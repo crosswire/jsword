@@ -187,7 +187,7 @@ public class DownloadSet implements Comparable
     private static final DateFormat userdf = new SimpleDateFormat("dd MMM yyyy");
     static
     {
-        nf.setMaximumFractionDigits(1);
+        nf.setMaximumFractionDigits(2);
     }
 
     /**

@@ -86,7 +86,21 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="compile" depends="init, xjc" description="Validate source syntax">
+  <target name="check.config">
+    <mkdir dir="${gener.root}/config"/>
+    <style
+        in="${source.res}/config.xml"
+        out="${gener.root}/config/ConfigTest.java"
+        style="${source.etc}/config-test.xsl"/>
+    <mkdir dir="${target.classes}/config"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="generate" depends="xjc, check.config" description="Generate/update source files">
+  </target>
+
+  <!--=======================================================================-->
+  <target name="compile" depends="init, generate" description="Validate source syntax">
     <mkdir dir="${target.classes}/resource"/>
     <antcall target="compile.section">
       <param name="section" value="common"/>
@@ -105,6 +119,13 @@
         <patternset refid="java.non.compile"/>
       </fileset>
     </copy>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
+      <src path="${gener.root}/config"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
     <antcall target="compile.section">
       <param name="section" value="jsword"/>
     </antcall>
@@ -159,24 +180,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="check.config">
-    <mkdir dir="${gener.root}/config"/>
-    <style
-        in="${source.res}/config.xml"
-        out="${gener.root}/config/ConfigTest.java"
-        style="${source.etc}/config-test.xsl"/>
-    <mkdir dir="${target.classes}/config"/>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
-      <src path="${gener.root}/config"/>
-      <classpath>
-        <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="jar" unless="jar.notrequired" depends="compile, check.config, jar.check" description="Create a jsword jar file">
+  <target name="jar" unless="jar.notrequired" depends="compile, jar.check" description="Create a jsword jar file">
     <mkdir dir="${target.jar}"/>
     <jar manifest="${source.etc}/desktop/MANIFEST.MF" jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
