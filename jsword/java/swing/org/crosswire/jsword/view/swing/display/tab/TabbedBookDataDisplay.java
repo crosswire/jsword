@@ -57,7 +57,7 @@ public class TabbedBookDataDisplay implements BookDataDisplay
      */
     public TabbedBookDataDisplay()
     {
-        displays.add(pnlView);
+        pnlView = createInnerDisplayPane();
 
         initialize();
 
@@ -80,7 +80,7 @@ public class TabbedBookDataDisplay implements BookDataDisplay
         {
             public void stateChanged(ChangeEvent ev)
             {
-                newTab();
+                tabChanged();
             }
         });
 
@@ -106,20 +106,15 @@ public class TabbedBookDataDisplay implements BookDataDisplay
             BookData first = (BookData) datas.get(0);
 
             // Create the first tab
-            BookDataDisplay pnlNew = createInnerDisplayPane(first);
+            BookDataDisplay pnlNew = createInnerDisplayPane();
+            pnlNew.setBookData(first);
 
             Component display = pnlNew.getComponent();
 
             tabMain.add(display, JAXBUtil.getTitle(first, TITLE_LENGTH));
             tabMain.add(pnlMore, Msg.MORE);
 
-            // And show it if needed
-            if (center != tabMain)
-            {
-                pnlMain.remove(center);
-                pnlMain.add(tabMain, BorderLayout.CENTER);
-                center = tabMain;
-            }
+            setCenterComponent(tabMain);
         }
         else
         {
@@ -128,16 +123,24 @@ public class TabbedBookDataDisplay implements BookDataDisplay
             // Setup the front tab
             pnlView.setBookData(data);
 
-            // And show it if needed
-            if (center != pnlView)
-            {
-                pnlMain.remove(center);
-                center = pnlView.getComponent();
-                pnlMain.add(center, BorderLayout.CENTER);
-            }
+            setCenterComponent(pnlView.getComponent());
         }
 
-        // this.repaint();
+        // tabMain.repaint();
+    }
+
+    /**
+     * Make a new component reside in the center of this panel
+     */
+    private void setCenterComponent(Component comp)
+    {
+        // And show it is needed
+        if (center != comp)
+        {
+            pnlMain.remove(center);
+            center = comp;
+            pnlMain.add(center, BorderLayout.CENTER);
+        }
     }
 
     /* (non-Javadoc)
@@ -211,9 +214,9 @@ public class TabbedBookDataDisplay implements BookDataDisplay
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.display.BookDataDisplay#removeMouseListener(java.awt.event.MouseListener)
+     * @see org.crosswire.jsword.view.swing.display.BookDataDisplay#addMouseListener(java.awt.event.MouseListener)
      */
-    public synchronized void removeMouseListener(MouseListener li)
+    public synchronized void addMouseListener(MouseListener li)
     {
         // First add to our list of listeners so when we get more event syncs
         // we can add this new listener to the new sync
@@ -243,9 +246,9 @@ public class TabbedBookDataDisplay implements BookDataDisplay
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.display.BookDataDisplay#addMouseListener(java.awt.event.MouseListener)
+     * @see org.crosswire.jsword.view.swing.display.BookDataDisplay#removeMouseListener(java.awt.event.MouseListener)
      */
-    public synchronized void addMouseListener(MouseListener li)
+    public synchronized void removeMouseListener(MouseListener li)
     {
         // First remove from the list of listeners
         if (mouselis != null && mouselis.contains(li))
@@ -275,7 +278,7 @@ public class TabbedBookDataDisplay implements BookDataDisplay
     /**
      * Tabs changed, generate some stuff
      */
-    protected void newTab()
+    protected void tabChanged()
     {
         try
         {
@@ -293,7 +296,8 @@ public class TabbedBookDataDisplay implements BookDataDisplay
             BookData next = (BookData) datas.get(countTabs);
 
             // Create a new tab
-            BookDataDisplay pnlNew = createInnerDisplayPane(next);
+            BookDataDisplay pnlNew = createInnerDisplayPane();
+            pnlNew.setBookData(next);
             Component display = pnlNew.getComponent();
             tabMain.add(display, JAXBUtil.getTitle(next, TITLE_LENGTH));
 
@@ -330,10 +334,9 @@ public class TabbedBookDataDisplay implements BookDataDisplay
     /**
      * Tab creation helper
      */
-    private synchronized BookDataDisplay createInnerDisplayPane(BookData bdata) throws BookException
+    private synchronized BookDataDisplay createInnerDisplayPane()
     {
         BookDataDisplay display = new ScrolledBookDataDisplay();
-        display.setBookData(bdata);
         displays.add(display);
 
         // Add all the known listeners to this new BookDataDisplay
@@ -403,7 +406,7 @@ public class TabbedBookDataDisplay implements BookDataDisplay
     /**
      * If we are not using tabs, this is the main view
      */
-    private BookDataDisplay pnlView = new ScrolledBookDataDisplay();
+    private BookDataDisplay pnlView = null;
 
     /**
      * A list of all the InnerDisplayPanes so we can control listeners

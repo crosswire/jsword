@@ -436,11 +436,13 @@
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
     <jdepend format="xml" outputfile="${target.temp}/jdepend/jdepend-report.xml" fork="yes">
-      <classpath>
+      <classespath>
         <pathelement path="${target.classes}/common"/>
         <pathelement path="${target.classes}/jsword"/>
         <pathelement path="${target.classes}/swing"/>
         <pathelement path="${target.classes}/servlet"/>
+      </classespath>
+      <classpath>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
         <fileset dir="${support.tools}/jdepend26" includes="**/*.jar"/>
       </classpath>

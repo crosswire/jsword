@@ -58,9 +58,12 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
      */
     public TabbedDisplayPane()
     {
-        displays.add(pnlView);
+        pnlView = createInnerDisplayPane();
 
         initialize();
+
+        center = pnlView.getComponent();
+        this.add(center, BorderLayout.CENTER);
 
         // NOTE: when we tried dynamic laf update, these needed special treatment
         // There are times when tab_main or pnl_view are not in visible or
@@ -81,13 +84,11 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         {
             public void stateChanged(ChangeEvent ev)
             {
-                newTab();
+                tabChanged();
             }
         });
 
         this.setLayout(new BorderLayout());
-        center = pnlView.getComponent();
-        this.add(center, BorderLayout.CENTER);
     }
 
     /**
@@ -121,39 +122,19 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
                 waiting = cut.trimVerses(pagesize);
 
                 // Create the tab
-                BookDataDisplay pnlNew = createInnerDisplayPane(cut);
+                BookDataDisplay pnlNew = createInnerDisplayPane();
+                setDisplay(pnlNew, cut);
+
                 Component display = pnlNew.getComponent();
                 tabMain.add(display, shortenName(cut.getName()));
                 tabMain.add(pnlMore, "More ...");
 
-                // And show it is needed
-                if (center != tabMain)
-                {
-                    this.remove(center);
-                    this.add(tabMain, BorderLayout.CENTER);
-                    center = tabMain;
-                }
+                setCenterComponent(tabMain);
             }
             else
             {
-                // Setup the front tab
-                if (ref == null || book == null)
-                {
-                    pnlView.setBookData(null);
-                }
-                else
-                {
-                    BookData data = book.getData(ref);
-                    pnlView.setBookData(data);
-                }
-
-                // And show it if needed
-                if (center != pnlView)
-                {
-                    this.remove(center);
-                    center = pnlView.getComponent();
-                    this.add(center, BorderLayout.CENTER);
-                }
+                setDisplay(pnlView, ref);
+                setCenterComponent(pnlView.getComponent());
             }
         }
         catch (CloneNotSupportedException ex)
@@ -165,9 +146,41 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     }
 
     /**
+     * @param display
+     * @param cut
+     * @throws BookException
+     */
+    private void setDisplay(BookDataDisplay display, Passage cut) throws BookException
+    {
+        if (cut == null || book == null)
+        {
+            display.setBookData(null);
+        }
+        else
+        {
+            BookData data = book.getData(cut);
+            display.setBookData(data);
+        }
+    }
+
+    /**
+     * Make a new component reside in the center of this panel
+     */
+    private void setCenterComponent(Component comp)
+    {
+        // And show it is needed
+        if (center != comp)
+        {
+            this.remove(center);
+            center = comp;
+            this.add(center, BorderLayout.CENTER);
+        }
+    }
+
+    /**
      * Tabs changed, generate some stuff
      */
-    protected void newTab()
+    protected void tabChanged()
     {
         try
         {
@@ -185,7 +198,9 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
             waiting = cut.trimVerses(pagesize);
 
             // Create a new tab
-            BookDataDisplay pnlNew = createInnerDisplayPane(cut);
+            BookDataDisplay pnlNew = createInnerDisplayPane();
+            setDisplay(pnlNew, cut);
+
             Component display = pnlNew.getComponent();
             tabMain.add(display, shortenName(cut.getName()));
 
@@ -222,20 +237,9 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * Tab creation helper
      */
-    private synchronized BookDataDisplay createInnerDisplayPane(Passage cut) throws BookException
+    private synchronized BookDataDisplay createInnerDisplayPane()
     {
         BookDataDisplay idp = new ScrolledBookDataDisplay();
-
-        if (cut == null || book == null)
-        {
-            pnlView.setBookData(null);
-        }
-        else
-        {
-            BookData data = book.getData(cut);
-            pnlView.setBookData(data);
-        }
-
         displays.add(idp);
 
         // Add all the known listeners to this new BookDataDisplay
@@ -356,7 +360,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * Forward the mouse listener to our child components
      */
-    public synchronized void removeMouseListener(MouseListener li)
+    public synchronized void addMouseListener(MouseListener li)
     {
         // First add to our list of listeners so when we get more event syncs
         // we can add this new listener to the new sync
@@ -388,7 +392,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * Forward the mouse listener to our child components
      */
-    public synchronized void addMouseListener(MouseListener li)
+    public synchronized void removeMouseListener(MouseListener li)
     {
         // First remove from the list of listeners
         if (mouselis != null && mouselis.contains(li))
@@ -493,7 +497,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * If we are not using tabs, this is the main view
      */
-    private BookDataDisplay pnlView = new ScrolledBookDataDisplay();
+    private BookDataDisplay pnlView = null;
 
     /**
      * A list of all the InnerDisplayPanes so we can control listeners
