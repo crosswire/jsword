@@ -45,6 +45,7 @@ public class History
     {
         nav = new ArrayList();
         history = new HashMap();
+        listeners = new EventListenerList();
     }
 
     /**
@@ -58,15 +59,14 @@ public class History
     public Object select(int i)
     {
         // Adjust to be 1 based
-        i++;
         int size = nav.size();
         if (i > size)
         {
             i = size;
         }
-        else if (i < 0)
+        else if (i < 1)
         {
-            i = 0;
+            i = 1;
         }
         backCount = i;
         fireHistoryChanged();
@@ -101,7 +101,7 @@ public class History
     {
         if (backCount > 0)
         {
-            return Collections.unmodifiableList(nav.subList(0, backCount + 1));
+            return Collections.unmodifiableList(nav.subList(0, backCount));
         }
         return Collections.EMPTY_LIST;
     }
@@ -114,7 +114,7 @@ public class History
     {
         if (backCount < nav.size())
         {
-            return Collections.unmodifiableList(nav.subList(backCount + 1, nav.size()));
+            return Collections.unmodifiableList(nav.subList(backCount, nav.size()));
         }
         return Collections.EMPTY_LIST;
     }
@@ -139,9 +139,9 @@ public class History
      */
     public Object getCurrent()
     {
-        if (nav.size() > 0)
+        if (nav.size() > 0 && backCount > 0)
         {
-            return nav.get(backCount);
+            return nav.get(backCount - 1);
         }
         return null;
     }
