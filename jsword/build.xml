@@ -615,44 +615,56 @@
       <fileset dir="${source.res}"/>
     </jar>
     <antcall target="jnlp.section">
-      <param name="jar" value="jdom.jar"/>
-      <param name="dir" value="${source.jar}/jdom09"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="xalan.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10endorsed"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="xercesImpl.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10endorsed"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="sax.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10endorsed"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="dom.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10endorsed"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="commons-lang-2.0.jar"/>
-      <param name="dir" value="${source.jar}/lang200"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="log4j-1.2.7.jar"/>
-      <param name="dir" value="${source.jar}/log4j127"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="projectb-ser-av.zip"/>
-      <param name="dir" value="${support.notes}/versions"/>
-    </antcall>
-    <antcall target="jnlp.section">
       <param name="jar" value="${ant.project.name}.jar"/>
       <param name="dir" value="${target.jar}"/>
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="resource.jar"/>
       <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jsword-osis.jar"/>
+      <param name="dir" value="${gener.root}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="commons-lang-2.0.jar"/>
+      <param name="dir" value="${source.jar}/lang200"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="commons-net-1.1.0.jar"/>
+      <param name="dir" value="${source.jar}/net110"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxb-api.jar"/>
+      <param name="dir" value="${source.jar}/jaxb10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxb-libs.jar"/>
+      <param name="dir" value="${source.jar}/jaxb10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxb-ri.jar"/>
+      <param name="dir" value="${source.jar}/jaxb10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jdom.jar"/>
+      <param name="dir" value="${source.jar}/jdom09"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="log4j-1.2.7.jar"/>
+      <param name="dir" value="${source.jar}/log4j127"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="lucene-1.3-final.jar"/>
+      <param name="dir" value="${source.jar}/lucene13"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="tar.jar"/>
+      <param name="dir" value="${source.jar}/jtar25"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="winlaf-0.4.jar"/>
+      <param name="dir" value="${source.jar}/winlaf04"/>
     </antcall>
   </target>
 
