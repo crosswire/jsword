@@ -109,7 +109,12 @@ public class DemoServlet extends HttpServlet
                 if (ref.countVerses() > page_size)
                 {
                     Passage waiting = ref.trimVerses(page_size);
-                    String link = URLEncoder.encode(waiting.getName(), "UTF-8");
+                    
+                    // Well, do you or not?  A deprecation error if you don't, won't build or run on
+                    // java < 1.4 if you do.
+                    //String link = URLEncoder.encode(waiting.getName(), "UTF-8");
+                    String link = URLEncoder.encode(waiting.getName());
+                    
                     request.setAttribute("next-link", link);
                     request.setAttribute("next-name", waiting.getName());
                     request.setAttribute("next-overview", waiting.getOverview());
