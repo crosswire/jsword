@@ -1,11 +1,10 @@
 package org.crosswire.common.progress;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.crosswire.jsword.util.Project;
-
 import junit.framework.TestCase;
+
+import org.crosswire.jsword.util.Project;
 
 /**
  * JUnit Test.
@@ -43,7 +42,7 @@ public class JobTest extends TestCase
         super(arg0);
     }
 
-    public void testJob() throws MalformedURLException
+    public void testJob()
     {
         Job job;
         URL url = Project.instance().getWritablePropertiesURL("splash");

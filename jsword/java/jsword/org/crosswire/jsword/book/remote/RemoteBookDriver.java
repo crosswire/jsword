@@ -68,7 +68,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
      * flush the cache because the list of Bibles on the server could change.
      * @return an array of book names
      */
-    public BookMetaData[] getBooks()
+    public BookMetaData[] getBookMetaDatas()
     {
         synchronized (this)
         {

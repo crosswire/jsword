@@ -57,7 +57,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public BookMetaData[] getBooks()
+    public BookMetaData[] getBookMetaDatas()
     {
         if (dirs == null)
         {
@@ -108,6 +108,26 @@ public class SwordBookDriver extends AbstractBookDriver
         }
 
         return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
+    }
+
+    /**
+     * A helper class for the SwordInstaller to tell us that it has copied a
+     * new Book into our install dorectory
+     * @param config The SwordConfig object for the new Book
+     * @param modpath The path that we have installed to
+     */
+    public static void registerNewBook(SwordConfig config, String modpath) throws BookException, MalformedURLException, ParseException
+    {
+        if (config.isSupported())
+        {
+            BookDriver[] drivers = Books.getDriversByClass(SwordBookDriver.class);
+            for (int i = 0; i < drivers.length; i++)
+            {
+                SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
+                Book book = sdriver.createBook(config, new File(modpath));
+                Books.addBook(book.getBookMetaData());
+            }
+        }
     }
 
     /**

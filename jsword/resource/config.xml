@@ -137,12 +137,12 @@
     <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>
   </option>
 
-  <option key="Advanced.Reports.Exceptions to Dialog Box" type="boolean" priority="8">
+  <option key="Advanced.Reports.Show errors in a dialog box" type="boolean" priority="8">
   	<introspect class="org.crosswire.common.swing.ExceptionPane" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a GUI window.</help>
   </option>
 
-  <option key="Advanced.Reports.Exceptions to Log Window" type="boolean" priority="8">
+  <option key="Advanced.Reports.Log errors in the log window" type="boolean" priority="8">
   	<introspect class="org.crosswire.common.swing.ExceptionShelf" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a the GUI shelf.</help>
   </option>

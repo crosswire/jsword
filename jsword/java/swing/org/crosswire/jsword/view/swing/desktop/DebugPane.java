@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -158,7 +157,7 @@ public class DebugPane extends JPanel
     /**
      * Create some test jobs
      */
-    public void createTestJobs() throws MalformedURLException
+    public void createTestJobs()
     {
         createTestJob(30000, "test1", 20, false);
         createTestJob(30000, "test2", 3, false);
@@ -168,7 +167,7 @@ public class DebugPane extends JPanel
     /**
      * Create a test job
      */
-    public static void createTestJob(final long millis, final String predictbase, final int steps, final boolean fake) throws MalformedURLException
+    public static void createTestJob(final long millis, final String predictbase, final int steps, final boolean fake)
     {
         final URL predicturl = Project.instance().getWritablePropertiesURL(predictbase);
         final Thread test = new Thread()

@@ -760,7 +760,7 @@ public class BibleInfo
 
     /**
      * Handy section finder. There is a bit of moderately bad programming
-     * here because org.crosswire.jsword.control.map.swing.GroupVerseColor
+     * here because org.crosswire.jsword.control.map.sw*ng.GroupVerseColor
      * uses these numbers as an index into an array, so we shouldn't
      * change these numbers without fixing that, however I don't imagine
      * that this section could ever change without breaking

@@ -72,13 +72,13 @@ public class ExceptionPane extends JPanel
     private ExceptionPane(Throwable ex)
     {
         this.ex = ex;
-        jbInit();
+        initialise();
     }
 
     /**
      * Setup the GUI
      */
-    private void jbInit()
+    private void initialise()
     {
         String exmsg = "<html><font size=\"-1\">An error has occured:</font> "+ExceptionPane.getHTMLDescription(ex);
         
@@ -352,6 +352,14 @@ public class ExceptionPane extends JPanel
         }
     
         return retcode.toString();
+    }
+
+    /**
+     * Make the default to be an error listener
+     */
+    static
+    {
+        setHelpDeskListener(true);        
     }
 
     /**

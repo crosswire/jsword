@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
@@ -207,9 +208,8 @@ public class Project
      * totally untested, so reading may well cause errors.
      * @param subject The name (minus the .properties extension)
      * @return The resource as a URL
-     * @throws MalformedURLException Something went very wrong creating the URL
      */
-    public URL getWritablePropertiesURL(String subject) throws MalformedURLException
+    public URL getWritablePropertiesURL(String subject)
     {
         URL base = getWritableBaseURL();
         return NetUtil.lengthenURL(base, subject+ResourceUtil.PROPERTIES_EXTENSION);
@@ -219,10 +219,17 @@ public class Project
      * Where can we write cache or config files?
      * @return URL of the users .jsword directory.
      */
-    private URL getWritableBaseURL() throws MalformedURLException
+    private URL getWritableBaseURL()
     {
         String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY + File.separator;
-        return new URL("file", null, path);
+        try
+        {
+            return new URL("file", null, path);
+        }
+        catch (MalformedURLException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**

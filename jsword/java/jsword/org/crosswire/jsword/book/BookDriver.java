@@ -33,7 +33,7 @@ public interface BookDriver
      * you use this method.
      * @return A list of the known Bibles
      */
-    public BookMetaData[] getBooks();
+    public BookMetaData[] getBookMetaDatas();
 
     /**
      * Is this name capable of creating writing data in the correct format

@@ -3,7 +3,6 @@ package org.crosswire.jsword.view.swing.book;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -76,17 +75,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
         {
             public void run()
             {
-                URL predicturl = null;
-                try
-                {
-                    predicturl = Project.instance().getWritablePropertiesURL("display");
-                }
-                catch (MalformedURLException ex)
-                {
-                    log.error("Prediction URL failed", ex);
-                    return;
-                }
-
+                URL predicturl = Project.instance().getWritablePropertiesURL("display");
                 Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
 
                 try

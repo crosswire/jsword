@@ -15,6 +15,37 @@ import org.crosswire.common.util.Logger;
  * JobManager is responsible for creating jobs and informing listeners about
  * the progress they make to completion.
  * 
+ * <p>Example code:
+ * <pre>
+ * final Thread worker = new Thread("DisplayPreLoader")
+ * {
+ *     public void run()
+ *     {
+ *         URL predicturl = Project.instance().getWritablePropertiesURL("display");
+ *         Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
+ * 
+ *         try
+ *         {
+ *             job.setProgress("Step 1");
+ *             ...
+ *             job.setProgress("Step 2");
+ *             ...
+ *         }
+ *         catch (Exception ex)
+ *         {
+ *             ...
+ *         }
+ *         finally
+ *         {
+ *             job.done();
+ *         }
+ *     }
+ * };
+ * 
+ * worker.setPriority(Thread.MIN_PRIORITY);
+ * worker.start();
+ * </pre>
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

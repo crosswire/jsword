@@ -55,7 +55,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public BookMetaData[] getBooks()
+    public BookMetaData[] getBookMetaDatas()
     {
         return bmds;
     }

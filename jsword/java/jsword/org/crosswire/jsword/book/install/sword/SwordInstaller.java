@@ -119,8 +119,10 @@ public class SwordInstaller implements Installer, Comparable
             File conf = new File(confdir, config.getInternalName()+".conf");
             URL configurl = new URL("file", null, conf.getAbsolutePath());
             config.save(configurl);
+
+            SwordBookDriver.registerNewBook(config, modpath);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new InstallException(Msg.URL_FAILED, ex);
         }

@@ -294,7 +294,7 @@ public class Books
 
         drivers.add(driver);
 
-        BookMetaData[] bmds = driver.getBooks();
+        BookMetaData[] bmds = driver.getBookMetaDatas();
         for (int j=0; j<bmds.length; j++)
         {
             addBook(bmds[j]);
@@ -311,7 +311,7 @@ public class Books
     {
         log.debug("begin un-registering driver: "+driver.getClass().getName());
 
-        BookMetaData[] bmds = driver.getBooks();
+        BookMetaData[] bmds = driver.getBookMetaDatas();
         for (int j=0; j<bmds.length; j++)
         {
             removeBook(bmds[j]);

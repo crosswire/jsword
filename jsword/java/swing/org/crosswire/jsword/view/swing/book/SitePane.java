@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -12,11 +13,13 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -25,11 +28,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.swing.MapTableModel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.util.Project;
 
 /**
  * A panel for use within a SitesPane to display one set of Books that are
@@ -195,7 +201,7 @@ public class SitePane extends JPanel
     }
 
     /**
-     * 
+     * Kick of the installer
      */
     protected void install()
     {
@@ -204,18 +210,52 @@ public class SitePane extends JPanel
             TreePath path = treAvailable.getSelectionPath();
             if (path != null)
             {
-                try
-                {
-                    Object last = path.getLastPathComponent();
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
-                    String name = (String) node.getUserObject();
+                Object last = path.getLastPathComponent();
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
+                final String name = (String) node.getUserObject();
 
-                    installer.install(name);
-                }
-                catch (InstallException ex)
+                // So now we know what we want to install - all we need to do
+                // is installer.install(name) however we are doing it in the
+                // background so we create a job for it.
+                final Thread worker = new Thread("DisplayPreLoader")
                 {
-                    Reporter.informUser(this, ex);
-                }
+                    public void run()
+                    {
+                        URL predicturl = Project.instance().getWritablePropertiesURL("install");
+                        Job job = JobManager.createJob("Install Module: "+name, predicturl, this, true);
+
+                        try
+                        {
+                            job.setProgress("Installing");
+                            installer.install(name);
+
+                            // inform the user that we are done
+                            SwingUtilities.invokeLater(new Runnable()
+                            {
+                                public void run()
+                                {
+                                    JOptionPane.showConfirmDialog(SitePane.this, 
+                                            "Finished installing module: "+name,
+                                            "Installation Done",
+                                            JOptionPane.INFORMATION_MESSAGE,
+                                            JOptionPane.YES_OPTION);
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Reporter.informUser(this, ex);
+                        }
+                        finally
+                        {
+                            job.done();
+                        }
+                    }
+                };
+
+                // this actually starts the thread off
+                worker.setPriority(Thread.MIN_PRIORITY);
+                worker.start();
             }
         }
     }
@@ -297,7 +337,7 @@ public class SitePane extends JPanel
     /**
      * From which we get our list of installable modules
      */
-    private Installer installer;
+    protected Installer installer;
 
     /*
      * GUI Components
