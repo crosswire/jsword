@@ -17,8 +17,6 @@ import javax.swing.JFrame;
  * The methods without specific JavaDoc comments mirror the methods
  * of AppletStub and AppletContext, returning null, true, this or ""
  * where appropriate.
- * TODO: Maybe it is possible to have main in here using a static
- * method to find the applet object... Maybe not.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

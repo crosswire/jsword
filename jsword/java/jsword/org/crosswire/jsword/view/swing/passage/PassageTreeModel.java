@@ -9,7 +9,7 @@ import org.crosswire.jsword.passage.Passage;
 /**
  * The PassageTreeModel class implements TreeModel using various custom
  * TreeNodes, and simply extending DefaultTreeModel.
- * TODO: I think we oughtn't to need to pass the tree in here.
+ * PENDING(joe): I think we oughtn't to need to pass the tree in here.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

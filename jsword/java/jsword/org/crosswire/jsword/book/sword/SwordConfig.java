@@ -70,14 +70,14 @@ public class SwordConfig
         if (dataPath == null)
         {
             log.warn("No data path could be found in the config: " + url.toString());
-            // TODO: assume something like <sword root>/modules/type/name
+            // PENDING(mark): assume something like <sword root>/modules/type/name
         }
         if (description == null)
             log.warn("No description could be found in the config: " + url.toString());
         if (modDrv == -1)
         {
             log.warn("No data path could be found in the config: " + url.toString());
-            // TODO: Throw - we can't sensibly assume a name.
+            // PENDING(mark): Throw - we can't sensibly assume a name.
         }
     }
 
@@ -125,10 +125,10 @@ public class SwordConfig
     {
         about = reader.getFirstValue("About");
         version = reader.getFirstValue("Version");
-        // TODO: History - perhaps iterate over the keys and do a startsWith("History") thing.
-        // TODO: Minimum version - discuss version emulation
+        // PENDING(mark): History - perhaps iterate over the keys and do a startsWith("History") thing.
+        // PENDING(mark): Minimum version - discuss version emulation
         category = reader.getFirstValue("Category");
-        // TODO: LCSH - what on earth is this?
+        // PENDING(mark): LCSH - what on earth is this?
         lang = reader.getFirstValue("Lang");
         try
         {
@@ -140,7 +140,7 @@ public class SwordConfig
         {
             log.warn("There was a problem parsing the InstallSize: " + url.toString(), nfe);
         }
-        // TODO: SwordVersionDate - see MinimumVersion
+        // PENDING(mark): SwordVersionDate - see MinimumVersion
     }
 
     /**
@@ -154,8 +154,8 @@ public class SwordConfig
             String featureString = (String) features.next();
             feature |= 1 << matchingIndex(SwordConstants.FEATURE_STRINGS, featureString);
         }
-        // TODO: lexicon from
-        // TODO: lexicon to
+        // PENDING(mark): lexicon from
+        // PENDING(mark): lexicon to
     }
 
     /**
@@ -163,7 +163,7 @@ public class SwordConfig
      */
     private void setRenderingProperties()
     {
-        //TODO: Change to set flags for each value
+        // PENDING(mark): Change to set flags for each value
         Iterator it = reader.getAllValues("GlobalOptionFilter");
         while (it.hasNext())
         {
@@ -547,7 +547,7 @@ public class SwordConfig
 
     public static void main(String[] args)
     {
-        // TODO: MDG. JUnit tests.
+        // PENDING(mark): MDG. JUnit tests.
     }
 
     /** The log stream */

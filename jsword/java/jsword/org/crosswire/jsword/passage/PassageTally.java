@@ -12,7 +12,7 @@ import org.crosswire.common.util.LogicError;
  * Similar to a Passage, but that stores a ranking for each of the
  * Verses that it contains.
  *
- * <p>TODO: Specify how passage ranks work. Currently there is no well
+ * <p>PENDING(joe): Specify how passage ranks work. Currently there is no well
  * defined spec for what the rank of a verse means - it is just an int.
  * Since this number is expoed in 2 places (getNameAndTally() and
  * getTallyFor()) we should specify what the numbers mean. Trouble is

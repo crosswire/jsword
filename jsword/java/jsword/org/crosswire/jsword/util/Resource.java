@@ -198,6 +198,9 @@ public class Resource
 
     /**
      * Generic resource URL fetcher. One way or the other we'll find it!
+     * I'm fairly sure some of these do the same thing, but which and how they
+     * change on various JDK's is complex, and it seems simpler to take the
+     * shotgun approach.
      * @param search The name of the resource (without a leading /) to find
      * @return A URL of the found resource or null if we couldn't find one.
      */

@@ -1,17 +1,13 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.io.StringReader;
 import java.util.Iterator;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.xml.sax.SAXException;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Verse;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * A VerseData represents a Verse that exists inside a BibleData.
@@ -118,31 +114,15 @@ public class DefaultRefData implements RefData
         Element dad = ref.getParent();
         dad.removeContent(ref);
 
-        // We need to ensure that we have a single root node to be the
-        // Document node in the parse
-        String insert =
-        "<ref " +
-        " b='" + verse.getBook() + "'" +
-        " c='" + verse.getChapter() + "'" +
-        " v='" + verse.getVerse() + "'" +
-        (para ? " para='true'" : "") +
-        "><it>" +
-        xml +
-        "</it></ref>";
+        Element it = new Element("it");
+        it.setText(xml);
 
-        // TODO: Not sure about this it needs testing since we killed the SAX
-        // parse section. We might need to get the last child of the root element
-        try
-        {
-            StringReader in = new StringReader(insert);
-            SAXBuilder builder = new SAXBuilder();
-            Document doc = builder.build(in);
-            ref = doc.getRootElement();
-        }
-        catch (JDOMException ex)
-        {
-            throw new SAXException("Rare in-memory IO error. System message: " + ex);
-        }
+        ref = new Element("ref");
+        ref.setAttribute("b", ""+verse.getBook());
+        ref.setAttribute("c", ""+verse.getChapter());
+        ref.setAttribute("v", ""+verse.getVerse());
+        if (para) ref.setAttribute("para", "true");
+        ref.addContent(it);
     }
 
     /**

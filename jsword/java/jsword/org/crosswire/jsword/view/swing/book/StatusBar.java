@@ -24,7 +24,7 @@ import org.crosswire.jsword.util.Project;
  *     instructional.
  * <li>A set of panels that tell you the time/if CAPS is presses and so on
  * </ul>
- * <p>TODO: Make this do something more useful
+ * <p>PENDING(joe): Make this do something more useful
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

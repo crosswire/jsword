@@ -125,8 +125,7 @@ public class ConfigReader
     public static void main(String[] args)
     {
         // A little test
-        // TODO: MDG.
-        // JUnit tests..... (ask joe about a ${project.root}/misc/testdata dir - this (and many other tests) are data dependant)
+        // PENGING(mark): (ask joe about a ${project.root}/misc/testdata dir - this (and many other tests) are data dependant)
         try
         {
             File f = new File("/usr/share/sword/mods.d/kjv.conf");

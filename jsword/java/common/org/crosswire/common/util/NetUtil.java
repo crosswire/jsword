@@ -184,13 +184,11 @@ public class NetUtil
      */
     public static File getAsFile(URL url) throws IOException
     {
-        //TODO:  Implement this method
-        //TODO: Remove these comments?
-
         // if the URL is already a file URL, return it
         if (url.getProtocol().equals("file"))
             return new File(url.getFile());
 
+        // PENGING(mark): surely this is a bug - the replace() happens on "" and not the url?
         File workingFile = null;
         String hashString = url.toExternalForm().hashCode() + "".replace('-', 'm');
 

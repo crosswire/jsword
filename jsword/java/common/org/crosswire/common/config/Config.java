@@ -51,8 +51,6 @@ import org.jdom.Element;
  *     data have been changed in the screen data, and so that we can
  *     load data from disk to screen without involving the app.
  * </ul>
- * TODO: Questions that fail on load - ask
- * TODO: I18N
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

@@ -318,7 +318,7 @@ public class GeneratorPane extends EirPanel
             {
                 // Get the values
                 Bible source = mdl_source.getSelectedBibleMetaData().getBible();
-                // TODO
+                // PENDING(joe)
                 //String dest_name = txt_name.getText();
                 BibleDriver dest_driver = mdl_driver.getSelectedDriver();
 

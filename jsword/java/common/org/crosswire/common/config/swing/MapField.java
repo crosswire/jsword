@@ -74,16 +74,30 @@ public class MapField extends JPanel implements Field
         buttons.add(remove);
         buttons.add(update);
 
-        // TODO: consider custom cell editors
+        // PENDING(joe): consider custom cell editors
 
-        add.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { addEntry(); }
+        add.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                addEntry();
+            }
         });
-        remove.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { removeEntry(); }
+
+        remove.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                removeEntry();
+            }
         });
-        update.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { updateEntry(); }
+
+        update.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                updateEntry();
+            }
         });
 
         Border title = BorderFactory.createTitledBorder("Component Editor");
@@ -155,7 +169,7 @@ public class MapField extends JPanel implements Field
     }
 
     /**
-     * TODO: Make this work
+     * PENDING(joe): Make this work
      */
     public void registerComboEditor(OptionsField field)
     {
@@ -168,7 +182,7 @@ public class MapField extends JPanel implements Field
     {
         InputPane input = new InputPane();
 
-        // TODO: Initial focus ...
+        // PENDING(joe): Initial focus ...
         if (JOptionPane.showConfirmDialog(this, input, "New Class", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
             String new_class = input.class_field.getText();
@@ -205,7 +219,7 @@ public class MapField extends JPanel implements Field
 
     /**
      * Delete the current value in the hashtable
-     * TODO: do we need an "Are you sure?"
+     * PENDING(joe): do we need an "Are you sure?"
      */
     public void removeEntry()
     {

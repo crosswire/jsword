@@ -164,7 +164,7 @@ public class Desktop extends JFrame implements TitleChangedListener
             pnl_tbar = new JToolBar();
             bar_status = new StatusBar();
 
-			//TODO: add splash.setProgress stuff
+			// PENDING(joe): add splash.setProgress stuff
             act_tools_options.createConfig();
             act_tools_options.loadConfig();
 
