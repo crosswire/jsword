@@ -247,7 +247,7 @@ public class LuceneIndex implements Index, Activatable
                 Reader reader = new StringReader(text);
 
                 Document doc = new Document();
-                doc.add(Field.UnIndexed(FIELD_NAME, subkey.getName()));
+                doc.add(Field.UnIndexed(FIELD_NAME, subkey.getOSISName()));
                 doc.add(Field.Text(FIELD_BODY, reader));
 
                 writer.addDocument(doc);
@@ -295,15 +295,23 @@ public class LuceneIndex implements Index, Activatable
      */
     private static final Logger log = Logger.getLogger(LuceneIndex.class);
 
+    /* The following fields are named the same as Sword in the hopes of
+     * sharing indexes.
+     */
     /**
      * The Lucene field for the verse name
      */
-    protected static final String FIELD_NAME = "name"; //$NON-NLS-1$
+    protected static final String FIELD_NAME = "key"; //$NON-NLS-1$
 
     /**
      * The Lucene field for the verse contents
      */
-    protected static final String FIELD_BODY = "body"; //$NON-NLS-1$
+    protected static final String FIELD_BODY = "content"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for the strong numbers
+     */
+    protected static final String FIELD_STRONG = "strong"; //$NON-NLS-1$
 
     /**
      * The Book that we are indexing

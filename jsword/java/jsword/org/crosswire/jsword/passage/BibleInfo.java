@@ -1,6 +1,8 @@
 package org.crosswire.jsword.passage;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.CWClassLoader;
@@ -58,22 +60,25 @@ public class BibleInfo
         fullBooksUpper = new String[BOOKS_IN_BIBLE];
 
         shortBooks = new String[BOOKS_IN_BIBLE];
+        shortBooksMap = new HashMap(BOOKS_IN_BIBLE);
         shortBooksLower = new String[BOOKS_IN_BIBLE];
         shortBooksUpper = new String[BOOKS_IN_BIBLE];
 
-        alt_books = new String[BOOKS_IN_BIBLE][];
         altBooksLower = new String[BOOKS_IN_BIBLE][];
+        altBooksMap = new HashMap(BOOKS_IN_BIBLE);
 
         sections = new String[SECTIONS_IN_BIBLE];
         sectionsLower = new String[SECTIONS_IN_BIBLE];
         sectionsUpper = new String[SECTIONS_IN_BIBLE];
 
         osisBooks = new String[BOOKS_IN_BIBLE];
+        osisMap   = new HashMap(BOOKS_IN_BIBLE);
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleInfo.class.getName(), Locale.getDefault(), new CWClassLoader(BibleInfo.class));
 
         for (int i = 0; i < BibleInfo.BOOKS_IN_BIBLE; i++)
         {
+            Integer bookNum = new Integer(i+1);
             String fullBook = getString(resources, FULL_KEY + (i + 1));
             fullBooks[i] = fullBook;
             fullBooksLower[i] = fullBook.toLowerCase();
@@ -81,12 +86,19 @@ public class BibleInfo
 
             String shortBook = getString(resources, SHORT_KEY + (i + 1));
             shortBooks[i] = shortBook;
-            shortBooksLower[i] = shortBook.toLowerCase();
+            String lower = shortBook.toLowerCase();
+            shortBooksMap.put(lower, bookNum);
+            shortBooksLower[i] = lower;
             shortBooksUpper[i] = shortBook.toUpperCase();
 
             String altBook = getString(resources, ALT_KEY + (i + 1));
-            alt_books[i] = StringUtil.split(altBook, ',');
-            altBooksLower[i] = StringUtil.split(altBook.toLowerCase(), ',');
+            String altBooks[] = StringUtil.split(altBook.toLowerCase(), ',');
+            altBooksLower[i] = altBooks;
+
+            for (int j = 0; j < altBooks.length; j++)
+            {
+                altBooksMap.put(altBooks[j].toLowerCase(), bookNum);
+            }
         }
 
         for (int i = 0; i < SECTIONS_IN_BIBLE; i++)
@@ -103,6 +115,7 @@ public class BibleInfo
         for (int i = 0; i < osisBooks.length; i++)
         {
             osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
+            osisMap.put(osisBooks[i], new Integer(i+1));
         }
     }
 
@@ -271,11 +284,30 @@ public class BibleInfo
         {
             return -1;
         }
+        
+        // Favor OSIS names.
+        Integer bookNum = (Integer) osisMap.get(find);
+        if (bookNum != null)
+        {
+            return bookNum.intValue();
+        }
 
         String match = find.toLowerCase();
 
+        bookNum = (Integer) shortBooksMap.get(match);
+        if (bookNum != null)
+        {
+            return bookNum.intValue();
+        }
+
+        bookNum = (Integer) altBooksMap.get(match);
+        if (bookNum != null)
+        {
+            return bookNum.intValue();
+        }
+
         // Does it match a long version of the book or a short version
-        for (int i = 0; i < fullBooks.length; i++)
+        for (int i = 0; i < fullBooksLower.length; i++)
         {
             if (fullBooksLower[i].startsWith(match))
             {
@@ -288,9 +320,9 @@ public class BibleInfo
         }
 
         // Or does it match one of the alternative versions
-        for (int i = 0; i < alt_books.length; i++)
+        for (int i = 0; i < altBooksLower.length; i++)
         {
-            for (int j = 0; j < alt_books[i].length; j++)
+            for (int j = 0; j < altBooksLower[i].length; j++)
             {
                 if (match.startsWith(altBooksLower[i][j]))
                 {
@@ -310,35 +342,7 @@ public class BibleInfo
      */
     public static final boolean isBookName(String find)
     {
-        String match = find.toLowerCase();
-
-        if (!containsLetter(find))
-        {
-            return false;
-        }
-
-        // This could be sped up with less of the toLowerCase()
-        for (int i = 0; i < fullBooks.length; i++)
-        {
-            if (fullBooksLower[i].startsWith(match))
-            {
-                return true;
-            }
-            if (match.startsWith(shortBooksLower[i]))
-            {
-                return true;
-            }
-
-            for (int j = 0; j < alt_books[i].length; j++)
-            {
-                if (match.startsWith(altBooksLower[i][j]))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return (getBookNumber(find) != -1);
     }
 
     /**
@@ -529,7 +533,7 @@ public class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(chaptersInBook(book)),
-                fullBooks[book - 1], new Integer(chapter),
+                getShortBookName(book - 1), new Integer(chapter),
             };
             throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
@@ -540,7 +544,7 @@ public class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(versesInChapter(book, chapter)),
-                fullBooks[book - 1],
+                getShortBookName(book - 1),
                 new Integer(chapter),
                 new Integer(verse),
             };
@@ -1006,22 +1010,24 @@ public class BibleInfo
 
     /** Standard shortened names for the book of the Bible, in lower case, generated at run time */
     private static String[] shortBooksLower;
+    
+    /** Standard shortened names for the book of the Bible, in lower case, generated at runtime. */
+    private static Map shortBooksMap;
 
     /** Standard shortened names for the book of the Bible, in upper case, generated at run time */
     private static String[] shortBooksUpper;
 
-    /** Alternative shortened names for the book of the Bible, in mixed case */
-    private static String[][] alt_books;
-
-    /** Alternative shortened names for the book of the Bible, in lower case, generated at run time */
+    /** Alternative shortened names for the book of the Bible, in lower case */
     private static String[][] altBooksLower;
 
-    /* Alternative shortened names for the book of the Bible, in upper case, generated at run time */
-    // Not needed as the lower version was only there to speed up searching.
-    // private static String[][] altBooksUpper;
+    /** Alternative shortened names for the book of the Bible, in lower case, generated at run time */
+    private static Map altBooksMap;
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
     private static String[] osisBooks;
+
+    /** Standard OSIS names for the book of the Bible, in mixed case */
+    private static Map osisMap;
 
     /** Standard names for the sections */
     private static String[] sections;
