@@ -46,13 +46,13 @@ public class SidebarPane extends JPanel
      */
     private void jbInit()
     {
-        spt_books.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        spt_books.setDividerLocation(150);
-        spt_books.add(tab_conc, JSplitPane.TOP);
-        spt_books.add(tab_dict, JSplitPane.BOTTOM);
+        split.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        split.setDividerLocation(150);
+        split.add(comments, JSplitPane.TOP);
+        split.add(dicts, JSplitPane.BOTTOM);
 
         this.setLayout(new BorderLayout());
-        this.add(spt_books,  BorderLayout.CENTER);
+        this.add(split,  BorderLayout.CENTER);
     }
 
 	/**
@@ -60,8 +60,8 @@ public class SidebarPane extends JPanel
 	 */
 	public void addHyperlinkListener(HyperlinkListener li)
 	{
-		tab_dict.addHyperlinkListener(li);
-		tab_conc.addHyperlinkListener(li);
+		dicts.addHyperlinkListener(li);
+		comments.addHyperlinkListener(li);
 	}
 
 	/**
@@ -69,11 +69,27 @@ public class SidebarPane extends JPanel
 	 */
 	public void removeHyperlinkListener(HyperlinkListener li)
 	{
-		tab_dict.removeHyperlinkListener(li);
-		tab_conc.removeHyperlinkListener(li);
+		dicts.removeHyperlinkListener(li);
+		comments.removeHyperlinkListener(li);
 	}
 
-    private CommentaryPane tab_conc = new CommentaryPane();
-    private JSplitPane spt_books = new JSplitPane();
-    private DictionaryPane tab_dict = new DictionaryPane();
+    /**
+     * Accessor for the CommentaryPane
+     */
+    public CommentaryPane getCommentaryPane()
+    {
+        return comments;
+    }
+
+    /**
+     * Accessor for the DictionaryPane
+     */
+    public DictionaryPane getDictionaryPane()
+    {
+        return dicts;
+    }
+
+    private CommentaryPane comments = new CommentaryPane();
+    private JSplitPane split = new JSplitPane();
+    private DictionaryPane dicts = new DictionaryPane();
 }

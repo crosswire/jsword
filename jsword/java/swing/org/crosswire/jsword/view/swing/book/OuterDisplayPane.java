@@ -14,6 +14,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
@@ -45,7 +46,7 @@ import org.crosswire.jsword.view.swing.passage.PassageList;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OuterDisplayPane extends JPanel
+public class OuterDisplayPane extends JPanel implements DisplayArea
 {
     /**
      * Initialize the OuterDisplayPane
@@ -137,43 +138,75 @@ public class OuterDisplayPane extends JPanel
     }
 
     /**
-     * Copy the selection to the clipboard
+     * Accessor for the current InnerDisplayPane
+     *
+    public InnerDisplayPane getSelectedInnerDisplayPane()
+    {
+        return txt_passg.getInnerDisplayPane();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
      */
     public void cut()
     {
-        txt_passg.getJTextComponent().cut();
+        txt_passg.cut();
     }
 
-    /**
-     * Copy the selection to the clipboard
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
      */
     public void copy()
     {
-        txt_passg.getJTextComponent().copy();
+        txt_passg.copy();
     }
 
-    /**
-     * Copy the selection to the clipboard
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
      */
     public void paste()
     {
-        txt_passg.getJTextComponent().paste();
+        txt_passg.paste();
     }
 
-    /**
-     * Add a listener when someone clicks on a browser 'link'
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
         txt_passg.addHyperlinkListener(li);
     }
 
-    /**
-     * Remove a listener when someone clicks on a browser 'link'
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
         txt_passg.removeHyperlinkListener(li);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     */
+    public String getOSISSource()
+    {
+        return txt_passg.getOSISSource();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     */
+    public String getHTMLSource()
+    {
+        return txt_passg.getHTMLSource();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     */
+    public Key getKey()
+    {
+        return txt_passg.getKey();
     }
 
     /**

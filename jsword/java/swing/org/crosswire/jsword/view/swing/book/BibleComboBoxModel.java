@@ -91,7 +91,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
                 Integer csel = (Integer) selected;
                 setChapter(csel.intValue());
                 break;
-    
+
             case LEVEL_VERSE:
                 Integer vsel = (Integer) selected;
                 setVerse(vsel.intValue());
@@ -178,7 +178,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     {
         Verse old = set.getVerse();
         Verse update = new Verse(book, old.getChapter(), old.getVerse(), true);
-        set.setVerse(update);
+        set.setViewedVerse(update);
     }
 
     /**
@@ -188,7 +188,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     {
         Verse old = set.getVerse();
         Verse update = new Verse(old.getChapter(), chapter, old.getVerse(), true);
-        set.setVerse(update);
+        set.setViewedVerse(update);
     }
 
     /**
@@ -198,7 +198,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     {
         Verse old = set.getVerse();
         Verse update = new Verse(old.getChapter(), old.getChapter(), verse, true);
-        set.setVerse(update);
+        set.setViewedVerse(update);
     }
 
     /* (non-Javadoc)

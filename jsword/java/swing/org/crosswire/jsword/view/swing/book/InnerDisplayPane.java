@@ -10,14 +10,17 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
+import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.SerializingContentHandler;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -48,7 +51,7 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class InnerDisplayPane extends JPanel
+public class InnerDisplayPane extends JPanel implements DisplayArea
 {
     /**
      * Simple Constructor
@@ -108,6 +111,8 @@ public class InnerDisplayPane extends JPanel
      */
     public void setPassage(Passage ref) throws IOException, SAXException, BookException, TransformerException
     {
+        this.ref = ref;
+
         if (ref == null || version == null)
         {
             txt_view.setText("");
@@ -122,26 +127,92 @@ public class InnerDisplayPane extends JPanel
         txt_view.select(0, 0);
     }
 
-    /**
-     * Accessor for the current TextComponent
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
      */
-    public JTextComponent getJTextComponent()
+    public String getHTMLSource()
     {
-        return txt_view;
+        return txt_view.getText();
     }
 
-	/**
-	 * Add a listener when someone clicks on a browser 'link'
-	 */
-	public void addHyperlinkListener(HyperlinkListener li)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     */
+    public String getOSISSource()
+    {
+        if (ref == null || version == null)
+        {
+            return "";
+        }
+
+        try
+        {
+            BookData data = version.getData(ref);
+            SAXEventProvider provider = data.getSAXEventProvider();
+            SerializingContentHandler handler = new SerializingContentHandler(true);
+            provider.provideSAXEvents(handler);
+
+            return handler.toString();
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+            return "";
+        }
+    }
+
+    /**
+     * Accessor for the current passage
+     */
+    public Passage getPassage()
+    {
+        return ref;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     */
+    public Key getKey()
+    {
+        return new PassageKey(ref);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
+     */
+    public void cut()
+    {
+        txt_view.cut();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     */
+    public void copy()
+    {
+        txt_view.copy();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
+     */
+    public void paste()
+    {
+        txt_view.paste();
+    }
+
+	/* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     */
+    public void addHyperlinkListener(HyperlinkListener li)
 	{
 		txt_view.addHyperlinkListener(li);
 	}
 
-	/**
-	 * Remove a listener when someone clicks on a browser 'link'
-	 */
-	public void removeHyperlinkListener(HyperlinkListener li)
+	/* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     */
+    public void removeHyperlinkListener(HyperlinkListener li)
 	{
 		txt_view.removeHyperlinkListener(li);
 	}
@@ -163,12 +234,16 @@ public class InnerDisplayPane extends JPanel
     }
 
     /**
-     * What is being displayed
+     * What version is currently being used for display
      */
     private Bible version = null;
 
-    private Style style = new Style("swing");
+    /**
+     * What was the last passage to be viewed
+     */
+    private Passage ref = null;
 
+    private Style style = new Style("swing");
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();
 }

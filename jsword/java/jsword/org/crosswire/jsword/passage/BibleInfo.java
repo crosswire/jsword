@@ -185,15 +185,14 @@ public class BibleInfo implements PassageConstants
                 throw new NoSuchVerseException(Msg.BOOKS_NUMBER, new Object[] { find });
         }
 
-        // Does it match a long version of the book
-        // or a short version
+        // Does it match a long version of the book or a short version
         for (int i=0; i<full_books.length; i++)
         {
             if (full_books_lower[i].startsWith(match)) return i+1;
             if (match.startsWith(short_books_lower[i])) return i+1;
         }
 
-        // The alternative versions
+        // Or does it match one of the alternative versions
         for (int i=0; i<alt_books.length; i++)
         {
             for (int j=0; j<alt_books[i].length; j++)

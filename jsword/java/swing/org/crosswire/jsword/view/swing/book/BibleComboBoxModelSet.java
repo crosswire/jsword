@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.event.EventListenerList;
 
+import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -40,6 +43,8 @@ public class BibleComboBoxModelSet
      */
     public void setBookComboBox(JComboBox cbo_book)
     {
+        this.cbo_book = cbo_book;
+
         cbo_book.setModel(mdl_book);
         cbo_book.addActionListener(new CustomActionListener());
     }
@@ -49,6 +54,8 @@ public class BibleComboBoxModelSet
      */
     public void setChapterComboBox(JComboBox cbo_chapter)
     {
+        this.cbo_chapter = cbo_chapter;
+
         cbo_chapter.setModel(mdl_chapter);
     }
 
@@ -57,6 +64,8 @@ public class BibleComboBoxModelSet
      */
     public void setVerseComboBox(JComboBox cbo_verse)
     {
+        this.cbo_verse = cbo_verse;
+
         cbo_verse.setModel(mdl_verse);
     }
 
@@ -72,12 +81,38 @@ public class BibleComboBoxModelSet
      * Sets the verse.
      * @param verse The verse to set
      */
-    public void setVerse(Verse verse)
+    protected void setViewedVerse(Verse verse)
     {
         this.verse = verse;
     }
 
+    /**
+     * Set the combo-boxes to a new verse
+     */
+    public void setVerse(Verse newverse)
+    {
+        try
+        {
+            String book = BibleInfo.getLongBookName(newverse.getBook());
+            cbo_book.setSelectedItem(book);
+            
+            Integer chapter = new Integer(newverse.getChapter());
+            cbo_chapter.setSelectedItem(chapter);
+            
+            Integer verse = new Integer(newverse.getVerse());
+            cbo_verse.setSelectedItem(verse);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
     private Verse verse = new Verse();
+
+    private JComboBox cbo_book = null;
+    private JComboBox cbo_chapter = null;
+    private JComboBox cbo_verse = null;
 
     protected BibleComboBoxModel mdl_book = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_BOOK);
     protected BibleComboBoxModel mdl_chapter = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_CHAPTER);
@@ -130,6 +165,7 @@ public class BibleComboBoxModelSet
             }
         }
     }
+
     /**
      * For when a selection is made
      */

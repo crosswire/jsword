@@ -12,6 +12,8 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  * The status bar provides usefull info to the user as to the current
@@ -44,7 +46,7 @@ import javax.swing.JLabel;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StatusBar extends JComponent implements MouseListener
+public class StatusBar extends JComponent implements MouseListener, HyperlinkListener
 {
     /**
      * Create a new StatusBar
@@ -74,8 +76,27 @@ public class StatusBar extends JComponent implements MouseListener
     }
 
     /**
+     * When the mouse points at a hyperlink that has registered with us
+     * to be shown on the statusbar
+     * @see javax.swing.event.HyperlinkListener#hyperlinkUpdate(javax.swing.event.HyperlinkEvent)
+     */
+    public void hyperlinkUpdate(HyperlinkEvent ev)
+    {
+        HyperlinkEvent.EventType type = ev.getEventType();
+        if (type == HyperlinkEvent.EventType.ENTERED)
+        {
+            lbl_message.setText(ev.getDescription());
+        }
+        else if (type == HyperlinkEvent.EventType.EXITED)
+        {
+            lbl_message.setText(DEFAULT);
+        }
+    }
+
+    /**
      * When the mouse points at something that has registered with us
      * to be shown on the statusbar
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent ev)
     {
@@ -98,6 +119,7 @@ public class StatusBar extends JComponent implements MouseListener
 
     /**
      * When the mouse no longer points at something that has registered with us
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent ev)
     {
@@ -107,6 +129,7 @@ public class StatusBar extends JComponent implements MouseListener
     /**
      * Invoked when the mouse has been clicked on a component.
      * Ignored
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent ev)
     {
@@ -115,6 +138,7 @@ public class StatusBar extends JComponent implements MouseListener
     /**
      * Invoked when a mouse button has been pressed on a component.
      * Ignored
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent ev)
     {
@@ -123,6 +147,7 @@ public class StatusBar extends JComponent implements MouseListener
     /**
      * Invoked when a mouse button has been released on a component.
      * Ignored
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent ev)
     {

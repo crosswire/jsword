@@ -119,7 +119,7 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <--========================================================================-->
+  <!--=======================================================================-->
   <xsl:template match="div">
     <xsl:if test="@divTitle">
       <h2><xsl:value-of select="@divTitle"/></h2>
@@ -137,24 +137,26 @@
       </h2>
     </xsl:if>
     <xsl:if test="@osisID">
-      <a href="{@osisID}">
+      <a href="bible:{@osisID}">
       <xsl:apply-templates/>
       </a>
     </xsl:if>
     <xsl:if test="not(@osisID)">
       <xsl:apply-templates/>
     </xsl:if>
-    <p>&#0160;</p>
+    <xsl:if test="@divTitle">
+      <p>&#0160;</p>
+    </xsl:if>
   </xsl:template>
 
-  <--========================================================================-->
+  <!--=======================================================================-->
   <xsl:template match="a">
     <a class="a" href="{@href}">
       <xsl:apply-templates/>
     </a>
   </xsl:template>
   
-  <--========================================================================-->
+  <!--=======================================================================-->
   <xsl:template match="abbr">
     <abbr class="abbr">
       <xsl:if test="@expansion">
@@ -165,13 +167,15 @@
       <xsl:apply-templates/>
     </abbr>
   </xsl:template>
-  
+
+  <!--=======================================================================-->
   <xsl:template match="caption">
     <div class="caption">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   
+  <!--=======================================================================-->
   <xsl:template match="catchWord">
     <span class="catchWord">
       <xsl:apply-templates/>

@@ -48,12 +48,13 @@ public class FileNewAction extends DesktopAbstractAction
     public void actionPerformed(ActionEvent ev)
     {
         BibleViewPane view = new BibleViewPane();
-        view.addHyperlinkListener(getDesktop());
 
         if (!getDesktop().addBibleViewPane(view))
         {
             JOptionPane.showMessageDialog(getDesktop(), "You can't add windows in this view.\nUse the View menu to switch to MDI mode or TDI mode to view multiple passages.");
             return;
         }
+
+        view.addHyperlinkListener(getDesktop());
     }
 }

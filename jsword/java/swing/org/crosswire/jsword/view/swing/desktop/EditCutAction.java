@@ -6,8 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import org.crosswire.jsword.view.swing.book.BibleViewPane;
-import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
+import org.crosswire.jsword.view.swing.book.DisplayArea;
 
 /**
  * cut action.
@@ -35,6 +34,9 @@ import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
  */
 public class EditCutAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configutarion
+     */
     public EditCutAction(Desktop tools)
     {
         super(tools,
@@ -47,10 +49,12 @@ public class EditCutAction extends DesktopAbstractAction
         setEnabled(false);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
-        BibleViewPane view = getDesktop().getSelectedBibleViewPane();
-        OuterDisplayPane odp = view.getPassagePane();
-        odp.cut();
+        DisplayArea da = getDesktop().getDisplayArea();
+        da.cut();
     }
 }

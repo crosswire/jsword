@@ -45,7 +45,9 @@ public class PassageUtil implements PassageConstants
     public static void setBlurRestriction(int value)
     {
         if (!PassageUtil.isValidBlurRestriction(value))
+        {
             throw new IllegalArgumentException(getResource(Msg.ERROR_BLUR));
+        }
 
         blur = value;
     }
@@ -131,7 +133,7 @@ public class PassageUtil implements PassageConstants
         case ACCURACY_BOOK_CHAPTER:
         case ACCURACY_BOOK_ONLY:
         case ACCURACY_CHAPTER_VERSE:
-        case ACCURACY_VERSE_ONLY:
+        case ACCURACY_NUMBER_ONLY:
         case ACCURACY_NONE:
             return true;
 
@@ -185,30 +187,42 @@ public class PassageUtil implements PassageConstants
     public static int getCase(String word)
     {
         if (word == null)
+        {
             throw new NullPointerException();
+        }
 
         // Blank word
         if (word.equals(""))
+        {
             return CASE_LOWER;
+        }
 
         // Lower case?
         if (word.equals(word.toLowerCase()))
+        {
             return CASE_LOWER;
+        }
 
         // Upper case?
         // A string length of 1 is no good ('I' or 'A' is sentance case)
         if (word.equals(word.toUpperCase()) && word.length() != 1)
+        {
             return CASE_UPPER;
+        }
 
         // If initial is lower then it must be mixed
         if (Character.isLowerCase(word.charAt(0)))
+        {
             return CASE_MIXED;
+        }
 
         // Hack the only real caseMixed is LORD's
         // And we don't want to bother sorting out Tubal-Cain
         // as CASE_SENTANCE, so for now ...
         if (word.equals("LORD's"))
+        {
             return CASE_MIXED;
+        }
 
         // So ...
         return CASE_SENTANCE;
@@ -237,24 +251,36 @@ public class PassageUtil implements PassageConstants
 
         case CASE_SENTANCE:
             index = word.indexOf('-');
-            if (index == -1) return toSentanceCase(word);
+            if (index == -1)
+            {
+                return toSentanceCase(word);
+            }
 
             // So there is a "-", however first some exceptions
             if (word.toLowerCase().equals("maher-shalal-hash-baz"))
+            {
                 return "Maher-Shalal-Hash-Baz";
+            }
 
             if (word.toLowerCase().equals("no-one"))
+            {
                 return "No-one";
+            }
 
             if (word.substring(0, 4).toLowerCase().equals("god-"))
+            {
                 return toSentanceCase(word);
+            }
 
             // So cut by the -
             return toSentanceCase(word.substring(0, index))
                    + "-" + toSentanceCase(word.substring(index+1));
 
         case CASE_MIXED:
-            if (word.toLowerCase().equals("lord's")) return "LORD's";
+            if (word.toLowerCase().equals("lord's"))
+            {
+                return "LORD's";
+            }
             // This should not happen
             throw new IllegalArgumentException(getResource(Msg.ERROR_MIXED));
 
@@ -271,10 +297,14 @@ public class PassageUtil implements PassageConstants
     public static String toSentanceCase(String word)
     {
         if (word == null)
+        {
             throw new NullPointerException();
+        }
 
         if (word.equals(""))
+        {
             return "";
+        }
 
         return "" + Character.toUpperCase(word.charAt(0))
                   + word.substring(1).toLowerCase();
@@ -671,8 +701,8 @@ public class PassageUtil implements PassageConstants
     private static final Logger log = Logger.getLogger(PassageUtil.class);
 
     /**
-    * Setup the resources
-    */
+     * Setup the resources
+     */
     static
     {
         try

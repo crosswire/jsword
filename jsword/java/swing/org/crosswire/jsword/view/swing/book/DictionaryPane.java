@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
+import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -20,9 +21,11 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.crosswire.common.swing.SortedSetListModel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.SerializingContentHandler;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
@@ -53,7 +56,7 @@ import org.crosswire.jsword.util.Style;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DictionaryPane extends JPanel
+public class DictionaryPane extends JPanel implements DisplayArea
 {
 	/**
      * Setup the GUI 
@@ -68,17 +71,17 @@ public class DictionaryPane extends JPanel
      */
     private void jbInit()
     {
-        lstcomments.setVisibleRowCount(4);
-        lstcomments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lstcomments.setModel(mdl_comments);
-        lstcomments.addListSelectionListener(new ListSelectionListener()
+        lstdicts.setVisibleRowCount(4);
+        lstdicts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lstdicts.setModel(mdldicts);
+        lstdicts.addListSelectionListener(new ListSelectionListener()
         {
             public void valueChanged(ListSelectionEvent ev)
             {
                 newDictionary();
             }
         });
-        scrcomments.setViewportView(lstcomments);
+        scrdicts.setViewportView(lstdicts);
 
         lstentries.addListSelectionListener(new ListSelectionListener()
         {
@@ -98,26 +101,116 @@ public class DictionaryPane extends JPanel
         sptmain.setBottomComponent(scrdisplay);
 
         this.setLayout(new BorderLayout(5, 5));
-        this.add(scrcomments, BorderLayout.NORTH);
+        this.add(scrdicts, BorderLayout.NORTH);
         this.add(sptmain, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
 
-	/**
-	 * Add a listener when someone clicks on a browser 'link'
-	 */
-	public void addHyperlinkListener(HyperlinkListener li)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
+     */
+    public void cut()
+    {
+        txtdisplay.cut();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     */
+    public void copy()
+    {
+        txtdisplay.copy();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
+     */
+    public void paste()
+    {
+        txtdisplay.paste();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     */
+    public String getOSISSource()
+    {
+        try
+        {
+            Key key = (Key) lstentries.getSelectedValue();
+            if (key == null)
+            {
+                return "";
+            }
+
+            BookData bdata = dict.getData(key);
+            SAXEventProvider provider = bdata.getSAXEventProvider();
+
+            SerializingContentHandler handler = new SerializingContentHandler(true);
+            provider.provideSAXEvents(handler);
+
+            return handler.toString();
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+            return "";
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     */
+    public String getHTMLSource()
+    {
+        return txtdisplay.getText();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     */
+    public Key getKey()
+    {
+        return (Key) lstentries.getSelectedValue();
+    }
+
+	/* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     */
+    public void addHyperlinkListener(HyperlinkListener li)
 	{
 		txtdisplay.addHyperlinkListener(li);
 	}
 
-	/**
-	 * Remove a listener when someone clicks on a browser 'link'
-	 */
-	public void removeHyperlinkListener(HyperlinkListener li)
+	/* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     */
+    public void removeHyperlinkListener(HyperlinkListener li)
 	{
 		txtdisplay.removeHyperlinkListener(li);
 	}
+
+    /**
+     * Find the first dictionary that has a mention of the word in question.
+     */
+    public void setWord(String data)
+    {
+        for (Iterator it = Books.getBooks(filter).iterator(); it.hasNext();)
+        {
+            Dictionary dict = (Dictionary) it.next();
+            try
+            {
+                Key key = dict.getKey(data);
+                lstdicts.setSelectedValue(dict, true);
+                lstentries.setSelectedValue(key, true);
+                return;
+            }
+            catch (BookException ex)
+            {
+                // ignore - we only wanted to see if it could be done.
+            }
+        }
+    }
 
     /**
      * Called when someone selects a new Dictionary
@@ -128,7 +221,7 @@ public class DictionaryPane extends JPanel
 
         try
         {
-            Object selected = lstcomments.getSelectedValue();
+            Object selected = lstdicts.getSelectedValue();
             DictionaryMetaData cmd = (DictionaryMetaData) selected;
             dict = cmd.getDictionary();
             set = dict.getIndex("");
@@ -170,11 +263,11 @@ public class DictionaryPane extends JPanel
     protected Style style = new Style("swing");
 
     private BookFilter filter = BookFilters.getDictionaries();
-    private BooksComboBoxModel mdl_comments = new BooksComboBoxModel(filter);
+    private BooksComboBoxModel mdldicts = new BooksComboBoxModel(filter);
     private Dictionary dict = null;
 
-    private JScrollPane scrcomments = new JScrollPane();
-    private JList lstcomments = new JList();
+    private JScrollPane scrdicts = new JScrollPane();
+    private JList lstdicts = new JList();
     private JSplitPane sptmain = new JSplitPane();
     private JScrollPane screntries = new JScrollPane();
     private JScrollPane scrdisplay =new JScrollPane();

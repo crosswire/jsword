@@ -391,7 +391,7 @@ public class TestVerse extends TestCase
         assertEquals(Verse.getAccuracy("Gen"), Verse.ACCURACY_BOOK_ONLY);
         assertEquals(Verse.getAccuracy(""), Verse.ACCURACY_NONE);
         assertEquals(Verse.getAccuracy("1:1"), Verse.ACCURACY_CHAPTER_VERSE);
-        assertEquals(Verse.getAccuracy("1"), Verse.ACCURACY_VERSE_ONLY);
+        assertEquals(Verse.getAccuracy("1"), Verse.ACCURACY_NUMBER_ONLY);
         try { Verse.getAccuracy("complete and utter rubbish"); fail(); }
         catch (NoSuchVerseException ex) { }
         try { Verse.getAccuracy("b 1 1"); fail(); }

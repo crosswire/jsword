@@ -100,7 +100,7 @@ public final class VerseRange implements VerseBase
             {
             case ACCURACY_BOOK_VERSE:
             case ACCURACY_CHAPTER_VERSE:
-            case ACCURACY_VERSE_ONLY:
+            case ACCURACY_NUMBER_ONLY:
             case ACCURACY_NONE:
                 start = new Verse(parts[0], basis);
                 end = start;
@@ -125,24 +125,324 @@ public final class VerseRange implements VerseBase
             break;
 
         case 2:
-            start = new Verse(parts[0], basis);
-            switch (Verse.getAccuracy(parts[1]))
+            switch (Verse.getAccuracy(parts[0]))
             {
-            case ACCURACY_BOOK_VERSE:
-            case ACCURACY_CHAPTER_VERSE:
-            case ACCURACY_VERSE_ONLY:
-            case ACCURACY_NONE:
-                end = new Verse(parts[1], start);
-                break;
+            case ACCURACY_BOOK_ONLY:
+                // We start with only a Book like "Gen". For all of these the
+                // basis is irrelevant since we start with a book.
+                switch (Verse.getAccuracy(parts[1]))
+                {
+                case ACCURACY_BOOK_ONLY:
+                    // And we end with a book, so we need to encompass the lot
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_BOOK_CHAPTER:
+                    // So we have something like "Gen-Exo 4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at verse 1, and not the book end
+                    end = end.getLastVerseInChapter();
+                    break;
+
+                case ACCURACY_BOOK_VERSE:
+                    // So we have something like "Gen-Exo 4:2"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    break;
+
+                case ACCURACY_CHAPTER_VERSE:
+                    // This is a bit wierd: "Gen-3:4". Assume "Gen 1:1-3:4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NUMBER_ONLY:
+                    // This is like "Gen-3", which could mean anything, but since
+                    // we interpret "1" to mean Genesis we will use "Gen-Num"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_NONE:
+                    // Also wierd "Gen-". Perhaps we need to assume end of book?
+                    start = new Verse(parts[0]);
+                    end = start.getLastVerseInBook();
+                    break;
+
+                default:
+                    throw new LogicError();
+                }
 
             case ACCURACY_BOOK_CHAPTER:
-            case ACCURACY_BOOK_ONLY:
-                end = new VerseRange(parts[1], start).getEnd();
+                // So we start something like "Gen 3", as above the basis is
+                // not relevant for any of these
+                switch (Verse.getAccuracy(parts[1]))
+                {
+                case ACCURACY_BOOK_ONLY:
+                    // For example "Gen 3-Exo"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_BOOK_CHAPTER:
+                    // For example "Gen 3-Exo 4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at verse 1, and not the book end
+                    end = end.getLastVerseInChapter();
+                    break;
+
+                case ACCURACY_BOOK_VERSE:
+                    // For example "Gen 4-Exo 3:4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    break;
+
+                case ACCURACY_CHAPTER_VERSE:
+                    // For example "Gen 4-5:6"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NUMBER_ONLY:
+                    // For example "Gen 4-6"
+                    start = new Verse(parts[0]);
+                    int chap = Integer.parseInt(parts[1]);
+                    end = new Verse(start.getBook(), chap, BibleInfo.versesInChapter(start.getBook(), chap));
+                    break;
+
+                case ACCURACY_NONE:
+                    // For example "Gen 4-", lets assume the end of the chapter?
+                    start = new Verse(parts[0]);
+                    end = start.getLastVerseInChapter();
+                    break;
+
+                default:
+                    throw new LogicError();
+                }
+                break;
+
+            case ACCURACY_BOOK_VERSE:
+                // So we start something like "Gen 2:3"
+                switch (Verse.getAccuracy(parts[1]))
+                {
+                case ACCURACY_BOOK_ONLY:
+                    // For example "Gen 3:2-Exo"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_BOOK_CHAPTER:
+                    // For example "Gen 3:2-Exo 4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at verse 1, and not the book end
+                    end = end.getLastVerseInChapter();
+                    break;
+
+                case ACCURACY_BOOK_VERSE:
+                    // For example "Gen 3:2-Exo 3:4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1]);
+                    break;
+
+                case ACCURACY_CHAPTER_VERSE:
+                    // For example "Gen 3:2-4:4"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NUMBER_ONLY:
+                    // For example "Gen 3:2-5"
+                    start = new Verse(parts[0]);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NONE:
+                    // Very wierd: "Gen 4:3-", can really assume end of anything
+                    // so make end = start.
+                    start = new Verse(parts[0]);
+                    end = start;
+                    break;
+    
+                default:
+                    throw new LogicError();
+                }
+                break;
+
+            case ACCURACY_CHAPTER_VERSE:
+                // So we start something like "3:4".
+                // Now the basis starts to become important
+                switch (Verse.getAccuracy(parts[1]))
+                {
+                case ACCURACY_BOOK_ONLY:
+                    // For example "3:2-Exo"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_BOOK_CHAPTER:
+                    // For example "3:2-Exo 4"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at verse 1, and not the book end
+                    end = end.getLastVerseInChapter();
+                    break;
+
+                case ACCURACY_BOOK_VERSE:
+                    // For example "3:2-Exo 3:4"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1]);
+                    break;
+
+                case ACCURACY_CHAPTER_VERSE:
+                    // For example "3:2-4:4"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NUMBER_ONLY:
+                    // For example "3:2-5"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NONE:
+                    // Very wierd: "4:3-", can really assume end of anything
+                    // so make end = start.
+                    start = new Verse(parts[0], basis);
+                    end = start;
+                    break;
+    
+                default:
+                    throw new LogicError();
+                }
+                break;
+
+            case ACCURACY_NUMBER_ONLY:
+                // So we start something like "5"
+                switch (Verse.getAccuracy(parts[1]))
+                {
+                case ACCURACY_BOOK_ONLY:
+                    // Wierd - For example "1-Exo". Since there is a basis to
+                    // work from we won't assume that 1 means Gen.
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_BOOK_CHAPTER:
+                    // For example "2-Exo 4". See note for ACCURACY_BOOK_ONLY 
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at verse 1, and not the book end
+                    end = end.getLastVerseInChapter();
+                    break;
+
+                case ACCURACY_BOOK_VERSE:
+                    // For example "2-Exo 3:4"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1]);
+                    break;
+
+                case ACCURACY_CHAPTER_VERSE:
+                    // For example "2-4:4"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NUMBER_ONLY:
+                    // For example "3-5". Tricky because the scope of the basis
+                    // tells us how to interpret this.
+                    // "Gen 1, 3-5" probably means chapters, but
+                    // "Gen 1:1, 3-5" probably means verses.
+
+                    // "Gen, 3-5" might mean
+                    // "Gen, Num - Deu"
+                    start = new Verse(parts[0], basis);
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NONE:
+                    // For example "4-".
+                    start = new Verse(parts[0], basis);
+                    end = basis;
+                    break;
+    
+                default:
+                    throw new LogicError();
+                }
+                break;
+
+            case ACCURACY_NONE:
+                // So we start with nothing. For most of these we will use
+                // the basis as the start point.
+                switch (Verse.getAccuracy(parts[1]))
+                {
+                case ACCURACY_BOOK_ONLY:
+                    // For example "-Exo".
+                    start = basis;
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at 1:1, and not the book end
+                    end = end.getLastVerseInBook();
+                    break;
+
+                case ACCURACY_BOOK_CHAPTER:
+                    // For example "-Exo 2"
+                    start = basis;
+                    end = new Verse(parts[1]);
+                    // except that this gives us end at verse 1, and not the book end
+                    end = end.getLastVerseInChapter();
+                    break;
+
+                case ACCURACY_BOOK_VERSE:
+                    // For example "-Exo 3:4"
+                    start = basis;
+                    end = new Verse(parts[1]);
+                    break;
+
+                case ACCURACY_CHAPTER_VERSE:
+                    // For example "-4:4"
+                    start = basis;
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NUMBER_ONLY:
+                    // For example "-5". This is wierd enough that is is hard
+                    // to say we got this wrong.
+                    start = basis;
+                    end = new Verse(parts[1], start);
+                    break;
+
+                case ACCURACY_NONE:
+                    // For example "-". We just make everything the basis,
+                    // although I'm not sure we shouldn't except.
+                    start = basis;
+                    end = basis;
+                    break;
+    
+                default:
+                    throw new LogicError();
+                }
                 break;
 
             default:
                 throw new LogicError();
             }
+
             verse_count = calcVerseCount(start, end);
             break;
 
@@ -203,7 +503,7 @@ public final class VerseRange implements VerseBase
                 verse_count = 1;
                 break;
 
-            case ACCURACY_VERSE_ONLY:
+            case ACCURACY_NUMBER_ONLY:
                 if (basis.isChapter())
                 {
                     // This should be ACCURACY_CHAPTER_ONLY if it existed

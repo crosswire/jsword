@@ -232,6 +232,22 @@ public class TextViewPanel extends JPanel
     }
 
     /**
+     * Is the text area editable (default no)
+     */
+    public void setEditable(boolean editable)
+    {
+        txt_text.setEditable(editable);
+    }
+
+    /**
+     * Is the text area editable (default no)
+     */
+    public boolean isEditable()
+    {
+        return txt_text.isEditable();
+    }
+
+    /**
      * Setter for the main body of text.
      * @param new_text The text to display
      */

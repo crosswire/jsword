@@ -5,7 +5,10 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,11 +17,13 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.FocusManager;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -34,8 +39,12 @@ import org.crosswire.common.swing.LogPane;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
+import org.crosswire.jsword.view.swing.book.DisplayArea;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.Splash;
@@ -137,6 +146,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             act_view_mdi = new ViewMDIAction(this);
             act_view_tbar = new ViewToolBarAction(this);
             act_view_sbar = new ViewStatusBarAction(this);
+            act_view_html = new ViewSourceHTMLAction(this);
+            act_view_osis = new ViewSourceOSISAction(this);
 
             act_list_delete = new ListDeleteAction(this);
 
@@ -190,6 +201,20 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             // Configuration
             splash.setProgress("General configuration");
             LookAndFeelUtil.addComponentToUpdate(this);
+
+            // Keep track of the selected DisplayArea
+            FocusManager.getCurrentManager().addPropertyChangeListener(new PropertyChangeListener()
+            {
+                public void propertyChange(PropertyChangeEvent arg0)
+                {
+                    DisplayArea da = recurseDisplayArea();
+                    if (da != null)
+                    {
+                        last = da;
+                    }
+                }
+            });
+            last = recurseDisplayArea();
 
             splash.done();
         }
@@ -250,6 +275,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_view.addSeparator();
         menu_view.add(chk_view_tbar);
         menu_view.add(chk_view_sbar);
+        menu_view.addSeparator();
+        menu_view.add(act_view_html).addMouseListener(bar_status);
+        menu_view.add(act_view_osis).addMouseListener(bar_status);
 
         menu_tools.setText("Tools");
         menu_tools.setMnemonic('T');
@@ -396,6 +424,42 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
+     * Find the currently highlighted DisplayArea
+     */
+    public DisplayArea getDisplayArea()
+    {
+        DisplayArea da = recurseDisplayArea();
+        if (da != null)
+        {
+            return da;
+        }
+
+        return last;
+    }
+
+    /**
+     * 
+     */
+    protected DisplayArea recurseDisplayArea()
+    {
+        Component comp = FocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+        
+        // So we've got the current component, we now need to walk up the tree
+        // to find something that we recognise.
+        while (comp != null)
+        {
+            if (comp instanceof DisplayArea)
+            {
+                return (DisplayArea) comp;
+            }
+        
+            comp = comp.getParent();
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the view_status.
      * @return boolean
      */
@@ -503,7 +567,77 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     public void hyperlinkUpdate(HyperlinkEvent ev)
     {
-        log.warn("No listener for "+ev.getURL());
+        try
+        {
+            bar_status.hyperlinkUpdate(ev);
+
+            HyperlinkEvent.EventType type = ev.getEventType();
+            if (type == HyperlinkEvent.EventType.ACTIVATED)
+            {
+                openHyperlink(ev.getDescription());
+            }
+        }
+        catch (MalformedURLException ex)
+        {
+            Reporter.informUser(this, ex);
+        }
+    }
+
+    /**
+     * Create a new view showing the contents of the given hyperlink
+     */
+    public void openHyperlink(String url) throws MalformedURLException
+    {
+        int match = url.indexOf(":");
+        if (match == -1)
+        {
+            throw new MalformedURLException("missing : in "+url);
+        }
+
+        String protocol = url.substring(0, match);
+        String data = url.substring(match+1);
+
+        if (protocol.equals("bible"))
+        {
+            try
+            {
+                Passage ref = PassageFactory.createPassage(data);
+                BibleViewPane view = new BibleViewPane();
+
+                if (!addBibleViewPane(view))
+                {
+                    JOptionPane.showMessageDialog(this, "You can't add windows in this view.\nUse the View menu to switch to MDI mode or TDI mode to view multiple passages.");
+                }
+
+                view.addHyperlinkListener(this);
+                view.setPassage(ref);
+            }
+            catch (NoSuchVerseException ex)
+            {
+                Reporter.informUser(this, ex);
+            }
+        }
+        else if (protocol.equals("comment"))
+        {
+            try
+            {
+                Passage ref = PassageFactory.createPassage(data);
+    
+                bar_side.getCommentaryPane().setPassage(ref);
+            }
+            catch (NoSuchVerseException ex)
+            {
+                Reporter.informUser(this, ex);
+            }
+        }
+        else if (protocol.equals("dict"))
+        {
+            bar_side.getDictionaryPane().setWord(data);
+        }
+        else
+        {
+            throw new MalformedURLException("unknown protocol "+protocol);
+        }
     }
 
     /**
@@ -521,7 +655,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     {
         // Check this is a change
         if (this.current == next)
+        {
             return;
+        }
 
         // Go through the views removing them from the layout
         Iterator it = iterateBibleViewPanes();
@@ -568,34 +704,59 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         Desktop.initial = initial;
     }
 
-    /** Single document interface */
+    /**
+     * Single document interface
+     */
     protected static final int LAYOUT_TYPE_SDI = 0;
 
-    /** Tabbed document interface */
+    /**
+     * Tabbed document interface
+     */
     protected static final int LAYOUT_TYPE_TDI = 1;
 
-    /** Multiple document interface */
+    /**
+     * Multiple document interface
+     */
     protected static final int LAYOUT_TYPE_MDI = 2;
 
-    /** The initial layout state */
+    /**
+     * The initial layout state
+     */
     private static int initial = LAYOUT_TYPE_SDI;
 
-    /** The array of valid layouts */
+    /**
+     * The array of valid layouts
+     */
     protected ViewLayout[] layouts; 
 
-    /** The current way the views are layed out */
+    /**
+     * The current way the views are layed out
+     */
     private int current = initial;
 
-    /** The list of BibleViewPanes being viewed in tdi and mdi workspaces */
+    /**
+     * The list of BibleViewPanes being viewed in tdi and mdi workspaces
+     */
     private List views = new ArrayList();
 
-    /** is the status bar visible */
+    /**
+     * is the status bar visible
+     */
     private boolean view_status = true;
 
-    /** is the toolbar visible */
+    /**
+     * is the toolbar visible
+     */
     private boolean view_tool = true;
 
-    /** The log stream */
+    /**
+     * The last selected DisplayArea
+     */
+    protected DisplayArea last = null;
+
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(Desktop.class);
 
     private Splash splash = null;
@@ -620,6 +781,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private Action act_view_mdi = null;
     private Action act_view_tbar = null;
     private Action act_view_sbar = null;
+
+    private Action act_view_html = null;
+    private Action act_view_osis = null;
 
     private Action act_list_delete = null;
 

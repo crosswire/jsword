@@ -1,13 +1,13 @@
 
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.view.swing.book;
 
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
+import javax.swing.event.HyperlinkListener;
+
+import org.crosswire.jsword.book.Key;
 
 /**
- * PassageKey is a Key tailored for Bibles.
- * 
+ * A parent to all things that display some Book output.
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -29,50 +29,46 @@ import org.crosswire.jsword.passage.PassageFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PassageKey implements Key
+public interface DisplayArea
 {
     /**
-     * Create a PassageKey from a Passage
-     * @param ref
+     * Cut the selection to the clipboard
      */
-    public PassageKey(Passage ref)
-    {
-        this.ref = ref;
-    }
+    public void cut();
 
     /**
-     * Create a PassageKey from a Passage
-     * @param ref
+     * Copy the selection to the clipboard
      */
-    public PassageKey(String refstr) throws NoSuchVerseException
-    {
-        this.ref = PassageFactory.createPassage(refstr);
-    }
+    public void copy();
 
     /**
-     * Convert this Key to a String
-     * @return a String version of the Key
+     * Paste the selection from the clipboard
      */
-    public String getText()
-    {
-        if (ref == null)
-        {
-            return "";
-        }
-
-        return ref.getName();
-    }
+    public void paste();
 
     /**
-     * @return The stored Passage
+     * Add a listener for when someone clicks on a browser 'link'
      */
-    public Passage getPassage()
-    {
-        return ref;
-    }
+    public void addHyperlinkListener(HyperlinkListener li);
 
     /**
-     * The Passage that we are wrapping
+     * Remove a listener for when someone clicks on a browser 'link'
      */
-    private Passage ref = null;
+    public void removeHyperlinkListener(HyperlinkListener li);
+
+    /**
+     * The display source in OSIS
+     */
+    public String getOSISSource();
+
+    /**
+     * The display source in HTML
+     */
+    public String getHTMLSource();
+
+    /**
+     * The Book Key that we are displaying, or null if we are not displaying
+     * anything
+     */
+    public Key getKey();
 }

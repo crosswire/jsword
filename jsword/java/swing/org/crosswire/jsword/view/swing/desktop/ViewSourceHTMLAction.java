@@ -2,14 +2,13 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
-import javax.swing.KeyStroke;
-
+import org.crosswire.common.swing.TextViewPanel;
+import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 
 /**
- * Copy action.
+ * View the HTML source to the current window.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,19 +31,19 @@ import org.crosswire.jsword.view.swing.book.DisplayArea;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class EditCopyAction extends DesktopAbstractAction
+public class ViewSourceHTMLAction extends DesktopAbstractAction
 {
     /**
      * Setup configutarion
      */
-    public EditCopyAction(Desktop tools)
+    public ViewSourceHTMLAction(Desktop tools)
     {
         super(tools,
-              "Copy",
-              "toolbarButtonGraphics/general/Copy16.gif",
-              "toolbarButtonGraphics/general/Copy24.gif",
-              "Copy", "Copy the selection.",
-              'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.ALT_MASK, false));
+              "View HTML Source",
+              null,
+              null,
+              "View HTML Source", "View the HTML source to the current window",
+              'H', null);
     }
 
     /* (non-Javadoc)
@@ -53,6 +52,11 @@ public class EditCopyAction extends DesktopAbstractAction
     public void actionPerformed(ActionEvent ev)
     {
         DisplayArea da = getDesktop().getDisplayArea();
-        da.copy();
+        String html = da.getHTMLSource();
+        Key ref = da.getKey();
+
+        TextViewPanel viewer = new TextViewPanel(html, "HTML source to "+ref.getText());
+        viewer.setEditable(true);
+        viewer.showInFrame(getDesktop());
     }
 }

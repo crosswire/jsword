@@ -122,7 +122,7 @@ public final class Verse implements VerseBase, Comparable
             set(basis.getBook(), parts[0], parts[1]);
             break;
 
-        case ACCURACY_VERSE_ONLY:
+        case ACCURACY_NUMBER_ONLY:
             set(basis.getBook(), basis.getChapter(), parts[0]);
             break;
 
@@ -602,7 +602,7 @@ public final class Verse implements VerseBase, Comparable
      * <li>getAccuracy("Jude 1") == ACCURACY_BOOK_VERSE;
      * <li>getAccuracy("Jude 1:1") == ACCURACY_BOOK_VERSE;
      * <li>getAccuracy("1:1") == ACCURACY_CHAPTER_VERSE;
-     * <li>getAccuracy("1") == ACCURACY_VERSE_ONLY;
+     * <li>getAccuracy("1") == ACCURACY_NUMBER_ONLY;
      * <li>getAccuracy("") == ACCURACY_NONE;
      * <ul>
      * @param desc The string to be tested for Rangeness
@@ -625,7 +625,7 @@ public final class Verse implements VerseBase, Comparable
      * <li>getAccuracy("Jude 1") == ACCURACY_BOOK_VERSE;
      * <li>getAccuracy("Jude 1:1") == ACCURACY_BOOK_VERSE;
      * <li>getAccuracy("1:1") == ACCURACY_CHAPTER_VERSE;
-     * <li>getAccuracy("1") == ACCURACY_VERSE_ONLY;
+     * <li>getAccuracy("1") == ACCURACY_NUMBER_ONLY;
      * <li>getAccuracy("") == ACCURACY_NONE;
      * <ul>
      * @param parts The string array to be tested for Rangeness
@@ -641,9 +641,12 @@ public final class Verse implements VerseBase, Comparable
             return ACCURACY_NONE;
 
         case 1:
-            if (BibleInfo.isBookName(parts[0])) return ACCURACY_BOOK_ONLY;
+            if (BibleInfo.isBookName(parts[0]))
+            {
+                return ACCURACY_BOOK_ONLY;
+            }
             checkValidChapterOrVerse(parts[0]);
-            return ACCURACY_VERSE_ONLY;
+            return ACCURACY_NUMBER_ONLY;
 
         case 2:
             try
@@ -768,6 +771,75 @@ public final class Verse implements VerseBase, Comparable
     public Iterator verseIterator()
     {
         return new VerseIterator();
+    }
+
+    /**
+     * Create a new Verse being the last verse in the current book
+     * @return The last verse in this book
+     */
+    public Verse getLastVerseInBook()
+    {
+        try
+        {
+            int lastchap = BibleInfo.chaptersInBook(book);
+            int lastverse = BibleInfo.versesInChapter(book, lastchap);
+
+            return new Verse(book, lastchap, lastverse);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /**
+     * Create a new Verse being the last verse in the current book
+     * @return The last verse in this book
+     */
+    public Verse getLastVerseInChapter()
+    {
+        try
+        {
+            int lastverse = BibleInfo.versesInChapter(book, chapter);
+
+            return new Verse(book, chapter, lastverse);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /**
+     * Create a new Verse being the first verse in the current book
+     * @return The first verse in this book
+     */
+    public Verse getFirstVerseInBook()
+    {
+        try
+        {
+            return new Verse(book, 1, 1);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /**
+     * Create a new Verse being the first verse in the current book
+     * @return The first verse in this book
+     */
+    public Verse getFirstVerseInChapter()
+    {
+        try
+        {
+            return new Verse(book, chapter, 1);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**

@@ -70,11 +70,8 @@ public interface PassageConstants
     /** The passage was specified to a chapter and verse (no book), eg 1:1 */
     public static final int ACCURACY_CHAPTER_VERSE = 3;
 
-    // The is no such thing as ACCURACY_CHAPTER_ONLY because that can not be distinguished
-    // From ACCURACY_VERSE_ONLY and has no use from a users point of view.
-
-    /** The passage was specified to a verse (no cahpter or book), eg 1 */
-    public static final int ACCURACY_VERSE_ONLY = 4;
+    /** There was only a number so we can tell if chapter or verse (or even book) was meant */
+    public static final int ACCURACY_NUMBER_ONLY = 4;
 
     /** The text was empty */
     public static final int ACCURACY_NONE = 5;

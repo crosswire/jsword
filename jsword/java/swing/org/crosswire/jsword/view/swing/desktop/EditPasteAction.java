@@ -6,11 +6,10 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import org.crosswire.jsword.view.swing.book.BibleViewPane;
-import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
+import org.crosswire.jsword.view.swing.book.DisplayArea;
 
 /**
- * paste action.
+ * Paste action.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -35,6 +34,9 @@ import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
  */
 public class EditPasteAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configutarion
+     */
     public EditPasteAction(Desktop tools)
     {
         super(tools,
@@ -47,10 +49,12 @@ public class EditPasteAction extends DesktopAbstractAction
         setEnabled(false);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
-        BibleViewPane view = getDesktop().getSelectedBibleViewPane();
-        OuterDisplayPane odp = view.getPassagePane();
-        odp.paste();
+        DisplayArea da = getDesktop().getDisplayArea();
+        da.paste();
     }
 }

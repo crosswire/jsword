@@ -2,14 +2,14 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
-import javax.swing.KeyStroke;
-
+import org.crosswire.common.swing.TextViewPanel;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 
 /**
- * Copy action.
+ * View the OSIS source to the current window.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,19 +32,19 @@ import org.crosswire.jsword.view.swing.book.DisplayArea;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class EditCopyAction extends DesktopAbstractAction
+public class ViewSourceOSISAction extends DesktopAbstractAction
 {
     /**
      * Setup configutarion
      */
-    public EditCopyAction(Desktop tools)
+    public ViewSourceOSISAction(Desktop tools)
     {
         super(tools,
-              "Copy",
-              "toolbarButtonGraphics/general/Copy16.gif",
-              "toolbarButtonGraphics/general/Copy24.gif",
-              "Copy", "Copy the selection.",
-              'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.ALT_MASK, false));
+              "View OSIS Source",
+              null,
+              null,
+              "View OSIS Source", "View the OSIS source to the current window",
+              'H', null);
     }
 
     /* (non-Javadoc)
@@ -52,7 +52,19 @@ public class EditCopyAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        DisplayArea da = getDesktop().getDisplayArea();
-        da.copy();
+        try
+        {
+            DisplayArea da = getDesktop().getDisplayArea();
+            String html = da.getOSISSource();
+            Key key = da.getKey();
+
+            TextViewPanel viewer = new TextViewPanel(html, "OSIS source to "+key.getText());
+            viewer.setEditable(true);
+            viewer.showInFrame(getDesktop());
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 }

@@ -14,7 +14,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.JTextComponent;
 import javax.xml.transform.TransformerException;
 
 import org.crosswire.common.swing.LookAndFeelUtil;
@@ -22,6 +21,7 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.xml.sax.SAXException;
 
@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TabbedDisplayPane extends JPanel
+public class TabbedDisplayPane extends JPanel implements DisplayArea
 {
     /**
      * Simple Constructor
@@ -205,16 +205,15 @@ public class TabbedDisplayPane extends JPanel
     /**
      * Accessor for the current TextComponent
      */
-    public JTextComponent getJTextComponent()
+    public InnerDisplayPane getInnerDisplayPane()
     {
         if (tabs)
         {
-            InnerDisplayPane view = (InnerDisplayPane) tab_main.getSelectedComponent();
-            return view.getJTextComponent();
+            return (InnerDisplayPane) tab_main.getSelectedComponent();
         }
         else
         {
-            return pnl_view.getJTextComponent();
+            return pnl_view;
         }
     }
 
@@ -275,9 +274,33 @@ public class TabbedDisplayPane extends JPanel
     {
         return page_size;
     }
-    
-    /**
-     * Add a listener to the list
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
+     */
+    public void cut()
+    {
+        getInnerDisplayPane().cut();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     */
+    public void copy()
+    {
+        getInnerDisplayPane().copy();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
+     */
+    public void paste()
+    {
+        getInnerDisplayPane().paste();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public synchronized void addHyperlinkListener(HyperlinkListener li)
     {
@@ -308,8 +331,8 @@ public class TabbedDisplayPane extends JPanel
         }
     }
 
-    /**
-     * Remote a listener from the list
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public synchronized void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -382,6 +405,30 @@ public class TabbedDisplayPane extends JPanel
             InnerDisplayPane idp = (InnerDisplayPane) it.next();
             idp.removeMouseListener(li);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     */
+    public String getOSISSource()
+    {
+        return getInnerDisplayPane().getOSISSource();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     */
+    public String getHTMLSource()
+    {
+        return getInnerDisplayPane().getHTMLSource();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     */
+    public Key getKey()
+    {
+        return getInnerDisplayPane().getKey();
     }
 
     /**

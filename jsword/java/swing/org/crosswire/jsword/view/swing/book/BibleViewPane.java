@@ -137,6 +137,14 @@ public class BibleViewPane extends JPanel
     }
 
     /**
+     * Accessor for the current InnerDisplayPane
+     *
+    private InnerDisplayPane getSelectedInnerDisplayPane()
+    {
+        return pnl_passg.getSelectedInnerDisplayPane();
+    }
+
+    /**
      * Add a listener when someone clicks on a browser 'link'
      */
     public void addHyperlinkListener(HyperlinkListener li)
