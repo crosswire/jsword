@@ -1,7 +1,7 @@
 package org.crosswire.jsword.passage;
 
-import org.crosswire.common.util.MsgBase;
 import org.crosswire.common.util.LucidException;
+import org.crosswire.common.util.MsgBase;
 
 /**
  * When something tries to use a key that we don't understand.

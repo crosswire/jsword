@@ -2,7 +2,7 @@ package org.crosswire.jsword.book;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * .
@@ -215,14 +215,14 @@ public class SentanceUtilTest extends TestCase
     {
         String[] sa;
 
-        sa = SentanceUtil.stripWords(StringUtils.split(" 'One's' ,Two? !Three-Four\" ")); //$NON-NLS-1$
+        sa = SentanceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-Four\" ")); //$NON-NLS-1$
         assertEquals(sa.length, 4);
         assertEquals(sa[0], "'"); //$NON-NLS-1$
         assertEquals(sa[1], "',"); //$NON-NLS-1$
         assertEquals(sa[2], "?!"); //$NON-NLS-1$
         assertEquals(sa[3], "\""); //$NON-NLS-1$
 
-        sa = SentanceUtil.stripWords(StringUtils.split(" 'One's' ,Two? !Three-- Four\" ")); //$NON-NLS-1$
+        sa = SentanceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-- Four\" ")); //$NON-NLS-1$
         assertEquals(sa.length, 5);
         assertEquals(sa[0], "'"); //$NON-NLS-1$
         assertEquals(sa[1], "',"); //$NON-NLS-1$

@@ -1,6 +1,5 @@
 package org.crosswire.jsword.book.jdbc;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
@@ -68,22 +67,22 @@ public class JDBCBibleUtil
         text = chop1(text, "{", "}"); //$NON-NLS-1$ //$NON-NLS-2$
         text = chop2(text, "<", ">"); //$NON-NLS-1$ //$NON-NLS-2$
         text = chop2(text, "(", ")"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, "[", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, "]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll("[", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll("]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-        text = StringUtils.replace(text, "    ", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, "   ", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, "  ", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll("    ", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll("   ", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll("  ", " "); //$NON-NLS-1$ //$NON-NLS-2$
 
-        text = StringUtils.replace(text, " ,", ","); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " .", "."); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " !", "!"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " ?", "?"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " :", ":"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " ;", ";"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " '", "'"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " )", ")"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = StringUtils.replace(text, " -", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" ,", ","); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" .", "."); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" !", "!"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" ?", "?"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" :", ":"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" ;", ";"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" '", "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" )", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll(" -", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 
         text = text.trim();
 

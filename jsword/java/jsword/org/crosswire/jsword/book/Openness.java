@@ -1,7 +1,8 @@
 
 package org.crosswire.jsword.book;
 
-import org.apache.commons.lang.enum.Enum;
+import java.io.Serializable;
+
 import org.crosswire.common.util.MsgBase;
 
 /**
@@ -29,7 +30,7 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Openness extends Enum
+public class Openness implements Serializable
 {
     /**
      * If the data of unknown distribution status
@@ -57,29 +58,87 @@ public class Openness extends Enum
     public static final Openness COMMERCIAL = new Openness(Msg.OPEN_COMMERCIAL);
 
     /**
-     * Find a constant given a name.
-     */
-    public static Openness get(String name)
-    {
-        return (Openness) Enum.getEnum(Openness.class, name);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.commons.lang.enum.Enum#toString()
-     */
-    public String toString()
-    {
-        return getName();
-    }
-
-    /**
      * Prevent anyone else from doing this
      */
     private Openness(MsgBase msg)
     {
-        super(msg.toString());
+        name = msg.toString();
     }
 
+    /**
+     * Lookup method to convert from a String
+     */
+    public static Openness fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            Openness o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static Openness fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
+
+    /**
+     * The name of the Openness
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final Openness[] VALUES =
+    {
+        UNKNOWN,
+        PD,
+        FREE,
+        COPYABLE,
+        COMMERCIAL
+    };
     /**
      * SERIALUID(dms): A placeholder for the ultimate version id.
      */

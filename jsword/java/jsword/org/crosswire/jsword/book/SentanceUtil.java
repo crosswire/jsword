@@ -3,7 +3,7 @@ package org.crosswire.jsword.book;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * The SentanceUtil class provide utility functions for the various Books.
@@ -188,18 +188,18 @@ public class SentanceUtil
         // First there are some things we regard as word delimitters even if
         // they are not near space. Note that "-" should not be in this list
         // because words like abel-beth-maiacha comtain them.
-        sentence = StringUtils.replace(sentence, "--", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, ".", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, "!", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, "?", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, ":", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, ";", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, "\"", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, "\'", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, "(", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        sentence = StringUtils.replace(sentence, ")", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentence = sentence.replaceAll("--", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentence = sentence.replace('.', ' ');
+        sentence = sentence.replace('!', ' ');
+        sentence = sentence.replace('?', ' ');
+        sentence = sentence.replace(':', ' ');
+        sentence = sentence.replace(';', ' ');
+        sentence = sentence.replace('"', ' ');
+        sentence = sentence.replace('\'', ' ');
+        sentence = sentence.replace('(', ' ');
+        sentence = sentence.replace(')', ' ');
 
-        String[] words = StringUtils.split(sentence, " "); //$NON-NLS-1$
+        String[] words = StringUtil.split(sentence, " "); //$NON-NLS-1$
         String[] retcode = new String[words.length];
 
         // Remove the punctuation from the ends of the words.

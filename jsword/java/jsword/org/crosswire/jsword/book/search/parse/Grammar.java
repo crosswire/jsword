@@ -1,6 +1,6 @@
 package org.crosswire.jsword.book.search.parse;
 
-import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * A class representing various grammatical constructs (in English).
@@ -118,7 +118,7 @@ public class Grammar
      */
     public static String[] tokenizeWithoutSmallWords(String original, String delims)
     {
-        String[] words = StringUtils.split(original, delims);
+        String[] words = StringUtil.split(original, delims);
         int small_words = 0;
 
         for (int i = 0; i < words.length; i++)

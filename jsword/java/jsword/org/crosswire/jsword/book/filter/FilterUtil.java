@@ -1,6 +1,5 @@
 package org.crosswire.jsword.book.filter;
 
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Utilities to help filters.
@@ -49,7 +48,7 @@ public class FilterUtil
         }
         else
         {
-            String chopped = StringUtils.left(data, MAX_OUTPUT_LEN);
+            String chopped = data.substring(0, MAX_OUTPUT_LEN);
             return chopped + Msg.TRUNCATED;
         }
     }

@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.raw;
 
-import java.util.Iterator;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * Items is a list of words, puncuation marks or other bits of data that

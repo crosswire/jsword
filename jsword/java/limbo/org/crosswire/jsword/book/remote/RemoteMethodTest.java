@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.book.remote;
 
-import org.crosswire.jsword.book.remote.RemoteMethod;
-
 import junit.framework.TestCase;
 
 /**

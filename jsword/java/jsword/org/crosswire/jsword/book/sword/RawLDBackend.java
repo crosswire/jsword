@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.DefaultKeyList;
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -197,7 +197,7 @@ public class RawLDBackend implements Backend
 
         if (!(key instanceof IndexKey))
         {
-            throw new BookException(Msg.BAD_KEY, new Object[] { ClassUtils.getShortClassName(key.getClass()), key.getName() });
+            throw new BookException(Msg.BAD_KEY, new Object[] { ClassUtil.getShortClassName(key.getClass()), key.getName() });
         }
 
         IndexKey ikey = (IndexKey) key;

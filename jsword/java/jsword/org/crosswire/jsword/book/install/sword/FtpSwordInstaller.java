@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -596,10 +595,12 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
     {
         FtpSwordInstaller myClass = (FtpSwordInstaller) object;
 
-        return new CompareToBuilder()
-            .append(this.host, myClass.host)
-            .append(this.directory, myClass.directory)
-            .toComparison();
+        int ret = host.compareTo(myClass.host);
+        if (ret != 0)
+        {
+            ret = directory.compareTo(myClass.directory);
+        }
+        return ret;
     }
 
     /**

@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -19,7 +20,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
@@ -187,7 +187,9 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
             URL zipurl = new URL("http://" + site + dir); //$NON-NLS-1$
             File f = File.createTempFile("swd", "zip"); //$NON-NLS-1$ //$NON-NLS-2$
             out = new FileOutputStream(f);
-            in = zipurl.openStream();
+            URLConnection urlConnection = zipurl.openConnection();
+            log.debug("The file size is " + urlConnection.getContentLength()); //$NON-NLS-1$
+            in = urlConnection.getInputStream();
             byte[] buf = new byte[4096];
             for (int count = 0; -1 != (count = in.read(buf)); )
             {
@@ -327,7 +329,12 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     {
         HttpSwordInstaller myClass = (HttpSwordInstaller) arg0;
 
-        return new CompareToBuilder().append(this.host, myClass.host).append(this.directory, myClass.directory).toComparison();
+        int ret = host.compareTo(myClass.host);
+        if (ret != 0)
+        {
+            ret = directory.compareTo(myClass.directory);
+        }
+        return ret;
     }
 
     /* (non-Javadoc)

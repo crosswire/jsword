@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -194,13 +193,13 @@ public class SwordBookMetaData implements BookMetaData
         if (mtype != null)
         {
             BookType type = mtype.getBookType();
-            prop.put(KEY_TYPE, type != null ? type.getName() : ""); //$NON-NLS-1$
+            prop.put(KEY_TYPE, type != null ? type.toString() : ""); //$NON-NLS-1$
         }
 
         prop.put(KEY_LANGUAGE, language); //$NON-NLS-1$
         prop.put(KEY_SPEED, Integer.toString(speed));
         prop.put(KEY_EDITION, edition);
-        prop.put(KEY_OPENNESS, openness.getName());
+        prop.put(KEY_OPENNESS, openness.toString());
         prop.put(KEY_LICENCE, licence == null ? "" : licence.toString()); //$NON-NLS-1$
         prop.put(KEY_FIRSTPUB, firstPublished.toString());
     }
@@ -221,7 +220,7 @@ public class SwordBookMetaData implements BookMetaData
 
         if (lookup.indexOf('_') != -1)
         {
-            String[] locale = StringUtils.split(lookup, '_');
+            String[] locale = StringUtil.split(lookup, '_');
             return getLanguage(locale[0]);
         }
 
@@ -244,7 +243,7 @@ public class SwordBookMetaData implements BookMetaData
             return getLanguage(UNKNOWN_LANG_CODE);
         }
     }
-    
+
     /**
      * Save this config file to a URL
      * @param dest The URL to save the data to
@@ -283,7 +282,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getFirstValue(ConfigEntry key)
     {
-        ArrayList list = (ArrayList) table.get(key.getName());
+        ArrayList list = (ArrayList) table.get(key.toString());
         if (list == null)
         {
             return null;
@@ -315,7 +314,7 @@ public class SwordBookMetaData implements BookMetaData
 
         if (value == null)
         {
-            log.error("Null string (title=" + title.getName() + ") in array: " + StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("Null string (title=" + title + ") in array: " + StringUtil.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return -1;
         }
 
@@ -328,7 +327,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Some debug to say: no match
-        log.error("String " + value + " (title=" + title.getName() + ") not found in array: " + StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        log.error("String " + value + " (title=" + title + ") not found in array: " + StringUtil.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return -1;
     }
 
@@ -352,7 +351,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Some debug to say: no match
-        log.error("String " + value + " (title=" + title.getName() + ") not found in array: " + StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        log.error("String " + value + " (title=" + title + ") not found in array: " + StringUtil.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return deft;
     }
 
@@ -605,7 +604,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     private void addEntry(String key, String value)
     {
-        if (ConfigEntry.getConfigEntry(key) == null)
+        if (ConfigEntry.fromString(key) == null)
         {
             log.warn("Unknown config entry for " + internal + ": " + key); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -755,7 +754,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getOsisID()
     {
-        return getType().getName() + "." + getInitials(); //$NON-NLS-1$
+        return getType().toString() + '.' + getInitials();
     }
 
     /* (non-Javadoc)

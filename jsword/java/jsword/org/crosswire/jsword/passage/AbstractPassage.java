@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * This is a base class to help with some of the common implementation
@@ -945,7 +945,7 @@ public abstract class AbstractPassage implements Passage
     {
         optimizeWrites();
 
-        String[] parts = StringUtils.split(refs, AbstractPassage.REF_ALLOWED_DELIMS);
+        String[] parts = StringUtil.split(refs, AbstractPassage.REF_ALLOWED_DELIMS);
         if (parts.length == 0) return;
 
         // We treat the first as a special case because there is

@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book.remote;
 
-import org.apache.commons.lang.enum.Enum;
+import java.io.Serializable;
+
 
 /**
  * Set of constants for the types of RemoteMethod.
@@ -26,25 +27,89 @@ import org.apache.commons.lang.enum.Enum;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class MethodName extends Enum
+public class MethodName implements Serializable
 {
     static final MethodName GETBIBLES = new MethodName("getBibles"); //$NON-NLS-1$
     static final MethodName GETDATA = new MethodName("getData"); //$NON-NLS-1$
     static final MethodName FINDPASSAGE = new MethodName("findPassage"); //$NON-NLS-1$
 
     /**
-     * Find a constant given a name.
-     */
-    public static MethodName getMethod(String name)
-    {
-        return (MethodName) Enum.getEnum(MethodName.class, name);
-    }
-
-    /**
      * Only we should be doing this
      */
     private MethodName(String name)
     {
-        super(name);
+        this.name = name;
     }
+
+    /**
+     * Lookup method to convert from a String
+     */
+    public static MethodName fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            MethodName o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static MethodName fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
+
+    /**
+     * The name of the MethodName
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final MethodName[] VALUES =
+    {
+                    GETBIBLES, GETDATA, FINDPASSAGE
+    };
+
 }

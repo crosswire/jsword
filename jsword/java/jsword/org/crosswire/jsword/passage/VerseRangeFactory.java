@@ -1,6 +1,6 @@
 package org.crosswire.jsword.passage;
 
-import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * A factory that creates VerseRanges from user input.
@@ -66,7 +66,7 @@ public final class VerseRangeFactory
      */
     public static VerseRange fromString(String original, VerseRange basis) throws NoSuchVerseException
     {
-        String[] parts = StringUtils.split(original, VerseRange.RANGE_ALLOWED_DELIMS);
+        String[] parts = StringUtil.split(original, VerseRange.RANGE_ALLOWED_DELIMS);
 
         switch (parts.length)
         {

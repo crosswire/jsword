@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.install;
 
-import org.crosswire.common.util.MsgBase;
 import org.crosswire.common.util.LucidException;
+import org.crosswire.common.util.MsgBase;
 
 /**
  * Something went wrong with a Book.

@@ -1,8 +1,7 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import org.jdom.Element;
-
 import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**

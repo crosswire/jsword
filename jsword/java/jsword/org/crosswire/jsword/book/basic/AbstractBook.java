@@ -2,8 +2,8 @@ package org.crosswire.jsword.book.basic;
 
 import java.net.URL;
 
-import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
@@ -110,7 +110,7 @@ public abstract class AbstractBook implements Book
      */
     public final String toString()
     {
-        return ClassUtils.getShortClassName(getClass()) + ":" + getBookMetaData().toString(); //$NON-NLS-1$
+        return ClassUtil.getShortClassName(getClass()) + ":" + getBookMetaData().toString(); //$NON-NLS-1$
     }
 
     /**

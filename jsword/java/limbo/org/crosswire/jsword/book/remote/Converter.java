@@ -106,7 +106,7 @@ public class Converter
                 String licencestr = bmdele.getChildTextTrim(ELEMENT_LICENCE);
                 String typestr = bmdele.getChildTextTrim(ELEMENT_TYPE);
 
-                BookType type = BookType.get(typestr);
+                BookType type = BookType.fromString(typestr);
 
                 Book book = new RemoteBook(remoter, driver, name, type, edition, pubstr, openstr, licencestr, speed);
 

@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
@@ -235,7 +233,15 @@ public class SwordBookDriver extends AbstractBookDriver
         else if (!files[0].equals(downloadDir))
         {
             // Find it
-            int pos = ArrayUtils.indexOf(files, downloadDir);
+            int pos = -1;
+            for (int i = 0; i < files.length; i++)
+            {
+                if (downloadDir.equals(files[i]))
+                {
+                    pos = i;
+                    break;
+                }
+            }
 
             // If it is not in the list then add it
             if (pos == -1)
@@ -281,7 +287,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // .jsword in the users home directory is the first location
         reply.add(new File(System.getProperty(PROPERTY_USER_HOME) + File.separator + Project.DIR_PROJECT));
 
-        if (SystemUtils.IS_OS_WINDOWS)
+        if (System.getProperty("os.name").startsWith("Windows")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             testDefaultPath(reply, DIR_WINDOWS_DEFAULT);
         }
@@ -295,7 +301,7 @@ public class SwordBookDriver extends AbstractBookDriver
                 {
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(sysconfig));
-                    String datapath = prop.getProperty(ConfigEntry.DATA_PATH.getName());
+                    String datapath = prop.getProperty(ConfigEntry.DATA_PATH.toString());
                     testDefaultPath(reply, datapath);
                 }
                 catch (IOException ex)

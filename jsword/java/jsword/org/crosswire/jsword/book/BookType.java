@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book;
 
-import org.apache.commons.lang.enum.Enum;
+import java.io.Serializable;
+
 
 /**
  * An Enumeration of the possible types of Book.
@@ -28,7 +29,7 @@ import org.apache.commons.lang.enum.Enum;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BookType extends Enum
+public class BookType implements Serializable
 {
     /**
      * Books that are Bibles
@@ -55,24 +56,82 @@ public class BookType extends Enum
      */
     private BookType(String name)
     {
-        super(name);
+        this.name = name;
     }
 
     /**
-     * Find a BookType by string
+     * Lookup method to convert from a String
      */
-    public static BookType get(String typestr)
+    public static BookType fromString(String name)
     {
-        return (BookType) getEnum(BookType.class, typestr);
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            BookType o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static BookType fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
     }
 
     /* (non-Javadoc)
-     * @see org.apache.commons.lang.enum.Enum#toString()
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
-        return getName();
+        return name;
     }
+
+    /**
+     * The name of the BookType
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final BookType[] VALUES =
+    {
+        BIBLE,
+        DICTIONARY,
+        COMMENTARY,
+        OTHER
+    };
 
     /**
      * SERIALUID(dms): A placeholder for the ultimate version id.

@@ -1,8 +1,8 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
 
 /**
  * Book is the most basic store of textual data - It can retrieve data

@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**

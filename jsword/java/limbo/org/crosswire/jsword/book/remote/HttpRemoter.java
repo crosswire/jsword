@@ -109,7 +109,7 @@ public class HttpRemoter implements Remoter
             try
             {
                 String key = (String) it.next();
-                ParamName param = ParamName.getMethod(key);
+                ParamName param = ParamName.fromString(key);
                 if (param != null)
                 {
                     String val = method.getParameter(param);

@@ -2,7 +2,7 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import org.apache.commons.lang.ClassUtils;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
@@ -73,7 +73,7 @@ public class FootnoteTagBuilder implements TagBuilder
                     }
                     else
                     {
-                        DataPolice.report("expected to pop a Note, but found " + ClassUtils.getShortClassName(pop.getClass())); //$NON-NLS-1$
+                        DataPolice.report("expected to pop a Note, but found " + ClassUtil.getShortClassName(pop.getClass())); //$NON-NLS-1$
                     }
                 }
             };

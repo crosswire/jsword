@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book.sword;
 
-import org.apache.commons.lang.enum.Enum;
+import java.io.Serializable;
+
 
 /**
  * Constants for the keys in a SwordConfig file.
@@ -65,7 +66,7 @@ import org.apache.commons.lang.enum.Enum;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ConfigEntry extends Enum
+public class ConfigEntry implements Serializable
 {
     /**
      * single value string, unknown use
@@ -373,23 +374,146 @@ public class ConfigEntry extends Enum
     public static final ConfigEntry VERSION = new ConfigEntry("Version"); //$NON-NLS-1$
 
     /**
-     * Find a ConfigEntry for a given name.
-     */
-    public static ConfigEntry getConfigEntry(String name)
-    {
-        return (ConfigEntry) Enum.getEnum(ConfigEntry.class, name);
-    }
-
-    /**
      * Simple ctor
      */
     private ConfigEntry(String name)
     {
-        super(name);
+        this.name = name;
     }
+
+    /**
+     * Lookup method to convert from a String
+     */
+    public static ConfigEntry fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            ConfigEntry o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // should not get here.
+        // But there are typos in the keys in the module conf files
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static ConfigEntry fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
+
+    /**
+     * The name of the ConfigEntry
+     */
+    private String name;
 
     /**
      * SERIALUID(dms): A placeholder for the ultimate version id.
      */
     private static final long serialVersionUID = 1L;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final ConfigEntry[] VALUES =
+    {
+                    ABOUT,
+                    BLOCK_COUNT,
+                    BLOCK_TYPE,
+                    CATEGORY,
+                    CIPHER_KEY,
+                    COMPRESS_TYPE,
+                    COPYRIGHT,
+                    COPYRIGHT_CONTACT_ADDRESS,
+                    COPYRIGHT_CONTACT_EMAIL,
+                    COPYRIGHT_CONTACT_NAME,
+                    COPYRIGHT_DATE,
+                    COPYRIGHT_HOLDER,
+                    COPYRIGHT_NOTES,
+                    DATA_PATH,
+                    DESCRIPTION,
+                    DIRECTION,
+                    DISPLAY_LEVEL,
+                    DISTRIBUTION,
+                    DISTRIBUTION_LICENSE,
+                    DISTRIBUTION_NOTES,
+                    DISTRIBUTION_SOURCE,
+                    ENCODING,
+                    GLOBAL_OPTION_FILTER,
+                    GLOSSARY_FROM,
+                    GLOSSARY_TO,
+                    HISTORY,
+                    INSTALL_SIZE,
+                    FEATURE,
+                    FONT,
+                    HISTORY_0_1,
+                    HISTORY_0_2,
+                    HISTORY_0_3,
+                    HISTORY_0_9,
+                    HISTORY_0_91,
+                    HISTORY_0_92,
+                    HISTORY_1_0,
+                    HISTORY_1_1,
+                    HISTORY_1_2,
+                    HISTORY_1_3,
+                    HISTORY_1_4,
+                    HISTORY_1_5,
+                    HISTORY_1_6,
+                    HISTORY_1_7,
+                    HISTORY_1_8,
+                    HISTORY_1_9,
+                    HISTORY_2_0,
+                    HISTORY_2_1,
+                    HISTORY_2_2,
+                    HISTORY_2_5,
+                    LANG,
+                    LCSH,
+                    LEXICON_FROM,
+                    LEXICON_TO,
+                    MOD_DRV,
+                    MINIMUM_VERSION,
+                    MINIMUM_SWORD_VERSION,
+                    OBSOLETES,
+                    SOURCE_TYPE,
+                    SWORD_VERSION_DATE,
+                    TEXT_SOURCE,
+                    VERSION,
+    };
 }

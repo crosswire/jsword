@@ -241,7 +241,7 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public String getOsisID()
     {
-        return getType().getName() + "." + getInitials(); //$NON-NLS-1$
+        return getType().toString() + '.' + getInitials();
     }
 
     /* (non-Javadoc)
@@ -423,7 +423,7 @@ public class DefaultBookMetaData implements BookMetaData
         }
         this.openness = openness;
 
-        map.put(KEY_OPENNESS, this.openness.getName());
+        map.put(KEY_OPENNESS, this.openness.toString());
     }
 
     /**
@@ -434,7 +434,7 @@ public class DefaultBookMetaData implements BookMetaData
         Openness newOpenness = null;
         if (openstr != null)
         {
-            newOpenness = Openness.get(openstr);
+            newOpenness = Openness.fromString(openstr);
         }
 
         setOpenness(newOpenness);
@@ -469,7 +469,7 @@ public class DefaultBookMetaData implements BookMetaData
         }
         this.type = type;
 
-        map.put(KEY_TYPE, type == null ? "" : type.getName()); //$NON-NLS-1$
+        map.put(KEY_TYPE, type == null ? "" : type.toString()); //$NON-NLS-1$
     }
 
     /**
@@ -480,7 +480,7 @@ public class DefaultBookMetaData implements BookMetaData
         BookType newType = null;
         if (typestr != null)
         {
-            newType = BookType.get(typestr);
+            newType = BookType.fromString(typestr);
         }
 
         setType(newType);

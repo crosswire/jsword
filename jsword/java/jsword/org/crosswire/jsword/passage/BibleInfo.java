@@ -3,8 +3,8 @@ package org.crosswire.jsword.passage;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.CaseType;
 
 /**
@@ -85,8 +85,8 @@ public class BibleInfo
             shortBooksUpper[i] = shortBook.toUpperCase();
 
             String altBook = getString(resources, ALT_KEY + (i + 1));
-            alt_books[i] = StringUtils.split(altBook, ',');
-            altBooksLower[i] = StringUtils.split(altBook.toLowerCase(), ',');
+            alt_books[i] = StringUtil.split(altBook, ',');
+            altBooksLower[i] = StringUtil.split(altBook.toLowerCase(), ',');
         }
 
         for (int i = 0; i < SECTIONS_IN_BIBLE; i++)
