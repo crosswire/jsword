@@ -104,20 +104,21 @@ public class GZIPBackend extends Backend
         String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
         File baseurl = new File(rootPath, dataPath);
         String path = baseurl.getAbsolutePath();
-        String allButLast = path + File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1;
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_INDEX);
-        textFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_TEXT);
-        compFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_COMP);
+        String otAllButLast = path + File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1;
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_INDEX);
+        textFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_TEXT);
+        compFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_COMP);
 
-        allButLast = path + File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1;
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_INDEX);
-        textFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_TEXT);
-        compFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_COMP);
+        String ntAllButLast = path + File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1;
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_INDEX);
+        textFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_TEXT);
+        compFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_COMP);
 
         // It is an error to be neither OT nor NT
         if (!textFile[SwordConstants.TESTAMENT_OLD].canRead()
             && !textFile[SwordConstants.TESTAMENT_NEW].canRead())
         {
+            log.error("Failed to find OT or NT files: '" + otAllButLast + SUFFIX_TEXT + "' and '" + ntAllButLast + SUFFIX_TEXT + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             throw new BookException(Msg.MISSING_FILE, new Object[] { path });
         }
     }
