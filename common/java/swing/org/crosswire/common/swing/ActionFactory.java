@@ -49,6 +49,7 @@ import org.crosswire.common.util.Logger;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class ActionFactory implements ActionListener
@@ -78,15 +79,17 @@ public class ActionFactory implements ActionListener
      * Construct a JLabel from the Action.
      * Only Action.NAME and Action.MNEMONIC_KEY are used.
      * @param acronymn the internal name of the CWAction
-     * @return JLabel null if it does not exist
+     * @return A label, asserting if missing resources or with default values otherwise
      */
     public JLabel createJLabel(String acronymn)
     {
-        JLabel label = null;
         Action action = getAction(acronymn);
+
+        assert action != null : "Missing resource: "+acronymn; //$NON-NLS-1$
+
+        JLabel label = new JLabel();
         if (action != null)
         {
-            label = new JLabel();
             label.setText(action.getValue(Action.NAME).toString());
             Integer mnemonic = (Integer) action.getValue(Action.MNEMONIC_KEY);
             if (mnemonic != null)
@@ -94,6 +97,11 @@ public class ActionFactory implements ActionListener
                 label.setDisplayedMnemonic(mnemonic.intValue());
             }
         }
+        else
+        {
+            label.setText(acronymn);
+        }
+
         return label;
     }
 

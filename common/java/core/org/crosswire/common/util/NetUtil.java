@@ -13,6 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -54,6 +56,11 @@ public class NetUtil
      * Constant for the file: protocol
      */
     public static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
+
+    /**
+     * Constant for the jar: protocol
+     */
+    public static final String PROTOCOL_JAR = "jar"; //$NON-NLS-1$
 
     /**
      * For directory listings
@@ -560,17 +567,46 @@ public class NetUtil
      */
     public static long getLastModified(URL url)
     {
+        if (url.getProtocol().equals(PROTOCOL_JAR))
+        {
+            // form is jar:file:.../xxx.jar!.../filename.ext
+            try
+            {
+                String spec = url.getFile();
+                int bang = spec.indexOf('!');
+
+                String jar = spec.substring(0, bang);
+                url = new URL(jar); // Note: replacing input argument!!!
+                JarFile jarfile = new JarFile(url.getFile());
+
+                // Skip the ! and the leading /
+                String file = spec.substring(bang + 2);
+                JarEntry jarEntry = jarfile.getJarEntry(file);
+
+                long time = jarEntry.getTime();
+                if (time != -1)
+                {
+                    return time;
+                }
+            }
+            catch (IOException ex)
+            {
+                log.debug("Could not get the file from the jar." + ex); //$NON-NLS-1$
+            }
+
+            // If we got here we did not get the timestamp of the file in the jar
+            // So now get the timestamp of the jar itself.
+        }
+
         if (url.getProtocol().equals(PROTOCOL_FILE))
         {
             File file = new File(url.getFile());
             return file.lastModified();
         }
-        else
-        {
-            return System.currentTimeMillis();
-        }
+
+        return System.currentTimeMillis();
     }
-    
+
     /**
      * Quick implementation of FilenameFilter that uses a URLFilter
      */

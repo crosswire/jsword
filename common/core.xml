@@ -16,7 +16,6 @@
   <property name="source.java"    value="java"/>
   <property name="source.res"     value="resource"/>
   <property name="target.root"    value="target/ant"/>
-  <property name="target.output"  value="${target.root}"/>
   <property name="target.classes" value="${target.root}/classes"/>
   <property name="target.jar"     value="${target.root}/jar"/>
   <property name="target.signed"  value="${target.root}/signed"/>
@@ -56,23 +55,7 @@
     =========================================================================-->
   <path id="test.jarpath">
     <fileset dir="${target.jar}" includes="*.jar"/>
-    <fileset dir="${source.jar}" includes="**/junit*.jar"/>
-  </path>
-
-  <!--=======================================================================
-    == This is a path to all of the jars in the project
-    =========================================================================-->
-  <path id="all.jarpath">
-    <fileset dir="${target.jar}" includes="*.jar"/>
-    <fileset dir="${source.jar}" includes="**/*.jar"/>
-  </path>
-
-  <!--=======================================================================
-    == This is a path to all of the jars in the project
-    =========================================================================-->
-  <path id="testsource.jarpath">
-    <fileset dir="${target.jar}" includes="*.jar"/>
-    <fileset dir="${source.jar}" includes="**/*.jar"/>
+    <fileset dir="../common/jar" includes="**/junit*.jar"/>
   </path>
 
   <!--=======================================================================
@@ -90,23 +73,6 @@
   <path id="testsource.path">
     <dirset dir="${source.java}" includes="*test*"/>
   </path>
-
-  <!--=======================================================================
-    == These are the non-test java files.
-    == A test file is any file that has Test in its name.
-    =========================================================================-->
-  <patternset id="non.test.sources">
-    <include name="**/*.java"/>
-    <exclude name="**/*Test*"/>
-  </patternset>
-
-  <!--=======================================================================
-    == These are the test java files.
-    == A test file is any file that has Test in its name.
-    =========================================================================-->
-  <patternset id="test.sources">
-    <include name="**/*Test*.java"/>
-  </patternset>
 
   <!--=======================================================================
     == These are the non-java resource files
