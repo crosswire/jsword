@@ -156,18 +156,18 @@ public class PassageUtilTest extends TestCase
         */
     }
 
-    public void testToSentanceCase() throws Exception
+    public void testToSentenceCase() throws Exception
     {
-        assertEquals(PassageUtil.toSentanceCase("one"), "One");
-        assertEquals(PassageUtil.toSentanceCase("one two"), "One two");
-        assertEquals(PassageUtil.toSentanceCase("ONE"), "One");
-        assertEquals(PassageUtil.toSentanceCase("ONE TWO"), "One two");
-        assertEquals(PassageUtil.toSentanceCase("onE"), "One");
-        assertEquals(PassageUtil.toSentanceCase("onE twO"), "One two");
-        assertEquals(PassageUtil.toSentanceCase("12345"), "12345");
-        assertEquals(PassageUtil.toSentanceCase("1 two"), "1 two");
-        assertEquals(PassageUtil.toSentanceCase("1 TWO"), "1 two");
-        try { PassageUtil.toSentanceCase(null); fail(); }
+        assertEquals(PassageUtil.toSentenceCase("one"), "One");
+        assertEquals(PassageUtil.toSentenceCase("one two"), "One two");
+        assertEquals(PassageUtil.toSentenceCase("ONE"), "One");
+        assertEquals(PassageUtil.toSentenceCase("ONE TWO"), "One two");
+        assertEquals(PassageUtil.toSentenceCase("onE"), "One");
+        assertEquals(PassageUtil.toSentenceCase("onE twO"), "One two");
+        assertEquals(PassageUtil.toSentenceCase("12345"), "12345");
+        assertEquals(PassageUtil.toSentenceCase("1 two"), "1 two");
+        assertEquals(PassageUtil.toSentenceCase("1 TWO"), "1 two");
+        try { PassageUtil.toSentenceCase(null); fail(); }
         catch (NullPointerException ex) { }
     }
 

@@ -42,7 +42,7 @@ public interface PassageConstants
     public static final int CASE_MIXED = 3;
 
     /** A word is mixed case if it does not conform to any of the above */
-    public static final String[] CASES = { "lower", "Sentance", "UPPER", "MIXed", };
+    public static final String[] CASES = { "lower", "Sentence", "UPPER", "MIXed", };
 
 
     /** Don't stop at all */

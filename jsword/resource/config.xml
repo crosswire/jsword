@@ -78,7 +78,7 @@
   	<introspect class="org.crosswire.jsword.passage.BibleInfo" property="Case"/>
     <help>What case should we use to display the references.</help>
     <alternative number="0" name="lower"/>
-    <alternative number="1" name="Sentance"/>
+    <alternative number="1" name="Sentence"/>
     <alternative number="2" name="UPPER"/>
     <alternative number="3" name="mIXeD"/>
   </option>

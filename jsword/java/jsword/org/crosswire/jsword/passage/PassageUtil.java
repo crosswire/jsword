@@ -258,7 +258,7 @@ public class PassageUtil
             index = word.indexOf('-');
             if (index == -1)
             {
-                return toSentanceCase(word);
+                return toSentenceCase(word);
             }
 
             // So there is a "-", however first some exceptions
@@ -274,12 +274,12 @@ public class PassageUtil
 
             if (word.substring(0, 4).toLowerCase().equals("god-"))
             {
-                return toSentanceCase(word);
+                return toSentenceCase(word);
             }
 
             // So cut by the -
-            return toSentanceCase(word.substring(0, index))
-                   + "-" + toSentanceCase(word.substring(index+1));
+            return toSentenceCase(word.substring(0, index))
+                   + "-" + toSentenceCase(word.substring(index+1));
 
         case PassageConstants.CASE_MIXED:
             if (word.toLowerCase().equals("lord's"))
@@ -299,7 +299,7 @@ public class PassageUtil
      * @param word The word to be manipulated
      * @return The altered word
      */
-    public static String toSentanceCase(String word)
+    public static String toSentenceCase(String word)
     {
         if (word == null)
         {
