@@ -147,7 +147,7 @@ public class Defaults
         }
 
         List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
-        for (Iterator it=lbmds.iterator(); it.hasNext();)
+        for (Iterator it = lbmds.iterator(); it.hasNext(); )
         {
             BookMetaData bmd = (BookMetaData) it.next();
             String tname = bmd.getFullName();
@@ -231,7 +231,7 @@ public class Defaults
         }
 
         List lbmds = Books.installed().getBookMetaDatas(BookFilters.getCommentaries());
-        for (Iterator it=lbmds.iterator(); it.hasNext();)
+        for (Iterator it = lbmds.iterator(); it.hasNext(); )
         {
             BookMetaData cmd = (BookMetaData) it.next();
             String tname = cmd.getFullName();
@@ -315,7 +315,7 @@ public class Defaults
         }
 
         List lbmds = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
-        for (Iterator it=lbmds.iterator(); it.hasNext();)
+        for (Iterator it = lbmds.iterator(); it.hasNext(); )
         {
             BookMetaData dmd = (BookMetaData) it.next();
             String tname = dmd.getFullName();
@@ -336,7 +336,7 @@ public class Defaults
     protected static void checkAllPreferable()
     {
         List bmds = Books.installed().getBookMetaDatas();
-        for (Iterator it = bmds.iterator(); it.hasNext();)
+        for (Iterator it = bmds.iterator(); it.hasNext(); )
         {
             BookMetaData bmd = (BookMetaData) it.next();
             checkPreferable(bmd);
@@ -360,7 +360,7 @@ public class Defaults
                 {
                     bdeft = bmd;
                     autobdeft = true;
-                    log.debug("setting as default bible since speed="+bdeft.getSpeed()); //$NON-NLS-1$
+                    log.debug("setting as default bible since speed=" + bdeft.getSpeed()); //$NON-NLS-1$
                 }
             }
         }
@@ -374,7 +374,7 @@ public class Defaults
                 {
                     cdeft = bmd;
                     autocdeft = true;
-                    log.debug("setting as default commentary since speed="+cdeft.getSpeed()); //$NON-NLS-1$
+                    log.debug("setting as default commentary since speed=" + cdeft.getSpeed()); //$NON-NLS-1$
                 }
             }
         }
@@ -388,7 +388,7 @@ public class Defaults
                 {
                     ddeft = bmd;
                     autoddeft = true;
-                    log.debug("setting as default dictionary since speed="+ddeft.getSpeed()); //$NON-NLS-1$
+                    log.debug("setting as default dictionary since speed=" + ddeft.getSpeed()); //$NON-NLS-1$
                 }
             }
         }

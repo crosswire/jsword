@@ -198,4 +198,9 @@ public class PathField extends JPanel implements Field
      * The Table - displays the Hashtble
      */
     private JList list;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

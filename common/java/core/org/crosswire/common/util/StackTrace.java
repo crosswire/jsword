@@ -64,36 +64,36 @@ public final class StackTrace
         String msg = new String(str.getBuffer());
         String[] calls = StringUtils.split(msg, "\n\r"); //$NON-NLS-1$
 
-        class_names = new String[calls.length-disgard];
-        method_names = new String[calls.length-disgard];
-        file_names = new String[calls.length-disgard];
-        line_numbers = new int[calls.length-disgard];
+        class_names = new String[calls.length - disgard];
+        method_names = new String[calls.length - disgard];
+        file_names = new String[calls.length - disgard];
+        line_numbers = new int[calls.length - disgard];
 
-        for (int i=0; i<class_names.length; i++)
+        for (int i = 0; i < class_names.length; i++)
         {
-            String call = calls[i+disgard];
+            String call = calls[i + disgard];
 
             try
             {
-                int spc_index = call.indexOf(" "); //$NON-NLS-1$
-                int lhs_index = call.indexOf("("); //$NON-NLS-1$
-                int cln_index = call.indexOf(":"); //$NON-NLS-1$
-                int rhs_index = call.indexOf(")"); //$NON-NLS-1$
+                int spc_index = call.indexOf(' ');
+                int lhs_index = call.indexOf('(');
+                int cln_index = call.indexOf(':');
+                int rhs_index = call.indexOf(')');
 
-                String full_fn = call.substring(spc_index+1, lhs_index).trim();
-                int last_dot = full_fn.lastIndexOf("."); //$NON-NLS-1$
+                String full_fn = call.substring(spc_index + 1, lhs_index).trim();
+                int last_dot = full_fn.lastIndexOf('.');
 
                 class_names[i] = StringUtils.replace(full_fn.substring(0, last_dot), "/", "."); //$NON-NLS-1$ //$NON-NLS-2$
-                method_names[i] = full_fn.substring(last_dot+1);
+                method_names[i] = full_fn.substring(last_dot + 1);
 
                 if (cln_index != -1)
                 {
-                    file_names[i] = call.substring(lhs_index+1, cln_index);
-                    line_numbers[i] = Integer.parseInt(call.substring(cln_index+1, rhs_index));
+                    file_names[i] = call.substring(lhs_index + 1, cln_index);
+                    line_numbers[i] = Integer.parseInt(call.substring(cln_index + 1, rhs_index));
                 }
                 else
                 {
-                    file_names[i] = call.substring(lhs_index+1, rhs_index);
+                    file_names[i] = call.substring(lhs_index + 1, rhs_index);
                     line_numbers[i] = 0;
                 }
             }
@@ -130,7 +130,7 @@ public final class StackTrace
      */
     public final String getFullFunctionName(int level)
     {
-        return class_names[level]+"."+method_names[level]+"()"; //$NON-NLS-1$ //$NON-NLS-2$
+        return class_names[level] + "." + method_names[level] + "()"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -187,7 +187,7 @@ public final class StackTrace
          */
         public boolean hasMoreElements()
         {
-            return level<class_names.length;
+            return level < class_names.length;
         }
 
         /**

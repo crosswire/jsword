@@ -51,7 +51,9 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
      */
     public String[] getOptions()
     {
-        return array;
+        String [] copy = new String[array.length];
+        System.arraycopy(array, 0, copy, 0, array.length);
+        return copy;
     }
 
     /* (non-Javadoc)

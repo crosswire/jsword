@@ -45,7 +45,7 @@ public class Grammar
      */
     public static String getRoot(String word)
     {
-        for (int i=0; i<ENDINGS.length; i++)
+        for (int i = 0; i < ENDINGS.length; i++)
         {
             if (word.endsWith(ENDINGS[i]))
             {
@@ -70,7 +70,7 @@ public class Grammar
             return true;
         }
 
-        for (int i=0; i<WORD_FREQ.length; i++)
+        for (int i = 0; i < WORD_FREQ.length; i++)
         {
             if (word.equalsIgnoreCase(WORD_FREQ[i]))
             {
@@ -88,7 +88,7 @@ public class Grammar
     {
         // How many long words are there?
         int long_words = 0;
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             if (!isSmallWord(words[i]))
             {
@@ -99,7 +99,7 @@ public class Grammar
         // Create the array with just the long words
         int count = 0;
         String[] retcode = new String[long_words];
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             if (!isSmallWord(words[i]))
             {
@@ -121,7 +121,7 @@ public class Grammar
         String[] words = StringUtils.split(original, delims);
         int small_words = 0;
 
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             if (Grammar.isSmallWord(words[i]))
             {
@@ -130,9 +130,9 @@ public class Grammar
             }
         }
 
-        String retcode[] = new String[words.length-small_words];
+        String [] retcode = new String[words.length - small_words];
         int count = 0;
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             if (words[i] != null)
             {

@@ -41,7 +41,7 @@ import org.crosswire.common.util.NetUtil;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Job
+public final class Job
 {
     /**
      * Create a new Job. This will automatically fire a workProgressed event to
@@ -101,7 +101,7 @@ public class Job
 
             predictSection(statedesc);
 
-            current.put(statedesc, new Integer((int) (System.currentTimeMillis()-start)));
+            current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 
         JobManager.fireWorkProgressed(this, true);
@@ -121,7 +121,7 @@ public class Job
     
             predictSection(statedesc);
     
-            current.put(statedesc, new Integer((int) (System.currentTimeMillis()-start)));
+            current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 
         JobManager.fireWorkProgressed(this, false);
@@ -144,7 +144,7 @@ public class Job
                 updater.stop();
             }
     
-            current.put(statedesc, new Integer((int) (System.currentTimeMillis()-start)));
+            current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 
         JobManager.fireWorkProgressed(this, false);
@@ -254,7 +254,7 @@ public class Job
 
         if (now < sectionstart)
         {
-            log.warn("now before started: now="+new Date(now)+" started="+new Date(sectionstart)); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("now before started: now=" + new Date(now) + " started=" + new Date(sectionstart)); //$NON-NLS-1$ //$NON-NLS-2$
             guessedpc = reportedpc;
             return;
         }
@@ -306,7 +306,7 @@ public class Job
         int predsectend = Integer.MAX_VALUE;
 
         // find better values for predsectend and predallend
-        for (Iterator it = predicted.keySet().iterator(); it.hasNext();)
+        for (Iterator it = predicted.keySet().iterator(); it.hasNext(); )
         {
             String title = (String) it.next();
             int age = ((Integer) predicted.get(title)).intValue();
@@ -328,7 +328,7 @@ public class Job
 
         percentend = reportedpc + pcdiff;
 
-        log.debug("Predicting "+predsecttime+"ms ("+reportedpc+"-"+percentend+"%) for section "+message); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        log.debug("Predicting " + predsecttime + "ms (" + reportedpc + "-" + percentend + "%) for section " + message); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
     /**
@@ -345,7 +345,7 @@ public class Job
                 Properties temp = new Properties();
                 temp.load(in);
 
-                for (Iterator it = temp.keySet().iterator(); it.hasNext();)
+                for (Iterator it = temp.keySet().iterator(); it.hasNext(); )
                 {
                     String title = (String) it.next();
                     String timestr = temp.getProperty(title);
@@ -382,7 +382,7 @@ public class Job
     {
         // We need to create a new prediction file. Work out the end point
         long end = start;
-        for (Iterator it = current.keySet().iterator(); it.hasNext();)
+        for (Iterator it = current.keySet().iterator(); it.hasNext(); )
         {
             String message = (String) it.next();
             int age = getAgeFromMap(current, message);
@@ -395,7 +395,7 @@ public class Job
         
         // Now we know the start and the end we can convert all times to percents
         Properties predictions = new Properties();
-        for (Iterator it = current.keySet().iterator(); it.hasNext();)
+        for (Iterator it = current.keySet().iterator(); it.hasNext(); )
         {
             String message = (String) it.next();
             int age = getAgeFromMap(current, message);

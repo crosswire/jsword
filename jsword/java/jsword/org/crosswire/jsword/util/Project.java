@@ -107,7 +107,7 @@ public class Project
      */
     public URL getWritablePropertiesURL(String subject)
     {
-        return NetUtil.lengthenURL(base, subject+FileUtil.EXTENSION_PROPERTIES);
+        return NetUtil.lengthenURL(base, subject + FileUtil.EXTENSION_PROPERTIES);
     }
 
     /**

@@ -55,7 +55,7 @@ public class GuiConvert
         String[] values = StringUtils.split(value, ","); //$NON-NLS-1$
         if (values.length != 3)
         {
-            log.warn("Illegal font name: "+value); //$NON-NLS-1$
+            log.warn("Illegal font name: " + value); //$NON-NLS-1$
             return null;
         }
 
@@ -74,7 +74,7 @@ public class GuiConvert
             return ""; //$NON-NLS-1$
         }
 
-        return font.getName()+","+font.getStyle()+","+font.getSize(); //$NON-NLS-1$ //$NON-NLS-2$
+        return font.getName() + "," + font.getStyle() + "," + font.getSize(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -91,15 +91,15 @@ public class GuiConvert
 
         if (value.length() != 7)
         {
-            log.warn("Illegal colour name: "+value); //$NON-NLS-1$
+            log.warn("Illegal colour name: " + value); //$NON-NLS-1$
             return null;
         }
 
-        // log.fine("input="+value);
+        // log.fine("input=" + value);
         String red = value.substring(1, 3);
         String green = value.substring(3, 5);
         String blue = value.substring(5, 7);
-        // log.fine("red="+red+" green="+green+" blue="+blue);
+        // log.fine("red=" + red + " green=" + green + " blue=" + blue);
 
         return new Color(Integer.parseInt(red, 16),
                          Integer.parseInt(green, 16),
@@ -122,11 +122,11 @@ public class GuiConvert
         String green = "00" + Integer.toHexString(color.getGreen()); //$NON-NLS-1$
         String blue = "00" + Integer.toHexString(color.getBlue()); //$NON-NLS-1$
 
-        red = red.substring(red.length()-2);
-        green = green.substring(green.length()-2);
-        blue = blue.substring(blue.length()-2);
+        red = red.substring(red.length() - 2);
+        green = green.substring(green.length() - 2);
+        blue = blue.substring(blue.length() - 2);
 
-        return "#"+red+green+blue; //$NON-NLS-1$
+        return "#" + red + green + blue; //$NON-NLS-1$
     }
     
     /**

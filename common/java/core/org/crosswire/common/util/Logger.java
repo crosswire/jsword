@@ -76,7 +76,7 @@ public final class Logger
         Object check = loggers.get(id);
         if (check != null)
         {
-            log4j.error("Logger reuse for: "+id.getName()); //$NON-NLS-1$
+            log4j.error("Logger reuse for: " + id.getName()); //$NON-NLS-1$
             log4j.debug("Javascript creates a new classloader so this might not be a problem"); //$NON-NLS-1$
         }
 

@@ -227,7 +227,7 @@ public class Books implements BookList
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException
     {
-        log.debug("begin registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("begin registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
 
         if (drivers.contains(driver))
         {
@@ -237,12 +237,12 @@ public class Books implements BookList
         drivers.add(driver);
 
         BookMetaData[] bmds = driver.getBookMetaDatas();
-        for (int j=0; j<bmds.length; j++)
+        for (int j = 0; j < bmds.length; j++)
         {
             addBook(bmds[j]);
         }
 
-        log.debug("end registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("end registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
     }
 
     /**
@@ -251,10 +251,10 @@ public class Books implements BookList
      */
     public synchronized void unregisterDriver(BookDriver driver) throws BookException
     {
-        log.debug("begin un-registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("begin un-registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
 
         BookMetaData[] bmds = driver.getBookMetaDatas();
-        for (int j=0; j<bmds.length; j++)
+        for (int j = 0; j < bmds.length; j++)
         {
             removeBook(bmds[j]);
         }
@@ -264,7 +264,7 @@ public class Books implements BookList
             throw new BookException(Msg.DRIVER_NOREMOVE, new Object[] { driver.getClass().getName() });
         }
 
-        log.debug("end un-registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("end un-registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
     }
 
     /**
@@ -275,7 +275,7 @@ public class Books implements BookList
     public synchronized BookDriver[] getDriversByClass(Class type)
     {
         List matches = new ArrayList();
-        for (Iterator it = drivers.iterator(); it.hasNext();)
+        for (Iterator it = drivers.iterator(); it.hasNext(); )
         {
             BookDriver driver = (BookDriver) it.next();
             if (driver.getClass() == type)
@@ -303,7 +303,7 @@ public class Books implements BookList
     public synchronized BookDriver[] getWritableDrivers()
     {
         int i = 0;
-        for (Iterator it = drivers.iterator(); it.hasNext();)
+        for (Iterator it = drivers.iterator(); it.hasNext(); )
         {
             BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
@@ -315,7 +315,7 @@ public class Books implements BookList
         BookDriver[] reply = new BookDriver[i];
 
         i = 0;
-        for (Iterator it = drivers.iterator(); it.hasNext();)
+        for (Iterator it = drivers.iterator(); it.hasNext(); )
         {
             BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
@@ -366,11 +366,11 @@ public class Books implements BookList
             // This will classload them all and they will register themselves.
             Class[] types = ClassUtil.getImplementors(BookDriver.class);
 
-            log.debug("begin auto-registering "+types.length+" drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("begin auto-registering " + types.length + " drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
 
-            for (int i=0; i<types.length; i++)
+            for (int i = 0; i < types.length; i++)
             {
-                job.setProgress(Msg.JOB_DRIVER.toString()+ClassUtils.getShortClassName(types[i]));
+                job.setProgress(Msg.JOB_DRIVER.toString() + ClassUtils.getShortClassName(types[i]));
 
                 try
                 {

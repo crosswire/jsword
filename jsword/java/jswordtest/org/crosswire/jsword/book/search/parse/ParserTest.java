@@ -49,9 +49,10 @@ public class ParserTest extends TestCase
         // We shouldn't need a SearchableBible here because all of these should
         // fail before any searching is done.
         LocalParser engine = new LocalParser();
+        // FIXME: These fail because the the engine is not initialized with a valid index.
         engine.init(null);
 
-        //try { engine.search(new Search("moses aaron", false)); fail(); } catch (BookException ex) { }
+         //try { engine.search(new Search("moses aaron", false)); fail(); } catch (BookException ex) { }
         try { engine.search(new Search("(", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
         try { engine.search(new Search("~", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
         try { engine.search(new Search(")", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$

@@ -58,7 +58,7 @@ public class XMLUtil
         String resource = subject + FileUtil.EXTENSION_XML;
         InputStream in = ResourceUtil.getResourceAsStream(resource);
 
-        log.debug("Loading "+subject+".xml from classpath: [OK]"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.debug("Loading " + subject + ".xml from classpath: [OK]"); //$NON-NLS-1$ //$NON-NLS-2$
         SAXBuilder builder = new SAXBuilder(true);
         return builder.build(in);
     }
@@ -80,9 +80,9 @@ public class XMLUtil
      */
     public static void debugSAXAttributes(Attributes attrs)
     {
-        for (int i=0; i<attrs.getLength(); i++)
+        for (int i = 0; i < attrs.getLength(); i++)
         {
-            log.debug("attr["+i+"]: "+attrs.getQName(i)+"="+attrs.getValue(i)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.debug("attr[" + i + "]: " + attrs.getQName(i) + "=" + attrs.getValue(i)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
     }
 
@@ -121,9 +121,9 @@ public class XMLUtil
                 {
                     String entity = working.substring(amp);
                     String replace = guessEntity(entity);
-                    //DataPolice.report("replacing unterminated entity: '"+entity+"' with: '"+replace+"'");
+                    //DataPolice.report("replacing unterminated entity: '" + entity + "' with: '" + replace + "'");
 
-                    working = working.substring(0, amp)+replace;
+                    working = working.substring(0, amp) + replace;
                     break singleEntity;
                 }
 
@@ -133,11 +133,11 @@ public class XMLUtil
                 char c = working.charAt(i);
                 if (c == ';')
                 {
-                    String entity = working.substring(amp, i+1);
+                    String entity = working.substring(amp, i + 1);
                     String replace = guessEntity(entity);
-                    //DataPolice.report("replacing entity: '"+entity+"' with: '"+replace+"'");
+                    //DataPolice.report("replacing entity: '" + entity + "' with: '" + replace + "'");
                     
-                    working = working.substring(0, amp)+replace+working.substring(i+1);
+                    working = working.substring(0, amp) + replace + working.substring(i + 1);
                     break singleEntity;
                 }
 
@@ -147,9 +147,9 @@ public class XMLUtil
                 {
                     String entity = working.substring(amp, i);
                     String replace = guessEntity(entity);
-                    //DataPolice.report("replacing invalid entity: '"+entity+"' with: '"+replace+"'");
+                    //DataPolice.report("replacing invalid entity: '" + entity + "' with: '" + replace + "'");
 
-                    working = working.substring(0, amp)+replace+working.substring(i);
+                    working = working.substring(0, amp) + replace + working.substring(i);
                     break singleEntity;
                 }
 
@@ -171,7 +171,7 @@ public class XMLUtil
         // strip any beginning & or ending ;
         if (broken.endsWith(";")) //$NON-NLS-1$
         {
-            broken = broken.substring(0, broken.length()-1);
+            broken = broken.substring(0, broken.length() - 1);
         }
         if (broken.startsWith("&")) //$NON-NLS-1$
         {
@@ -309,8 +309,8 @@ public class XMLUtil
             }
 
             // So we have the end of the tag, delete it ...
-            //DataPolice.report("disguarding tag: "+working.substring(lt, i+1));
-            working = working.substring(0, lt)+working.substring(i+1);
+            //DataPolice.report("disguarding tag: " + working.substring(lt, i + 1));
+            working = working.substring(0, lt) + working.substring(i + 1);
         }
         
         return working;

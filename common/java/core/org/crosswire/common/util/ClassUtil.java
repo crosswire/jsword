@@ -55,8 +55,8 @@ public class ClassUtil
     {
         String full = null;
 
-        String paths[] = StringUtils.split(classpath, File.pathSeparator);
-        for (int i=0; i<paths.length; i++)
+        String[] paths = StringUtils.split(classpath, File.pathSeparator);
+        for (int i = 0; i < paths.length; i++)
         {
             // Search the jar
             if (paths[i].endsWith(EXTENSION_ZIP) || paths[i].endsWith(EXTENSION_JAR))

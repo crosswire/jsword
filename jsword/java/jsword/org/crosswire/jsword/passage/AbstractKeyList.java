@@ -41,7 +41,7 @@ public abstract class AbstractKeyList implements Key
      */
     public boolean contains(Key key)
     {
-        for (Iterator it = iterator(); it.hasNext();)
+        for (Iterator it = iterator(); it.hasNext(); )
         {
             Key temp = (Key) it.next();
             if (key.equals(temp))
@@ -70,7 +70,7 @@ public abstract class AbstractKeyList implements Key
      */
     protected static void retain(Key alter, Key base)
     {
-        for (Iterator it = alter.iterator(); it.hasNext();)
+        for (Iterator it = alter.iterator(); it.hasNext(); )
         {
             Key sublist = (Key) it.next();
             if (sublist.canHaveChildren())

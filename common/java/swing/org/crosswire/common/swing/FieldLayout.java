@@ -58,7 +58,9 @@ public class FieldLayout extends AbstractLayout
      */
     public Dimension minimumLayoutSize(Container target)
     {
-        int left = 0, right = 0, height = 0;
+        int left = 0;
+        int right = 0;
+        int height = 0;
         Insets insets = target.getInsets();
         int ncomponents = target.getComponentCount();
 

@@ -123,12 +123,10 @@ public interface PassageConstants
     public static final String VERSE_END_MARK2 = "ff"; //$NON-NLS-1$
 
     /**
-     * The delimitters that can be used to prefix a book number
+     * The delimiter that can be used to prefix a book number
+     * DEAD(DM): I think this is not used.
      */
-    public static final String[] VERSE_NUMERIC_BOOK =
-    {
-        "#" //$NON-NLS-1$
-    };
+    public static final String VERSE_NUMERIC_BOOK = "#"; //$NON-NLS-1$
 
     /**
      * What characters can we use to separate the 2 parts to a VerseRanges

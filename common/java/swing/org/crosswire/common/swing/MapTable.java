@@ -83,7 +83,7 @@ public class MapTable extends JTable
         {
             for (int c = 0; c < getColumnCount(); c++)
             {
-                setDefaultRenderer(getColumnClass(c), tcr);
+                setDefaultRenderer(getColumnClass(c), TCR);
             }
 
             adjustRowHeight();
@@ -109,7 +109,7 @@ public class MapTable extends JTable
             int highest = height;
             for (int col = 0; col < colcount; col++)
             {
-                Component comp = prepareRenderer(tcr, row, col);
+                Component comp = prepareRenderer(TCR, row, col);
                 highest = Math.max(highest, comp.getPreferredSize().height + 2 * margin);
             }
 
@@ -122,14 +122,19 @@ public class MapTable extends JTable
     }
 
     /**
-     * <code>tcr</code> is a shared renderer that renders potentially
+     * <code>TCR</code> is a shared renderer that renders potentially
      * mulitline text.
      */
-    private static final TableCellRenderer tcr = new MapCellRenderer();
+    private static final TableCellRenderer TCR = new MapCellRenderer();
     
     /**
      * <code>initialized</code> indicates that a TableCellRenderer
      * can be set in setModel.
      */
     private boolean initialized;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

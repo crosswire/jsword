@@ -126,9 +126,12 @@ public class DistinctPassage extends AbstractPassage
     {
         Verse[] verses = toVerseArray(obj);
 
-        for (int i=0; i<verses.length; i++)
+        for (int i = 0; i < verses.length; i++)
         {
-            if (!store.contains(verses[i])) return false;
+            if (!store.contains(verses[i]))
+            {
+                return false;
+            }
         }
 
         return true;
@@ -143,7 +146,7 @@ public class DistinctPassage extends AbstractPassage
 
         Verse[] verses = toVerseArray(obj);
 
-        for (int i=0; i<verses.length; i++)
+        for (int i = 0; i < verses.length; i++)
         {
             store.add(verses[i]);
         }
@@ -165,7 +168,7 @@ public class DistinctPassage extends AbstractPassage
 
         Verse[] verses = toVerseArray(obj);
 
-        for (int i=0; i<verses.length; i++)
+        for (int i = 0; i < verses.length; i++)
         {
             store.remove(verses[i]);
         }

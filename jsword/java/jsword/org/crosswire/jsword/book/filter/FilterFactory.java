@@ -76,7 +76,7 @@ public class FilterFactory
         }
 
         // the lookup table
-        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
         {
             try
             {
@@ -105,7 +105,7 @@ public class FilterFactory
     public static Filter getFilter(String lookup)
     {
         Filter reply = null;
-        for (Iterator it = filters.keySet().iterator(); it.hasNext();)
+        for (Iterator it = filters.keySet().iterator(); it.hasNext(); )
         {
             String key = (String) it.next();
             if (key.equalsIgnoreCase(lookup))

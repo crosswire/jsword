@@ -50,6 +50,7 @@ public class WordsTest extends TestCase
         // We shouldn't need a SearchableBible here because all of these should
         // complete without any searching being done.
         engine = new LocalParser();
+        // FIXME: These fail because the the engine is not initialized with a valid index.
         engine.init(null);
         engine.setSearchMap(commands);        
     }

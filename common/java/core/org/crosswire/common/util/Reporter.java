@@ -192,7 +192,7 @@ public class Reporter
      */
     public static void addReporterListener(ReporterListener li)
     {
-        listeners.add(ReporterListener.class, li);
+        LISTENERS.add(ReporterListener.class, li);
     }
 
     /**
@@ -201,7 +201,7 @@ public class Reporter
      */
     public static void removeReporterListener(ReporterListener li)
     {
-        listeners.remove(ReporterListener.class, li);
+        LISTENERS.remove(ReporterListener.class, li);
     }
 
     /**
@@ -210,20 +210,20 @@ public class Reporter
     protected static void fireCapture(ReporterEvent ev)
     {
         // Guaranteed to return a non-null array
-        Object[] liArr = listeners.getListenerList();
+        Object[] liArr = LISTENERS.getListenerList();
 
         if (liArr.length == 0)
         {
-            log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException()); //$NON-NLS-1$
+            log.warn("Nothing to listen to report: message=" + ev.getMessage(), ev.getException()); //$NON-NLS-1$
         }
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i=liArr.length-2; i>=0; i-=2)
+        for (int i = liArr.length - 2; i >= 0; i -= 2)
         {
             if (liArr[i] == ReporterListener.class)
             {
-                ReporterListener li = (ReporterListener) liArr[i+1];
+                ReporterListener li = (ReporterListener) liArr[i + 1];
                 try
                 {
                     if (ev.getException() != null)
@@ -237,7 +237,7 @@ public class Reporter
                 }
                 catch (Exception ex)
                 {
-                    listeners.remove(ReporterListener.class, li);
+                    LISTENERS.remove(ReporterListener.class, li);
 
                     log.warn("Dispatch failure", ex); //$NON-NLS-1$
                 }
@@ -285,12 +285,12 @@ public class Reporter
     /**
      * The list of listeners
      */
-    protected static final EventListenerList listeners = new EventListenerList();
+    private static final EventListenerList LISTENERS = new EventListenerList();
 
     /**
      * A class to handle AWT caught Exceptions
      */
-    public class CustomAWTExceptionHandler
+    public static final class CustomAWTExceptionHandler
     {
         /**
          * Its important that we have a no-arg ctor to make this work. So if we ever

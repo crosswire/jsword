@@ -214,7 +214,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 }
                 catch (NumberFormatException ex)
                 {
-                    log.error("NumberFormatException reading line: "+line, ex); //$NON-NLS-1$
+                    log.error("NumberFormatException reading line: " + line, ex); //$NON-NLS-1$
                 }
             }
         }
@@ -258,7 +258,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             throw new BookException(Msg.WRITE_ERROR, ex);
         }
 
-        for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
+        for (Iterator it = matchmap.keySet().iterator(); it.hasNext(); )
         {
             String word = (String) it.next();
             Key match = (Key) matchmap.get(word);
@@ -307,7 +307,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         // loop through all the verses
 
         int percent = 0;
-        for (Iterator it = key.iterator(); it.hasNext();)
+        for (Iterator it = key.iterator(); it.hasNext(); )
         {
             Key sublist = (Key) it.next();
             if (sublist.canHaveChildren())

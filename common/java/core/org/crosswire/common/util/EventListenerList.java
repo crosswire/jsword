@@ -262,4 +262,9 @@ public class EventListenerList implements Serializable
      * The list of ListenerType - Listener pairs
      */
     protected transient Object[] listenerList = NULL_ARRAY;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

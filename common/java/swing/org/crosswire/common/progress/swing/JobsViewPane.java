@@ -64,7 +64,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         JobManager.addWorkListener(this);
 
         Set current = JobManager.getJobs();
-        for (Iterator it = current.iterator(); it.hasNext();)
+        for (Iterator it = current.iterator(); it.hasNext(); )
         {
             Job job = (Job) it.next();
             addJob(job);
@@ -197,7 +197,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.getProgress().setString("" + percent + "%"); //$NON-NLS-1$ //$NON-NLS-2$
+        jobdata.getProgress().setString(percent + "%"); //$NON-NLS-1$
         jobdata.getProgress().setToolTipText(job.getStateDescription());
         jobdata.getProgress().setValue(percent);
     }

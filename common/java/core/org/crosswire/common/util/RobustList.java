@@ -156,10 +156,10 @@ public class RobustList extends AbstractList implements List
         }
 
         Entry e;
-        if (index < size/2)
+        if (index < size / 2)
         {
             e = head;
-            for (int i=0; i!=index; i++)
+            for (int i = 0; i != index; i++)
             {
                 e = e.next;
             }
@@ -167,7 +167,7 @@ public class RobustList extends AbstractList implements List
         else
         {
             e = foot;
-            for (int i=size-1; i!=index; i--)
+            for (int i = size - 1; i != index; i--)
             {
                 e = e.prev;
             }
@@ -340,10 +340,10 @@ public class RobustList extends AbstractList implements List
          */
         protected void debug()
         {
-            log.debug("  prev="+prev); //$NON-NLS-1$
-            log.debug("  this="+this); //$NON-NLS-1$
-            log.debug("  next="+next); //$NON-NLS-1$
-            log.debug("   obje="+object); //$NON-NLS-1$
+            log.debug("  prev=" + prev); //$NON-NLS-1$
+            log.debug("  this=" + this); //$NON-NLS-1$
+            log.debug("  next=" + next); //$NON-NLS-1$
+            log.debug("   obje=" + object); //$NON-NLS-1$
         }
 
         protected Object object;
@@ -357,14 +357,14 @@ public class RobustList extends AbstractList implements List
     protected void debug(String title)
     {
         log.debug(title);
-        log.debug(" head ="+head); //$NON-NLS-1$
-        log.debug(" foot ="+foot); //$NON-NLS-1$
+        log.debug(" head =" + head); //$NON-NLS-1$
+        log.debug(" foot =" + foot); //$NON-NLS-1$
 
         int i = 0;
         Entry e = head;
         while (e != null)
         {
-            log.debug(" index="+i); //$NON-NLS-1$
+            log.debug(" index=" + i); //$NON-NLS-1$
             e.debug();
             e = e.next;
             i++;

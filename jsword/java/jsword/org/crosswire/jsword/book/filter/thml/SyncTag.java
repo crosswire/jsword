@@ -50,24 +50,24 @@ public class SyncTag implements Tag
         if ("Strongs".equals(type)) //$NON-NLS-1$
         {
             Element w = OSISUtil.factory().createW();
-            w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_STRONGS+value);
+            w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_STRONGS + value);
             ele.addContent(w);
         }
         else if ("Dict".equals(type)) //$NON-NLS-1$
         {
             Element div = OSISUtil.factory().createDiv();
-            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "dict://"+value); //$NON-NLS-1$
+            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "dict://" + value); //$NON-NLS-1$
             ele.addContent(div);
         }
         else if ("morph".equals(type)) //$NON-NLS-1$
         {
             Element div = OSISUtil.factory().createDiv();
-            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "morph://"+value); //$NON-NLS-1$
+            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "morph://" + value); //$NON-NLS-1$
             ele.addContent(div);
         }
         else
         {
-            DataPolice.report("sync tag has type="+type+" when value="+value); //$NON-NLS-1$ //$NON-NLS-2$
+            DataPolice.report("sync tag has type=" + type + " when value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 }

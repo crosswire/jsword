@@ -397,4 +397,9 @@ final class ReadOnlyPassage implements Passage
      * Do we just silently ignore change attempts or throw up
      */
     private boolean ignore;
+
+    /**
+     * SERIALUID(dms): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

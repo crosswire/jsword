@@ -113,7 +113,7 @@ public class THMLFilter implements Filter
     private void parse(Element ele, String toparse) throws FactoryConfigurationError, ParserConfigurationException, SAXException, IOException
     {
         // We need to create a root element to house our document fragment
-        StringReader in = new StringReader("<"+RootTag.TAG_ROOT+">"+toparse+"</"+RootTag.TAG_ROOT+">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        StringReader in = new StringReader("<" + RootTag.TAG_ROOT + ">" + toparse + "</" + RootTag.TAG_ROOT + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         InputSource is = new InputSource(in);
 
         SAXParser parser = spf.newSAXParser();

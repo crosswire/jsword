@@ -128,7 +128,7 @@ public class BitwisePassage extends AbstractPassage
     {
         Verse[] verses = toVerseArray(obj);
 
-        for (int i=0; i<verses.length; i++)
+        for (int i = 0; i < verses.length; i++)
         {
             if (!store.get(verses[i].getOrdinal()))
             {
@@ -148,7 +148,7 @@ public class BitwisePassage extends AbstractPassage
 
         Verse[] verses = toVerseArray(obj);
 
-        for (int i=0; i<verses.length; i++)
+        for (int i = 0; i < verses.length; i++)
         {
             store.set(verses[i].getOrdinal());
         }
@@ -170,7 +170,7 @@ public class BitwisePassage extends AbstractPassage
 
         Verse[] verses = toVerseArray(obj);
 
-        for (int i=0; i<verses.length; i++)
+        for (int i = 0; i < verses.length; i++)
         {
             store.clear(verses[i].getOrdinal());
         }
@@ -312,12 +312,12 @@ public class BitwisePassage extends AbstractPassage
             int versesInBible = BibleInfo.versesInBible();
             BitSet newStore = new BitSet(versesInBible + 1);
 
-            for (int i=store.nextSetBit(0); i>=0; i=store.nextSetBit(i+1))
+            for (int i = store.nextSetBit(0); i >= 0; i = store.nextSetBit(i + 1))
             {
-                int start = Math.max(1, i-verses);
-                int end = Math.min(versesInBible, i+verses);
+                int start = Math.max(1, i - verses);
+                int end = Math.min(versesInBible, i + verses);
 
-                for (int j=start; j<=end; j++)
+                for (int j = start; j <= end; j++)
                 {
                     newStore.set(j);
                 }
@@ -391,7 +391,7 @@ public class BitwisePassage extends AbstractPassage
          */
         private void calculateNext()
         {
-            next = store.nextSetBit(next+1);
+            next = store.nextSetBit(next + 1);
         }
 
         /**
@@ -424,7 +424,7 @@ public class BitwisePassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = new BitSet(BibleInfo.versesInBible()+1);
+        store = new BitSet(BibleInfo.versesInBible() + 1);
         readObjectSupport(in);
     }
 
@@ -436,5 +436,5 @@ public class BitwisePassage extends AbstractPassage
     /**
      * The place the real data is stored
      */
-    protected transient BitSet store = new BitSet(BibleInfo.versesInBible()+1);
+    protected transient BitSet store = new BitSet(BibleInfo.versesInBible() + 1);
 }

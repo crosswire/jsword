@@ -63,7 +63,7 @@ import org.crosswire.jsword.passage.Verse;
  * unGZIP them into a byte array of uncompressed-size
  * </pre>
  * 
- * TODO: Testament 0 is used to index an README file for the bible.
+ * TODO(DM): Testament 0 is used to index an README file for the bible.
  * At this time it is ignored.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>

@@ -88,7 +88,7 @@ public class ConfigEditorFactory
          */
         public URLActionListener(Config config, URL url)
         {
-            this.config =config;
+            this.config = config;
             this.url = url;
         }
 

@@ -61,7 +61,7 @@ public class ScripRefTag implements Tag
             }
             catch (NoSuchKeyException ex)
             {
-                DataPolice.report("Unparsable passage:"+refstr+" due to "+ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                DataPolice.report("Unparsable passage:" + refstr + " due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         else

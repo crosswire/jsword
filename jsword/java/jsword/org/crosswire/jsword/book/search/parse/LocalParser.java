@@ -282,7 +282,7 @@ public class LocalParser implements Parser
         Object next = iterator().next();
         if (!(next instanceof ParamWord))
         {
-            log.error("next="+next); //$NON-NLS-1$
+            log.error("next=" + next); //$NON-NLS-1$
         }
 
         ParamWord param = (ParamWord) next;
@@ -304,7 +304,7 @@ public class LocalParser implements Parser
         Object next = iterator().next();
         if (!(next instanceof ParamWord))
         {
-            log.error("next="+next); //$NON-NLS-1$
+            log.error("next=" + next); //$NON-NLS-1$
         }
 
         ParamWord param = (ParamWord) next;
@@ -323,7 +323,7 @@ public class LocalParser implements Parser
             Map classes = ClassUtil.getImplementorsMap(Word.class);
             wordMap = new HashMap();
 
-            for (Iterator it = classes.keySet().iterator(); it.hasNext();)
+            for (Iterator it = classes.keySet().iterator(); it.hasNext(); )
             {
                 String key = (String) it.next();
                 Class clazz = (Class) classes.get(key);
@@ -334,7 +334,7 @@ public class LocalParser implements Parser
                 }
                 catch (Exception ex)
                 {
-                    log.error("can't add CommandWord: key=" + key + " Class="+clazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.error("can't add CommandWord: key=" + key + " Class=" + clazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }

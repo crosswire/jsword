@@ -72,14 +72,14 @@ public class DebugContainerListener implements ContainerListener
         Container statedParent = child.getParent();
         if (statedParent == null)
         {
-            log.warn("CL1: child:"+toString(child)+"(pink), claiming getParent()=null", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("CL1: child:" + toString(child) + "(pink), claiming getParent()=null", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
             setAlert(child, Color.PINK);
         }
         else
         {
             if (statedParent != parent)
             {
-                log.warn("CL1: child:"+toString(child)+"(cyan), getParent()="+toString(statedParent)+"(green) added under parent="+toString(parent)+"(yellow)", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                log.warn("CL1: child:" + toString(child) + "(cyan), getParent()=" + toString(statedParent) + "(green) added under parent=" + toString(parent) + "(yellow)", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 setAlert(child, Color.CYAN);
                 setAlert(statedParent, Color.GREEN);
                 setAlert(parent, Color.YELLOW);
@@ -91,7 +91,7 @@ public class DebugContainerListener implements ContainerListener
         {
             if (lastKnownParent != parent)
             {
-                log.warn("CL1: child:"+toString(child)+"(blue), altered reparent, old parent="+toString(lastKnownParent)+"(magenta), new parent="+toString(parent)+"(orange)", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                log.warn("CL1: child:" + toString(child) + "(blue), altered reparent, old parent=" + toString(lastKnownParent) + "(magenta), new parent=" + toString(parent) + "(orange)", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 setAlert(child, Color.BLUE);
                 setAlert(lastKnownParent, Color.MAGENTA);
                 setAlert(parent, Color.ORANGE);
@@ -120,7 +120,7 @@ public class DebugContainerListener implements ContainerListener
      */
     private String toString(Component parent)
     {
-        return ClassUtils.getShortClassName(parent, "Null")+"("+parent.hashCode()+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return ClassUtils.getShortClassName(parent, "Null") + "(" + parent.hashCode() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /* (non-Javadoc)

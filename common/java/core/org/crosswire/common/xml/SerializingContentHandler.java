@@ -110,7 +110,7 @@ public class SerializingContentHandler implements ContentHandler
             buffer.append(localname);
         }
 
-        for (int i=0; i<attrs.getLength(); i++)
+        for (int i = 0; i < attrs.getLength(); i++)
         {
             buffer.append(" "); //$NON-NLS-1$
             buffer.append(attrs.getLocalName(i));

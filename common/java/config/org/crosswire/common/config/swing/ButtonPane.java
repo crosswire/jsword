@@ -111,4 +111,9 @@ public class ButtonPane extends JPanel
      * PENDING: turn this into a [add|remove]ButtonPaneListener thing
      */
     protected ButtonPaneListener li;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

@@ -67,7 +67,7 @@ public class FontChooser extends JPanel
             }
         };
 
-        font = defaultFont.getFont();
+        font = DEFAULT_FONT.getFont();
         name.setModel(new CustomComboBoxModel());
         name.setRenderer(new CustomListCellRenderer());
         name.setSelectedItem(font.deriveFont(Font.PLAIN, RENDERED_FONT_SIZE));
@@ -190,7 +190,7 @@ public class FontChooser extends JPanel
 
         if (selected == null)
         {
-            return defaultFont.getFont();
+            return DEFAULT_FONT.getFont();
         }
 
         int font_style = (bold.isSelected() ? Font.BOLD : Font.PLAIN) | (italic.isSelected() ? Font.ITALIC : Font.PLAIN);
@@ -311,7 +311,7 @@ public class FontChooser extends JPanel
             if (value == null)
             {
                 setText("<null>"); //$NON-NLS-1$
-                setFont(defaultFont.getFont());
+                setFont(DEFAULT_FONT.getFont());
             }
             else
             {
@@ -327,7 +327,7 @@ public class FontChooser extends JPanel
     /**
      * A label that we can use to get defaults
      */
-    protected static JLabel defaultFont = new JLabel();
+    protected static final JLabel DEFAULT_FONT = new JLabel();
 
     /**
      * The dialog box

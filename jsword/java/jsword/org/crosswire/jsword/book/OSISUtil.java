@@ -358,7 +358,7 @@ public class OSISUtil
         StringBuffer buffer = new StringBuffer();
 
         List content = ele.getContent();
-        for (Iterator it = content.iterator(); it.hasNext();)
+        for (Iterator it = content.iterator(); it.hasNext(); )
         {
             Object next = it.next();
             recurseElement(next, buffer);
@@ -490,7 +490,7 @@ public class OSISUtil
         try
         {
             List content = ele.getContent();
-            for (Iterator it = content.iterator(); it.hasNext();)
+            for (Iterator it = content.iterator(); it.hasNext(); )
             {
                 Object sub = it.next();
                 recurseElement(sub, buffer);

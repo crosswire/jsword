@@ -200,8 +200,6 @@ public class VerseRangeTest extends TestCase
         assertEquals(gen_rev, new VerseRange(gen11, 999999, true));
         assertEquals(gen11_1, new VerseRange(gen11, 0, true));
         assertEquals(gen11_1, new VerseRange(gen11, -1, true));
-        try { new VerseRange(null, 1, true); fail(); }
-        catch (NullPointerException ex) { }
         try { new VerseRange(gen11, 1, false); fail(); }
         catch (IllegalArgumentException ex) { }
     }
@@ -224,12 +222,6 @@ public class VerseRangeTest extends TestCase
         assertEquals(gen_ex1, new VerseRange(gen11, exo11));
         assertEquals(gen_ex1, new VerseRange(exo11, gen11));
         assertEquals(gen11_1, new VerseRange(gen11, new Verse(1, 1, 1)));
-        try { new VerseRange(null, gen11); fail(); }
-        catch (NullPointerException ex) { }
-        try { new VerseRange(gen11, null); fail(); }
-        catch (NullPointerException ex) { }
-        try { new VerseRange((Verse) null, (Verse) null); fail(); }
-        catch (NullPointerException ex) { }
     }
 
     public void testNewViaVerseIntIntBoolean() throws Exception

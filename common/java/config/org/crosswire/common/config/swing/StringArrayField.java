@@ -94,7 +94,7 @@ public class StringArrayField extends JPanel implements Field
      */
     public String getValue()
     {
-        return Convert.stringArray2String(getArray(), separator);
+        return Convert.stringArray2String(getArray(), SEPARATOR);
     }
 
     /**
@@ -117,7 +117,7 @@ public class StringArrayField extends JPanel implements Field
      */
     public void setValue(String value)
     {
-        setArray(Convert.string2StringArray(value, separator));
+        setArray(Convert.string2StringArray(value, SEPARATOR));
     }
 
     /**
@@ -219,7 +219,7 @@ public class StringArrayField extends JPanel implements Field
     /**
      * What character do we use to separate strings?
      */
-    private static final String separator = "#"; //$NON-NLS-1$
+    private static final String SEPARATOR = "#"; //$NON-NLS-1$
 
     private ActionFactory actions;
 
@@ -232,4 +232,9 @@ public class StringArrayField extends JPanel implements Field
      * The Table - displays the Hashtble
      */
     private JList list;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

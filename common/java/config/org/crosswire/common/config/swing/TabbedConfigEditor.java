@@ -86,7 +86,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
                     {
                         JTabbedPane sub = new JTabbedPane();
                         sub.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                        nest.addTab(name, tab_icon, sub);
+                        nest.addTab(name, TAB_ICON, sub);
                         // log.fine("  Added named tab");
                         nest = sub;
                     }
@@ -105,7 +105,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
                             sub.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                             nest.setComponentAt(index, sub);
                             nest = sub;
-                            nest.addTab(Msg.BASIC.toString(), tab_icon, comp);
+                            nest.addTab(Msg.BASIC.toString(), TAB_ICON, comp);
                         }
                     }
                 }
@@ -118,7 +118,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
                         if (card != null)
                         {
                             card.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                            nest.addTab(name, tab_icon, card);
+                            nest.addTab(name, TAB_ICON, card);
                         }
                     }
                     else
@@ -132,7 +132,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
                             if (card != null)
                             {
                                 card.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                                nest.addTab(Msg.BASIC.toString(), tab_icon, card);
+                                nest.addTab(Msg.BASIC.toString(), TAB_ICON, card);
                             }
                         }
                         // else log.fine("  Warning skipping comp="+comp.getClass().getName());
@@ -152,5 +152,5 @@ public class TabbedConfigEditor extends AbstractConfigEditor
     /**
      * Set this to task_small to get icons on the tabs. I don't like it
      */
-    protected static final ImageIcon tab_icon = null;
+    protected static final ImageIcon TAB_ICON = null;
 }

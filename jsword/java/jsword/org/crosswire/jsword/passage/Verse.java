@@ -600,22 +600,17 @@ public final class Verse implements VerseBase, Comparable
      */
     public int getOrdinal()
     {
-        //if (ord == -1)
+        try
         {
-            try
-            {
-                return /*ord =*/ BibleInfo.verseOrdinal(book, chapter, verse);
-            }
-            catch (NoSuchVerseException ex)
-            {
-                // A verse should never be illegal so
-                log.error("ref="+book+", "+chapter+", "+verse); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                assert false : ex;
-                return 1;
-            }
+            return BibleInfo.verseOrdinal(book, chapter, verse);
         }
-
-        //return ord;
+        catch (NoSuchVerseException ex)
+        {
+            // A verse should never be illegal so
+            log.error("ref=" + book + ", " + chapter + ", " + verse); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            assert false : ex;
+            return 1;
+        }
     }
 
     /**
@@ -907,10 +902,10 @@ public final class Verse implements VerseBase, Comparable
         {
             // Check that the "v" is surrounded my non letters - i.e.
             // it is not part of "prov"
-            if (!Character.isLetter(command.charAt(idx-1))
-                && !Character.isLetter(command.charAt(idx+1)))
+            if (!Character.isLetter(command.charAt(idx - 1))
+                && !Character.isLetter(command.charAt(idx + 1)))
             {
-                command = command.substring(0, idx) + PassageConstants.VERSE_PREF_DELIM2 + command.substring(idx+1);
+                command = command.substring(0, idx) + PassageConstants.VERSE_PREF_DELIM2 + command.substring(idx + 1);
             }
         }
         
@@ -922,10 +917,10 @@ public final class Verse implements VerseBase, Comparable
         {
             // Check that the "ch" is surrounded by non letters - i.e.
             // it is not part of "chronicles"
-            if (!Character.isLetter(command.charAt(idx-1)) &&
-                !Character.isLetter(command.charAt(idx+2)))
+            if (!Character.isLetter(command.charAt(idx - 1)) &&
+                !Character.isLetter(command.charAt(idx + 2)))
             {
-                command = command.substring(0, idx) + VERSE_PREF_DELIM1 + command.substring(idx+2);
+                command = command.substring(0, idx) + VERSE_PREF_DELIM1 + command.substring(idx + 2);
             }
         }
         */
@@ -952,9 +947,9 @@ public final class Verse implements VerseBase, Comparable
                 args = new String[oldargs.length - 1];
 
                 args[0] = oldargs[0] + oldargs[1];
-                for (int i=1; i<args.length; i++)
+                for (int i = 1; i < args.length; i++)
                 {
-                    args[i] = oldargs[i+1];
+                    args[i] = oldargs[i + 1];
                 }
             }
         }
@@ -963,7 +958,7 @@ public final class Verse implements VerseBase, Comparable
         // then this must be something like "Gen1" to split them up
         // to get "Gen 1"
         if (args.length > 0
-            && Character.isDigit(args[0].charAt(args[0].length()-1))
+            && Character.isDigit(args[0].charAt(args[0].length() - 1))
             && containsLetter(args[0]))
         {
             // This might make the code quicker (less array subscripting)
@@ -973,21 +968,14 @@ public final class Verse implements VerseBase, Comparable
             // The caveat here is that - We should not split if the bit
             // before the number is one of the numeric book identifiers,
             // in that case #2 means Exo and not the book of # chapter 2
-            boolean is_numeric_book = false;
-            for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length && !is_numeric_book; i++)
-            {
-                // so if we start with a book number id mark
-                if (word.startsWith(PassageConstants.VERSE_NUMERIC_BOOK[i]))
-                    is_numeric_book = true;
-            }
-
-            if (!is_numeric_book)
+            // so if we start with a book number id mark
+            if (!word.startsWith(PassageConstants.VERSE_NUMERIC_BOOK))
             {
                 boolean found_letters = false;
                 int i = 0;
 
                 // Find the split
-                for (i=0; i<word.length(); i++)
+                for (i = 0; i < word.length(); i++)
                 {
                     if (!found_letters)
                     {
@@ -1004,9 +992,9 @@ public final class Verse implements VerseBase, Comparable
 
                 args[0] = oldargs[0].substring(0, i);
                 args[1] = oldargs[0].substring(i);
-                for (int j=2; j<args.length; j++)
+                for (int j = 2; j < args.length; j++)
                 {
-                    args[j] = oldargs[j-1];
+                    args[j] = oldargs[j - 1];
                 }
             }
         }
@@ -1325,7 +1313,7 @@ public final class Verse implements VerseBase, Comparable
      */
     private static boolean containsLetter(String text)
     {
-        for (int i=0; i<text.length(); i++)
+        for (int i = 0; i < text.length(); i++)
         {
             if (Character.isLetter(text.charAt(i)))
             {

@@ -57,8 +57,8 @@ public class FormPane extends JPanel
         add(label);
         add(comp);
 
-        comps.put(prompt+SUFFIX_LABEL, label);
-        comps.put(prompt+SUFFIX_COMP, comp);
+        comps.put(prompt + SUFFIX_LABEL, label);
+        comps.put(prompt + SUFFIX_COMP, comp);
     }
 
     /**
@@ -67,14 +67,14 @@ public class FormPane extends JPanel
      */
     public void removeEntry(String prompt)
     {
-        JLabel label = (JLabel) comps.get(prompt+SUFFIX_LABEL);
-        Component comp = (Component) comps.get(prompt+SUFFIX_COMP);
+        JLabel label = (JLabel) comps.get(prompt + SUFFIX_LABEL);
+        Component comp = (Component) comps.get(prompt + SUFFIX_COMP);
 
         remove(label);
         remove(comp);
 
-        comps.remove(prompt+SUFFIX_LABEL);
-        comps.remove(prompt+SUFFIX_COMP);
+        comps.remove(prompt + SUFFIX_LABEL);
+        comps.remove(prompt + SUFFIX_COMP);
     }
 
     /**

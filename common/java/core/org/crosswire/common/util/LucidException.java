@@ -86,7 +86,7 @@ public class LucidException extends Exception
     public LucidException(MsgBase msg, Throwable cause, Object[] params)
     {
         super(msg.toString(), cause);
-
+        this.deprecated = false;
         this.params = params;
     }
 
@@ -143,13 +143,18 @@ public class LucidException extends Exception
     private static final Logger log = Logger.getLogger(LucidException.class);
 
     /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Is the message to be included literally (ie passed a string), or should we look it up as a
      * resource (ie passed a MsgBase).
      */
-    private boolean deprecated;
+    private final boolean deprecated;
 
     /**
      * The array of parameters
      */
-    protected Object[] params;
+    protected final Object[] params;
 }

@@ -185,7 +185,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         URL cache = getCachedIndexFile();
         if (!NetUtil.isFile(cache))
         {
-            log.info("Missing cache file: "+cache.toExternalForm()); //$NON-NLS-1$
+            log.info("Missing cache file: " + cache.toExternalForm()); //$NON-NLS-1$
         }
         else
         {
@@ -216,7 +216,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                             {
                                 internal = internal.substring(0, internal.length() - 5);
                             }
-                            if (internal.startsWith(SwordConstants.DIR_CONF+'/'))
+                            if (internal.startsWith(SwordConstants.DIR_CONF + '/'))
                             {
                                 internal = internal.substring(7);
                             }
@@ -231,7 +231,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                         }
                         catch (Exception ex)
                         {
-                            log.warn("Failed to load config for entry: "+internal, ex); //$NON-NLS-1$
+                            log.warn("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
                         }
                     }
                 }
@@ -515,7 +515,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     public String getURL()
     {
-        return PROTOCOL_SWORD+":"+username+":"+password+"@"+host+directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return PROTOCOL_SWORD + ":" + username + ":" + password + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -525,7 +525,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     public String toString()
     {
-        return PROTOCOL_SWORD+":"+username+"@"+host+directory; //$NON-NLS-1$ //$NON-NLS-2$
+        return PROTOCOL_SWORD + ":" + username + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /* (non-Javadoc)

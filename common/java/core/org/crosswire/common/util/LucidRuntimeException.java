@@ -100,8 +100,8 @@ public class LucidRuntimeException extends RuntimeException
         }
         catch (IllegalArgumentException ex)
         {
-            log.warn("Format fail for '"+out+"'", ex); //$NON-NLS-1$ //$NON-NLS-2$
-            return "Error formatting message '"+out+"'"; //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Format fail for '" + out + "'", ex); //$NON-NLS-1$ //$NON-NLS-2$
+            return "Error formatting message '" + out + "'"; //$NON-NLS-1$ //$NON-NLS-2$
         }
      }
 
@@ -111,7 +111,12 @@ public class LucidRuntimeException extends RuntimeException
     private static final Logger log = Logger.getLogger(LucidRuntimeException.class);
 
     /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * The array of parameters
      */
-    protected Object[] params = null;
+    protected final Object[] params;
 }

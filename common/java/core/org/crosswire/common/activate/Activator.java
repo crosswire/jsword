@@ -63,7 +63,7 @@ public class Activator
         switch (amount)
         {
         case KILL_EVERYTHING:
-            for (Iterator it = activated.iterator(); it.hasNext();)
+            for (Iterator it = activated.iterator(); it.hasNext(); )
             {
                 Activatable subject = (Activatable) it.next();
                 deactivate(subject);

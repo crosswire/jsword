@@ -108,7 +108,7 @@ public class SentanceUtil
     
             // So cut by the -
             return toSentenceCase(word.substring(0, index))
-                   + "-" + toSentenceCase(word.substring(index+1)); //$NON-NLS-1$
+                   + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
     
         case PassageConstants.CASE_MIXED:
             if (word.equalsIgnoreCase("lord's")) //$NON-NLS-1$
@@ -137,7 +137,7 @@ public class SentanceUtil
             return ""; //$NON-NLS-1$
         }
     
-        return "" + Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(); //$NON-NLS-1$
+        return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
     }
 
     /**
@@ -205,7 +205,7 @@ public class SentanceUtil
         int[] retcode = new int[words.length];
     
         // Remove the punctuation from the ends of the words.
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             retcode[i] = getCase(words[i]);
         }
@@ -276,7 +276,7 @@ public class SentanceUtil
         // Create a String[]
         String[] retcode = new String[tokens.size()];
         int i = 0;
-        for (Iterator it = tokens.iterator(); it.hasNext();)
+        for (Iterator it = tokens.iterator(); it.hasNext(); )
         {
             retcode[i++] = (String) it.next();
         }
@@ -295,7 +295,7 @@ public class SentanceUtil
         String[] retcode = new String[words.length];
     
         // Remove the punctuation from the ends of the words.
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             retcode[i] = stripPunctuationWord(words[i]);
         }
@@ -316,7 +316,7 @@ public class SentanceUtil
             return new String[0];
         }
     
-        String[] retcode = new String[words.length+1];
+        String[] retcode = new String[words.length + 1];
     
         // The first bit of punctuation is what comes in front of the first word
         int first = firstLetter(words[0]);
@@ -330,13 +330,13 @@ public class SentanceUtil
         }
     
         // The rest of the words
-        for (int i=1; i<words.length; i++)
+        for (int i = 1; i < words.length; i++)
         {
-            retcode[i] = stripWords(words[i-1], words[i]);
+            retcode[i] = stripWords(words[i - 1], words[i]);
         }
     
         // The last bit of punctuation is what comes at the end of the last word
-        int last = lastLetter(words[words.length-1]);
+        int last = lastLetter(words[words.length - 1]);
         if (last == words[words.length - 1].length())
         {
             retcode[words.length] = ""; //$NON-NLS-1$
@@ -371,11 +371,11 @@ public class SentanceUtil
         sentance = StringUtils.replace(sentance, "(", " "); //$NON-NLS-1$ //$NON-NLS-2$
         sentance = StringUtils.replace(sentance, ")", " "); //$NON-NLS-1$ //$NON-NLS-2$
 
-        String words[] = StringUtils.split(sentance, " "); //$NON-NLS-1$
+        String[] words = StringUtils.split(sentance, " "); //$NON-NLS-1$
         String[] retcode = new String[words.length];
 
         // Remove the punctuation from the ends of the words.
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             retcode[i] = stripPunctuationWord(words[i]).toLowerCase();
         }
@@ -391,7 +391,7 @@ public class SentanceUtil
     public static String stripPunctuationWord(String word)
     {
         int first = firstLetter(word);
-        int last = lastLetter(word)+1;
+        int last = lastLetter(word) + 1;
 
         if (first > last)
         {
@@ -412,7 +412,7 @@ public class SentanceUtil
      */
     public static String stripWords(String first, String last)
     {
-        String init1 = first.substring(lastLetter(first)+1);
+        String init1 = first.substring(lastLetter(first) + 1);
         String init2 = last.substring(0, firstLetter(last));
 
         return init1 + init2;
@@ -427,7 +427,7 @@ public class SentanceUtil
     {
         int first;
 
-        for (first=0; first<word.length(); first++)
+        for (first = 0; first < word.length(); first++)
         {
             char c = word.charAt(first);
             if (Character.isLetterOrDigit(c))
@@ -448,7 +448,7 @@ public class SentanceUtil
     {
         int last;
 
-        for (last=word.length()-1; last>=0; last--)
+        for (last = word.length() - 1; last >= 0; last--)
         {
             char c = word.charAt(last);
             if (Character.isLetterOrDigit(c))

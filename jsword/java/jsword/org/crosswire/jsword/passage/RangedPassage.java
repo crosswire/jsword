@@ -238,7 +238,7 @@ public class RangedPassage extends AbstractPassage
                 store.remove(this_range);
                 VerseRange[] vra = VerseRange.remainder(this_range, that_range);
 
-                for (int i=0; i<vra.length; i++)
+                for (int i = 0; i < vra.length; i++)
                 {
                     store.add(vra[i]);
                 }
@@ -373,9 +373,9 @@ public class RangedPassage extends AbstractPassage
                 {
                     VerseRange range = (VerseRange) it.next();
 
-                    for (int i=0; i<range.getVerseCount(); i++)
+                    for (int i = 0; i < range.getVerseCount(); i++)
                     {
-                        temp.add(new Verse(range.getStart().getOrdinal()+i));
+                        temp.add(new Verse(range.getStart().getOrdinal() + i));
                     }
                 }
 

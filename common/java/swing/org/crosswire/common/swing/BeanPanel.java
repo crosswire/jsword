@@ -90,7 +90,7 @@ public class BeanPanel extends JPanel
 
                     String title = property.getDisplayName();
                     title = StringUtil.createTitle(title);
-                    label.setText(title+":"); //$NON-NLS-1$
+                    label.setText(title + ":"); //$NON-NLS-1$
                     label.setLabelFor(text);
 
                     Method writer = property.getWriteMethod();
@@ -162,6 +162,11 @@ public class BeanPanel extends JPanel
      * The log stream
      */
     protected static final Logger log = Logger.getLogger(BeanPanel.class);
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Document Listener that updates the original bean

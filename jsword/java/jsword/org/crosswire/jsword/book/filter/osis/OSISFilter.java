@@ -107,7 +107,7 @@ public class OSISFilter implements Filter
     private void parse(Element ele, String plain) throws JDOMException, IOException
     {
         // create a root element to house our document fragment
-        StringReader in = new StringReader("<div>"+plain+"</div>"); //$NON-NLS-1$ //$NON-NLS-2$
+        StringReader in = new StringReader("<div>" + plain + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
         InputSource is = new InputSource(in);
 
         Document doc = builder.build(is);

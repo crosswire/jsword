@@ -144,7 +144,7 @@ public class LookAndFeelUtil
         }
         catch (Exception ex)
         {
-            log.warn("Failed to install windows laf tweak tool: "+ex); //$NON-NLS-1$
+            log.warn("Failed to install windows laf tweak tool: " + ex); //$NON-NLS-1$
         }
 
         // try to set the default look and feel to the system default
@@ -162,7 +162,7 @@ public class LookAndFeelUtil
  
         /*
         Class[] impls = Project.resource().getImplementors(LookAndFeel.class);
-        for (int i=0; i<impls.length; i++)
+        for (int i = 0; i < impls.length; i++)
         {
             LookAndFeel lnf = (LookAndFeel) impls[i].newInstance();
             defaults.put(lnf.getName(), impls[i].getName());

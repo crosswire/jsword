@@ -115,8 +115,8 @@
     == Build everything that has changed, test it and then install the changes.
     =========================================================================-->
   <target name="incremental"
-          depends="build, install"
-          description="Run a build/test/install cycle"><!--test, -->
+          depends="build, test, install"
+          description="Run a build/test/install cycle">
   </target>
 
   <!--=======================================================================

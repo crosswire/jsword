@@ -162,7 +162,7 @@ public class Convert
 
         String[] data_arr = StringUtils.split(data, " "); //$NON-NLS-1$
 
-        for (int i=0; i<data_arr.length; i++)
+        for (int i = 0; i < data_arr.length; i++)
         {
             try
             {
@@ -182,7 +182,7 @@ public class Convert
             }
             catch (Exception ex)
             {
-                log.warn("Invalid config file entry: "+data_arr[i]+" System message: "+ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Invalid config file entry: " + data_arr[i] + " System message: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
                 Reporter.informUser(Convert.class, ex);
             }
         }
@@ -227,7 +227,7 @@ public class Convert
             }
             catch (ClassCastException ex)
             {
-                log.warn("non-String member found: key="+key+" value="+value); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("non-String member found: key=" + key + " value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
                 Reporter.informUser(Convert.class, ex);
             }
         }

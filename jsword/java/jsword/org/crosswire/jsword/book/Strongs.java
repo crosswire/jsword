@@ -52,29 +52,29 @@ public class Strongs
             if (desc.charAt(0) == '<')
             {
                 // It's a Greek or Hebrew number
-                if (desc.charAt(desc.length()-1) != '>')
+                if (desc.charAt(desc.length() - 1) != '>')
                 {
                     throw new BookException(Msg.STRONGS_ERROR_PARSE, new Object[] { desc });
                 }
 
                 if (desc.charAt(1) == '0')
                 {
-                    set(HEBREW, Integer.parseInt(desc.substring(2, desc.length()-1)));
+                    set(HEBREW, Integer.parseInt(desc.substring(2, desc.length() - 1)));
                 }
                 else
                 {
-                    set(GREEK, Integer.parseInt(desc.substring(1, desc.length()-1)));
+                    set(GREEK, Integer.parseInt(desc.substring(1, desc.length() - 1)));
                 }
             }
             else if (desc.charAt(0) == '(')
             {
                 // It's a parsing number
-                if (desc.charAt(desc.length()-1) != ')')
+                if (desc.charAt(desc.length() - 1) != ')')
                 {
                     throw new BookException(Msg.STRONGS_ERROR_PARSE, new Object[] { desc });
                 }
 
-                set(PARSING, Integer.parseInt(desc.substring(1, desc.length()-1)));
+                set(PARSING, Integer.parseInt(desc.substring(1, desc.length() - 1)));
             }
         }
         catch (NumberFormatException ex)
@@ -105,7 +105,7 @@ public class Strongs
         int colonpos = lemma.indexOf(":"); //$NON-NLS-1$
         if (colonpos != -1)
         {
-            lemma = lemma.substring(colonpos+1);
+            lemma = lemma.substring(colonpos + 1);
         }
 
         int newtype = -1;

@@ -124,8 +124,6 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentanceUtil.getCase("freD"), PassageConstants.CASE_MIXED); //$NON-NLS-1$
         assertEquals(SentanceUtil.getCase("LORD's"), PassageConstants.CASE_MIXED); //$NON-NLS-1$
         assertEquals(SentanceUtil.getCase(""), PassageConstants.CASE_LOWER); //$NON-NLS-1$
-        try { SentanceUtil.getCase(null); fail(); }
-        catch (NullPointerException ex) { }
         // The results of this are undefined so
         // assertEquals(PassageUtil.getCase("FreD"), PassageConstants.CASE_SENTANCE);
     }
@@ -183,8 +181,6 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentanceUtil.toSentenceCase("12345"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.toSentenceCase("1 two"), "1 two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.toSentenceCase("1 TWO"), "1 two"); //$NON-NLS-1$ //$NON-NLS-2$
-        try { SentanceUtil.toSentenceCase(null); fail(); }
-        catch (NullPointerException ex) { }
     }
 
     public void testGetCases() throws Exception

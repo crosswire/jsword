@@ -136,19 +136,19 @@ public class ThreadUtil
                 addItem(vec, depth, Msg.UNAVILABLE.toString());
             }
 
-            for (int i=0; i<num_threads; i++)
+            for (int i = 0; i < num_threads; i++)
             {
-                listThread(vec, depth+1, threads[i]);
+                listThread(vec, depth + 1, threads[i]);
             }
 
-            for (int i=0; i<num_groups; i++)
+            for (int i = 0; i < num_groups; i++)
             {
-                listThreads(vec, depth+1, groups[i]);
+                listThreads(vec, depth + 1, groups[i]);
             }
         }
         catch (Exception ex)
         {
-            addItem(vec, depth, ""+ex); //$NON-NLS-1$
+            addItem(vec, depth, ex.toString());
         }
     }
 
@@ -179,6 +179,6 @@ public class ThreadUtil
      */
     private static void addItem(List vec, int depth, String item)
     {
-        vec.add(StringUtils.leftPad("", depth*2) + item); //$NON-NLS-1$
+        vec.add(StringUtils.leftPad("", depth * 2) + item); //$NON-NLS-1$
     }
 }

@@ -69,7 +69,7 @@ public abstract class AbstractPassage implements Passage
     {
         if (!(obj instanceof Passage))
         {
-            log.warn("Can't compare a Passage to a "+obj.getClass().getName()); //$NON-NLS-1$
+            log.warn("Can't compare a Passage to a " + obj.getClass().getName()); //$NON-NLS-1$
             return -1;
         }
 
@@ -236,7 +236,7 @@ public abstract class AbstractPassage implements Passage
                      ? Msg.ABSTRACT_BOOK_SINGULAR.toString()
                      : Msg.ABSTRACT_BOOK_PLURAL.toString();
 
-        return verse_count+" "+verses+" "+book_count+" "+books; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return verse_count + " " + verses + " " + book_count + " " + books; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /* (non-Javadoc)
@@ -333,7 +333,7 @@ public abstract class AbstractPassage implements Passage
      */
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException
     {
-        BibleInfo.validate((book == 0 ? 1 : book), (chapter == 0 ? 1 : chapter), 1);
+        BibleInfo.validate(book == 0 ? 1 : book, chapter == 0 ? 1 : chapter, 1);
 
         int verse_count = 0;
 
@@ -359,7 +359,7 @@ public abstract class AbstractPassage implements Passage
         Iterator it = iterator();
         Object retcode = null;
 
-        for (int i=0; i<=offset; i++)
+        for (int i = 0; i <= offset; i++)
         {
             if (!it.hasNext())
             {
@@ -381,7 +381,7 @@ public abstract class AbstractPassage implements Passage
         Iterator it = rangeIterator(restrict);
         Object retcode = null;
 
-        for (int i=0; i<=offset; i++)
+        for (int i = 0; i <= offset; i++)
         {
             if (!it.hasNext())
             {
@@ -582,7 +582,7 @@ public abstract class AbstractPassage implements Passage
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest())
         {
-            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
+            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
         }
     }
 
@@ -856,7 +856,7 @@ public abstract class AbstractPassage implements Passage
         }
 
         // And run throught the list shouting
-        for (int i=0; i<temp.size(); i++)
+        for (int i = 0; i < temp.size(); i++)
         {
             PassageListener rl = (PassageListener) temp.get(i);
             rl.versesAdded(ev);
@@ -891,7 +891,7 @@ public abstract class AbstractPassage implements Passage
         }
 
         // And run throught the list shouting
-        for (int i=0; i<temp.size(); i++)
+        for (int i = 0; i < temp.size(); i++)
         {
             PassageListener rl = (PassageListener) temp.get(i);
             rl.versesRemoved(ev);
@@ -926,7 +926,7 @@ public abstract class AbstractPassage implements Passage
         }
 
         // And run throught the list shouting
-        for (int i=0; i<temp.size(); i++)
+        for (int i = 0; i < temp.size(); i++)
         {
             PassageListener rl = (PassageListener) temp.get(i);
             rl.versesChanged(ev);
@@ -955,7 +955,7 @@ public abstract class AbstractPassage implements Passage
 
         // Loop for the other verses, interpreting each on the
         // basis of the one before.
-        for (int i=1; i<parts.length; i++)
+        for (int i = 1; i < parts.length; i++)
         {
             VerseRange next = new VerseRange(parts[i].trim(), basis);
             add(next);
@@ -992,7 +992,7 @@ public abstract class AbstractPassage implements Passage
             // chance to fix the error
             //   throw new LogicError();
 
-            log.warn("skip_normalization="+skipNormalization, new Exception()); //$NON-NLS-1$
+            log.warn("skip_normalization=" + skipNormalization, new Exception()); //$NON-NLS-1$
         }
     }
 
@@ -1030,7 +1030,7 @@ public abstract class AbstractPassage implements Passage
             // chance to fix the error
             //   throw new LogicError();
 
-            log.warn("suppress_events="+suppressEvents, new Exception()); //$NON-NLS-1$
+            log.warn("suppress_events=" + suppressEvents, new Exception()); //$NON-NLS-1$
         }
     }
 
@@ -1045,7 +1045,7 @@ public abstract class AbstractPassage implements Passage
         suppressEvents--;
         assert suppressEvents >= 0;
 
-        return (suppressEvents == 0);
+        return suppressEvents == 0;
     }
 
     /**
@@ -1271,7 +1271,7 @@ public abstract class AbstractPassage implements Passage
             while (it.hasNext())
             {
                 Verse verse = (Verse) it.next();
-                store.set(verse.getOrdinal()-1);
+                store.set(verse.getOrdinal() - 1);
             }
 
             out.writeObject(store);
@@ -1338,18 +1338,18 @@ public abstract class AbstractPassage implements Passage
             {
             case BITWISE:
                 BitSet store = (BitSet) in.readObject();
-                for (int i=0; i<BibleInfo.versesInBible(); i++)
+                for (int i = 0; i < BibleInfo.versesInBible(); i++)
                 {
                     if (store.get(i))
                     {
-                        add(new Verse(i+1));
+                        add(new Verse(i + 1));
                     }
                 }
                 break;
 
             case DISTINCT:
                 int verses = in.readInt();
-                for (int i=0; i<verses; i++)
+                for (int i = 0; i < verses; i++)
                 {
                     int ord = in.readInt();
                     add(new Verse(ord));
@@ -1358,7 +1358,7 @@ public abstract class AbstractPassage implements Passage
 
             case RANGED:
                 int ranges = in.readInt();
-                for (int i=0; i<ranges; i++)
+                for (int i = 0; i < ranges; i++)
                 {
                     int ord = in.readInt();
                     int count = in.readInt();

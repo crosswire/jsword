@@ -75,7 +75,7 @@ public class ExceptionShelf extends JPanel
         add(toggle, BorderLayout.EAST);
 
         addPanel(noproblems);
-        shelves.add(this);
+        SHELVES.add(this);
 
         setToggles();
     }
@@ -85,7 +85,7 @@ public class ExceptionShelf extends JPanel
      */
     public void close()
     {
-        shelves.remove(this);
+        SHELVES.remove(this);
     }
 
     /**
@@ -215,7 +215,7 @@ public class ExceptionShelf extends JPanel
      */
     private void addPanel(JPanel panel)
     {
-        String key = "" + panel.hashCode(); //$NON-NLS-1$
+        String key = Integer.toString(panel.hashCode());
         shelf.add(panel, key);
 
         card.last(shelf);
@@ -388,7 +388,7 @@ public class ExceptionShelf extends JPanel
     /**
      * All the ExceptionShelves that we know about
      */
-    protected static final List shelves = new ArrayList();
+    protected static final List SHELVES = new ArrayList();
 
     /**
      * The font for the remove button
@@ -414,7 +414,7 @@ public class ExceptionShelf extends JPanel
             {
                 public void run()
                 {
-                    Iterator it = shelves.iterator();
+                    Iterator it = SHELVES.iterator();
                     while (it.hasNext())
                     {
                         ExceptionShelf es = (ExceptionShelf) it.next();
@@ -433,7 +433,7 @@ public class ExceptionShelf extends JPanel
             {
                 public void run()
                 {
-                    Iterator it = shelves.iterator();
+                    Iterator it = SHELVES.iterator();
                     while (it.hasNext())
                     {
                         ExceptionShelf es = (ExceptionShelf) it.next();

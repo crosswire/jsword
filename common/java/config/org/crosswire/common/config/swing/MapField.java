@@ -312,4 +312,9 @@ public class MapField extends JPanel implements Field
      * The class that everything must inherit from
      */
     private Class superclass;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

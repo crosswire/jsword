@@ -78,7 +78,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
         deck.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         deck.add(blank, BLANK);
 
-        dtcr.setLeafIcon(tasksm);
+        dtcr.setLeafIcon(TASK_ICON_SMALL);
 
         tree.setCellRenderer(dtcr);
         tree.setPreferredSize(new Dimension(150, 150));
@@ -94,7 +94,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
             }
         });
 
-        title.setIcon(task);
+        title.setIcon(TASK_ICON_LARGE);
         title.setFont(new Font(getFont().getName(), Font.PLAIN, 16));
         title.setPreferredSize(new Dimension(30, 30));
         title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -187,13 +187,13 @@ public class TreeConfigEditor extends AbstractConfigEditor
             return;
         }
 
-        title.setText(""+obj+" "+Msg.PROPERTIES); //$NON-NLS-1$ //$NON-NLS-2$
+        title.setText(obj + " " + Msg.PROPERTIES); //$NON-NLS-1$
 
         // Get the name of the current deck
         Object[] list = tree.getSelectionPath().getPath();
         StringBuffer path = new StringBuffer();
 
-        for (int i=1; i<list.length; i++)
+        for (int i = 1; i < list.length; i++)
         {
             if (i > 1)
             {
@@ -245,6 +245,11 @@ public class TreeConfigEditor extends AbstractConfigEditor
      * Layout for the config panels
      */
     protected CardLayout layout;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * A custom data model for the TreeConfig Tree
@@ -388,7 +393,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
 
             // Process the listeners last to first, notifying
             // those that are interested in this event
-            for (int i = array.length-2; i>=0; i-=2)
+            for (int i = array.length - 2; i >= 0; i -= 2)
             {
                 if (array[i] == TreeModelListener.class)
                 {
@@ -398,7 +403,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
                         ev = new TreeModelEvent(source, path);
                     }
 
-                    ((TreeModelListener) array[i+1]).treeStructureChanged(ev);
+                    ((TreeModelListener) array[i + 1]).treeStructureChanged(ev);
                 }
             }
         }

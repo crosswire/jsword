@@ -44,7 +44,7 @@ public class KeyUtil
      */
     public static void visit(Key key, KeyVisitor visitor)
     {
-        for (Iterator it = key.iterator(); it.hasNext();)
+        for (Iterator it = key.iterator(); it.hasNext(); )
         {
             Key subkey = (Key) it.next();
             if (subkey.canHaveChildren())
@@ -83,7 +83,7 @@ public class KeyUtil
         }
         catch (NoSuchVerseException ex)
         {
-            log.warn("Key can't be a verse: "+key.getName()); //$NON-NLS-1$
+            log.warn("Key can't be a verse: " + key.getName()); //$NON-NLS-1$
             return new Verse();
         }
     }
@@ -112,7 +112,7 @@ public class KeyUtil
         }
         catch (NoSuchKeyException ex)
         {
-            log.warn("Key can't be a passage: "+key.getName()); //$NON-NLS-1$
+            log.warn("Key can't be a passage: " + key.getName()); //$NON-NLS-1$
             ref = keyf.createEmptyKeyList();
         }
         return (Passage) ref;

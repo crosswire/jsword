@@ -101,7 +101,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
         }
 
         title = new JLabel(Msg.PROPERTIES.toString(), SwingConstants.LEFT);
-        title.setIcon(task);
+        title.setIcon(TASK_ICON_LARGE);
         title.setFont(new Font(getFont().getName(), Font.PLAIN, 16));
         title.setPreferredSize(new Dimension(30, 30));
         title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -318,4 +318,9 @@ public class WizardConfigEditor extends AbstractConfigEditor
      * The log stream
      */
     private static final Logger log = Logger.getLogger(WizardConfigEditor.class);
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

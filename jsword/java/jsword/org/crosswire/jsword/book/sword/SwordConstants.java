@@ -334,7 +334,7 @@ public class SwordConstants
         bks = new int[3][];
         cps = new int[3][];
 
-        int bksot[] =
+        int[] bksot =
         {
             0, 1, 52, 93, 121, 158,
             193, 218, 240, 245, 277, 302, 325,
@@ -344,7 +344,7 @@ public class SwordConstants
             934, 938, 942, 946, 949, 964
         };
        
-        int bksnt[] =
+        int[] bksnt =
         {
             0, 1, 30, 47, 72, 94,
             123, 140, 157, 171, 178, 185, 190,
@@ -356,7 +356,7 @@ public class SwordConstants
         bks[SwordConstants.TESTAMENT_OLD] = bksot;
         bks[SwordConstants.TESTAMENT_NEW] = bksnt;
 
-        int cpsot[] =
+        int[] cpsot =
         {
             0, 2, 3, 35, 61, 86,
             113, 146, 169, 194, 217, 247, 280,
@@ -499,7 +499,7 @@ public class SwordConstants
             24056, 24071, 24089, 24108
         };
 
-        int cpsnt[] =
+        int[] cpsnt =
         {
             0, 2, 3, 29, 53, 71,
             97, 146, 181, 211, 246, 285, 328,

@@ -63,7 +63,7 @@ public class SwordBookDriver extends AbstractBookDriver
         List valid = new ArrayList();
 
         // Loop through the dirs in the lookup path
-        for (int j=0; j<dirs.length; j++)
+        for (int j = 0; j < dirs.length; j++)
         {
             File mods = new File(dirs[j], SwordConstants.DIR_CONF);
             if (mods.isDirectory())
@@ -72,7 +72,7 @@ public class SwordBookDriver extends AbstractBookDriver
                 //String[] bookdirs = NetUtil.listByFile(mods, new CustomURLFilter());
 
                 // Loop through the entries in this mods.d directory
-                for (int i=0; i<bookdirs.length; i++)
+                for (int i = 0; i < bookdirs.length; i++)
                 {
                     String bookdir = bookdirs[i];
                     try
@@ -89,7 +89,7 @@ public class SwordBookDriver extends AbstractBookDriver
                         else
                         {
                             String name = bookdir.substring(0, bookdir.indexOf(SwordConstants.EXTENSION_CONF));
-                            log.warn("Unsupported Book: "+name); //$NON-NLS-1$
+                            log.warn("Unsupported Book: " + name); //$NON-NLS-1$
                         }
                     }
                     catch (Exception ex)
@@ -100,7 +100,7 @@ public class SwordBookDriver extends AbstractBookDriver
             }
             else
             {
-                log.debug("mods.d directory at "+mods+" does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
+                log.debug("mods.d directory at " + mods + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -189,7 +189,7 @@ public class SwordBookDriver extends AbstractBookDriver
         
         // First we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.installed().getDriversByClass(SwordBookDriver.class);
-        for (int i=0; i<matches.length; i++)
+        for (int i = 0; i < matches.length; i++)
         {
             Books.installed().unregisterDriver(matches[i]);
         }
@@ -244,7 +244,7 @@ public class SwordBookDriver extends AbstractBookDriver
                 temp[0] = downloadDir;
                 for (int i = 0; i < files.length; i++)
                 {
-                    temp[i+1] = files[i];
+                    temp[i + 1] = files[i];
                 }
                 files = temp;
             }

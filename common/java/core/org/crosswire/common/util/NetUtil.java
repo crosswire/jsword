@@ -323,14 +323,14 @@ public class NetUtil
                     return new URL(orig.getProtocol(),
                                    orig.getHost(),
                                    orig.getPort(),
-                                   orig.getFile()+extra);
+                                   orig.getFile() + extra);
                 }
                 else
                 {
                     return new URL(orig.getProtocol(),
                                    orig.getHost(),
                                    orig.getPort(),
-                                   orig.getFile()+File.separator+extra);
+                                   orig.getFile() + File.separator + extra);
                 }
             }
             else
@@ -338,7 +338,7 @@ public class NetUtil
                 return new URL(orig.getProtocol(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile()+SEPARATOR+extra);
+                               orig.getFile() + SEPARATOR + extra);
             }
         }
         catch (MalformedURLException ex)
@@ -364,14 +364,14 @@ public class NetUtil
                 return new URL(orig.getProtocol(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile()+File.separator+extra1+File.separator+extra2);
+                               orig.getFile() + File.separator + extra1 + File.separator + extra2);
             }
             else
             {
                 return new URL(orig.getProtocol(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile()+SEPARATOR+extra1+SEPARATOR+extra2);
+                               orig.getFile() + SEPARATOR + extra1 + SEPARATOR + extra2);
             }
         }
         catch (MalformedURLException ex)
@@ -399,16 +399,16 @@ public class NetUtil
                                orig.getHost(),
                                orig.getPort(),
                                orig.getFile()
-                                    +File.separator+extra1
-                                    +File.separator+extra2
-                                    +File.separator+extra3);
+                                    + File.separator + extra1
+                                    + File.separator + extra2
+                                    + File.separator + extra3);
             }
             else
             {
                 return new URL(orig.getProtocol(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile()+SEPARATOR+extra1+SEPARATOR+extra2+SEPARATOR+extra3);
+                               orig.getFile() + SEPARATOR + extra1 + SEPARATOR + extra2 + SEPARATOR + extra3);
             }
         }
         catch (MalformedURLException ex)
@@ -470,7 +470,7 @@ public class NetUtil
     {
         // We should probably cache this in some way? This is going
         // to get very slow calling this often across a network
-        String[] reply = null;
+        String[] reply = {};
         try
         {
             URL search = NetUtil.lengthenURL(url, INDEX_FILE);
@@ -482,7 +482,7 @@ public class NetUtil
             // JNLP or other systems that can't use file: URLs. But it is silly
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
-            log.warn("index file for "+url.toExternalForm()+" was not found."); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("index file for " + url.toExternalForm() + " was not found."); //$NON-NLS-1$ //$NON-NLS-2$
             if (url.getProtocol().equals(PROTOCOL_FILE))
             {
                 return listByFile(url, filter);
@@ -497,16 +497,16 @@ public class NetUtil
             // Check that the answers are the same
             if (files.length != reply.length)
             {
-                log.warn("index file for "+url.toExternalForm()+" has incorrect number of entries."); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("index file for " + url.toExternalForm() + " has incorrect number of entries."); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
                 List list = Arrays.asList(files);
-                for (int i=0; i<files.length; i++)
+                for (int i = 0; i < files.length; i++)
                 {
                     if (!list.contains(files[i]))
                     {
-                        log.warn("file: based index found "+files[i]+" but this was not found using index file."); //$NON-NLS-1$ //$NON-NLS-2$
+                        log.warn("file: based index found " + files[i] + " but this was not found using index file."); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
             }
@@ -542,7 +542,7 @@ public class NetUtil
         // We still need to do the filtering
         List list = new ArrayList();
         String[] names = StringUtils.split(contents, "\n"); //$NON-NLS-1$
-        for (int i=0; i<names.length; i++)
+        for (int i = 0; i < names.length; i++)
         {
             // we need to trim, as we may have \r\n not \n
             String name = names[i].trim();

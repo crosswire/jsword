@@ -208,7 +208,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     private void generateSearchIndexImpl(Job job, IndexWriter writer, Key key) throws BookException, IOException
     {
         int percent = 0;
-        for (Iterator it = key.iterator(); it.hasNext();)
+        for (Iterator it = key.iterator(); it.hasNext(); )
         {
             Key subkey = (Key) it.next();
             if (subkey.canHaveChildren())

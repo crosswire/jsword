@@ -86,7 +86,7 @@ public final class StringUtil
         boolean lastlower = false;
         boolean lastspace = true;
 
-        for (int i=0; i<variable.length(); i++)
+        for (int i = 0; i < variable.length(); i++)
         {
             char c = variable.charAt(i);
 
@@ -112,10 +112,10 @@ public final class StringUtil
                 retcode.append(c);
             }
 
-            lastspace = (c == ' ');
+            lastspace = c == ' ';
         }
 
-        return "" + retcode; //$NON-NLS-1$
+        return retcode.toString();
     }
 
     /**
@@ -129,7 +129,7 @@ public final class StringUtil
         String[] words = StringUtils.split(sentence);
 
         StringBuffer retcode = new StringBuffer();
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             String word = words[i];
 

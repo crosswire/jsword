@@ -71,7 +71,7 @@ public abstract class AbstractReflectedChoice implements Choice
             throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "property" }); //$NON-NLS-1$
         }
 
-        //log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
+        //log.debug("Looking up " + clazzname + ".set" + propertyname + "(" + getConvertionClass().getName() + " arg0)");
 
         try
         {
@@ -84,7 +84,7 @@ public abstract class AbstractReflectedChoice implements Choice
 
         try
         {
-            setter = clazz.getMethod("set"+propertyname, new Class[] { getConvertionClass() }); //$NON-NLS-1$
+            setter = clazz.getMethod("set" + propertyname, new Class[] { getConvertionClass() }); //$NON-NLS-1$
         }
         catch (NoSuchMethodException ex)
         {
@@ -95,11 +95,11 @@ public abstract class AbstractReflectedChoice implements Choice
         {
             try
             {
-                getter = clazz.getMethod("get"+propertyname, new Class[0]); //$NON-NLS-1$
+                getter = clazz.getMethod("get" + propertyname, new Class[0]); //$NON-NLS-1$
             }
             catch (Exception ex)
             {
-                getter = clazz.getMethod("is"+propertyname, new Class[0]); //$NON-NLS-1$
+                getter = clazz.getMethod("is" + propertyname, new Class[0]); //$NON-NLS-1$
             }
         }
         catch (NoSuchMethodException ex)
@@ -109,7 +109,7 @@ public abstract class AbstractReflectedChoice implements Choice
 
         if (getter.getReturnType() != getConvertionClass())
         {
-            log.debug("Not using "+propertyname+" from "+clazz.getName()+" because the return type of the getter is not "+getConvertionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConvertionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConvertionClass() });
         }
 
@@ -225,12 +225,12 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (IllegalAccessException ex)
         {
-            log.error("Illegal access getting value from "+clazz.getName()+"."+getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Illegal access getting value from " + clazz.getName() + "." + getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
             return ""; //$NON-NLS-1$
         }
         catch (InvocationTargetException ex)
         {
-            log.error("Failed to get value from "+clazz.getName()+"."+getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Failed to get value from " + clazz.getName() + "." + getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
             return ""; //$NON-NLS-1$
         }
     }
@@ -247,7 +247,7 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (InvocationTargetException ex)
         {
-            log.info("Exception while attempting to execute: "+setter.toString()); //$NON-NLS-1$
+            log.info("Exception while attempting to execute: " + setter.toString()); //$NON-NLS-1$
 
             Throwable orig = ex.getTargetException();
             if (orig instanceof Exception)
@@ -261,7 +261,7 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (Exception ex)
         {
-            log.info("Exception while attempting to execute: "+setter.toString()); //$NON-NLS-1$
+            log.info("Exception while attempting to execute: " + setter.toString()); //$NON-NLS-1$
             throw ex;
         }
     }

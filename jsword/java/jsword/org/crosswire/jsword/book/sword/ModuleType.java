@@ -223,10 +223,10 @@ public abstract class ModuleType implements Serializable
     {
         for (int i = 0; i < VALUES.length; i++)
         {
-            ModuleType obj = VALUES[i];
-            if (obj.name.equalsIgnoreCase(name))
+            ModuleType mod = VALUES[i];
+            if (mod.name.equalsIgnoreCase(name))
             {
-                return obj;
+                return mod;
             }
         }
 
@@ -344,10 +344,10 @@ public abstract class ModuleType implements Serializable
     {
         for (int i = 0; i < VALUES.length; i++)
         {
-            ModuleType obj = VALUES[i];
-            if (obj.name.equalsIgnoreCase(name))
+            ModuleType mod = VALUES[i];
+            if (mod.name.equalsIgnoreCase(name))
             {
-                return obj;
+                return mod;
             }
         }
 
@@ -358,9 +358,9 @@ public abstract class ModuleType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object obj)
+    public final boolean equals(Object o)
     {
-        return super.equals(obj);
+        return super.equals(o);
     }
 
     /**
@@ -382,12 +382,12 @@ public abstract class ModuleType implements Serializable
 
     // Support for serialization
     static final long serialVersionUID = 1417463751329673026L;
-    private static int nextObj_ = 0;
-    private final int obj_ = nextObj_++;
+    private static int nextObj = 0;
+    private final int obj = nextObj++;
 
     Object readResolve()
     {
-        return VALUES[obj_];
+        return VALUES[obj];
     }
 
     private static final ModuleType[] VALUES =

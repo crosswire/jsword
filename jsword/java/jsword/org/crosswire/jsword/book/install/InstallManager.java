@@ -50,7 +50,7 @@ public class InstallManager
             Properties sitemap = ResourceUtil.getProperties(getClass());
             factories = ClassUtil.getImplementorsMap(InstallerFactory.class);
 
-            for (Iterator it = sitemap.keySet().iterator(); it.hasNext();)
+            for (Iterator it = sitemap.keySet().iterator(); it.hasNext(); )
             {
                 String name = (String) it.next();
                 String url = sitemap.getProperty(name);
@@ -126,11 +126,11 @@ public class InstallManager
             }
             catch (Exception ex)
             {
-                log.warn("Failed to instansiate installer factory: "+name+"="+factclazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Failed to instansiate installer factory: " + name + "=" + factclazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
-        log.warn("Failed to find factory name for "+installer.toString()+" among the "+factories.size()+" factories."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        log.warn("Failed to find factory name for " + installer.toString() + " among the " + factories.size() + " factories."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return null;
     }
 
@@ -151,12 +151,12 @@ public class InstallManager
             }
         }
 
-        log.warn("Failed to find installer name for "+installer.toString()+" among the "+installers.size()+" installers."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
         {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
-            log.warn("  it isn't equal to "+test.getURL()); //$NON-NLS-1$
+            log.warn("  it isn't equal to " + test.getURL()); //$NON-NLS-1$
         }
         return null;
     }
@@ -231,7 +231,7 @@ public class InstallManager
             if (tinstaller.equals(installer))
             {
                 // We have a dupe - remove the old name
-                log.warn("duplicate installers: "+name+"="+tname+". removing "+tname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.warn("duplicate installers: " + name + "=" + tname + ". removing " + tname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                 it.remove();
                 fireInstallersChanged(this, tinstaller, false);

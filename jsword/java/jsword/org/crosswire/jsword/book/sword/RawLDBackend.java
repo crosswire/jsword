@@ -134,12 +134,12 @@ public class RawLDBackend implements Backend
             return reply;
         }
 
-        for (int entry=0; entry<entries; entry++)
+        for (int entry = 0; entry < entries; entry++)
         {
             try
             {
                 // Read the offset and size for this key from the index
-                byte[] buffer = SwordUtil.readRAF(idxRaf, entry*entrysize, entrysize);
+                byte[] buffer = SwordUtil.readRAF(idxRaf, entry * entrysize, entrysize);
                 long offset = SwordUtil.decodeLittleEndian32(buffer, 0);
                 int size = -1;
                 switch (datasize)
@@ -160,7 +160,7 @@ public class RawLDBackend implements Backend
                 int keyend = SwordUtil.findByte(data, SEPARATOR);
                 if (keyend == -1)
                 {
-                    DataPolice.report("Failed to find keyname. offset="+offset+" data='"+new String(data)+"'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    DataPolice.report("Failed to find keyname. offset=" + offset + " data='" + new String(data) + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
 
@@ -172,7 +172,7 @@ public class RawLDBackend implements Backend
                 // all get \ added to the ends of the index entries.
                 if (keytitle.endsWith("\\")) //$NON-NLS-1$
                 {
-                    keytitle = keytitle.substring(0, keytitle.length()-1);
+                    keytitle = keytitle.substring(0, keytitle.length() - 1);
                 }
                 Key key = new IndexKey(keytitle, offset, size, reply);
 

@@ -393,7 +393,7 @@ public class ExceptionPane extends JPanel
             mylabel.setText(Msg.NO_FILE.toString());
 
             // Find a file
-            name = File.separator + StringUtils.replace(orig, ".", "" + File.separatorChar) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
+            name = File.separator + StringUtils.replace(orig, ".", Character.toString(File.separatorChar)) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
             for (int i = 0; i < sources.length; i++)
             {
                 File file = new File(sources[i], name);
@@ -548,5 +548,4 @@ public class ExceptionPane extends JPanel
      * The listener that pops up the ExceptionPanes
      */
     private static ExceptionPaneReporterListener li;
-
 }

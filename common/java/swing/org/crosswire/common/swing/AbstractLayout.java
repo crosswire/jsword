@@ -175,4 +175,10 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
      * vertical gap
      */
     protected int vgap;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
+
 }

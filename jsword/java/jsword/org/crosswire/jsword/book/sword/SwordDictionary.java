@@ -66,7 +66,7 @@ public class SwordDictionary extends AbstractBook
         set = backend.readIndex();
 
         map = new HashMap();
-        for (Iterator it = set.iterator(); it.hasNext();)
+        for (Iterator it = set.iterator(); it.hasNext(); )
         {
             Key key = (Key) it.next();
             map.put(key.getName(), key);
@@ -179,7 +179,7 @@ public class SwordDictionary extends AbstractBook
         // So we need to find a matching key.
 
         // First check for keys that match ignoring case
-        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
         {
             String keyName = (String) it.next();
             if (keyName.equalsIgnoreCase(text))
@@ -190,7 +190,7 @@ public class SwordDictionary extends AbstractBook
         }
 
         // Next keys that start with the given text
-        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
         {
             String keyName = (String) it.next();
             if (keyName.startsWith(text))
@@ -201,7 +201,7 @@ public class SwordDictionary extends AbstractBook
         }
 
         // Next try keys that contain the given text
-        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
         {
             String keyName = (String) it.next();
             if (keyName.indexOf(text) != -1)

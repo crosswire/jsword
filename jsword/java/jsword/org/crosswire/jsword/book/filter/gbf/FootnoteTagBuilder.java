@@ -75,7 +75,7 @@ public class FootnoteTagBuilder implements TagBuilder
                     }
                     else
                     {
-                        DataPolice.report("expected to pop a Note, but found "+ClassUtils.getShortClassName(pop.getClass())); //$NON-NLS-1$
+                        DataPolice.report("expected to pop a Note, but found " + ClassUtils.getShortClassName(pop.getClass())); //$NON-NLS-1$
                     }
                 }
             };

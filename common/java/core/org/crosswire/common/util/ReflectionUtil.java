@@ -46,7 +46,7 @@ public class ReflectionUtil
     {
         // Create a Class array describing the params
         Class[] calledTypes = new Class[params.length];
-        for (int i=0; i<params.length; i++)
+        for (int i = 0; i < params.length; i++)
         {
             calledTypes[i] = params[i].getClass();
         }
@@ -60,7 +60,7 @@ public class ReflectionUtil
         // so we have to search ourselves...
         Method[] testMethods = clazz.getMethods();
         outer:
-        for (int i=0; i<testMethods.length; i++)
+        for (int i = 0; i < testMethods.length; i++)
         {
             // This this the right method name?
             if (!testMethods[i].getName().equals(methodName))
@@ -73,7 +73,7 @@ public class ReflectionUtil
             if (testTypes.length != calledTypes.length) continue;
     
             // Of the right types?
-            for (int j=0; j<testTypes.length; j++)
+            for (int j = 0; j < testTypes.length; j++)
             {
                 if (!testTypes[j].isAssignableFrom(calledTypes[j]))
                 {
@@ -98,11 +98,11 @@ public class ReflectionUtil
         // Spilt the call into class name and method name
         int lastDot = call.lastIndexOf('.');
         String className = call.substring(0, lastDot);
-        String methodName = call.substring(lastDot+1);
+        String methodName = call.substring(lastDot + 1);
 
         // Create a Class array describing the params
         Class[] calledTypes = new Class[params.length];
-        for (int i=0; i<params.length; i++)
+        for (int i = 0; i < params.length; i++)
         {
             calledTypes[i] = params[i].getClass();
         }
@@ -116,7 +116,7 @@ public class ReflectionUtil
         // so we have to search ourselves...
         Method[] testMethods = clazz.getMethods();
         outer:
-        for (int i=0; i<testMethods.length; i++)
+        for (int i = 0; i < testMethods.length; i++)
         {
             // This this the right method name?
             if (!testMethods[i].getName().equals(methodName))
@@ -129,7 +129,7 @@ public class ReflectionUtil
             if (testTypes.length != calledTypes.length) continue;
     
             // Of the right types?
-            for (int j=0; j<testTypes.length; j++)
+            for (int j = 0; j < testTypes.length; j++)
             {
                 if (!testTypes[j].isAssignableFrom(calledTypes[j]))
                 {

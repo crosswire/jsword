@@ -215,7 +215,9 @@ public final class VerseRange implements VerseBase
 
                 default:
                     assert false : Verse.getAccuracy(parts[0]);
+                    break;
                 }
+                break;
 
             case PassageConstants.ACCURACY_BOOK_CHAPTER:
                 // So we start something like "Gen 3", as above the basis is
@@ -539,12 +541,12 @@ public final class VerseRange implements VerseBase
             throw new NoSuchVerseException(Msg.RANGE_LOCOUNT);
         }
 
-        if (start.getOrdinal()+verseCount-1 > BibleInfo.versesInBible())
+        if (start.getOrdinal() + verseCount - 1 > BibleInfo.versesInBible())
         {
             Object[] params =
             {
                 start.getName(),
-                new Integer(BibleInfo.versesInBible()-start.getOrdinal()),
+                new Integer(BibleInfo.versesInBible() - start.getOrdinal()),
                 new Integer(verseCount)
             };
             throw new NoSuchVerseException(Msg.RANGE_HICOUNT, params);
@@ -1022,7 +1024,7 @@ public final class VerseRange implements VerseBase
         {
             // So we are going to have to count up chapters from start to end
             int total = BibleInfo.chaptersInBook(startBook) - startChap;
-            for (int b = startBook+1; b<endBook; b++)
+            for (int b = startBook + 1; b < endBook; b++)
             {
                 total += BibleInfo.chaptersInBook(b);
             }
@@ -1389,9 +1391,9 @@ public final class VerseRange implements VerseBase
         {
             Verse[] retcode = new Verse[verseCount];
 
-            for (int i=0; i<verseCount; i++)
+            for (int i = 0; i < verseCount; i++)
             {
-                retcode[i] = new Verse(start.getOrdinal()+i);
+                retcode[i] = new Verse(start.getOrdinal() + i);
             }
 
             return retcode;
@@ -1557,7 +1559,7 @@ public final class VerseRange implements VerseBase
      */
     private void verifyData()
     {
-        assert verseCount == end.subtract(start) + 1 : "start="+start+", end="+end+", verseCount="+verseCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assert verseCount == end.subtract(start) + 1 : "start=" + start + ", end=" + end + ", verseCount=" + verseCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**

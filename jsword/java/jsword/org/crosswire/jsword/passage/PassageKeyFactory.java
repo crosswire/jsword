@@ -288,7 +288,7 @@ public class PassageKeyFactory implements KeyFactory
                 // Which bit within that byte (0-7)
                 int bit = (ord % 8) - 1;
 
-                buffer[idx0] |= (1 << bit);
+                buffer[idx0] |= 1 << bit;
             }
 
             return buffer;
@@ -324,14 +324,14 @@ public class PassageKeyFactory implements KeyFactory
         else
         {
             int array_size = binarySize(AbstractPassage.METHOD_COUNT)
-                           + binarySize(BibleInfo.versesInBible()/2)
+                           + binarySize(BibleInfo.versesInBible() / 2)
                            + (2 * ranges * binarySize(BibleInfo.versesInBible()));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of ranges
             index += toBinary(buffer, index, AbstractPassage.RANGED, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, ranges, BibleInfo.versesInBible()/2);
+            index += toBinary(buffer, index, ranges, BibleInfo.versesInBible() / 2);
 
             // write the verse ordinals in a loop
             Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE);
@@ -372,7 +372,7 @@ public class PassageKeyFactory implements KeyFactory
         switch (type)
         {
         case AbstractPassage.BITWISE:
-            for (int ord=1; ord<=BibleInfo.versesInBible(); ord++)
+            for (int ord = 1; ord <= BibleInfo.versesInBible(); ord++)
             {
                 // Which byte should we be viewing
                 int idx0 = (ord / 8) + index[0];
@@ -388,7 +388,7 @@ public class PassageKeyFactory implements KeyFactory
 
         case AbstractPassage.DISTINCT:
             int verses = fromBinary(buffer, index, BibleInfo.versesInBible());
-            for (int i=0; i<verses; i++)
+            for (int i = 0; i < verses; i++)
             {
                 int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
                 ref.add(new Verse(ord));
@@ -396,8 +396,8 @@ public class PassageKeyFactory implements KeyFactory
             break;
 
         case AbstractPassage.RANGED:
-            int ranges = fromBinary(buffer, index, BibleInfo.versesInBible()/2);
-            for (int i=0; i<ranges; i++)
+            int ranges = fromBinary(buffer, index, BibleInfo.versesInBible() / 2);
+            for (int i = 0; i < ranges; i++)
             {
                 int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
                 int len = fromBinary(buffer, index, BibleInfo.versesInBible());
@@ -474,8 +474,8 @@ public class PassageKeyFactory implements KeyFactory
      */
     protected static int toBinary(byte[] buffer, int index, int number, int max)
     {
-        assert number >= 0 : "No -ve output "+number; //$NON-NLS-1$
-        assert number <= max : "number "+number+" > max "+max; //$NON-NLS-1$ //$NON-NLS-2$
+        assert number >= 0 : "No -ve output " + number; //$NON-NLS-1$
+        assert number <= max : "number " + number + " > max " + max; //$NON-NLS-1$ //$NON-NLS-2$
 
         // 1 byte (2^8)
         if (max < 256)

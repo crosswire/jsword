@@ -94,7 +94,7 @@ public class Config
      */
     public void add(String key, Choice model)
     {
-        //log.debug("Adding key="+key);
+        //log.debug("Adding key=" + key);
 
         keys.add(key);
         models.add(model);
@@ -103,7 +103,7 @@ public class Config
         if (value == null)
         {
             value = ""; //$NON-NLS-1$
-            log.info("key="+key+" had a null value");  //$NON-NLS-1$//$NON-NLS-2$
+            log.info("key=" + key + " had a null value");  //$NON-NLS-1$//$NON-NLS-2$
         }
 
         local.put(key, value);
@@ -134,7 +134,7 @@ public class Config
             }
             catch (Exception ex)
             {
-                log.warn("Error creating config element, key="+key, ex); //$NON-NLS-1$
+                log.warn("Error creating config element, key=" + key, ex); //$NON-NLS-1$
             }
         }
     }
@@ -251,7 +251,7 @@ public class Config
             }
             catch (Exception ex)
             {
-                log.warn("Failure with setting "+key); //$NON-NLS-1$
+                log.warn("Failure with setting " + key); //$NON-NLS-1$
                 Reporter.informUser(this, ex);
             }
         }
@@ -271,9 +271,9 @@ public class Config
             log.info("Force=true, all changes will propogate regardless"); //$NON-NLS-1$
         }
 
-        for (int priority=Choice.PRIORITY_SYSTEM; priority>=Choice.PRIORITY_LOWEST; priority--)
+        for (int priority = Choice.PRIORITY_SYSTEM; priority >= Choice.PRIORITY_LOWEST; priority--)
         {
-            log.info("Settings for priority level="+priority); //$NON-NLS-1$
+            log.info("Settings for priority level=" + priority); //$NON-NLS-1$
 
             Iterator it = keys.iterator();
             while (it.hasNext())
@@ -303,7 +303,7 @@ public class Config
                             || priority < highest_change
                             || !new_value.equals(old_value))
                         {
-                            log.info("Setting "+key+"="+new_value+" (was "+old_value+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            log.info("Setting " + key + "=" + new_value + " (was " + old_value + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                             model.setString(new_value);
 
                             if (priority > highest_change)
@@ -319,7 +319,7 @@ public class Config
                     }
                     catch (Exception ex)
                     {
-                        log.warn("Failure with "+key+"="+new_value, ex);  //$NON-NLS-1$ //$NON-NLS-2$
+                        log.warn("Failure with " + key + "=" + new_value, ex);  //$NON-NLS-1$ //$NON-NLS-2$
                         Reporter.informUser(this, ex);
                     }
                 }
@@ -432,7 +432,7 @@ public class Config
             throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return key.substring(last_dot+1);
+        return key.substring(last_dot + 1);
     }
 
     /**
@@ -464,7 +464,7 @@ public class Config
         // Process the listeners last to first, notifying
         // those that are interested in this event
         ConfigEvent ev = null;
-        for (int i=listeners.length-2; i>=0; i-=2)
+        for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
             if (listeners[i] == ConfigListener.class)
             {
@@ -473,7 +473,7 @@ public class Config
                     ev = new ConfigEvent(this, key, model);
                 }
 
-                ((ConfigListener) listeners[i+1]).choiceAdded(ev);
+                ((ConfigListener) listeners[i + 1]).choiceAdded(ev);
             }
         }
     }
@@ -489,7 +489,7 @@ public class Config
         // Process the listeners last to first, notifying
         // those that are interested in this event
         ConfigEvent ev = null;
-        for (int i=listeners.length-2; i>=0; i-=2)
+        for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
             if (listeners[i] == ConfigListener.class)
             {
@@ -498,7 +498,7 @@ public class Config
                     ev = new ConfigEvent(this, key, model);
                 }
 
-                ((ConfigListener) listeners[i+1]).choiceRemoved(ev);
+                ((ConfigListener) listeners[i + 1]).choiceRemoved(ev);
             }
         }
     }

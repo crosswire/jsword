@@ -136,7 +136,7 @@ public class GBFFilter implements Filter
             {
                 Tag reply = null;
                 
-                for (int i=0; i<BUILDERS.length; i++)
+                for (int i = 0; i < BUILDERS.length; i++)
                 {
                     reply = BUILDERS[i].createTag(tag);
                     if (reply != null)

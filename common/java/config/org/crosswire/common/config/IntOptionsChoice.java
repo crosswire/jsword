@@ -65,7 +65,9 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
      */
     public String[] getOptions()
     {
-        return options;
+        String [] copy = new String[options.length];
+        System.arraycopy(options, 0, copy, 0, options.length);
+        return copy;
     }
 
     /* (non-Javadoc)

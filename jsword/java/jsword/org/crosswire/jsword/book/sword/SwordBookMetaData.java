@@ -162,14 +162,14 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // merge entries into properties file
-        for (Iterator kit = getKeys(); kit.hasNext();)
+        for (Iterator kit = getKeys(); kit.hasNext(); )
         {
             String key = (String) kit.next();
             List list = (List) table.get(key);
 
             StringBuffer combined = new StringBuffer();
             boolean appendSeparator = false;
-            for (Iterator vit = list.iterator(); vit.hasNext();)
+            for (Iterator vit = list.iterator(); vit.hasNext(); )
             {
                 String element = (String) vit.next();
                 if (appendSeparator)
@@ -317,14 +317,14 @@ public class SwordBookMetaData implements BookMetaData
     public boolean isSupported()
     {
         // It has to have a usable name
-        boolean named = (name != null && name.length() > 0);
+        boolean named = name != null && name.length() > 0;
 
         // If this has a CIPHER_KEY then it is locked
-        boolean unlocked = (getFirstValue(ConfigEntry.CIPHER_KEY) == null);
+        boolean unlocked = getFirstValue(ConfigEntry.CIPHER_KEY) == null;
 
         // See if the ModuleType can handle this BookMetaData
         ModuleType type = getModuleType();
-        boolean workable = (type != null && type.isSupported(this));
+        boolean workable = type != null && type.isSupported(this);
 
         if (!unlocked)
         {
@@ -465,7 +465,7 @@ public class SwordBookMetaData implements BookMetaData
             int length = buf.length();
 
             // Look for bad data as this condition did exist
-            boolean continuation_expected = (buf.charAt(length - 1) == '\\');
+            boolean continuation_expected = buf.charAt(length - 1) == '\\';
 
             if (continuation_expected)
             {

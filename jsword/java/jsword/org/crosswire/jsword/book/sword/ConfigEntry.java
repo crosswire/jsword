@@ -387,4 +387,9 @@ public class ConfigEntry extends Enum
     {
         super(name);
     }
+
+    /**
+     * SERIALUID(dms): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

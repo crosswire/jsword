@@ -119,4 +119,9 @@ public class CWAction extends AbstractAction
     }
 
     private EventListenerList listeners;
+
+    /**
+     * SERIALUID(dm): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

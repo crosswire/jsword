@@ -29,7 +29,7 @@ package org.crosswire.jsword.passage;
 public interface PreferredKey
 {
     /**
-     * What Key would this objct like us to use?
+     * What Key would this object like us to use?
      * @return The preferredKey
      */
     public Key getPreferred();

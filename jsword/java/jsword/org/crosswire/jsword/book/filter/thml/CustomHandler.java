@@ -72,13 +72,13 @@ public class CustomHandler extends DefaultHandler
         {
             if (qname.equalsIgnoreCase(TAGS[i].getTagName()))
             {
-                DataPolice.report("Wrong case used in element: "+qname); //$NON-NLS-1$
+                DataPolice.report("Wrong case used in element: " + qname); //$NON-NLS-1$
                 TAGS[i].processTag(ele, attrs);
                 return;
             }
         }
 
-        log.warn("unknown thml element: "+localname+" qname="+qname); //$NON-NLS-1$ //$NON-NLS-2$
+        log.warn("unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /* (non-Javadoc)
@@ -100,15 +100,15 @@ public class CustomHandler extends DefaultHandler
         // split a word.
         if (list.size() > 0)
         {
-            Object last = list.get(list.size()-1);
+            Object last = list.get(list.size() - 1);
             if (last instanceof String)
             {
-                list.remove(list.size()-1);
+                list.remove(list.size() - 1);
                 text = ((String) last) + text; 
             }
             else if (last instanceof Text)
             {
-                list.remove(list.size()-1);
+                list.remove(list.size() - 1);
                 text = ((Text) last).getText() + text; 
             }
         }

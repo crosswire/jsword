@@ -54,7 +54,7 @@ public class OptionsField implements Field
         }
         else
         {
-            log.warn("Unknown Choice type: "+param.getClass().getName()); //$NON-NLS-1$
+            log.warn("Unknown Choice type: " + param.getClass().getName()); //$NON-NLS-1$
             list = new String[] { Msg.ERROR.toString() };
         }
 
@@ -83,7 +83,7 @@ public class OptionsField implements Field
      */
     public void setValue(String value)
     {
-        for (int i=0; i<list.length; i++)
+        for (int i = 0; i < list.length; i++)
         {
             if (value.equals(list[i]))
             {
@@ -97,7 +97,7 @@ public class OptionsField implements Field
             combo.setSelectedItem(list[0]);
         }
 
-        log.warn("Checked for options without finding: '"+value+"'. Defaulting to first option: "+combo.getSelectedItem());  //$NON-NLS-1$//$NON-NLS-2$
+        log.warn("Checked for options without finding: '" + value + "'. Defaulting to first option: " + combo.getSelectedItem());  //$NON-NLS-1$//$NON-NLS-2$
     }
 
     /**

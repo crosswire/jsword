@@ -82,7 +82,7 @@ public class JobManager
         Job job = new Job(description, predicturl, work, fakeupdates);
         jobs.add(job);
 
-        log.debug("job starting: "+job.getJobDescription()); //$NON-NLS-1$
+        log.debug("job starting: " + job.getJobDescription()); //$NON-NLS-1$
 
         return job;
     }
@@ -184,7 +184,7 @@ public class JobManager
         {
             if (job.isFinished())
             {
-                log.debug("job finished: "+job.getJobDescription()); //$NON-NLS-1$
+                log.debug("job finished: " + job.getJobDescription()); //$NON-NLS-1$
                 jobs.remove(job);
             }
         }
@@ -193,15 +193,15 @@ public class JobManager
     /**
      * List of listeners
      */
-    protected static List listeners = new ArrayList();
+    private static List listeners = new ArrayList();
 
     /**
      * List of current jobs
      */
-    protected static Set jobs = new HashSet();
+    private static Set jobs = new HashSet();
 
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(JobManager.class);
+    private static final Logger log = Logger.getLogger(JobManager.class);
 }

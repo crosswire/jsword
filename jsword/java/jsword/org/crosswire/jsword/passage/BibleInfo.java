@@ -72,26 +72,26 @@ public class BibleInfo
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleInfo.class.getName(), Locale.getDefault(), new CWClassLoader(BibleInfo.class));
 
-        for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
+        for (int i = 0; i < BibleInfo.BOOKS_IN_BIBLE; i++)
         {
-            String fullBook = getString(resources, FULL_KEY+(i+1));
+            String fullBook = getString(resources, FULL_KEY + (i + 1));
             full_books[i] = fullBook;
             full_books_lower[i] = fullBook.toLowerCase();
             full_books_upper[i] = fullBook.toUpperCase();
             
-            String shortBook = getString(resources, SHORT_KEY+(i+1));
+            String shortBook = getString(resources, SHORT_KEY + (i + 1));
             short_books[i] = shortBook;
             short_books_lower[i] = shortBook.toLowerCase();
             short_books_upper[i] = shortBook.toUpperCase();
             
-            String altBook = getString(resources, ALT_KEY+(i+1));
+            String altBook = getString(resources, ALT_KEY + (i + 1));
             alt_books[i] = StringUtils.split(altBook, ',');
             alt_books_lower[i] = StringUtils.split(altBook.toLowerCase(), ',');
         }
 
-        for (int i=0; i<SECTIONS_IN_BIBLE; i++)
+        for (int i = 0; i < SECTIONS_IN_BIBLE; i++)
         {
-            String section = getString(resources, SECTION_KEY+(i+1));
+            String section = getString(resources, SECTION_KEY + (i + 1));
             sections[i] = section;
             sections_lower[i] = section.toLowerCase();
             sections_upper[i] = section.toUpperCase();
@@ -102,7 +102,7 @@ public class BibleInfo
 
         for (int i = 0; i < osis_books.length; i++)
         {
-            osis_books[i] = getString(resources, OSIS_KEY + (i+1));
+            osis_books[i] = getString(resources, OSIS_KEY + (i + 1));
         }
     }
 
@@ -168,11 +168,11 @@ public class BibleInfo
             switch (book_case)
             {
             case PassageConstants.CASE_LOWER:
-                return full_books_lower[book-1];
+                return full_books_lower[book - 1];
             case PassageConstants.CASE_UPPER:
-                return full_books_upper[book-1];
+                return full_books_upper[book - 1];
             default:
-                return full_books[book-1];
+                return full_books[book - 1];
             }
         }
         catch (ArrayIndexOutOfBoundsException ex)
@@ -198,11 +198,11 @@ public class BibleInfo
             switch (book_case)
             {
             case PassageConstants.CASE_LOWER:
-                return short_books_lower[book-1];
+                return short_books_lower[book - 1];
             case PassageConstants.CASE_UPPER:
-                return short_books_upper[book-1];
+                return short_books_upper[book - 1];
             default:
-                return short_books[book-1];
+                return short_books[book - 1];
             }
         }
         catch (ArrayIndexOutOfBoundsException ex)
@@ -224,7 +224,7 @@ public class BibleInfo
     {
         try
         {
-            return osis_books[book-1];
+            return osis_books[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -247,25 +247,13 @@ public class BibleInfo
 
         // Check this isn't a number.
         // And that it does not start with any of the numeric book markers
-        if (!containsLetter(find))
+        if (!containsLetter(find) && !find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK))
         {
-            boolean numeric_book = false;
-            for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length; i++)
-            {
-                if (find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK[i]))
-                {
-                    numeric_book = true;
-                }
-            }
-
-            if (!numeric_book)
-            {
-                throw new NoSuchVerseException(Msg.BOOKS_NUMBER, new Object[] { find });
-            }
+            throw new NoSuchVerseException(Msg.BOOKS_NUMBER, new Object[] { find });
         }
 
         // Does it match a long version of the book or a short version
-        for (int i=0; i<full_books.length; i++)
+        for (int i = 0; i < full_books.length; i++)
         {
             if (full_books_lower[i].startsWith(match))
             {
@@ -278,9 +266,9 @@ public class BibleInfo
         }
 
         // Or does it match one of the alternative versions
-        for (int i=0; i<alt_books.length; i++)
+        for (int i = 0; i < alt_books.length; i++)
         {
-            for (int j=0; j<alt_books[i].length; j++)
+            for (int j = 0; j < alt_books[i].length; j++)
             {
                 if (match.startsWith(alt_books_lower[i][j]))
                 {
@@ -290,17 +278,17 @@ public class BibleInfo
         }
 
         // if we start with a book number id mark
-        for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length; i++)
+        if (find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK))
         {
-            if (find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK[i]))
+            int book = Integer.parseInt(find.substring(PassageConstants.VERSE_NUMERIC_BOOK.length()));
+            if (book < 1 || book > 66)
             {
-                int book = Integer.parseInt(find.substring(PassageConstants.VERSE_NUMERIC_BOOK[i].length()));
-                if (book < 1 || book > 66)
+                throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[]
                 {
-                    throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
-                }
-                return book;
+                    new Integer(book)
+                });
             }
+            return book;
         }
 
         throw new NoSuchVerseException(Msg.BOOKS_FIND, new Object[] { find });
@@ -316,10 +304,13 @@ public class BibleInfo
     {
         String match = find.toLowerCase();
 
-        if (!containsLetter(find)) return false;
+        if (!containsLetter(find))
+        {
+            return false;
+        }
 
         // This could be sped up with less of the toLowerCase()
-        for (int i=0; i<full_books.length; i++)
+        for (int i = 0; i < full_books.length; i++)
         {
             if (full_books_lower[i].startsWith(match))
             {
@@ -330,9 +321,12 @@ public class BibleInfo
                 return true;
             }
 
-            for (int j=0; j<alt_books[i].length; j++)
+            for (int j = 0; j < alt_books[i].length; j++)
             {
-                if (match.startsWith(alt_books_lower[i][j])) return true;
+                if (match.startsWith(alt_books_lower[i][j]))
+                {
+                    return true;
+                }
             }
         }
 
@@ -378,7 +372,7 @@ public class BibleInfo
     {
         try
         {
-            return CHAPTERS_IN_BOOK[book-1];
+            return CHAPTERS_IN_BOOK[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -400,7 +394,7 @@ public class BibleInfo
     {
         try
         {
-            return VERSES_IN_CHAPTER[book-1][chapter-1];
+            return VERSES_IN_CHAPTER[book - 1][chapter - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -423,7 +417,7 @@ public class BibleInfo
     {
         try
         {
-            return VERSES_IN_BOOK[book-1];
+            return VERSES_IN_BOOK[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -447,7 +441,7 @@ public class BibleInfo
     public static final int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException
     {
         validate(book, chapter, verse);
-        return ORDINAL_AT_START_OF_CHAPTER[book-1][chapter-1] + verse - 1;
+        return ORDINAL_AT_START_OF_CHAPTER[book - 1][chapter - 1] + verse - 1;
     }
 
     /**
@@ -484,16 +478,16 @@ public class BibleInfo
             throw new NoSuchVerseException(Msg.BOOKS_DECODE, params);
         }
 
-        for (int b=BOOKS_IN_BIBLE; b>0; b--)
+        for (int b = BOOKS_IN_BIBLE; b > 0; b--)
         {
-            if (ordinal >= ORDINAL_AT_START_OF_BOOK[b-1])
+            if (ordinal >= ORDINAL_AT_START_OF_BOOK[b - 1])
             {
                 int cib = BibleInfo.chaptersInBook(b);
-                for (int c=cib; c>0; c--)
+                for (int c = cib; c > 0; c--)
                 {
-                    if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[b-1][c-1])
+                    if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[b - 1][c - 1])
                     {
-                        return new int[] { b, c, ordinal - ORDINAL_AT_START_OF_CHAPTER[b-1][c-1] + 1 };
+                        return new int[] { b, c, ordinal - ORDINAL_AT_START_OF_CHAPTER[b - 1][c - 1] + 1 };
                     }
                 }
             }
@@ -527,7 +521,7 @@ public class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(chaptersInBook(book)),
-                full_books[book-1], new Integer(chapter),
+                full_books[book - 1], new Integer(chapter),
             };
             throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
@@ -538,7 +532,7 @@ public class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(versesInChapter(book, chapter)),
-                full_books[book-1],
+                full_books[book - 1],
                 new Integer(chapter),
                 new Integer(verse),
             };
@@ -844,11 +838,11 @@ public class BibleInfo
             switch (book_case)
             {
             case PassageConstants.CASE_LOWER:
-                return sections_lower[section-1];
+                return sections_lower[section - 1];
             case PassageConstants.CASE_UPPER:
-                return sections_upper[section-1];
+                return sections_upper[section - 1];
             default:
-                return sections[section-1];
+                return sections[section - 1];
             }
         }
         catch (ArrayIndexOutOfBoundsException ex)
@@ -867,7 +861,7 @@ public class BibleInfo
      */
     protected static boolean containsLetter(String text)
     {
-        for (int i=0; i<text.length(); i++)
+        for (int i = 0; i < text.length(); i++)
         {
             if (Character.isLetter(text.charAt(i))) return true;
         }
@@ -1084,18 +1078,18 @@ public class BibleInfo
         { 17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16, 22, 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27, 28, 23,  9, 27, 36, 27, 21, 33, 25, 33, 27, 23 },
         { 11, 70, 13, 24, 17, 22, 28, 36, 15, 44 },
         { 11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31 },
-        { 22, 23, 15, 17, 14, 14, 10, 17, 32, 03 },
+        { 22, 23, 15, 17, 14, 14, 10, 17, 32,  3 },
         { 22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28, 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25,  6, 14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41, 30, 24, 34, 17 },
         {  6, 12,  8,  8, 12, 10, 17,  9, 20, 18,  7,  8,  6,  7,  5, 11, 15, 50, 14,  9, 13, 31,  6, 10, 22, 12, 14,  9, 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13, 11,  5, 26, 17, 11,  9, 14, 20, 23, 19,  9,  6,  7, 23, 13, 11, 11, 17, 12,  8, 12, 11, 10, 13, 20,  7, 35, 36,  5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19, 16,  8, 18, 12, 13, 17,  7, 18, 52, 17, 16, 15,  5, 23, 11, 13, 12,  9,  9,  5,  8, 28, 22, 35, 45, 48, 43, 13, 31,  7, 10, 10,  9,  8, 18, 19,  2, 29, 176,  7,  8,  9,  4,  8,  5,  6,  5,  6,  8,  8,  3, 18,  3,  3, 21, 26, 9,  8, 24, 13, 10,  7, 12, 15, 21, 10, 20, 14,  9,  6 },
         { 33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25, 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28, 28, 27, 28, 27, 33, 31 },
         { 18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14 },
         { 17, 17, 11, 16, 16, 13, 13, 14 },
-        { 31, 22, 26, 06, 30, 13, 25, 22, 21, 34, 16, 06, 22, 32,  9, 14, 14, 07, 25, 06, 17, 25, 18, 23, 12, 21, 13, 29, 24, 33,  9, 20, 24, 17, 10, 22, 38, 22,  8, 31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15, 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12, 25, 24 },
+        { 31, 22, 26,  6, 30, 13, 25, 22, 21, 34, 16,  6, 22, 32,  9, 14, 14,  7, 25,  6, 17, 25, 18, 23, 12, 21, 13, 29, 24, 33,  9, 20, 24, 17, 10, 22, 38, 22,  8, 31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15, 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12, 25, 24 },
         { 19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17, 27, 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10, 38, 24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32, 21, 28, 18, 16, 18, 22, 13, 30,  5, 28,  7, 47, 39, 46, 64, 34 },
         { 22, 22, 66, 22, 22 },
         { 28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28, 23, 23,  8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17, 21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28, 23, 29, 49, 26, 20, 27, 31, 25, 24, 23, 35 },
         { 21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13 },
-        { 11, 23, 05, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16,  9 },
+        { 11, 23,  5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16,  9 },
         { 20, 32, 21 },
         { 15, 16, 15, 13, 27, 14, 17, 14, 15 },
         { 21 },
@@ -1106,7 +1100,7 @@ public class BibleInfo
         { 18, 15, 20 },
         { 15, 23 },
         { 21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14,  9, 21 },
-        { 14, 17, 18, 06 },
+        { 14, 17, 18,  6 },
         { 25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58, 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51, 46, 75, 66, 20 },
         { 45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37, 72, 47, 20 },
         { 80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59, 35, 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53 },
@@ -1260,11 +1254,11 @@ public class BibleInfo
         log.fine("    private static final int[] ordinal_at_start_of_book =");
         log.fine("    {");
         log.fine("        ");
-        for (int b=1; b<=booksInBible(); b++)
+        for (int b = 1; b <= booksInBible(); b++)
         {
-            String vstr1 = "     "+verse_num;
-            String vstr2 = vstr1.substring(vstr1.length()-5);
-            log.fine(vstr2+", ");
+            String vstr1 = "     " + verse_num;
+            String vstr2 = vstr1.substring(vstr1.length() - 5);
+            log.fine(vstr2 + ", ");
             verse_num += versesInBook(b);
 
             if (b % 10 == 0) log.fine();
@@ -1275,14 +1269,14 @@ public class BibleInfo
         verse_num = 1;
         log.fine("    private static final int[][] ordinal_at_start_of_chapter =");
         log.fine("    {");
-        for (int b=1; b<=BibleInfo.booksInBible(); b++)
+        for (int b = 1; b <= BibleInfo.booksInBible(); b++)
         {
             log.fine("        { ");
-            for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
+            for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++)
             {
-                String vstr1 = "     "+verse_num;
-                String vstr2 = vstr1.substring(vstr1.length()-5);
-                log.fine(vstr2+", ");
+                String vstr1 = "     " + verse_num;
+                String vstr2 = vstr1.substring(vstr1.length() - 5);
+                log.fine(vstr2 + ", ");
                 verse_num += BibleInfo.versesInChapter(b, c);
             }
             log.fine("},");

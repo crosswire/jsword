@@ -73,4 +73,9 @@ public class BookType extends Enum
     {
         return getName();
     }
+
+    /**
+     * SERIALUID(dms): A placeholder for the ultimate version id.
+     */
+    private static final long serialVersionUID = 1L;
 }

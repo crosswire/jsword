@@ -63,7 +63,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         Color bg = new Color(orig.getRed(), orig.getGreen(), orig.getBlue());
 
         // This seems to be broken ...
-        render.setLeafIcon(tasksm);
+        render.setLeafIcon(TASK_ICON_SMALL);
         render.setBackgroundNonSelectionColor(bg);
 
         scroll.setPreferredSize(new Dimension(150, 150));
@@ -162,13 +162,13 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         Object obj = tree.getLastSelectedPathComponent();
         if (obj == null) return;
 
-        title.setText(""+obj+Msg.PROPERTIES.toString()); //$NON-NLS-1$
+        title.setText(obj + Msg.PROPERTIES.toString());
 
         // Get the name of the current deck
         Object[] list = tree.getSelectionPath().getPath();
         StringBuffer path = new StringBuffer();
 
-        for (int i=1; i<list.length; i++)
+        for (int i = 1; i < list.length; i++)
         {
             if (i > 1)
             {
