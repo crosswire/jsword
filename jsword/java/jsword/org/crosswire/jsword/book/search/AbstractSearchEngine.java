@@ -175,6 +175,7 @@ public abstract class AbstractSearchEngine implements SearchEngine
             catch (Exception ex)
             {
                 Reporter.informUser(AbstractSearchEngine.this, ex);
+                job.ignoreTimings();
             }
             finally
             {

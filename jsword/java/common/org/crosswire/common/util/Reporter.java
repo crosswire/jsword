@@ -1,5 +1,7 @@
 package org.crosswire.common.util;
 
+import java.util.Properties;
+
 /**
  * This package looks after Exceptions and messages as they happen. It would be
  * nice not to need this class - the principle being that any library that
@@ -67,10 +69,6 @@ public class Reporter
         Logger templog = Logger.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
-        if (prob instanceof ThreadDeath)
-        {
-            throw (ThreadDeath) prob;
-        }
 
         fireCapture(new ReporterEvent(source, prob));
     }
@@ -153,6 +151,38 @@ public class Reporter
     }
 
     /**
+     * Sets the parent of any exception windows.
+     */
+    public static void grabAWTExecptions(boolean grab)
+    {
+        if (grab)
+        {
+            // register ourselves
+            System.setProperty(AWT_HANDLER_PROPERTY, OUR_NAME);
+        }
+        else
+        {
+            // deregister ourselves
+            String current = System.getProperty(AWT_HANDLER_PROPERTY);
+            if (current != null && current.equals(OUR_NAME))
+            {
+                Properties prop = System.getProperties();
+                prop.remove(AWT_HANDLER_PROPERTY);
+            }
+        }
+    }
+
+    /**
+     * The system property name for registering AWT exceptions
+     */
+    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
+
+    /**
+     * The name of the class to register for AWT exceptions
+     */
+    private static final String OUR_NAME = CustomAWTExceptionHandler.class.getName();
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(Reporter.class);
@@ -161,4 +191,24 @@ public class Reporter
      * The list of listeners
      */
     protected static final EventListenerList listeners = new EventListenerList();
+
+    /**
+     * A class to handle AWT caught Exceptions
+     */
+    public class CustomAWTExceptionHandler
+    {
+        /**
+         * Its important that we have a no-arg ctor to make this work. So if we ever
+         * create an arged ctor then we need to add:
+         * public CustomAWTExceptionHandler() { }
+         */
+
+        /**
+         * Handle AWT exceptions
+         */
+        public void handle(final Throwable ex)
+        {
+            Reporter.informUser(this, ex);
+        }
+    }
 }

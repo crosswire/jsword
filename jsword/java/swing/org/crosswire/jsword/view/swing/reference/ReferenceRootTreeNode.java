@@ -47,10 +47,10 @@ public class ReferenceRootTreeNode implements TreeNode
     public ReferenceRootTreeNode(ReferenceTreeModel model)
     {
         this.model = model;        
-        Books.addBooksListener(new CustomBooksListener());
+        Books.installed().addBooksListener(new CustomBooksListener());
 
         this.filter = null;
-        books = Books.getBookMetaDatas();
+        books = Books.installed().getBookMetaDatas();
     }
 
     /**
@@ -59,10 +59,10 @@ public class ReferenceRootTreeNode implements TreeNode
     public ReferenceRootTreeNode(ReferenceTreeModel model, BookFilter filter)
     {
         this.model = model;
-        Books.addBooksListener(new CustomBooksListener());
+        Books.installed().addBooksListener(new CustomBooksListener());
 
         this.filter = filter;
-        books = Books.getBookMetaDatas(filter);
+        books = Books.installed().getBookMetaDatas(filter);
     }
 
     /* (non-Javadoc)
@@ -79,7 +79,7 @@ public class ReferenceRootTreeNode implements TreeNode
     public void setFilter(BookFilter filter)
     {
         this.filter = filter;
-        books = Books.getBookMetaDatas(filter);
+        books = Books.installed().getBookMetaDatas(filter);
 
         model.fireTreeStructureChanged(filter, new Object[] { this }, new int[0], null);
     }

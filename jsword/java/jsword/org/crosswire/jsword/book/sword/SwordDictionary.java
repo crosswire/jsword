@@ -1,25 +1,17 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBook;
-import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.OsisTextType;
@@ -58,21 +50,12 @@ public class SwordDictionary extends AbstractBook
      * Start and to as much checking as we can without using memory.
      * (i.e. actually reading the indexes)
      */
-    protected SwordDictionary(SwordBookDriver driver, SwordConfig config, Backend backend, BookType type) throws MalformedURLException, ParseException
+    protected SwordDictionary(SwordBookMetaData sbmd, Backend backend)
     {
-        Properties prop = config.getProperties();
-        prop.setProperty(BookMetaData.KEY_EDITION, "");
-        prop.setProperty(BookMetaData.KEY_NAME, config.getDescription());
-        prop.setProperty(BookMetaData.KEY_OPENNESS, Openness.UNKNOWN.getName());
-        prop.setProperty(BookMetaData.KEY_SPEED, Integer.toString(Books.SPEED_FAST));
-        prop.setProperty(BookMetaData.KEY_TYPE, type.getName());
-
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, prop);
-        setBookMetaData(bmd);
-
+        setBookMetaData(sbmd);
         initSearchEngine();
 
-        this.config = config;
+        this.sbmd = sbmd;
         this.backend = backend;
     }
 
@@ -144,7 +127,7 @@ public class SwordDictionary extends AbstractBook
             text.getDiv().add(div);
 
             byte[] data = backend.getRawText(key);
-            String charset = config.getModuleCharset();
+            String charset = sbmd.getModuleCharset();
             String txt = null;
             try
             {
@@ -157,7 +140,7 @@ public class SwordDictionary extends AbstractBook
                 txt = new String(data);
             }
 
-            config.getFilter().toOSIS(div, txt);
+            sbmd.getFilter().toOSIS(div, txt);
 
             BookData bdata = new BookData(osis);
             return bdata;
@@ -268,7 +251,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * The Sword configuration file
      */
-    private SwordConfig config;
+    private SwordBookMetaData sbmd;
 
     /**
      * The log stream

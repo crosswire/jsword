@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -82,11 +80,12 @@ public class SwordBookDriver extends AbstractBookDriver
                     try
                     {
                         File configfile = new File(mods, bookdir);
-                        SwordConfig config = new SwordConfig(configfile, bookdir);
+                        SwordBookMetaData sbmd = new SwordBookMetaData(configfile, bookdir);
+                        sbmd.setDriver(this);
 
-                        if (config.isSupported())
+                        if (sbmd.isSupported())
                         {
-                            Book book = createBook(config, dirs[j]);
+                            Book book = createBook(sbmd, dirs[j]);
                             valid.add(book.getBookMetaData());
                         }
                         else
@@ -113,18 +112,18 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * A helper class for the SwordInstaller to tell us that it has copied a
      * new Book into our install dorectory
-     * @param config The SwordConfig object for the new Book
-     * @param modpath The path that we have installed to
+     * @param sbmd The SwordBookMetaData object for the new Book
+     * @param bookpath The path that we have installed to
      */
-    public static void registerNewBook(SwordConfig config, String modpath) throws BookException, MalformedURLException, ParseException
+    public static void registerNewBook(SwordBookMetaData sbmd, File bookpath) throws BookException
     {
-        if (config.isSupported())
+        if (sbmd.isSupported())
         {
             BookDriver[] drivers = Books.getDriversByClass(SwordBookDriver.class);
             for (int i = 0; i < drivers.length; i++)
             {
                 SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
-                Book book = sdriver.createBook(config, new File(modpath));
+                Book book = sdriver.createBook(sbmd, bookpath);
                 Books.addBook(book.getBookMetaData());
             }
         }
@@ -133,80 +132,81 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Create a Book to wrap the given backend
      */
-    private Book createBook(SwordConfig config, File progdir) throws BookException, MalformedURLException, ParseException
+    private Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
     {
-        String dataPath = config.getFirstValue(ConfigEntry.DATA_PATH);
+        String dataPath = sbmd.getFirstValue(ConfigEntry.DATA_PATH);
         File baseurl = new File(progdir, dataPath);
         String path = baseurl.getAbsolutePath();
 
         Book book = null;
 
-        ModuleType moddrv = config.getModDrv();
-        if (moddrv.getBookType() == null)
+        ModuleType modtype = sbmd.getModuleType();
+        if (modtype.getBookType() == null)
         {
             // LATER(joe): how do we support books?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK");
             throw new BookException(Msg.TYPE_UNSUPPORTED);
         }
-        else if (moddrv.getBookType().equals(BookType.DICTIONARY))
+        else if (modtype.getBookType().equals(BookType.DICTIONARY))
         {
             Backend backend = null;
 
-            if (moddrv.equals(ModuleType.RAW_LD))
+            if (modtype.equals(ModuleType.RAW_LD))
             {
-                backend = new RawLDBackend(config, path, 2);
+                backend = new RawLDBackend(sbmd, path, 2);
             }
-            else if (moddrv.equals(ModuleType.RAW_LD4))
+            else if (modtype.equals(ModuleType.RAW_LD4))
             {
-                backend = new RawLDBackend(config, path, 4);
+                backend = new RawLDBackend(sbmd, path, 4);
             }
-            else if (moddrv.equals(ModuleType.Z_LD))
+            else if (modtype.equals(ModuleType.Z_LD))
             {
-                backend = new ZLDBackend(config);
+                backend = new ZLDBackend(sbmd);
             }
             else
             {
-                throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { moddrv.getName(), path });
+                throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { modtype.getName(), path });
             }
 
-            book = new SwordDictionary(this, config, backend, moddrv.getBookType());
+            book = new SwordDictionary(sbmd, backend);
         }
         else
         {
             Backend backend = null;
-            if (moddrv.isCompressed())
+            if (modtype.isCompressed())
             {
-                backend = getCompressedBackend(config, path);
+                backend = getCompressedBackend(sbmd, path);
             }
             else
             {
                 backend = new RawBackend(path);
             }
 
-            book = new SwordBook(this, config, backend, moddrv.getBookType());
+            book = new SwordBook(sbmd, backend);
         }
 
+        sbmd.setBook(book);
         return book;
     }
 
     /**
      * 
      */
-    private Backend getCompressedBackend(SwordConfig config, String path) throws BookException
+    private Backend getCompressedBackend(SwordBookMetaData sbmd, String path) throws BookException
     {
-        switch (config.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
+        switch (sbmd.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
         {
         case SwordConstants.COMPRESSION_ZIP:
             // The default blocktype (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
             // but the specified default here is BLOCK_BOOK (0)
-            int blocktype = config.matchingIndex(SwordConstants.BLOCK_STRINGS, ConfigEntry.BLOCK_TYPE, SwordConstants.BLOCK_BOOK);
+            int blocktype = sbmd.matchingIndex(SwordConstants.BLOCK_STRINGS, ConfigEntry.BLOCK_TYPE, SwordConstants.BLOCK_BOOK);
             return new GZIPBackend(path, blocktype);
       
         case SwordConstants.COMPRESSION_LZSS:
-            return new LZSSBackend(config);
+            return new LZSSBackend(sbmd);
       
         default:
-            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { config.getFirstValue(ConfigEntry.COMPRESS_TYPE) });
+            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE) });
         }
     }
 

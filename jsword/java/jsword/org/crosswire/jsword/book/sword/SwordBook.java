@@ -1,19 +1,11 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.text.ParseException;
-import java.util.Properties;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Openness;
-import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Verse;
@@ -47,21 +39,12 @@ public class SwordBook extends PassageAbstractBook
     /**
      * Simple ctor
      */
-    protected SwordBook(SwordBookDriver driver, SwordConfig config, Backend backend, BookType type) throws MalformedURLException, ParseException
+    protected SwordBook(SwordBookMetaData sbmd, Backend backend)
     {
-        Properties prop = config.getProperties();
-        prop.setProperty(BookMetaData.KEY_EDITION, "");
-        prop.setProperty(BookMetaData.KEY_NAME, config.getDescription());
-        prop.setProperty(BookMetaData.KEY_OPENNESS, Openness.UNKNOWN.getName());
-        prop.setProperty(BookMetaData.KEY_SPEED, Integer.toString(Books.SPEED_FAST));
-        prop.setProperty(BookMetaData.KEY_TYPE, type.getName());
-
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, prop);
-        setBookMetaData(bmd);
-
+        setBookMetaData(sbmd);
         initSearchEngine();
 
-        this.config = config;
+        this.sbmd = sbmd;
         this.backend = backend;
     }
 
@@ -92,7 +75,7 @@ public class SwordBook extends PassageAbstractBook
     protected String getText(Verse verse) throws BookException
     {
         byte[] data = backend.getRawText(verse);
-        String charset = config.getModuleCharset();
+        String charset = sbmd.getModuleCharset();
 
         try
         {
@@ -119,7 +102,7 @@ public class SwordBook extends PassageAbstractBook
      */
     protected Filter getFilter()
     {
-        return config.getFilter();
+        return sbmd.getFilter();
     }
 
     /**
@@ -130,7 +113,7 @@ public class SwordBook extends PassageAbstractBook
     /**
      * The Sword configuration file
      */
-    private SwordConfig config;
+    private SwordBookMetaData sbmd;
     
     /**
      * The log stream

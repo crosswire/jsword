@@ -74,13 +74,13 @@ public class DisplaySelectPane extends JPanel
     {
         // search() and version() rely on this returning only Bibles
         mdlVersn = new BooksComboBoxModel(BookFilters.getBibles());
-        jbInit();
+        initialize();
     }
 
     /**
      * Initialize the GUI
      */
-    private void jbInit()
+    private void initialize()
     {
         rdoPassg.setSelected(true);
         rdoPassg.setText("Passage Lookup");

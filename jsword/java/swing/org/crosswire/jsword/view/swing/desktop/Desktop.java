@@ -35,7 +35,6 @@ import javax.swing.event.HyperlinkListener;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.swing.BackportUtil;
-import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
@@ -139,41 +138,41 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     public Desktop() throws IOException, JDOMException, InstallException
     {
         LookAndFeelUtil.tweakLookAndFeel();
+        Reporter.grabAWTExecptions(true);
 
         URL predicturl = Project.instance().getWritablePropertiesURL("splash");
         Splash splash = new Splash(frame, 60000);
-        startjob = JobManager.createJob("Startup", predicturl, true);
+        startJob = JobManager.createJob("Startup", predicturl, true);
         splash.pack();
 
         // Initial setup
         frame = new JFrame();
-        CustomAWTExceptionHandler.setParentComponent(frame);
 
-        startjob.setProgress("Setting-up config");
-        act_tools_options = new OptionsAction(this);
+        startJob.setProgress("Setting-up config");
+        actToolsOptions = new OptionsAction(this);
 
-        startjob.setProgress("Loading Configuration System");
-        act_tools_options.createConfig();
+        startJob.setProgress("Loading Configuration System");
+        actToolsOptions.createConfig();
 
-        startjob.setProgress("Loading Stored Settings");
-        act_tools_options.loadConfig();
+        startJob.setProgress("Loading Stored Settings");
+        actToolsOptions.loadConfig();
 
-        startjob.setProgress("Generating Components");
+        startJob.setProgress("Generating Components");
         createComponents();
 
         // GUI setup
         debug();
         init();
 
-        accelerateMenu(bar_menu);
+        accelerateMenu(barMenu);
 
         if (initial == LAYOUT_TYPE_MDI)
         {
-            rdo_view_mdi.setSelected(true);
+            rdoViewMdi.setSelected(true);
         }
         if (initial == LAYOUT_TYPE_TDI)
         {
-            rdo_view_tdi.setSelected(true);
+            rdoViewTdi.setSelected(true);
         }
 
         // Sort out the current ViewLayout. We need to reset current to be
@@ -182,7 +181,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         ensureAvailableBibleViewPane();
 
         // Configuration
-        startjob.setProgress("General configuration");
+        startJob.setProgress("General configuration");
         LookAndFeelUtil.addComponentToUpdate(frame);
 
         // Keep track of the selected DisplayArea
@@ -205,7 +204,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         // Preload the PassageInnerPane for faster initial view
         InnerDisplayPane.preload();
 
-        startjob.done();
+        startJob.done();
         splash.close();
 
         frame.pack();
@@ -231,55 +230,55 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();
         layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout();
         
-        act_file_new = new FileNewAction(this);
-        act_file_open = new FileOpenAction(this);
-        act_file_save = new FileSaveAction(this);
-        act_file_saveas = new FileSaveAsAction(this);
-        act_file_saveall = new FileSaveAllAction(this);
-        act_file_close = new FileCloseAction(this);
-        act_file_closeall = new FileCloseAllAction(this);
-        //act_file_print = new FilePrintAction(this);
-        act_file_exit = new ExitAction(this);
+        actFileNew = new FileNewAction(this);
+        actFileOpen = new FileOpenAction(this);
+        actFileSave = new FileSaveAction(this);
+        actFileSaveAs = new FileSaveAsAction(this);
+        actFileSaveAll = new FileSaveAllAction(this);
+        actFileClose = new FileCloseAction(this);
+        actFileCloseAll = new FileCloseAllAction(this);
+        //actFilePrint = new FilePrintAction(this);
+        actFileExit = new ExitAction(this);
         
-        act_edit_cut = new EditCutAction(this);
-        act_edit_copy = new EditCopyAction(this);
-        act_edit_paste = new EditPasteAction(this);
-        act_edit_blur1 = new BlurAction(this, 1, PassageConstants.RESTRICT_CHAPTER);
-        act_edit_blur5 = new BlurAction(this, 5, PassageConstants.RESTRICT_CHAPTER);
+        actEditCut = new EditCutAction(this);
+        actEditCopy = new EditCopyAction(this);
+        actEditPaste = new EditPasteAction(this);
+        actEditBlur1 = new BlurAction(this, 1, PassageConstants.RESTRICT_CHAPTER);
+        actEditBlur5 = new BlurAction(this, 5, PassageConstants.RESTRICT_CHAPTER);
         
-        act_view_tdi = new ViewTDIAction(this);
-        act_view_mdi = new ViewMDIAction(this);
-        //act_view_tbar = new ViewToolBarAction(this);
-        act_view_ghtml = new ViewSourceGHTMLAction(this);
-        act_view_vhtml = new ViewSourceHTMLAction(this);
-        act_view_osis = new ViewSourceOSISAction(this);
+        actViewTdi = new ViewTDIAction(this);
+        actViewMdi = new ViewMDIAction(this);
+        //actViewTbar = new ViewToolBarAction(this);
+        actViewGhtml = new ViewSourceGHTMLAction(this);
+        actViewVhtml = new ViewSourceHTMLAction(this);
+        actViewOsis = new ViewSourceOSISAction(this);
 
-        act_list_delete = new ListDeleteAction(this);
+        actListDelete = new ListDeleteAction(this);
 
-        //act_tools_generate = GeneratorPane.createOpenAction(this);
-        //act_tools_diff = ComparePane.createOpenAction(this);
-        act_tools_sites = SitesPane.createOpenAction(frame);
+        //actToolsGenerate = GeneratorPane.createOpenAction(this);
+        //actToolsDiff = ComparePane.createOpenAction(this);
+        actToolsSites = SitesPane.createOpenAction(frame);
 
-        act_help_contents = new HelpContentsAction(this);
-        act_help_about = AboutPane.createOpenAction(this);
+        actHelpContents = new HelpContentsAction(this);
+        actHelpAbout = AboutPane.createOpenAction(this);
 
-        rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
-        rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
-        //chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
+        rdoViewTdi = new JRadioButtonMenuItem(actViewTdi);
+        rdoViewMdi = new JRadioButtonMenuItem(actViewMdi);
+        //chkViewTbar = new JCheckBoxMenuItem(actViewTbar);
 
-        bar_menu = new JMenuBar();
-        menu_file = new JMenu();
-        menu_edit = new JMenu();
-        menu_view = new JMenu();
-        menu_tools = new JMenu();
-        menu_help = new JMenu();
+        barMenu = new JMenuBar();
+        menuFile = new JMenu();
+        menuEdit = new JMenu();
+        menuView = new JMenu();
+        menuTools = new JMenu();
+        menuHelp = new JMenu();
 
-        grp_views = new ButtonGroup();
-        pnl_tbar = new JToolBar();
-        bar_status = new StatusBar();
-        bar_side = new SidebarPane();
-        //bar_book = new ReferencedPane();
-        spt_books = new JSplitPane();
+        grpViews = new ButtonGroup();
+        pnlTbar = new JToolBar();
+        barStatus = new StatusBar();
+        barSide = new SidebarPane();
+        //barBook = new ReferencedPane();
+        sptBooks = new JSplitPane();
     }
 
     /**
@@ -287,110 +286,110 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     private void init()
     {
-        menu_file.setText("File");
-        menu_file.setMnemonic('F');
-        menu_file.add(act_file_new).addMouseListener(bar_status);
-        menu_file.add(act_file_open).addMouseListener(bar_status);
-        menu_file.addSeparator();
-        menu_file.add(act_file_close).addMouseListener(bar_status);
-        menu_file.add(act_file_closeall).addMouseListener(bar_status);
-        menu_file.addSeparator();
-        //menu_file.add(act_file_print).addMouseListener(bar_status);
+        menuFile.setText("File");
+        menuFile.setMnemonic('F');
+        menuFile.add(actFileNew).addMouseListener(barStatus);
+        menuFile.add(actFileOpen).addMouseListener(barStatus);
+        menuFile.addSeparator();
+        menuFile.add(actFileClose).addMouseListener(barStatus);
+        menuFile.add(actFileCloseAll).addMouseListener(barStatus);
+        menuFile.addSeparator();
+        //menu_file.add(actFilePrint).addMouseListener(bar_status);
         //menu_file.addSeparator();
-        menu_file.add(act_file_save).addMouseListener(bar_status);
-        menu_file.add(act_file_saveas).addMouseListener(bar_status);
-        menu_file.add(act_file_saveall).addMouseListener(bar_status);
-        menu_file.addSeparator();
-        menu_file.add(act_file_exit).addMouseListener(bar_status);
+        menuFile.add(actFileSave).addMouseListener(barStatus);
+        menuFile.add(actFileSaveAs).addMouseListener(barStatus);
+        menuFile.add(actFileSaveAll).addMouseListener(barStatus);
+        menuFile.addSeparator();
+        menuFile.add(actFileExit).addMouseListener(barStatus);
 
-        menu_edit.setText("Edit");
-        menu_edit.setMnemonic('E');
-        menu_edit.add(act_edit_cut).addMouseListener(bar_status);
-        menu_edit.add(act_edit_copy).addMouseListener(bar_status);
-        menu_edit.add(act_edit_paste).addMouseListener(bar_status);
+        menuEdit.setText("Edit");
+        menuEdit.setMnemonic('E');
+        menuEdit.add(actEditCut).addMouseListener(barStatus);
+        menuEdit.add(actEditCopy).addMouseListener(barStatus);
+        menuEdit.add(actEditPaste).addMouseListener(barStatus);
 
-        rdo_view_tdi.addMouseListener(bar_status);
-        rdo_view_mdi.addMouseListener(bar_status);
-        //chk_view_tbar.addMouseListener(bar_status);
-        //chk_view_tbar.setSelected(view_tool);
-        grp_views.add(rdo_view_mdi);
-        grp_views.add(rdo_view_tdi);
+        rdoViewTdi.addMouseListener(barStatus);
+        rdoViewMdi.addMouseListener(barStatus);
+        //chkViewTbar.addMouseListener(bar_status);
+        //chkViewTbar.setSelected(view_tool);
+        grpViews.add(rdoViewMdi);
+        grpViews.add(rdoViewTdi);
 
-        menu_view.setText("View");
-        menu_view.setMnemonic('V');
-        menu_view.add(rdo_view_tdi);
-        menu_view.add(rdo_view_mdi);
-        //menu_view.add(chk_view_tbar);
-        menu_view.addSeparator();
-        menu_view.add(act_view_ghtml).addMouseListener(bar_status);
-        menu_view.add(act_view_vhtml).addMouseListener(bar_status);
-        menu_view.add(act_view_osis).addMouseListener(bar_status);
+        menuView.setText("View");
+        menuView.setMnemonic('V');
+        menuView.add(rdoViewTdi);
+        menuView.add(rdoViewMdi);
+        //menu_view.add(chkViewTbar);
+        menuView.addSeparator();
+        menuView.add(actViewGhtml).addMouseListener(barStatus);
+        menuView.add(actViewVhtml).addMouseListener(barStatus);
+        menuView.add(actViewOsis).addMouseListener(barStatus);
 
-        menu_tools.setText("Tools");
-        menu_tools.setMnemonic('T');
-        menu_tools.add(act_edit_blur1).addMouseListener(bar_status);
-        menu_tools.add(act_edit_blur5).addMouseListener(bar_status);
-        menu_tools.add(act_list_delete).addMouseListener(bar_status);
-        menu_tools.addSeparator();
-        //menu_tools.add(act_tools_generate).addMouseListener(bar_status);
-        //menu_tools.add(act_tools_diff).addMouseListener(bar_status);
+        menuTools.setText("Tools");
+        menuTools.setMnemonic('T');
+        menuTools.add(actEditBlur1).addMouseListener(barStatus);
+        menuTools.add(actEditBlur5).addMouseListener(barStatus);
+        menuTools.add(actListDelete).addMouseListener(barStatus);
+        menuTools.addSeparator();
+        //menu_tools.add(actToolsGenerate).addMouseListener(bar_status);
+        //menu_tools.add(actToolsDiff).addMouseListener(bar_status);
         //menu_tools.addSeparator();
-        menu_tools.add(act_tools_sites).addMouseListener(bar_status);
-        menu_tools.add(act_tools_options).addMouseListener(bar_status);
+        menuTools.add(actToolsSites).addMouseListener(barStatus);
+        menuTools.add(actToolsOptions).addMouseListener(barStatus);
 
-        menu_help.setText("Help");
-        menu_help.setMnemonic('H');
-        menu_help.add(act_help_contents).addMouseListener(bar_status);
-        menu_help.addSeparator();
-        menu_help.add(act_help_about).addMouseListener(bar_status);
+        menuHelp.setText("Help");
+        menuHelp.setMnemonic('H');
+        menuHelp.add(actHelpContents).addMouseListener(barStatus);
+        menuHelp.addSeparator();
+        menuHelp.add(actHelpAbout).addMouseListener(barStatus);
 
-        bar_menu.add(menu_file);
-        bar_menu.add(menu_edit);
-        bar_menu.add(menu_view);
-        bar_menu.add(menu_tools);
-        bar_menu.add(menu_tools);
-        bar_menu.add(menu_help);
+        barMenu.add(menuFile);
+        barMenu.add(menuEdit);
+        barMenu.add(menuView);
+        barMenu.add(menuTools);
+        barMenu.add(menuTools);
+        barMenu.add(menuHelp);
 
-        BackportUtil.setRollover(pnl_tbar, true);
+        BackportUtil.setRollover(pnlTbar, true);
 
-        pnl_tbar.add(act_file_new).addMouseListener(bar_status);
-        pnl_tbar.add(act_file_open).addMouseListener(bar_status);
-        pnl_tbar.add(act_file_save).addMouseListener(bar_status);
-        pnl_tbar.addSeparator();
-        pnl_tbar.add(act_edit_cut).addMouseListener(bar_status);
-        pnl_tbar.add(act_edit_copy).addMouseListener(bar_status);
-        pnl_tbar.add(act_edit_paste).addMouseListener(bar_status);
-        pnl_tbar.addSeparator();
-        //pnl_tbar.add(act_tools_generate).addMouseListener(bar_status);
-        //pnl_tbar.add(act_tools_diff).addMouseListener(bar_status);
+        pnlTbar.add(actFileNew).addMouseListener(barStatus);
+        pnlTbar.add(actFileOpen).addMouseListener(barStatus);
+        pnlTbar.add(actFileSave).addMouseListener(barStatus);
+        pnlTbar.addSeparator();
+        pnlTbar.add(actEditCut).addMouseListener(barStatus);
+        pnlTbar.add(actEditCopy).addMouseListener(barStatus);
+        pnlTbar.add(actEditPaste).addMouseListener(barStatus);
+        pnlTbar.addSeparator();
+        //pnl_tbar.add(actToolsGenerate).addMouseListener(bar_status);
+        //pnl_tbar.add(actToolsDiff).addMouseListener(bar_status);
         //pnl_tbar.addSeparator();
-        pnl_tbar.add(act_help_contents).addMouseListener(bar_status);
-        pnl_tbar.add(act_help_about).addMouseListener(bar_status);
+        pnlTbar.add(actHelpContents).addMouseListener(barStatus);
+        pnlTbar.add(actHelpAbout).addMouseListener(barStatus);
 
-        //bar_book.addHyperlinkListener(this);
-        bar_side.addHyperlinkListener(this);
+        //barBook.addHyperlinkListener(this);
+        barSide.addHyperlinkListener(this);
 
-        spt_books.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        spt_books.setOneTouchExpandable(true);
-        spt_books.setDividerLocation(0.9D);
-        //spt_books.add(bar_book, JSplitPane.RIGHT);
-        spt_books.add(bar_side, JSplitPane.RIGHT);
-        spt_books.add(new JPanel(), JSplitPane.LEFT);
-        spt_books.setResizeWeight(0.9D);
+        sptBooks.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        sptBooks.setOneTouchExpandable(true);
+        sptBooks.setDividerLocation(0.9D);
+        //spt_books.add(barBook, JSplitPane.RIGHT);
+        sptBooks.add(barSide, JSplitPane.RIGHT);
+        sptBooks.add(new JPanel(), JSplitPane.LEFT);
+        sptBooks.setResizeWeight(0.9D);
 
         frame.addWindowListener(new WindowAdapter()
         {
             public void windowClosed(WindowEvent ev)
             {
-                act_file_exit.actionPerformed(null);
+                actFileExit.actionPerformed(null);
             }
         });
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(pnl_tbar, BorderLayout.NORTH);
-        frame.getContentPane().add(bar_status, BorderLayout.SOUTH);
-        frame.getContentPane().add(spt_books, BorderLayout.CENTER);
-        frame.setJMenuBar(bar_menu);
+        frame.getContentPane().add(pnlTbar, BorderLayout.NORTH);
+        frame.getContentPane().add(barStatus, BorderLayout.SOUTH);
+        frame.getContentPane().add(sptBooks, BorderLayout.CENTER);
+        frame.setJMenuBar(barMenu);
 
         frame.setEnabled(true);
         frame.setTitle(Project.instance().getName());
@@ -541,7 +540,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     private void setLayoutComponent(Component next)
     {
-        Component leftcurr = spt_books.getLeftComponent();
+        Component leftcurr = sptBooks.getLeftComponent();
         if (leftcurr == next)
         {
             return;
@@ -557,7 +556,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         }
         */
 
-        spt_books.add(next, JSplitPane.LEFT);
+        sptBooks.add(next, JSplitPane.LEFT);
     }
 
     /**
@@ -602,7 +601,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     {
         try
         {
-            bar_status.hyperlinkUpdate(ev);
+            barStatus.hyperlinkUpdate(ev);
 
             HyperlinkEvent.EventType type = ev.getEventType();
             if (type == HyperlinkEvent.EventType.ACTIVATED)
@@ -675,7 +674,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
             try
             {
                 Passage ref = PassageFactory.createPassage(data);    
-                bar_side.getCommentaryPane().setPassage(ref);
+                barSide.getCommentaryPane().setPassage(ref);
             }
             catch (NoSuchVerseException ex)
             {
@@ -684,7 +683,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         }
         else if (protocol.equals("dict"))
         {
-            bar_side.getDictionaryPane().setWord(data);
+            barSide.getDictionaryPane().setWord(data);
         }
         else
         {
@@ -698,7 +697,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public boolean isStatusBarVisible()
     {
-        return view_status;
+        return viewStatus;
     }
 
     /**
@@ -707,8 +706,8 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public void setStatusBarVisible(boolean view_status)
     {
-        bar_status.setVisible(true);
-        this.view_status = view_status;
+        barStatus.setVisible(true);
+        this.viewStatus = view_status;
     }
 
     /**
@@ -717,7 +716,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public boolean isToolbarVisible()
     {
-        return view_tool;
+        return viewTool;
     }
 
     /**
@@ -726,8 +725,8 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public void setToolbarVisible(boolean view_tool)
     {
-        pnl_tbar.setVisible(true);
-        this.view_tool = view_tool;
+        pnlTbar.setVisible(true);
+        this.viewTool = view_tool;
     }
 
     /**
@@ -736,8 +735,8 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public void setCloseEnabled(boolean enabled)
     {
-        act_file_close.setEnabled(enabled);
-        act_file_closeall.setEnabled(enabled);
+        actFileClose.setEnabled(enabled);
+        actFileCloseAll.setEnabled(enabled);
     }
 
     /* (non-Javadoc)
@@ -826,12 +825,12 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * is the status bar visible
      */
-    private boolean view_status = true;
+    private boolean viewStatus = true;
 
     /**
      * is the toolbar visible
      */
-    private boolean view_tool = true;
+    private boolean viewTool = true;
 
     /**
      * The last selected DisplayArea
@@ -843,58 +842,61 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     private static final Logger log = Logger.getLogger(Desktop.class);
 
-    private Job startjob = null;
-    private Action act_file_new = null;
-    private Action act_file_open = null;
-    private Action act_file_save = null;
-    private Action act_file_saveas = null;
-    private Action act_file_saveall = null;
-    private Action act_file_close = null;
-    private Action act_file_closeall = null;
-    //private Action act_file_print = null;
-    protected Action act_file_exit = null;
+    /*
+     * GUI components
+     */
+    private Job startJob = null;
+    private Action actFileNew = null;
+    private Action actFileOpen = null;
+    private Action actFileSave = null;
+    private Action actFileSaveAs = null;
+    private Action actFileSaveAll = null;
+    private Action actFileClose = null;
+    private Action actFileCloseAll = null;
+    //private Action actFilePrint = null;
+    protected Action actFileExit = null;
 
-    private Action act_edit_cut = null;
-    private Action act_edit_copy = null;
-    private Action act_edit_paste = null;
-    private Action act_edit_blur1 = null;
-    private Action act_edit_blur5 = null;
+    private Action actEditCut = null;
+    private Action actEditCopy = null;
+    private Action actEditPaste = null;
+    private Action actEditBlur1 = null;
+    private Action actEditBlur5 = null;
 
-    private Action act_view_tdi = null;
-    private Action act_view_mdi = null;
-    //private Action act_view_tbar = null;
+    private Action actViewTdi = null;
+    private Action actViewMdi = null;
+    //private Action actViewTbar = null;
 
-    private Action act_view_ghtml = null;
-    private Action act_view_vhtml = null;
-    private Action act_view_osis = null;
+    private Action actViewGhtml = null;
+    private Action actViewVhtml = null;
+    private Action actViewOsis = null;
 
-    private Action act_list_delete = null;
+    private Action actListDelete = null;
 
-    //private Action act_tools_generate = null;
-    //private Action act_tools_diff = null;
-    private OptionsAction act_tools_options = null;
-    private Action act_tools_sites = null;
+    //private Action actToolsGenerate = null;
+    //private Action actToolsDiff = null;
+    private OptionsAction actToolsOptions = null;
+    private Action actToolsSites = null;
 
-    private Action act_help_contents = null;
-    private Action act_help_about = null;
-    //private Action act_help_debug = null;
+    private Action actHelpContents = null;
+    private Action actHelpAbout = null;
+    //private Action actHelpDebug = null;
 
-    private JRadioButtonMenuItem rdo_view_tdi = null;
-    private JRadioButtonMenuItem rdo_view_mdi = null;
-    //private JCheckBoxMenuItem chk_view_tbar = null;
+    private JRadioButtonMenuItem rdoViewTdi = null;
+    private JRadioButtonMenuItem rdoViewMdi = null;
+    //private JCheckBoxMenuItem chkViewTbar = null;
 
-    private JMenuBar bar_menu = null;
-    private JMenu menu_file = null;
-    private JMenu menu_edit = null;
-    private JMenu menu_view = null;
-    private JMenu menu_tools = null;
-    private JMenu menu_help = null;
+    private JMenuBar barMenu = null;
+    private JMenu menuFile = null;
+    private JMenu menuEdit = null;
+    private JMenu menuView = null;
+    private JMenu menuTools = null;
+    private JMenu menuHelp = null;
 
     private JFrame frame = null;
-    private ButtonGroup grp_views = null;
-    private JToolBar pnl_tbar = null;
-    private StatusBar bar_status = null;
-    private SidebarPane bar_side = null;
-    //private ReferencedPane bar_book = null;
-    private JSplitPane spt_books = null;
+    private ButtonGroup grpViews = null;
+    private JToolBar pnlTbar = null;
+    private StatusBar barStatus = null;
+    private SidebarPane barSide = null;
+    //private ReferencedPane barBook = null;
+    private JSplitPane sptBooks = null;
 }

@@ -66,7 +66,7 @@ public class CliMapper
             PrintWriter dbout = new PrintWriter(new FileOutputStream("c:\\database.csv"));
             PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
 
-            List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+            List dicts = Books.installed().getBookMetaDatas(BookFilters.getBibles());
             BookMetaData bmd = (BookMetaData) dicts.get(0);
             Book book = bmd.getBook();
             //Matcher engine = new Matcher(bible);

@@ -76,7 +76,7 @@ public class OptionsAction extends DesktopAbstractAction
             // I'm not 100% sure that this will update the dialog with the
             // current list of Bibles, but it should.
             fillChoiceFactory();
-            Books.addBooksListener(new CustomBooksListener());
+            Books.installed().addBooksListener(new CustomBooksListener());
 
             URL config_url = Project.instance().getWritablePropertiesURL("desktop");
             ConfigEditorFactory.showDialog(config, getDesktop().getJFrame(), config_url);
@@ -159,7 +159,7 @@ public class OptionsAction extends DesktopAbstractAction
      */
     private static String[] getFullNameArray(BookFilter filter)
     {
-        List bmds = Books.getBookMetaDatas(filter);
+        List bmds = Books.installed().getBookMetaDatas(filter);
         List names = new ArrayList();
 
         for (Iterator it = bmds.iterator(); it.hasNext();)

@@ -124,7 +124,7 @@ public class Defaults
             return;
         }
 
-        List lbmds = Books.getBookMetaDatas(BookFilters.getBibles());
+        List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();
@@ -145,7 +145,7 @@ public class Defaults
      */
     protected static void checkAllPreferable()
     {
-        List bmds = Books.getBookMetaDatas();
+        List bmds = Books.installed().getBookMetaDatas();
         for (Iterator it = bmds.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();
@@ -184,7 +184,7 @@ public class Defaults
      */
     static
     {
-        Books.addBooksListener(new DefaultsBookListener());
+        Books.installed().addBooksListener(new DefaultsBookListener());
         checkAllPreferable();
     }
 

@@ -1,5 +1,7 @@
 package org.crosswire.jsword.view.swing.book;
 
+import java.util.List;
+
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -7,6 +9,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookList;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Books;
@@ -51,7 +54,16 @@ public class BooksTreeModel implements TreeModel
      */
     public BooksTreeModel()
     {
-        Books.addBooksListener(new CustomBooksListener());
+        this(Books.installed());
+    }
+
+    /**
+     * Simple ctor
+     */
+    public BooksTreeModel(BookList books)
+    {
+        this.books = books;
+        cacheBooks();
     }
 
     /* (non-Javadoc)
@@ -74,17 +86,17 @@ public class BooksTreeModel implements TreeModel
 
         if (parent == BookType.BIBLE)
         {
-            return Books.getBookMetaDatas(BookFilters.getBibles()).size();
+            return bibles.size();
         }
 
         if (parent == BookType.COMMENTARY)
         {
-            return Books.getBookMetaDatas(BookFilters.getCommentaries()).size();
+            return commentaries.size();
         }
 
         if (parent == BookType.DICTIONARY)
         {
-            return Books.getBookMetaDatas(BookFilters.getDictionaries()).size();
+            return dictionaries.size();
         }
 
         return 0;
@@ -106,17 +118,27 @@ public class BooksTreeModel implements TreeModel
     /* (non-Javadoc)
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
      */
-    public void addTreeModelListener(TreeModelListener li)
+    public void addTreeModelListener(TreeModelListener tmli)
     {
-        listenerList.add(TreeModelListener.class, li);
+        if (listenerList.getListenerCount() == 0)
+        {
+            books.addBooksListener(li);
+        }
+
+        listenerList.add(TreeModelListener.class, tmli);
     }
 
     /* (non-Javadoc)
      * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
      */
-    public void removeTreeModelListener(TreeModelListener li)
+    public void removeTreeModelListener(TreeModelListener tmli)
     {
-        listenerList.remove(TreeModelListener.class, li);
+        listenerList.remove(TreeModelListener.class, tmli);
+
+        if (listenerList.getListenerCount() == 0)
+        {
+            books.removeBooksListener(li);
+        }
     }
 
     /* (non-Javadoc)
@@ -141,17 +163,17 @@ public class BooksTreeModel implements TreeModel
 
         if (parent == BookType.BIBLE)
         {
-            return Books.getBookMetaDatas(BookFilters.getBibles()).get(index);
+            return bibles.get(index);
         }
 
         if (parent == BookType.COMMENTARY)
         {
-            return Books.getBookMetaDatas(BookFilters.getCommentaries()).get(index);
+            return commentaries.get(index);
         }
 
         if (parent == BookType.DICTIONARY)
         {
-            return Books.getBookMetaDatas(BookFilters.getDictionaries()).get(index);
+            return dictionaries.get(index);
         }
 
         return null;
@@ -184,17 +206,17 @@ public class BooksTreeModel implements TreeModel
 
         if (parent == BookType.BIBLE)
         {
-            return Books.getBookMetaDatas(BookFilters.getBibles()).indexOf(child);
+            return bibles.indexOf(child);
         }
 
         if (parent == BookType.COMMENTARY)
         {
-            return Books.getBookMetaDatas(BookFilters.getCommentaries()).indexOf(child);
+            return commentaries.indexOf(child);
         }
 
         if (parent == BookType.DICTIONARY)
         {
-            return Books.getBookMetaDatas(BookFilters.getDictionaries()).indexOf(child);
+            return dictionaries.indexOf(child);
         }
 
         return -1;
@@ -245,6 +267,24 @@ public class BooksTreeModel implements TreeModel
     }
 
     /**
+     * What nodes have been removed?
+     */
+    protected void fireTreeStructureChanged(Object source)
+    {
+        TreeModelEvent ev = new TreeModelEvent(source, new Object[] { ROOT, });
+        Object[] listeners = listenerList.getListenerList();
+
+        // Loop through the listeners
+        for (int i = listeners.length-2; i>=0; i-=2)
+        {
+            if (listeners[i] == TreeModelListener.class)
+            {
+                ((TreeModelListener) listeners[i+1]).treeStructureChanged(ev);
+            }          
+        }
+    }
+
+    /**
      * Level 2 nodes can be derived from the BookMetaData object of the parent
      * node at level 3.
      */
@@ -253,6 +293,44 @@ public class BooksTreeModel implements TreeModel
         return bmd.getType();
     }
 
+    /**
+     * Regenerate the cache of bibles, commentaries and dictionaries
+     */
+    protected void cacheBooks()
+    {
+        bibles = books.getBookMetaDatas(BookFilters.getBibles());
+        commentaries = books.getBookMetaDatas(BookFilters.getCommentaries());
+        dictionaries = books.getBookMetaDatas(BookFilters.getDictionaries());
+    }
+
+    /**
+     * The cache of Bibles
+     */
+    private List bibles;
+
+    /**
+     * The cache of commentaries
+     */
+    private List commentaries;
+
+    /**
+     * The cache of dictionaries
+     */
+    private List dictionaries;
+
+    /**
+     * The Books listener
+     */
+    private CustomBooksListener li = new CustomBooksListener();
+
+    /**
+     * The list of books in this tree
+     */
+    private BookList books;
+
+    /**
+     * The name for the root node (usually invisible)
+     */
     protected static final String ROOT = "Books";
 
     /**
@@ -270,9 +348,14 @@ public class BooksTreeModel implements TreeModel
          */
         public void bookAdded(BooksEvent ev)
         {
+            cacheBooks();
+            fireTreeStructureChanged(ev.getSource());
+
+            /*
             BookMetaData bmd = ev.getBookMetaData();
             Object[] path = new Object[] { ROOT, getChildOfRoot(bmd), bmd };
             fireTreeNodesInserted(ev.getSource(), path);
+            */
         }
 
         /* (non-Javadoc)
@@ -280,9 +363,14 @@ public class BooksTreeModel implements TreeModel
          */
         public void bookRemoved(BooksEvent ev)
         {
+            cacheBooks();
+            fireTreeStructureChanged(ev.getSource());
+
+            /*
             BookMetaData bmd = ev.getBookMetaData();
             Object[] path = new Object[] { ROOT, getChildOfRoot(bmd), bmd };
             fireTreeNodesRemoved(ev.getSource(), path);
+            */
         }
     }
 }

@@ -50,7 +50,7 @@ public class Bench
 
         try
         {
-            List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+            List dicts = Books.installed().getBookMetaDatas(BookFilters.getBibles());
             BookMetaData bmd = (BookMetaData) dicts.get(0);
             version = bmd.getBook();
         }
@@ -96,7 +96,7 @@ public class Bench
     private static void versions()
     {
         System.out.println("  Available versions:");
-        List lbmds = Books.getBookMetaDatas();
+        List lbmds = Books.installed().getBookMetaDatas();
         for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();

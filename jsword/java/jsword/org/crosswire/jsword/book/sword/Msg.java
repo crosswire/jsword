@@ -33,7 +33,7 @@ class Msg extends MsgBase
     static final Msg GZIP_FORMAT = new Msg("Error whilst reading field {0}");
     static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
     static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");
-    static final Msg MISSING_FILE = new Msg("Missing file.");
+    static final Msg MISSING_FILE = new Msg("Missing data files for old and new testaments in {0}.");
     static final Msg NOT_FOUND = new Msg("Module directory not found.");
     static final Msg READ_FAIL = new Msg("Error reading {0}");
     static final Msg READ_ONLY = new Msg("Sword modules are read-only");

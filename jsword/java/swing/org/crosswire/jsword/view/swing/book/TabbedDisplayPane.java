@@ -55,25 +55,25 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      */
     public TabbedDisplayPane()
     {
-        idps.add(pnl_view);
+        idps.add(pnlView);
 
-        jbInit();
+        initialize();
 
         // There are times when tab_main or pnl_view are not in visible or
         // attached to the main widget hierachy, so when we change L&F the
         // changes do not get propogated through. The solution is to register
         // them with the L&F handler to be altered when the L&F changes.
-        LookAndFeelUtil.addComponentToUpdate(pnl_view);
-        LookAndFeelUtil.addComponentToUpdate(tab_main);
+        LookAndFeelUtil.addComponentToUpdate(pnlView);
+        LookAndFeelUtil.addComponentToUpdate(tabMain);
     }
 
     /**
      * Gui creation
      */
-    private void jbInit()
+    private void initialize()
     {
-        tab_main.setTabPlacement(SwingConstants.BOTTOM);
-        tab_main.addChangeListener(new ChangeListener()
+        tabMain.setTabPlacement(SwingConstants.BOTTOM);
+        tabMain.addChangeListener(new ChangeListener()
         {
             public void stateChanged(ChangeEvent ev)
             {
@@ -82,8 +82,8 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
         });
 
         this.setLayout(new BorderLayout());
-        this.add(pnl_view, BorderLayout.CENTER);
-        center = pnl_view;
+        this.add(pnlView, BorderLayout.CENTER);
+        center = pnlView;
     }
 
     /**
@@ -111,31 +111,31 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
         try
         {
             // Tabbed view or not we should clear out the old tabs
-            tab_main.removeAll();
+            tabMain.removeAll();
 
             idps.clear();
-            idps.add(pnl_view);
+            idps.add(pnlView);
 
             // Do we need a tabbed view
-            if (ref != null && ref.countVerses() > page_size)
+            if (ref != null && ref.countVerses() > pagesize)
             {
                 tabs = true;
 
                 // Calc the verses to display in this tab
                 Passage cut = (Passage) whole.clone();
-                waiting = cut.trimVerses(page_size);
+                waiting = cut.trimVerses(pagesize);
 
                 // Create the tab
                 InnerDisplayPane pnl_new = createInnerDisplayPane(cut);
-                tab_main.add(pnl_new, shortenName(cut.getName()));
-                tab_main.add(pnl_more, "More ...");
+                tabMain.add(pnl_new, shortenName(cut.getName()));
+                tabMain.add(pnlMore, "More ...");
 
                 // And show it is needed
-                if (center != tab_main)
+                if (center != tabMain)
                 {
                     this.remove(center);
-                    this.add(tab_main, BorderLayout.CENTER);
-                    center = tab_main;
+                    this.add(tabMain, BorderLayout.CENTER);
+                    center = tabMain;
                 }
             }
             else
@@ -143,14 +143,14 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
                 tabs = false;
 
                 // Setup the front tab
-                pnl_view.setPassage(ref);
+                pnlView.setPassage(ref);
 
                 // And show it if needed
-                if (center != pnl_view)
+                if (center != pnlView)
                 {
                     this.remove(center);
-                    this.add(pnl_view, BorderLayout.CENTER);
-                    center = pnl_view;
+                    this.add(pnlView, BorderLayout.CENTER);
+                    center = pnlView;
                 }
             }
         }
@@ -170,30 +170,30 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
         try
         {
             // This is someone clicking on more isnt it?
-            if (tab_main.getSelectedComponent() != pnl_more)
+            if (tabMain.getSelectedComponent() != pnlMore)
             {
                 return;
             }
 
             // First remove the old more ... tab that the user has just selected
-            tab_main.remove(pnl_more);
+            tabMain.remove(pnlMore);
 
             // Calculate the new verses to display
             Passage cut = waiting;
-            waiting = cut.trimVerses(page_size);
+            waiting = cut.trimVerses(pagesize);
 
             // Create a new tab
             InnerDisplayPane pnl_new = createInnerDisplayPane(cut);
-            tab_main.add(pnl_new, shortenName(cut.getName()));
+            tabMain.add(pnl_new, shortenName(cut.getName()));
 
             // Do we need a new more tab
             if (waiting != null)
             {
-                tab_main.add(pnl_more, "More ...");
+                tabMain.add(pnlMore, "More ...");
             }
 
             // Select the real new tab in place of any more tabs
-            tab_main.setSelectedComponent(pnl_new);
+            tabMain.setSelectedComponent(pnl_new);
         }
         catch (Exception ex)
         {
@@ -208,11 +208,11 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     {
         if (tabs)
         {
-            return (InnerDisplayPane) tab_main.getSelectedComponent();
+            return (InnerDisplayPane) tabMain.getSelectedComponent();
         }
         else
         {
-            return pnl_view;
+            return pnlView;
         }
     }
 
@@ -269,7 +269,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      */
     public static void setPageSize(int page_size)
     {
-        TabbedDisplayPane.page_size = page_size;
+        TabbedDisplayPane.pagesize = page_size;
     }
 
     /**
@@ -277,7 +277,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      */
     public static int getPageSize()
     {
-        return page_size;
+        return pagesize;
     }
 
     /* (non-Javadoc)
@@ -440,7 +440,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      * How many verses on a tab.
      * Should this be a static?
      */
-    private static int page_size = 50;
+    private static int pagesize = 50;
 
     /**
      * A list of all the HyperlinkListeners
@@ -475,12 +475,12 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * If we are using tabs, this is the main view
      */
-    private JTabbedPane tab_main = new JTabbedPane();
+    private JTabbedPane tabMain = new JTabbedPane();
 
     /**
      * If we are not using tabs, this is the main view
      */
-    private InnerDisplayPane pnl_view = new InnerDisplayPane();
+    private InnerDisplayPane pnlView = new InnerDisplayPane();
 
     /**
      * A list of all the InnerDisplayPanes so we can control listeners
@@ -495,5 +495,5 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Blank thing for the "More..." button
      */
-    private JPanel pnl_more = new JPanel();
+    private JPanel pnlMore = new JPanel();
 }

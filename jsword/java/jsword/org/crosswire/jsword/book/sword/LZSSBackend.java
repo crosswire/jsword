@@ -34,9 +34,9 @@ public class LZSSBackend implements Backend
     /**
      * Simple ctor
      */
-    public LZSSBackend(SwordConfig config)
+    public LZSSBackend(SwordBookMetaData sbmd)
     {
-        this.config = config;
+        this.sbmd = sbmd;
     }
 
     /* (non-Javadoc)
@@ -59,7 +59,7 @@ public class LZSSBackend implements Backend
     public byte[] getRawText(Key key) throws BookException
     {
         // LATER(joe): implement this
-        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { config.toString() });
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { sbmd.toString() });
     }
 
     /* (non-Javadoc)
@@ -71,5 +71,5 @@ public class LZSSBackend implements Backend
         return null;
     }
 
-    private SwordConfig config;
+    private SwordBookMetaData sbmd;
 }

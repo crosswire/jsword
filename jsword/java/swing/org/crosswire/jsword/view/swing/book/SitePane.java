@@ -5,37 +5,28 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.swing.MapTableModel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A panel for use within a SitesPane to display one set of Books that are
@@ -78,7 +69,7 @@ public class SitePane extends JPanel
         lblAvailable.setText("Installed Books:");
         lblAvailable.setDisplayedMnemonic('B');
 
-        TreeModel model = new BooksTreeModel();
+        TreeModel model = new BooksTreeModel(Books.installed());
         treAvailable.setModel(model);
     }
 
@@ -97,7 +88,7 @@ public class SitePane extends JPanel
         lblAvailable.setText("Available Books:");
         lblAvailable.setDisplayedMnemonic('B');
 
-        TreeModel model = getTreeModel(installer.getIndex());
+        TreeModel model = new BooksTreeModel(installer);
         treAvailable.setModel(model);
     }
 
@@ -175,14 +166,14 @@ public class SitePane extends JPanel
     }
 
     /**
-     * 
+     * Delete the current book
      */
     protected void delete()
     {
     }
 
     /**
-     * 
+     * Reload and redisplay the list of books
      */
     protected void refresh()
     {
@@ -190,7 +181,9 @@ public class SitePane extends JPanel
         {
             try
             {
-                TreeModel model = getTreeModel(installer.reloadIndex());
+                installer.reloadIndex();
+
+                TreeModel model = new BooksTreeModel(installer);
                 treAvailable.setModel(model);
             }
             catch (InstallException ex)
@@ -201,7 +194,7 @@ public class SitePane extends JPanel
     }
 
     /**
-     * Kick of the installer
+     * Kick off the installer
      */
     protected void install()
     {
@@ -212,50 +205,16 @@ public class SitePane extends JPanel
             {
                 Object last = path.getLastPathComponent();
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
-                final String name = (String) node.getUserObject();
+                BookMetaData name = (BookMetaData) node.getUserObject();
 
-                // So now we know what we want to install - all we need to do
-                // is installer.install(name) however we are doing it in the
-                // background so we create a job for it.
-                final Thread worker = new Thread("DisplayPreLoader")
+                try
                 {
-                    public void run()
-                    {
-                        URL predicturl = Project.instance().getWritablePropertiesURL("install");
-                        Job job = JobManager.createJob("Install Module: "+name, predicturl, this, true);
-
-                        try
-                        {
-                            job.setProgress("Installing");
-                            installer.install(name);
-
-                            // inform the user that we are done
-                            SwingUtilities.invokeLater(new Runnable()
-                            {
-                                public void run()
-                                {
-                                    JOptionPane.showConfirmDialog(SitePane.this, 
-                                            "Finished installing module: "+name,
-                                            "Installation Done",
-                                            JOptionPane.INFORMATION_MESSAGE,
-                                            JOptionPane.YES_OPTION);
-                                }
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            Reporter.informUser(this, ex);
-                        }
-                        finally
-                        {
-                            job.done();
-                        }
-                    }
-                };
-
-                // this actually starts the thread off
-                worker.setPriority(Thread.MIN_PRIORITY);
-                worker.start();
+                    installer.install(name);
+                }
+                catch (InstallException ex)
+                {
+                    Reporter.informUser(this, ex);
+                }
             }
         }
     }
@@ -282,9 +241,9 @@ public class SitePane extends JPanel
             else if (last instanceof DefaultMutableTreeNode && installer != null)
             {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
-                String name = (String) node.getUserObject();
-                Properties prop = installer.getEntry(name);
-                tblSelected.setModel(new MapTableModel(prop));
+                BookMetaData bmd = (BookMetaData) node.getUserObject();
+
+                tblSelected.setModel(new MapTableModel(bmd.getProperties()));
             }
             else
             {
@@ -293,20 +252,22 @@ public class SitePane extends JPanel
         }
     }
 
-    /**
+    /*
      * Convert an Installer index list into a Tree model
-     */
+     *
     private TreeModel getTreeModel(List entries)
     {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Modules");
-        for (Iterator it = entries.iterator(); it.hasNext();)
+        for (Iterator it = entries.iterator(); it.hasNext(); )
         {
-            String entry = (String) it.next();
-            root.add(new DefaultMutableTreeNode(entry));
+            BookMetaData bmd = (BookMetaData) it.next();
+            root.add(new DefaultMutableTreeNode(bmd));
         }
+
         DefaultTreeModel dtm = new DefaultTreeModel(root);
         return dtm;
     }
+    */
 
     /**
      * Display the BookMetaData as something better than toString()

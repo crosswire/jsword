@@ -9,10 +9,10 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -20,13 +20,20 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.sword.ConfigEntry;
 import org.crosswire.jsword.book.sword.ModuleType;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
-import org.crosswire.jsword.book.sword.SwordConfig;
+import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.util.Project;
 
 import com.ice.tar.TarEntry;
@@ -56,36 +63,23 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordInstaller implements Installer, Comparable
+public class SwordInstaller extends AbstractBookList implements Installer, Comparable
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#getURL()
-     */
-    public String getURL()
-    {
-        return "sword:"+username+":"+password+"@"+host+directory;
-    }
-
-    /**
-     * Like getURL() except that we skip the password for display purposes.
-     * @see SwordInstaller#getURL()
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return "sword:"+username+"@"+host+directory;
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getIndex()
      */
-    public List getIndex()
+    public List getBookMetaDatas()
     {
         try
         {
-            loadCachedIndex();
+            if (!loaded)
+            {
+                loadCachedIndex();
+            }
 
-            return new ArrayList(entries.keySet());
+            List mutable = new ArrayList();
+            mutable.addAll(entries.values());
+            return Collections.unmodifiableList(mutable);
         }
         catch (InstallException ex)
         {
@@ -97,62 +91,76 @@ public class SwordInstaller implements Installer, Comparable
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(java.lang.String)
      */
-    public void install(String entry) throws InstallException
+    public void install(BookMetaData bmd)
     {
-        try
+        if (!(bmd instanceof SwordBookMetaData))
         {
-            SwordConfig config = (SwordConfig) entries.get(entry);
-            ModuleType type = config.getModDrv();
-            String modpath = type.getInstallDirectory();
-            String destname = modpath + "/" + config.getInternalName();
-
-            File dldir = SwordBookDriver.getDownloadDir();
-            File moddir = new File(dldir, "modules");
-            File fulldir = new File(moddir, destname);
-            fulldir.mkdirs();
-            URL desturl = new URL("file", null, fulldir.getAbsolutePath());
-
-            downloadAll(host, USERNAME, PASSWORD, directory+"/modules/"+destname, desturl);
-
-            File confdir = new File(dldir, "mods.d");
-            confdir.mkdirs();
-            File conf = new File(confdir, config.getInternalName()+".conf");
-            URL configurl = new URL("file", null, conf.getAbsolutePath());
-            config.save(configurl);
-
-            SwordBookDriver.registerNewBook(config, modpath);
+            throw new LogicError();
         }
-        catch (Exception ex)
+
+        final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
+
+        Reporter.informUser(this, "Installing module: "+sbmd.getName());
+
+        // So now we know what we want to install - all we need to do
+        // is installer.install(name) however we are doing it in the
+        // background so we create a job for it.
+        final Thread worker = new Thread("DisplayPreLoader")
         {
-            throw new InstallException(Msg.URL_FAILED, ex);
-        }
+            public void run()
+            {
+                URL predicturl = Project.instance().getWritablePropertiesURL("sword-install");
+                Job job = JobManager.createJob("Install Module: "+sbmd.getName(), predicturl, this, true);
+
+                try
+                {
+                    job.setProgress("Init");
+
+                    ModuleType type = sbmd.getModuleType();
+                    String modpath = type.getInstallDirectory();
+                    String destname = modpath + "/" + sbmd.getInternalName();
+
+                    File dldir = SwordBookDriver.getDownloadDir();
+                    File moddir = new File(dldir, "modules");
+                    File fulldir = new File(moddir, destname);
+                    fulldir.mkdirs();
+                    URL desturl = new URL("file", null, fulldir.getAbsolutePath());
+
+                    downloadAll(job, host, USERNAME, PASSWORD, directory+"/modules/"+destname, desturl);
+
+                    job.setProgress("Copying config file");
+                    File confdir = new File(dldir, "mods.d");
+                    confdir.mkdirs();
+                    File conf = new File(confdir, sbmd.getInternalName()+".conf");
+                    URL configurl = new URL("file", null, conf.getAbsolutePath());
+                    sbmd.save(configurl);
+
+                    SwordBookDriver.registerNewBook(sbmd, dldir);
+                    
+                    // inform the user that we are done
+                    Reporter.informUser(this, "Finished installing module: "+sbmd.getName());
+                }
+                catch (Exception ex)
+                {
+                    Reporter.informUser(this, ex);
+                    job.ignoreTimings();
+                }
+                finally
+                {
+                    job.done();
+                }
+            }
+        };
+
+        // this actually starts the thread off
+        worker.setPriority(Thread.MIN_PRIORITY);
+        worker.start();
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
      */
-    public List reloadIndex() throws InstallException
-    {
-        cacheRemoteFile();
-        loadCachedIndex();
-
-        return new ArrayList(entries.keySet());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#getEntry(java.lang.String)
-     */
-    public Properties getEntry(String entry)
-    {
-        SwordConfig config = (SwordConfig) entries.get(entry);
-        Properties prop = config.getProperties();
-        return prop;
-    }
-
-    /**
-     * Load the index file from FTP and parse it
-     */
-    private void cacheRemoteFile() throws InstallException
+    public void reloadIndex() throws InstallException
     {
         URL scratchfile = getCachedIndexFile();
         download(host, USERNAME, PASSWORD, directory, FILE_LIST_GZ, scratchfile);
@@ -186,32 +194,56 @@ public class SwordInstaller implements Installer, Comparable
                     break;
                 }
 
+                String internal = entry.getName();
                 if (!entry.isDirectory())
                 {
-                    int size = (int) entry.getSize();
-                    byte[] buffer = new byte[size];
-                    tin.read(buffer);
-
-                    String internal = entry.getName();
-                    if (internal.endsWith(".conf"))
+                    try
                     {
-                        internal = internal.substring(0, internal.length() - 5);
-                    }
-                    if (internal.startsWith("mods.d/"))
-                    {
-                        internal = internal.substring(7);
-                    }
+                        int size = (int) entry.getSize();
+                        byte[] buffer = new byte[size];
+                        tin.read(buffer);
 
-                    Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                    SwordConfig config = new SwordConfig(rin, internal);
-                    String desc = config.getDescription();
-                    entries.put(desc, config);
+                        if (internal.endsWith(".conf"))
+                        {
+                            internal = internal.substring(0, internal.length() - 5);
+                        }
+                        if (internal.startsWith("mods.d/"))
+                        {
+                            internal = internal.substring(7);
+                        }
+
+                        Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
+                        SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
+
+                        String desc = sbmd.getName();
+                        if (desc == null)
+                        {
+                            log.warn("Ignoring descriptionless module: "+internal);
+                        }
+                        else if (sbmd.isSupported())
+                        {
+                            if (sbmd.getFirstValue(ConfigEntry.CIPHER_KEY) == null)
+                            {
+                                entries.put(desc, sbmd);
+                            }
+                            else
+                            {
+                                log.info("Ignoring module: "+desc+" because it is locked.");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        log.warn("Failed to load config for entry: "+internal, ex);
+                    }
                 }
             }
             
             tin.close();
             gin.close();
             in.close();
+
+            loaded = true;
         }
         catch (IOException ex)
         {
@@ -283,14 +315,16 @@ public class SwordInstaller implements Installer, Comparable
      * @param dir The directory from which to download the file
      * @throws InstallException
      */
-    private static void downloadAll(String site, String user, String password, String dir, URL destdir) throws InstallException
+    protected static void downloadAll(Job job, String site, String user, String password, String dir, URL destdir) throws InstallException
     {
         FTPClient ftp = new FTPClient();
 
         try
         {
+            job.setProgress("Logging on to remote site");
             ftpInit(ftp, site, user, password, dir);
 
+            job.setProgress("Downloading files");
             downloadContents(destdir, ftp);
         }
         catch (InstallException ex)
@@ -467,6 +501,24 @@ public class SwordInstaller implements Installer, Comparable
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#getURL()
+     */
+    public String getURL()
+    {
+        return "sword:"+username+":"+password+"@"+host+directory;
+    }
+
+    /**
+     * Like getURL() except that we skip the password for display purposes.
+     * @see SwordInstaller#getURL()
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "sword:"+username+"@"+host+directory;
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object object)
@@ -532,11 +584,16 @@ public class SwordInstaller implements Installer, Comparable
             .append(this.directory, myClass.directory)
             .toComparison();
     }
-    
+
+    /**
+     * Do we need to reload the index file
+     */
+    private boolean loaded = false;
+
     /**
      * The remote hostname.
      */
-    private String host;
+    protected String host;
 
     /**
      * The remote username for a valid account on the <code>host</code>.
@@ -551,12 +608,12 @@ public class SwordInstaller implements Installer, Comparable
     /**
      * The directory containing modules on the <code>host</code>.
      */
-    private String directory = "/";
+    protected String directory = "/";
 
     /**
      * A map of the entries in this download area
      */
-    private Map entries = new HashMap();
+    protected Map entries = new HashMap();
 
     /**
      * The default anon username

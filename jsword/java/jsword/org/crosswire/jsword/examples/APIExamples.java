@@ -67,7 +67,7 @@ public class APIExamples
     public void readPlainText() throws BookException, NoSuchVerseException
     {
         Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Book bible = Books.getBookMetaData(BIBLE_NAME).getBook();
+        Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
         String text = data.getPlainText();
@@ -87,7 +87,7 @@ public class APIExamples
     public void readStyledText() throws NoSuchVerseException, BookException, TransformerException, SAXException
     {
         Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Book bible = Books.getBookMetaData(BIBLE_NAME).getBook();
+        Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
         SAXEventProvider osissep = data.getSAXEventProvider();
@@ -115,7 +115,7 @@ public class APIExamples
         // This just gets a list of all the known dictionaries and picks the
         // first. In a real world app you will probably have a better way
         // of doing this.
-        List dicts = Books.getBookMetaDatas(BookFilters.getDictionaries());
+        List dicts = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
         BookMetaData bmd = (BookMetaData) dicts.get(0);
         Book dict = bmd.getBook();
 
@@ -135,7 +135,7 @@ public class APIExamples
      */
     public void search() throws BookException
     {
-        Book bible = Books.getBookMetaData(BIBLE_NAME).getBook();
+        Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
@@ -162,7 +162,7 @@ public class APIExamples
         BookMetaData bmd;
 
         // The Default Bible - JSword does everything it can to make this work
-        bmd = Books.getBookMetaData(BIBLE_NAME);
+        bmd = Books.installed().getBookMetaData(BIBLE_NAME);
         Book bible = bmd.getBook();
 
         // You can only get a Bible (or any other Book) via a MetaData object
@@ -170,10 +170,10 @@ public class APIExamples
         // without reading indexes off disk or similar.
 
         // If you want a greater selection of Books:
-        List everything = Books.getBookMetaDatas();
+        List everything = Books.installed().getBookMetaDatas();
 
         // Or you can narrow the range a bit
-        List bibles = Books.getBookMetaDatas(BookFilters.getBibles());
+        List bibles = Books.installed().getBookMetaDatas(BookFilters.getBibles());
 
         // There are implementations of BookFilter for all sorts of things in
         // the BookFilters class 
@@ -192,7 +192,7 @@ public class APIExamples
 
         // If you are wanting to get really fancy you can implement your own
         // Bookfilter easily
-        List test = Books.getBookMetaDatas(new BookFilter()
+        List test = Books.installed().getBookMetaDatas(new BookFilter()
         {
             public boolean test(BookMetaData tbmd)
             {
@@ -205,10 +205,7 @@ public class APIExamples
         // List from above except that you can pass the BookFilter around and
         // store it in a local variable.
 
-        // The number of registered Books may well change during the program
-        // so it is a good idea to register a BooksListener to make sure
-        // you can keep up with any changes
-        Books.addBooksListener(new BooksListener()
+        Books.installed().addBooksListener(new BooksListener()
         {
             /* (non-Javadoc)
              * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
@@ -216,7 +213,7 @@ public class APIExamples
             public void bookAdded(BooksEvent ev)
             {
             }
-
+        
             /* (non-Javadoc)
              * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
              */

@@ -63,7 +63,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public InnerDisplayPane()
     {
-        jbInit();
+        initialize();
     }
 
     /**
@@ -81,7 +81,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                 try
                 {
                     job.setProgress("Setup");
-                    List booklist = Books.getBookMetaDatas();
+                    List booklist = Books.installed().getBookMetaDatas();
                     if (booklist.size() == 0)
                     {
                         return;
@@ -117,12 +117,12 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                 }
                 catch (Exception ex)
                 {
+                    job.ignoreTimings();
                     log.error("View pre-load failed", ex);
                 }
                 finally
                 {
                     job.done();
-
                     log.debug("View pre-load finished");
                 }
             }
@@ -135,16 +135,16 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     /**
      * Gui creation
      */
-    private void jbInit()
+    private void initialize()
     {
-        txt_view.setEditable(false);
-        txt_view.setEditorKit(new HTMLEditorKit());
+        txtView.setEditable(false);
+        txtView.setEditorKit(new HTMLEditorKit());
 
-        scr_view.getViewport().setPreferredSize(new Dimension(500, 400));
-        scr_view.getViewport().add(txt_view, null);
+        scrView.getViewport().setPreferredSize(new Dimension(500, 400));
+        scrView.getViewport().add(txtView, null);
 
         this.setLayout(new BorderLayout());
-        this.add(scr_view, BorderLayout.CENTER);
+        this.add(scrView, BorderLayout.CENTER);
     }
 
     /**
@@ -164,7 +164,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
 
         if (ref == null || book == null)
         {
-            txt_view.setText("");
+            txtView.setText("");
             return;
         }
 
@@ -174,8 +174,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
         SAXEventProvider htmlsep = converter.convert(osissep);
         String text = XMLUtil.writeToString(htmlsep);
 
-        txt_view.setText(text);
-        txt_view.select(0, 0);
+        txtView.setText(text);
+        txtView.select(0, 0);
     }
 
     /* (non-Javadoc)
@@ -183,7 +183,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public String getHTMLSource()
     {
-        return txt_view.getText();
+        return txtView.getText();
     }
 
     /* (non-Javadoc)
@@ -233,7 +233,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void cut()
     {
-        txt_view.cut();
+        txtView.cut();
     }
 
     /* (non-Javadoc)
@@ -241,7 +241,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void copy()
     {
-        txt_view.copy();
+        txtView.copy();
     }
 
     /* (non-Javadoc)
@@ -249,7 +249,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void paste()
     {
-        txt_view.paste();
+        txtView.paste();
     }
 
     /* (non-Javadoc)
@@ -257,7 +257,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
-        txt_view.addHyperlinkListener(li);
+        txtView.addHyperlinkListener(li);
     }
 
     /* (non-Javadoc)
@@ -265,7 +265,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
-        txt_view.removeHyperlinkListener(li);
+        txtView.removeHyperlinkListener(li);
     }
 
     /**
@@ -273,7 +273,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void removeMouseListener(MouseListener li)
     {
-        txt_view.removeMouseListener(li);
+        txtView.removeMouseListener(li);
     }
 
     /**
@@ -281,7 +281,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public void addMouseListener(MouseListener li)
     {
-        txt_view.addMouseListener(li);
+        txtView.addMouseListener(li);
     }
 
     /**
@@ -299,6 +299,6 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     private Passage ref = null;
 
-    private JScrollPane scr_view = new JScrollPane();
-    private JEditorPane txt_view = new JEditorPane();
+    private JScrollPane scrView = new JScrollPane();
+    private JEditorPane txtView = new JEditorPane();
 }

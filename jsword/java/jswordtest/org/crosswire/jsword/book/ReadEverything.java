@@ -59,7 +59,7 @@ public class ReadEverything
 
         // Loop through all the Commentaries
         log.info("*** Reading all known Commentaries");
-        List comments = Books.getBookMetaDatas(BookFilters.getCommentaries());
+        List comments = Books.installed().getBookMetaDatas(BookFilters.getCommentaries());
         for (Iterator cit = comments.iterator(); cit.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) cit.next();
@@ -69,7 +69,7 @@ public class ReadEverything
 
         // Loop through all the Dictionaries
         log.info("*** Reading all known Dictionaries");
-        List dicts = Books.getBookMetaDatas(BookFilters.getDictionaries());
+        List dicts = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
         for (Iterator dit = dicts.iterator(); dit.hasNext();)
         {
             BookMetaData dmd = (BookMetaData) dit.next();
@@ -83,7 +83,7 @@ public class ReadEverything
 
         // Loop through all the Bibles
         log.info("*** Reading all known Bibles");
-        List bibles = Books.getBookMetaDatas(BookFilters.getBibles());
+        List bibles = Books.installed().getBookMetaDatas(BookFilters.getBibles());
         for (Iterator bit = bibles.iterator(); bit.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) bit.next();

@@ -66,7 +66,7 @@ public class LocalRemoter implements Remoter
         {
             if (MethodName.GETBIBLES.equals(methodname))
             {
-                List lbmds = Books.getBookMetaDatas(FILTER);
+                List lbmds = Books.installed().getBookMetaDatas(FILTER);
                 BookMetaData[] bmds = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
 
                 String[] uids = getUIDs(bmds);
@@ -122,7 +122,7 @@ public class LocalRemoter implements Remoter
      */
     public int getSpeed()
     {
-        return Books.SPEED_REMOTE_FASTEST;
+        return BookMetaData.SPEED_REMOTE_FASTEST;
     }
 
     /**
@@ -175,7 +175,7 @@ public class LocalRemoter implements Remoter
     /**
      * The filter to select the bibles we are exporting
      */
-    private static final BookFilter FILTER = BookFilters.getFaster(Books.SPEED_SLOWEST);
+    private static final BookFilter FILTER = BookFilters.getFaster(BookMetaData.SPEED_SLOWEST);
 
     /**
      * To help finding uids from bmds

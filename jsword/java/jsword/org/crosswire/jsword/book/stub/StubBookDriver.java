@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.stub;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
@@ -41,10 +40,10 @@ public class StubBookDriver extends AbstractBookDriver
     {
         Book[] books = new Book[]
         {
-            new StubBook(this, "Stub Version", BookType.BIBLE, Books.SPEED_INACCURATE),
-            new StubBook(this, "New Stub Version", BookType.BIBLE, Books.SPEED_INACCURATE),
-            new StubBook(this, "Stub Comments", BookType.COMMENTARY, Books.SPEED_INACCURATE),
-            new StubDictionary(this, "Stub Dict", BookType.DICTIONARY, Books.SPEED_INACCURATE),
+            new StubBook(this, "Stub Version", BookType.BIBLE, BookMetaData.SPEED_INACCURATE),
+            new StubBook(this, "New Stub Version", BookType.BIBLE, BookMetaData.SPEED_INACCURATE),
+            new StubBook(this, "Stub Comments", BookType.COMMENTARY, BookMetaData.SPEED_INACCURATE),
+            new StubDictionary(this, "Stub Dict", BookType.DICTIONARY, BookMetaData.SPEED_INACCURATE),
         };
 
         bmds = new BookMetaData[books.length];

@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.Passage;
@@ -60,11 +59,11 @@ public class ConverterTest extends TestCase
  
         t1 = new BookMetaData[]
         {
-            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE, Books.SPEED_MEDIUM),
-            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE, Books.SPEED_MEDIUM),
-            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE, Books.SPEED_MEDIUM),
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, Books.SPEED_MEDIUM, "tv", "PD", "http://nowhere.com/test", "1900-10-20"),
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, Books.SPEED_MEDIUM, null, (String) null, null, null),
+            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE, BookMetaData.SPEED_MEDIUM),
+            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE, BookMetaData.SPEED_MEDIUM),
+            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE, BookMetaData.SPEED_MEDIUM),
+            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, "tv", "PD", "http://nowhere.com/test", "1900-10-20"),
+            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, null, (String) null, null, null),
         };
         uid1 = new String[]
         {
@@ -76,7 +75,7 @@ public class ConverterTest extends TestCase
         };
 
         doc = Converter.convertBookMetaDatasToDocument(t1, uid1);
-        t2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
+        t2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter(), BookMetaData.SPEED_INACCURATE);
         assertEquals(t1.length, 5);
         assertEquals(t2.length, 5);
 
@@ -97,7 +96,7 @@ public class ConverterTest extends TestCase
 
         t1 = new BookMetaData[] { };
         doc = Converter.convertBookMetaDatasToDocument(t1, new String[] { });
-        t2 = Converter.convertDocumentToBookMetaDatas(null, doc, null, Books.SPEED_INACCURATE);
+        t2 = Converter.convertDocumentToBookMetaDatas(null, doc, null, BookMetaData.SPEED_INACCURATE);
         assertEquals(t1.length, 0);
         assertEquals(t2.length, 0);
     }

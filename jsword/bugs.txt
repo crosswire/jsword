@@ -5,20 +5,18 @@ GUI
 - status bar re-size
 - better display mechanism
 - what ui tweaker to use
-- error messages don't always come up on top properly, double modal problem (make exceptionPane non modal?)
 
 Other
 - change name of swing packages
 - change name of servlet packages
 - move map and maptest into jsword-support
-- install manager
 - what version of findbugs
 
 Web
 - auto test for web demo
 
 Other
-- Sword installer does not register new Bible
+- installer book sorting
 - need to put download dir in sword module list
 
 --------------------------------------------------------------------------------

@@ -57,33 +57,33 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     {
         try
         {
-            List booklist = Books.getBookMetaDatas();
+            List booklist = Books.installed().getBookMetaDatas();
             if (booklist.size() == 0)
             {
                 return;
             }
 
             Book book = ((BookMetaData) booklist.get(0)).getBook();
-            txt_passg.setBook(book);
+            txtPassg.setBook(book);
         }
         catch (Exception ex)
         {
             log.error("Failed to set default book", ex);
         }
 
-        jbInit();
+        initialize();
     }
 
     /**
      * Create the GUI
      */
-    private void jbInit()
+    private void initialize()
     {
-        mdl_passg.setMode(PassageListModel.LIST_RANGES);
-        mdl_passg.setRestriction(PassageConstants.RESTRICT_CHAPTER);
+        mdlPassg.setMode(PassageListModel.LIST_RANGES);
+        mdlPassg.setRestriction(PassageConstants.RESTRICT_CHAPTER);
 
-        lst_passg.setModel(mdl_passg);
-        lst_passg.addListSelectionListener(new ListSelectionListener()
+        lstPassg.setModel(mdlPassg);
+        lstPassg.addListSelectionListener(new ListSelectionListener()
         {
             public void valueChanged(ListSelectionEvent ev)
             {
@@ -91,16 +91,16 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
             }
         });
 
-        spt_passg.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        spt_passg.add(scr_passg, JSplitPane.LEFT);
-        spt_passg.add(txt_passg, JSplitPane.RIGHT);
-        spt_passg.setOneTouchExpandable(true);
-        spt_passg.setDividerLocation(0.0D);
+        sptPassg.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        sptPassg.add(scrPassg, JSplitPane.LEFT);
+        sptPassg.add(txtPassg, JSplitPane.RIGHT);
+        sptPassg.setOneTouchExpandable(true);
+        sptPassg.setDividerLocation(0.0D);
 
-        scr_passg.getViewport().add(lst_passg);
+        scrPassg.getViewport().add(lstPassg);
 
         this.setLayout(new BorderLayout());
-        this.add(spt_passg, BorderLayout.CENTER);
+        this.add(sptPassg, BorderLayout.CENTER);
     }
 
     /**
@@ -120,8 +120,8 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
 
         try
         {
-            mdl_passg.setPassage(ref);
-            txt_passg.setPassage(ref);
+            mdlPassg.setPassage(ref);
+            txtPassg.setPassage(ref);
         }
         catch (Exception ex)
         {
@@ -134,7 +134,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public Passage getPassage()
     {
-        return mdl_passg.getPassage();
+        return mdlPassg.getPassage();
     }
 
     /**
@@ -142,10 +142,10 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void deleteSelected(BibleViewPane view)
     {
-        PassageGuiUtil.deleteSelectedVersesFromList(lst_passg);
+        PassageGuiUtil.deleteSelectedVersesFromList(lstPassg);
 
         // Update the text box
-        ref = mdl_passg.getPassage();
+        ref = mdlPassg.getPassage();
         DisplaySelectPane psel = view.getSelectPane();
         psel.setPassage(ref);
     }
@@ -155,7 +155,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      *
     public InnerDisplayPane getSelectedInnerDisplayPane()
     {
-        return txt_passg.getInnerDisplayPane();
+        return txtPassg.getInnerDisplayPane();
     }
     */
 
@@ -164,7 +164,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void cut()
     {
-        txt_passg.cut();
+        txtPassg.cut();
     }
 
     /* (non-Javadoc)
@@ -172,7 +172,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void copy()
     {
-        txt_passg.copy();
+        txtPassg.copy();
     }
 
     /* (non-Javadoc)
@@ -180,7 +180,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void paste()
     {
-        txt_passg.paste();
+        txtPassg.paste();
     }
 
     /* (non-Javadoc)
@@ -188,7 +188,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
-        txt_passg.addHyperlinkListener(li);
+        txtPassg.addHyperlinkListener(li);
     }
 
     /* (non-Javadoc)
@@ -196,7 +196,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
-        txt_passg.removeHyperlinkListener(li);
+        txtPassg.removeHyperlinkListener(li);
     }
 
     /* (non-Javadoc)
@@ -204,7 +204,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public String getOSISSource()
     {
-        return txt_passg.getOSISSource();
+        return txtPassg.getOSISSource();
     }
 
     /* (non-Javadoc)
@@ -212,7 +212,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public String getHTMLSource()
     {
-        return txt_passg.getHTMLSource();
+        return txtPassg.getHTMLSource();
     }
 
     /* (non-Javadoc)
@@ -220,7 +220,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public Key getKey()
     {
-        return txt_passg.getKey();
+        return txtPassg.getKey();
     }
 
     /**
@@ -230,7 +230,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     {
         try
         {
-            Object[] ranges = lst_passg.getSelectedValues();
+            Object[] ranges = lstPassg.getSelectedValues();
 
             Passage local = null;
             if (ranges.length == 0)
@@ -252,7 +252,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
                 }
             }
 
-            txt_passg.setPassage(local);
+            txtPassg.setPassage(local);
         }
         catch (Exception ex)
         {
@@ -273,11 +273,11 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     /*
      * GUI Components
      */
-    private JSplitPane spt_passg = new JSplitPane();
-    private JScrollPane scr_passg = new JScrollPane();
-    protected TabbedDisplayPane txt_passg = new TabbedDisplayPane();
-    private JList lst_passg = new JList();
-    private PassageListModel mdl_passg = new PassageListModel();
+    private JSplitPane sptPassg = new JSplitPane();
+    private JScrollPane scrPassg = new JScrollPane();
+    protected TabbedDisplayPane txtPassg = new TabbedDisplayPane();
+    private JList lstPassg = new JList();
+    private PassageListModel mdlPassg = new PassageListModel();
     private DisplaySelectListener dsli = new CustomDisplaySelectListener();
 
     /**
@@ -293,7 +293,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
             log.debug("new bible chosen: "+ev.getBook());
 
             Book book = ev.getBook();
-            txt_passg.setBook(book);
+            txtPassg.setBook(book);
 
             // The following way to refresh the view is a little harsh because
             // resets any list selections. It would be nice if we could get

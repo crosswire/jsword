@@ -152,7 +152,7 @@ public class ExceptionPane extends JPanel
         split.setBottomComponent(text_scroll);
         split.setBorder(BorderFactory.createEmptyBorder());
         split.setPreferredSize(new Dimension(500, 300));
-        
+
         this.setLayout(new BorderLayout());
         this.add(upper, BorderLayout.NORTH);
     }
@@ -243,12 +243,16 @@ public class ExceptionPane extends JPanel
             }
         });
 
-        //dialog.setModal(true);
+        // If this dialog is not modal then if we display an exception dialog
+        // where there is a modal dialog displayed then although this dialog
+        // is to the front, we can't interract with it until the modal dialog
+        // has been closed.
+        dialog.setModal(true);
     
         GuiUtil.centerWindow(dialog);
-        dialog.setVisible(true);
         dialog.pack();
-    
+        dialog.setVisible(true);
+
         // When it has closed
         //dialog.dispose();
         //dialog = null;

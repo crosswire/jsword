@@ -1,14 +1,12 @@
-
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 /**
- * JUnit Test.
- * For when we don't actually want to do testing of responses
+ * There are several lists of Books, the most important being the installed
+ * Books, however there may be others like the available books or books from
+ * a specific driver.
+ * This interface provides a common method of accessing all of them.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,37 +29,28 @@ import junit.framework.TestCase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BookParentTst extends TestCase
+public interface BookList
 {
-    public BookParentTst(String s)
-    {
-        super(s);
-    }
+    /**
+     * Get an iterator over all the Books of all types.
+     */
+    public List getBookMetaDatas();
 
-    protected BookMetaData[] bmds = null;
-    protected Book[] bibles = null;
+    /**
+     * Get a filtered iterator over all the Books.
+     * @see BookFilters
+     */
+    public List getBookMetaDatas(BookFilter filter);
 
-    protected void setUp() throws Exception
-    {
-        List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
-        bibles = new Book[lbmds.size()];
-        bmds = new BookMetaData[lbmds.size()];
+    /**
+     * Remove a BibleListener from our list of listeners
+     * @param li The old listener
+     */
+    public void addBooksListener(BooksListener li);
 
-        int i = 0;
-        for (Iterator it = lbmds.iterator(); it.hasNext();)
-        {
-            bmds[i] = (BookMetaData) it.next();
-            bibles[i] = bmds[i].getBook();
-            i++;
-        }
-    }
-
-    protected void tearDown() throws Exception
-    {
-    }
-
-    public void testNothing()
-    {
-        assertTrue(true);
-    }
+    /**
+     * Add a BibleListener to our list of listeners
+     * @param li The new listener
+     */
+    public void removeBooksListener(BooksListener li);
 }

@@ -1,7 +1,9 @@
 package org.crosswire.jsword.book.install;
 
 import java.util.List;
-import java.util.Properties;
+
+import org.crosswire.jsword.book.BookList;
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
  * An interface that allows us to download from a specific source of Bible data.
@@ -33,7 +35,7 @@ import java.util.Properties;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Installer
+public interface Installer extends BookList
 {
     /**
      * Accessor for the URL
@@ -42,18 +44,13 @@ public interface Installer
     public String getURL();
 
     /**
-     * Get a cached list of names (Strings) that represent downloadable modules.
+     * Get a list of BookMetaData objects that represent downloadable modules.
      * If no list has been retrieved from the remote source using reloadIndex()
      * then we should just return an empty list and not attempt to contact the
      * remote source. See notes on reload for more information.
      * @see Installer#reloadIndex()
      */
-    public List getIndex();
-
-    /**
-     * Get a Properties file describing one of the index entries
-     */
-    public Properties getEntry(String name);
+    public List getBookMetaDatas();
 
     /**
      * Refetch a list of names from the remote source.
@@ -61,13 +58,13 @@ public interface Installer
      * of this action. If the user lives in a country that persecutes
      * Christians then this action might give the game away.</b>
      */
-    public List reloadIndex() throws InstallException;
+    public void reloadIndex() throws InstallException;
 
     /**
      * Download and install a module locally.
      * The name should be one from an index list retrieved from getIndex() or
      * reloadIndex()
-     * @param name The module to install
+     * @param bmd The module to install
      */
-    public void install(String name) throws InstallException;
+    public void install(BookMetaData bmd) throws InstallException;
 }

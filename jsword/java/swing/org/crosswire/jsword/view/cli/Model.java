@@ -68,7 +68,7 @@ public class Model
 
     public String dictList()
     {
-        List dicts = Books.getBookMetaDatas(BookFilters.getDictionaries());
+        List dicts = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
         BookMetaData bmd = (BookMetaData) dicts.get(0);
         Book dict = bmd.getBook();
 
@@ -103,7 +103,7 @@ public class Model
     
     public String search(String str) throws BookException
     {
-        List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+        List dicts = Books.installed().getBookMetaDatas(BookFilters.getBibles());
         BookMetaData bmd = (BookMetaData) dicts.get(0);
         Book book = bmd.getBook();
         
@@ -113,7 +113,7 @@ public class Model
     
     public String match(String str) throws BookException
     {
-        List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+        List dicts = Books.installed().getBookMetaDatas(BookFilters.getBibles());
         BookMetaData bmd = (BookMetaData) dicts.get(0);
         Book book = bmd.getBook();
 
@@ -145,7 +145,7 @@ public class Model
     {
         StringBuffer buffer = new StringBuffer();
 
-        List list = Books.getBookMetaDatas(filter);
+        List list = Books.installed().getBookMetaDatas(filter);
         for (Iterator it = list.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();

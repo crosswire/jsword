@@ -1,4 +1,3 @@
-
 package org.crosswire.common.progress;
 
 import java.awt.event.ActionEvent;
@@ -111,7 +110,7 @@ public class Job
      * We have moved onto another section so update the percentage complete
      * and the section title.
      */
-    public synchronized void setProgress(int percent, String statedesc)
+    public void setProgress(int percent, String statedesc)
     {
         synchronized (this)
         {
@@ -130,7 +129,7 @@ public class Job
     /**
      * Called to indicate that we are finished with the dialog
      */
-    public synchronized void done()
+    public void done()
     {
         synchronized (this)
         {
@@ -153,6 +152,15 @@ public class Job
         {
             savePredictions();
         }
+    }
+
+    /**
+     * Typically called from in a catch block, this ensures that we don't save
+     * the timing file because we have a messed up run.
+     */
+    public void ignoreTimings()
+    {
+        predicturl = null;
     }
 
     /**

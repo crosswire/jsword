@@ -58,7 +58,7 @@ public class DemoServlet extends HttpServlet
         try
         {
             String bookname = config.getInitParameter("book-name");
-            book = Books.getBookMetaData(bookname).getBook();
+            book = Books.installed().getBookMetaData(bookname).getBook();
         }
         catch (Exception ex)
         {

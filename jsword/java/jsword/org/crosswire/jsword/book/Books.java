@@ -6,11 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.activate.Activator;
-import org.crosswire.common.util.CollectionUtil;
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.jsword.book.basic.AbstractBookList;
 
 /**
  * The Bibles class (along with Bible) is the central point of contact
@@ -37,7 +36,7 @@ import org.crosswire.common.util.ResourceUtil;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Books
+public class Books extends AbstractBookList
 {
     /**
      * Prevent Instansiation
@@ -47,125 +46,25 @@ public class Books
     }
 
     /**
-     * The SPEED_* constants specify how fast a Book implementation is.
-     * 
-     * Important values include 5, were the remoting system will not remote
-     * Books where getSpeed() >= 5 (to save re-remoting already remote Books).
-     * 10 is also special - values > 10 indicate the data returned is likely to
-     * be wrong (i.e. test data) So we should probably not ship systems with
-     * BibleDrivers that return > 10.
+     * Accessor for the singleton instance
      */
-    public static final int SPEED_FASTEST = 10;
+    public static Books installed()
+    {
+        return instance;
+    }
 
-    /**
-     * @see Books#SPEED_FASTEST
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas()
      */
-    public static final int SPEED_FAST = 9;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_MEDIUM = 8;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_SLOW = 7;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_SLOWEST = 6;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_FASTEST = 5;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_FAST = 4;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_MEDIUM = 3;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_SLOW = 2;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_SLOWEST = 1;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_IGNORE = 0;
-
-    /**
-     * @see Books#SPEED_FASTEST
-     */
-    public static final int SPEED_INACCURATE = -1;
-
-    /**
-     * The list of Books
-     */
-    private static List books = new ArrayList();
-
-    /**
-     * The list of listeners
-     */
-    private static EventListenerList listeners = new EventListenerList();
-
-    /**
-     * An array of BookDrivers
-     */
-    private static List drivers = new ArrayList();
-
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(Books.class);
-
-    /**
-     * Get an iterator over all the Books of all types.
-     */
-    public static List getBookMetaDatas()
+    public List getBookMetaDatas()
     {
         return Collections.unmodifiableList(books);
     }
 
-    /**
-     * Get a filtered iterator over all the Books.
-     * @see BookFilters
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBookMetaData(java.lang.String)
      */
-    public static List getBookMetaDatas(BookFilter filter)
-    {
-        List temp = CollectionUtil.createList(new BookFilterIterator(books.iterator(), filter));
-        return Collections.unmodifiableList(temp);
-    }
-
-    /**
-     * Find a book by name, currently trying a case sensitive match first, and a
-     * case insensitive match second.
-     * <p>We might alter the functionallity of this to use a HashMap rather than
-     * a loop so we probably should not rely on the case insensitive bit,
-     * however this feels like a low use convenience method most useful in a
-     * scripting type environment for the time being, so I'm leaving case
-     * insensitivity in.
-     * <p>This is not expected to be a primary way to get books, most interfaces
-     * will have some way to allow the user to select books from a list in
-     * which case one of the getBooks() methods is more useful.
-     * This method could well be slow(ish) to execute.
-     * @param name The name of the book to find.
-     * @return null if a book by the given name can not be found.
-     */
-    public static BookMetaData getBookMetaData(String name)
+    public BookMetaData getBookMetaData(String name)
     {
         // First check for exact matches
         for (Iterator it = books.iterator(); it.hasNext(); )
@@ -191,22 +90,24 @@ public class Books
     }
 
     /**
-     * Remove a BibleListener from our list of listeners
-     * @param li The old listener
+     * The list of Books
      */
-    public static synchronized void addBooksListener(BooksListener li)
-    {
-        listeners.add(BooksListener.class, li);
-    }
+    private static List books = new ArrayList();
 
     /**
-     * Add a BibleListener to our list of listeners
-     * @param li The new listener
+     * An array of BookDrivers
      */
-    public static synchronized void removeBooksListener(BooksListener li)
-    {
-        listeners.remove(BooksListener.class, li);
-    }
+    private static List drivers = new ArrayList();
+
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(Books.class);
+
+    /**
+     * The singleton instance
+     */
+    private static final Books instance = new Books();
 
     /**
      * Add a Bible to the current list of Books.
@@ -241,41 +142,6 @@ public class Books
         else
         {
             throw new BookException(Msg.BOOK_NOREMOVE);
-        }
-    }
-
-    /**
-     * Kick of an event sequence
-     * @param source The event source
-     * @param bmd The meta-data of the changed Bible
-     * @param added Is it added?
-     */
-    protected static synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
-    {
-        // Guaranteed to return a non-null array
-        Object[] contents = listeners.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        BooksEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2)
-        {
-            if (contents[i] == BooksListener.class)
-            {
-                if (ev == null)
-                {
-                    ev = new BooksEvent(source, bmd, added);
-                }
-
-                if (added)
-                {
-                    ((BooksListener) contents[i + 1]).bookAdded(ev);
-                }
-                else
-                {
-                    ((BooksListener) contents[i + 1]).bookRemoved(ev);
-                }
-            }
         }
     }
 

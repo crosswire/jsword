@@ -334,7 +334,7 @@ public class GZIPBackend implements Backend
     /**
      * Yuck - they blocking method defines the initial file character.
      * The Sword original used: { 'X', 'r', 'v', 'c', 'b' }, however the values
-     * we read from SwordConfig never matched up. Perhaps we need to work out
+     * we read from SwordBookMetaData never matched up. Perhaps we need to work out
      * why.
      */
     private static final char[] UNIQUE_INDEX_ID = { 'b', 'c', 'v', };

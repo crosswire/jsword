@@ -156,7 +156,7 @@ public class Mapper extends JFrame
 
             config.localToApplication(true);
 
-            List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+            List dicts = Books.installed().getBookMetaDatas(BookFilters.getBibles());
             BookMetaData bmd = (BookMetaData) dicts.get(0);
             Book book = bmd.getBook();
 

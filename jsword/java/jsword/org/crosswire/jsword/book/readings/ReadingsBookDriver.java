@@ -1,10 +1,8 @@
-
 package org.crosswire.jsword.book.readings;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.util.Project;
 
@@ -41,7 +39,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     {
         Book[] books = new Book[]
         {
-            new ReadingsBook(this, "Readings", BookType.DICTIONARY, Books.SPEED_MEDIUM),
+            new ReadingsBook(this, "Readings", BookType.DICTIONARY, BookMetaData.SPEED_MEDIUM),
         };
 
         bmds = new BookMetaData[books.length];

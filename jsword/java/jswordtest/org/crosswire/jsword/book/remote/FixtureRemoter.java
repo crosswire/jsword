@@ -1,7 +1,6 @@
-
 package org.crosswire.jsword.book.remote;
 
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BookMetaData;
 import org.jdom.Document;
 
 /**
@@ -51,6 +50,6 @@ public class FixtureRemoter implements Remoter
      */
     public int getSpeed()
     {
-        return Books.SPEED_INACCURATE;
+        return BookMetaData.SPEED_INACCURATE;
     }
 }

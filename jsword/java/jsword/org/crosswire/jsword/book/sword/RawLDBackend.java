@@ -47,9 +47,9 @@ public class RawLDBackend implements Backend
      * Simple ctor
      * @param datasize We need to know how many bytes in the size portion of the index
      */
-    public RawLDBackend(SwordConfig config, String path, int datasize) throws BookException
+    public RawLDBackend(SwordBookMetaData sbmd, String path, int datasize) throws BookException
     {
-        this.config = config;
+        this.sbmd = sbmd;
         this.datasize = datasize;
 
         if (datasize != 2 && datasize != 4)
@@ -121,7 +121,7 @@ public class RawLDBackend implements Backend
     {
         checkActive();
 
-        KeyList reply = new DefaultKeyList(config.getDescription());
+        KeyList reply = new DefaultKeyList(sbmd.getName());
 
         int entrysize = OFFSETSIZE + datasize;
         long entries;
@@ -284,7 +284,7 @@ public class RawLDBackend implements Backend
     /**
      * The book driver that we are providing data for
      */
-    private SwordConfig config;
+    private SwordBookMetaData sbmd;
 
     /**
      * A Key that knows where the data is in the real file.

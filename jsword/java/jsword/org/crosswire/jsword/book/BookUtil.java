@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
@@ -168,24 +167,6 @@ public class BookUtil
     }
 
     /**
-     * Remove the punctuation from the ends of the word
-     * @param word Word with punctuation
-     * @return Word without punctuation
-     */
-    protected static String stripPunctuationWord(String word)
-    {
-        int first = firstLetter(word);
-        int last = lastLetter(word)+1;
-
-        if (first > last)
-        {
-            return word;
-        }
-
-        return word.substring(first, last);
-    }
-
-    /**
      * From a sentance get a list of words (in original order) without
      * any punctuation, and all in lower case.
      * @param words Words with punctuation
@@ -232,20 +213,23 @@ public class BookUtil
     }
 
     /**
-     * Remove the punctuation from the ends of the word. The special
-     * case is that if the first word ends "--" and the last word has
-     * no punctuation at the beginning, then the answer is "--" and not
-     * "-- ". We miss out the space because "--" is a special separator.
-     * @param first The word to grab the punctuation from the end of
-     * @param last The word to grab the punctuation from the start of
-     * @return The end of the first, a space, and the end of the first
+     * Convert an Iterator of strings to an array of strings. Needed because
+     * quite a few things want to take the result of Book.startsWith() and
+     * pass it into a method taking String[]
+     * @param it The Iterator to convert
+     * @return A string array
+     * @throws ClassCastException if the iterator isn't 100% strings
      */
-    protected static String stripWords(String first, String last)
+    public static String[] toStringArray(Iterator it) throws ClassCastException
     {
-        String init1 = first.substring(lastLetter(first)+1);
-        String init2 = last.substring(0, firstLetter(last));
+        ArrayList list = new ArrayList();
+        while (it.hasNext())
+        {
+            String s = (String) it.next();
+            list.add(s);
+        }
 
-        return init1 + init2;
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
     /**
@@ -265,6 +249,41 @@ public class BookUtil
         }
 
         return retcode;
+    }
+
+    /**
+     * Remove the punctuation from the ends of the word
+     * @param word Word with punctuation
+     * @return Word without punctuation
+     */
+    protected static String stripPunctuationWord(String word)
+    {
+        int first = firstLetter(word);
+        int last = lastLetter(word)+1;
+
+        if (first > last)
+        {
+            return word;
+        }
+
+        return word.substring(first, last);
+    }
+
+    /**
+     * Remove the punctuation from the ends of the word. The special
+     * case is that if the first word ends "--" and the last word has
+     * no punctuation at the beginning, then the answer is "--" and not
+     * "-- ". We miss out the space because "--" is a special separator.
+     * @param first The word to grab the punctuation from the end of
+     * @param last The word to grab the punctuation from the start of
+     * @return The end of the first, a space, and the end of the first
+     */
+    protected static String stripWords(String first, String last)
+    {
+        String init1 = first.substring(lastLetter(first)+1);
+        String init2 = last.substring(0, firstLetter(last));
+
+        return init1 + init2;
     }
 
     /**
@@ -307,25 +326,5 @@ public class BookUtil
         }
 
         return last;
-    }
-
-    /**
-     * Convert an Iterator of strings to an array of strings. Needed because
-     * quite a few things want to take the result of Book.startsWith() and
-     * pass it into a method taking String[]
-     * @param it The Iterator to convert
-     * @return A string array
-     * @throws ClassCastException if the iterator isn't 100% strings
-     */
-    public static String[] toStringArray(Iterator it) throws ClassCastException
-    {
-        ArrayList list = new ArrayList();
-        while (it.hasNext())
-        {
-            String s = (String) it.next();
-            list.add(s);
-        }
-
-        return (String[]) list.toArray(new String[list.size()]);
     }
 }

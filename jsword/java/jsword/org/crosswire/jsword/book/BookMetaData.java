@@ -4,7 +4,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
+import java.util.Properties;
 
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
@@ -167,11 +167,78 @@ public interface BookMetaData
 
     /**
      * Get a list of all the properties available to do with this Book.
-     * The returned Map will be read-only so any attempts to alter it will
-     * fail. We may support a setProperty() method at a later date that will
-     * allow the user to set run-time properties.
+     * The returned Properties will be read-only so any attempts to alter it
+     * will fail.
+     * This method is designed to support finding out more about a book
+     * rather than as a covert method of
      */
-    public Map getProperties();
+    public Properties getProperties();
+
+    /**
+     * The SPEED_* constants specify how fast a Book implementation is.
+     * 
+     * Important values include 5, were the remoting system will not remote
+     * Books where getSpeed() >= 5 (to save re-remoting already remote Books).
+     * 10 is also special - values > 10 indicate the data returned is likely to
+     * be wrong (i.e. test data) So we should probably not ship systems with
+     * BibleDrivers that return > 10.
+     */
+    public static final int SPEED_FASTEST = 10;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_FAST = 9;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_MEDIUM = 8;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_SLOW = 7;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_SLOWEST = 6;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_REMOTE_FASTEST = 5;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_REMOTE_FAST = 4;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_REMOTE_MEDIUM = 3;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_REMOTE_SLOW = 2;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_REMOTE_SLOWEST = 1;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_IGNORE = 0;
+
+    /**
+     * @see BookMetaData#SPEED_FASTEST
+     */
+    public static final int SPEED_INACCURATE = -1;
 
     /**
      * The key for the type in the properties map

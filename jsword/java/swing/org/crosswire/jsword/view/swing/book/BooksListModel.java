@@ -7,6 +7,7 @@ import javax.swing.event.ListDataListener;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookList;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
@@ -54,7 +55,17 @@ public class BooksListModel extends AbstractListModel
      */
     public BooksListModel(BookFilter filter)
     {
+        this(filter, Books.installed());
+    }
+
+    /**
+     * Basic constructor
+     */
+    public BooksListModel(BookFilter filter, BookList books)
+    {
         this.filter = filter;
+        this.books = books;
+
         cacheData();
     }
 
@@ -109,7 +120,7 @@ public class BooksListModel extends AbstractListModel
     {
         if (listenerList.getListenerCount() == 0)
         {
-            Books.addBooksListener(listener);
+            books.addBooksListener(listener);
         }
 
         super.addListDataListener(li);
@@ -124,7 +135,7 @@ public class BooksListModel extends AbstractListModel
 
         if (listenerList.getListenerCount() == 0)
         {
-            Books.removeBooksListener(listener);
+            books.removeBooksListener(listener);
         }
     }
 
@@ -133,7 +144,7 @@ public class BooksListModel extends AbstractListModel
      */
     protected void cacheData()
     {
-        bmds = Books.getBookMetaDatas(filter);
+        bmds = books.getBookMetaDatas(filter);
     }
 
     /**
@@ -177,6 +188,11 @@ public class BooksListModel extends AbstractListModel
     {
         super.fireIntervalRemoved(source, index0, index1);
     }
+
+    /**
+     * The list of books in this tree
+     */
+    private BookList books;
 
     /**
      * The filter used to choose Bibles

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import javax.swing.ComboBoxModel;

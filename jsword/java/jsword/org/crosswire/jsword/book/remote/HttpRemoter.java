@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BookMetaData;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
@@ -89,7 +89,7 @@ public class HttpRemoter implements Remoter
      */
     public int getSpeed()
     {
-        return Books.SPEED_REMOTE_SLOW;
+        return BookMetaData.SPEED_REMOTE_SLOW;
     }
 
     /**

@@ -52,20 +52,20 @@ public class BibleViewPane extends JPanel
      */
     public BibleViewPane()
     {
-        jbInit();
+        initialize();
     }
 
     /**
      * Setup the GUI
      */
-    private void jbInit()
+    private void initialize()
     {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.addChoosableFileFilter(new CustomFileFilter());
         chooser.setMultiSelectionEnabled(false);
 
-        pnl_select.addCommandListener(pnl_passg.getDisplaySelectListener());
-        pnl_select.addCommandListener(new DisplaySelectListener()
+        pnlSelect.addCommandListener(pnlPassg.getDisplaySelectListener());
+        pnlSelect.addCommandListener(new DisplaySelectListener()
         {
             /* (non-Javadoc)
              * @see org.crosswire.jsword.view.swing.book.DisplaySelectListener#passageSelected(org.crosswire.jsword.view.swing.book.DisplaySelectEvent)
@@ -85,12 +85,12 @@ public class BibleViewPane extends JPanel
             {
             }
         });
-        pnl_passg.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        pnlPassg.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.setLayout(new BorderLayout());
-        this.add(pnl_select, BorderLayout.NORTH);
-        this.add(pnl_passg, BorderLayout.CENTER);
+        this.add(pnlSelect, BorderLayout.NORTH);
+        this.add(pnlPassg, BorderLayout.CENTER);
     }
 
     /**
@@ -98,7 +98,7 @@ public class BibleViewPane extends JPanel
      */
     public void adjustFocus()
     {
-        pnl_select.adjustFocus();
+        pnlSelect.adjustFocus();
     }
 
     /**
@@ -108,7 +108,7 @@ public class BibleViewPane extends JPanel
     {
         if (saved == null)
         {
-            String deft = pnl_select.getDefaultName();
+            String deft = pnlSelect.getDefaultName();
             if (deft.length() > shortlen)
             {
                 deft = StringUtil.shorten(deft, shortlen);
@@ -194,7 +194,7 @@ public class BibleViewPane extends JPanel
      */
     public Passage getPassage()
     {
-        return pnl_passg.getPassage();
+        return pnlPassg.getPassage();
     }
 
     /**
@@ -202,8 +202,8 @@ public class BibleViewPane extends JPanel
      */
     public void setPassage(Passage ref)
     {
-        pnl_select.setPassage(ref);
-        pnl_passg.setPassage(ref);
+        pnlSelect.setPassage(ref);
+        pnlPassg.setPassage(ref);
     }
 
     /**
@@ -211,7 +211,7 @@ public class BibleViewPane extends JPanel
      */
     public OuterDisplayPane getPassagePane()
     {
-        return pnl_passg;
+        return pnlPassg;
     }
 
     /**
@@ -219,7 +219,7 @@ public class BibleViewPane extends JPanel
      */
     public DisplaySelectPane getSelectPane()
     {
-        return pnl_select;
+        return pnlSelect;
     }
 
     /**
@@ -235,7 +235,7 @@ public class BibleViewPane extends JPanel
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
-        pnl_passg.addHyperlinkListener(li);
+        pnlPassg.addHyperlinkListener(li);
     }
 
     /**
@@ -243,7 +243,7 @@ public class BibleViewPane extends JPanel
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
-        pnl_passg.removeHyperlinkListener(li);
+        pnlPassg.removeHyperlinkListener(li);
     }
 
     /**
@@ -302,8 +302,8 @@ public class BibleViewPane extends JPanel
 
     protected File saved = null;
     private transient List listeners;
-    private DisplaySelectPane pnl_select = new DisplaySelectPane();
-    private OuterDisplayPane pnl_passg = new OuterDisplayPane();
+    private DisplaySelectPane pnlSelect = new DisplaySelectPane();
+    private OuterDisplayPane pnlPassg = new OuterDisplayPane();
     private static int shortlen = 30;
     private JFileChooser chooser = new JFileChooser();
     private static final String EXTENSION = ".lst";
@@ -334,9 +334,9 @@ public class BibleViewPane extends JPanel
         /* (non-Javadoc)
          * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
          */
-        public boolean accept(File f)
+        public boolean accept(File file)
         {
-            return f.getName().endsWith(EXTENSION);
+            return file.getName().endsWith(EXTENSION);
         }
 
         /* (non-Javadoc)

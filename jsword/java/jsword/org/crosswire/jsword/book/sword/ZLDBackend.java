@@ -36,9 +36,9 @@ public class ZLDBackend implements Backend
     /**
      * Simple ctor
      */
-    public ZLDBackend(SwordConfig config)
+    public ZLDBackend(SwordBookMetaData sbmd)
     {
-        this.config = config;
+        this.sbmd = sbmd;
     }
 
     /* (non-Javadoc)
@@ -60,7 +60,7 @@ public class ZLDBackend implements Backend
      */
     public KeyList readIndex()
     {
-        return new DefaultKeyList(config.getDescription());
+        return new DefaultKeyList(sbmd.getName());
     }
 
     /* (non-Javadoc)
@@ -75,5 +75,5 @@ public class ZLDBackend implements Backend
     /**
      * The book driver that we are providing data for
      */
-    private SwordConfig config;
+    private SwordBookMetaData sbmd;
 }

@@ -3,10 +3,7 @@ package org.crosswire.jsword.book.basic;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.crosswire.common.util.StringUtil;
@@ -14,7 +11,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Openness;
 
 /**
@@ -203,9 +199,9 @@ public class DefaultBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map getProperties()
+    public Properties getProperties()
     {
-        return Collections.unmodifiableMap(map);
+        return map;
     }
     
     /* (non-Javadoc)
@@ -535,14 +531,18 @@ public class DefaultBookMetaData implements BookMetaData
         return FIRSTPUB_FORMAT.format(pub);
     }
 
-    private Map map = new HashMap();
+    /**
+     * 
+     */
+    private Properties map = new Properties();
+
     private BookType type;
     private Book book;
     private BookDriver driver = null;
     private String name = "";
     private String edition = "";
     private String initials = "";
-    private int speed = Books.SPEED_SLOWEST;
+    private int speed = BookMetaData.SPEED_SLOWEST;
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;
     private URL licence = null;

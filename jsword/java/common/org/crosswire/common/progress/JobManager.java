@@ -21,8 +21,8 @@ import org.crosswire.common.util.Logger;
  * {
  *     public void run()
  *     {
- *         URL predicturl = Project.instance().getWritablePropertiesURL("display");
- *         Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
+ *         URL predicturl = Project.instance().getWritablePropertiesURL("save-name");
+ *         Job job = JobManager.createJob("Job Title", predicturl, this, true);
  * 
  *         try
  *         {
@@ -34,6 +34,7 @@ import org.crosswire.common.util.Logger;
  *         catch (Exception ex)
  *         {
  *             ...
+ *             job.ignoreTimings();
  *         }
  *         finally
  *         {
