@@ -144,7 +144,7 @@ public class SerBible extends LocalURLBible
     {
         try
         {
-            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL());
+            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
         }
         catch (Exception ex)
         {
@@ -161,7 +161,7 @@ public class SerBible extends LocalURLBible
     {
         try
         {
-            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL());
+            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
             cache.load();
         }
         catch (Exception ex)

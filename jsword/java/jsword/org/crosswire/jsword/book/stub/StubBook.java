@@ -16,8 +16,7 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
-import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -92,14 +91,14 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
      */
     public BibleData getData(Passage ref) throws BookException
     {
-        BibleData doc = new DefaultBibleData();
+        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
 
         // For all the ranges in this Passage
         Iterator rit = ref.rangeIterator();
         while (rit.hasNext())
         {
             VerseRange range = (VerseRange) rit.next();
-            SectionData section = doc.createSectionData(range.toString());
+            SectionData section = OsisUtil.createSectionData(doc, range.toString());
 
             // For all the verses in this range
             Iterator vit = range.verseIterator();
@@ -107,8 +106,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
             {
                 Verse verse = (Verse) vit.next();
 
-                RefData vref = section.createRefData(verse, false);
-                vref.setPlainText("stub implementation");
+                OsisUtil.createRefData(section, verse, "stub implementation");
             }
         }
 
@@ -141,11 +139,10 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
             Verse verse = new Verse("Gen 1:1");
             VerseRange range = new VerseRange(verse);
             
-            BibleData doc = new DefaultBibleData();
-            SectionData section = doc.createSectionData(range.toString());
+            BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
+            SectionData section = OsisUtil.createSectionData(doc, range.toString());
             
-            RefData vref = section.createRefData(verse, false);
-            vref.setPlainText("stub implementation");
+            OsisUtil.createRefData(section, verse, "stub implementation");
             return doc;
         }
         catch (NoSuchVerseException ex)

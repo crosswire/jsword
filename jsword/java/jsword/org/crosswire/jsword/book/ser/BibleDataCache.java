@@ -12,9 +12,10 @@ import java.net.URL;
 import java.util.Iterator;
 
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -50,10 +51,12 @@ public class BibleDataCache
 {
     /**
      * Constructor for BibleDataCache.
+     * PENDING(joe): surely the bmd is our responsibility not our users?
      */
-    public BibleDataCache(URL url) throws BookException, FileNotFoundException, IOException
+    public BibleDataCache(URL url, BibleMetaData bmd) throws BookException, FileNotFoundException, IOException
     {
         this.url = url;
+        this.bmd = bmd;
 
         if (!url.getProtocol().equals("file"))
         {
@@ -90,7 +93,7 @@ public class BibleDataCache
      */
     public BibleData getData(Passage ref) throws BookException
     {
-        BibleData doc = new DefaultBibleData();
+        BibleData doc = OsisUtil.createBibleData(bmd);
 
         try
         {
@@ -99,7 +102,7 @@ public class BibleDataCache
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                SectionData section = doc.createSectionData(range.toString());
+                SectionData section = OsisUtil.createSectionData(doc, range.toString());
 
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
@@ -113,8 +116,7 @@ public class BibleDataCache
                     // Read the XML text
                     String text = xml_dat.readUTF();
 
-                    RefData vref = section.createRefData(verse, false);
-                    vref.setPlainText(text);
+                    OsisUtil.createRefData(section, verse, text);
                 }
             }
 
@@ -135,15 +137,15 @@ public class BibleDataCache
         try
         {
             // For all of the sections
-            for (Iterator sit = doc.getSectionDatas(); sit.hasNext(); )
+            for (Iterator sit = OsisUtil.getSectionDatas(doc); sit.hasNext(); )
             {
                 SectionData section = (SectionData) sit.next();
 
                 // For all of the Verses in the section
-                for (Iterator vit = section.getRefDatas(); vit.hasNext(); )
+                for (Iterator vit = OsisUtil.getRefDatas(section); vit.hasNext(); )
                 {
                     RefData vel = (RefData) vit.next();
-                    String text = vel.getPlainText();
+                    String text = OsisUtil.getPlainText(vel);
 
                     // Remember where we were so we can read it back later
                     xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();
@@ -184,6 +186,11 @@ public class BibleDataCache
             throw new BookException("ser_index", ex);
         }
     }
+
+    /**
+     * About the data that we are caching
+     */
+    private BibleMetaData bmd;
 
     /**
      * The directory in which the cache is stored

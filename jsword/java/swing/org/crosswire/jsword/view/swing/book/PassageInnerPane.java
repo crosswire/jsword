@@ -20,6 +20,7 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Style;
 import org.xml.sax.SAXException;
@@ -96,7 +97,7 @@ public class PassageInnerPane extends JPanel
         }
 
         BibleData data = version.getData(ref);
-        SAXEventProvider provider = data.getSAXEventProvider();
+        SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
         String text = style.applyStyleToString(provider, "simple");
 
         txt_view.setText(text);

@@ -25,12 +25,6 @@ package org.crosswire.jsword.book.data;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BookData
+public class BookData
 {
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The text without markup
-     */
-    public String getPlainText();
 }

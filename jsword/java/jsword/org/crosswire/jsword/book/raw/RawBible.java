@@ -11,7 +11,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.basic.LocalURLBible;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.events.ProgressListener;
@@ -349,7 +349,7 @@ public class RawBible extends LocalURLBible
      */
     public BibleData getData(Passage ref) throws BookException
     {
-        BibleData doc = new DefaultBibleData();
+        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
 
         Iterator it = ref.rangeIterator();
         while (it.hasNext())
@@ -437,16 +437,16 @@ public class RawBible extends LocalURLBible
     public void setDocument(Verse verse, BibleData doc) throws BookException
     {
         // For all of the sections
-        for (Iterator sit=doc.getSectionDatas(); sit.hasNext(); )
+        for (Iterator sit=OsisUtil.getSectionDatas(doc); sit.hasNext(); )
         {
             SectionData section = (SectionData) sit.next();
 
             // For all of the Verses in the section
-            for (Iterator vit=section.getRefDatas(); vit.hasNext(); )
+            for (Iterator vit=OsisUtil.getRefDatas(section); vit.hasNext(); )
             {
                 RefData vel = (RefData) vit.next();
 
-                String text = vel.getPlainText();
+                String text = OsisUtil.getPlainText(vel);
 
                 // Is this verse part of a new paragraph? Since the move to OSIS
                 // the concept of new para is not what it was. I don't intend to
@@ -530,17 +530,15 @@ public class RawBible extends LocalURLBible
      */
     private void append(BibleData doc, VerseRange range) throws BookException
     {
-        SectionData section = doc.createSectionData(range.getName());
+        SectionData section = OsisUtil.createSectionData(doc, range.getName());
 
         Verse[] array = range.toVerseArray();
         for (int i=0; i<array.length; i++)
         {
             Verse verse = array[i];
             String text = getText(new VerseRange(verse));
-            boolean para = para_insts.getPara(verse);
 
-            RefData ref = section.createRefData(verse, para);
-            ref.setPlainText(text);
+            OsisUtil.createRefData(section, verse, text);
         }
     }
 

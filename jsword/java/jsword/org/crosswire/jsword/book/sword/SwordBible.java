@@ -13,8 +13,7 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
-import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -153,7 +152,7 @@ public class SwordBible extends AbstractBible
      */
     public BibleData getData(Passage ref) throws BookException
     {
-        BibleData doc = new DefaultBibleData();
+        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
 
         try
         {
@@ -162,7 +161,7 @@ public class SwordBible extends AbstractBible
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                SectionData section = doc.createSectionData(range.toString());
+                SectionData section = OsisUtil.createSectionData(doc, range.toString());
 
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
@@ -170,8 +169,7 @@ public class SwordBible extends AbstractBible
                 {
                     Verse verse = (Verse) vit.next();
 
-                    RefData vref = section.createRefData(verse, false);
-                    vref.setPlainText(getText(new VerseRange(verse)));
+                    OsisUtil.createRefData(section, verse, getText(new VerseRange(verse)));
                 }
             }
 

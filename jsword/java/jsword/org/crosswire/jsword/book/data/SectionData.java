@@ -1,11 +1,10 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * A SectionData contains a list of references, and a note that
@@ -33,45 +32,23 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface SectionData
+public class SectionData
 {
     /**
-     * Accessor for our parent Element
-     * @return The parent BibleData
+     * We only want to be created by OsisUtil
+     * @see OsisUtil
      */
-    public BibleData getParent();
+    protected SectionData()
+    {
+    }
 
     /**
-     * This is an accessor for the list of references (verses) that we
-     * hold
-     * @return The list of RefDatas
+     * The list of references
      */
-    public Iterator getRefDatas();
+    protected List refs = new ArrayList();
 
     /**
-     * Get a reference to the real W3C Document.
-     * @param verse The reference marker
-     * @param para True if this is the start of a new section
+     * JAXB element
      */
-    public void addRefData(RefData ref) throws BookException;
-
-    /**
-     * Get a reference to the real W3C Document.
-     * @param verse The reference marker
-     * @param para True if this is the start of a new section
-     */
-    public RefData createRefData(Verse verse, boolean para) throws BookException;
-
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public String getPlainText();
-
-    /**
-     * JAXB accessor.
-     * @return Object
-     */
-    public Div getDiv();
+    protected Div div;
 }

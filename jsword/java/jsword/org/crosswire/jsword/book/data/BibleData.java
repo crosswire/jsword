@@ -1,10 +1,11 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
 
 /**
  * Basic section of BookData.
@@ -30,33 +31,28 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BibleData extends BookData
+public class BibleData extends BookData
 {
     /**
-     * Output the current data as a SAX stream.
-     * @return SAXEventProvider
+     * We only want to be created by OsisUtil
+     * @see OsisUtil
      */
-    public SAXEventProvider getSAXEventProvider();
+    protected BibleData()
+    {
+    }
 
     /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The text without markup
+     * The root where we read data from
      */
-    public String getPlainText();
+    protected Osis osis;
 
     /**
-     * This is an enumeration through all the sections in this Document.
-     * Each of the sections will be able to give a list of the Verses
-     * that it contains.
-     * @return The list of sections
+     * The place we add sections to
      */
-    public Iterator getSectionDatas();
+    protected OsisText text;
 
     /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
+     * The list of Sections
      */
-    public SectionData createSectionData(String title) throws BookException;
+    protected List sections = new ArrayList();
 }

@@ -19,6 +19,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -184,7 +185,7 @@ public class SerSearcher implements Searcher
             // loop through all the words in this verse
             Passage current = PassageFactory.createPassage();
             current.add(verse);
-            String text = bible.getData(current).getPlainText();
+            String text = OsisUtil.getPlainText(bible.getData(current));
             String[] words = BookUtil.getWords(text);
             for (int i = 0; i < words.length; i++)
             {

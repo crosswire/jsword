@@ -16,6 +16,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.control.search.Engine;
 import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.Passage;
@@ -121,7 +122,7 @@ public class DemoServlet extends HttpServlet
                 }
     
                 BibleData data = version.getData(ref);
-                SAXEventProvider provider = data.getSAXEventProvider();
+                SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
                 String text = style.applyStyleToString(provider, "simple");
     
                 request.setAttribute("reply", text);

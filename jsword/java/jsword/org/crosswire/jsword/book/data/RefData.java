@@ -1,10 +1,10 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.osis.Verse;
 
 /**
- * A VerseData represents a Verse that exists inside a BibleData.
+ * A RefData represents a Verse that exists inside a BibleData.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,29 +27,18 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface RefData
+public class RefData
 {
     /**
-     * Get the verse that this element contains
-     * @param The verse
+     * We only want to be created by OsisUtil
+     * @see OsisUtil
      */
-    public Verse getVerse();
+    protected RefData()
+    {
+    }
 
     /**
-     * Add some plain text to the verse
+     * JAXB element that we encapsulate. 
      */
-    public void setPlainText(String text);
-
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public String getPlainText();
-
-    /**
-     * Method getJAXBVerse.
-     * @return Object
-     */
-    public Object getJAXBVerse();
+    protected Verse everse;
 }

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -110,7 +111,7 @@ public class CliMapper
                         ref.add(find);
 
                         BibleData data = bible.getData(ref);
-                        String text = data.getPlainText();   
+                        String text = OsisUtil.getPlainText(data);
                         PassageTally temp = engine.bestMatch(text);
                         temp.setOrdering(PassageTally.ORDER_TALLY);
                         total.addAll(temp);

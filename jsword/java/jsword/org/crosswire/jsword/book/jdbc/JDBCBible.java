@@ -18,8 +18,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBible;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
-import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -135,7 +134,7 @@ public class JDBCBible extends LocalURLBible
      */
     public BibleData getData(Passage ref) throws BookException
     {
-        BibleData doc = new DefaultBibleData();
+        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
 
         try
         {
@@ -148,7 +147,7 @@ public class JDBCBible extends LocalURLBible
                 int start_id = BibleInfo.verseOrdinal(start.getRefArray());
                 int end_id = BibleInfo.verseOrdinal(end.getRefArray());
 
-                SectionData section = doc.createSectionData(range.getName());
+                SectionData section = OsisUtil.createSectionData(doc, range.getName());
 
                 doc_stmt.setInt(1, start_id);
                 doc_stmt.setInt(2, end_id);
@@ -157,12 +156,11 @@ public class JDBCBible extends LocalURLBible
                 while (rs.next())
                 {
                     Verse verse = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
-                    boolean para = rs.getBoolean(4);
+                    rs.getBoolean(4); // ignored, but perhaps we should wtill be getting things in order?
                     String text = rs.getString(5);
                     if (text == null) text = "";
 
-                    RefData vref = section.createRefData(verse, para);
-                    vref.setPlainText(JDBCBibleUtil.processText(text));
+                    OsisUtil.createRefData(section, verse, JDBCBibleUtil.processText(text));
                 }
 
                 rs.close();
