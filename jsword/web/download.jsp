@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<jsp:directive.page import="org.crosswire.jsword.view.web.DownloadSet"/>
+<jsp:directive.page import="org.crosswire.jsword.view.web.DownloadSet" contentType="text/html"/>
 
 <h1>Download</h1>
 

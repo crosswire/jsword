@@ -1,0 +1,112 @@
+
+body
+{
+  background-color: #f5f5dc;
+  font-family: Verdana, Arial, Geneva, Helvetica, Sans-Serif;
+}
+
+a:link
+{
+  color: #4d5c47;
+  text-decoration: underline;
+}
+
+a:visited
+{
+  color: #4d5c47;
+  text-decoration: underline;
+}
+
+a:hover
+{
+  color: #ff0000;
+  text-decoration: none;
+}
+
+h1
+{
+  font-family: Eras Bold ITC, Verdana, Arial, Geneva, Helvetica, Sans-Serif;
+  font-weight: normal;
+}
+
+h2
+{
+  font-family: Eras Bold ITC, Verdana, Arial, Geneva, Helvetica, Sans-Serif;
+  font-weight: normal;
+}
+
+h3
+{
+  font-family: Eras Bold ITC, Verdana, Arial, Geneva, Helvetica, Sans-Serif;
+  font-weight: normal;
+}
+
+h4
+{
+  font-family: Eras Bold ITC, Verdana, Arial, Geneva, Helvetica, Sans-Serif;
+  font-weight: normal;
+}
+
+/* Table colors */
+.TableHeadingColor
+{
+  background-color: #4d5c47;
+  color: #ffffcc;
+}
+
+.TableHeadingColor
+{
+  color: #ffffcc;
+  text-decoration: none;
+}
+
+.NavBarCell1
+{
+  font-family: Eras Bold ITC, Verdana, Arial, Geneva, Helvetica, Sans-Serif;
+  font-size: smaller;
+  background-color: #4d5c47;
+  color: #ffffcc;
+}
+
+.NavBarCell1 a:link
+{
+  background-color: #4d5c47;
+  color: #ffffee;
+}
+
+.NavBarCell1 a:visited
+{
+  background-color: #4d5c47;
+  color: #ffffcc;
+}
+
+.NavBarCell1Rev
+{
+  background-color: #ffffcc;
+  color: #4d5c47;
+}
+
+.TableSubHeadingColor
+{
+  background: #cccc99;
+}
+
+.TableRowColor
+{
+  background: #FFFFFF;
+}
+
+/* Font used in left-hand frame lists */
+.FrameTitleFont   { font-size: smaller; }
+.FrameHeadingFont { font-size: smaller; }
+.FrameItemFont    { font-size: smaller; }
+
+.NavBarCell2
+{
+  background-color:#FFFFFF;
+}
+
+.NavBarCell3
+{
+  background-color:#FFFFFF;
+}

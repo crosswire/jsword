@@ -5,6 +5,9 @@
   <link rel="stylesheet" type="text/css" href="sword.css"/>
 </head>
 <body>
+
+<jsp:directive.page contentType="text/html"/>
+
 <jsp:scriptlet><![CDATA[
   String search = (String) request.getAttribute("search");
   if (search == null) search = "";
@@ -13,6 +16,7 @@
   String view = (String) request.getAttribute("view");
   if (view == null) view = "";
 ]]></jsp:scriptlet>
+
 <h1>Live</h1>
 <p>
 This is a quick demonstration of how easy it is to write new front-ends 
@@ -62,6 +66,7 @@ to JSword.
   </tr>
 </table>
 <br/>
+
 <jsp:scriptlet><![CDATA[
   String reply = (String) request.getAttribute("reply");
   if (reply != null) {
@@ -72,6 +77,7 @@ to JSword.
 String link = (String) request.getAttribute("next-link");
 if (link != null) {
 ]]></jsp:scriptlet>
+
 <hr />
 <p>The following <jsp:expression>request.getAttribute("next-overview")</jsp:expression>
 were trimmed to avoid overloading server.</p>

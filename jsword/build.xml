@@ -334,7 +334,7 @@
   <target name="web.javadoc" depends="init" description="Create JavaDoc">
     <mkdir dir="${target.web}/api"/>
     <javadoc
-        stylesheetfile="${source.web}/javadoc/stylesheet.css"
+        stylesheetfile="${source.etc}/javadoc/stylesheet.css"
         destdir="${target.web}/api"
         overview="${source.java}/jsword/overview.html"
         private="true"
@@ -371,7 +371,7 @@
       <classpath>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
-      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.web}/javadoc"/>
+      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.etc}/javadoc"/>
     </javadoc>
   </target>
 
