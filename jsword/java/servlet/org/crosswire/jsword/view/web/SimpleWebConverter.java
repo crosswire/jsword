@@ -43,7 +43,7 @@ public class SimpleWebConverter implements Converter
     {
         try
         {
-            URL xslurl = ResourceUtil.getResource("xsl/web/simple.xsl");
+            URL xslurl = ResourceUtil.getResource("xsl/web/simple.xsl"); //$NON-NLS-1$
 
             // We used to do:
             // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

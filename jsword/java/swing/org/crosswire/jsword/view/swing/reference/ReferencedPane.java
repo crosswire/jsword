@@ -144,7 +144,7 @@ public class ReferencedPane extends JPanel implements FocusablePart
             Key key = getKey();
             if (key == null)
             {
-                return "";
+                return ""; //$NON-NLS-1$
             }
 
             BookData bdata = book.getData(key);
@@ -158,7 +158,7 @@ public class ReferencedPane extends JPanel implements FocusablePart
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

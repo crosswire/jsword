@@ -33,14 +33,6 @@ class Msg extends MsgBase
     static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

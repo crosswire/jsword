@@ -181,7 +181,7 @@ public class ReferenceRootTreeNode implements TreeNode
                 boolean changed = books.add(bmd);
                 if (!changed)
                 {
-                    log.error("added a book from an event but our filtered book list did not change");
+                    log.error("added a book from an event but our filtered book list did not change"); //$NON-NLS-1$
                 }
             }
         }
@@ -198,7 +198,7 @@ public class ReferenceRootTreeNode implements TreeNode
                 boolean changed = books.remove(bmd);
                 if (!changed)
                 {
-                    log.error("removed a book from an event but our filtered book list did not change");
+                    log.error("removed a book from an event but our filtered book list did not change"); //$NON-NLS-1$
                 }
             }
         }

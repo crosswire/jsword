@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.Map;
@@ -58,19 +57,19 @@ public class ParserTest extends TestCase
         engine.setSearchMap(commands);        
 
         //try { engine.search(new Search("moses aaron", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("(", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("~", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search(")", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("&", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search(",", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("+", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("-", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("/", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("|", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("sw", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("startswith", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("gr", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("grammar", false)); fail(); } catch (BookException ex) { }
+        try { engine.search(new Search("(", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("~", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search(")", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("&", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search(",", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("+", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("-", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("/", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("|", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("sw", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("startswith", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("gr", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(new Search("grammar", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
         //try { engine.search(new Search("moses ( aaron )", false)); fail(); } catch (BookException ex) { }
         //try { engine.search(new Search("moses & ( aaron", false)); fail(); } catch (BookException ex) { }
         //try { engine.search(new Search("moses & ( aaron", false)); fail(); } catch (BookException ex) { }

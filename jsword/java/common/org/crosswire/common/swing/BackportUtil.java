@@ -15,7 +15,7 @@ import org.crosswire.common.util.Logger;
 
 /**
  * JDK: Make up for problems with 1_3.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -75,7 +75,7 @@ public class BackportUtil
                 it.next();
             }
 
-            log.warn("missing reference looking for "+reference+". Found:");
+            log.warn("missing reference looking for "+reference+". Found:"); //$NON-NLS-1$ //$NON-NLS-2$
             /*
             it = hdoc.getIterator(HTML.Tag.A);
             while (it.isValid())
@@ -99,7 +99,7 @@ public class BackportUtil
             Rectangle rect = pane.modelToView(offset);
             if (rect != null)
             {
-                // the view is visible, scroll it to the 
+                // the view is visible, scroll it to the
                 // center of the current visible area.
                 Rectangle vis = pane.getVisibleRect();
 
@@ -107,16 +107,16 @@ public class BackportUtil
                 rect.height = vis.height;
                 pane.scrollRectToVisible(rect);
 
-                log.debug("scrolling to: "+rect);
+                log.debug("scrolling to: "+rect); //$NON-NLS-1$
             }
             else
             {
-                log.warn("rect == null");
+                log.warn("rect == null"); //$NON-NLS-1$
             }
         }
         catch (BadLocationException ex)
         {
-            log.warn("Bad location", ex);
+            log.warn("Bad location", ex); //$NON-NLS-1$
         }
     }
 
@@ -129,7 +129,7 @@ public class BackportUtil
         try
         {
             Class cl = pnl_tbar.getClass();
-            Method method = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
+            Method method = cl.getMethod("setRollover", new Class[] { Boolean.TYPE }); //$NON-NLS-1$
             method.invoke(pnl_tbar, new Object[] { value ? Boolean.TRUE : Boolean.FALSE });
         }
         catch (NoSuchMethodException ex)
@@ -139,7 +139,7 @@ public class BackportUtil
         catch (Exception ex)
         {
             // we don't expect this one, print a stack trace
-            log.warn("unexpected", ex);
+            log.warn("unexpected", ex); //$NON-NLS-1$
         }
     }
 

@@ -82,7 +82,7 @@ public class JobManager
         Job job = new Job(description, predicturl, work, fakeupdates);
         jobs.add(job);
 
-        log.debug("job starting: "+job.getJobDescription());
+        log.debug("job starting: "+job.getJobDescription()); //$NON-NLS-1$
 
         return job;
     }
@@ -184,7 +184,7 @@ public class JobManager
         {
             if (job.isFinished())
             {
-                log.debug("job finished: "+job.getJobDescription());
+                log.debug("job finished: "+job.getJobDescription()); //$NON-NLS-1$
                 jobs.remove(job);
             }
         }

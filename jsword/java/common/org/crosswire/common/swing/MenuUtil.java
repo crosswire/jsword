@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.Component;
@@ -76,7 +75,7 @@ public class MenuUtil
     {
         JMenuBar menubar = new JMenuBar();
 
-        String[] menu_names = StringUtils.split(getResourceString("menubar"));
+        String[] menu_names = StringUtils.split(getResourceString("menubar")); //$NON-NLS-1$
         for (int i=0; i<menu_names.length; i++)
         {
             JMenu menu = createMenu(menu_names[i]);
@@ -95,7 +94,7 @@ public class MenuUtil
         JMenu menu = new JMenu(getResourceString(name+SUFFIX_LABEL));
         for (int i=0; i<item_names.length; i++)
         {
-            if (item_names[i].equals("-"))
+            if (item_names[i].equals("-")) //$NON-NLS-1$
             {
                 menu.addSeparator();
             }
@@ -167,10 +166,10 @@ public class MenuUtil
     public static Component createToolbar()
     {
         JToolBar toolbar = new JToolBar();
-        String[] toolKeys = StringUtils.split(getResourceString("toolbar"));
+        String[] toolKeys = StringUtils.split(getResourceString("toolbar")); //$NON-NLS-1$
         for (int i = 0; i < toolKeys.length; i++)
         {
-            if (toolKeys[i].equals("-"))
+            if (toolKeys[i].equals("-")) //$NON-NLS-1$
             {
                 toolbar.add(Box.createHorizontalStrut(5));
             }
@@ -294,7 +293,7 @@ public class MenuUtil
                 String text = (String) ev.getNewValue();
                 menuItem.setText(text);
             }
-            else if (propertyName.equals("enabled"))
+            else if (propertyName.equals("enabled")) //$NON-NLS-1$
             {
                 Boolean enabled = (Boolean) ev.getNewValue();
                 menuItem.setEnabled(enabled.booleanValue());
@@ -308,25 +307,25 @@ public class MenuUtil
      * Suffix applied to the key used in resource file
      * lookups for an image.
      */
-    public static final String SUFFIX_IMAGE = "Image";
+    public static final String SUFFIX_IMAGE = "Image"; //$NON-NLS-1$
 
     /**
      * Suffix applied to the key used in resource file
      * lookups for a label.
      */
-    public static final String SUFFIX_LABEL = "Label";
+    public static final String SUFFIX_LABEL = "Label"; //$NON-NLS-1$
 
     /**
      * Suffix applied to the key used in resource file
      * lookups for an action.
      */
-    public static final String SUFFIX_ACTIOIN = "Action";
+    public static final String SUFFIX_ACTIOIN = "Action"; //$NON-NLS-1$
 
     /**
      * Suffix applied to the key used in resource file
      * lookups for tooltip text.
      */
-    public static final String SUFFIX_TIP = "Tooltip";
+    public static final String SUFFIX_TIP = "Tooltip"; //$NON-NLS-1$
 
     /*
      * Data

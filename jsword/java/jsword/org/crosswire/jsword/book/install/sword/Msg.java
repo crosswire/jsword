@@ -37,14 +37,6 @@ class Msg extends MsgBase
     static final Msg URL_FAILED = new Msg("URL manipulation failed");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

@@ -134,7 +134,7 @@ public class Job
         synchronized (this)
         {
             finished = true;
-            statedesc = DONE;
+            statedesc = Msg.DONE.toString();
             reportedpc = 100;
             guessedpc = 100;
 
@@ -253,7 +253,7 @@ public class Job
 
         if (now < sectionstart)
         {
-            log.warn("now before started: now="+new Date(now)+" started="+new Date(sectionstart));
+            log.warn("now before started: now="+new Date(now)+" started="+new Date(sectionstart)); //$NON-NLS-1$ //$NON-NLS-2$
             guessedpc = reportedpc;
             return;
         }
@@ -327,7 +327,7 @@ public class Job
 
         percentend = reportedpc + pcdiff;
 
-        log.debug("Predicting "+predsecttime+"ms ("+reportedpc+"-"+percentend+"%) for section "+message);
+        log.debug("Predicting "+predsecttime+"ms ("+reportedpc+"-"+percentend+"%) for section "+message); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
     /**
@@ -363,14 +363,14 @@ public class Job
                     }
                     catch (NumberFormatException ex)
                     {
-                        log.error("Time format error", ex);
+                        log.error("Time format error", ex); //$NON-NLS-1$
                     }
                 }
             }
         }
         catch (IOException ex)
         {
-            log.debug("Failed to load prediction times - guessing");
+            log.debug("Failed to load prediction times - guessing"); //$NON-NLS-1$
         }
     }
 
@@ -405,11 +405,11 @@ public class Job
         try
         {
             OutputStream out = NetUtil.getOutputStream(predicturl);
-            predictions.store(out, "Predicted Startup Times");
+            predictions.store(out, "Predicted Startup Times"); //$NON-NLS-1$
         }
         catch (IOException ex)
         {
-            log.error("Failed to save prediction times", ex);
+            log.error("Failed to save prediction times", ex); //$NON-NLS-1$
         }
     }
 
@@ -502,11 +502,6 @@ public class Job
             JobManager.fireWorkProgressed(Job.this, true);
         }
     }
-
-    /**
-     * What we use as a label for the end of the job
-     */
-    private static final String DONE = "Done";
 
     /**
      * The log stream

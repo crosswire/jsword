@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * A generic class of String utils.
  * It would be good if we could put this stuff in java.lang ...
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -43,7 +43,7 @@ public final class StringUtil
     /**
      * The newline character
      */
-    public static final String NEWLINE = System.getProperty("line.separator", "\r\n");
+    public static final String NEWLINE = System.getProperty("line.separator", "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
      * This method reads an InputStream <b>In its entirety</b>, and passes
@@ -55,7 +55,7 @@ public final class StringUtil
     public static String read(Reader in) throws IOException
     {
         StringBuffer retcode = new StringBuffer();
-        String line = "";
+        String line = ""; //$NON-NLS-1$
         BufferedReader din = new BufferedReader(in);
 
         while (true)
@@ -63,7 +63,9 @@ public final class StringUtil
             line = din.readLine();
 
             if (line == null)
+            {
                 break;
+            }
 
             retcode.append(line);
             retcode.append(NEWLINE);
@@ -137,7 +139,7 @@ public final class StringUtil
             return str;
         }
 
-        return str.substring(0, len-3) + "...";
+        return str.substring(0, len-3) + "..."; //$NON-NLS-1$
     }
 
     /**
@@ -181,7 +183,7 @@ public final class StringUtil
             lastspace = (c == ' ');
         }
 
-        return "" + retcode;
+        return "" + retcode; //$NON-NLS-1$
     }
 
     /**

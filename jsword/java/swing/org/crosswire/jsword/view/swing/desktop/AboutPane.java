@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -24,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import org.crosswire.common.progress.swing.JobsViewPane;
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.ExceptionShelf;
 import org.crosswire.common.swing.MapTableModel;
 import org.crosswire.jsword.util.Project;
@@ -62,13 +61,13 @@ public class AboutPane
      */
     public AboutPane(Desktop desktop)
     {
-        jbInit(desktop);
+        init(desktop);
     }
 
     /**
      * Build the GUI components
      */
-    private void jbInit(Desktop desktop)
+    private void init(Desktop desktop)
     {
         URL url = getClass().getResource(Msg.SPLASH_IMAGE.toString());
         Icon icon = null;
@@ -88,22 +87,12 @@ public class AboutPane
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        Object[] msg = { Project.instance().getVersion() };
-        lbl_info.setText(Msg.VERSION_TITLE.toString(msg));
+        lbl_info.setText(Msg.VERSION_TITLE.toString(Project.instance().getVersion()));
 
         JTabbedPane tab_main = new JTabbedPane();
-
-        // TODO: Turn into an ActionFactory action
-        JButton btn_ok = new JButton();
-        btn_ok.setText("OK");
-        btn_ok.setMnemonic('O');
-        btn_ok.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                close();
-            }
-        });
+        
+        ActionFactory actions = DesktopActionFactory.instance();
+        JButton btn_ok = new JButton(actions.getAction(DesktopActions.ABOUT_OK));
 
         JPanel pnl_buttons = new JPanel();
         pnl_buttons.add(btn_ok);
@@ -181,8 +170,7 @@ public class AboutPane
     {
         dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
         dlg_main.getContentPane().add(pnl_main);
-        Object[] msg = { Project.instance().getName() };
-        dlg_main.setTitle(Msg.ABOUT_TITLE.toString(msg));
+        dlg_main.setTitle(Msg.ABOUT_TITLE.toString(Project.instance().getName()));
         dlg_main.setModal(true);
         dlg_main.addWindowListener(new WindowAdapter()
         {

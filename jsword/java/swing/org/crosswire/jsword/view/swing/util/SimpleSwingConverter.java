@@ -58,7 +58,7 @@ public class SimpleSwingConverter implements Converter
     {
         try
         {
-            String search = "xsl/swing/"+NetUtil.INDEX_FILE;
+            String search = "xsl/swing/"+NetUtil.INDEX_FILE; //$NON-NLS-1$
             URL index = ResourceUtil.getResource(search);
             return NetUtil.listByIndexFile(index, new URLFilter()
             {
@@ -81,7 +81,7 @@ public class SimpleSwingConverter implements Converter
     {
         try
         {
-            String path = "xsl/swing/"+style;
+            String path = "xsl/swing/"+style; //$NON-NLS-1$
             URL xslurl = ResourceUtil.getResource(path);
 
             // We used to do:
@@ -114,5 +114,5 @@ public class SimpleSwingConverter implements Converter
     /**
      * The stylesheet we are transforming using
      */
-    private static String style = "simple.xsl";
+    private static String style = "simple.xsl"; //$NON-NLS-1$
 }

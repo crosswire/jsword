@@ -44,48 +44,48 @@ public class DictionaryTest extends TestCase
 
     public void testGetRoot() throws Exception
     {
-        assertEquals(Grammar.getRoot("joseph"), "joseph");
-        assertEquals(Grammar.getRoot("joseph's"), "joseph");
-        assertEquals(Grammar.getRoot("walker"), "walk");
-        assertEquals(Grammar.getRoot("walked"), "walk");
-        assertEquals(Grammar.getRoot("walks"), "walk");
-        assertEquals(Grammar.getRoot("boxes"), "box");
+        assertEquals(Grammar.getRoot("joseph"), "joseph"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(Grammar.getRoot("joseph's"), "joseph"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(Grammar.getRoot("walker"), "walk"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(Grammar.getRoot("walked"), "walk"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(Grammar.getRoot("walks"), "walk"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(Grammar.getRoot("boxes"), "box"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testIsSmallWord() throws Exception
     {
-        assertTrue(Grammar.isSmallWord("the"));
-        assertTrue(Grammar.isSmallWord("and"));
-        assertTrue(!Grammar.isSmallWord("lord"));
-        assertTrue(!Grammar.isSmallWord("god"));
-        assertTrue(Grammar.isSmallWord("o"));
-        assertTrue(!Grammar.isSmallWord("nothing"));
-        assertTrue(Grammar.isSmallWord(" the "));
-        assertTrue(Grammar.isSmallWord(" and "));
-        assertTrue(!Grammar.isSmallWord(" lord "));
-        assertTrue(!Grammar.isSmallWord(" god "));
-        assertTrue(Grammar.isSmallWord(" o "));
-        assertTrue(!Grammar.isSmallWord(" nothing "));
-        assertTrue(Grammar.isSmallWord(""));
-        assertTrue(Grammar.isSmallWord(" "));
-        assertTrue(Grammar.isSmallWord("  "));
+        assertTrue(Grammar.isSmallWord("the")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord("and")); //$NON-NLS-1$
+        assertTrue(!Grammar.isSmallWord("lord")); //$NON-NLS-1$
+        assertTrue(!Grammar.isSmallWord("god")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord("o")); //$NON-NLS-1$
+        assertTrue(!Grammar.isSmallWord("nothing")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord(" the ")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord(" and ")); //$NON-NLS-1$
+        assertTrue(!Grammar.isSmallWord(" lord ")); //$NON-NLS-1$
+        assertTrue(!Grammar.isSmallWord(" god ")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord(" o ")); //$NON-NLS-1$
+        assertTrue(!Grammar.isSmallWord(" nothing ")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord("")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord(" ")); //$NON-NLS-1$
+        assertTrue(Grammar.isSmallWord("  ")); //$NON-NLS-1$
     }
 
     public void testStripSmallWords() throws Exception
     {
-        String[] temp = Grammar.stripSmallWords(new String[] { "i", "am", "but", "nothing", "o", "the", "lord", "god", "and", "", });
-        assertEquals(temp[0], "nothing");
-        assertEquals(temp[1], "lord");
-        assertEquals(temp[2], "god");
+        String[] temp = Grammar.stripSmallWords(new String[] { "i", "am", "but", "nothing", "o", "the", "lord", "god", "and", "", }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        assertEquals(temp[0], "nothing"); //$NON-NLS-1$
+        assertEquals(temp[1], "lord"); //$NON-NLS-1$
+        assertEquals(temp[2], "god"); //$NON-NLS-1$
         assertEquals(temp.length, 3);
     }
 
     public void testTokenizeWithoutSmallWords() throws Exception
     {
-        String[] temp = Grammar.tokenizeWithoutSmallWords("i am but nothing o the lord god and ", " ");
-        assertEquals(temp[0], "nothing");
-        assertEquals(temp[1], "lord");
-        assertEquals(temp[2], "god");
+        String[] temp = Grammar.tokenizeWithoutSmallWords("i am but nothing o the lord god and ", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(temp[0], "nothing"); //$NON-NLS-1$
+        assertEquals(temp[1], "lord"); //$NON-NLS-1$
+        assertEquals(temp[2], "god"); //$NON-NLS-1$
         assertEquals(temp.length, 3);
     }
 }

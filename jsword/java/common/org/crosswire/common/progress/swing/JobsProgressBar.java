@@ -53,7 +53,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         if (small)
         {
             // They start of at 15pt (on Windows at least)
-            font = new Font("SansSerif", Font.PLAIN, 10);
+            font = new Font("SansSerif", Font.PLAIN, 10); //$NON-NLS-1$
         }
 
         JobManager.addWorkListener(this);
@@ -100,7 +100,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     protected synchronized void addJob(Job job)
     {
         int i = findEmptyPosition();
-        log.debug("adding job to panel at "+i+": "+job.getJobDescription());
+        log.debug("adding job to panel at "+i+": "+job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
 
         JProgressBar progress = new JProgressBar();
         progress.setStringPainted(true);
@@ -136,7 +136,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.getProgress().setString(job.getStateDescription()+": ("+percent+"%)");
+        jobdata.getProgress().setString(job.getStateDescription()+": ("+percent+"%)"); //$NON-NLS-1$ //$NON-NLS-2$
         jobdata.getProgress().setValue(percent);
     }
 
@@ -149,7 +149,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
 
         positions.set(jobdata.getIndex(), null);
         jobs.remove(job);
-        log.debug("removing job from panel: "+jobdata.getJob().getJobDescription());
+        log.debug("removing job from panel: "+jobdata.getJob().getJobDescription()); //$NON-NLS-1$
 
         this.remove(jobdata.getProgress());
         this.revalidate();

@@ -61,7 +61,7 @@ public class MapField extends JPanel implements Field
     {
         JPanel buttons = new JPanel(new FlowLayout());
 
-        table.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        table.setFont(new Font("Monospaced", Font.PLAIN, 12)); //$NON-NLS-1$
         table.setPreferredScrollableViewportSize(new Dimension(30, 100));
         table.setColumnSelectionAllowed(false);
 
@@ -95,13 +95,13 @@ public class MapField extends JPanel implements Field
             }
         });
 
-        Border title = BorderFactory.createTitledBorder("Component Editor");
+        Border title = BorderFactory.createTitledBorder(Msg.COMPONENT_EDITOR.toString());
         Border pad = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(title, pad));
 
         setLayout(new BorderLayout());
-        add("Center", scroll);
-        add("South", buttons);
+        add(BorderLayout.CENTER, scroll);
+        add(BorderLayout.SOUTH, buttons);
     }
 
     /**
@@ -161,7 +161,7 @@ public class MapField extends JPanel implements Field
     {
         InputPane input = new InputPane();
 
-        if (JOptionPane.showConfirmDialog(this, input, "New Class", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
+        if (JOptionPane.showConfirmDialog(this, input, Msg.NEW_CLASS.toString(), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
             String new_class = input.class_field.getText();
             String new_name = input.name_field.getText();
@@ -182,7 +182,7 @@ public class MapField extends JPanel implements Field
         input.name_field.setText(currentKey());
         input.class_field.setText(currentValue());
 
-        if (JOptionPane.showConfirmDialog(this, input, "Edit Class", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
+        if (JOptionPane.showConfirmDialog(this, input, Msg.EDIT_CLASS.toString(), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
             String new_class = input.class_field.getText();
             String new_name = input.name_field.getText();
@@ -215,14 +215,14 @@ public class MapField extends JPanel implements Field
 
             if (!superclass.isAssignableFrom(clazz))
             {    
-                throw new ClassCastException("The class '"+name+"' does not inherit from '"+superclass+"'. Instansiation failed.");
+                throw new ClassCastException(Msg.BAD_SUPERCLASS.toString(new Object[] { name, superclass }));
             }
 
             return true;
         }
         catch (ClassNotFoundException ex)
         {
-            JOptionPane.showMessageDialog(this, "A class named '"+name+"' could not be found.");
+            JOptionPane.showMessageDialog(this, Msg.CLASS_NOT_FOUND.toString(new Object[] { name }));
         }
         catch (Exception ex)
         {
@@ -268,7 +268,7 @@ public class MapField extends JPanel implements Field
          */
         public String getColumnName(int col)
         {
-            return (col == 0) ? "Name" : "Class";
+            return (col == 0) ? Msg.NAME.toString() : Msg.CLASS.toString();
         }
 
         /* (non-Javadoc)
@@ -293,9 +293,9 @@ public class MapField extends JPanel implements Field
         {
             super(new FieldLayout(10, 10));
 
-            add(new JLabel("Name:"));
+            add(new JLabel(Msg.NAME+":")); //$NON-NLS-1$
             add(name_field);
-            add(new JLabel("Class:"));
+            add(new JLabel(Msg.CLASS+":")); //$NON-NLS-1$
             add(class_field);
 
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -330,17 +330,17 @@ public class MapField extends JPanel implements Field
     /**
      * Button bar: add
      */
-    private JButton add = new JButton("Add");
+    private JButton add = new JButton(Msg.ADD.toString());
 
     /**
      * Button bar: remove
      */
-    private JButton remove = new JButton("Remove");
+    private JButton remove = new JButton(Msg.REMOVE.toString());
 
     /**
      * Button bar: update
      */
-    private JButton update = new JButton("Update");
+    private JButton update = new JButton(Msg.UPDATE.toString());
 
     /**
      * The class that everything must inherit from

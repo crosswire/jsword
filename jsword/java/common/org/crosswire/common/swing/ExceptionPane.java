@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ReporterEvent;
@@ -80,12 +81,12 @@ public class ExceptionPane extends JPanel
      */
     private void initialise()
     {
-        String exmsg = "<html><font size=\"-1\">An error has occured:</font> "+ExceptionPane.getHTMLDescription(ex);
+        String exmsg = "<html><font size=\"-1\">"+Msg.ERROR_OCCURED+"</font> "+ExceptionPane.getHTMLDescription(ex); //$NON-NLS-1$ //$NON-NLS-2$
         
         // The upper pane
         message.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         message.setText(exmsg);
-        message.setIcon(GuiUtil.getIcon("toolbarButtonGraphics/general/Stop24.gif"));
+        message.setIcon(GuiUtil.getIcon("toolbarButtonGraphics/general/Stop24.gif")); //$NON-NLS-1$
         message.setIconTextGap(20);
         
         banner.setLayout(new BorderLayout());
@@ -97,8 +98,8 @@ public class ExceptionPane extends JPanel
         setDisplayedException(ex);
         
         // The buttons at the bottom
-        ok.setText("OK");
-        ok.setMnemonic('O');
+        ok.setText(Msg.OK.toString());
+        ok.setMnemonic(Msg.OK.toString().charAt(0));
         
         detail.addChangeListener(new ChangeListener()
         {
@@ -107,7 +108,7 @@ public class ExceptionPane extends JPanel
                 changeDetail();
             }
         });
-        detail.setText("Details");
+        detail.setText(Msg.DETAILS.toString());
         
         spacer.setLayout(new FlowLayout());
         spacer.add(ok);
@@ -123,7 +124,7 @@ public class ExceptionPane extends JPanel
         // The lower pane
         label.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         label.setFont(courier);
-        label.setText("No File");
+        label.setText(Msg.NO_FILE.toString());
         text.setEditable(false);
         text.setFont(courier);
         text_scroll.setColumnHeaderView(label);
@@ -192,7 +193,7 @@ public class ExceptionPane extends JPanel
     // The components - contained, top to containing, bottom
     private JLabel message = new JLabel();
     private JPanel banner = new JPanel();
-    private Font courier = new Font("Monospaced", Font.PLAIN, 12);
+    private Font courier = new Font("Monospaced", Font.PLAIN, 12); //$NON-NLS-1$
     private JList list = new JList();
     private JScrollPane list_scroll = new JScrollPane(list);
     private JPanel upper = new JPanel();
@@ -233,7 +234,7 @@ public class ExceptionPane extends JPanel
         dialog.getRootPane().setLayout(new BorderLayout());
         dialog.getRootPane().setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, pane.upper.getBackground()));
         dialog.getRootPane().add(pane, BorderLayout.CENTER);
-        dialog.setTitle("Error");
+        dialog.setTitle(Msg.ERROR.toString());
 
         pane.ok.addActionListener(new ActionListener()
         {
@@ -317,12 +318,12 @@ public class ExceptionPane extends JPanel
     
         // The message in the exception
         String msg = ex.getMessage();
-        if (msg == null || msg.equals(""))
+        if (msg == null || msg.equals("")) //$NON-NLS-1$
         {
-            msg = "No description available";
+            msg = Msg.NO_DESC.toString();
         }
         String orig = msg;
-        msg = StringUtils.replace(orig, "\n", "<br>");
+        msg = StringUtils.replace(orig, "\n", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
     
         // The name of the exception
         /*
@@ -341,7 +342,7 @@ public class ExceptionPane extends JPanel
         retcode.append(classname);
         retcode.append("</strong></font>");
         */
-        retcode.append("<br>");
+        retcode.append("<br>"); //$NON-NLS-1$
         retcode.append(msg);
     
         // If this is a LucidException with a nested Exception
@@ -350,7 +351,7 @@ public class ExceptionPane extends JPanel
             Throwable nex = ((LucidException) ex).getCause();
             if (nex != null)
             {
-                retcode.append("<p><br><font size=\"-1\">This was caused by: </font>");
+                retcode.append("<p><br><font size=\"-1\">"+Msg.CAUSED_BY+"</font>"); //$NON-NLS-1$ //$NON-NLS-2$
                 retcode.append(getHTMLDescription(nex));
             }
         }
@@ -413,7 +414,7 @@ public class ExceptionPane extends JPanel
             String orig = name;
 
             // Find a file
-            name = File.separator + StringUtils.replace(orig, ".", ""+File.separatorChar) + ".java";
+            name = File.separator + StringUtils.replace(orig, ".", ""+File.separatorChar) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
             for (int i=0; i<sources.length; i++)
             {
                 File file = new File(sources[i], name);
@@ -433,8 +434,11 @@ public class ExceptionPane extends JPanel
                         while (true)
                         {
                             String line = in.readLine();
-                            if (line == null) break;
-                            data.append(line).append("\n");
+                            if (line == null)
+                            {
+                                break;
+                            }
+                            data.append(line).append("\n"); //$NON-NLS-1$
 
                             int current_line = in.getLineNumber();
                             if (current_line == line_num-1) selection_start = data.length();
@@ -457,10 +461,10 @@ public class ExceptionPane extends JPanel
             }
 
             // If we can't find a matching file
-            String error = "Can't open source for: '"+st.getClassName(level)+"' line: "+line_num+"\n";
+            String error = Msg.SOURCE_NOT_FOUND.toString(new Object[] { st.getClassName(level), new Integer(line_num) });
             for (int i=0; i<sources.length; i++)
             {
-                error += "Tried: " + sources[i].getAbsolutePath() + name + "\n";
+                error += Msg.SOURCE_ATTEMPT.toString(new Object[] { sources[i].getAbsolutePath() + name });
             }
 
             mytext.setText(error);

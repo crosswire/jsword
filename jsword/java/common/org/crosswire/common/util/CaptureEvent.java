@@ -75,7 +75,7 @@ public class CaptureEvent extends EventObject
         }
 
         String full = clazz.getName();
-        int last_dot = full.lastIndexOf(".");
+        int last_dot = full.lastIndexOf("."); //$NON-NLS-1$
         if (last_dot == -1)
         {
             return full;

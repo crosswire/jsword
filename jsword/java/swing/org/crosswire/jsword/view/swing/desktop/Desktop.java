@@ -643,8 +643,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         int match = url.indexOf(':');
         if (match == -1)
         {
-            Object [] msg = { url };
-            throw new MalformedURLException(Msg.BAD_PROTOCOL_URL.toString(msg));
+            throw new MalformedURLException(Msg.BAD_PROTOCOL_URL.toString(url));
         }
 
         String protocol = url.substring(0, match);
@@ -689,8 +688,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         }
         else
         {
-            Object [] msg = { protocol };
-            throw new MalformedURLException(Msg.UNKNOWN_PROTOCOL.toString(msg));
+            throw new MalformedURLException(Msg.UNKNOWN_PROTOCOL.toString(protocol));
         }
     }
 

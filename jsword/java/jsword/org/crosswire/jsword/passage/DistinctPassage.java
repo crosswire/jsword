@@ -151,7 +151,7 @@ public class DistinctPassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppressEvents == 0)
         {
             fireIntervalAdded(this, verses[0], verses[verses.length - 1]);
         }
@@ -173,7 +173,7 @@ public class DistinctPassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppressEvents == 0)
         {
             fireIntervalRemoved(this, verses[0], verses[verses.length - 1]);
         }

@@ -56,7 +56,7 @@ public class PathField extends JPanel implements Field
     {
         JPanel buttons = new JPanel(new FlowLayout());
 
-        list.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        list.setFont(new Font("Monospaced", Font.PLAIN, 12)); //$NON-NLS-1$
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // list.setPreferredScrollableViewportSize(new Dimension(30, 100));
 
@@ -90,13 +90,13 @@ public class PathField extends JPanel implements Field
             }
         });
 
-        Border title = BorderFactory.createTitledBorder("Path Editor");
+        Border title = BorderFactory.createTitledBorder(Msg.PATH_EDITOR.toString());
         Border pad = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(title, pad));
 
         setLayout(new BorderLayout());
-        add("Center", scroll);
-        add("South", buttons);
+        add(BorderLayout.CENTER, scroll);
+        add(BorderLayout.SOUTH, buttons);
     }
 
     /**
@@ -227,15 +227,15 @@ public class PathField extends JPanel implements Field
     /**
      * Button bar: add
      */
-    private JButton add = new JButton("Add");
+    private JButton add = new JButton(Msg.ADD.toString());
 
     /**
      * Button bar: remove
      */
-    private JButton remove = new JButton("Remove");
+    private JButton remove = new JButton(Msg.REMOVE.toString());
 
     /**
      * Button bar: update
      */
-    private JButton update = new JButton("Update");
+    private JButton update = new JButton(Msg.UPDATE.toString());
 }

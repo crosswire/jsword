@@ -36,14 +36,6 @@ class Msg extends MsgBase
     static final Msg PARSE_FAIL = new Msg("Failure parsing remote response.");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor#
      */
     private Msg(String name)

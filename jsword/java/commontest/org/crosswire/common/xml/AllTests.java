@@ -11,7 +11,7 @@ public class AllTests
 
     public static Test suite()
     {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.xml");
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.xml"); //$NON-NLS-1$
         //$JUnit-BEGIN$
         suite.addTestSuite(XMLUtilTest.class);
         //$JUnit-END$

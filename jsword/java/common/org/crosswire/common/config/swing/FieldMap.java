@@ -72,19 +72,19 @@ public class FieldMap
                 }
                 else
                 {
-                    log.warn("field type (" + type + ") unregistered.");
+                    log.warn("field type (" + type + ") unregistered."); //$NON-NLS-1$ //$NON-NLS-2$
                     field = new TextField();
                 }
             }
         }
         catch (Exception ex)
         {
-            log.warn("field type (" + type + ") initialization failed:", ex);
+            log.warn("field type (" + type + ") initialization failed:", ex); //$NON-NLS-1$ //$NON-NLS-2$
             Reporter.informUser(type, ex);
 
             if (field == null)
             {
-                log.warn("field type (" + type + ") unregistered.");
+                log.warn("field type (" + type + ") unregistered."); //$NON-NLS-1$ //$NON-NLS-2$
                 field = new TextField();
             }
         }

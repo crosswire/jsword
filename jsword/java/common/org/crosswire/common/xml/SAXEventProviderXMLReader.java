@@ -143,7 +143,7 @@ public class SAXEventProviderXMLReader implements XMLReader
     {
         if (!(is instanceof SAXEventProviderInputSource))
         {
-            throw new SAXException("SAXEventProviderInputSource required");
+            throw new SAXException("SAXEventProviderInputSource required"); //$NON-NLS-1$
         }
 
         doc_in.provideSAXEvents(getContentHandler());
@@ -154,7 +154,7 @@ public class SAXEventProviderXMLReader implements XMLReader
      */
     public void parse(String arg0) throws SAXException
     {
-        throw new SAXException("SAXEventProviderInputSource required");
+        throw new SAXException("SAXEventProviderInputSource required"); //$NON-NLS-1$
     }
 
     private SAXEventProvider doc_in;

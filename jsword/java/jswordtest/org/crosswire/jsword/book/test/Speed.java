@@ -73,19 +73,19 @@ public class Speed implements Runnable
             PassageTally tally;
 
             // Part 1, a best match, and doc generate
-            tally = (PassageTally) book.find(new Search("In the beginning god created the heavens and the earth", true));
+            tally = (PassageTally) book.find(new Search("In the beginning god created the heavens and the earth", true)); //$NON-NLS-1$
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 2, another best match, and doc generate
-            tally = (PassageTally) book.find(new Search("for god so loves the world that he gave his only begotten son", true));
+            tally = (PassageTally) book.find(new Search("for god so loves the world that he gave his only begotten son", true)); //$NON-NLS-1$
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 3, a power match, and doc generate
-            String next_input = book.find(new Search("aaron & manna", false)).getName();
+            String next_input = book.find(new Search("aaron & manna", false)).getName(); //$NON-NLS-1$
             Passage ref = PassageFactory.createPassage(next_input);
             ref.trimVerses(35);
             dummyDisplay(ref);
@@ -107,7 +107,7 @@ public class Speed implements Runnable
     {
         if (ref == null)
         {    
-            throw new NullPointerException("Null Passage in dummyDisplay.");
+            throw new NullPointerException("Null Passage in dummyDisplay."); //$NON-NLS-1$
         }
 
         book.getData(ref);
@@ -120,7 +120,7 @@ public class Speed implements Runnable
     {
         if (start_time == 0 || end_time == 0)
         {    
-            throw new IllegalStateException("The benchmark has not finished yet.");
+            throw new IllegalStateException("The benchmark has not finished yet."); //$NON-NLS-1$
         }
 
         return end_time - start_time;

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.FlowLayout;
@@ -89,9 +88,13 @@ public class BooleanField extends JPanel implements Field
         return this;
     }
 
-    /** The 'on' button */
-    private JRadioButton on = new JRadioButton("Yes");
+    /**
+     * The 'on' button
+     */
+    private JRadioButton on = new JRadioButton(Msg.YES.toString());
 
-    /** The 'off' button */
-    private JRadioButton off = new JRadioButton("No");
+    /**
+     * The 'off' button
+     */
+    private JRadioButton off = new JRadioButton(Msg.NO.toString());
 }

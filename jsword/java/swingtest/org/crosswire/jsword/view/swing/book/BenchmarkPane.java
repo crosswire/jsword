@@ -66,7 +66,7 @@ public class BenchmarkPane extends EirPanel
         cbo_bible.setModel(mdl_bible);
         cbo_bible.setRenderer(new BookListCellRenderer());
         btn_go.setMnemonic('G');
-        btn_go.setText("Go");
+        btn_go.setText("Go"); //$NON-NLS-1$
         btn_go.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev) { benchmark(); }
@@ -90,7 +90,7 @@ public class BenchmarkPane extends EirPanel
      */
     public void showInDialog(Component parent)
     {
-        showInDialog(parent, "Benchmark", false);
+        showInDialog(parent, "Benchmark", false); //$NON-NLS-1$
     }
 
     /**
@@ -107,12 +107,12 @@ public class BenchmarkPane extends EirPanel
             speed.run();
     
             float time = speed.getBenchmark() / 1000;
-            txt_results.append("Benchmark for '" + book.getBookMetaData().getName() + "': " + time + "s\n");
+            txt_results.append("Benchmark for '" + book.getBookMetaData().getName() + "': " + time + "s\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
-            txt_results.append("Benchmark failed. No timing available.\n");
+            txt_results.append("Benchmark failed. No timing available.\n"); //$NON-NLS-1$
         }
     }
 

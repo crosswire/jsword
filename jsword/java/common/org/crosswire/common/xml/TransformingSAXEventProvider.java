@@ -81,14 +81,14 @@ public class TransformingSAXEventProvider implements SAXEventProvider
                 {
                     txers.remove(xslurl);
                     tinfo = null;
-                    log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm());
+                    log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm()); //$NON-NLS-1$
                 }
             }
         }
 
         if (tinfo == null)
         {
-            log.debug("generating templates for " + xslurl.toExternalForm());
+            log.debug("generating templates for " + xslurl.toExternalForm()); //$NON-NLS-1$
 
             InputStream xsl_in = xslurl.openStream();
             Templates templates = transfact.newTemplates(new StreamSource(xsl_in));

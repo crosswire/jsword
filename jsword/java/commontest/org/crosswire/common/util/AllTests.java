@@ -31,7 +31,7 @@ public class AllTests
 {
     public static Test suite()
     {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.util");
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.util"); //$NON-NLS-1$
         //$JUnit-BEGIN$
         suite.addTest(new TestSuite(HelpDeskTest.class));
         suite.addTest(new TestSuite(StringUtilTest.class));

@@ -101,8 +101,8 @@ public class Config
         String value = model.getString();
         if (value == null)
         {
-            value = "";
-            log.info("key="+key+" had a null value");
+            value = ""; //$NON-NLS-1$
+            log.info("key="+key+" had a null value");  //$NON-NLS-1$//$NON-NLS-2$
         }
 
         local.put(key, value);
@@ -123,7 +123,7 @@ public class Config
         while (it.hasNext())
         {
             Element element = (Element) it.next();
-            String key = element.getAttributeValue("key");
+            String key = element.getAttributeValue("key"); //$NON-NLS-1$
             try
             {
                 Choice choice = ChoiceFactory.getChoice(element);
@@ -131,7 +131,7 @@ public class Config
             }
             catch (Exception ex)
             {
-                log.warn("Error creating config element, key="+key, ex);
+                log.warn("Error creating config element, key="+key, ex); //$NON-NLS-1$
             }
         }
     }
@@ -216,12 +216,12 @@ public class Config
     {
         if (name == null)
         {
-            throw new NullPointerException("name");
+            throw new NullPointerException("name"); //$NON-NLS-1$
         }
 
         if (value == null)
         {
-            throw new NullPointerException("value");
+            throw new NullPointerException("value"); //$NON-NLS-1$
         }
 
         local.put(name, value);
@@ -255,7 +255,7 @@ public class Config
             }
             catch (Exception ex)
             {
-                log.warn("Failure with setting "+key);
+                log.warn("Failure with setting "+key); //$NON-NLS-1$
                 Reporter.informUser(this, ex);
             }
         }
@@ -272,12 +272,12 @@ public class Config
 
         if (force)
         {
-            log.info("Force=true, all changes will propogate regardless");
+            log.info("Force=true, all changes will propogate regardless"); //$NON-NLS-1$
         }
 
         for (int priority=Choice.PRIORITY_SYSTEM; priority>=Choice.PRIORITY_LOWEST; priority--)
         {
-            log.info("Settings for priority level="+priority);
+            log.info("Settings for priority level="+priority); //$NON-NLS-1$
 
             Iterator it = keys.iterator();
             while (it.hasNext())
@@ -307,7 +307,7 @@ public class Config
                             || priority < highest_change
                             || !new_value.equals(old_value))
                         {
-                            log.info("Setting "+key+"="+new_value+" (was "+old_value+")");
+                            log.info("Setting "+key+"="+new_value+" (was "+old_value+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                             model.setString(new_value);
 
                             if (priority > highest_change)
@@ -316,14 +316,14 @@ public class Config
 
                                 if (!force)
                                 {
-                                    log.info("Change at level " + highest_change + ", all changes will propogate regardless");
+                                    log.info("Change at level " + highest_change + ", all changes will propogate regardless"); //$NON-NLS-1$ //$NON-NLS-2$
                                 }
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        log.warn("Failure with "+key+"="+new_value, ex);
+                        log.warn("Failure with "+key+"="+new_value, ex);  //$NON-NLS-1$ //$NON-NLS-2$
                         Reporter.informUser(this, ex);
                     }
                 }
@@ -419,7 +419,7 @@ public class Config
         int last_dot = key.lastIndexOf('.');
         if (last_dot == -1)
         {
-            throw new IllegalArgumentException("key=" + key + " does not contain a dot.");
+            throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return key.substring(0, last_dot);
@@ -433,7 +433,7 @@ public class Config
         int last_dot = key.lastIndexOf('.');
         if (last_dot == -1)
         {
-            throw new IllegalArgumentException("key=" + key + " does not contain a dot.");
+            throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return key.substring(last_dot+1);

@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Various utilities for examining the running Threads and
  * controlling their execution.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -133,7 +133,7 @@ public class ThreadUtil
             }
             catch (SecurityException ex)
             {
-                addItem(vec, depth, "<Unavailable>");
+                addItem(vec, depth, Msg.UNAVILABLE.toString());
             }
 
             for (int i=0; i<num_threads; i++)
@@ -148,7 +148,7 @@ public class ThreadUtil
         }
         catch (Exception ex)
         {
-            addItem(vec, depth, ""+ex);
+            addItem(vec, depth, ""+ex); //$NON-NLS-1$
         }
     }
 
@@ -164,11 +164,11 @@ public class ThreadUtil
 
         try
         {
-            addItem(vec, depth, thread.getName() + " (" + thread.getPriority() + ")");
+            addItem(vec, depth, thread.getName() + " (" + thread.getPriority() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (SecurityException ex)
         {
-            addItem(vec, depth, "<Unavailable>");
+            addItem(vec, depth, Msg.UNAVILABLE.toString());
         }
     }
 
@@ -179,6 +179,6 @@ public class ThreadUtil
      */
     private static void addItem(List vec, int depth, String item)
     {
-        vec.add(StringUtils.leftPad("", depth*2) + item);
+        vec.add(StringUtils.leftPad("", depth*2) + item); //$NON-NLS-1$
     }
 }

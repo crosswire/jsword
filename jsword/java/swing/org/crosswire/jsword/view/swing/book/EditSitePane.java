@@ -417,7 +417,7 @@ public class EditSitePane extends JPanel
         editName = null;
         editInstaller = null;
 
-        setState(STATE_DISPLAY, "");
+        setState(STATE_DISPLAY, ""); //$NON-NLS-1$
         select();
     }
 
@@ -434,7 +434,7 @@ public class EditSitePane extends JPanel
         editName = null;
         editInstaller = null;
 
-        setState(STATE_DISPLAY, "");
+        setState(STATE_DISPLAY, ""); //$NON-NLS-1$
         select();
     }
 
@@ -519,7 +519,7 @@ public class EditSitePane extends JPanel
     {
         try
         {
-            txtName.setText("");
+            txtName.setText(""); //$NON-NLS-1$
             pnlBean.setBean(null);
         }
         catch (IntrospectionException ex)

@@ -55,7 +55,7 @@ public class EirPanel extends JPanel
         }
 
         btn_ok = new JButton();
-        btn_ok.setText("Close");
+        btn_ok.setText(Msg.CLOSE.toString());
         btn_ok.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)

@@ -28,59 +28,50 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg NO_HELP = new Msg("Currently on-line help is only available via the J-Sword website:\nhttp://www.crosswire.org/jsword");
-
     // Strings used by Desktop
-    static final Msg UNKNOWN_PROTOCOL = new Msg("Unknown protocol {0}");
-    static final Msg BAD_PROTOCOL_URL = new Msg("Missing : in {0}");
-
+    static final Msg UNKNOWN_PROTOCOL = new Msg("Desktop.UnknownProtocol");
+    static final Msg BAD_PROTOCOL_URL = new Msg("Desktop.BadProtocolUrl");
+    
     // Strings for the preloading job
-    static final Msg PRELOAD_TITLE = new Msg("Display Pre-load");
-    static final Msg PRELOAD_SETUP = new Msg("Setup");
-    static final Msg PRELOAD_DATA = new Msg("Getting initial data");
-    static final Msg PRELOAD_PROVIDER = new Msg("Getting event provider");
-    static final Msg PRELOAD_STYLE = new Msg("Compiling stylesheet");
+    static final Msg PRELOAD_TITLE = new Msg("Desktop.PreloadTitle");
+    static final Msg PRELOAD_SETUP = new Msg("Desktop.PreloadSetup");
+    static final Msg PRELOAD_DATA = new Msg("Desktop.PreloadData");
+    static final Msg PRELOAD_PROVIDER = new Msg("Desktop.PreloadProvider");
+    static final Msg PRELOAD_STYLE = new Msg("Desktop.PreloadStyle");
 
-    // Strings for the startup job
-    static final Msg STARTUP_TITLE = new Msg("Startup");
-    static final Msg STARTUP_CONFIG = new Msg("Setting-up config");
-    static final Msg STARTUP_LOAD_CONFIG = new Msg("Loading Configuration System");
-    static final Msg STARTUP_LOAD_SETTINGS = new Msg("Loading Stored Settings");
-    static final Msg STARTUP_GENERATE = new Msg("Generating Components");
-    static final Msg STARTUP_GENERAL_CONFIG = new Msg("General configuration");
+   // Strings for the startup job
+    static final Msg STARTUP_TITLE = new Msg("Desktop.StartupTitle");
+    static final Msg STARTUP_CONFIG = new Msg("Desktop.StartupConfig");
+    static final Msg STARTUP_LOAD_CONFIG = new Msg("Desktop.StartupLoadConfig");
+    static final Msg STARTUP_LOAD_SETTINGS = new Msg("Desktop.StartupLoadSettings");
+    static final Msg STARTUP_GENERATE = new Msg("Desktop.StartupGenerate");
+    static final Msg STARTUP_GENERAL_CONFIG = new Msg("Desktop.StartupGeneral");
 
     // Strings for DesktopAction
-    static final Msg NOT_IMPLEMENTED = new Msg("{0} is not implemented");
-    static final Msg NO_PASSAGE = new Msg("No Passage to Save");
-    static final Msg SOURCE_MISSING = new Msg("No {0} source to view");
-    static final Msg GHTML = new Msg("Generated HTML");
-    static final Msg HTML = new Msg("HTML");
-    static final Msg OSIS = new Msg("OSIS");
-    static final Msg SOURCE_FOUND = new Msg("{0} source to {1}");
+    static final Msg NO_HELP = new Msg("DesktopActions.NoHelp");
+    static final Msg NOT_IMPLEMENTED = new Msg("DesktopActions.NotImplemented");
+    static final Msg NO_PASSAGE = new Msg("DesktopActions.NoPassage");
+    static final Msg SOURCE_MISSING = new Msg("DesktopActions.SourceMissing");
+    static final Msg GHTML = new Msg("DesktopActions.GHTML");
+    static final Msg HTML = new Msg("DesktopActions.HTML");
+    static final Msg OSIS = new Msg("DesktopActions.OSIS");
+    static final Msg SOURCE_FOUND = new Msg("DesktopActions.SourceFound");
 
     // Strings for AboutPane and Splash
     // The splash image is of an English version of the application
-    static final Msg SPLASH_IMAGE = new Msg("/images/splash.png");
-    static final Msg VERSION_TITLE = new Msg("Version {0}");
-    static final Msg ABOUT_TITLE = new Msg("About {0}");
-    static final Msg TASK_TAB_TITLE = new Msg("Running Tasks");
-    static final Msg ERROR_TAB_TITLE = new Msg("Errors");
-    static final Msg SYSTEM_PROPS_TAB_TITLE = new Msg("System Properties");
-    static final Msg DEBUG_TAB_TITLE = new Msg("Debug");
+    static final Msg SPLASH_IMAGE = new Msg("Splash.SplashImage");
+    static final Msg VERSION_TITLE = new Msg("Splash.VersionTitle");
+    static final Msg ABOUT_TITLE = new Msg("AboutPane.AboutTitle");
+    static final Msg TASK_TAB_TITLE = new Msg("AboutPane.TaskTabTitle");
+    static final Msg ERROR_TAB_TITLE = new Msg("AboutPane.ErrorTabTitle");
+    static final Msg SYSTEM_PROPS_TAB_TITLE = new Msg("AboutPane.SystemPropsTabTitle");
+    static final Msg DEBUG_TAB_TITLE = new Msg("AboutPane.DebugTabTitle");
 
     // Strings for StatusBar
-    static final Msg STATUS_DEFAULT = new Msg("Ready ...        ");
+    static final Msg STATUS_DEFAULT = new Msg("StatusBar.StatusDefault");
 
     // Strings for OptionsAction
-    static final Msg CONFIG_TITLE = new Msg("Desktop Options");
-
-    /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
+    static final Msg CONFIG_TITLE = new Msg("OptionsAction.ConfigTitle");
 
     /**
      * Passthrough ctor

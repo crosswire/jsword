@@ -74,7 +74,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
         deck = new JPanel();
         layout = new CardLayout();
 
-        blank.add(new JLabel("Select a sub-node in the tree for more options"));
+        blank.add(new JLabel(Msg.SELECT_SUBNODE.toString()));
 
         deck.setLayout(layout);
         deck.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -103,30 +103,29 @@ public class TreeConfigEditor extends AbstractConfigEditor
         title.setBackground(Color.gray);
         title.setForeground(Color.white);
         title.setOpaque(true);
-        title.setText("Properties");
+        title.setText(Msg.PROPERTIES.toString());
         title.setAlignmentX(SwingConstants.LEFT);
 
         // Use this if you want to have the tree touch the bottom. Then add
         // the button panel to content.South
         // JPanel content = new JPanel();
         // content.setLayout(new BorderLayout());
-        // content.add("Center", deck);
+        // content.add(BorderLayout.CENTER, deck);
 
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-        panel.add("North", title);
-        panel.add("Center", deck);
+        panel.add(BorderLayout.NORTH, title);
+        panel.add(BorderLayout.CENTER, deck);
 
         setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         //if (cards > 1)
-            add("West", new JScrollPane(tree));
+            add(BorderLayout.WEST, new JScrollPane(tree));
 
-        add("Center", panel);
-        add("South", new ButtonPane(this));
+        add(BorderLayout.CENTER, panel);
+        add(BorderLayout.SOUTH, new ButtonPane(this));
     }
-
 
     /**
      * Updates to the tree that we need to do on any change
@@ -190,7 +189,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
             return;
         }
 
-        title.setText(""+obj+" Properties");
+        title.setText(""+obj+" "+Msg.PROPERTIES); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Get the name of the current deck
         Object[] list = tree.getSelectionPath().getPath();
@@ -200,7 +199,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
         {
             if (i > 1)
             {
-                path.append(".");
+                path.append("."); //$NON-NLS-1$
             }
 
             path.append(list[i].toString());
@@ -222,7 +221,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
     /**
      * The name of the blank tab
      */
-    protected static final String BLANK = "$$BLANK$$";
+    protected static final String BLANK = "$$BLANK$$"; //$NON-NLS-1$
 
     /**
      * The tree containing the Field sets
@@ -280,13 +279,13 @@ public class TreeConfigEditor extends AbstractConfigEditor
                 {
                     // Chop off the similar start
                     temp = temp.substring(path.length());
-                    if (temp.startsWith("."))
+                    if (temp.startsWith(".")) //$NON-NLS-1$
                     {
                         temp = temp.substring(1);
                     }
 
                     // Chop off all after the first dot
-                    int dot_pos = temp.indexOf(".");
+                    int dot_pos = temp.indexOf("."); //$NON-NLS-1$
                     if (dot_pos != -1)
                     {
                         temp = temp.substring(0, dot_pos);
@@ -414,7 +413,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
         /**
          * The root node
          */
-        private Node root = new Node("", "");
+        private Node root = new Node("", "");  //$NON-NLS-1$//$NON-NLS-2$
     }
 
     /**
@@ -450,7 +449,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
             }
             else
             {
-                return path + "." + name;
+                return path + "." + name; //$NON-NLS-1$
             }
         }
 

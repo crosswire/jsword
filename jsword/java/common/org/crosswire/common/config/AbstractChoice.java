@@ -35,7 +35,7 @@ public abstract class AbstractChoice implements Choice
      */
     public String getType()
     {
-        return "text";
+        return "text"; //$NON-NLS-1$
     }
 
     /**

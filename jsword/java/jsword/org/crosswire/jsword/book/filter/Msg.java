@@ -31,14 +31,6 @@ class Msg extends MsgBase
     static final Msg JAXB_ERROR = new Msg("JAXB Error");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

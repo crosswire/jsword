@@ -29,31 +29,31 @@ public class zip extends HttpServlet
         String modName = null;
         String pkgType = null;
 
-        response.setContentType("application/zip");
+        response.setContentType("application/zip"); //$NON-NLS-1$
         try
         {
-            modName = request.getParameterValues("modName")[0];
-            pkgType = request.getParameterValues("pkgType")[0];
-            if (pkgType.equals("win"))
+            modName = request.getParameterValues("modName")[0]; //$NON-NLS-1$
+            pkgType = request.getParameterValues("pkgType")[0]; //$NON-NLS-1$
+            if (pkgType.equals("win")) //$NON-NLS-1$
             {
                 ZipOutputStream zstream = new ZipOutputStream(response.getOutputStream());
-                File dataDir = new File("/home/sword/winmodinst/");
+                File dataDir = new File("/home/sword/winmodinst/"); //$NON-NLS-1$
                 String names[] = dataDir.list();
 
                 for (int i = 0; i < names.length; i++)
                 {
-                    if ((!names[i].equals(".")) && (!names[i].equals("..")))
+                    if ((!names[i].equals(".")) && (!names[i].equals(".."))) //$NON-NLS-1$ //$NON-NLS-2$
                     {
-                        PackageMod.copyFileToZip(zstream, "/home/sword/winmodinst/", names[i], "");
+                        PackageMod.copyFileToZip(zstream, "/home/sword/winmodinst/", names[i], ""); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
-                zstream.putNextEntry(new ZipEntry("data.zip"));
-                PackageMod.sendToZipStream(zstream, SWMgr.staticInstance, "/home/ftp/pub/sword/raw/", modName, true);
+                zstream.putNextEntry(new ZipEntry("data.zip")); //$NON-NLS-1$
+                PackageMod.sendToZipStream(zstream, SWMgr.staticInstance, "/home/ftp/pub/sword/raw/", modName, true); //$NON-NLS-1$
                 zstream.close();
             }
             else
                 PackageMod.sendToZipStream(response.getOutputStream(), SWMgr.staticInstance,
-                        "/home/ftp/pub/sword/raw/", modName, false);
+                        "/home/ftp/pub/sword/raw/", modName, false); //$NON-NLS-1$
         }
         catch (Exception e)
         {
@@ -64,8 +64,8 @@ public class zip extends HttpServlet
             response.getOutputStream().close();
             synchronized (this)
             {
-                FileOutputStream log = new FileOutputStream("/var/log/httpd/pkgDownloads", true);
-                log.write(new String(pkgType + "|" + modName + "|" + new Date() + "\n").getBytes());
+                FileOutputStream log = new FileOutputStream("/var/log/httpd/pkgDownloads", true); //$NON-NLS-1$
+                log.write(new String(pkgType + "|" + modName + "|" + new Date() + "\n").getBytes()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 log.close();
             }
         }

@@ -52,12 +52,12 @@ public abstract class AbstractSearchEngine implements SearchEngine
             }
             catch (IOException ex)
             {
-                log.warn("second load failure", ex);
+                log.warn("second load failure", ex); //$NON-NLS-1$
             }
         }
         else
         {
-            Reporter.informUser(this, Msg.TYPE_INDEXGEN.getName());
+            Reporter.informUser(this, Msg.TYPE_INDEXGEN);
 
             // The index is usable but incomplete, so kick off a generation
             // thread if there is not one running already.
@@ -68,7 +68,7 @@ public abstract class AbstractSearchEngine implements SearchEngine
             }
             else
             {
-                log.warn("activate() called while job in progress", new Exception());
+                log.warn("activate() called while job in progress", new Exception()); //$NON-NLS-1$
             }
         }
 

@@ -128,11 +128,11 @@ public class RobustList extends AbstractList implements List
      */
     public void clear()
     {
-        debug("pre-clear");
+        debug("pre-clear"); //$NON-NLS-1$
         head = null;
         foot = null;
         size = 0;
-        debug("post-clear");
+        debug("post-clear"); //$NON-NLS-1$
     }
 
     /**
@@ -152,7 +152,7 @@ public class RobustList extends AbstractList implements List
     {
         if (index < 0 || index >= size)
         {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         Entry e;
@@ -340,10 +340,10 @@ public class RobustList extends AbstractList implements List
          */
         protected void debug()
         {
-            log.debug("  prev="+prev);
-            log.debug("  this="+this);
-            log.debug("  next="+next);
-            log.debug("   obje="+object);
+            log.debug("  prev="+prev); //$NON-NLS-1$
+            log.debug("  this="+this); //$NON-NLS-1$
+            log.debug("  next="+next); //$NON-NLS-1$
+            log.debug("   obje="+object); //$NON-NLS-1$
         }
 
         protected Object object;
@@ -357,14 +357,14 @@ public class RobustList extends AbstractList implements List
     protected void debug(String title)
     {
         log.debug(title);
-        log.debug(" head ="+head);
-        log.debug(" foot ="+foot);
+        log.debug(" head ="+head); //$NON-NLS-1$
+        log.debug(" foot ="+foot); //$NON-NLS-1$
 
         int i = 0;
         Entry e = head;
         while (e != null)
         {
-            log.debug(" index="+i);
+            log.debug(" index="+i); //$NON-NLS-1$
             e.debug();
             e = e.next;
             i++;

@@ -78,15 +78,15 @@ public class OsisTest extends TestCase
         try
         {
             Seg seg = JAXBUtil.factory().createSeg();
-            seg.getContent().add("In the beginning God created the heaven and the earth.");
+            seg.getContent().add("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
 
             Verse verse = JAXBUtil.factory().createVerse();
-            verse.setOsisID("Gen.1.1");
+            verse.setOsisID("Gen.1.1"); //$NON-NLS-1$
             verse.getContent().add(seg);
     
             Div div = JAXBUtil.factory().createDiv();
-            div.setType("chapter");
-            div.setOsisID("Gen.1.1");
+            div.setType("chapter"); //$NON-NLS-1$
+            div.setOsisID("Gen.1.1"); //$NON-NLS-1$
             div.getContent().add(verse);
     
             Work work = JAXBUtil.factory().createWork();
@@ -95,7 +95,7 @@ public class OsisTest extends TestCase
             header.getWork().add(work);
     
             OsisText osistext = JAXBUtil.factory().createOsisText();
-            osistext.setOsisIDWork("Bible.KJV");
+            osistext.setOsisIDWork("Bible.KJV"); //$NON-NLS-1$
             osistext.getDiv().add(div);
             osistext.setHeader(header);
 
@@ -125,10 +125,10 @@ public class OsisTest extends TestCase
     {
         try
         {
-            String zipfile = "T:\\share\\joe\\jsword\\notes\\kjv.zip";
+            String zipfile = "T:\\share\\joe\\jsword\\notes\\kjv.zip"; //$NON-NLS-1$
             
             ZipFile zfile = new ZipFile(new File(zipfile));
-            ZipEntry zentry = zfile.getEntry("kjv.xml");
+            ZipEntry zentry = zfile.getEntry("kjv.xml"); //$NON-NLS-1$
             InputStream zin = zfile.getInputStream(zentry);
             
             Osis kjv = (Osis) umarsh.unmarshal(zin);

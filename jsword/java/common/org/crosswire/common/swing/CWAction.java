@@ -12,7 +12,7 @@ import javax.swing.event.EventListenerList;
  * that adds LARGE_ICON to Action and also forwards the Action
  * to its listeners after modifying the ActionEvent to include
  * the ACTION_COMMAND_KEY.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -40,7 +40,7 @@ public class CWAction extends AbstractAction
      * The icon to display when a large one is needed.
      * This is still not part of Java as of 1.5
      */
-    public static final String LARGE_ICON = "LargeIcon";
+    public static final String LARGE_ICON = "LargeIcon"; //$NON-NLS-1$
 
     /**
      * Create an empty action. This action needs to be populated in order to be useful.
@@ -50,7 +50,7 @@ public class CWAction extends AbstractAction
         super();
     }
 
-    /** 
+    /**
      * Forwards the ActionEvent to the registered listener.
      * @param evt ActionEvent
      */
@@ -102,17 +102,19 @@ public class CWAction extends AbstractAction
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        sb.append("Name:");
+
+        sb.append("Name:"); //$NON-NLS-1$
         sb.append((String) getValue(Action.NAME));
-        sb.append("\n Desc:");
+        sb.append("\n Desc:"); //$NON-NLS-1$
         sb.append((String) getValue(Action.SHORT_DESCRIPTION));
-        sb.append("\n    ActionCommandKey:");
+        sb.append("\n    ActionCommandKey:"); //$NON-NLS-1$
         sb.append((String) getValue(Action.ACTION_COMMAND_KEY));
-        sb.append("\n    Enabled:");
+        sb.append("\n    Enabled:"); //$NON-NLS-1$
         sb.append(isEnabled());
-        sb.append("\n    ObjectID:");
+        sb.append("\n    ObjectID:"); //$NON-NLS-1$
         sb.append(System.identityHashCode(this));
-        sb.append("\n");
+        sb.append("\n"); //$NON-NLS-1$
+
         return sb.toString();
     }
 

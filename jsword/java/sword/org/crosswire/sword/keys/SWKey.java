@@ -21,7 +21,7 @@ public class SWKey implements Cloneable, Comparable
      */
     public SWKey()
     {
-        this("");
+        this(""); //$NON-NLS-1$
     }
 
     public SWKey(String ikey)

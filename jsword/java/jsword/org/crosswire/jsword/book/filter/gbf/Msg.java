@@ -32,14 +32,6 @@ class Msg extends MsgBase
     static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

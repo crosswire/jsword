@@ -92,7 +92,7 @@ public class ButtonPane extends JPanel
 
         this.setBorder(new EdgeBorder(SwingConstants.NORTH));
         this.setLayout(new BorderLayout(10, 10));
-        this.add("East", buttons);
+        this.add(BorderLayout.EAST, buttons);
     }
 
     /**
@@ -108,20 +108,20 @@ public class ButtonPane extends JPanel
     /**
      * The Ok button
      */
-    private JButton ok = new JButton("OK");
+    private JButton ok = new JButton(Msg.OK.toString());
 
     /**
      * The cancel button
      */
-    private JButton cancel = new JButton("Cancel");
+    private JButton cancel = new JButton(Msg.CANCEL.toString());
 
     /**
      * The apply button
      */
-    private JButton apply = new JButton("Apply");
+    private JButton apply = new JButton(Msg.APPLY.toString());
 
     /**
      * The help button
      */
-    private JButton help = new JButton("Help");
+    private JButton help = new JButton(Msg.HELP.toString());
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,20 +28,14 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg CONFIG_NOCLASS = new Msg("Specified class not found: {0}");
-    static final Msg CONFIG_MISSINGELE = new Msg("Missing {0} element in config.xml");
-    static final Msg CONFIG_NOSETTER = new Msg("Specified method not found {0}.set{1}({2} arg0)");
-    static final Msg CONFIG_NOGETTER = new Msg("Specified method not found {0}.get{1}()");
-    static final Msg CONFIG_NORETURN = new Msg("Mismatch of return types, found: {0} required: {1}");
-    static final Msg CONFIG_NOMAP = new Msg("Missing <map> element.");
-
-    /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
+    static final Msg CONFIG_NOCLASS = new Msg("Specified class not found: {0}"); //$NON-NLS-1$
+    static final Msg CONFIG_MISSINGELE = new Msg("Missing {0} element in config.xml"); //$NON-NLS-1$
+    static final Msg CONFIG_NOSETTER = new Msg("Specified method not found {0}.set{1}({2} arg0)"); //$NON-NLS-1$
+    static final Msg CONFIG_NOGETTER = new Msg("Specified method not found {0}.get{1}()"); //$NON-NLS-1$
+    static final Msg CONFIG_NORETURN = new Msg("Mismatch of return types, found: {0} required: {1}"); //$NON-NLS-1$
+    static final Msg CONFIG_NOMAP = new Msg("Missing <map> element."); //$NON-NLS-1$
+    static final Msg NO_HELP = new Msg("No help available"); //$NON-NLS-1$
+    static final Msg IGNORE = new Msg("Ignoring invalid option: {0}"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

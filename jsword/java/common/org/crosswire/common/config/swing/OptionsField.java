@@ -49,13 +49,13 @@ public class OptionsField implements Field
             
             if (list == null)
             {
-                throw new IllegalArgumentException("getOptions() returns null for option with help text " + mc.getHelpText());
+                throw new IllegalArgumentException("getOptions() returns null for option with help text " + mc.getHelpText()); //$NON-NLS-1$
             }
         }
         else
         {
-            log.warn("Unknown Choice type: "+param.getClass().getName());
-            list = new String[] { "ERROR" };
+            log.warn("Unknown Choice type: "+param.getClass().getName()); //$NON-NLS-1$
+            list = new String[] { Msg.ERROR.toString() };
         }
 
         combo.setModel(new DefaultComboBoxModel(list));
@@ -71,7 +71,7 @@ public class OptionsField implements Field
 
         if (reply == null)
         {
-            reply = "";
+            reply = ""; //$NON-NLS-1$
         }
 
         return reply;
@@ -97,7 +97,7 @@ public class OptionsField implements Field
             combo.setSelectedItem(list[0]);
         }
 
-        log.warn("Checked for options without finding: '"+value+"'. Defaulting to first option: "+combo.getSelectedItem());
+        log.warn("Checked for options without finding: '"+value+"'. Defaulting to first option: "+combo.getSelectedItem());  //$NON-NLS-1$//$NON-NLS-2$
     }
 
     /**
@@ -112,7 +112,7 @@ public class OptionsField implements Field
     /**
      * The component that we are wrapping in a field
      */
-    private JComboBox combo = new JComboBox(new String[] { "No Options Set" });
+    private JComboBox combo = new JComboBox(new String[] { Msg.NO_OPTIONS.toString() });
 
     /**
      * The options

@@ -11,7 +11,7 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  * A MapCellRenderer that renders multiline text.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -52,7 +52,7 @@ public class MapCellRenderer extends JTextArea implements TableCellRenderer
     /**
      * Overrides <code>JComponent.setForeground</code> to assign
      * the unselected-foreground color to the specified color.
-     * 
+     *
      * @param c set the foreground color to this value
      */
     public void setForeground(Color c)
@@ -76,7 +76,7 @@ public class MapCellRenderer extends JTextArea implements TableCellRenderer
     /**
      * Notification from the <code>UIManager</code> that the look and feel
      * [L&F] has changed.
-     * Replaces the current UI object with the latest version from the 
+     * Replaces the current UI object with the latest version from the
      * <code>UIManager</code>.
      *
      * @see javax.swing.JComponent#updateUI()
@@ -88,22 +88,17 @@ public class MapCellRenderer extends JTextArea implements TableCellRenderer
         setBackground(null);
     }
 
-    // implements javax.swing.table.TableCellRenderer
     /**
-     *
      * Returns the default table cell renderer.
-     *
-     * @param table  the <code>JTable</code>
-     * @param value  the value to assign to the cell at
-     *          <code>[row, column]</code>
+     * @param table the <code>JTable</code>
+     * @param value the value to assign to the cell at <code>[row, column]</code>
      * @param isSelected true if cell is selected
      * @param hasFocus true if cell has focus
      * @param row  the row of the cell to render
      * @param column the column of the cell to render
      * @return the default table cell renderer
      */
-    public Component getTableCellRendererComponent(JTable table, Object value, 
-    boolean isSelected, boolean hasFocus, int row, int column)
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
     {
         if (isSelected)
         {
@@ -112,26 +107,32 @@ public class MapCellRenderer extends JTextArea implements TableCellRenderer
         }
         else
         {
-            super.setForeground((unselectedForeground != null) ? unselectedForeground
-            : table.getForeground());
-            super.setBackground((unselectedBackground != null) ? unselectedBackground
-            : table.getBackground());
+            super.setForeground((unselectedForeground != null)
+                            ? unselectedForeground
+                            : table.getForeground());
+            super.setBackground((unselectedBackground != null)
+                            ? unselectedBackground
+                            : table.getBackground());
         }
+
         setFont(table.getFont());
+
         if (hasFocus)
         {
-            setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+            setBorder(UIManager.getBorder("Table.focusCellHighlightBorder")); //$NON-NLS-1$
             if (table.isCellEditable(row, column))
             {
-                super.setForeground(UIManager.getColor("Table.focusCellForeground"));
-                super.setBackground(UIManager.getColor("Table.focusCellBackground"));
+                super.setForeground(UIManager.getColor("Table.focusCellForeground")); //$NON-NLS-1$
+                super.setBackground(UIManager.getColor("Table.focusCellBackground")); //$NON-NLS-1$
             }
         }
         else
         {
             setBorder(noFocusBorder);
         }
-        setText(value == null ? "" : value.toString());
+
+        setText(value == null ? "" : value.toString()); //$NON-NLS-1$
+
         return this;
     }
 
@@ -141,14 +142,15 @@ public class MapCellRenderer extends JTextArea implements TableCellRenderer
      */
     private static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
 
-    // We need a place to store the color the JTextArea should be returned 
-    // to after its foreground and background colors have been set 
-    // to the selection background color. 
     /**
+     * We need a place to store the color the JTextArea should be returned
+     * to after its foreground and background colors have been set
+     * to the selection background color.
      * <code>unselectedForeground</code> is used to present the cell as with
      * the DefaultTableCellRenderer
      */
     private Color unselectedForeground;
+
     /**
      * <code>unselectedBackground</code> is used to present the cell as with
      * the DefaultTableCellRenderer

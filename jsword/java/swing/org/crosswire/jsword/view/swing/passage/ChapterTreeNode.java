@@ -123,13 +123,13 @@ public class ChapterTreeNode extends BookTreeNode
     {
         try
         {
-            String Passage_num = ""+chapter;
+            String Passage_num = ""+chapter; //$NON-NLS-1$
             if (ref == null) return Passage_num;
 
             int verses = ref.versesInPassage(book, chapter);
             if (verses == 0) return Passage_num;
 
-            return Passage_num + " (" + verses + ")";
+            return Passage_num + " (" + verses + ")";  //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (NoSuchVerseException ex)
         {

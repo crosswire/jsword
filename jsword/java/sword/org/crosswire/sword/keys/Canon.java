@@ -46,45 +46,45 @@ public class Canon {
      }
 
 public static final Book otbooks[] = new Book[] { 
-	new Book("Genesis", 50),
-	new Book("Exodus", 40), 
-	new Book("Leviticus", 27), 
-	new Book("Numbers", 36), 
-	new Book("Deuteronomy", 34), 
-	new Book("Joshua", 24), 
-	new Book("Judges", 21), 
-	new Book("Ruth", 4), 
-	new Book("I Samuel", 31), 
-	new Book("II Samuel", 24), 
-	new Book("I Kings", 22), 
-	new Book("II Kings", 25), 
-	new Book("I Chronicles", 29), 
-	new Book("II Chronicles", 36), 
-	new Book("Ezra", 10), 
-	new Book("Nehemiah", 13), 
-	new Book("Esther", 10), 
-	new Book("Job", 42), 
-	new Book("Psalms", 150), 
-	new Book("Proverbs", 31), 
-	new Book("Ecclesiastes", 12), 
-	new Book("Song of Solomon", 8), 
-	new Book("Isaiah", 66), 
-	new Book("Jeremiah", 52), 
-	new Book("Lamentations", 5), 
-	new Book("Ezekiel", 48), 
-	new Book("Daniel", 12), 
-	new Book("Hosea", 14), 
-	new Book("Joel", 3), 
-	new Book("Amos", 9), 
-	new Book("Obadiah", 1), 
-	new Book("Jonah", 4), 
-	new Book("Micah", 7), 
-	new Book("Nahum", 3), 
-	new Book("Habakkuk", 3), 
-	new Book("Zephaniah", 3), 
-	new Book("Haggai", 2), 
-	new Book("Zechariah", 14), 
-	new Book("Malachi", 4)
+	new Book("Genesis", 50), //$NON-NLS-1$
+	new Book("Exodus", 40),  //$NON-NLS-1$
+	new Book("Leviticus", 27),  //$NON-NLS-1$
+	new Book("Numbers", 36),  //$NON-NLS-1$
+	new Book("Deuteronomy", 34),  //$NON-NLS-1$
+	new Book("Joshua", 24),  //$NON-NLS-1$
+	new Book("Judges", 21),  //$NON-NLS-1$
+	new Book("Ruth", 4),  //$NON-NLS-1$
+	new Book("I Samuel", 31),  //$NON-NLS-1$
+	new Book("II Samuel", 24),  //$NON-NLS-1$
+	new Book("I Kings", 22),  //$NON-NLS-1$
+	new Book("II Kings", 25),  //$NON-NLS-1$
+	new Book("I Chronicles", 29),  //$NON-NLS-1$
+	new Book("II Chronicles", 36),  //$NON-NLS-1$
+	new Book("Ezra", 10),  //$NON-NLS-1$
+	new Book("Nehemiah", 13),  //$NON-NLS-1$
+	new Book("Esther", 10),  //$NON-NLS-1$
+	new Book("Job", 42),  //$NON-NLS-1$
+	new Book("Psalms", 150),  //$NON-NLS-1$
+	new Book("Proverbs", 31),  //$NON-NLS-1$
+	new Book("Ecclesiastes", 12),  //$NON-NLS-1$
+	new Book("Song of Solomon", 8),  //$NON-NLS-1$
+	new Book("Isaiah", 66),  //$NON-NLS-1$
+	new Book("Jeremiah", 52),  //$NON-NLS-1$
+	new Book("Lamentations", 5),  //$NON-NLS-1$
+	new Book("Ezekiel", 48),  //$NON-NLS-1$
+	new Book("Daniel", 12),  //$NON-NLS-1$
+	new Book("Hosea", 14),  //$NON-NLS-1$
+	new Book("Joel", 3),  //$NON-NLS-1$
+	new Book("Amos", 9),  //$NON-NLS-1$
+	new Book("Obadiah", 1),  //$NON-NLS-1$
+	new Book("Jonah", 4),  //$NON-NLS-1$
+	new Book("Micah", 7),  //$NON-NLS-1$
+	new Book("Nahum", 3),  //$NON-NLS-1$
+	new Book("Habakkuk", 3),  //$NON-NLS-1$
+	new Book("Zephaniah", 3),  //$NON-NLS-1$
+	new Book("Haggai", 2),  //$NON-NLS-1$
+	new Book("Zechariah", 14),  //$NON-NLS-1$
+	new Book("Malachi", 4) //$NON-NLS-1$
 };
 
 }

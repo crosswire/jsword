@@ -97,6 +97,7 @@ public class DesktopActions implements ActionListener
     public static final String OPTIONS = "Options";
     public static final String CONTENTS = "Contents";
     public static final String ABOUT = "About";
+    public static final String ABOUT_OK = "AboutOK";
 
     // Enumeration of error strings used in this class
     private static final String EMPTY_ACTION_ERROR = "Empty action: No Action Command Key";
@@ -112,7 +113,7 @@ public class DesktopActions implements ActionListener
     {
         desktop = d;
         simplestyle = new SimpleSwingConverter();
-        actions = new ActionFactory();
+        actions = DesktopActionFactory.instance();
         actions.addActionListener(this);
     }
 
@@ -376,22 +377,15 @@ public class DesktopActions implements ActionListener
         {
             FocusablePart da = getDesktop().getDisplayArea();
             String osis = da.getOSISSource();
-            Key ref = da.getKey();
-
-            Object [] msg = { Msg.GHTML.toString() };
-            if (osis == null || osis.equals("") || ref == null)
+            String html = null;
+            if (osis != null && osis.length() > 0)
             {
-                Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, msg);
-                return;
+                SAXEventProvider osissep = new StringSAXEventProvider(osis);
+                SAXEventProvider htmlsep = simplestyle.convert(osissep);
+                html = XMLUtil.writeToString(htmlsep);
             }
 
-            SAXEventProvider osissep = new StringSAXEventProvider(osis);
-            SAXEventProvider htmlsep = simplestyle.convert(osissep);
-            String html = XMLUtil.writeToString(htmlsep);
-            
-            TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_MISSING.toString(msg));
-            viewer.setEditable(true);
-            viewer.showInFrame(getDesktop().getJFrame());
+            showTextViewer(da.getKey(), Msg.GHTML.toString(), html);
         }
         catch (Exception ex)
         {
@@ -410,19 +404,7 @@ public class DesktopActions implements ActionListener
         try
         {
             FocusablePart da = getDesktop().getDisplayArea();
-            String html = da.getHTMLSource();
-            Key ref = da.getKey();
-
-            Object [] msg = { Msg.HTML.toString() };
-            if (html == null || html.equals("") || ref == null)
-            {
-                Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, msg);
-                return;
-            }
-
-            TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_MISSING.toString(msg));
-            viewer.setEditable(true);
-            viewer.showInFrame(getDesktop().getJFrame());
+            showTextViewer(da.getKey(), Msg.HTML.toString(), da.getHTMLSource());
         }
         catch (Exception ex)
         {
@@ -438,24 +420,31 @@ public class DesktopActions implements ActionListener
         try
         {
             FocusablePart da = getDesktop().getDisplayArea();
-            String html = da.getOSISSource();
-            Key key = da.getKey();
-
-            Object [] msg = { Msg.OSIS.toString() };
-            if (html == null || html.equals("") || key == null)
-            {
-                Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, msg);
-                return;
-            }
-
-            TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_FOUND.toString(msg));
-            viewer.setEditable(true);
-            viewer.showInFrame(getDesktop().getJFrame());
+            showTextViewer(da.getKey(), Msg.OSIS.toString(), da.getOSISSource());
         }
         catch (Exception ex)
         {
             Reporter.informUser(getDesktop().getJFrame(), ex);
         }
+    }
+
+    /**
+     * Pop up a TextViewPane or inform user of the problem
+     * @param ref
+     * @param name
+     * @param html
+     */
+    private void showTextViewer(Key ref, String name, String html)
+    {
+        if (html == null || html.length() == 0 || ref == null)
+        {
+            Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, name);
+            return;
+        }
+        
+        TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_MISSING.toString(name));
+        viewer.setEditable(true);
+        viewer.showInFrame(getDesktop().getJFrame());
     }
 
     /**
@@ -487,11 +476,13 @@ public class DesktopActions implements ActionListener
         if (view != null)
         {
             Passage ref = view.getPassage();
-            ref.blur(amount, PassageConstants.RESTRICT_CHAPTER);
-            view.setPassage(ref);
+            if (ref != null) {
+                ref.blur(amount, PassageConstants.RESTRICT_CHAPTER);
+                view.setPassage(ref);
+            }
         }
     }
-
+    
     /**
      * Remove the selected verses out of the PassagePane.
      */
@@ -570,6 +561,17 @@ public class DesktopActions implements ActionListener
         }
 
         atp.showInDialog(getDesktop().getJFrame());
+    }
+
+    /**
+     * For opening the About window
+     */
+    protected void doAboutOK()
+    {
+        if (atp != null)
+        {
+            atp.close();
+        }
     }
 
     /**

@@ -75,7 +75,7 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
         }
         catch (Exception ex)
         {
-            log.error("Failed to set default book", ex);
+            log.error("Failed to set default book", ex); //$NON-NLS-1$
         }
     }
 
@@ -270,7 +270,7 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
          */
         public void bookChosen(DisplaySelectEvent ev)
         {
-            log.debug("new bible chosen: "+ev.getBook());
+            log.debug("new bible chosen: "+ev.getBook()); //$NON-NLS-1$
 
             Book book = ev.getBook();
             txtPassg.setBook(book);
@@ -286,7 +286,7 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
          */
         public void passageSelected(DisplaySelectEvent ev)
         {
-            log.debug("new passage chosen: "+ev.getPassage().getName());
+            log.debug("new passage chosen: "+ev.getPassage().getName()); //$NON-NLS-1$
             setPassage(ev.getPassage());
         }
     }

@@ -4,6 +4,7 @@ package org.crosswire.common.swing;
 import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -64,7 +65,7 @@ public class AppletFrame extends JFrame
         app.start();
 
         /*getContentPane().setLayout(new BorderLayout()); */
-        getContentPane().add("Center", app);
+        getContentPane().add(BorderLayout.CENTER, app);
 
         setTitle(name);
         setSize(width, height);
@@ -150,7 +151,7 @@ public class AppletFrame extends JFrame
          */
         public String getParameter(String name)
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         /* (non-Javadoc)

@@ -33,14 +33,6 @@ class Msg extends MsgBase
     static final Msg SER_INIT = new Msg("Initialisation error.");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

@@ -51,60 +51,60 @@ public class StringUtilTest extends TestCase
         PipedReader in = new PipedReader();
         PipedWriter pout = new PipedWriter(in);
         PrintWriter out = new PrintWriter(pout, true);
-        out.println("a b c d e");
-        out.println("f g h i j");
+        out.println("a b c d e"); //$NON-NLS-1$
+        out.println("f g h i j"); //$NON-NLS-1$
         out.close();
         pout.close();
-        assertEquals(StringUtil.read(in), "a b c d e"+StringUtil.NEWLINE+"f g h i j"+StringUtil.NEWLINE);
+        assertEquals(StringUtil.read(in), "a b c d e"+StringUtil.NEWLINE+"f g h i j"+StringUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testSetLength() throws Exception
     {
-        assertEquals(StringUtil.setLengthRightPad("12345", 5), "12345");
-        assertEquals(StringUtil.setLengthRightPad("1234567890", 5), "12345");
-        assertEquals(StringUtil.setLengthRightPad("123", 5), "123  ");
+        assertEquals(StringUtil.setLengthRightPad("12345", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.setLengthRightPad("1234567890", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.setLengthRightPad("123", 5), "123  "); //$NON-NLS-1$ //$NON-NLS-2$
 
-        assertEquals(StringUtil.setLengthLeftPad("12345", 5), "12345");
-        assertEquals(StringUtil.setLengthLeftPad("1234567890", 5), "12345");
-        assertEquals(StringUtil.setLengthLeftPad("123", 5), "  123");
+        assertEquals(StringUtil.setLengthLeftPad("12345", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.setLengthLeftPad("1234567890", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.setLengthLeftPad("123", 5), "  123"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testShorten() throws Exception
     {
-        assertEquals(StringUtil.shorten("12345", 5), "12345");
-        assertEquals(StringUtil.shorten("1234567890", 5), "12...");
-        assertEquals(StringUtil.shorten("123", 5), "123");
+        assertEquals(StringUtil.shorten("12345", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.shorten("1234567890", 5), "12..."); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.shorten("123", 5), "123"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testGetInitials() throws Exception
     {
-        assertEquals(StringUtil.getInitials("Church of England"), "CoE");
-        assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC");
-        assertEquals(StringUtil.getInitials(""), "");
+        assertEquals(StringUtil.getInitials("Church of England"), "CoE"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.getInitials(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testGetCapitals() throws Exception
     {
-        assertEquals(StringUtil.getCapitals("Church of England"), "CE");
-        assertEquals(StringUtil.getCapitals("Java DataBase Connectivity"), "JDBC");
-        assertEquals(StringUtil.getCapitals(""), "");
+        assertEquals(StringUtil.getCapitals("Church of England"), "CE"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.getCapitals("Java DataBase Connectivity"), "JDBC"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.getCapitals(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testCreateTitle() throws Exception
     {
-        assertEquals(StringUtil.createTitle("OneTwo"), "One Two");
-        assertEquals(StringUtil.createTitle("one_two"), "One Two");
-        assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo");
-        assertEquals(StringUtil.createTitle("One_Two"), "One Two");
-        assertEquals(StringUtil.createTitle("One _Two"), "One Two");
-        assertEquals(StringUtil.createTitle("one  _Two"), "One Two");
+        assertEquals(StringUtil.createTitle("OneTwo"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createTitle("one_two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createTitle("One_Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createTitle("One _Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createTitle("one  _Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testCreateJavaName() throws Exception
     {
-        assertEquals(StringUtil.createJavaName("one  _Two"), "OneTwo");
-        assertEquals(StringUtil.createJavaName("one_two"), "OneTwo");
-        assertEquals(StringUtil.createJavaName("onetwo"), "Onetwo");
-        assertEquals(StringUtil.createJavaName("ONetwo"), "ONetwo");
+        assertEquals(StringUtil.createJavaName("one  _Two"), "OneTwo"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createJavaName("one_two"), "OneTwo"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createJavaName("onetwo"), "Onetwo"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createJavaName("ONetwo"), "ONetwo"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

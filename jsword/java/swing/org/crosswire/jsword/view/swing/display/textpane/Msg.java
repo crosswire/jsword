@@ -28,15 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg TRANSFORM_FAIL = new Msg("Transformation failure");
-
-    /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
+    static final Msg TRANSFORM_FAIL = new Msg("Transformation failure"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

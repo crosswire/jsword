@@ -112,12 +112,12 @@ public class EventListenerList implements Serializable
     {
         if (l == null)
         {
-            throw new NullPointerException("EventListener");
+            throw new NullPointerException("EventListener"); //$NON-NLS-1$
         }
 
         if (!t.isInstance(l))
         {
-            throw new IllegalArgumentException("Listener " + l + " is not of type " + t);
+            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] { l, t }));
         }
 
         if (listenerList == NULL_ARRAY)
@@ -149,12 +149,12 @@ public class EventListenerList implements Serializable
     {
         if (l == null)
         {
-            throw new NullPointerException("EventListener");
+            throw new NullPointerException("EventListener"); //$NON-NLS-1$
         }
 
         if (!t.isInstance(l))
         {
-            throw new IllegalArgumentException("Listener " + l + " is not of type " + t);
+            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] { l, t }));
         }
 
         // Is l on the list?
@@ -237,13 +237,13 @@ public class EventListenerList implements Serializable
     public String toString()
     {
         Object[] lList = listenerList;
-        String s = "EventListenerList: ";
-        s += lList.length / 2 + " listeners: ";
+        String s = "EventListenerList: "; //$NON-NLS-1$
+        s += lList.length / 2 + " listeners: "; //$NON-NLS-1$
 
         for (int i = 0; i <= lList.length - 2; i += 2)
         {
-            s += " type " + ((Class) lList[i]).getName();
-            s += " listener " + lList[i + 1];
+            s += " type " + ((Class) lList[i]).getName(); //$NON-NLS-1$
+            s += " listener " + lList[i + 1]; //$NON-NLS-1$
         }
 
         return s;

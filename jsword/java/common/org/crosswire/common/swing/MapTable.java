@@ -58,7 +58,7 @@ public class MapTable extends JTable
     {
         if (initialized && !(dm instanceof MapTableModel))
         {
-            throw new IllegalArgumentException("Table Model must be a MapTableModel");
+            throw new IllegalArgumentException(Msg.ERROR_TABLE_MODEL.toString());
         }
 
         super.setModel(dm);
@@ -72,7 +72,7 @@ public class MapTable extends JTable
     {
         if (!(renderer instanceof MapCellRenderer))
         {
-            throw new IllegalArgumentException("Renderer must be a MapCellRenderer");
+            throw new IllegalArgumentException(Msg.ERROR_CELL_RENDER.toString());
         }
 
         super.setDefaultRenderer(columnclass, renderer);

@@ -31,14 +31,6 @@ class Msg extends MsgBase
     static final Msg CACHE_READONLY = new Msg("Can't build a cache using a read-only driver.");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

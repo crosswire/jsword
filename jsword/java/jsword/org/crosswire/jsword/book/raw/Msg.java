@@ -36,14 +36,6 @@ class Msg extends MsgBase
     static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry.");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor 
      */
     private Msg(String name)

@@ -37,25 +37,25 @@ public abstract class AbstractReflectedChoice implements Choice
      */
     public void init(Element option) throws StartupException
     {
-        type = option.getAttributeValue("type");
+        type = option.getAttributeValue("type"); //$NON-NLS-1$
 
         // The important 3 things saying what we update and how we describe ourselves
-        Element introspector = option.getChild("introspect");
+        Element introspector = option.getChild("introspect"); //$NON-NLS-1$
         if (introspector == null)
         {
-            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "introspect" });
+            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "introspect" }); //$NON-NLS-1$
         }
 
-        String clazzname = introspector.getAttributeValue("class");
+        String clazzname = introspector.getAttributeValue("class"); //$NON-NLS-1$
         if (clazzname == null)
         {
-            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "class" });
+            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "class" }); //$NON-NLS-1$
         }
 
-        propertyname = introspector.getAttributeValue("property");
+        propertyname = introspector.getAttributeValue("property"); //$NON-NLS-1$
         if (propertyname == null)
         {
-            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "property" });
+            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "property" }); //$NON-NLS-1$
         }
 
         //log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
@@ -71,7 +71,7 @@ public abstract class AbstractReflectedChoice implements Choice
 
         try
         {
-            setter = clazz.getMethod("set"+propertyname, new Class[] { getConvertionClass() });
+            setter = clazz.getMethod("set"+propertyname, new Class[] { getConvertionClass() }); //$NON-NLS-1$
         }
         catch (NoSuchMethodException ex)
         {
@@ -82,11 +82,11 @@ public abstract class AbstractReflectedChoice implements Choice
         {
             try
             {
-                getter = clazz.getMethod("get"+propertyname, new Class[0]);
+                getter = clazz.getMethod("get"+propertyname, new Class[0]); //$NON-NLS-1$
             }
             catch (Exception ex)
             {
-                getter = clazz.getMethod("is"+propertyname, new Class[0]);
+                getter = clazz.getMethod("is"+propertyname, new Class[0]); //$NON-NLS-1$
             }
         }
         catch (NoSuchMethodException ex)
@@ -96,20 +96,20 @@ public abstract class AbstractReflectedChoice implements Choice
 
         if (getter.getReturnType() != getConvertionClass())
         {
-            log.debug("Not using "+propertyname+" from "+clazz.getName()+" because the return type of the getter is not "+getConvertionClass().getName());
+            log.debug("Not using "+propertyname+" from "+clazz.getName()+" because the return type of the getter is not "+getConvertionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConvertionClass() });
         }
 
         // Help text
-        Element childele = option.getChild("help");
+        Element childele = option.getChild("help"); //$NON-NLS-1$
         if (childele == null)
         {
-            helptext = "";
+            helptext = ""; //$NON-NLS-1$
         }
         helptext = childele.getTextTrim();
 
         // 2 optional config attrubites
-        String priorityname = option.getAttributeValue("priority");
+        String priorityname = option.getAttributeValue("priority"); //$NON-NLS-1$
         if (priorityname == null)
         {
             priority = Choice.PRIORITY_NORMAL;
@@ -205,13 +205,13 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (IllegalAccessException ex)
         {
-            log.error("Illegal access getting value from "+clazz.getName()+"."+getter.getName(), ex);
-            return "";
+            log.error("Illegal access getting value from "+clazz.getName()+"."+getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+            return ""; //$NON-NLS-1$
         }
         catch (InvocationTargetException ex)
         {
-            log.error("Failed to get value from "+clazz.getName()+"."+getter.getName(), ex);
-            return "";
+            log.error("Failed to get value from "+clazz.getName()+"."+getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+            return ""; //$NON-NLS-1$
         }
     }
 
@@ -227,7 +227,7 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (InvocationTargetException ex)
         {
-            log.info("Exception while attempting to execute: "+setter.toString());
+            log.info("Exception while attempting to execute: "+setter.toString()); //$NON-NLS-1$
 
             Throwable orig = ex.getTargetException();
             if (orig instanceof Exception)
@@ -241,7 +241,7 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (Exception ex)
         {
-            log.info("Exception while attempting to execute: "+setter.toString());
+            log.info("Exception while attempting to execute: "+setter.toString()); //$NON-NLS-1$
             throw ex;
         }
     }
@@ -274,7 +274,7 @@ public abstract class AbstractReflectedChoice implements Choice
     /**
      * The help text (tooltip) for this item
      */
-    private String helptext = "No help available";
+    private String helptext = Msg.NO_HELP.toString();
 
     /**
      * The priority of this config level

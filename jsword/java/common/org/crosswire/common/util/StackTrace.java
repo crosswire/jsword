@@ -62,7 +62,7 @@ public final class StackTrace
         StringWriter str = new StringWriter();
         ex.printStackTrace(new PrintWriter(str));
         String msg = new String(str.getBuffer());
-        String[] calls = StringUtils.split(msg, "\n\r");
+        String[] calls = StringUtils.split(msg, "\n\r"); //$NON-NLS-1$
 
         class_names = new String[calls.length-disgard];
         method_names = new String[calls.length-disgard];
@@ -75,15 +75,15 @@ public final class StackTrace
 
             try
             {
-                int spc_index = call.indexOf(" ");
-                int lhs_index = call.indexOf("(");
-                int cln_index = call.indexOf(":");
-                int rhs_index = call.indexOf(")");
+                int spc_index = call.indexOf(" "); //$NON-NLS-1$
+                int lhs_index = call.indexOf("("); //$NON-NLS-1$
+                int cln_index = call.indexOf(":"); //$NON-NLS-1$
+                int rhs_index = call.indexOf(")"); //$NON-NLS-1$
 
                 String full_fn = call.substring(spc_index+1, lhs_index).trim();
-                int last_dot = full_fn.lastIndexOf(".");
+                int last_dot = full_fn.lastIndexOf("."); //$NON-NLS-1$
 
-                class_names[i] = StringUtils.replace(full_fn.substring(0, last_dot), "/", ".");
+                class_names[i] = StringUtils.replace(full_fn.substring(0, last_dot), "/", "."); //$NON-NLS-1$ //$NON-NLS-2$
                 method_names[i] = full_fn.substring(last_dot+1);
 
                 if (cln_index != -1)
@@ -99,9 +99,9 @@ public final class StackTrace
             }
             catch (Exception ex2)
             {
-                class_names[i] = "ParseError: ";
+                class_names[i] = "ParseError: "; //$NON-NLS-1$
                 method_names[i] = call;
-                file_names[i] = "Error";
+                file_names[i] = "Error"; //$NON-NLS-1$
                 line_numbers[i] = 0;
             }
         }
@@ -130,7 +130,7 @@ public final class StackTrace
      */
     public final String getFullFunctionName(int level)
     {
-        return class_names[level]+"."+method_names[level]+"()";
+        return class_names[level]+"."+method_names[level]+"()"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -172,7 +172,8 @@ public final class StackTrace
         }
         catch (ClassNotFoundException ex)
         {
-            throw new LogicError();
+            assert false : ex;
+            return null;
         }
     }
 

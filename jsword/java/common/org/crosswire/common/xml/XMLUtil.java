@@ -56,7 +56,7 @@ public class XMLUtil
     {
         for (int i=0; i<attrs.getLength(); i++)
         {
-            log.debug("attr["+i+"]: "+attrs.getQName(i)+"="+attrs.getValue(i));
+            log.debug("attr["+i+"]: "+attrs.getQName(i)+"="+attrs.getValue(i)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
     }
 
@@ -174,68 +174,68 @@ public class XMLUtil
     private static String guessEntity(String broken)
     {
         // strip any beginning & or ending ;
-        if (broken.endsWith(";"))
+        if (broken.endsWith(";")) //$NON-NLS-1$
         {
             broken = broken.substring(0, broken.length()-1);
         }
-        if (broken.startsWith("&"))
+        if (broken.startsWith("&")) //$NON-NLS-1$
         {
             broken = broken.substring(1);
         }
 
         // pre-defined XML entities
-        if ("amp".equals(broken))
+        if ("amp".equals(broken)) //$NON-NLS-1$
         {
-            return "&#38;";
+            return "&#38;"; //$NON-NLS-1$
         }
-        if ("lt".equals(broken))
+        if ("lt".equals(broken)) //$NON-NLS-1$
         {
-            return "&#60;";
+            return "&#60;"; //$NON-NLS-1$
         }
-        if ("gt".equals(broken))
+        if ("gt".equals(broken)) //$NON-NLS-1$
         {
-            return "&#62;";
+            return "&#62;"; //$NON-NLS-1$
         }
-        if ("quot".equals(broken))
+        if ("quot".equals(broken)) //$NON-NLS-1$
         {
-            return "&#34;";
+            return "&#34;"; //$NON-NLS-1$
         }
 
         // common HTML entities
-        if ("nbsp".equals(broken))
+        if ("nbsp".equals(broken)) //$NON-NLS-1$
         {
-            return "&#160;";
+            return "&#160;"; //$NON-NLS-1$
         }
-        if ("pound".equals(broken))
+        if ("pound".equals(broken)) //$NON-NLS-1$
         {
-            return "&#163;";
+            return "&#163;"; //$NON-NLS-1$
         }
-        if ("yen".equals(broken))
+        if ("yen".equals(broken)) //$NON-NLS-1$
         {
-            return "&#165;";
+            return "&#165;"; //$NON-NLS-1$
         }
-        if ("euro".equals(broken))
+        if ("euro".equals(broken)) //$NON-NLS-1$
         {
-            return "&#8364;";
+            return "&#8364;"; //$NON-NLS-1$
         }
-        if ("copy".equals(broken))
+        if ("copy".equals(broken)) //$NON-NLS-1$
         {
-            return "&#169;";
+            return "&#169;"; //$NON-NLS-1$
         }
-        if ("para".equals(broken))
+        if ("para".equals(broken)) //$NON-NLS-1$
         {
-            return "&#182;";
+            return "&#182;"; //$NON-NLS-1$
         }
-        if ("lsquo".equals(broken))
+        if ("lsquo".equals(broken)) //$NON-NLS-1$
         {
-            return "&#8216;";
+            return "&#8216;"; //$NON-NLS-1$
         }
-        if ("rsquo".equals(broken))
+        if ("rsquo".equals(broken)) //$NON-NLS-1$
         {
-            return "&#8217;";
+            return "&#8217;"; //$NON-NLS-1$
         }
 
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     /**
@@ -303,7 +303,7 @@ public class XMLUtil
                         // attribute, so this must be the beginning of the next
                         // NOTE(joe): no - spaces can exist in attr values
                         String value = working.substring(startattr, i);
-                        if (value.indexOf("=") == -1)
+                        if (value.indexOf("=") == -1) //$NON-NLS-1$
                         {
                             // this 'attribute' does not contain an equals so
                             // we call it a word and end the parse

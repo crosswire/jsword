@@ -59,7 +59,7 @@ public class TextPaneBookDataDisplay implements BookDataDisplay
         {
             if (data == null)
             {
-                txtView.setText("");
+                txtView.setText(""); //$NON-NLS-1$
                 return;
             }
 

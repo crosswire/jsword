@@ -112,7 +112,7 @@ public class TabbedBookDataDisplay implements BookDataDisplay
             Component display = pnlNew.getComponent();
 
             tabMain.add(display, JAXBUtil.getTitle(first, TITLE_LENGTH));
-            tabMain.add(pnlMore, Msg.MORE);
+            tabMain.add(pnlMore, Msg.MORE.toString());
 
             setCenterComponent(tabMain);
         }
@@ -304,7 +304,7 @@ public class TabbedBookDataDisplay implements BookDataDisplay
             // Do we need a new more tab
             if (countTabs >= datas.size())
             {
-                tabMain.add(pnlMore, Msg.MORE);
+                tabMain.add(pnlMore, Msg.MORE.toString());
             }
 
             // Select the real new tab in place of any more tabs

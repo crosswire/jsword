@@ -19,7 +19,6 @@ import javax.swing.event.EventListenerList;
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 
 /**
  * The ActionFactory is responsible for creating CWActions
@@ -109,10 +108,10 @@ public class ActionFactory implements ActionListener
      */
     private void buildActionMap()
     {
-        ResourceBundle resources = ResourceBundle.getBundle(getClass().getName(), Locale.getDefault(), new CWClassLoader());
+        ResourceBundle resources = ResourceBundle.getBundle(getClass().getName(), Locale.getDefault(), new CWClassLoader(getClass()));
 
         // ActionNames is a comma separated list of actions in the file
-        String names = getString(resources, "ActionNames", "ActionNames");
+        String names = getString(resources, "ActionNames", "ActionNames"); //$NON-NLS-1$ //$NON-NLS-2$
         String [] nameArray = StringUtils.split(names, ',');
         for (int i = 0; i < nameArray.length; i++)
         {
@@ -126,7 +125,7 @@ public class ActionFactory implements ActionListener
             Integer mnemonic = getMnemonic(resources, actionName);
             KeyStroke accelerator = getAccelerator(resources, actionName);
 
-            String enabledStr = getActionString(resources, actionName, "Enabled");
+            String enabledStr = getActionString(resources, actionName, "Enabled"); //$NON-NLS-1$
             boolean enabled = Boolean.valueOf(enabledStr).booleanValue();
 
             createAction(actionName, name, shortDesc, longDesc, mnemonic,
@@ -154,8 +153,8 @@ public class ActionFactory implements ActionListener
         }
         catch (MissingResourceException e)
         {
-            log.info("Missing key for " + actionName, e);
-            return "";
+            log.info("Missing key for " + actionName, e); //$NON-NLS-1$
+            return ""; //$NON-NLS-1$
         }
     }
 
@@ -186,9 +185,9 @@ public class ActionFactory implements ActionListener
             {
                 mnemonic = new Integer(getInteger(mnemonicStr));
             }
-            catch (NumberFormatException e)
+            catch (NumberFormatException ex)
             {
-                log.warn("Could not parse integer for mnemonic of action " + actionName, e);
+                log.warn("Could not parse integer for mnemonic of action " + actionName, ex); //$NON-NLS-1$
             }
         }
         return mnemonic;
@@ -202,7 +201,7 @@ public class ActionFactory implements ActionListener
         // Create the KeyStroke for the action's shortcut/accelerator
         KeyStroke accelerator = null;
         String acceleratorStr = getActionString(resources, actionName, Action.ACCELERATOR_KEY);
-        String [] modifiers = StringUtils.split(getActionString(resources, actionName, Action.ACCELERATOR_KEY + ".Modifiers"), ',');
+        String [] modifiers = StringUtils.split(getActionString(resources, actionName, Action.ACCELERATOR_KEY + ".Modifiers"), ','); //$NON-NLS-1$
         if (acceleratorStr.length() > 0)
         {
             try
@@ -215,7 +214,7 @@ public class ActionFactory implements ActionListener
             }
             catch (NumberFormatException nfe)
             {
-                log.warn("Could not parse integer for accelerator of action " + actionName, nfe);
+                log.warn("Could not parse integer for accelerator of action " + actionName, nfe); //$NON-NLS-1$
             }
         }
         return accelerator;
@@ -230,7 +229,7 @@ public class ActionFactory implements ActionListener
     {
         int val = 0;
         int length = str.length();
-        if (str.startsWith("0x"))
+        if (str.startsWith("0x")) //$NON-NLS-1$
         {
             val = Integer.parseInt(str.substring(2), 16);
         }
@@ -255,16 +254,16 @@ public class ActionFactory implements ActionListener
         for (int j = 0; j < modifiers.length; j++)
         {
             String modifier = modifiers[j];
-            if ("ctrl".equalsIgnoreCase(modifier))
+            if ("ctrl".equalsIgnoreCase(modifier)) //$NON-NLS-1$
             {
                 // use this so MacOS users are happy
                 keyModifier |= Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             }
-            else if ("shift".equalsIgnoreCase(modifier))
+            else if ("shift".equalsIgnoreCase(modifier)) //$NON-NLS-1$
             {
                 keyModifier |= InputEvent.SHIFT_MASK;
             }
-            else if ("alt".equalsIgnoreCase(modifier))
+            else if ("alt".equalsIgnoreCase(modifier)) //$NON-NLS-1$
             {
                 keyModifier |= InputEvent.ALT_MASK;
             }
@@ -290,20 +289,27 @@ public class ActionFactory implements ActionListener
                     String long_desc, Integer mnemonic, KeyStroke accel,
                     Icon small_icon, Icon large_icon, boolean enabled)
     {
+        CWAction cwAction = new CWAction();
 
         if (acronymn == null || acronymn.length() == 0)
         {
-            throw new LogicError("Acronymn is missing for CWAction");
+            log.warn("Acronymn is missing for CWAction"); //$NON-NLS-1$
+        }
+        else
+        {
+            cwAction.putValue(Action.ACTION_COMMAND_KEY, acronymn);
         }
 
         if (name == null || name.length() == 0)
         {
-            throw new LogicError("Name is missing for CWAction (" + acronymn + ")");
+            log.warn("Name is missing for CWAction"); //$NON-NLS-1$
+            cwAction.putValue(Action.NAME, "?"); //$NON-NLS-1$
+        }
+        else
+        {
+            cwAction.putValue(Action.NAME, name);
         }
 
-        CWAction cwAction = new CWAction();
-        cwAction.putValue(Action.ACTION_COMMAND_KEY, acronymn);
-        cwAction.putValue(Action.NAME, name);
         cwAction.putValue(CWAction.LARGE_ICON, large_icon);
         cwAction.putValue(Action.SMALL_ICON, small_icon);
         cwAction.putValue(Action.SHORT_DESCRIPTION, short_desc);

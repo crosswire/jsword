@@ -30,6 +30,7 @@ public class LogicError extends RuntimeException
     /**
      * Logic Errors should never happen so there is no need for an error
      * message as a description describes how this happened.
+     * @deprecated Use assert
      */
     public LogicError()
     {
@@ -38,6 +39,7 @@ public class LogicError extends RuntimeException
     /**
      * Logic Errors should never happen so there is no need for an error
      * message as a description describes how this happened.
+     * @deprecated Use assert
      */
     public LogicError(String message)
     {
@@ -47,6 +49,7 @@ public class LogicError extends RuntimeException
     /**
      * Logic Errors should never happen. This passes on the presumably
      * checked Exception
+     * @deprecated Use assert
      */
     public LogicError(Throwable ex)
     {

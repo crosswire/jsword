@@ -198,7 +198,7 @@ public class RangedPassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppressEvents == 0)
         {
             fireIntervalAdded(this, that_range.getStart(), that_range.getEnd());
         }
@@ -257,7 +257,7 @@ public class RangedPassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppressEvents == 0)
         {
             fireIntervalRemoved(this, that_range.getStart(), that_range.getEnd());
         }
@@ -316,7 +316,7 @@ public class RangedPassage extends AbstractPassage
      */
     protected void normalize()
     {
-        if (skip_normalization != 0)
+        if (skipNormalization != 0)
         {
             return;
         }

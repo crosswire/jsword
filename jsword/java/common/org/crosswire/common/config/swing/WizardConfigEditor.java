@@ -92,7 +92,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
                 wcards++;
 
                 // The name for the title bar
-                names.add(StringUtils.replace(path, ".", " "));
+                names.add(StringUtils.replace(path, ".", " "));  //$NON-NLS-1$//$NON-NLS-2$
             }
         }
 
@@ -103,7 +103,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
         title.setBackground(Color.gray);
         title.setForeground(Color.white);
         title.setOpaque(true);
-        title.setText(names.get(1) + " Properties (1 out of "+wcards+")");
+        title.setText(names.get(1) + Msg.PROPERTIES_POSN.toString(new Object[] { new Integer(1), new Integer(wcards) }));
 
         deck.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
@@ -111,18 +111,18 @@ public class WizardConfigEditor extends AbstractConfigEditor
         // the button panel to content.South
         // JPanel content = new JPanel();
         // content.setLayout(new BorderLayout());
-        // content.add("Center", deck);
+        // content.add(BorderLayout.CENTER, deck);
 
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-        panel.add("North", title);
-        panel.add("Center", deck);
+        panel.add(BorderLayout.NORTH, title);
+        panel.add(BorderLayout.CENTER, deck);
 
         setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        add("Center", panel);
-        add("South", getButtonPane());
+        add(BorderLayout.CENTER, panel);
+        add(BorderLayout.SOUTH, getButtonPane());
 
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -142,9 +142,9 @@ public class WizardConfigEditor extends AbstractConfigEditor
     protected JComponent getButtonPane()
     {
         // relabel the buttons
-        cancel.setText("Cancel");
-        apply.setText("Next");
-        ok.setText("Finish");
+        cancel.setText(Msg.CANCEL.toString());
+        apply.setText(Msg.NEXT.toString());
+        ok.setText(Msg.FINISH.toString());
 
         JPanel buttons = new JPanel();
         JPanel retcode = new JPanel();
@@ -206,7 +206,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
 
         retcode.setBorder(new EdgeBorder(SwingConstants.NORTH));
         retcode.setLayout(new BorderLayout(10, 10));
-        retcode.add("East", buttons);
+        retcode.add(BorderLayout.EAST, buttons);
 
         return retcode;
     }
@@ -228,7 +228,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
             posn++;
         }
 
-        title.setText(names.get(posn) + " Properties ("+(posn+1)+" out of "+wcards+")");
+        title.setText(names.get(posn) + Msg.PROPERTIES_POSN.toString(new Object[] { new Integer(posn+1), new Integer(wcards) }));
 
         back.setEnabled(posn != 0);
         apply.setEnabled(posn != (wcards-1));
@@ -265,8 +265,8 @@ public class WizardConfigEditor extends AbstractConfigEditor
         // Why is this only available in Frames?
         // dialog.setIconImage(task_small);
 
-        log.debug("Modal fails on SunOS, take care. os.name="+System.getProperty("os.name"));
-        if (!"SunOS".equals(System.getProperty("os.name")))
+        log.debug("Modal fails on SunOS, take care. os.name="+System.getProperty("os.name"));  //$NON-NLS-1$//$NON-NLS-2$
+        if (!"SunOS".equals(System.getProperty("os.name")))  //$NON-NLS-1$//$NON-NLS-2$
         {
             dialog.dispose();
             dialog = null;
@@ -291,7 +291,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
     /**
      * The title for the config panels
      */
-    private JLabel title = new JLabel("Properties", SwingConstants.LEFT);
+    private JLabel title = new JLabel(Msg.PROPERTIES.toString(), SwingConstants.LEFT);
 
     /**
      * Contains the configuration panels
@@ -306,27 +306,27 @@ public class WizardConfigEditor extends AbstractConfigEditor
     /**
      * The Ok button
      */
-    private JButton ok = new JButton("OK");
+    private JButton ok = new JButton(Msg.OK.toString());
 
     /**
      * The cancel button
      */
-    private JButton cancel = new JButton("Cancel");
+    private JButton cancel = new JButton(Msg.CANCEL.toString());
 
     /**
      * The apply button
      */
-    private JButton apply = new JButton("Apply");
+    private JButton apply = new JButton(Msg.APPLY.toString());
 
     /**
      * The help button
      */
-    private JButton help = new JButton("Help");
+    private JButton help = new JButton(Msg.HELP.toString());
 
     /**
      * The Back button
      */
-    private JButton back = new JButton("Back");
+    private JButton back = new JButton(Msg.BACK.toString());
 
     /**
      * The log stream

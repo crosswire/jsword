@@ -72,11 +72,11 @@ public class Activator
 
         case KILL_LEAST_USED:
             // LATER(joe): implement
-            throw new IllegalArgumentException("Not implemented");
+            throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
 
         case KILL_ONLY_IF_TIGHT:
             // LATER(joe): implement
-            throw new IllegalArgumentException("Not implemented");
+            throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
 
         default:
             throw new IllegalArgumentException();

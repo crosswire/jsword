@@ -15,7 +15,7 @@ import java.util.Properties;
 /**
  * Better implemenetations of the getResource methods with less ambiguity and
  * that are less dependent on the specific classloader situation.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -47,9 +47,9 @@ public class ResourceUtil
     }
 
     /**
-     * Extension for properties files
+     * The string for default implementations
      */
-    public static final String PROPERTIES_EXTENSION = ".properties";
+    private static final String DEFAULT = "default"; //$NON-NLS-1$
 
     /**
      * If the application has set the home, it will return
@@ -81,30 +81,30 @@ public class ResourceUtil
      */
     public static URL getResource(String search) throws MalformedURLException
     {
-    	URL resource = null;
-    	
- 		if (search != null && search.length() > 0)
- 		{
+        URL resource = null;
+
+         if (search != null && search.length() > 0)
+         {
             // First look for the resource using an absolute path
- 		    if (!search.startsWith("/"))
- 		    {
+             if (!search.startsWith("/")) //$NON-NLS-1$
+             {
                 resource = findResource('/' + search);
- 		    }
+             }
             else
             {
-                ResourceUtil.log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't");
+                log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't"); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             // If that fails just look for it as is.
             if (resource != null)
             {
-                resource = findResource(search);                
+                resource = findResource(search);
             }
- 		}
+         }
 
         if (resource == null)
         {
-            throw new MalformedURLException("Can't find resource: " + search);
+            throw new MalformedURLException(Msg.NO_RESOURCE.toString(new Object[] { search }));
         }
 
         return resource;
@@ -113,7 +113,7 @@ public class ResourceUtil
     /**
      * Generic resource URL fetcher. This uses a variety of strategies
      * to find the resource.
-     * 
+     *
      * I'm fairly sure some of these do the same thing, but which and how they
      * change on various VMs is complex, and it seems simpler to take the
      * shotgun approach.
@@ -126,13 +126,13 @@ public class ResourceUtil
 
         if (search == null)
         {
-            ResourceUtil.log.warn("findResource called on a null string.");
+            log.warn("findResource called on a null string."); //$NON-NLS-1$
             return reply;
         }
 
         if (search.length() == 0)
         {
-            ResourceUtil.log.warn("findResource called on an empty string.");
+            log.warn("findResource called on an empty string."); //$NON-NLS-1$
             return reply;
         }
 
@@ -155,7 +155,7 @@ public class ResourceUtil
 
         return reply;
     }
-    
+
     /**
      * Look for the resource in the home directory
      * @param search must be non-null, non-empty
@@ -164,7 +164,7 @@ public class ResourceUtil
     public static URL findHomeResource(String search)
     {
         URL reply = null;
-        
+
         // Look at the application's home first to allow overrides
         if (home != null)
         {
@@ -180,9 +180,9 @@ public class ResourceUtil
             {
                 ssearch = '/' + search;
             }
-            
+
             URL override = null;
-            
+
             // Make use of "home" thread safe
             synchronized (ResourceUtil.class)
             {
@@ -239,21 +239,21 @@ public class ResourceUtil
                     }
                     else
                     {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
+                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                 }
                 catch (Exception ex)
                 {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
+                    log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
+            log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             return (Class[]) matches.toArray(new Class[0]);
         }
         catch (Exception ex)
         {
-            log.error("Failed to get any classes.", ex);
+            log.error("Failed to get any classes.", ex); //$NON-NLS-1$
             return new Class[0];
         }
     }
@@ -290,20 +290,20 @@ public class ResourceUtil
                     }
                     else
                     {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
+                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                 }
                 catch (Exception ex)
                 {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
+                    log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
+            log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (Exception ex)
         {
-            log.error("Failed to get any classes.", ex);
+            log.error("Failed to get any classes.", ex); //$NON-NLS-1$
         }
 
         return matches;
@@ -325,12 +325,12 @@ public class ResourceUtil
     public static Class getImplementor(Class clazz) throws MalformedURLException, IOException, ClassNotFoundException, ClassCastException
     {
         Properties props = getProperties(clazz.getName());
-        String name = props.getProperty("default");
+        String name = props.getProperty(DEFAULT);
 
         Class impl = Class.forName(name);
         if (!clazz.isAssignableFrom(impl))
         {
-            throw new ClassCastException("Class " + impl.getName() + " does not implement " + clazz.getName());
+            throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] { impl.getName(), clazz.getName() }));
         }
 
         return impl;
@@ -364,7 +364,7 @@ public class ResourceUtil
      */
     public static Properties getProperties(String subject) throws IOException, MalformedURLException
     {
-        String lookup = subject+PROPERTIES_EXTENSION;
+        String lookup = subject+FileUtil.EXTENSION_PROPERTIES;
         InputStream in = getResourceAsStream(lookup);
 
         Properties prop = new Properties();

@@ -29,15 +29,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg MORE = new Msg("More ...");
-
-    /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
+    static final Msg MORE = new Msg("More ..."); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

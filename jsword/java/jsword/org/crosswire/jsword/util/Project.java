@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
@@ -143,7 +144,7 @@ public class Project
             {
                 public boolean accept(String name)
                 {
-                    return name.endsWith(ResourceUtil.PROPERTIES_EXTENSION);
+                    return name.endsWith(FileUtil.EXTENSION_PROPERTIES);
                 }
             });
         }
@@ -194,7 +195,7 @@ public class Project
      */
     public URL getWritablePropertiesURL(String subject)
     {
-        return NetUtil.lengthenURL(base, subject+ResourceUtil.PROPERTIES_EXTENSION);
+        return NetUtil.lengthenURL(base, subject+FileUtil.EXTENSION_PROPERTIES);
     }
 
     /**

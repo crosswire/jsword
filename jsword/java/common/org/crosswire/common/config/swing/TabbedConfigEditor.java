@@ -49,7 +49,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        add("South", bar);
+        add(BorderLayout.SOUTH, bar);
     }
 
     /**
@@ -70,7 +70,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
             // log.fine("TAB: path="+path);
 
             JTabbedPane nest = tab;
-            StringTokenizer st = new StringTokenizer(path, ".");
+            StringTokenizer st = new StringTokenizer(path, "."); //$NON-NLS-1$
             while (st.hasMoreTokens())
             {
                 String name = st.nextToken();
@@ -103,7 +103,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
                             sub.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                             nest.setComponentAt(index, sub);
                             nest = sub;
-                            nest.addTab("Basic", tab_icon, comp);
+                            nest.addTab(Msg.BASIC.toString(), tab_icon, comp);
                         }
                     }
                 }
@@ -130,7 +130,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
                             if (card != null)
                             {
                                 card.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                                nest.addTab("Basic", tab_icon, card);
+                                nest.addTab(Msg.BASIC.toString(), tab_icon, card);
                             }
                         }
                         // else log.fine("  Warning skipping comp="+comp.getClass().getName());
@@ -139,7 +139,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
             }
         }
 
-        add("Center", tab);
+        add(BorderLayout.CENTER, tab);
     }
 
     /**

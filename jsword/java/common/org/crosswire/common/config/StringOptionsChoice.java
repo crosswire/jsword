@@ -34,13 +34,13 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
     public void init(Element option) throws StartupException
     {
         super.init(option);
-        Element map = option.getChild("map");
+        Element map = option.getChild("map"); //$NON-NLS-1$
         if (map == null)
         {
             throw new StartupException(Msg.CONFIG_NOMAP);
         }
 
-        String name = map.getAttributeValue("name");
+        String name = map.getAttributeValue("name"); //$NON-NLS-1$
         array = (String[]) ChoiceFactory.getDataMap().get(name);
     }
 

@@ -51,13 +51,13 @@ public class Model
 {
     public Model() throws MalformedURLException, JDOMException, IOException
     {
-        config = new Config("Tool Shed Options");
-        Document xmlconfig = Project.instance().getDocument("config");
+        config = new Config("Tool Shed Options"); //$NON-NLS-1$
+        Document xmlconfig = Project.instance().getDocument("config"); //$NON-NLS-1$
         config.add(xmlconfig);
 
         try
         {
-            config.setProperties(Project.instance().getProperties("cli"));
+            config.setProperties(Project.instance().getProperties("cli")); //$NON-NLS-1$
             config.localToApplication(true);
         }
         catch (Exception ex)
@@ -169,7 +169,7 @@ public class Model
             String key = (String) it.next();
             Choice choice = config.getChoice(key);
 
-            buffer.append(key+" = "+choice.getString());
+            buffer.append(key+" = "+choice.getString()); //$NON-NLS-1$
 
             if (it.hasNext())
             {
@@ -190,11 +190,11 @@ public class Model
 
     public String save() throws IOException
     {
-        URL url = Project.instance().getWritablePropertiesURL("cli");
+        URL url = Project.instance().getWritablePropertiesURL("cli"); //$NON-NLS-1$
         config.applicationToLocal();
         config.localToPermanent(url);
         
-        return "OK";
+        return "OK"; //$NON-NLS-1$
     }
 
     private Config config;

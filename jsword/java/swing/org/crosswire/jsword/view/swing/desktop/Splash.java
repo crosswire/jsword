@@ -95,8 +95,7 @@ public class Splash extends JWindow
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        Object [] msg = { Project.instance().getVersion() };
-        lbl_info.setText(Msg.VERSION_TITLE.toString(msg));
+        lbl_info.setText(Msg.VERSION_TITLE.toString(Project.instance().getVersion()));
 
         JPanel pnl_info = new JPanel();
         JobsProgressBar pnl_jobs = new JobsProgressBar(false);

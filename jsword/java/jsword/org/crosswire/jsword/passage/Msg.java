@@ -88,23 +88,6 @@ public class Msg extends MsgBase
     range_error_patch=patch_up\=false is not supported. See the JavaDoc
     */
 
-    /*
-     * Lookup for the benefit of those that use computed ids
-     *
-    protected static Msg getMessage(String id)
-    {
-        return (Msg) Enum.getEnum(Msg.class, id);
-    }
-    */
-
-    /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
     /**
      * Passthrough ctor
      */

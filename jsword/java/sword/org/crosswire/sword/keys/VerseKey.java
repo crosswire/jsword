@@ -105,7 +105,7 @@ public class VerseKey extends SWKey
      */
     public VerseKey()
     {
-        this("");
+        this(""); //$NON-NLS-1$
     }
 
     public VerseKey(SWKey ikey)

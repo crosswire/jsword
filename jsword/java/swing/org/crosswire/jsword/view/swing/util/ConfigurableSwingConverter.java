@@ -58,7 +58,7 @@ public class ConfigurableSwingConverter implements Converter
     {
         try
         {
-            String search = "xsl/cswing/"+NetUtil.INDEX_FILE;
+            String search = "xsl/cswing/"+NetUtil.INDEX_FILE; //$NON-NLS-1$
             URL index = ResourceUtil.getResource(search);
             return NetUtil.listByIndexFile(index, new URLFilter()
             {
@@ -81,14 +81,14 @@ public class ConfigurableSwingConverter implements Converter
     {
         try
         {
-            String path = "xsl/cswing/"+style;
+            String path = "xsl/cswing/"+style; //$NON-NLS-1$
             URL xslurl = ResourceUtil.getResource(path);
 
             TransformingSAXEventProvider tsep = new TransformingSAXEventProvider(xslurl, xmlsep);
             // We used to do:
             // tsep.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             // however for various reasons, now we don't but nothing seems to be broken ...
-            tsep.setParameter("font", font);
+            tsep.setParameter("font", font); //$NON-NLS-1$
 
             return tsep;
         }
@@ -151,10 +151,10 @@ public class ConfigurableSwingConverter implements Converter
     /**
      * The font to be used in OSIS->HTML generation
      */
-    private static String font = "Serif";
+    private static String font = "Serif"; //$NON-NLS-1$
 
     /**
      * The stylesheet we are transforming using
      */
-    private static String style = "simple.xsl";
+    private static String style = "simple.xsl"; //$NON-NLS-1$
 }

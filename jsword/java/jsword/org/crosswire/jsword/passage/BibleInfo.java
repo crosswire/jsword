@@ -59,8 +59,7 @@ public class BibleInfo
     {
         if (book_case < 0 || book_case > 2)
         {
-            Object[] params = new Object[] { new Integer(book_case) };
-            throw new IllegalArgumentException(Msg.ERROR_CASE.toString(params));
+            throw new IllegalArgumentException(Msg.ERROR_CASE.toString(new Integer(book_case)));
         }
 
         BibleInfo.book_case = book_case;

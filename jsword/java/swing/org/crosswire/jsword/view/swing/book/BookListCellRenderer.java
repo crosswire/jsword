@@ -96,7 +96,7 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
 
             setEnabled(list.isEnabled());
             setFont(list.getFont());
-            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
+            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus); //$NON-NLS-1$
         }
 
         if (value instanceof BookMetaData)
@@ -109,7 +109,7 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
 
             setEnabled(list.isEnabled());
             setFont(list.getFont());
-            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
+            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus); //$NON-NLS-1$
         }
 
         return this;
@@ -118,7 +118,7 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
     /**
      * The small version icon
      */
-    private static final ImageIcon ICON_SMALL = GuiUtil.getIcon("images/Passage16.gif");
+    private static final ImageIcon ICON_SMALL = GuiUtil.getIcon("images/Passage16.gif"); //$NON-NLS-1$
 
     /**
      * border if we do not have focus
@@ -128,5 +128,5 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
     /**
      * Make sure that book names are not too wide
      */
-    public static final String PROTOTYPE_BOOK_NAME = "012345678901234567890123456789";
+    public static final String PROTOTYPE_BOOK_NAME = "012345678901234567890123456789"; //$NON-NLS-1$
 }

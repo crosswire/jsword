@@ -135,7 +135,7 @@ public class DriversListModel extends AbstractListModel
     /**
      * The small version icon
      */
-    protected static final ImageIcon SMALL_ICON = new ImageIcon("/org/crosswire/resources/task_small.gif");
+    protected static final ImageIcon SMALL_ICON = new ImageIcon("/org/crosswire/resources/task_small.gif"); //$NON-NLS-1$
 
     /**
      * border if we do not have focus
@@ -197,7 +197,7 @@ public class DriversListModel extends AbstractListModel
 
             setEnabled(list.isEnabled());
             setFont(list.getFont());
-            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
+            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus); //$NON-NLS-1$
 
             return this;
         }

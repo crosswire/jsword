@@ -2,16 +2,15 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.common.util.MsgBase;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 
 /**
-* A test SearchParamWord
-* @author Joe Walker
-*/
+ * A test SearchParamWord
+ * @author Joe Walker
+ */
 class FixtureParamWord implements ParamWord
 {
     /**
@@ -28,7 +27,7 @@ class FixtureParamWord implements ParamWord
      */
     public String getWord(LocalParser engine) throws BookException
     {
-        throw new BookException(new MsgBase("Can't get a word from a startswith command"){});
+        throw new BookException(new MsgBase("Can't get a word from a startswith command"){}); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -42,10 +41,13 @@ class FixtureParamWord implements ParamWord
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError();
+            assert false : ex;
+            return PassageFactory.createPassage();
         }
     }
 
-    /** The editied up Passage */
+    /**
+     * The editied up Passage
+     */
     private String ref = null;
 }

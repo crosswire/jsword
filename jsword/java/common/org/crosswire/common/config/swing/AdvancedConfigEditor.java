@@ -59,7 +59,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         comps = new HashMap();
 
         // Hack: tree depends on it being a Color not a sub of it.
-        Color orig = UIManager.getColor("control");
+        Color orig = UIManager.getColor("control"); //$NON-NLS-1$
         Color bg = new Color(orig.getRed(), orig.getGreen(), orig.getBlue());
 
         // This seems to be broken ...
@@ -69,7 +69,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         scroll.setPreferredSize(new Dimension(150, 150));
         scroll.setViewportView(tree);
 
-        tree.putClientProperty("JTree.lineStyle", "Angled");
+        tree.putClientProperty("JTree.lineStyle", "Angled");  //$NON-NLS-1$//$NON-NLS-2$
         tree.setBackground(bg);
         tree.setCellRenderer(render);
         tree.setShowsRootHandles(true);
@@ -81,8 +81,8 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        add("Center", scroll);
-        add("South", new ButtonPane(this));
+        add(BorderLayout.CENTER, scroll);
+        add(BorderLayout.SOUTH, new ButtonPane(this));
     }
 
     /**
@@ -162,7 +162,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         Object obj = tree.getLastSelectedPathComponent();
         if (obj == null) return;
 
-        title.setText(""+obj+" Properties");
+        title.setText(""+obj+Msg.PROPERTIES.toString()); //$NON-NLS-1$
 
         // Get the name of the current deck
         Object[] list = tree.getSelectionPath().getPath();
@@ -172,7 +172,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         {
             if (i > 1)
             {
-                path.append(".");
+                path.append("."); //$NON-NLS-1$
             }
 
             path.append(list[i].toString());
@@ -218,13 +218,13 @@ public class AdvancedConfigEditor extends TreeConfigEditor
                 {
                     // Chop off the similar start
                     temp = temp.substring(path.length());
-                    if (temp.startsWith("."))
+                    if (temp.startsWith(".")) //$NON-NLS-1$
                     {
                         temp = temp.substring(1);
                     }
 
                     // Chop off all after the first dot
-                    int dot_pos = temp.indexOf(".");
+                    int dot_pos = temp.indexOf("."); //$NON-NLS-1$
                     if (dot_pos != -1)
                     {
                         temp = temp.substring(0, dot_pos);

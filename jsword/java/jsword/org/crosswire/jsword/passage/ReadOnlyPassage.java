@@ -53,7 +53,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -66,7 +66,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -255,7 +255,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -268,7 +268,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -289,7 +289,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -302,7 +302,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -315,7 +315,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -328,7 +328,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -341,7 +341,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -354,7 +354,7 @@ public final class ReadOnlyPassage implements Passage
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
     }
 
     /* (non-Javadoc)

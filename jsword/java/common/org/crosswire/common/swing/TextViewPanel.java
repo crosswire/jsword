@@ -149,8 +149,7 @@ public class TextViewPanel extends JPanel
                 clipboard();
             }
         });
-        btn_clipboard.setMnemonic('C');
-        btn_clipboard.setText("Copy to Clipboard");
+        btn_clipboard.setText(Msg.COPY_TO_CLIP.toString());
 
         lay_buttons.setAlignment(FlowLayout.RIGHT);
         pnl_buttons.setLayout(lay_buttons);
@@ -166,10 +165,10 @@ public class TextViewPanel extends JPanel
      */
     public void showInFrame(Frame parent)
     {
-        frame = new JDialog(parent, "Text Viewer");
+        frame = new JDialog(parent, Msg.TEXT_VIEWER.toString());
 
-        btn_close = new JButton("Close");
-        btn_close.setMnemonic('L');
+        btn_close = new JButton(Msg.CLOSE.toString());
+        btn_close.setMnemonic(Msg.CLOSE.toString().charAt(0));
         btn_close.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -218,7 +217,7 @@ public class TextViewPanel extends JPanel
             this.remove(lbl_main);
         }
 
-        listeners.firePropertyChange("header", old_header, new_header);
+        listeners.firePropertyChange("header", old_header, new_header); //$NON-NLS-1$
     }
 
     /**
@@ -261,7 +260,7 @@ public class TextViewPanel extends JPanel
             GuiUtil.restrainedRePack(frame);
         }
 
-        listeners.firePropertyChange("text", old_text, new_text);
+        listeners.firePropertyChange("text", old_text, new_text); //$NON-NLS-1$
     }
 
     /**
@@ -299,7 +298,7 @@ public class TextViewPanel extends JPanel
             {
                 try
                 {
-                    InputStream pmin = new ProgressMonitorInputStream(TextViewPanel.this, "Loading text ...", in);
+                    InputStream pmin = new ProgressMonitorInputStream(TextViewPanel.this, Msg.LOADING, in);
                     Reader rin = new InputStreamReader(pmin);
                     final String data = StringUtil.read(rin);
 

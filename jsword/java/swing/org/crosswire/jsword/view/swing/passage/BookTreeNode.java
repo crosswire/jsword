@@ -143,7 +143,7 @@ public class BookTreeNode extends BibleTreeNode
             int chapters = ref.chaptersInPassage(book);
             if (chapters == 0) return book_name;
 
-            return book_name + " (" + chapters + ")";
+            return book_name + " (" + chapters + ")";  //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (NoSuchVerseException ex)
         {

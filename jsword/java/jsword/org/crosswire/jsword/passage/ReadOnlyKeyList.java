@@ -79,7 +79,7 @@ public class ReadOnlyKeyList implements KeyList
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -92,7 +92,7 @@ public class ReadOnlyKeyList implements KeyList
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
     /* (non-Javadoc)
@@ -105,7 +105,7 @@ public class ReadOnlyKeyList implements KeyList
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
     /* (non-Javadoc)

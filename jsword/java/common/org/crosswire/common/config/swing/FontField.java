@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import javax.swing.BorderFactory;
@@ -40,7 +39,7 @@ public class FontField extends FontChooser implements Field
      */
     public FontField()
     {
-        Border title = BorderFactory.createTitledBorder("Select Font");
+        Border title = BorderFactory.createTitledBorder(Msg.SELECT_FONT.toString());
         Border pad = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(title, pad));
     }

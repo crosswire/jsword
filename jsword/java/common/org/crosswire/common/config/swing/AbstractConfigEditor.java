@@ -203,7 +203,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
             JComponent comp = field.getComponent();
             comp.setToolTipText(model.getHelpText());
 
-            String name = Config.getLeaf(key) + ":";
+            String name = Config.getLeaf(key) + ":"; //$NON-NLS-1$
             card.addEntry(name, comp);
 
             // Fill in the current value
@@ -232,7 +232,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
                 FormPane card = (FormPane) decks.get(path);
 
                 // Remove field from card.
-                String name = Config.getLeaf(key) + ":";
+                String name = Config.getLeaf(key) + ":"; //$NON-NLS-1$
                 card.removeEntry(name);
 
                 if (card.isEmpty())
@@ -277,7 +277,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
                 
                 if (value == null)
                 {
-                    log.error("null value from key="+key);
+                    log.error("null value from key="+key); //$NON-NLS-1$
                 }
 
                 config.setLocal(key, value);
@@ -306,7 +306,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
 
                 if (field == null)
                 {
-                    log.error("Null field from key="+key+", skipping setting value="+value);
+                    log.error("Null field from key="+key+", skipping setting value="+value); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else
                 {
@@ -358,10 +358,10 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     /**
      * The large task icon
      */
-    protected static final ImageIcon task = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences24.gif");
+    protected static final ImageIcon task = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences24.gif"); //$NON-NLS-1$
 
     /**
      * The small task icon
      */
-    protected static final ImageIcon tasksm = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences16.gif");
+    protected static final ImageIcon tasksm = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences16.gif"); //$NON-NLS-1$
 }

@@ -59,19 +59,19 @@ public class ConverterTest extends TestCase
  
         t1 = new BookMetaData[]
         {
-            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE, BookMetaData.SPEED_MEDIUM),
-            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE, BookMetaData.SPEED_MEDIUM),
-            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE, BookMetaData.SPEED_MEDIUM),
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, "tv", "PD", "http://nowhere.com/test", "1900-10-20"),
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, null, (String) null, null, null),
+            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE, BookMetaData.SPEED_MEDIUM), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE, BookMetaData.SPEED_MEDIUM), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE, BookMetaData.SPEED_MEDIUM), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, "tv", "PD", "http://nowhere.com/test", "1900-10-20"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, null, (String) null, null, null), //$NON-NLS-1$
         };
         uid1 = new String[]
         {
-            "v1",
-            "v2",
-            "v3",
-            "v4",
-            "v5",
+            "v1", //$NON-NLS-1$
+            "v2", //$NON-NLS-1$
+            "v3", //$NON-NLS-1$
+            "v4", //$NON-NLS-1$
+            "v5", //$NON-NLS-1$
         };
 
         doc = Converter.convertBookMetaDatasToDocument(t1, uid1);
@@ -107,17 +107,17 @@ public class ConverterTest extends TestCase
         KeyList p2;
         Document doc;
 
-        p1 = PassageFactory.createPassage("Gen 1:1");
+        p1 = PassageFactory.createPassage("Gen 1:1"); //$NON-NLS-1$
         doc = Converter.convertKeyListToDocument(p1);
         p2 = Converter.convertDocumentToKeyList(doc);
         assertEquals(p1, p2);
 
-        p1 = PassageFactory.createPassage("");
+        p1 = PassageFactory.createPassage(""); //$NON-NLS-1$
         doc = Converter.convertKeyListToDocument(p1);
         p2 = Converter.convertDocumentToKeyList(doc);
         assertEquals(p1, p2);
 
-        p1 = PassageFactory.createPassage("Gen-Rev");
+        p1 = PassageFactory.createPassage("Gen-Rev"); //$NON-NLS-1$
         doc = Converter.convertKeyListToDocument(p1);
         p2 = Converter.convertDocumentToKeyList(doc);
         assertEquals(p1, p2);
@@ -130,7 +130,7 @@ public class ConverterTest extends TestCase
         Iterator t2;
         Document doc;
 
-        l1 = Arrays.asList(new String[] { "v1", "v2", "v3" });
+        l1 = Arrays.asList(new String[] { "v1", "v2", "v3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         t1 = l1.iterator();
         doc = Converter.convertStartsWithToDocument(t1);
         t2 = Converter.convertDocumentToStartsWith(doc);
@@ -142,7 +142,7 @@ public class ConverterTest extends TestCase
         t2 = Converter.convertDocumentToStartsWith(doc);
         assertEquals(l1.iterator(), t2);
 
-        l1 = Arrays.asList(new String[] { "v", "v", "v" });
+        l1 = Arrays.asList(new String[] { "v", "v", "v" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         t1 = l1.iterator();
         doc = Converter.convertStartsWithToDocument(t1);
         t2 = Converter.convertDocumentToStartsWith(doc);
@@ -155,7 +155,7 @@ public class ConverterTest extends TestCase
         RemoterException ex2;
         Document doc;
 
-        ex1 = new NullPointerException("message");
+        ex1 = new NullPointerException("message"); //$NON-NLS-1$
         doc = Converter.convertExceptionToDocument(ex1);
         ex2 = Converter.convertDocumentToException(doc);
         assertEquals(ex1.getMessage(), ex2.getMessage());

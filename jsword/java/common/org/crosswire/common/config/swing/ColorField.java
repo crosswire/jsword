@@ -55,7 +55,7 @@ public class ColorField extends JPanel implements Field
         {
             public void actionPerformed(ActionEvent ex)
             {
-                color = JColorChooser.showDialog(ColorField.this, name, color);
+                color = JColorChooser.showDialog(ColorField.this, Msg.EDIT.toString(), color);
                 //text.setText(Convert.color2String(color));
                 edit.repaint();
             }
@@ -105,19 +105,24 @@ public class ColorField extends JPanel implements Field
         return this;
     }
 
-    /** The name of the Color selection */
-    protected String name = "Edit";
+    /**
+     * The browse button
+     */
+    protected JButton edit = new JButton(Msg.EDIT.toString());
 
-    /** The browse button */
-    protected JButton edit = new JButton(name);
-
-    /** Some feedback on the color */
+    /**
+     * Some feedback on the color
+     */
     //private JLabel text = new JLabel();
 
-    /** The current Color */
+    /**
+     * The current Color
+     */
     protected Color color = Color.white;
 
-    /** The icon square size */
+    /**
+     * The icon square size
+     */
     private static final int SIZE = 16;
 
     /**

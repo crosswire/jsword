@@ -45,28 +45,22 @@ public class TextViewPanelBeanInfo extends SimpleBeanInfo
         try
         {
             // The header property
-            PropertyDescriptor header = new PropertyDescriptor("header",
-                                                               TextViewPanel.class,
-                                                               "getHeader",
-                                                               "setHeader");
-            header.setDisplayName("Header");
-            header.setShortDescription("Header");
+            PropertyDescriptor header = new PropertyDescriptor("header", TextViewPanel.class, "getHeader", "setHeader"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            header.setDisplayName("Header"); //$NON-NLS-1$
+            header.setShortDescription("Header"); //$NON-NLS-1$
             header.setBound(true);
 
             // The main text property
-            PropertyDescriptor text = new PropertyDescriptor("text",
-                                                             TextViewPanel.class,
-                                                             "getText",
-                                                             "setText");
-            text.setDisplayName("Text");
-            text.setShortDescription("Text");
+            PropertyDescriptor text = new PropertyDescriptor("text", TextViewPanel.class, "getText", "setText"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            text.setDisplayName("Text"); //$NON-NLS-1$
+            text.setShortDescription("Text"); //$NON-NLS-1$
             text.setBound(true);
 
             return new PropertyDescriptor[] { header, text, };
         }
         catch (IntrospectionException ex)
         {
-            log.info("Failure", ex);
+            log.info("Failure", ex); //$NON-NLS-1$
             return null;
         }
     }
@@ -84,11 +78,13 @@ public class TextViewPanelBeanInfo extends SimpleBeanInfo
         }
         catch (IntrospectionException ex)
         {
-            log.info("Failure", ex);
+            log.info("Failure", ex); //$NON-NLS-1$
             return null;
         }
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(TextViewPanelBeanInfo.class);
 }

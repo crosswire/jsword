@@ -64,7 +64,7 @@ public class LookAndFeelUtil
         // new_class is null if the user enters a bogus value
         if (current != null && !new_class.equals(current))
         {
-            JOptionPane.showMessageDialog(null, "The Look and Feel will change on the next startup.");
+            JOptionPane.showMessageDialog(null, Msg.PLAF_CHANGE);
         }
         else
         {
@@ -82,20 +82,20 @@ public class LookAndFeelUtil
     {
         try
         {
-            System.setProperty("winlaf.forceTahoma", "true");
-            Class clazz = Class.forName("net.java.plaf.LookAndFeelPatchManager");
-            Method init = clazz.getMethod("initialize", new Class[0]);
+            System.setProperty("winlaf.forceTahoma", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+            Class clazz = Class.forName("net.java.plaf.LookAndFeelPatchManager"); //$NON-NLS-1$
+            Method init = clazz.getMethod("initialize", new Class[0]); //$NON-NLS-1$
             init.invoke(null, new Object[0]);
 
-            log.debug("installed Windows LookAndFeelPatchManager");
+            log.debug("installed Windows LookAndFeelPatchManager"); //$NON-NLS-1$
         }
         catch (Exception ex)
         {
-            log.warn("Failed to install windows laf tweak tool: "+ex);
+            log.warn("Failed to install windows laf tweak tool: "+ex); //$NON-NLS-1$
         }
 
         LookAndFeel currentlnf = UIManager.getLookAndFeel();
-        if (currentlnf.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+        if (currentlnf.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel")) //$NON-NLS-1$
         {
             /*
             UIDefaults defaults = UIManager.getDefaults();
@@ -148,7 +148,7 @@ public class LookAndFeelUtil
         }
         catch (Exception ex)
         {
-            log.warn("Failed to initialise system default LAF", ex);
+            log.warn("Failed to initialise system default LAF", ex); //$NON-NLS-1$
             current = javax.swing.plaf.metal.MetalLookAndFeel.class;
         }
  

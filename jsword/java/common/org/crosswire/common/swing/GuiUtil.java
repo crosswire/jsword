@@ -72,7 +72,7 @@ public class GuiUtil
         }
         catch (MalformedURLException ex)
         {
-            log.warn("Failed to find resource name='"+name+"'");
+            log.warn("Failed to find resource name='"+name+"'"); //$NON-NLS-1$ //$NON-NLS-2$
             return null;
         }
     }

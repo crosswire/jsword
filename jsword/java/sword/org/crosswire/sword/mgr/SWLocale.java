@@ -43,12 +43,12 @@ public class SWLocale {
         localeSource = new SWConfig(ifilename);
 
         try {
-            name = localeSource.getProperty("Meta", "Name");
+            name = localeSource.getProperty("Meta", "Name"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (Exception e) { /* no name, bad locale file */ }
 
         try {
-            description = localeSource.getProperty("Meta", "Description");
+            description = localeSource.getProperty("Meta", "Description"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (Exception e) { /* no description, maybe bad locale file */ }
     }
@@ -61,7 +61,7 @@ public class SWLocale {
         if (entry == null) {
             String confEntry = null;
             try {
-                confEntry = localeSource.getProperty("Text", text);
+                confEntry = localeSource.getProperty("Text", text); //$NON-NLS-1$
             }
             catch (Exception e) { /* no entry in locale file */}
             if (confEntry == null)

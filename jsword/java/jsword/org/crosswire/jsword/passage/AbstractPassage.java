@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -22,7 +21,7 @@ import org.crosswire.common.util.Logger;
  * details of being a Passage.
  * <p>Importantly, this class takes care of Serialization in a general yet
  * optimized way. I think I am going to have a look at replacement here.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -59,7 +58,7 @@ public abstract class AbstractPassage implements Passage
      */
     protected AbstractPassage(String original_name)
     {
-        this.original_name = original_name;
+        this.originalName = original_name;
     }
 
     /* (non-Javadoc)
@@ -69,7 +68,7 @@ public abstract class AbstractPassage implements Passage
     {
         if (!(obj instanceof Passage))
         {
-            log.warn("Can't compare a Passage to a "+obj.getClass().getName());
+            log.warn("Can't compare a Passage to a "+obj.getClass().getName()); //$NON-NLS-1$
             return -1;
         }
 
@@ -87,7 +86,7 @@ public abstract class AbstractPassage implements Passage
                 return -1;
             }
         }
-        
+
         if (countVerses() == 0)
         {
             // we are empty be he isn't so we are first
@@ -111,7 +110,7 @@ public abstract class AbstractPassage implements Passage
         copy.listeners = new ArrayList();
         copy.listeners.addAll(listeners);
 
-        copy.original_name  = original_name;
+        copy.originalName  = originalName;
 
         return copy;
     }
@@ -155,9 +154,9 @@ public abstract class AbstractPassage implements Passage
      */
     public String getName()
     {
-        if (PassageUtil.isPersistentNaming() && original_name != null)
+        if (PassageUtil.isPersistentNaming() && originalName != null)
         {
-            return original_name;
+            return originalName;
         }
 
         StringBuffer retcode = new StringBuffer();
@@ -219,14 +218,14 @@ public abstract class AbstractPassage implements Passage
         int book_count = booksInPassage();
 
         String verses = (verse_count == 1)
-                      ? Msg.ABSTRACT_VERSE_SINGULAR.getName()
-                      : Msg.ABSTRACT_VERSE_PLURAL.getName();
+                      ? Msg.ABSTRACT_VERSE_SINGULAR.toString()
+                      : Msg.ABSTRACT_VERSE_PLURAL.toString();
 
         String books = (book_count == 1)
-                     ? Msg.ABSTRACT_BOOK_SINGULAR.getName()
-                     : Msg.ABSTRACT_BOOK_PLURAL.getName();
+                     ? Msg.ABSTRACT_BOOK_SINGULAR.toString()
+                     : Msg.ABSTRACT_BOOK_PLURAL.toString();
 
-        return verse_count+" "+verses+" "+book_count+" "+books;
+        return verse_count+" "+verses+" "+book_count+" "+books; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /* (non-Javadoc)
@@ -450,21 +449,22 @@ public abstract class AbstractPassage implements Passage
                     remainder.remove(verse);
                 }
             }
+
+            lowerNormalizeProtection();
+            // The event notification is done by the remove above
+
+            if (overflow)
+            {
+                return remainder;
+            }
+            else
+            {
+                return null;
+            }
         }
         catch (CloneNotSupportedException ex)
         {
-            throw new LogicError(ex);
-        }
-
-        lowerNormalizeProtection();
-        // The event notification is done by the remove above
-
-        if (overflow)
-        {
-            return remainder;
-        }
-        else
-        {
+            assert false : ex;
             return null;
         }
     }
@@ -501,21 +501,22 @@ public abstract class AbstractPassage implements Passage
                     remainder.remove(range);
                 }
             }
+
+            lowerNormalizeProtection();
+            // The event notification is done by the remove above
+
+            if (overflow)
+            {
+                return remainder;
+            }
+            else
+            {
+                return null;
+            }
         }
         catch (CloneNotSupportedException ex)
         {
-            throw new LogicError(ex);
-        }
-
-        lowerNormalizeProtection();
-        // The event notification is done by the remove above
-
-        if (overflow)
-        {
-            return remainder;
-        }
-        else
-        {
+            assert false : ex;
             return null;
         }
     }
@@ -608,16 +609,16 @@ public abstract class AbstractPassage implements Passage
                     remove(verse);
                 }
             }
+
+            lowerNormalizeProtection();
+            if (lowerEventSuppresionAndTest())
+            {
+                fireIntervalRemoved(this, null, null);
+            }
         }
         catch (CloneNotSupportedException ex)
         {
-            throw new LogicError(ex);
-        }
-
-        lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest())
-        {
-            fireIntervalRemoved(this, null, null);
+            assert false : ex;
         }
     }
 
@@ -656,16 +657,16 @@ public abstract class AbstractPassage implements Passage
                 VerseRange range = new VerseRange((VerseRange) it.next(), verses, verses, restrict);
                 add(range);
             }
+
+            lowerNormalizeProtection();
+            if (lowerEventSuppresionAndTest())
+            {
+                fireIntervalAdded(this, null, null);
+            }
         }
         catch (CloneNotSupportedException ex)
         {
-            throw new LogicError(ex);
-        }
-
-        lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest())
-        {
-            fireIntervalAdded(this, null, null);
+            assert false : ex;
         }
     }
 
@@ -709,7 +710,7 @@ public abstract class AbstractPassage implements Passage
             count++;
             addVerses(line);
         }
-        
+
         // If the file was empty then there is nothing to do
         if (count == 0)
         {
@@ -861,7 +862,7 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireIntervalAdded(Object source, Verse start, Verse end)
     {
-        if (suppress_events != 0)
+        if (suppressEvents != 0)
         {
             return;
         }
@@ -896,7 +897,7 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireIntervalRemoved(Object source, Verse start, Verse end)
     {
-        if (suppress_events != 0)
+        if (suppressEvents != 0)
         {
             return;
         }
@@ -931,7 +932,7 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireContentsChanged(Object source, Verse start, Verse end)
     {
-        if (suppress_events != 0)
+        if (suppressEvents != 0)
         {
             return;
         }
@@ -1006,15 +1007,15 @@ public abstract class AbstractPassage implements Passage
      */
     protected void raiseNormalizeProtection()
     {
-        skip_normalization++;
+        skipNormalization++;
 
-        if (skip_normalization > 10)
+        if (skipNormalization > 10)
         {
             // This is a bit drastic and does not give us much
             // chance to fix the error
             //   throw new LogicError();
 
-            log.warn("skip_normalization="+skip_normalization, new Exception());
+            log.warn("skip_normalization="+skipNormalization, new Exception()); //$NON-NLS-1$
         }
     }
 
@@ -1026,17 +1027,14 @@ public abstract class AbstractPassage implements Passage
      */
     protected void lowerNormalizeProtection()
     {
-        skip_normalization--;
+        skipNormalization--;
 
-        if (skip_normalization == 0)
+        if (skipNormalization == 0)
         {
             normalize();
         }
 
-        if (skip_normalization < 0)
-        {
-            throw new LogicError();
-        }
+        assert skipNormalization >= 0;
     }
 
     /**
@@ -1047,15 +1045,15 @@ public abstract class AbstractPassage implements Passage
      */
     protected void raiseEventSuppresion()
     {
-        suppress_events++;
+        suppressEvents++;
 
-        if (suppress_events > 10)
+        if (suppressEvents > 10)
         {
             // This is a bit drastic and does not give us much
             // chance to fix the error
             //   throw new LogicError();
 
-            log.warn("suppress_events="+suppress_events, new Exception());
+            log.warn("suppress_events="+suppressEvents, new Exception()); //$NON-NLS-1$
         }
     }
 
@@ -1067,14 +1065,10 @@ public abstract class AbstractPassage implements Passage
      */
     protected boolean lowerEventSuppresionAndTest()
     {
-        suppress_events--;
+        suppressEvents--;
+        assert suppressEvents >= 0;
 
-        if (suppress_events < 0)
-        {
-            throw new LogicError();
-        }
-
-        return (suppress_events == 0);
+        return (suppressEvents == 0);
     }
 
     /**
@@ -1165,12 +1159,12 @@ public abstract class AbstractPassage implements Passage
         public final Object next() throws NoSuchElementException
         {
             Object retcode = next_range;
-            
+
             if (retcode == null)
             {
                 throw new NoSuchElementException();
             }
-            
+
             calculateNext();
             return retcode;
         }
@@ -1236,8 +1230,9 @@ public abstract class AbstractPassage implements Passage
                     break;
 
                 default:
-                    throw new LogicError();
+                    assert false;
                 }
+
                 end = next_verse;
             }
 
@@ -1458,7 +1453,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * The original string for picky users
      */
-    protected transient String original_name = null;
+    protected transient String originalName = null;
 
     /**
      * If we have several changes to make then we increment this and then
@@ -1466,11 +1461,11 @@ public abstract class AbstractPassage implements Passage
      * calculating the parameters to the fire is high then we can check that
      * this is 0 before doing the calculation.
      */
-    protected transient int suppress_events = 0;
+    protected transient int suppressEvents = 0;
 
     /**
      * Do we skip normalization for now - if we want to skip then we increment
      * this, and the decrement it when done.
      */
-    protected transient int skip_normalization = 0;
+    protected transient int skipNormalization = 0;
 }

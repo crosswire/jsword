@@ -43,7 +43,7 @@ public class FileChoice extends AbstractReflectedChoice
     {
         if (orig == null)
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         return ((File) orig).getAbsolutePath();

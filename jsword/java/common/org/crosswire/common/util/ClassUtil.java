@@ -52,11 +52,11 @@ public class ClassUtil
         for (int i=0; i<paths.length; i++)
         {
             // Search the jar
-            if (paths[i].endsWith(".zip") || paths[i].endsWith(".jar"))
+            if (paths[i].endsWith(EXTENSION_ZIP) || paths[i].endsWith(EXTENSION_JAR))
             {
                 try
                 {
-                    String file_name = StringUtils.replace(classname, ".", "/") + ".class";
+                    String file_name = StringUtils.replace(classname, ".", "/") + EXTENSION_CLASS; //$NON-NLS-1$ //$NON-NLS-2$
                     ZipFile zip = new ZipFile(paths[i]);
                     ZipEntry entry = zip.getEntry(file_name);
 
@@ -64,7 +64,7 @@ public class ClassUtil
                     {
                         if (full != null && !full.equals(file_name))
                         {
-                            log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
+                            log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         }
                         else
                         {
@@ -80,20 +80,20 @@ public class ClassUtil
             else
             {
                 // Search for the file
-                String extra = StringUtils.replace(classname, ".", File.separator);
+                String extra = StringUtils.replace(classname, ".", File.separator); //$NON-NLS-1$
 
                 if (!paths[i].endsWith(File.separator))
                 {
                     paths[i] = paths[i] + File.separator;
                 }
 
-                String file_name = paths[i] + extra + ".class";
+                String file_name = paths[i] + extra + EXTENSION_CLASS;
 
                 if (new File(file_name).isFile())
                 {
                     if (full != null && !full.equals(file_name))
                     {
-                        log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
+                        log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                     else
                     {
@@ -112,9 +112,13 @@ public class ClassUtil
      */
     public static String findClasspathEntry(String classname)
     {
-        String classpath = System.getProperty("java.class.path", "");
+        String classpath = System.getProperty("java.class.path", ""); //$NON-NLS-1$ //$NON-NLS-2$
         return findClasspathEntry(classname, classpath);
     }
+
+    private static final String EXTENSION_CLASS = ".class"; //$NON-NLS-1$
+    private static final String EXTENSION_JAR = ".jar"; //$NON-NLS-1$
+    private static final String EXTENSION_ZIP = ".zip"; //$NON-NLS-1$
 
     /**
      * The log stream

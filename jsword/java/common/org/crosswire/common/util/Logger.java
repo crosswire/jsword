@@ -10,7 +10,7 @@ import org.apache.log4j.Level;
  * smaller and have an API closer to the Log4J API (and even J2SE 1.4 logging)
  * to help us to move over.
  * Having our own class will also help with re-factoring.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -76,8 +76,8 @@ public final class Logger
         Object check = loggers.get(id);
         if (check != null)
         {
-            log4j.error("Logger reuse for: "+id.getName());
-            log4j.debug("Javascript creates a new classloader so this might not be a problem");
+            log4j.error("Logger reuse for: "+id.getName()); //$NON-NLS-1$
+            log4j.debug("Javascript creates a new classloader so this might not be a problem"); //$NON-NLS-1$
         }
 
         loggers.put(id, this);

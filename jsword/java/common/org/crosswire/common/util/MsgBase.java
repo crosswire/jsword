@@ -1,7 +1,9 @@
 package org.crosswire.common.util;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -9,7 +11,7 @@ import org.apache.commons.lang.enum.Enum;
 
 /**
  * A base class for implementing type safe internationalization (i18n) that is
- * easy for most cases. See { @see org.crosswire.common.util.Msg } for an
+ * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
  * example of how to inherit from here.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -31,11 +33,21 @@ import org.apache.commons.lang.enum.Enum;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at hotmail dot com]
  * @version $Id$
  * @see org.crosswire.common.util.Msg
  */
 public class MsgBase extends Enum
 {
+    /**
+     * Create a MsgBase object
+     */
+    protected MsgBase(String key)
+    {
+        super(key);
+        loadResources();
+    }
+
     /* (non-Javadoc)
      * @see org.apache.commons.lang.enum.Enum#toString()
      */
@@ -43,74 +55,79 @@ public class MsgBase extends Enum
     {
         String base = super.getName();
 
-        if (resources != null)
+        try
         {
-            try
+            if (resources != null)
             {
-                return resources.getString(base);
+                base = resources.getString(base);
             }
-            catch (MissingResourceException ex)
-            {
-                log.warn("missing resource in "+Locale.getDefault().getDisplayName()+" for "+base);
-                return base;
-            }
+        }
+        catch (MissingResourceException ex)
+        {
+            log.warn("Missing resource in " + Locale.getDefault().getDisplayName() + " for " + base); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return base;
     }
 
     /**
-     * @see org.apache.commons.lang.enum.Enum#toString()
+     * Formats the message with the given parameter.
+     */
+    public String toString(Object param)
+    {
+        Object [] params = {param};
+        return MessageFormat.format(toString(), params);
+    }
+
+    /**
+     * Formats the message with the given parameters.
      */
     public String toString(Object[] params)
     {
-        String base = super.getName();
-
-        if (resources != null)
-        {
-            try
-            {
-                return resources.getString(base);
-            }
-            catch (MissingResourceException ex)
-            {
-                log.warn("missing resource in "+Locale.getDefault().getDisplayName()+" for "+base);
-                return base;
-            }
-        }
-
-        MessageFormat formatter = new MessageFormat(base);
-        return formatter.format(params);
+        return MessageFormat.format(toString(), params);
     }
 
     /**
      * Initialise any resource bundles
      */
-    protected static void init(String pkgname)
+    protected void loadResources()
     {
-        try
+        Class implementingClass = getClass();
+        String className = implementingClass.getName();
+
+        // Class lock is needed around static resourceMap
+        synchronized (MsgBase.class)
         {
-            resources = ResourceBundle.getBundle(pkgname);
-            log.debug("Using resources for "+pkgname+" from locale "+Locale.getDefault().getDisplayName());
-        }
-        catch (MissingResourceException ex)
-        {
-            log.debug("Using default resources for "+pkgname);
+            // see if it is in the cache
+            resources = (ResourceBundle) resourceMap.get(className);
+
+            // if not then create it and put it into the cache
+            if (resources == null)
+            {
+                Locale defaultLocale = Locale.getDefault();
+                try
+                {
+                    resources = ResourceBundle.getBundle(className, defaultLocale, new CWClassLoader(implementingClass));
+                    resourceMap.put(className, resources);
+                    log.debug("Using resources for " + className + " in locale " + defaultLocale.getDisplayName()); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                catch (MissingResourceException ex)
+                {
+                    log.debug("Assuming key is the default message " + className + ": " + getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
         }
     }
 
     /**
-     * Simple ctor
+     * resource map maintains a mapping of class names to resources found by that name.
      */
-    protected MsgBase(String name)
-    {
-        super(name);
-    }
-
+    private static Map resourceMap = new HashMap();
+    
     /**
      * If there is any internationalization to be done, it is thru this
      */
-    private static ResourceBundle resources;
+    private ResourceBundle resources;
 
     /**
      * The log stream

@@ -76,7 +76,7 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private void init()
     {
-        lbl_nojobs.setText("No active jobs.");
+        lbl_nojobs.setText(Msg.NO_JOBS.toString());
 
         pnl_ijobs.setBorder(null);
         pnl_ijobs.setLayout(new GridBagLayout());
@@ -141,17 +141,17 @@ public class JobsViewPane extends JPanel implements WorkListener
     protected void addJob(final Job job)
     {
         int i = findEmptyPosition();
-        log.debug("adding job to panel at "+i+": "+job.getJobDescription());
+        log.debug("adding job to panel at "+i+": "+job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
 
         JProgressBar progress = new JProgressBar();
         progress.setStringPainted(true);
-        progress.setString("0%");
+        progress.setString("0%"); //$NON-NLS-1$
         progress.setToolTipText(job.getJobDescription());
         progress.setValue(0);
 
-        JLabel label = new JLabel(job.getJobDescription() + ":");
+        JLabel label = new JLabel(job.getJobDescription() + ":"); //$NON-NLS-1$
 
-        JButton cancel = new JButton("Cancel");
+        JButton cancel = new JButton(Msg.CANCEL.toString());
         if (!job.canInterrupt())
         {
             cancel.setEnabled(false);
@@ -189,7 +189,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.getProgress().setString(""+percent+"%");
+        jobdata.getProgress().setString(""+percent+"%"); //$NON-NLS-1$ //$NON-NLS-2$
         jobdata.getProgress().setToolTipText(job.getStateDescription());
         jobdata.getProgress().setValue(percent);
     }
@@ -201,7 +201,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        log.debug("removing job from panel at "+jobdata.getIndex()+": "+job.getJobDescription());
+        log.debug("removing job from panel at "+jobdata.getIndex()+": "+job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
 
         positions.set(jobdata.getIndex(), null);
         jobs.remove(job);

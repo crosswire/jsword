@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.BorderLayout;
@@ -201,7 +200,7 @@ public class ExceptionShelf extends JPanel
     {
         if (total == 0)
         {
-            JOptionPane.showMessageDialog(this, "No detected problems.", "Status", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, Msg.NO_PROBLEMS, Msg.STATUS.toString(), JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
@@ -222,7 +221,7 @@ public class ExceptionShelf extends JPanel
      */
     private void addPanel(JPanel panel)
     {
-        String key = "" + panel.hashCode();
+        String key = "" + panel.hashCode(); //$NON-NLS-1$
         shelf.add(panel, key);
 
         card.last(shelf);
@@ -262,7 +261,7 @@ public class ExceptionShelf extends JPanel
     private JPanel createExceptionPanel(Throwable ex)
     {
         JPanel retcode = new JPanel();
-        JButton remove = new JButton("Remove");
+        JButton remove = new JButton(Msg.REMOVE.toString());
         JButton report = new JButton();
 
         if (small == null)
@@ -273,14 +272,14 @@ public class ExceptionShelf extends JPanel
 
         if (ex == null)
         {
-            report.setText("No Problems");
-            report.setIcon(UIManager.getIcon("OptionPane.informationIcon"));
+            report.setText(Msg.NO_PROBLEMS.toString());
+            report.setIcon(UIManager.getIcon("OptionPane.informationIcon")); //$NON-NLS-1$
             remove.setEnabled(false);
         }
         else
         {
-            report.setText("<html>" + ExceptionPane.getHTMLDescription(ex));
-            report.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
+            report.setText("<html>" + ExceptionPane.getHTMLDescription(ex)); //$NON-NLS-1$
+            report.setIcon(UIManager.getIcon("OptionPane.errorIcon")); //$NON-NLS-1$
             remove.setEnabled(true);
         }
 
@@ -317,28 +316,44 @@ public class ExceptionShelf extends JPanel
         return retcode;
     }
 
-    /** The set of panels reporting on the errors */
+    /**
+     * The set of panels reporting on the errors
+     */
     private List panels = new ArrayList();
 
-    /** The shelf scroller */
+    /**
+     * The shelf scroller
+     */
     private NudgeButton toggle = new NudgeButton();
 
-    /** The layout for the shelf */
+    /**
+     * The layout for the shelf
+     */
     private CardLayout card = new CardLayout();
 
-    /** The card currently being displayed */
+    /**
+     * The card currently being displayed
+     */
     private int current = 0;
 
-    /** The scrolled panel to which we can add stuff */
+    /**
+     * The scrolled panel to which we can add stuff
+     */
     private JPanel shelf = new JPanel();
 
-    /** The no problems exception */
+    /**
+     * The no problems exception
+     */
     private JPanel noproblems = createExceptionPanel(null);
 
-    /** The current number of cards */
+    /**
+     * The current number of cards
+     */
     private int total = 0;
 
-    /** The set of known errors */
+    /**
+     * The set of known errors
+     */
     private List exceptions = new ArrayList();
 
     /**
@@ -369,16 +384,24 @@ public class ExceptionShelf extends JPanel
         return li != null;
     }
 
-    /** The listener that pops up the ExceptionPanes */
+    /**
+     * The listener that pops up the ExceptionPanes
+     */
     private static ShelfCaptureListener li = new ShelfCaptureListener();
 
-    /** All the ExceptionShelves that we know about */
+    /**
+     * All the ExceptionShelves that we know about
+     */
     protected static final List shelves = new ArrayList();
 
-    /** The font for the remove button */
+    /**
+     * The font for the remove button
+     */
     private static Font small;
 
-    /** Are we in the list of listeners */
+    /**
+     * Are we in the list of listeners
+     */
     private static boolean joined = false;
 
     /**

@@ -95,18 +95,18 @@ public class SWMgr {
         init();
 
          path = iConfigPath;
-        if (!path.endsWith("/"))
-            path += "/";
+        if (!path.endsWith("/")) //$NON-NLS-1$
+            path += "/"; //$NON-NLS-1$
 
-        if (existsFile(path, "mods.conf")) {
+        if (existsFile(path, "mods.conf")) { //$NON-NLS-1$
             prefixPath = path;
-            path += "mods.conf";
+            path += "mods.conf"; //$NON-NLS-1$
             configPath = path;
         }
         else {
-            if (existsDir(path, "mods.d")) {
+            if (existsDir(path, "mods.d")) { //$NON-NLS-1$
                 prefixPath = path;
-                path += "mods.d";
+                path += "mods.d"; //$NON-NLS-1$
                 configPath = path;
                 configType = 1;
             }
@@ -123,7 +123,7 @@ public class SWMgr {
     private boolean existsFile(String ipath, String ifileName) {
         String path = ipath;
 
-        path += "/";
+        path += "/"; //$NON-NLS-1$
         String filePath = path + ifileName;
         File testFile = new File(filePath);
             return testFile.exists();
@@ -132,7 +132,7 @@ public class SWMgr {
 
     private boolean existsDir(String ipath, String idirName) {
         String path = ipath;
-        path += "/";
+        path += "/"; //$NON-NLS-1$
         String filePath = path + idirName;
         File testDir = new File(filePath);
         return testDir.isDirectory();
@@ -239,16 +239,16 @@ public class SWMgr {
             String names[] = dirList.list(
                 new FilenameFilter() {
                     public boolean accept(File dir, String name) {
-                        return name.endsWith(".conf");
+                        return name.endsWith(".conf"); //$NON-NLS-1$
                     }
                 });
             try {
 
                 for (int i = 0; i < names.length; i++) {
-                    if ((!names[i].equals(".")) && (!names[i].equals(".."))) {
+                    if ((!names[i].equals(".")) && (!names[i].equals(".."))) { //$NON-NLS-1$ //$NON-NLS-2$
                         newmodfile = ipath;
-                        if (!newmodfile.endsWith("/"))
-                            newmodfile += "/";
+                        if (!newmodfile.endsWith("/")) //$NON-NLS-1$
+                            newmodfile += "/"; //$NON-NLS-1$
                         newmodfile += names[i];
                         if (config != null) {
                             SWConfig tmpConfig = new SWConfig(newmodfile);
@@ -260,7 +260,7 @@ public class SWMgr {
 
                 if (config == null) {	// if no .conf file exist yet, create a default
                     newmodfile = ipath;
-                    newmodfile += "/globals.conf";
+                    newmodfile += "/globals.conf"; //$NON-NLS-1$
                     config = myconfig = new SWConfig(newmodfile);
                 }
             }
@@ -307,7 +307,7 @@ public class SWMgr {
         else {
 //			SWLog::systemlog->LogError("SWMgr: Can't find 'mods.conf' or 'mods.d'.  Try setting:\n\tSWORD_PATH=<directory containing mods.conf>\n\tOr see the README file for a full description of setup options (%s)", (configPath) ? configPath : "<configPath is null>");
 //			exit(-1);
-            System.err.println("SWMgr: Can't find 'mods.conf' or 'mods.d'.  Try setting:\n\tSWORD_PATH=<directory containing mods.conf>\n\tOr see the README file for a full description of setup options (" + ((configPath != null) ? configPath : "<configPath is null>") + ")");
+            System.err.println("SWMgr: Can't find 'mods.conf' or 'mods.d'.  Try setting:\n\tSWORD_PATH=<directory containing mods.conf>\n\tOr see the README file for a full description of setup options (" + ((configPath != null) ? configPath : "<configPath is null>") + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
     }
 

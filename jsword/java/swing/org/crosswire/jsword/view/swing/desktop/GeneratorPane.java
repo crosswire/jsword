@@ -106,7 +106,7 @@ public class GeneratorPane extends EirPanel
 
         bar_prog.setBorderPainted(true);
         bar_prog.setMaximum(100);
-        bar_prog.setString("");
+        bar_prog.setString(""); //$NON-NLS-1$
         bar_prog.setStringPainted(true);
         pnl_prog.setLayout(new BorderLayout());
         pnl_prog.setBorder(BorderFactory.createTitledBorder("Progress"));
@@ -335,7 +335,7 @@ public class GeneratorPane extends EirPanel
                     Verifier ver = new Verifier(source, dest_version);
 
                     CompareResultsPane results = new CompareResultsPane(ver);
-                    results.setCheckText("");
+                    results.setCheckText(""); //$NON-NLS-1$
                     results.setCheckPassages(Verifier.WHOLE);
                     results.showInFrame(GuiUtil.getFrame(GeneratorPane.this));
                     results.startStop();
@@ -383,7 +383,7 @@ public class GeneratorPane extends EirPanel
                 {
                     Job job = ev.getJob();
                     int percent = job.getPercent();
-                    bar_prog.setString(job.getStateDescription() + ": (" + percent + "%)");
+                    bar_prog.setString(job.getStateDescription() + ": (" + percent + "%)"); //$NON-NLS-1$  //$NON-NLS-2$
                     bar_prog.setValue(percent);
                 }
             });

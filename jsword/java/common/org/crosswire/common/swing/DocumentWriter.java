@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.io.IOException;
@@ -8,8 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
-import org.crosswire.common.util.LogicError;
 
 /**
  * A DocumentWriter is-a Writer that uses a Document so all text printed
@@ -178,11 +175,11 @@ public class DocumentWriter extends Writer
             }
             catch (InterruptedException ex)
             {
-                throw new IOException(""+ex);
+                throw new IOException(""+ex); //$NON-NLS-1$
             }
             catch (InvocationTargetException ex)
             {
-                throw new IOException(""+ex);
+                throw new IOException(""+ex); //$NON-NLS-1$
             }
         }
     }
@@ -203,7 +200,7 @@ public class DocumentWriter extends Writer
     /**
      * The queue of strings to be added to the GUI
      */
-    protected String queue = "";
+    protected String queue = ""; //$NON-NLS-1$
 
     /**
      * The destination Document
@@ -232,19 +229,19 @@ public class DocumentWriter extends Writer
                 try
                 {
                     doc.insertString(doc.getLength(), queue, null);
+
+                    queue = ""; //$NON-NLS-1$
+
+                    // This simply releases the pointer that our parent had
+                    // to us, it does not affect how this thread is being
+                    // executed. The practical effect is that any further
+                    // writes know to create a new updater
+                    updater = null;
                 }
                 catch (BadLocationException ex)
                 {
-                    throw new LogicError();
+                    assert false : ex;
                 }
-
-                queue = "";
-
-                // This simply releases the pointer that our parent had
-                // to us, it does not affect how this thread is being
-                // executed. The practical effect is that any further
-                // writes know to create a new updater
-                updater = null;
             }
         }
     }

@@ -48,14 +48,14 @@ public class ReadEverything
         JAXBUtil.getJAXBContext();
 
         // Load the desktop configuration so we can find the sword drivers
-        Config config = new Config("Desktop Options");
-        Document xmlconfig = Project.instance().getDocument("config");
+        Config config = new Config("Desktop Options"); //$NON-NLS-1$
+        Document xmlconfig = Project.instance().getDocument("config"); //$NON-NLS-1$
         config.add(xmlconfig);
-        config.setProperties(Project.instance().getProperties("desktop"));
+        config.setProperties(Project.instance().getProperties("desktop")); //$NON-NLS-1$
         config.localToApplication(true);
 
         // Loop through all the Bookks
-        log.info("*** Reading all known Books");
+        log.info("*** Reading all known Books"); //$NON-NLS-1$
         List comments = Books.installed().getBookMetaDatas();
         for (Iterator cit = comments.iterator(); cit.hasNext();)
         {
@@ -99,7 +99,7 @@ public class ReadEverything
         long end = System.currentTimeMillis();
         float time = (end - start) / 1000F;
 
-        log.info("Tested: book="+bmd.getInitials()+" entries="+entries+" time="+time+"s ("+(1000*time/entries)+"ms per entry)");
+        log.info("Tested: book="+bmd.getInitials()+" entries="+entries+" time="+time+"s ("+(1000*time/entries)+"ms per entry)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
     /**
@@ -114,7 +114,7 @@ public class ReadEverything
             BookData data = book.getData(key);
             if (data.getPlainText() == null)
             {
-                log.warn("No output from: "+bmd.getInitials()+", "+key.getName());
+                log.warn("No output from: "+bmd.getInitials()+", "+key.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             // LATER(joe): put in a test for invalid characters
@@ -130,11 +130,11 @@ public class ReadEverything
         */
         catch (BookException ex)
         {
-            log.warn("Failed to read: "+bmd.getInitials()+", "+key.getName()+", reason: "+ex.getMessage(), ex);
+            log.warn("Failed to read: "+bmd.getInitials()+", "+key.getName()+", reason: "+ex.getMessage(), ex); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         catch (Throwable ex)
         {
-            log.error("Unexpected error reading: "+bmd.getInitials()+", "+key.getName(), ex);
+            log.error("Unexpected error reading: "+bmd.getInitials()+", "+key.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

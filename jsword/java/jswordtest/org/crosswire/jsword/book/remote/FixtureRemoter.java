@@ -42,7 +42,7 @@ public class FixtureRemoter implements Remoter
      */
     public String getRemoterName()
     {
-        return "Fixture Remote";
+        return "Fixture Remote"; //$NON-NLS-1$
     }
 
     /**

@@ -42,13 +42,13 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
         super.init(option);
 
         List list = new ArrayList();
-        List alts = option.getChildren("alternative");
+        List alts = option.getChildren("alternative"); //$NON-NLS-1$
         Iterator it = alts.iterator();
         while (it.hasNext())
         {
             Element alternative = (Element) it.next();
-            int number = Integer.parseInt(alternative.getAttributeValue("number"));
-            String name = alternative.getAttributeValue("name");
+            int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
+            String name = alternative.getAttributeValue("name"); //$NON-NLS-1$
             list.add(number, name);
         }
 
@@ -100,7 +100,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
                 }
             }
         
-            Reporter.informUser(this, "Ignoring invalid option: "+orig);
+            Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
             return options[0];
         }
     }

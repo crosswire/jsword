@@ -21,10 +21,10 @@ public class ConfigTest
 {
     public static void main(String[] args) throws Exception
     {
-        String stemp = "";
+        String stemp = ""; //$NON-NLS-1$
         String[] astemp = new String[0];
         File[] aftemp = new File[0];
-        File ftemp = new File("");
+        File ftemp = new File(""); //$NON-NLS-1$
         boolean btemp = false;
         Class ctemp = null;
         int itemp = 0;

@@ -48,6 +48,10 @@ import org.crosswire.jsword.passage.PassageTally;
  */
 public class DemoServlet extends HttpServlet
 {
+    private static final String FIELD_VIEW = "view"; //$NON-NLS-1$
+    private static final String FIELD_MATCH = "match"; //$NON-NLS-1$
+    private static final String FIELD_SEARCH = "search"; //$NON-NLS-1$
+
     /**
      * @see javax.servlet.Servlet#init(ServletConfig)
      */
@@ -57,12 +61,12 @@ public class DemoServlet extends HttpServlet
 
         try
         {
-            String bookname = config.getInitParameter("book-name");
+            String bookname = config.getInitParameter("book-name"); //$NON-NLS-1$
             book = Books.installed().getBookMetaData(bookname).getBook();
         }
         catch (Exception ex)
         {
-            throw new ServletException("Failed to initialize", ex);
+            throw new ServletException(Msg.INIT_FAILED.toString(), ex);
         }
     }
 
@@ -75,27 +79,27 @@ public class DemoServlet extends HttpServlet
         {
             Key key = null;
 
-            String search = request.getParameter("search");
+            String search = request.getParameter(FIELD_SEARCH);
             if (search != null)
             {
-                request.setAttribute("search", search);
+                request.setAttribute(FIELD_SEARCH, search);
                 key = book.find(new Search(search, false));
             }
 
-            String match = request.getParameter("match");
+            String match = request.getParameter(FIELD_MATCH);
             if (match != null)
             {
-                request.setAttribute("match", match);
+                request.setAttribute(FIELD_MATCH, match);
                 PassageTally tally = (PassageTally) book.find(new Search(match, true));
                 tally.setOrdering(PassageTally.ORDER_TALLY);
-                tally.trimRanges(tally_trim, PassageConstants.RESTRICT_NONE);
+                tally.trimRanges(tallyTrim, PassageConstants.RESTRICT_NONE);
                 key = tally;
             }
 
-            String view = request.getParameter("view");
+            String view = request.getParameter(FIELD_VIEW);
             if (view != null)
             {
-                request.setAttribute("view", view);
+                request.setAttribute(FIELD_VIEW, view);
                 key = PassageFactory.createPassage(view);
             }
 
@@ -104,17 +108,17 @@ public class DemoServlet extends HttpServlet
                 Passage ref = (Passage) key;
 
                 // Do we need multiple pages
-                if (ref.countVerses() > page_size)
+                if (ref.countVerses() > pageSize)
                 {
-                    Passage waiting = ref.trimVerses(page_size);
+                    Passage waiting = ref.trimVerses(pageSize);
 
                     // JDK: A deprecation error if you don't, won't build or run on java < 1.4 if you do.
                     //String link = URLEncoder.encode(waiting.getName());
-                    String link = URLEncoder.encode(waiting.getName(), "UTF-8");
+                    String link = URLEncoder.encode(waiting.getName(), "UTF-8"); //$NON-NLS-1$
 
-                    request.setAttribute("next-link", link);
-                    request.setAttribute("next-name", waiting.getName());
-                    request.setAttribute("next-overview", waiting.getOverview());
+                    request.setAttribute("next-link", link); //$NON-NLS-1$
+                    request.setAttribute("next-name", waiting.getName()); //$NON-NLS-1$
+                    request.setAttribute("next-overview", waiting.getOverview()); //$NON-NLS-1$
                 }
 
                 BookData data = book.getData(ref);
@@ -122,16 +126,16 @@ public class DemoServlet extends HttpServlet
                 SAXEventProvider htmlsep = style.convert(osissep);
                 String text = XMLUtil.writeToString(htmlsep);
 
-                request.setAttribute("reply", text);
+                request.setAttribute("reply", text); //$NON-NLS-1$
             }
         }
         catch (Exception ex)
         {
-            log.error("Failed view", ex);
-            throw new ServletException("Failed view", ex);
+            log.error("Failed view", ex); //$NON-NLS-1$
+            throw new ServletException("Failed view", ex); //$NON-NLS-1$
         }
 
-        getServletContext().getRequestDispatcher("/demo.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/demo.jsp").forward(request, response); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -142,8 +146,8 @@ public class DemoServlet extends HttpServlet
         doPost(request, response);
     }
 
-    private static int tally_trim = 50;
-    private static int page_size = 150;
+    private static int tallyTrim = 50;
+    private static int pageSize = 150;
     private Book book;
     private SimpleWebConverter style = new SimpleWebConverter();
 

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.Component;
@@ -10,7 +9,7 @@ import javax.swing.JPanel;
 
 /**
  * A Panel customized to hold fields.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -34,6 +33,9 @@ import javax.swing.JPanel;
  */
 public class FormPane extends JPanel
 {
+    private static final String SUFFIX_COMP = "_comp"; //$NON-NLS-1$
+    private static final String SUFFIX_LABEL = "_label"; //$NON-NLS-1$
+
     /**
      * Create a FormPane
      */
@@ -55,8 +57,8 @@ public class FormPane extends JPanel
         add(label);
         add(comp);
 
-        comps.put(prompt+"_label", label);
-        comps.put(prompt+"_comp", comp);
+        comps.put(prompt+SUFFIX_LABEL, label);
+        comps.put(prompt+SUFFIX_COMP, comp);
     }
 
     /**
@@ -65,14 +67,14 @@ public class FormPane extends JPanel
      */
     public void removeEntry(String prompt)
     {
-        JLabel label = (JLabel) comps.get(prompt+"_label");
-        Component comp = (Component) comps.get(prompt+"_comp");
+        JLabel label = (JLabel) comps.get(prompt+SUFFIX_LABEL);
+        Component comp = (Component) comps.get(prompt+SUFFIX_COMP);
 
         remove(label);
         remove(comp);
 
-        comps.remove(prompt+"_label");
-        comps.remove(prompt+"_comp");
+        comps.remove(prompt+SUFFIX_LABEL);
+        comps.remove(prompt+SUFFIX_COMP);
     }
 
     /**

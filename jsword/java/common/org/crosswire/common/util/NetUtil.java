@@ -53,12 +53,17 @@ public class NetUtil
     /**
      * For directory listings
      */
-    public static final String INDEX_FILE = "index.txt";
+    public static final String INDEX_FILE = "index.txt"; //$NON-NLS-1$
 
     /**
      * URL separator
      */
-    public static final String SEPARATOR = "/";
+    public static final String SEPARATOR = "/"; //$NON-NLS-1$
+
+    /**
+     * The temporary directory name
+     */
+    private static final String TEMP_DIR = "jswordtemp"; //$NON-NLS-1$
 
     /**
      * If the directory does not exist, create it.
@@ -74,7 +79,7 @@ public class NetUtil
         // If it is a file, except
         if (file.isFile())
         {
-            throw new MalformedURLException("The given URL '" + orig + "' is a file.");
+            throw new MalformedURLException(Msg.IS_FILE.toString(new Object[] { orig }));
         }
 
         // Is it already a directory ?
@@ -85,7 +90,7 @@ public class NetUtil
             // Did that work?
             if (!file.isDirectory())
             {
-                throw new MalformedURLException("The given URL '" + orig + "' could not be created as a directory.");
+                throw new MalformedURLException(Msg.CREATE_DIR_FAIL.toString(new Object[] { orig }));
             }
         }
     }
@@ -104,7 +109,7 @@ public class NetUtil
         // If it is a file, except
         if (file.isDirectory())
         {
-            throw new MalformedURLException("The given URL '" + orig + "' is a directory.");
+            throw new MalformedURLException(Msg.IS_DIR.toString(new Object[] { orig }));
         }
 
         // Is it already a directory ?
@@ -116,7 +121,7 @@ public class NetUtil
             // Did that work?
             if (!file.isFile())
             {
-                throw new MalformedURLException("The given URL '" + orig + "' could not be created as a file.");
+                throw new MalformedURLException(Msg.CREATE_FILE_FAIL.toString(new Object[] { orig }));
             }
         }
     }
@@ -211,7 +216,7 @@ public class NetUtil
         }
         else
         {
-            String hashString = (url.toExternalForm().hashCode() + "").replace('-', 'm');
+            String hashString = (url.toExternalForm().hashCode() + "").replace('-', 'm'); //$NON-NLS-1$
 
             // get the location of the tempWorkingDir
             File workingDir = getURLCacheDir();
@@ -224,7 +229,7 @@ public class NetUtil
             else
             {
                 // If there's no working dir, we just use temp...
-                workingFile = File.createTempFile(hashString, "jswordtemp");
+                workingFile = File.createTempFile(hashString, TEMP_DIR);
             }
             workingFile.deleteOnExit();
 
@@ -259,7 +264,7 @@ public class NetUtil
         {
             file = file.substring(0, file.length() - 1);
         }
-        if (file.endsWith("\\"))
+        if (file.endsWith("\\")) //$NON-NLS-1$
         {
             file = file.substring(0, file.length() - 1);
         }
@@ -267,7 +272,7 @@ public class NetUtil
         String test = file.substring(file.length() - strip.length());
         if (!test.equals(strip))
         {
-            throw new MalformedURLException("The URL '" + orig + "' does not end in '" + strip + "'");
+            throw new MalformedURLException(Msg.CANT_STRIP.toString(new Object[] { orig, strip }));
         }
 
         String newFile = file.substring(0, file.length() - strip.length());
@@ -315,7 +320,8 @@ public class NetUtil
         }
         catch (MalformedURLException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -347,7 +353,8 @@ public class NetUtil
         }
         catch (MalformedURLException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -383,7 +390,8 @@ public class NetUtil
         }
         catch (MalformedURLException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -451,7 +459,7 @@ public class NetUtil
             // JNLP or other systems that can't use file: URLs. But it is silly
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
-            log.warn("index file for "+url.toExternalForm()+" was not found.");
+            log.warn("index file for "+url.toExternalForm()+" was not found."); //$NON-NLS-1$ //$NON-NLS-2$
             if (url.getProtocol().equals(PROTOCOL_FILE))
             {
                 return listByFile(url, filter);
@@ -466,7 +474,7 @@ public class NetUtil
             // Check that the answers are the same
             if (files.length != reply.length)
             {
-                log.warn("index file for "+url.toExternalForm()+" has incorrect number of entries.");
+                log.warn("index file for "+url.toExternalForm()+" has incorrect number of entries."); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
@@ -475,7 +483,7 @@ public class NetUtil
                 {
                     if (!list.contains(files[i]))
                     {
-                        log.warn("file: based index found "+files[i]+" but this was not found using index file.");
+                        log.warn("file: based index found "+files[i]+" but this was not found using index file."); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
             }
@@ -493,7 +501,7 @@ public class NetUtil
         File fdir = new File(url.getFile());
         if (!fdir.isDirectory())
         {
-            throw new MalformedURLException("URL "+url.toExternalForm()+" is not a directory");
+            throw new MalformedURLException(Msg.NOT_DIR.toString(new Object[] { url.toExternalForm() }));
         }
 
         return fdir.list(new URLFilterFilenameFilter(filter));
@@ -510,7 +518,7 @@ public class NetUtil
         
         // We still need to do the filtering
         List list = new ArrayList();
-        String[] names = StringUtils.split(contents, "\n");
+        String[] names = StringUtils.split(contents, "\n"); //$NON-NLS-1$
         for (int i=0; i<names.length; i++)
         {
             // we need to trim, as we may have \r\n not \n
@@ -519,7 +527,7 @@ public class NetUtil
             // to be acceptable it must be a non-0 length string, not commented
             // with #, not the index file itself and acceptable by the filter.
             if (name.length() > 0
-                && !name.startsWith("#")
+                && !name.startsWith("#") //$NON-NLS-1$
                 && !name.equals(INDEX_FILE)
                 && filter.accept(name))
             {
@@ -580,7 +588,7 @@ public class NetUtil
     {
         if (!url.getProtocol().equals(PROTOCOL_FILE))
         {
-            throw new MalformedURLException("The given URL '" + url + "' is not a file: URL.");
+            throw new MalformedURLException(Msg.NOT_FILE_URL.toString(new Object[] { url }));
         }
     }
 
@@ -602,7 +610,7 @@ public class NetUtil
         NetUtil.cachedir = cachedir;
     }
 
-    private static final String PROTOCOL_FILE = "file";
+    private static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
 
     /**
      * Where are temporary files cached.

@@ -47,15 +47,15 @@ public class GuiConvert
      */
     public static Font string2Font(String value)
     {
-        if (value == null || value.equals(""))
+        if (value == null || value.equals("")) //$NON-NLS-1$
         {
             return null;
         }
 
-        String[] values = StringUtils.split(value, ",");
+        String[] values = StringUtils.split(value, ","); //$NON-NLS-1$
         if (values.length != 3)
         {
-            log.warn("illegal font name: "+value);
+            log.warn("Illegal font name: "+value); //$NON-NLS-1$
             return null;
         }
 
@@ -69,12 +69,12 @@ public class GuiConvert
      */
     public static String font2String(Font font)
     {
-        if (font == null || font.equals(""))
+        if (font == null || font.equals("")) //$NON-NLS-1$
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
-        return font.getName()+","+font.getStyle()+","+font.getSize();
+        return font.getName()+","+font.getStyle()+","+font.getSize(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -84,14 +84,14 @@ public class GuiConvert
      */
     public static Color string2Color(String value)
     {
-        if (value == null || value.equals(""))
+        if (value == null || value.equals("")) //$NON-NLS-1$
         {
             return null;
         }
 
         if (value.length() != 7)
         {
-            log.warn("illegal colour name: "+value);
+            log.warn("Illegal colour name: "+value); //$NON-NLS-1$
             return null;
         }
 
@@ -115,18 +115,18 @@ public class GuiConvert
     {
         if (color == null)
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
-        String red = "00" + Integer.toHexString(color.getRed());
-        String green = "00" + Integer.toHexString(color.getGreen());
-        String blue = "00" + Integer.toHexString(color.getBlue());
+        String red = "00" + Integer.toHexString(color.getRed()); //$NON-NLS-1$
+        String green = "00" + Integer.toHexString(color.getGreen()); //$NON-NLS-1$
+        String blue = "00" + Integer.toHexString(color.getBlue()); //$NON-NLS-1$
 
         red = red.substring(red.length()-2);
         green = green.substring(green.length()-2);
         blue = blue.substring(blue.length()-2);
 
-        return "#"+red+green+blue;
+        return "#"+red+green+blue; //$NON-NLS-1$
     }
     
     /**

@@ -48,10 +48,10 @@ public class ChoiceFactory
     {
         Class clazz = null;
 
-        String type = option.getAttributeValue("type");
-        if (type.equals("custom"))
+        String type = option.getAttributeValue("type"); //$NON-NLS-1$
+        if (type.equals("custom")) //$NON-NLS-1$
         {
-            String clazzstr = option.getAttributeValue("class");
+            String clazzstr = option.getAttributeValue("class"); //$NON-NLS-1$
             clazz = Class.forName(clazzstr);
         }
         else

@@ -46,27 +46,27 @@ public class Convert
      */
     public static boolean string2Boolean(String data)
     {
-        if (data.equalsIgnoreCase("true"))
+        if (data.equalsIgnoreCase("true")) //$NON-NLS-1$
         {
             return true;
         }
-        if (data.equalsIgnoreCase("yes"))
+        if (data.equalsIgnoreCase("yes")) //$NON-NLS-1$
         {
             return true;
         }
-        if (data.equalsIgnoreCase("ok"))
+        if (data.equalsIgnoreCase("ok")) //$NON-NLS-1$
         {
             return true;
         }
-        if (data.equalsIgnoreCase("okay"))
+        if (data.equalsIgnoreCase("okay")) //$NON-NLS-1$
         {
             return true;
         }
-        if (data.equalsIgnoreCase("on"))
+        if (data.equalsIgnoreCase("on")) //$NON-NLS-1$
         {
             return true;
         }
-        if (data.equalsIgnoreCase("1"))
+        if (data.equalsIgnoreCase("1")) //$NON-NLS-1$
         {
             return true;
         }
@@ -81,7 +81,7 @@ public class Convert
      */
     public static String boolean2String(boolean data)
     {
-        return data ? "True" : "False";
+        return data ? "True" : "False"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -160,7 +160,7 @@ public class Convert
     {
         Map commands = new HashMap();
 
-        String[] data_arr = StringUtils.split(data, " ");
+        String[] data_arr = StringUtils.split(data, " "); //$NON-NLS-1$
 
         for (int i=0; i<data_arr.length; i++)
         {
@@ -173,14 +173,16 @@ public class Convert
 
                 if (clazz.isAssignableFrom(superclass))
                 {
-                    throw new ClassCastException("Type Error");
+                    assert false;
                 }
-
-                commands.put(key, value);
+                else
+                {
+                    commands.put(key, value);
+                }
             }
             catch (Exception ex)
             {
-                log.warn("Invalid config file entry: "+data_arr[i]+" System message: "+ex.getMessage());
+                log.warn("Invalid config file entry: "+data_arr[i]+" System message: "+ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
                 Reporter.informUser(Convert.class, ex);
             }
         }
@@ -210,8 +212,8 @@ public class Convert
 
         while (it.hasNext())
         {
-            String key = "";
-            String value = "";
+            String key = ""; //$NON-NLS-1$
+            String value = ""; //$NON-NLS-1$
 
             try
             {
@@ -219,13 +221,13 @@ public class Convert
                 value = (String) commands.get(key);
 
                 retcode.append(key);
-                retcode.append("=");
+                retcode.append("="); //$NON-NLS-1$
                 retcode.append(value);
-                retcode.append(" ");
+                retcode.append(" "); //$NON-NLS-1$
             }
             catch (ClassCastException ex)
             {
-                log.warn("non-String member found: key="+key+" value="+value);
+                log.warn("non-String member found: key="+key+" value="+value); //$NON-NLS-1$ //$NON-NLS-2$
                 Reporter.informUser(Convert.class, ex);
             }
         }

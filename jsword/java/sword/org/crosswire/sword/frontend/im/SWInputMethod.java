@@ -11,7 +11,7 @@ package org.crosswire.sword.frontend.im;
 
 public abstract class SWInputMethod {
 
-    private String name = "InputMethod";
+    private String name = "InputMethod"; //$NON-NLS-1$
     int state = 0;
 
     public SWInputMethod(String name) {

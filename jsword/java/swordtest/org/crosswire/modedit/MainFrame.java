@@ -91,34 +91,34 @@ public class MainFrame extends JFrame {
         contentPane.setLayout(borderLayout1);
         this.setJMenuBar(jMenuBar1);
         this.setSize(new Dimension(549, 300));
-        this.setTitle("ModEdit");
+        this.setTitle("ModEdit"); //$NON-NLS-1$
         jPanel1.setLayout(borderLayout5);
         jPanel2.setLayout(borderLayout2);
         jPanel3.setLayout(borderLayout3);
         jLabel1.setMinimumSize(new Dimension(90, 13));
         jLabel1.setPreferredSize(new Dimension(90, 13));
         jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel1.setText("FontURL");
+        jLabel1.setText("FontURL"); //$NON-NLS-1$
         jLabel2.setMinimumSize(new Dimension(90, 13));
         jLabel2.setPreferredSize(new Dimension(90, 13));
         jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel2.setText("contentURL");
-        jTextField1.setToolTipText("");
-        jTextField1.setText("http://www.crosswire.org/~scribe/ElEdit/1kg1.uni");
-        jTextField2.setText("http://www.crosswire.org/~scribe/ElEdit/yoyo.ttf");
-        jButton1.setText("Load");
+        jLabel2.setText("contentURL"); //$NON-NLS-1$
+        jTextField1.setToolTipText(""); //$NON-NLS-1$
+        jTextField1.setText("http://www.crosswire.org/~scribe/ElEdit/1kg1.uni"); //$NON-NLS-1$
+        jTextField2.setText("http://www.crosswire.org/~scribe/ElEdit/yoyo.ttf"); //$NON-NLS-1$
+        jButton1.setText("Load"); //$NON-NLS-1$
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jButton1_actionPerformed();
             }
         });
-        jButton2.setText("Load");
+        jButton2.setText("Load"); //$NON-NLS-1$
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jButton2_actionPerformed();
             }
         });
-        jTextArea1.setText("");
+        jTextArea1.setText(""); //$NON-NLS-1$
         jTextArea1.setLineWrap(true);
         jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -126,7 +126,7 @@ public class MainFrame extends JFrame {
             }
         });
         jTextArea1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        statusBar.setText("");
+        statusBar.setText(""); //$NON-NLS-1$
         jPanel4.setLayout(borderLayout4);
         jSlider1.setMinimum(1);
         jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -134,39 +134,39 @@ public class MainFrame extends JFrame {
                 jSlider1_stateChanged();
             }
         });
-        jLabel3.setText("Keyboard");
+        jLabel3.setText("Keyboard"); //$NON-NLS-1$
         imComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 imComboBox_itemStateChanged();
             }
         });
-        jMenu1.setText("File");
-        jMenuItem1.setText("Lookup Url");
+        jMenu1.setText("File"); //$NON-NLS-1$
+        jMenuItem1.setText("Lookup Url"); //$NON-NLS-1$
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jMenuItem1_actionPerformed();
             }
         });
-        jMenuItem2.setText("Exit");
+        jMenuItem2.setText("Exit"); //$NON-NLS-1$
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jMenuItem2_actionPerformed();
             }
         });
-        jMenuItem3.setText("Save");
+        jMenuItem3.setText("Save"); //$NON-NLS-1$
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jMenuItem3_actionPerformed();
             }
         });
-        jMenu2.setText("Edit");
-        jMenuItem4.setText("Copy");
+        jMenu2.setText("Edit"); //$NON-NLS-1$
+        jMenuItem4.setText("Copy"); //$NON-NLS-1$
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jMenuItem4_actionPerformed();
             }
         });
-        jMenuItem5.setText("Paste");
+        jMenuItem5.setText("Paste"); //$NON-NLS-1$
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jMenuItem5_actionPerformed();
@@ -197,9 +197,9 @@ public class MainFrame extends JFrame {
         jMenu2.add(jMenuItem4);
         jMenu2.add(jMenuItem5);
         jSlider1.setValue(jTextArea1.getFont().getSize());
-        imComboBox.addItem(new HebrewDurusauIM("Durusau"));
-        imComboBox.addItem(new NullIM("Latin"));
-        imComboBox.addItem(new HebrewMCIM("Michigan-Claremont"));
+        imComboBox.addItem(new HebrewDurusauIM("Durusau")); //$NON-NLS-1$
+        imComboBox.addItem(new NullIM("Latin")); //$NON-NLS-1$
+        imComboBox.addItem(new HebrewMCIM("Michigan-Claremont")); //$NON-NLS-1$
     }
     /**Overridden so we can exit when window is closed*/
     protected void processWindowEvent(WindowEvent e) {
@@ -211,7 +211,7 @@ public class MainFrame extends JFrame {
 
     void jButton2_actionPerformed() {
         try {
-            statusBar.setText("Loading font...");
+            statusBar.setText("Loading font..."); //$NON-NLS-1$
             statusBar.paintImmediately(statusBar.getVisibleRect());
             URLConnection connection = new URL(jTextField2.getText()).openConnection();
             InputStream is = connection.getInputStream();
@@ -220,7 +220,7 @@ public class MainFrame extends JFrame {
             jSlider1.setValue(18);
             this.jTextArea1.setFont(newFont);
             is.close();
-            statusBar.setText("New Font Loaded.");
+            statusBar.setText("New Font Loaded."); //$NON-NLS-1$
         }
         catch (Exception ex) { ex.printStackTrace(); }
 
@@ -228,7 +228,7 @@ public class MainFrame extends JFrame {
 
     void jButton1_actionPerformed() {
         try {
-            statusBar.setText("Loading content...");
+            statusBar.setText("Loading content..."); //$NON-NLS-1$
             statusBar.paintImmediately(statusBar.getVisibleRect());
             URLConnection connection = new URL(jTextField1.getText()).openConnection();
             InputStream is = connection.getInputStream();
@@ -243,9 +243,9 @@ public class MainFrame extends JFrame {
                 if (len != -1)
                     bos.write(inBuf, 0, len);
             } while (len != -1);
-            newText = new String(bos.toByteArray(), "UTF-8");
+            newText = new String(bos.toByteArray(), "UTF-8"); //$NON-NLS-1$
             jTextArea1.setText(newText);
-            statusBar.setText(Integer.toString(newText.length())+" characters of content loaded.");
+            statusBar.setText(Integer.toString(newText.length())+" characters of content loaded."); //$NON-NLS-1$
         }
         catch (Exception ex) { ex.printStackTrace(); }
 
@@ -254,13 +254,13 @@ public class MainFrame extends JFrame {
     void jTextArea1_keyTyped(KeyEvent e) {
         char typedChar = e.getKeyChar();
         String pushChar = null;
-        statusBar.setText("");
+        statusBar.setText(""); //$NON-NLS-1$
 
         SWInputMethod inputMethod = (SWInputMethod) imComboBox.getSelectedItem();
 
         pushChar = inputMethod.translate(typedChar);
         if (inputMethod.getState() > 1) {
-            statusBar.setText("Compound '"+typedChar+"'");
+            statusBar.setText("Compound '"+typedChar+"'"); //$NON-NLS-1$ //$NON-NLS-2$
             e.consume();
         }
         else {
@@ -284,19 +284,19 @@ public class MainFrame extends JFrame {
 
     void jMenuItem1_actionPerformed() {
         String currentEntry = jTextField1.getText();
-        javax.swing.JFileChooser fileChooser = new JFileChooser((currentEntry.startsWith("file://") ? currentEntry.substring(7):"."));
+        javax.swing.JFileChooser fileChooser = new JFileChooser((currentEntry.startsWith("file://") ? currentEntry.substring(7):".")); //$NON-NLS-1$ //$NON-NLS-2$
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            jTextField1.setText("file://"+ fileChooser.getSelectedFile().getAbsolutePath());
+            jTextField1.setText("file://"+ fileChooser.getSelectedFile().getAbsolutePath()); //$NON-NLS-1$
         }
     }
 
     void jMenuItem3_actionPerformed() {
         String currentEntry = jTextField1.getText();
-        javax.swing.JFileChooser fileChooser = new JFileChooser((currentEntry.startsWith("file://") ? currentEntry.substring(7):"."));
+        javax.swing.JFileChooser fileChooser = new JFileChooser((currentEntry.startsWith("file://") ? currentEntry.substring(7):".")); //$NON-NLS-1$ //$NON-NLS-2$
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File outFile = fileChooser.getSelectedFile();
             try {
-                jTextArea1.write(new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
+                jTextArea1.write(new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8")); //$NON-NLS-1$
             }
             catch (Exception e1) { e1.printStackTrace(); }
         }

@@ -112,7 +112,7 @@ public class PassageTally extends AbstractPassage
     {
         if (order != ORDER_BIBLICAL && order != ORDER_TALLY)
         {
-            throw new IllegalArgumentException(Msg.TALLY_ERROR_ORDER.getName());
+            throw new IllegalArgumentException(Msg.TALLY_ERROR_ORDER.toString());
         }
 
         this.order = order;
@@ -169,9 +169,9 @@ public class PassageTally extends AbstractPassage
      */
     public String getName(int max_count)
     {
-        if (PassageUtil.isPersistentNaming() && original_name != null)
+        if (PassageUtil.isPersistentNaming() && originalName != null)
         {
-            return original_name;
+            return originalName;
         }
 
         StringBuffer retcode = new StringBuffer();
@@ -635,7 +635,7 @@ public class PassageTally extends AbstractPassage
 
         if (verses < 0)
         {
-            throw new IllegalArgumentException(Msg.ERROR_BLUR.getName());
+            throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
         }
 
         if (restrict != PassageConstants.RESTRICT_NONE)
@@ -660,7 +660,7 @@ public class PassageTally extends AbstractPassage
             }
             catch (CloneNotSupportedException ex)
             {
-                throw new Error(Msg.ERROR_LOGIC.getName());
+                throw new Error(Msg.ERROR_LOGIC.toString());
             }
         }
         else
@@ -953,7 +953,7 @@ public class PassageTally extends AbstractPassage
             }
             catch (NullPointerException ex)
             {
-                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.getName());
+                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
             }
         }
 
@@ -1085,7 +1085,7 @@ public class PassageTally extends AbstractPassage
             }
             catch (NullPointerException ex)
             {
-                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.getName());
+                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
             }
         }
 

@@ -94,7 +94,7 @@ public class PassageListModel extends AbstractListModel implements PassageListen
     {
         if (mode != LIST_VERSES && mode != LIST_RANGES)
         {
-            throw new IllegalArgumentException(""+mode);
+            throw new IllegalArgumentException(""+mode); //$NON-NLS-1$
         }
 
         this.mode = mode;

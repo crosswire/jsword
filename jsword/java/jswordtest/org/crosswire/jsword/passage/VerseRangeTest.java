@@ -99,90 +99,90 @@ public class VerseRangeTest extends TestCase
 
     public void testNewViaString() throws Exception
     {
-        assertEquals(gen11_1, new VerseRange("Gen 1:1-1"));
-        assertEquals(gen11_2, new VerseRange("Gen 1:1-2"));
-        assertEquals(gen11_2, new VerseRange("Gen 1:1-1:2"));
-        assertEquals(gen_all, new VerseRange("Gen"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-50:26"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-50:$"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-50:ff"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-$:26"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-ff:26"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-$:$"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-$:ff"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-ff:$"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-ff:ff"));
-        assertEquals(gen_ex1, new VerseRange("Gen 1:1-Exo 1:1"));
-        assertEquals(gen_exo, new VerseRange("Gen-Exo"));
-        assertEquals(gen_rev, new VerseRange("Gen 1:1-Rev 22:21"));
-        assertEquals(gen_rev, new VerseRange("Gen 1:1-Rev 22:$"));
-        assertEquals(gen_rev, new VerseRange("Gen 1:1-Rev 22:ff"));
-        assertEquals(gen11_1, new VerseRange("Gen 1:1"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21-21"));
-        assertEquals(gen11_1, new VerseRange("Gen 1:1-Gen 1:1"));
-        assertEquals(gen11_2, new VerseRange("Gen 1:1-Gen 1:2"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-50:26"));
-        assertEquals(gen_all, new VerseRange("Gen 1:1-Gen 50:26"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21-Rev 22:21"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21-Rev 22:ff"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21-Rev 22:$"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21-$"));
-        assertEquals(rev99_1, new VerseRange("Rev 22:21-21"));
-        assertEquals(gen11_1, new VerseRange("Gen 1:1-1:1"));
-        assertEquals(gen_ex1, new VerseRange("g 1 1-e 1 1"));
-        assertEquals(gen_ex1, new VerseRange("g 1-e 1 1"));
-        assertEquals(gen_ex1, new VerseRange("Genesis 1:1-e 1 1"));
-        assertEquals(gen_ex1, new VerseRange("g-e:1:1"));
-        assertEquals(gen11_1, new VerseRange(""));
-        try { new VerseRange("Gen 1:1-Gen 1:2-Gen 1:3"); fail(); }
+        assertEquals(gen11_1, new VerseRange("Gen 1:1-1")); //$NON-NLS-1$
+        assertEquals(gen11_2, new VerseRange("Gen 1:1-2")); //$NON-NLS-1$
+        assertEquals(gen11_2, new VerseRange("Gen 1:1-1:2")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-50:26")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-50:$")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-50:ff")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-$:26")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-ff:26")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-$:$")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-$:ff")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-ff:$")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-ff:ff")); //$NON-NLS-1$
+        assertEquals(gen_ex1, new VerseRange("Gen 1:1-Exo 1:1")); //$NON-NLS-1$
+        assertEquals(gen_exo, new VerseRange("Gen-Exo")); //$NON-NLS-1$
+        assertEquals(gen_rev, new VerseRange("Gen 1:1-Rev 22:21")); //$NON-NLS-1$
+        assertEquals(gen_rev, new VerseRange("Gen 1:1-Rev 22:$")); //$NON-NLS-1$
+        assertEquals(gen_rev, new VerseRange("Gen 1:1-Rev 22:ff")); //$NON-NLS-1$
+        assertEquals(gen11_1, new VerseRange("Gen 1:1")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21-21")); //$NON-NLS-1$
+        assertEquals(gen11_1, new VerseRange("Gen 1:1-Gen 1:1")); //$NON-NLS-1$
+        assertEquals(gen11_2, new VerseRange("Gen 1:1-Gen 1:2")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-50:26")); //$NON-NLS-1$
+        assertEquals(gen_all, new VerseRange("Gen 1:1-Gen 50:26")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21-Rev 22:21")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21-Rev 22:ff")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21-Rev 22:$")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21-$")); //$NON-NLS-1$
+        assertEquals(rev99_1, new VerseRange("Rev 22:21-21")); //$NON-NLS-1$
+        assertEquals(gen11_1, new VerseRange("Gen 1:1-1:1")); //$NON-NLS-1$
+        assertEquals(gen_ex1, new VerseRange("g 1 1-e 1 1")); //$NON-NLS-1$
+        assertEquals(gen_ex1, new VerseRange("g 1-e 1 1")); //$NON-NLS-1$
+        assertEquals(gen_ex1, new VerseRange("Genesis 1:1-e 1 1")); //$NON-NLS-1$
+        assertEquals(gen_ex1, new VerseRange("g-e:1:1")); //$NON-NLS-1$
+        assertEquals(gen11_1, new VerseRange("")); //$NON-NLS-1$
+        try { new VerseRange("Gen 1:1-Gen 1:2-Gen 1:3"); fail(); } //$NON-NLS-1$
         catch (NoSuchVerseException ex) { }
-        try { new VerseRange("Gen 1:1-2-3"); fail(); }
+        try { new VerseRange("Gen 1:1-2-3"); fail(); } //$NON-NLS-1$
         catch (NoSuchVerseException ex) { }
-        try { new VerseRange("b 1:1-2"); fail(); }
+        try { new VerseRange("b 1:1-2"); fail(); } //$NON-NLS-1$
         catch (NoSuchVerseException ex) { }
-        try { new VerseRange("g-f 1 2"); fail(); }
+        try { new VerseRange("g-f 1 2"); fail(); } //$NON-NLS-1$
         catch (NoSuchVerseException ex) { }
         try { new VerseRange((String) null); fail(); }
         catch (NullPointerException ex) { }
-        assertEquals(gen_all, new VerseRange("Gen"));
-        assertEquals(rev99_9, new VerseRange("Rev 22"));
-        assertEquals(rev11_9, new VerseRange("Rev"));
+        assertEquals(gen_all, new VerseRange("Gen")); //$NON-NLS-1$
+        assertEquals(rev99_9, new VerseRange("Rev 22")); //$NON-NLS-1$
+        assertEquals(rev11_9, new VerseRange("Rev")); //$NON-NLS-1$
     }
 
     public void testToString() throws Exception
     {
-        assertEquals(gen11_1.toString(), "Gen 1:1");
-        assertEquals(gen11_2.toString(), "Gen 1:1-2");
-        assertEquals(gen11_9.toString(), "Gen 1");
-        assertEquals(gen11_a.toString(), "Gen 1:1-2:1");
-        assertEquals(gen12_1.toString(), "Gen 1:2");
-        assertEquals(gen_all.toString(), "Gen");
-        assertEquals(gen_ex1.toString(), "Gen 1:1-Exo 1:1");
-        assertEquals(gen_rev.toString(), "Gen-Rev");
-        assertEquals(rev99_9.toString(), "Rev 22");
-        assertEquals(rev11_9.toString(), "Rev");
-        assertEquals(rev99_1.toString(), "Rev 22:21");
+        assertEquals(gen11_1.toString(), "Gen 1:1"); //$NON-NLS-1$
+        assertEquals(gen11_2.toString(), "Gen 1:1-2"); //$NON-NLS-1$
+        assertEquals(gen11_9.toString(), "Gen 1"); //$NON-NLS-1$
+        assertEquals(gen11_a.toString(), "Gen 1:1-2:1"); //$NON-NLS-1$
+        assertEquals(gen12_1.toString(), "Gen 1:2"); //$NON-NLS-1$
+        assertEquals(gen_all.toString(), "Gen"); //$NON-NLS-1$
+        assertEquals(gen_ex1.toString(), "Gen 1:1-Exo 1:1"); //$NON-NLS-1$
+        assertEquals(gen_rev.toString(), "Gen-Rev"); //$NON-NLS-1$
+        assertEquals(rev99_9.toString(), "Rev 22"); //$NON-NLS-1$
+        assertEquals(rev11_9.toString(), "Rev"); //$NON-NLS-1$
+        assertEquals(rev99_1.toString(), "Rev 22:21"); //$NON-NLS-1$
     }
 
     public void testPersistentNaming() throws Exception
     {
         PassageUtil.setPersistentNaming(false);
-        assertEquals(new VerseRange("Genesis 1 1").toString(), "Gen 1:1");
-        assertEquals(new VerseRange("g 1 1-e 1 1").toString(), "Gen 1:1-Exo 1:1");
-        assertEquals(new VerseRange("g-e:1:10").toString(), "Gen 1:1-Exo 1:10");
-        assertEquals(new VerseRange("g 1-e 2").toString(), "Gen 1-Exo 2");
+        assertEquals(new VerseRange("Genesis 1 1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(new VerseRange("g 1 1-e 1 1").toString(), "Gen 1:1-Exo 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(new VerseRange("g-e:1:10").toString(), "Gen 1:1-Exo 1:10"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(new VerseRange("g 1-e 2").toString(), "Gen 1-Exo 2"); //$NON-NLS-1$ //$NON-NLS-2$
         PassageUtil.setPersistentNaming(true);
-        assertEquals(new VerseRange("Genesis 1 1").toString(), "Genesis 1 1");
-        assertEquals(new VerseRange("g 1 1-e 1 1").toString(), "g 1 1-e 1 1");
-        assertEquals(new VerseRange("g-e:1:1").toString(), "g-e:1:1");
-        assertEquals(new VerseRange("g 1-e 2").toString(), "g 1-e 2");
+        assertEquals(new VerseRange("Genesis 1 1").toString(), "Genesis 1 1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(new VerseRange("g 1 1-e 1 1").toString(), "g 1 1-e 1 1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(new VerseRange("g-e:1:1").toString(), "g-e:1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(new VerseRange("g 1-e 2").toString(), "g 1-e 2"); //$NON-NLS-1$ //$NON-NLS-2$
         PassageUtil.setPersistentNaming(false);
     }
 
     public void testNewViaVerseInt() throws Exception
     {
-        assertEquals(gen11_1, new VerseRange(new Verse("Gen 1:1"), 1));
+        assertEquals(gen11_1, new VerseRange(new Verse("Gen 1:1"), 1)); //$NON-NLS-1$
         try { new VerseRange(rev99, 2); fail(); }
         catch (NoSuchVerseException ex) { }
         try { new VerseRange(gen11, 31104); fail(); }
@@ -434,25 +434,25 @@ public class VerseRangeTest extends TestCase
 
     public void testGetName() throws Exception
     {
-        assertEquals(gen11_1.getName(), "Gen 1:1");
-        assertEquals(gen11_2.getName(), "Gen 1:1-2");
-        assertEquals(gen11_9.getName(), "Gen 1");
-        assertEquals(gen11_a.getName(), "Gen 1:1-2:1");
-        assertEquals(gen12_1.getName(), "Gen 1:2");
-        assertEquals(gen_all.getName(), "Gen");
-        assertEquals(gen_ex1.getName(), "Gen 1:1-Exo 1:1");
-        assertEquals(gen_rev.getName(), "Gen-Rev");
-        assertEquals(rev99_9.getName(), "Rev 22");
-        assertEquals(rev11_9.getName(), "Rev");
-        assertEquals(rev99_1.getName(), "Rev 22:21");
+        assertEquals(gen11_1.getName(), "Gen 1:1"); //$NON-NLS-1$
+        assertEquals(gen11_2.getName(), "Gen 1:1-2"); //$NON-NLS-1$
+        assertEquals(gen11_9.getName(), "Gen 1"); //$NON-NLS-1$
+        assertEquals(gen11_a.getName(), "Gen 1:1-2:1"); //$NON-NLS-1$
+        assertEquals(gen12_1.getName(), "Gen 1:2"); //$NON-NLS-1$
+        assertEquals(gen_all.getName(), "Gen"); //$NON-NLS-1$
+        assertEquals(gen_ex1.getName(), "Gen 1:1-Exo 1:1"); //$NON-NLS-1$
+        assertEquals(gen_rev.getName(), "Gen-Rev"); //$NON-NLS-1$
+        assertEquals(rev99_9.getName(), "Rev 22"); //$NON-NLS-1$
+        assertEquals(rev11_9.getName(), "Rev"); //$NON-NLS-1$
+        assertEquals(rev99_1.getName(), "Rev 22:21"); //$NON-NLS-1$
     }
 
     public void testGetNameVerse() throws Exception
     {
-        assertEquals(gen11_2.getName(gen11), "1-2");
-        assertEquals(gen12_1.getName(gen11), "2");
-        assertEquals(rev99_9.getName(gen11), "Rev 22");
-        assertEquals(rev99_9.getName(null), "Rev 22");
+        assertEquals(gen11_2.getName(gen11), "1-2"); //$NON-NLS-1$
+        assertEquals(gen12_1.getName(gen11), "2"); //$NON-NLS-1$
+        assertEquals(rev99_9.getName(gen11), "Rev 22"); //$NON-NLS-1$
+        assertEquals(rev99_9.getName(null), "Rev 22"); //$NON-NLS-1$
     }
 
     public void testGetStart() throws Exception
@@ -536,30 +536,30 @@ public class VerseRangeTest extends TestCase
         assertTrue(gen11_1.adjacentTo(gen12_1));
         assertTrue(gen_all.adjacentTo(gen_ex1));
         assertTrue(gen_all.adjacentTo(gen_rev));
-        assertTrue(new VerseRange("Gen 1:10-11").adjacentTo(new VerseRange("Gen 1:12-13")));
-        assertTrue(new VerseRange("Gen 1:10-12").adjacentTo(new VerseRange("Gen 1:11-13")));
-        assertTrue(new VerseRange("Gen 1:10-13").adjacentTo(new VerseRange("Gen 1:11-12")));
-        assertTrue(new VerseRange("Gen 1:10-13").adjacentTo(new VerseRange("Gen 1:10-13")));
-        assertTrue(new VerseRange("Gen 1:11-12").adjacentTo(new VerseRange("Gen 1:10-13")));
-        assertTrue(new VerseRange("Gen 1:11-13").adjacentTo(new VerseRange("Gen 1:10-12")));
-        assertTrue(new VerseRange("Gen 1:12-13").adjacentTo(new VerseRange("Gen 1:10-11")));
-        assertTrue(!new VerseRange("Gen 1:10-11").adjacentTo(new VerseRange("Gen 1:13-14")));
-        assertTrue(!new VerseRange("Gen 1:13-14").adjacentTo(new VerseRange("Gen 1:10-11")));
+        assertTrue(new VerseRange("Gen 1:10-11").adjacentTo(new VerseRange("Gen 1:12-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:10-12").adjacentTo(new VerseRange("Gen 1:11-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:10-13").adjacentTo(new VerseRange("Gen 1:11-12"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:10-13").adjacentTo(new VerseRange("Gen 1:10-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:11-12").adjacentTo(new VerseRange("Gen 1:10-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:11-13").adjacentTo(new VerseRange("Gen 1:10-12"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:12-13").adjacentTo(new VerseRange("Gen 1:10-11"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(!new VerseRange("Gen 1:10-11").adjacentTo(new VerseRange("Gen 1:13-14"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(!new VerseRange("Gen 1:13-14").adjacentTo(new VerseRange("Gen 1:10-11"))); //$NON-NLS-1$ //$NON-NLS-2$
         try { gen_all.adjacentTo(null); fail(); }
         catch (NullPointerException ex) { }
     }
 
     public void testOverlaps() throws Exception
     {
-        assertTrue(new VerseRange("Gen 1:10-11").overlaps(new VerseRange("Gen 1:11-12")));
-        assertTrue(new VerseRange("Gen 1:10-12").overlaps(new VerseRange("Gen 1:11-13")));
-        assertTrue(new VerseRange("Gen 1:10-13").overlaps(new VerseRange("Gen 1:11-12")));
-        assertTrue(new VerseRange("Gen 1:10-13").overlaps(new VerseRange("Gen 1:10-13")));
-        assertTrue(new VerseRange("Gen 1:11-12").overlaps(new VerseRange("Gen 1:10-13")));
-        assertTrue(new VerseRange("Gen 1:11-13").overlaps(new VerseRange("Gen 1:10-12")));
-        assertTrue(new VerseRange("Gen 1:11-12").overlaps(new VerseRange("Gen 1:10-11")));
-        assertTrue(!new VerseRange("Gen 1:10-11").overlaps(new VerseRange("Gen 1:12-13")));
-        assertTrue(!new VerseRange("Gen 1:12-13").overlaps(new VerseRange("Gen 1:10-11")));
+        assertTrue(new VerseRange("Gen 1:10-11").overlaps(new VerseRange("Gen 1:11-12"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:10-12").overlaps(new VerseRange("Gen 1:11-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:10-13").overlaps(new VerseRange("Gen 1:11-12"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:10-13").overlaps(new VerseRange("Gen 1:10-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:11-12").overlaps(new VerseRange("Gen 1:10-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:11-13").overlaps(new VerseRange("Gen 1:10-12"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(new VerseRange("Gen 1:11-12").overlaps(new VerseRange("Gen 1:10-11"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(!new VerseRange("Gen 1:10-11").overlaps(new VerseRange("Gen 1:12-13"))); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(!new VerseRange("Gen 1:12-13").overlaps(new VerseRange("Gen 1:10-11"))); //$NON-NLS-1$ //$NON-NLS-2$
         try { gen_all.overlaps(null); fail(); }
         catch (NullPointerException ex) { }
     }
@@ -604,28 +604,28 @@ public class VerseRangeTest extends TestCase
 
     public void testIsChapter() throws Exception
     {
-        assertTrue(new VerseRange("Gen 1").isWholeChapter());
-        assertTrue(new VerseRange("Gen 1:1-ff").isWholeChapter());
-        assertTrue(new VerseRange("Gen 1:1-$").isWholeChapter());
-        assertTrue(new VerseRange("Exo 2").isWholeChapter());
-        assertTrue(new VerseRange("Exo 2:1-ff").isWholeChapter());
-        assertTrue(new VerseRange("Exo 2:1-$").isWholeChapter());
-        assertTrue(!new VerseRange("Num 3:1").isWholeChapter());
-        assertTrue(!new VerseRange("Num 4:1-5:1").isWholeChapter());
-        assertTrue(!new VerseRange("Num 5:1-6:ff").isWholeChapter());
-        assertTrue(!new VerseRange("Lev").isWholeChapter());
+        assertTrue(new VerseRange("Gen 1").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Gen 1:1-ff").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Gen 1:1-$").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Exo 2").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Exo 2:1-ff").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Exo 2:1-$").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Num 3:1").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Num 4:1-5:1").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Num 5:1-6:ff").isWholeChapter()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Lev").isWholeChapter()); //$NON-NLS-1$
     }
 
     public void testIsBook() throws Exception
     {
-        assertTrue(new VerseRange("Gen").isWholeBook());
-        assertTrue(new VerseRange("Gen 1:1-Gen 50:ff").isWholeBook());
-        assertTrue(new VerseRange("Gen 1:1-Gen 50:$").isWholeBook());
-        assertTrue(new VerseRange("Gen 1-50:ff").isWholeBook());
-        assertTrue(!new VerseRange("Num 1:2-Num $:$").isWholeBook());
-        assertTrue(!new VerseRange("Num 4:1-5:1").isWholeBook());
-        assertTrue(!new VerseRange("Num 5:1-6:ff").isWholeBook());
-        assertTrue(!new VerseRange("Lev-Deu 1:1").isWholeBook());
+        assertTrue(new VerseRange("Gen").isWholeBook()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Gen 1:1-Gen 50:ff").isWholeBook()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Gen 1:1-Gen 50:$").isWholeBook()); //$NON-NLS-1$
+        assertTrue(new VerseRange("Gen 1-50:ff").isWholeBook()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Num 1:2-Num $:$").isWholeBook()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Num 4:1-5:1").isWholeBook()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Num 5:1-6:ff").isWholeBook()); //$NON-NLS-1$
+        assertTrue(!new VerseRange("Lev-Deu 1:1").isWholeBook()); //$NON-NLS-1$
     }
 
     public void testToVerseArray() throws Exception

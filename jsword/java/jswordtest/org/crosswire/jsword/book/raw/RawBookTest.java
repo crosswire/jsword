@@ -47,16 +47,16 @@ public class RawBookTest extends BookAdvancedParentTst
             Items words = raw.getWords();
             Insts wordinsts = raw.getWordData();
     
-            int in = words.getIndex("in");
-            int th = words.getIndex("the");
-            int be = words.getIndex("beginning");
-            int go = words.getIndex("god");
-            int cr = words.getIndex("created");
-            assertEquals(in, words.getIndex("in"));
-            assertEquals(th, words.getIndex("the"));
-            assertEquals(be, words.getIndex("beginning"));
-            assertEquals(go, words.getIndex("god"));
-            assertEquals(cr, words.getIndex("created"));
+            int in = words.getIndex("in"); //$NON-NLS-1$
+            int th = words.getIndex("the"); //$NON-NLS-1$
+            int be = words.getIndex("beginning"); //$NON-NLS-1$
+            int go = words.getIndex("god"); //$NON-NLS-1$
+            int cr = words.getIndex("created"); //$NON-NLS-1$
+            assertEquals(in, words.getIndex("in")); //$NON-NLS-1$
+            assertEquals(th, words.getIndex("the")); //$NON-NLS-1$
+            assertEquals(be, words.getIndex("beginning")); //$NON-NLS-1$
+            assertEquals(go, words.getIndex("god")); //$NON-NLS-1$
+            assertEquals(cr, words.getIndex("created")); //$NON-NLS-1$
             assertTrue(in != th);
             assertTrue(in != be);
             assertTrue(in != go);
@@ -67,16 +67,16 @@ public class RawBookTest extends BookAdvancedParentTst
             assertTrue(be != go);
             assertTrue(be != cr);
             assertTrue(go != cr);
-            int g2 = words.getIndex("gods");
-            int g3 = words.getIndex("god");
-            int g4 = words.getIndex("god's");
-            int g5 = words.getIndex("godly");
-            int g6 = words.getIndex("good");
-            assertEquals(g2, words.getIndex("gods"));
-            assertEquals(g3, words.getIndex("god"));
-            assertEquals(g4, words.getIndex("god's"));
-            assertEquals(g5, words.getIndex("godly"));
-            assertEquals(g6, words.getIndex("good"));
+            int g2 = words.getIndex("gods"); //$NON-NLS-1$
+            int g3 = words.getIndex("god"); //$NON-NLS-1$
+            int g4 = words.getIndex("god's"); //$NON-NLS-1$
+            int g5 = words.getIndex("godly"); //$NON-NLS-1$
+            int g6 = words.getIndex("good"); //$NON-NLS-1$
+            assertEquals(g2, words.getIndex("gods")); //$NON-NLS-1$
+            assertEquals(g3, words.getIndex("god")); //$NON-NLS-1$
+            assertEquals(g4, words.getIndex("god's")); //$NON-NLS-1$
+            assertEquals(g5, words.getIndex("godly")); //$NON-NLS-1$
+            assertEquals(g6, words.getIndex("good")); //$NON-NLS-1$
             assertTrue(go != g2);
             assertEquals(go, g3);
             assertTrue(go != g4);
@@ -93,11 +93,11 @@ public class RawBookTest extends BookAdvancedParentTst
             assertTrue(g4 != g6);
             assertTrue(g5 != g6);
     
-            int[] idx = words.getIndex(new String[] { "in", "the", "beginning", "did", "god" });
+            int[] idx = words.getIndex(new String[] { "in", "the", "beginning", "did", "god" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
             assertEquals(idx[0], in);
             assertEquals(idx[1], th);
             assertEquals(idx[2], be);
-            assertEquals(idx[3], words.getIndex("did"));
+            assertEquals(idx[3], words.getIndex("did")); //$NON-NLS-1$
             assertEquals(idx[4], go);
     
             /*
@@ -111,12 +111,12 @@ public class RawBookTest extends BookAdvancedParentTst
             }
             */
     
-            assertEquals("in", words.getItem(in));
-            assertEquals("the", words.getItem(th));
-            assertEquals("beginning", words.getItem(be));
-            assertEquals("god", words.getItem(go));
-            assertEquals("created", words.getItem(cr));
-            assertEquals("good", words.getItem(g6));
+            assertEquals("in", words.getItem(in)); //$NON-NLS-1$
+            assertEquals("the", words.getItem(th)); //$NON-NLS-1$
+            assertEquals("beginning", words.getItem(be)); //$NON-NLS-1$
+            assertEquals("god", words.getItem(go)); //$NON-NLS-1$
+            assertEquals("created", words.getItem(cr)); //$NON-NLS-1$
+            assertEquals("good", words.getItem(g6)); //$NON-NLS-1$
     
             int[] widx = new int[] { 0, 1, 2, 3, 4 };
             wordinsts.setIndexes(widx, new Verse(1));

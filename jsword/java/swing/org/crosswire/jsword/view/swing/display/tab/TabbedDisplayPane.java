@@ -127,7 +127,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
 
                 Component display = pnlNew.getComponent();
                 tabMain.add(display, shortenName(cut.getName()));
-                tabMain.add(pnlMore, "More ...");
+                tabMain.add(pnlMore, Msg.MORE);
 
                 setCenterComponent(tabMain);
             }
@@ -207,7 +207,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
             // Do we need a new more tab
             if (waiting != null)
             {
-                tabMain.add(pnlMore, "More ...");
+                tabMain.add(pnlMore, Msg.MORE);
             }
 
             // Select the real new tab in place of any more tabs
@@ -273,7 +273,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         int len = tabname.length();
         if (len > 25)
         {
-            tabname = tabname.substring(0, 9) + " ... " + tabname.substring(len - 9, len);
+            tabname = tabname.substring(0, 9) + " ... " + tabname.substring(len - 9, len); //$NON-NLS-1$
         }
 
         return tabname;
@@ -434,7 +434,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     {
         if (whole == null || book == null)
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         try
@@ -449,7 +449,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

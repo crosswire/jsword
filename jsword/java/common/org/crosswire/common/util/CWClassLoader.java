@@ -32,11 +32,24 @@ public class CWClassLoader extends ClassLoader
 {
     /**
      * Creates a class loader that finds resources
-     * for the supplied class using ResourceUtil
+     * for the supplied class using ResourceUtil.
+     * You can use this within base classes by passing getClass()
+     * to load resources for a derived class.
+     * @param resourceOwner is the owner of the resource
+     */
+    public CWClassLoader(Class resourceOwner)
+    {
+        owner = resourceOwner;
+    }
+
+    /**
+     * Creates a class loader that finds resources
+     * for the supplied class using ResourceUtil.
+     * Use this only within classes that are directly looking up their resources.
      */
     public CWClassLoader()
     {
-        owner = getCallingClass();
+        owner = CallContext.instance().getCallingClass();
     }
 
     /* (non-Javadoc)
@@ -175,16 +188,6 @@ public class CWClassLoader extends ClassLoader
         return search;
     }
 
-    /*
-     * When called from the constructor it will return the class
-     * calling the constructor.
-     *
-     */
-    private static Class getCallingClass()
-    {
-        return resolver.getClassContext()[CALL_CONTEXT_OFFSET];
-    }
-
     public ClassLoader getClassLoader()
     {
         // Choose the child loader as it will use the parent if need be
@@ -227,32 +230,7 @@ public class CWClassLoader extends ClassLoader
     }
 
     /**
-     * A helper class to make the call stack visible.
+     * The class to which the resources belong
      */
-    private static final class ClassResolver extends SecurityManager
-    {
-        protected Class[] getClassContext()
-        {
-            return super.getClassContext();
-        }
-
-    }
-
-    private static final int CALL_CONTEXT_OFFSET = 3; // may need to change if this class is redesigned
-
-    private static final ClassResolver resolver;
-
-    static
-    {
-        try
-        {
-            resolver = new ClassResolver();
-        }
-        catch (SecurityException se)
-        {
-            throw new RuntimeException("CWClassLoader: could not create ClassResolver: ", se);
-        }
-    }
-
     private Class owner;
 }

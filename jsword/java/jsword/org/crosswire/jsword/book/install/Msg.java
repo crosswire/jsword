@@ -31,14 +31,6 @@ class Msg extends MsgBase
     static final Msg INIT = new Msg("Failed to load installer classes");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

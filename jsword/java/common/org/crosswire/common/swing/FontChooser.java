@@ -101,8 +101,8 @@ public class FontChooser extends JPanel
     public static Font showDialog(Component parent, String title, Font initial)
     {
         JPanel buttons = new JPanel();
-        JButton ok = new JButton("OK");
-        JButton cancel = new JButton("Cancel");
+        JButton ok = new JButton(Msg.OK.toString());
+        JButton cancel = new JButton(Msg.CANCEL.toString());
         Component root = SwingUtilities.getRoot(parent);
         final FontChooser fontc = new FontChooser();
 
@@ -136,7 +136,7 @@ public class FontChooser extends JPanel
             }
         });
 
-        fontc.setBorder(BorderFactory.createTitledBorder("Select Font"));
+        fontc.setBorder(BorderFactory.createTitledBorder(Msg.SELECT_FONT.toString()));
 
         fontc.dialog.getRootPane().setDefaultButton(ok);
         fontc.dialog.getContentPane().setLayout(new BorderLayout());
@@ -227,7 +227,7 @@ public class FontChooser extends JPanel
 
         if (!suppressEvents)
         {
-            listeners.firePropertyChange("style", old, font);
+            listeners.firePropertyChange("style", old, font); //$NON-NLS-1$
         }
     }
 
@@ -311,7 +311,7 @@ public class FontChooser extends JPanel
         {
             if (value == null)
             {
-                setText("<null>");
+                setText("<null>"); //$NON-NLS-1$
                 setFont(defaultFont.getFont());
             }
             else
@@ -358,12 +358,12 @@ public class FontChooser extends JPanel
     /**
      * Bold font?
      */
-    protected JCheckBox bold = new JCheckBox("Bold");
+    protected JCheckBox bold = new JCheckBox(Msg.BOLD.toString());
 
     /**
      * Italic font?
      */
-    protected JCheckBox italic = new JCheckBox("Italic");
+    protected JCheckBox italic = new JCheckBox(Msg.ITALIC.toString());
 
     /**
      * The font size

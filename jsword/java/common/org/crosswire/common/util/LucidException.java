@@ -123,8 +123,8 @@ public class LucidException extends Exception
         }
         catch (IllegalArgumentException ex)
         {
-            log.warn("Format fail for '"+out+"'", ex);
-            return "Error formatting message '"+out+"'";
+            log.warn("Format fail for '"+out+"'", ex); //$NON-NLS-1$ //$NON-NLS-2$
+            return "Error formatting message '"+out+"'"; //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

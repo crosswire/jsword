@@ -54,17 +54,17 @@ class FixturePassageListener implements PassageListener
     {
         if (this.adds != addcheck)
         {
-            throw new Exception("ADD: should have: "+addcheck+", noted "+this.adds);
+            throw new Exception("ADD: should have: "+addcheck+", noted "+this.adds); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (this.removals != removalcheck)
         {
-            throw new Exception("REMOVALS: should have: "+removalcheck+", noted "+this.removals);
+            throw new Exception("REMOVALS: should have: "+removalcheck+", noted "+this.removals); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (this.changes != changecheck)
         {
-            throw new Exception("CHANGES: should have: "+changecheck+", noted "+this.changes);
+            throw new Exception("CHANGES: should have: "+changecheck+", noted "+this.changes); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return true;

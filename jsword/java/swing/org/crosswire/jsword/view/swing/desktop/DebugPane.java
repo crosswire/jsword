@@ -237,7 +237,7 @@ public class DebugPane extends JPanel
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (value instanceof Method)
             {
-                setText(((Method) value).getName()+"()");
+                setText(((Method) value).getName()+"()"); //$NON-NLS-1$
             }
             return this;
         }

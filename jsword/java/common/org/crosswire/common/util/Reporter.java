@@ -155,6 +155,27 @@ public class Reporter
      *
      * @param source The cause of the message, a Component if possible.
      * @param message The message to pass to the user
+     * @param param The parameters to the message
+     */
+    public static void informUser(Object source, MsgBase message, Object param)
+    {
+        String msg = message.toString(param);
+        log.debug(msg);
+
+        fireCapture(new ReporterEvent(source, msg));
+    }
+
+
+    /**
+     * Something has happened. We need to tell the user or someone.
+     *
+     * <p>Maybe we should have an extra parameter (or even several
+     * versions of this method like log*()) that describes the severity
+     * of the message. A Sw*ng listener could use this to decide the
+     * icon in the OptionPane for example.</p>
+     *
+     * @param source The cause of the message, a Component if possible.
+     * @param message The message to pass to the user
      * @param params The parameters to the message
      */
     public static void informUser(Object source, MsgBase message, Object [] params)
@@ -193,7 +214,7 @@ public class Reporter
 
         if (liArr.length == 0)
         {
-            log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException());
+            log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException()); //$NON-NLS-1$
         }
 
         // Process the listeners last to first, notifying
@@ -218,7 +239,7 @@ public class Reporter
                 {
                     listeners.remove(CaptureListener.class, li);
         
-                    log.warn("Dispatch failure", ex);
+                    log.warn("Dispatch failure", ex); //$NON-NLS-1$
                 }
             }
         }
@@ -249,7 +270,7 @@ public class Reporter
     /**
      * The system property name for registering AWT exceptions
      */
-    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
+    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler"; //$NON-NLS-1$
 
     /**
      * The name of the class to register for AWT exceptions

@@ -40,12 +40,12 @@ import org.crosswire.common.util.Logger;
  */
 public class DownloadSet implements Comparable
 {
-    public static final String BIN_ZIP = "-bin.zip";
-    public static final String BIN_TGZ = "-bin.tar.gz";
-    public static final String SRC_ZIP = "-src.zip";
-    public static final String SRC_TGZ = "-src.tar.gz";
-    public static final String DOC_ZIP = "-doc.zip";
-    public static final String DOC_TGZ = "-doc.tar.gz";
+    public static final String BIN_ZIP = "-bin.zip"; //$NON-NLS-1$
+    public static final String BIN_TGZ = "-bin.tar.gz"; //$NON-NLS-1$
+    public static final String SRC_ZIP = "-src.zip"; //$NON-NLS-1$
+    public static final String SRC_TGZ = "-src.tar.gz"; //$NON-NLS-1$
+    public static final String DOC_ZIP = "-doc.zip"; //$NON-NLS-1$
+    public static final String DOC_TGZ = "-doc.tar.gz"; //$NON-NLS-1$
 
     /**
      * Get an Iterator over all the Downloads in the specified Directory
@@ -55,19 +55,17 @@ public class DownloadSet implements Comparable
         File dir = new File(localprefix);
         if (!dir.isDirectory())
         {
-            throw new IOException(localprefix+" is not a directory");
+            throw new IOException(Msg.NON_DIR.toString(localprefix));
         }
 
-        log.debug("dig "+localprefix);
+        log.debug("dig "+localprefix); //$NON-NLS-1$
         File[] files = dir.listFiles(new FileFilter()
         {
             public boolean accept(File file)
             {
                 String name = file.getName();
-                log.debug("found "+name);
-                return file.canRead()
-                    && name.startsWith(TEST_PREFIX)
-                    && name.endsWith(TEST_SUFFIX);
+                log.debug("found "+name); //$NON-NLS-1$
+                return file.canRead() && name.startsWith(TEST_PREFIX) && name.endsWith(TEST_SUFFIX);
             }
         });
 
@@ -75,7 +73,7 @@ public class DownloadSet implements Comparable
         for (int i = 0; i < files.length; i++)
         {
             String name = files[i].getName();
-            log.debug("adding "+name);
+            log.debug("adding "+name); //$NON-NLS-1$
             String sets = name.substring(TEST_PREFIX.length(), name.length() - TEST_SUFFIX.length());
             reply.add(new DownloadSet(localprefix, webprefix, sets, datesort));
         }
@@ -93,7 +91,7 @@ public class DownloadSet implements Comparable
         this.setname = setname;
         this.datesort = datesort;
 
-        log.debug("ctor "+webprefix);
+        log.debug("ctor "+webprefix); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -103,7 +101,7 @@ public class DownloadSet implements Comparable
     {
         if (!(obj instanceof DownloadSet))
         {
-            log.error("Asked to compare to non DownloadSet");
+            log.error("Asked to compare to non DownloadSet"); //$NON-NLS-1$
             return 0;
         }
         
@@ -119,7 +117,7 @@ public class DownloadSet implements Comparable
             }
             catch (ParseException ex)
             {
-                log.error("Failed to parse dates", ex);
+                log.error("Failed to parse dates", ex); //$NON-NLS-1$
                 return 0;
             }
         }
@@ -143,7 +141,7 @@ public class DownloadSet implements Comparable
      */
     public String getVersionString()
     {
-        return "Version "+setname;
+        return Msg.VERSION.toString(setname);
     }
 
     /**
@@ -157,9 +155,9 @@ public class DownloadSet implements Comparable
     {
         File file = new File(localprefix, TEST_PREFIX + setname + extension);
         String size = NF.format(file.length() / (1024F * 1024F));
-        String reply = "<a href='"+ webprefix + "/" + TEST_PREFIX + setname + extension + "'>"+size+" Mb</a>";
+        String reply = "<a href='"+ webprefix + "/" + TEST_PREFIX + setname + extension + "'>"+size+" Mb</a>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-        log.debug("link="+reply);
+        log.debug("link="+reply); //$NON-NLS-1$
 
         return reply;
     }
@@ -169,12 +167,12 @@ public class DownloadSet implements Comparable
     private String localprefix;
     private String setname;
 
-    private static final String TEST_PREFIX = "jsword-";
+    private static final String TEST_PREFIX = "jsword-"; //$NON-NLS-1$
     private static final String TEST_SUFFIX = BIN_ZIP;
 
     private static final NumberFormat NF = NumberFormat.getNumberInstance();
-    private static final DateFormat DF_DISK = new SimpleDateFormat("yyyyMMdd");
-    private static final DateFormat DF_USER = new SimpleDateFormat("dd MMM yyyy");
+    private static final DateFormat DF_DISK = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
+    private static final DateFormat DF_USER = new SimpleDateFormat("dd MMM yyyy"); //$NON-NLS-1$
     static
     {
         NF.setMaximumFractionDigits(2);

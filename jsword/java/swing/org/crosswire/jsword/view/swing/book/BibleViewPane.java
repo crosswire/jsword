@@ -181,7 +181,7 @@ public class BibleViewPane extends JPanel
             saved = chooser.getSelectedFile();
             if (saved.length() == 0)
             {
-                Reporter.informUser(getRootPane(), "File '" + saved.getName() + "' is empty");
+                Reporter.informUser(getRootPane(), "File '" + saved.getName() + "' is empty"); //$NON-NLS-1$
                 return;
             }
 
@@ -327,7 +327,7 @@ public class BibleViewPane extends JPanel
     private OuterDisplayPane pnlPassg = new OuterDisplayPane();
     private static int shortlen = 30;
     private JFileChooser chooser = new JFileChooser();
-    private static final String EXTENSION = ".lst";
+    private static final String EXTENSION = ".lst"; //$NON-NLS-1$
 
     /**
      * Returns the shortlen.

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.Dimension;
@@ -164,12 +163,16 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
      */
     public String toString()
     {
-        return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + "]";
+        return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
-    /** horizontal gap */
+    /**
+     * horizontal gap
+     */
     protected int hgap;
 
-    /** vertical gap */
+    /**
+     * vertical gap
+     */
     protected int vgap;
 }

@@ -100,7 +100,7 @@ public class MapTableModel extends AbstractTableModel
     {
         if (value == null)
         {
-            value = "";
+            value = ""; //$NON-NLS-1$
         }
 
         if (key == null || key.length() == 0)
@@ -258,7 +258,7 @@ public class MapTableModel extends AbstractTableModel
      */
     private String[] colNames = new String[]
     {
-        "Keys", "Values"
+        Msg.KEYS.toString(), Msg.VALUES.toString()
     };
 
     /**

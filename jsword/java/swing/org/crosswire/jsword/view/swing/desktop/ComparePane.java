@@ -163,11 +163,11 @@ public class ComparePane extends EirPanel
             Passage ref = PassageFactory.createPassage(ref_text);
 
             words = words.trim();
-            if (words.equals("*"))
+            if (words.equals("*")) //$NON-NLS-1$
             {
-                words = "";
+                words = ""; //$NON-NLS-1$
             }
-            if (words.equals(""))
+            if (words.equals("")) //$NON-NLS-1$
             {
                 words = null;
             }

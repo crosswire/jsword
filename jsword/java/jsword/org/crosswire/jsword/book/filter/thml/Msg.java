@@ -31,14 +31,6 @@ class Msg extends MsgBase
     static final Msg THML_BADTOKEN = new Msg("Bad XML string line={1}, column={2}: {0}");
 
     /**
-     * Initialise any resource bundles
-     */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
      * Passthrough ctor
      */
     private Msg(String name)

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import org.crosswire.common.util.Convert;
@@ -36,7 +35,7 @@ public class StringArrayChoice extends AbstractReflectedChoice
     public void init(Element option) throws StartupException
     {
         super.init(option);
-        separator = option.getAttributeValue("separator");
+        separator = option.getAttributeValue("separator"); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -63,5 +62,5 @@ public class StringArrayChoice extends AbstractReflectedChoice
         return Convert.string2StringArray(orig, separator);
     }
 
-    private String separator = " ";
+    private String separator = " "; //$NON-NLS-1$
 }

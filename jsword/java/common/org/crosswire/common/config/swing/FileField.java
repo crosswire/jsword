@@ -44,8 +44,8 @@ public class FileField extends JPanel implements Field
     public FileField()
     {
         setLayout(new BorderLayout(10, 0));
-        add("Center", text);
-        add("East", browse);
+        add(BorderLayout.CENTER, text);
+        add(BorderLayout.EAST, browse);
 
         browse.addActionListener(new ActionListener()
         {
@@ -108,5 +108,5 @@ public class FileField extends JPanel implements Field
     /**
      * The browse button
      */
-    private JButton browse = new JButton("Browse");
+    private JButton browse = new JButton(Msg.BROWSE.toString());
 }

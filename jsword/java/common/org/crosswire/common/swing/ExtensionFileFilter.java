@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.io.File;
@@ -6,7 +5,7 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * ExtensionFileFilter.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -31,19 +30,19 @@ import javax.swing.filechooser.FileFilter;
 public class ExtensionFileFilter extends FileFilter
 {
     /**
-    * Basic constructor
-    * @param extensions An array of allowed extensions without the .
-    */
+     * Basic constructor
+     * @param extensions An array of allowed extensions without the .
+     */
     public ExtensionFileFilter(String[] extensions)
     {
         this.extensions = extensions;
     }
 
     /**
-    * Basic constructor
-    * @param extensions An array of allowed extensions without the .
-    * @param desc The description of this filter
-    */
+     * Basic constructor
+     * @param extensions An array of allowed extensions without the .
+     * @param desc The description of this filter
+     */
     public ExtensionFileFilter(String[] extensions, String desc)
     {
         this.desc = desc;
@@ -51,49 +50,58 @@ public class ExtensionFileFilter extends FileFilter
     }
 
     /**
-    * Is the given file valid?
-    * @param file The object to test
-    */
+     * Is the given file valid?
+     * @param file The object to test
+     */
     public boolean accept(File file)
     {
         if (file.isDirectory())
+        {
             return true;
+        }
 
         String extension = getExtension(file);
 
         for (int i=0; i<extensions.length; i++)
         {
             if (extension.equals(extensions[i]))
+            {
                 return true;
+            }
         }
 
         return false;
     }
 
     /**
-    *
-    */
+     *
+     */
     public String getDescription()
     {
         if (desc != null)
+        {
             return desc;
+        }
 
-        StringBuffer buff = new StringBuffer("(");
+        StringBuffer buff = new StringBuffer("("); //$NON-NLS-1$
         for (int i=0; i<extensions.length; i++)
         {
             if (i != 0)
-                buff.append(", ");
+            {
+                buff.append(", "); //$NON-NLS-1$
+            }
 
             buff.append(extensions[i]);
         }
-        buff.append(")");
+
+        buff.append(")"); //$NON-NLS-1$
 
         return buff.toString();
     }
 
     /**
-    * Get the extension of a file.
-    */
+     * Get the extension of a file.
+     */
     public static String getExtension(File file)
     {
         String name = file.getName();
@@ -104,12 +112,16 @@ public class ExtensionFileFilter extends FileFilter
             return name.substring(idx+1).toLowerCase();
         }
 
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
-    /** The description of this filter */
+    /**
+     * The description of this filter
+     */
     private String desc;
 
-    /** The allowed files */
+    /**
+     * The allowed files
+     */
     private String[] extensions;
 }

@@ -6,7 +6,7 @@ import org.xml.sax.Locator;
 
 /**
  * Class to convert a SAX stream into a simple String.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -70,7 +70,7 @@ public class SerializingContentHandler implements ContentHandler
 
         if (newlines)
         {
-            buffer.append("\n");
+            buffer.append("\n"); //$NON-NLS-1$
         }
     }
 
@@ -100,7 +100,7 @@ public class SerializingContentHandler implements ContentHandler
      */
     public void startElement(String uri, String localname, String qname, Attributes attrs)
     {
-        buffer.append("<");
+        buffer.append("<"); //$NON-NLS-1$
         if (qname != null)
         {
             buffer.append(qname);
@@ -109,21 +109,21 @@ public class SerializingContentHandler implements ContentHandler
         {
             buffer.append(localname);
         }
-        
+
         for (int i=0; i<attrs.getLength(); i++)
         {
-            buffer.append(" ");
+            buffer.append(" "); //$NON-NLS-1$
             buffer.append(attrs.getLocalName(i));
-            buffer.append("=\"");
+            buffer.append("=\""); //$NON-NLS-1$
             buffer.append(attrs.getValue(i));
-            buffer.append("\"");
+            buffer.append("\""); //$NON-NLS-1$
         }
 
-        buffer.append(">");
+        buffer.append(">"); //$NON-NLS-1$
 
         if (newlines)
         {
-            buffer.append("\n");
+            buffer.append("\n"); //$NON-NLS-1$
         }
     }
 
@@ -132,7 +132,7 @@ public class SerializingContentHandler implements ContentHandler
      */
     public void endElement(String uri, String localname, String qname)
     {
-        buffer.append("</");
+        buffer.append("</"); //$NON-NLS-1$
         if (qname != null)
         {
             buffer.append(qname);
@@ -141,12 +141,12 @@ public class SerializingContentHandler implements ContentHandler
         {
             buffer.append(localname);
         }
-        
-        buffer.append(">");
+
+        buffer.append(">"); //$NON-NLS-1$
 
         if (newlines)
         {
-            buffer.append("\n");
+            buffer.append("\n"); //$NON-NLS-1$
         }
     }
 
@@ -173,15 +173,15 @@ public class SerializingContentHandler implements ContentHandler
      */
     public void processingInstruction(String target, String data)
     {
-        buffer.append("<!");
+        buffer.append("<!"); //$NON-NLS-1$
         buffer.append(target);
-        buffer.append(" ");
+        buffer.append(" "); //$NON-NLS-1$
         buffer.append(data);
-        buffer.append("!>");
+        buffer.append("!>"); //$NON-NLS-1$
 
         if (newlines)
         {
-            buffer.append("\n");
+            buffer.append("\n"); //$NON-NLS-1$
         }
     }
 

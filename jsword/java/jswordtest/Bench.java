@@ -58,9 +58,9 @@ public class Bench
         {
             Reporter.informUser(Bench.class, ex);
 
-            System.out.println("Failed to load version '" + args[0] + "'");
-            System.out.println("System message: " + ex);
-            System.out.println("");
+            System.out.println("Failed to load version '" + args[0] + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+            System.out.println("System message: " + ex); //$NON-NLS-1$
+            System.out.println(""); //$NON-NLS-1$
             usage();
             System.exit(1);
         }
@@ -71,11 +71,11 @@ public class Bench
         try
         {
             float time = speed.getBenchmark() / 1000;
-            System.out.println("CBench mark for '" + args[0] + "': " + time + "s");
+            System.out.println("CBench mark for '" + args[0] + "': " + time + "s"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         catch (Exception ex)
         {
-            System.out.println("Benchmark failed. No timing available.");
+            System.out.println("Benchmark failed. No timing available."); //$NON-NLS-1$
         }
     }
 
@@ -84,10 +84,10 @@ public class Bench
      */
     private static void usage()
     {
-        System.out.println("Usage: CBench [<version>] [disk]");
-        System.out.println("  where <version> is the name of a version to benchmark.");
-        System.out.println("  and 'disk' specifies if the Raw version should not cache data.");
-        System.out.println("  Remember to quote the version name if it includes spaces.");
+        System.out.println("Usage: CBench [<version>] [disk]"); //$NON-NLS-1$
+        System.out.println("  where <version> is the name of a version to benchmark."); //$NON-NLS-1$
+        System.out.println("  and 'disk' specifies if the Raw version should not cache data."); //$NON-NLS-1$
+        System.out.println("  Remember to quote the version name if it includes spaces."); //$NON-NLS-1$
     }
 
     /**
@@ -95,12 +95,12 @@ public class Bench
      */
     private static void versions()
     {
-        System.out.println("  Available versions:");
+        System.out.println("  Available versions:"); //$NON-NLS-1$
         List lbmds = Books.installed().getBookMetaDatas();
         for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();
-            System.out.println("    " + bmd.getName());
+            System.out.println("    " + bmd.getName()); //$NON-NLS-1$
         }
     }
 }

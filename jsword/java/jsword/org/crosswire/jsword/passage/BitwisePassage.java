@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.IOException;
@@ -7,8 +6,6 @@ import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import org.crosswire.common.util.LogicError;
 
 /**
  * A Passage that is implemented using a BitSet - one for each verse.
@@ -188,7 +185,7 @@ public class BitwisePassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppressEvents == 0)
         {
             fireIntervalAdded(this, verses[0], verses[verses.length - 1]);
         }
@@ -210,7 +207,7 @@ public class BitwisePassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppressEvents == 0)
         {
             fireIntervalRemoved(this, verses[0], verses[verses.length - 1]);
         }
@@ -235,7 +232,7 @@ public class BitwisePassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0 && !that.isEmpty())
+        if (suppressEvents == 0 && !that.isEmpty())
         {
             fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
         }
@@ -261,7 +258,7 @@ public class BitwisePassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0 && !that.isEmpty())
+        if (suppressEvents == 0 && !that.isEmpty())
         {
             fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
         }
@@ -325,7 +322,7 @@ public class BitwisePassage extends AbstractPassage
 
         if (verses < 0)
         {
-            throw new IllegalArgumentException(Msg.ERROR_BLUR.getName());
+            throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
         }
 
         if (restrict != PassageConstants.RESTRICT_NONE)
@@ -345,7 +342,7 @@ public class BitwisePassage extends AbstractPassage
             }
             catch (CloneNotSupportedException ex)
             {
-                throw new LogicError(ex);
+                assert false;
             }
         }
         else
@@ -415,7 +412,8 @@ public class BitwisePassage extends AbstractPassage
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false;
+                return null;
             }
         }
 

@@ -1,13 +1,8 @@
-package org.crosswire.common.swing;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-
-import javax.swing.BorderFactory;
+package org.crosswire.common.util;
 
 /**
- * A Simple pane to hold log messages to aid debugging.
- *
+ * .
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -29,36 +24,22 @@ import javax.swing.BorderFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LogPane extends EirPanel
+public class FileUtil
 {
     /**
-     * Create a fault log window
+     * Prevent Instansiation
      */
-    public LogPane()
+    private FileUtil()
     {
-        init();
     }
 
     /**
-     * Create the GUI
+     * Extension for java files
      */
-    private void init()
-    {
-        pnl_shelf = new ExceptionShelf();
-
-        this.setLayout(new BorderLayout());
-        this.add(pnl_shelf, BorderLayout.NORTH);
-        //pnl_log.add(pnl_status, BorderLayout.CENTER);
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    }
+    public static final String EXTENSION_JAVA = ".java"; //$NON-NLS-1$
 
     /**
-     * Show this Panel in a new dialog
+     * Extension for properties files
      */
-    public void showInDialog(Component parent)
-    {
-        showInDialog(parent, "Fault Log", false);
-    }
-
-    private ExceptionShelf pnl_shelf = null;
+    public static final String EXTENSION_PROPERTIES = ".properties"; //$NON-NLS-1$
 }

@@ -163,9 +163,9 @@ public class BibleTreeNode implements TreeNode
      */
     public String toString()
     {
-        if (ref == null) return "The Whole Bible";
+        if (ref == null) return Msg.WHOLE_BIBLE.toString();
 
-        return "Search ("+ref.getOverview()+")";
+        return Msg.PART_BIBLE.toString(ref.getOverview());
     }
 
     /**

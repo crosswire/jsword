@@ -74,7 +74,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
      */
     public void setSelectedItem(Object selected)
     {
-        log.debug("setSelectedItem("+selected+") level="+level);
+        log.debug("setSelectedItem("+selected+") level="+level); //$NON-NLS-1$ //$NON-NLS-2$
 
         try
         {

@@ -90,7 +90,7 @@ public class BeanPanel extends JPanel
 
                     String title = property.getDisplayName();
                     title = StringUtil.createTitle(title);
-                    label.setText(title+":");
+                    label.setText(title+":"); //$NON-NLS-1$
                     label.setLabelFor(text);
 
                     Method writer = property.getWriteMethod();
@@ -102,7 +102,7 @@ public class BeanPanel extends JPanel
                         Object reply = reader.invoke(bean, null);
                         if (reply == null)
                         {
-                            text.setText("");
+                            text.setText(""); //$NON-NLS-1$
                         }
                         else
                         {
@@ -112,7 +112,7 @@ public class BeanPanel extends JPanel
                     catch (Exception ex)
                     {
                         text.setText("Error reading value: "+ex.getMessage());
-                        log.warn("property read failed", ex);
+                        log.warn("property read failed", ex); //$NON-NLS-1$
                     }
 
                     editors.add(text);
@@ -189,7 +189,7 @@ public class BeanPanel extends JPanel
             }
             catch (Exception ex)
             {
-                log.error("Introspected set failed", ex);
+                log.error("Introspected set failed", ex); //$NON-NLS-1$
             }
         }
 
