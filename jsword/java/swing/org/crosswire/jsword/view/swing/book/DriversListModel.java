@@ -133,7 +133,7 @@ public class DriversListModel extends AbstractListModel
     protected static Border no_focus;
 
     /**
-     * Create a BibleListCellRenderer
+     * Create a BookListCellRenderer
      */
     public static ListCellRenderer getListCellRenderer()
     {

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.Filter;
@@ -112,7 +113,7 @@ public class SwordConfig
             while (tok.hasMoreTokens())
             {
                 String distributionLicenseString = tok.nextToken().trim();
-                int index = matchingIndex(SwordConstants.DISTIBUTION_LICENSE_STRINGS, distributionLicenseString);
+                int index = matchingIndex(SwordConstants.DISTIBUTION_LICENSE_STRINGS, distributionLicenseString, -1);
                 if (index != -1)
                 {
                     distributionLicense |= 1 << index;
@@ -169,7 +170,7 @@ public class SwordConfig
         while (features.hasNext())
         {
             String featureString = (String) features.next();
-            feature |= 1 << matchingIndex(SwordConstants.FEATURE_STRINGS, featureString);
+            feature |= 1 << matchingIndexManual(SwordConstants.FEATURE_STRINGS, featureString);
         }
         // PENDING(mark): lexicon from
         // PENDING(mark): lexicon to
@@ -185,14 +186,12 @@ public class SwordConfig
         while (it.hasNext())
         {
             String gofString = (String) it.next();
-            globalOptionFilter |= 1 << matchingIndex(SwordConstants.GOF_STRINGS, gofString);
+            globalOptionFilter |= 1 << matchingIndexManual(SwordConstants.GOF_STRINGS, gofString);
         }
 
-        String directionString = reader.getFirstValue("Direction");
-        direction = matchingIndex(SwordConstants.DIRECTION_STRINGS, directionString);
+        direction = matchingIndex(SwordConstants.DIRECTION_STRINGS, "Direction", 0);
 
-        String sourceTypeString = reader.getFirstValue("SourceType");
-        int sourceType = matchingIndex(SwordConstants.SOURCE_STRINGS, sourceTypeString);
+        int sourceType = matchingIndex(SwordConstants.SOURCE_STRINGS, "SourceType", 0);
         switch (sourceType)
         {
         case SwordConstants.SOURCE_PLAINTEXT:
@@ -200,29 +199,24 @@ public class SwordConfig
             break;
 
         case SwordConstants.SOURCE_GBF:
-            log.debug("Found GBF source: "+getName()+" desire="+(++desire_gbf));
             filter = Filters.GBF;
             break;
 
         case SwordConstants.SOURCE_THML:
-            log.debug("Found THML source: "+getName()+" desire="+(++desire_thml));
             filter = Filters.THML;
             break;
 
         case SwordConstants.SOURCE_OSIS:
-            log.debug("Found OSIS source: "+getName()+" desire="+(++desire_osis));
             filter = Filters.OSIS;
             break;
 
         default:
-            log.warn("SourceType set to invalid value: " + sourceTypeString);
+            log.warn("SourceType set to invalid value, using default");
             filter = Filters.PLAIN_TEXT;
             break;
-
         }
 
-        String encodingString = reader.getFirstValue("Encoding");
-        encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, encodingString);
+        encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", 0);
         if (encoding < 0)
         {
             encoding = 1; // default is Latin-1, but why not encoding is a String object?
@@ -245,25 +239,24 @@ public class SwordConfig
         font = reader.getFirstValue("Font");
     }
 
-    private static int desire_gbf = 0;
-    private static int desire_thml = 0;
-    private static int desire_osis = 0;
-
     /**
      * Method setModuleAccess.
      */
     private void setModuleAccessProperties()
     {
         cipherKey = reader.getFirstValue("CipherKey");
-        String blockString = reader.getFirstValue("BlockType");
-        blockType = matchingIndex(SwordConstants.BLOCK_STRINGS, blockString);
 
-        log.debug("DEBUG: " + getName() + " <- getName()");
-        log.debug("DEBUG: " + blockString + " <- blockString");
-        log.debug("DEBUG: " + blockType + " <- blockType");
+        blockType = matchingIndex(SwordConstants.BLOCK_STRINGS, "BlockType", 0);
+        
+        if (isCompressed())
+        {
+            compressType = matchingIndex(SwordConstants.COMPRESSION_STRINGS, "CompressType");
+        }
+        else
+        {
+            compressType = -1;
+        }
 
-        String compressString = reader.getFirstValue("CompressType");
-        compressType = matchingIndex(SwordConstants.COMPRESSION_STRINGS, compressString);
         try
         {
             String blockCountString = reader.getFirstValue("BlockCount");
@@ -286,29 +279,81 @@ public class SwordConfig
     {
         dataPath = reader.getFirstValue("DataPath");
         description = reader.getFirstValue("Description");
-        String modDrvString = reader.getFirstValue("ModDrv");
-        modDrv = matchingIndex(SwordConstants.DRIVER_STRINGS, modDrvString);
+        modDrv = matchingIndex(SwordConstants.DRIVER_STRINGS, "ModDrv");
     }
 
     /**
      * returns the index of the array element that matches the specified string
      */
-    private int matchingIndex(String[] array, String s)
+    private int matchingIndexManual(String[] array, String s)
     {
-        int matchNo = -1;
-        if (array == null || s == null)
+        if (s == null)
         {
+            log.error("Null string not found in array: "+StringUtils.join(array, ", "));
             return -1;
         }
-
+        
         for (int i = 0; i < array.length; i++)
         {
             if (s.equalsIgnoreCase(array[i]))
             {
-                matchNo = i;
+                return i;
             }
         }
-        return matchNo;
+
+        // Some debug to say: no match
+        log.error("String "+s+" not found in array: "+StringUtils.join(array, ", "));
+        return -1;
+    }
+
+    /**
+     * returns the index of the array element that matches the specified string
+     */
+    private int matchingIndex(String[] array, String title)
+    {
+        String value = reader.getFirstValue(title);
+
+        if (value == null)
+        {
+            log.error("Null string (title="+title+") in array: "+StringUtils.join(array, ", ")+" while reading: "+url);
+            return -1;
+        }
+        
+        for (int i = 0; i < array.length; i++)
+        {
+            if (value.equalsIgnoreCase(array[i]))
+            {
+                return i;
+            }
+        }
+
+        // Some debug to say: no match
+        log.error("String "+value+" (title="+title+") not found in array: "+StringUtils.join(array, ", ")+" while reading: "+url);
+        return -1;
+    }
+
+    /**
+     * returns the index of the array element that matches the specified string
+     */
+    private int matchingIndex(String[] array, String title, int deft)
+    {
+        String value = reader.getFirstValue(title);
+        if (value == null)
+        {
+            return deft;
+        }
+
+        for (int i = 0; i < array.length; i++)
+        {
+            if (value.equalsIgnoreCase(array[i]))
+            {
+                return i;
+            }
+        }
+
+        // Some debug to say: no match
+        log.error("String "+value+" (title="+title+") not found in array: "+StringUtils.join(array, ", ")+" while reading: "+url);
+        return deft;
     }
 
     /**
@@ -316,8 +361,7 @@ public class SwordConfig
      */
     public SwordBookMetaData getMetaData() throws IOException, BookException
     {
-        int type = getModDrv();
-        switch (type)
+        switch (modDrv)
         {
         case SwordConstants.DRIVER_RAW_TEXT:
         case SwordConstants.DRIVER_Z_TEXT:
@@ -336,16 +380,13 @@ public class SwordConfig
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
             // LATER(joe): how do we support books?
-            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName()+" desire="+(++desire_rawgenbook));
-            throw new BookException(Msg.TYPE_UNSUPPORTED, new Object[] { new Integer(type) });
+            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName());
+            throw new BookException(Msg.TYPE_UNSUPPORTED, new Object[] { new Integer(modDrv), url });
 
         default:
-            throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { new Integer(type) });
+            throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { new Integer(modDrv), url });
         }
     }
-
-    private static int desire_rawgenbook = 0;
-
 
     /**
      * Get the configured method of reading a block of data from disk.
@@ -421,6 +462,32 @@ public class SwordConfig
     public int getCompressType()
     {
         return compressType;
+    }
+
+    /**
+     * It this a compressed driver - do we need a valid compressType.
+     */
+    public boolean isCompressed()
+    {
+        switch (modDrv)
+        {
+        case SwordConstants.DRIVER_RAW_TEXT:
+        case SwordConstants.DRIVER_RAW_COM:
+        case SwordConstants.DRIVER_HREF_COM:
+        case SwordConstants.DRIVER_RAW_FILES:
+        case SwordConstants.DRIVER_RAW_LD:
+        case SwordConstants.DRIVER_RAW_LD4:
+        case SwordConstants.DRIVER_RAW_GEN_BOOK:
+            return false;
+
+        case SwordConstants.DRIVER_Z_TEXT:
+        case SwordConstants.DRIVER_Z_COM:
+        case SwordConstants.DRIVER_Z_LD:
+            return true;
+
+        default:
+            throw new IllegalArgumentException(Msg.TYPE_UNKNOWN.toString());
+        }
     }
 
     /**
@@ -570,18 +637,11 @@ public class SwordConfig
     
     /**
      * Returns the Charset of the module based on the encoding attribute
-     *
      * @return the charset of the module.
      */
     public String getModuleCharset()
     {
-        switch(encoding)
-        {
-            case 0:
-                return "UTF-8";
-            default:
-                return "ISO-8859-1"; // Latin-1
-        }
+        return SwordConstants.ENCODING_STRINGS[encoding];
     }
 
     /**

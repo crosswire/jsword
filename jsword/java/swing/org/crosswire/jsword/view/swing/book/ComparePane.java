@@ -70,7 +70,9 @@ public class ComparePane extends EirPanel
     private void jbInit()
     {
         cbo_bible1.setModel(mdl_bibles1);
+        cbo_bible1.setRenderer(new BookListCellRenderer());
         cbo_bible2.setModel(mdl_bibles2);
+        cbo_bible2.setRenderer(new BookListCellRenderer());
         pnl_bibles.setLayout(new BoxLayout(pnl_bibles, BoxLayout.Y_AXIS));
         pnl_bibles.setAlignmentX((float) 0.5);
         pnl_bibles.setBorder(new TitledBorder("Books To Compare"));

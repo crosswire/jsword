@@ -83,7 +83,7 @@ public class MaintenancePane extends EirPanel
     {
         scr_versions.getViewport().add(lst_versions, null);
         lst_versions.setModel(mdl_versions);
-        lst_versions.setCellRenderer(new BibleListCellRenderer());
+        lst_versions.setCellRenderer(new BookListCellRenderer());
         lst_versions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lst_versions.addListSelectionListener(new ListSelectionListener()
         {

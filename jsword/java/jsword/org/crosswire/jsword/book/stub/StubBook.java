@@ -215,6 +215,14 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         return set;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "StubBible:"+bmd.toString();
+    }
+
     /**
      * The name of this version
      */

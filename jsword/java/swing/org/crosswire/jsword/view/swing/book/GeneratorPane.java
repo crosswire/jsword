@@ -89,6 +89,7 @@ public class GeneratorPane extends EirPanel
     private void jbInit()
     {
         cbo_source.setModel(mdl_source);
+        cbo_source.setRenderer(new BookListCellRenderer());
         lbl_source.setText("  Source Bible: ");
         pnl_source.setLayout(new BorderLayout());
         pnl_source.setBorder(BorderFactory.createTitledBorder("Source"));

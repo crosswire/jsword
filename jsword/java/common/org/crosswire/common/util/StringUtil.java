@@ -34,7 +34,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class StringUtil
 {
-    /** The newline character */
+    /**
+     * The newline character
+     */
     public static final String NEWLINE = System.getProperty("line.separator", "\r\n");
 
     /**
@@ -125,7 +127,9 @@ public final class StringUtil
     public static String shorten(String str, int len)
     {
         if (str.length() <= len)
+        {
             return str;
+        }
 
         return str.substring(0, len-3) + "...";
     }
@@ -248,4 +252,3 @@ public final class StringUtil
         return retcode.toString();
     }
 }
-

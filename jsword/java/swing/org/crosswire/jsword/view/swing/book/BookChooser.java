@@ -78,7 +78,7 @@ public class BookChooser extends JPanel
         pnl_bibles.add(scr_bibles, BorderLayout.CENTER);
         scr_bibles.setViewportView(lst_bibles);
         lst_bibles.setModel(bmod);
-        lst_bibles.setCellRenderer(new BibleListCellRenderer());
+        lst_bibles.setCellRenderer(new BookListCellRenderer());
         lst_bibles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lst_bibles.addListSelectionListener(new ListSelectionListener()
         {

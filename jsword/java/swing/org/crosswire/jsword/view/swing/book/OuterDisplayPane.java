@@ -125,8 +125,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     }
 
     /**
-     * 
-     * @param view
+     * Delete the selected verses
      */
     public void deleteSelected(BibleViewPane view)
     {
@@ -138,13 +137,14 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
         psel.setPassage(ref);
     }
 
-    /**
+    /*
      * Accessor for the current InnerDisplayPane
      *
     public InnerDisplayPane getSelectedInnerDisplayPane()
     {
         return txt_passg.getInnerDisplayPane();
     }
+    */
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
@@ -244,11 +244,13 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     protected static final Logger log = Logger.getLogger(OuterDisplayPane.class);
 
+    /*
+     * GUI Components
+     */
     private JSplitPane spt_passg = new JSplitPane();
     private JScrollPane scr_passg = new JScrollPane();
     protected TabbedDisplayPane txt_passg = new TabbedDisplayPane();
     private PassageList lst_passg = new PassageList();
-
     private DisplaySelectListener dsli = new CustomDisplaySelectListener();
 
     /**
@@ -262,7 +264,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
          */
         public void bookChosen(DisplaySelectEvent ev)
         {
-            log.debug("new bible chosen: "+ev.getBook().getBookMetaData().getFullName());
+            log.debug("new bible chosen: "+ev.getBook());
 
             Bible version = (Bible) ev.getBook();
             txt_passg.setVersion(version);

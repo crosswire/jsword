@@ -38,9 +38,9 @@ import java.util.Map;
  */
 public class ConfigReader
 {
-    private BufferedReader bufferedReader;
-    private Map table = new HashMap();
-
+    /**
+     * Simple ctor
+     */
     public ConfigReader(InputStream is) throws IOException
     {
         InputStreamReader r = new InputStreamReader(is);
@@ -52,7 +52,9 @@ public class ConfigReader
         {
             currentLine = bufferedReader.readLine();
             if (currentLine != null)
+            {
                 parseLine(currentLine);
+            }
         }
     }
 
@@ -149,4 +151,7 @@ public class ConfigReader
             e.printStackTrace();
         }
     }
+
+    private BufferedReader bufferedReader;
+    private Map table = new HashMap();
 }

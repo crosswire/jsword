@@ -17,6 +17,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Filter to convert THML to OSIS format.
+ * <br/>I used the THML ref page: {@link http://www.ccel.org/ThML/ThML1.04.htm}
+ * to work out what the tags meant.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -63,7 +65,7 @@ public class THMLFilter implements Filter
         }
     }
 
-    private static final String TAG_FOO = "foo";
+    private static final String TAG_ROOT = "root";
 
     /**
      * The log stream
@@ -96,50 +98,57 @@ public class THMLFilter implements Filter
          */
         public void startElement(String uri, String localname, String qname, Attributes attr) throws SAXException
         {
-            if (localname == null)
+            if (qname.equals(TAG_ROOT))
             {
-                log.warn("localname is null");
+                // we added this in the first place so ignore
                 return;
             }
 
-            if (localname.equals(TAG_FOO))
-            {
-                //li.startTitle();
-                return;
-            }
-
-            log.warn("unknown thml element: "+localname);
+            log.warn("unknown thml element: "+localname+" qname="+qname);
         }
         
-        /* (non-Javadoc)
-         * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-         */
-        public void characters(char[] data, int offset, int length) throws SAXException
-        {
-            String text = new String(data, offset, length);
-
-            log.debug("found text="+text);
-            Element current = (Element) stack.getFirst();
-            List list = JAXBUtil.getList(current); 
-            list.add(text);
-        }
-
         /* (non-Javadoc)
          * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
          */
         public void endElement(String uri, String localname, String qname) throws SAXException
         {
-            if (localname == null)
+            if (qname.equals(TAG_ROOT))
             {
-                log.warn("localname is null");
+                // we added this in the first place so ignore
                 return;
             }
 
-            if (localname.equals(TAG_FOO))
+            log.warn("unknown thml element: "+localname+" qname="+qname);
+        }
+
+        /* (non-Javadoc)
+         * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+         */
+        public void characters(char[] data, int offset, int length) throws SAXException
+        {
+            // What we are adding to
+            Element current = (Element) stack.getFirst();
+            List list = JAXBUtil.getList(current); 
+
+            // what we are adding
+            String text = new String(data, offset, length);
+
+            // If the last element in the list is a string then we should add
+            // this string on to the end of it rather than add a new list item
+            // because (probably as an atrifact of the HTML/XSL transform we get
+            // a space inserted in the output even when 2 calls to this method
+            // split a word.
+            if (list.size() > 0)
             {
-                //li.endTitle();
-                return;
+                Object last = list.get(list.size()-1);
+                if (last instanceof String)
+                {
+                    list.remove(list.size()-1);
+                    text = ((String) last) + text; 
+                }
             }
+
+            list.add(text);
         }
 
         private LinkedList stack = new LinkedList();

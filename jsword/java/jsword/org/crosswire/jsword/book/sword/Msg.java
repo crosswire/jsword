@@ -39,8 +39,10 @@ class Msg extends MsgBase
     protected static final Msg READ_FAIL = new Msg("Error reading {0}");
     protected static final Msg READ_ONLY = new Msg("Sword modules are read-only");
     protected static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type: {0}");
-    protected static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0}");
-    protected static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0}");
+    protected static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0} when reading {1}");
+    protected static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0} when reading {1}");
+    protected static final Msg MISSING_SEARCHER = new Msg("Configuration error: Missing search engine.");
+    protected static final Msg MISSING_BACKEND = new Msg("Configuration error: Missing backend engine.");
 
     /** Initialise any resource bundles */
     static

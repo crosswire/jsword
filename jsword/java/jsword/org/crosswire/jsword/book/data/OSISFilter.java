@@ -56,7 +56,7 @@ public class OSISFilter implements Filter
         try
         {
             // create a root element to house our document fragment
-            StringReader in = new StringReader("<root>"+plain+"</root>");
+            StringReader in = new StringReader(plain);
             InputSource is = new InputSource(in);
 
             Object data = unm.unmarshal(is);

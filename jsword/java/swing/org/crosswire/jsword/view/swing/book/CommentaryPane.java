@@ -95,6 +95,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
         pnlselect.add(cboverse, null);
 
         cbocomments.setModel(mdlcomments);
+        cbocomments.setRenderer(new BookListCellRenderer());
         Dimension min = cbocomments.getMinimumSize();
         min.width = 100;
         cbocomments.setMinimumSize(min);

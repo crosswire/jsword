@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -106,6 +107,14 @@ public abstract class AbstractBible implements Bible
         {
             return null;
         }
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return ClassUtil.getShortName(getClass())+":"+getBookMetaData().toString();
     }
 
     /**

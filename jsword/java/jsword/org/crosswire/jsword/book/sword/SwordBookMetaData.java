@@ -61,7 +61,6 @@ public abstract class SwordBookMetaData implements BookMetaData
 
     /**
      * A simple concrete implementation ctor
-     * @throws BookException
      */
     public abstract Book createBook();
 
@@ -158,7 +157,10 @@ public abstract class SwordBookMetaData implements BookMetaData
      */
     public String toString()
     {
-        return getFullName();
+        return getInitials()+
+            "[moddrv="+SwordConstants.DRIVER_STRINGS[config.getModDrv()]+
+            //",compress="+SwordConstants.COMPRESSION_STRINGS[config.getCompressType()]+
+            "]";
     }
 
     /* (non-Javadoc)

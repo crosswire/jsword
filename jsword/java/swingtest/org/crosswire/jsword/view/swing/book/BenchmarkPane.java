@@ -61,6 +61,7 @@ public class BenchmarkPane extends EirPanel
     private void jbInit()
     {
         cbo_bible.setModel(mdl_bible);
+        cbo_bible.setRenderer(new BookListCellRenderer());
         btn_go.setMnemonic('G');
         btn_go.setText("Go");
         btn_go.addActionListener(new ActionListener()

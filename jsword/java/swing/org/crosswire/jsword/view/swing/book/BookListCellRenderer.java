@@ -12,7 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
  * A custom list view that paints icons alongside the words. This is a
@@ -39,12 +39,12 @@ import org.crosswire.jsword.book.BibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BibleListCellRenderer extends JLabel implements ListCellRenderer
+public class BookListCellRenderer extends JLabel implements ListCellRenderer
 {
     /**
      * Constructs a default renderer object for an item in a list.
      */
-    public BibleListCellRenderer()
+    public BookListCellRenderer()
     {
         if (no_focus == null)
         {
@@ -76,16 +76,28 @@ public class BibleListCellRenderer extends JLabel implements ListCellRenderer
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-        
-        BibleMetaData bmd = (BibleMetaData) value;
-        setText((bmd == null) ? "" : bmd.getFullName());
-        setIcon(ICON_SMALL);
 
-        setEnabled(list.isEnabled());
-        setFont(list.getFont());
-        setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
+        BookMetaData bmd = (BookMetaData) value;
+        if (bmd == null)
+        {
+            setText("None");
+            setToolTipText(null);
+            setIcon(null);
+            setEnabled(false);
+            return this;
+        }
+        else
+        {
+            setText(bmd.getName());
+            setToolTipText(bmd.getFullName());
+            setIcon(ICON_SMALL);
 
-        return this;
+            setEnabled(list.isEnabled());
+            setFont(list.getFont());
+            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
+
+            return this;
+        }
     }
 
     /**

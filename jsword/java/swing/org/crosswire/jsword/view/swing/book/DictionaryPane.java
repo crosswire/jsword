@@ -74,6 +74,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
         lstdicts.setVisibleRowCount(4);
         lstdicts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstdicts.setModel(mdldicts);
+        lstdicts.setCellRenderer(new BookListCellRenderer());
         lstdicts.addListSelectionListener(new ListSelectionListener()
         {
             public void valueChanged(ListSelectionEvent ev)

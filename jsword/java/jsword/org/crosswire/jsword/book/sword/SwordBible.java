@@ -90,7 +90,7 @@ public class SwordBible extends AbstractBible
     {
         if (backend == null)
         {
-            throw new BookException(Msg.READ_FAIL);
+            throw new BookException(Msg.MISSING_BACKEND);
         }
 
         try
@@ -165,7 +165,7 @@ public class SwordBible extends AbstractBible
     {
         if (searcher == null)
         {
-            throw new BookException(Msg.READ_FAIL);
+            throw new BookException(Msg.MISSING_SEARCHER);
         }
 
         if (!searchable)

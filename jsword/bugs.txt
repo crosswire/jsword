@@ -15,6 +15,9 @@ GUI
 - Heb and Greek Fonts not used
 
 Sword Modules
+- ASV: paragraph uses "P" char?
+- ASV: footnotes dont work
+- HNV: bizarre punctuation errors
 - ISV (NT only?) refs in with text????
 - RSV for Rev 22:21 contains bizarre markup
 - KJV1769+Strong and Young's - stange <small><br>
@@ -26,4 +29,3 @@ CVS tidyup
 - remove junit from jsword-support
 - move map and maptest into jsword-support
 - deletes from web/images?
-

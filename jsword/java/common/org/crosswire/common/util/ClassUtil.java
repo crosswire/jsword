@@ -77,7 +77,9 @@ public class ClassUtil
                 String extra = StringUtils.replace(classname, ".", File.separator);
 
                 if (!paths[i].endsWith(File.separator))
+                {
                     paths[i] = paths[i] + File.separator;
+                }
 
                 String file_name = paths[i] + extra + ".class";
 
@@ -108,6 +110,27 @@ public class ClassUtil
         return findClasspathEntry(classname, classpath);
     }
 
-    /** The log stream */
+    /**
+     * What is the short name of a class (e.g. String for java lang.String)
+     * @param clazz The class to find the short name of
+     * @return The short name
+     */
+    public static String getShortName(Class clazz)
+    {
+        String longname = clazz.getName();
+        int lastdot = longname.lastIndexOf('.');
+        if (lastdot == -1)
+        {
+            return longname;
+        }
+        else
+        {
+            return longname.substring(lastdot+1);
+        }
+    }
+
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(StringUtil.class);
 }
