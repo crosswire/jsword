@@ -3,7 +3,7 @@ package org.crosswire.jsword.view.swing.desktop;
 
 import javax.swing.KeyStroke;
 
-import org.crosswire.jsword.view.swing.book.EirAbstractAction;
+import org.crosswire.common.swing.EirAbstractAction;
 
 /**
  * An EirAbstractAction that knows about a Desktop that it is attached to.

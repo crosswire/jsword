@@ -4,8 +4,10 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
+
+import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
  * copy action.
@@ -41,10 +43,12 @@ public class EditCopyAction extends DesktopAbstractAction
               "/toolbarButtonGraphics/general/Copy24.gif",
               "Copy", "Copy the selection.",
               'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.ALT_MASK, false));
-        setEnabled(false);
     }
+
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Not implemented");
+        BibleViewPane view = getDesktop().getSelectedBibleViewPane();
+        JTextComponent text = view.getPassagePane().getJTextComponent();
+        text.copy();
     }
 }

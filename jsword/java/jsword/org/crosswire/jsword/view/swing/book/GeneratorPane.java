@@ -13,8 +13,24 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.*;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
+import org.crosswire.common.swing.ComponentAbstractAction;
+import org.crosswire.common.swing.EirPanel;
+import org.crosswire.common.swing.ExceptionPane;
+import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.WritableBible;
@@ -22,9 +38,6 @@ import org.crosswire.jsword.book.WritableBibleDriver;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.common.swing.EirPanel;
-import org.crosswire.common.swing.ExceptionPane;
-import org.crosswire.common.swing.GuiUtil;
 
 /**
  * Bible Generator allows the creation of new Books - although it
@@ -128,6 +141,36 @@ public class GeneratorPane extends EirPanel
         this.add(box_main, BorderLayout.NORTH);
         this.add(pnl_prog, BorderLayout.CENTER);
         this.add(pnl_buttons, BorderLayout.SOUTH);
+    }
+
+    /**
+     * Create an 'open' Action
+     */
+    public static Action createOpenAction(Component parent)
+    {
+        return new OpenAction(parent);
+    }
+
+    /**
+     * An Action to open a new one of these
+     */
+    public static class OpenAction extends ComponentAbstractAction
+    {
+        public OpenAction(Component comp)
+        {
+            super(comp,
+                  "Generate ...",
+                  "/toolbarButtonGraphics/development/BeanAdd16.gif",
+                  "/toolbarButtonGraphics/development/BeanAdd24.gif",
+                  "Generate", "Generate a new version file set.",
+                  'G', null);
+        }
+    
+        public void actionPerformed(ActionEvent ev)
+        {
+            MaintenancePane pnl_maint = new MaintenancePane();
+            pnl_maint.showInDialog(getComponent());
+        }
     }
 
     /**

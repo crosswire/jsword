@@ -3,17 +3,20 @@ package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
@@ -21,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -52,9 +56,9 @@ public class Splash extends JWindow
     /**
      * Create a splash window
      */
-    public Splash(Frame frame, int wait)
+    public Splash(Component comp, int wait)
     {
-        super(frame);
+        super(JOptionPane.getFrameForComponent(comp));
         this.wait = wait;
 
         jbInit();
@@ -138,6 +142,36 @@ public class Splash extends JWindow
         catch (Exception ex)
         {
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Create an 'open' Action
+     */
+    public static Action createOpenAction(Component parent)
+    {
+        return new OpenAction(parent);
+    }
+
+    /**
+     * An Action to open a new Splash
+     */
+    public static class OpenAction extends ComponentAbstractAction
+    {
+        public OpenAction(Component comp)
+        {
+            super(comp,
+                  "About ...",
+                  "/toolbarButtonGraphics/general/About16.gif",
+                  "/toolbarButtonGraphics/general/About24.gif",
+                  "About this program", "Display details about this program.",
+                  'A', null);
+        }
+    
+        public void actionPerformed(ActionEvent ev)
+        {
+            Splash splash = new Splash(getComponent(), 60000);
+            splash.setProgress(100, "");
         }
     }
 

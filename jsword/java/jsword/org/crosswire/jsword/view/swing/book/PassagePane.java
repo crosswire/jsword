@@ -14,8 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.swing.*;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
@@ -226,6 +228,14 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
         }
 
         PassagePane.this.validate();
+    }
+
+    /**
+     * Accessor for the current TextComponent
+     */
+    public JTextComponent getJTextComponent()
+    {
+        return txt_view.getJTextComponent();
     }
 
     /**

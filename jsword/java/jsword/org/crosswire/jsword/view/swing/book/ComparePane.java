@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
@@ -119,6 +121,36 @@ public class ComparePane extends EirPanel
     public void showInDialog(Component parent)
     {
         showInDialog(parent, "Bible Compare", false);
+    }
+
+    /**
+     * Create an 'open' Action
+     */
+    public static Action createOpenAction(Component parent)
+    {
+        return new OpenAction(parent);
+    }
+
+    /**
+     * An Action to open a new one of these
+     */
+    public static class OpenAction extends ComponentAbstractAction
+    {
+        public OpenAction(Component comp)
+        {
+            super(comp,
+                  "Version Compare ...",
+                  "/toolbarButtonGraphics/media/Pause16.gif",
+                  "/toolbarButtonGraphics/media/Pause24.gif",
+                  "Compare Versions", "Compare text produced by different drivers.",
+                  'S', null);
+        }
+
+        public void actionPerformed(ActionEvent ev)
+        {
+            ComparePane pnl_comp = new ComparePane();
+            pnl_comp.showInDialog(getComponent());
+        }
     }
 
     /**

@@ -1,12 +1,12 @@
 
-package org.crosswire.jsword.view.swing.desktop;
+package org.crosswire.common.swing;
 
-import java.awt.event.ActionEvent;
+import java.awt.Component;
+import javax.swing.KeyStroke;
 
-import org.crosswire.common.swing.LogPane;
 
 /**
- * Show the error log window.
+ * An EirAbstractAction that knows about a Desktop that it is attached to.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,25 +29,25 @@ import org.crosswire.common.swing.LogPane;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ErrorLogAction extends DesktopAbstractAction
+public abstract class ComponentAbstractAction extends EirAbstractAction
 {
-    public ErrorLogAction(Desktop tools)
+    /**
+     * Constructor for DesktopAbstractAction.
+     */
+    public ComponentAbstractAction(Component comp, String name, String small_icon, String large_icon,
+                                   String short_desc, String long_desc, int mnemonic, KeyStroke accel)
     {
-        super(tools,
-              "Problem History ...",
-              "/toolbarButtonGraphics/general/History16.gif",
-              "/toolbarButtonGraphics/general/History24.gif",
-              "Problem History", "Display list of captured problems.",
-              'P', null);
-
-        pnl_log = new LogPane();
+        super(name, small_icon, large_icon, short_desc, long_desc, mnemonic, accel);
+        this.comp = comp;
     }
 
-    public void actionPerformed(ActionEvent ev)
+    /**
+     * Accessor for the Desktop this Action is tied to.
+     */
+    public Component getComponent()
     {
-        pnl_log.showInDialog(getDesktop());
+        return comp;
     }
 
-    /** The properties pane */
-    private LogPane pnl_log = null;
+    private Component comp;
 }

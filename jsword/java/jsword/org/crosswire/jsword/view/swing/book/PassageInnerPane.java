@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
@@ -112,7 +113,18 @@ public class PassageInnerPane extends JPanel
         }
 
         txt_view.setText(text);
+        
+        // The following *ought* to scroll to the top but it doesn't ...
         //txt_view.scrollRectToVisible(new Rectangle());
+        txt_view.select(0, 0);
+    }
+
+    /**
+     * Accessor for the current TextComponent
+     */
+    public JTextComponent getJTextComponent()
+    {
+        return txt_view;
     }
 
     /**

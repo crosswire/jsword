@@ -4,8 +4,10 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
+
+import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
  * paste action.
@@ -41,10 +43,14 @@ public class EditPasteAction extends DesktopAbstractAction
               "/toolbarButtonGraphics/general/Paste24.gif",
               "Paste", "Paste the selection.",
               'P', KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.ALT_MASK, false));
+
         setEnabled(false);
     }
+
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Not implemented");
+        BibleViewPane view = getDesktop().getSelectedBibleViewPane();
+        JTextComponent text = view.getPassagePane().getJTextComponent();
+        text.paste();
     }
 }

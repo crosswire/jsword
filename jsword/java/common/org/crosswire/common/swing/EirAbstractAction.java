@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.common.swing;
 
 import java.net.URL;
 

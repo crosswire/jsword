@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.JTextComponent;
 import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
@@ -95,6 +96,8 @@ public class PassageTabbedPane extends JPanel
             // Do we need a tabbed view
             if (ref != null && ref.countVerses() > page_size)
             {
+                tabs = true;
+
                 // Calc the verses to display in this tab
                 Passage cut = (Passage) whole.clone();
                 waiting = cut.trimVerses(page_size);
@@ -124,6 +127,8 @@ public class PassageTabbedPane extends JPanel
             }
             else
             {
+                tabs = false;
+
                 // Setup the front tab
                 pnl_view.setPassage(ref);
 
@@ -191,6 +196,22 @@ public class PassageTabbedPane extends JPanel
     }
 
     /**
+     * Accessor for the current TextComponent
+     */
+    public JTextComponent getJTextComponent()
+    {
+        if (tabs)
+        {
+            return pnl_view.getJTextComponent();
+        }
+        else
+        {
+            PassageInnerPane view = (PassageInnerPane) tab_main.getSelectedComponent();
+            return view.getJTextComponent();
+        }
+    }
+
+    /**
      * Accessor for the page size
      */
     public void setPageSize(int page_size)
@@ -232,6 +253,7 @@ public class PassageTabbedPane extends JPanel
     private Passage waiting = null;
     private Bible version = null;
     private Style style = new Style("swing");
+    private boolean tabs = false;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(PassageTabbedPane.class);

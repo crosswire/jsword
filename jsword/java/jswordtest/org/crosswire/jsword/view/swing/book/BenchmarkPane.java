@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ import javax.swing.JTextArea;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.control.test.Speed;
+import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.util.Reporter;
 
@@ -21,10 +23,11 @@ import org.crosswire.common.util.Reporter;
  * BenchmarkPane allows an application to test the speed of a Bible by
  * giving it some stress tests.
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -32,14 +35,14 @@ import org.crosswire.common.util.Reporter;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class BenchmarkPane extends EirPanel
 {
@@ -83,6 +86,36 @@ public class BenchmarkPane extends EirPanel
     public void showInDialog(Component parent)
     {
         showInDialog(parent, "Benchmark", false);
+    }
+
+    /**
+     * Create an 'open' Action
+     */
+    public static Action createOpenAction(Component parent)
+    {
+        return new OpenAction(parent);
+    }
+
+    /**
+     * An Action to open a new one of these
+     */
+    public static class OpenAction extends ComponentAbstractAction
+    {
+        public OpenAction(Component comp)
+        {
+            super(comp,
+                  "Benchmark ...",
+                  "/toolbarButtonGraphics/media/Movie16.gif",
+                  "/toolbarButtonGraphics/media/Movie24.gif",
+                  "Becnhmark", "Run a benchmark test.",
+                  'B', null);
+        }
+    
+        public void actionPerformed(ActionEvent ev)
+        {
+            BenchmarkPane pnl_bench = new BenchmarkPane();
+            pnl_bench.showInDialog(getComponent());
+        }
     }
 
     /**
