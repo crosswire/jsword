@@ -690,7 +690,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="release.version" depends="swingui, web">
+  <target name="release.version" depends="swingui, ser-av, web">
     <echo message="Building release ${version} to ${directory}"/>
     <!-- source packages -->
     <mkdir dir="${directory}"/>
