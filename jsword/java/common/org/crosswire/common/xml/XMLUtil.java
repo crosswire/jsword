@@ -1,5 +1,6 @@
 package org.crosswire.common.xml;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.xml.sax.Attributes;
 
@@ -72,14 +73,14 @@ public class XMLUtil
                 char c = working.charAt(i);
                 if (c == ';')
                 {
-                    //ConversionLogger.report("disguarding potentially valid entity: "+working.substring(amp, i));
+                    //DataPolice.report("disguarding potentially valid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
                 }
 
                 if (!Character.isLetterOrDigit(c) && c != '-')
                 {
-                    //ConversionLogger.report("disguarding invalid entity: "+working.substring(amp, i));
+                    //DataPolice.report("disguarding invalid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
                 }
@@ -98,7 +99,9 @@ public class XMLUtil
 
     /**
      * XML parse failed, so we can try getting rid of all the tags and having
-     * another go.
+     * another go. We define a tag to start at a &lt; and end at the end of the
+     * next word (where a word is what comes in between spaces) that does not
+     * contain an = sign, or at a >, whichever is earlier.
      */
     public static String cleanAllTags(String broken)
     {
@@ -114,26 +117,43 @@ public class XMLUtil
                 break allTags;
             }
 
-            // Check for chars that should not be in an entity name
-            int i = lt;
+            // where is the next > symbol?
+            int gt = working.indexOf('>', lt);
 
-            singleTag: while (true)
+            // Are there any "words" that can not be attributes first?
+            String lton = working.substring(lt);
+            String[] parts = StringUtils.split(lton, ' ');
+            int noeqword = -1;
+            for (int i = 0; i < parts.length; i++)
             {
-                if (i >= working.length())
+                // Check this contains an =
+                if (parts[i].indexOf('=') == -1)
                 {
-                    break singleTag;
+                    noeqword = working.indexOf(parts[i]);
                 }
-
-                char c = working.charAt(i);
-                if (c == '>')
-                {
-                    //ConversionLogger.report("disguarding potentially valid tag: "+working.substring(lt, i+1));
-                    working = working.substring(0, lt)+working.substring(i+1);
-                    break singleTag;
-                }
-
-                i++;
             }
+
+            // so which is sooner gt, noeqword, or end-of-string?
+            if (gt == -1)
+            {
+                gt = Integer.MAX_VALUE;
+            }
+            if (noeqword == -1)
+            {
+                noeqword = Integer.MAX_VALUE;
+            }
+            int min = gt;
+            if (noeqword < min)
+            {
+                min = noeqword;
+            }
+            if (working.length() < min)
+            {
+                min = working.length();
+            }
+
+            // So chop the string
+            working = working.substring(lt, min);
         }
         
         return working;

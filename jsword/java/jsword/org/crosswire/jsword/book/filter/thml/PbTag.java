@@ -1,12 +1,12 @@
-package org.crosswire.jsword.book.filter.gbf;
+package org.crosswire.jsword.book.filter.thml;
 
-import java.util.LinkedList;
+import javax.xml.bind.Element;
+import javax.xml.bind.JAXBException;
 
-import org.crosswire.common.util.Logger;
+import org.xml.sax.Attributes;
 
 /**
- * Unknown Tag. Either not supported tag or tag not defined in GBF
- * specification.
+ * THML Tag to process the pb element.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,28 +29,21 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class UnknownTagBuilder implements TagBuilder
+public class PbTag implements Tag
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public Tag createTag(final String name)
+    public String getTagName()
     {
-        return new Tag()
-        {
-            public void updateOsisStack(LinkedList stack)
-            {
-                // I'm confident enough that we handle all the GBF tags
-                // that I will blame the module and not the program
-
-                log.warn("Ignoring tag of <" + name + ">");
-                //DataPolice.report("Ignoring tag of <" + name + ">");
-            }
-        };
+        return "pb";
     }
 
-    /**
-     * The log stream
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
      */
-    protected static final Logger log = Logger.getLogger(UnknownTagBuilder.class);
+    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    {
+        // Only for print edition
+    }
 }

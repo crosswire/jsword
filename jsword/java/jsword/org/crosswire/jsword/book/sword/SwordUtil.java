@@ -8,6 +8,7 @@ import java.util.zip.Inflater;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 
 /**
  * Various utilities used by different Sword classes.
@@ -45,13 +46,25 @@ public class SwordUtil
     /**
      * Read a RandomAccessFile
      * @param raf The file to read
-     * @param index The record to read
+     * @param offset The record to read
      * @param size The number of bytes to read
      * @return the read data
      */
-    protected static byte[] readRAF(RandomAccessFile raf, long index, int size) throws IOException
+    protected static byte[] readRAF(RandomAccessFile raf, long offset, int size) throws IOException
     {
-        raf.seek(index);
+        if (offset + size > raf.length())
+        {
+            DataPolice.report("Need to reduce size to avoid EOFException. offset="+offset+" size="+size+" but raf.length="+raf.length());
+            size = (int) (raf.length() - offset);
+        }
+
+        if (size < 1)
+        {
+            DataPolice.report("Nothing to read returning empty because size="+size);
+            return new byte[0];
+        }
+
+        raf.seek(offset);
         byte[] read = new byte[size];
         raf.readFully(read);
         
@@ -62,7 +75,7 @@ public class SwordUtil
      * Decode little endian data from a byte array
      * @param data the byte[] from which to read 4 bytes
      * @param offset the offset into the array
-     * @return long
+     * @return The decoded data
      */
     protected static long decodeLittleEndian32(byte[] data, int offset)
     {
@@ -78,7 +91,7 @@ public class SwordUtil
      * Decode little endian data from a byte array
      * @param data the byte[] from which to read 4 bytes
      * @param offset the offset into the array
-     * @return long
+     * @return The decoded data
      */
     protected static int decodeLittleEndian32AsInt(byte[] data, int offset)
     {
@@ -96,7 +109,7 @@ public class SwordUtil
      * Decode little endian data from a byte array
      * @param data the byte[] from which to read 4 bytes
      * @param offset the offset into the array
-     * @return long
+     * @return The decoded data
      */
     protected static int decodeLittleEndian16(byte[] data, int offset)
     {        
@@ -119,7 +132,6 @@ public class SwordUtil
      * @param data The array to search
      * @param sought The data to search for
      * @return The index of the found position or -1 if not found
-     * @throws BookException
      */
     protected static int findByte(byte[] data, byte sought)
     {
@@ -136,9 +148,9 @@ public class SwordUtil
 
     /**
      * Uncompress a block of GZIP compressed data
-     * @param compressed
-     * @param endsize
-     * @return byte[]
+     * @param compressed The data to uncompress
+     * @param endsize The expected resultant data size
+     * @return The uncompressed data
      */
     public static byte[] uncompress(byte[] compressed, int endsize) throws IOException, DataFormatException, BookException
     {

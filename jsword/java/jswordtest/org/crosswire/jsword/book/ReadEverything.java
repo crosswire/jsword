@@ -7,7 +7,6 @@ import java.util.SortedSet;
 
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.filter.ConversionLogger;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseBase;
@@ -57,13 +56,22 @@ public class ReadEverything
         config.setProperties(Project.resource().getProperties("desktop"));
         config.localToApplication(true);
 
-        // Loop through all the Bibles
-        List bibles = Books.getBooks(BookFilters.getBibles());
-        for (Iterator bit = bibles.iterator(); bit.hasNext();)
+        // Loop through all the Dictionaries
+        List dicts = Books.getBooks(BookFilters.getDictionaries());
+        for (Iterator dit = dicts.iterator(); dit.hasNext();)
         {
-            BookMetaData bmd = (BookMetaData) bit.next();
-            Iterator it = new KeyIterator(WHOLE.verseIterator());
-            testReadMultiple(bmd, it);
+            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
+
+            if (dmd.getInitials().compareTo("j") < 1)
+            {
+                continue;
+            }
+
+            Dictionary dict = dmd.getDictionary();
+            SortedSet set = dict.getIndex(null);
+
+            Iterator it = set.iterator();
+            testReadMultiple(dmd, it);
         }
 
         // Loop through all the Commentaries
@@ -75,16 +83,13 @@ public class ReadEverything
             testReadMultiple(bmd, it);
         }
 
-        // Loop through all the Dictionaries
-        List dicts = Books.getBooks(BookFilters.getDictionaries());
-        for (Iterator dit = dicts.iterator(); dit.hasNext();)
+        // Loop through all the Bibles
+        List bibles = Books.getBooks(BookFilters.getBibles());
+        for (Iterator bit = bibles.iterator(); bit.hasNext();)
         {
-            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
-            Dictionary dict = dmd.getDictionary();
-            SortedSet set = dict.getIndex(null);
-
-            Iterator it = set.iterator();
-            testReadMultiple(dmd, it);
+            BookMetaData bmd = (BookMetaData) bit.next();
+            Iterator it = new KeyIterator(WHOLE.verseIterator());
+            testReadMultiple(bmd, it);
         }
     }
 
@@ -93,21 +98,24 @@ public class ReadEverything
      */
     private static void testReadMultiple(BookMetaData bmd, Iterator it)
     {
-        ConversionLogger.setBook(bmd);
+        DataPolice.setBook(bmd);
 
         //log.info("Testing: "+bmd.getInitials()+"="+bmd.getFullName());
         long start = System.currentTimeMillis();
+        int entries = 0;
 
         Book book = bmd.getBook();
         while (it.hasNext())
         {
             Key key = (Key) it.next();
             testReadSingle(bmd, book, key);
+            entries++;
         }
 
         long end = System.currentTimeMillis();
         float time = (end - start) / 1000F;
-        log.info("Tested: "+bmd.getInitials()+" in "+time+"s");
+
+        log.info("Tested: book="+bmd.getInitials()+" entries="+entries+" time="+time+"s ("+(1000*time/entries)+"ms per entry)");
     }
 
     /**

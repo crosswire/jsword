@@ -1,16 +1,14 @@
-package org.crosswire.jsword.book.filter.gbf;
-
-import java.util.LinkedList;
+package org.crosswire.jsword.book.filter.thml;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.P;
+import org.crosswire.jsword.osis.Note;
+import org.xml.sax.Attributes;
 
 /**
- * Tag syntax: Words<CM>.
+ * THML Tag to process the note element.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -33,38 +31,23 @@ import org.crosswire.jsword.osis.P;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ParagraphTagBuilder implements TagBuilder
+public class NoteTag implements Tag
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public Tag createTag(String name)
+    public String getTagName()
     {
-        if (!name.equals("CM"))
-        {
-            return null;
-        }
+        return "note";
+    }
 
-        return new Tag()
-        {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.Stack)
-             */
-            public void updateOsisStack(LinkedList stack) throws JAXBException
-            {
-                P p = JAXBUtil.factory().createP();
-
-                if (stack.size() == 0)
-                {
-                    stack.addFirst(p);
-                    DataPolice.report("failing to add to element on empty stack");
-                }
-                else
-                {
-                    Element ele = (Element) stack.get(0);
-                    JAXBUtil.getList(ele).add(p);
-                }
-            }
-        };
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     */
+    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    {
+        Note note = JAXBUtil.factory().createNote();
+        note.setNoteType("x-StudyNote");
+        JAXBUtil.getList(ele).add(note);
     }
 }

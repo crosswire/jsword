@@ -1,12 +1,12 @@
-package org.crosswire.jsword.book.filter.gbf;
+package org.crosswire.jsword.book.filter.thml;
 
-import java.util.LinkedList;
+import javax.xml.bind.Element;
+import javax.xml.bind.JAXBException;
 
-import org.crosswire.common.util.Logger;
+import org.xml.sax.Attributes;
 
 /**
- * Unknown Tag. Either not supported tag or tag not defined in GBF
- * specification.
+ * THML Tag to process the bold element.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,28 +29,40 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class UnknownTagBuilder implements TagBuilder
+public class AliasTag implements Tag
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+    /**
+     * simple ctor
      */
-    public Tag createTag(final String name)
+    public AliasTag(String alias, Tag tag)
     {
-        return new Tag()
-        {
-            public void updateOsisStack(LinkedList stack)
-            {
-                // I'm confident enough that we handle all the GBF tags
-                // that I will blame the module and not the program
+        this.alias = alias;
+        this.tag = tag;
+    }
 
-                log.warn("Ignoring tag of <" + name + ">");
-                //DataPolice.report("Ignoring tag of <" + name + ">");
-            }
-        };
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+     */
+    public String getTagName()
+    {
+        return alias;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     */
+    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    {
+        tag.processTag(ele, attrs);
     }
 
     /**
-     * The log stream
+     * The tag we are aliasing to
      */
-    protected static final Logger log = Logger.getLogger(UnknownTagBuilder.class);
+    private Tag tag;
+
+    /**
+     * The alias that we are using for the other tag
+     */
+    private String alias;
 }

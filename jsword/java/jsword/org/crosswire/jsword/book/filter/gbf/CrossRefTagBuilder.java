@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.filter.ConversionLogger;
 import org.crosswire.jsword.osis.Reference;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -59,7 +59,7 @@ public class CrossRefTagBuilder implements TagBuilder
                     }
                     catch (NoSuchVerseException ex)
                     {
-                        ConversionLogger.report("unable to parse reference: "+refstr);
+                        DataPolice.report("unable to parse reference: "+refstr);
                     }
 
                     Element current = (Element) stack.get(0);

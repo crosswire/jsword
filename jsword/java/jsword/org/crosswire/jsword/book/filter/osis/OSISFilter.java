@@ -7,20 +7,21 @@ import java.util.List;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
 
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.filter.ConversionLogger;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.osis.P;
 import org.xml.sax.InputSource;
 
 /**
  * Filter to convert an OSIS XML string to OSIS format.
- * URGENT(joe): write a validation event listener
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -55,6 +56,7 @@ public class OSISFilter implements Filter
             try
             {
                 unm = JAXBUtil.getJAXBContext().createUnmarshaller();
+                unm.setEventHandler(new CustomValidationEventHandler());
             }
             catch (JAXBException ex)
             {
@@ -68,8 +70,8 @@ public class OSISFilter implements Filter
         }
         catch (Exception ex1)
         {
-            ConversionLogger.report("parse original failed: "+ex1.getMessage());
-            ConversionLogger.report("  while parsing: "+forOutput(plain));
+            DataPolice.report("parse original failed: "+ex1.getMessage());
+            DataPolice.report("  while parsing: "+forOutput(plain));
 
             // Attempt to fix broken entities, that could be the least damage
             // way to fix a broken input string
@@ -81,8 +83,8 @@ public class OSISFilter implements Filter
             }
             catch (Exception ex2)
             {
-                ConversionLogger.report("parse cropped failed: "+ex2.getMessage());
-                ConversionLogger.report("  while parsing: "+forOutput(cropped));
+                DataPolice.report("parse cropped failed: "+ex2.getMessage());
+                DataPolice.report("  while parsing: "+forOutput(cropped));
                 
                 // So just try to strip out all XML looking things
                 String shawn = XMLUtil.cleanAllTags(cropped);
@@ -93,8 +95,8 @@ public class OSISFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    ConversionLogger.report("parse shawn failed: "+ex3.getMessage());
-                    ConversionLogger.report("  while parsing: "+forOutput(shawn));
+                    DataPolice.report("parse shawn failed: "+ex3.getMessage());
+                    DataPolice.report("  while parsing: "+forOutput(shawn));
 
                     try
                     {
@@ -152,4 +154,19 @@ public class OSISFilter implements Filter
      * The JAXB unmarshaller
      */
     private Unmarshaller unm = null;
+
+    /**
+     * Catcher for all the Unmarshallers warnings
+     */
+    private static class CustomValidationEventHandler implements ValidationEventHandler
+    {
+        /* (non-Javadoc)
+         * @see javax.xml.bind.ValidationEventHandler#handleEvent(javax.xml.bind.ValidationEvent)
+         */
+        public boolean handleEvent(ValidationEvent ev)
+        {
+            DataPolice.report("OSIS parse error: "+ev.getMessage()+" More information is available.");
+            return true;
+        }
+    }
 }

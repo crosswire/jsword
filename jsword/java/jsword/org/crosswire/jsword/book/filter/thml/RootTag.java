@@ -1,12 +1,12 @@
-package org.crosswire.jsword.book.filter.gbf;
+package org.crosswire.jsword.book.filter.thml;
 
-import java.util.LinkedList;
+import javax.xml.bind.Element;
+import javax.xml.bind.JAXBException;
 
-import org.crosswire.common.util.Logger;
+import org.xml.sax.Attributes;
 
 /**
- * Unknown Tag. Either not supported tag or tag not defined in GBF
- * specification.
+ * THML Tag to process the root element.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,28 +29,26 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class UnknownTagBuilder implements TagBuilder
+public class RootTag implements Tag
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+    /**
+     * This is added by the parser to we make the string accessible
      */
-    public Tag createTag(final String name)
-    {
-        return new Tag()
-        {
-            public void updateOsisStack(LinkedList stack)
-            {
-                // I'm confident enough that we handle all the GBF tags
-                // that I will blame the module and not the program
+    protected static final String TAG_ROOT = "root";
 
-                log.warn("Ignoring tag of <" + name + ">");
-                //DataPolice.report("Ignoring tag of <" + name + ">");
-            }
-        };
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+     */
+    public String getTagName()
+    {
+        return TAG_ROOT;
     }
 
-    /**
-     * The log stream
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
      */
-    protected static final Logger log = Logger.getLogger(UnknownTagBuilder.class);
+    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    {
+        // Only for print edition
+    }
 }

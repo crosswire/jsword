@@ -2,15 +2,10 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.P;
-
 /**
- * Tag syntax: Words<CM>.
+ * Represent a trunc of bible text without any tags.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -33,38 +28,28 @@ import org.crosswire.jsword.osis.P;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ParagraphTagBuilder implements TagBuilder
+public class IgnoredTagBuilder implements TagBuilder
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
      */
-    public Tag createTag(String name)
+    public Tag createTag(final String name)
     {
-        if (!name.equals("CM"))
+        if ("BA".equals(name)
+            || "BC".equals(name)
+            || "BI".equals(name)
+            || "BN".equals(name)
+            || "BO".equals(name)
+            || "BP".equals(name))
         {
-            return null;
+            return new Tag()
+            {
+                public void updateOsisStack(LinkedList stack) throws JAXBException
+                {
+                }
+            };
         }
 
-        return new Tag()
-        {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.Stack)
-             */
-            public void updateOsisStack(LinkedList stack) throws JAXBException
-            {
-                P p = JAXBUtil.factory().createP();
-
-                if (stack.size() == 0)
-                {
-                    stack.addFirst(p);
-                    DataPolice.report("failing to add to element on empty stack");
-                }
-                else
-                {
-                    Element ele = (Element) stack.get(0);
-                    JAXBUtil.getList(ele).add(p);
-                }
-            }
-        };
+        return null;
     }
 }

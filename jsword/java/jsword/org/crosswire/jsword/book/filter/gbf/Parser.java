@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.filter.gbf;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.crosswire.jsword.book.filter.ConversionLogger;
+import org.crosswire.jsword.book.DataPolice;
 
 /**
  * A factory for Tags generated from a string.
@@ -85,7 +85,7 @@ public class Parser
         // check that we don't have unmatched tags
         if (ltpos == -1 || gtpos == -1)
         {
-            ConversionLogger.report("ignoring unmatched '<' or '>' in gbf: " + remains);
+            DataPolice.report("ignoring unmatched '<' or '>' in gbf: " + remains);
             retval.add(createText(remains));
             remains = null;
             return;
@@ -94,7 +94,7 @@ public class Parser
         // check that the tags are in a sensible order
         if (ltpos > gtpos)
         {
-            ConversionLogger.report("ignoring transposed '<' or '>' in gbf: " + remains);
+            DataPolice.report("ignoring transposed '<' or '>' in gbf: " + remains);
             retval.add(createText(remains));
             remains = null;
             return;
@@ -193,5 +193,6 @@ public class Parser
         new ParagraphTagBuilder(),
         new StrongsMorphTagBuilder(),
         new StrongsWordTagBuilder(),
+        new IgnoredTagBuilder(),
     };
 }

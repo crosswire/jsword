@@ -6,8 +6,8 @@ import java.util.List;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.filter.ConversionLogger;
 import org.crosswire.jsword.osis.W;
 
 /**
@@ -56,7 +56,7 @@ public class StrongsWordTagBuilder implements TagBuilder
                 List list = JAXBUtil.getList(ele);
                 if (list.isEmpty())
                 {
-                    ConversionLogger.report("No content to attach word to: <" + name + ">.");
+                    DataPolice.report("No content to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -76,7 +76,7 @@ public class StrongsWordTagBuilder implements TagBuilder
                 }
                 else
                 {
-                    ConversionLogger.report("No words to attach word to: <" + name + ">.");
+                    DataPolice.report("No words to attach word to: <" + name + ">.");
                     return;
                 }
 

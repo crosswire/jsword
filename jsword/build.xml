@@ -224,6 +224,20 @@
   </target>
 
   <!--=======================================================================-->
+  <target name="format" description="Format source code">
+    <taskdef name="pretty" classname="org.acm.seguin.ant.Pretty">
+      <classpath>
+        <fileset dir="${support.tools}/jrefactory2707" includes="**/*.jar"/>
+      </classpath>
+    </taskdef>
+    <pretty settingsDir="${support.tools}/jrefactory2707" cvs="true" compileDir="${target.root}">
+      <fileset dir="${source.java}">
+        <include name="**/*.java" />
+      </fileset>
+    </pretty>
+  </target>
+
+  <!--=======================================================================-->
   <target name="web.files" depends="jar" description="Copy the file based documentation">
     <mkdir dir="${target.web}"/>
     <style basedir="${source.web}" extension=".html" style="${source.web}/template.xsl" destdir="${target.web}">
@@ -715,6 +729,7 @@
       org.crosswire.jsword.view.swing.desktop.Desktop
       org.crosswire.jsword.book.ReadEverything
       abbot.editor.Costello
+      org.acm.seguin.tools.install.PrettyPrinterConfigGUI
       -->
       <sysproperty key="jsword.bible.dir" value="${source.res}"/>
       <jvmarg value="-Xmx512m"/>

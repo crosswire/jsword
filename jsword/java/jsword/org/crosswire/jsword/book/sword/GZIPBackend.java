@@ -149,6 +149,12 @@ public class GZIPBackend implements Backend
             // 10 because we the index is 10 bytes long for each verse
             byte[] temp = SwordUtil.readRAF(comp_raf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
+            // On occasion the index is short so just do nothing.
+            if (temp == null || temp.length == 0)
+            {
+                return temp;
+            }
+
             // The data is little endian - extract the start, size and endsize
             int buffernum = SwordUtil.decodeLittleEndian32AsInt(temp, 0);
 

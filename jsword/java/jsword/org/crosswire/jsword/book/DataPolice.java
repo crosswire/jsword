@@ -1,8 +1,6 @@
-package org.crosswire.jsword.book.filter;
+package org.crosswire.jsword.book;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Key;
 
 /**
  * When we can't convert some source data then the user doesn't really care and
@@ -30,12 +28,12 @@ import org.crosswire.jsword.book.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ConversionLogger
+public class DataPolice
 {
     /**
      * Prevent instansiation
      */
-    private ConversionLogger()
+    private DataPolice()
     {
     }
 
@@ -44,7 +42,7 @@ public class ConversionLogger
      */
     public static void setBook(BookMetaData bmd)
     {
-        ConversionLogger.bmd = bmd;
+        DataPolice.bmd = bmd;
     }
 
     /**
@@ -52,7 +50,7 @@ public class ConversionLogger
      */
     public static void setKey(Key key)
     {
-        ConversionLogger.key = key;
+        DataPolice.key = key;
     }
 
     /**
@@ -81,5 +79,5 @@ public class ConversionLogger
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(ConversionLogger.class);
+    protected static final Logger log = Logger.getLogger(DataPolice.class);
 }

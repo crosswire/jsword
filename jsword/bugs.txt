@@ -5,34 +5,16 @@ Name
 - change name of swing packages
 - change name of servlet packages
 
-Tests
-- write tests to check support for all modules
-
-Filters
-- Check THML debug tags needing work (Joe)
-
 GUI
 - Heb and Greek Fonts not used
 - Select first dict entry when picking new dict
 - Get better HTML renderer
 
 Sword Modules
-- Link divs from THML e.g. AmTract:AB
-
-- The Common Edition - missing backend
-- Modern Hebrew - RtoL/LtoR
-- Punctuation errors for fancy ' and "
-- XML parse errors, e.g. 2BabDict:Flowers
-
-- ISV (NT only?) refs in with text????
-- RSV for Rev 22:21 contains bizarre markup
-- KJV1769+Strong and Young's - stange <small><br>
-- zLD
 - GenBook
 - Locale/font support (Joe)
 
 CVS tidyup
-- remove junit from jsword-support
 - move map and maptest into jsword-support
 - deletes from web/images?
 

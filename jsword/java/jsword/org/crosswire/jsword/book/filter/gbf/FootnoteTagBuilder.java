@@ -7,8 +7,8 @@ import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.ClassUtils;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.filter.ConversionLogger;
 import org.crosswire.jsword.osis.Note;
 
 /**
@@ -80,7 +80,7 @@ public class FootnoteTagBuilder implements TagBuilder
                     }
                     else
                     {
-                        ConversionLogger.report("expected to pop a Note, but found "+ClassUtils.getShortClassName(pop.getClass()));
+                        DataPolice.report("expected to pop a Note, but found "+ClassUtils.getShortClassName(pop.getClass()));
                     }
                 }
             };

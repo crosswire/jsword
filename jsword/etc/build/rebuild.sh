@@ -24,8 +24,6 @@ echo JSWORD_HOME=$JSWORD_HOME
 . $JSWORD_HOME/etc/build/settings.global.sh
 
 . $JSWORD_HOME/etc/build/commands.`dnsdomainname`.sh
-. $JSWORD_HOME/etc/build/commands.global.sh
-
 
 #debug
 echo 'which ant'

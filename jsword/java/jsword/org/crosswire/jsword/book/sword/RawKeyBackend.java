@@ -12,6 +12,7 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.basic.DefaultKey;
 
@@ -119,7 +120,7 @@ public class RawKeyBackend implements KeyBackend
                 int keyend = SwordUtil.findByte(data, SEPARATOR);
                 if (keyend == -1)
                 {
-                    log.error("Failed to find keyname. offset="+offset+" data='"+new String(data)+"'");
+                    DataPolice.report("Failed to find keyname. offset="+offset+" data='"+new String(data)+"'");
                     continue;
                 }
 

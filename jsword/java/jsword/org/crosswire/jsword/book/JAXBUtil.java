@@ -15,6 +15,8 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
+import org.crosswire.jsword.osis.Foreign;
+import org.crosswire.jsword.osis.Item;
 import org.crosswire.jsword.osis.Milestone;
 import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.ObjectFactory;
@@ -90,6 +92,11 @@ public class JAXBUtil
      * Constant to help narrow down what we use seg for. In this case the justify right tag
      */
     public static final String SEG_JUSTIFYRIGHT = "text-align: right;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the justify right tag
+     */
+    public static final String SEG_CENTER = "text-align: center;";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the small tag
@@ -251,6 +258,18 @@ public class JAXBUtil
         else if (ele instanceof Title)
         {
             return ((Title) ele).getContent();
+        }
+        else if (ele instanceof Item)
+        {
+            return ((Item) ele).getContent();
+        }
+        else if (ele instanceof Foreign)
+        {
+            return ((Foreign) ele).getContent();
+        }
+        else if (ele instanceof org.crosswire.jsword.osis.List)
+        {
+            return ((org.crosswire.jsword.osis.List) ele).getContent();
         }
         else if (ele instanceof Table)
         {
