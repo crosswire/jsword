@@ -1,7 +1,6 @@
 package org.crosswire.common.xml;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.DataPolice;
 import org.xml.sax.Attributes;
 
 /**
@@ -67,8 +66,8 @@ public class XMLUtil
             if (c < 32 && c != 9 && c != 10 && c != 13)
             {
                 // since it is a control char, we want to see the number and not a character
-                int num = c;
-                DataPolice.report("disguarding illegal XML character: "+num);
+                //int num = c;
+                //DataPolice.report("disguarding illegal XML character: "+num);
             }
             else
             {
@@ -114,7 +113,7 @@ public class XMLUtil
                 {
                     String entity = working.substring(amp);
                     String replace = guessEntity(entity);
-                    DataPolice.report("replacing unterminated entity: '"+entity+"' with: '"+replace+"'");
+                    //DataPolice.report("replacing unterminated entity: '"+entity+"' with: '"+replace+"'");
 
                     working = working.substring(0, amp)+replace;
                     break singleEntity;
@@ -128,7 +127,7 @@ public class XMLUtil
                 {
                     String entity = working.substring(amp, i+1);
                     String replace = guessEntity(entity);
-                    DataPolice.report("replacing entity: '"+entity+"' with: '"+replace+"'");
+                    //DataPolice.report("replacing entity: '"+entity+"' with: '"+replace+"'");
                     
                     working = working.substring(0, amp)+replace+working.substring(i+1);
                     break singleEntity;
@@ -140,7 +139,7 @@ public class XMLUtil
                 {
                     String entity = working.substring(amp, i);
                     String replace = guessEntity(entity);
-                    DataPolice.report("replacing invalid entity: '"+entity+"' with: '"+replace+"'");
+                    //DataPolice.report("replacing invalid entity: '"+entity+"' with: '"+replace+"'");
 
                     working = working.substring(0, amp)+replace+working.substring(i);
                     break singleEntity;
@@ -302,7 +301,7 @@ public class XMLUtil
             }
 
             // So we have the end of the tag, delete it ...
-            DataPolice.report("disguarding tag: "+working.substring(lt, i+1));
+            //DataPolice.report("disguarding tag: "+working.substring(lt, i+1));
             working = working.substring(0, lt)+working.substring(i+1);
         }
         
