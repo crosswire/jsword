@@ -3,7 +3,6 @@
   <!-- This build uses the core build targets -->
   <import file="../common/core.xml"/>
 
-  <!--=======================================================================-->
   <target name="prepare.extra" description="Prepare extras files.">
     <copy todir="${target.output}" flatten="true">
       <fileset dir="${source.etc}">
