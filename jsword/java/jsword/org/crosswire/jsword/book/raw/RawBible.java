@@ -463,38 +463,48 @@ public class RawBible extends LocalURLBible implements Index
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {
         // For all of the sections
-        for (Iterator sit = JAXBUtil.getSectionDatas(bdata); sit.hasNext(); )
+        Iterator sit = bdata.getOsis().getOsisText().getDiv().iterator();
+        while (sit.hasNext())
         {
             Div div = (Div) sit.next();
 
             // For all of the Verses in the section
-            for (Iterator vit=JAXBUtil.getRefDatas(div); vit.hasNext(); )
+            for (Iterator vit=div.getContent().iterator(); vit.hasNext(); )
             {
-                org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) vit.next();
-                String text = JAXBUtil.getPlainText(overse);
+                Object data = vit.next();
+                if (data instanceof org.crosswire.jsword.osis.Verse)
+                {
+                    org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) data;
 
-                // Is this verse part of a new paragraph? Since the move to OSIS
-                // the concept of new para is not what it was. I don't intend to
-                // fix it properly since Raw does not fit well with marked-up
-                // text.
-                para_insts.setPara(false, verse);
+                    String text = JAXBUtil.getPlainText(overse);
 
-                // Chop the sentance into words.
-                String[] text_array = BookUtil.tokenize(text);
-
-                // The word index
-                String[] word_array = BookUtil.stripPunctuation(text_array);
-                int[] word_indexes = word_items.getIndex(word_array);
-                word_insts.setIndexes(word_indexes, verse);
-
-                // The punctuation index
-                String[] punc_array = BookUtil.stripWords(text_array);
-                int[] punc_indexes = punc_items.getIndex(punc_array);
-                punc_insts.setIndexes(punc_indexes, verse);
-
-                // The case index
-                int[] case_indexes = BookUtil.getCases(word_array);
-                case_insts.setIndexes(case_indexes, verse);
+                    // Is this verse part of a new paragraph? Since the move to OSIS
+                    // the concept of new para is not what it was. I don't intend to
+                    // fix it properly since Raw does not fit well with marked-up
+                    // text.
+                    para_insts.setPara(false, verse);
+    
+                    // Chop the sentance into words.
+                    String[] text_array = BookUtil.tokenize(text);
+    
+                    // The word index
+                    String[] word_array = BookUtil.stripPunctuation(text_array);
+                    int[] word_indexes = word_items.getIndex(word_array);
+                    word_insts.setIndexes(word_indexes, verse);
+    
+                    // The punctuation index
+                    String[] punc_array = BookUtil.stripWords(text_array);
+                    int[] punc_indexes = punc_items.getIndex(punc_array);
+                    punc_insts.setIndexes(punc_indexes, verse);
+    
+                    // The case index
+                    int[] case_indexes = BookUtil.getCases(word_array);
+                    case_insts.setIndexes(case_indexes, verse);
+                }
+                else
+                {
+                    log.error("Ignoring non OSIS/Verse content of DIV.");
+                }
             }
         }
     }

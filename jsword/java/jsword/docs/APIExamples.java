@@ -20,7 +20,6 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -66,7 +65,7 @@ public class APIExamples
         Bible bible = Defaults.getBibleMetaData().getBible();
 
         BookData data = bible.getData(ref);
-        String text = JAXBUtil.getPlainText(data);
+        String text = data.getPlainText();
 
         System.out.println("The plain text of Mat 1:1 is "+text);
     }
@@ -87,7 +86,7 @@ public class APIExamples
         Bible bible = Defaults.getBibleMetaData().getBible();
 
         BookData data = bible.getData(ref);
-        SAXEventProvider sep = JAXBUtil.getSAXEventProvider(data);
+        SAXEventProvider sep = data.getSAXEventProvider();
 
         // It would be normal to store 'styler' in a class variable (field)
         Style styler = new Style("html");
@@ -115,7 +114,7 @@ public class APIExamples
         System.out.println("The first Key in the default dictionary is "+first);
         
         BookData data = dict.getData(first);
-        System.out.println("And the text against that key is "+JAXBUtil.getPlainText(data));
+        System.out.println("And the text against that key is "+data.getPlainText());
     }
 
     /**

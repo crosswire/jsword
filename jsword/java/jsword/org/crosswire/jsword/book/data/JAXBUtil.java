@@ -2,31 +2,20 @@
 package org.crosswire.jsword.book.data;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.UnmarshallerHandler;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
-import javax.xml.bind.Validator;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.common.xml.JAXBSAXEventProvider;
-import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.ObjectFactory;
-import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.Seg;
 import org.crosswire.jsword.osis.Verse;
 import org.crosswire.jsword.util.Project;
-import org.xml.sax.SAXException;
 
 /**
  * Some simple utilities to help working with OSIS classes.
@@ -120,10 +109,54 @@ public class JAXBUtil
     }
 
     /**
+     * A simplified plain text version of the data in this verse with all
+     * the markup stripped out.
+     * @return The Bible text without markup
+     */
+    public static String getPlainText(Verse overse)
+    {
+        StringBuffer buffer = new StringBuffer();
+    
+        List content = overse.getContent();
+        for (Iterator it = content.iterator(); it.hasNext();)
+        {
+            Object ele = it.next();
+            JAXBUtil.recurseElement(ele, buffer);
+        }
+    
+        return buffer.toString();
+    }
+
+    /**
+     * Many of the OSIS elements have lists with content, but the accessors are
+     * not accoring to any interface, (or even with consistent names) so this
+     * method extracts a content List from a JAXB element.
+     */
+    public static List getList(Element current)
+    {
+        if (current instanceof Verse)
+        {
+            return ((Verse) current).getContent();
+        }
+        else if (current instanceof Seg)
+        {
+            return ((Seg) current).getContent();
+        }
+        else if (current instanceof Div)
+        {
+            return ((Div) current).getContent();
+        }
+        
+        log.error("unknown element: "+current.getClass().getName());
+        
+        throw new LogicError();
+    }
+
+    /**
      * If we have a String just add it to the buffer, but if we have an Element
      * then try to dig the strings out of it.
      */
-    public static void recurseElement(Object sub, StringBuffer buffer)
+    private static void recurseElement(Object sub, StringBuffer buffer)
     {
         if (sub instanceof String)
         {
@@ -162,171 +195,5 @@ public class JAXBUtil
             // We can continue, but we should report a problem
             log.error("Error interrogating: "+ele.getClass().getName(), ex);
         }
-    }
-
-    /**
-     * Create a BibleData from a SAXEventProvider
-     * @param doc
-     */
-    public static BookData createBibleData(SAXEventProvider provider) throws SAXException
-    {
-        try
-        {
-            Unmarshaller unm = JAXBUtil.getJAXBContext().createUnmarshaller();
-            UnmarshallerHandler unmh = unm.getUnmarshallerHandler();
-            provider.provideSAXEvents(unmh);
-
-            BookData bdata = new BookData((Osis) unmh.getResult());
-
-            return bdata;
-        }
-        catch (JAXBException ex)
-        {
-            throw new SAXException(ex);
-        }
-    }
-
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public static String getPlainText(Verse overse)
-    {
-        StringBuffer buffer = new StringBuffer();
-    
-        List content = overse.getContent();
-        for (Iterator it = content.iterator(); it.hasNext();)
-        {
-            Object ele = it.next();
-            JAXBUtil.recurseElement(ele, buffer);
-        }
-    
-        return buffer.toString();
-    }
-
-    /**
-     * A simplified plain text version of the data in this section with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public static String getPlainText(Div div)
-    {
-        StringBuffer buffer = new StringBuffer();
-    
-        Iterator it = JAXBUtil.getRefDatas(div);
-        while (it.hasNext())
-        {
-            Verse overse = (Verse) it.next();
-            buffer.append(JAXBUtil.getPlainText(overse));
-        }
-    
-        return buffer.toString();
-    }
-
-    /**
-     * A simplified plain text version of the data in this document with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public static String getPlainText(BookData bdata)
-    {
-        StringBuffer buffer = new StringBuffer();
-    
-        Iterator it = JAXBUtil.getSectionDatas(bdata);
-        while (it.hasNext())
-        {
-            Div div = (Div) it.next();
-            buffer.append(JAXBUtil.getPlainText(div));
-        }
-    
-        return buffer.toString().trim();
-    }
-
-    /**
-     * Check that a BibleData is valid. Currently (probably as a result of a bug
-     * in JAXB) this method will always fail.
-     * @param bdata The BibleData to check
-     * @throws JAXBException
-     */
-    public static void validate(BookData bdata) throws JAXBException
-    {
-        Validator val = JAXBUtil.getJAXBContext().createValidator();
-        val.setEventHandler(new ValidationEventHandler()
-        {
-            public boolean handleEvent(ValidationEvent ev)
-            {
-                return false;
-            }
-        });
-        val.validateRoot(bdata.getOsis());
-    }
-
-    /**
-     * This is an enumeration through all the sections in this Document.
-     * Each of the sections will be able to give a list of the Verses
-     * that it contains.
-     * @return The list of sections
-     */
-    public static Iterator getSectionDatas(BookData bdata)
-    {
-        List reply = new ArrayList();
-        
-        for (Iterator dit = bdata.getOsis().getOsisText().getDiv().iterator(); dit.hasNext();)
-        {
-            reply.add(dit.next());
-        }
-
-        return reply.iterator();
-    }
-
-    /**
-     * List the verses in this section
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public static Iterator getRefDatas(Div div)
-    {
-        List reply = new ArrayList();
-    
-        for (Iterator it = div.getContent().iterator(); it.hasNext();)
-        {
-            Object element = it.next();
-            if (element instanceof Verse)
-            {
-                reply.add(element);
-            }
-        }
-    
-        return reply.iterator();
-    }
-
-    /**
-     * Output the current data as a SAX stream.
-     * @return A way of posting SAX events
-     */
-    public static SAXEventProvider getSAXEventProvider(BookData bdata)
-    {
-        return new JAXBSAXEventProvider(JAXBUtil.getJAXBContext(), bdata.getOsis());
-    }
-
-    public static List getList(Element current)
-    {
-        if (current instanceof Verse)
-        {
-            return ((Verse) current).getContent();
-        }
-        else if (current instanceof Seg)
-        {
-            return ((Seg) current).getContent();
-        }
-        else if (current instanceof Div)
-        {
-            return ((Div) current).getContent();
-        }
-        
-        log.error("unknown element: "+current.getClass().getName());
-        
-        throw new LogicError();
     }
 }

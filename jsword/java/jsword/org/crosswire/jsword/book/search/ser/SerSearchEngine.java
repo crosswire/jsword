@@ -20,7 +20,6 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
@@ -294,7 +293,7 @@ public class SerSearchEngine implements SearchEngine, Index
                 // loop through all the words in this verse
                 Passage current = PassageFactory.createPassage();
                 current.add(verse);
-                String text = JAXBUtil.getPlainText(bible.getData(current));
+                String text = bible.getData(current).getPlainText();
                 String[] words = BookUtil.getWords(text);
                 for (int i = 0; i < words.length; i++)
                 {

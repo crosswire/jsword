@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.book.data;
 
 import java.util.LinkedList;

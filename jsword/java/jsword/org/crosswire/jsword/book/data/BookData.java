@@ -1,7 +1,21 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.util.Iterator;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.UnmarshallerHandler;
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
+import javax.xml.bind.Validator;
+
+import org.crosswire.common.xml.JAXBSAXEventProvider;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.Verse;
+import org.xml.sax.SAXException;
 
 /**
  * Basic section of BookData.
@@ -38,11 +52,87 @@ public class BookData
     }
 
     /**
+     * Create a BibleData from a SAXEventProvider
+     */
+    public BookData(SAXEventProvider provider) throws SAXException
+    {
+        try
+        {
+            Unmarshaller unm = JAXBUtil.getJAXBContext().createUnmarshaller();
+            UnmarshallerHandler unmh = unm.getUnmarshallerHandler();
+            provider.provideSAXEvents(unmh);
+
+            osis = (Osis) unmh.getResult();
+        }
+        catch (JAXBException ex)
+        {
+            throw new SAXException(ex);
+        }
+    }
+
+    /**
      * Accessor for the root OSIS element
      */
     public Osis getOsis()
     {
         return osis;
+    }
+
+    /**
+     * A simplified plain text version of the data in this document with all
+     * the markup stripped out.
+     * @return The Bible text without markup
+     */
+    public String getPlainText()
+    {
+        StringBuffer buffer = new StringBuffer();
+    
+        Iterator oit = getOsis().getOsisText().getDiv().iterator();
+        while (oit.hasNext())
+        {
+            Div div = (Div) oit.next();
+    
+            Iterator dit = div.getContent().iterator();
+            while (dit.hasNext())
+            {
+                Object data = dit.next();
+                if (data instanceof Verse)
+                {
+                    String txt = JAXBUtil.getPlainText((Verse) data);
+                    buffer.append(txt);
+                }
+            }
+        }
+    
+        return buffer.toString().trim();
+    }
+
+    /**
+     * Check that a BibleData is valid. Currently (probably as a result of a bug
+     * in JAXB) this method will always fail.
+     * @param bdata The BibleData to check
+     * @throws JAXBException
+     */
+    public void validate() throws JAXBException
+    {
+        Validator val = JAXBUtil.getJAXBContext().createValidator();
+        val.setEventHandler(new ValidationEventHandler()
+        {
+            public boolean handleEvent(ValidationEvent ev)
+            {
+                return false;
+            }
+        });
+        val.validateRoot(osis);
+    }
+
+    /**
+     * Output the current data as a SAX stream.
+     * @return A way of posting SAX events
+     */
+    public SAXEventProvider getSAXEventProvider()
+    {
+        return new JAXBSAXEventProvider(JAXBUtil.getJAXBContext(), osis);
     }
 
     /**

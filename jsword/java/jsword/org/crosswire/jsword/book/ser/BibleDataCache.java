@@ -204,21 +204,30 @@ public class BibleDataCache
         try
         {
             // For all of the sections
-            for (Iterator sit = JAXBUtil.getSectionDatas(bdata); sit.hasNext(); )
+            Iterator sit = bdata.getOsis().getOsisText().getDiv().iterator();
+            while (sit.hasNext())
             {
                 Div div = (Div) sit.next();
 
                 // For all of the Verses in the section
-                for (Iterator vit = JAXBUtil.getRefDatas(div); vit.hasNext(); )
+                for (Iterator vit = div.getContent().iterator(); vit.hasNext(); )
                 {
-                    org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) vit.next();
-                    String text = JAXBUtil.getPlainText(overse);
+                    Object data = vit.next();
+                    if (data instanceof org.crosswire.jsword.osis.Verse)
+                    {
+                        org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) data;
+                        String text = JAXBUtil.getPlainText(overse);
 
-                    // Remember where we were so we can read it back later
-                    xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();
+                        // Remember where we were so we can read it back later
+                        xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();
 
-                    // And write the entry
-                    xml_dat.writeUTF(text);
+                        // And write the entry
+                        xml_dat.writeUTF(text);
+                    }
+                    else
+                    {
+                        log.error("Ignoring non OSIS/Verse content of DIV.");
+                    }
                 }
             }
         }
