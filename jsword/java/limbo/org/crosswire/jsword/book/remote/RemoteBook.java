@@ -77,7 +77,7 @@ public class RemoteBook extends AbstractBook
             Document doc = remoter.execute(method);
             SAXEventProvider provider = new JDOMSAXEventProvider(doc);
 
-            return new BookData(provider, this, key);
+            return new BookData(provider);
         }
         catch (RemoterException ex)
         {

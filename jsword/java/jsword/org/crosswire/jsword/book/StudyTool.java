@@ -71,11 +71,11 @@ public class StudyTool
                     Translation trans = (Translation) reply.get(strongs);
                     if (trans == null)
                     {
-                        trans = new Translation(word, strongs);
+                        trans = new Translation(word, strongs, key);
                         reply.put(strongs, trans);
                     }
 
-                    trans.getRef().add(OSISUtil.getVerse(w));
+                    trans.getKey().addAll(OSISUtil.getVerse(w));
                 }
             }
         }
@@ -120,11 +120,11 @@ public class StudyTool
                     Translation trans = (Translation) reply.get(translated);
                     if (trans == null)
                     {
-                        trans = new Translation(translated, number);
+                        trans = new Translation(translated, number, key);
                         reply.put(translated, trans);
                     }
 
-                    trans.getRef().add(OSISUtil.getVerse(w));
+                    trans.getKey().addAll(OSISUtil.getVerse(w));
                 }
             }
         }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
@@ -26,6 +25,7 @@ import java.util.NoSuchElementException;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class BookFilterIterator implements Iterator
@@ -38,22 +38,18 @@ public class BookFilterIterator implements Iterator
     {
         this.it = it;
         this.filter = filter;
-
-        findNext();
     }
 
-    /**
-     * Are there any more?
+    /* (non-Javadoc)
      * @see java.util.Iterator#hasNext()
      */
     public boolean hasNext()
     {
+        next = findNext();
         return next != null;
     }
 
-    /**
-     * Get the next. Hmmm using finally to avoid creating a temporary local
-     * variable. Just how evil is this?
+    /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
     public Object next()
@@ -62,19 +58,10 @@ public class BookFilterIterator implements Iterator
         {
             throw new NoSuchElementException();
         }
-
-        try
-        {
-            return next;
-        }
-        finally
-        {
-            findNext();
-        }
+        return next;
     }
 
-    /**
-     * Can't do this.
+    /* (non-Javadoc)
      * @see java.util.Iterator#remove()
      */
     public void remove()
@@ -83,27 +70,20 @@ public class BookFilterIterator implements Iterator
     }
 
     /**
-     * Store the next (if there is one)
+     * Find the next (if there is one)
      */
-    private void findNext()
+    private BookMetaData findNext()
     {
-        if (filter == null)
+        while (it.hasNext())
         {
-            next = null;
-            return;
-        }
-
-        do
-        {
-            if (!it.hasNext())
+            BookMetaData bmd = (BookMetaData) it.next();
+            if (filter == null || filter.test(bmd))
             {
-                next = null;
-                return;
+                return bmd;
             }
-
-            next = (BookMetaData) it.next();
         }
-        while (!filter.test(next));
+
+        return null;
     }
 
     /**

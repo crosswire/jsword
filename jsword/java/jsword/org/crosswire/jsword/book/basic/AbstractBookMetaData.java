@@ -2,10 +2,21 @@ package org.crosswire.jsword.book.basic;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.swing.event.EventListenerList;
 
+import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.IndexStatus;
 
 /**
  * An implementaion of the Propery Change methods from BookMetaData.
@@ -33,6 +44,248 @@ import org.crosswire.jsword.book.BookMetaData;
  */
 public abstract class AbstractBookMetaData implements BookMetaData
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getBook()
+     */
+    public Book getBook()
+    {
+        return book;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriver()
+     */
+    public BookDriver getDriver()
+    {
+        return driver;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
+     */
+    public String getDriverName()
+    {
+        if (getDriver() == null)
+        {
+            return null;
+        }
+
+        return getDriver().getDriverName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
+     */
+    public String getOsisID()
+    {
+        return getType().toString() + '.' + getInitials();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
+     */
+    public String getFullName()
+    {
+        if (fullName == null)
+        {
+            fullName = computeFullName();
+        }
+        return fullName;
+    }
+
+    /**
+     * 
+     */
+    private String computeFullName()
+    {
+        StringBuffer buf = new StringBuffer(getName());
+
+        if (getDriver() != null)
+        {
+            buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        return buf.toString();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
+     */
+    public String getLanguage()
+    {
+        return (String) getProperty(KEY_LANGUAGE);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getProperties()
+     */
+    public Map getProperties()
+    {
+        return prop;
+    }
+    
+    /**
+     * @param newProperties
+     */
+    public void setProperties(Map newProperties)
+    {
+        prop = newProperties;
+    }
+    
+    /**
+     * @param key
+     * @return the object found by the key
+     */
+    protected Object getProperty(String key)
+    {
+        return prop.get(key);
+    }
+
+    /**
+     * @param key
+     * @param value
+     */
+    protected void putProperty(String key, Object value)
+    {
+        prop.put(key, value);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
+     */
+    public IndexStatus getIndexStatus()
+    {
+        return indexStatus;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
+     */
+    public void setIndexStatus(IndexStatus newValue)
+    {
+        IndexStatus oldValue = this.indexStatus;
+        this.indexStatus = newValue;
+        prop.put(KEY_INDEXSTATUS, newValue);
+        firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
+    }
+
+    /**
+     * @param book The book to set.
+     */
+    public void setBook(Book book)
+    {
+        this.book = book;
+    }
+
+    /**
+     * @param driver The driver to set.
+     */
+    public void setDriver(BookDriver driver)
+    {
+        this.driver = driver;
+    }
+
+
+    /**
+     * Get the language name from the language code. Note, this code does not support dialects.
+     * @param iso639Code
+     * @return the name of the language
+     */
+    protected String getLanguage(String ident, String iso639Code)
+    {
+        String lookup = iso639Code;
+        if (lookup == null || lookup.length() == 0)
+        {
+            log.warn("Book " + ident + " named " + getName() + " has no language specified. Assuming English."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return getLanguage(ident, DEFAULT_LANG_CODE);
+        }
+
+        if (lookup.indexOf('_') != -1)
+        {
+            String[] locale = StringUtil.split(lookup, '_');
+            return getLanguage(ident, locale[0]);
+        }
+
+        char firstLangChar = lookup.charAt(0);
+        // If the language begins w/ an x then it is "Undetermined"
+        // Also if it is not a 2 or 3 character code then it is not a valid
+        // iso639 code.
+        if (firstLangChar == 'x' || firstLangChar == 'X' || lookup.length() > 3)
+        {
+            return getLanguage(ident, UNKNOWN_LANG_CODE);
+        }
+
+        try
+        {
+            return languages.getString(lookup);
+        }
+        catch (MissingResourceException e)
+        {
+            log.error("Not a valid language code:" + iso639Code + " in book " + ident); //$NON-NLS-1$ //$NON-NLS-2$
+            return getLanguage(ident, UNKNOWN_LANG_CODE);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // We might consider checking for equality against all BookMetaDatas?
+        // However currently we dont.
+
+        // Check that that is the same as this
+        // Don't use instanceof since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        // The real bit ...
+        BookMetaData that = (BookMetaData) obj;
+
+        return getName().equals(that.getName());
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return getName().hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        BookMetaData that = (BookMetaData) obj;
+        return this.getInitials().compareTo(that.getInitials());
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        if (displayName == null)
+        {
+            StringBuffer buf = new StringBuffer("["); //$NON-NLS-1$
+            buf.append(getInitials());
+            buf.append("] - "); //$NON-NLS-1$
+            buf.append(getFullName());
+            displayName = buf.toString();
+        }
+        return displayName;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#addPropertyChangeListener(java.beans.PropertyChangeListener)
      */
@@ -94,7 +347,39 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(AbstractBookMetaData.class);
+
+    private static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
+    private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
+
+    /**
      * The list of property change listeners
      */
     private transient EventListenerList listeners;
+
+    private static/*final*/ResourceBundle languages;
+    static
+    {
+        try
+        {
+            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), new CWClassLoader()); //$NON-NLS-1$;
+        }
+        catch (MissingResourceException e)
+        {
+            assert false;
+        }
+    }
+
+    /**
+     * The single key version of the properties
+     */
+    private Map prop = new LinkedHashMap();
+
+    private Book book;
+    private BookDriver driver;
+    private String fullName;
+    private String displayName;
+    private IndexStatus indexStatus = IndexStatus.UNDONE;
 }

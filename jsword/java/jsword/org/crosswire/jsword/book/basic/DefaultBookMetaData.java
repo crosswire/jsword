@@ -1,7 +1,5 @@
 package org.crosswire.jsword.book.basic;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.crosswire.common.util.StringUtil;
@@ -49,11 +47,10 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      */
     public DefaultBookMetaData(BookDriver driver, Book book, Properties prop)
     {
-        this.driver = driver;
-        this.book = book;
+        setDriver(driver);
+        setBook(book);
 
-        map.putAll(prop);
-
+        setProperties(prop);
         setName(prop.getProperty(BookMetaData.KEY_NAME));
         setType(prop.getProperty(BookMetaData.KEY_TYPE));
         setLanguage(prop.getProperty(BookMetaData.KEY_LANGUAGE));
@@ -75,11 +72,11 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      */
     public DefaultBookMetaData(BookDriver driver, Book book, String name, BookType type)
     {
-        this.driver = driver;
-        this.book = book;
-
+        setDriver(driver);
+        setBook(book);
         setName(name);
         setType(type);
+        setLanguage(null); // Default language
     }
 
     /* (non-Javadoc)
@@ -91,35 +88,11 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getBook()
-     */
-    public Book getBook()
-    {
-        return book;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getDriver()
-     */
-    public BookDriver getDriver()
-    {
-        return driver;
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName()
     {
         return name;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
-     */
-    public String getLanguage()
-    {
-        return language;
     }
 
     /* (non-Javadoc)
@@ -131,45 +104,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getProperties()
-     */
-    public Map getProperties()
-    {
-        return map;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
-     */
-    public String getFullName()
-    {
-        StringBuffer buf = new StringBuffer(getName());
-
-        if (driver != null)
-        {
-            buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        return buf.toString();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
-     */
-    public String getOsisID()
-    {
-        return getType().toString() + '.' + getInitials();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
-     */
-    public String getDriverName()
-    {
-        return driver.getDriverName();
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight()
@@ -178,56 +112,12 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
-     */
-    public IndexStatus getIndexStatus()
-    {
-        return indexStatus;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
-     */
-    public void setIndexStatus(IndexStatus newValue)
-    {
-        IndexStatus oldValue = this.indexStatus;
-        this.indexStatus = newValue;
-        map.put(KEY_INDEXSTATUS, newValue);
-        firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
-    }
-
-    /**
-     * @param book The book to set.
-     */
-    public void setBook(Book book)
-    {
-        this.book = book;
-    }
-
-    /**
-     * @param driver The driver to set.
-     */
-    public void setDriver(BookDriver driver)
-    {
-        this.driver = driver;
-    }
-
     /**
      * @param language The language to set.
      */
     public void setLanguage(String language)
     {
-        if (language == null)
-        {
-            this.language = ""; //$NON-NLS-1$
-        }
-        else
-        {
-            this.language = language;
-        }
-
-        map.put(KEY_LANGUAGE, this.language);
+        putProperty(KEY_LANGUAGE, getLanguage(initials, language));
     }
 
     /**
@@ -254,7 +144,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
             this.initials = initials;
         }
 
-        map.put(KEY_INITIALS, this.initials);
+        putProperty(KEY_INITIALS, this.initials);
     }
 
     /**
@@ -267,7 +157,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     {
         this.name = name;
 
-        map.put(KEY_NAME, this.name);
+        putProperty(KEY_NAME, this.name);
 
         setInitials(StringUtil.getInitials(name));
     }
@@ -283,7 +173,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         }
         this.type = type;
 
-        map.put(KEY_TYPE, type == null ? "" : type.toString()); //$NON-NLS-1$
+        putProperty(KEY_TYPE, type == null ? "" : type.toString()); //$NON-NLS-1$
     }
 
     /**
@@ -300,68 +190,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         setType(newType);
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj)
-    {
-        // Since this can not be null
-        if (obj == null)
-        {
-            return false;
-        }
-
-        // We might consider checking for equality against all BookMetaDatas?
-        // However currently we dont.
-
-        // Check that that is the same as this
-        // Don't use instanceof since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
-            return false;
-        }
-
-        // The real bit ...
-        BookMetaData that = (BookMetaData) obj;
-
-        return getName().equals(that.getName());
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
-        return getName().hashCode();
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getFullName();
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object obj)
-    {
-        BookMetaData that = (BookMetaData) obj;
-        return this.getName().compareTo(that.getName());
-    }
-
-    /**
-     * 
-     */
-    private Map map = new LinkedHashMap();
-
     private BookType type;
-    private Book book;
-    private BookDriver driver;
-    private String name = ""; //$NON-NLS-1$
-    private String language = ""; //$NON-NLS-1$
-    private String initials = ""; //$NON-NLS-1$
-    private IndexStatus indexStatus = IndexStatus.UNDONE;
+    private String name;
+    private String initials;
 }

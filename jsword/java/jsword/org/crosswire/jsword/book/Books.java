@@ -192,7 +192,7 @@ public class Books implements BookList
 
         books.add(bmd);
 
-        fireBooksChanged(Books.class, bmd, true);
+        fireBooksChanged(instance, bmd, true);
     }
 
     /**
@@ -209,7 +209,7 @@ public class Books implements BookList
         boolean removed = books.remove(bmd);
         if (removed)
         {
-            fireBooksChanged(Books.class, bmd, true);
+            fireBooksChanged(instance, bmd, true);
         }
         else
         {
@@ -411,7 +411,7 @@ public class Books implements BookList
      * At this time there is no way to set this or influence it
      * So it just acts as a means of commenting out code.
      */
-    private boolean threaded =  false;
+    private boolean threaded;
 
     /**
      * The log stream

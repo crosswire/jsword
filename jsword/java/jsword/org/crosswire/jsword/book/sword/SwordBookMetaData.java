@@ -15,21 +15,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Histogram;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.StringUtil;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
@@ -89,7 +82,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public SwordBookMetaData(Reader in, String internal) throws IOException
     {
-        this.book = null;
+        setBook(null);
         this.internal = internal;
         this.supported = true;
 
@@ -148,11 +141,11 @@ public class SwordBookMetaData extends AbstractBookMetaData
                 appendSeparator = true;
             }
 
-            prop.put(key, combined.toString());
+            putProperty(key, combined.toString());
         }
 
         // set the key property file entries
-        prop.put(KEY_INITIALS, initials);
+        putProperty(KEY_INITIALS, initials);
 
         validate();
 
@@ -179,7 +172,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
         }
 
         String lang = getProperty(ConfigEntry.LANG);
-        prop.put(KEY_LANGUAGE, getLanguage(lang));
+        putProperty(KEY_LANGUAGE, getLanguage(internal, lang));
         if (lang != null) //$NON-NLS-1$
         {
             // This returns ComponentOrientation.LEFT_TO_RIGHT if
@@ -204,51 +197,11 @@ public class SwordBookMetaData extends AbstractBookMetaData
         if (mtype != null)
         {
             BookType type = mtype.getBookType();
-            prop.put(KEY_TYPE, type != null ? type.toString() : ""); //$NON-NLS-1$
+            putProperty(KEY_TYPE, type != null ? type.toString() : ""); //$NON-NLS-1$
         }
 
         // now that prop is fully populated we can organize it.
         organize();
-    }
-
-    /**
-     * Get the language name from the language code. Note, this code does not support dialects.
-     * @param iso639Code
-     * @return the name of the language
-     */
-    private String getLanguage(String iso639Code)
-    {
-        String lookup = iso639Code;
-        if (lookup == null || lookup.length() == 0)
-        {
-            log.warn("Book " + internal + " named " + getName() + " has no language specified. Assuming English."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            return getLanguage(DEFAULT_LANG_CODE);
-        }
-
-        if (lookup.indexOf('_') != -1)
-        {
-            String[] locale = StringUtil.split(lookup, '_');
-            return getLanguage(locale[0]);
-        }
-
-        char firstLangChar = lookup.charAt(0);
-        // If the language begins w/ an x then it is "Undetermined"
-        // Also if it is not a 2 or 3 character code then it is not a valid
-        // iso639 code.
-        if (firstLangChar == 'x' || firstLangChar == 'X' || lookup.length() > 3)
-        {
-            return getLanguage(UNKNOWN_LANG_CODE);
-        }
-
-        try
-        {
-            return languages.getString(lookup);
-        }
-        catch (MissingResourceException e)
-        {
-            log.error("Not a valid language code:" + iso639Code + " in book " + internal); //$NON-NLS-1$ //$NON-NLS-2$
-            return getLanguage(UNKNOWN_LANG_CODE);
-        }
     }
 
     /**
@@ -321,8 +274,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
         organize(orderedMap, SYSTEM_INFO);
         organize(orderedMap, COPYRIGHT_INFO);
         // add everything else in sorted order
-        orderedMap.putAll(new TreeMap(prop));
-        prop = orderedMap;
+        orderedMap.putAll(new TreeMap(getProperties()));
+        setProperties(orderedMap);
     }
 
     /**
@@ -333,7 +286,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
         for (int i = 0; i < category.length; i++)
         {
             String key = category[i].toString();
-            Object value = prop.remove(key);
+            Object value = getProperties().remove(key);
             if (value != null)
             {
                 result.put(key, value);
@@ -684,7 +637,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
         list.add(value);
         table.put(key, list);
 
-        prop.put(key, value);
+        putProperty(key, value);
     }
 
     /**
@@ -706,62 +659,11 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getBook()
-     */
-    public Book getBook()
-    {
-        return book;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getDriver()
-     */
-    public BookDriver getDriver()
-    {
-        return driver;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
-     */
-    public String getLanguage()
-    {
-        return getProperty(KEY_LANGUAGE);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials()
     {
         return initials;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getProperties()
-     */
-    public Map getProperties()
-    {
-        return prop;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
-     */
-    public IndexStatus getIndexStatus()
-    {
-        return indexStatus;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
-     */
-    public void setIndexStatus(IndexStatus newValue)
-    {
-        IndexStatus oldValue = this.indexStatus;
-        this.indexStatus = newValue;
-        prop.put(KEY_INDEXSTATUS, newValue);
-        firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
     }
 
     /**
@@ -772,7 +674,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getProperty(Object entry)
     {
-        String result = (String) prop.get(entry.toString());
+        String result = (String) getProperty(entry.toString());
 
         if (result == null)
         {
@@ -790,58 +692,10 @@ public class SwordBookMetaData extends AbstractBookMetaData
             }
             else
             {
-                prop.put(entry.toString(), result);
+                putProperty(entry.toString(), result);
             }
         }
         return result;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
-     */
-    public String getFullName()
-    {
-        if (fullName == null)
-        {
-            fullName = computeFullName();
-        }
-        return fullName;
-    }
-
-    /**
-     * 
-     */
-    private String computeFullName()
-    {
-        StringBuffer buf = new StringBuffer(getName());
-
-        if (driver != null)
-        {
-            buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        return buf.toString();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
-     */
-    public String getOsisID()
-    {
-        return getType().toString() + '.' + getInitials();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
-     */
-    public String getDriverName()
-    {
-        if (driver == null)
-        {
-            return null;
-        }
-
-        return driver.getDriverName();
     }
 
     /* (non-Javadoc)
@@ -853,109 +707,15 @@ public class SwordBookMetaData extends AbstractBookMetaData
         return ltor == null || ltor.equals(SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_LTOR]);
     }
 
-    /**
-     * @param book The book to set.
-     */
-    protected void setBook(Book book)
-    {
-        this.book = book;
-    }
-
-    /**
-     * This setter is public because access is needed from *SwordInstallers as
-     * well as the normal sword drivers. Where is C++ friend when you need it!
-     * @param driver The driver to set.
-     */
-    public void setDriver(BookDriver driver)
-    {
-        this.driver = driver;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj)
-    {
-        // Since this can not be null
-        if (obj == null)
-        {
-            return false;
-        }
-
-        // We might consider checking for equality against all BookMetaDatas?
-        // However currently we dont.
-
-        // Check that that is the same as this
-        // Don't use instanceof since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
-            return false;
-        }
-
-        // The real bit ...
-        BookMetaData that = (BookMetaData) obj;
-
-        return getName().equals(that.getName());
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
-        return getName().hashCode();
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        if (displayName == null)
-        {
-            StringBuffer buf = new StringBuffer("["); //$NON-NLS-1$
-            buf.append(getInitials());
-            buf.append("] - "); //$NON-NLS-1$
-            buf.append(getFullName());
-            displayName = buf.toString();
-        }
-        return displayName;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object obj)
-    {
-        BookMetaData that = (BookMetaData) obj;
-        return this.getName().compareTo(that.getName());
-    }
-
     public static void dumpStatistics()
     {
         System.out.println(histogram.toString());
     }
 
-    private static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
-    private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
-
     /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SwordBookMetaData.class);
-
-    private static/*final*/ResourceBundle languages;
-    static
-    {
-        try
-        {
-            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), new CWClassLoader()); //$NON-NLS-1$;
-        }
-        catch (MissingResourceException e)
-        {
-            assert false;
-        }
-    }
 
     private static final Object[] BASIC_INFO =
     {
@@ -1073,26 +833,16 @@ public class SwordBookMetaData extends AbstractBookMetaData
     private Map table = new LinkedHashMap();
 
     /**
-     * The single key version of the input file
-     */
-    private Map prop = new LinkedHashMap();
-
-    /**
      * The original name of this config file from mods.d.
      * This is only used for reporting
      */
     private String internal;
 
     private ModuleType mtype;
-    private Book book;
-    private BookDriver driver;
-    private String fullName;
-    private String displayName;
     private String initials = ""; //$NON-NLS-1$
     private boolean supported;
     private StringBuffer data = new StringBuffer();
     private String readahead;
     private static Histogram histogram = new Histogram();
     private List warnings = new ArrayList();
-    private IndexStatus indexStatus = IndexStatus.UNDONE;
 }
