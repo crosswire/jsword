@@ -130,7 +130,7 @@ public class BibleDataCache
      * Write the XML to disk
      * @param doc The data to write
      */
-    public void setDocument(BibleData doc) throws BookException
+    public void setDocument(Verse verse, BibleData doc) throws BookException
     {
         try
         {
@@ -143,8 +143,6 @@ public class BibleDataCache
                 for (Iterator vit = section.getRefDatas(); vit.hasNext(); )
                 {
                     RefData vel = (RefData) vit.next();
-
-                    Verse verse = vel.getVerse();
                     String text = vel.getPlainText();
 
                     // Remember where we were so we can read it back later

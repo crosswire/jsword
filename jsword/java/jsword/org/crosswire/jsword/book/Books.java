@@ -42,7 +42,9 @@ import org.crosswire.jsword.util.Project;
 public class Books
 {
     /**
-     * <p>Important values include 5, were the remoting system will not remote
+     * The SPEED_* constants specify how fast a Book implementation is.
+     * 
+     * Important values include 5, were the remoting system will not remote
      * Books where getSpeed() >= 5 (to save re-remoting already remote Books).
      * 10 is also special - values > 10 indicate the data returned is likely to
      * be wrong (i.e. test data) So we should probably not ship systems with

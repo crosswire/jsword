@@ -9,7 +9,7 @@
 	  
 <p>There is a mailing list at <a href="mailto:jsword-devel@crosswire.org">jsword-devel@crosswire.org</a>. 
 To join, please fill out your email address in on <a href="http://www.crosswire.org/mailman/listinfo/jsword-devel ">this</a> 
-form.</p>
+form. Or you can read the archives <a href='http://www.crosswire.org/pipermail/jsword-devel/'>here</a></p>
 
 <p> CVS is also hosted at crosswire. The CVS root is:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<code>:pserver:anonymous@cvs.crosswire.org:/cvs/jsword</code> 

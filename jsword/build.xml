@@ -63,7 +63,7 @@
       <and>
         <available file="${gener.root}/osis/org" type="dir"/>
         <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
-          <uptodate targetfile="${source.etc}/osisCore.1.1.xsd">
+          <uptodate targetfile="${source.etc}/osisCore.1.1.1.xsd">
             <srcfiles dir="${gener.root}/osis"/>
           </uptodate>
         </not>
@@ -197,7 +197,7 @@
     <copy todir="${target.deploy}/lib">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-      <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
+      <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
       <fileset dir="${target.jar}" includes="*.jar"/>
     </copy>
     <mkdir dir="${target.deploy}/resource"/>
@@ -299,7 +299,7 @@
     <copy todir="${target.web}/WEB-INF/lib">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-      <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
+      <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
       <fileset dir="${target.jar}" includes="*.jar"/>
     </copy>
     <mkdir dir="${target.web}/WEB-INF/classes"/>
@@ -328,6 +328,9 @@
         splitindex="true"
         version="true">
       <packageset dir="${source.java}/common" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
+      <packageset dir="${gener.root}/osis" defaultexcludes="yes">
         <include name="**" />
       </packageset>
       <packageset dir="${source.java}/jsword" defaultexcludes="yes">
@@ -423,7 +426,7 @@
     <copy todir="${target.jnlp}">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-      <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
+      <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
       <fileset dir="${target.jar}" includes="*.jar"/>
       <fileset dir="${notes.root}/versions">
         <include name="*.jar"/>

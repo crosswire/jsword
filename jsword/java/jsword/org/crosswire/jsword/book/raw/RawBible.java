@@ -435,7 +435,7 @@ public class RawBible extends LocalURLBible
      * @param verse The verse to write
      * @param text The data to write
      */
-    public void setDocument(BibleData doc) throws BookException
+    public void setDocument(Verse verse, BibleData doc) throws BookException
     {
         // For all of the sections
         for (Iterator sit=doc.getSectionDatas(); sit.hasNext(); )
@@ -447,7 +447,6 @@ public class RawBible extends LocalURLBible
             {
                 RefData vel = (RefData) vit.next();
 
-                Verse verse = vel.getVerse();
                 String text = vel.getPlainText();
 
                 // Is this verse part of a new paragraph?

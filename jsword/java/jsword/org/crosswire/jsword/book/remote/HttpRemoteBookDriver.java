@@ -49,8 +49,8 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
 
     /**
      * Accessor for the current remoter.
-     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
      * @return The remoter or null if none is available.
+     * @see org.crosswire.jsword.book.remote.RemoteBookDriver#getRemoter()
      */
     protected Remoter getRemoter()
     {

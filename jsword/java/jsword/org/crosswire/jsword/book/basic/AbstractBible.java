@@ -105,13 +105,14 @@ public abstract class AbstractBible implements Bible
             return null;
         }
     }
+
     /**
      * Write the XML to disk. Children will almost certainly want to
      * override this.
      * @param verse The verse to write
      * @param text The data to write
      */
-    public void setDocument(BibleData text) throws BookException
+    public void setDocument(Verse verse, BibleData text) throws BookException
     {
         throw new BookException("bible_driver_readonly");
     }
@@ -151,7 +152,7 @@ public abstract class AbstractBible implements Bible
             BibleData doc = source.getData(temp);
 
             // Write the document to the mutable version
-            setDocument(doc);
+            setDocument(verse, doc);
 
             // This could take a long time ...
             Thread.yield();

@@ -8,6 +8,7 @@ import org.crosswire.jsword.book.basic.LocalURLBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.Verse;
 
 /**
  * A Biblical source that comes from files on the local file system.
@@ -184,9 +185,9 @@ public class SerBible extends LocalURLBible
      * Write the XML to disk
      * @param doc The data to write
      */
-    public void setDocument(BibleData doc) throws BookException
+    public void setDocument(Verse verse, BibleData doc) throws BookException
     {
-        cache.setDocument(doc);
+        cache.setDocument(verse, doc);
     }
 
     /**

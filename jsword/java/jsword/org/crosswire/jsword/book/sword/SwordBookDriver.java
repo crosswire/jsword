@@ -50,7 +50,7 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * @see org.crosswire.jsword.book.BibleDriver#getBibles()
+     * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
     public BookMetaData[] getBooks()
     {

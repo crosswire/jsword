@@ -2,13 +2,11 @@
 package org.crosswire.jsword.book.remote;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Books;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
@@ -105,21 +103,18 @@ public class HttpRemoter implements Remoter
         Iterator it = method.getParameterKeys();
         while (it.hasNext())
         {
-            try
-            {
-                String key = (String) it.next();
-                String val = method.getParameter(key);
-                String b64 = URLEncoder.encode(val, "UTF-8");
-                
-                buffer.append("&");
-                buffer.append(key);
-                buffer.append("=");
-                buffer.append(b64);
-            }
-            catch (UnsupportedEncodingException ex)
-            {
-                throw new LogicError(ex);
-            }
+            // JDK1.4 - will need to say:
+            // try { ... URLEncoder.encode(val, "UTF-8"); }
+            // catch (UnsupportedEncodingException ex) { throw new LogicError(ex); }
+
+            String key = (String) it.next();
+            String val = method.getParameter(key);
+            String b64 = URLEncoder.encode(val);
+            
+            buffer.append("&");
+            buffer.append(key);
+            buffer.append("=");
+            buffer.append(b64);
         }
 
         return buffer.toString();

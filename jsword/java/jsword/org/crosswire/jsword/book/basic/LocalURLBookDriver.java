@@ -144,7 +144,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
     }
 
     /**
-     * @see org.crosswire.jsword.book.basic.AbstractBookDriver#getBibles()
+     * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
     public BookMetaData[] getBooks()
     {

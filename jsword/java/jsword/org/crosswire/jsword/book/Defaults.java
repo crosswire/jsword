@@ -50,7 +50,17 @@ public class Defaults
     /**
      * The default Bible
      */
-    private static BibleMetaData deft = null;
+    private static BibleMetaData bdeft = null;
+
+    /**
+     * The default Commentary
+     */
+    private static CommentaryMetaData cdeft = null;
+
+    /**
+     * The default Dictionary
+     */
+    private static DictionaryMetaData ddeft = null;
 
     /**
      * Has the default Bible been manually set or are we picking the fastest
@@ -68,7 +78,7 @@ public class Defaults
     public static void setBibleMetaData(BibleMetaData bmd) throws BookException
     {
         autodef = false;
-        deft = bmd;
+        bdeft = bmd;
     }
 
     /**
@@ -83,7 +93,7 @@ public class Defaults
      */
     public static BibleMetaData getBibleMetaData() throws BookException
     {
-        return deft;
+        return bdeft;
     }
 
     /**
@@ -136,18 +146,21 @@ public class Defaults
      */
     protected static void isPreferable(BookMetaData bmd)
     {
-        // PENDING(joe) currently there is no concept of preference for non-bibles, should there be?
+        if (bmd == null)
+            throw new NullPointerException("null BookMetaData");
+
+        // PENDING(joe): currently there is no concept of preference for non-bibles, should there be?
         if (!(bmd instanceof BibleMetaData))
             return;
 
         // Do we even think about replacing the default Bible?
-        if (autodef || deft == null)
+        if (autodef || bdeft == null)
         {
             // If there is no default or this is faster
-            if (deft == null || bmd.getSpeed() > deft.getSpeed())
+            if (bdeft == null || bmd.getSpeed() > bdeft.getSpeed())
             {
-                deft = (BibleMetaData) bmd;
-                log.debug("setting as default since speed="+deft.getSpeed());
+                bdeft = (BibleMetaData) bmd;
+                log.debug("setting as default since speed="+bdeft.getSpeed());
             }
         }
     }

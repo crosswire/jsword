@@ -29,9 +29,9 @@ import junit.framework.TestSuite;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class CommonAllTests extends TestCase
+public class OsisAllTests extends TestCase
 {
-    public CommonAllTests(String s)
+    public OsisAllTests(String s)
     {
         super(s);
     }
@@ -40,9 +40,7 @@ public class CommonAllTests extends TestCase
     {
         TestSuite suite = new TestSuite();
 
-        suite.addTestSuite(org.crosswire.common.util.TestHelpDesk.class);
-        suite.addTestSuite(org.crosswire.common.util.TestStringUtil.class);
-        suite.addTestSuite(org.crosswire.common.util.TestThreadUtil.class);
+        suite.addTestSuite(org.crosswire.jsword.osis.TestOsis.class);
 
         return suite;
     }
