@@ -113,6 +113,7 @@ public class LookAndFeelUtil
         // then be complex.
 
         windows.add(comp);
+        SwingUtilities.updateComponentTreeUI(comp);
         // window.addContainerListener(new CustomContainerListener());
     }
 
