@@ -120,7 +120,7 @@ public class LuceneIndexManager implements IndexManager
         {
             URL storage = getStorageArea(bmd);
             File zip = NetUtil.getAsFile(tempDest);
-            IOUtil.unpackZip(zip, storage);
+            IOUtil.unpackZip(zip, NetUtil.getAsFile(storage));
         }
         catch (IOException ex)
         {

@@ -79,7 +79,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     {
         try
         {
-            URL url = new URL("http://" + host + dir + '/' + file); //$NON-NLS-1$
+            URL url = new URL(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file); //$NON-NLS-1$
             copy(job, url, dest);
         }
         catch (IOException ex)

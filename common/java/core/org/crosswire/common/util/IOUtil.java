@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -43,12 +44,13 @@ public class IOUtil
     }
 
     /**
-     * Unpack a zip file to a given directory
+     * Unpack a zip file to a given directory. Honor the paths
+     * as given in the zip file.
      * @param file The zip file to download
      * @param destdir The directory to unpack up
      * @throws IOException If there is an file error
      */
-    public static void unpackZip(File file, URL destdir) throws IOException
+    public static void unpackZip(File file, File destdir) throws IOException
     {
         // unpack the zip.
         byte[] dbuf = new byte[4096];
@@ -58,8 +60,21 @@ public class IOUtil
         {
             ZipEntry entry = (ZipEntry) entries.nextElement();
             String entrypath = entry.getName();
-            String filename = entrypath.substring(entrypath.lastIndexOf('/') + 1);
-            URL child = NetUtil.lengthenURL(destdir, filename);
+            File entryFile = new File(destdir, entrypath);
+            File parentDir = entryFile.getParentFile();
+            // Is it already a directory ?
+            if (!parentDir.isDirectory())
+            {
+                parentDir.mkdirs();
+
+                // Did that work?
+                if (!parentDir.isDirectory())
+                {
+                    throw new MalformedURLException(Msg.CREATE_DIR_FAIL.toString(parentDir.toString()));
+                }
+            }
+
+            URL child = NetUtil.getURL(entryFile);
 
             OutputStream dataOut = NetUtil.getOutputStream(child);
             InputStream dataIn = zf.getInputStream(entry);

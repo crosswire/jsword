@@ -27,7 +27,6 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.ModuleType;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordConstants;
@@ -72,36 +71,31 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     protected abstract void download(Job job, String dir, String file, URL dest) throws InstallException;
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#toLocalURL(org.crosswire.jsword.book.BookMetaData)
-     */
-    public URL toLocalURL(BookMetaData bmd)
-    {
-        File fulldir = toLocalDirectory(bmd);
-
-        try
-        {
-            return new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
-        }
-        catch (MalformedURLException ex)
-        {
-            log.error("Failed to create URL for file: "+fulldir, ex); //$NON-NLS-1$
-            assert false;
-            return null;
-        }
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.BookMetaData)
      */
     public boolean isNewer(BookMetaData bmd)
     {
-        URL local = toLocalURL(bmd);
-
         SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-        URL conf = NetUtil.lengthenURL(local, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
+        File dldir = SwordBookDriver.getDownloadDir();
+
+        File confdir = new File(dldir, SwordConstants.DIR_CONF);
+        File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
+
+        URL configurl = null;
+        try
+        {
+            configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
+    
+        }
+        catch (MalformedURLException ex)
+        {
+            log.error("Failed to create URL for file: " + conf, ex); //$NON-NLS-1$
+            assert false;
+            return false;
+        }
 
         URL remote = toRemoteURL(bmd);
-        return NetUtil.isNewer(remote, conf);
+        return NetUtil.isNewer(remote, configurl);
     }
 
     /* (non-Javadoc)
@@ -164,23 +158,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                 {
                     job.setProgress(Msg.JOB_INIT.toString());
 
-                    URL desturl = toLocalURL(sbmd);
-                    NetUtil.makeDirectory(desturl);
-
                     URL temp = NetUtil.getTemporaryURL("swd", ZIP_SUFFIX); //$NON-NLS-1$
 
                     download(job, directory + '/' + PACKAGE_DIR, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
-                    IOUtil.unpackZip(NetUtil.getAsFile(temp), desturl);
-
                     File dldir = SwordBookDriver.getDownloadDir();
-                    job.setProgress(Msg.JOB_CONFIG.toString());
-                    File confdir = new File(dldir, SwordConstants.DIR_CONF);
-                    confdir.mkdirs();
-                    File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
-                    URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
-                    sbmd.save(configurl);
+                    IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
 
+                    job.setProgress(Msg.JOB_CONFIG.toString());
                     SwordBookDriver.registerNewBook(sbmd, dldir);
                 }
                 catch (Exception ex)
@@ -210,7 +195,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         try
         {
             URL scratchfile = getCachedIndexFile();
-            download(job, LIST_DIR + '/' + directory, FILE_LIST_GZ, scratchfile);
+            download(job, directory + '/' + LIST_DIR, FILE_LIST_GZ, scratchfile);
             loaded = false;
         }
         catch (InstallException ex)
@@ -365,7 +350,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     {
         try
         {
-            URL scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), false);
+            URL scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), true);
             return NetUtil.lengthenURL(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)
@@ -380,28 +365,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     private static String getTempFileExtension(String host, String directory)
     {
         return DOWNLOAD_PREFIX + host + directory.replace('/', '_'); //$NON-NLS-1$
-    }
-
-    /**
-     * Get a local directory to which a book is installed
-     */
-    protected File toLocalDirectory(BookMetaData bmd)
-    {
-        if (!(bmd instanceof SwordBookMetaData))
-        {
-            assert false;
-            return null;
-        }
-
-        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        ModuleType type = sbmd.getModuleType();
-        String modpath = type.getInstallDirectory();
-        String destname = modpath + '/' + sbmd.getDiskName();
-
-        File dldir = SwordBookDriver.getDownloadDir();
-        File moddir = new File(dldir, SwordConstants.DIR_DATA);
-        return new File(moddir, destname);
     }
 
     /* (non-Javadoc)

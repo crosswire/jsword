@@ -37,7 +37,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Uncompressed Bibles
      */
-    public static final ModuleType RAW_TEXT = new ModuleType("RawText", "texts/rawtext", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType RAW_TEXT = new ModuleType("RawText", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -52,13 +52,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3257004341402874419L;
+        private static final long serialVersionUID = 3544385920414529336L;
     };
 
     /**
      * Compressed Bibles
      */
-    public static final ModuleType Z_TEXT = new ModuleType("zText", "texts/ztext", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType Z_TEXT = new ModuleType("zText", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -78,13 +78,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3258697597915772985L;
+        private static final long serialVersionUID = 3257846571620906039L;
     };
 
     /**
      * Uncompressed Commentaries
      */
-    public static final ModuleType RAW_COM = new ModuleType("RawCom", "comments/rawcom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType RAW_COM = new ModuleType("RawCom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -99,13 +99,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3762250850940433716L;
+        private static final long serialVersionUID = 3258129141898294837L;
     };
 
     /**
      * Compressed Commentaries
      */
-    public static final ModuleType Z_COM = new ModuleType("zCom", "comments/zcom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType Z_COM = new ModuleType("zCom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -125,13 +125,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3257008752367580211L;
+        private static final long serialVersionUID = 3257569516166002487L;
     };
 
     /**
      * Uncompresses HREF Commentaries
      */
-    public static final ModuleType HREF_COM = new ModuleType("HREFCom", "comments/hrefcom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType HREF_COM = new ModuleType("HREFCom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -146,13 +146,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3257567291372548153L;
+        private static final long serialVersionUID = 3256439209706338354L;
     };
 
     /**
      * Uncompressed Commentaries
      */
-    public static final ModuleType RAW_FILES = new ModuleType("RawFiles", "comments/rawfiles", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType RAW_FILES = new ModuleType("RawFiles", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -167,13 +167,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3257005475290625843L;
+        private static final long serialVersionUID = 3256446901875325236L;
     };
 
     /**
      * 2-Byte Index Uncompressed Dictionaries
      */
-    public static final ModuleType RAW_LD = new ModuleType("RawLD", "lexdict/rawld", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType RAW_LD = new ModuleType("RawLD", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -188,13 +188,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3258412833061352242L;
+        private static final long serialVersionUID = 3257290240195442745L;
     };
 
     /**
      * 4-Byte Index Uncompressed Dictionaries
      */
-    public static final ModuleType RAW_LD4 = new ModuleType("RawLD4", "lexdict/rawld4", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType RAW_LD4 = new ModuleType("RawLD4", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -209,13 +209,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3258689892711149625L;
+        private static final long serialVersionUID = 3689067356945331762L;
     };
 
     /**
      * Compressed Dictionaries
      */
-    public static final ModuleType Z_LD = new ModuleType("zLD", "lexdict/zld", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType Z_LD = new ModuleType("zLD", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -230,13 +230,13 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3257849883074573619L;
+        private static final long serialVersionUID = 3691037673259414067L;
     };
 
     /**
      * Generic Books
      */
-    public static final ModuleType RAW_GEN_BOOK = new ModuleType("RawGenBook", "genbook/rawgenbook", null) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ModuleType RAW_GEN_BOOK = new ModuleType("RawGenBook", null) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -251,16 +251,15 @@ public abstract class ModuleType implements Serializable
         /**
          * Serialization ID
          */
-        private static final long serialVersionUID = 3257849895976449588L;
+        private static final long serialVersionUID = 3257290218703892528L;
     };
 
     /**
      * Simple ctor
      */
-    public ModuleType(String name, String install, BookType type)
+    public ModuleType(String name, BookType type)
     {
         this.name = name;
-        this.install = install;
         this.type = type;
     }
 
@@ -281,15 +280,6 @@ public abstract class ModuleType implements Serializable
         }
 
         throw new IllegalArgumentException(Msg.UNDEFINED_MODULE.toString(name));
-    }
-
-    /**
-     * Strings for where the modules are installed.
-     * @return Returns the install directory for this module type.
-     */
-    public String getInstallDirectory()
-    {
-        return install;
     }
 
     /**
@@ -377,12 +367,6 @@ public abstract class ModuleType implements Serializable
     private String name;
 
     /**
-     * Where are modules of this type installed relative to the sword module
-     * directory?
-     */
-    private String install;
-
-    /**
      * What booktype is this module
      */
     private BookType type;
@@ -431,7 +415,6 @@ public abstract class ModuleType implements Serializable
     }
 
     // Support for serialization
-    static final long serialVersionUID = 1417463751329673026L;
     private static int nextObj;
     private final int obj = nextObj++;
 

@@ -51,12 +51,6 @@ public interface Installer extends BookList
     public URL toRemoteURL(BookMetaData bmd);
 
     /**
-     * @param bmd The book meta-data to get a URL from.
-     * @return the url for the directory for BookMetaData
-     */
-    public URL toLocalURL(BookMetaData bmd);
-
-    /**
      * Get a list of BookMetaData objects that represent downloadable modules.
      * If no list has been retrieved from the remote source using reloadIndex()
      * then we should just return an empty list and not attempt to contact the
