@@ -1,4 +1,4 @@
-<%@ page import="org.crosswire.jsword.passage.Passage" %>
+<%@ page %>
 
 <html>
 <head>
