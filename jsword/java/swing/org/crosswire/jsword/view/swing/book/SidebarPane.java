@@ -6,8 +6,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import org.crosswire.jsword.book.BookFilters;
-
 /**
  * SidebarPane builds a panel containing a set of books in tabbed dialogs.
  * 
@@ -56,7 +54,7 @@ public class SidebarPane extends JPanel
         this.add(spt_books,  BorderLayout.CENTER);
     }
 
-    private TabbedBookPane tab_conc = new TabbedBookPane(BookFilters.getCommentaries());
+    private TabbedCommentaryPane tab_conc = new TabbedCommentaryPane();
     private JSplitPane spt_books = new JSplitPane();
     private TabbedDictionaryPane tab_dict = new TabbedDictionaryPane();
 }

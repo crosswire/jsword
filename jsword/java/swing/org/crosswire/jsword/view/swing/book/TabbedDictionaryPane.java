@@ -99,7 +99,10 @@ public class TabbedDictionaryPane extends JPanel
                 edit.setEditorKit(new HTMLEditorKit());
                 edit.addHyperlinkListener(new HyperlinkListener()
                 {
-                    public void hyperlinkUpdate(HyperlinkEvent ev) { link(ev); }
+                    public void hyperlinkUpdate(HyperlinkEvent ev)
+                    {
+                        link(ev);
+                    }
                 });
 
                 JScrollPane sedit = new JScrollPane();
@@ -123,6 +126,7 @@ public class TabbedDictionaryPane extends JPanel
                 spacer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                 
                 tab_main.add(spacer, dmd.getInitials());
+                tab_main.setToolTipTextAt(tab_main.getTabCount()-1, dmd.getFullName());
             }
             catch (BookException ex)
             {

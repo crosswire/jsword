@@ -2,3 +2,15 @@
 This file is our equivalent of bugzilla for the time being.
 
 - chapter ranges are not displayed distinctly from verse ranges
+
+- devt.jsp needs sorting out
+
+- provide support for:
+	COUNT	ID	TYPE
+	1	DRIVER_RAW_FILES	commentary
+	1	DRIVER_RAW_LD4	dictionary
+	3	DRIVER_RAW_COM	commentary
+	15	DRIVER_Z_COM	commentary
+	20	DRIVER_RAW_LD	dictionary
+
+- 

@@ -43,6 +43,7 @@ public class LogicError extends RuntimeException
      */
     public LogicError(Throwable ex)
     {
+        super(ex.getMessage());
         this.ex = ex;
     }
 

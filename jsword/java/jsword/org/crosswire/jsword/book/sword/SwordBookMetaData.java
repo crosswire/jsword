@@ -4,7 +4,6 @@ package org.crosswire.jsword.book.sword;
 import java.net.URL;
 import java.util.Date;
 
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
@@ -108,16 +107,12 @@ public abstract class SwordBookMetaData implements BookMetaData
      */
     public abstract Book createBook() throws BookException;
 
-    /**
-     * The cached bible so we don't have to create too many
-     */
-    private Book book = null;
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName()
     {
-        return config.getName();
+        return config.getDescription();
     }
 
     /* (non-Javadoc)
@@ -149,7 +144,7 @@ public abstract class SwordBookMetaData implements BookMetaData
      */
     public final String getInitials()
     {
-        return StringUtil.getInitials(getName());
+        return config.getName();
     }
 
     /* (non-Javadoc)
@@ -247,4 +242,9 @@ public abstract class SwordBookMetaData implements BookMetaData
      * Our store of config data
      */
     private SwordConfig config;
+
+    /**
+     * The cached bible so we don't have to create too many
+     */
+    private Book book = null;
 }

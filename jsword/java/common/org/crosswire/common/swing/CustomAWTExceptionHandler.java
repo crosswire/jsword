@@ -4,8 +4,6 @@ package org.crosswire.common.swing;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.SwingUtilities;
-
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -48,6 +46,7 @@ public class CustomAWTExceptionHandler
     {
         Reporter.informUser(this, ex);
 
+        /* This is done by the above
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
@@ -55,6 +54,7 @@ public class CustomAWTExceptionHandler
                 ExceptionPane.showExceptionDialog(comp, ex);
             }
         });
+        */
     }
     
     /**
