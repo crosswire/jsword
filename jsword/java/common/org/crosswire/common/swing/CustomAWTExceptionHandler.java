@@ -68,7 +68,7 @@ public class CustomAWTExceptionHandler
         {
             // deregister ourselves
             String current = System.getProperty(AWT_HANDLER_PROPERTY);
-            if (current.equals(OUR_NAME))
+            if (current != null && current.equals(OUR_NAME))
             {
                 Properties prop = System.getProperties();
                 prop.remove(AWT_HANDLER_PROPERTY);

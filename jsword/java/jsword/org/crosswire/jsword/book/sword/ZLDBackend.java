@@ -2,7 +2,7 @@ package org.crosswire.jsword.book.sword;
 
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.basic.DefaultKeyList;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 

@@ -84,8 +84,8 @@ public class GZIPBackend implements Backend
         compFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "v");
 
         // It is an error to be neither OT nor NT
-        if (!textFile[SwordConstants.TESTAMENT_OLD].canRead() &&
-            !textFile[SwordConstants.TESTAMENT_NEW].canRead())
+        if (!textFile[SwordConstants.TESTAMENT_OLD].canRead()
+            && !textFile[SwordConstants.TESTAMENT_NEW].canRead())
         {
             throw new BookException(Msg.MISSING_FILE, new Object[] { path });
         }
@@ -117,6 +117,8 @@ public class GZIPBackend implements Backend
         {
             // Ignore this might be OT only
         }
+
+        active = true;
     }
 
     /* (non-Javadoc)
@@ -146,6 +148,8 @@ public class GZIPBackend implements Backend
         idxRaf[SwordConstants.TESTAMENT_NEW] = null;
         textRaf[SwordConstants.TESTAMENT_NEW] = null;
         compRaf[SwordConstants.TESTAMENT_NEW] = null;
+
+        active = false;
     }
 
     /* (non-Javadoc)
@@ -262,7 +266,7 @@ public class GZIPBackend implements Backend
      */
     public KeyList readIndex()
     {
-        // TODO: refactor to get rid of this
+        // PENDING(joe): refactor to get rid of this
         return null;
     }
 

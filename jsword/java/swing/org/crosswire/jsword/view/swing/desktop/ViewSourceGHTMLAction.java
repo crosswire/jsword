@@ -68,7 +68,7 @@ public class ViewSourceGHTMLAction extends DesktopAbstractAction
             
             TextViewPanel viewer = new TextViewPanel(html, "Generated source to " + ref.getName());
             viewer.setEditable(true);
-            viewer.showInFrame(getDesktop());
+            viewer.showInFrame(getDesktop().getJFrame());
         }
         catch (Exception ex)
         {

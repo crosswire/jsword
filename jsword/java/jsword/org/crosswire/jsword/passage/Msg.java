@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.passage;
 
-import org.apache.commons.lang.enum.Enum;
 import org.crosswire.common.util.MsgBase;
 
 /**
@@ -78,7 +77,9 @@ public class Msg extends MsgBase
     static final Msg ABSTRACT_TYPE = new Msg("Unknown Passage Type");
     static final Msg ABSTRACT_INDEX = new Msg("Index out of range (Given {0,number,integer}, Max {1,number,integer}).");
 
-/*
+    static final Msg KEYLIST_READONLY = new Msg("Can't alter a read-only key list");
+
+    /*
     range_error_blur_book=RESTRICT_BOOK is not supported.
     range_error_blur_mode=Illegal blur mode.
     range_error_null=Verse can not be null
@@ -86,23 +87,27 @@ public class Msg extends MsgBase
     range_error_count=verse_count must be greater than 0
     range_error_size=Starting at {0}, there are only {1,number,integer} verses left in the Bible. {2,number,integer} is too many.
     range_error_patch=patch_up\=false is not supported. See the JavaDoc
-*/
+    */
 
-    /**
+    /*
      * Lookup for the benefit of those that use computed ids
-     */
+     *
     protected static Msg getMessage(String id)
     {
         return (Msg) Enum.getEnum(Msg.class, id);
     }
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

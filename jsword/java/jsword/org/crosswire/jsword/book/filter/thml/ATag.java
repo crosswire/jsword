@@ -48,7 +48,7 @@ public class ATag implements Tag
     {
         Reference reference = JAXBUtil.factory().createReference();
 
-        // PENDING(joe): put the correct reference here
+        // LATER(joe): put the correct reference here
         //reference.setOsisID("XX");
         JAXBUtil.getList(ele).add(reference);
     }

@@ -108,7 +108,7 @@
   </option>
 
   <option key="Looks.Converter" type="string-options">
-  	<introspect class="org.crosswire.jsword.util.ConverterFactory" property="CurrentConverter"/>
+  	<introspect class="org.crosswire.jsword.util.ConverterFactory" property="CurrentConverterName"/>
     <help>The engine used to genterate the book display</help>
     <map name="converters"/>
   </option>

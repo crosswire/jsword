@@ -40,7 +40,7 @@ public interface Backend extends Activatable
 
     /**
      * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
+     * @param key The key to fetch
      * @return byte[] The data for the verse in question
      * @throws BookException If the data can not be read.
      */

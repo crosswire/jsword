@@ -42,15 +42,15 @@ public interface Book extends Activatable, KeyFactory
     /**
      * Retrieval: Add to the given document some mark-up for the specified
      * Verses.
-     * @param ref The verses to search for
+     * @param key The verses to search for
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
-    public BookData getData(Key ref) throws BookException;
+    public BookData getData(Key key) throws BookException;
 
     /**
      * Does the specified verse have any data behind it.
-     * @param verse The verse to query
+     * @param key The verse to query
      * @return The found BibleData document
      * @throws BookException If anything goes wrong with this method
      */

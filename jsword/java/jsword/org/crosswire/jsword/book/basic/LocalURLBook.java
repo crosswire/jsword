@@ -57,7 +57,7 @@ public abstract class LocalURLBook
      *
     public void generateText(Book source) throws BookException
     {
-        // URGENT(joe): we need somewhere to do ...
+        // LATER(joe): we need somewhere to do ...
         // DefaultBookMetaData bbmd = new DefaultBookMetaData(this, url, sbmd);
 
         Passage temp = PassageFactory.createPassage(PassageFactory.SPEED);

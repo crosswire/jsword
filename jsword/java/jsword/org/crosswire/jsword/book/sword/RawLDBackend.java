@@ -12,8 +12,8 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.basic.DefaultKey;
-import org.crosswire.jsword.book.basic.DefaultKeyList;
+import org.crosswire.jsword.passage.DefaultKey;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 
@@ -89,6 +89,8 @@ public class RawLDBackend implements Backend
             idxRaf = null;
             datRaf = null;
         }
+
+        active = true;
     }
 
     /* (non-Javadoc)
@@ -108,6 +110,8 @@ public class RawLDBackend implements Backend
 
         idxRaf = null;
         datRaf = null;
+
+        active = false;
     }
 
     /* (non-Javadoc)

@@ -39,7 +39,6 @@ public class MapTableModel extends AbstractTableModel
 {
     /**
      * Create an internal store from a 2D array
-     * @param hash The table to model
      */
     public MapTableModel()
     {
@@ -173,7 +172,7 @@ public class MapTableModel extends AbstractTableModel
      */
     public boolean isCellEditable(int row, int col)
     {
-        // NOTE(joe): editing was broken, and there didn't seem much benefit in it
+        // Editing is broken, and there didn't seem much benefit in it
         return false;
     }
 

@@ -100,35 +100,4 @@ public class JobTest extends TestCase
         assertEquals(job.getReportedPercent(), 100);
         assertEquals(job.canInterrupt(), false);
     }
-
-    /*
-     * Test for void setProgress(String)
-     */
-    public void testSetProgressString()
-    {
-        //NOTE: Implement setProgress().
-    }
-
-    /*
-     * Test for void setProgress(int, String)
-     */
-    public void testSetProgressintString()
-    {
-        //NOTE: Implement setProgress().
-    }
-
-    public void testPredictProgress()
-    {
-        //NOTE: Implement predictProgress().
-    }
-
-    public void testDone()
-    {
-        //NOTE: Implement done().
-    }
-
-    public void testInterrupt()
-    {
-        //NOTE: Implement interrupt().
-    }
 }

@@ -1,14 +1,16 @@
 package org.crosswire.jsword.book.stub;
 
-import org.crosswire.jsword.book.basic.DefaultKey;
-import org.crosswire.jsword.book.basic.DefaultKeyList;
+import java.util.Iterator;
+
+import org.crosswire.jsword.passage.DefaultKey;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * A KeyFactory that handles a pretend set of keys.
- * PENDING(joe): make this more consistent it current returns any key from getKey()
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -38,16 +40,25 @@ public class StubDictionaryKeyFactory implements KeyFactory
      */
     public StubDictionaryKeyFactory()
     {
-        set.add(new DefaultKey("stub"));
-        set.add(new DefaultKey("implementation"));
+        set.add(KEY_STUB);
+        set.add(KEY_IMPL);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
-    public Key getKey(String name)
+    public Key getKey(String name) throws NoSuchKeyException
     {
-        return new DefaultKey(name);
+        for (Iterator it = set.iterator(); it.hasNext();)
+        {
+            Key key = (Key) it.next();
+            if (key.getName().equals(name))
+            {
+                return key;
+            }
+        }
+
+        throw new NoSuchKeyException(Msg.NO_KEY);
     }
 
     /* (non-Javadoc)
@@ -59,4 +70,6 @@ public class StubDictionaryKeyFactory implements KeyFactory
     }
 
     private KeyList set = new DefaultKeyList("Stub Dictionary");
+    private static final DefaultKey KEY_IMPL = new DefaultKey("implementation");
+    private static final DefaultKey KEY_STUB = new DefaultKey("stub");
 }

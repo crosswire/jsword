@@ -28,9 +28,9 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg NOT_IMPLEMENTED = new Msg("Not implemented.");
-    static final Msg SEARCH_INIT = new Msg("Search sub-system initialization failed.");
+    static final Msg NO_KEY = new Msg("Key not found.");
     static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry.");
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
 
     /**
      * Initialise any resource bundles

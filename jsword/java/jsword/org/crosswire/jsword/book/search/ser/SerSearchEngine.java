@@ -117,7 +117,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     {
         checkActive();
 
-        // NOTE(joe): write delete()
+        // LATER(joe): write delete()
     }
 
     /* (non-Javadoc)
@@ -433,7 +433,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
 
     /**
      * The Whole Bible
-     * PENDING(joe): this should be getIndex();
+     * LATER(joe): this should be getIndex();
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 

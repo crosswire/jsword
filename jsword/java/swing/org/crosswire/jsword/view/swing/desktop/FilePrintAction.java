@@ -51,6 +51,6 @@ public class FilePrintAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Not implemented");
+        JOptionPane.showMessageDialog(getDesktop().getJFrame(), "Not implemented");
     }
 }

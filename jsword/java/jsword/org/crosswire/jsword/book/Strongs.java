@@ -103,7 +103,7 @@ public class Strongs
     {
         String lemma = w.getLemma();
 
-        // NOTE: I think it goes x-study:[H|G]number, but this will need fixing...
+        // LATER(joe): I think it goes x-study:[H|G]number, but this will need fixing...
         int colonpos = lemma.indexOf(":");
         if (colonpos != -1)
         {

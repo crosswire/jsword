@@ -45,6 +45,6 @@ public class HelpContentsAction extends DesktopAbstractAction
 
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Um. Help, yes that would require me to write some.\nErrr. Sorry.");
+        JOptionPane.showMessageDialog(getDesktop().getJFrame(), "Um. Help, yes that would require me to write some.\nErrr. Sorry.");
     }
 }

@@ -430,7 +430,7 @@ public class DefaultBookMetaData implements BookMetaData
     }
 
     /**
-     * @param speed The speed to set.
+     * @param speedstr The speed to set.
      */
     public void setSpeed(String speedstr) throws NumberFormatException
     {
@@ -450,7 +450,7 @@ public class DefaultBookMetaData implements BookMetaData
     }
 
     /**
-     * @param openstr The string version of the openness to set.
+     * @param typestr The string version of the type to set.
      */
     public void setType(String typestr)
     {
@@ -482,7 +482,8 @@ public class DefaultBookMetaData implements BookMetaData
             return false;
         }
         
-        // TODO(joe): should we be checking against all BookMetaDatas?
+        // We might consider checking for equality against all BookMetaDatas?
+        // However currently we dont.
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance

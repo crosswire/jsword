@@ -192,8 +192,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
 
     /**
      * See if the current dictionary has a mention of the word in question.
-     * PENDING(joe): add a background task to highlight other dictionaries that
-     * have the word.
+     * LATER(joe): add a background task to highlight other dictionaries that have the word.
      */
     public void setWord(String data)
     {

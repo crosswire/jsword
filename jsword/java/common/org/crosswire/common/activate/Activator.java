@@ -70,11 +70,11 @@ public class Activator
             break;
 
         case KILL_LEAST_USED:
-            // PENDING(joe): implement
+            // LATER(joe): implement
             throw new IllegalArgumentException("Not implemented");
 
         case KILL_ONLY_IF_TIGHT:
-            // PENDING(joe): implement
+            // LATER(joe): implement
             throw new IllegalArgumentException("Not implemented");
 
         default:

@@ -85,7 +85,9 @@ public class ConfigurableSwingConverter implements Converter
             URL xslurl = ResourceUtil.getResource(path);
 
             TransformingSAXEventProvider tsep = new TransformingSAXEventProvider(xslurl, xmlsep);
-            // TODO(joe): do we need to tsep.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // We used to do:
+            // tsep.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // however for various reasons, now we don't but nothing seems to be broken ...
             tsep.setParameter("font", font);
 
             return tsep;

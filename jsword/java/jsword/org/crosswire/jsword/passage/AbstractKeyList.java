@@ -1,10 +1,8 @@
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
  * An implementation of some of the easier methods from KeyList.

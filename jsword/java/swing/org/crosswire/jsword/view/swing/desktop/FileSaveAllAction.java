@@ -4,9 +4,13 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Iterator;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
  * Save all the passage windows.
@@ -52,6 +56,19 @@ public class FileSaveAllAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Not implemented");
+        Iterator it = getDesktop().iterateBibleViewPanes();
+        while (it.hasNext())
+        {
+            try
+            {
+                BibleViewPane view = (BibleViewPane) it.next();
+                view.save();
+            }
+            catch (IOException ex)
+            {
+                Reporter.informUser(this, ex);
+            }
+        }
+
     }
 }

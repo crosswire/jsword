@@ -15,7 +15,6 @@ import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
-import org.crosswire.jsword.book.basic.SetKeyList;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.OsisTextType;
@@ -26,6 +25,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.util.Project;
 

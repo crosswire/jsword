@@ -89,7 +89,7 @@ public class LocalURLBookDriver
 
             LocalURLBook dest = (LocalURLBook) bibleclass.newInstance();
 
-            // URGENT(joe): this should not be null
+            // LATER(joe): this should not be null
             dest.init(url, null);
             dest.generateText(source);
 
@@ -105,7 +105,7 @@ public class LocalURLBookDriver
     /*
      * We need to create a unique directory in which to store the new Book data.
      * We do this by shortening the name and adding numbers until it is unique.
-     * BUG(joe): there is a theoretical race condition here but this is probably ST so we are OK.
+     * LATER(joe): there is a theoretical race condition here but this is probably ST so we are OK.
      *
     private URL createUniqueDirectory(String base) throws MalformedURLException
     {

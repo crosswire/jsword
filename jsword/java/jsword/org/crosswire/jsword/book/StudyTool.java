@@ -60,8 +60,7 @@ public class StudyTool
             Iterator dit = JAXBUtil.getDeepContent(div, W.class).iterator();
             while (dit.hasNext())
             {
-                // NOTE: This only looks at level 1 content, what we need is a
-                // deep scan for all 'W's.
+                // LATER(joe): This only looks at L1 content, we need a deep scan for 'W's.
                 Object ele = dit.next();
                 W w = (W) ele;
                 String content = JAXBUtil.getPlainText(w);
@@ -111,8 +110,7 @@ public class StudyTool
             Iterator dit = JAXBUtil.getDeepContent(div, W.class).iterator();
             while (dit.hasNext())
             {
-                // NOTE: This only looks at level 1 content, what we need is a
-                // deep scan for all 'W's.
+                // see note above on deep scanning for W
                 Object ele = dit.next();
                 W w = (W) ele;
                 Strongs strongs = new Strongs(w);

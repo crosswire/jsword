@@ -317,7 +317,7 @@ public class Project
      * class. Those that are not are warned, but ignored. The reply is in the
      * form of a map of keys=strings, and values=classes in case you need to get
      * at the names given to the classes in the properties file.
-     * @see Resource#getImplementors(Class)
+     * @see Project#getImplementors(Class)
      * @param clazz The class or interface to find implementors of.
      * @return The map of implementing classes.
      */
@@ -372,7 +372,7 @@ public class Project
      * @throws IOException if there is a problem reading the found file
      * @throws ClassNotFoundException if the read contents are not found
      * @throws ClassCastException if the read contents are not valid
-     * @see Resource#getImplementors(Class)
+     * @see Project#getImplementors(Class)
      */
     public Class getImplementor(Class clazz) throws MalformedURLException, IOException, ClassNotFoundException, ClassCastException
     {

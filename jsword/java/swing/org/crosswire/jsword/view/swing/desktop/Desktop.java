@@ -86,7 +86,7 @@ import org.jdom.JDOMException;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
-public class Desktop extends JFrame implements TitleChangedListener, HyperlinkListener
+public class Desktop implements TitleChangedListener, HyperlinkListener
 {
     /**
      * Central start point.
@@ -97,10 +97,10 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         try
         {
             Desktop desktop = new Desktop();
-            desktop.pack();
-            GuiUtil.centerWindow(desktop);
-            desktop.toFront();
-            desktop.setVisible(true);
+            desktop.getJFrame().pack();
+            GuiUtil.centerWindow(desktop.getJFrame());
+            desktop.getJFrame().toFront();
+            desktop.getJFrame().setVisible(true);
 
             log.debug("desktop main exiting.");
         }
@@ -119,16 +119,16 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     public Desktop() throws IOException, JDOMException
     {
         URL predicturl = Project.instance().getWritablePropertiesURL("splash");
-        Splash splash = new Splash(this, 60000);
+        Splash splash = new Splash(frame, 60000);
         startjob = JobManager.createJob("Startup", predicturl, true);
         splash.pack();
 
         // Initial setup
-        startjob.setProgress("Setting-up environment");
+        frame = new JFrame();
+        CustomAWTExceptionHandler.setParentComponent(frame);
 
         startjob.setProgress("Setting-up config");
         act_tools_options = new OptionsAction(this);
-        CustomAWTExceptionHandler.setParentComponent(this);
 
         startjob.setProgress("Loading Configuration System");
         act_tools_options.createConfig();
@@ -161,7 +161,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         // Configuration
         startjob.setProgress("General configuration");
-        LookAndFeelUtil.addComponentToUpdate(this);
+        LookAndFeelUtil.addComponentToUpdate(frame);
 
         // Keep track of the selected DisplayArea
         FocusManager.getCurrentManager().addPropertyChangeListener(new PropertyChangeListener()
@@ -186,7 +186,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         startjob.done();
         splash.close();
 
-        this.pack();
+        frame.pack();
     }
 
     /**
@@ -216,7 +216,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         act_file_saveall = new FileSaveAllAction(this);
         act_file_close = new FileCloseAction(this);
         act_file_closeall = new FileCloseAllAction(this);
-        act_file_print = new FilePrintAction(this);
+        //act_file_print = new FilePrintAction(this);
         act_file_exit = new ExitAction(this);
         
         act_edit_cut = new EditCutAction(this);
@@ -236,7 +236,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         //act_tools_generate = GeneratorPane.createOpenAction(this);
         //act_tools_diff = ComparePane.createOpenAction(this);
-        act_tools_sites = SitesPane.createOpenAction(this);
+        act_tools_sites = SitesPane.createOpenAction(frame);
 
         act_help_contents = new HelpContentsAction(this);
         act_help_about = AboutPane.createOpenAction(this);
@@ -273,8 +273,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_file.add(act_file_close).addMouseListener(bar_status);
         menu_file.add(act_file_closeall).addMouseListener(bar_status);
         menu_file.addSeparator();
-        menu_file.add(act_file_print).addMouseListener(bar_status);
-        menu_file.addSeparator();
+        //menu_file.add(act_file_print).addMouseListener(bar_status);
+        //menu_file.addSeparator();
         menu_file.add(act_file_save).addMouseListener(bar_status);
         menu_file.add(act_file_saveas).addMouseListener(bar_status);
         menu_file.add(act_file_saveall).addMouseListener(bar_status);
@@ -356,22 +356,22 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         spt_books.add(new JPanel(), JSplitPane.LEFT);
         spt_books.setResizeWeight(0.9D);
 
-        this.addWindowListener(new WindowAdapter()
+        frame.addWindowListener(new WindowAdapter()
         {
             public void windowClosed(WindowEvent ev)
             {
                 act_file_exit.actionPerformed(null);
             }
         });
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(pnl_tbar, BorderLayout.NORTH);
-        this.getContentPane().add(bar_status, BorderLayout.SOUTH);
-        this.getContentPane().add(spt_books, BorderLayout.CENTER);
-        this.setJMenuBar(bar_menu);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(pnl_tbar, BorderLayout.NORTH);
+        frame.getContentPane().add(bar_status, BorderLayout.SOUTH);
+        frame.getContentPane().add(spt_books, BorderLayout.CENTER);
+        frame.setJMenuBar(bar_menu);
 
-        this.setEnabled(true);
-        this.setTitle(Project.instance().getName());
+        frame.setEnabled(true);
+        frame.setTitle(Project.instance().getName());
     }
 
     /**
@@ -727,6 +727,14 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
+     * Accessor for the main desktop Frame
+     */
+    public JFrame getJFrame()
+    {
+        return frame;
+    }
+
+    /**
      * Run down the menus adding the accelerators
      */
     private void accelerateMenu(JMenuBar menubar)
@@ -820,7 +828,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private Action act_file_saveall = null;
     private Action act_file_close = null;
     private Action act_file_closeall = null;
-    private Action act_file_print = null;
+    //private Action act_file_print = null;
     protected Action act_file_exit = null;
 
     private Action act_edit_cut = null;
@@ -859,6 +867,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private JMenu menu_tools = null;
     private JMenu menu_help = null;
 
+    private JFrame frame = null;
     private ButtonGroup grp_views = null;
     private JToolBar pnl_tbar = null;
     private StatusBar bar_status = null;

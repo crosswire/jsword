@@ -1,12 +1,13 @@
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.passage;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
- * A read-only wrapper around any writable implementation of KeyList.
+ * A KeyList that uses a Set of Keys as it's store of data.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,47 +30,42 @@ import org.crosswire.jsword.passage.KeyList;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReadOnlyKeyList implements KeyList
+public class SetKeyList extends AbstractKeyList implements KeyList
 {
     /**
      * Simple ctor
      */
-    public ReadOnlyKeyList(KeyList keys, boolean ignore)
+    public SetKeyList(Set set)
     {
-        this.keys = keys;
-        this.ignore = ignore;
+        list.addAll(set);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#size()
+    /**
+     * Simple ctor
      */
-    public int size()
+    public SetKeyList(Set set, String name)
     {
-        return keys.size();
+        list.addAll(set);
+        setName(name);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
+    /**
+     * Simple ctor
      */
-    public boolean isEmpty()
+    public SetKeyList(Set set, Key parent)
     {
-        return keys.isEmpty();
+        list.addAll(set);
+        this.parent = parent;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+    /**
+     * Simple ctor
      */
-    public boolean contains(Key key)
+    public SetKeyList(Set set, Key parent, String name)
     {
-        return keys.contains(key);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
-     */
-    public Iterator iterator()
-    {
-        return keys.iterator();
+        list.addAll(set);
+        this.parent = parent;
+        setName(name);
     }
 
     /* (non-Javadoc)
@@ -77,25 +73,7 @@ public class ReadOnlyKeyList implements KeyList
      */
     public void add(Key key)
     {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
-     */
-    public void remove(Key key)
-    {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
+        list.add(key);
     }
 
     /* (non-Javadoc)
@@ -103,28 +81,63 @@ public class ReadOnlyKeyList implements KeyList
      */
     public void clear()
     {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
+        list.clear();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getName()
+     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
      */
-    public String getName()
+    public boolean contains(Key key)
     {
-        return keys.getName();
+        return list.contains(key);
     }
 
     /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public int compareTo(Object o)
+    public boolean equals(Object obj)
     {
-        return keys.compareTo(o);
+        return list.equals(obj);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return list.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
+     */
+    public boolean isEmpty()
+    {
+        return list.isEmpty();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     */
+    public Iterator iterator()
+    {
+        return list.iterator();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void remove(Key key)
+    {
+        list.remove(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#size()
+     */
+    public int size()
+    {
+        return list.size();
     }
 
     /* (non-Javadoc)
@@ -132,7 +145,7 @@ public class ReadOnlyKeyList implements KeyList
      */
     public Key get(int index)
     {
-        return keys.get(index);
+        return (Key) list.get(index);
     }
 
     /* (non-Javadoc)
@@ -140,7 +153,7 @@ public class ReadOnlyKeyList implements KeyList
      */
     public int indexOf(Key that)
     {
-        return keys.indexOf(that);
+        return list.indexOf(that);
     }
 
     /* (non-Javadoc)
@@ -148,16 +161,16 @@ public class ReadOnlyKeyList implements KeyList
      */
     public Key getParent()
     {
-        return keys.getParent();
+        return parent;
     }
 
     /**
-     * Do we ignore write requests or throw?
+     * The parent of this key
      */
-    private boolean ignore;
+    private Key parent;
 
     /**
-     * The KeyList to which we proxy
+     * The Set that we are proxying to
      */
-    private KeyList keys;
+    private List list = new ArrayList();
 }

@@ -45,7 +45,7 @@ public class PoetryTagBuilder implements TagBuilder
             {
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
-                    // PENDING(joe): is speech the right thing?
+                    // LATER(joe): is speech the right thing?
                     Speech speech = JAXBUtil.factory().createSpeech();
 
                     Element current = (Element) stack.get(0);

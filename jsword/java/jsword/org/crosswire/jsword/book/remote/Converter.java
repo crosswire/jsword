@@ -117,7 +117,7 @@ public class Converter
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
-     * @see Converter#convertDocumentToBibleMetaDatas(BookDriver, Document, Remoter, int)
+     * @see Converter#convertDocumentToBookMetaDatas(RemoteBookDriver, Document, Remoter, int)
      */
     public static Document convertBookMetaDatasToDocument(BookMetaData[] bmds, String[] ids)
     {

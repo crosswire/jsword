@@ -1,17 +1,25 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.filechooser.FileFilter;
 
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
 
 /**
  * A quick Swing Bible display pane.
@@ -52,9 +60,16 @@ public class BibleViewPane extends JPanel
      */
     private void jbInit()
     {
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.addChoosableFileFilter(new CustomFileFilter());
+        chooser.setMultiSelectionEnabled(false);
+
         pnl_select.addCommandListener(pnl_passg.getDisplaySelectListener());
         pnl_select.addCommandListener(new DisplaySelectListener()
         {
+            /* (non-Javadoc)
+             * @see org.crosswire.jsword.view.swing.book.DisplaySelectListener#passageSelected(org.crosswire.jsword.view.swing.book.DisplaySelectEvent)
+             */
             public void passageSelected(DisplaySelectEvent ev)
             {
                 if (saved == null)
@@ -63,6 +78,9 @@ public class BibleViewPane extends JPanel
                 }
             }
 
+            /* (non-Javadoc)
+             * @see org.crosswire.jsword.view.swing.book.DisplaySelectListener#bookChosen(org.crosswire.jsword.view.swing.book.DisplaySelectEvent)
+             */
             public void bookChosen(DisplaySelectEvent ev)
             {
             }
@@ -100,6 +118,75 @@ public class BibleViewPane extends JPanel
         }
 
         return saved.getName();
+    }
+
+    /**
+     * Save the view to disk.
+     */
+    public void save() throws IOException
+    {
+        if (saved == null)
+        {
+            querySaveFile();
+        }
+
+        Writer out = new FileWriter(saved);
+        getPassage().writeDescription(out);
+    }
+
+    /**
+     * Save the view to disk, but ask the user where to save it first.
+     */
+    public void saveAs() throws IOException
+    {
+        querySaveFile();
+
+        Writer out = new FileWriter(saved);
+        getPassage().writeDescription(out);
+    }
+
+    /**
+     * Open a saved verse list form disk
+     */
+    public void open() throws NoSuchVerseException, IOException
+    {
+        int reply = chooser.showOpenDialog(getRootPane());
+        if (reply == JFileChooser.APPROVE_OPTION)
+        {
+            saved = chooser.getSelectedFile();
+
+            Reader in = new FileReader(saved);
+            Passage ref = PassageFactory.createPassage();
+            ref.readDescription(in);
+            setPassage(ref);
+        }
+    }
+
+    /**
+     * Ask the user where to store the data
+     */
+    private boolean querySaveFile()
+    {
+        if (saved == null)
+        {
+            File guess = new File(getTitle() + EXTENSION);
+            chooser.setSelectedFile(guess);
+        }
+        else
+        {
+            chooser.setSelectedFile(saved);
+        }
+
+        int reply = chooser.showSaveDialog(getRootPane());
+        if (reply == JFileChooser.APPROVE_OPTION)
+        {
+            saved = chooser.getSelectedFile();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -215,11 +302,11 @@ public class BibleViewPane extends JPanel
 
     protected File saved = null;
     private transient List listeners;
-
     private DisplaySelectPane pnl_select = new DisplaySelectPane();
     private OuterDisplayPane pnl_passg = new OuterDisplayPane();
-
     private static int shortlen = 30;
+    private JFileChooser chooser = new JFileChooser();
+    private static final String EXTENSION = ".lst";
 
     /**
      * Returns the shortlen.
@@ -237,5 +324,27 @@ public class BibleViewPane extends JPanel
     public static void setShortlen(int shortlen)
     {
         BibleViewPane.shortlen = shortlen;
+    }
+
+    /**
+     * Filter out verse lists
+     */
+    private final class CustomFileFilter extends FileFilter
+    {
+        /* (non-Javadoc)
+         * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+         */
+        public boolean accept(File f)
+        {
+            return f.getName().endsWith(EXTENSION);
+        }
+
+        /* (non-Javadoc)
+         * @see javax.swing.filechooser.FileFilter#getDescription()
+         */
+        public String getDescription()
+        {
+            return "Verse Lists ("+EXTENSION+")";
+        }
     }
 }

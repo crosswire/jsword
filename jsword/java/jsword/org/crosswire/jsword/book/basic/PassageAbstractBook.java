@@ -10,6 +10,7 @@ import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.OsisTextType;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyList;
@@ -107,7 +108,7 @@ public abstract class PassageAbstractBook extends AbstractBook
 
     /**
      * What filter should be used to filter data in the format produced by this
-     * Book?
+     * Book?.
      * In some ways this method is more suited to BookMetaData however we do not
      * have a specialization of BookMetaData to fit PassageAbstractBook and it
      * doesn't like any higher in the hierachy at the moment so I will leave

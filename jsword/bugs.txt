@@ -2,10 +2,7 @@
 This file is our equivalent of bugzilla for the time being.
 
 GUI
-- better display management, font selections etc
-- how do we work with verse lists/bookmarks?
-- implement load/save
-- Select first dict entry when picking new dict
+- something better with the help dialog?
 
 Modules
 
@@ -13,7 +10,11 @@ Other
 - change name of swing packages
 - change name of servlet packages
 - move map and maptest into jsword-support
-- sort out best match
+
+Web
+- API primer link broken (java source)
+- auto test for web demo
+- CPD link broken (& link text bust)
 
 --------------------------------------------------------------------------------
 

@@ -20,13 +20,13 @@ import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
-import org.crosswire.jsword.book.basic.ReadOnlyKeyList;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.OsisTextType;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.ReadOnlyKeyList;
 
 /**
  * A Sword version of Dictionary.
@@ -94,6 +94,8 @@ public class SwordDictionary extends AbstractBook
 
         global = new ReadOnlyKeyList(set, false);
 
+        active = true;
+
         // We don't need to activate the backend because it should be capable
         // of doing it for itself.
     }
@@ -110,6 +112,8 @@ public class SwordDictionary extends AbstractBook
         global = null;
 
         Activator.deactivate(backend);
+
+        active = false;
     }
 
     /* (non-Javadoc)

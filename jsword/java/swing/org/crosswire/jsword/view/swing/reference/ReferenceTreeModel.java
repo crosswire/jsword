@@ -193,7 +193,7 @@ public class ReferenceTreeModel implements TreeModel
     /**
      * Invoke this method if you've modified the TreeNodes upon which this
      * model depends.  The model will notify all of its listeners that the
-     * model has changed below the node <code>node</code> (PENDING).
+     * model has changed below the node <code>node</code>.
      */
     public void reload(TreeNode node)
     {
@@ -216,7 +216,9 @@ public class ReferenceTreeModel implements TreeModel
             Object[] newChildren = new Object[cCount];
 
             for (int counter = 0; counter < cCount; counter++)
+            {
                 newChildren[counter] = node.getChildAt(childIndices[counter]);
+            }
             fireTreeNodesInserted(this, getPathToRoot(node), childIndices, newChildren);
         }
     }
@@ -252,7 +254,9 @@ public class ReferenceTreeModel implements TreeModel
                     Object[] cChildren = new Object[cCount];
 
                     for (int counter = 0; counter < cCount; counter++)
+                    {
                         cChildren[counter] = node.getChildAt(childIndices[counter]);
+                    }
                     fireTreeNodesChanged(this, getPathToRoot(node), childIndices, cChildren);
                 }
             }
@@ -313,17 +317,25 @@ public class ReferenceTreeModel implements TreeModel
         if (aNode == null)
         {
             if (depth == 0)
+            {
                 return null;
+            }
             else
+            {
                 retNodes = new TreeNode[depth];
+            }
         }
         else
         {
             depth++;
             if (aNode == root)
+            {
                 retNodes = new TreeNode[depth];
+            }
             else
+            {
                 retNodes = getPathToRoot(aNode.getParent(), depth);
+            }
             retNodes[retNodes.length - depth] = aNode;
         }
         return retNodes;
@@ -526,8 +538,6 @@ public class ReferenceTreeModel implements TreeModel
      *
      * @see TreeNode#getAllowsChildren
      * @see TreeModel#isLeaf
-     * @see #setAsksAllowsChildren
      */
     protected boolean asksAllowsChildren;
-
 }

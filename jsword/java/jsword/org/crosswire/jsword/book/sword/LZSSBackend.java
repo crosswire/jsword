@@ -67,7 +67,7 @@ public class LZSSBackend implements Backend
      */
     public KeyList readIndex()
     {
-        // TODO: refactor to get rid of this
+        // PENDING(joe): refactor to get rid of this
         return null;
     }
 

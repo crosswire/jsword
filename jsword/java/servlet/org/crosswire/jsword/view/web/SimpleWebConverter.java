@@ -45,7 +45,9 @@ public class SimpleWebConverter implements Converter
         {
             URL xslurl = ResourceUtil.getResource("xsl/web/simple.xsl");
 
-            // TODO(joe): do we need to transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // We used to do:
+            // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // however for various reasons, now we don't but nothing seems to be broken ...
             return new TransformingSAXEventProvider(xslurl, xmlsep);
         }
         catch (MalformedURLException ex)

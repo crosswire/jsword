@@ -12,11 +12,11 @@ import org.crosswire.common.util.LogicError;
  * Similar to a Passage, but that stores a ranking for each of the
  * Verses that it contains.
  *
- * <p>NOTE(joe): Specify how passage ranks work. Currently there is no well
- * defined spec for what the rank of a verse means - it is just an int. Since
- * this number is expoed in 2 places (getNameAndTally() and getTallyFor()) we
- * should specify what the numbers mean. Trouble is most tallies come from
- * searches where the numbers only have relative meaning.</p>
+ * <p>Currently there is no well defined spec for what the rank of a verse means
+ * - it is just an int. Since this number is expoed in 2 places
+ * (getNameAndTally() and getTallyFor()) we should specify what the numbers
+ * mean. Trouble is most tallies come from searches where the numbers only have
+ * relative meaning.</p>
  *
  * <p>This class exactly implements the Passage interface when the
  * ordering is set to ORDER_BIBLICAL, however an additional setting of
@@ -56,6 +56,8 @@ import org.crosswire.common.util.LogicError;
  * 
  * <p>To think about - I've upped the MAX_TALLY to 20000 to help the new
  * mapper program. I'm not sure why it was originally 100?
+ * 
+ * <p>LATER(joe): Specify how passage ranks work.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

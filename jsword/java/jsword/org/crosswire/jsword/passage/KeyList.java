@@ -79,14 +79,16 @@ public interface KeyList extends Key
     public void clear();
 
     /**
-     * @param index
-     * @return
+     * Gets a key from a specific point in this list.
+     * @param index The index of the Key to retrieve
+     * @return The specified key
      */
     public Key get(int index);
 
     /**
-     * @param that
-     * @return
+     * Reverse a Key into the position the key holds in the list
+     * @param that The Key to find
+     * @return The index of the key or -1 if the key is not in the list
      */
     public int indexOf(Key that);
 }

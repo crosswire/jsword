@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * <a href="http://www.ccel.org/ThML/ThML1.04.htm">http://www.ccel.org/ThML/ThML1.04.htm</a>
  * to work out what the tags meant.
  * 
- * URGENT(joe): check nesting on these elements
+ * LATER(joe): check nesting on these THML elements
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

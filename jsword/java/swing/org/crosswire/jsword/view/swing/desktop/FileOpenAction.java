@@ -4,8 +4,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
  * open a new passage window from a file.
@@ -51,6 +53,14 @@ public class FileOpenAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Not implemented");
+        try
+        {
+            BibleViewPane view = getDesktop().getSelectedBibleViewPane();
+            view.open();
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 }

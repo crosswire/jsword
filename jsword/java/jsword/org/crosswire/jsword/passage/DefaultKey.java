@@ -1,7 +1,6 @@
 
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.passage;
 
-import org.crosswire.jsword.passage.Key;
 
 /**
  * A simple default implementation of the Key interface.

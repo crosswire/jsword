@@ -34,8 +34,6 @@ public class Msg extends MsgBase
     static final Msg NO_VERSE = new Msg("Invalid reference.");
     static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
 
-    static final Msg KEYLIST_READONLY = new Msg("Can't alter a read-only key list");
-
     /* From LocalURL*
     static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");
     static final Msg CREATE_NOBIBLE = new Msg("Can't create a Bible from a non-Bible source");

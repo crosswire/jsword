@@ -280,12 +280,13 @@ public class SwordConfig
      */
     protected String getModuleCharset()
     {
-        // PENDING(joe): why the messing with defaults?
-        int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", 0);
-        if (encoding < 0)
-        {
-            encoding = 1; // default is Latin-1, but why not encoding is a String object?
-        }
+        int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", SwordConstants.ENCODING_LATIN1);
+        
+        // There was code here that said:
+        // if (encoding < 0)
+        //  encoding = SwordConstants.ENCODING_UTF8;
+        // However this would never trigger since we give a default above
+
         return SwordConstants.ENCODING_JAVA[encoding];
     }
 

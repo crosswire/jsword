@@ -23,6 +23,7 @@ import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -78,8 +79,6 @@ public class APIExamples
      * @see Passage
      * @see PassageFactory
      * @see SAXEventProvider
-     * @see org.crosswire.jsword.view.swing.util.SimpleSwingConverter
-     * @see org.crosswire.jsword.view.web.util.SimpleWebConverter
      */
     public void readStyledText() throws NoSuchVerseException, BookException, TransformerException, SAXException
     {
@@ -89,14 +88,7 @@ public class APIExamples
         BookData data = bible.getData(ref);
         SAXEventProvider osissep = data.getSAXEventProvider();
 
-        // It would be normal to store 'styler' in a class variable (field)
-        // I have also had to comment it out since this examples class is in the
-        // non-ui dependant tree, and our ant buildfile is sensibly picky.
-
-        //import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
-        //Converter styler = new SimpleSwingConverter();
-
-        Converter styler = null;
+        Converter styler = ConverterFactory.getConverter();
 
         SAXEventProvider htmlsep = styler.convert(osissep);
         String text = XMLUtil.writeToString(htmlsep);
@@ -111,7 +103,6 @@ public class APIExamples
      * While Bible and Commentary are very similar, a Dictionary is read in a
      * slightly different way. It is also worth looking at the JavaDoc for
      * Book that has a way of treating Bible, Commentary and Dictionary the same.
-     * @see Dictionary
      * @see Key
      * @see Book
      */

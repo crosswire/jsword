@@ -865,8 +865,18 @@ public final class Verse implements VerseBase, Comparable
      */
     public Key getParent()
     {
-        // NOTE(joe): should we make it have a parent
-        return null;
+        return parent;
+    }
+
+    /**
+     * Set a parent Key. This allows us to follow the Key interface more
+     * closely, although the concept of a parent for a verse is fairly
+     * alien.
+     * @param parent The parent Key for this verse
+     */
+    public void setParent(Key parent)
+    {
+        this.parent = parent;
     }
 
     /**
@@ -1360,6 +1370,13 @@ public final class Verse implements VerseBase, Comparable
      * The default verse
      */
     protected static final Verse DEFAULT = new Verse(1, 1, 1, true);
+
+    /**
+     * The parent key. See the key interface for more information.
+     * NOTE(joe): These keys are not serialized, should we?
+     * @see Key
+     */
+    private transient Key parent;
 
     /**
      * The book number. Genesis=1

@@ -3,9 +3,12 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
  * save the current passage window under a new name.
@@ -51,6 +54,14 @@ public class FileSaveAsAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        JOptionPane.showMessageDialog(getDesktop(), "Not implemented");
+        try
+        {
+            BibleViewPane view = getDesktop().getSelectedBibleViewPane();
+            view.saveAs();
+        }
+        catch (IOException ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 }

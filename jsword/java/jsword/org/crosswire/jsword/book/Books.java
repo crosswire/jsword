@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.activate.Activator;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.util.Project;
 
@@ -154,7 +154,7 @@ public class Books
      * Remove a BibleListener from our list of listeners
      * @param li The old listener
      */
-    public synchronized static void addBooksListener(BooksListener li)
+    public static synchronized void addBooksListener(BooksListener li)
     {
         listeners.add(BooksListener.class, li);
     }
@@ -163,7 +163,7 @@ public class Books
      * Add a BibleListener to our list of listeners
      * @param li The new listener
      */
-    public synchronized static void removeBooksListener(BooksListener li)
+    public static synchronized void removeBooksListener(BooksListener li)
     {
         listeners.remove(BooksListener.class, li);
     }
@@ -173,7 +173,7 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public synchronized static void addBook(BookMetaData bmd)
+    public static synchronized void addBook(BookMetaData bmd)
     {
         //log.debug("registering book: "+bmd.getName());
 
@@ -187,7 +187,7 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public synchronized static void removeBook(BookMetaData bmd) throws BookException
+    public static synchronized void removeBook(BookMetaData bmd) throws BookException
     {
         //log.debug("unregistering book: "+bmd.getName());
 
@@ -210,7 +210,7 @@ public class Books
      * @param bmd The meta-data of the changed Bible
      * @param added Is it added?
      */
-    protected synchronized static void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
+    protected static synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -243,7 +243,7 @@ public class Books
      * Add to the list of drivers
      * @param driver The BookDriver to add
      */
-    public synchronized static void registerDriver(BookDriver driver) throws BookException
+    public static synchronized void registerDriver(BookDriver driver) throws BookException
     {
         log.debug("begin registering driver: "+driver.getClass().getName());
 
@@ -267,7 +267,7 @@ public class Books
      * Remove from the list of drivers
      * @param driver The BookDriver to remove
      */
-    public synchronized static void unregisterDriver(BookDriver driver) throws BookException
+    public static synchronized void unregisterDriver(BookDriver driver) throws BookException
     {
         log.debug("begin un-registering driver: "+driver.getClass().getName());
 
@@ -290,7 +290,7 @@ public class Books
      * registered it can be hard to get ahold of the current book driver. This
      * method gives access to the registered instances.
      */
-    public synchronized static BookDriver[] getDriversByClass(Class type)
+    public static synchronized BookDriver[] getDriversByClass(Class type)
     {
         List matches = new ArrayList();
         for (Iterator it = drivers.iterator(); it.hasNext();)
@@ -309,7 +309,7 @@ public class Books
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public synchronized static BookDriver[] getDrivers()
+    public static synchronized BookDriver[] getDrivers()
     {
         return (BookDriver[]) drivers.toArray(new BookDriver[drivers.size()]);
     }
@@ -318,7 +318,7 @@ public class Books
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public synchronized static BookDriver[] getWritableDrivers()
+    public static synchronized BookDriver[] getWritableDrivers()
     {
         int i = 0;
         for (Iterator it = drivers.iterator(); it.hasNext();)

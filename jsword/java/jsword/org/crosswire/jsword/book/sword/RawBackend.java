@@ -83,6 +83,8 @@ public class RawBackend implements Backend
         {
             // Ignore this might be OT only
         }
+
+        active = true;
     }
 
     /* (non-Javadoc)
@@ -108,6 +110,8 @@ public class RawBackend implements Backend
 
         idxRaf[SwordConstants.TESTAMENT_NEW] = null;
         txtRaf[SwordConstants.TESTAMENT_NEW] = null;
+
+        active = false;
     }
 
     /* (non-Javadoc)
@@ -157,7 +161,7 @@ public class RawBackend implements Backend
      */
     public KeyList readIndex()
     {
-        // TODO: refactor to get rid of this
+        // PENDING(joe): refactor to get rid of this
         return null;
     }
 

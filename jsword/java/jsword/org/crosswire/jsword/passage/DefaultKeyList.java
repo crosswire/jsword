@@ -1,15 +1,14 @@
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.passage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
- * A KeyList that uses a Set of Keys as it's store of data.
+ * A default implementation of KeyList.
+ * 
+ * <p>This implementation uses <tt>java.util.TreeSet</tt> to store keys.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,106 +31,56 @@ import org.crosswire.jsword.passage.KeyList;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SetKeyList extends AbstractKeyList implements KeyList
+public class DefaultKeyList extends AbstractKeyList implements KeyList
 {
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set)
+    public DefaultKeyList()
     {
-        list.addAll(set);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, String name)
+    public DefaultKeyList(String name)
     {
-        list.addAll(set);
         setName(name);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent)
+    public DefaultKeyList(Key parent)
     {
-        list.addAll(set);
         this.parent = parent;
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent, String name)
+    public DefaultKeyList(Key parent, String name)
     {
-        list.addAll(set);
         this.parent = parent;
         setName(name);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+    /**
+     * A factory constructor to create a KeyList from a Key, buy casting if we
+     * really have a KeyList or by new()ing and add()ing if not.
      */
-    public void add(Key key)
+    public static KeyList getKeyList(Key key)
     {
-        list.add(key);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#clear()
-     */
-    public void clear()
-    {
-        list.clear();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
-     */
-    public boolean contains(Key key)
-    {
-        return list.contains(key);
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj)
-    {
-        return list.equals(obj);
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
-        return list.hashCode();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
-     */
-    public boolean isEmpty()
-    {
-        return list.isEmpty();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
-     */
-    public Iterator iterator()
-    {
-        return list.iterator();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
-     */
-    public void remove(Key key)
-    {
-        list.remove(key);
+        if (key instanceof KeyList)
+        {
+            return (KeyList) key;
+        }
+        else
+        {
+            KeyList reply = new DefaultKeyList();
+            reply.add(key);
+            return reply;
+        }
     }
 
     /* (non-Javadoc)
@@ -139,7 +88,55 @@ public class SetKeyList extends AbstractKeyList implements KeyList
      */
     public int size()
     {
-        return list.size();
+        return keys.size();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
+     */
+    public boolean isEmpty()
+    {
+        return keys.isEmpty();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key)
+    {
+        return keys.contains(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     */
+    public Iterator iterator()
+    {
+        return keys.iterator();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     */
+    public void add(Key key)
+    {
+        keys.add(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void remove(Key key)
+    {
+        keys.remove(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#clear()
+     */
+    public void clear()
+    {
+        keys.clear();
     }
 
     /* (non-Javadoc)
@@ -147,7 +144,7 @@ public class SetKeyList extends AbstractKeyList implements KeyList
      */
     public Key get(int index)
     {
-        return (Key) list.get(index);
+        return (Key) keys.get(index);
     }
 
     /* (non-Javadoc)
@@ -155,11 +152,11 @@ public class SetKeyList extends AbstractKeyList implements KeyList
      */
     public int indexOf(Key that)
     {
-        return list.indexOf(that);
+        return keys.indexOf(that);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getParent()
+    /**
+     * @return Returns the parent of this key.
      */
     public Key getParent()
     {
@@ -172,7 +169,7 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     private Key parent;
 
     /**
-     * The Set that we are proxying to
+     * The store of Keys
      */
-    private List list = new ArrayList();
+    private List keys = new ArrayList();
 }

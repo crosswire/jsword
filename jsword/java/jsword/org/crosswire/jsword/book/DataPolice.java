@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * When we can't convert some source data then the user doesn't really care and

@@ -10,7 +10,6 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
  * StubBookDriver is a simple stub implementation of BibleDriver that is
  * pretty much always going to work because it has no dependancies on external
  * files.
- * <p>TODO(joe): StubDict M.I.A because StubBook isa PassageAbstractBook
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -45,7 +44,7 @@ public class StubBookDriver extends AbstractBookDriver
             new StubBook(this, "Stub Version", BookType.BIBLE, Books.SPEED_INACCURATE),
             new StubBook(this, "New Stub Version", BookType.BIBLE, Books.SPEED_INACCURATE),
             new StubBook(this, "Stub Comments", BookType.COMMENTARY, Books.SPEED_INACCURATE),
-            //new StubBook(this, "Stub Dict", BookType.DICTIONARY, Books.SPEED_INACCURATE, new StubDictionaryKeyFactory()),
+            new StubDictionary(this, "Stub Dict", BookType.DICTIONARY, Books.SPEED_INACCURATE),
         };
 
         bmds = new BookMetaData[books.length];

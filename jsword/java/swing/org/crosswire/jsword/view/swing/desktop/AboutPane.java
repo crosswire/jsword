@@ -234,7 +234,7 @@ public class AboutPane
          */
         public void actionPerformed(ActionEvent ev)
         {
-            atp.showInDialog(getDesktop());
+            atp.showInDialog(getDesktop().getJFrame());
         }
 
         private AboutPane atp = null;

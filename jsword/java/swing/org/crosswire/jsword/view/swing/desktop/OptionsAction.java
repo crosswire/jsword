@@ -80,7 +80,7 @@ public class OptionsAction extends DesktopAbstractAction
 
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
             URL config_url = Project.instance().getWritablePropertiesURL("desktop");
-            SwingConfig.showDialog(config, getDesktop(), config_url);
+            SwingConfig.showDialog(config, getDesktop().getJFrame(), config_url);
         }
         catch (Exception ex)
         {
@@ -135,13 +135,6 @@ public class OptionsAction extends DesktopAbstractAction
         ConfigurableSwingConverter cstyle = new ConfigurableSwingConverter();
         String[] cstyles = cstyle.getStyles();
         ChoiceFactory.getDataMap().put("cswing-styles", cstyles);
-
-        /*
-        TODO(joe): delete this
-        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String[] fonts = genv.getAvailableFontFamilyNames();
-        ChoiceFactory.getDataMap().put("font-names", fonts);
-        */
     }
 
     /**

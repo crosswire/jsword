@@ -1,16 +1,9 @@
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.passage;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
- * A default implementation of KeyList.
- * 
- * <p>This implementation uses <tt>java.util.TreeSet</tt> to store keys.
+ * A read-only wrapper around any writable implementation of KeyList.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -33,56 +26,15 @@ import org.crosswire.jsword.passage.KeyList;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DefaultKeyList extends AbstractKeyList implements KeyList
+public class ReadOnlyKeyList implements KeyList
 {
     /**
      * Simple ctor
      */
-    public DefaultKeyList()
+    public ReadOnlyKeyList(KeyList keys, boolean ignore)
     {
-    }
-
-    /**
-     * Simple ctor
-     */
-    public DefaultKeyList(String name)
-    {
-        setName(name);
-    }
-
-    /**
-     * Simple ctor
-     */
-    public DefaultKeyList(Key parent)
-    {
-        this.parent = parent;
-    }
-
-    /**
-     * Simple ctor
-     */
-    public DefaultKeyList(Key parent, String name)
-    {
-        this.parent = parent;
-        setName(name);
-    }
-
-    /**
-     * A factory constructor to create a KeyList from a Key, buy casting if we
-     * really have a KeyList or by new()ing and add()ing if not.
-     */
-    public static KeyList getKeyList(Key key)
-    {
-        if (key instanceof KeyList)
-        {
-            return (KeyList) key;
-        }
-        else
-        {
-            KeyList reply = new DefaultKeyList();
-            reply.add(key);
-            return reply;
-        }
+        this.keys = keys;
+        this.ignore = ignore;
     }
 
     /* (non-Javadoc)
@@ -122,7 +74,12 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
      */
     public void add(Key key)
     {
-        keys.add(key);
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -130,7 +87,12 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
      */
     public void remove(Key key)
     {
-        keys.remove(key);
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -138,7 +100,28 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
      */
     public void clear()
     {
-        keys.clear();
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.getName());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName()
+     */
+    public String getName()
+    {
+        return keys.getName();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o)
+    {
+        return keys.compareTo(o);
     }
 
     /* (non-Javadoc)
@@ -146,7 +129,7 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
      */
     public Key get(int index)
     {
-        return (Key) keys.get(index);
+        return keys.get(index);
     }
 
     /* (non-Javadoc)
@@ -157,21 +140,21 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
         return keys.indexOf(that);
     }
 
-    /**
-     * @return Returns the parent of this key.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent()
     {
-        return parent;
+        return keys.getParent();
     }
 
     /**
-     * The parent of this key
+     * Do we ignore write requests or throw?
      */
-    private Key parent;
+    private boolean ignore;
 
     /**
-     * The store of Keys
+     * The KeyList to which we proxy
      */
-    private List keys = new ArrayList();
+    private KeyList keys;
 }

@@ -1,7 +1,6 @@
 package org.crosswire.jsword.book.ser;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -47,7 +46,7 @@ public class BookDataCache implements Activatable
     /**
      * Constructor for BookDataCache.
      */
-    public BookDataCache(URL url) throws FileNotFoundException, IOException
+    public BookDataCache(URL url) throws MalformedURLException
     {
         this.url = url;
 
@@ -55,17 +54,6 @@ public class BookDataCache implements Activatable
         {
             throw new MalformedURLException("not a file url");
         }
-
-        // Create blank indexes
-        xml_arr = new long[BibleInfo.versesInBible()];
-        
-        // Open the XML RAF
-        URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
-        xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), "r");
-
-        // Open the index file
-        URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
-        xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
     }
 
     /* (non-Javadoc)
@@ -73,40 +61,56 @@ public class BookDataCache implements Activatable
      */
     public final void activate(Lock lock)
     {
-        // Load the ascii XML index
-        for (int i = 0; i < BibleInfo.versesInBible(); i++)
+        try
         {
-            String line = null;
+            // Create blank indexes
+            indexArr = new long[BibleInfo.versesInBible()];
+        
+            // Open the XML RAF
+            dataUrl = NetUtil.lengthenURL(url, "xml.data");
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "r");
 
-            try
+            // Open the index file
+            indexUrl = NetUtil.lengthenURL(url, "xml.index");
+            indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
+
+            // Load the ascii XML index
+            for (int i = 0; i < BibleInfo.versesInBible(); i++)
             {
-                line = xml_idy_bin.readLine();
-            }
-            catch (IOException ex)
-            {
-                log.error("Error reading xml_idy_bin", ex);
-                break;
+                String line = null;
+
+                try
+                {
+                    line = indexIn.readLine();
+                }
+                catch (IOException ex)
+                {
+                    log.error("Error reading index", ex);
+                    break;
+                }
+
+                if (line == null)
+                {
+                    break;
+                }
+
+                try
+                {
+                    indexArr[i] = Integer.parseInt(line);
+                }
+                catch (NumberFormatException ex)
+                {
+                    indexArr[i] = -1;
+                    log.error("Error parsing line: "+line, ex);
+                }
             }
 
-            if (line == null)
-            {
-                break;
-            }
-
-            try
-            {
-                xml_arr[i] = Integer.parseInt(line);
-            }
-            catch (NumberFormatException ex)
-            {
-                xml_arr[i] = -1;
-                log.error("Error parsing line: "+line, ex);
-            }
+            active = true;
         }
-
-        // xml_idy_bin.close();
-
-        active = true;
+        catch (IOException ex)
+        {
+            log.warn("failed to open stream", ex);
+        }
     }
 
     /* (non-Javadoc)
@@ -114,7 +118,15 @@ public class BookDataCache implements Activatable
      */
     public final void deactivate(Lock lock)
     {
-        // NOTE(joe): is there anything we can do to conserve memory?
+        try
+        {
+            indexIn.close();
+        }
+        catch (IOException ex)
+        {
+            log.warn("failed to close stream", ex);
+        }
+
         active = false;
     }
 
@@ -139,16 +151,16 @@ public class BookDataCache implements Activatable
         try
         {
             // Seek to the correct point
-            long location = xml_arr[verse.getOrdinal() - 1];
+            long location = indexArr[verse.getOrdinal() - 1];
             if (location == -1)
             {
                 throw new BookException(Msg.READ_ERROR);
             }
 
-            xml_dat.seek(location);
+            dataRaf.seek(location);
 
             // Read the XML text
-            String txt = xml_dat.readUTF();
+            String txt = dataRaf.readUTF();
             return txt;
         }
         catch (IOException ex)
@@ -167,10 +179,10 @@ public class BookDataCache implements Activatable
         try
         {
             // Remember where we were so we can read it back later
-            xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();
+            indexArr[verse.getOrdinal() - 1] = dataRaf.getFilePointer();
     
             // And write the entry
-            xml_dat.writeUTF(text);
+            dataRaf.writeUTF(text);
         }
         catch (IOException ex)
         {
@@ -188,17 +200,16 @@ public class BookDataCache implements Activatable
         try
         {
             // re-open the RAF read-write
-            URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
-            xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), "rw");
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "rw");
 
             // Save the ascii XML index
-            URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
-            PrintWriter xml_idy_out = new PrintWriter(NetUtil.getOutputStream(xml_idy_url));
-            for (int i = 0; i < xml_arr.length; i++)
+            PrintWriter indexOut = new PrintWriter(NetUtil.getOutputStream(indexUrl));
+            for (int i = 0; i < indexArr.length; i++)
             {
-                xml_idy_out.println(xml_arr[i]);
+                indexOut.println(indexArr[i]);
             }
-            xml_idy_out.close();
+
+            indexOut.close();
         }
         catch (IOException ex)
         {
@@ -217,21 +228,31 @@ public class BookDataCache implements Activatable
     private URL url;
 
     /**
+     * URL of the index file
+     */
+    private URL indexUrl;
+
+    /**
+     * URL of the text file
+     */
+    private URL dataUrl;
+
+    /**
      * The text random access file
      */
-    private RandomAccessFile xml_dat;
+    private RandomAccessFile dataRaf;
 
     /**
      * The index file reader
      */
-    private BufferedReader xml_idy_bin;
+    private BufferedReader indexIn;
 
     /**
      * The hash of indexes into the text file, one per verse. Note that the
      * index in use is NOT the ordinal number of the verse since ordinal nos are
      * 1 based. The index into xml_arr is verse.getOrdinal() - 1
      */
-    private long[] xml_arr;
+    private long[] indexArr;
 
     /**
      * The log stream

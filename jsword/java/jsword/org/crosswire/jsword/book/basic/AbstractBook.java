@@ -12,6 +12,7 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.book.search.SearchEngineFactory;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.util.Project;

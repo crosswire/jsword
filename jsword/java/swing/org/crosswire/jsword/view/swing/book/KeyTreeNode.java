@@ -6,7 +6,7 @@ import java.util.Vector;
 import javax.swing.tree.TreeNode;
 
 import org.crosswire.common.util.IteratorEnumeration;
-import org.crosswire.jsword.book.basic.DefaultKeyList;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 

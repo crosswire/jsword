@@ -253,7 +253,7 @@ public class PassageSet implements SortedSet
      */
     public Object first()
     {
-        return ref.getVerseRangeAt(0, restrict = PassageConstants.RESTRICT_CHAPTER);
+        return ref.getVerseRangeAt(0, restrict);
     }
 
     /* (non-Javadoc)
@@ -277,7 +277,7 @@ public class PassageSet implements SortedSet
      */
     public SortedSet headSet(Object to)
     {
-        // TODO: implement
+        // LATER(joe): implement
         // VerseRange range = AbstractPassage.toVerseRange(to);
         throw new UnsupportedOperationException();
     }
@@ -287,7 +287,7 @@ public class PassageSet implements SortedSet
      */
     public SortedSet tailSet(Object fromElement)
     {
-        // TODO: implement
+        // LATER(joe): implement
         // VerseRange range = AbstractPassage.toVerseRange(to);
         throw new UnsupportedOperationException();
     }
@@ -297,7 +297,7 @@ public class PassageSet implements SortedSet
      */
     public SortedSet subSet(Object fromElement, Object toElement)
     {
-        // TODO: implement
+        // LATER(joe): implement
         // VerseRange range = AbstractPassage.toVerseRange(to);
         throw new UnsupportedOperationException();
     }

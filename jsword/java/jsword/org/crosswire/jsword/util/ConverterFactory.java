@@ -6,7 +6,7 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.xml.Converter;
 
 /**
- * A factory for Converters
+ * A factory for Converters.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,9 +28,17 @@ import org.crosswire.common.xml.Converter;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
+ * @see org.crosswire.common.xml.Converter
  */
 public class ConverterFactory
 {
+    /**
+     * Prevent instantiation
+     */
+    private ConverterFactory()
+    {
+    }
+
     /**
      * Generate a converter for the current converter name
      */
@@ -64,7 +72,7 @@ public class ConverterFactory
     /**
      * For config to set the currently preferred converter implementation
      */
-    public static final void setCurrentConverter(String name)
+    public static final void setCurrentConverterName(String name)
     {
         ConverterFactory.name = name;
     }
@@ -72,7 +80,7 @@ public class ConverterFactory
     /**
      * For config to read the currently preferred converter implementation
      */
-    public static final String getCurrentConverter()
+    public static final String getCurrentConverterName()
     {
         return name;
     }

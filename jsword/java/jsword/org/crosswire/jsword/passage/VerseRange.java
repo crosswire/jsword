@@ -890,9 +890,8 @@ public final class VerseRange implements VerseBase
     /**
      * The OSIS defined specification for this VerseRange.
      * Uses short books names, with "." as a verse part separator.
-     * NOTE(joe): This is technically wrong because we just have to list the
-     * verses separated by spaces, but that could get very messy, so I'm keeping
-     * things simple for the time being.
+     * NOTE(joe): Technically wrong - we should list verses separated by spaces
+     * But that could get very messy, so I'm keeping things simple.
      * @return a String containing the OSIS description of the verses
      */
     public String getOSISName()
@@ -1443,8 +1442,18 @@ public final class VerseRange implements VerseBase
      */
     public Key getParent()
     {
-        // NOTE(joe): should we make it have a parent
-        return null;
+        return parent;
+    }
+
+    /**
+     * Set a parent Key. This allows us to follow the Key interface more
+     * closely, although the concept of a parent for a verse is fairly
+     * alien.
+     * @param parent The parent Key for this verse
+     */
+    public void setParent(Key parent)
+    {
+        this.parent = parent;
     }
 
     /**
@@ -1697,6 +1706,13 @@ public final class VerseRange implements VerseBase
      * All ctors init this so leave default
      */
     protected transient Verse end;
+
+    /**
+     * The parent key. See the key interface for more information.
+     * NOTE(joe): These keys are not serialized, should we?
+     * @see Key
+     */
+    private transient Key parent;
 
     /**
      * The original string for picky users

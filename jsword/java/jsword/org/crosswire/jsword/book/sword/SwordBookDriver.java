@@ -204,9 +204,10 @@ public class SwordBookDriver extends AbstractBookDriver
         switch (config.matchingIndex(SwordConstants.COMPRESSION_STRINGS, "CompressType"))
         {
         case SwordConstants.COMPRESSION_ZIP:
-            // PENDING(joe): BlockType - the default (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
+            // The default blocktype (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
             // but the specified default here is BLOCK_BOOK (0)
-            return new GZIPBackend(path, config.matchingIndex(SwordConstants.BLOCK_STRINGS, "BlockType", 0));
+            int blocktype = config.matchingIndex(SwordConstants.BLOCK_STRINGS, "BlockType", SwordConstants.BLOCK_BOOK);
+            return new GZIPBackend(path, blocktype);
       
         case SwordConstants.COMPRESSION_LZSS:
             return new LZSSBackend(config);

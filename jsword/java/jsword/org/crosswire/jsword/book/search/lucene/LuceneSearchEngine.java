@@ -88,7 +88,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     {
         checkActive();
 
-        // PENDING(joe): think about splitting out the parser.
+        // LATER(joe): think about splitting out the parser.
         /*
         Parser parser = ParserFactory.createParser(this);
         return parser.search(search);
@@ -141,7 +141,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     {
         checkActive();
 
-        // PENDING(joe): write this
+        // LATER(joe): write this
         /*
         Directory directory = FSDirectory.getDirectory("demo index", false);
         IndexReader reader = IndexReader.open(directory);
@@ -258,7 +258,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
 
     /**
      * The Whole Bible
-     * PENDING(joe): this should be getIndex();
+     * LATER(joe): this should be getIndex();
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 }

@@ -60,7 +60,7 @@ public class ViewSourceOSISAction extends DesktopAbstractAction
 
             TextViewPanel viewer = new TextViewPanel(html, "OSIS source to "+key.getName());
             viewer.setEditable(true);
-            viewer.showInFrame(getDesktop());
+            viewer.showInFrame(getDesktop().getJFrame());
         }
         catch (Exception ex)
         {

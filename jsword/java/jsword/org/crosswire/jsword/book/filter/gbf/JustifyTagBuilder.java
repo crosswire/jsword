@@ -45,7 +45,7 @@ public class JustifyTagBuilder implements TagBuilder
             {
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
-                    // PENDING(joe): is div the right thing?
+                    // LATER(joe): is div the right thing?
                     Seg seg = JAXBUtil.factory().createSeg();
                     seg.setType(JAXBUtil.SEG_JUSTIFYRIGHT);
 

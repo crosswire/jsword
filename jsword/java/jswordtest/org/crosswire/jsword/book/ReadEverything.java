@@ -132,7 +132,7 @@ public class ReadEverything
                 log.warn("No output from: "+bmd.getInitials()+", "+key.getName());
             }
 
-            // PENDING(joe): put in a test for invalid characters
+            // LATER(joe): put in a test for invalid characters
 
             // This might be a useful extra test, except that a failure gives you no help at all.
             //data.validate();
