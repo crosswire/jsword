@@ -95,7 +95,6 @@ public class Map implements Serializable
     /**
      * Get the position (as a float array) of a node by the ordinal number
      * of the verse that it contains
-     * @param ord The verse ordinal number
      * @return The requested node position
      */
     public float[] getPositionArrayCopy(int book, int chapter)
@@ -114,7 +113,6 @@ public class Map implements Serializable
     /**
      * Get the position (as a float array) of a node by the ordinal number
      * of the verse that it contains
-     * @param ord The verse ordinal number
      * @param idx The index into the position array for the given verse
      * @return The requested node position
      */
@@ -134,7 +132,6 @@ public class Map implements Serializable
     /**
      * Get the position of a node by the ordinal number of the verse that
      * it contains
-     * @param ord The verse ordinal number
      * @return The requested node position
      */
     public void setPosition(int book, int chapter, float[] pos)
@@ -147,7 +144,6 @@ public class Map implements Serializable
     /**
      * Get the position of a node by the ordinal number of the verse that
      * it contains
-     * @param ord The verse ordinal number
      * @param idx The index into the position array for the given verse
      * @param f The new position
      * @return The requested node position
@@ -185,8 +181,11 @@ public class Map implements Serializable
      */
     public void setLayoutSimple()
     {
-        if (dimensions != 2)
-            throw new IllegalArgumentException("Can't set simple layout for maps with "+dimensions+" dimensions.");
+		if (dimensions != 2)
+		{
+			throw new IllegalArgumentException("Can't set simple layout for maps with "
+					+ dimensions + " dimensions.");
+		}
 
         float start = 0.05F;
         float end = 0.95F;
@@ -366,8 +365,10 @@ public class Map implements Serializable
         {
             if (contents[i] == MapListener.class)
             {
-                if (ev == null)
-                    ev = new MapEvent(this, book, chapter);
+				if (ev == null)
+				{
+					ev = new MapEvent(this, book, chapter);
+				}
 
                 ((MapListener) contents[i+1]).mapChanged(ev);
             }
@@ -391,8 +392,10 @@ public class Map implements Serializable
         {
             if (contents[i] == MapListener.class)
             {
-                if (ev == null)
-                    ev = new MapEvent(this);
+				if (ev == null)
+				{
+					ev = new MapEvent(this);
+				}
 
                 ((MapListener) contents[i+1]).mapRewritten(ev);
             }
@@ -462,8 +465,10 @@ public class Map implements Serializable
      */
     public void fromXML(Element epos) throws JDOMException
     {
-        if (!epos.getName().equals("positions"))
-            throw new JDOMException("root element is not called 'links'");
+		if (!epos.getName().equals("positions"))
+		{
+			throw new JDOMException("root element is not called 'links'");
+		}
 
         dimensions = Integer.parseInt(epos.getAttributeValue("dimensions"));
 
@@ -541,30 +546,48 @@ public class Map implements Serializable
         listeners = new EventListenerList();
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(LinkArray.class);
 
-    /** What is the maximum calculations between re-calcing the CoG */
+    /**
+     * What is the maximum calculations between re-calcing the CoG
+     */
     private static final int MAX_REPLIES = 1;
 
-    /** The current center of gravity */
+    /**
+     * The current center of gravity
+     */
     private Position cog = null;
 
-    /** How long until we next calculate the center of gravity */
-    private int replies = 0;
+	/**
+     * How long until we next calculate the center of gravity
+     */
+	private int replies = 0;
 
-    /** The array of verse nodes */
+    /**
+     * The array of verse nodes
+     */
     private Position[][] nodes;
 
-    /** The number of dimensions in the display */
+    /**
+     * The number of dimensions in the display
+     */
     private int dimensions;
 
-    /** The number of links that we track for a node */
+    /**
+     * The number of links that we track for a node
+     */
     public static final int LINKS_PER_NODE = 20;
 
-    /** The list of listeners */
+    /**
+     * The list of listeners
+     */
     protected transient EventListenerList listeners = new EventListenerList();
 
-    /** Serialization ID - a serialization of nodes and dimensions */
+    /**
+     * Serialization ID - a serialization of nodes and dimensions
+     */
     static final long serialVersionUID = -193572391252539071L;
 }

@@ -789,6 +789,9 @@
         <argument value="-P"/>
       </commandline>
     </cvs>
+    <chmod perm="755">
+      <fileset dir="${source.etc}/build" includes="**/*.sh"/>
+    </chmod>
   </target>
 
   <!--=======================================================================-->
@@ -826,4 +829,3 @@
   </target>
 
 </project>
-

@@ -61,9 +61,9 @@ public class BookVerseColor implements VerseColor
 
     /**
      * What Color should we use to represent this verse
-     * @param book The book number (Gen=1, Rev=66)
-     * @param chapter The chapter number
-     * @param verse The verse number
+     * @param booknum The book number (Gen=1, Rev=66)
+     * @param chapternum The chapter number
+     * @param versenum The verse number
      * @return The Color for this verse
      */
     public Color getColor(int booknum, int chapternum, int versenum)

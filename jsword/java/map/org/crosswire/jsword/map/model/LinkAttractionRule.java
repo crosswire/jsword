@@ -28,13 +28,6 @@ package org.crosswire.jsword.map.model;
 public class LinkAttractionRule extends AbstractRule
 {
     /**
-     * Basic constructor
-     */
-    public LinkAttractionRule()
-    {
-    }
-
-    /**
      * Specify where it would like a node to be positioned in space.
      * Rules return an array of positions where the average of them
      * specifies the real desired position. So to specify a single place
@@ -43,7 +36,6 @@ public class LinkAttractionRule extends AbstractRule
      * more strongly, return an array conataining that position many
      * times.
      * @param map The Map to select a node from
-     * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
     public Position getDesiredPosition(Map map, int b, int c)
@@ -79,7 +71,7 @@ public class LinkAttractionRule extends AbstractRule
     }
 
     /**
-     * Returns the la.
+     * Returns the link array.
      * @return LinkArray
      */
     public LinkArray getLinkArray()
@@ -88,14 +80,16 @@ public class LinkAttractionRule extends AbstractRule
     }
 
     /**
-     * Sets the la.
-     * @param la The la to set
+     * Sets the link array.
+     * @param la The link array to set
      */
     public void setLinkArray(LinkArray la)
     {
         this.la = la;
     }
 
-    /** The number of links we remember for a node */
+    /**
+     * The number of links we remember for a node
+     */
     private LinkArray la;
 }

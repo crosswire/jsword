@@ -106,7 +106,6 @@ public class LinkArray implements Serializable
 
     /**
      * Generate links from an XML representation.
-     * @param root The root 'links' element
      */
     public void fromXML(Element elinks) throws JDOMException
     {
@@ -213,7 +212,6 @@ public class LinkArray implements Serializable
 
     /**
      * Turn a PassageTally into an array of links.
-     * @param verse The verse to get a link for
      * @return The array of links for the specified verse
      */
     public Link[] getLinks(int b, int c)

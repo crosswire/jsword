@@ -38,7 +38,6 @@ public class BrownianRule extends AbstractRule
      * more strongly, return an array conataining that position many
      * times.
      * @param map The Map to select a node from
-     * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
     public Position getDesiredPosition(Map map, int book, int chapter)

@@ -35,7 +35,6 @@ public class MapEvent extends EventObject
     /**
      * Initialize a MapEvent
      * @param source The map that started this off
-     * @param ord The verse ordinal that changed position
      */
     public MapEvent(Map source, int book, int chapter)
     {
@@ -58,8 +57,6 @@ public class MapEvent extends EventObject
     /**
      * Initialize a MapEvent
      * @param source The Object that started this off
-     * @param command The command typed
-     * @param lang The Progress that interprets this command
      */
     public MapEvent(Map source)
     {

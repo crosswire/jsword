@@ -188,7 +188,6 @@ public class MapperPane extends JPanel implements Scrollable
 
     /**
      * Get a (2D) position based on a verse ordinal
-     * @param ord The verse id
      * @return A position array
      */
     private int[] getPosition(int book, int chapter)

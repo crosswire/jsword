@@ -146,8 +146,20 @@ public class JobManager
                 }
             }
         };
+        
+        boolean invoke = false;
+        try
+        {
+            invoke = SwingUtilities.isEventDispatchThread();
+        }
+        catch (NoClassDefFoundError ex)
+        {
+            // This can happen in a headerless environment, and we don't care
+            // because we never need to invoke there, so just ignore.
+            log.debug("ignoring NoClassDefFoundError because we are headerless?");
+        }
 
-        if (SwingUtilities.isEventDispatchThread())
+        if (invoke)
         {
             firer.run();
         }
