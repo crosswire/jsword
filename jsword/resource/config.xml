@@ -6,7 +6,6 @@
 <!ATTLIST option
   key CDATA #REQUIRED
   static (true|false) 'true'
-  level (beginner|intermediate|advanced) 'beginner'
   priority NMTOKEN '5'
   type (string|boolean|int-options|string-options|file|path|directory|number|font|class|custom) #REQUIRED
   class CDATA #IMPLIED
@@ -55,12 +54,12 @@
     <help>The URL of a remote HTTP host.</help>
   </option>
 
-  <option key="Bibles.Display.Persistent Naming" level="advanced" type="boolean">
+  <option key="Bibles.Display.Persistent Naming" type="boolean">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="PersistentNaming"/>
     <help>True if the passage editor re-writes the references to conform to its notation.</help>
   </option>
 
-  <option key="Bibles.Display.Blurring Rules" level="advanced" type="int-options">
+  <option key="Bibles.Display.Blurring Rules" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="BlurRestriction"/>
     <help>What is the default blurring - Blur across chapter boundaries or not.</help>
     <alternative number="0" name="None"/>
@@ -68,7 +67,7 @@
     <alternative number="2" name="Chapter"/>
   </option>
 
-  <option key="Bibles.Display.Book Case" level="advanced" type="int-options">
+  <option key="Bibles.Display.Book Case" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.Books" property="Case"/>
     <help>What case should we use to display the references.</help>
     <alternative number="0" name="lower"/>
@@ -92,13 +91,9 @@
     <help>Do we display Exceptions in a the GUI shelf.</help>
   </option>
 
-  <option key="Advanced.Source Path" level="advanced" type="path">
+  <option key="Advanced.Source Path" type="path">
   	<introspect class="org.crosswire.common.swing.DetailedExceptionPane" property="SourcePath"/>
     <help>The directories to search for source code in when investigating an exception.</help>
-  </option>
-
-  <option key="Advanced.User Level" type="custom" class="org.crosswire.common.util.UserLevel$UserLevelChoice">
-    <help>How advanced is your knowledge of this program.</help>
   </option>
 
 </config>

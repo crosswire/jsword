@@ -96,7 +96,6 @@ public abstract class ReflectedChoice implements Choice, Serializable
         helptext = childele.getTextTrim();
 
         // 2 optional config attrubites
-        level = UserLevel.forName(option.getAttributeValue("level"));
         String priorityname = option.getAttributeValue("priority");
         if (priorityname == null)
             priority = ReflectedChoice.PRIORITY_NORMAL;
@@ -132,24 +131,6 @@ public abstract class ReflectedChoice implements Choice, Serializable
     public void setHelpText(String helptext)
     {
         this.helptext = helptext;
-    }
-
-    /**
-     * Gets a default user level (beginner to advanced)
-     * @return The user level
-     */
-    public UserLevel getUserLevel()
-    {
-        return level;
-    }
-
-    /**
-     * Gets a default user level (beginner to advanced)
-     * @param level The user level
-     */
-    protected void setUserLevel(UserLevel level)
-    {
-        this.level = level;
     }
 
     /**
@@ -263,11 +244,6 @@ public abstract class ReflectedChoice implements Choice, Serializable
      * The help text (tooltip) for this item
      */
     private String helptext = "No help available";
-
-    /**
-     * The userlevel
-     */
-    private UserLevel level = UserLevel.BEGINNER;
 
     /**
      * The priority of this config level

@@ -6,7 +6,6 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.crosswire.common.config.UserLevel;
 import org.crosswire.common.util.LogUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.event.ReporterEvent;
@@ -50,16 +49,7 @@ public class ExceptionPane
     {
         String message = LogUtil.getHTMLDescription(ex);
 
-        String[] options;
-        if (UserLevel.getGlobalUserLevel() == UserLevel.ADVANCED)
-        {
-            options = new String[] { "Ok", "More Info ..." };
-        }
-        else
-        {
-            options = new String[] { "Ok" };
-        }
-
+        String[] options = new String[] { "Ok", "More Info ..." };
         int choice = JOptionPane.showOptionDialog(comp, "<html><font size=\"-1\">An error has occured:</font> "+message, "Error",
                                                   JOptionPane.DEFAULT_OPTION,
                                                   JOptionPane.ERROR_MESSAGE,

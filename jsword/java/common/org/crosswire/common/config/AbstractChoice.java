@@ -28,15 +28,6 @@ package org.crosswire.common.config;
 public abstract class AbstractChoice implements Choice
 {
     /**
-     * Gets a default user level (beginner to advanced)
-     * @return The user level
-     */
-    public UserLevel getUserLevel()
-    {
-        return UserLevel.BEGINNER;
-    }
-
-    /**
      * This method is used to configure a good way of editing this
      * component. It returns a MIME style string, which a config
      * ui can use to select a suitable ui tool.

@@ -72,12 +72,6 @@ public interface Choice extends Serializable
     public String getHelpText();
 
     /**
-     * Gets a default user level (beginner to advanced)
-     * @return The user level
-     */
-    public UserLevel getUserLevel();
-
-    /**
      * Is this Choice OK to write out to a file, or should we use settings
      * in this run of the program, but forget them for next time. A
      * typical use of this is for password configuration.

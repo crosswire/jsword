@@ -182,31 +182,26 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
             Field field = FieldMap.getField(model);
             fields.put(key, field);
 
-            // if model level less than or same as global level
-            // if global level greater than model level
-            if (model.getUserLevel().isAvailable())
+            // Get or create a FieldPanel
+            FormPane card = (FormPane) decks.get(path);
+
+            if (card == null)
             {
-                // Get or create a FieldPanel
-                FormPane card = (FormPane) decks.get(path);
-
-                if (card == null)
-                {
-                    card = new FormPane();
-                    decks.put(path, card);
-                    cards++;
-                }
-
-                // Add the Field to the FieldPanel
-                JComponent comp = field.getComponent();
-                comp.setToolTipText(model.getHelpText());
-
-                String name = Config.getLeaf(key) + ":";
-                card.addEntry(name, comp);
-
-                // Fill in the current value
-                String value = config.getLocal(key);
-                field.setValue(value);
+                card = new FormPane();
+                decks.put(path, card);
+                cards++;
             }
+
+            // Add the Field to the FieldPanel
+            JComponent comp = field.getComponent();
+            comp.setToolTipText(model.getHelpText());
+
+            String name = Config.getLeaf(key) + ":";
+            card.addEntry(name, comp);
+
+            // Fill in the current value
+            String value = config.getLocal(key);
+            field.setValue(value);
         }
         catch (Exception ex)
         {
