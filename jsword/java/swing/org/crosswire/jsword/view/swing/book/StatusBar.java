@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.view.swing.book;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,9 +13,10 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+
+import org.crosswire.common.progress.swing.JobsProgressBar;
 
 /**
  * The status bar provides useful info to the user as to the current
@@ -62,7 +64,9 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
      */
     private void jbInit()
     {
-        pnl_progr.setBorder(BorderFactory.createEtchedBorder());
+        // pnl_progr.setBorder(BorderFactory.createEtchedBorder());
+        Font font = pnl_progr.getFont();
+        pnl_progr.setFont(font.deriveFont(6.0F));
 
         lbl_message.setBorder(BorderFactory.createEtchedBorder());
         lbl_message.setText(DEFAULT);
@@ -73,8 +77,8 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
         this.setBorder(BorderFactory.createLoweredBevelBorder());
         this.setLayout(new GridBagLayout());
 
-        this.add(pnl_progr,   new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(lbl_message, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        this.add(lbl_message, new GridBagConstraints(0, 0, 1, 1, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        this.add(pnl_progr,   new GridBagConstraints(1, 0, 1, 1, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         this.add(lbl_name,    new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     }
 
@@ -164,7 +168,7 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
     /**
      * Where the progress bars go
      */
-    private JPanel pnl_progr = new JPanel();
+    private JobsProgressBar pnl_progr = new JobsProgressBar(true);
 
     /**
      * Where the help messages go

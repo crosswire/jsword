@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -40,6 +42,7 @@ import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -53,6 +56,7 @@ import org.crosswire.jsword.view.swing.book.Splash;
 import org.crosswire.jsword.view.swing.book.StatusBar;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
 import org.crosswire.jsword.view.swing.book.TitleChangedListener;
+import org.jdom.JDOMException;
 
 /**
  * A container for various tools, particularly the BibleGenerator and
@@ -93,145 +97,152 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     public static void main(String[] args)
     {
-        Desktop desktop = new Desktop();
-        desktop.pack();
-        GuiUtil.centerWindow(desktop);
-        desktop.setVisible(true);
-        
-        log.debug("desktop main exiting.");
+        try
+        {
+            Desktop desktop = new Desktop();
+            desktop.pack();
+            GuiUtil.centerWindow(desktop);
+            desktop.setVisible(true);
+
+            log.debug("desktop main exiting.");
+        }
+        catch (Throwable ex)
+        {
+            // Something went wrong before we've managed to get on our feet.
+            // so we want the best possible shot at working out what failed.
+            ex.printStackTrace();
+            ExceptionPane.showExceptionDialog(null, ex);
+        }
     }
 
     /**
      * Construct a Desktop.
      */
-    public Desktop()
+    public Desktop() throws BookException, IOException, JDOMException
     {
-        try
+        URL predicturl = Project.resource().getWritablePropertiesURL("splash");
+        Splash splash = new Splash(this, 60000);
+        startjob = JobManager.createJob("Startup", predicturl);
+
+        // Initial setup
+        startjob.setProgress("Setting-up config");
+        act_tools_options = new OptionsAction(this);
+        CustomAWTExceptionHandler.setParentComponent(this);
+
+        startjob.setProgress("Loading Configuration System");
+        act_tools_options.createConfig();
+
+        startjob.setProgress("Loading Stored Settings");
+        act_tools_options.loadConfig();
+
+        startjob.setProgress("Generating Components");
+        createComponents();
+
+        // GUI setup
+        init();
+        accelerateMenu(bar_menu);
+
+        if (initial == LAYOUT_TYPE_MDI)
         {
-            Splash splash = new Splash(this, 60000);
+            rdo_view_mdi.setSelected(true);
+        }
+        if (initial == LAYOUT_TYPE_TDI)
+        {
+            rdo_view_tdi.setSelected(true);
+        }
 
-            URL predicturl = Project.resource().getWritablePropertiesURL("splash");
-            startjob = JobManager.createJob("Startup", predicturl);
+        // Sort out the current ViewLayout. We need to reset current to be
+        // initial because the config system may well have changed initial
+        current = initial;
+        ensureAvailableBibleViewPane();
 
-            // Initial setup
-            startjob.setProgress("Creating GUI : Setting-up config");
-            act_tools_options = new OptionsAction(this);
-            CustomAWTExceptionHandler.setParentComponent(this);
+        // Configuration
+        startjob.setProgress("General configuration");
+        LookAndFeelUtil.addComponentToUpdate(this);
 
-            startjob.setProgress("Creating GUI : Loading Configuration System");
-            act_tools_options.createConfig();
-
-            startjob.setProgress("Creating GUI : Loading Stored Settings");
-            act_tools_options.loadConfig();
-
-            startjob.setProgress("Creating GUI : Generating Components");
-            layouts = new ViewLayout[2];
-            layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();
-            layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout();
-
-            act_file_new = new FileNewAction(this);
-            act_file_open = new FileOpenAction(this);
-            act_file_save = new FileSaveAction(this);
-            act_file_saveas = new FileSaveAsAction(this);
-            act_file_saveall = new FileSaveAllAction(this);
-            act_file_close = new FileCloseAction(this);
-            act_file_closeall = new FileCloseAllAction(this);
-            act_file_print = new FilePrintAction(this);
-            act_file_exit = new ExitAction(this);
-
-            act_edit_cut = new EditCutAction(this);
-            act_edit_copy = new EditCopyAction(this);
-            act_edit_paste = new EditPasteAction(this);
-            act_edit_blur1 = new BlurAction(this, 1, Passage.RESTRICT_CHAPTER);
-            act_edit_blur5 = new BlurAction(this, 5, Passage.RESTRICT_CHAPTER);
-
-            act_view_tdi = new ViewTDIAction(this);
-            act_view_mdi = new ViewMDIAction(this);
-            act_view_tbar = new ViewToolBarAction(this);
-            act_view_sbar = new ViewStatusBarAction(this);
-            act_view_html = new ViewSourceHTMLAction(this);
-            act_view_osis = new ViewSourceOSISAction(this);
-
-            act_list_delete = new ListDeleteAction(this);
-
-            //act_tools_generate = GeneratorPane.createOpenAction(this);
-            //act_tools_diff = ComparePane.createOpenAction(this);
-
-            act_help_contents = new HelpContentsAction(this);
-            act_help_system = SystemPropertiesPane.createOpenAction(this);
-            act_help_about = Splash.createOpenAction(this);
-            act_help_log = AdvancedToolsPane.createOpenAction(this);
-            act_help_debug = new DebugAction(this);
-
-            rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
-            rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
-            chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
-            chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
-
-            bar_menu = new JMenuBar();
-            menu_file = new JMenu();
-            menu_edit = new JMenu();
-            menu_view = new JMenu();
-            menu_tools = new JMenu();
-            menu_help = new JMenu();
-
-            grp_views = new ButtonGroup();
-            pnl_tbar = new JToolBar();
-            bar_status = new StatusBar();
-            bar_side = new SidebarPane();
-            spt_books = new JSplitPane();
-
-			bar_side.addHyperlinkListener(this);
-
-            // GUI setup
-            init();
-
-            if (initial == LAYOUT_TYPE_MDI)
+        // Keep track of the selected DisplayArea
+        FocusManager.getCurrentManager().addPropertyChangeListener(new PropertyChangeListener()
+        {
+            public void propertyChange(PropertyChangeEvent ev)
             {
-                rdo_view_mdi.setSelected(true);
-            }
-            if (initial == LAYOUT_TYPE_TDI)
-            {
-                rdo_view_tdi.setSelected(true);
-            }
-
-            // Sort out the current ViewLayout. We need to reset current to be
-            // initial because the config system may well have changed initial
-            current = initial;
-            ensureAvailableBibleViewPane();
-
-            // Configuration
-            startjob.setProgress("General configuration");
-            LookAndFeelUtil.addComponentToUpdate(this);
-
-            // Keep track of the selected DisplayArea
-            FocusManager.getCurrentManager().addPropertyChangeListener(new PropertyChangeListener()
-            {
-                public void propertyChange(PropertyChangeEvent arg0)
+                DisplayArea da = recurseDisplayArea();
+                if (da != null)
                 {
-                    DisplayArea da = recurseDisplayArea();
-                    if (da != null)
-                    {
-                        last = da;
-                    }
+                    last = da;
                 }
-            });
-            last = recurseDisplayArea();
+            }
+        });
+        last = recurseDisplayArea();
 
-            // Preload the PassageInnerPane for faster initial view
-            startjob.setProgress("Creating GUI : Preloading view system");
-            InnerDisplayPane.preload();
+        // Preload the PassageInnerPane for faster initial view
+        InnerDisplayPane.preload();
 
-            startjob.done();
-            splash.close();
-        }
-        catch (Exception ex)
-        {
-            // Something went wrong before we've managed to get on our feet.
-            // so we want the best possible shot at working out what failed.
-            ex.printStackTrace();
-            ExceptionPane.showExceptionDialog(this, ex);
-        }
+        startjob.done();
+        splash.close();
+
+        this.pack();
+    }
+
+    /**
+     * Call all the constructors
+     */
+    private void createComponents()
+    {
+        layouts = new ViewLayout[2];
+        layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();
+        layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout();
+        
+        act_file_new = new FileNewAction(this);
+        act_file_open = new FileOpenAction(this);
+        act_file_save = new FileSaveAction(this);
+        act_file_saveas = new FileSaveAsAction(this);
+        act_file_saveall = new FileSaveAllAction(this);
+        act_file_close = new FileCloseAction(this);
+        act_file_closeall = new FileCloseAllAction(this);
+        act_file_print = new FilePrintAction(this);
+        act_file_exit = new ExitAction(this);
+        
+        act_edit_cut = new EditCutAction(this);
+        act_edit_copy = new EditCopyAction(this);
+        act_edit_paste = new EditPasteAction(this);
+        act_edit_blur1 = new BlurAction(this, 1, Passage.RESTRICT_CHAPTER);
+        act_edit_blur5 = new BlurAction(this, 5, Passage.RESTRICT_CHAPTER);
+        
+        act_view_tdi = new ViewTDIAction(this);
+        act_view_mdi = new ViewMDIAction(this);
+        act_view_tbar = new ViewToolBarAction(this);
+        act_view_sbar = new ViewStatusBarAction(this);
+        act_view_html = new ViewSourceHTMLAction(this);
+        act_view_osis = new ViewSourceOSISAction(this);
+        
+        act_list_delete = new ListDeleteAction(this);
+        
+        //act_tools_generate = GeneratorPane.createOpenAction(this);
+        //act_tools_diff = ComparePane.createOpenAction(this);
+        
+        act_help_contents = new HelpContentsAction(this);
+        act_help_system = SystemPropertiesPane.createOpenAction(this);
+        act_help_about = Splash.createOpenAction(this);
+        act_help_log = AdvancedToolsPane.createOpenAction(this);
+        act_help_debug = new DebugAction(this);
+        
+        rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
+        rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
+        chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
+        chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
+        
+        bar_menu = new JMenuBar();
+        menu_file = new JMenu();
+        menu_edit = new JMenu();
+        menu_view = new JMenu();
+        menu_tools = new JMenu();
+        menu_help = new JMenu();
+        
+        grp_views = new ButtonGroup();
+        pnl_tbar = new JToolBar();
+        bar_status = new StatusBar();
+        bar_side = new SidebarPane();
+        spt_books = new JSplitPane();
     }
 
     /**
@@ -239,7 +250,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     private void init()
     {
-        startjob.setProgress("Creating GUI : Laying out menus");
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);
@@ -304,7 +314,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_help.addSeparator();
         menu_help.add(act_help_debug).addMouseListener(bar_status);
 
-        startjob.setProgress("Creating GUI : Toolbars");
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
         bar_menu.add(menu_view);
@@ -346,12 +355,14 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         pnl_tbar.add(act_help_log).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
-        startjob.setProgress("Creating GUI : Main Window");
+        bar_side.addHyperlinkListener(this);
+
         spt_books.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         spt_books.setOneTouchExpandable(true);
-        spt_books.setDividerLocation(1.0D);
+        spt_books.setDividerLocation(0.9D);
         spt_books.add(bar_side, JSplitPane.RIGHT);
-        spt_books.setResizeWeight(1.0D);
+        spt_books.add(new JPanel(), JSplitPane.LEFT);
+        spt_books.setResizeWeight(0.9D);
 
         this.addWindowListener(new WindowAdapter()
         {
@@ -369,8 +380,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         this.setEnabled(true);
         this.setTitle("JSword");
-
-        accelerateMenu(bar_menu);
     }
 
     /**
@@ -523,12 +532,14 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         {
             return;
         }
-        
+
         if (leftcurr != null)
         {
             // Not sure why we have to use a number in place of
             // the JSplitPane.LEFT string constant.
-            spt_books.remove(1/*JSplitPane.LEFT*/);
+            
+            // And not sure that we need to do this at all.
+            //spt_books.remove(1/*JSplitPane.LEFT*/);
         }
 
         spt_books.add(next, JSplitPane.LEFT);
@@ -738,7 +749,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     /**
      * The initial layout state
      */
-    private static int initial = LAYOUT_TYPE_MDI;
+    private static int initial = LAYOUT_TYPE_TDI;
 
     /**
      * The array of valid layouts

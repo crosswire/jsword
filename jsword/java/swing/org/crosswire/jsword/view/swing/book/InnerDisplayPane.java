@@ -84,8 +84,10 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     Passage ref = PassageFactory.createPassage("Gen 1:1");
                     Bible version = Defaults.getBibleMetaData().getBible();
 
-                    job.setProgress("Getting init data");
+                    job.setProgress("Getting initial data");
                     BookData data = version.getData(ref);
+
+                    job.setProgress("Getting event provider");
                     SAXEventProvider provider = data.getSAXEventProvider();
 
                     job.setProgress("Compiling stylesheet");

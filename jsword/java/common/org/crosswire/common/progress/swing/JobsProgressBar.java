@@ -1,6 +1,7 @@
 
 package org.crosswire.common.progress.swing;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +48,14 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * Simple ctor
      */
-    public JobsProgressBar()
+    public JobsProgressBar(boolean small)
     {
+        if (small)
+        {
+            // They start of at 15pt (on Windows at least)
+            font = new Font("SansSerif", Font.PLAIN, 10);
+        }
+
         JobManager.addWorkListener(this);
 
         Set current = JobManager.getJobs();
@@ -58,14 +65,6 @@ public class JobsProgressBar extends JPanel implements WorkListener
             addJob(job);
         }
 
-        init();
-    }
-
-    /**
-     * GUI initializer
-     */
-    private void init()
-    {
         this.setLayout(new GridLayout(1, 0, 2, 0));
     }
 
@@ -111,6 +110,10 @@ public class JobsProgressBar extends JPanel implements WorkListener
         jobdata.index = i;
         jobdata.progress = new JProgressBar();
         jobdata.progress.setStringPainted(true);
+        if (font != null)
+        {
+            jobdata.progress.setFont(font);
+        }
 
         // Dimension preferred = jobdata.progress.getPreferredSize();
         // preferred.width = 50;
@@ -130,7 +133,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = ev.getPercent();
-        jobdata.progress.setString(ev.getDescription()+" "+percent+"%");
+        jobdata.progress.setString(ev.getDescription()+": ("+percent+"%)");
         jobdata.progress.setValue(percent);
     }
 
@@ -144,10 +147,10 @@ public class JobsProgressBar extends JPanel implements WorkListener
         positions.set(jobdata.index, null);
         jobs.remove(job);
         log.debug("removing job from panel: "+jobdata.job.getDescription());
-        
+
         this.remove(jobdata.progress);
         this.revalidate();
-        
+
         jobdata.job = null;
         jobdata.progress = null;
         jobdata.index = -1;
@@ -191,6 +194,11 @@ public class JobsProgressBar extends JPanel implements WorkListener
      * Array telling us what y position the jobs have in the window
      */
     private List positions = new ArrayList();
+
+    /**
+     * The font for the progress-bars
+     */
+    private Font font;
 
     /**
      * A simple struct to group information about a Job

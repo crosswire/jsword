@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -54,20 +55,15 @@ public class AdvancedToolsPane extends EirPanel
      */
     private void init()
     {
-        pnl_hshelf.setLayout(new BorderLayout(5, 5));
         pnl_hshelf.add(pnl_shelf, BorderLayout.NORTH);
+        pnl_hshelf.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         tab_main.add(pnl_jobs, "Running Tasks");
         tab_main.add(pnl_hshelf, "Errors");
-        tab_main.add(pnl_logs, "Logs");
+        //tab_main.add(pnl_logs, "Logs");
 
         this.setLayout(new BorderLayout(5, 5));
         this.add(tab_main, BorderLayout.CENTER);
-        /*
-        this.add(new JPanel(), BorderLayout.EAST);
-        this.add(new JPanel(), BorderLayout.WEST);
-        this.add(new JPanel(), BorderLayout.NORTH);
-        */
     }
 
     /**
@@ -108,22 +104,9 @@ public class AdvancedToolsPane extends EirPanel
         showInDialog(parent, "Advanced Tools", false);
     }
 
-    /*
-    public void showInDialog()
-    {
-        JDialog dialog = new JDialog((Frame) null, "Advanced Tools");
-        dialog.getContentPane().add(this);
-        dialog.pack();
-        dialog.setModal(true);
-        dialog.setVisible(true);
-
-        System.exit(0);
-    }
-    */
-
     private ExceptionShelf pnl_shelf = new ExceptionShelf();
     private JPanel pnl_hshelf = new JPanel();
     private JobsViewPane pnl_jobs = new JobsViewPane();
     private JTabbedPane tab_main = new JTabbedPane();
-    private JPanel pnl_logs = new JPanel();
+    //private JPanel pnl_logs = new JPanel();
 }

@@ -75,6 +75,8 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private void init()
     {
+        lbl_nojobs.setText("No active jobs.");
+
         pnl_ijobs.setBorder(null);
         pnl_ijobs.setLayout(new GridBagLayout());
         
@@ -85,7 +87,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         scr_jobs.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scr_jobs.setViewportView(pnl_ojobs);
 
-        this.setPreferredSize(new Dimension(400, 300));
+        this.setPreferredSize(new Dimension(500, 300));
         this.setLayout(new BorderLayout());
         this.add(scr_jobs, BorderLayout.CENTER);
         this.add(new JPanel(), BorderLayout.SOUTH);
@@ -103,6 +105,12 @@ public class JobsViewPane extends JPanel implements WorkListener
 
         if (!jobs.containsKey(job))
         {
+            // do we need an 'empty' label
+            if (jobs.isEmpty())
+            {
+                removeEmptyLabel();
+            }
+
             addJob(job);
         }
 
@@ -111,6 +119,12 @@ public class JobsViewPane extends JPanel implements WorkListener
         if (ev.isFinished())
         {
             removeJob(job);
+
+            // do we need an 'empty' label
+            if (jobs.isEmpty())
+            {
+                addEmptyLabel();
+            }
         }
     }
 
@@ -137,7 +151,8 @@ public class JobsViewPane extends JPanel implements WorkListener
         jobdata.index = i;
         jobdata.label = new JLabel(job.getDescription() + ":");
         jobdata.progress = new JProgressBar();
-        jobdata.progress.setString(job.getDescription()+" 0%");
+        jobdata.progress.setStringPainted(true);
+        jobdata.progress.setString(job.getDescription()+" (0%)");
         jobdata.progress.setValue(0);
 
         jobdata.cancel = new JButton("Cancel");
@@ -171,7 +186,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = ev.getPercent();
-        jobdata.progress.setString(ev.getDescription()+" "+percent+"%");
+        jobdata.progress.setString(ev.getDescription()+": ("+percent+"%)");
         jobdata.progress.setValue(percent);
     }
 
@@ -192,12 +207,30 @@ public class JobsViewPane extends JPanel implements WorkListener
         pnl_ijobs.remove(jobdata.cancel);
         
         this.revalidate();
-        
+
         jobdata.job = null;
         jobdata.label = null;
         jobdata.progress = null;
         jobdata.cancel = null;
         jobdata.index = -1;
+    }
+
+    /**
+     * Add the "no jobs" label
+     */
+    private void addEmptyLabel()
+    {
+        pnl_ijobs.add(lbl_nojobs, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+        this.revalidate();
+    }
+
+    /**
+     * Get rid of the "no jobs" label
+     */
+    private void removeEmptyLabel()
+    {
+        pnl_ijobs.remove(lbl_nojobs);
+        this.revalidate();
     }
 
     /**
@@ -242,6 +275,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     private JPanel pnl_ojobs = new JPanel();
     private JPanel pnl_ijobs = new JPanel();
     private JScrollPane scr_jobs = new JScrollPane();
+    private JLabel lbl_nojobs = new JLabel();
 
     /**
      * A simple struct to group information about a Job

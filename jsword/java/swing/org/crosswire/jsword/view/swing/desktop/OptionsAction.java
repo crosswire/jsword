@@ -49,6 +49,9 @@ import org.jdom.JDOMException;
  */
 public class OptionsAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public OptionsAction(Desktop tools)
     {
         super(tools,
@@ -59,21 +62,9 @@ public class OptionsAction extends DesktopAbstractAction
               'O', null);
     }
 
-    public void createConfig() throws IOException, JDOMException, BookException
-    {
-        fillChoiceFactory();
-
-        config = new Config("Tool Shed Options");
-        Document xmlconfig = Project.resource().getDocument("config");
-        config.add(xmlconfig);
-    }
-
-    public void loadConfig() throws MalformedURLException, IOException
-    {
-        config.setProperties(Project.resource().getProperties("desktop"));
-        config.localToApplication(true);
-    }
-
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         try
@@ -90,6 +81,21 @@ public class OptionsAction extends DesktopAbstractAction
         {
             Reporter.informUser(getDesktop(), ex);
         }
+    }
+
+    public void createConfig() throws IOException, JDOMException, BookException
+    {
+        fillChoiceFactory();
+
+        config = new Config("Desktop Options");
+        Document xmlconfig = Project.resource().getDocument("config");
+        config.add(xmlconfig);
+    }
+
+    public void loadConfig() throws MalformedURLException, IOException
+    {
+        config.setProperties(Project.resource().getProperties("desktop"));
+        config.localToApplication(true);
     }
 
     private static void fillChoiceFactory() throws BookException

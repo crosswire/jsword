@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -61,6 +62,8 @@ public class Splash extends JWindow
         super(JOptionPane.getFrameForComponent(comp));
         this.wait = wait;
 
+        //LookAndFeelUtil.addComponentToUpdate(this);
+
         jbInit();
 
         new Thread(new CloseRunnable()).start();
@@ -83,7 +86,7 @@ public class Splash extends JWindow
         lbl_picture.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
         lbl_info.setBackground(Color.black);
-        lbl_info.setFont(new java.awt.Font("SansSerif", 1, 14));
+        lbl_info.setFont(new Font("SansSerif", 1, 14));
         lbl_info.setForeground(UIManager.getColor("ScrollBar.thumbHighlight"));
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
@@ -98,7 +101,6 @@ public class Splash extends JWindow
 
         this.getContentPane().add(pnl_info, BorderLayout.SOUTH);
         this.getContentPane().add(lbl_picture, BorderLayout.CENTER);
-        this.pack();
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension window = lbl_picture.getPreferredSize();
@@ -111,6 +113,7 @@ public class Splash extends JWindow
                 close();
             }
         });
+        this.pack();
         this.setVisible(true);
     }
 
@@ -184,5 +187,5 @@ public class Splash extends JWindow
     private JPanel pnl_info = new JPanel();
     private JLabel lbl_picture = new JLabel();
     private JLabel lbl_info = new JLabel();
-    private JobsProgressBar pnl_jobs = new JobsProgressBar();
+    private JobsProgressBar pnl_jobs = new JobsProgressBar(false);
 }
