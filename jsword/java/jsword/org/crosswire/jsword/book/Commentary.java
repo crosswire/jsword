@@ -3,13 +3,15 @@ package org.crosswire.jsword.book;
 
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.Verse;
 
 /**
- * Bible is the core interface to a Bible store.
- * It is a specialization of Book to help people work with specifically Bible
- * data rather then more generic data. Most of the method here have direct
- * counterparts in Book, and it Java could do co-variant return types then this
- * would all be a lot simpler.
+ * Commentary in the core interface to works that provide text on a verse-by-
+ * verse basis.
+ * <p>The interface is very similar to that of Bible with one addition -
+ * hasData() which is useful because not all verses will have entries in all
+ * implementations, and we mught speed-up UI responsiveness by know if there is
+ * any point in calling getData().
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,29 +33,36 @@ import org.crosswire.jsword.passage.Passage;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see Book
+ * @see org.crosswire.jsword.book.Bible
  */
-public interface Bible extends Book
+public interface Commentary extends Book
 {
     /**
-     * The meta data about this Book
-     * @return A Version for this Bible
+     * The meta data about this Book.
+     * @return A Version for this Commentary
      * @see Book#getBookMetaData()
      */
-    public BibleMetaData getBibleMetaData();
+    public CommentaryMetaData getCommentaryMetaData();
 
     /**
-     * Retrieval: Get BibleData for the given Passage. To get a plain string
-     * you need to use:
-     * <pre>
-     *   String s = book.getData(ref).getPlainText();
-     * </pre>
+     * Get BibleData for the given Passage.
+     * To consider: Perhaps we should make the param to getData() be a Verse
+     * too...
      * @param ref The verses to search for
      * @return The found BibleData document
      * @throws BookException If anything goes wrong with this method
+     * @see Bible#getData(Passage)
      * @see Book#getData(Key)
      */
     public BibleData getData(Passage ref) throws BookException;
+
+    /**
+     * Does the specified verse have any data behind it.
+     * @param verse The verse to query
+     * @return The found BibleData document
+     * @throws BookException If anything goes wrong with this method
+     */
+    public boolean hasData(Verse verse) throws BookException;
 
     /**
      * Retrieval: For a given word find a list of references to it

@@ -1,18 +1,8 @@
 
-package org.crosswire.jsword.control.dictionary;
-
-import java.util.Iterator;
-
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.Bible;
+package org.crosswire.jsword.book;
 
 /**
- * The Dictionary class is the beginnings of a powerful base of knowedge
- * about various Languages.
- * 
- * We  need to move the data from RawBible.Word to here, but I'm not clear how
- * to do that in a version independant way.
+ * A specialization of BookMetaData for working with Dictionaries.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -35,24 +25,20 @@ import org.crosswire.jsword.book.Bible;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Dictionary
+public interface DictionaryMetaData extends BookMetaData
 {
     /**
-     * Basic constructor
+     * Accessor for the real Dictionary to read data.
+     * <p>Note that constructing a Dictionary may well consume system resources
+     * far more than the construction of a DictionaryMetaData so you should only
+     * get a Dictionary if you intend to use it.
+     * <p>This method is here rather than on the BookDriver because we want to
+     * avoid user contact with the Drivers where possible.
+     * <p>For implementors of DictionaryMetaData - the objects returned by 2
+     * successive calls to getDictionary() should be the same (i.e. return true
+     * to an == test) unless for some reason the objects are not thread safe.
+     * Since Dictionary are read-only once setup thread safety should not be
+     * hard.
      */
-    public Dictionary()
-    {
-    }
-
-    /**
-     * Find a list of words that start with the given word. I've made this
-     * private for the time being until we can make this work sensibly.
-     * @param word The word to search for
-     * @return An array of matches
-     */
-    private Iterator getStartsWith(String word) throws BookException
-    {
-        Bible bible = Bibles.getDefaultBible();
-        return bible.getStartsWith(word);
-    }
+    public Dictionary getDictionary() throws BookException;
 }
