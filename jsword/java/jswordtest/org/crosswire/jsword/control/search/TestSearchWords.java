@@ -5,7 +5,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 
 /**
  * JUnit Test.
@@ -49,7 +49,7 @@ public class TestSearchWords extends TestCase
         commands.put("t2", new FixtureParamWord("Deu 28-1Sa 1:1"));
         commands.put("t3", new FixtureParamWord("Mar 2:3"));
 
-        engine = new Engine(Bibles.getDefaultBible(), commands);
+        engine = new Engine(Books.getDefaultBible(), commands);
     }
 
     protected void tearDown() throws Exception

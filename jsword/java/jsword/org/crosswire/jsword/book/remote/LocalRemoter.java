@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -62,7 +62,7 @@ public class LocalRemoter implements Remoter
         {
             try
             {
-                BibleMetaData[] bmds = Bibles.getFastBibles(Bibles.SPEED_SLOWEST);
+                BibleMetaData[] bmds = Books.getFastBibles(Books.SPEED_SLOWEST);
                 String[] uids = getUIDs(bmds);
                 return Converter.convertBibleMetaDatasToDocument(bmds, uids);
             }
@@ -135,7 +135,7 @@ public class LocalRemoter implements Remoter
      */
     public int getSpeed()
     {
-        return Bibles.SPEED_REMOTE_FASTEST;
+        return Books.SPEED_REMOTE_FASTEST;
     }
 
     /**

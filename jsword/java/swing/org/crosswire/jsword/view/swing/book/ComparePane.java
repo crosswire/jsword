@@ -74,7 +74,7 @@ public class ComparePane extends EirPanel
         cbo_bible2.setModel(mdl_bibles2);
         pnl_bibles.setLayout(new BoxLayout(pnl_bibles, BoxLayout.Y_AXIS));
         pnl_bibles.setAlignmentX((float) 0.5);
-        pnl_bibles.setBorder(new TitledBorder("Bibles To Compare"));
+        pnl_bibles.setBorder(new TitledBorder("Books To Compare"));
         btn_go.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev) { compare(); }
@@ -165,9 +165,9 @@ public class ComparePane extends EirPanel
         if (bmd1.equals(bmd2))
         {
             if (JOptionPane.showConfirmDialog(this,
-                "You are attempting to compare 2 Bibles that are identical.\n" +
+                "You are attempting to compare 2 Books that are identical.\n" +
                 "Do you want to continue?",
-                "Compare Identical Bibles?",
+                "Compare Identical Books?",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
             {
                 return;

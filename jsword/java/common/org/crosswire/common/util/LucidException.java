@@ -1,14 +1,13 @@
 
 package org.crosswire.common.util;
 
+import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.text.*;
 
 /**
- * A LucidException adds 3 concepts to a base Exception, that of a wrapped
- * Exception, that of internationalised (i18n) messages, and that of an internal
- * string which is for debugging/logging purposes.
+ * A LucidException adds 2 concepts to a base Exception, that of a wrapped
+ * Exception, that of internationalised (i18n) messages.
  *
  * <p>The first addition is the concept of an optional wrapped Exception
  * (actually a Throwable), which describes what caused this to happen. Any well
@@ -17,18 +16,15 @@ import java.text.*;
  * However the interface should have no idea how it will be implemented and so
  * the details of exactly what broke under the covers gets lost. With
  * LucidException this detail is kept in the wrapped Exception. This
- * functionallity is expected to be added to the base Exception class in JDK
- * 1.4</p>
+ * functionallity has been added to the base Exception class in JDK 1.4</p>
  *
  * <p>The second addition is the concept of i18n messages. Normal Exceptions are
  * created with an almost random string in the message field, LucidExceptions
  * define this string to be a key into a resource bundle, and to help formatting
- * this string there is an optional Object array of format options.</p>
+ * this string there is an optional Object array of format options. There is
+ * a constructor that allows us to specify no I18N lookup, which is useful
+ * if this lookup may have been done already.</p>
  *
- * <p>The third addition is that of a debug/logging string. Some information
- * about what went wrong is not for the eyes of the user (especially in a web
- * environment) but we may like to remember what broke.</p>
- * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -61,7 +57,18 @@ public class LucidException extends Exception
      */
     public LucidException(String msg)
     {
-        this(msg, null, null, null);
+        this(msg, null, null);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file.
+     * @param msg The resource id to read
+     */
+    public LucidException(String msg, boolean literal)
+    {
+        this(msg, null, null);
+        this.literal = literal;
     }
 
     /**
@@ -71,7 +78,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Throwable ex)
     {
-        this(msg, ex, null, null);
+        this(msg, ex, null);
     }
 
     /**
@@ -82,7 +89,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Object[] params)
     {
-        this(msg, null, params, null);
+        this(msg, null, params);
     }
 
     /**
@@ -93,53 +100,10 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Throwable ex, Object[] params)
     {
-        this(msg, ex, params, null);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
-     * @param msg The resource id to read
-     */
-    public LucidException(String msg, String internal)
-    {
-        this(msg, null, null, internal);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
-     * @param msg The resource id to read
-     */
-    public LucidException(String msg, Throwable ex, String internal)
-    {
-        this(msg, ex, null, internal);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
-     * @param msg The resource id to read
-     * @param params An array of parameters
-     */
-    public LucidException(String msg, Object[] params, String internal)
-    {
-        this(msg, null, params, internal);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
-     * @param msg The resource id to read
-     * @param params An array of parameters
-     */
-    public LucidException(String msg, Throwable ex, Object[] params, String internal)
-    {
         super(msg);
 
         this.ex = ex;
         this.params = params;
-        this.internal = internal;
 
         try
         {
@@ -158,6 +122,9 @@ public class LucidException extends Exception
      */
     public String getMessage()
     {
+        if (literal)
+            return super.getMessage();
+
         String id = super.getMessage();
         String out = getResource(id);
 
@@ -181,9 +148,8 @@ public class LucidException extends Exception
         if (ex == null)
             return getMessage();
 
-        // avoid an NPE is res has not been set up.
+        // avoid an NPE if res has not been set up.
         String reason = getResource("reason");
-
         if (ex instanceof LucidException)
         {
             LucidException lex = (LucidException) ex;
@@ -214,15 +180,6 @@ public class LucidException extends Exception
         {
             return "Missing resource for: "+id;
         }
-    }
-
-    /**
-     * Accessor for the message private to the developers
-     * @return The internal message
-     */
-    public String getInternalMessage()
-    {
-        return internal;
     }
 
     /**
@@ -257,15 +214,24 @@ public class LucidException extends Exception
         setResourceBundleName("Exception");
     }
 
-    /** An embedded exception */
+    /**
+     * Is the message to be included literally, or should we look it up as a
+     * resource.
+     */
+    private boolean literal = false;
+
+    /**
+     * An embedded exception
+     */
     protected Throwable ex;
 
-    /** The array of parameters */
+    /**
+     * The array of parameters
+     */
     protected Object[] params;
 
-    /** The array of parameters */
-    protected String internal;
-
-    /** The resource hash */
+    /**
+     * The resource lookup
+     */
     protected static ResourceBundle res = null;
 }

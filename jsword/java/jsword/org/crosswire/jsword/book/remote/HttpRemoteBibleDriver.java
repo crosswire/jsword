@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
 
 
@@ -82,7 +82,7 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
         {
             try
             {
-                Bibles.unregisterDriver(drivers[i]);
+                Books.unregisterDriver(drivers[i]);
             }
             catch (BookException ex)
             {
@@ -99,7 +99,7 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
             {
                 BibleDriver driver = new HttpRemoteBibleDriver(urls[i]); 
                 dlist.add(driver);
-                Bibles.registerDriver(driver);
+                Books.registerDriver(driver);
             }
             catch (Exception ex)
             {

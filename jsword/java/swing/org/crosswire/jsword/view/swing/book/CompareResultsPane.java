@@ -172,7 +172,7 @@ public class CompareResultsPane extends JPanel implements Runnable
      */
     private void setTitles()
     {
-        lbl_bible1.setText("<html><b>Bibles:</b> "+
+        lbl_bible1.setText("<html><b>Books:</b> "+
                            ver.getBible1().getBookMetaData().getName()+" / "+
                            ver.getBible2().getBookMetaData().getName());
 
@@ -188,7 +188,7 @@ public class CompareResultsPane extends JPanel implements Runnable
 
     /**
      * A class to be run in a Thread to do the real work of comparing the
-     * selected Bibles
+     * selected Books
      */
     public void run()
     {

@@ -12,7 +12,7 @@ import org.crosswire.jsword.util.Project;
 
 /**
  * The idea behind this class is to gradually abstract out the search from the
- * data retrieval so that we can re-use the search technology in other Bibles.
+ * data retrieval so that we can re-use the search technology in other Books.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -57,7 +57,7 @@ public abstract class SearchableBible extends AbstractBible
 
     /**
      * This allows our children to decide to store indexes in a different place
-     * so they can ship indexes with distributed Bibles.
+     * so they can ship indexes with distributed Books.
      * @return A file: URL of a place to store indexes. 
      */
     protected URL getIndexDirectory() throws IOException

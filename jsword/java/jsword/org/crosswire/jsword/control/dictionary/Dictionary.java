@@ -4,7 +4,7 @@ package org.crosswire.jsword.control.dictionary;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Bible;
 
 /**
@@ -52,7 +52,7 @@ public class Dictionary
      */
     private Iterator getStartsWith(String word) throws BookException
     {
-        Bible bible = Bibles.getDefaultBible();
+        Bible bible = Books.getDefaultBible();
         return bible.getStartsWith(word);
     }
 }

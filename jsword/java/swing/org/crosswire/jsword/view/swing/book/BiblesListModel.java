@@ -6,7 +6,7 @@ import javax.swing.event.ListDataListener;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.events.BiblesEvent;
 import org.crosswire.jsword.book.events.BiblesListener;
@@ -56,7 +56,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
     {
         try
         {
-            bmds = Bibles.getBibles();
+            bmds = Books.getBibles();
         }
         catch (BookException ex)
         {
@@ -108,7 +108,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
     public void addListDataListener(ListDataListener li)
     {
         if (listenerList.getListenerCount() == 0)
-            Bibles.addBiblesListener(this);
+            Books.addBiblesListener(this);
 
         super.addListDataListener(li);
     }
@@ -123,7 +123,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
         super.removeListDataListener(li);
 
         if (listenerList.getListenerCount() == 0)
-            Bibles.removeBiblesListener(this);
+            Books.removeBiblesListener(this);
     }
 
     /**

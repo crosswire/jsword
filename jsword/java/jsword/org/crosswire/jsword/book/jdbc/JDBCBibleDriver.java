@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
@@ -44,7 +44,7 @@ public class JDBCBibleDriver extends LocalURLBibleDriver
      */
     public JDBCBibleDriver() throws MalformedURLException, IOException
     {
-        super("Database", "jdbc", JDBCBible.class, Bibles.SPEED_SLOW);
+        super("Database", "jdbc", JDBCBible.class, Books.SPEED_SLOW);
     }
 
     /**

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 
 /**
  * JUnit Test.
@@ -49,7 +49,7 @@ public class TestEngine extends TestCase
     public void testSearch() throws Exception
     {
         Map commands = SearchDefault.getMap();
-        Engine engine = new Engine(Bibles.getDefaultBible(), commands);
+        Engine engine = new Engine(Books.getDefaultBible(), commands);
         try { engine.search("moses aaron"); fail(); } catch (SearchException ex) { }
         try { engine.search("("); fail(); } catch (SearchException ex) { }
         try { engine.search("~"); fail(); } catch (SearchException ex) { }

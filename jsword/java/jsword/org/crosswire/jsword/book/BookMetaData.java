@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Date;
 
 /**
- * A BookMetaData represents a method of translating the Bible. All Bibles with
+ * A BookMetaData represents a method of translating the Bible. All Books with
  * the same BookMetaData should return identical text for any call to
  * <code>Bible.getText(VerseRange)</code>. The implication of this is that
  * there may be many instances of the Version "NIV", as there are several
@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * <p>BookMetaData like Strings must be compared using <code>.equals()<code>
  * instead of ==. A Bible must have the ability to handle a version
- * unknown to JSword. So Bibles must be able to add versions to the
+ * unknown to JSword. So Books must be able to add versions to the
  * system, and the system must cope with versions that already exist.</p>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -91,10 +91,10 @@ public interface BookMetaData
 
     /**
      * The expected speed at which this implementation gets correct answers.
-     * This value is used by Bibles to decide the fastest implementation for a
+     * This value is used by Books to decide the fastest implementation for a
      * given job.
-     * <p>The valid values are defined in the Bibles class.
-     * @see Bibles
+     * <p>The valid values are defined in the Books class.
+     * @see Books
      * @return a speed value between -1 and 10
      */
     public int getSpeed();

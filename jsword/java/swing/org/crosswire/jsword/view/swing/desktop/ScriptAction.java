@@ -42,7 +42,7 @@ public class ScriptAction extends DesktopAbstractAction
         /*
         pnl_script.declareBean("tools", this, this.getClass());
         pnl_script.declareBean("views", views, views.getClass());
-        String[] names = Bibles.getBibleNames();
+        String[] names = Books.getBibleNames();
         for (int i=0; i<names.length; i++)
         {
             String varname = names[i].toLowerCase();
@@ -51,7 +51,7 @@ public class ScriptAction extends DesktopAbstractAction
 
             try
             {
-                Bible bible = Bibles.getBible(names[i]);
+                Bible bible = Books.getBible(names[i]);
                 pnl_script.declareBean(varname, bible, bible.getClass());
             }
             catch (Exception ex)

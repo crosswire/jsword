@@ -140,7 +140,7 @@ public class MaintenancePane extends EirPanel
             }
 
             if (JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete "+bmd.getName()+"?\nDeleted Bibles can not be recovered",
+                "Are you sure you want to delete "+bmd.getName()+"?\nDeleted Books can not be recovered",
                 "Delete Bible",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {

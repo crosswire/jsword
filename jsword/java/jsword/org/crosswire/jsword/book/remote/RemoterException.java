@@ -40,19 +40,20 @@ public class RemoterException extends LucidException
     /**
      * Constructor RemoterException.
      */
-    public RemoterException(String message, Class original_type)
-    {
-        super(message);
-        this.original_type = original_type;
-    }
-
-    /**
-     * Constructor RemoterException.
-     */
     public RemoterException(String message, Throwable cause)
     {
         super(message);
         this.cause = cause;
+    }
+
+    /**
+     * When we are re-constructing an exception we don't want to attempt i18n
+     * on the message so we use the special non i18n version of LucidException.
+     */
+    public RemoterException(String message, Class original_type)
+    {
+        super(message, true);
+        this.original_type = original_type;
     }
 
     /**

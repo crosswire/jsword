@@ -11,7 +11,7 @@ import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
@@ -89,7 +89,7 @@ public class OptionsAction extends DesktopAbstractAction
     private static void fillChoiceFactory() throws BookException
     {
         // Create the array of options
-        BibleMetaData[] bmds = Bibles.getBibles();
+        BibleMetaData[] bmds = Books.getBibles();
         String[] names = new String[bmds.length];
         for (int i=0; i<names.length; i++)
         {

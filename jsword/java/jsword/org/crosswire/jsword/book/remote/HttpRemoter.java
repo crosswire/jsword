@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
@@ -88,7 +88,7 @@ public class HttpRemoter implements Remoter
      */
     public int getSpeed()
     {
-        return Bibles.SPEED_REMOTE_SLOW;
+        return Books.SPEED_REMOTE_SLOW;
     }
 
     /**

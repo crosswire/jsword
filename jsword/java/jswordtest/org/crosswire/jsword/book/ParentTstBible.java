@@ -40,7 +40,7 @@ public class ParentTstBible extends TestCase
 
     protected void setUp() throws Exception
     {
-        bmds = Bibles.getBibles();
+        bmds = Books.getBibles();
         bibles = new Bible[bmds.length];
 
         for (int i=0; i<bibles.length; i++)

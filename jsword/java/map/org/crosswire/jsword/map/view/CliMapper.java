@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -76,7 +76,7 @@ public class CliMapper
             PrintWriter dbout = new PrintWriter(new FileOutputStream("c:\\database.csv"));
             PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
 
-            Bible bible = Bibles.getDefaultBible();
+            Bible bible = Books.getDefaultBible();
             Matcher engine = new Matcher(bible);
 
             Element links = new Element("links");

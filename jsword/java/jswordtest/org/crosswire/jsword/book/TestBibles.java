@@ -58,7 +58,7 @@ public class TestBibles extends TestCase
     {
         gen11 = PassageFactory.createPassage("Gen 1:1");
 
-        bmds = Bibles.getBibles();
+        bmds = Books.getBibles();
         bibles = new Bible[bmds.length];
 
         for (int i=0; i<bibles.length; i++)

@@ -37,11 +37,11 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Bibles
+public class Books
 {
     /*
      * <p>Important values include 5, were the remoting system will not remote
-     * Bibles where getSpeed() >= 5 (to save re-remoting already remote Bibles).
+     * Books where getSpeed() >= 5 (to save re-remoting already remote Books).
      * 10 is also special - values > 10 indicate the data returned is likely to
      * be wrong (i.e. test data) So we should probably not ship systems with
      * BibleDrivers that return > 10.
@@ -60,7 +60,7 @@ public class Bibles
     public static final int SPEED_INACCURATE = -1;
 
     /**
-     * The list of Bibles
+     * The list of Books
      */
     private static List bibles = new ArrayList();
 
@@ -88,7 +88,7 @@ public class Bibles
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(Bibles.class);
+    private static Logger log = Logger.getLogger(Books.class);
 
     /**
      * Get an array of the available Bible names.
@@ -241,7 +241,7 @@ public class Bibles
     }
 
     /**
-     * Add a Bible to the current list of Bibles.
+     * Add a Bible to the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
@@ -252,7 +252,7 @@ public class Bibles
         bibles.add(bmd);
         checkReplaceDefault(bmd);
 
-        fireBiblesChanged(Bibles.class, bmd, true);
+        fireBiblesChanged(Books.class, bmd, true);
     }
 
     /**
@@ -273,7 +273,7 @@ public class Bibles
     }
 
     /**
-     * Add a Bible to the current list of Bibles.
+     * Add a Bible to the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
@@ -284,7 +284,7 @@ public class Bibles
         boolean removed = bibles.remove(bmd);
         if (removed)
         {
-            fireBiblesChanged(Bibles.class, bmd, true);
+            fireBiblesChanged(Books.class, bmd, true);
         }
         else
         {
@@ -428,7 +428,7 @@ public class Bibles
             }
             catch (Throwable ex)
             {
-                Reporter.informUser(Bibles.class, ex);
+                Reporter.informUser(Books.class, ex);
             }
         }
 

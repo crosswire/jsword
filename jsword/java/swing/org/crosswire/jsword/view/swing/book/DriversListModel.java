@@ -13,7 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 
 /**
  * DriversListModel.
@@ -47,9 +47,9 @@ public class DriversListModel extends AbstractListModel
     public DriversListModel(boolean include_ro)
     {
         if (include_ro)
-            drivers = Bibles.getDrivers();
+            drivers = Books.getDrivers();
         else
-            drivers = Bibles.getWritableDrivers();
+            drivers = Books.getWritableDrivers();
     }
 
     /**

@@ -42,7 +42,7 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.map.model.AdjustOriginRule;
 import org.crosswire.jsword.map.model.AntiGravityRule;
 import org.crosswire.jsword.map.model.CircularBoundsRule;
@@ -154,7 +154,7 @@ public class Mapper extends JFrame
                 config.setProperties(prop);
             config.localToApplication(true);
 
-            la = new LinkArray(Bibles.getDefaultBible());
+            la = new LinkArray(Books.getDefaultBible());
         }
         catch (Exception ex)
         {

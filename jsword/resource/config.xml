@@ -35,7 +35,7 @@
 
 <config>
   <option key="Bibles.Default" type="string-options">
-  	<introspect class="org.crosswire.jsword.book.Bibles" property="DefaultByName"/>
+  	<introspect class="org.crosswire.jsword.book.Books" property="DefaultByName"/>
     <help>Which of the available Bibles is the default.</help>
     <map name="biblenames"/>
   </option>

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
@@ -109,7 +109,7 @@ public class StubBibleMetaData extends AbstractBibleMetaData
      */
     public int getSpeed()
     {
-        return Bibles.SPEED_INACCURATE;
+        return Books.SPEED_INACCURATE;
     }
 
     /**

@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.remote;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.remote.Converter;
 import org.crosswire.jsword.book.remote.LocalRemoter;
 import org.crosswire.jsword.book.remote.RemoteConstants;
@@ -54,11 +54,11 @@ public class LocalRemoterTest extends TestCase
 
     public void testGetBibles() throws Exception
     {
-        BibleMetaData[] names1 = Bibles.getFastBibles(Bibles.SPEED_SLOWEST); 
+        BibleMetaData[] names1 = Books.getFastBibles(Books.SPEED_SLOWEST); 
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
         Document doc = remote.execute(method);
-        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter(), Bibles.SPEED_INACCURATE);
+        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
 
         assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)
