@@ -19,13 +19,13 @@ import org.crosswire.jsword.passage.Key;
  * 
  * Functionality the I invisage includes:<ul>
  * <li>A simple search syntax that goes something like this.<ul>
- *     <li>aaron, moses     (verses containing aaron and moses. Can also use & or +)
- *     <li>aaron/moses      (verses containing aaron or moses. Can also use |)
- *     <li>aaron - moses    (verses containing aaron but not moses)
- *     <li>aaron ~5 , moses (verses with aaron within 5 verses of moses)
- *     <li>soundslike aaron (verses with words that sound like aaron. Can also use sl ...)
- *     <li>thesaurus happy  (verses with words that mean happy. Can also use th ...)
- *     <li>grammar have     (words like has have had and so on. Can also use gr ...)</ul>
+ * <li>aaron, moses     (verses containing aaron and moses. Can also use & or +)
+ * <li>aaron/moses      (verses containing aaron or moses. Can also use |)
+ * <li>aaron - moses    (verses containing aaron but not moses)
+ * <li>aaron ~5 , moses (verses with aaron within 5 verses of moses)
+ * <li>soundslike aaron (verses with words that sound like aaron. Can also use sl ...)
+ * <li>thesaurus happy  (verses with words that mean happy. Can also use th ...)
+ * <li>grammar have     (words like has have had and so on. Can also use gr ...)</ul>
  * <li>The ability to add soundslike type extensions.</ul>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
