@@ -1,6 +1,12 @@
 <project name="jsword" default="deploy">
 
   <!--=======================================================================-->
+  <!--
+  When you first check files out of CVS you should run the generate and deploy
+  targets to generate all the source files required for tools like eclipse.
+  -->
+
+  <!--=======================================================================-->
   <property name="source.root" value="."/>
   <property name="source.bin" value="${source.root}/bin"/>
   <property name="source.web" value="${source.root}/web"/>
