@@ -5,5 +5,7 @@ PENDING: Issue that needs fixing before next release
 NOTE: Something to thing about when we are next editing this code
 LATER: An issue that we don't need to think about until the next release
 BUG: Something isn't quite right but it isn't a serious problem
+
 JDK14: Things to change when we move to JDK1.4
 NOWARN: code inserted to stop eclipse (or something else) warning
+PARANOIA: code that shouldn't need to be there and perhaps could be removed to make things faster
