@@ -195,7 +195,10 @@ public class TreeConfigPane extends PanelConfigPane
     public void selectCard()
     {
         Object obj = tree.getLastSelectedPathComponent();
-        if (obj == null) return;
+        if (obj == null)
+        {
+            return;
+        }
 
         title.setText(""+obj+" Properties");
 
@@ -226,22 +229,34 @@ public class TreeConfigPane extends PanelConfigPane
         deck.repaint();
     }
 
-    /** The name of the blank tab */
+    /**
+     * The name of the blank tab
+     */
     protected static final String BLANK = "$$BLANK$$";
 
-    /** The tree containing the Field sets */
+    /**
+     * The tree containing the Field sets
+     */
     protected JTree tree;
 
-    /** The custom tree model for the tree */
+    /**
+     * The custom tree model for the tree
+     */
     protected ConfigureTreeModel ctm;
 
-    /** The title for the config panels */
+    /**
+     * The title for the config panels
+     */
     protected JLabel title;
 
-    /** Contains the configuration panels */
+    /**
+     * Contains the configuration panels
+     */
     protected JPanel deck;
 
-    /** Layout for the config panels */
+    /**
+     * Layout for the config panels
+     */
     protected CardLayout layout;
 
     /**
@@ -401,10 +416,14 @@ public class TreeConfigPane extends PanelConfigPane
             }
         }
 
-        /** The Listeners. */
+        /**
+         * The Listeners.
+         */
         protected EventListenerList listeners = new EventListenerList();
 
-        /** The root node */
+        /**
+         * The root node
+         */
         private Node root = new Node("", "");
     }
 
@@ -445,10 +464,14 @@ public class TreeConfigPane extends PanelConfigPane
             }
         }
 
-        /** The displayed string */
+        /**
+         * The displayed string
+         */
         private String name;
 
-        /** The path to us */
+        /**
+         * The path to us
+         */
         private String path;
     }
 }

@@ -643,7 +643,7 @@ public class SwordConfig
      */
     public String getModuleCharset()
     {
-        return SwordConstants.ENCODING_STRINGS[encoding];
+        return SwordConstants.ENCODING_JAVA[encoding];
     }
 
     /**

@@ -100,24 +100,38 @@ public interface Choice
      */
     public boolean requiresRestart();
 
-    /** The highest level priority generally for system level stuff */
+    /**
+     * The highest level priority generally for system level stuff
+     */
     public static final int PRIORITY_SYSTEM = 10;
 
-    /** The priority level for important but non system level stuff */
+    /**
+     * The priority level for important but non system level stuff
+     */
     public static final int PRIORITY_EXTENDER = 9;
 
-    /** The priority level for important but non system level stuff */
+    /**
+     * The priority level for important but non system level stuff
+     */
     public static final int PRIORITY_HIGHEST = 8;
 
-    /** The priority level for normal use */
+    /**
+     * The priority level for normal use
+     */
     public static final int PRIORITY_NORMAL = 6;
 
-    /** The priority level for creating items for later configuring */
+    /**
+     * The priority level for creating items for later configuring
+     */
     public static final int PRIORITY_CTOR = 4;
 
-    /** The priority level for configuring previously created items */
+    /**
+     * The priority level for configuring previously created items
+     */
     public static final int PRIORITY_ACCESSOR = 2;
 
-    /** The lowest level priority generally for system level stuff */
+    /**
+     * The lowest level priority generally for system level stuff
+     */
     public static final int PRIORITY_LOWEST = 0;
 }

@@ -16,7 +16,10 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
 
 /**
- * DriversListModel.
+ * A ListModel that shows the regestered BookDrivers.
+ * 
+ * <p>DriversListModel can be set to read-only mode where it will display only
+ * the BookDrivers that can receive new Book data.</p>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -54,6 +57,14 @@ public class DriversListModel extends AbstractListModel
         {
             drivers = Books.getWritableDrivers();
         }
+    }
+
+    /**
+     * Basic constructor
+     */
+    public DriversListModel()
+    {
+        this(true);
     }
 
     /**
@@ -130,7 +141,7 @@ public class DriversListModel extends AbstractListModel
     /**
      * border if we do not have focus
      */
-    static Border no_focus;
+    protected static Border no_focus;
 
     /**
      * Create a BookListCellRenderer
@@ -146,7 +157,9 @@ public class DriversListModel extends AbstractListModel
      */
     public static class BibleListCellRenderer extends JLabel implements ListCellRenderer
     {
-        //Constructs a default renderer object for an item in a list.
+        /**
+         * Constructs a default renderer object for an item in a list.
+         */
         public BibleListCellRenderer()
         {
             if (no_focus == null)

@@ -111,11 +111,12 @@ public class SwordConstants
     };
 
     /** Constants for direction */
-    static final int DIRECTION_L_TO_R = 0;
-    static final int DIRECTION_R_TO_L = 1;
+    static final int DIRECTION_LTOR = 0;
+    static final int DIRECTION_RTOL = 1;
+    static final int DIRECTION_BIDI = 2;
 
     /** Strings for direction */
-    static final String[] DIRECTION_STRINGS = { "LtoR", "RtoL" };
+    static final String[] DIRECTION_STRINGS = { "LtoR", "RtoL", "bidi" };
 
     /** Constants for source type */
     static final int SOURCE_PLAINTEXT = 0;
@@ -127,11 +128,12 @@ public class SwordConstants
     static final String[] SOURCE_STRINGS = { "Plaintext", "GBF", "ThML", "OSIS" };
 
     /** constants for encoding */
-    static final int ENCODING_UTF8 = 0;
-    static final int ENCODING_LATIN1 = 1;
+    static final int ENCODING_LATIN1 = 0;
+    static final int ENCODING_UTF8 = 1;
 
     /** Strings for encoding */
-    static final String[] ENCODING_STRINGS = { "UTF-8", "Latin-1" };
+    static final String[] ENCODING_STRINGS = { "Latin-1", "UTF-8", "SCSU", "UTF-16" };
+    static final String[] ENCODING_JAVA = { "ISO-8859-1", "UTF-8", "SCSU", "UTF-16" };
 
     /** Constants for feature */
     static final int FEATURE_STRONGS_NUMBERS = 1;

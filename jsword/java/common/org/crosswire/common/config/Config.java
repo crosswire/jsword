@@ -1,7 +1,6 @@
 
 package org.crosswire.common.config;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -387,11 +386,20 @@ public class Config
      */
     public void localToPermanent(URL url) throws IOException
     {
-        File file = new File(url.getFile());
-        OutputStream out = new FileOutputStream(file);
+        OutputStream out = null;
 
-        getProperties().store(out, title);
-        out.close();
+        try
+        {
+            out = new FileOutputStream(url.getFile());
+            getProperties().store(out, title);
+        }
+        finally
+        {
+            if (out != null)
+            {
+                out.close();
+            }
+        }
     }
 
     /**

@@ -68,9 +68,13 @@ public class ConfigEvent extends EventObject
         return model;
     }
 
-    /** The name of the choice */
+    /**
+     * The name of the choice
+     */
     private String key;
 
-    /** The Choice */
+    /**
+     * The Choice
+     */
     private Choice model;
 }
