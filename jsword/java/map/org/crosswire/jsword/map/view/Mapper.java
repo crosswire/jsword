@@ -38,6 +38,7 @@ import javax.swing.WindowConstants;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.ExtensionFileFilter;
+import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.config.DisplayExceptionChoice;
 import org.crosswire.common.swing.config.LookAndFeelChoices;
 import org.crosswire.common.swing.config.SourcePathChoice;
@@ -82,10 +83,23 @@ import org.crosswire.jsword.view.swing.book.BibleChooser;
  * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
  * @see <{docs.Licence}>
  * @author Joe Walker
- * @version D0.I0.T0
+ * @version $Id$
  */
 public class Mapper extends JFrame
 {
+    /**
+    * Central start point.
+    * @param args The command line arguments
+    */
+    public static void main(String[] args)
+    {
+        Mapper map = new Mapper(args);
+
+        map.pack();
+        GuiUtil.centerWindow(map);
+        map.setVisible(true);
+    }
+
     /**
      * Basic constructor
      */

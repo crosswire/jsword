@@ -1,13 +1,39 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="default.css">
+  <title>JSword</title>
+</head>
 
-package docs;
+<body>
 
-/**
-Some recommendations on coding for this project.
+<h3>Aims</h3>
 
-<h3>JDK Versions</h3>
+<ul>
+<li>JSword should be a Bible study library with which to build various front-ends.
+Front-ends could include Applets, stand-alone Swing/AWT/SWT GUIs, server-side
+processing for JSP/Servlets, and more advanced projects like link mappers and
+translations.
+<li>It should help Bible study through various optional front-ends that are
+shipped with JSword or separately.
+<li>It should be easliy contributed-to, and easily used.
+</ul>
+
+This is a list of the people that have contributed code to this project.
+It would be good to make this list auto-generated from the author tags
+of the source.
+
+<ul>
+<li>Joe Walker
+<li>Keith Ralston
+<li>Mark Goodwin
+</ul>
+
+<h3>Coding Recommendations</h3>
+
+<h4>JDK Versions</h4>
 <p>This is all currently being written using JDK 1.3+</p>
 
-<h3>Momentum</h3>
+<h4>Momentum</h4>
 <p>CatB talked about getting people involved -
 &quot;Release early and often&quot;, &quot;Mailing Lists&quot; and so on.
 I plan to have a menu item &quot;Get involved ...&quot; This will present
@@ -24,7 +50,7 @@ involved so far include:
   <li>Reporting usage data</li>
 </ul>
 
-<h3>Coding Standards</h3>
+<h4>Coding Standards</h4>
 <p>The coding standards used on this project so far are
 very much based on the SUN coding standards. This is some notes on style we are
 using, some of this deviates from the SUN standard, and some is just extensions
@@ -80,8 +106,38 @@ a different editor, or want to paste into an html doc using &lt;pre&gt;
 tags. Everything will look exactly the same if you use spaces instead of
 tabs.</p>
 
+<h5>Preamble</h5>
+<p>All java source should have the following at the end of the class JavaDoc</p>
+
+<pre>
+ * &lt;p>&lt;table border='1' cellPadding='3' cellSpacing='0'>
+ * &lt;tr>&lt;td bgColor='white' class='TableRowColor'>&lt;font size='-7'>
+ * Distribution Licence:&lt;br />
+ *
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.&lt;br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.&lt;br />
+ * The License is available on the internet
+ * &lt;a href='http://www.gnu.org/copyleft/gpl.html'>here&lt;/a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA&lt;br />
+ * The copyright to this program is held by it's authors.
+ * &lt;/font>&lt;/td>&lt;/tr>&lt;/table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+</pre>
+
+<p>If you look in the source to this page there is a commented out section to cut
+and paste just below this note.</p>
+<!--
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
  * Distribution Licence:<br />
  * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
@@ -91,15 +147,34 @@ tabs.</p>
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the 'Licence' link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- */
-public class WritingCode
-{
-}
+-->
+
+<p>The result looks something like this from JavaDoc:</p>
+
+<p><table border='1' cellPadding='3' cellSpacing='0'>
+<tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+Distribution Licence:<br />
+JSword is free software; you can redistribute it
+and/or modify it under the terms of the GNU General Public License,
+version 2 as published by the Free Software Foundation.<br />
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.<br />
+The License is available on the internet
+<a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+MA 02111-1307, USA<br />
+The copyright to this program is held by it's authors.
+</font></td></tr></table>
+
+</body>
+</html>

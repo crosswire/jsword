@@ -71,10 +71,9 @@
       <src path="${source.java}/${section}"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
-        <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-        <fileset dir="${source.jar}/servlet23" includes="*.jar"/>
-        <fileset dir="${source.jar}/junit37" includes="*.jar"/>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
       </classpath>
     </javac>
     <copy todir="${target.classes}/${section}">
@@ -109,6 +108,7 @@
     <copy todir="${target.deploy}/${ant.project.name}">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
+      <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
     </copy>
     <unzip
         src="${notes.root}/versions/projectb-ser-av.zip"
@@ -181,7 +181,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="report" depends="test" description="Compile test report">
+  <target name="doc.report" depends="test" description="Compile test report">
     <junitreport todir="${target.junit}">
       <fileset dir="${target.junit}">
         <include name="TEST-*.xml"/>
@@ -191,7 +191,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="files" depends="init" description="Copy the file based documentation">
+  <target name="doc.files" depends="init" description="Copy the file based documentation">
     <mkdir dir="${target.doc}"/>
     <copy todir="${target.doc}">
       <fileset dir="${source.doc}" />
@@ -199,7 +199,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="javadoc" depends="init" description="Create JavaDoc">
+  <target name="doc.javadoc" depends="init" description="Create JavaDoc">
     <mkdir dir="${target.doc}/api"/>
     <javadoc
         destdir="${target.doc}/api"
@@ -227,16 +227,16 @@
       <header>JSword</header>
       <footer>Copyright &#168; 2002</footer>
       <classpath>
-        <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
-        <fileset dir="${source.jar}/servlet23" includes="*.jar"/>
-        <fileset dir="${source.jar}/junit37" includes="*.jar"/>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
       </classpath>
       <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.doc}/jdk14api"/>
     </javadoc>
   </target>
 
   <!--=======================================================================-->
-  <target name="java2html" depends="init" description="HTML versions of the java code">
+  <target name="doc.java2html" depends="init" description="HTML versions of the java code">
     <mkdir dir="${target.doc}/java2html"/>
     <java fork="true" classname="j2h">
       <classpath>
@@ -245,7 +245,13 @@
         </fileset>
       </classpath>
       <arg value="-js"/>
-      <arg value="${basedir}/${source.java}"/>
+      <arg value="${basedir}/${source.java}/common"/>
+      <arg value="-js"/>
+      <arg value="${basedir}/${source.java}/jsword"/>
+      <arg value="-js"/>
+      <arg value="${basedir}/${source.java}/sword"/>
+      <arg value="-js"/>
+      <arg value="${basedir}/${source.java}/map"/>
       <arg value="-d" />
       <arg value="${target.doc}/java2html"/>
       <arg value="-n"/>
@@ -259,7 +265,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc" depends="files, javadoc, java2html, report" description="All the documentation tasks">
+  <target name="doc" depends="doc.files, doc.javadoc, doc.java2html, doc.report" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->
