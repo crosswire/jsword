@@ -640,7 +640,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="nightly" depends="veryclean, cvsup, release.nightly" description="To be run nightly at crosswire">
+  <target name="nightly" depends="veryclean, release.nightly" description="To be run nightly at crosswire">
   </target>
 
   <!--=======================================================================-->
