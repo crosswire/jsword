@@ -160,7 +160,7 @@ public class RawLDBackend extends Backend
 
                 // Now read the data file for this key using the offset and size
                 byte[] data = SwordUtil.readRAF(datRaf, offset, size);
-                
+
                 decipher(data);
 
                 int keyend = SwordUtil.findByte(data, SEPARATOR);

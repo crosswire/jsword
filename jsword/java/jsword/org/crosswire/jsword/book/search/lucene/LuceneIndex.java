@@ -100,7 +100,7 @@ public class LuceneIndex implements Index, Activatable
 
         try
         {
-            synchronized (creating)
+            synchronized (CREATING)
             {
                 book.getBookMetaData().setIndexStatus(IndexStatus.CREATING);
 
@@ -109,9 +109,9 @@ public class LuceneIndex implements Index, Activatable
                 IndexWriter writer = new IndexWriter(NetUtil.getAsFile(storage).getCanonicalPath(), new SimpleAnalyzer(), true);
 
                 generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
-        
+
                 job.setProgress(95, Msg.OPTIMIZING.toString());
-        
+
                 writer.optimize();
                 writer.close();
 
@@ -128,7 +128,7 @@ public class LuceneIndex implements Index, Activatable
         finally
         {
             job.done();
-        }                
+        }
     }
 
     /* (non-Javadoc)
@@ -150,7 +150,7 @@ public class LuceneIndex implements Index, Activatable
                     Analyzer analyzer = new SimpleAnalyzer();
                     Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
                     Hits hits = searcher.search(query);
-    
+
                     for (int i = 0; i < hits.length(); i++)
                     {
                         Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
@@ -166,7 +166,7 @@ public class LuceneIndex implements Index, Activatable
             }
             else
             {
-                log.warn("Missing searcher, skipping search for: "+search); //$NON-NLS-1$
+                log.warn("Missing searcher, skipping search for: " + search); //$NON-NLS-1$
             }
         }
 
@@ -263,7 +263,7 @@ public class LuceneIndex implements Index, Activatable
                 }
                 catch (NoSuchVerseException ex)
                 {
-                    log.error("Failed to get book name from verse: "+verse, ex); //$NON-NLS-1$
+                    log.error("Failed to get book name from verse: " + verse, ex); //$NON-NLS-1$
                     assert false;
                     name = subkey.getName();
                 }
@@ -283,12 +283,12 @@ public class LuceneIndex implements Index, Activatable
     /**
      * A synchronization lock point to prevent us from doing 2 index runs at a time.
      */
-    private static final Object creating = new Object();
+    private static final Object CREATING = new Object();
 
     /**
      * Are we active
      */
-    private boolean active = false;
+    private boolean active;
 
     /**
      * The log stream

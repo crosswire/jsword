@@ -47,7 +47,7 @@ import org.crosswire.common.swing.CWAction;
  */
 public class ToolBar extends JToolBar
 {
-	/**
+    /**
      * ToolBar constructor.
      */
     public ToolBar(JFrame frame)

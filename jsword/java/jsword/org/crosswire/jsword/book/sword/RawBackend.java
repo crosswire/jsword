@@ -17,7 +17,7 @@ import org.crosswire.jsword.passage.Verse;
 /**
  * Both Books and Commentaries seem to use the same format so this class
  * abstracts out the similarities.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -50,7 +50,7 @@ public class RawBackend extends Backend
         String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
         File baseurl = new File(rootPath, dataPath);
         String path = baseurl.getAbsolutePath();
-       
+
         idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
         txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
 
@@ -155,7 +155,7 @@ public class RawBackend extends Backend
             // I wonder if it would be safe to do a readLine() from here.
             // Probably be safer not to risk it since we know how long it is.
             byte[] data = SwordUtil.readRAF(txtRaf[testament], start, size);
-            
+
             decipher(data);
 
             return SwordUtil.decode(key, data, charset);

@@ -32,7 +32,7 @@ import java.util.Iterator;
  */
 public class RocketPassage extends BitwisePassage
 {
-	/**
+    /**
      * Create a new RocketPassage
      */
     public RocketPassage()

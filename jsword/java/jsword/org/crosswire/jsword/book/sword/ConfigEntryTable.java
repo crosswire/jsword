@@ -157,7 +157,7 @@ public class ConfigEntryTable
                 log.warn("Expected to see '=' in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
                 continue;
             }
-            
+
             String key = line.substring(0, eqpos).trim();
             String value = line.substring(eqpos + 1).trim();
             // Only CIPHER_KEYS that are empty are not ignored
@@ -169,7 +169,7 @@ public class ConfigEntryTable
 
             // Create a configEntry so that the name is normalized.
             ConfigEntry configEntry = new ConfigEntry(internal, key);
-            
+
             ConfigEntry e = (ConfigEntry) table.get(configEntry.getType());
 
             if (e == null)
@@ -272,7 +272,7 @@ public class ConfigEntryTable
 
             if (!configEntry.allowsContinuation())
             {
-                log.warn("Ignoring unexpected additional line for " + configEntry.getName()  + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
+                log.warn("Ignoring unexpected additional line for " + configEntry.getName()  + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             else
             {
@@ -368,7 +368,7 @@ public class ConfigEntryTable
 
         String langFromEntry = (String) getValue(ConfigEntryType.GLOSSARY_FROM);
         String langToEntry = (String) getValue(ConfigEntryType.GLOSSARY_TO);
-        
+
         if (langFromEntry != null || langToEntry != null)
         {
             String langFrom = AbstractBookMetaData.getLanguage(internal, langFromEntry);
@@ -377,7 +377,7 @@ public class ConfigEntryTable
             add(ConfigEntryType.LANGUAGE_TO, langTo);
             boolean fromLeftToRight = true;
             boolean toLeftToRight = true;
-            
+
             if (langFromEntry == null)
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + "=" + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -395,13 +395,13 @@ public class ConfigEntryTable
             {
                 toLeftToRight = ComponentOrientation.getOrientation(new Locale(langToEntry)).isLeftToRight();
             }
-            
+
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang))
             {
                 log.error("Data error in " + internal + ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() + " or " + ConfigEntryType.GLOSSARY_FROM.getName() + " match " + ConfigEntryType.LANG.getName());  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
-            
+
             if (fromLeftToRight != toLeftToRight)
             {
                 newDir = ConfigEntryType.DIRECTION_BIDI;
@@ -442,11 +442,11 @@ public class ConfigEntryTable
         {
             if (dir == null)
             {
-                log.warn("Fixing data for " + internal + ". Adding " + ConfigEntryType.DIRECTION.getName() + "=" + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
+                log.warn("Fixing data for " + internal + ". Adding " + ConfigEntryType.DIRECTION.getName() + "=" + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             else
             {
-                log.warn("Fixing data for " + internal + ". Changing " + ConfigEntryType.DIRECTION.getName() + "=" + dir + " to " + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$                   
+                log.warn("Fixing data for " + internal + ". Changing " + ConfigEntryType.DIRECTION.getName() + "=" + dir + " to " + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
             add(ConfigEntryType.DIRECTION, newDir);
         }
@@ -522,7 +522,7 @@ public class ConfigEntryTable
         {
             ConfigEntry entry = (ConfigEntry) table.get(category[i]);
             Element configElement = null;
-            
+
             if (entry != null)
             {
                 configElement = entry.toOSIS();
@@ -530,9 +530,9 @@ public class ConfigEntryTable
 
             if (title == null && configElement != null)
             {
-                // I18N(DMS): use aTitle to lookup translation. 
+                // I18N(DMS): use aTitle to lookup translation.
                 title = factory.createHeader();
-                title.addContent(aTitle); 
+                title.addContent(aTitle);
                 ele.addContent(title);
             }
 

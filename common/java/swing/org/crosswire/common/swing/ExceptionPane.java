@@ -66,7 +66,7 @@ import org.crosswire.common.util.StackTrace;
  */
 public class ExceptionPane extends JPanel
 {
-	/**
+    /**
      * Use showExceptionDialog for the time being
      */
     private ExceptionPane(Throwable ex)

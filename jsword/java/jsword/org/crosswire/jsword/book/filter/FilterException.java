@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class FilterException extends LucidException
 {
-	/**
+    /**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */

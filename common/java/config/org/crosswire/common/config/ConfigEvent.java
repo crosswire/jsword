@@ -28,7 +28,7 @@ import java.util.EventObject;
  */
 public class ConfigEvent extends EventObject
 {
-	/**
+    /**
      * Constructs an ConfigEvent object.
      * @param source The event originator, or log stream
      */

@@ -16,7 +16,7 @@ import org.crosswire.jsword.book.CaseType;
  * <p>I've considered merging BibleInfo and PassageUtil since they are both supporting
  * static only classes. However they are both non-trivial, so together they would
  * be large, and there is a good dividing line between the 2.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -78,7 +78,7 @@ public class BibleInfo
 
         for (int i = 0; i < BibleInfo.BOOKS_IN_BIBLE; i++)
         {
-            Integer bookNum = new Integer(i+1);
+            Integer bookNum = new Integer(i + 1);
             String fullBook = getString(resources, FULL_KEY + (i + 1));
             fullBooks[i] = fullBook;
             fullBooksLower[i] = fullBook.toLowerCase();
@@ -92,7 +92,7 @@ public class BibleInfo
             shortBooksUpper[i] = shortBook.toUpperCase();
 
             String altBook = getString(resources, ALT_KEY + (i + 1));
-            String altBooks[] = StringUtil.split(altBook.toLowerCase(), ',');
+            String [] altBooks = StringUtil.split(altBook.toLowerCase(), ',');
             altBooksLower[i] = altBooks;
 
             for (int j = 0; j < altBooks.length; j++)
@@ -115,7 +115,7 @@ public class BibleInfo
         for (int i = 0; i < osisBooks.length; i++)
         {
             osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
-            osisMap.put(osisBooks[i], new Integer(i+1));
+            osisMap.put(osisBooks[i], new Integer(i + 1));
         }
     }
 
@@ -284,7 +284,7 @@ public class BibleInfo
         {
             return -1;
         }
-        
+
         // Favor OSIS names.
         Integer bookNum = (Integer) osisMap.get(find);
         if (bookNum != null)
@@ -342,7 +342,7 @@ public class BibleInfo
      */
     public static final boolean isBookName(String find)
     {
-        return (getBookNumber(find) != -1);
+        return getBookNumber(find) != -1;
     }
 
     /**
@@ -1010,7 +1010,7 @@ public class BibleInfo
 
     /** Standard shortened names for the book of the Bible, in lower case, generated at run time */
     private static String[] shortBooksLower;
-    
+
     /** Standard shortened names for the book of the Bible, in lower case, generated at runtime. */
     private static Map shortBooksMap;
 

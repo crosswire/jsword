@@ -28,7 +28,7 @@ import java.util.EventObject;
  */
 public class TitleChangedEvent extends EventObject
 {
-	/**
+    /**
      *
      */
     public TitleChangedEvent(Object source, String title)

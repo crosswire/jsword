@@ -146,7 +146,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     {
         return getModuleType().getBookType();
     }
-    
+
     public Document toOSIS()
     {
         return new Document(cet.toOSIS());
@@ -169,8 +169,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
     public String getProperty(ConfigEntryType entry)
     {
         Object obj = cet.getValue(entry);
-        
-        return obj != null ? obj.toString() : null; 
+
+        return obj != null ? obj.toString() : null;
     }
 
     /* (non-Javadoc)
@@ -185,10 +185,10 @@ public class SwordBookMetaData extends AbstractBookMetaData
     private void buildProperties()
     {
         // merge entries into properties file
-        for (Iterator kit = cet.getKeys(); kit.hasNext();)
+        for (Iterator kit = cet.getKeys(); kit.hasNext(); )
         {
             ConfigEntryType key = (ConfigEntryType) kit.next();
-    
+
             Object value = cet.getValue(key);
             // value is null if the config entry was rejected.
             if (value == null)
@@ -200,7 +200,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
                 List list = (List) value;
                 StringBuffer combined = new StringBuffer();
                 boolean appendSeparator = false;
-                for (Iterator vit = list.iterator(); vit.hasNext();)
+                for (Iterator vit = list.iterator(); vit.hasNext(); )
                 {
                     String element = (String) vit.next();
                     if (appendSeparator)
@@ -210,14 +210,14 @@ public class SwordBookMetaData extends AbstractBookMetaData
                     combined.append(element);
                     appendSeparator = true;
                 }
-    
+
                 value = combined.toString();
             }
-    
+
             putProperty(key.toString(), value.toString());
         }
     }
- 
+
     /**
      * The language strings need to be converted to Java charsets
      */
@@ -225,7 +225,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     static
     {
         ENCODING_JAVA.put("Latin-1", "ISO-8859-1"); //$NON-NLS-1$ //$NON-NLS-2$
-        ENCODING_JAVA.put("UTF-8","UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+        ENCODING_JAVA.put("UTF-8", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private ConfigEntryTable cet;

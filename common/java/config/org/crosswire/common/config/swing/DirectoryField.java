@@ -28,7 +28,7 @@ import javax.swing.JFileChooser;
  */
 public class DirectoryField extends FileField
 {
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.common.config.swing.FileField#doBrowse()
      */
     public void doBrowse()

@@ -16,7 +16,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * The central interface to all searching.
- * 
+ *
  * Functionality the I invisage includes:<ul>
  * <li>A simple search syntax that goes something like this.<ul>
  * <li>aaron, moses     (verses containing aaron and moses. Can also use & or +)
@@ -27,7 +27,7 @@ import org.crosswire.jsword.passage.Key;
  * <li>thesaurus happy  (verses with words that mean happy. Can also use th ...)
  * <li>grammar have     (words like has have had and so on. Can also use gr ...)</ul>
  * <li>The ability to add soundslike type extensions.</ul>
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -237,7 +237,7 @@ public class IndexSearcher implements Searcher
 
                 wordMap = new HashMap();
                 preferredMap = new HashMap();
-    
+
                 for (Iterator it = prop.keySet().iterator(); it.hasNext(); )
                 {
                     String key = (String) it.next();
@@ -301,30 +301,30 @@ public class IndexSearcher implements Searcher
     /**
      * The cache of known words
      */
-    private static Map wordMap = null;
+    private static Map wordMap;
 
     /**
      * The cache of preferred symbols for the words
      */
-    private static Map preferredMap = null;
+    private static Map preferredMap;
 
     /**
      * The parsed version of the current string
      */
-    private List output = null;
+    private List output;
 
     /**
      * The commands that we know about
      */
-    private Map commands = null;
+    private Map commands;
 
     /**
      * While the answer is being worked out ...
      */
-    private Iterator wit = null;
+    private Iterator wit;
 
     /**
      * The index
      */
-    private Index index = null;
+    private Index index;
 }

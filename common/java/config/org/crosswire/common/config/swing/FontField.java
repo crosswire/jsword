@@ -34,7 +34,7 @@ import org.crosswire.common.swing.GuiConvert;
  */
 public class FontField extends FontChooser implements Field
 {
-	/**
+    /**
      *
      */
     public FontField()

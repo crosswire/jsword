@@ -93,7 +93,10 @@ public class BookMetaDataSet extends SortedListSet
     {
         return (BookMetaDataSet) filter(new GroupFilter(key, value));
     }
-    
+
+    /**
+     * GroupFilter does the SQL traditional group by.
+     */
     private static final class GroupFilter implements Filter
     {
         public GroupFilter(String aKey, String aValue)

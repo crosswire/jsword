@@ -36,7 +36,7 @@ import javax.swing.SwingConstants;
  */
 public class NudgeButton extends JPanel
 {
-	/**
+    /**
      *
      */
     public NudgeButton()

@@ -34,7 +34,7 @@ import java.awt.Insets;
  */
 public class FieldLayout extends AbstractLayout
 {
-	/**
+    /**
      * A default FieldLayout with intercomponent
      * spacing of 0.
      */

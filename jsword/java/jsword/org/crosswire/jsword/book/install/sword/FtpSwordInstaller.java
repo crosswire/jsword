@@ -17,7 +17,7 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
 
 /**
  * An implementation of Installer for reading data from Sword FTP sites.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -82,11 +82,11 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
         try
         {
             log.info("Connecting to site=" + host + " dir=" + dir); //$NON-NLS-1$ //$NON-NLS-2$
-            
+
             // First connect
             ftp.connect(host);
             Thread.yield();
-            
+
             log.info(ftp.getReplyString());
             int reply1 = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply1))
@@ -94,11 +94,11 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
                 String text1 = ftp.getReplyString();
                 throw new InstallException(Msg.CONNECT_REFUSED, new Object[] { host, new Integer(reply1), text1 });
             }
-            
+
             // Authenticate
             ftp.login(username, password);
             Thread.yield();
-            
+
             log.info(ftp.getReplyString());
             reply1 = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply1))
@@ -106,11 +106,11 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
                 String text2 = ftp.getReplyString();
                 throw new InstallException(Msg.AUTH_REFUSED, new Object[] { username, new Integer(reply1), text2 });
             }
-            
+
             // Change directory
             ftp.changeWorkingDirectory(dir);
             Thread.yield();
-            
+
             log.info(ftp.getReplyString());
             reply1 = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply1))
@@ -118,7 +118,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
                 String text3 = ftp.getReplyString();
                 throw new InstallException(Msg.CWD_REFUSED, new Object[] { dir, new Integer(reply1), text3 });
             }
-            
+
             ftp.setFileType(FTP.BINARY_FILE_TYPE);
             Thread.yield();
 

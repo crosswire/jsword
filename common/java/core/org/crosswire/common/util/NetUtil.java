@@ -685,7 +685,7 @@ public class NetUtil
     /**
      * Where are temporary files cached.
      */
-    private static File cachedir = null;
+    private static File cachedir;
 
     /**
      * The log stream

@@ -54,7 +54,7 @@ import javax.swing.SwingUtilities;
  */
 public class FontChooser extends JPanel
 {
-	/**
+    /**
      * Create a FontChooser.
      */
     public FontChooser()
@@ -238,7 +238,7 @@ public class FontChooser extends JPanel
      */
     static class CustomComboBoxModel extends AbstractListModel implements ComboBoxModel
     {
-		/**
+        /**
          * Create a custom data model for a JComboBox
          */
         protected CustomComboBoxModel()
@@ -308,7 +308,7 @@ public class FontChooser extends JPanel
      */
     private static class CustomListCellRenderer extends DefaultListCellRenderer
     {
-		/* (non-Javadoc)
+        /* (non-Javadoc)
          * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
          */
         public Component getListCellRendererComponent(JList listbox, Object value, int index, boolean selected, boolean focus)

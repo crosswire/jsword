@@ -54,7 +54,7 @@ import org.crosswire.common.util.Logger;
  */
 public class JobsViewPane extends JPanel implements WorkListener
 {
-	/**
+    /**
      * Simple ctor
      */
     public JobsViewPane()

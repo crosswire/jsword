@@ -13,7 +13,7 @@ import org.crosswire.jsword.book.search.IndexManagerFactory;
 
 /**
  * .
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -52,12 +52,12 @@ public class IndexDownloader
     {
         // Get a temp home
         URL tempDownload = NetUtil.getTemporaryURL(TEMP_PREFIX, TEMP_SUFFIX);
-    
+
         try
         {
             // Now we know what installer to use, download to the temp file
             installer.downloadSearchIndex(bmd, tempDownload);
-    
+
             // And install from that file.
             IndexManager idxman = IndexManagerFactory.getIndexManager();
             idxman.installDownloadedIndex(bmd, tempDownload);

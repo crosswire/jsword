@@ -36,7 +36,7 @@ import org.crosswire.common.swing.NumericDocument;
  */
 public class NumberField extends JPanel implements Field
 {
-	/**
+    /**
      * Create a new FileField
      */
     public NumberField()

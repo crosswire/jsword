@@ -36,7 +36,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class MapCellRenderer extends JTextArea implements TableCellRenderer
 {
-	/**
+    /**
      * Create a MapCellRenderer
      */
     public MapCellRenderer()

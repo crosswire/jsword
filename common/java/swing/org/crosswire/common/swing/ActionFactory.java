@@ -116,7 +116,7 @@ public class ActionFactory implements ActionListener
         }
         else
         {
-            log.info("Missing key: '" + key + "'. Known keys are: "+StringUtil.join(actions.keySet().toArray(), ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.info("Missing key: '" + key + "'. Known keys are: " + StringUtil.join(actions.keySet().toArray(), ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             assert false;
 
             CWAction getOutOfJailFreeAction = new CWAction();

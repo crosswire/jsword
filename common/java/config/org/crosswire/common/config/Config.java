@@ -47,7 +47,7 @@ import org.jdom.Element;
  *     data have been changed in the screen data, and so that we can
  *     load data from disk to screen without involving the app.
  * </ul>
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -268,10 +268,10 @@ public class Config
         {
             String key = (String) it.next();
             Choice choice = getChoice(key);
-        
+
             String oldValue = choice.getString();
             String newValue = local.getProperty(key);
-                            
+
             // The new value shouldn't really be blank - obviously this
             // choice has just been added, substitute the default.
             if (newValue == null || newValue.length() == 0)
@@ -282,8 +282,8 @@ public class Config
                 }
                 local.setProperty(key, oldValue);
                 newValue = oldValue;
-            }    
-    
+            }
+
             try
             {
                 // If a value has not changed, we only call setString()
@@ -298,7 +298,7 @@ public class Config
             catch (Exception ex)
             {
                 log.warn("Failure setting " + key + "=" + newValue, ex);  //$NON-NLS-1$ //$NON-NLS-2$
-                Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { choice.getFullPath() } ));
+                Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { choice.getFullPath() }));
             }
         }
 //        int highestChange = Choice.PRIORITY_LOWEST;

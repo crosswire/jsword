@@ -69,12 +69,12 @@ public class LuceneIndexManager implements IndexManager
     {
         try
         {
-            Index reply = (Index) indexes.get(book);
+            Index reply = (Index) INDEXES.get(book);
             if (reply == null)
             {
                 URL storage = getStorageArea(book.getBookMetaData());
                 reply = new LuceneIndex(book, storage);
-                indexes.put(book, reply);
+                INDEXES.put(book, reply);
             }
 
             return reply;
@@ -100,7 +100,7 @@ public class LuceneIndexManager implements IndexManager
                 {
                     URL storage = getStorageArea(book.getBookMetaData());
                     Index index = new LuceneIndex(book, storage, true);
-                    indexes.put(book, index);
+                    INDEXES.put(book, index);
                 }
                 catch (Exception ex)
                 {
@@ -168,7 +168,7 @@ public class LuceneIndexManager implements IndexManager
     /**
      * The created indexes
      */
-    protected static final Map indexes = new HashMap();
+    protected static final Map INDEXES = new HashMap();
 
     /**
      * The segments directory

@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class NoSuchVerseException extends NoSuchKeyException
 {
-	/**
+    /**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */

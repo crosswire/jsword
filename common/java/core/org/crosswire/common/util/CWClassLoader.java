@@ -285,10 +285,10 @@ public class CWClassLoader extends ClassLoader
     /**
      * The class to which the resources belong
      */
-    private Class owner = null;
+    private Class owner;
 
     /**
      * Notion of a project's home from where additional resources can be found.
      */
-    private static URL home = null;
+    private static URL home;
 }

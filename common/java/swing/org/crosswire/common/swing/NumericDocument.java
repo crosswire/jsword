@@ -32,10 +32,10 @@ import javax.swing.text.PlainDocument;
  */
 public class NumericDocument extends PlainDocument
 {
-	/* (non-Javadoc)
-	 * @see javax.swing.text.Document#insertString(int, java.lang.String, javax.swing.text.AttributeSet)
-	 */
-	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
+    /* (non-Javadoc)
+     * @see javax.swing.text.Document#insertString(int, java.lang.String, javax.swing.text.AttributeSet)
+     */
+    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
     {
         if (str == null)
         {

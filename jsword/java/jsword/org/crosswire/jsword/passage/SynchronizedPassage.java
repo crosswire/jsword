@@ -33,7 +33,7 @@ import java.util.Iterator;
  */
 final class SynchronizedPassage implements Passage
 {
-	/**
+    /**
      * Construct a SynchronizedPassage from a real Passage to which we proxy.
      * @param ref The real Passage
      */

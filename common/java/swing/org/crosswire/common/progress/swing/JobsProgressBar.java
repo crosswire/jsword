@@ -54,7 +54,7 @@ import org.crosswire.common.util.Logger;
  */
 public class JobsProgressBar extends JPanel implements WorkListener
 {
-	/**
+    /**
      * Simple ctor
      */
     public JobsProgressBar(boolean small)

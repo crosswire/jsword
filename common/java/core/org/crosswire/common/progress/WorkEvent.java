@@ -29,7 +29,7 @@ import java.util.EventObject;
  */
 public class WorkEvent extends EventObject
 {
-	/**
+    /**
      * Initialize a WorkEvent
      */
     public WorkEvent(Job source, boolean predicted)

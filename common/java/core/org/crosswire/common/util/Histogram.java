@@ -39,7 +39,6 @@ public class Histogram
         hist = new HashMap();
     }
 
-    
     /**
      * note that this key has been seen one time more than before.
      * @param key
@@ -59,6 +58,7 @@ public class Histogram
     {
         hist.clear();
     }
+
     /**
      * The format of the histogram is an unordered list
      * of string and the counts of the number of times it has been seen.

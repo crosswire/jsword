@@ -60,7 +60,7 @@ public class SortedListSet extends ArrayList implements Set
         // Might be better to add all then sort.
         addAll(c);
     }
-    
+
     /* (non-Javadoc)
      * @see java.util.List#add(int, java.lang.Object)
      */
@@ -80,7 +80,7 @@ public class SortedListSet extends ArrayList implements Set
         int pos = Collections.binarySearch(this, o);
         if (pos < 0)
         {
-            super.add(-pos-1, o);
+            super.add(-pos - 1, o);
             return true;
         }
         return false;

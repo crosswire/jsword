@@ -28,7 +28,7 @@ import java.util.EventObject;
  */
 public class ReporterEvent extends EventObject
 {
-	/**
+    /**
      * Constructs an CaptureEvent object.
      * @param source The event originator (typically <code>this</code>)
      * @param ex An exception

@@ -75,12 +75,12 @@ public class StudyTool
                     {
                         try
                         {
-							trans = new Translation(word, strongs, bible.getKey(null));
-						}
+                            trans = new Translation(word, strongs, bible.getKey(null));
+                        }
                         catch (NoSuchKeyException ex)
                         {
                             log.warn("Failed to create key", ex); //$NON-NLS-1$
-						}
+                        }
 
                         reply.put(strongs, trans);
                     }

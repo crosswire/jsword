@@ -13,7 +13,7 @@ import org.jdom.Element;
 
 /**
  * A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -86,9 +86,9 @@ public class ConfigEntry
     }
 
     /**
-     * Determines whether the string is allowed. For some config entries, 
+     * Determines whether the string is allowed. For some config entries,
      * the value is expected to be one of a group, for others the format is defined.
-     * 
+     *
      * @param aValue
      * @return true if the string is allowed
      */
@@ -113,7 +113,7 @@ public class ConfigEntry
         }
         return true;
     }
-    
+
     /**
      * While most fields are single line or single value, some allow continuation.
      * A continuation mark is a backslash at the end of a line. It is not to be followed by whitespace.
@@ -140,9 +140,9 @@ public class ConfigEntry
         }
         return true;
     }
-    
+
     /**
-     * 
+     *
      */
     public boolean reportDetails()
     {
@@ -209,7 +209,7 @@ public class ConfigEntry
         {
             if (value != null)
             {
-                log.info("Ignoring unexpected additional entry for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
+                log.info("Ignoring unexpected additional entry for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             else
             {
@@ -227,11 +227,11 @@ public class ConfigEntry
             }
         }
     }
-    
+
     public Element toOSIS()
     {
         OSISUtil.ObjectFactory factory = OSISUtil.factory();
-        
+
         Element rowEle = factory.createRow();
 
         Element nameEle = factory.createCell();
@@ -241,8 +241,8 @@ public class ConfigEntry
         Element valueElement = factory.createCell();
         rowEle.addContent(nameEle);
         rowEle.addContent(valueElement);
-        
-        // I18N(DMS): use name to lookup translation. 
+
+        // I18N(DMS): use name to lookup translation.
         hiEle.addContent(getName());
 
         if (value != null)
@@ -359,7 +359,7 @@ public class ConfigEntry
 
         return copy;
     }
-    
+
     private List processLines(OSISUtil.ObjectFactory factory, String aValue)
     {
         List list = new ArrayList();

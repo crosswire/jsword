@@ -38,7 +38,7 @@ import com.ice.tar.TarInputStream;
 
 /**
  * .
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -86,7 +86,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         try
         {
             configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
-    
+
         }
         catch (MalformedURLException ex)
         {
@@ -229,7 +229,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         finally
         {
             job.done();
-        }                
+        }
     }
 
     /**

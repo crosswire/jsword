@@ -67,5 +67,5 @@ public class GrammarParamWord implements ParamWord
     /**
      * The source of thesaurus data
      */
-    private Thesaurus thesaurus = null;
+    private Thesaurus thesaurus;
 }

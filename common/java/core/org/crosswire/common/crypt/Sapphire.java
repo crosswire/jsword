@@ -5,7 +5,7 @@ package org.crosswire.common.crypt;
  * of Michael Paul Johnson's 2 January 1995 public domain cipher. Below is the documentation that he
  * originally provided for it. It has been converted to JavaDoc and the
  * C++ fragment has been removed.
- * 
+ *
  * <h1>THE SAPPHIRE II STREAM CIPHER</h1>
  *
  * <p>The Sapphire II Stream Cipher is designed to have the following properties:</p>
@@ -41,7 +41,7 @@ package org.crosswire.common.crypt;
  * </ul>
  *
  * <h2>HISTORY AND RELATED CIPHERS</h2>
- * 
+ *
  * <p>The Sapphire Stream Cipher is very similar to a cipher I started work on in
  * November 1993.  It is also similar in some respects to the alledged RC-4 that
  * was posted to sci.crypt recently.  Both operate on the principle of a
@@ -57,15 +57,15 @@ package org.crosswire.common.crypt;
  * user keys allowed) and the commercial North American version (with a session
  * key of 128 bits).  A variant of the Sapphire Stream Cipher is also used in
  * the shareware program Atbash, which has no weakened exportable version.</p>
- * 
+ *
  * <p>The Sapphire II Stream Cipher is a modification of the Sapphire Stream Cipher
  * designed to be much more resistant to adaptive chosen plaintext attacks (with
  * reorigination of the cipher allowed).  The Sapphire II Stream Cipher is used
  * in an encryption utility called ATBASH2.</p>
- * 
- * 
+ *
+ *
  * <h2>OVERVIEW</h2>
- * 
+ *
  * <p>The Sapphire Stream Cipher is based on a state machine.  The state consists
  * of 5 index values and a permutation vector.  The permutation vector is simply
  * an array containing a permutation of the numbers from 0 through 255.  Four of
@@ -84,29 +84,29 @@ package org.crosswire.common.crypt;
  * are set (somewhat arbitrarily) to the permutation vector elements at
  * locations 1, 3, 5, 7, and a key dependent value (rsum) left over from the
  * shuffling of the permutation vector (cards array).</p>
- * 
- * 
+ *
+ *
  * <h2>KEY SETUP</h2>
- * 
+ *
  * <p>Key setup (illustrated by the function initialize(), below) consists of three
  * parts:</p>
- * <ol> 
+ * <ol>
  *     <li>Initialize the index variables.</li>
  *     <li>Set the permutation vector to a known state (a simple counting
  *         sequence).</li>
  *     <li>Starting at the end of the vector, swap each element of the
  *         permutation vector with an element indexed somewhere from 0
  *         to the current index (chosen by the function keyrand()).</li>
- * </ol> 
+ * </ol>
  * <p>The keyrand() function returns a value between 0 and some maximum number
  * based on the user's key, the current state of the permutation vector, and an
  * index running sum called rsum.  Note that the length of the key is used in
  * keyrand(), too, so that a key like "abcd" will not result in the same
  * permutation as a key like "abcdabcd".</p>
- * 
- * 
+ *
+ *
  * <h2>ENCRYPTION</h2>
- * 
+ *
  * <p>Each encryption involves updating the index values, moving (up to) 4 bytes
  * around in the permutation vector, selecting an output byte, and adding the
  * output byte bitwise modulo-2 (exclusive-or) to the plain text byte to produce
@@ -117,63 +117,63 @@ package org.crosswire.common.crypt;
  * another byte in the permutation vector pointed to by the last cipher text
  * byte.  The last plain text and the last cipher text bytes are also kept as
  * index variables.  See the function called encrypt(), below for details.</p>
- * 
- * 
+ *
+ *
  * <h2>PSUEDORANDOM BYTE GENERATION</h2>
- * 
+ *
  * <p>If you want to generate random numbers without encrypting any particular
  * ciphertext, simply encrypt 0.  There is still plenty of complexity left in
  * the system to ensure unpredictability (if the key is not known) of the output
  * stream when this simplification is made.</p>
- * 
- * 
+ *
+ *
  * <h2>DECRYPTION</h2>
- * 
+ *
  * <p>Decryption is the same as encryption, except for the obvious swapping of the
  * assignments to last_plain and last_cipher and the return value.  See the
  * function decrypt(), below.</p>
- * 
- * 
+ *
+ *
  * <h2>C++ SOURCE CODE FRAGMENT</h2>
- * 
+ *
  * <p>The original implimentation of this cipher was in Object Oriented Pascal, but
  * C++ is available for more platforms.</p>
- * 
+ *
  * <h2>GENERATION OF CRYPTOGRAPHIC CHECK VALUES (HASH VALUES)</h2>
- * 
+ *
  * <p>For a fast way to generate a cryptographic check value (also called a hash or
  * message integrity check value) of a message of arbitrary length:</p>
- * <ol> 
+ * <ol>
  * <li>Initialize either with a key (for a keyed hash value) or call hash_init
  *     with no key (for a public hash value).</li>
- * 
+ *
  * <li>Encrypt all of the bytes of the message or file to be hashed.  The
  *     results of the encryption need not be kept for the hash generation
  *     process.  (Optionally decrypt encrypted text, here).</li>
- * 
+ *
  * <li>Call hash_final, which will further "stir" the permutation vector by
  *     encrypting the values from 255 down to 0, then report the results of
  *     encrypting 20 zeroes.</li>
- * </ol> 
- * 
+ * </ol>
+ *
  * <h2>SECURITY ANALYSIS</h2>
- * 
+ *
  * <p>There are several security issues to be considered.  Some are easier to
  * analyze than others.  The following includes more "hand waving" than
  * mathematical proofs, and looks more like it was written by an engineer than a
  * mathematician.  The reader is invited to improve upon or refute the
  * following, as appropriate.</p>
- * 
- * 
+ *
+ *
  * <h2>KEY LENGTH</h2>
- * 
+ *
  * <p>There are really two kinds of user keys to consider: (1) random binary keys,
  * and (2) pass phrases.  Analysis of random binary keys is fairly straight
  * forward.  Pass phrases tend to have much less entropy per byte, but the
  * analysis made for random binary keys applies to the entropy in the pass
  * phrase.  The length limit of the key (255 bytes) is adequate to allow a pass
  * phrase with enough entropy to be considered strong.</p>
- * 
+ *
  * <p>To be real generous to a cryptanalyst, assume dedicated Sapphire Stream
  * Cipher cracking hardware.  The constant portion of the key scheduling can be
  * done in one cycle.  That leaves at least 256 cycles to do the swapping
@@ -185,7 +185,7 @@ package org.crosswire.common.crypt;
  * estimate.  Based on these assumptions (reasonable for major governments), and
  * rounding to two significant digits, the following key length versus cracking
  * time estimates result:</p>
- * 
+ *
  * <pre>
  *     Key length, bits    Time to crack
  *     ----------------    -------------
@@ -196,25 +196,25 @@ package org.crosswire.common.crypt;
  *                   64    290,000 years (good enough for most things)
  *                   80    19 billion years (kind of like Skipjack's key)
  *                  128    5.4E24 years (good enough for the clinically paranoid)
- * </pre> 
+ * </pre>
  *
  * <p>Naturally, the above estimates can vary by several orders of magnitude based
  * on what you assume for attacker's hardware, budget, and motivation.</p>
- * 
+ *
  * <p>In the range listed above, the probability of spare keys (two keys resulting
  * in the same initial permutation vector) is small enough to ignore.  The proof
  * is left to the reader.</p>
- * 
- * 
+ *
+ *
  * <h2>INTERNAL STATE SPACE</h2>
- * 
+ *
  * <p>For a stream cipher, internal state space should be at least as big as the
  * number of possible keys to be considered strong.  The state associated with
  * the permutation vector alone (256!) constitutes overkill.</p>
- * 
- * 
+ *
+ *
  * <h2>PREDICTABILITY OF THE STATE</h2>
- * 
+ *
  * <p>If you have a history of stream output from initialization (or equivalently,
  * previous known plaintext and ciphertext), then rotor, last_plain, and
  * last_cipher are known to an attacker.  The other two index values, flipper
@@ -226,10 +226,10 @@ package org.crosswire.common.crypt;
  * are generated at each iteration.  Indeed, fewer index variables and swaps
  * could be used to achieve security, here, if it were not for the hash
  * requirements.</p>
- * 
- * 
+ *
+ *
  * <h2>CRYPTOGRAPHIC CHECK VALUE</h2>
- * 
+ *
  * <p>The change in state altered with each byte encrypted contributes to an
  * avalanche of generated check values that is radically different after a
  * sequence of at least 64 bytes have been encrypted.  The suggested way to
@@ -238,7 +238,7 @@ package org.crosswire.common.crypt;
  * single bit change in a message causes a radical change in the check value
  * generated (about half of the bits change).  This is an essential feature of a
  * cryptographic check value.</p>
- * 
+ *
  * <p>Another good property of a cryptographic check value is that it is too hard
  * to compute a message that results in a certain check value.  In this case, we
  * assume the attacker knows the key and the contents of a message that has the
@@ -248,7 +248,7 @@ package org.crosswire.common.crypt;
  * indices back to what it was before the alteration.  The other one is the
  * so-called "birthday" attack that is to cryptographic hash functions what
  * brute force is to key search.</p>
- * 
+ *
  * <p>To generate a sequence that restores the state of the cipher to what it was
  * before the alteration probably requires at least 256 bytes, since the index
  * "rotor" marches steadily on its cycle, one by one.  The values to do this
@@ -261,7 +261,7 @@ package org.crosswire.common.crypt;
  * in finding out what it is.  Please email me at
  * &lt;m.p.johnson&#064ieee.org&gt; if you
  * find one.</p>
- * 
+ *
  * <p>The "birthday" attack just uses the birthday paradox to find a message that
  * has the same check value.  With a 20 byte check value, you would have to find
  * at least 80 bits to change in the text such that they wouldn't be noticed (a
@@ -270,17 +270,17 @@ package org.crosswire.common.crypt;
  * isn't big enough, you are free to generate a longer check value with this
  * algorithm.  Someone who likes 16 byte keys might prefer 32 byte check values
  * for similar stringth.</p>
- * 
- * 
+ *
+ *
  * <h2>ADAPTIVE CHOSEN PLAIN TEXT ATTACKS</h2>
- * 
+ *
  * <p>Let us give the attacker a keyed black box that accepts any input and
  * provides the corresponding output.  Let us also provide a signal to the black
  * box that causes it to reoriginate (revert to its initial keyed state) at the
  * attacker's will.  Let us also be really generous and provide a free copy of
  * the black box, identical in all respects except that the key is not provided
  * and it is not locked, so the array can be manipulated directly.</p>
- * 
+ *
  * <p>Since each byte encrypted only modifies at most 5 of the 256 bytes in the
  * permutation vector, and it is possible to find different sequences of two
  * bytes that leave the five index variables the same, it is possible for the
@@ -299,10 +299,10 @@ package org.crosswire.common.crypt;
  * Thanks to Bryan G. Olson's &lt;olson&#064umbc.edu&gt; continued attacks on the Sapphire
  * Stream Cipher, I have come up with the Sapphire II Stream Cipher.  Thanks
  * again to Bryan for his valuable help.</p>
- * 
+ *
  * <p>Bryan Olson's "differential" attack of the original Sapphire Stream Cipher
  * relies on both of these facts:</p>
- * 
+ *
  * <ol>
  * <li>By continual reorigination of a black box containing a keyed version of
  * the Sapphire Stream Cipher, it is possible to find a set of input strings
@@ -310,13 +310,13 @@ package org.crosswire.common.crypt;
  * identical output after the first three (or possibly four) bytes.  The output
  * suffixes so obtained will not contain the values of the permutation vector
  * bytes that <i>differ</i> because of the different initial bytes encrypted.</li>
- * 
+ *
  * <li>Because the five index values are initialized to constants that are
  * known by the attacker, most of the locations of the "missing" bytes noted in
  * the above paragraph are known to the attacker (except for those indexed by
  * the ratchet index variable for encryptions after the first byte).</li>
  * </ol>
- * 
+ *
  * <p>I have not yet figured out if Bryan's attack on the original Sapphire Stream
  * Cipher had complexity of more or less than the design strength goal of 2^64
  * encryptions, but some conservative estimations I made showed that it could
@@ -324,7 +324,7 @@ package org.crosswire.common.crypt;
  * develop a full practical attack to accurately estimate the complexity more
  * accurately, and I have limited time for that).  Fortunately, there is a way
  * to frustrate this type of attack without fully developing it.</p>
- * 
+ *
  * <p>Denial of condition 1 above by increased alteration of the state variables is
  * too costly, at least using the methods I tried. For example, doubling the
  * number of index variables and the number of permutation vector items
@@ -334,32 +334,32 @@ package org.crosswire.common.crypt;
  * output byte is a combination of two permutation vector bytes instead of one.
  * That means that all possible output values can occur in the differential
  * sequences of item 1, above.</p>
- * 
+ *
  * <p>Denial of condition 2 above, is simpler.  By making the initial values of the
  * five index variables dependent on the key, Bryan's differential attack is
  * defeated, since the attacker has no idea which elements of the permutation
  * vector were different between data sets, and exhaustive search is too
  * expensive.</p>
- * 
- * 
+ *
+ *
  * <h2>OTHER HOLES</h2>
- * 
+ *
  * <p>Are there any?  Take you best shot and let me know if you see any.  I offer
  * no challenge text with this algorithm, but you are free to use it without
  * royalties to me if it is any good.</p>
- * 
- * 
+ *
+ *
  * <h2>CURRENT STATUS</h2>
- * 
+ *
  * <p>This is a new (to the public) cipher, and an even newer approach to
  * cryptographic hash generation.  Take your best shot at it, and please let me
  * know if you find any weaknesses (proven or suspected) in it.  Use it with
  * caution, but it still looks like it fills a need for reasonably strong
  * cryptography with limited resources.</p>
- * 
- * 
+ *
+ *
  * <h2>LEGAL STUFF</h2>
- * 
+ *
  * <p>The intention of this document is to share some research results on an
  * informal basis.  You may freely use the algorithm and code listed above as
  * far as I'm concerned, as long as you don't sue me for anything, but there may
@@ -368,7 +368,7 @@ package org.crosswire.common.crypt;
  * and is not a complete application.  I understand this document to be
  * Constitutionally protected publication, and not a munition, but don't blame
  * me if it explodes or has toxic side effects.</p>
- * 
+ *
  * <pre>
  *                   ___________________________________________________________
  *                  |                                                           |
@@ -383,7 +383,7 @@ package org.crosswire.common.crypt;
  *
  * Regarding this port to Java and not the original code, the following license
  * applies:
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -426,10 +426,10 @@ public class Sapphire
         }
         else
         {
-            hash_init();
+            hashInit();
         }
     }
-    
+
     /**
      * Decipher a single byte, presumably the next.
      * @param b the next byte to decipher
@@ -446,7 +446,7 @@ public class Sapphire
 
         // Convert from a byte to an int, but prevent sign extension.
         // So -16 becomes 240
-        int bVal = (b & 0xFF);
+        int bVal = b & 0xFF;
         ratchet += cards[rotor++];
         // Keep ratchet and rotor in the range of 0-255
         // The C++ code relied upon overflow of an unsigned char
@@ -463,8 +463,8 @@ public class Sapphire
 
         // Output one byte from the state in such a way as to make it
         // very hard to figure out which one you are looking at.
-        lastPlain = (bVal ^ cards[(cards[ratchet] + cards[rotor]) & 0xFF] ^
-            cards[cards[(cards[lastPlain] + cards[lastCipher] + cards[avalanche]) & 0xFF]]);
+        lastPlain = bVal ^ cards[(cards[ratchet] + cards[rotor]) & 0xFF]
+                    ^ cards[cards[(cards[lastPlain] + cards[lastCipher] + cards[avalanche]) & 0xFF]];
 
         lastCipher = bVal;
 
@@ -490,15 +490,15 @@ public class Sapphire
     /**
      * @param hash
      */
-    public void hash_final(byte[] hash)      // Destination
+    public void hashFinal(byte[] hash)      // Destination
     {
         for (int i = 255; i >= 0; i--)
         {
-            cipher((byte)i);
+            cipher((byte) i);
         }
         for (int i = 0; i < hash.length; i++)
         {
-            hash[i] = cipher((byte)0);
+            hash[i] = cipher((byte) 0);
         }
     }
 
@@ -518,12 +518,12 @@ public class Sapphire
     private void initialize(byte[] key)
     {
 
-        // Start with cards all in order, one of each.  
+        // Start with cards all in order, one of each.
         for (int i = 0; i < 256; i++)
         {
             cards[i] = i;
         }
-    
+
         // Swap the card at each position with some other card.
         int swaptemp;
         int toswap = 0;
@@ -536,7 +536,7 @@ public class Sapphire
             cards[i] = cards[toswap];
             cards[toswap] = swaptemp;
         }
-    
+
         // Initialize the indices and data dependencies.
         // Indices are set to different values instead of all 0
         // to reduce what is known about the state of the cards
@@ -556,7 +556,7 @@ public class Sapphire
     /**
      *  Initialize non-keyed hash computation.
      */
-    private void hash_init()
+    private void hashInit()
     {
 
         // Initialize the indices and data dependencies.
@@ -578,21 +578,21 @@ public class Sapphire
     private int keyrand(int limit, byte[] key)
     {
         int u; // Value from 0 to limit to return.
-    
+
         if (limit == 0)
         {
             return 0;   // Avoid divide by zero error.
         }
 
         int retry_limiter = 0; // No infinite loops allowed.
-        
-        // Fill mask with enough bits to cover the desired range. 
-        int mask = 1;          
+
+        // Fill mask with enough bits to cover the desired range.
+        int mask = 1;
         while (mask < limit)
         {
             mask = (mask << 1) + 1;
         }
-        
+
         do
         {
             // Convert a byte from the key to an int, but prevent sign extension.
@@ -607,7 +607,7 @@ public class Sapphire
                 rsum += key.length;   // key "aaaa" != key "aaaaaaaa"
             }
 
-            u = (mask & rsum);
+            u = mask & rsum;
 
             if (++retry_limiter > 11)
             {

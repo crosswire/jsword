@@ -31,7 +31,7 @@ import javax.swing.ListModel;
  */
 public class ListListModel extends AbstractListModel implements ListModel
 {
-	/**
+    /**
      * Constructor for ListListModel.
      */
     public ListListModel(List list)

@@ -43,7 +43,7 @@ import javax.swing.text.html.HTMLEditorKit;
  */
 public class QuickHelpDialog extends JDialog
 {
-	/**
+    /**
      * This is the default constructor
      */
     public QuickHelpDialog(Frame owner, String title, String helpText)
@@ -136,9 +136,9 @@ public class QuickHelpDialog extends JDialog
 
     private static final String OK = "OK"; //$NON-NLS-1$
 
-    private ActionFactory actions = null;
+    private ActionFactory actions;
 
-    private JEditorPane txtHelp = null;
+    private JEditorPane txtHelp;
 
     /**
      * Serialization ID

@@ -31,7 +31,7 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-abstract public class Backend implements Activatable
+public abstract class Backend implements Activatable
 {
     /**
      * Construct a minimal backend
@@ -82,7 +82,7 @@ abstract public class Backend implements Activatable
      * Initialise a Backend before use. This method needs to call addKey() a
      * number of times on SwordDictionary
      */
-    abstract public Key readIndex();
+    public abstract Key readIndex();
 
     /**
      * Get the bytes alotted for the given verse
@@ -90,14 +90,14 @@ abstract public class Backend implements Activatable
      * @return String The data for the verse in question
      * @throws BookException If the data can not be read.
      */
-    abstract public String getRawText(Key key) throws BookException;
+    public abstract String getRawText(Key key) throws BookException;
 
     /**
      * Returns whether this Backend is implemented.
      * @return true if this Backend is implemented.
      */
-    abstract public boolean isSupported();
-    
+    public abstract boolean isSupported();
+
     private SwordBookMetaData bmd;
     private File rootPath;
 }

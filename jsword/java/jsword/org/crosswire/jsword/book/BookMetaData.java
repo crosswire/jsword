@@ -126,7 +126,7 @@ public interface BookMetaData extends Comparable
      * will fail.
      */
     public Map getProperties();
-    
+
     /**
      * Has anyone generated a search index for this Book?
      * @see org.crosswire.jsword.book.search.IndexManager

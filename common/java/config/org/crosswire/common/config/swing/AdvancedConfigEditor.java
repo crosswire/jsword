@@ -46,7 +46,7 @@ import org.crosswire.common.util.Reporter;
  */
 public class AdvancedConfigEditor extends TreeConfigEditor
 {
-	/**
+    /**
      * WARNING: this code is not called from anywhere and is probably broken
      */
     protected void jbInit()

@@ -29,7 +29,7 @@ import java.util.EventObject;
  */
 public class InstallerEvent extends EventObject
 {
-	/**
+    /**
      * Basic constructor
      * @param installer The installer, or null if there is more than one change.
      * @param added True if the changed installer is an addition.

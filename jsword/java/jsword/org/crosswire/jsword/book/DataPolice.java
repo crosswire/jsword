@@ -81,12 +81,12 @@ public class DataPolice
     /**
      * the last known verse
      */
-    private static Key key = null;
+    private static Key key;
 
     /**
      * The last known Book
      */
-    private static BookMetaData bmd = null;
+    private static BookMetaData bmd;
 
     /**
      * The log stream

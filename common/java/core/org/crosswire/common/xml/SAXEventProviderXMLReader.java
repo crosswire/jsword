@@ -157,9 +157,9 @@ public class SAXEventProviderXMLReader implements XMLReader
         throw new SAXException("SAXEventProviderInputSource required"); //$NON-NLS-1$
     }
 
-    private SAXEventProvider docIn = null;
-    private ErrorHandler errors = null;
-    private ContentHandler content = null;
-    private DTDHandler dtds = null;
-    private EntityResolver entities = null;
+    private SAXEventProvider docIn;
+    private ErrorHandler errors;
+    private ContentHandler content;
+    private DTDHandler dtds;
+    private EntityResolver entities;
 }

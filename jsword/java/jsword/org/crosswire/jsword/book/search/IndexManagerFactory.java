@@ -47,7 +47,7 @@ public class IndexManagerFactory
     /**
      * The singleton
      */
-    private static IndexManager instance = null;
+    private static IndexManager instance;
 
     /**
      * The log stream

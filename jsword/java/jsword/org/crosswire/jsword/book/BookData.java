@@ -79,7 +79,7 @@ public class BookData
         Element osisText = getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
         List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
 
-        for (Iterator oit = divs.iterator(); oit.hasNext();)
+        for (Iterator oit = divs.iterator(); oit.hasNext(); )
         {
             Element div = (Element) oit.next();
 

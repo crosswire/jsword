@@ -29,10 +29,10 @@ import java.util.EventObject;
  */
 public final class ViewEvent extends EventObject
 {
-	/**
-	 * Default ctor to set the event source
-	 */
-	public ViewEvent(Component view)
+    /**
+     * Default ctor to set the event source
+     */
+    public ViewEvent(Component view)
     {
         super(view);
     }

@@ -16,7 +16,7 @@ import org.crosswire.jsword.book.basic.AbstractBookMetaData;
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
  * now located at
  * http://www.crosswire.org/ucgi-bin/twiki/view/Swordapi/ConfFileLayout
- * 
+ *
  * <p>Keys that might be available that we are ignoring for now:
  * <li>DistributionLicense: single value coded string, a ';' separated string of license attributes
  *     There are mis-spellings, etc. so there is a need for a distributionLicenseAdditionalInfo field. (Ugh!)
@@ -53,7 +53,7 @@ import org.crosswire.jsword.book.basic.AbstractBookMetaData;
  *         }
  *     }
  *     </pre>
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -89,15 +89,15 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
-         
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
         public boolean allowsRTF()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -288,7 +288,7 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -307,15 +307,15 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
-        
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
         public boolean allowsRTF()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -339,7 +339,7 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
+        }
 
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
@@ -347,7 +347,7 @@ public class ConfigEntryType implements Serializable
         public boolean allowsRTF()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -368,7 +368,7 @@ public class ConfigEntryType implements Serializable
             return validDatePattern.matcher(value).matches();
         }
 
-        Pattern validDatePattern = Pattern.compile("\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*"); //$NON-NLS-1$
+        private Pattern validDatePattern = Pattern.compile("\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*"); //$NON-NLS-1$
 
         /**
          * Serialization ID
@@ -392,15 +392,15 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
-        
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
         public boolean allowsRTF()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -419,7 +419,7 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -497,7 +497,7 @@ public class ConfigEntryType implements Serializable
             {
                 return false;
             }
-        }        
+        }
 
         /**
          * Serialization ID
@@ -516,7 +516,7 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
-        }        
+        }
 
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
@@ -562,7 +562,7 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -582,7 +582,7 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -601,7 +601,7 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
-        }        
+        }
 
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
@@ -646,7 +646,7 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
-        }        
+        }
 
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
@@ -758,7 +758,7 @@ public class ConfigEntryType implements Serializable
             {
                 return false;
             }
-    }        
+    }
 
         /**
          * Serialization ID
@@ -779,7 +779,7 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
-        }        
+        }
 
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
@@ -953,7 +953,7 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
-        }        
+        }
 
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
@@ -999,9 +999,9 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String value)
         {
             return validDatePattern.matcher(value).matches();
-        }        
+        }
 
-        Pattern validDatePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}"); //$NON-NLS-1$
+        private Pattern validDatePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}"); //$NON-NLS-1$
 
         /**
          * Serialization ID
@@ -1020,7 +1020,7 @@ public class ConfigEntryType implements Serializable
         public boolean allowsContinuation()
         {
             return true;
-        }        
+        }
 
         /**
          * Serialization ID
@@ -1071,9 +1071,9 @@ public class ConfigEntryType implements Serializable
          */
         public boolean isAllowed(String aValue)
         {
-            return aValue != null &&
-                aValue.equalsIgnoreCase("true") && //$NON-NLS-1$
-                aValue.equalsIgnoreCase("false"); //$NON-NLS-1$
+            return aValue != null
+                && aValue.equalsIgnoreCase("true") //$NON-NLS-1$
+                && aValue.equalsIgnoreCase("false"); //$NON-NLS-1$
         }
 
         /* (non-Javadoc)
@@ -1214,7 +1214,7 @@ public class ConfigEntryType implements Serializable
     {
         this.name = name;
     }
-    
+
     /**
      * Returns the normalized name of this ConfigEntry.
      * @return the name
@@ -1225,9 +1225,9 @@ public class ConfigEntryType implements Serializable
     }
 
     /**
-     * Determines whether the string is allowed. For some config entries, 
+     * Determines whether the string is allowed. For some config entries,
      * the value is expected to be one of a group, for others the format is defined.
-     * 
+     *
      * @param value the string to be checked
      * @return true if the string is allowed
      */
@@ -1244,7 +1244,7 @@ public class ConfigEntryType implements Serializable
     {
         return false;
     }
-    
+
     /**
      * While most fields are single line or single value, some allow continuation.
      * A continuation mark is a backslash at the end of a line. It is not to be followed by whitespace.
@@ -1266,7 +1266,7 @@ public class ConfigEntryType implements Serializable
 
     /**
      * Determines the level of detail stored in the histogram.
-     * 
+     *
      * @return true if the ConfigEntry should report histogram for repetitions
      */
     public boolean reportDetails()
@@ -1293,7 +1293,7 @@ public class ConfigEntryType implements Serializable
     {
         return false;
     }
-    
+
     /**
      * Some ConfigEntryTypes have defaults.
      * @return the default, if there is one, null otherwise

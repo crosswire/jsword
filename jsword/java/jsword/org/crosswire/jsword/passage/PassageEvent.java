@@ -30,7 +30,7 @@ import java.util.EventObject;
  */
 public class PassageEvent extends EventObject
 {
-	/**
+    /**
      * Constructs a PassageEvent object.
      * @param source the source Object (typically <code>this</code>)
      * @param type an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED

@@ -42,26 +42,6 @@ public class Defaults
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(Defaults.class);
-
-    /**
-     * The default Bible
-     */
-    private static BookMetaData bdeft = null;
-
-    /**
-     * The default Commentary
-     */
-    private static BookMetaData cdeft = null;
-
-    /**
-     * The default Dictionary
-     */
-    private static BookMetaData ddeft = null;
-
-    /**
      * Set the default Bible. The new name must be equal() to a string
      * returned from getBibleNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
@@ -329,8 +309,8 @@ public class Defaults
     }
 
     /**
-     * Should this Book become the default?
-     * Only if there is not one.
+     * Determine whether this Book become the default.
+     * It should, only if there is not one.
      */
     protected static void checkPreferable(BookMetaData bmd)
     {
@@ -397,4 +377,24 @@ public class Defaults
             }
         }
     }
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(Defaults.class);
+
+    /**
+     * The default Bible
+     */
+    private static BookMetaData bdeft;
+
+    /**
+     * The default Commentary
+     */
+    private static BookMetaData cdeft;
+
+    /**
+     * The default Dictionary
+     */
+    private static BookMetaData ddeft;
+
 }

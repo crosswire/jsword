@@ -50,7 +50,7 @@ import org.crosswire.common.util.Convert;
  */
 public class StringArrayField extends JPanel implements Field
 {
-	/**
+    /**
      * Create a PropertyHashtableField for editing String arrays.
      */
     public StringArrayField()
@@ -193,7 +193,7 @@ public class StringArrayField extends JPanel implements Field
      */
     public static class InputPane extends JPanel
     {
-		/**
+        /**
          * Simple ctor
          */
         public InputPane()

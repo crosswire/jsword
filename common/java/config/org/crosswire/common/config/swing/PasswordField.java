@@ -32,7 +32,7 @@ import org.crosswire.common.config.Choice;
  */
 public class PasswordField extends JPasswordField implements Field
 {
-	/**
+    /**
      * Some fields will need some extra info to display properly
      * like the options in an options field. FieldMap calls this
      * method with options provided by the choice.

@@ -47,7 +47,7 @@ import org.crosswire.common.util.ReporterListener;
  */
 public class ExceptionShelf extends JPanel
 {
-	/**
+    /**
      *
      */
     public ExceptionShelf()

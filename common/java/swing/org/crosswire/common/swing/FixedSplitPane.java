@@ -57,7 +57,7 @@ import javax.swing.JSplitPane;
  */
 public class FixedSplitPane extends JSplitPane
 {
-	/**
+    /**
      * Constructor for FixedSplitPane
      */
     public FixedSplitPane()
@@ -191,8 +191,8 @@ public class FixedSplitPane extends JSplitPane
 
     private static final Dimension DOT = new Dimension(0, 0);
     private boolean firstValidate = true;
-    private boolean hasProportionalLocation = false;
-    private double proportionalLocation = 0.0D;
+    private boolean hasProportionalLocation;
+    private double proportionalLocation;
 
     /**
      * Serialization ID

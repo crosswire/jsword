@@ -118,7 +118,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
             {
                 throw new InstallException(Msg.MISSING_FILE, exception);
             }
-            
+
             byte[] buf = new byte[4096];
             for (int count = 0; -1 != (count = in.read(buf)); )
             {

@@ -53,7 +53,7 @@ import org.crosswire.common.util.Convert;
  */
 public class MapField extends JPanel implements Field
 {
-	/**
+    /**
      * Create a PropertyHashtableField for editing Hashtables.
      */
     public MapField()
@@ -229,7 +229,7 @@ public class MapField extends JPanel implements Field
      */
     static class NamedMapTableModel extends MapTableModel
     {
-		/**
+        /**
          * 
          */
         protected NamedMapTableModel()
@@ -265,7 +265,7 @@ public class MapField extends JPanel implements Field
      */
     static class InputPane extends JPanel
     {
-		/**
+        /**
          * 
          */
         protected InputPane()

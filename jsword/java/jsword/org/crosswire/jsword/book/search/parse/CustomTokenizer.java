@@ -12,7 +12,7 @@ import org.crosswire.jsword.book.BookException;
  * up to the job. The specific problem is that there is sometimes no separator
  * between parts of the command, and since this is specialized we also leave the
  * results in a Vector of SearchWords.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -84,21 +84,21 @@ public class CustomTokenizer
                 currentType = CHAR_SPACE;
                 i = end + 1;
             }
-            
+
             // Pass through everything between pairs of :: e.g. ::bread::
             // as a single word. If there is no trailing :: take it
             // to the end of the line
             if (i < sought.length() - 4 && sought.indexOf("::", i) != -1) //$NON-NLS-1$
             {
-                int end = sought.indexOf("::", i+2); //$NON-NLS-1$
+                int end = sought.indexOf("::", i + 2); //$NON-NLS-1$
                 if (end == -1)
                 {
-                    addWord(output, commands, sought.substring(i+1));
+                    addWord(output, commands, sought.substring(i + 1));
                     i = sought.length();
                 }
                 else
                 {
-                    addWord(output, commands, sought.substring(i+1, end));
+                    addWord(output, commands, sought.substring(i + 1, end));
                     i = end + 2;
                 }
                 currentType = CHAR_SPACE;

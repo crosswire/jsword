@@ -124,7 +124,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         return prop;
     }
-    
+
     /**
      * @param newProperties
      */
@@ -132,7 +132,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         prop = newProperties;
     }
-    
+
     /**
      * @param key
      * @return the object found by the key
