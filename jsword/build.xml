@@ -207,6 +207,7 @@
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
+      <fileset dir="${source.jar}/lang101" includes="*.jar"/>
       <fileset dir="${source.jar}/jaxb10b">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-ri.jar"/>
