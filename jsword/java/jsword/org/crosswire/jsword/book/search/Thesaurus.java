@@ -1,15 +1,11 @@
 package org.crosswire.jsword.book.search;
 
-import java.net.URL;
+import java.util.Collection;
 
-import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.passage.Key;
 
 /**
- * An interface that Bibles can use for help in becoming searchable.
+ * A source of synonym data for a given word.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,26 +28,15 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface SearchEngine extends Activatable
+public interface Thesaurus
 {
     /**
-     * An initializer type method so we can configure the Search engine at
-     * runtime. This method is run first of all, before anything else and should
-     * do everything it can to ensure that future method calls will be error
-     * free without consuming significant system resources.
+     * Return an array of words that are used by this Bible that start with the
+     * given string. For example calling:
+     * <code>getStartsWith("love")</code> will return something like:
+     * { "love", "loves", "lover", "lovely", ... }
+     * @param word The word to base your word array on
+     * @return An array of words starting with the base
      */
-    public void init(Book book, URL url) throws BookException;
-
-    /**
-     * For a given word find a list of references to it
-     * @param search The text to search for
-     * @return The references to the word
-     */
-    public Key findKeyList(Search search) throws BookException;
-
-    /**
-     * Tidy up after yourself and remove all the files that make up any indexes
-     * you created.
-     */
-    public void delete() throws BookException;
+    public Collection getSynonyms(String word) throws BookException;
 }

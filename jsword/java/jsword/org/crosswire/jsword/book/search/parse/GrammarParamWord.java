@@ -3,6 +3,9 @@ package org.crosswire.jsword.book.search.parse;
 import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.search.Grammar;
+import org.crosswire.jsword.book.search.Thesaurus;
+import org.crosswire.jsword.book.search.ThesaurusFactory;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -32,24 +35,37 @@ import org.crosswire.jsword.passage.Key;
  */
 public class GrammarParamWord implements ParamWord
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.LocalParser)
+    /**
+     * Default ctor
      */
-    public String getWord(LocalParser engine) throws BookException
+    public GrammarParamWord() throws InstantiationException
+    {
+        thesaurus = ThesaurusFactory.createThesaurus();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.IndexSearcher)
+     */
+    public String getWord(IndexSearcher engine) throws BookException
     {
         throw new BookException(Msg.GRAMMAR_WORD);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.IndexSearcher)
      */
-    public Key getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(IndexSearcher engine) throws BookException
     {
         String root = Grammar.getRoot(engine.iterateWord());
 
-        Collection col = engine.getIndex().getStartsWith(root);
+        Collection col = thesaurus.getSynonyms(root);
         String[] words = (String[]) col.toArray(new String[col.size()]);
 
         return engine.getPassage(words);
     }
+
+    /**
+     * The source of thesaurus data
+     */
+    private Thesaurus thesaurus = null;
 }

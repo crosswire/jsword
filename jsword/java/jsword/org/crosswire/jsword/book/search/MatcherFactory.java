@@ -4,7 +4,7 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
 /**
- * Factory method for creating a new Parser.
+ * Factory method for creating a new Matcher.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,31 +27,31 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ParserFactory
+public class MatcherFactory
 {
     /**
      * Prevent Instansiation
      */
-    private ParserFactory()
+    private MatcherFactory()
     {
     }
 
     /**
-     * Create a new Parser.
+     * Create a new Matcher.
      */
-    public static Parser createParser(Index index) throws InstantiationException
+    public static Matcher createMatcher(Index index, Thesaurus thesaurus) throws InstantiationException
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(Parser.class);
-            Parser parser = (Parser) impl.newInstance();
-            parser.init(index);
+            Class impl = ClassUtil.getImplementor(Matcher.class);
+            Matcher matcher = (Matcher) impl.newInstance();
+            matcher.init(index, thesaurus);
 
-            return parser;
+            return matcher;
         }
         catch (Exception ex)
         {
-            log.error("createParser failed", ex); //$NON-NLS-1$
+            log.error("createMatcher failed", ex); //$NON-NLS-1$
             throw new InstantiationException();
         }
     }
@@ -59,5 +59,5 @@ public class ParserFactory
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ParserFactory.class);
+    private static final Logger log = Logger.getLogger(MatcherFactory.class);
 }

@@ -1,4 +1,4 @@
-package org.crosswire.jsword.book.search.parse;
+package org.crosswire.jsword.book.search;
 
 import org.crosswire.common.util.StringUtil;
 

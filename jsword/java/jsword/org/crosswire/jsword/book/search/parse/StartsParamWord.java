@@ -3,11 +3,12 @@ package org.crosswire.jsword.book.search.parse;
 import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.search.Thesaurus;
+import org.crosswire.jsword.book.search.ThesaurusFactory;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * The Search Word for a Word to search for. The default if no other SearchWords
- * match.
+ * The Search Word for a Word to search for.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,10 +33,18 @@ import org.crosswire.jsword.passage.Key;
  */
 public class StartsParamWord implements ParamWord
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Parser)
+    /**
+     * Default ctor
      */
-    public String getWord(LocalParser engine) throws BookException
+    public StartsParamWord() throws InstantiationException
+    {
+        thesaurus = ThesaurusFactory.createThesaurus();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Searcher)
+     */
+    public String getWord(IndexSearcher engine) throws BookException
     {
         throw new BookException(Msg.STARTS_WORD);
     }
@@ -44,15 +53,20 @@ public class StartsParamWord implements ParamWord
      * WARNING the return from this method is a PassageTally which is not a
      * 100% match for the Passage interface. Maybe this needs to be fixed
      * somehow.
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getKeyList(org.crosswire.jsword.book.search.parse.LocalParser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getKeyList(org.crosswire.jsword.book.search.parse.IndexSearcher)
      */
-    public Key getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(IndexSearcher engine) throws BookException
     {
         String word = engine.iterateWord();
 
-        Collection col = engine.getIndex().getStartsWith(word);
+        Collection col = thesaurus.getSynonyms(word);
         String[] words = (String[]) col.toArray(new String[col.size()]);
 
         return engine.getPassage(words);
     }
+
+    /**
+     * The source of thesaurus data
+     */
+    private Thesaurus thesaurus = null;
 }

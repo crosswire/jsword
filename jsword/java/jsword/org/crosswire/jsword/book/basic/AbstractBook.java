@@ -1,19 +1,20 @@
 package org.crosswire.jsword.book.basic;
 
-import java.net.URL;
-
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.ClassUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.search.SearchEngine;
-import org.crosswire.jsword.book.search.SearchEngineFactory;
-import org.crosswire.jsword.passage.DefaultKeyList;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.IndexFactory;
+import org.crosswire.jsword.book.search.Matcher;
+import org.crosswire.jsword.book.search.MatcherFactory;
+import org.crosswire.jsword.book.search.Searcher;
+import org.crosswire.jsword.book.search.SearcherFactory;
+import org.crosswire.jsword.book.search.Thesaurus;
+import org.crosswire.jsword.book.search.ThesaurusFactory;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.util.Project;
 
 /**
  * AbstractBook implements a few of the more generic methods of Book.
@@ -73,35 +74,45 @@ public abstract class AbstractBook implements Book
     {
     }
 
-    /**
-     * Called by our children if we need to initialise a SearchEngine
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#search(org.crosswire.jsword.book.Search)
      */
-    protected void initSearchEngine()
+    public Key find(Search search) throws BookException
     {
         try
         {
-            URL url = Project.instance().getTempScratchSpace(getBookMetaData().getDriverName() + "-" + getBookMetaData().getInitials(), false); //$NON-NLS-1$
-            searcher = SearchEngineFactory.createSearchEngine(this, url);
-        }
-        catch (Exception ex)
-        {
-            searcher = null;
-            Reporter.informUser(this, ex);
-        }
-    }
+            if (index == null)
+            {
+                index = IndexFactory.getIndexForBook(this);
+            }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
-     */
-    public Key find(Search match) throws BookException
-    {
-        if (searcher != null)
-        {
-            return searcher.findKeyList(match);
+            if (thesaurus == null)
+            {
+                thesaurus = ThesaurusFactory.createThesaurus();
+            }
+
+            if (search.isBestMatch())
+            {
+                if (matcher == null)
+                {
+                    matcher = MatcherFactory.createMatcher(index, thesaurus);
+                }
+
+                return matcher.bestMatch(search.getMatch(), search.getRestriction());
+            }
+            else
+            {
+                if (searcher == null)
+                {
+                    searcher = SearcherFactory.createSearcher(index);
+                }
+
+                return searcher.search(search.getMatch(), search.getRestriction());
+            }
         }
-        else
+        catch (InstantiationException ex)
         {
-            return new DefaultKeyList();
+            throw new BookException(Msg.INDEX_FAIL);
         }
     }
 
@@ -114,9 +125,24 @@ public abstract class AbstractBook implements Book
     }
 
     /**
-     * The search implementation
+     * The global thesaurus
      */
-    private SearchEngine searcher;
+    private Thesaurus thesaurus;
+
+    /**
+     * The search index for this book
+     */
+    private Index index;
+
+    /**
+     * How do we perform best matches
+     */
+    private Matcher matcher;
+
+    /**
+     * How do we perform searches
+     */
+    private Searcher searcher;
 
     /**
      * The meta data for this book

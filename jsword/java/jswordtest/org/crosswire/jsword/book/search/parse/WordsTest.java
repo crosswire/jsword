@@ -37,11 +37,11 @@ public class WordsTest extends TestCase
         super(s);
     }
 
-    private LocalParser engine = null;
+    private IndexSearcher engine = null;
 
     protected void setUp() throws Exception
     {
-        Map commands = LocalParser.getWordMap();
+        Map commands = IndexSearcher.getWordMap();
 
         commands.put("t1", new FixtureParamWord("Rut 2")); //$NON-NLS-1$ //$NON-NLS-2$
         commands.put("t2", new FixtureParamWord("Deu 28-1Sa 1:1")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -49,7 +49,7 @@ public class WordsTest extends TestCase
 
         // We shouldn't need a SearchableBible here because all of these should
         // complete without any searching being done.
-        engine = new LocalParser();
+        engine = new IndexSearcher();
         // FIXME: These fail because the the engine is not initialized with a valid index.
         engine.init(null);
         engine.setSearchMap(commands);        
@@ -61,56 +61,56 @@ public class WordsTest extends TestCase
 
     public void testAddCommandWord() throws Exception
     {
-        assertEquals(engine.search(new Search("t1", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t2", false)).getName(), "Deu 28:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("/t1", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("/t2", false)).getName(), "Deu 28:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("|t1", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("|t2", false)).getName(), "Deu 28:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t2", Search.UNRESTRICTED).getName(), "Deu 28:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("/t1", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("/t2", Search.UNRESTRICTED).getName(), "Deu 28:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("|t1", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("|t2", Search.UNRESTRICTED).getName(), "Deu 28:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testRetainCommandWord() throws Exception
     {
-        assertEquals(engine.search(new Search("t2&t1", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1&t2", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t2+t1", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1+t2", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t2,t1", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1,t2", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t2&t1", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1&t2", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t2+t1", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1+t2", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t2,t1", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1,t2", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testRemoveCommandWord() throws Exception
     {
-        assertEquals(engine.search(new Search("t2-t1", false)).getName(), "Deu 28-Rut 1, Rut 3:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1-t2", false)).getName(), ""); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t2-t1", Search.UNRESTRICTED).getName(), "Deu 28-Rut 1, Rut 3:1-1Sa 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1-t2", Search.UNRESTRICTED).getName(), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testBlurCommandWord() throws Exception
     {
-        assertEquals(engine.search(new Search("t3 ~1", false)).getName(), "Mar 2:2-4"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t3 ~2", false)).getName(), "Mar 2:1-5"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t3 ~3", false)).getName(), "Mar 2:1-6"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t3 ~4", false)).getName(), "Mar 2:1-7"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t3 ~5", false)).getName(), "Mar 2:1-8"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3 ~1", Search.UNRESTRICTED).getName(), "Mar 2:2-4"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3 ~2", Search.UNRESTRICTED).getName(), "Mar 2:1-5"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3 ~3", Search.UNRESTRICTED).getName(), "Mar 2:1-6"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3 ~4", Search.UNRESTRICTED).getName(), "Mar 2:1-7"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3 ~5", Search.UNRESTRICTED).getName(), "Mar 2:1-8"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testStartsParamWord() throws Exception
     {
-        //assertEquals(engine.search(new Search("startswith joshu", false)), engine.search(new Search("joshua", false)));
-        //assertEquals(engine.search(new Search("sw joshu", false)), engine.search(new Search("joshua", false)));
+        //assertEquals(engine.search("startswith joshu", Search.UNRESTRICTED), engine.search("joshua", Search.UNRESTRICTED));
+        //assertEquals(engine.search("sw joshu", Search.UNRESTRICTED), engine.search("joshua", Search.UNRESTRICTED));
     }
 
     public void testSubXParamWord() throws Exception
     {
-        assertEquals(engine.search(new Search("t3 / ( t2 )", false)).getName(), "Deu 28:1-1Sa 1:1, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t3/(t2)", false)).getName(), "Deu 28:1-1Sa 1:1, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1 & t2 | t3", false)).getName(), "Rut 2, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1 & t2 - t3", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("( t1 & t2 ) | t3", false)).getName(), "Rut 2, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1 & ( t2 | t3 )", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1 & ( t2 | t3 ) & ( t3 | t2 )", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1&(t2|t3)&(t3|t2)", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(engine.search(new Search("t1&(t2|(t3))&(t3|t2)", false)).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3 / ( t2 )", Search.UNRESTRICTED).getName(), "Deu 28:1-1Sa 1:1, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t3/(t2)", Search.UNRESTRICTED).getName(), "Deu 28:1-1Sa 1:1, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1 & t2 | t3", Search.UNRESTRICTED).getName(), "Rut 2, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1 & t2 - t3", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("( t1 & t2 ) | t3", Search.UNRESTRICTED).getName(), "Rut 2, Mar 2:3"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1 & ( t2 | t3 )", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1 & ( t2 | t3 ) & ( t3 | t2 )", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1&(t2|t3)&(t3|t2)", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(engine.search("t1&(t2|(t3))&(t3|t2)", Search.UNRESTRICTED).getName(), "Rut 2"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testGetAlternatives() throws Exception
@@ -130,7 +130,7 @@ public class WordsTest extends TestCase
 
     public void testUpdatePassage() throws Exception
     {
-        //assertEquals(engine.search(new Search("grammar joseph", false)), engine.search(new Search("joseph / joseph's", false)));
-        //assertEquals(engine.search(new Search("new Search(gr joseph", false)), engine.search(new Search("joseph / joseph's", false)));
+        //assertEquals(engine.search("grammar joseph", Search.UNRESTRICTED), engine.search("joseph / joseph's", Search.UNRESTRICTED));
+        //assertEquals(engine.search("gr joseph", Search.UNRESTRICTED), engine.search("joseph / joseph's", Search.UNRESTRICTED));
     }
 }

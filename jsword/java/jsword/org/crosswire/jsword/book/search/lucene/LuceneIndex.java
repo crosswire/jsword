@@ -16,21 +16,27 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
+import org.crosswire.common.activate.Activatable;
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.progress.Job;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.search.AbstractSearchEngine;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.IndexManager;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.util.Project;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -56,24 +62,33 @@ import org.crosswire.jsword.passage.VerseFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LuceneSearchEngine extends AbstractSearchEngine
+public class LuceneIndex implements Index, Activatable
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
-    public void init(Book newbible, URL newurl) throws BookException
+    public void init(Book newBook) throws BookException
     {
         try
         {
-            url = NetUtil.lengthenURL(newurl, DIR_LUCENE);
-            book = newbible;
+            book = newBook;
+
+            String driverName = book.getBookMetaData().getDriverName();
+            String bookName = book.getBookMetaData().getInitials();
+
+            assert driverName != null;
+            assert bookName != null;
+
+            URL base = Project.instance().getTempScratchSpace(DIR_LUCENE, false);
+            URL driver = NetUtil.lengthenURL(base, driverName);
+            url = NetUtil.lengthenURL(driver, bookName);
 
             if (isIndexed())
             {
                 // Opening Lucene indexes is quite quick I think, so we can try
                 // it to see if it works to report errors that we want to drop
                 // later
-                loadIndexes();
+                searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
             }
         }
         catch (IOException ex)
@@ -85,109 +100,86 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#findKeyList(org.crosswire.jsword.book.Search)
      */
-    public Key findKeyList(Search search) throws BookException
+    public Key findWord(String search) throws BookException
     {
         checkActive();
 
-        // LATER(joe): think about splitting out the parser.
-        /*
-        Parser parser = ParserFactory.createParser(this);
-        return parser.search(search);
-        */
+        PassageTally tally = new PassageTally();
 
-        try
+        if (search != null)
         {
-            Analyzer analyzer = new StandardAnalyzer();
-            Query query = QueryParser.parse(search.getMatch(), FIELD_BODY, analyzer);
-            Hits hits = searcher.search(query);
-
-            PassageTally tally = new PassageTally();
-            for (int i = 0; i < hits.length(); i++)
+            if (searcher != null)
             {
-                Verse verse = VerseFactory.fromString(hits.doc(i).get(FIELD_NAME));
-                int score = (int) (hits.score(i) * 100);
-                tally.add(verse, score);
+                try
+                {
+                    Analyzer analyzer = new StandardAnalyzer();
+                    Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
+                    Hits hits = searcher.search(query);
+    
+                    for (int i = 0; i < hits.length(); i++)
+                    {
+                        Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        int score = (int) (hits.score(i) * 100);
+                        tally.add(verse, score);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new BookException(Msg.SEARCH_FAILED, ex);
+                }
             }
+            else
+            {
+                log.warn("Missing searcher, skipping search for: "+search); //$NON-NLS-1$
+            }
+        }
 
-            return tally;
-        }
-        catch (Exception ex)
-        {
-            throw new BookException(Msg.SEARCH_FAILED, ex);
-        }
+        return tally;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#getKey(java.lang.String)
-     *
+     */
     public Key getKey(String name) throws NoSuchKeyException
     {
         return book.getKey(name);
     }
-    */
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)
-     *
-    public Iterator getStartsWith(String word) throws BookException
-    {
-        // NOTE(joe): we could probably implement this, but only if we can split the parser out
-    }
-    */
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
-     *
-    public Passage findWord(String word) throws BookException
-    {
-        // NOTE(joe): we could probably implement this, but only if we can split the parser out
-    }
-    */
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#delete()
      */
-    public void delete()
+    public void delete() throws BookException
     {
         checkActive();
 
-        // LATER(joe): write this
-        /*
-        Directory directory = FSDirectory.getDirectory("demo index", false);
-        IndexReader reader = IndexReader.open(directory);
-
-        //       Term term = new Term("path", "pizza");
-        //       int deleted = reader.delete(term);
-
-        //       System.out.println("deleted " + deleted +
-        //           " documents containing " + term);
-
-        for (int i = 0; i < reader.maxDoc(); i++)
-            reader.delete(i);
-
-        reader.close();
-        directory.close();
-        */
+        try
+        {
+            NetUtil.delete(url);
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.DELETE_FAILED, ex);
+        }
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#isIndexed()
+     * @see org.crosswire.jsword.book.search.AbstractIndex#isIndexed()
      */
-    protected boolean isIndexed()
+    public boolean isIndexed()
     {
-        if (isRunning())
+        if (generating)
         {
             return false;
         }
 
-        URL index = NetUtil.lengthenURL(url, DIR_SEGMENTS);
-        return NetUtil.isFile(index);
+        URL longer = NetUtil.lengthenURL(url, DIR_SEGMENTS);
+        return NetUtil.isFile(longer);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#generateSearchIndex(org.crosswire.common.progress.Job)
+     * @see org.crosswire.jsword.book.search.AbstractIndex#generateSearchIndex(org.crosswire.common.progress.Job)
      */
-    protected void generateSearchIndex(Job job) throws IOException, BookException, NoSuchKeyException
+    public void generateSearchIndex(Job job) throws IOException, BookException
     {
         // An index is created by opening an IndexWriter with the
         // create argument set to true.
@@ -200,7 +192,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
         writer.optimize();
         writer.close();
 
-        loadIndexes();
+        searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
     }
 
     /**
@@ -228,13 +220,22 @@ public class LuceneSearchEngine extends AbstractSearchEngine
                 writer.addDocument(doc);
 
                 // report progress
-                if (subkey instanceof Passage)
+                String name = ""; //$NON-NLS-1$
+                Verse verse = KeyUtil.getVerse(subkey);
+
+                try
                 {
-                    Verse verse = KeyUtil.getVerse(key);
                     percent = 95 * verse.getOrdinal() / BibleInfo.versesInBible();
+                    name = BibleInfo.getLongBookName(verse.getBook());
+                }
+                catch (NoSuchVerseException ex)
+                {
+                    log.error("Failed to get book name from verse: "+verse, ex); //$NON-NLS-1$
+                    assert false;
+                    name = subkey.getName();
                 }
 
-                job.setProgress(percent, Msg.INDEXING.toString(subkey.getName()));
+                job.setProgress(percent, Msg.INDEXING.toString(name));
 
                 // This could take a long time ...
                 Thread.yield();
@@ -247,41 +248,93 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#loadIndexes()
+     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
      */
-    protected void loadIndexes() throws IOException
+    public final void activate(Lock lock)
     {
-        searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
+        // Load the ascii Passage index
+        if (isIndexed())
+        {
+            try
+            {
+                searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
+            }
+            catch (IOException ex)
+            {
+                log.warn("second load failure", ex); //$NON-NLS-1$
+            }
+        }
+        else
+        {
+            IndexManager.instance().createIndex(this);
+        }
+
+        active = true;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#unloadIndexes()
+     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
      */
-    protected void unloadIndexes() throws IOException
+    public final void deactivate(Lock lock)
     {
-        searcher.close();
-        searcher = null;
+        try
+        {
+            searcher.close();
+            searcher = null;
+        }
+        catch (IOException ex)
+        {
+            Reporter.informUser(this, ex);
+        }
+
+        active = false;
     }
+
+    /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    protected final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
+    }
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(LuceneIndex.class);
+
+    /**
+     * Are we in the middle of generating an index?
+     */
+    private boolean generating = false;
 
     /**
      * The lucene search index directory
      */
-    private static final String DIR_LUCENE = "lucene"; //$NON-NLS-1$
+    protected static final String DIR_LUCENE = "lucene"; //$NON-NLS-1$
 
     /**
      * The segments directory
      */
-    private static final String DIR_SEGMENTS = "segments"; //$NON-NLS-1$
+    protected static final String DIR_SEGMENTS = "segments"; //$NON-NLS-1$
 
     /**
      * The Lucene field for the verse name
      */
-    private static final String FIELD_NAME = "name"; //$NON-NLS-1$
+    protected static final String FIELD_NAME = "name"; //$NON-NLS-1$
 
     /**
      * The Lucene field for the verse contents
      */
-    private static final String FIELD_BODY = "body"; //$NON-NLS-1$
+    protected static final String FIELD_BODY = "body"; //$NON-NLS-1$
 
     /**
      * The Book that we are indexing
@@ -296,5 +349,5 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     /**
      * The Lucene search engine
      */
-    private Searcher searcher;
+    protected Searcher searcher;
 }

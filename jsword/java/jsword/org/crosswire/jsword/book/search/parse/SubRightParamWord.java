@@ -30,17 +30,17 @@ import org.crosswire.jsword.passage.Key;
 public class SubRightParamWord implements ParamWord
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Searcher)
      */
-    public String getWord(LocalParser engine) throws BookException
+    public String getWord(IndexSearcher engine) throws BookException
     {
         throw new BookException(Msg.RIGHT_PARAM);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Searcher)
      */
-    public Key getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(IndexSearcher engine) throws BookException
     {
         throw new BookException(Msg.RIGHT_BRACKETS);
     }

@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.crosswire.common.activate.Activatable;
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
@@ -21,12 +24,9 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.SentanceUtil;
-import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.Parser;
-import org.crosswire.jsword.book.search.ParserFactory;
+import org.crosswire.jsword.book.search.IndexManager;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -34,6 +34,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.util.Project;
 
 /**
  * A search engine - This is a stepping stone on the way to allowing use of
@@ -60,15 +61,29 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SerSearchEngine extends AbstractSearchEngine implements Index
+public class SerIndex implements Index, Activatable
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
-    public void init(Book newbook, URL newurl)
+    public void init(Book newbook) throws BookException
     {
         this.book = newbook;
-        this.url = newurl;
+
+        try
+        {
+            String driverName = book.getBookMetaData().getDriverName();
+            String bookName = book.getBookMetaData().getInitials();
+
+            assert driverName != null;
+            assert bookName != null;
+
+            url = Project.instance().getTempScratchSpace(driverName + "-" + bookName, false); //$NON-NLS-1$
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.WRITE_ERROR);
+        }
     }
 
     /* (non-Javadoc)
@@ -77,24 +92,6 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     public Key getKey(String name) throws NoSuchKeyException
     {
         return book.getKey(name);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#findKeyListe(org.crosswire.jsword.book.Search)
-     */
-    public Key findKeyList(Search search) throws BookException
-    {
-        checkActive();
-
-        try
-        {
-            Parser parser = ParserFactory.createParser(this);
-            return parser.search(search);
-        }
-        catch (InstantiationException ex)
-        {
-            throw new BookException(Msg.SEARCH_FAIL, ex);
-        }
     }
 
     /* (non-Javadoc)
@@ -166,11 +163,11 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#isIndexed()
+     * @see org.crosswire.jsword.book.search.AbstractIndex#isIndexed()
      */
-    protected boolean isIndexed()
+    public boolean isIndexed()
     {
-        if (isRunning())
+        if (generating)
         {
             return false;
         }
@@ -180,63 +177,9 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#loadIndexes()
+     * @see org.crosswire.jsword.book.search.AbstractIndex#generateSearchIndex(org.crosswire.common.progress.Job)
      */
-    protected void loadIndexes()
-    {
-        try
-        {
-            URL dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
-            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_READ);
-
-            URL indexUrl = NetUtil.lengthenURL(url, FILE_INDEX);
-            BufferedReader indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
-
-            while (true)
-            {
-                String line = indexIn.readLine();
-                if (line == null)
-                {
-                    break;
-                }
-
-                try
-                {
-                    int colon1 = line.indexOf(":"); //$NON-NLS-1$
-                    int colon2 = line.lastIndexOf(":"); //$NON-NLS-1$
-                    String word = line.substring(0, colon1);
-
-                    long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
-                    int length = Integer.parseInt(line.substring(colon2 + 1));
-
-                    Section section = new Section(offset, length);
-                    datamap.put(word, section);
-                }
-                catch (NumberFormatException ex)
-                {
-                    log.error("NumberFormatException reading line: " + line, ex); //$NON-NLS-1$
-                }
-            }
-        }
-        catch (IOException ex)
-        {
-            log.error("Read failed on indexin", ex); //$NON-NLS-1$
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#unloadIndexes()
-     */
-    protected void unloadIndexes()
-    {
-        datamap.clear();
-        dataRaf = null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#generateSearchIndex(org.crosswire.common.progress.Job)
-     */
-    protected void generateSearchIndex(Job job) throws BookException
+    public void generateSearchIndex(Job job) throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
@@ -381,6 +324,93 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
+     */
+    public final void activate(Lock lock)
+    {
+        // Load the ascii Passage index
+        if (isIndexed())
+        {
+            try
+            {
+                URL dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
+                dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_READ);
+            
+                URL indexUrl = NetUtil.lengthenURL(url, FILE_INDEX);
+                BufferedReader indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
+            
+                while (true)
+                {
+                    String line = indexIn.readLine();
+                    if (line == null)
+                    {
+                        break;
+                    }
+            
+                    try
+                    {
+                        int colon1 = line.indexOf(":"); //$NON-NLS-1$
+                        int colon2 = line.lastIndexOf(":"); //$NON-NLS-1$
+                        String word = line.substring(0, colon1);
+            
+                        long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
+                        int length = Integer.parseInt(line.substring(colon2 + 1));
+            
+                        Section section = new Section(offset, length);
+                        datamap.put(word, section);
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        log.error("NumberFormatException reading line: " + line, ex); //$NON-NLS-1$
+                    }
+                }
+            }
+            catch (IOException ex)
+            {
+                log.error("Read failed on indexin", ex); //$NON-NLS-1$
+            }
+        }
+        else
+        {
+            IndexManager.instance().createIndex(this);
+        }
+
+        active = true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
+     */
+    public final void deactivate(Lock lock)
+    {
+        datamap.clear();
+        dataRaf = null;
+
+        active = false;
+    }
+
+    /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    private final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
+    }
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
+
+    /**
+     * Are we in the middle of generating an index?
+     */
+    private boolean generating = false;
+
     /**
      * The name of the data file
      */
@@ -414,7 +444,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SerSearchEngine.class);
+    private static final Logger log = Logger.getLogger(SerIndex.class);
 
     /**
      * The percentages taken but by different parts

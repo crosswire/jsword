@@ -1,6 +1,5 @@
 package org.crosswire.jsword.book.search.parse;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,12 +9,9 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.Parser;
+import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * The central interface to all searching.
@@ -52,10 +48,10 @@ import org.crosswire.jsword.passage.RestrictionType;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LocalParser implements Parser
+public class IndexSearcher implements Searcher
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.Parser#init(org.crosswire.jsword.book.search.Index)
+     * @see org.crosswire.jsword.book.search.Searcher#init(org.crosswire.jsword.book.search.Index)
      */
     public void init(Index newindex)
     {
@@ -64,77 +60,19 @@ public class LocalParser implements Parser
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.Parser#search(org.crosswire.jsword.book.Search)
+     * @see org.crosswire.jsword.book.search.Searcher#search(java.lang.String, org.crosswire.jsword.passage.Key)
      */
-    public Key search(Search search) throws BookException
+    public Key search(String search, Key restriction) throws BookException
     {
-        Key ref = null;
+        output = CustomTokenizer.tokenize(search, commands);
+        Key key = search(output);
 
-        if (search.isBestMatch())
+        if (restriction != Search.UNRESTRICTED)
         {
-            ref = bestMatch(search.getMatch());
+            key.retainAll(restriction);
         }
-        else
-        {
-            output = CustomTokenizer.tokenize(search.getMatch(), commands);
-            ref = search(output);
-        }
-
-        if (search.isRestricted())
-        {
-            Key restrict = search.getRestriction();
-            if (!restrict.equals(Search.UNRESTRICTED))
-            {
-                ref.retainAll(restrict);
-            }
-        }
-
-        return ref;
-    }
-
-    /**
-     * Generate a bestmatch search
-     */
-    private Key bestMatch(String sought) throws BookException
-    {
-        String[] words = SentanceUtil.getWords(sought);
-        words = Grammar.stripSmallWords(words);
-        // log.fine("words="+StringUtil.toString(words));
-
-        PassageTally tally = new PassageTally();
-        tally.blur(2, RestrictionType.NONE);
-
-        for (int i = 0; i < words.length; i++)
-        {
-            tally.addAll(wordSearch(words[i]));
-        }
-
-        // This uses updatePassageTallyFlat() so that words like God
-        // that have many startsWith() matches, and hence many verse
-        // matches, do not end up with wrongly high scores.
-        for (int i = 0; i < words.length; i++)
-        {
-            // log.fine("considering="+words[i]);
-            String root = Grammar.getRoot(words[i]);
-
-            // Check that the root is still a word. If not then we
-            // use the full version. This catches misses like se is
-            // the root of seed, and matches sea and so on ...
-            Key ref = wordSearch(root);
-            if (ref.isEmpty())
-            {
-                root = words[i];
-            }
-
-            // log.fine("  root="+root);
-            Collection col = index.getStartsWith(root);
-            String[] grWords = (String[]) col.toArray(new String[col.size()]);
-
-            // log.fine("  gr_words="+StringUtil.toString(gr_words));
-            updatePassageTallyFlat(tally, grWords);
-        }
-
-        return tally;
+        
+        return key;
     }
 
     /**
@@ -186,7 +124,6 @@ public class LocalParser implements Parser
         wit = null;
 
         return key;
-
     }
 
     /**
@@ -206,26 +143,6 @@ public class LocalParser implements Parser
         }
 
         return ref;
-    }
-
-    /**
-     * This is similar to updatePassageTally() however if a verse matches
-     * many words it still only adds on for that verse in the given tally
-     * @param tally The PassageTally to update
-     * @param words The words to search for
-     * @throws BookException If anything goes wrong with this method
-     */
-    private void updatePassageTallyFlat(PassageTally tally, String[] words) throws BookException
-    {
-        PassageTally temp = new PassageTally();
-
-        for (int i = 0; i < words.length; i++)
-        {
-            temp.addAll(wordSearch(words[i]));
-        }
-
-        temp.flatten();
-        tally.addAll(temp);
     }
 
     /**
@@ -260,7 +177,7 @@ public class LocalParser implements Parser
 
     /**
      * Most Words need to access parameters, this method allows them access to
-     * the Parser's own Enumerator. Use with care, and only if you are a Word
+     * the Searcher's own Enumerator. Use with care, and only if you are a Word
      * taking part in the current search.
      * @return The current Iterator
      */
@@ -345,30 +262,30 @@ public class LocalParser implements Parser
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(LocalParser.class);
+    private static final Logger log = Logger.getLogger(IndexSearcher.class);
 
     /**
      * The cache of known words
      */
-    private static Map wordMap;
+    private static Map wordMap = null;
 
     /**
      * The parsed version of the current string
      */
-    private List output;
+    private List output = null;
 
     /**
      * The commands that we know about
      */
-    private Map commands;
+    private Map commands = null;
 
     /**
      * While the answer is being worked out ...
      */
-    private Iterator wit;
+    private Iterator wit = null;
 
     /**
      * The index
      */
-    private Index index;
+    private Index index = null;
 }

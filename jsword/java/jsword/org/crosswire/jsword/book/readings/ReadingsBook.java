@@ -66,8 +66,6 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type, speed);
         setBookMetaData(bmd);
 
-        initSearchEngine();
-
         String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();

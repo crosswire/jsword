@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.search.parse;
 
+import org.crosswire.jsword.book.search.Grammar;
+
 import junit.framework.TestCase;
 
 /**

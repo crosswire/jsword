@@ -31,9 +31,9 @@ import org.crosswire.jsword.passage.Key;
 public class AddCommandWord implements CommandWord
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Parser, org.crosswire.jsword.passage.Passage)
+     * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Searcher, org.crosswire.jsword.passage.Passage)
      */
-    public void updatePassage(LocalParser engine, Key key) throws BookException
+    public void updatePassage(IndexSearcher engine, Key key) throws BookException
     {
         key.addAll(engine.iteratePassage());
     }

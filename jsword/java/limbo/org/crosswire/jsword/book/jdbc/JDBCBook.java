@@ -19,14 +19,10 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
-import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.Parser;
-import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -56,7 +52,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDBCBook extends PassageAbstractBook implements Index
+public class JDBCBook extends PassageAbstractBook
 {
     /**
      * Simple ctor
@@ -124,8 +120,6 @@ public class JDBCBook extends PassageAbstractBook implements Index
 
             throw new BookException(Msg.BIBLE_CONNECT, ex);
         }
-
-        initSearchEngine();
     }
 
     /* (non-Javadoc)
@@ -188,22 +182,6 @@ public class JDBCBook extends PassageAbstractBook implements Index
     protected void setText(Verse verse, String text) throws BookException
     {
         throw new BookException(Msg.DRIVER_READONLY);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
-     */
-    public Key find(Search search) throws BookException
-    {
-        try
-        {
-            Parser parser = ParserFactory.createParser(this);
-            return parser.search(search);
-        }
-        catch (InstantiationException ex)
-        {
-            throw new BookException(Msg.SEARCH_FAIL, ex);
-        }
     }
 
     /* (non-Javadoc)

@@ -1,12 +1,11 @@
-
 package org.crosswire.jsword.book.search;
 
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.passage.Key;
+import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.Book;
 
 /**
- * The central interface to all searching.
+ * Factory method for creating a new Searcher.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,18 +28,37 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Parser
+public class IndexFactory
 {
     /**
-     * Setup the index that this parser can use to do word level searches
-     * @param index The Index to query for words
+     * Prevent Instansiation
      */
-    public void init(Index index);
+    private IndexFactory()
+    {
+    }
 
     /**
-     * Take a search string and decipher it into a Passage.
-     * @param search The string to be searched for
-     * @return The matching verses
+     * Create a new Searcher.
      */
-    public Key search(Search search) throws BookException;
+    public static Index getIndexForBook(Book book) throws InstantiationException
+    {
+        try
+        {
+            Class impl = ClassUtil.getImplementor(Index.class);
+            Index index = (Index) impl.newInstance();
+            index.init(book);
+
+            return index;
+        }
+        catch (Exception ex)
+        {
+            log.error("createParser failed", ex); //$NON-NLS-1$
+            throw new InstantiationException();
+        }
+    }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(IndexFactory.class);
 }

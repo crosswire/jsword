@@ -47,7 +47,7 @@ public class CustomTokenizerTest extends TestCase
 
     public void testGetStringArray() throws Exception
     {
-        Map commands = LocalParser.getWordMap();
+        Map commands = IndexSearcher.getWordMap();
         List output = null;
 
         output = CustomTokenizer.tokenize("/ aaron , moses", commands); //$NON-NLS-1$

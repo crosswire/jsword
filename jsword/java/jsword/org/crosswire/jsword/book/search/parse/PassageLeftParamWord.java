@@ -35,17 +35,17 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 public class PassageLeftParamWord implements ParamWord
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Searcher)
      */
-    public String getWord(LocalParser engine) throws BookException
+    public String getWord(IndexSearcher engine) throws BookException
     {
         throw new BookException(Msg.LEFT_PARAM);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#Key(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#Key(org.crosswire.jsword.book.search.parse.Searcher)
      */
-    public Key getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(IndexSearcher engine) throws BookException
     {
         Iterator it = engine.iterator();
         StringBuffer buff = new StringBuffer();

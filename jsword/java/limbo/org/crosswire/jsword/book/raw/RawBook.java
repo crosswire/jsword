@@ -21,8 +21,6 @@ import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
-import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -208,7 +206,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawBook extends PassageAbstractBook implements Index
+public class RawBook extends PassageAbstractBook
 {
     /**
      * Simple ctor
@@ -271,8 +269,6 @@ public class RawBook extends PassageAbstractBook implements Index
         {
             log.error("Failed to load indexes.", ex); //$NON-NLS-1$
         }
-
-        initSearchEngine();
     }
 
     /* (non-Javadoc)
@@ -646,11 +642,6 @@ public class RawBook extends PassageAbstractBook implements Index
      * The cache of word searches
      */
     private Passage[] cache;
-
-    /**
-     * The search implementation
-     */
-    protected SearchEngine searcher;
 
     /**
      * Are we cacheing or in on disk mode?.

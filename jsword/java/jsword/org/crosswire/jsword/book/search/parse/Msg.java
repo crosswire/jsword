@@ -41,7 +41,7 @@ class Msg extends MsgBase
     static final Msg GRAMMAR_BLANK = new Msg("GrammarParamWord.GrammarBlank"); //$NON-NLS-1$
     static final Msg BLUR_BLANK = new Msg("BlurCommandWord.BlurBlank"); //$NON-NLS-1$
     static final Msg BLUR_FORMAT = new Msg("BlurCommandWord.BlurFormat"); //$NON-NLS-1$
-    static final Msg ENGINE_SYNTAX = new Msg("LocalParser.EngineSyntax"); //$NON-NLS-1$
+    static final Msg ENGINE_SYNTAX = new Msg("IndexSearcher.EngineSyntax"); //$NON-NLS-1$
     static final Msg ILLEGAL_PASSAGE = new Msg("PassageLeftParamWord.IllegalPassage"); //$NON-NLS-1$
     static final Msg UNMATCHED_ESCAPE = new Msg("CustomTokenizer.UnmatchedEscape"); //$NON-NLS-1$
 

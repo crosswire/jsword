@@ -1,9 +1,15 @@
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.search.basic;
 
-import org.crosswire.common.util.MsgBase;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.search.Thesaurus;
 
 /**
- * Compile safe Msg resource settings.
+ * An implementation of Thesaurus that simply returns the word that the user
+ * wanted similies of.
+ * Useful if there is no other source of similarity data.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,19 +32,15 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public class NullThesaurus implements Thesaurus
 {
-    static final Msg LUCENE_INIT = new Msg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
-    static final Msg SEARCH_FAILED = new Msg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("LuceneIndex.Indexing"); //$NON-NLS-1$
-    static final Msg OPTIMIZING = new Msg("LuceneIndex.Optimizing"); //$NON-NLS-1$
-    static final Msg DELETE_FAILED = new Msg("LuceneIndex.DeleteFailed"); //$NON-NLS-1$
-
-    /**
-     * Passthrough ctor
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Thesaurus#getStartsWith(java.lang.String)
      */
-    private Msg(String name)
+    public Collection getSynonyms(String word) throws BookException
     {
-        super(name);
+        Collection reply = new ArrayList();
+        reply.add(word);
+        return reply;
     }
 }

@@ -1,9 +1,10 @@
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.common.util.MsgBase;
+import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.util.Logger;
 
 /**
- * Compile safe Msg resource settings.
+ * Factory method for creating a new Searcher.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,19 +27,37 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public class SearcherFactory
 {
-    static final Msg LUCENE_INIT = new Msg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
-    static final Msg SEARCH_FAILED = new Msg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("LuceneIndex.Indexing"); //$NON-NLS-1$
-    static final Msg OPTIMIZING = new Msg("LuceneIndex.Optimizing"); //$NON-NLS-1$
-    static final Msg DELETE_FAILED = new Msg("LuceneIndex.DeleteFailed"); //$NON-NLS-1$
+    /**
+     * Prevent Instansiation
+     */
+    private SearcherFactory()
+    {
+    }
 
     /**
-     * Passthrough ctor
+     * Create a new Searcher.
      */
-    private Msg(String name)
+    public static Searcher createSearcher(Index index) throws InstantiationException
     {
-        super(name);
+        try
+        {
+            Class impl = ClassUtil.getImplementor(Searcher.class);
+            Searcher parser = (Searcher) impl.newInstance();
+            parser.init(index);
+
+            return parser;
+        }
+        catch (Exception ex)
+        {
+            log.error("createSearcher failed", ex); //$NON-NLS-1$
+            throw new InstantiationException();
+        }
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(SearcherFactory.class);
 }

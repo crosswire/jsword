@@ -1,9 +1,10 @@
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.common.util.MsgBase;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.Key;
 
 /**
- * Compile safe Msg resource settings.
+ * .
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,19 +27,20 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public interface Matcher
 {
-    static final Msg LUCENE_INIT = new Msg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
-    static final Msg SEARCH_FAILED = new Msg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("LuceneIndex.Indexing"); //$NON-NLS-1$
-    static final Msg OPTIMIZING = new Msg("LuceneIndex.Optimizing"); //$NON-NLS-1$
-    static final Msg DELETE_FAILED = new Msg("LuceneIndex.DeleteFailed"); //$NON-NLS-1$
+    /**
+     * Setup the index that this parser can use to do word level searches
+     * @param index The Index to query for words
+     */
+    public void init(Index index, Thesaurus thesaurus);
 
     /**
-     * Passthrough ctor
+     * Generate a bestmatch search
+     * @param sought The phrase to match
+     * @param restriction What verses are we interested in looking in?
+     * @see org.crosswire.jsword.book.Search#UNRESTRICTED
+     * @return The matching verses
      */
-    private Msg(String name)
-    {
-        super(name);
-    }
+    public Key bestMatch(String sought, Key restriction) throws BookException;
 }

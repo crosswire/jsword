@@ -48,28 +48,28 @@ public class ParserTest extends TestCase
     {
         // We shouldn't need a SearchableBible here because all of these should
         // fail before any searching is done.
-        LocalParser engine = new LocalParser();
+        IndexSearcher engine = new IndexSearcher();
         // FIXME: These fail because the the engine is not initialized with a valid index.
         engine.init(null);
 
          //try { engine.search(new Search("moses aaron", false)); fail(); } catch (BookException ex) { }
-        try { engine.search(new Search("(", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("~", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search(")", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("&", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search(",", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("+", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("-", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("/", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("|", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("sw", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("startswith", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("gr", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        try { engine.search(new Search("grammar", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$
-        //try { engine.search(new Search("moses ( aaron )", false)); fail(); } catch (BookException ex) { }
-        //try { engine.search(new Search("moses & ( aaron", false)); fail(); } catch (BookException ex) { }
-        //try { engine.search(new Search("moses & ( aaron", false)); fail(); } catch (BookException ex) { }
-        //try { engine.search(new Search("( moses ( aaron ) )", false)); fail(); } catch (BookException ex) { }
+        try { engine.search("(", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("~", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(")", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("&", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search(",", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("+", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("-", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("/", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("|", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("sw", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("startswith", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("gr", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        try { engine.search("grammar", Search.UNRESTRICTED); fail(); } catch (BookException ex) { } //$NON-NLS-1$
+        //try { engine.search("moses ( aaron )", Search.UNRESTRICTED); fail(); } catch (BookException ex) { }
+        //try { engine.search("moses & ( aaron", Search.UNRESTRICTED); fail(); } catch (BookException ex) { }
+        //try { engine.search("moses & ( aaron", Search.UNRESTRICTED); fail(); } catch (BookException ex) { }
+        //try { engine.search("( moses ( aaron ) )", Search.UNRESTRICTED); fail(); } catch (BookException ex) { }
     }
 
     public void testBestMatch() throws Exception
@@ -77,7 +77,7 @@ public class ParserTest extends TestCase
         /*
         version = new FileBible();
         commands = Options.getSearchHashtable();
-        engine = new Parser(version, commands);
+        engine = new Searcher(version, commands);
 
         PassageTally tally = engine.bestMatch("for god so loved the world that he gave his one and only son");
         log.fine(tally.getName(10));

@@ -49,8 +49,6 @@ public class StubDictionary extends AbstractBook
     {
         BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type, speed);
         setBookMetaData(bmd);
-
-        initSearchEngine();
     }
 
     /* (non-Javadoc)

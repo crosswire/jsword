@@ -10,7 +10,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -191,51 +190,6 @@ public class Verifier
         }
 
         job.done();
-    }
-
-    /**
-     * Read from the given source version to generate ourselves
-     */
-    public void checkPassage(String starts, PrintWriter out) throws BookException
-    {
-        if (starts == null || starts.equals("")) //$NON-NLS-1$
-        {
-            checkPassage(out);
-            return;
-        }
-
-        if (!(book1 instanceof Index))
-        {
-            return;
-        }
-
-        Job job = JobManager.createJob(Msg.VERIFY_PASSAGES.toString(), Thread.currentThread(), false);
-        int count = 0;
-        int percent = -1;
-
-        // For every word in the word list
-        Index index1 = (Index) book1;
-        Iterator it = index1.getStartsWith(starts).iterator();
-        while (it.hasNext())
-        {
-            String s = (String) it.next();
-            checkSinglePassage(s, out);
-
-            // Fire a progress event?
-            int newpercent = 100 * count++ / GUESS_WORDS;
-            if (percent != newpercent)
-            {
-                percent = newpercent;
-                job.setProgress(percent, Msg.VERIFY_WORDS.toString());
-            }
-
-            // This could take a long time ...
-            Thread.yield();
-            if (Thread.currentThread().isInterrupted())
-            {
-                break;
-            }
-        }
     }
 
     /**

@@ -45,7 +45,6 @@ public class SwordBook extends PassageAbstractBook
     protected SwordBook(SwordBookMetaData sbmd, Backend backend)
     {
         setBookMetaData(sbmd);
-        initSearchEngine();
 
         this.sbmd = sbmd;
         this.backend = backend;

@@ -159,8 +159,6 @@ public class SerBook extends PassageAbstractBook
         {
             throw new BookException(Msg.SER_INIT, ex);
         }
-
-        initSearchEngine();
     }
 
     /* (non-Javadoc)

@@ -35,17 +35,17 @@ import org.crosswire.jsword.passage.Key;
 public class SubLeftParamWord implements ParamWord
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Searcher)
      */
-    public String getWord(LocalParser engine) throws BookException
+    public String getWord(IndexSearcher engine) throws BookException
     {
         throw new BookException(Msg.LEFT_PARAM);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Searcher)
      */
-    public Key getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(IndexSearcher engine) throws BookException
     {
         Iterator it = engine.iterator();
         List output = new ArrayList();
@@ -78,7 +78,7 @@ public class SubLeftParamWord implements ParamWord
             output.add(word);
         }
 
-        LocalParser subEngine = new LocalParser();
+        IndexSearcher subEngine = new IndexSearcher();
         subEngine.init(engine.getIndex());
         subEngine.setSearchMap(engine.getSearchMap());
         Key subRef = subEngine.search(output);

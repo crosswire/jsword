@@ -53,7 +53,6 @@ public class SwordDictionary extends AbstractBook
     protected SwordDictionary(SwordBookMetaData sbmd, Backend backend)
     {
         setBookMetaData(sbmd);
-        initSearchEngine();
 
         this.sbmd = sbmd;
         this.backend = backend;

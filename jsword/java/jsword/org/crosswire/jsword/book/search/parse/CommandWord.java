@@ -5,7 +5,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * CommandWord extends Word to allow actions that alter a base
- * Passage. Implementations of this interface may use the Parser to
+ * Passage. Implementations of this interface may use the Searcher to
  * get at a default Bible (or they may have one hard coded if necessary)
  * or to get at ParamWords that follow this command.
  * 
@@ -43,5 +43,5 @@ public interface CommandWord extends Word
      *               string or a default Bible.
      * @param ref The Passage to alter (if necessary)
      */
-    public void updatePassage(LocalParser engine, Key ref) throws BookException;
+    public void updatePassage(IndexSearcher engine, Key ref) throws BookException;
 }

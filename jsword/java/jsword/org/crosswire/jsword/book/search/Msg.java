@@ -28,9 +28,8 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg SEARCH_INIT = new Msg("SearchEngineFactory.SearchInit"); //$NON-NLS-1$
-    static final Msg TYPE_INDEXGEN = new Msg("AbstractSearchEngine.TypeIndexGen"); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("AbstractSearchEngine.Indexing"); //$NON-NLS-1$
+    static final Msg TYPE_INDEXGEN = new Msg("IndexManager.TypeIndexGen"); //$NON-NLS-1$
+    static final Msg INDEXING = new Msg("IndexManager.Indexing"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

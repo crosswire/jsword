@@ -1,13 +1,10 @@
 package org.crosswire.jsword.book.search;
 
-import java.net.URL;
-
 import org.crosswire.common.util.ClassUtil;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.common.util.Logger;
 
 /**
- * Factory class for creating SearchEngines.
+ * Factory method for creating a new Thesaurus.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,31 +27,36 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SearchEngineFactory
+public class ThesaurusFactory
 {
     /**
      * Prevent Instansiation
      */
-    private SearchEngineFactory()
+    private ThesaurusFactory()
     {
     }
 
     /**
-     * Factory constructor for a SearchEngine
+     * Create a new Thesaurus.
      */
-    public static SearchEngine createSearchEngine(Book bible, URL indexdir) throws BookException
+    public static Thesaurus createThesaurus() throws InstantiationException
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(SearchEngine.class);
-            SearchEngine searcher = (SearchEngine) impl.newInstance();
-            searcher.init(bible, indexdir);
+            Class impl = ClassUtil.getImplementor(Thesaurus.class);
+            Thesaurus thesaurus = (Thesaurus) impl.newInstance();
 
-            return searcher;
+            return thesaurus;
         }
         catch (Exception ex)
         {
-            throw new BookException(Msg.SEARCH_INIT, ex);
+            log.error("createThesaurus failed", ex); //$NON-NLS-1$
+            throw new InstantiationException();
         }
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ThesaurusFactory.class);
 }
