@@ -167,7 +167,6 @@ public class DownloadSet implements Comparable
     private String webprefix;
     private String localprefix;
     private String setname;
-    private Date date;
 
     private static final String TEST_PREFIX = "jsword-";
     private static final String TEST_SUFFIX = BIN_ZIP;

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.remote.Converter;
 import org.crosswire.jsword.book.remote.ConverterException;
@@ -128,9 +127,4 @@ public class RemoterServlet extends HttpServlet
      * The way we answer any questions asked of us.
      */
     private Remoter remoter;
-
-    /**
-     * The log stream
-     */
-    protected static Logger log = Logger.getLogger(RemoterServlet.class);
 }

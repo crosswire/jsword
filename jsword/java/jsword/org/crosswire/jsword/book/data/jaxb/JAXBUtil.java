@@ -1,14 +1,12 @@
 
 package org.crosswire.jsword.book.data.jaxb;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.osis.ObjectFactory;
@@ -58,7 +56,7 @@ public class JAXBUtil
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(JAXBUtil.class);
+    private static Logger log = Logger.getLogger(JAXBUtil.class);
 
     /**
      * Something went wrong at startup
@@ -76,20 +74,13 @@ public class JAXBUtil
                 String val = (String) test.get(key);
                 log.debug("jaxb: "+key+"="+val);
             }
-        }
-        catch (IOException ex)
-        {
-            log.error("Failed to test JAXB", ex);
-        }
 
-        try
-        {
             jc = JAXBContext.newInstance(OSIS_PACKAGE);
             factory = new ObjectFactory();
         }
-        catch (JAXBException ex)
+        catch (Exception ex)
         {
-            log.error("Failed to start JAXB", ex);
+            log.error("Failed to test JAXB", ex);
             initex = ex;
         }
     }
@@ -98,7 +89,7 @@ public class JAXBUtil
     {
         if (jc == null)
         {
-            throw new NullPointerException("jc is null");
+            throw new NullPointerException("jc is null due to startup issue: "+initex.getMessage());
         }
 
         return jc;

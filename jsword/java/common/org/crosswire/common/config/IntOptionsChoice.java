@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.jdom.Element;
 
@@ -89,11 +88,6 @@ public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
             return options[0];
         }
     }
-
-    /**
-     * The log stream
-     */
-    protected static Logger log = Logger.getLogger(IntOptionsChoice.class);
 
     private String[] options = null;
 }

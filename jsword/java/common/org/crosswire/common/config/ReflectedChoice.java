@@ -299,5 +299,5 @@ public abstract class ReflectedChoice implements Choice, Serializable
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(ReflectedChoice.class);
+    private static Logger log = Logger.getLogger(ReflectedChoice.class);
 }

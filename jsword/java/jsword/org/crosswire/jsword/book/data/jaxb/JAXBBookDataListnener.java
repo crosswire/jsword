@@ -513,7 +513,7 @@ public class JAXBBookDataListnener implements BookDataListener
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(JAXBBookDataListnener.class);
+    private static Logger log = Logger.getLogger(JAXBBookDataListnener.class);
 
     /**
      * The proxied OSIS bean that we add to

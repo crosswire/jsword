@@ -41,14 +41,13 @@ public class SAXEventProviderXMLReader implements XMLReader
 {
     /**
      * Constructor SAXEventProviderXMLReader.
-     * @param doc_in
      */
     public SAXEventProviderXMLReader(SAXEventProvider doc_in)
     {
         this.doc_in = doc_in;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getFeature(java.lang.String)
      */
     public boolean getFeature(String arg0) throws SAXNotRecognizedException, SAXNotSupportedException
@@ -56,14 +55,14 @@ public class SAXEventProviderXMLReader implements XMLReader
         return false;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setFeature(java.lang.String, boolean)
      */
     public void setFeature(String arg0, boolean arg1) throws SAXNotRecognizedException, SAXNotSupportedException
     {
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getProperty(java.lang.String)
      */
     public Object getProperty(String arg0) throws SAXNotRecognizedException, SAXNotSupportedException
@@ -71,14 +70,14 @@ public class SAXEventProviderXMLReader implements XMLReader
         return null;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setProperty(java.lang.String, java.lang.Object)
      */
     public void setProperty(String arg0, Object arg1) throws SAXNotRecognizedException, SAXNotSupportedException
     {
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setEntityResolver(org.xml.sax.EntityResolver)
      */
     public void setEntityResolver(EntityResolver entities)
@@ -86,15 +85,15 @@ public class SAXEventProviderXMLReader implements XMLReader
         this.entities = entities;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getEntityResolver()
      */
     public EntityResolver getEntityResolver()
     {
-        return null;
+        return entities;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setDTDHandler(org.xml.sax.DTDHandler)
      */
     public void setDTDHandler(DTDHandler dtds)
@@ -102,7 +101,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         this.dtds = dtds;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getDTDHandler()
      */
     public DTDHandler getDTDHandler()
@@ -110,7 +109,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         return dtds;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setContentHandler(org.xml.sax.ContentHandler)
      */
     public void setContentHandler(ContentHandler content)
@@ -118,7 +117,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         this.content = content;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getContentHandler()
      */
     public ContentHandler getContentHandler()
@@ -126,7 +125,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         return content;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setErrorHandler(org.xml.sax.ErrorHandler)
      */
     public void setErrorHandler(ErrorHandler errors)
@@ -134,7 +133,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         this.errors = errors;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getErrorHandler()
      */
     public ErrorHandler getErrorHandler()
@@ -142,7 +141,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         return errors;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#parse(org.xml.sax.InputSource)
      */
     public void parse(InputSource is) throws IOException, SAXException
@@ -153,7 +152,7 @@ public class SAXEventProviderXMLReader implements XMLReader
         doc_in.provideSAXEvents(getContentHandler());
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#parse(java.lang.String)
      */
     public void parse(String arg0) throws IOException, SAXException

@@ -348,5 +348,5 @@ public class LinkArray implements Serializable
     public static final int LINKS_PER_CHAPTER = 200;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(LinkArray.class);
+    private static Logger log = Logger.getLogger(LinkArray.class);
 }

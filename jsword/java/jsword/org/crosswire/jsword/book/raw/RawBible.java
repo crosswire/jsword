@@ -369,10 +369,10 @@ public class RawBible extends LocalURLBible
 
             for (int ord=1; ord<=total; ord++)
             {
-                int[] word_items = word_insts.getIndexes(ord);
-                for (int i=0; i<word_items.length; i++)
+                int[] word_item_ids = word_insts.getIndexes(ord);
+                for (int i=0; i<word_item_ids.length; i++)
                 {
-                    if (word_items[i] == word_idx)
+                    if (word_item_ids[i] == word_idx)
                     {
                         ref.add(new Verse(ord));
                     }
@@ -639,5 +639,5 @@ public class RawBible extends LocalURLBible
     private boolean memory = true;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(RawBible.class);
+    private static Logger log = Logger.getLogger(RawBible.class);
 }

@@ -159,7 +159,7 @@ public class SwordBookDriver extends AbstractBookDriver
     protected static URL dir;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(SwordBookDriver.class);
+    private static Logger log = Logger.getLogger(SwordBookDriver.class);
 
     /**
      * Check that the directories in the version directory really

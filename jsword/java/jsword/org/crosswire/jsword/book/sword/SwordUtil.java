@@ -125,5 +125,5 @@ public class SwordUtil
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(SwordUtil.class);
+    private static Logger log = Logger.getLogger(SwordUtil.class);
 }

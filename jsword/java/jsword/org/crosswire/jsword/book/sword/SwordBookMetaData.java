@@ -6,7 +6,6 @@ import java.util.Date;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Openness;
@@ -162,14 +161,6 @@ public abstract class SwordBookMetaData implements BookMetaData
     public final URL getLicence()
     {
         return null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#delete()
-     */
-    private final void delete() throws BookException
-    {
-        throw new BookException(Msg.READ_ONLY);
     }
 
     /* (non-Javadoc)

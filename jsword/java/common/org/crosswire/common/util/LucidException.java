@@ -65,9 +65,9 @@ public class LucidException extends Exception
      * an I18N properties file.
      * @param msg The resource id to read
      */
-    public LucidException(MsgBase msg, Throwable ex)
+    public LucidException(MsgBase msg, Throwable cause)
     {
-        this(msg, ex, null);
+        this(msg, cause, null);
     }
 
     /**
@@ -87,11 +87,11 @@ public class LucidException extends Exception
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidException(MsgBase msg, Throwable ex, Object[] params)
+    public LucidException(MsgBase msg, Throwable cause, Object[] params)
     {
         super(msg.toString());
 
-        this.ex = ex;
+        this.cause = cause;
         this.params = params;
     }
 
@@ -138,19 +138,19 @@ public class LucidException extends Exception
      */
     public String getDetailedMessage()
     {
-        if (ex == null)
+        if (cause == null)
         {
             return getMessage();
         }
 
-        if (ex instanceof LucidException)
+        if (cause instanceof LucidException)
         {
-            LucidException lex = (LucidException) ex;
+            LucidException lex = (LucidException) cause;
             return getMessage() + Msg.REASON + lex.getDetailedMessage();
         }
         else
         {
-            return getMessage() + Msg.REASON + ex.getMessage();
+            return getMessage() + Msg.REASON + cause.getMessage();
         }
     }
 
@@ -160,7 +160,7 @@ public class LucidException extends Exception
      */
     public Throwable getCause()
     {
-        return ex;
+        return cause;
     }
 
     /**
@@ -177,7 +177,7 @@ public class LucidException extends Exception
     /**
      * An embedded exception
      */
-    protected Throwable ex;
+    protected Throwable cause;
 
     /**
      * The array of parameters

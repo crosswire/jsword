@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.remote;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
@@ -112,6 +113,11 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
         // unregister() them
         drivers = (HttpRemoteBookDriver[]) dlist.toArray(new HttpRemoteBookDriver[dlist.size()]);
     }
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(HttpRemoteBookDriver.class);
 
     /**
      * An array of the urls that we are currently using.

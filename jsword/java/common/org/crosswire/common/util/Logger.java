@@ -56,7 +56,6 @@ public final class Logger
      */
     private Logger(Class id)
     {
-        this.id = id;
         log4j = org.apache.log4j.Logger.getLogger(id);
 
         Object check = loggers.get(id);
@@ -159,5 +158,4 @@ public final class Logger
 
     private static Map loggers = new HashMap(); 
     private org.apache.log4j.Logger log4j = null;
-    private Class id = null;
 }

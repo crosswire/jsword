@@ -114,5 +114,5 @@ public class RuleSlider extends JPanel
     private TitledBorder bdr_rule;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(RuleSlider.class);
+    private static Logger log = Logger.getLogger(RuleSlider.class);
 }

@@ -1194,7 +1194,7 @@ public class BibleInfo implements PassageConstants
     };
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(BibleInfo.class);
+    private static Logger log = Logger.getLogger(BibleInfo.class);
 
     /**
      * Set up the Internationalization (Msg), and cache the upper and

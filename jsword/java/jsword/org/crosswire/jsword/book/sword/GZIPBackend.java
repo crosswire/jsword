@@ -261,7 +261,7 @@ public class GZIPBackend implements Backend
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(GZIPBackend.class);
+    private static Logger log = Logger.getLogger(GZIPBackend.class);
 
     /**
      * The array of index files

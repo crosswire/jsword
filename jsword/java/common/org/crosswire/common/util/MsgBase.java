@@ -85,5 +85,5 @@ public class MsgBase extends Enum
     }
 
     protected static ResourceBundle resources;
-    protected static Logger log = Logger.getLogger(MsgBase.class);
+    private static Logger log = Logger.getLogger(MsgBase.class);
 }

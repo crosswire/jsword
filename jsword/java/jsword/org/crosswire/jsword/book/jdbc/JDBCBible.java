@@ -163,11 +163,11 @@ public class JDBCBible extends LocalURLBible
                 {
                     Verse verse = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
                     rs.getBoolean(4); // ignored, but perhaps we should still be getting things in order?
-                    String text = rs.getString(5);
-                    if (text == null) text = "";
+                    String vtext = rs.getString(5);
+                    if (vtext == null) vtext = "";
 
                     li.startVerse(verse);
-                    Filters.PLAIN_TEXT.toOSIS(li, JDBCBibleUtil.processText(text));
+                    Filters.PLAIN_TEXT.toOSIS(li, JDBCBibleUtil.processText(vtext));
                     li.endVerse();
                 }
 

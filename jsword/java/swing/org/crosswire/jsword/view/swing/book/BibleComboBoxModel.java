@@ -212,7 +212,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(BibleComboBoxModel.class);
+    private static Logger log = Logger.getLogger(BibleComboBoxModel.class);
 
     /**
      * For when the we are a book level combo

@@ -40,12 +40,6 @@ import org.crosswire.common.util.Reporter;
  * and that the rest of the app didn't care much, and that the tree style
  * view was the only one you would ever need. This package is a re-write
  * that addresses these shortcomings and others.
- * <p>The JDJ article uses a <code>DeckLayout</code> instead of the
- * <code>java.awt.CardLayout</code> because there are supposedly some focus
- * problems in the CardLayout code. I have not noticed these, and so I have
- * used the more standard CardLayout, however a copy of the DeckLayout code
- * is in the <code>com.barclaycard.swing</code> package. Maybe we should remove it
- * from here - the redistribution status of it is not clear.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -105,7 +99,7 @@ public class WizardConfigPane extends PanelConfigPane
                 JScrollPane scroll = new JScrollPane(card);
                 scroll.setBorder(BorderFactory.createEmptyBorder());
                 deck.add(path, scroll);
-                cards++;
+                wcards++;
 
                 // The name for the title bar
                 names.addElement(StringUtils.replace(path, ".", " "));
@@ -119,7 +113,7 @@ public class WizardConfigPane extends PanelConfigPane
         title.setBackground(Color.gray);
         title.setForeground(Color.white);
         title.setOpaque(true);
-        title.setText(names.elementAt(1) + " Properties (1 out of "+cards+")");
+        title.setText(names.elementAt(1) + " Properties (1 out of "+wcards+")");
 
         deck.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
@@ -225,18 +219,18 @@ public class WizardConfigPane extends PanelConfigPane
             posn--;
         }
 
-        if (dirn == 1 && posn < (cards-1))
+        if (dirn == 1 && posn < (wcards-1))
         {
             layout.next(deck);
             posn++;
         }
 
-        title.setText(names.elementAt(posn) + " Properties ("+(posn+1)+" out of "+cards+")");
+        title.setText(names.elementAt(posn) + " Properties ("+(posn+1)+" out of "+wcards+")");
 
         back.setEnabled(posn != 0);
-        apply.setEnabled(posn != (cards-1));
+        apply.setEnabled(posn != (wcards-1));
 
-        if (posn == cards-1)
+        if (posn == wcards-1)
         {
             dialog.getRootPane().setDefaultButton(ok);
         }
@@ -279,7 +273,7 @@ public class WizardConfigPane extends PanelConfigPane
     private int posn = 0;
 
     /** The number of cards */
-    private int cards = 0;
+    private int wcards = 0;
 
     /** The list of path names */
     private Vector names = new Vector();
@@ -297,6 +291,6 @@ public class WizardConfigPane extends PanelConfigPane
     private JButton back = new JButton("Back");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(WizardConfigPane.class);
+    private static Logger log = Logger.getLogger(WizardConfigPane.class);
 }
 

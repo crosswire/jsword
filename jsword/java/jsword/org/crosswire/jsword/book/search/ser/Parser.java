@@ -215,10 +215,10 @@ public class Parser
             output.add(0, new AddCommandWord());
         }
 
-        it = output.iterator();
-        while (it.hasNext())
+        wit = output.iterator();
+        while (wit.hasNext())
         {
-            Object temp = it.next();
+            Object temp = wit.next();
             try
             {
                 CommandWord command = (CommandWord) temp;
@@ -233,7 +233,7 @@ public class Parser
         // Set these to null so that people can't play around
         // with them once they're done with, and to save memory.
         output = null;
-        it = null;
+        wit = null;
 
         return ref;
     }
@@ -288,7 +288,7 @@ public class Parser
      */
     protected Iterator iterator()
     {
-        return it;
+        return wit;
     }
 
     /** The parsed version of the current string */
@@ -298,7 +298,7 @@ public class Parser
     private Map commands = null;
 
     /** While the answer is being worked out ... */
-    private Iterator it = null;
+    private Iterator wit = null;
 
     private SerSearcher searcher;
 }

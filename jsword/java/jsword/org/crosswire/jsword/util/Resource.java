@@ -428,5 +428,5 @@ public class Resource
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(Resource.class);
+    private static Logger log = Logger.getLogger(Resource.class);
 }

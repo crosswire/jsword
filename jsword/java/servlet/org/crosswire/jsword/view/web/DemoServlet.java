@@ -146,5 +146,5 @@ public class DemoServlet extends HttpServlet
     private Style style = new Style("web");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(DemoServlet.class);
+    private static Logger log = Logger.getLogger(DemoServlet.class);
 }

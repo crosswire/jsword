@@ -61,16 +61,16 @@ public class ReporterEvent extends EventObject
      */
     public String getSourceName()
     {
-        Object source = getSource();
+        Object src = getSource();
 
         Class clazz;
-        if (source instanceof Class)
+        if (src instanceof Class)
         {
-            clazz = (Class) source;
+            clazz = (Class) src;
         }
         else
         {
-            clazz = source.getClass();
+            clazz = src.getClass();
         }
 
         String full = clazz.getName();

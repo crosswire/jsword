@@ -86,7 +86,7 @@ public class Project
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(Project.class);
+    private static Logger log = Logger.getLogger(Project.class);
 
     /**
      * The filesystem resources

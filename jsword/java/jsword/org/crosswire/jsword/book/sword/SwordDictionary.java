@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
@@ -53,7 +52,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
     protected SwordDictionary(SwordDictionaryMetaData data, SwordConfig config) throws BookException
     {
         this.config = config;
-        this.data = data;
+        this.sdmd = data;
 
         int ctype = config.getModDrv(); 
         switch (ctype)
@@ -81,17 +80,17 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
      */
     public void init()
     {
-        List data = backend.readIndex();
+        List raw = backend.readIndex();
 
         map = new HashMap();
-        for (Iterator it = data.iterator(); it.hasNext();)
+        for (Iterator it = raw.iterator(); it.hasNext();)
         {
             Key key = (Key) it.next();
             map.put(key.getText(), key);
         }
 
         set = new TreeSet(new KeyComparator());
-        set.addAll(data);
+        set.addAll(raw);
     }
 
     /**
@@ -108,7 +107,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
      */
     public DictionaryMetaData getDictionaryMetaData()
     {
-        return data;
+        return sdmd;
     }
 
     /* (non-Javadoc)
@@ -196,12 +195,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
     /**
      * our meta data
      */
-    private SwordDictionaryMetaData data;
-
-    /**
-     * The log stream
-     */
-    protected static Logger log = Logger.getLogger(SwordDictionary.class);
+    private SwordDictionaryMetaData sdmd;
 
     /**
      * So we can order Keys in the SortedSet and cut them up with subSet using.

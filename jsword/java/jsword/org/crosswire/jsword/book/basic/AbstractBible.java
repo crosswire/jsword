@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Iterator;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -152,9 +151,8 @@ public abstract class AbstractBible implements Bible
         }
     }
 
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(AbstractBible.class);
-
-    /** The Whole Bible */
+    /**
+     * The Whole Bible
+     */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 }

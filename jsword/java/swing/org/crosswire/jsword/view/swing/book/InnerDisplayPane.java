@@ -167,7 +167,7 @@ public class InnerDisplayPane extends JPanel
     private Style style = new Style("swing");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(InnerDisplayPane.class);
+    private static Logger log = Logger.getLogger(InnerDisplayPane.class);
 
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();

@@ -54,11 +54,11 @@ public class EventException extends RuntimeException
      * an I18N properties file.
      * @param msg The resource id to read
      */
-    public EventException(String msg, Throwable ex)
+    public EventException(String msg, Throwable cause)
     {
         super(msg);
 
-        this.ex = ex;
+        this.cause = cause;
     }
 
     /**
@@ -80,11 +80,11 @@ public class EventException extends RuntimeException
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public EventException(String msg, Throwable ex, Object[] params)
+    public EventException(String msg, Throwable cause, Object[] params)
     {
         super(msg);
 
-        this.ex = ex;
+        this.cause = cause;
         this.params = params;
     }
 
@@ -123,11 +123,11 @@ public class EventException extends RuntimeException
      */
     public Throwable getException()
     {
-        return ex;
+        return cause;
     }
 
     /** An embedded exception */
-    protected Throwable ex = null;
+    protected Throwable cause = null;
 
     /** The array of parameters */
     protected Object[] params = null;

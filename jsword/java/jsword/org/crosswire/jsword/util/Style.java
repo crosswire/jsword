@@ -111,7 +111,9 @@ public class Style
     {
         String[] styles = getStyles();
         if (styles.length == 0)
+        {
             return null;
+        }
 
         return styles[0];
     }
@@ -143,7 +145,9 @@ public class Style
             template = transfact.newTemplates(new StreamSource(xsl_in));
 
             if (cache)
+            {
                 txers.put(style, template);
+            }
         }
 
         Transformer transformer = template.newTransformer();
@@ -168,11 +172,8 @@ public class Style
     /** Do we log.fine() the documents as we format them? */
     private static boolean debug = false;
 
-    /** The extension for an XSL file */
-    public static final String XSL_EXTENSION = ".xsl";
-
     /** The log stream */
-    protected static Logger log = Logger.getLogger(Style.class);
+    private static Logger log = Logger.getLogger(Style.class);
 
     /**
      * Do we log all the intermediate XML?

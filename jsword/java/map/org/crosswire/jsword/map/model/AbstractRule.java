@@ -34,7 +34,6 @@ public abstract class AbstractRule implements Rule
      */
     public Position[] getScaledPosition(Map map, int book, int chapter)
     {
-        int scale = getScale();
         if (scale == 0)
         {
             return new Position[0];

@@ -265,5 +265,5 @@ public class GBFFilter implements Filter
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(GBFFilter.class);
+    private static Logger log = Logger.getLogger(GBFFilter.class);
 }

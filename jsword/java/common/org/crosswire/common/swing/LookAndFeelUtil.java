@@ -139,7 +139,7 @@ public class LookAndFeelUtil
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(LookAndFeelUtil.class);
+    private static Logger log = Logger.getLogger(LookAndFeelUtil.class);
 
     /**
      * Setup the defaults Hashtable

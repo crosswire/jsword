@@ -90,5 +90,5 @@ public class TextViewPanelBeanInfo extends SimpleBeanInfo
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(TextViewPanelBeanInfo.class);
+    private static Logger log = Logger.getLogger(TextViewPanelBeanInfo.class);
 }

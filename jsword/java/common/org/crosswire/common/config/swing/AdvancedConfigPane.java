@@ -365,7 +365,7 @@ public class AdvancedConfigPane extends TreeConfigPane
         /**
          *
          */
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean focus)
+        public Component getTreeCellRendererComponent(JTree jtree, Object value, boolean isselected, boolean expanded, boolean leaf, int row, boolean focus)
         {
             if (value instanceof CompNode)
             {
@@ -373,10 +373,10 @@ public class AdvancedConfigPane extends TreeConfigPane
 
                 if (comp == null)
                 {
-                    return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, focus);
+                    return super.getTreeCellRendererComponent(jtree, value, isselected, expanded, leaf, row, focus);
                 }
 
-                if (selected)
+                if (isselected)
                 {
                     comp.setBorder(BorderFactory.createLineBorder(Color.black));
                 }
@@ -389,7 +389,7 @@ public class AdvancedConfigPane extends TreeConfigPane
             }
             else
             {
-                return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, focus);
+                return super.getTreeCellRendererComponent(jtree, value, isselected, expanded, leaf, row, focus);
             }
         }
     }
@@ -414,7 +414,7 @@ public class AdvancedConfigPane extends TreeConfigPane
         /**
         *
         */
-        public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row)
+        public Component getTreeCellEditorComponent(JTree jtree, Object value, boolean selected, boolean expanded, boolean leaf, int row)
         {
             /*
             if (value instanceof FieldTreeNode)
@@ -424,7 +424,7 @@ public class AdvancedConfigPane extends TreeConfigPane
             else
             */
             {
-                return super.getTreeCellEditorComponent(tree, value, selected, expanded, leaf, row);
+                return super.getTreeCellEditorComponent(jtree, value, selected, expanded, leaf, row);
             }
         }
     }

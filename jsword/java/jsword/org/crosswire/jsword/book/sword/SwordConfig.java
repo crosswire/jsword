@@ -44,10 +44,8 @@ public class SwordConfig
      */
     public SwordConfig(SwordBookDriver driver, File parent, String bookdir) throws IOException
     {
-        URL url = new File(parent, bookdir).toURL();
-
         this.driver = driver;
-        this.url = url;
+        this.url = new File(parent, bookdir).toURL();
         this.name = bookdir.substring(0, bookdir.indexOf(".conf"));;
         this.reader = new ConfigReader(url.openStream());
 
@@ -79,8 +77,12 @@ public class SwordConfig
             log.warn("No data path could be found in the config: " + url.toString());
             // PENDING(mark): assume something like <sword root>/modules/type/name
         }
+
         if (description == null)
+        {
             log.warn("No description could be found in the config: " + url.toString());
+        }
+
         if (modDrv == -1)
         {
             log.warn("No data path could be found in the config: " + url.toString());
@@ -660,7 +662,7 @@ public class SwordConfig
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(SwordConfig.class);
+    private static Logger log = Logger.getLogger(SwordConfig.class);
 
     // we use java.util.Properties to save us from having to parse.
     private ConfigReader reader;

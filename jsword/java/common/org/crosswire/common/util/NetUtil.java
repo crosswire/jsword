@@ -546,5 +546,5 @@ public class NetUtil
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(NetUtil.class);
+    private static Logger log = Logger.getLogger(NetUtil.class);
 }

@@ -355,7 +355,7 @@ public class SerSearcher implements Searcher
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(SerSearcher.class);
+    private static Logger log = Logger.getLogger(SerSearcher.class);
 
     /**
      * The passages random access file

@@ -36,16 +36,12 @@ import org.crosswire.jsword.passage.Passage;
 public class PassageTreeModel extends DefaultTreeModel
 {
     /**
-    * Basic constructor.
-    * At some stage when editing this and PassageTreeNode we should be able to
-    * remove the JTree param.
-    */
+     * Basic constructor.
+     * At some stage when editing this and PassageTreeNode we should be able to
+     * remove the JTree param.
+     */
     public PassageTreeModel(Passage ref, JTree tree)
     {
         super(new PassageTreeNode(ref, tree));
-        this.ref = ref;
     }
-
-    /** The Passagethat we are modeling */
-    private Passage ref;
 }

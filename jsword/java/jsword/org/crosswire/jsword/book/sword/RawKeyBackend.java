@@ -202,7 +202,7 @@ public class RawKeyBackend implements KeyBackend
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(RawKeyBackend.class);
+    private static Logger log = Logger.getLogger(RawKeyBackend.class);
 
     /**
      * A Key that knows where the data is in the real file.

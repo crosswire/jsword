@@ -40,8 +40,6 @@ public class BibleComboBoxModelSet
      */
     public void setBookComboBox(JComboBox cbo_book)
     {
-        this.cbo_book = cbo_book;
-
         cbo_book.setModel(mdl_book);
         cbo_book.addActionListener(new CustomActionListener());
     }
@@ -51,8 +49,6 @@ public class BibleComboBoxModelSet
      */
     public void setChapterComboBox(JComboBox cbo_chapter)
     {
-        this.cbo_chapter = cbo_chapter;
-
         cbo_chapter.setModel(mdl_chapter);
     }
 
@@ -61,8 +57,6 @@ public class BibleComboBoxModelSet
      */
     public void setVerseComboBox(JComboBox cbo_verse)
     {
-        this.cbo_verse = cbo_verse;
-
         cbo_verse.setModel(mdl_verse);
     }
 
@@ -88,10 +82,6 @@ public class BibleComboBoxModelSet
     protected BibleComboBoxModel mdl_book = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_BOOK);
     protected BibleComboBoxModel mdl_chapter = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_CHAPTER);
     protected BibleComboBoxModel mdl_verse = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_VERSE);
-
-    private JComboBox cbo_book = null;
-    private JComboBox cbo_chapter = null;
-    private JComboBox cbo_verse = null;
 
     protected EventListenerList listeners = new EventListenerList();
 

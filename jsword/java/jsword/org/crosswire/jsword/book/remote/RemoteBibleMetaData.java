@@ -46,30 +46,36 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
         this.speed = speed;
     }
 
-    /**
-     * Fetch a currently existing Bible, read-only
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBibleMetaData#createBible()
      */
     public Bible createBible()
     {
         return new RemoteBible(remoter, this);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return remoter.getRemoterName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public int getSpeed()
+    {
+        return speed;
+    }
+    
     /**
      * The unique (self generated) id for this instance
      */
     public String getID()
     {
         return id;
-    }
-
-    /**
-     * Accessor for the driver name
-     */
-    public String getDriverName()
-    {
-        return remoter.getRemoterName();
     }
 
     /**
@@ -81,22 +87,6 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
      * The ID for this instance
      */
     private String id;
-
-    /**
-     * The expected speed at which this implementation gets correct answers.
-     * Perhaps we should allow this to be customized more by concrete
-     * implementations?
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return speed;
-    }
-    
-    /**
-     * The cached bible so we don't have to create too many
-     */
-    private Bible bible = null;
 
     /**
      * The speed of this RemoteBible

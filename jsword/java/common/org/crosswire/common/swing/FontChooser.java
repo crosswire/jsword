@@ -348,7 +348,6 @@ public class FontChooser extends JPanel
         */
         public TestCellRenderer(JComboBox combobox)
         {
-            this.combobox = combobox;
             setOpaque(true);
         }
 
@@ -394,9 +393,6 @@ public class FontChooser extends JPanel
             setFont((Font) hash.get("font"));
             return this;
         }
-
-        /** The thing we are rendering */
-        private JComboBox combobox = null;
     }
 
     /** The dialog box */

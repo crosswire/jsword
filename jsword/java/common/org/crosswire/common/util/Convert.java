@@ -236,6 +236,6 @@ public class Convert
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(Convert.class);
+    private static Logger log = Logger.getLogger(Convert.class);
 }
 

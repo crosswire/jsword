@@ -58,21 +58,21 @@ public class CaptureEvent extends EventObject
     }
 
     /**
-    * Returns a string specifying the source of the message.
-    * @return The Source as a String
-    */
+     * Returns a string specifying the source of the message.
+     * @return The Source as a String
+     */
     public String getSourceName()
     {
-        Object source = getSource();
+        Object src = getSource();
 
         Class clazz;
-        if (source instanceof Class)
+        if (src instanceof Class)
         {
-            clazz = (Class) source;
+            clazz = (Class) src;
         }
         else
         {
-            clazz = source.getClass();
+            clazz = src.getClass();
         }
 
         String full = clazz.getName();

@@ -68,7 +68,7 @@ public class AdjustOriginRule extends AbstractRule
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(AdjustOriginRule.class);
+    private static Logger log = Logger.getLogger(AdjustOriginRule.class);
 
     /** The thing we are trying to move to middle,middle */
     private Position cog;

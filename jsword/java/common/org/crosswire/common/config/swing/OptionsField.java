@@ -121,5 +121,5 @@ public class OptionsField extends JComboBox implements Field
     private String[] list = null;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(OptionsField.class);
+    private static Logger log = Logger.getLogger(OptionsField.class);
 }

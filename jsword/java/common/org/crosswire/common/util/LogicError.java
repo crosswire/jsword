@@ -55,6 +55,14 @@ public class LogicError extends RuntimeException
         this.ex = ex;
     }
 
+    /**
+     * Accessor for the cause
+     */
+    public Throwable getCause()
+    {
+        return ex;
+    }
+
     /** The error that caused this exception */
     private Throwable ex = null;
 }

@@ -542,7 +542,7 @@ public class Map implements Serializable
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(LinkArray.class);
+    private static Logger log = Logger.getLogger(LinkArray.class);
 
     /** What is the maximum calculations between re-calcing the CoG */
     private static final int MAX_REPLIES = 1;

@@ -214,5 +214,5 @@ public class SerBible extends LocalURLBible
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(SerBible.class);
+    private static Logger log = Logger.getLogger(SerBible.class);
 }

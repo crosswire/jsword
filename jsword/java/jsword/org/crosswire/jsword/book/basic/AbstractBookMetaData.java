@@ -12,7 +12,6 @@ import java.util.Properties;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Openness;
 
@@ -378,14 +377,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
         return getName().equals(version.getName());
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#delete()
-     */
-    private final void delete() throws BookException
-    {
-        throw new BookException(Msg.DELETE_NOTIMPL, new Object[] { getName() });
-    }
-
     /**
      * 
      */
@@ -399,7 +390,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(AbstractBookMetaData.class);
+    private static Logger log = Logger.getLogger(AbstractBookMetaData.class);
 
     /**
      * Setup the default publish date
@@ -412,7 +403,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         }
         catch (ParseException ex)
         {
-            log.warn("Failed to set default fallback date", ex);
+            log.error("Failed to set default fallback date", ex);
             DEFAULT = new Date();
         }
     }

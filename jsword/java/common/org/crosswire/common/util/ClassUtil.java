@@ -110,5 +110,5 @@ public class ClassUtil
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(StringUtil.class);
+    private static Logger log = Logger.getLogger(StringUtil.class);
 }

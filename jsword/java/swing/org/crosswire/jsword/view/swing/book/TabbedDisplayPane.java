@@ -13,7 +13,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 import javax.xml.transform.TransformerException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
@@ -264,9 +263,6 @@ public class TabbedDisplayPane extends JPanel
     private Passage waiting = null;
     private Bible version = null;
     private boolean tabs = false;
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(TabbedDisplayPane.class);
 
     private JTabbedPane tab_main = new JTabbedPane();
     private JPanel pnl_more = new JPanel();

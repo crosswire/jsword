@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.search;
 import java.io.IOException;
 import java.net.URL;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
@@ -81,6 +82,11 @@ public abstract class SearchableBible extends AbstractBible
 
         return searcher.findPassage(match);
     }
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(SearchableBible.class);
 
     /**
      * The search implementation

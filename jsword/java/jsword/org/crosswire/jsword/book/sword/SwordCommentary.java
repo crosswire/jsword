@@ -147,5 +147,5 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(SwordCommentary.class);
+    private static Logger log = Logger.getLogger(SwordCommentary.class);
 }

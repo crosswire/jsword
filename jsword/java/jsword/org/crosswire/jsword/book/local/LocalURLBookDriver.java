@@ -58,7 +58,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         this.name = name;
         this.bibleclass = bibleclass;
 
-        URL root = findBibleRoot();
+        findBibleRoot();
         if (root == null)
         {
             log.warn("Cant find Bibles root, restart needed before service can resume.");
@@ -291,7 +291,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(LocalURLBookDriver.class);
+    private static Logger log = Logger.getLogger(LocalURLBookDriver.class);
 
     /**
      * The Bibles root

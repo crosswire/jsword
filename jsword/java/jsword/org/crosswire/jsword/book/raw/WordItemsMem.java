@@ -217,5 +217,5 @@ public class WordItemsMem extends ItemsMem
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(WordItemsMem.class);
+    private static Logger log = Logger.getLogger(WordItemsMem.class);
 }

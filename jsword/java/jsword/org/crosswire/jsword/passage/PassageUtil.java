@@ -682,7 +682,7 @@ public class PassageUtil implements PassageConstants
     private static int blur = Passage.RESTRICT_CHAPTER;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(PassageUtil.class);
+    private static Logger log = Logger.getLogger(PassageUtil.class);
 
     /**
     * Setup the resources

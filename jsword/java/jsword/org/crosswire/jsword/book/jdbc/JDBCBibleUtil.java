@@ -184,5 +184,5 @@ public class JDBCBibleUtil
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(JDBCBibleUtil.class);
+    private static Logger log = Logger.getLogger(JDBCBibleUtil.class);
 }
