@@ -374,13 +374,17 @@ public class JAXBUtil
 
     /**
      * Split a BookData into a number of BookDatas where each one has a maximum
-     * of <code>i</code> words on each page. 
+     * of <code>i</code> words on each page.
+     * TODO: Implement this.
      * @param data The BookData to cut up
      * @param i The max words on a page
      * @return List of cut up BookDatas
      */
     public static List pagenate(BookData data, int i)
     {
+        int ignore = i;
+        i = ignore;
+
         List reply = new ArrayList();
         reply.add(data);
         return reply;
@@ -389,12 +393,16 @@ public class JAXBUtil
     /**
      * Create a title based on the given <code>BookData</code> not more than
      * <code>length</code> characters in length
+     * TODO: Implement this.
      * @param data The BookData to create a title from.
      * @param length The maximim String length
      * @return The BookData title
      */
     public static String getTitle(BookData data, int length)
     {
+        int ignore = length;
+        length = ignore;
+
         return data.toString();
     }
 
