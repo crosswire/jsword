@@ -46,6 +46,7 @@
     <include name="**/tar.jar"/>
     <include name="**/winlaf-*.jar"/>
     <include name="**/jlfgr-*.jar"/>
+    <include name="**/servlet.jar"/>
   </patternset>
 
   <!--=======================================================================
