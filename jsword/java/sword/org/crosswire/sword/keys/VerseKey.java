@@ -35,12 +35,12 @@ public class VerseKey extends SWKey
     class LocaleCache
     {
         String name;
-        int abbrevsCnt;
+        int myAbbrevsCnt;
         SWLocale locale;
         LocaleCache()
         {
             name = null;
-            abbrevsCnt = 0;
+            myAbbrevsCnt = 0;
             locale = null;
         }
     }
@@ -170,7 +170,7 @@ public class VerseKey extends SWKey
         if (!useCache)
         { // if we're setting params for a new locale
             localeCache.name = name;
-            localeCache.abbrevsCnt = 0;
+            localeCache.myAbbrevsCnt = 0;
         }
 
         /*

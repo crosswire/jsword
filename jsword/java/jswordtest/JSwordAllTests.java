@@ -1,4 +1,3 @@
-
 // package default;
 
 import junit.framework.Test;
@@ -39,8 +38,6 @@ public class JSwordAllTests extends TestCase
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
-
-        suite.addTestSuite(org.crosswire.jsword.util.StyleTest.class);
 
         suite.addTestSuite(org.crosswire.jsword.passage.BibleInfoTest.class);
         suite.addTestSuite(org.crosswire.jsword.passage.PassageConstantsTest.class);

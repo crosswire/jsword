@@ -57,27 +57,22 @@
     <help>How many verses do you want to display on a page before spilling to tabbed mode.</help>
   </option>
 
-  <option key="Bibles.Raw.Cache Data" type="boolean">
-  	<introspect class="org.crosswire.jsword.book.raw.RawBook" property="DefaultCacheData"/>
-    <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>
-  </option>
-
-  <option key="Bibles.Sword.Base Directory" type="path">
+  <option key="Sword.Base Directory" type="path">
   	<introspect class="org.crosswire.jsword.book.sword.SwordBookDriver" property="SwordDir"/>
     <help>Where is the SWORD Project base directory.</help>
   </option>
 
-  <option key="Bibles.Remote.Remote Host" type="string-array" separator=" ">
+  <option key="Remote.Remote Host" type="string-array" separator=" ">
   	<introspect class="org.crosswire.jsword.book.remote.HttpRemoteBookDriver" property="URLs"/>
     <help>The URL of a remote HTTP host.</help>
   </option>
 
-  <option key="Bibles.Display.Persistent Naming" type="boolean">
+  <option key="Display.Persistent Naming" type="boolean">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="PersistentNaming"/>
     <help>True if the passage editor re-writes the references to conform to its notation.</help>
   </option>
 
-  <option key="Bibles.Display.Blurring Rules" type="int-options">
+  <option key="Display.Blurring Rules" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="BlurRestriction"/>
     <help>What is the default blurring - Blur across chapter boundaries or not.</help>
     <alternative number="0" name="None"/>
@@ -85,7 +80,7 @@
     <alternative number="2" name="Chapter"/>
   </option>
 
-  <option key="Bibles.Display.Book Case" type="int-options">
+  <option key="Display.Book Case" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.BibleInfo" property="Case"/>
     <help>What case should we use to display the references.</help>
     <alternative number="0" name="lower"/>
@@ -94,7 +89,7 @@
     <alternative number="3" name="mIXeD"/>
   </option>
 
-  <option key="Bibles.Readings" type="string-options">
+  <option key="Readings.Readings Set" type="string-options">
   	<introspect class="org.crosswire.jsword.book.readings.ReadingsBookDriver" property="ReadingsSet"/>
     <help>Which of the available readings sets is the default.</help>
     <map name="readings"/>
@@ -112,12 +107,23 @@
     <alternative number="1" name="Multiple Document Interface"/>
   </option>
 
-  <option key="Reports.Exceptions to Dialog Box" type="boolean" priority="8">
+  <option key="Looks.Stylesheet" type="string-options">
+  	<introspect class="org.crosswire.jsword.view.swing.util.Style" property="ResourceName"/>
+    <help>The style applied to displayed Books</help>
+    <map name="swing-styles"/>
+  </option>
+
+  <option key="Advanced.Raw.Cache Data" type="boolean">
+  	<introspect class="org.crosswire.jsword.book.raw.RawBook" property="DefaultCacheData"/>
+    <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>
+  </option>
+
+  <option key="Advanced.Reports.Exceptions to Dialog Box" type="boolean" priority="8">
   	<introspect class="org.crosswire.common.swing.ExceptionPane" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a GUI window.</help>
   </option>
 
-  <option key="Reports.Exceptions to Log Window" type="boolean" priority="8">
+  <option key="Advanced.Reports.Exceptions to Log Window" type="boolean" priority="8">
   	<introspect class="org.crosswire.common.swing.ExceptionShelf" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a the GUI shelf.</help>
   </option>
@@ -128,7 +134,7 @@
   </option>
 
   <option key="Advanced.XSLT.Cache" type="boolean">
-  	<introspect class="org.crosswire.jsword.util.Style" property="Cache"/>
+  	<introspect class="org.crosswire.common.xml.TransformingSAXEventProvider" property="Cache"/>
     <help>Do we cache the XSLT pages (faster but a pain for development).</help>
   </option>
 
@@ -141,7 +147,7 @@
     <alternative number="3" name="Mix (Ranged)"/>
   </option>
 
-  <option key="Advanced.Debug.Show Debug Tab" type="boolean">
+  <option key="Advanced.About Dialog.Include Debug Tab" type="boolean">
   	<introspect class="org.crosswire.jsword.view.swing.desktop.AboutPane" property="Debugging"/>
     <help>Is the debug tab visible in the about dialog.</help>
   </option>

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
@@ -16,8 +15,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
@@ -26,8 +27,8 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.util.Style;
 import org.crosswire.jsword.view.swing.passage.KeyListListModel;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.
@@ -260,9 +261,10 @@ public class DictionaryPane extends JPanel implements DisplayArea
             if (key != null)
             {
                 BookData bdata = dict.getData(key);
-                SAXEventProvider provider = bdata.getSAXEventProvider();
-                String text = style.applyStyleToString(provider, "simple.xsl");
-    
+                SAXEventProvider osissep = bdata.getSAXEventProvider();
+                SAXEventProvider htmlsep = style.convert(osissep);
+                String text = XMLUtil.writeToString(htmlsep);
+
                 txtdisplay.setText(text);
                 txtdisplay.select(0, 0);
             }
@@ -276,7 +278,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
     /**
      * The stylizer
      */
-    protected Style style = new Style("swing");
+    protected Converter style = new SimpleSwingConverter();
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdldicts = new BooksComboBoxModel(filter);

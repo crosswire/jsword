@@ -1,12 +1,10 @@
+package org.crosswire.common.xml;
 
-package org.crosswire.jsword.util;
-
-import junit.framework.TestCase;
-
-import org.crosswire.jsword.util.Style;
+import javax.xml.transform.TransformerException;
 
 /**
- * JUnit Test.
+ * A generic method of converting one SAX stream into another.
+ * This can be a wrapper around an XSL transform or anything else.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,41 +27,13 @@ import org.crosswire.jsword.util.Style;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StyleTest extends TestCase
+public interface Converter
 {
-    public StyleTest(String s)
-    {
-        super(s);
-    }
-
-    private Style style = null;
-
-    protected void setUp() throws Exception
-    {
-        style = new Style("test");
-    }
-
-    protected void tearDown() throws Exception
-    {
-    }
-
-    public void testGetStyles() throws Exception
-    {
-        String[] names = style.getStyles();
-        assertEquals(names.length, 2);
-        assertEquals(names[0], "test.xsl");
-        assertEquals(names[1], "test2.xsl");
-    }
-
-    public void testGetFilename() throws Exception
-    {
-        /*
-        assertEquals(style.getFilename("test"),
-             "S:\\Joe\\Devt\\DoE" + File.separator +
-             "lib" + File.separator +
-             "styles" + File.separator +
-             "test" + File.separator +
-             "test.xsl");
-        */
-    }
+    /**
+     * Convert one SAX stream into another.
+     * @param provider The source stream
+     * @return The destination stream
+     * @throws TransformerException If the transformation can't be completed
+     */
+    public SAXEventProvider convert(SAXEventProvider provider) throws TransformerException;
 }

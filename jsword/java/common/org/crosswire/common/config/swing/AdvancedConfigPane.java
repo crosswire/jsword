@@ -112,7 +112,6 @@ public class AdvancedConfigPane extends TreeConfigPane
 
     /**
      * Updates to the tree that we need to do on any change
-     * @return A button panel
      */
     protected void updateTree()
     {

@@ -2,6 +2,7 @@ package org.crosswire.common.xml;
 
 import org.crosswire.common.util.Logger;
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * Utilities for working with SAX XML parsing.
@@ -34,6 +35,18 @@ public class XMLUtil
      */
     private XMLUtil()
     {
+    }
+
+    /**
+     * Serialize a SAXEventProvider into an XML String
+     * @param provider The source of SAX events
+     * @return a serialized string
+     */
+    public static String writeToString(SAXEventProvider provider) throws SAXException
+    {
+        SerializingContentHandler ser = new SerializingContentHandler();
+        provider.provideSAXEvents(ser);
+        return ser.toString();
     }
 
     /**

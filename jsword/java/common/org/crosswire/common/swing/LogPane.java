@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.BorderLayout;

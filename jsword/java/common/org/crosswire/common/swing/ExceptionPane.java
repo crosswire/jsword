@@ -371,8 +371,8 @@ public class ExceptionPane extends JPanel
         public CustomLister(StackTrace st, JTextArea text, JLabel label)
         {
             this.st = st;
-            this.text = text;
-            this.label = label;
+            this.mytext = text;
+            this.mylabel = label;
         }
 
         /**
@@ -387,7 +387,7 @@ public class ExceptionPane extends JPanel
             }
 
             // Wait cursor
-            SwingUtilities.getRoot(label).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            SwingUtilities.getRoot(mylabel).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
             // Get a stack trace
             JList lst = (JList) ev.getSource();
@@ -419,7 +419,7 @@ public class ExceptionPane extends JPanel
 
                     try
                     {
-                        label.setText(file.getCanonicalPath());
+                        mylabel.setText(file.getCanonicalPath());
                         LineNumberReader in = new LineNumberReader(new FileReader(file));
                         while (true)
                         {
@@ -438,11 +438,11 @@ public class ExceptionPane extends JPanel
                     }
 
                     // Actually set the text
-                    text.setText(data.toString());
-                    text.setSelectionStart(selection_start);
-                    text.setSelectionEnd(selection_end);
+                    mytext.setText(data.toString());
+                    mytext.setSelectionStart(selection_start);
+                    mytext.setSelectionEnd(selection_end);
 
-                    SwingUtilities.getRoot(label).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    SwingUtilities.getRoot(mylabel).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     return;
                 }
             }
@@ -454,18 +454,24 @@ public class ExceptionPane extends JPanel
                 error += "Tried: "+sourcescopy[i]+name+"\n";
             }
 
-            text.setText(error);
-            SwingUtilities.getRoot(label).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            mytext.setText(error);
+            SwingUtilities.getRoot(mylabel).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
-        /** The StackTrace */
+        /**
+         * The StackTrace
+         */
         private StackTrace st;
 
-        /** The Text to write to */
-        private JTextArea text;
+        /**
+         * The Text to write to
+         */
+        private JTextArea mytext;
 
-        /** The Text to write to */
-        private JLabel label;
+        /**
+         * The Text to write to
+         */
+        private JLabel mylabel;
     }
 
     /**

@@ -42,6 +42,10 @@ public class ReferenceKeyTreeNode implements TreeNode
         this.bmd = bmd;
         this.parent = parent;
         this.key = key;
+
+        // NOWARN: this just shuts eclipse up - remove it later.
+        this.bmd.hashCode();
+        this.model.hashCode();
     }
 
     /* (non-Javadoc)

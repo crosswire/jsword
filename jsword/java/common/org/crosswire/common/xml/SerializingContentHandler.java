@@ -1,4 +1,3 @@
-
 package org.crosswire.common.xml;
 
 import org.xml.sax.Attributes;
@@ -67,7 +66,7 @@ public class SerializingContentHandler implements ContentHandler
      */
     public void startDocument()
     {
-        buffer.append("<?xml version=\"1.0\"?>");
+        //buffer.append("<?xml version=\"1.0\"?>");
 
         if (newlines)
         {
@@ -114,7 +113,7 @@ public class SerializingContentHandler implements ContentHandler
         for (int i=0; i<attrs.getLength(); i++)
         {
             buffer.append(" ");
-            buffer.append(attrs.getType(i));
+            buffer.append(attrs.getLocalName(i));
             buffer.append("=\"");
             buffer.append(attrs.getValue(i));
             buffer.append("\"");

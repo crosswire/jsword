@@ -1,11 +1,10 @@
+package org.crosswire.common.xml;
 
-package org.crosswire.jsword.map.model;
-
-import java.io.Serializable;
+import java.net.URL;
 
 /**
- * A Position is simply an array of floats that specify a place for a
- * Node to be.
+ * An implementation of Converter that uses a TransformingSAXEventProvider to
+ * transform one SAXEventProvider into another SAXEventProvider using XSL.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,36 +27,27 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Position implements Serializable
+public class TransformingSAXEventProviderConverter implements Converter
 {
     /**
-     * Basic constructor
+     * Simple ctor
+     * @param xslurl The url of the stylesheet
      */
-    public Position(float[] pos)
+    public TransformingSAXEventProviderConverter(URL xslurl)
     {
-        this.pos = pos;
+        this.xslurl = xslurl;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.xml.Converter#convert(org.crosswire.common.xml.SAXEventProvider)
+     */
+    public SAXEventProvider convert(SAXEventProvider provider)
+    {
+        return new TransformingSAXEventProvider(xslurl, provider);
     }
 
     /**
-     * Accessor for the array of positions
-     * @return The array of positions
+     * The URL of the stylesheet
      */
-    public float[] getPosition()
-    {
-        return pos;
-    }
-
-    /**
-     * Accessor for the array of positions
-     */
-    public void setPosition(float[] pos)
-    {
-        this.pos = pos;
-    }
-
-    /** The array of floats */
-    protected float[] pos;
-
-    /** Serialization ID - a serialization of pos */
-    static final long serialVersionUID = -2737633670295539140L;
+    private URL xslurl;
 }

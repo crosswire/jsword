@@ -27,6 +27,7 @@ import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -307,6 +308,12 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
                 String key = (String) it.next();
                 Field field = (Field) fields.get(key);
                 String value = field.getValue();
+                
+                if (value == null)
+                {
+                    log.warn("null value from key="+key);
+                }
+
                 config.setLocal(key, value);
             }
             catch (Exception ex)
@@ -338,39 +345,68 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
         }
     }
 
-    /** How many cards have we created - we only need a tree if there are 2 or more cards */
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(PanelConfigPane.class);
+
+    /**
+     * How many cards have we created - we only need a tree if there are 2 or more cards
+     */
     protected int cards = 0;
 
-    /** Action when the user clicks on accept */
+    /**
+     * Action when the user clicks on accept
+     */
     protected ActionListener al;
 
-    /** The class that represents the Fields that we display */
+    /**
+     * The class that represents the Fields that we display
+     */
     protected Config config;
 
-    /** The Ok button */
+    /**
+     * The Ok button
+     */
     protected JButton ok = new JButton("OK");
 
-    /** The cancel button */
+    /**
+     * The cancel button
+     */
     protected JButton cancel = new JButton("Cancel");
 
-    /** The apply button */
+    /**
+     * The apply button
+     */
     protected JButton apply = new JButton("Apply");
 
-    /** The help button */
+    /**
+     * The help button
+     */
     protected JButton help = new JButton("Help");
 
-    /** The dialog that we are displayed in */
+    /**
+     * The dialog that we are displayed in
+     */
     protected JDialog dialog;
 
-    /** A fast way to get at the configuration panels */
+    /**
+     * A fast way to get at the configuration panels
+     */
     protected Hashtable decks = new Hashtable();
 
-    /** The set of fields that we are displaying */
+    /**
+     * The set of fields that we are displaying
+     */
     protected Hashtable fields = new Hashtable();
 
-    /** The large task icon */
+    /**
+     * The large task icon
+     */
     protected static final ImageIcon task = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences24.gif");
 
-    /** The small task icon */
+    /**
+     * The small task icon
+     */
     protected static final ImageIcon tasksm = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences16.gif");
 }

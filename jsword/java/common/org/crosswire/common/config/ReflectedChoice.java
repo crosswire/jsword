@@ -150,7 +150,6 @@ public abstract class ReflectedChoice implements Choice
     /**
      * Get some help on this Field. In this case we are just providing
      * a default help text, that isn't much use.
-     * @return The default help text
      */
     public void setHelpText(String helptext)
     {

@@ -1,10 +1,8 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.JEditorPane;
@@ -18,8 +16,10 @@ import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -28,7 +28,8 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.util.Style;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
+import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -101,8 +102,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     }
 
                     job.setProgress("Compiling stylesheet");
-                    Style swing = new Style("swing");
-                    swing.applyStyleToString(provider, "simple.xsl");
+                    Converter swing = new SimpleSwingConverter();
+                    swing.convert(provider);
                     if (interrupted())
                     {
                         return;
@@ -149,7 +150,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the passage being viewed
      */
-    public void setPassage(Passage ref) throws IOException, BookException, TransformerException
+    public void setPassage(Passage ref) throws BookException, SAXException, TransformerException
     {
         this.ref = ref;
 
@@ -160,10 +161,9 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
         }
 
         BookData data = book.getData(ref);
-        SAXEventProvider provider = data.getSAXEventProvider();
-        String text = style.applyStyleToString(provider, "simple.xsl");
-
-        //log.debug(text);
+        SAXEventProvider osissep = data.getSAXEventProvider();
+        SAXEventProvider htmlsep = style.convert(osissep);
+        String text = XMLUtil.writeToString(htmlsep);
 
         txt_view.setText(text);
         txt_view.select(0, 0);
@@ -290,8 +290,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     private Passage ref = null;
 
-    private Style style = new Style("swing");
+    private Converter style = new SimpleSwingConverter();
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();
 }
-

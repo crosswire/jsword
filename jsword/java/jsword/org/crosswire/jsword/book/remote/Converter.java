@@ -189,7 +189,7 @@ public class Converter
 
     /**
      * Reverse of convertDocumentToPassage().
-     * @see Converter#convertDocumentToPassage(Document)
+     * @see Converter#convertDocumentToKeyList(Document)
      */
     public static Document convertKeyListToDocument(KeyList key)
     {

@@ -1,11 +1,9 @@
+package org.crosswire.jsword.view.swing.util;
 
-package org.crosswire.jsword.map.model;
-
-import java.io.Serializable;
+import junit.framework.TestCase;
 
 /**
- * A Position is simply an array of floats that specify a place for a
- * Node to be.
+ * JUnit Test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,36 +26,41 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Position implements Serializable
+public class SimpleSwingConverterTest extends TestCase
 {
-    /**
-     * Basic constructor
-     */
-    public Position(float[] pos)
+    public SimpleSwingConverterTest(String s)
     {
-        this.pos = pos;
+        super(s);
     }
 
-    /**
-     * Accessor for the array of positions
-     * @return The array of positions
-     */
-    public float[] getPosition()
+    private SimpleSwingConverter style = null;
+
+    protected void setUp() throws Exception
     {
-        return pos;
+        style = new SimpleSwingConverter();
     }
 
-    /**
-     * Accessor for the array of positions
-     */
-    public void setPosition(float[] pos)
+    protected void tearDown() throws Exception
     {
-        this.pos = pos;
     }
 
-    /** The array of floats */
-    protected float[] pos;
+    public void testGetStyles() throws Exception
+    {
+        String[] names = style.getStyles();
+        assertEquals(names.length, 2);
+        assertEquals(names[0], "test.xsl");
+        assertEquals(names[1], "test2.xsl");
+    }
 
-    /** Serialization ID - a serialization of pos */
-    static final long serialVersionUID = -2737633670295539140L;
+    public void testGetFilename() throws Exception
+    {
+        /*
+         assertEquals(style.getFilename("test"),
+         "S:\\Joe\\Devt\\DoE" + File.separator +
+         "lib" + File.separator +
+         "styles" + File.separator +
+         "test" + File.separator +
+         "test.xsl");
+         */
+    }
 }

@@ -33,7 +33,6 @@ public interface Filter
      * Converter from plain (encoded) text to OSIS data
      * @param ele The element to which to add the data encoded in <code>plain</code>
      * @param plain The encoded text
-     * @return Verse OSIS data
      */
     public void toOSIS(Element ele, String plain) throws FilterException;
 }

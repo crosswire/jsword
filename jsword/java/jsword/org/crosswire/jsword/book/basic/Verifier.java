@@ -57,7 +57,7 @@ public class Verifier
      * The first Bible that we are checking, this is supposed to be the
      * more accurate of the 2 Bibles, so we use this as a source of the
      * words to check.
-     * @param bible1 A Bible to check
+     * @param book1 A Bible to check
      */
     public final void setBible1(Book book1)
     {
@@ -77,7 +77,7 @@ public class Verifier
      * The second Bible that we are checking, this is supposed to be the
      * less accurate, or more recent of the 2 Bibles, so we use this in
      * firing ProgressEvents.
-     * @param bible2 A Bible to check
+     * @param book2 A Bible to check
      */
     public final void setBible2(Book book2)
     {

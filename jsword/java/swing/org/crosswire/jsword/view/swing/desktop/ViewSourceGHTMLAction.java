@@ -1,15 +1,16 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
 
 import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.StringSAXEventProvider;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.util.Style;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**
  * View the HTML source to the current window.
@@ -61,10 +62,10 @@ public class ViewSourceGHTMLAction extends DesktopAbstractAction
             String osis = da.getOSISSource();
             Key ref = da.getKey();
 
-            SAXEventProvider provider = new StringSAXEventProvider(osis);
-
-            String html = style.applyStyleToString(provider, "simple.xsl");
-
+            SAXEventProvider osissep = new StringSAXEventProvider(osis);
+            SAXEventProvider htmlsep = style.convert(osissep);
+            String html = XMLUtil.writeToString(htmlsep);
+            
             TextViewPanel viewer = new TextViewPanel(html, "Generated source to " + ref.getName());
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop());
@@ -78,5 +79,5 @@ public class ViewSourceGHTMLAction extends DesktopAbstractAction
     /**
      * The stylizer
      */
-    private Style style = new Style("swing");
+    private Converter style = new SimpleSwingConverter();
 }

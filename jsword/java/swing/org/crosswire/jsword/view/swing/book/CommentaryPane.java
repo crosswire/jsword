@@ -15,8 +15,10 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
@@ -26,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.util.Style;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**
  * Builds a set of tabs from the list of Books returned by a filtered list
@@ -132,9 +134,10 @@ public class CommentaryPane extends JPanel implements DisplayArea
             BookMetaData bmd = (BookMetaData) cmds.get(index);
 
             BookData bdata = bmd.getBook().getData(ref);
-            SAXEventProvider provider = bdata.getSAXEventProvider();
-            String text = style.applyStyleToString(provider, "simple.xsl");
-                
+            SAXEventProvider osissep = bdata.getSAXEventProvider();
+            SAXEventProvider htmlsep = style.convert(osissep);
+            String text = XMLUtil.writeToString(htmlsep);
+
             txtdisplay.setText(text);
             txtdisplay.select(0, 0);
         }
@@ -265,7 +268,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
     /**
      * The stylizer
      */
-    protected Style style = new Style("swing");
+    protected Converter style = new SimpleSwingConverter();
 
     /**
      * To get us just the Commentaries
@@ -286,4 +289,3 @@ public class CommentaryPane extends JPanel implements DisplayArea
     protected JEditorPane txtdisplay = new JEditorPane();
     private JScrollPane scrdisplay = new JScrollPane();
 }
-

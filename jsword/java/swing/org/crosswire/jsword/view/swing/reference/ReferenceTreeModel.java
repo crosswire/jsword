@@ -473,7 +473,7 @@ public class ReferenceTreeModel implements TreeModel
         }
     }
 
-    /**
+    /*
      * Notifies all listeners that have registered interest for
      * notification on this event type.  The event instance 
      * is lazily created using the parameters passed into 
@@ -482,7 +482,7 @@ public class ReferenceTreeModel implements TreeModel
      * @param source the node where the tree model has changed
      * @param path the path to the root node
      * @see EventListenerList
-     */
+     *
     private void fireTreeStructureChanged(Object source, TreePath path)
     {
         // Guaranteed to return a non-null array

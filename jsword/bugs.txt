@@ -2,20 +2,12 @@
 This file is our equivalent of bugzilla for the time being.
 
 GUI
-- tidy up options dialog
 - better display management, font selections etc
-- Get better HTML renderer (see: http://java.sun.com/products/jfc/tsc/articles/tictactoe/index.html)
-
 - how do we work with verse lists/bookmarks?
 - implement load/save
-- implement print
-
-- merge dict/comment to form reference pane
 - Select first dict entry when picking new dict
 
 Modules
-- background sword (+others?) module loading/discovery
-- Locale/font support
 
 Other
 - change name of swing packages
@@ -32,6 +24,9 @@ GUI
 - help screens
 - recreate module creator/tester
 - install manager
+- merge dict/comment to form reference pane
+- implement print
+- Get better HTML renderer (see: http://java.sun.com/products/jfc/tsc/articles/tictactoe/index.html)
 
 Modules
 - Sword GenBook

@@ -111,8 +111,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
     private Map ids = new HashMap();
 
     /**
-     * @param id
-     * @param bmd
+     * 
      */
     public void registerID(String id, BookMetaData bmd)
     {
@@ -120,8 +119,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
     }
 
     /**
-     * @param data
-     * @return
+     * 
      */
     public String getID(BookMetaData bmd)
     {

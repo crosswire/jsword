@@ -68,7 +68,14 @@ public class OptionsField implements Field
      */
     public String getValue()
     {
-        return (String) combo.getSelectedItem();
+        String reply = (String) combo.getSelectedItem();
+
+        if (reply == null)
+        {
+            reply = "";
+        }
+
+        return reply;
     }
 
     /**

@@ -3,7 +3,6 @@ package org.crosswire.jsword.view.swing.book;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +22,7 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
+import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -104,7 +104,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the passage being viewed
      */
-    public synchronized void setPassage(Passage ref) throws IOException, BookException, TransformerException
+    public synchronized void setPassage(Passage ref) throws BookException, SAXException, TransformerException
     {
         this.whole = ref;
 
@@ -219,7 +219,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Tab creation helper
      */
-    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws IOException, BookException, TransformerException
+    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws BookException, SAXException, TransformerException
     {
         InnerDisplayPane idp = new InnerDisplayPane();
         idp.setBook(book);

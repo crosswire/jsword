@@ -1,11 +1,17 @@
+package org.crosswire.jsword.view.web;
 
-package org.crosswire.jsword.map.model;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import java.io.Serializable;
+import javax.xml.transform.TransformerException;
+
+import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.xml.Converter;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.TransformingSAXEventProvider;
 
 /**
- * A Position is simply an array of floats that specify a place for a
- * Node to be.
+ * Turn XML from a Bible into HTML according to a Display style.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,36 +34,21 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Position implements Serializable
+public class SimpleWebConverter implements Converter
 {
-    /**
-     * Basic constructor
+    /* (non-Javadoc)
+     * @see org.crosswire.common.xml.Converter#convert(org.crosswire.common.xml.SAXEventProvider)
      */
-    public Position(float[] pos)
+    public SAXEventProvider convert(SAXEventProvider xmlsep) throws TransformerException
     {
-        this.pos = pos;
+        try
+        {
+            URL xslurl = ResourceUtil.getResource("xsl/web/simple.xsl");
+            return new TransformingSAXEventProvider(xslurl, xmlsep);
+        }
+        catch (MalformedURLException ex)
+        {
+            throw new TransformerException(ex);
+        }
     }
-
-    /**
-     * Accessor for the array of positions
-     * @return The array of positions
-     */
-    public float[] getPosition()
-    {
-        return pos;
-    }
-
-    /**
-     * Accessor for the array of positions
-     */
-    public void setPosition(float[] pos)
-    {
-        this.pos = pos;
-    }
-
-    /** The array of floats */
-    protected float[] pos;
-
-    /** Serialization ID - a serialization of pos */
-    static final long serialVersionUID = -2737633670295539140L;
 }

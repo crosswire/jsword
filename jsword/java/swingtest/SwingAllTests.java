@@ -1,11 +1,11 @@
+// package default;
 
-package org.crosswire.jsword.map.model;
-
-import java.io.Serializable;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
- * A Position is simply an array of floats that specify a place for a
- * Node to be.
+ * JUnit Test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,36 +28,19 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Position implements Serializable
+public class SwingAllTests extends TestCase
 {
-    /**
-     * Basic constructor
-     */
-    public Position(float[] pos)
+    public SwingAllTests(String s)
     {
-        this.pos = pos;
+        super(s);
     }
 
-    /**
-     * Accessor for the array of positions
-     * @return The array of positions
-     */
-    public float[] getPosition()
+    public static Test suite()
     {
-        return pos;
+        TestSuite suite = new TestSuite();
+
+        suite.addTestSuite(org.crosswire.jsword.view.swing.util.SimpleSwingConverterTest.class);
+
+        return suite;
     }
-
-    /**
-     * Accessor for the array of positions
-     */
-    public void setPosition(float[] pos)
-    {
-        this.pos = pos;
-    }
-
-    /** The array of floats */
-    protected float[] pos;
-
-    /** Serialization ID - a serialization of pos */
-    static final long serialVersionUID = -2737633670295539140L;
 }

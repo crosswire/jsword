@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import junit.framework.TestCase;
@@ -113,12 +112,12 @@ public class VerseTest extends TestCase
         assertEquals(gen11, new Verse("gen 1  v  1 "));
         assertEquals(gen11, new Verse(" gen 1  v  1 "));
         /* See note in Verse.tokenize()
-        assertEquals(gen11, new Verse("gen ch1 1"));
-        assertEquals(gen11, new Verse("gen ch 1 1"));
-        assertEquals(gen11, new Verse("gen ch  1 1"));
-        assertEquals(gen11, new Verse("gen ch1v1"));
-        assertEquals(gen11, new Verse(" gen ch 1 v 1 "));
-        */
+         assertEquals(gen11, new Verse("gen ch1 1"));
+         assertEquals(gen11, new Verse("gen ch 1 1"));
+         assertEquals(gen11, new Verse("gen ch  1 1"));
+         assertEquals(gen11, new Verse("gen ch1v1"));
+         assertEquals(gen11, new Verse(" gen ch 1 v 1 "));
+         */
         assertEquals(gen11, new Verse(" gen 1 1 "));
         assertEquals(pro11, new Verse("proverbs 1v1"));
         //assertEquals(ch111, new Verse("1chronicles ch1 1"));
@@ -144,20 +143,62 @@ public class VerseTest extends TestCase
         assertEquals(jude9, new Verse("  Jude  ff  "));
         assertEquals(new Verse("Deu 1:1"), new Verse("Dt 1:1"));
         assertEquals(new Verse("Mat 1:1"), new Verse("Mt 1:1"));
-        try { new Verse("gen 1 1 1"); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse("gen.1.1.1"); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse("gen.1.1:1"); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse("gen 1 1 1", gen11); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse("gen 1 1 1", gen11); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse("gen 1 1 1", gen11); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(null); fail(); }
-        catch (Exception ex) { }
+        try
+        {
+            new Verse("gen 1 1 1");
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse("gen.1.1.1");
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse("gen.1.1:1");
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse("gen 1 1 1", gen11);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse("gen 1 1 1", gen11);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse("gen 1 1 1", gen11);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(null);
+            fail();
+        }
+        catch (Exception ex)
+        {
+        }
         assertEquals(jude1, new Verse("jude 1"));
         assertEquals(jude2, new Verse("jude 2"));
         assertEquals(jude9, new Verse("jude 25"));
@@ -200,12 +241,30 @@ public class VerseTest extends TestCase
         assertEquals(rev99, new Verse(" 22 21 ", rev11));
         assertEquals(gen11, new Verse("", gen11));
         assertEquals(jude2, new Verse("2", jude1));
-        try { new Verse("2", null); fail(); }
-        catch (NullPointerException ex) { }
-        try { new Verse(null, gen11); fail(); }
-        catch (NullPointerException ex) { }
-        try { new Verse(null, null); fail(); }
-        catch (NullPointerException ex) { }
+        try
+        {
+            new Verse("2", null);
+            fail();
+        }
+        catch (NullPointerException ex)
+        {
+        }
+        try
+        {
+            new Verse(null, gen11);
+            fail();
+        }
+        catch (NullPointerException ex)
+        {
+        }
+        try
+        {
+            new Verse(null, null);
+            fail();
+        }
+        catch (NullPointerException ex)
+        {
+        }
     }
 
     public void testNewViaIntIntIntBoolean() throws Exception
@@ -221,37 +280,109 @@ public class VerseTest extends TestCase
         assertEquals(rev99, new Verse(999999, 0, 0, true));
         assertEquals(rev99, new Verse(0, 999999, 0, true));
         assertEquals(rev99, new Verse(0, 0, 999999, true));
-        try { new Verse(0, 1, 1); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(1, 0, 1); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(1, 1, 0); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(1, 1, 32); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(1, 51, 1); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(67, 1, 1); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { new Verse(0, 1, 1, false); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new Verse(1, 0, 1, false); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new Verse(1, 1, 0, false); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new Verse(1, 1, 32, false); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new Verse(1, 51, 1, false); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new Verse(67, 1, 1, false); fail(); }
-        catch (IllegalArgumentException ex) { }
+        try
+        {
+            new Verse(0, 1, 1);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 0, 1);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 1, 0);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 1, 32);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 51, 1);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(67, 1, 1);
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            new Verse(0, 1, 1, false);
+            fail();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 0, 1, false);
+            fail();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 1, 0, false);
+            fail();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 1, 32, false);
+            fail();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
+        try
+        {
+            new Verse(1, 51, 1, false);
+            fail();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
+        try
+        {
+            new Verse(67, 1, 1, false);
+            fail();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
     }
 
     public void testClone() throws Exception
     {
-        assertEquals(gen11,  gen11.clone());
         assertEquals(gen11, gen11.clone());
-        assertEquals(rev99,  rev99.clone());
+        assertEquals(gen11, gen11.clone());
+        assertEquals(rev99, rev99.clone());
         assertEquals(rev99, rev99.clone());
     }
 
@@ -287,7 +418,7 @@ public class VerseTest extends TestCase
         assertEquals(gen11.subtract(gen11), 0);
         assertEquals(gen11.subtract(gen12), -1);
         Verse last = (Verse) gen11.clone();
-        for (int i=0; i<BibleInfo.versesInBible(); i+=99)
+        for (int i = 0; i < BibleInfo.versesInBible(); i += 99)
         {
             Verse next = last.add(i);
             assertEquals(next.subtract(last), i);
@@ -358,15 +489,15 @@ public class VerseTest extends TestCase
 
     public void testGetRefArray() throws Exception
     {
-        assertEquals(BibleInfo.verseCount(gen11.getRefArray(), new int[]{1,1,1}), 1);
-        assertEquals(BibleInfo.verseCount(gen12.getRefArray(), new int[]{1,1,2}), 1);
-        assertEquals(BibleInfo.verseCount(gen21.getRefArray(), new int[]{1,2,1}), 1);
-        assertEquals(BibleInfo.verseCount(gen22.getRefArray(), new int[]{1,2,2}), 1);
-        assertEquals(BibleInfo.verseCount(rev11.getRefArray(), new int[]{66,1,1}), 1);
-        assertEquals(BibleInfo.verseCount(rev12.getRefArray(), new int[]{66,1,2}), 1);
-        assertEquals(BibleInfo.verseCount(rev21.getRefArray(), new int[]{66,2,1}), 1);
-        assertEquals(BibleInfo.verseCount(rev22.getRefArray(), new int[]{66,2,2}), 1);
-        assertEquals(BibleInfo.verseCount(rev99.getRefArray(), new int[]{66,22,21}), 1);
+        assertEquals(BibleInfo.verseCount(gen11.getRefArray(), new int[]{1, 1, 1}), 1);
+        assertEquals(BibleInfo.verseCount(gen12.getRefArray(), new int[]{1, 1, 2}), 1);
+        assertEquals(BibleInfo.verseCount(gen21.getRefArray(), new int[]{1, 2, 1}), 1);
+        assertEquals(BibleInfo.verseCount(gen22.getRefArray(), new int[]{1, 2, 2}), 1);
+        assertEquals(BibleInfo.verseCount(rev11.getRefArray(), new int[]{66, 1, 1}), 1);
+        assertEquals(BibleInfo.verseCount(rev12.getRefArray(), new int[]{66, 1, 2}), 1);
+        assertEquals(BibleInfo.verseCount(rev21.getRefArray(), new int[]{66, 2, 1}), 1);
+        assertEquals(BibleInfo.verseCount(rev22.getRefArray(), new int[]{66, 2, 2}), 1);
+        assertEquals(BibleInfo.verseCount(rev99.getRefArray(), new int[]{66, 22, 21}), 1);
     }
 
     public void testGetOrdinal() throws Exception
@@ -392,12 +523,30 @@ public class VerseTest extends TestCase
         assertEquals(Verse.getAccuracy(""), PassageConstants.ACCURACY_NONE);
         assertEquals(Verse.getAccuracy("1:1"), PassageConstants.ACCURACY_CHAPTER_VERSE);
         assertEquals(Verse.getAccuracy("1"), PassageConstants.ACCURACY_NUMBER_ONLY);
-        try { Verse.getAccuracy("complete and utter rubbish"); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { Verse.getAccuracy("b 1 1"); fail(); }
-        catch (NoSuchVerseException ex) { }
-        try { Verse.getAccuracy(null); fail(); }
-        catch (NullPointerException ex) { }
+        try
+        {
+            Verse.getAccuracy("complete and utter rubbish");
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            Verse.getAccuracy("b 1 1");
+            fail();
+        }
+        catch (NoSuchVerseException ex)
+        {
+        }
+        try
+        {
+            Verse.getAccuracy(null);
+            fail();
+        }
+        catch (NullPointerException ex)
+        {
+        }
     }
 
     public void testIsStartEndOfChapterBook() throws Exception

@@ -1254,8 +1254,8 @@ public abstract class AbstractPassage implements Passage
      * come out equal first then bitwise is preferred, then distinct,
      * then ranged, because I imagine that for speed of de-serialization
      * this is the sensible order. I've not tested it though.
-     * @throws IOException if the read fails
      * @param out The stream to write our state to
+     * @throws IOException if the read fails
      */
     protected void writeObjectSupport(ObjectOutputStream out) throws IOException
     {
@@ -1322,9 +1322,9 @@ public abstract class AbstractPassage implements Passage
 
     /**
      * Write out the object to the given ObjectOutputStream
+     * @param in The stream to read our state from
      * @throws IOException if the read fails
      * @throws ClassNotFoundException If the read data is incorrect
-     * @param in The stream to read our state from
      */
     protected void readObjectSupport(ObjectInputStream in) throws IOException, ClassNotFoundException
     {

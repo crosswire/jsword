@@ -67,7 +67,6 @@ public class DocumentWriter extends Writer
 
     /**
      * Accessor for the Document that we are updating
-     * @return The new document
      */
     public void setDocument(Document doc)
     {

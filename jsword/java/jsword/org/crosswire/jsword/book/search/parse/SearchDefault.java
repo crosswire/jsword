@@ -48,7 +48,6 @@ public class SearchDefault
 
     /**
      * The Search Hashtable
-     * @return The default search hash
      */
     public static void setMap(Map value)
     {

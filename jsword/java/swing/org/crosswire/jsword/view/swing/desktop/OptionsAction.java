@@ -15,8 +15,11 @@ import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BooksEvent;
+import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.book.readings.ReadingsBookDriver;
 import org.crosswire.jsword.util.Project;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 
@@ -69,6 +72,7 @@ public class OptionsAction extends DesktopAbstractAction
             // I'm not 100% sure that this will update the dialog with the
             // current list of Bibles, but it should.
             fillChoiceFactory();
+            Books.addBooksListener(new CustomBooksListener());
 
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
             URL config_url = Project.instance().getWritablePropertiesURL("desktop");
@@ -81,7 +85,7 @@ public class OptionsAction extends DesktopAbstractAction
     }
 
     /**
-     * 
+     * Load the config.xml file
      */
     public void createConfig() throws IOException, JDOMException
     {
@@ -93,7 +97,7 @@ public class OptionsAction extends DesktopAbstractAction
     }
 
     /**
-     * 
+     * Load the desktop.properties file
      */
     public void loadConfig() throws IOException
     {
@@ -102,9 +106,26 @@ public class OptionsAction extends DesktopAbstractAction
     }
 
     /**
-     * 
+     * Setup the choices so that the options dialog knows what there is to
+     * select from.
      */
     private static void fillChoiceFactory()
+    {
+        refreshBooks();
+
+        // Create the array of readings sets
+        ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
+
+        // The choice of XSL stylesheets
+        SimpleSwingConverter style = new SimpleSwingConverter();
+        String[] names = style.getStyles();
+        ChoiceFactory.getDataMap().put("swing-styles", names);
+    }
+
+    /**
+     * Setup the book choices
+     */
+    protected static void refreshBooks()
     {
         // Create the array of Bibles
         String[] bnames = getFullNameArray(BookFilters.getBibles());
@@ -117,28 +138,49 @@ public class OptionsAction extends DesktopAbstractAction
         // Create the array of Dictionaries
         String[] dnames = getFullNameArray(BookFilters.getDictionaries());
         ChoiceFactory.getDataMap().put("dictionarynames", dnames);
-
-        // Create the array of readings sets
-        ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
     }
 
     /**
-     * 
+     * Allow us to keep up with changes to the known books
+     */
+    private class CustomBooksListener implements BooksListener
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
+         */
+        public void bookAdded(BooksEvent ev)
+        {
+            refreshBooks();
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
+         */
+        public void bookRemoved(BooksEvent ev)
+        {
+            refreshBooks();
+        }
+    }
+
+    /**
+     * Convert a filter into an array of names of Books that pass the filter.
      */
     private static String[] getFullNameArray(BookFilter filter)
     {
         List bmds = Books.getBooks(filter);
         List names = new ArrayList();
+
         for (Iterator it = bmds.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();
             names.add(bmd.getFullName());
         }
+
         return (String[]) names.toArray(new String[names.size()]);
     }
 
     /**
-     * 
+     * The configuration engine
      */
     private Config config = null;
 }

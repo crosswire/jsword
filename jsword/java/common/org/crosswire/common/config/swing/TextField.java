@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import javax.swing.JComponent;
@@ -57,7 +56,14 @@ public class TextField extends JTextField implements Field
      */
     public void setValue(String value)
     {
-        setText(value);
+        if (value == null)
+        {
+            setText("");
+        }
+        else
+        {
+            setText(value);
+        }
     }
 
     /**
@@ -69,4 +75,3 @@ public class TextField extends JTextField implements Field
         return this;
     }
 }
-

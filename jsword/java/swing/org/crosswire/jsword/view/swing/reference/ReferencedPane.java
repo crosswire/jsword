@@ -23,8 +23,10 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
@@ -33,11 +35,11 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.util.Style;
 import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
 import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 import org.crosswire.jsword.view.swing.book.KeyTreeNode;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.
@@ -306,9 +308,10 @@ public class ReferencedPane extends JPanel implements DisplayArea
             if (key != null)
             {
                 BookData bdata = book.getData(key);
-                SAXEventProvider provider = bdata.getSAXEventProvider();
-                String text = style.applyStyleToString(provider, "simple.xsl");
-    
+                SAXEventProvider osissep = bdata.getSAXEventProvider();
+                SAXEventProvider htmlsep = style.convert(osissep);
+                String text = XMLUtil.writeToString(htmlsep);
+
                 txtDisplay.setText(text);
                 txtDisplay.select(0, 0);
             }
@@ -322,7 +325,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
     /**
      * The stylizer
      */
-    protected Style style = new Style("swing");
+    protected Converter style = new SimpleSwingConverter();
 
     private BookFilter filter = null;
     private BooksComboBoxModel mdlBooks = new BooksComboBoxModel();

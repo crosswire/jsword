@@ -38,7 +38,6 @@ public interface Choice
 {
     /**
      * String value to associate with the name (key)
-     * @return value of this Choice
      */
     public void init(Element option) throws StartupException;
 

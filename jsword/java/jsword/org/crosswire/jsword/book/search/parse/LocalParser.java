@@ -265,7 +265,6 @@ public class LocalParser implements Parser
      * Accessor for the available SearchWords. This is probably
      * the same as from Options.getSearchHashtable() but just in
      * case anyone has been playing around with it...
-     * @return The SearchWord Hashtable
      */
     protected void setSearchMap(Map commands)
     {

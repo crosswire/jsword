@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.web;
 
 import java.io.IOException;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Defaults;
@@ -21,7 +21,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.util.Style;
 
 /**
  * A quick demo of how easy it is to write new front-ends to JSword.
@@ -119,8 +118,9 @@ public class DemoServlet extends HttpServlet
                 }
 
                 BookData data = book.getData(ref);
-                SAXEventProvider provider = data.getSAXEventProvider();
-                String text = style.applyStyleToString(provider, "simple.xsl");
+                SAXEventProvider osissep = data.getSAXEventProvider();
+                SAXEventProvider htmlsep = style.convert(osissep);
+                String text = XMLUtil.writeToString(htmlsep);
 
                 request.setAttribute("reply", text);
             }
@@ -145,8 +145,10 @@ public class DemoServlet extends HttpServlet
     private static int tally_trim = 50;
     private static int page_size = 150;
     private Book book;
-    private Style style = new Style("web");
+    private SimpleWebConverter style = new SimpleWebConverter();
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(DemoServlet.class);
 }

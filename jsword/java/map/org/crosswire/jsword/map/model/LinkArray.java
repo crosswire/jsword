@@ -57,7 +57,7 @@ public class LinkArray implements Serializable
 {
     /**
      * Basic constructor
-     * @param bible The source of Bible data
+     * @param book The source of Bible data
      */
     public LinkArray(Book book) throws NoSuchVerseException
     {

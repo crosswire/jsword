@@ -215,6 +215,16 @@ public class Config
      */
     public void setLocal(String name, String value)
     {
+        if (name == null)
+        {
+            throw new NullPointerException("name");
+        }
+
+        if (value == null)
+        {
+            throw new NullPointerException("value");
+        }
+
         local.put(name, value);
     }
 
@@ -498,21 +508,33 @@ public class Config
         }
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(Config.class);
 
-    /** The name for dialog boxes and properties files */
+    /**
+     * The name for dialog boxes and properties files
+     */
     protected String title;
 
-    /** The array that stores the keys */
+    /**
+     * The array that stores the keys
+     */
     protected RobustList keys = new RobustList();
 
-    /** The array that stores the models */
+    /**
+     * The array that stores the models
+     */
     protected RobustList models = new RobustList();
 
-    /** The set of local values */
+    /**
+     * The set of local values
+     */
     protected Properties local = new Properties();
 
-    /** The list of listeners */
+    /**
+     * The list of listeners
+     */
     protected EventListenerList listener_list = new EventListenerList();
 }

@@ -132,7 +132,6 @@ public class Map implements Serializable
     /**
      * Get the position of a node by the ordinal number of the verse that
      * it contains
-     * @return The requested node position
      */
     public void setPosition(int book, int chapter, float[] pos)
     {
@@ -146,7 +145,6 @@ public class Map implements Serializable
      * it contains
      * @param idx The index into the position array for the given verse
      * @param f The new position
-     * @return The requested node position
      */
     public void setPositionDimension(int book, int chapter, int idx, float f)
     {
