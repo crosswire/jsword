@@ -10,6 +10,9 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.passage.Verse;
 
 /**
  * A utility class for loading and representing Sword module configs.
@@ -288,7 +291,13 @@ public class SwordConfig
                 public Book createBook() throws BookException
                 {
                     // PENDING(joe): support DRIVER_Z_COM
-                    return null;
+                    return new SwordCommentary(this, SwordConfig.this)
+                    {
+                        public String getText(Verse verse) throws BookException
+                        {
+                            return "";
+                        }
+                    };
                 }
             };
     
@@ -299,7 +308,13 @@ public class SwordConfig
                 public Book createBook() throws BookException
                 {
                     // PENDING(joe): support DRIVER_HREF_COM
-                    return null;
+                    return new SwordCommentary(this, SwordConfig.this)
+                    {
+                        public String getText(Verse verse) throws BookException
+                        {
+                            return "";
+                        }
+                    };
                 }
             };
 
@@ -310,7 +325,13 @@ public class SwordConfig
                 public Book createBook() throws BookException
                 {
                     // PENDING(joe): support DRIVER_RAW_FILES
-                    return null;
+                    return new SwordCommentary(this, SwordConfig.this)
+                    {
+                        public String getText(Verse verse) throws BookException
+                        {
+                            return "";
+                        }
+                    };
                 }
             };
 
@@ -321,7 +342,13 @@ public class SwordConfig
                 public Book createBook() throws BookException
                 {
                     // PENDING(joe): support DRIVER_RAW_LD
-                    return null;
+                    return new SwordDictionary(this)
+                    {
+                        public BookData getData(Key ref) throws BookException
+                        {
+                            return null;
+                        }
+                    };
                 }
             };
 
@@ -332,7 +359,13 @@ public class SwordConfig
                 public Book createBook() throws BookException
                 {
                     // PENDING(joe): support DRIVER_RAW_LD4
-                    return null;
+                    return new SwordDictionary(this)
+                    {
+                        public BookData getData(Key ref) throws BookException
+                        {
+                            return null;
+                        }
+                    };
                 }
             };
     
@@ -343,7 +376,13 @@ public class SwordConfig
                 public Book createBook() throws BookException
                 {
                     // PENDING(joe): support DRIVER_Z_LD
-                    return null;
+                    return new SwordDictionary(this)
+                    {
+                        public BookData getData(Key ref) throws BookException
+                        {
+                            return null;
+                        }
+                    };
                 }
             };
 
