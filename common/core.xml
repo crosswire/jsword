@@ -225,7 +225,6 @@
   <target name="prepare.dependency"
           if="dependency.jar"
           description="Prepare this build from the dependency.">
-    <mkdir dir="${target.jar}"/>
     <copy todir="${target.jar}" flatten="true">
       <fileset dir="${dependency.jar}" includes="*.jar"/>
     </copy>
