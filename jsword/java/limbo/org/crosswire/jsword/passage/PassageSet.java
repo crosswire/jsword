@@ -224,7 +224,7 @@ public class PassageSet implements SortedSet
      */
     public boolean retainAll(Collection col)
     {
-        Passage temp = keyf.createPassage();
+        Passage temp = (Passage) keyf.createEmptyKeyList();
 
         for (Iterator it = col.iterator(); it.hasNext(); )
         {
@@ -320,7 +320,7 @@ public class PassageSet implements SortedSet
     /**
      * How we create Passages
      */
-    private static PassageKeyFactory keyf = new PassageKeyFactory();
+    private static KeyFactory keyf = PassageKeyFactory.instance();
 
     /**
      * What restrictions are we using which dividing the passage up

@@ -54,57 +54,43 @@ public class OSISFilter implements Filter
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse (1) original failed: "+ex1.getMessage()); //$NON-NLS-1$
-            DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain)); //$NON-NLS-1$
+            DataPolice.report("parse (1) original failed: " + ex1.getMessage()); //$NON-NLS-1$
+            DataPolice.report("  while parsing: " + FilterUtil.forOutput(plain)); //$NON-NLS-1$
 
-            // Attempt to fix broken characters, that doesn't break xml strings
-            // in any way
-            String cleaned = XMLUtil.cleanInvalidCharacters(plain);
+            // Attempt to fix broken entities, that could be a low damage
+            // way to fix a broken input string
+            String cropped = XMLUtil.cleanAllEntities(plain);
 
             try
             {
-                parse(ele, cleaned);
+                parse(ele, cropped);
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse (2) original failed: "+ex1.getMessage()); //$NON-NLS-1$
-                DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned)); //$NON-NLS-1$
+                DataPolice.report("parse (2) cropped failed: " + ex2.getMessage()); //$NON-NLS-1$
+                DataPolice.report("  while parsing: " + FilterUtil.forOutput(cropped)); //$NON-NLS-1$
 
-                // Attempt to fix broken entities, that could be a low damage
-                // way to fix a broken input string
-                String cropped = XMLUtil.cleanAllEntities(cleaned);
+                // So just try to strip out all XML looking things
+                String shawn = XMLUtil.cleanAllTags(cropped);
 
                 try
                 {
-                    parse(ele, cropped);
+                    parse(ele, shawn);
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse (3) cropped failed: "+ex3.getMessage()); //$NON-NLS-1$
-                    DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped)); //$NON-NLS-1$
-
-                    // So just try to strip out all XML looking things
-                    String shawn = XMLUtil.cleanAllTags(cropped);
+                    DataPolice.report("parse (3) shawn failed: " + ex3.getMessage()); //$NON-NLS-1$
+                    DataPolice.report("  while parsing: " + FilterUtil.forOutput(shawn)); //$NON-NLS-1$
 
                     try
                     {
-                        parse(ele, shawn);
+                        Element p = OSISUtil.factory().createP();
+                        ele.addContent(p);
+                        p.addContent(plain);
                     }
                     catch (Exception ex4)
                     {
-                        DataPolice.report("parse (4) shawn failed: "+ex4.getMessage()); //$NON-NLS-1$
-                        DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn)); //$NON-NLS-1$
-
-                        try
-                        {
-                            Element p = OSISUtil.factory().createP();
-                            ele.addContent(p);
-                            p.addContent(plain);
-                        }
-                        catch (Exception ex5)
-                        {
-                            log.warn("no way. say it ain't so!", ex5); //$NON-NLS-1$
-                        }
+                        log.warn("no way. say it ain't so!", ex4); //$NON-NLS-1$
                     }
                 }
             }

@@ -7,11 +7,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.stub.StubBook;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * JUnit Test.
@@ -51,14 +47,15 @@ public class BooksTest extends TestCase
 
     protected Class[] ignorebibles =
     {
-        StubBook.class,
     };
 
     protected void setUp() throws Exception
     {
         List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
-        bibles = new Book[lbmds.size()];
-        bmds = new BookMetaData[lbmds.size()];
+        int numBibles = lbmds.size();
+        bibles = new Book[numBibles];
+        bmds = new BookMetaData[numBibles];
+        gen11 = new Key[numBibles];
 
         int i = 0;
         for (Iterator it = lbmds.iterator(); it.hasNext();)
@@ -155,6 +152,7 @@ public class BooksTest extends TestCase
         }
     }
 
+    /* FIXME: These are only valid if all bibles are English
     public void testGetFind() throws Exception
     {
         // This only checks that find() does something vaguely sensible
@@ -167,6 +165,7 @@ public class BooksTest extends TestCase
         }
     }
 
+	FIXME: These are only valid if all bibles are English
     public void testFindPassage() throws Exception
     {
         for (int i = 0; i < bibles.length; i++)
@@ -178,6 +177,7 @@ public class BooksTest extends TestCase
         }
     }
 
+	FIXME: These are only valid if all bibles are English
     public void testFindPassage2() throws Exception
     {
         for (int i = 0; i < bibles.length; i++)
@@ -242,8 +242,8 @@ public class BooksTest extends TestCase
             assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3")); //$NON-NLS-1$
         }
     }
-
-    /*
+	*/
+	/*
     public void testGetStartsWith() throws Exception
     {
         for (int i=0; i<bibles.length; i++)

@@ -1,7 +1,5 @@
 package org.crosswire.jsword.book.search.parse;
 
-import java.util.Map;
-
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BookException;
@@ -48,13 +46,10 @@ public class ParserTest extends TestCase
 
     public void testSearch() throws Exception
     {
-        Map commands = LocalParser.getWordMap();
-
         // We shouldn't need a SearchableBible here because all of these should
         // fail before any searching is done.
         LocalParser engine = new LocalParser();
         engine.init(null);
-        engine.setSearchMap(commands);        
 
         //try { engine.search(new Search("moses aaron", false)); fail(); } catch (BookException ex) { }
         try { engine.search(new Search("(", false)); fail(); } catch (BookException ex) { } //$NON-NLS-1$

@@ -28,20 +28,6 @@ import junit.framework.TestCase;
  */
 public class XMLUtilTest extends TestCase
 {
-    public void testCleanInvalidCharacters()
-    {
-        assertNull(XMLUtil.cleanInvalidCharacters(null));
-
-        assertEquals("", XMLUtil.cleanInvalidCharacters("")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(" one two three four five ", XMLUtil.cleanInvalidCharacters(" one two three four five ")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("!\"$%^&*() -=_+", XMLUtil.cleanInvalidCharacters("!\"$%^&*() -=_+")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("{}[]:@~;'#<>?,./", XMLUtil.cleanInvalidCharacters("{}[]:@~;\'#<>?,./")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("ONETWOTHREEZZ", XMLUtil.cleanInvalidCharacters("ONETWOTHREEZZ")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("1234567890", XMLUtil.cleanInvalidCharacters("1234567890")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("\u00a0\u20ac", XMLUtil.cleanInvalidCharacters("\u00a0\u20ac")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("nul-:bel-:tab-\t:cr-\r:lf-\n:last-:space-\u0020:", XMLUtil.cleanInvalidCharacters("nul-\u0000:bel-\u0007:tab-\t:cr-\r:lf-\n:last-\u001f:space-\u0020:")); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-    
     public void testCleanAllEntities()
     {
         assertNull(XMLUtil.cleanAllEntities(null));

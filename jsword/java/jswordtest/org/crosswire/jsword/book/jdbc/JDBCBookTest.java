@@ -2,7 +2,6 @@
 package org.crosswire.jsword.book.jdbc;
 
 import org.crosswire.jsword.book.BookParentTst;
-import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * JUnit Test.
@@ -37,6 +36,7 @@ public class JDBCBookTest extends BookParentTst
 
     public void testVerseOrdinal() throws Exception
     {
+        /* LATER: JDBCBook is in limbo
         for (int i=0; i<bibles.length; i++)
         {
             if (!(bibles[i] instanceof JDBCBook))
@@ -57,5 +57,6 @@ public class JDBCBookTest extends BookParentTst
                 //   for (int v=1; v<=BibleInfo.versesIn(b, c); v++)
             }
         }
+        */
     }
 }

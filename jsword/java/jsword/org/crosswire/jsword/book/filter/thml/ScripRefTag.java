@@ -77,5 +77,5 @@ public class ScripRefTag implements Tag
     /**
      * To convert strings into Biblical keys
      */
-    protected KeyFactory keyf = new PassageKeyFactory();
+    protected KeyFactory keyf = PassageKeyFactory.instance();
 }

@@ -128,7 +128,7 @@ public class CustomTokenizer
             return CHAR_SPACE;
         }
 
-        if (commands.indexOf("" + sought) != -1) //$NON-NLS-1$
+        if (commands.indexOf(sought) != -1)
         {
             return CHAR_COMMAND;
         }

@@ -100,6 +100,11 @@ public class ConfigEntry extends Enum
     /**
      * single value string, unknown use
      */
+    public static final ConfigEntry COPYRIGHT = new ConfigEntry("Copyright"); //$NON-NLS-1$
+
+    /**
+     * single value string, unknown use
+     */
     public static final ConfigEntry COPYRIGHT_CONTACT_ADDRESS = new ConfigEntry("CopyrightContactAddress"); //$NON-NLS-1$
 
     /**

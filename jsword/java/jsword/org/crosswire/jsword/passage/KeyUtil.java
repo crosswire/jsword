@@ -3,7 +3,6 @@ package org.crosswire.jsword.passage;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.Book;
 
 /**
  * .
@@ -61,36 +60,16 @@ public class KeyUtil
     }
 
     /**
-     * Convert a VerseBase into a Key.
-     * @param base
-     * @param book
-     * @return
-     */
-    public static Key getKeyList(VerseBase base, Book book)
-    {
-        return base;
-        /*
-        Key list = book.createEmptyKeyList();
-        if (list instanceof Passage)
-        {
-            Passage ref = (Passage) list;
-            ref.add(base);
-        }
-        else
-        {
-            assert false;
-        }
-
-        return list;
-        */
-    }
-
-    /**
      * Not all keys represent verses, but we ought to be able to get something
      * close to a verse from anything that does verse like work.
      */
     public static Verse getVerse(Key key)
     {
+        if (key instanceof Verse)
+        {
+            return (Verse) key;
+        }
+
         if (key instanceof Passage)
         {
             Passage ref = getPassage(key);
@@ -100,7 +79,6 @@ public class KeyUtil
         try
         {
             Verse verse = new Verse(key.getName());
-            log.warn("Created verse from non Verse: "+key.getName()+" = "+verse.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             return verse;
         }
         catch (NoSuchVerseException ex)
@@ -127,23 +105,23 @@ public class KeyUtil
             return (Passage) key;
         }
     
+        Key ref = null;
         try
         {
-            Passage ref = keyf.createPassage(key.getName());
-            log.warn("Created passage from non Passage: "+key.getName()+" = "+ref.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return ref;
+            ref = keyf.getKey(key.getName());
         }
-        catch (NoSuchVerseException ex)
+        catch (NoSuchKeyException ex)
         {
             log.warn("Key can't be a passage: "+key.getName()); //$NON-NLS-1$
-            return keyf.createPassage();
+            ref = keyf.createEmptyKeyList();
         }
+        return (Passage) ref;
     }
 
     /**
      * How we create Passages
      */
-    private static PassageKeyFactory keyf = new PassageKeyFactory();
+    private static KeyFactory keyf = PassageKeyFactory.instance();
 
     /**
      *  The log stream

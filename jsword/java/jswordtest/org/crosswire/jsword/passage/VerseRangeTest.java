@@ -210,8 +210,6 @@ public class VerseRangeTest extends TestCase
     {
         assertEquals(gen11_1, new VerseRange(gen11));
         assertEquals(rev99_1, new VerseRange(rev99));
-        try { new VerseRange((Verse) null); fail(); }
-        catch (NullPointerException ex) { }
     }
 
     public void testNewViaVerseVerse() throws Exception
@@ -306,24 +304,6 @@ public class VerseRangeTest extends TestCase
         assertEquals(rev11_9, new VerseRange(rev99, 403, 1, PassageConstants.RESTRICT_NONE));
         assertEquals(rev99_9, new VerseRange(rev99, 403, 9, PassageConstants.RESTRICT_CHAPTER));
         assertEquals(rev11_9, new VerseRange(rev99, 403, 9, PassageConstants.RESTRICT_NONE));
-        try { new VerseRange((Verse) null, 0, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
-        catch (NullPointerException ex) { }
-        try { new VerseRange(gen11, -1, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, -1, PassageConstants.RESTRICT_CHAPTER); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange((Verse) null, 0, 0, PassageConstants.RESTRICT_NONE); fail(); }
-        catch (NullPointerException ex) { }
-        try { new VerseRange(gen11, -1, 0, PassageConstants.RESTRICT_NONE); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, -1, PassageConstants.RESTRICT_NONE); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, -1); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, 5); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, PassageConstants.RESTRICT_BOOK); fail(); }
-        catch (IllegalArgumentException ex) { }
     }
 
     public void testNewViaVerseRangeIntIntBoolean() throws Exception
@@ -398,24 +378,6 @@ public class VerseRangeTest extends TestCase
         assertEquals(rev11_9, new VerseRange(rev99_1, 403, 1, PassageConstants.RESTRICT_NONE));
         assertEquals(rev99_9, new VerseRange(rev99_1, 403, 9, PassageConstants.RESTRICT_CHAPTER));
         assertEquals(rev11_9, new VerseRange(rev99_1, 403, 9, PassageConstants.RESTRICT_NONE));
-        try { new VerseRange((VerseRange) null, 0, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
-        catch (NullPointerException ex) { }
-        try { new VerseRange(gen11_1, -1, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11_1, 0, -1, PassageConstants.RESTRICT_CHAPTER); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange((VerseRange) null, 0, 0, PassageConstants.RESTRICT_NONE); fail(); }
-        catch (NullPointerException ex) { }
-        try { new VerseRange(gen11_1, -1, 0, PassageConstants.RESTRICT_NONE); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11_1, 0, -1, PassageConstants.RESTRICT_NONE); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, -1); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, 5); fail(); }
-        catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, PassageConstants.RESTRICT_BOOK); fail(); }
-        catch (IllegalArgumentException ex) { }
     }
 
     public void testNewViaVerseRangeVerseRange() throws Exception

@@ -35,8 +35,8 @@ $ANT_HOME/bin/ant incremental $PROPERTIES
 
 echo "Building jsword-support"
 cd $JSWORD_HOME/../jsword-support
-$ANT_HOME/bin/ant cvsup $PROPERTIES
-$ANT_HOME/bin/ant incremental $PROPERTIES
+cvs -q up -d -P
+#$ANT_HOME/bin/ant incremental $PROPERTIES
 
 echo "Building jsword"
 cd $JSWORD_HOME/../jsword

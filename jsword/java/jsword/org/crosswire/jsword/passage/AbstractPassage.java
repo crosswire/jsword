@@ -178,6 +178,7 @@ public abstract class AbstractPassage implements Passage
             VerseRange range = (VerseRange) it.next();
             retcode.append(range.getName(current));
 
+            // FIXME: Potential bug. According to iterator contract hasNext and next must be paired.
             if (it.hasNext())
             {
                 retcode.append(PassageConstants.REF_PREF_DELIM);
@@ -805,8 +806,7 @@ public abstract class AbstractPassage implements Passage
      */
     public Key get(int index)
     {
-        Key key = KeyUtil.getKeyList(getVerseAt(index), null);
-        return key;
+        return getVerseAt(index);
     }
 
     /* (non-Javadoc)
@@ -1078,7 +1078,7 @@ public abstract class AbstractPassage implements Passage
      * @return The Verse array
      * @exception java.lang.ClassCastException If this is not a Verse or a VerseRange
      */
-    protected static Verse[] toVerseArray(Object base) throws ClassCastException
+    protected static Verse[] toVerseArray(VerseBase base) throws ClassCastException
     {
         assert base != null;
 

@@ -214,7 +214,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[0], "One"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three"); //$NON-NLS-1$
-        sa = SentanceUtil.stripPunctuation(new String[] { " 'One's' ,Two? !Three-Four\" " }); //$NON-NLS-1$
+        sa = SentanceUtil.stripPunctuation(new String[] { " 'One's' " , "Two?",  "!Three-Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One's"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$

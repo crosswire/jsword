@@ -36,7 +36,7 @@ public class PassageUtilTest extends TestCase
     /**
      * How we create Passages
      */
-    private static PassageKeyFactory keyf = new PassageKeyFactory();
+    private static KeyFactory keyf = PassageKeyFactory.instance();
 
     protected void setUp()
     {
@@ -263,11 +263,11 @@ public class PassageUtilTest extends TestCase
 
     public void testBinaryRepresentation() throws Exception
     {
-        Passage gen1_135 = keyf.createPassage("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
-        Passage exo2a_3b = keyf.createPassage("Exo 2:1-10, Exo 3:1-11"); //$NON-NLS-1$
-        Passage gen_rev = keyf.createPassage("Gen 1:1-Rev 22:21"); //$NON-NLS-1$
-        Passage hard = keyf.createPassage();
-        Passage empty = keyf.createPassage();
+        Passage gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
+        Passage exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11"); //$NON-NLS-1$
+        Passage gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21"); //$NON-NLS-1$
+        Passage hard = (Passage) keyf.createEmptyKeyList();
+        Passage empty = (Passage) keyf.createEmptyKeyList();
 
         for (int i = 1; i < BibleInfo.versesInBible(); i += 10)
         {

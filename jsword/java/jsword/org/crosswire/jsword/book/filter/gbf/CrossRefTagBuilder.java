@@ -84,5 +84,5 @@ public class CrossRefTagBuilder implements TagBuilder
     /**
      * To convert strings into Biblical keys
      */
-    protected KeyFactory keyf = new PassageKeyFactory();
+    protected KeyFactory keyf = PassageKeyFactory.instance();
 }

@@ -155,7 +155,7 @@ public class RemoteBook extends AbstractBook
     /**
      * Our key manager
      */
-    private KeyFactory keyf = new PassageKeyFactory();
+    private KeyFactory keyf = PassageKeyFactory.instance();
 
     /**
      * We need to be able to get IDs

@@ -56,6 +56,19 @@ public class PassageKeyFactory implements KeyFactory
      */
     public static final int TALLY = 4;
 
+
+    /**
+     * This class implements a Singleton pattern. So the ctor is private
+     */
+    private PassageKeyFactory()
+    {
+    }
+
+    public static KeyFactory instance()
+    {
+        return keyf;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
      */
@@ -342,7 +355,7 @@ public class PassageKeyFactory implements KeyFactory
      */
     public static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchVerseException
     {
-        Passage ref = keyf.createPassage();
+        Passage ref = (Passage) keyf.createEmptyKeyList();
 
         // Some speedups
         AbstractPassage aref = null;
@@ -415,7 +428,7 @@ public class PassageKeyFactory implements KeyFactory
      */
     public static Passage readPassage(Reader in) throws IOException, NoSuchVerseException
     {
-        Passage ref = keyf.createPassage();
+        Passage ref = (Passage) keyf.createEmptyKeyList();
         ref.readDescription(in);
         return ref;
     }
@@ -538,7 +551,7 @@ public class PassageKeyFactory implements KeyFactory
     /**
      * How we create Passages
      */
-    private static PassageKeyFactory keyf = new PassageKeyFactory();
+    private static KeyFactory keyf = new PassageKeyFactory();
 
     /**
      * The cached whole Bible passage

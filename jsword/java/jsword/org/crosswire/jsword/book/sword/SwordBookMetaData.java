@@ -36,6 +36,9 @@ import org.crosswire.jsword.book.filter.FilterFactory;
  * <a href="http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
  * 
+ * <p> The contents of the About field are in rtf.
+ * <p> \ is used as a continuation line.
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -102,11 +105,15 @@ public class SwordBookMetaData implements BookMetaData
             if (length > 0)
             {
                 buf.append(line);
-
-                getContinuation(bin, buf);
-
-                parseLine(buf.toString());
             }
+            else
+            {
+                buf.append(' ');
+            }
+
+            getContinuation(bin, buf);
+
+            parseLine(buf.toString());
         }
 
         // From the config map, extract the important bean properties
@@ -311,12 +318,12 @@ public class SwordBookMetaData implements BookMetaData
 
         if (!unlocked)
         {
-            log.warn("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (!named)
         {
-            log.warn("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
         }
             
         if (!workable)
@@ -324,16 +331,16 @@ public class SwordBookMetaData implements BookMetaData
             String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
             if (mtype == null)
             {
-                log.warn("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
+                log.debug("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
                 
             }
             else if (mtype.getBookType() == null)
             {
-                log.warn("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.debug("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             else
             {
-                log.warn("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.debug("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
 
@@ -383,6 +390,7 @@ public class SwordBookMetaData implements BookMetaData
 
     /**
      * Parse a single line.
+     * The About field may use RTF, where \par is a line break.
      */
     private void parseLine(String line)
     {
@@ -407,14 +415,38 @@ public class SwordBookMetaData implements BookMetaData
         }
         else
         {
+            value = handleRTF(value);
             addEntry(key, value);
         }
 
     }
+    private String handleRTF(String value)
+    {
+        // This method is a hack! It could be made much nicer.
+
+        // strip \pard
+        value = value.replaceAll("\\\\pard ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // replace rtf newlines
+        value = value.replaceAll("\\\\pa[er] ?", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip whatever \qc is.
+        value = value.replaceAll("\\\\qc ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip bold and italic
+        value = value.replaceAll("\\\\[bi]0? ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip unicode characters
+        value = value.replaceAll("\\\\u-?[0-9]{4,6}+\\?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip { and } which are found in {\i text }
+        value = value.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        return value;
+    }
 
     /**
      * Since the current line ended with \, append the next line.
-     * Use \n to separate lines.
      */
     private void getContinuation(BufferedReader bin, StringBuffer buf) throws IOException
     {
@@ -424,6 +456,13 @@ public class SwordBookMetaData implements BookMetaData
 
             // Look for bad data as this condition did exist
             boolean continuation_expected = (buf.charAt(length - 1) == '\\');
+
+            if (continuation_expected)
+            {
+                // delete the continuation character
+                buf.deleteCharAt(length - 1);
+            }
+
             if (isKeyLine(line))
             {
                 if (continuation_expected)
@@ -439,7 +478,6 @@ public class SwordBookMetaData implements BookMetaData
                 log.warn("data without previous continuation for " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
-            buf.append('\n');
             buf.append(line);
         }
     }
@@ -466,6 +504,9 @@ public class SwordBookMetaData implements BookMetaData
             // Save the original for diagnostics and for save
             data.append(line).append('\n');
 
+            // Remove any RTF in the line
+            line = handleRTF(line);
+
             // Remove trailing whitespace
             line = line.trim();
 
@@ -490,7 +531,7 @@ public class SwordBookMetaData implements BookMetaData
         else
         {
             // should never happen
-            log.warn("Backup an empty string for " + internal); //$NON-NLS-1$
+            log.error("Backup an empty string for " + internal); //$NON-NLS-1$
         }
     }
 

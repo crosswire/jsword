@@ -138,7 +138,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
 
             try
             {
-                KeyFactory keyf = new PassageKeyFactory();
+                KeyFactory keyf = PassageKeyFactory.instance();
                 Passage ref = (Passage) keyf.getKey(readings);
 
                 for (Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE); it.hasNext();)

@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
@@ -113,13 +112,11 @@ public class ParaInstsMem extends InstsMem
     {
         if (para)
         {
-            Key temp = KeyUtil.getKeyList(verse, null);
-            key.addAll(temp);
+            key.addAll(verse);
         }
         else
         {
-            Key temp = KeyUtil.getKeyList(verse, null);
-            key.removeAll(temp);
+            key.removeAll(verse);
         }
     }
 
@@ -130,8 +127,7 @@ public class ParaInstsMem extends InstsMem
      */
     public boolean getPara(Verse verse)
     {
-        Key temp = KeyUtil.getKeyList(verse, null);
-        return key.contains(temp);
+        return key.contains(verse);
     }
 
     /**

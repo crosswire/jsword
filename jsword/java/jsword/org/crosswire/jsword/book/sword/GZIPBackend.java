@@ -15,14 +15,32 @@ import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A backend to read GZIPped data files.
+ * A backend to read GZIPped data files. While the text file contains
+ * data compressed with GZIP, it cannot be uncompressed using a stand
+ * alone zip utility, such as WinZip or gzip. The reason for this is
+ * that the data file is a concatenation of blocks of compressed data.
  * 
- * <p>There are 3 files, 2 (comp and idx) are indexes into the third (text)
- * which contains the data. I'm not sure why we need 2 indexes, but that's the
- * way it is done any it is too late to change it now.
- * <p>In addition there is a separate set of files for each testament. So for
- * each read you will need to know the testament from which to read and an index
- * (derived from the book, chapter and verse) within that testament.
+ * <p>The blocks can either be "b", book (aka testament); "c", chapter
+ * or "v", verse. The choice is a matter of trade offs. The program needs
+ * to uncompress a block into memory. Having it at the book level is
+ * very memory expensive. Having it at the verse level is very disk
+ * expensive, but takes the least amount of memory. The most common is
+ * chapter.
+ * 
+ * <p>In order to find the data in the text file, we need to find the 
+ * block. The first index (comp) is used for this. Each verse is indexed
+ * to a tuple (block number, verse start, verse size). This data allows
+ * us to find the correct block, and to extract the verse from the
+ * uncompressed block, but it does not help us uncompress the block.
+ * 
+ * <p>Once the block is known, then the next index (idx) gives the location
+ * of the compressed block, its compressed size and its uncompressed size.
+ * 
+ * <p>There are 3 files for each testament, 2 (comp and idx) are indexes into
+ * the third (text) which contains the data. The key into each index is the
+ * verse index within that testament, which is determined by book, chapter
+ * and verse of that key.
+ * 
  * <p>All numbers are stored 2-complement, little endian.
  * <p>Then proceed as follows, at all times working on the set of files for the
  * testament in question:
@@ -30,20 +48,23 @@ import org.crosswire.jsword.passage.Verse;
  * <pre>
  * in the comp file, seek to the index * 10
  * read 10 bytes.
- * the compressed-buffer-index is the first 4 bytes (32-bit number)
- * the remaining bytes are ignored
+ * the block-index is the first 4 bytes (32-bit number)
+ * the next bytes are the verse offset and length of the uncompressed block.
  * 
- * in the idx file seek to compressed-buffer-index * 12
+ * in the idx file seek to block-index * 12
  * read 12 bytes
- * the text-buffer-index is the first 4 bytes
- * the compressed-size is the next 4 bytes
+ * the text-block-index is the first 4 bytes
+ * the data-size is the next 4 bytes
  * the uncompressed-size is the next 4 bytes
  * 
- * in the text file seek to the text-buffer-index
- * read compressed-size bytes
- * //decipher them. wont this change their size? 
- * unGZIP them and check for uncompressed-size
+ * in the text file seek to the text-block-index
+ * read data-size bytes
+ * //decipher them if they are encrypted
+ * unGZIP them into a byte array of uncompressed-size
  * </pre>
+ * 
+ * TODO: Testament 0 is used to index an README file for the bible.
+ * At this time it is ignored.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -73,20 +94,21 @@ public class GZIPBackend implements Backend
     private static final String SUFFIX_PART1 = "z"; //$NON-NLS-1$
     private static final String SUFFIX_TEXT = "z"; //$NON-NLS-1$
 
+    // TODO(DM): Change blocktype to an enum.
     /**
      * Simple ctor
      */
     public GZIPBackend(String path, int blockType) throws BookException
     {
-        String allbutlast = path + File.separator + SwordConstants.FILE_OT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + SUFFIX_INDEX);
-        textFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + SUFFIX_TEXT);
-        compFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + SUFFIX_COMP);
+        String allButLast = path + File.separator + SwordConstants.FILE_OT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_INDEX);
+        textFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_TEXT);
+        compFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_COMP);
 
-        allbutlast = path + File.separator + SwordConstants.FILE_NT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + SUFFIX_INDEX);
-        textFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + SUFFIX_TEXT);
-        compFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + SUFFIX_COMP);
+        allButLast = path + File.separator + SwordConstants.FILE_NT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_INDEX);
+        textFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_TEXT);
+        compFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_COMP);
 
         // It is an error to be neither OT nor NT
         if (!textFile[SwordConstants.TESTAMENT_OLD].canRead()
@@ -133,26 +155,46 @@ public class GZIPBackend implements Backend
     {
         try
         {
-            idxRaf[SwordConstants.TESTAMENT_OLD].close();
-            textRaf[SwordConstants.TESTAMENT_OLD].close();
-            compRaf[SwordConstants.TESTAMENT_OLD].close();
-
             idxRaf[SwordConstants.TESTAMENT_NEW].close();
             textRaf[SwordConstants.TESTAMENT_NEW].close();
             compRaf[SwordConstants.TESTAMENT_NEW].close();
         }
         catch (IOException ex)
         {
-            log.error("failed to close files", ex); //$NON-NLS-1$
+            log.error("failed to close nt files", ex); //$NON-NLS-1$
+        }
+        catch (NullPointerException ex)
+        {
+            // ignore this might be OT only
+        }
+        finally
+        {
+            idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+            textRaf[SwordConstants.TESTAMENT_NEW] = null;
+            compRaf[SwordConstants.TESTAMENT_NEW] = null;
         }
 
-        idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-        textRaf[SwordConstants.TESTAMENT_OLD] = null;
-        compRaf[SwordConstants.TESTAMENT_OLD] = null;
+        try
+        {
+            idxRaf[SwordConstants.TESTAMENT_OLD].close();
+            textRaf[SwordConstants.TESTAMENT_OLD].close();
+            compRaf[SwordConstants.TESTAMENT_OLD].close();
 
-        idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-        textRaf[SwordConstants.TESTAMENT_NEW] = null;
-        compRaf[SwordConstants.TESTAMENT_NEW] = null;
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to close ot files", ex); //$NON-NLS-1$
+        }
+        catch (NullPointerException ex)
+        {
+            // ignore this might be NT only
+        }
+        finally
+        {
+            idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+            textRaf[SwordConstants.TESTAMENT_OLD] = null;
+            compRaf[SwordConstants.TESTAMENT_OLD] = null;
+        }
 
         active = false;
     }
@@ -172,7 +214,7 @@ public class GZIPBackend implements Backend
             int testament = SwordConstants.getTestament(verse);
             long index = SwordConstants.getIndex(verse);
 
-            // If this is a single testament Bible, return nothing.
+            // If Bible does not contain the desired testament, return nothing.
             if (compRaf[testament] == null)
             {
                 return ""; //$NON-NLS-1$
@@ -181,54 +223,60 @@ public class GZIPBackend implements Backend
             // 10 because we the index is 10 bytes long for each verse
             byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
-            // On occasion the index is short so just do nothing.
+            // If the Bible does not contain the desired verse, return nothing.
+            // Some Bibles have different versification, so the requested verse
+            // may not exist.
             if (temp == null || temp.length == 0)
             {
                 return ""; //$NON-NLS-1$
             }
 
-            // The data is little endian - extract the start, size and endsize
-            int buffernum = SwordUtil.decodeLittleEndian32AsInt(temp, 0);
-
-            // These 2 bits of data are never read.
-            int bstart = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
-            int bsize = SwordUtil.decodeLittleEndian16(temp, 8);
+            // The data is little endian - extract the blockNum, verseStart and verseSize
+            int blockNum = SwordUtil.decodeLittleEndian32AsInt(temp, 0);
+            int verseStart = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
+            int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
 
             // Can we get the data from the cache
-            byte[] uncompr = null;
-            if (buffernum == lastbuffernum)
+            byte[] uncompressed = null;
+            if (blockNum == lastBlockNum && testament == lastTestament)
             {
-                uncompr = lastuncompr;
+                uncompressed = lastUncompressed;
             }
             else
             {
                 // Then seek using this index into the idx file
-                temp = SwordUtil.readRAF(idxRaf[testament], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                temp = SwordUtil.readRAF(idxRaf[testament], blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
                 if (temp == null || temp.length == 0)
                 {
                     return ""; //$NON-NLS-1$
                 }
 
-                long start = SwordUtil.decodeLittleEndian32(temp, 0);
-                int size = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
-                int endsize = SwordUtil.decodeLittleEndian32AsInt(temp, 8);
+                long blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+                int blockSize = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
+                int uncompressedSize = SwordUtil.decodeLittleEndian32AsInt(temp, 8);
 
                 // Read from the data file.
-                byte[] compressed = SwordUtil.readRAF(textRaf[testament], start, size);
+                byte[] data = SwordUtil.readRAF(textRaf[testament], blockStart, blockSize);
 
                 // LATER(joe): implement encryption?
-                // byte[] decrypted = decrypt(compressed);
+                // If the file is encrypted, then decryption yeilds the gzipped data.
+                // Otherwise the data is gzipped.
+                // if (data is encrypted)
+                // {
+                //     data = decrypt(data);
+                // }
 
-                uncompr = SwordUtil.uncompress(compressed, endsize);
+                uncompressed = SwordUtil.uncompress(data, uncompressedSize);
 
                 // cache the uncompressed data for next time
-                lastbuffernum = buffernum;
-                lastuncompr = uncompr;
+                lastBlockNum = blockNum;
+                lastTestament = testament;
+                lastUncompressed = uncompressed;
             }
 
             // and cut out the required section.
-            byte[] chopped = new byte[bsize];
-            System.arraycopy(uncompr, bstart, chopped, 0, bsize);
+            byte[] chopped = new byte[verseSize];
+            System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
 
             return SwordUtil.decode(key, chopped, charset);
 
@@ -298,12 +346,17 @@ public class GZIPBackend implements Backend
     /**
      * 
      */
-    private int lastbuffernum = -1;
+    private int lastTestament = -1;
 
     /**
      * 
      */
-    private byte[] lastuncompr = null;
+    private int lastBlockNum = -1;
+
+    /**
+     * 
+     */
+    private byte[] lastUncompressed = null;
 
     /**
      * Are we active
@@ -350,6 +403,7 @@ public class GZIPBackend implements Backend
      * The Sword original used: { 'X', 'r', 'v', 'c', 'b' }, however the values
      * we read from SwordBookMetaData never matched up. Perhaps we need to work out
      * why.
+     * TODO(DM): migrate this into an Enum of BlockType
      */
     private static final char[] UNIQUE_INDEX_ID = { 'b', 'c', 'v', };
 

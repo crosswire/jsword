@@ -5,4 +5,11 @@
   <property name="dependency" value="common"/>
   <property name="dependency.jar" value="../${dependency}/target/ant/jar"/>
 
+  <!--=======================================================================-->
+  <target name="cvsup.extra" description="Extra stuff to do after calling cvsup">
+    <chmod perm="755">
+      <fileset dir="${source.etc}/build" includes="**/*.sh"/>
+    </chmod>
+  </target>
+
 </project>

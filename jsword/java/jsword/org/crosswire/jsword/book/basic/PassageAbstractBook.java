@@ -177,7 +177,7 @@ public abstract class PassageAbstractBook extends AbstractBook
     /**
      * Our key manager
      */
-    private KeyFactory keyf = new PassageKeyFactory();
+    private KeyFactory keyf = PassageKeyFactory.instance();
 
     /**
      * The log stream

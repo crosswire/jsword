@@ -24,7 +24,6 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -370,8 +369,7 @@ public class RawBook extends PassageAbstractBook implements Index
                 {
                     if (wordItemIds[i] == wordIdx)
                     {
-                        Key added = KeyUtil.getKeyList(new Verse(ord), this);
-                        key.addAll(added);
+                        key.addAll(new Verse(ord));
                     }
                 }
             }

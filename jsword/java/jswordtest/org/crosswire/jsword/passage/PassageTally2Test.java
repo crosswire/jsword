@@ -42,7 +42,7 @@ public class PassageTally2Test extends TestCase
     /**
      * How we create Passages
      */
-    private static PassageKeyFactory keyf = new PassageKeyFactory();
+    private static KeyFactory keyf = PassageKeyFactory.instance();
 
     VerseRange gen11_1 = null;
     VerseRange gen11_2 = null;
@@ -86,9 +86,9 @@ public class PassageTally2Test extends TestCase
         exo23 = new Verse(2, 2, 3);
         exo3b = new Verse(2, 3, 11);
 
-        gen1_135 = keyf.createPassage("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
-        gen123_1 = keyf.createPassage("Gen 1:1, Gen 2:1, Gen 3:1"); //$NON-NLS-1$
-        gen1_157 = keyf.createPassage("Gen 1:1, Gen 1:5, Gen 1:7"); //$NON-NLS-1$
+        gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
+        gen123_1 = (Passage) keyf.getKey("Gen 1:1, Gen 2:1, Gen 3:1"); //$NON-NLS-1$
+        gen1_157 = (Passage) keyf.getKey("Gen 1:1, Gen 1:5, Gen 1:7"); //$NON-NLS-1$
 
         tally.setOrdering(PassageTally.ORDER_TALLY);
         empty.setOrdering(PassageTally.ORDER_TALLY);
@@ -257,14 +257,6 @@ public class PassageTally2Test extends TestCase
         catch (NullPointerException ex)
         {
         }
-        try
-        {
-            temp.add((Verse) null);
-            fail();
-        }
-        catch (NullPointerException ex)
-        {
-        }
     }
 
     public void testUnAdd() throws Exception
@@ -281,7 +273,7 @@ public class PassageTally2Test extends TestCase
     public void testAddAll() throws Exception
     {
         temp = (PassageTally) tally.clone();
-        temp.addAll(keyf.createPassage("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
+        temp.addAll(keyf.getKey("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1"); //$NON-NLS-1$
     }
 
