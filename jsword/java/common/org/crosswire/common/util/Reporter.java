@@ -1,6 +1,9 @@
+
 package org.crosswire.common.util;
 
-import org.crosswire.common.util.event.*;
+import org.crosswire.common.util.event.CaptureListener;
+import org.crosswire.common.util.event.ReporterEvent;
+import org.crosswire.common.util.event.ReporterListener;
 
 /**
  * This package looks after Exceptions and messages as they happen. It would be
@@ -115,33 +118,40 @@ public class Reporter
      */
     protected static void fireCapture(ReporterEvent ev)
     {
-        // Guaranteed to return a non-null array
-        Object[] listeners = inform_list.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i=listeners.length-2; i>=0; i-=2)
+        try
         {
-            if (listeners[i] == ReporterListener.class)
+            // Guaranteed to return a non-null array
+            Object[] listeners = inform_list.getListenerList();
+            
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+            for (int i=listeners.length-2; i>=0; i-=2)
             {
-                ReporterListener li = (ReporterListener) listeners[i+1];
-                try
+                if (listeners[i] == ReporterListener.class)
                 {
-                    if (ev.getException() != null)
-                        li.reportException(ev);
-                    else
-                        li.reportMessage(ev);
-                }
-                catch (Throwable ex)
-                {
-                    if (ex instanceof ThreadDeath)
-                        throw (ThreadDeath) ex;
-
-                    inform_list.remove(CaptureListener.class, li);
-
-                    log.log(Level.WARNING, "Dispatch failure", ex);
+                    ReporterListener li = (ReporterListener) listeners[i+1];
+                    try
+                    {
+                        if (ev.getException() != null)
+                            li.reportException(ev);
+                        else
+                            li.reportMessage(ev);
+                    }
+                    catch (Throwable ex)
+                    {
+                        if (ex instanceof ThreadDeath)
+                            throw (ThreadDeath) ex;
+            
+                        inform_list.remove(CaptureListener.class, li);
+            
+                        log.log(Level.WARNING, "Dispatch failure", ex);
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex);
         }
     }
 

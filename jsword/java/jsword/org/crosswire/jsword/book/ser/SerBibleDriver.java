@@ -68,8 +68,6 @@ public class SerBibleDriver extends AbstractBibleDriver
      */
     public String[] getBibleNames()
     {
-        URL url = null;
-
         try
         {
             if (dir.getProtocol().equals("file"))

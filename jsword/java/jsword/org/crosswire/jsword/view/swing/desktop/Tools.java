@@ -4,19 +4,48 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.crosswire.common.config.Config;
+import org.crosswire.common.swing.ExceptionPane;
+import org.crosswire.common.swing.LogPane;
+import org.crosswire.common.swing.SystemPropertiesPane;
+import org.crosswire.common.swing.config.DisplayExceptionChoice;
+import org.crosswire.common.swing.config.LookAndFeelChoices;
+import org.crosswire.common.swing.config.ShelfExceptionChoice;
+import org.crosswire.common.swing.config.SourcePathChoice;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.config.StdOutCaptureInformChoice;
+import org.crosswire.common.util.config.StdOutCaptureLogChoice;
+import org.crosswire.common.util.config.UserLevelChoice;
 import org.crosswire.jsword.book.config.CacheBiblesChoice;
 import org.crosswire.jsword.book.config.DriversChoice;
 import org.crosswire.jsword.book.raw.config.CacheDataChoice;
@@ -33,21 +62,6 @@ import org.crosswire.jsword.view.swing.book.SelectPane;
 import org.crosswire.jsword.view.swing.book.Splash;
 import org.crosswire.jsword.view.swing.book.StatusBar;
 import org.crosswire.jsword.view.swing.passage.PassageList;
-import org.crosswire.common.config.Config;
-import org.crosswire.common.config.swing.SwingConfig;
-import org.crosswire.common.swing.ExceptionPane;
-import org.crosswire.common.swing.LogPane;
-import org.crosswire.common.swing.SystemPropertiesPane;
-import org.crosswire.common.swing.config.DisplayExceptionChoice;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
-import org.crosswire.common.swing.config.ShelfExceptionChoice;
-import org.crosswire.common.swing.config.SourcePathChoice;
-import org.crosswire.common.util.EventException;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.StdOutCaptureInformChoice;
-import org.crosswire.common.util.config.StdOutCaptureLogChoice;
-import org.crosswire.common.util.config.UserLevelChoice;
 
 /**
  * A container for various tools, particularly the BibleGenerator and
@@ -122,7 +136,9 @@ public class Tools extends JFrame
             config.add("Advanced.User Level", new UserLevelChoice());
             config.add("Advanced.Available Drivers", new DriversChoice());
 
-            config.setProperties(Project.resource().getProperties("Tools"));
+            Properties prop = Project.resource().getProperties("Tools");
+            if (prop != null)
+                config.setProperties(prop);
             config.localToApplication(true);
 
             // GUI setup
@@ -363,7 +379,7 @@ public class Tools extends JFrame
     /**
      * Some debug action that we can configure
      */
-    private void debug()
+    protected void debug()
     {
         System.out.println("\nViews:");
         int i = 0;
@@ -582,7 +598,7 @@ public class Tools extends JFrame
             try
             {
                 Runtime runtime = Runtime.getRuntime();
-                Process proc = runtime.exec("java dtools");
+                runtime.exec("java dtools");
 
                 System.exit(0);
             }
@@ -1337,92 +1353,92 @@ public class Tools extends JFrame
         private JDesktopPane mdi_main = new JDesktopPane();
     }
 
-    private final ViewLayout VIEW_SDI = new SDIViewLayout();
-    private final ViewLayout VIEW_MDI = new MDIViewLayout();
-    private final ViewLayout VIEW_TDI = new TDIViewLayout();
+    protected final ViewLayout VIEW_SDI = new SDIViewLayout();
+    protected final ViewLayout VIEW_MDI = new MDIViewLayout();
+    protected final ViewLayout VIEW_TDI = new TDIViewLayout();
 
     /** The current way the views are layed out */
-    private ViewLayout layout = null;
+    protected ViewLayout layout = null;
 
     /** The list of BibleViewPanes being viewed in tdi and mdi workspaces */
-    private List views = new ArrayList();
+    protected List views = new ArrayList();
 
     /** The version generation tool */
-    private MaintenancePane pnl_maint = null;
+    protected MaintenancePane pnl_maint = null;
 
     /** The benchmarking tool */
-    //private BenchmarkPane pnl_bench = null;
+    //protected BenchmarkPane pnl_bench = null;
 
     /** The Bible comparison tool */
-    private ComparePane pnl_comp = null;
+    protected ComparePane pnl_comp = null;
 
     /** The test tool */
-    //private TesterPane pnl_tester = null;
+    //protected TesterPane pnl_tester = null;
 
     /** The scripting interface to BSF */
-    //private ScriptPane pnl_script = null;
+    //protected ScriptPane pnl_script = null;
 
     /** The properties pane */
-    private LogPane pnl_log = new LogPane();
+    protected LogPane pnl_log = new LogPane();
 
     /** The properties pane */
-    private SystemPropertiesPane pnl_props = null;
+    protected SystemPropertiesPane pnl_props = null;
 
     /** is the status bar visible */
-    private boolean view_status = true;
+    protected boolean view_status = true;
 
     /** is the toolbar visible */
-    private boolean view_tool = true;
+    protected boolean view_tool = true;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger("bible.view");
 
-    private Config config = null;
+    protected Config config = null;
 
-    private Action act_file_new = new FileNewAction();
-    private Action act_file_open = new FileOpenAction();
-    private Action act_file_save = new FileSaveAction();
-    private Action act_file_saveas = new FileSaveAsAction();
-    private Action act_file_saveall = new FileSaveAllAction();
-    private Action act_file_close = new FileCloseAction();
-    private Action act_file_closeall = new FileCloseAllAction();
-    private Action act_file_print = new FilePrintAction();
-    private Action act_file_restart = new RestartAction();
-    private Action act_file_exit = new ExitAction();
+    protected Action act_file_new = new FileNewAction();
+    protected Action act_file_open = new FileOpenAction();
+    protected Action act_file_save = new FileSaveAction();
+    protected Action act_file_saveas = new FileSaveAsAction();
+    protected Action act_file_saveall = new FileSaveAllAction();
+    protected Action act_file_close = new FileCloseAction();
+    protected Action act_file_closeall = new FileCloseAllAction();
+    protected Action act_file_print = new FilePrintAction();
+    protected Action act_file_restart = new RestartAction();
+    protected Action act_file_exit = new ExitAction();
 
-    private Action act_edit_cut = new EditCutAction();
-    private Action act_edit_copy = new EditCopyAction();
-    private Action act_edit_paste = new EditPasteAction();
-    private Action act_edit_blur1 = new BlurAction(1, Passage.RESTRICT_CHAPTER);
-    private Action act_edit_blur5 = new BlurAction(5, Passage.RESTRICT_CHAPTER);
+    protected Action act_edit_cut = new EditCutAction();
+    protected Action act_edit_copy = new EditCopyAction();
+    protected Action act_edit_paste = new EditPasteAction();
+    protected Action act_edit_blur1 = new BlurAction(1, Passage.RESTRICT_CHAPTER);
+    protected Action act_edit_blur5 = new BlurAction(5, Passage.RESTRICT_CHAPTER);
 
-    private Action act_view_sdi = new ViewSDIAction();
-    private Action act_view_tdi = new ViewTDIAction();
-    private Action act_view_mdi = new ViewMDIAction();
-    private Action act_view_tbar = new ViewToolBarAction();
-    private Action act_view_sbar = new ViewStatusBarAction();
+    protected Action act_view_sdi = new ViewSDIAction();
+    protected Action act_view_tdi = new ViewTDIAction();
+    protected Action act_view_mdi = new ViewMDIAction();
+    protected Action act_view_tbar = new ViewToolBarAction();
+    protected Action act_view_sbar = new ViewStatusBarAction();
 
-    private Action act_list_toggle = new ListToggleAction();
-    private Action act_list_delete = new ListDeleteAction();
+    protected Action act_list_toggle = new ListToggleAction();
+    protected Action act_list_delete = new ListDeleteAction();
 
-    //private Action act_tools_bench = new BenchmarkAction();
-    private Action act_tools_generate = new GenerateAction();
-    //private Action act_tools_script = new ScriptAction();
-    //private Action act_tools_test = new TestAction();
-    private Action act_tools_diff = new DiffAction();
-    private Action act_tools_options = new OptionsAction();
+    //protected Action act_tools_bench = new BenchmarkAction();
+    protected Action act_tools_generate = new GenerateAction();
+    //protected Action act_tools_script = new ScriptAction();
+    //protected Action act_tools_test = new TestAction();
+    protected Action act_tools_diff = new DiffAction();
+    protected Action act_tools_options = new OptionsAction();
 
-    private Action act_help_contents = new HelpContentsAction();
-    private Action act_help_system = new SysInfoAction();
-    private Action act_help_about = new AboutAction();
-    private Action act_help_log = new ErrorLogAction();
-    private Action act_help_debug = new DebugAction();
+    protected Action act_help_contents = new HelpContentsAction();
+    protected Action act_help_system = new SysInfoAction();
+    protected Action act_help_about = new AboutAction();
+    protected Action act_help_log = new ErrorLogAction();
+    protected Action act_help_debug = new DebugAction();
 
-    private JRadioButtonMenuItem rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
-    private JRadioButtonMenuItem rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
-    private JRadioButtonMenuItem rdo_view_sdi = new JRadioButtonMenuItem(act_view_sdi);
-    private JCheckBoxMenuItem chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
-    private JCheckBoxMenuItem chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
+    protected JRadioButtonMenuItem rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
+    protected JRadioButtonMenuItem rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
+    protected JRadioButtonMenuItem rdo_view_sdi = new JRadioButtonMenuItem(act_view_sdi);
+    protected JCheckBoxMenuItem chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
+    protected JCheckBoxMenuItem chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
 
     private JMenuBar bar_menu = new JMenuBar();
     private JMenu menu_file = new JMenu();
@@ -1436,6 +1452,6 @@ public class Tools extends JFrame
 
     // private JPanel pnl_main = new JPanel();
     // private CardLayout lay_main = new CardLayout();
-    private JToolBar pnl_tbar = new JToolBar();
-    private StatusBar bar_status = new StatusBar();
+    protected JToolBar pnl_tbar = new JToolBar();
+    protected StatusBar bar_status = new StatusBar();
 }

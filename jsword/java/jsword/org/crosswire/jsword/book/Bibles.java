@@ -59,6 +59,9 @@ public class Bibles
             }
         }
 
+        if (total == 0)
+            return new String[0];
+
         // Fetch them all into a big list
         String[] retcode = new String[total];
         int count = 0;
@@ -198,8 +201,11 @@ public class Bibles
     */
     public static String getDefaultName() throws BookException
     {
+        if (getBibleNames().length == 0)
+            throw new BookException("book_no_bibles");
+
         if (default_name == null)
-            default_name = getBibleNames() [0];
+            default_name = getBibleNames()[0];
 
         return default_name;
     }

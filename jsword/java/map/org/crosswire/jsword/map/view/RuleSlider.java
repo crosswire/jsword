@@ -80,7 +80,7 @@ public class RuleSlider extends JPanel
     /**
     * When someone slides the slider
     */
-    private void changed()
+    protected void changed()
     {
         rule.setScale(sdr_rule.getValue());
         log.info(bdr_rule.getTitle()+": "+rule.getScale());

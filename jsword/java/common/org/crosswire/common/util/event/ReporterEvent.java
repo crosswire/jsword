@@ -1,9 +1,9 @@
 
 package org.crosswire.common.util.event;
 
-import java.util.*;
+import java.util.EventObject;
 
-import org.crosswire.common.util.*;
+import org.crosswire.common.util.Reporter;
 
 /**
  * An event indicating that some bit of data needs capturing.

@@ -1,25 +1,20 @@
 
 package org.crosswire.jsword.util;
 
-import java.io.PrintWriter;
-import java.io.IOException;
 import java.io.File;
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
-
-import java.util.Properties;
-import java.util.List;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.MissingResourceException;
+import java.util.Properties;
 
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.StringUtil;
-import org.crosswire.common.util.event.StdOutCaptureListener;
 
 /**
  * Accessor for various resources available in jar files or in the filesystem
@@ -168,7 +163,7 @@ public class Resource
 
         InputStream in = getClass().getClassLoader().getSystemResourceAsStream(subject+".properties");
         if (in == null)
-            throw new MalformedURLException("No properties found for "+subject+" or classpath not set.");
+            return null;
 
         PropertiesUtil.load(prop, in);
 

@@ -17,10 +17,34 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Properties;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.WindowConstants;
 
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.common.config.Config;
+import org.crosswire.common.swing.ExceptionPane;
+import org.crosswire.common.swing.ExtensionFileFilter;
+import org.crosswire.common.swing.config.DisplayExceptionChoice;
+import org.crosswire.common.swing.config.LookAndFeelChoices;
+import org.crosswire.common.swing.config.SourcePathChoice;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.config.StdOutCaptureInformChoice;
+import org.crosswire.common.util.config.StdOutCaptureLogChoice;
+import org.crosswire.common.util.config.UserLevelChoice;
 import org.crosswire.jsword.book.config.CacheBiblesChoice;
 import org.crosswire.jsword.book.config.DriversChoice;
 import org.crosswire.jsword.book.raw.config.CacheDataChoice;
@@ -38,16 +62,6 @@ import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.config.FileChoice;
 import org.crosswire.jsword.view.swing.book.BibleChooser;
-import org.crosswire.common.config.Config;
-import org.crosswire.common.swing.ExceptionPane;
-import org.crosswire.common.swing.ExtensionFileFilter;
-import org.crosswire.common.swing.config.DisplayExceptionChoice;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
-import org.crosswire.common.swing.config.SourcePathChoice;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.StdOutCaptureInformChoice;
-import org.crosswire.common.util.config.StdOutCaptureLogChoice;
-import org.crosswire.common.util.config.UserLevelChoice;
 
 /**
  * Mapper is GUI wrapper around Map to allow it to be run standalone.
@@ -139,7 +153,9 @@ public class Mapper extends JFrame
             config.add("Advanced.User Level", new UserLevelChoice());
             config.add("Advanced.Available Drivers", new DriversChoice());
 
-            config.setProperties(Project.resource().getProperties("Mapper"));
+            Properties prop = Project.resource().getProperties("Mapper");
+            if (prop != null)
+                config.setProperties(prop);
             config.localToApplication(true);
         }
         catch (Exception ex)
@@ -597,7 +613,7 @@ public class Mapper extends JFrame
 
             if (reply == BibleChooser.APPROVE_OPTION)
             {
-                Bible bible = chooser.getSelectedBible();
+                // Bible bible = chooser.getSelectedBible();
                 // map.createLinks(bible);
             }
         }
@@ -716,7 +732,7 @@ public class Mapper extends JFrame
     private String filename;
 
     /** The thing that does the real work */
-    private Map map = new Map(2);
+    protected Map map = new Map(2);
 
     /** The table view of the map */
     private MapTableModel mdl_map = new MapTableModel();
@@ -728,7 +744,7 @@ public class Mapper extends JFrame
     private AutoLayoutRunnable alr;
 
     /** Have the map been changed? */
-    private boolean saved = true;
+    protected boolean saved = true;
 
     /** File filter for map files */
     private ExtensionFileFilter bmap_filter = new ExtensionFileFilter(new String[] { "bmap" }, "JSword Map Files (*.bmap)");
@@ -746,15 +762,15 @@ public class Mapper extends JFrame
     private VBAExport vba = new VBAExport();
 
     /** The Rules */
-    private Rule[] rules = new Rule[]
-                              {
-            new AntiGravityRule(),
-            new DefraggingRule(),
-            new LinkAttractionRule(getLinkArray()),
-            new BrownianRule(0.001F),
-            new BoundsRule(),
-            new FrictionRule(),
-            };
+    protected Rule[] rules = new Rule[]
+    {
+        new AntiGravityRule(),
+        new DefraggingRule(),
+        new LinkAttractionRule(getLinkArray()),
+        new BrownianRule(0.001F),
+        new BoundsRule(),
+        new FrictionRule(),
+    };
 
     /** The Verse colorizers */
     private VerseColor[] vcols;

@@ -262,4 +262,3 @@ public class LucidException extends Exception
     /** The resource hash */
     protected static ResourceBundle res = ResourceBundle.getBundle("Exception");
 }
-
