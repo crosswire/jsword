@@ -59,8 +59,8 @@ import org.crosswire.jsword.passage.Verse;
  */
 public class SerSearchEngine implements SearchEngine, Index
 {
-    /**
-     * Constructor for SerSearchEngine.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
     public void init(Bible newbible, URL newurl) throws BookException
     {
@@ -69,10 +69,9 @@ public class SerSearchEngine implements SearchEngine, Index
             this.bible = newbible;
             this.url = newurl;
 
-            isindexed = isIndexed();
-            
             URL dataurl = NetUtil.lengthenURL(newurl, "ref.data");
 
+            isindexed = isIndexed();
             if (isindexed)
             {
                 URL indexurl = NetUtil.lengthenURL(newurl, "ref.index");
@@ -209,7 +208,7 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Detects if index data has been stored for this Bible already
      */
-    private boolean isIndexed() throws IOException
+    private boolean isIndexed()
     {
         URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
         return NetUtil.isFile(ref_idy_url);
@@ -261,7 +260,7 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Read from the given source version to generate ourselves
      */
-    protected void generateSearchIndex(Job ajob) throws BookException
+    protected void generateSearchIndex() throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
@@ -280,7 +279,7 @@ public class SerSearchEngine implements SearchEngine, Index
                 if (percent != newpercent)
                 {
                     percent = newpercent;
-                    ajob.setProgress(percent, "Finding Words ("+verse.getName()+")");
+                    job.setProgress(percent, "Finding Words ("+verse.getName()+")");
                 }
 
                 // loop through all the words in this verse
@@ -343,7 +342,7 @@ public class SerSearchEngine implements SearchEngine, Index
             if (percent != newpercent)
             {
                 percent = newpercent;
-                ajob.setProgress(percent, "Writing Words ("+word+")");
+                job.setProgress(percent, "Writing Words ("+word+")");
             }
 
             // This could take a long time ...
@@ -385,12 +384,12 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Write the indexes to disk
      */
-    protected void saveIndexes(Job ajob) throws BookException
+    protected void saveIndexes() throws BookException
     {
         // Store the indexes on disk
         try
         {
-            ajob.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
+            job.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
 
             // Save the ascii Passage index
             URL indexurl = NetUtil.lengthenURL(url, "ref.index");
@@ -477,8 +476,8 @@ public class SerSearchEngine implements SearchEngine, Index
             try
             {
                 job = JobManager.createJob("Indexing "+bible.getBibleMetaData().getName(), Thread.currentThread(), false);
-                generateSearchIndex(job);
-                saveIndexes(job);
+                generateSearchIndex();
+                saveIndexes();
                 job.done();
                 job = null;
             }

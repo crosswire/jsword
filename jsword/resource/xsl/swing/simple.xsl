@@ -204,7 +204,12 @@
         </u>
       </xsl:when>
       <xsl:when test="starts-with(@type, 'color:')">
-        <font color="substring-after(@type, 'color: ')">
+        <font color="substring-before(substring-after(@type, 'color: '), ';')">
+          <xsl:apply-templates/>
+        </font>
+      </xsl:when>
+      <xsl:when test="starts-with(@type, 'font-size:')">
+        <font size="substring-before(substring-after(@type, 'font-size: '), ';')">
           <xsl:apply-templates/>
         </font>
       </xsl:when>

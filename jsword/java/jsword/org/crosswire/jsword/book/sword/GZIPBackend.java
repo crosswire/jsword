@@ -4,7 +4,6 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.crosswire.common.util.Logger;
@@ -73,69 +72,62 @@ public class GZIPBackend implements Backend
     {
         URL swordBase = SwordBookDriver.getSwordURL();
 
+        URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
+        if (!url.getProtocol().equals("file"))
+        {
+            throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol() });
+        }
+
+        String path = url.getFile();
+
+        int blockType = config.getBlockType();
+
         try
         {
-            URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
-            if (!url.getProtocol().equals("file"))
-            {
-                throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol() });
-            }
+            String allbutlast = path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "z";
 
-            String path = url.getFile();
-
-            int blockType = config.getBlockType();
-
-            try
-            {
-                String allbutlast = path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "z";
-
-                idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "s", "r");
-                text_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "z", "r");
-                comp_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "v", "r");
-            }
-            catch (FileNotFoundException ex)
-            {
-                // Ignore this might be NT only
-                log.debug("Missing index: "+path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "zs");
-            }
-
-            try
-            {
-                String allbutlast = path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "z";
-
-                idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "s", "r");
-                text_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "z", "r");
-                comp_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "v", "r");
-            }
-            catch (FileNotFoundException ex)
-            {
-                // Ignore this might be OT only
-                log.debug("Missing index: "+path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "zs");
-            }
-
-            // It is an error to be neither OT nor NT
-            if (text_raf[SwordConstants.TESTAMENT_OLD] == null && text_raf[SwordConstants.TESTAMENT_NEW] == null)
-            {
-                throw new BookException(Msg.MISSING_FILE, new Object[] { url.getFile()});
-            }
-
-            // The original had a dtor that did the equiv of .close()ing the above
-            // I'm not sure that there is a delete type ability in Book.java and
-            // the finalizer for RandomAccessFile will do it anyway so for the
-            // moment I'm going to ignore this.
-
-            // The original also stored the path, but I don't think it ever used it
-
-            // The original also kept an instance count, which went unused (and I
-            // noticed in a few other places so it is either c&p or a pattern?
-            // Either way the assumption that there is only one of a static is not
-            // safe in many java environments (servlets, ejbs at least) so I've
-            // deleted it
+            idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "s", "r");
+            text_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "z", "r");
+            comp_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "v", "r");
         }
-        catch (MalformedURLException ex)
+        catch (FileNotFoundException ex)
         {
-            throw new BookException(Msg.NOT_FOUND, ex);
+            // Ignore this might be NT only
+            log.debug("Missing index: "+path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "zs");
         }
+
+        try
+        {
+            String allbutlast = path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "z";
+
+            idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "s", "r");
+            text_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "z", "r");
+            comp_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "v", "r");
+        }
+        catch (FileNotFoundException ex)
+        {
+            // Ignore this might be OT only
+            log.debug("Missing index: "+path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "zs");
+        }
+
+        // It is an error to be neither OT nor NT
+        if (text_raf[SwordConstants.TESTAMENT_OLD] == null && text_raf[SwordConstants.TESTAMENT_NEW] == null)
+        {
+            throw new BookException(Msg.MISSING_FILE, new Object[] { url.getFile()});
+        }
+
+        // The original had a dtor that did the equiv of .close()ing the above
+        // I'm not sure that there is a delete type ability in Book.java and
+        // the finalizer for RandomAccessFile will do it anyway so for the
+        // moment I'm going to ignore this.
+
+        // The original also stored the path, but I don't think it ever used it
+
+        // The original also kept an instance count, which went unused (and I
+        // noticed in a few other places so it is either c&p or a pattern?
+        // Either way the assumption that there is only one of a static is not
+        // safe in many java environments (servlets, ejbs at least) so I've
+        // deleted it
     }
 
     /* (non-Javadoc)

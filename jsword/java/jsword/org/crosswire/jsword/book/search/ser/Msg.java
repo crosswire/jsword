@@ -29,11 +29,11 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
-    protected static final Msg INITIALIZE = new Msg("Error initializing.");
-    protected static final Msg READ_ERROR = new Msg("Read Error.");
-    protected static final Msg WRITE_ERROR = new Msg("Write Error.");
-    protected static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
+    static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
+    static final Msg INITIALIZE = new Msg("Error initializing.");
+    static final Msg READ_ERROR = new Msg("Read Error.");
+    static final Msg WRITE_ERROR = new Msg("Write Error.");
+    static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
 
     /** Initialise any resource bundles */
     static

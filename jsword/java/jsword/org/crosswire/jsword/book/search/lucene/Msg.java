@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.lucene;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,16 +28,21 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg LUCENE_INIT = new Msg("Failed to initialise Lucene search engine.");
-    public static final Msg SEARCH_FAILED = new Msg("Search failed.");
+    static final Msg LUCENE_INIT = new Msg("Failed to initialise Lucene search engine.");
+    static final Msg SEARCH_FAILED = new Msg("Search failed.");
+    static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

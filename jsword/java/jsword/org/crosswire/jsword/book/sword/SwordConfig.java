@@ -389,6 +389,30 @@ public class SwordConfig
     }
 
     /**
+     * Is this one of the supported book types?
+     */
+    public boolean isSupported()
+    {
+        switch (modDrv)
+        {
+        case SwordConstants.DRIVER_RAW_TEXT:
+        case SwordConstants.DRIVER_Z_TEXT:
+        case SwordConstants.DRIVER_RAW_COM:
+        case SwordConstants.DRIVER_Z_COM:
+        case SwordConstants.DRIVER_HREF_COM:
+        case SwordConstants.DRIVER_RAW_FILES:
+        case SwordConstants.DRIVER_RAW_LD:
+        case SwordConstants.DRIVER_RAW_LD4:
+        case SwordConstants.DRIVER_Z_LD:
+            return true;
+
+        case SwordConstants.DRIVER_RAW_GEN_BOOK:
+        default:
+            return false;
+        }
+    }
+
+    /**
      * Get the configured method of reading a block of data from disk.
      */
     public Backend getBackend() throws BookException

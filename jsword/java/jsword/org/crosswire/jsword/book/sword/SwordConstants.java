@@ -98,9 +98,9 @@ public class SwordConstants
     static final String[] GOF_STRINGS =
     {
         "GBFStrongs",  "GBFFootnotes",  "GBFScripref",  "GBFMorph",  "GBFHeadings",
-        "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings",
-        "ThMLVariants", "THMLLemma",
+        "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "THMLLemma",
         "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewVowels",
+        "OSISStrongs", "OSISFootnotes",                 "OSISMorph", "OSISHeadings", "OSISRedLetterWords",
     };
 
     /** Constants for direction */

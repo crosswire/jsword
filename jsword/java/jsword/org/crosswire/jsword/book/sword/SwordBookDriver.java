@@ -98,8 +98,15 @@ public class SwordBookDriver extends AbstractBookDriver
             try
             {
                 SwordConfig config = new SwordConfig(this, modsdir, bookdirs[i]);
-                SwordBookMetaData bmd = config.getMetaData();
-                valid.add(bmd);
+                if (config.isSupported())
+                {
+                    SwordBookMetaData bmd = config.getMetaData();
+                    valid.add(bmd);
+                }
+                else
+                {
+                    log.warn("Unsupported Book: "+config.getName());
+                }
             }
             catch (Exception ex)
             {

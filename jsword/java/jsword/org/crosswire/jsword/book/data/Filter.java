@@ -56,4 +56,9 @@ public interface Filter
      * Constant to help narrow down what we use seg for. In this case the color tag
      */
     public static final String SEG_COLORPREFIX = "color: ";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the font-size tag
+     */
+    public static final String SEG_SIZEPREFIX = "font-size: ";
 }

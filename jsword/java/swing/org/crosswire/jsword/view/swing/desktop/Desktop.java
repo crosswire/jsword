@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
@@ -26,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -233,19 +233,19 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         act_help_about = Splash.createOpenAction(this);
         act_help_log = AdvancedToolsPane.createOpenAction(this);
         act_help_debug = new DebugAction(this);
-        
+
         rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
         rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
         chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
         chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
-        
+
         bar_menu = new JMenuBar();
         menu_file = new JMenu();
         menu_edit = new JMenu();
         menu_view = new JMenu();
         menu_tools = new JMenu();
         menu_help = new JMenu();
-        
+
         grp_views = new ButtonGroup();
         pnl_tbar = new JToolBar();
         bar_status = new StatusBar();
@@ -748,22 +748,28 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         for (int i = 0; i < menubar.getMenuCount(); i++)
         {
             JMenu menu = menubar.getMenu(i);
-            for (int j = 0; j < menu.getItemCount(); j++)
+            for (int j = 0; j < menu.getMenuComponentCount(); j++)
             {
-                JMenuItem item = menu.getItem(j);
-                if (item == null)
+                Component comp = menu.getMenuComponent(j);
+                if (comp instanceof JMenuItem)
                 {
-                    log.warn("null item at "+j+" when getMenuCount()="+menu.getItemCount());
-                    continue;
-                }
-
-                Action action = item.getAction();
-                if (action != null)
-                {
-                    KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-                    if (accel != null)
+                    JMenuItem item = (JMenuItem) comp;
+                    Action action = item.getAction();
+                    if (action != null)
                     {
-                        item.setAccelerator(accel);
+                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+                        if (accel != null)
+                        {
+                            item.setAccelerator(accel);
+                        }
+                    }
+                }
+                else
+                {
+                    // Just in case we start getting things we could do something with
+                    if (!(comp instanceof JPopupMenu.Separator))
+                    {
+                        log.warn("Non JMenuItem, class="+comp.getClass().getName());
                     }
                 }
             }

@@ -88,6 +88,7 @@ public abstract class AbstractBibleMetaData extends AbstractBookMetaData impleme
         if (!active)
         {
             bible.activate();
+            active = true;
         }
 
         return bible;

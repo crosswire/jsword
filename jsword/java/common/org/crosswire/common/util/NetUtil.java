@@ -248,7 +248,7 @@ public class NetUtil
     public static URL shortenURL(URL orig, String strip) throws MalformedURLException
     {
         String file = orig.getFile();
-        if (file.endsWith("/"))
+        if (file.endsWith(SEPARATOR))
         {
             file = file.substring(0, file.length() - 1);
         }
@@ -276,33 +276,39 @@ public class NetUtil
      * @param orig The URL to strip
      * @param extra The text to add to the end of the URL
      * @return The stripped URL
-     * @exception MalformedURLException If the URL is not valid
      */
-    public static URL lengthenURL(URL orig, String extra) throws MalformedURLException
+    public static URL lengthenURL(URL orig, String extra)
     {
-        if (orig.getProtocol().equals(PROTOCOL_FILE))
+        try
         {
-            if (orig.toExternalForm().endsWith(File.separator))
+            if (orig.getProtocol().equals(PROTOCOL_FILE))
             {
-                return new URL(orig.getProtocol(),
-                               orig.getHost(),
-                               orig.getPort(),
-                               orig.getFile()+extra);
+                if (orig.toExternalForm().endsWith(File.separator))
+                {
+                    return new URL(orig.getProtocol(),
+                                   orig.getHost(),
+                                   orig.getPort(),
+                                   orig.getFile()+extra);
+                }
+                else
+                {
+                    return new URL(orig.getProtocol(),
+                                   orig.getHost(),
+                                   orig.getPort(),
+                                   orig.getFile()+File.separator+extra);
+                }
             }
             else
             {
                 return new URL(orig.getProtocol(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile()+File.separator+extra);
+                               orig.getFile()+SEPARATOR+extra);
             }
         }
-        else
+        catch (MalformedURLException ex)
         {
-            return new URL(orig.getProtocol(),
-                           orig.getHost(),
-                           orig.getPort(),
-                           orig.getFile()+"/"+extra);
+            throw new LogicError(ex);
         }
     }
 
@@ -312,23 +318,29 @@ public class NetUtil
      * @param extra1 The text to add to the end of the URL
      * @param extra2 The next bit of text to add to the end of the URL
      * @return The stripped URL
-     * @exception MalformedURLException If the URL is not valid
      */
-    public static URL lengthenURL(URL orig, String extra1, String extra2) throws MalformedURLException
+    public static URL lengthenURL(URL orig, String extra1, String extra2)
     {
-        if (orig.getProtocol().equals(PROTOCOL_FILE))
+        try
         {
-            return new URL(orig.getProtocol(),
-                           orig.getHost(),
-                           orig.getPort(),
-                           orig.getFile()+File.separator+extra1+File.separator+extra2);
+            if (orig.getProtocol().equals(PROTOCOL_FILE))
+            {
+                return new URL(orig.getProtocol(),
+                               orig.getHost(),
+                               orig.getPort(),
+                               orig.getFile()+File.separator+extra1+File.separator+extra2);
+            }
+            else
+            {
+                return new URL(orig.getProtocol(),
+                               orig.getHost(),
+                               orig.getPort(),
+                               orig.getFile()+SEPARATOR+extra1+SEPARATOR+extra2);
+            }
         }
-        else
+        catch (MalformedURLException ex)
         {
-            return new URL(orig.getProtocol(),
-                           orig.getHost(),
-                           orig.getPort(),
-                           orig.getFile()+"/"+extra1+"/"+extra2);
+            throw new LogicError(ex);
         }
     }
 
@@ -339,26 +351,32 @@ public class NetUtil
      * @param extra2 The next bit of text to add to the end of the URL
      * @param extra3 The next bit of text to add to the end of the URL
      * @return The stripped URL
-     * @exception MalformedURLException If the URL is not valid
      */
-    public static URL lengthenURL(URL orig, String extra1, String extra2, String extra3) throws MalformedURLException
+    public static URL lengthenURL(URL orig, String extra1, String extra2, String extra3)
     {
-        if (orig.getProtocol().equals(PROTOCOL_FILE))
+        try
         {
-            return new URL(orig.getProtocol(),
-                           orig.getHost(),
-                           orig.getPort(),
-                           orig.getFile()
-                                +File.separator+extra1
-                                +File.separator+extra2
-                                +File.separator+extra3);
+            if (orig.getProtocol().equals(PROTOCOL_FILE))
+            {
+                return new URL(orig.getProtocol(),
+                               orig.getHost(),
+                               orig.getPort(),
+                               orig.getFile()
+                                    +File.separator+extra1
+                                    +File.separator+extra2
+                                    +File.separator+extra3);
+            }
+            else
+            {
+                return new URL(orig.getProtocol(),
+                               orig.getHost(),
+                               orig.getPort(),
+                               orig.getFile()+SEPARATOR+extra1+SEPARATOR+extra2+SEPARATOR+extra3);
+            }
         }
-        else
+        catch (MalformedURLException ex)
         {
-            return new URL(orig.getProtocol(),
-                           orig.getHost(),
-                           orig.getPort(),
-                           orig.getFile()+"/"+extra1+"/"+extra2+"/"+extra3);
+            throw new LogicError(ex);
         }
     }
 

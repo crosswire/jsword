@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.crosswire.common.util.NetUtil;
@@ -45,60 +44,53 @@ public class RawBackend implements Backend
     public void init(SwordConfig config) throws BookException
     {
         URL swordBase = SwordBookDriver.getSwordURL();
-        
+
+        URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
+        if (!url.getProtocol().equals("file"))
+        {
+            throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
+        }
+
+        String path = url.getFile();
+
         try
         {
-            URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
-            if (!url.getProtocol().equals("file"))
-            {
-                throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
-            }
-        
-            String path = url.getFile();
-        
-            try
-            {
-                idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot.vss", "r");
-                txt_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot", "r");
-            }
-            catch (FileNotFoundException ex)
-            {
-                // Ignore this might be NT only
-            }
-
-            try
-            {
-                idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt.vss", "r");
-                txt_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt", "r");
-            }
-            catch (FileNotFoundException ex)
-            {
-                // Ignore this might be OT only
-            }
-        
-            // It is an error to be neither OT nor NT
-            if (txt_raf[SwordConstants.TESTAMENT_OLD] == null && txt_raf[SwordConstants.TESTAMENT_NEW] == null)
-            {
-                throw new BookException(Msg.MISSING_FILE, new Object[] { url.getFile() });
-            }
-        
-            // The original had a dtor that did the equiv of .close()ing the above
-            // I'm not sure that there is a delete type ability in Book.java and
-            // the finalizer for RandomAccessFile will do it anyway so for the
-            // moment I'm going to ignore this.
-        
-            // The original also stored the path, but I don't think it ever used it
-        
-            // The original also kept an instance count, which went unused (and I
-            // noticed in a few other places so it is either c&p or a pattern?
-            // Either way the assumption that there is only one of a static is not
-            // safe in many java environments (servlets, ejbs at least) so I've
-            // deleted it
+            idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot.vss", "r");
+            txt_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot", "r");
         }
-        catch (MalformedURLException ex)
+        catch (FileNotFoundException ex)
         {
-            throw new BookException(Msg.NOT_FOUND, ex);
+            // Ignore this might be NT only
         }
+
+        try
+        {
+            idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt.vss", "r");
+            txt_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt", "r");
+        }
+        catch (FileNotFoundException ex)
+        {
+            // Ignore this might be OT only
+        }
+
+        // It is an error to be neither OT nor NT
+        if (txt_raf[SwordConstants.TESTAMENT_OLD] == null && txt_raf[SwordConstants.TESTAMENT_NEW] == null)
+        {
+            throw new BookException(Msg.MISSING_FILE, new Object[] { url.getFile() });
+        }
+
+        // The original had a dtor that did the equiv of .close()ing the above
+        // I'm not sure that there is a delete type ability in Book.java and
+        // the finalizer for RandomAccessFile will do it anyway so for the
+        // moment I'm going to ignore this.
+
+        // The original also stored the path, but I don't think it ever used it
+
+        // The original also kept an instance count, which went unused (and I
+        // noticed in a few other places so it is either c&p or a pattern?
+        // Either way the assumption that there is only one of a static is not
+        // safe in many java environments (servlets, ejbs at least) so I've
+        // deleted it
     }
 
     /* (non-Javadoc)

@@ -104,6 +104,14 @@ public class THMLFilter implements Filter
     private static final String TAG_LI = "li";
     private static final String TAG_OL = "ol";
 
+    /*
+    private static final String TAG_TABLE = "table";
+    private static final String TAG_TR = "tr";
+    private static final String TAG_TD = "td";
+    private static final String TAG_HR = "hr";
+    private static final String TAG_PB = "pb";
+    */
+
     /**
      * The log stream
      */
@@ -165,7 +173,7 @@ public class THMLFilter implements Filter
                 }
                 else if (qname.equals(TAG_U))
                 {
-                    // Bold
+                    // Underline
                     Seg seg = JAXBUtil.factory().createSeg();
                     seg.setType(SEG_UNDERLINE);
                     JAXBUtil.getList(ele).add(seg);
@@ -174,14 +182,28 @@ public class THMLFilter implements Filter
                 {
                     // Font
                     Seg seg = JAXBUtil.factory().createSeg();
+                    StringBuffer buf = new StringBuffer();
+
                     String color = attrs.getValue("color");
                     if (color != null)
                     {
-                        seg.setType(SEG_COLORPREFIX+color+";");
+                        buf.append(SEG_COLORPREFIX+color+";");
+                    }
+
+                    String size = attrs.getValue("size");
+                    if (size != null)
+                    {
+                        buf.append(SEG_SIZEPREFIX+size+";");
+                    }
+
+                    String type = buf.toString();
+                    if (type != null)
+                    {
+                        seg.setType(type);
                     }
                     else
                     {
-                        log.debug("Missing color attribute.");
+                        log.debug("Missing color/size attribute.");
                         SAXUtil.debugAttributes(attrs);
                     }
                     JAXBUtil.getList(ele).add(seg);
