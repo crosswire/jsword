@@ -7,8 +7,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.remote.Converter;
-import org.crosswire.jsword.book.remote.RemoteBibleMetaData;
+import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
@@ -73,7 +72,7 @@ public class ConverterTest extends TestCase
         };
 
         doc = Converter.convertBibleMetaDatasToDocument(t1, uid1);
-        t2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter());
+        t2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter(), Bibles.SPEED_INACCURATE);
         assertEquals(t1.length, 5);
         assertEquals(t2.length, 5);
 
@@ -92,7 +91,7 @@ public class ConverterTest extends TestCase
 
         t1 = new FixtureBibleMetaData[] { };
         doc = Converter.convertBibleMetaDatasToDocument(t1, new String[] { });
-        t2 = Converter.convertDocumentToBibleMetaDatas(doc, null);
+        t2 = Converter.convertDocumentToBibleMetaDatas(doc, null, Bibles.SPEED_INACCURATE);
         assertEquals(t1.length, 0);
         assertEquals(t2.length, 0);
     }

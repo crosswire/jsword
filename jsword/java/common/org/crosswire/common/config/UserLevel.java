@@ -4,7 +4,7 @@ package org.crosswire.common.config;
 import org.jdom.Element;
 
 /**
- * URGENT(joe) get rid of this class
+ * URGENT(joe): get rid of this class
  * A UserLevel keeps a track of how advanced the user is.
  * It may not be a graphical component, but many graphical components depend on
  * it, and it doesn't seem to be a 'util'.

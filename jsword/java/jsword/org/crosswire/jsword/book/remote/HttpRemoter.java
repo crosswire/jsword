@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
+import org.crosswire.jsword.book.Bibles;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -82,6 +83,14 @@ public class HttpRemoter implements Remoter
         {
             throw new RemoterException(ex);
         }
+    }
+
+    /**
+     * How fast are we?
+     */
+    public int getSpeed()
+    {
+        return Bibles.SPEED_REMOTE_SLOW;
     }
 
     /**

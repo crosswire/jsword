@@ -93,22 +93,9 @@ public interface BookMetaData
      * The expected speed at which this implementation gets correct answers.
      * This value is used by Bibles to decide the fastest implementation for a
      * given job.
-     * Important values include 5, were the remoting system will not remote
-     * Bibles where getSpeed() >= 5 (to save re-remoting already remote Bibles).
-     * 10 is also special - values > 10 indicate the data returned is likely to
-     * be wrong (i.e. test data) So we should probably not ship systems with
-     * BibleDrivers that return > 10
-     * 
-     * 0 = this is preferred
-     * 1 = fastest known
-     * 2 = fast local
-     * 5 = fast remote speeds
-     * 7 = slow remote speeds
-     * 8 = very slow
-     * 9 = slowest known
-     * 10 = not preferred
-     * 11 = not guaranteed to get correct results!
-     * @return a speed value between 0 and 11
+     * <p>The valid values are defined in the Bibles class.
+     * @see Bibles
+     * @return a speed value between -1 and 10
      */
     public int getSpeed();
 

@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 
 import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
@@ -73,6 +74,6 @@ public class FixtureBibleMetaData extends AbstractBibleMetaData
      */
     public int getSpeed()
     {
-        return 11;
+        return Bibles.SPEED_INACCURATE;
     }
 }

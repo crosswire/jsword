@@ -54,11 +54,11 @@ public class LocalRemoterTest extends TestCase
 
     public void testGetBibles() throws Exception
     {
-        BibleMetaData[] names1 = Bibles.getBibles(); 
+        BibleMetaData[] names1 = Bibles.getFastBibles(Bibles.SPEED_SLOWEST); 
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
         Document doc = remote.execute(method);
-        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter());
+        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter(), Bibles.SPEED_INACCURATE);
 
         assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)

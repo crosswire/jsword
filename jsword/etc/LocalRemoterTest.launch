@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
     <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-        <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
         <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+        <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
     </listAttribute>
+    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.crosswire.jsword.util.remoter.LocalRemoterTest"/>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="jsword/target"/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jsword"/>
     <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
-    <mapAttribute key="org.eclipse.jdt.launchingVM_INSTALL_TYPE_SPECIFIC_ATTRS_MAP">
-        <mapEntry key="org.eclipse.jdt.launching.JAVA_COMMAND" value="javaw"/>
-    </mapAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=T:\share\joe\jsword\target\ant\deploy\jsword\resource"/>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
 </launchConfiguration>

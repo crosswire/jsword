@@ -62,7 +62,7 @@ public class Converter
      * @param doc
      * @return BibleMetaData[]
      */
-    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(Document doc, Remoter remoter) throws MalformedURLException, ParseException
+    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(Document doc, Remoter remoter, int speed) throws MalformedURLException, ParseException
     {
         Element root = doc.getRootElement();
         List bmds = root.getChildren("metadata");
@@ -81,7 +81,7 @@ public class Converter
             String open = bmdele.getChildTextTrim("openness");
             String licence = bmdele.getChildTextTrim("licence");
 
-            rbmds[i++] = new RemoteBibleMetaData(remoter, id, name, edition, initials, pub, open, licence);
+            rbmds[i++] = new RemoteBibleMetaData(remoter, id, name, edition, initials, pub, open, licence, speed);
         }
 
         return rbmds;

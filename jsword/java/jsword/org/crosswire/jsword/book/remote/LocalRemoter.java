@@ -134,7 +134,15 @@ public class LocalRemoter implements Remoter
     }
 
     /**
-     * Method trimRemote.
+     * How fast are we?
+     */
+    public int getSpeed()
+    {
+        return Bibles.SPEED_REMOTE_FASTEST;
+    }
+
+    /**
+     * Method trimRemote
      * @param orig_bmds
      * @return BibleMetaData[]
      */
@@ -145,7 +153,7 @@ public class LocalRemoter implements Remoter
         for (int i = 0; i < orig_bmds.length; i++)
         {
             BibleMetaData bmd = orig_bmds[i];
-            if (bmd.getSpeed() < Bibles.SPEED_REMOTE)
+            if (bmd.getSpeed() > Bibles.SPEED_REMOTE_FASTEST)
                 temp.add(bmd);
         }
 

@@ -39,8 +39,25 @@ import org.crosswire.jsword.util.Project;
  */
 public class Bibles
 {
-    public static final int SPEED_REMOTE = 5;
-    public static final int SPEED_INACCURATE = 11;
+    /*
+     * <p>Important values include 5, were the remoting system will not remote
+     * Bibles where getSpeed() >= 5 (to save re-remoting already remote Bibles).
+     * 10 is also special - values > 10 indicate the data returned is likely to
+     * be wrong (i.e. test data) So we should probably not ship systems with
+     * BibleDrivers that return > 10.
+     */
+    public static final int SPEED_FASTEST = 10;
+    public static final int SPEED_FAST = 9;
+    public static final int SPEED_MEDIUM = 8;
+    public static final int SPEED_SLOW = 7;
+    public static final int SPEED_SLOWEST = 6;
+    public static final int SPEED_REMOTE_FASTEST = 5;
+    public static final int SPEED_REMOTE_FAST = 4;
+    public static final int SPEED_REMOTE_MEDIUM = 3;
+    public static final int SPEED_REMOTE_SLOW = 2;
+    public static final int SPEED_REMOTE_SLOWEST = 1;
+    public static final int SPEED_IGNORE = 0;
+    public static final int SPEED_INACCURATE = -1;
 
     /**
      * The list of Bibles
@@ -53,9 +70,15 @@ public class Bibles
     private static BibleMetaData deft = null;
 
     /**
+     * Has the default Bible been manually set or are we picking the fastest
+     * as the default?
+     */
+    private static boolean autodef = true;
+
+    /**
      * The list of listeners
      */
-    protected static EventListenerList listeners = new EventListenerList();
+    private static EventListenerList listeners = new EventListenerList();
 
     /**
      * An array of BookDrivers
@@ -65,7 +88,7 @@ public class Bibles
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(Bibles.class);
+    private static Logger log = Logger.getLogger(Bibles.class);
 
     /**
      * Get an array of the available Bible names.
@@ -96,6 +119,38 @@ public class Bibles
     }
 
     /**
+     * Get all the BibleMetaDatas that are at least as fast as minspeed.
+     * @throws BookException If anything goes wrong with this method
+     */
+    public static BibleMetaData[] getFastBibles(int minspeed) throws BookException
+    {
+        List faster = new ArrayList();
+        for (Iterator it = bibles.iterator(); it.hasNext();)
+        {
+            BibleMetaData bmd = (BibleMetaData) it.next();
+            if (bmd.getSpeed() > minspeed)
+            {
+                faster.add(bmd);
+            }
+        }
+
+        return (BibleMetaData[]) faster.toArray(new BibleMetaData[faster.size()]);
+    }
+
+    /**
+     * Set the default Bible. The new name must be equal() to a string
+     * returned from getBibleNames. (if does not need to be == however)
+     * A BookException results if you get it wrong.
+     * @param bmd The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static void setDefault(BibleMetaData bmd) throws BookException
+    {
+        autodef = false;
+        deft = bmd;
+    }
+
+    /**
      * Get the current default Bible. If there are no Bibles that
      * can be accessed (sounds like an installation problem or something)
      * then a BookException results. Otherwise this should always get
@@ -105,11 +160,6 @@ public class Bibles
      */
     public static BibleMetaData getDefault() throws BookException
     {
-        if (deft == null)
-        {
-            deft = getBibles()[0];
-        }
-
         return deft;
     }
 
@@ -141,18 +191,6 @@ public class Bibles
     }
 
     /**
-     * Set the default Bible. The new name must be equal() to a string
-     * returned from getBibleNames. (if does not need to be == however)
-     * A BookException results if you get it wrong.
-     * @param bmd The version to use as default.
-     * @exception BookException If the name is not valid
-     */
-    public static void setDefault(BibleMetaData bmd) throws BookException
-    {
-        deft = bmd;
-    }
-
-    /**
      * Trawl through all the known Bibles looking for the one closest to
      * the given name.
      * This method is for use with config scripts and other things that
@@ -163,12 +201,19 @@ public class Bibles
      */
     public static void setDefaultByName(String name) throws BookException
     {
+        autodef = false;
+
         BibleMetaData[] bmds = getBibles();
         for (int i=0; i<bmds.length; i++)
         {
             if (bmds[i].getName().equals(name))
+            {
                 setDefault(bmds[i]);
+                return;
+            }
         }
+
+        throw new BookException("bible_not_found");
     }
 
     /**
@@ -199,7 +244,26 @@ public class Bibles
         log.debug("registering bible: "+bmd.getName());
 
         bibles.add(bmd);
+        checkReplaceDefault(bmd);
+
         fireBiblesChanged(Bibles.class, bmd, true);
+    }
+
+    /**
+     * Should this Bible become the default?
+     */
+    private static void checkReplaceDefault(BibleMetaData bmd)
+    {
+        // Do we even think about replacing the default Bible?
+        if (autodef || deft == null)
+        {
+            // If there is no default or this is faster
+            if (deft == null || bmd.getSpeed() > deft.getSpeed())
+            {
+                deft = bmd;
+                log.debug("setting as default since speed="+deft.getSpeed());
+            }
+        }
     }
 
     /**
@@ -219,6 +283,16 @@ public class Bibles
         else
         {
             throw new BookException("bibles_booknotfound");
+        }
+
+        // Was this the default?
+        if (bmd.equals(deft))
+        {
+            // find the next fastest
+            for (Iterator it = bibles.iterator(); it.hasNext();)
+            {
+                checkReplaceDefault((BibleMetaData) it.next());
+            }
         }
     }
 

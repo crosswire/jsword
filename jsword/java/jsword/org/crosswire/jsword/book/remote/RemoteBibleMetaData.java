@@ -37,11 +37,12 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for RemoteBibleMetaData.
      */
-    public RemoteBibleMetaData(Remoter remoter, String id, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public RemoteBibleMetaData(Remoter remoter, String id, String name, String edition, String initials, String pubstr, String openstr, String licencestr, int speed) throws ParseException, MalformedURLException
     {
         super(name, edition, initials, pubstr, openstr, licencestr);
         this.remoter = remoter;
         this.id = id;
+        this.speed = speed;
     }
 
     /**
@@ -100,11 +101,16 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
      */
     public int getSpeed()
     {
-        return 6;
+        return speed;
     }
     
     /**
      * The cached bible so we don't have to create too many
      */
     private Bible bible = null;
+
+    /**
+     * The speed of this RemoteBible
+     */
+    private int speed;
 }

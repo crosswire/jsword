@@ -1,9 +1,7 @@
 
 package org.crosswire.jsword.book.remote;
 
-import org.crosswire.jsword.book.remote.RemoteMethod;
-import org.crosswire.jsword.book.remote.Remoter;
-import org.crosswire.jsword.book.remote.RemoterException;
+import org.crosswire.jsword.book.Bibles;
 import org.jdom.Document;
 
 /**
@@ -46,5 +44,13 @@ public class FixtureRemoter implements Remoter
     public String getRemoterName()
     {
         return "Fixture Remote";
+    }
+
+    /**
+     * How fast are we?
+     */
+    public int getSpeed()
+    {
+        return Bibles.SPEED_INACCURATE;
     }
 }
