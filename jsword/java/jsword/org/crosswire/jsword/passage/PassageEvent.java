@@ -71,7 +71,7 @@ public class PassageEvent extends EventObject
 
     /**
      * Returns the lower index of the range. For a single element,
-     * this value is the same as that returned by {@link #getUpperIndex}.
+     * this value is the same as that returned by {@link #getUpperIndex()}.
      * @return an int representing the lower index value
      */
     public Verse getLowerIndex()
@@ -81,7 +81,7 @@ public class PassageEvent extends EventObject
 
     /**
      * Returns the upper index of the range. For a single element,
-     * this value is the same as that returned by {@link #getLowerIndex}.
+     * this value is the same as that returned by {@link #getLowerIndex()}.
      * @return an int representing the upper index value
      */
     public Verse getUpperIndex()
