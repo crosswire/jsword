@@ -248,8 +248,11 @@
       <formatter type="plain" usefile="false"/>
       <formatter type="xml"/>
       <classpath>
-        <pathelement path="${target.classes}"/>
-        <pathelement path="${target.test}"/>
+        <pathelement path="${target.classes}/common"/>
+        <pathelement path="${target.classes}/jsword"/>
+        <pathelement path="${target.classes}/map"/>
+        <pathelement path="${target.classes}/sword"/>
+        <fileset dir="${target.deploy}" includes="**/*.jar"/>
       </classpath>
     </junit>
   </target>
