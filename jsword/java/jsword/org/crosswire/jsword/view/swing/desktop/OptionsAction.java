@@ -71,6 +71,10 @@ public class OptionsAction extends DesktopAbstractAction
     {
         try
         {
+            // I'm not 100% sure that this will update the dialog with the
+            // current list of Bibles, but it should.
+            ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibles());
+
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
             URL config_url = Project.resource().getPropertiesURL("desktop");
             SwingConfig.showDialog(config, getDesktop(), config_url);

@@ -36,8 +36,25 @@ import org.crosswire.jsword.book.events.BiblesListener;
 public class Bibles
 {
     /**
-     * Get an array of the available Bible names. This is done by asking
-     * all of the available Bibles in turn and collating the results.
+     * Get an array of the available Bible names.
+     * This is done by asking all of the available Bibles in turn and collating
+     * the results. Using this method (equivalent to calling getBibles()
+     * followed by calling addBiblesListener()) is preferred because it helps
+     * keep people up to date with the available Bibles.
+     * @return An array of available version IDs
+     * @throws BookException If anything goes wrong with this method
+     */
+    public static BibleMetaData[] getBibles(BiblesListener li) throws BookException
+    {
+        return (BibleMetaData[]) bibles.toArray(new BibleMetaData[bibles.size()]);
+    }
+
+    /**
+     * Get an array of the available Bible names.
+     * This is done by asking all of the available Bibles in turn and collating
+     * the results. You are encouraged <b>not</b> use this method, but to use
+     * getBibles(BiblesListener) to keep up to date with available Bibles.
+     * @see #getBibles(BiblesListener)
      * @return An array of available version IDs
      * @throws BookException If anything goes wrong with this method
      */
