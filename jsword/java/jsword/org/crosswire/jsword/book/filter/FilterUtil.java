@@ -32,6 +32,13 @@ import org.apache.commons.lang.StringUtils;
 public class FilterUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private FilterUtil()
+    {
+    }
+
+    /**
      * Cut up the input data so it is OK to output in an error log
      */
     public static String forOutput(String data)

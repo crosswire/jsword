@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Better implemenetations of the getResource methods with les ambiguity and
+ * Better implemenetations of the getResource methods with less ambiguity and
  * that are less dependent on the specific classloader situation.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>

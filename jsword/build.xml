@@ -588,7 +588,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html, web.javancss">
+  <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html, web.javancss, web.findbugs">
     <!-- I've taken web.cpd out because it is very slow and not that useful -->
   </target>
 

@@ -50,4 +50,3 @@ public class CitationTag implements Tag
         JAXBUtil.getList(ele).add(q);
     }
 }
-    

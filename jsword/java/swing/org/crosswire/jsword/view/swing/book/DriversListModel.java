@@ -130,7 +130,7 @@ public class DriversListModel extends AbstractListModel
     /**
      * border if we do not have focus
      */
-    protected static Border no_focus;
+    static Border no_focus;
 
     /**
      * Create a BookListCellRenderer
