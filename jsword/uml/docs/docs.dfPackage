@@ -122,55 +122,10 @@ class link76 {
 */
 class link161 {
 }/**
-@__ref <oiref:java#Class#docs.DesignIntro:oiref><oihard>
-@__modelType reference 
-*/
-class reference {
-}/**
-@__ref <oiref:java#Class#docs.Installation:oiref><oihard>
-@__modelType reference 
-*/
-class reference438 {
-}/**
-@__ref <oiref:java#Class#docs.WhyJava:oiref><oihard>
-@__modelType reference 
-*/
-class reference439 {
-}/**
-@__ref <oiref:java#Class#docs.Versions:oiref><oihard>
-@__modelType reference 
-*/
-class reference440 {
-}/**
-@__ref <oiref:java#Class#docs.Credits:oiref><oihard>
-@__modelType reference 
-*/
-class reference441 {
-}/**
-@__ref <oiref:java#Class#docs.WritingCode:oiref><oihard>
-@__modelType reference 
-*/
-class reference442 {
-}/**
-@__ref <oiref:java#Class#docs.Free:oiref><oihard>
-@__modelType reference 
-*/
-class reference443 {
-}/**
-@__ref <oiref:java#Class#docs.Aims:oiref><oihard>
-@__modelType reference 
-*/
-class reference444 {
-}/**
 @__ref <oiref:java#Class#docs.Licence:oiref><oihard>
 @__modelType reference 
 */
 class reference445 {
-}/**
-@__ref <oiref:java#Class#docs.XML:oiref><oihard>
-@__modelType reference 
-*/
-class reference446 {
 }}/**
 @__tags
 @shapeType ClassDiagram 
@@ -181,23 +136,14 @@ class __tags {
 */
 class __options {
 }/**
-@__positions <oigroup:<oiref:design#Class#id3qgpocc6chppkcc6czh9x.diagram.link24:oiref>=610,138,610,68:oigroup>
-<oigroup:<oiref:design#Class#id3qgpocc6chppkcc6czh9x.diagram:oiref>=539,138,152,129,1:oigroup>
-<oigroup:<oiref:java#Class#docs.Licence:oiref>=220,180,80,69,1:oigroup>
-<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.node19:oiref>=358,24,164,69,1:oigroup>
-<oigroup:<oiref:java#Class#docs.Aims:oiref>=210,260,80,69,1:oigroup>
-<oigroup:<oiref:java#Class#docs.Credits:oiref>=30,180,80,69,1:oigroup>
-<oigroup:<oiref:java#Class#docs.XML:oiref>=220,90,80,69,1:oigroup>
-<oigroup:<oiref:design#Class#id34f7jcjogjmpycjogm68l.diagram:oiref>=373,127,100,225,1:oigroup>
-<oigroup:<oiref:design#Class#id34f7jcjogjmpycjogm68l.diagram.link21:oiref>=423,127,423,93:oigroup>
-<oigroup:<oiref:java#Class#docs.Installation:oiref>=30,340,84,69,1:oigroup>
-<oigroup:<oiref:java#Class#docs.WhyJava:oiref>=30,260,80,69,1:oigroup>
-<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.node:oiref>=31,27,300,40,1:oigroup>
-<oigroup:<oiref:java#Class#docs.Versions:oiref>=130,90,80,69,1:oigroup>
+@__positions <oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.node19:oiref>=358,24,164,69,1:oigroup>
 <oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.node22:oiref>=535,28,181,40,1:oigroup>
-<oigroup:<oiref:java#Class#docs.DesignIntro:oiref>=30,90,87,69,1:oigroup>
-<oigroup:<oiref:java#Class#docs.WritingCode:oiref>=120,180,91,69,1:oigroup>
-<oigroup:<oiref:java#Class#docs.Free:oiref>=120,260,80,69,1:oigroup>
+<oigroup:<oiref:design#Class#id34f7jcjogjmpycjogm68l.diagram.link21:oiref>=423,127,423,93:oigroup>
+<oigroup:<oiref:design#Class#id3qgpocc6chppkcc6czh9x.diagram:oiref>=539,138,152,129,1:oigroup>
+<oigroup:<oiref:design#Class#id34f7jcjogjmpycjogm68l.diagram:oiref>=373,127,100,225,1:oigroup>
+<oigroup:<oiref:java#Class#docs.Licence:oiref>=220,180,80,69,1:oigroup>
+<oigroup:<oiref:design#Class#id3qgpocc6chppkcc6czh9x.diagram.link24:oiref>=610,138,610,68:oigroup>
+<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.node:oiref>=31,27,300,40,1:oigroup>
 */
 class __positions {
 }/**

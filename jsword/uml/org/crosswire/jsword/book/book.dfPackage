@@ -477,6 +477,11 @@ class reference465 {
 @__modelType reference 
 */
 class reference466 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.Openness:oiref><oihard>
+@__modelType reference 
+*/
+class reference2 {
 }}
 /**
 Contains the fundamental text delivery classes. If you consider JSword as a MVC design, book is the Model.
@@ -499,12 +504,12 @@ class __options {
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.jdbc.JDBCBibleDriver:oiref>=1470,1210,200,70,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.TestDriverManager:oiref>=615,194,184,219,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.ser.SerBibleDriver#driver:oiref>=763,1293,763,1340,847,1340,847,1256,800,1256:oigroup>
-<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultRefData#section:oiref>=2081,711,1827,562:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.sword.SwordBible#version:oiref>=1040,1070,1040,970,199,970:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultRefData#section:oiref>=2081,711,1827,562:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.Book:oiref>=420,30,189,152,1:oigroup>
 <oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram:oiref>=1200,1390,116,81,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultBibleData:oiref>=1361,711,200,70,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.basic.VersewiseBible:oiref>=302,799,200,70,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultBibleData:oiref>=1361,711,200,70,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.bible.book.Bible#org.crosswire.bible.book.Book:oiref>=509,249,509,182:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.basic.AbstractWritableBibleDriver#org.crosswire.bible.book.WritableBibleDriver:oiref>=1128,589,1128,540:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.BibleEle#org.crosswire.bible.book.BookEle:oiref>=1105,168,1105,121:oigroup>
@@ -512,15 +517,15 @@ class __options {
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultSectionData#refs:oiref>=1862,746,1982,746:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.bible.book.ser.SerBible#org.crosswire.bible.book.VersewiseBible:oiref>=529,1086,312,930:oigroup>
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram:oiref>=910,1390,127,116,1:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.bible.book.jdbc.JDBCBibleDriver#org.crosswire.bible.book.basic.AbstractBibleDriver:oiref>=1570,1210,955,635:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultSectionData:oiref>=1662,711,200,70,1:oigroup>
-<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.basic.Verifier#bible2:oiref>=1537,368,333,257:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.jdbc.JDBCBibleDriver#org.crosswire.bible.book.basic.AbstractBibleDriver:oiref>=1570,1210,955,635:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.stub.StubBible:oiref>=1170,1071,200,70,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.basic.Verifier#bible2:oiref>=1537,368,333,257:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.TestBibleDriver:oiref>=252,1,150,235,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.stub.StubBibleDriver:oiref>=1170,1210,200,70,1:oigroup>
 <oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram:oiref>=2210,72,138,97,1:oigroup>
-<oigroup:<oiref:java#Implements#org.crosswire.bible.book.AbstractWritableBibleDriver#org.crosswire.bible.book.WritableBibleDriver:oiref>=780,90,780,679:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.jdbc.JDBCBible:oiref>=1470,1070,200,83,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.AbstractWritableBibleDriver#org.crosswire.bible.book.WritableBibleDriver:oiref>=780,90,780,679:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.AbstractWritableBible#org.crosswire.bible.book.WritableBible:oiref>=500,489,739,489:oigroup>
 <oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link197:oiref>=109,1594,1593,490:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.TestBookUtil:oiref>=877,696,200,347,1:oigroup>
@@ -533,8 +538,8 @@ class __options {
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.TestBible:oiref>=515,654,164,235,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.SectionEle#doc:oiref>=945,279,1004,279:oigroup>
 <oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link211:oiref>=604,1592,1685,490:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.bible.book.jdbc.JDBCBible#org.crosswire.bible.book.basic.AbstractBible:oiref>=1535,1070,659,637:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.bible.book.stub.StubBible#org.crosswire.bible.book.basic.AbstractBible:oiref>=1270,1071,618,637:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.jdbc.JDBCBible#org.crosswire.bible.book.basic.AbstractBible:oiref>=1535,1070,659,637:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultSectionData#doc:oiref>=1728,711,1459,594:oigroup>
 <oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram:oiref>=1389,71,141,177,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.events.BiblesEvent:oiref>=1086,628,219,139,1:oigroup>
@@ -542,25 +547,25 @@ class __options {
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.BibleMetaData:oiref>=130,1089,105,85,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.stub.StubBibleDriver#driver:oiref>=1332,1280,1332,1328,1418,1328,1418,1242,1370,1242:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#version:oiref>=450,1070,450,990,199,990:oigroup>
-<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.jdbc.JDBCBibleDriver#driver:oiref>=1637,1280,1637,1323,1713,1323,1713,1247,1670,1247:oigroup>
 <oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link203:oiref>=323,1599,1639,490:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.jdbc.JDBCBibleDriver#driver:oiref>=1637,1280,1637,1323,1713,1323,1713,1247,1670,1247:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.bible.book.stub.StubBibleDriver#org.crosswire.bible.book.basic.AbstractBibleDriver:oiref>=1270,1210,940,635:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.bible.book.basic.AbstractBible:oiref>=501,580,200,57,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.data.RefData:oiref>=1980,390,200,169,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.basic.AbstractBible:oiref>=501,580,200,57,1:oigroup>
 <oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram:oiref>=1500,1390,118,113,1:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.AbstractBible#org.crosswire.bible.book.Bible:oiref>=154,514,154,331:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.basic.AbstractWritableBibleDriver:oiref>=1050,589,200,92,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.bible.book.VersewiseBible#org.crosswire.bible.book.AbstractWritableBible:oiref>=312,707,312,520:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.sword.SwordBible:oiref>=880,1070,200,70,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.BibleData#sections:oiref>=1559,485,1660,485:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.RawBibleDriver#org.crosswire.bible.book.AbstractBibleDriver:oiref>=317,1335,587,852:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.ser.SerBible:oiref>=600,1070,200,83,1:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.bible.book.AbstractWritableBibleDriver#org.crosswire.bible.book.AbstractBibleDriver:oiref>=644,90,644,790:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.RawBibleDriver#org.crosswire.bible.book.AbstractBibleDriver:oiref>=317,1335,587,852:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.basic.AbstractBible#org.crosswire.bible.book.Bible:oiref>=550,580,550,433:oigroup>
-<oigroup:<oiref:java#Implements#org.crosswire.bible.book.basic.AbstractWritableBible#org.crosswire.bible.book.WritableBible:oiref>=360,690,360,620:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.AbstractWritableBibleDriver#org.crosswire.bible.book.AbstractBibleDriver:oiref>=644,90,644,790:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.bible.book.AbstractWritableBible#org.crosswire.bible.book.AbstractBible:oiref>=281,499,226,526:oigroup>
-<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link222:oiref>=1589,105,1146,204:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.basic.AbstractWritableBible#org.crosswire.bible.book.WritableBible:oiref>=360,690,360,620:oigroup>
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link231:oiref>=1621,267,1621,313:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link222:oiref>=1589,105,1146,204:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.WritableBible:oiref>=281,500,194,120,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.ser.SerBible#version:oiref>=750,1070,750,980,199,980:oigroup>
 <oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram:oiref>=630,1390,135,129,1:oigroup>

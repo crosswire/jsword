@@ -49,11 +49,6 @@ class link268 {
 */
 class link {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.util.config.FileChoice:oiref><oihard>
-@__modelType reference 
-*/
-class reference {
-}/**
 @__ref <oiref:java#Class#org.crosswire.jsword.util.config.RemoteChoices:oiref><oihard>
 @__modelType reference 
 */

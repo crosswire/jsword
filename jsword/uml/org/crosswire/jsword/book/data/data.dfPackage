@@ -99,10 +99,10 @@ class __tags {
 */
 class __options {
 }/**
-@__positions <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultBibleData#sections:oiref>=271,570,392,570:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultBibleData:oiref>=52,430,219,231,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.RefData:oiref>=752,141,203,167,1:oigroup>
+@__positions <oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultBibleData:oiref>=52,430,219,231,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultBibleData#sections:oiref>=271,570,392,570:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.data.DefaultRefData#org.crosswire.bible.book.data.RefData:oiref>=904,430,904,308:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.RefData:oiref>=752,141,203,167,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultRefData:oiref>=744,430,219,285,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.BibleData#sections:oiref>=260,218,402,218:oigroup>
 <oigroup:<oiref:java#Implements#org.crosswire.bible.book.data.DefaultBibleData#org.crosswire.bible.book.data.BibleData:oiref>=107,430,107,298:oigroup>

@@ -214,12 +214,6 @@ class reference8 {
 */
 class reference15 {
 }/**
-@__ref <oiref:java#Class#dmapper:oiref><oihard>
-@__modelType reference 
-@hideAttributes
-*/
-class reference {
-}/**
 @shapeType DependencyLink
 @__modelType link
 @__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
@@ -454,39 +448,38 @@ class __tags {
 class __options {
 }/**
 @__positions 
-<oigroup:<oiref:java#Class#JSwordAllTests:oiref>=270,820,113,88,1:oigroup>
+<oigroup:<oiref:java#Class#JSwordAllTests:oiref>=234,882,161,71,1:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link12:oiref>=267,727,267,615:oigroup>
-<oigroup:<oiref:design#Class#idbogc37li4p0c37mprvg.diagram.link:oiref>=535,150,535,120:oigroup>
+<oigroup:<oiref:design#Class#idbogc37li4p0c37mprvg.diagram.link:oiref>=584,89,584,63:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link10:oiref>=290,590,290,557:oigroup>
-<oigroup:<oiref:java#Extends#MapAllTests#junit.framework.TestCase:oiref>=410,820,410,773:oigroup>
+<oigroup:<oiref:java#Extends#MapAllTests#junit.framework.TestCase:oiref>=362,775,362,725:oigroup>
 <oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.diagram.link405:oiref>=783,56,683,56:oigroup>
-<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.diagram:oiref>=520,560,98,244,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node4:oiref>=10,10,600,110,0:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node7:oiref>=30,700,150,90,0:oigroup>
-<oigroup:<oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref>=460,150,157,191,1:oigroup>
-<oigroup:<oiref:java#Class#dmapper:oiref>=250,590,80,72,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node:oiref>=20,370,360,187,0:oigroup>
-<oigroup:<oiref:java#Extends#CommonAllTests#junit.framework.TestCase:oiref>=236,820,236,773:oigroup>
-<oigroup:<oiref:java#Class#cbench:oiref>=150,590,80,72,1:oigroup>
-<oigroup:<oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram.link9:oiref>=58,150,58,120:oigroup>
-<oigroup:<oiref:java#Class#CommonAllTests:oiref>=130,820,123,88,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link:oiref>=76,590,76,557:oigroup>
+<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.diagram:oiref>=85,481,69,110,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node4:oiref>=10,10,643,53,0:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node7:oiref>=27,655,150,90,0:oigroup>
+<oigroup:<oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref>=519,89,131,215,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node:oiref>=297,351,360,169,0:oigroup>
+<oigroup:<oiref:java#Extends#CommonAllTests#junit.framework.TestCase:oiref>=251,781,251,725:oigroup>
+<oigroup:<oiref:java#Class#cbench:oiref>=495,551,153,52,1:oigroup>
+<oigroup:<oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram.link9:oiref>=57,106,57,63:oigroup>
+<oigroup:<oiref:java#Class#CommonAllTests:oiref>=114,781,172,71,1:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link136:oiref>=265,627,265,662:oigroup>
-<oigroup:<oiref:java#Class#dtools:oiref>=50,590,80,72,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link:oiref>=387,550,387,520:oigroup>
+<oigroup:<oiref:java#Class#dtools:oiref>=311,550,153,52,1:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link13:oiref>=421,646,421,615:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link11:oiref>=241,647,241,615:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node4.link:oiref>=193,120,193,150:oigroup>
-<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.diagram.link16:oiref>=569,560,569,530:oigroup>
-<oigroup:<oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref>=20,150,76,75,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node7.link:oiref>=180,736,220,736:oigroup>
-<oigroup:<oiref:java#Extends#JSwordAllTests#junit.framework.TestCase:oiref>=328,820,328,773:oigroup>
-<oigroup:<oiref:java#Class#MapAllTests:oiref>=400,820,94,88,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node14:oiref>=420,370,200,160,0:oigroup>
-<oigroup:<oiref:design#Class#id1zfxxd0s4c5ysd0syqykf.diagram:oiref>=290,150,152,159,1:oigroup>
-<oigroup:<oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref>=110,150,166,127,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node4.link655:oiref>=366,120,366,150:oigroup>
-<oigroup:<oiref:java#Class#junit.framework.TestCase:oiref>=220,700,200,73,1:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link137:oiref>=190,557,190,590:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node4.link:oiref>=196,63,196,101:oigroup>
+<oigroup:<oiref:design#Class#id3oh1ncc6chppkcc6czey0.diagram.link16:oiref>=119,481,119,433:oigroup>
+<oigroup:<oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref>=19,106,77,82,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node7.link:oiref>=177,691,217,691:oigroup>
+<oigroup:<oiref:java#Extends#JSwordAllTests#junit.framework.TestCase:oiref>=312,882,312,725:oigroup>
+<oigroup:<oiref:java#Class#MapAllTests:oiref>=335,775,143,71,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node14:oiref>=31,298,233,135,0:oigroup>
+<oigroup:<oiref:design#Class#id1zfxxd0s4c5ysd0syqykf.diagram:oiref>=309,99,128,177,1:oigroup>
+<oigroup:<oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref>=125,101,142,139,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node4.link655:oiref>=373,63,373,99:oigroup>
+<oigroup:<oiref:java#Class#junit.framework.TestCase:oiref>=217,655,173,70,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.node.link137:oiref>=571,520,571,551:oigroup>
 
 */
 class __positions {
@@ -494,11 +487,15 @@ class __positions {
 @shapeType Note
 @__modelType node
 @name Note1
-@text The idea behind these classes is that they are shortcuts to the real implementations. So in general they only extend the real version. So rather than type:
+@text The idea behind these classes is that they are shortcuts to
+the real implementations. So in general they only extend the
+real version. So rather than type:
 $ java com.eireneh.bible.view.swing.desktop.Tools
 You can get away with the more simple:
 $ java dtools
-As we move more into webapps, webstart, etc these will become less and less useful. The first letter d/c/s denotes the type of view d=desktop gui, c=command line, etc
+As we move more into webapps, webstart, etc these will
+become less and less useful. The first letter d/c/s denotes
+the type of view d=desktop gui, c=command line, etc
 */
 class node {
 /**
@@ -552,9 +549,8 @@ class link137 {
 @shapeType Note
 @__modelType node
 @name Note2
-@text The org.crosswire.bible hierachy is where almost all of the code lives. The doc hierachy contains documentation only.
-The only code that does not live within org.crosswire.bible is util stuff that is not JSword only. It is also GPLed, but separate because it is used by a number of other projects.
-Rather than digging your way down through org.crosswire.bible you might like to use the shortcuts on the right.
+@text The org.crosswire hierachy is where almost all of the code lives. The doc hierachy contains documentation only.
+Rather than digging your way down through org.crosswire.bible you might like to use these shortcuts.
 */
 class node4 {
 /**
@@ -573,8 +569,13 @@ class link655 {
 @shapeType Note
 @__modelType node
 @name Note3
-@text Documentation that is not specific to any one part of the project is collected in this docs package.
-There is no real code here. The only classes are 100% JavaDoc where we wanted to have docos that did not require Together.
+@text Documentation that is not specific to
+any one part of the project is collected
+in this docs package.
+There is no real code here.
+The only classes are 100% JavaDoc
+where we wanted to have docos that
+did not require Together.
 */
 class node14 {
 }/**

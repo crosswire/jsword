@@ -84,11 +84,6 @@ class link170 {
 */
 class link173 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.VersionFactory:oiref><oihard>
-@__modelType reference 
-*/
-class reference {
-}/**
 @__ref <oiref:java#Class#org.crosswire.jsword.book.basic.VersewiseBible:oiref><oihard>
 @__modelType reference 
 */

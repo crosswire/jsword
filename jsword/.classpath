@@ -8,7 +8,7 @@
     <classpathentry kind="lib" path="jar/jlf10/jlfgr-1_0.jar"/>
     <classpathentry kind="lib" path="jar/servlet23/servlet.jar"/>
     <classpathentry kind="lib" path="jar/junit37/junit.jar"/>
-    <classpathentry kind="lib" path="jar/log4j126/log4.jar"/>
+    <classpathentry kind="lib" path="jar/log4j126/log4j.jar"/>
     <classpathentry kind="src" path="java/common"/>
     <classpathentry kind="src" path="java/commontest"/>
     <classpathentry kind="src" path="java/jsword"/>

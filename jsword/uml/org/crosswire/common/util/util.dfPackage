@@ -146,11 +146,6 @@ class reference29 {
 */
 class reference31 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.common.util.Logger:oiref><oihard>
-@__modelType reference 
-*/
-class reference32 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.common.util.EventException:oiref><oihard>
 @__modelType reference 
 */
@@ -167,6 +162,11 @@ class reference34 {
 @automatic 
 */
 class link206 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.util.LogUtil:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
 }}/**
 @__tags
 @shapeType ClassDiagram 
@@ -178,7 +178,6 @@ class __tags {
 class __options {
 }/**
 @__positions <oigroup:<oiref:java#Class#org.crosswire.util.LogicError:oiref>=852,990,121,123,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.util.Logger:oiref>=23,367,200,347,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.util.StringUtil#log:oiref>=303,805,489,875:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.util.ArrayEnumeration:oiref>=809,750,187,203,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.common.util.LucidException:oiref>=833,1177,200,363,1:oigroup>

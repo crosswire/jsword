@@ -55,20 +55,10 @@ class reference13 {
 */
 class reference19 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.common.util.event.StdOutCaptureListener:oiref><oihard>
-@__modelType reference 
-*/
-class reference20 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.common.util.event.CaptureListener:oiref><oihard>
 @__modelType reference 
 */
 class reference25 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.common.util.event.FileCaptureListener:oiref><oihard>
-@__modelType reference 
-*/
-class reference26 {
 }/**
 @shapeType DependencyLink
 @__modelType link

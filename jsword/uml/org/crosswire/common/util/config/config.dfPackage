@@ -42,30 +42,10 @@ class link344 {
 */
 class link345 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.common.util.config.FilenameLogChoice:oiref><oihard>
-@__modelType reference 
-*/
-class reference2 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.common.util.config.StdOutCaptureInformChoice:oiref><oihard>
-@__modelType reference 
-*/
-class reference7 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.common.util.config.LogCaptureChoice:oiref><oihard>
 @__modelType reference 
 */
 class reference14 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.common.util.config.FileLogChoice:oiref><oihard>
-@__modelType reference 
-*/
-class reference22 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.common.util.config.StdOutCaptureLogChoice:oiref><oihard>
-@__modelType reference 
-*/
-class reference30 {
 }/**
 @__ref <oiref:java#Class#org.crosswire.common.util.config.UserLevelChoice:oiref><oihard>
 @__modelType reference 

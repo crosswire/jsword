@@ -89,8 +89,6 @@ public class BasicBookMetaData implements BookMetaData
         initials = prop.getProperty("Initials");
         if (initials == null || initials.trim().length() == 0)
             initials = StringUtil.getInitials(name);
-        else
-            initials = initials;
     }
 
     /**

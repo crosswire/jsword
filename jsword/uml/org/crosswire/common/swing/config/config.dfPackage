@@ -111,11 +111,6 @@ class reference156 {
 */
 class reference157 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.common.swing.config.LogListChoices:oiref><oihard>
-@__modelType reference 
-*/
-class reference158 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.common.swing.config.SourcePathChoice:oiref><oihard>
 @__modelType reference 
 */
