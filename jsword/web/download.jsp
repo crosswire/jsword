@@ -15,9 +15,9 @@ Sword drivers.
 <h3>Nightly Releases</h3>
 <p>
 Regular releases on hold pendingare made and stored for a short time:
-<%
+< %
 File f = new File("@DOWNLOAD@/nightly");
-%>
+% >
 </p>
 -->
 
