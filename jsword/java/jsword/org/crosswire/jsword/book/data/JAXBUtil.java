@@ -12,9 +12,11 @@ import javax.xml.bind.JAXBContext;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.Seg;
 import org.crosswire.jsword.osis.Verse;
+import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -148,6 +150,14 @@ public class JAXBUtil
         else if (current instanceof Div)
         {
             return ((Div) current).getContent();
+        }
+        else if (current instanceof Note)
+        {
+            return ((Note) current).getContent();
+        }
+        else if (current instanceof W)
+        {
+            return ((W) current).getContent();
         }
         
         log.error("unknown element: "+current.getClass().getName());

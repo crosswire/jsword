@@ -2,17 +2,15 @@
 package org.crosswire.jsword.book.data;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.osis.Note;
-import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.osis.W;
 
 /**
  * Filter to convert GBF data to OSIS format.
@@ -47,8 +45,18 @@ public class GBFFilter implements Filter
     {
         try
         {
-            List tokens = tokenize(plain);
-            parseTokens(ele, tokens);
+            Stack stack = new Stack();
+            stack.push(ele);
+
+            TagGenerator generator = new TagGenerator(plain);
+            Tag tag = generator.getNextTag();
+            while (tag != null)
+            {
+                tag.updateOsisStack(stack);
+                tag = generator.getNextTag();
+            }
+
+            stack.pop();
         }
         catch (JAXBException ex)
         {
@@ -56,244 +64,414 @@ public class GBFFilter implements Filter
         }
     }
 
-    /**
-     * Go through a list of tokens and add them to the listener
-     */
-    public void parseTokens(Element ele, List tokens) throws JAXBException, DataException
+    private static class TagGenerator
     {
-        LinkedList stack = new LinkedList();
-        stack.addFirst(ele);
-
-        // For notes
-        int marker = 1;
-
-        // go through the token working out what to do with them all
-        for (Iterator it = tokens.iterator(); it.hasNext();)
+        public TagGenerator(String plain)
         {
-            Object token = it.next();
-            if (token instanceof String)
+            int lastIndex = plain.length() - 1;
+            if (lastIndex >= 0 && plain.charAt(lastIndex) == ((char) 13))
             {
-                Element current = (Element) stack.getFirst();
-                List list = JAXBUtil.getList(current); 
-                list.add((String) token);
+                plain = plain.substring(0, lastIndex);
             }
-            else if (token instanceof Tag)
-            {
-                Tag tag = (Tag) token;
-        
-                // skip over the rest of the footnote
-                if (tag.equals(FOOTNOTE_START))
-                {
-                    List footnote = getTokensUntil(it, FOOTNOTE_STOP);
-                    String content = filterText(footnote);
-                    
-                    // This could be a marker or it could be the body of the note
-                    // We tell which by string length. <= 1 is a marker which we
-                    // ignore for simplicity
-                    if (content.length() > 1)
-                    {
-                        Note note = JAXBUtil.factory().createNote();
-                        note.setN(""+(marker++));
-                        note.getContent().add(content);
-                        Element current = (Element) stack.getFirst();
-                        
-                        List list = JAXBUtil.getList(current); 
-                        list.add(note);
-                    }
-                }
-                else if (tag.equals(PARAGRAPH))
-                {
-                    // ignore paragraph markers
-                }                
-                else if (tag.equals(ITALICS_START))
-                {
-                    Seg seg = JAXBUtil.factory().createSeg();
-                    Element current = (Element) stack.getFirst();
-                    
-                    List list = JAXBUtil.getList(current); 
-                    list.add(seg);
-
-                    stack.addFirst(seg);
-                }                
-                else if (tag.equals(ITALICS_STOP))
-                {
-                    Object top = stack.removeFirst();
-                    
-                    // Check that we are properly tree structured
-                    if (!(top instanceof Seg))
-                    {
-                        throw new LogicError();
-                    }
-                }                
-                else
-                {
-                    // unknown tags
-                    log.warn("Ignoring tag of "+tag.getTag());
-                }
-            }
-            else
-            {
-                throw new DataException(Msg.GBF_BADTOKEN, new Object[] { token });
-            }
+            remains = plain;
         }
 
-        stack.removeFirst();
-    }
-
-    /**
-     * Strip all the Tags from a List and return just the text
-     */
-    private String filterText(List list)
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        // go through the token working out what to do with them all
-        for (Iterator it = list.iterator(); it.hasNext();)
+        /**
+         * Get Next tags in the string
+         */
+        public Tag getNextTag()
         {
-            Object token = it.next();
-            if (token instanceof String)
+            if (retval.isEmpty())
             {
-                buffer.append((String) token);
+                if (remains == null)
+                    return null;
+                parseNextTag();
             }
-        }
-        
-        return buffer.toString();
-    }
-
-    /**
-     * Get a list for the footnote
-     */
-    private List getTokensUntil(Iterator it, Tag end) throws JAXBException
-    {
-        // take tokens off the list until end of list or FOOTNOTE_END
-        List ignored = new ArrayList();
-
-        while (true)
-        {
-            if (!it.hasNext())
-            {
-                break;
-            }
-        
-            Object token = it.next();
-            if (token instanceof String)
-            {
-                ignored.add(token);
-            }
-            else if (token instanceof Tag)
-            {
-                Tag tag = (Tag) token;
-                if (tag.equals(end))
-                {
-                    break;
-                }
-                else
-                {
-                    ignored.add(token);
-                }
-            }
-            else
-            {
-                throw new JAXBException("Failed to parse: "+token);
-            }
+            return (Tag) retval.remove(0);
         }
 
-        return ignored;
-    }
-    
-    /**
-     * Create a list of strings and tags
-     * @param plain
-     * @return List
-     */
-    private List tokenize(String plain)
-    {
-        List retval = new ArrayList();
-        String remains = plain;
-
-        while (true)
+        private void parseNextTag()
         {
+            if (remains == null)
+            {
+                return;
+            }
+
             int ltpos = remains.indexOf('<');
             int gtpos = remains.indexOf('>');
 
             if (ltpos == -1 && gtpos == -1)
             {
                 // no more tags to decode
-                retval.add(remains);
-                break;
+                retval.add(new TextTag(remains));
+                remains = null;
+                return;
             }
 
             // check that we don't have unmatched tags
             if (ltpos == -1 || gtpos == -1)
             {
-                log.warn("ignoring unmatched '<' or '>' in gbf: "+remains);
-                retval.add(remains);
-                break;
+                log.warn("ignoring unmatched '<' or '>' in gbf: " + remains);
+                retval.add(new TextTag(remains));
+                remains = null;
+                return;
             }
-            
+
             // check that the tags are in a sensible order
             if (ltpos > gtpos)
             {
-                log.warn("ignoring unmatched '<' or '>' in gbf: "+remains);
-                retval.add(remains);
-                break;
+                log.warn("ignoring unmatched '<' or '>' in gbf: " + remains);
+                retval.add(new TextTag(remains));
+                remains = null;
+                return;
             }
 
+            // generate tags
             String start = remains.substring(0, ltpos);
-            retval.add(start);
+            int strLen = start.length();
+            if (strLen > 0)
+            {
+                int beginIndex = 0;
+                boolean inSepStr = isSeperator(start.charAt(0));
+                // split words from seperators...
+                // e.g., "a b c? e g." -> "a b c", "? ", "e g."
+                //       "a b c<tag> e g." -> "a b c", tag, " ", "e g."
+                for (int i = 1; inSepStr && i < strLen; i++)
+                {
+                    char currentChar = start.charAt(i);
+                    if (!isSeperator(currentChar))
+                    {
+                        retval.add(new TextTag(start.substring(beginIndex, i)));
+                        beginIndex = i;
+                        inSepStr = false;
+                    }
+                }
 
-            String tag = remains.substring(ltpos+1, gtpos);
-            retval.add(new Tag(tag));
-            
-            remains = remains.substring(gtpos+1);
+                if (beginIndex < strLen)
+                {
+                    retval.add(new TextTag(start.substring(beginIndex)));
+                }
+            }
+
+            String tag = remains.substring(ltpos + 1, gtpos);
+            if (tag.length() > 0)
+            {
+                retval.add(createTag(tag));
+            }
+
+            remains = remains.substring(gtpos + 1);
         }
 
-        return retval;
+        private boolean isSeperator(char c)
+        {
+            final String seperators = " ,:;.?!";
+            return seperators.indexOf(c) >= 0;
+        }
+
+        private Tag createTag(String tag)
+        {
+            if (tag.equals("RB"))
+            {
+                return new TextWithEmbeddedFootnote();
+            }
+            if (tag.equals("RF"))
+            {
+                return new FootnoteStartTag();
+            }
+            if (tag.equals("Rf"))
+            {
+                return new FootnoteEndTag();
+            }
+            if (tag.equals("FI"))
+            {
+                return new ItalicStartTag();
+            }
+            if (tag.equals("Fi"))
+            {
+                return new ItalicEndTag();
+            }
+            if (tag.equals("CM"))
+            {
+                return new ParagraphTag();
+            }
+            if (tag.startsWith("WT"))
+            {
+                return new StrongsMorphRefTag(tag);
+            }
+            if (tag.startsWith("WH") || tag.startsWith("WG"))
+            {
+                return new StrongsWordRefTag(tag);
+            }
+            return new UnknownTag(tag);
+        }
+        private String remains;
+        private List retval = new ArrayList();
     }
 
     /**
-     * A GBF Tag
+     * GBF Tag interface
+     * Now the number of supported tags are small.
+     * If the number become large, refactor...
+     * <li>1. refactor Tag to public abstract class GBFTag</li>
+     * <li>2. move createTag() to GBFTag</li>
+     * <li>3. move tag classes to GBFTag.java so that adding tags updates only GBFTag.java</li>
+     * On adding new tags, implements new tag classes and update createTag()
      */
-    private static class Tag
+    private static interface Tag
     {
-        public Tag(String tag)
+        /**
+         * Sub-classes should implement this method to generate OSIS Object
+         */
+        public void updateOsisStack(Stack osisStack) throws JAXBException;
+    }
+
+    /**
+     * Tag syntax: <RB>Words<RF>note<Rf>
+     */
+    private static class TextWithEmbeddedFootnote implements Tag    
+    {
+        public void updateOsisStack(Stack stack) throws JAXBException
         {
-            this.tag = tag;
+            Note note = JAXBUtil.factory().createNote();
+            note.setNoteType("x-StudyNote");
+            Element current = (Element) stack.peek();
+
+            List list = JAXBUtil.getList(current);
+            list.add(note);
+            stack.push(note);
+        }
+    }
+
+    /**
+     * Tag syntax: <RF>note<Rf>
+     */
+    private static class FootnoteStartTag implements Tag
+    {
+        public void updateOsisStack(Stack stack) throws JAXBException
+        {
+            Element current = (Element) stack.peek();
+            if (!(current instanceof Note))
+            {
+                Note note = JAXBUtil.factory().createNote();
+                note.setNoteType("x-StudyNote");
+
+                List list = JAXBUtil.getList(current);
+                list.add(note);
+                stack.push(note);
+            }
+        }
+    }
+
+    /**
+     * Tag syntax: <RF>note<Rf>
+     */
+    private static class FootnoteEndTag implements Tag
+    {
+        public void updateOsisStack(Stack stack) throws JAXBException
+        {
+            Note note = (Note) stack.pop();
+            List list = JAXBUtil.getList(note);
+
+            if (list.size() < 1)
+            {
+                JAXBUtil.getList((Element) stack.peek()).remove(note);
+            }
+        }
+    }
+
+    /**
+     * Tag syntax: <FI>note<Fi>
+     */
+    private static class ItalicStartTag implements Tag
+    {
+        public void updateOsisStack(Stack stack) throws JAXBException
+        {
+            // remarked, for the XSL does not present it correctly
+            // The XSL should translate it to <I>...</I> but now it translated
+            //  to <div>...</div>
+            /*
+            Seg seg = JAXBUtil.factory().createSeg();
+            Element current = (Element) stack.peek();
+            
+            List list = JAXBUtil.getList(current); 
+            list.add(seg);
+            
+            stack.push(seg);
+            */
+        }
+    }
+
+    /**
+     * Tag syntax: <FI>note<Fi>
+     */
+    private static class ItalicEndTag implements Tag
+    {
+        public void updateOsisStack(Stack stack)
+        {
+            // remarked, for the XSL does not translate it correctly
+            // stack.pop();
+        }
+    }
+
+    /**
+     * Tag syntax: Words<CM>
+     */
+    private static class ParagraphTag implements Tag
+    {
+        public void updateOsisStack(Stack stack)
+        {
+            JAXBUtil.getList((Element) stack.peek()).add(Character.toString('¶'));
+        }
+    }
+
+    /**
+     * Tag syntax: word<WHxxxx> or word<WGxxxx>
+     */
+    private static class StrongsWordRefTag implements Tag
+    {
+        public StrongsWordRefTag(String tagName)
+        {
+            tag = tagName.trim();
         }
 
-        public String getTag()
+        public void updateOsisStack(Stack stack) throws JAXBException
         {
-            return tag;
-        }
+            Element ele = (Element) stack.peek();
+            List list = JAXBUtil.getList(ele);
+            if (list.isEmpty())
+            {
+                log.error("Source has problem for tag <" + tag + ">.");
+                return;
+            }
+            int lastIndex = list.size() - 1;
+            Object prevObj = list.get(lastIndex);
+            W word = null;
 
-        public boolean equals(Object obj)
-        {
-            if (obj == null)
-                return false;
+            if (prevObj instanceof String)
+            {
+                word = JAXBUtil.factory().createW();
+                word.getContent().add(prevObj);
+                list.set(lastIndex, word);
+            }
+            else if (prevObj instanceof W)
+            {
+                word = (W) prevObj;
+            }
+            else
+            {
+                log.error("Source has problem for tag <" + tag + ">.");
+                return;
+            }
 
-            if (obj.getClass() != this.getClass())
-                return false;
+            String existingLemma = word.getLemma();
+            StringBuffer newLemma = new StringBuffer();
 
-            Tag that = (Tag) obj;
-            return this.tag.equals(that.tag);
-        }
-        
-        public int hashCode()
-        {
-            return tag.hashCode();
+            if (existingLemma != null && existingLemma.length() > 0)
+            {
+                newLemma.append(existingLemma).append('|');
+            }
+            newLemma.append("x-Strongs:").append(tag.substring(2));
+            word.setLemma(newLemma.toString());
         }
 
         private String tag;
     }
-    
-    private static final Tag PARAGRAPH = new Tag("CM");
-    private static final Tag FOOTNOTE_START = new Tag("RF");
-    private static final Tag FOOTNOTE_STOP = new Tag("Rf");
-    private static final Tag ITALICS_START = new Tag("FI");
-    private static final Tag ITALICS_STOP = new Tag("Fi");
+
+    /**
+     * Tag syntax: word<WTxxxx>
+     */
+    private static class StrongsMorphRefTag implements Tag
+    {
+        public StrongsMorphRefTag(String tagName)
+        {
+            tag = tagName.trim();
+        }
+
+        public void updateOsisStack(Stack stack) throws JAXBException
+        {
+            Element ele = (Element) stack.peek();
+            List list = JAXBUtil.getList(ele);
+            if (list.isEmpty())
+            {
+                log.error("Source has problem for tag <" + tag + ">.");
+                return;
+            }
+
+            int lastIndex = list.size() - 1;
+            Object prevObj = list.get(lastIndex);
+            W word = null;
+
+            if (prevObj instanceof String)
+            {
+                word = JAXBUtil.factory().createW();
+                word.getContent().add(prevObj);
+                list.set(lastIndex, word);
+            }
+            else if (prevObj instanceof W)
+            {
+                word = (W) prevObj;
+            }
+            else
+            {
+                log.error("Source has problem for tag <" + tag + ">.");
+                return;
+            }
+
+            String existingMorph = word.getMorph();
+            StringBuffer newMorph = new StringBuffer();
+
+            if (existingMorph != null && existingMorph.length() > 0)
+            {
+                newMorph.append(existingMorph).append('|');
+            }
+            newMorph.append("x-StrongsMorph:T").append(tag.substring(2));
+            word.setMorph(newMorph.toString());
+        }
+
+        private String tag;
+    }
+
+    /**
+     * Represent a trunc of bible text without any tags
+     */
+    private static class TextTag implements Tag
+    {
+        public TextTag(String textData)
+        {
+            text = textData;
+        }
+
+        public void updateOsisStack(Stack stack) throws JAXBException
+        {
+            Element ele = (Element) stack.peek();
+            List list = JAXBUtil.getList(ele);
+            list.add(text);
+        }
+
+        private String text;
+    }
+
+    /**
+     * Unknown Tag. Either not supported tag or tag not defined in GBF specification
+     */
+    private static class UnknownTag implements Tag
+    {
+        public UnknownTag(String tagName)
+        {
+            tag = tagName;
+        }
+
+        public void updateOsisStack(Stack stack)
+        {
+            // unknown tags
+            log.warn("Ignoring tag of " + tag);
+        }
+
+        private String tag;
+    }
 
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(GBFFilter.class);
+    protected static final Logger log = Logger.getLogger(GBFFilter.class);
 }
