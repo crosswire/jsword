@@ -164,9 +164,9 @@ public class BeanPanel extends JPanel
     protected static final Logger log = Logger.getLogger(BeanPanel.class);
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3834589894202175795L;
 
     /**
      * Document Listener that updates the original bean

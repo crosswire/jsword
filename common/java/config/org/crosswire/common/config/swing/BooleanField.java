@@ -118,7 +118,7 @@ public class BooleanField extends JPanel implements Field
     private JRadioButton off;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3617291237934053686L;
 }

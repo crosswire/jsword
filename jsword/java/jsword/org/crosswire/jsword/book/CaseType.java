@@ -31,11 +31,15 @@ public abstract class CaseType implements Serializable
 {
     public static final CaseType LOWER = new CaseType("LOWER") //$NON-NLS-1$
     {
-
         public String setCase(String word)
         {
             return word.toLowerCase();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3546637707360286256L;
     };
 
     public static final CaseType SENTENCE = new CaseType("SENTENCE") //$NON-NLS-1$
@@ -68,6 +72,11 @@ public abstract class CaseType implements Serializable
             return toSentenceCase(word.substring(0, index))
                    + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3905520510312985138L;
     };
 
     public static final CaseType UPPER = new CaseType("UPPER") //$NON-NLS-1$
@@ -76,6 +85,11 @@ public abstract class CaseType implements Serializable
         {
             return word.toUpperCase();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257002163871035698L;
     };
 
     public static final CaseType MIXED = new CaseType("MIXED") //$NON-NLS-1$
@@ -89,6 +103,11 @@ public abstract class CaseType implements Serializable
             // This should not happen
             throw new IllegalArgumentException(Msg.ERROR_MIXED.toString());
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3546925766555547956L;
     };
 
     public abstract String setCase(String word);

@@ -113,7 +113,7 @@ public class ButtonPane extends JPanel
     protected ButtonPaneListener li;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3257847701248031033L;
 }

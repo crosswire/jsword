@@ -399,7 +399,7 @@ final class ReadOnlyPassage implements Passage
     private boolean ignore;
 
     /**
-     * SERIALUID(dms): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3257853173036102193L;
 }

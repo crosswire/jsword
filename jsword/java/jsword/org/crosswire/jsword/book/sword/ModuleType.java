@@ -48,6 +48,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawBackend(path);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257004341402874419L;
     };
 
     /**
@@ -69,6 +74,11 @@ public abstract class ModuleType implements Serializable
         {
             return isCompressedBackendSupported(sbmd);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258697597915772985L;
     };
 
     /**
@@ -85,6 +95,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawBackend(path);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3762250850940433716L;
     };
 
     /**
@@ -106,6 +121,11 @@ public abstract class ModuleType implements Serializable
         {
             return isCompressedBackendSupported(sbmd);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257008752367580211L;
     };
 
     /**
@@ -122,6 +142,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawBackend(path);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257567291372548153L;
     };
 
     /**
@@ -138,6 +163,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawBackend(path);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257005475290625843L;
     };
 
     /**
@@ -154,6 +184,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawLDBackend(sbmd, path, 2);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258412833061352242L;
     };
 
     /**
@@ -170,6 +205,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawLDBackend(sbmd, path, 4);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258689892711149625L;
     };
 
     /**
@@ -186,6 +226,11 @@ public abstract class ModuleType implements Serializable
         {
             return new ZLDBackend(sbmd);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257849883074573619L;
     };
 
     /**
@@ -202,6 +247,11 @@ public abstract class ModuleType implements Serializable
         {
             return new RawBackend(path);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257849895976449588L;
     };
 
     /**

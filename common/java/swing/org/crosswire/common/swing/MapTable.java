@@ -134,7 +134,7 @@ public class MapTable extends JTable
     private boolean initialized;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3906091143962965817L;
 }

@@ -45,6 +45,11 @@ public abstract class CompressionType implements Serializable
             BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntry.BLOCK_TYPE));
             return new GZIPBackend(path, blockType);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3977014063492642096L;
     };
 
     /**
@@ -60,6 +65,11 @@ public abstract class CompressionType implements Serializable
         {
             return new LZSSBackend(sbmd);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257847692691517494L;
     };
 
     /**

@@ -439,9 +439,9 @@ public class ConfigEntry implements Serializable
     private String name;
 
     /**
-     * SERIALUID(dms): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3258125873411273014L;
 
     // Support for serialization
     private static int nextObj;

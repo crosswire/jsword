@@ -74,6 +74,11 @@ public abstract class RestrictionType implements Serializable
             }
             return new VerseRange(verse, end);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3905246714754643248L;
     };
 
     /**
@@ -112,6 +117,11 @@ public abstract class RestrictionType implements Serializable
         {
             throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3978142166633820472L;
     };
 
     /**
@@ -201,6 +211,10 @@ public abstract class RestrictionType implements Serializable
             return new VerseRange(verse, end);
         }
 
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257284751327768626L;
     };
 
     /**

@@ -319,7 +319,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
     private static final Logger log = Logger.getLogger(WizardConfigEditor.class);
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3258416148742484276L;
 }

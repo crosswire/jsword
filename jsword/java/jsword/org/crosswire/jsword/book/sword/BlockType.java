@@ -38,6 +38,11 @@ public abstract class BlockType implements Serializable
         {
             return 'b';
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257569486067807287L;
     };
 
     /**
@@ -49,6 +54,11 @@ public abstract class BlockType implements Serializable
         {
             return 'c';
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3762533416838968372L;
     };
 
     /**
@@ -60,6 +70,11 @@ public abstract class BlockType implements Serializable
         {
             return 'v';
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257572793192362551L;
     };
 
     /**

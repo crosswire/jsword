@@ -105,6 +105,11 @@ public abstract class AccuracyType implements Serializable
             // A fully specified verse is the same regardless of whether it is a start or an end to a range.
             return createStartVerse(endVerseDesc, null, endParts);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256719589483165495L;
     };
 
      /**
@@ -141,6 +146,11 @@ public abstract class AccuracyType implements Serializable
             // except that this gives us end at verse 1, and not the book end
             return end.getLastVerseInChapter();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258125864737911609L;
     };
 
     /**
@@ -177,6 +187,11 @@ public abstract class AccuracyType implements Serializable
             // except that this gives us end at 1:1, and not the book end
             return end.getLastVerseInBook();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 4050486707419821620L;
     };
 
     /**
@@ -215,6 +230,11 @@ public abstract class AccuracyType implements Serializable
             int verse = getVerse(book, chapter, endParts[1]);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3691040958808668471L;
     };
 
     /**
@@ -252,6 +272,11 @@ public abstract class AccuracyType implements Serializable
             Verse end = new Verse(endVerseDesc, book, chapter, 1);
             return end.getLastVerseInChapter();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3689918357520463409L;
     };
 
     /**
@@ -290,6 +315,11 @@ public abstract class AccuracyType implements Serializable
             int verse = getVerse(book, chapter, endParts[0]);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3691034361722320178L;
     };
 
     /**

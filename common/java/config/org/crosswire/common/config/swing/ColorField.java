@@ -115,9 +115,9 @@ public class ColorField extends JPanel implements Field
     private static final int SIZE = 16;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3617291237934053686L;
 
     /**
      * The CustomIcon that shows the selected color

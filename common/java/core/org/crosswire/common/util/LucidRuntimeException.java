@@ -111,9 +111,9 @@ public class LucidRuntimeException extends RuntimeException
     private static final Logger log = Logger.getLogger(LucidRuntimeException.class);
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3906091143962965817L;
 
     /**
      * The array of parameters

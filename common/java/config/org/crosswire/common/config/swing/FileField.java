@@ -103,7 +103,7 @@ public class FileField extends JPanel implements Field
     protected JTextField text;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3258416148742484276L;
 }

@@ -266,7 +266,7 @@ public class EventListenerList implements Serializable
     protected transient Object[] listenerList = NULL_ARRAY;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3256999960636436785L;
 }

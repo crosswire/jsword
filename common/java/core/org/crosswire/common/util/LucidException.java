@@ -143,9 +143,9 @@ public class LucidException extends Exception
     private static final Logger log = Logger.getLogger(LucidException.class);
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3257846580311963191L;
 
     /**
      * Is the message to be included literally (ie passed a string), or should we look it up as a

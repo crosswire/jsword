@@ -262,9 +262,9 @@ public class MapTableModel extends AbstractTableModel
     };
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3546365041277352241L;
 
     /**
      * A simple holder of a key/value pair of Strings.

@@ -815,9 +815,9 @@ public class PassageTally extends AbstractPassage
     private static final Logger log = Logger.getLogger(PassageTally.class);
 
     /**
-     * SERIALUID(dms): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3761128240928274229L;
 
     /**
      * Iterate over the Verses in normal verse order

@@ -136,7 +136,7 @@ public class IndexStatus implements Serializable
     }
 
     /**
-     * SERIALUID(dms): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3256718472791537204L;
 }
