@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry sourcepath="/jsword-support/othersource/jdom-b10.zip" kind="lib" path="jar/jdom-1.0.b10/jdom.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/commons-lang-2.0-src.zip" kind="lib" path="jar/lang-2.0.0/commons-lang-2.0.jar"/>
+	<classpathentry sourcepath="/jsword-support/othersource/commons-net-1.1.0-src.zip" kind="lib" path="jar/net-1.1.0/commons-net-1.1.0.jar"/>
+	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-api.jar"/>
+	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-libs.jar"/>
+	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-ri.jar"/>
+	<classpathentry sourcepath="/jsword-support/othersource/lucene-1.3-final-src.zip" kind="lib" path="jar/lucene-1.3/lucene-1.3-final.jar"/>
+	<classpathentry sourcepath="/jsword-support/othersource/javatar-2.5.zip" kind="lib" path="jar/jtar-2.5/tar.jar"/>
+	<classpathentry exported="true" sourcepath="target/gener/osis" kind="lib" path="target/ant/jsword-osis.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/dom.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/sax.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/xalan.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/xercesImpl.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/commons-net-1.1.0-src.zip" kind="lib" path="jar/net-1.1.0/commons-net-1.1.0.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/lucene-1.3-final-src.zip" kind="lib" path="jar/lucene-1.3/lucene-1.3-final.jar"/>
-	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-api.jar"/>
-	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-ri.jar"/>
-	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-libs.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/javatar-2.5.zip" kind="lib" path="jar/jtar-2.5/tar.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/junit-3.8.1-src.jar" kind="lib" path="jar/junit-3.8.1/junit.jar"/>
-	<classpathentry exported="true" sourcepath="target/gener/osis" kind="lib" path="target/ant/temp/jar/jsword-osis.jar"/>
 	<classpathentry kind="src" path="/common"/>
 	<classpathentry kind="src" path="java/jsword"/>
 	<classpathentry kind="src" path="java/jswordtest"/>

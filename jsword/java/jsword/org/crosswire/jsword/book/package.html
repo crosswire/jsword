@@ -77,5 +77,23 @@ call getBook() on the BookMetaData that everything will work fine.</p>
 <p>Finally when BookMetaData.getBook() is called, it should ask the Book to load
 any system resources that are needed to fulfil the requests.</p>
 
+
+<h3>Cacheing</h3>
+
+<p>We used to have a CacheingBookDriver (now deleted) that was designed to allow
+data to be cached as it is read. Maybe at some stage we should add it back in
+again, but we would need to make Drivers writable before we do that.</p>
+
+<p>The designed features of CacheingBookDriver are:
+<ul>
+  <li>Ability to cache multiple (possibly remote) sources</li>
+  <li>Use of JDBC style URL to help cached data to re-connect with source</li>
+  <li>Can be used with multiple cacheing schemes (sword, ser, ...)</li>
+</ul> 
+
+<p>So it is up to the actual cacheing scheme to distinguish cached data from
+other normal data, and to be able to return a original source URL in case
+not all of the data is present.</p>
+
 </body>
 </html>
