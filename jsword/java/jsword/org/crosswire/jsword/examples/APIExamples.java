@@ -16,7 +16,6 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.util.ConverterFactory;
@@ -123,7 +122,6 @@ public class APIExamples
 
     /**
      * An example of how to search for various bits of data.
-     * @see Search
      */
     public void search() throws BookException
     {
@@ -131,14 +129,12 @@ public class APIExamples
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
-        Search search = new Search("moses + aaron", false); //$NON-NLS-1$
-        Key key = bible.find(search);
+        Key key = bible.find("moses + aaron"); //$NON-NLS-1$
 
         System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
 
-        // Or you can do a best match search ...
-        search = new Search("for god so loves the world", true); //$NON-NLS-1$
-        key = bible.find(search);
+        // Or you can do a best match search, by enclosing the string in quotes ...
+        key = bible.find("\"for god so loves the world\""); //$NON-NLS-1$
 
         System.out.println("Trying to find verses like John 3:16: " + key.getName()); //$NON-NLS-1$
     }

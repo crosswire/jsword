@@ -31,8 +31,6 @@ public class ParamName implements Serializable
     static final ParamName PARAM_BIBLE = new ParamName("bible"); //$NON-NLS-1$
     static final ParamName PARAM_PASSAGE = new ParamName("passage"); //$NON-NLS-1$
     static final ParamName PARAM_FINDSTRING = new ParamName("word"); //$NON-NLS-1$
-    static final ParamName PARAM_FINDMATCH = new ParamName("match"); //$NON-NLS-1$
-    static final ParamName PARAM_FINDRANGE = new ParamName("range"); //$NON-NLS-1$
 
     /**
      * Only we should be doing this
@@ -110,6 +108,8 @@ public class ParamName implements Serializable
 
     private static final ParamName[] VALUES =
     {
-                    PARAM_BIBLE, PARAM_PASSAGE, PARAM_FINDSTRING, PARAM_FINDMATCH, PARAM_FINDRANGE
+        PARAM_BIBLE,
+        PARAM_PASSAGE,
+        PARAM_FINDSTRING,
     };
 }

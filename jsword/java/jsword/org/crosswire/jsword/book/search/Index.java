@@ -1,9 +1,5 @@
 package org.crosswire.jsword.book.search;
 
-import java.io.IOException;
-
-import org.crosswire.common.progress.Job;
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -35,14 +31,6 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 public interface Index
 {
     /**
-     * An initializer type method so we can configure the Search engine at
-     * runtime. This method is run first of all, before anything else and should
-     * do everything it can to ensure that future method calls will be error
-     * free without consuming significant system resources.
-     */
-    public void init(Book book) throws BookException;
-
-    /**
      * For a given word find a list of references to it.
      * If the <code>word</code> being searched for is null then an empty Key
      * <b>MUST</b> be returned. Users of this index may use this functionality
@@ -59,27 +47,7 @@ public interface Index
      * @param name The string to convert to a Key
      * @return A new Key representing the given string, if possible
      * @throws NoSuchKeyException If the string can not be turned into a Key
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(String)
      */
     public Key getKey(String name) throws NoSuchKeyException;
-
-    /**
-     * Tidy up after yourself and remove all the files that make up any indexes
-     * you created.
-     */
-    public void delete() throws BookException;
-
-    /**
-     * Detects if index data has been stored for this Bible already
-     */
-    public boolean isIndexed();
-
-    /**
-     * Read from the given source version to generate ourselves. On completion
-     * of this method the index should be usable. If this is not the natural
-     * way this emthod finishes then it should be possible to call loadIndexes()
-     * @param ajob The place to report progress
-     * @throws IOException if the load fails to read from disk
-     * @throws BookException if there is a problem reading from the Bible
-     */
-    public void generateSearchIndex(Job ajob) throws IOException, BookException, NoSuchKeyException;
 }

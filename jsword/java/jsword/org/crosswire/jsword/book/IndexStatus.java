@@ -28,32 +28,43 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BookType implements Serializable
+public class IndexStatus implements Serializable
 {
     /**
-     * Books that are Bibles
+     * There is a complete and ready to use search index
      */
-    public static final BookType BIBLE = new BookType("Bible"); //$NON-NLS-1$
+    public static final IndexStatus DONE = new IndexStatus("Indexed"); //$NON-NLS-1$
 
     /**
-     * Books that are Dictionaries
+     * There is no search index, and no plans to create one
      */
-    public static final BookType DICTIONARY = new BookType("Dictionary"); //$NON-NLS-1$
+    public static final IndexStatus UNDONE = new IndexStatus("No Index");  //$NON-NLS-1$
 
     /**
-     * Books that are Commentaries
+     * This Book has been scheduled for index creation
      */
-    public static final BookType COMMENTARY = new BookType("Commentary"); //$NON-NLS-1$
+    public static final IndexStatus SCHEDULED = new IndexStatus("Scheduled"); //$NON-NLS-1$
 
     /**
-     * Books that are not any of the above
+     * An index is currently being generated for this Book
      */
-    public static final BookType OTHER = new BookType("Other"); //$NON-NLS-1$
+    public static final IndexStatus CREATING = new IndexStatus("Creating"); //$NON-NLS-1$
+
+    /**
+     * All the known values
+     */
+    private static final IndexStatus[] VALUES =
+    {
+        DONE,
+        UNDONE,
+        SCHEDULED,
+        CREATING,
+    };
 
     /**
      * @param name The name of the BookType
      */
-    private BookType(String name)
+    private IndexStatus(String name)
     {
         this.name = name;
     }
@@ -61,11 +72,11 @@ public class BookType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static BookType fromString(String name)
+    public static IndexStatus fromString(String name)
     {
         for (int i = 0; i < VALUES.length; i++)
         {
-            BookType o = VALUES[i];
+            IndexStatus o = VALUES[i];
             if (o.name.equalsIgnoreCase(name))
             {
                 return o;
@@ -79,7 +90,7 @@ public class BookType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static BookType fromInteger(int i)
+    public static IndexStatus fromInteger(int i)
     {
         return VALUES[i];
     }
@@ -123,14 +134,6 @@ public class BookType implements Serializable
     {
         return VALUES[obj];
     }
-
-    private static final BookType[] VALUES =
-    {
-        BIBLE,
-        DICTIONARY,
-        COMMENTARY,
-        OTHER
-    };
 
     /**
      * SERIALUID(dms): A placeholder for the ultimate version id.

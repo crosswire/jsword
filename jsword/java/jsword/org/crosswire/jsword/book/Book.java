@@ -62,5 +62,5 @@ public interface Book extends Activatable, KeyFactory
      * @param search The search spec.
      * @throws BookException If anything goes wrong with this method
      */
-    public Key find(Search search) throws BookException;
+    public Key find(String search) throws BookException;
 }

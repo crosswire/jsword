@@ -2,7 +2,6 @@ package org.crosswire.jsword.book.test;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
@@ -73,19 +72,19 @@ public class Speed implements Runnable
             PassageTally tally;
 
             // Part 1, a best match, and doc generate
-            tally = (PassageTally) book.find(new Search("In the beginning god created the heavens and the earth", true)); //$NON-NLS-1$
+            tally = (PassageTally) book.find("\"In the beginning god created the heavens and the earth\""); //$NON-NLS-1$
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 2, another best match, and doc generate
-            tally = (PassageTally) book.find(new Search("for god so loves the world that he gave his only begotten son", true)); //$NON-NLS-1$
+            tally = (PassageTally) book.find("\"for god so loves the world that he gave his only begotten son\""); //$NON-NLS-1$
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 3, a power match, and doc generate
-            String nextInput = book.find(new Search("aaron & manna", false)).getName(); //$NON-NLS-1$
+            String nextInput = book.find("aaron & manna").getName(); //$NON-NLS-1$
             Key key = book.getKey(nextInput);
             Passage ref = KeyUtil.getPassage(key);
             ref.trimVerses(35);

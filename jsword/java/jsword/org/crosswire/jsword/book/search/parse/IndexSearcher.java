@@ -10,7 +10,6 @@ import java.util.Properties;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.passage.Key;
@@ -64,17 +63,10 @@ public class IndexSearcher implements Searcher
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Searcher#search(java.lang.String, org.crosswire.jsword.passage.Key)
      */
-    public Key search(String search, Key restriction) throws BookException
+    public Key search(String search) throws BookException
     {
         output = CustomTokenizer.tokenize(search, commands);
-        Key key = search(output);
-
-        if (restriction != Search.UNRESTRICTED)
-        {
-            key.retainAll(restriction);
-        }
-        
-        return key;
+        return search(output);
     }
 
     /**
@@ -289,11 +281,11 @@ public class IndexSearcher implements Searcher
     /**
      * Accessor for the cached list of known special lookup words
      */
-    public static Map getPreferredMap()
+    public static String getPreferredSyntax(Class command)
     {
         // Check the maps have been created
         getWordMap();
-        return preferredMap;
+        return (String) preferredMap.get(command);
     }
 
     /**

@@ -1,11 +1,16 @@
 package org.crosswire.jsword.book.search.parse;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.SentanceUtil;
+import org.crosswire.jsword.book.search.Grammar;
+import org.crosswire.jsword.book.search.Thesaurus;
+import org.crosswire.jsword.book.search.ThesaurusFactory;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * The Search Word for a Word to search for. The default
@@ -39,7 +44,7 @@ public class PhraseParamWord implements ParamWord
      */
     public String getWord(IndexSearcher engine) throws BookException
     {
-        throw new BookException(Msg.LEFT_PARAM);
+        throw new BookException(Msg.SINGLE_PARAM);
     }
 
     /* (non-Javadoc)
@@ -50,7 +55,6 @@ public class PhraseParamWord implements ParamWord
         Iterator it = engine.iterator();
         StringBuffer buff = new StringBuffer();
 
-        int paren_level = 1;
         while (true)
         {
             if (!it.hasNext())
@@ -62,16 +66,6 @@ public class PhraseParamWord implements ParamWord
 
             if (word instanceof PhraseParamWord)
             {
-                paren_level++;
-            }
-
-            if (word instanceof PassageRightParamWord)
-            {
-                paren_level--;
-            }
-
-            if (paren_level == 0)
-            {
                 break;
             }
 
@@ -79,15 +73,69 @@ public class PhraseParamWord implements ParamWord
             buff.append(" "); //$NON-NLS-1$
         }
 
-        try
-        {
-            Index index = engine.getIndex();
-
-            return index.getKey(buff.toString());
-        }
-        catch (NoSuchKeyException ex)
-        {
-            throw new BookException(Msg.ILLEGAL_PASSAGE, ex, new Object[] { buff.toString() });
-        }
+        return bestMatch(engine, buff.toString());
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Matcher#bestMatch(java.lang.String, org.crosswire.jsword.passage.Key)
+     */
+    public Key bestMatch(IndexSearcher engine, String sought) throws BookException
+    {
+        if (thesaurus == null)
+        {
+            try
+            {
+                thesaurus = ThesaurusFactory.createThesaurus();
+            }
+            catch (InstantiationException ex)
+            {
+                throw new BookException(Msg.NO_THESAURUS, ex);
+            }
+        }
+
+        String[] words = SentanceUtil.getWords(sought);
+        words = Grammar.stripSmallWords(words);
+        // log.fine("words="+StringUtil.toString(words));
+
+        PassageTally tally = new PassageTally();
+        tally.blur(BLUR_BY, RestrictionType.NONE);
+
+        for (int i = 0; i < words.length; i++)
+        {
+            tally.addAll(engine.getIndex().findWord(words[i]));
+        }
+
+        // This uses updatePassageTallyFlat() so that words like God
+        // that have many startsWith() matches, and hence many verse
+        // matches, do not end up with wrongly high scores.
+        for (int i = 0; i < words.length; i++)
+        {
+            // log.fine("  root="+root);
+            Collection col = thesaurus.getSynonyms(words[i]);
+            String[] grWords = (String[]) col.toArray(new String[col.size()]);
+
+            // log.fine("  gr_words="+StringUtil.toString(gr_words));
+            PassageTally temp = new PassageTally();
+
+            for (int j = 0; j < grWords.length; j++)
+            {
+                temp.addAll(engine.getIndex().findWord(grWords[j]));
+            }
+
+            temp.flatten();
+            tally.addAll(temp);
+        }
+
+        return tally;
+    }
+
+    /**
+     * How we get related words
+     */
+    private Thesaurus thesaurus;
+
+    /**
+     * How many verses do we blur by?
+     */
+    private static final int BLUR_BY = 2;
 }

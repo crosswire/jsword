@@ -1,12 +1,7 @@
 package org.crosswire.jsword.book.search;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * .
@@ -32,83 +27,27 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class IndexManager
+public interface IndexManager
 {
     /**
-     * 
+     * Detects if index data has been stored for this Bible already
      */
-    public static IndexManager instance()
-    {
-        return instance;
-    }
+    public boolean isIndexed(Book book);
 
     /**
-     * 
+     * Create a new Searcher.
      */
-    public void createIndex(Index index)
-    {
-        Reporter.informUser(this, Msg.TYPE_INDEXGEN);
-
-        todo.add(index);
-
-        Thread work = new Thread(runner);
-        work.start();
-    }
+    public Index getIndex(Book book) throws BookException;
 
     /**
-     * The index creation thread
+     * Read from the given source version to generate ourselves. On completion
+     * of this method the index should be usable.
      */
-    private class IndexerRunnable implements Runnable
-    {
-        /* (non-Javadoc)
-         * @see java.lang.Runnable#run()
-         */
-        public void run()
-        {
-            running = true;
-
-            Iterator it = todo.iterator();
-            while (it.hasNext())
-            {
-                Index index = (Index) it.next();
-                Job job = JobManager.createJob(Msg.INDEXING.toString(), Thread.currentThread(), false);
-
-                try
-                {
-                    index.generateSearchIndex(job);
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(IndexManager.class, ex);
-                    job.ignoreTimings();
-                }
-                finally
-                {
-                    job.done();
-                }                
-            }
-
-            running = false;
-        }
-    }
+    public void scheduleIndexCreation(Book book);
 
     /**
-     * 
+     * Tidy up after yourself and remove all the files that make up any indexes
+     * you created.
      */
-    private static IndexManager instance = new IndexManager();
-
-    /**
-     * The thread worker that creates the indexes.
-     */
-    private Runnable runner = new IndexerRunnable();
-
-    /**
-     * The books to be indexed
-     */
-    protected Set todo = new HashSet();
-
-    /**
-     * Is there an index generation in progress?
-     */
-    protected boolean running = false;
+    public void deleteIndex(Book book) throws BookException;
 }

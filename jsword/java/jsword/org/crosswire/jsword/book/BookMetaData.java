@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book;
 
+import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
@@ -105,7 +106,7 @@ public interface BookMetaData extends Comparable
     /**
      * Calculated field: The name of the name, which could be helpful to
      * distinguish similar Books available through 2 BookDrivers.
-     * @return The name name
+     * @return The driver name
      */
     public String getDriverName();
 
@@ -115,17 +116,43 @@ public interface BookMetaData extends Comparable
      * Arabic and Hebrew in their propper orientation.
      * @return true if the orientation for the dominate language is LeftToRight.
      */
-
     public boolean isLeftToRight();
 
     /**
      * Get a list of all the properties available to do with this Book.
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.
-     * This method is designed to support finding out more about a book
-     * rather than as a covert method of
      */
     public Map getProperties();
+
+    /**
+     * Has anyone generated a search index for this Book?
+     * @see org.crosswire.jsword.book.search.IndexManager
+     */
+    public IndexStatus getIndexStatus();
+
+    /**
+     * This method does not alter the index status, however it is for Indexers
+     * that are responsible for indexing and have changed the status themselves.
+     * @see org.crosswire.jsword.book.search.IndexManager
+     */
+    public void setIndexStatus(IndexStatus status);
+
+    /**
+     * Adds a <code>PropertyChangeListener</code> to the listener list.
+     * The listener is registered for all properties. However the only one likely
+     * to change at the time of writing is the Index Status.
+     * <p>A <code>PropertyChangeEvent</code> will get fired in response
+     * to setting a bound property, such as <code>setIndexStatus</code>.
+     * @param li the <code>PropertyChangeListener</code> to be added
+     */
+    public void addPropertyChangeListener(PropertyChangeListener li);
+
+    /**
+     * Removes a <code>PropertyChangeListener</code> from the listener list.
+     * @param li the <code>PropertyChangeListener</code> to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener li);
 
     /**
      * The key for the type in the properties map
@@ -157,4 +184,8 @@ public interface BookMetaData extends Comparable
      */
     public static final String KEY_INITIALS = "Initials"; //$NON-NLS-1$
 
+    /**
+     * The key for the indexed status in the properties map
+     */
+    public static final String KEY_INDEXSTATUS = "IndexStatus"; //$NON-NLS-1$
 }

@@ -9,6 +9,9 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.IndexStatus;
+import org.crosswire.jsword.book.search.IndexManager;
+import org.crosswire.jsword.book.search.IndexManagerFactory;
 
 /**
  * DefaultBookMetaData is an implementation of the of the BookMetaData
@@ -38,7 +41,7 @@ import org.crosswire.jsword.book.BookType;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DefaultBookMetaData implements BookMetaData
+public class DefaultBookMetaData extends AbstractBookMetaData
 {
     /**
      * Ctor with a properties from which to get values.
@@ -53,8 +56,17 @@ public class DefaultBookMetaData implements BookMetaData
 
         setName(prop.getProperty(BookMetaData.KEY_NAME));
         setType(prop.getProperty(BookMetaData.KEY_TYPE));
-
         setLanguage(prop.getProperty(BookMetaData.KEY_LANGUAGE));
+
+        IndexManager imanager = IndexManagerFactory.getIndexManager();
+        if (imanager.isIndexed(book))
+        {
+            setIndexStatus(IndexStatus.DONE);
+        }
+        else
+        {
+            setIndexStatus(IndexStatus.UNDONE);
+        }
     }
 
     /**
@@ -164,6 +176,25 @@ public class DefaultBookMetaData implements BookMetaData
     {
         // TODO(joe): Do this correctly
         return true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
+     */
+    public IndexStatus getIndexStatus()
+    {
+        return indexStatus;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
+     */
+    public void setIndexStatus(IndexStatus newValue)
+    {
+        IndexStatus oldValue = this.indexStatus;
+        this.indexStatus = newValue;
+        map.put(KEY_INDEXSTATUS, newValue);
+        firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
     }
 
     /**
@@ -332,4 +363,5 @@ public class DefaultBookMetaData implements BookMetaData
     private String name = ""; //$NON-NLS-1$
     private String language = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
+    private IndexStatus indexStatus = IndexStatus.UNDONE;
 }

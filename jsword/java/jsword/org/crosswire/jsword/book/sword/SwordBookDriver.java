@@ -15,7 +15,10 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
+import org.crosswire.jsword.book.search.IndexManager;
+import org.crosswire.jsword.book.search.IndexManagerFactory;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -88,6 +91,16 @@ public class SwordBookDriver extends AbstractBookDriver
                         {
                             Book book = createBook(sbmd, dirs[j]);
                             valid.add(book.getBookMetaData());
+
+                            IndexManager imanager = IndexManagerFactory.getIndexManager();
+                            if (imanager.isIndexed(book))
+                            {
+                                sbmd.setIndexStatus(IndexStatus.DONE);
+                            }
+                            else
+                            {
+                                sbmd.setIndexStatus(IndexStatus.UNDONE);
+                            }
                         }
                         else
                         {

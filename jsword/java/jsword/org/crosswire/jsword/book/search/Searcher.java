@@ -38,9 +38,7 @@ public interface Searcher
     /**
      * Take a search string and decipher it into a Passage.
      * @param search The string to be searched for
-     * @param restriction What verses are we interested in looking in?
-     * @see org.crosswire.jsword.book.Search#UNRESTRICTED
      * @return The matching verses
      */
-    public Key search(String search, Key restriction) throws BookException;
+    public Key search(String search) throws BookException;
 }

@@ -17,6 +17,7 @@ import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -25,8 +26,9 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.SentanceUtil;
+import org.crosswire.jsword.book.search.Grammar;
 import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.IndexManager;
+import org.crosswire.jsword.book.search.Thesaurus;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -34,7 +36,6 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A search engine - This is a stepping stone on the way to allowing use of
@@ -61,29 +62,46 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SerIndex implements Index, Activatable
+public class SerIndex implements Index, Activatable, Thesaurus
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
+    /**
+     * Default ctor
      */
-    public void init(Book newbook) throws BookException
+    public SerIndex(Book newbook, URL storage)
     {
         this.book = newbook;
+        this.url = storage;
+    }
+
+    /**
+     * Generate an index to use, telling the job about progress as you go.
+     * @throws BookException If we fail to read the index files
+     */
+    public SerIndex(Book book, URL storage, boolean create) throws BookException
+    {
+        assert create;
+
+        this.book = book;
+        this.url = storage;
+
+        Job job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
         try
         {
-            String driverName = book.getBookMetaData().getDriverName();
-            String bookName = book.getBookMetaData().getInitials();
-
-            assert driverName != null;
-            assert bookName != null;
-
-            url = Project.instance().getTempScratchSpace(driverName + "-" + bookName, false); //$NON-NLS-1$
+            synchronized (creating)
+            {
+                generateSearchIndex(job);
+            }
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
-            throw new BookException(Msg.WRITE_ERROR);
+            job.ignoreTimings();
+            throw new BookException(Msg.SER_INIT, ex);
         }
+        finally
+        {
+            job.done();
+        }                
     }
 
     /* (non-Javadoc)
@@ -95,21 +113,23 @@ public class SerIndex implements Index, Activatable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#delete()
-     */
-    public void delete()
-    {
-        checkActive();
-
-        // LATER(joe): write delete()
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)
      */
-    public Collection getStartsWith(String word)
+    public Collection getSynonyms(String word)
     {
         checkActive();
+
+        // log.fine("considering="+words[i]);
+        String root = Grammar.getRoot(word);
+
+        // Check that the root is still a word. If not then we
+        // use the full version. This catches misses like se is
+        // the root of seed, and matches sea and so on ...
+        Key ref = findWord(root);
+        if (ref.isEmpty())
+        {
+            root = word;
+        }
 
         word = word.toLowerCase();
         SortedMap submap = datamap.subMap(word, word + "\u9999"); //$NON-NLS-1$
@@ -160,20 +180,6 @@ public class SerIndex implements Index, Activatable
 
             return book.createEmptyKeyList();
         }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractIndex#isIndexed()
-     */
-    public boolean isIndexed()
-    {
-        if (generating)
-        {
-            return false;
-        }
-
-        URL indexIn = NetUtil.lengthenURL(url, FILE_INDEX);
-        return NetUtil.isFile(indexIn);
     }
 
     /* (non-Javadoc)
@@ -329,51 +335,43 @@ public class SerIndex implements Index, Activatable
      */
     public final void activate(Lock lock)
     {
-        // Load the ascii Passage index
-        if (isIndexed())
+        try
         {
-            try
+            URL dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_READ);
+        
+            URL indexUrl = NetUtil.lengthenURL(url, FILE_INDEX);
+            BufferedReader indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
+        
+            while (true)
             {
-                URL dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
-                dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_READ);
-            
-                URL indexUrl = NetUtil.lengthenURL(url, FILE_INDEX);
-                BufferedReader indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
-            
-                while (true)
+                String line = indexIn.readLine();
+                if (line == null)
                 {
-                    String line = indexIn.readLine();
-                    if (line == null)
-                    {
-                        break;
-                    }
-            
-                    try
-                    {
-                        int colon1 = line.indexOf(":"); //$NON-NLS-1$
-                        int colon2 = line.lastIndexOf(":"); //$NON-NLS-1$
-                        String word = line.substring(0, colon1);
-            
-                        long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
-                        int length = Integer.parseInt(line.substring(colon2 + 1));
-            
-                        Section section = new Section(offset, length);
-                        datamap.put(word, section);
-                    }
-                    catch (NumberFormatException ex)
-                    {
-                        log.error("NumberFormatException reading line: " + line, ex); //$NON-NLS-1$
-                    }
+                    break;
+                }
+        
+                try
+                {
+                    int colon1 = line.indexOf(":"); //$NON-NLS-1$
+                    int colon2 = line.lastIndexOf(":"); //$NON-NLS-1$
+                    String word = line.substring(0, colon1);
+        
+                    long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
+                    int length = Integer.parseInt(line.substring(colon2 + 1));
+        
+                    Section section = new Section(offset, length);
+                    datamap.put(word, section);
+                }
+                catch (NumberFormatException ex)
+                {
+                    log.error("NumberFormatException reading line: " + line, ex); //$NON-NLS-1$
                 }
             }
-            catch (IOException ex)
-            {
-                log.error("Read failed on indexin", ex); //$NON-NLS-1$
-            }
         }
-        else
+        catch (IOException ex)
         {
-            IndexManager.instance().createIndex(this);
+            log.error("Read failed on indexin", ex); //$NON-NLS-1$
         }
 
         active = true;
@@ -402,14 +400,14 @@ public class SerIndex implements Index, Activatable
     }
 
     /**
+     * A synchronization lock point to prevent us from doing 2 index runs at a time.
+     */
+    private static final Object creating = new Object();
+
+    /**
      * Are we active
      */
     private boolean active = false;
-
-    /**
-     * Are we in the middle of generating an index?
-     */
-    private boolean generating = false;
 
     /**
      * The name of the data file
@@ -419,7 +417,7 @@ public class SerIndex implements Index, Activatable
     /**
      * The name of the index file
      */
-    private static final String FILE_INDEX = "ref.index"; //$NON-NLS-1$
+    protected static final String FILE_INDEX = "ref.index"; //$NON-NLS-1$
 
     /**
      * The Bible we are indexing

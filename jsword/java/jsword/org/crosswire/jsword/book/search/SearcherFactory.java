@@ -2,6 +2,7 @@ package org.crosswire.jsword.book.search;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.Book;
 
 /**
  * Factory method for creating a new Searcher.
@@ -39,10 +40,13 @@ public class SearcherFactory
     /**
      * Create a new Searcher.
      */
-    public static Searcher createSearcher(Index index) throws InstantiationException
+    public static Searcher createSearcher(Book book) throws InstantiationException
     {
         try
         {
+            IndexManager imanager = IndexManagerFactory.getIndexManager();
+            Index index = imanager.getIndex(book);
+
             Class impl = ClassUtil.getImplementor(Searcher.class);
             Searcher parser = (Searcher) impl.newInstance();
             parser.init(index);

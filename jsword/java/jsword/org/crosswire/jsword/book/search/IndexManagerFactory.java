@@ -2,10 +2,9 @@ package org.crosswire.jsword.book.search;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.Book;
 
 /**
- * Factory method for creating a new Searcher.
+ * A Factory class for IndexManagers.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,37 +27,46 @@ import org.crosswire.jsword.book.Book;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class IndexFactory
+public class IndexManagerFactory
 {
     /**
      * Prevent Instansiation
      */
-    private IndexFactory()
+    private IndexManagerFactory()
     {
     }
 
     /**
-     * Create a new Searcher.
+     * Create a new IndexManager.
      */
-    public static Index getIndexForBook(Book book) throws InstantiationException
+    public static IndexManager getIndexManager()
     {
-        try
-        {
-            Class impl = ClassUtil.getImplementor(Index.class);
-            Index index = (Index) impl.newInstance();
-            index.init(book);
-
-            return index;
-        }
-        catch (Exception ex)
-        {
-            log.error("createParser failed", ex); //$NON-NLS-1$
-            throw new InstantiationException();
-        }
+        return instance;
     }
+
+    /**
+     * The singleton
+     */
+    private static IndexManager instance = null;
 
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(IndexFactory.class);
+    private static final Logger log = Logger.getLogger(IndexManagerFactory.class);
+
+    /**
+     * Setup the instance
+     */
+    static
+    {
+        try
+        {
+            Class impl = ClassUtil.getImplementor(IndexManager.class);
+            instance = (IndexManager) impl.newInstance();
+        }
+        catch (Exception ex)
+        {
+            log.error("createIndexManager failed", ex); //$NON-NLS-1$
+        }
+    }
 }

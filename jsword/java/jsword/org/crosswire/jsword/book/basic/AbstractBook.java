@@ -5,15 +5,8 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.IndexFactory;
-import org.crosswire.jsword.book.search.Matcher;
-import org.crosswire.jsword.book.search.MatcherFactory;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.SearcherFactory;
-import org.crosswire.jsword.book.search.Thesaurus;
-import org.crosswire.jsword.book.search.ThesaurusFactory;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -75,45 +68,23 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.Searcher#search(org.crosswire.jsword.book.Search)
+     * @see org.crosswire.jsword.book.Book#find(java.lang.String)
      */
-    public Key find(Search search) throws BookException
+    public Key find(String search) throws BookException
     {
-        try
+        if (searcher == null)
         {
-            if (index == null)
+            try
             {
-                index = IndexFactory.getIndexForBook(this);
+                searcher = SearcherFactory.createSearcher(this);
             }
-
-            if (thesaurus == null)
+            catch (InstantiationException ex)
             {
-                thesaurus = ThesaurusFactory.createThesaurus();
-            }
-
-            if (search.isBestMatch())
-            {
-                if (matcher == null)
-                {
-                    matcher = MatcherFactory.createMatcher(index, thesaurus);
-                }
-
-                return matcher.bestMatch(search.getMatch(), search.getRestriction());
-            }
-            else
-            {
-                if (searcher == null)
-                {
-                    searcher = SearcherFactory.createSearcher(index);
-                }
-
-                return searcher.search(search.getMatch(), search.getRestriction());
+                throw new BookException(Msg.INDEX_FAIL);
             }
         }
-        catch (InstantiationException ex)
-        {
-            throw new BookException(Msg.INDEX_FAIL);
-        }
+
+        return searcher.search(search);
     }
 
     /* (non-Javadoc)
@@ -123,21 +94,6 @@ public abstract class AbstractBook implements Book
     {
         return ClassUtil.getShortClassName(getClass()) + ":" + getBookMetaData().toString(); //$NON-NLS-1$
     }
-
-    /**
-     * The global thesaurus
-     */
-    private Thesaurus thesaurus;
-
-    /**
-     * The search index for this book
-     */
-    private Index index;
-
-    /**
-     * How do we perform best matches
-     */
-    private Matcher matcher;
 
     /**
      * How do we perform searches

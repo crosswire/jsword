@@ -11,7 +11,6 @@ import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Document;
 import org.jdom.input.SAXHandler;
@@ -90,13 +89,7 @@ public class LocalRemoter implements Remoter
                 Book book = bmd.getBook();
 
                 String word = method.getParameter(ParamName.PARAM_FINDSTRING);
-                boolean match = Boolean.getBoolean(method.getParameter(ParamName.PARAM_FINDMATCH));
-                String refstr = method.getParameter(ParamName.PARAM_FINDRANGE);
-                Key range = book.getKey(refstr);
-                Search search = new Search(word, match);
-                search.setRestriction(range);
-
-                Key key = book.find(search);
+                Key key = book.find(word);
                 return Converter.convertKeyListToDocument(key);
             }
             else

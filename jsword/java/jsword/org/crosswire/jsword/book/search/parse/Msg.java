@@ -44,6 +44,8 @@ class Msg extends MsgBase
     static final Msg ENGINE_SYNTAX = new Msg("IndexSearcher.EngineSyntax"); //$NON-NLS-1$
     static final Msg ILLEGAL_PASSAGE = new Msg("PassageLeftParamWord.IllegalPassage"); //$NON-NLS-1$
     static final Msg UNMATCHED_ESCAPE = new Msg("CustomTokenizer.UnmatchedEscape"); //$NON-NLS-1$
+    static final Msg SINGLE_PARAM = new Msg("PhraseParamWord.SingleParam"); //$NON-NLS-1$
+    static final Msg NO_THESAURUS = new Msg("PhraseParamWord.NoThesaurus"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

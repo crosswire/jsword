@@ -7,7 +7,6 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.Key;
@@ -102,15 +101,13 @@ public class RemoteBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Key find(Search search) throws BookException
+    public Key find(String search) throws BookException
     {
         try
         {
             RemoteMethod method = new RemoteMethod(MethodName.FINDPASSAGE);
             method.addParam(ParamName.PARAM_BIBLE, driver.getID(getBookMetaData()));
-            method.addParam(ParamName.PARAM_FINDSTRING, search.getMatch());
-            method.addParam(ParamName.PARAM_FINDMATCH, Boolean.toString(search.isBestMatch()));
-            method.addParam(ParamName.PARAM_FINDRANGE, search.getRestriction().getName());
+            method.addParam(ParamName.PARAM_FINDSTRING, search);
             Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToKeyList(doc, this);

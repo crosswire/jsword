@@ -20,14 +20,15 @@ import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.book.search.IndexManager;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -36,7 +37,6 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
-import org.crosswire.jsword.util.Project;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -64,37 +64,72 @@ import org.crosswire.jsword.util.Project;
  */
 public class LuceneIndex implements Index, Activatable
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
+    /**
+     * Read an existing index and use it.
+     * @throws BookException If we fail to read the index files
      */
-    public void init(Book newBook) throws BookException
+    public LuceneIndex(Book book, URL storage) throws BookException
     {
+        this.book = book;
+        this.storage = storage;
+
         try
         {
-            book = newBook;
-
-            String driverName = book.getBookMetaData().getDriverName();
-            String bookName = book.getBookMetaData().getInitials();
-
-            assert driverName != null;
-            assert bookName != null;
-
-            URL base = Project.instance().getTempScratchSpace(DIR_LUCENE, false);
-            URL driver = NetUtil.lengthenURL(base, driverName);
-            url = NetUtil.lengthenURL(driver, bookName);
-
-            if (isIndexed())
-            {
-                // Opening Lucene indexes is quite quick I think, so we can try
-                // it to see if it works to report errors that we want to drop
-                // later
-                searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
-            }
+            // Opening Lucene indexes is quite quick I think, so we can try
+            // it to see if it works to report errors that we want to drop
+            // later
+            searcher = new IndexSearcher(NetUtil.getAsFile(storage).getCanonicalPath());
         }
         catch (IOException ex)
         {
             throw new BookException(Msg.LUCENE_INIT, ex);
         }
+    }
+
+    /**
+     * Generate an index to use, telling the job about progress as you go.
+     * @throws BookException If we fail to read the index files
+     */
+    public LuceneIndex(Book book, URL storage, boolean create) throws BookException
+    {
+        assert create;
+
+        this.book = book;
+        this.storage = storage;
+
+        Job job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
+
+        try
+        {
+            synchronized (creating)
+            {
+                book.getBookMetaData().setIndexStatus(IndexStatus.CREATING);
+
+                // An index is created by opening an IndexWriter with the
+                // create argument set to true.
+                IndexWriter writer = new IndexWriter(NetUtil.getAsFile(storage).getCanonicalPath(), new StandardAnalyzer(), true);
+
+                generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
+        
+                job.setProgress(95, Msg.OPTIMIZING.toString());
+        
+                writer.optimize();
+                writer.close();
+
+                searcher = new IndexSearcher(NetUtil.getAsFile(storage).getCanonicalPath());
+
+                book.getBookMetaData().setIndexStatus(IndexStatus.DONE);
+            }
+        }
+        catch (Exception ex)
+        {
+            job.ignoreTimings();
+            throw new BookException(Msg.LUCENE_INIT, ex);
+        }
+        finally
+        {
+            job.done();
+        }                
     }
 
     /* (non-Javadoc)
@@ -146,53 +181,49 @@ public class LuceneIndex implements Index, Activatable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#delete()
+     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
      */
-    public void delete() throws BookException
+    public final void activate(Lock lock)
     {
-        checkActive();
-
         try
         {
-            NetUtil.delete(url);
+            searcher = new IndexSearcher(NetUtil.getAsFile(storage).getCanonicalPath());
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.DELETE_FAILED, ex);
+            log.warn("second load failure", ex); //$NON-NLS-1$
         }
+
+        active = true;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractIndex#isIndexed()
+     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
      */
-    public boolean isIndexed()
+    public final void deactivate(Lock lock)
     {
-        if (generating)
+        try
         {
-            return false;
+            searcher.close();
+            searcher = null;
+        }
+        catch (IOException ex)
+        {
+            Reporter.informUser(this, ex);
         }
 
-        URL longer = NetUtil.lengthenURL(url, DIR_SEGMENTS);
-        return NetUtil.isFile(longer);
+        active = false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.AbstractIndex#generateSearchIndex(org.crosswire.common.progress.Job)
+    /**
+     * Helper method so we can quickly activate ourselves on access
      */
-    public void generateSearchIndex(Job job) throws IOException, BookException
+    protected final void checkActive()
     {
-        // An index is created by opening an IndexWriter with the
-        // create argument set to true.
-        IndexWriter writer = new IndexWriter(NetUtil.getAsFile(url), new StandardAnalyzer(), true);
-
-        generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
-
-        job.setProgress(95, Msg.OPTIMIZING.toString());
-
-        writer.optimize();
-        writer.close();
-
-        searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
+        if (!active)
+        {
+            Activator.activate(this);
+        }
     }
 
     /**
@@ -247,59 +278,10 @@ public class LuceneIndex implements Index, Activatable
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
-     */
-    public final void activate(Lock lock)
-    {
-        // Load the ascii Passage index
-        if (isIndexed())
-        {
-            try
-            {
-                searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
-            }
-            catch (IOException ex)
-            {
-                log.warn("second load failure", ex); //$NON-NLS-1$
-            }
-        }
-        else
-        {
-            IndexManager.instance().createIndex(this);
-        }
-
-        active = true;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
-     */
-    public final void deactivate(Lock lock)
-    {
-        try
-        {
-            searcher.close();
-            searcher = null;
-        }
-        catch (IOException ex)
-        {
-            Reporter.informUser(this, ex);
-        }
-
-        active = false;
-    }
-
     /**
-     * Helper method so we can quickly activate ourselves on access
+     * A synchronization lock point to prevent us from doing 2 index runs at a time.
      */
-    protected final void checkActive()
-    {
-        if (!active)
-        {
-            Activator.activate(this);
-        }
-    }
+    private static final Object creating = new Object();
 
     /**
      * Are we active
@@ -310,21 +292,6 @@ public class LuceneIndex implements Index, Activatable
      * The log stream
      */
     private static final Logger log = Logger.getLogger(LuceneIndex.class);
-
-    /**
-     * Are we in the middle of generating an index?
-     */
-    private boolean generating = false;
-
-    /**
-     * The lucene search index directory
-     */
-    protected static final String DIR_LUCENE = "lucene"; //$NON-NLS-1$
-
-    /**
-     * The segments directory
-     */
-    protected static final String DIR_SEGMENTS = "segments"; //$NON-NLS-1$
 
     /**
      * The Lucene field for the verse name
@@ -344,7 +311,7 @@ public class LuceneIndex implements Index, Activatable
     /**
      * The location of this index
      */
-    private URL url;
+    private URL storage;
 
     /**
      * The Lucene search engine

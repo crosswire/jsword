@@ -28,6 +28,9 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
+    static final Msg TYPE_INDEXGEN = new Msg("LuceneIndexManager.TypeIndexGen"); //$NON-NLS-1$
+    static final Msg INDEX_START = new Msg("LuceneIndexManager.Indexing"); //$NON-NLS-1$
+
     static final Msg LUCENE_INIT = new Msg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
     static final Msg SEARCH_FAILED = new Msg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
     static final Msg INDEXING = new Msg("LuceneIndex.Indexing"); //$NON-NLS-1$

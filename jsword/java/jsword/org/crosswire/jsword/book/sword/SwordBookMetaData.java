@@ -29,6 +29,8 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.IndexStatus;
+import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 
@@ -66,7 +68,7 @@ import org.crosswire.jsword.book.filter.FilterFactory;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class SwordBookMetaData implements BookMetaData
+public class SwordBookMetaData extends AbstractBookMetaData
 {
     /**
      * Loads a sword config from a given File.
@@ -151,9 +153,9 @@ public class SwordBookMetaData implements BookMetaData
 
         // set the key property file entries
         prop.put(KEY_INITIALS, initials);
-        
+
         validate();
-        
+
         if (!isSupported())
         {
             return;
@@ -322,7 +324,10 @@ public class SwordBookMetaData implements BookMetaData
         orderedMap.putAll(new TreeMap(prop));
         prop = orderedMap;
     }
-    
+
+    /**
+     * 
+     */
     private void organize(Map result, Object[] category)
     {
         for (int i = 0; i < category.length; i++)
@@ -336,6 +341,9 @@ public class SwordBookMetaData implements BookMetaData
         }
     }
 
+    /**
+     * 
+     */
     public void validate()
     {
         // See if the ModuleType can handle this BookMetaData
@@ -390,9 +398,9 @@ public class SwordBookMetaData implements BookMetaData
         {
             log.debug("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             supported = false;
-	        return;
+            return;
         }
-        
+
         // report on unknown config entries
         for (Iterator kit = getKeys(); kit.hasNext();)
         {
@@ -402,13 +410,12 @@ public class SwordBookMetaData implements BookMetaData
                 log.warn("Unknown config entry for " + internal + ": " + key); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
-        
+
         // output collected warnings
-        for (Iterator kit = warnings.iterator(); kit.hasNext(); )
+        for (Iterator kit = warnings.iterator(); kit.hasNext();)
         {
             log.warn((String) kit.next());
         }
-
     }
 
     /**
@@ -515,7 +522,7 @@ public class SwordBookMetaData implements BookMetaData
 
         // strip { and } which are found in {\i text }
         copy = copy.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         if (!allowsRTF.contains(key))
         {
             if (!copy.equals(value))
@@ -738,6 +745,25 @@ public class SwordBookMetaData implements BookMetaData
         return prop;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
+     */
+    public IndexStatus getIndexStatus()
+    {
+        return indexStatus;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
+     */
+    public void setIndexStatus(IndexStatus newValue)
+    {
+        IndexStatus oldValue = this.indexStatus;
+        this.indexStatus = newValue;
+        prop.put(KEY_INDEXSTATUS, newValue);
+        firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
+    }
+
     /**
      * Get the string value for the property or null if it is not defined.
      * It is assumed that all properties gotten with this method are single line.
@@ -782,6 +808,9 @@ public class SwordBookMetaData implements BookMetaData
         return fullName;
     }
 
+    /**
+     * 
+     */
     private String computeFullName()
     {
         StringBuffer buf = new StringBuffer(getName());
@@ -861,7 +890,6 @@ public class SwordBookMetaData implements BookMetaData
             return false;
         }
 
-
         // The real bit ...
         BookMetaData that = (BookMetaData) obj;
 
@@ -929,77 +957,77 @@ public class SwordBookMetaData implements BookMetaData
 
     private static final Object[] BASIC_INFO =
     {
-                    KEY_INITIALS,
-                    ConfigEntry.DESCRIPTION,
-                    KEY_TYPE,
-                    ConfigEntry.LCSH,
-                    ConfigEntry.CATEGORY,
-                    ConfigEntry.VERSION,
-                    ConfigEntry.SWORD_VERSION_DATE,
+        KEY_INITIALS,
+        ConfigEntry.DESCRIPTION,
+        KEY_TYPE,
+        ConfigEntry.LCSH,
+        ConfigEntry.CATEGORY,
+        ConfigEntry.VERSION,
+        ConfigEntry.SWORD_VERSION_DATE,
     };
 
     private static final Object[] LANG_INFO =
     {
-                    KEY_LANGUAGE,
-                    ConfigEntry.LANG,
-                    ConfigEntry.GLOSSARY_FROM,
-                    ConfigEntry.GLOSSARY_TO,
-                    ConfigEntry.LEXICON_FROM,
-                    ConfigEntry.LEXICON_TO,
+        KEY_LANGUAGE,
+        ConfigEntry.LANG,
+        ConfigEntry.GLOSSARY_FROM,
+        ConfigEntry.GLOSSARY_TO,
+        ConfigEntry.LEXICON_FROM,
+        ConfigEntry.LEXICON_TO,
     };
 
     private static final Object[] HISTORY_INFO =
     {
-                    ConfigEntry.HISTORY_2_5,
-                    ConfigEntry.HISTORY_2_2,
-                    ConfigEntry.HISTORY_2_1,
-                    ConfigEntry.HISTORY_2_0,
-                    ConfigEntry.HISTORY_1_9,
-                    ConfigEntry.HISTORY_1_8,
-                    ConfigEntry.HISTORY_1_7,
-                    ConfigEntry.HISTORY_1_6,
-                    ConfigEntry.HISTORY_1_5,
-                    ConfigEntry.HISTORY_1_4,
-                    ConfigEntry.HISTORY_1_3,
-                    ConfigEntry.HISTORY_1_2,
-                    ConfigEntry.HISTORY_1_1,
-                    ConfigEntry.HISTORY_1_0,
-                    ConfigEntry.HISTORY_0_92,
-                    ConfigEntry.HISTORY_0_91,
-                    ConfigEntry.HISTORY_0_9,
-                    ConfigEntry.HISTORY_0_3,
-                    ConfigEntry.HISTORY_0_2,
-                    ConfigEntry.HISTORY_0_1
+        ConfigEntry.HISTORY_2_5,
+        ConfigEntry.HISTORY_2_2,
+        ConfigEntry.HISTORY_2_1,
+        ConfigEntry.HISTORY_2_0,
+        ConfigEntry.HISTORY_1_9,
+        ConfigEntry.HISTORY_1_8,
+        ConfigEntry.HISTORY_1_7,
+        ConfigEntry.HISTORY_1_6,
+        ConfigEntry.HISTORY_1_5,
+        ConfigEntry.HISTORY_1_4,
+        ConfigEntry.HISTORY_1_3,
+        ConfigEntry.HISTORY_1_2,
+        ConfigEntry.HISTORY_1_1,
+        ConfigEntry.HISTORY_1_0,
+        ConfigEntry.HISTORY_0_92,
+        ConfigEntry.HISTORY_0_91,
+        ConfigEntry.HISTORY_0_9,
+        ConfigEntry.HISTORY_0_3,
+        ConfigEntry.HISTORY_0_2,
+        ConfigEntry.HISTORY_0_1
     };
 
     private static final Object[] SYSTEM_INFO =
     {
-                    ConfigEntry.DATA_PATH,
-                    ConfigEntry.MOD_DRV,
-                    ConfigEntry.SOURCE_TYPE,
-                    ConfigEntry.BLOCK_TYPE,
-                    ConfigEntry.COMPRESS_TYPE,
-                    ConfigEntry.ENCODING,
-                    ConfigEntry.MINIMUM_VERSION,
-                    ConfigEntry.MINIMUM_SWORD_VERSION,
-                    ConfigEntry.DIRECTION
+        ConfigEntry.DATA_PATH,
+        ConfigEntry.MOD_DRV,
+        ConfigEntry.SOURCE_TYPE,
+        ConfigEntry.BLOCK_TYPE,
+        ConfigEntry.COMPRESS_TYPE,
+        ConfigEntry.ENCODING,
+        ConfigEntry.MINIMUM_VERSION,
+        ConfigEntry.MINIMUM_SWORD_VERSION,
+        ConfigEntry.DIRECTION
     };
 
     private static final Object[] COPYRIGHT_INFO =
     {
-                    ConfigEntry.ABOUT,
-                    ConfigEntry.DISTRIBUTION,
-                    ConfigEntry.DISTRIBUTION_LICENSE,
-                    ConfigEntry.DISTRIBUTION_NOTES,
-                    ConfigEntry.DISTRIBUTION_SOURCE,
-                    ConfigEntry.COPYRIGHT,
-                    ConfigEntry.COPYRIGHT_DATE,
-                    ConfigEntry.COPYRIGHT_HOLDER,
-                    ConfigEntry.COPYRIGHT_CONTACT_NAME,
-                    ConfigEntry.COPYRIGHT_CONTACT_ADDRESS,
-                    ConfigEntry.COPYRIGHT_CONTACT_EMAIL,
-                    ConfigEntry.COPYRIGHT_NOTES,
-                    ConfigEntry.TEXT_SOURCE,
+        ConfigEntry.ABOUT,
+        ConfigEntry.DISTRIBUTION,
+        ConfigEntry.DISTRIBUTION_LICENSE,
+        ConfigEntry.DISTRIBUTION_NOTES,
+        ConfigEntry.DISTRIBUTION_SOURCE,
+        ConfigEntry.COPYRIGHT,
+        ConfigEntry.COPYRIGHT_DATE,
+        ConfigEntry.COPYRIGHT_HOLDER,
+        ConfigEntry.COPYRIGHT_CONTACT_NAME,
+        ConfigEntry.COPYRIGHT_CONTACT_ADDRESS,
+        ConfigEntry.COPYRIGHT_CONTACT_EMAIL,
+        ConfigEntry.COPYRIGHT_NOTES,
+        ConfigEntry.TEXT_SOURCE,
     };
 
     // Some config entries are expected to be single line entries
@@ -1037,7 +1065,6 @@ public class SwordBookMetaData implements BookMetaData
         allowsRTF.add(ConfigEntry.COPYRIGHT_CONTACT_NAME.toString());
     }
 
-
     /**
      * A map of lists of known keys. Keys are presented in insertion order
      */
@@ -1065,5 +1092,5 @@ public class SwordBookMetaData implements BookMetaData
     private String readahead;
     private static Histogram histogram = new Histogram();
     private List warnings = new ArrayList();
-
+    private IndexStatus indexStatus = IndexStatus.UNDONE;
 }

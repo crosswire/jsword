@@ -63,8 +63,6 @@ public class RemoteMethodTest extends TestCase
         assertTrue(!rmt4.getParameterKeys().hasNext());
 
         rmt1.addParam(ParamName.PARAM_BIBLE, "v1:1"); //$NON-NLS-1$
-        rmt2.addParam(ParamName.PARAM_FINDMATCH, "v2:1"); //$NON-NLS-1$
-        rmt2.addParam(ParamName.PARAM_FINDRANGE, "v2:2"); //$NON-NLS-1$
         rmt3.addParam(ParamName.PARAM_FINDSTRING, "v3:1"); //$NON-NLS-1$
         rmt3.addParam(ParamName.PARAM_PASSAGE, "v3:2"); //$NON-NLS-1$
 
@@ -81,8 +79,6 @@ public class RemoteMethodTest extends TestCase
         assertTrue(!rmt4.getParameterKeys().hasNext());
 
         assertEquals(null, rmt1.getParameter(ParamName.PARAM_BIBLE));
-        assertEquals("v2:1", rmt2.getParameter(ParamName.PARAM_FINDMATCH)); //$NON-NLS-1$
-        assertEquals("v2:2", rmt2.getParameter(ParamName.PARAM_FINDRANGE)); //$NON-NLS-1$
         assertEquals("v3:1", rmt3.getParameter(ParamName.PARAM_FINDSTRING)); //$NON-NLS-1$
         assertEquals("v3:2", rmt3.getParameter(ParamName.PARAM_PASSAGE)); //$NON-NLS-1$
 
