@@ -70,29 +70,29 @@ public class TestOsis extends TestCase
     {
         try
         {
-            Seg seg = ObjectFactory.createSeg();
+            Seg seg = OSISUtil.factory().createSeg();
             seg.getContent().add("In the beginning God created the heaven and the earth.");
 
-            Verse verse = ObjectFactory.createVerse();
+            Verse verse = OSISUtil.factory().createVerse();
             verse.setOsisID("Gen.1.1");
             verse.getContent().add(seg);
     
-            Div div = ObjectFactory.createDiv();
+            Div div = OSISUtil.factory().createDiv();
             div.setType("chapter");
             div.setOsisID("Gen.1.1");
             div.getContent().add(verse);
     
-            Work work = ObjectFactory.createWork();
+            Work work = OSISUtil.factory().createWork();
     
-            Header header = ObjectFactory.createHeader();
+            Header header = OSISUtil.factory().createHeader();
             header.getWork().add(work);
     
-            OsisText osistext = ObjectFactory.createOsisText();
+            OsisText osistext = OSISUtil.factory().createOsisText();
             osistext.setOsisIDWork("Bible.KJV");
             osistext.getDiv().add(div);
             osistext.setHeader(header);
 
-            Osis blank = ObjectFactory.createOsis();
+            Osis blank = OSISUtil.factory().createOsis();
             blank.setOsisText(osistext);
     
             val.setEventHandler(new ValidationEventHandler()

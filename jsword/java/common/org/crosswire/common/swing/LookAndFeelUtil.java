@@ -11,7 +11,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * LookAndFeelUtil declares the Choices and actions
@@ -153,7 +153,7 @@ public class LookAndFeelUtil
 		}
 		catch (ClassNotFoundException ex) 
 		{
-			log.debug("Failed to initialise system default LAF", ex);
+			log.warn("Failed to initialise system default LAF", ex);
 			current = javax.swing.plaf.metal.MetalLookAndFeel.class;
 		}
         /*

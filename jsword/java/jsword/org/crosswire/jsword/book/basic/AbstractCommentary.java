@@ -111,7 +111,7 @@ public abstract class AbstractCommentary implements Commentary
 
     /**
      * For when we need to patch up for a getData() that has failed.
-     * @see Bible#getData(Passage)
+     * @see org.crosswire.jsword.book.Bible#getData(Passage)
      */
     protected BookData failedGetData(Passage ref, MsgBase message)
     {

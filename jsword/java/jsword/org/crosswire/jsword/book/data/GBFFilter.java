@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * Filter to convert GBF data to OSIS format.
@@ -141,7 +141,9 @@ public class GBFFilter implements Filter
         while (true)
         {
             if (!it.hasNext())
+            {
                 break;
+            }
         
             Object token = it.next();
             if (token instanceof String)

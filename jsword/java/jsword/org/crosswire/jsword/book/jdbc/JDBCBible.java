@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;

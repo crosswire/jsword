@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.book.remote;
 
 import java.io.PrintWriter;
@@ -100,12 +101,14 @@ public class Converter
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
-     * @see Converter#convertDocumentToBibleMetaDatas(Document, Remoter, int)
+     * @see Converter#convertDocumentToBibleMetaDatas(BookDriver, Document, Remoter, int)
      */
     public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids) throws ConverterException
     {
         if (bmds.length != ids.length)
+        {
             throw new LogicError();
+        }
 
         Element root = new Element("root");
         for (int i = 0; i < bmds.length; i++)
@@ -125,7 +128,9 @@ public class Converter
             bmdele.addContent(new Element("openness").addContent(bmd.getOpenness().toString()));
 
             if (bmd.getLicence() != null)
+            {
                 bmdele.addContent(new Element("licence").addContent(bmd.getLicence().toExternalForm()));
+            }
 
             root.addContent(bmdele);
         }

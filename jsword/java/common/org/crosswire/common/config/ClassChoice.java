@@ -1,7 +1,7 @@
 
 package org.crosswire.common.config;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * A class to convert between strings and objects of a type.

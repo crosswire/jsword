@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.map.model;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * RectangularBoundsRule implements Rule and attempts to move the Node within the

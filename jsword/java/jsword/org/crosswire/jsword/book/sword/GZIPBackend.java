@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Verse;

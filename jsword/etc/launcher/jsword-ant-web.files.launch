@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.ant.AntLaunchConfigurationType">
-    <booleanAttribute
-        key="org.eclipse.ui.externaltools.ATTR_RUN_IN_BACKGROUND" value="true"/>
     <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
         <listEntry value="org.eclipse.ui.externaltools.launchGroup"/>
     </listAttribute>

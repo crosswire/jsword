@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 
 /**

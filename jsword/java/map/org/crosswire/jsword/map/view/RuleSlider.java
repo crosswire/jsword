@@ -11,7 +11,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.map.model.Rule;
 
 /**

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.jdom.Element;
 
 /**

@@ -83,6 +83,7 @@ public class TestBooks extends TestCase
         try { BibleInfo.getShortBookName(0); fail(); }
         catch (NoSuchVerseException ex) { }
         assertEquals(BibleInfo.getShortBookName(1), "Gen");
+        assertEquals(BibleInfo.getShortBookName(2), "Exo");
         assertEquals(BibleInfo.getShortBookName(7), "Judg");
         assertEquals(BibleInfo.getShortBookName(39), "Mal");
         assertEquals(BibleInfo.getShortBookName(40), "Mat");
@@ -96,6 +97,7 @@ public class TestBooks extends TestCase
         try { BibleInfo.getShortBookName(0); fail(); }
         catch (NoSuchVerseException ex) { }
         assertEquals(BibleInfo.getShortBookName(1), "gen");
+        assertEquals(BibleInfo.getShortBookName(2), "exo");
         assertEquals(BibleInfo.getShortBookName(7), "judg");
         assertEquals(BibleInfo.getShortBookName(39), "mal");
         assertEquals(BibleInfo.getShortBookName(40), "mat");
@@ -109,6 +111,7 @@ public class TestBooks extends TestCase
         try { BibleInfo.getShortBookName(0); fail(); }
         catch (NoSuchVerseException ex) { }
         assertEquals(BibleInfo.getShortBookName(1), "GEN");
+        assertEquals(BibleInfo.getShortBookName(2), "EXO");
         assertEquals(BibleInfo.getShortBookName(7), "JUDG");
         assertEquals(BibleInfo.getShortBookName(39), "MAL");
         assertEquals(BibleInfo.getShortBookName(40), "MAT");
@@ -122,23 +125,13 @@ public class TestBooks extends TestCase
 
     public void testGetBookJogger() throws Exception
     {
-        assertEquals(BibleInfo.getBookJogger(1), "LT");
-        assertEquals(BibleInfo.getBookJogger(66), "DB");
-        try { BibleInfo.getBookJogger(0); fail(); }
+        assertEquals(BibleInfo.getOSISName(1), "Gen");
+        assertEquals(BibleInfo.getOSISName(2), "Exod");
+        assertEquals(BibleInfo.getOSISName(66), "Rev");
+        try { BibleInfo.getOSISName(0); fail(); }
         catch (NoSuchVerseException ex) { }
-        try { BibleInfo.getBookJogger(67); fail(); }
+        try { BibleInfo.getOSISName(67); fail(); }
         catch (NoSuchVerseException ex) { }
-    }
-
-    public void testGetNumberJogger() throws Exception
-    {
-        assertEquals(BibleInfo.getNumberJogger(0), "S");
-        assertEquals(BibleInfo.getNumberJogger(1), "T");
-        assertEquals(BibleInfo.getNumberJogger(9), "P");
-        assertEquals(BibleInfo.getNumberJogger(10), "TS");
-        assertEquals(BibleInfo.getNumberJogger(99), "PP");
-        assertEquals(BibleInfo.getNumberJogger(100), "TSS");
-        assertEquals(BibleInfo.getNumberJogger(65536), "GLLMG");
     }
 
     public void testGetBookNumber() throws Exception

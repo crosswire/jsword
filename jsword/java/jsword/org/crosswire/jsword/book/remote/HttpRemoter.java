@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Books;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;

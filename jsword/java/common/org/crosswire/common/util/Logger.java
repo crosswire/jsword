@@ -1,6 +1,11 @@
 
 package org.crosswire.common.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Level;
+
 /**
  * This class is very similar to Commons-Logging except it should be even
  * smaller and have an API closer to the Log4J API (and even JDK 1.4 logging)
@@ -28,69 +33,39 @@ package org.crosswire.common.util;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Logger
+public final class Logger
 {
-    /**
-     * Retrieve a logger by name.
-     */
-    public static Logger getLogger(String name)
-    {
-        return new Logger(name);
-    }
-
     /**
      * Same as calling <code>getLogger(clazz.getName())</code>.
      */
     public static Logger getLogger(Class clazz)
     {
-        return new Logger(clazz.getName());
+        return new Logger(clazz);
     }
 
     /**
-     * Retrieve the root logger.
+     * Stop all logging output
      */
-    public static Logger getRootLogger()
+    public static void stopLogging()
     {
-        return new Logger("");
+        org.apache.log4j.Logger.getRootLogger().setLevel(Level.ERROR);
     }
 
     /**
-     * 
+     * Simple ctor
      */
-    public Logger(String message)
+    private Logger(Class id)
     {
-    }
+        this.id = id;
+        log4j = org.apache.log4j.Logger.getLogger(id);
 
-    /**
-     * Log a message object with the DEBUG level.
-     * @param message the message object to log.
-     */
-    public void debug(String message)
-    {
-    }
+        Object check = loggers.get(id);
+        if (check != null)
+        {
+            log4j.error("Logger reuse for: "+id.getName());
+        }
 
-    /**
-     * Log a message object with the DEBUG level.
-     * @param message the message object to log.
-     */
-    public void debug(String message, Throwable th)
-    {
-    }
-
-    /**
-     * Log a message object with the ERROR level.
-     * @param message the message object to log.
-     */
-    public void error(String message)
-    {
-    }
-
-    /**
-     * Log a message object with the ERROR level.
-     * @param message the message object to log.
-     */
-    public void error(String message, Throwable th)
-    {
+        loggers.put(id, this);
     }
 
     /**
@@ -99,6 +74,7 @@ public class Logger
      */
     public void fatal(String message)
     {
+        log4j.fatal(message);
     }
 
     /**
@@ -107,6 +83,25 @@ public class Logger
      */
     public void fatal(String message, Throwable th)
     {
+        log4j.fatal(message, th);
+    }
+
+    /**
+     * Log a message object with the ERROR level.
+     * @param message the message object to log.
+     */
+    public void error(String message)
+    {
+        log4j.error(message);
+    }
+
+    /**
+     * Log a message object with the ERROR level.
+     * @param message the message object to log.
+     */
+    public void error(String message, Throwable th)
+    {
+        log4j.error(message, th);
     }
 
     /**
@@ -115,6 +110,7 @@ public class Logger
      */
     public void info(String message)
     {
+        log4j.info(message);
     }
 
     /**
@@ -123,6 +119,7 @@ public class Logger
      */
     public void info(String message, Throwable th)
     {
+        log4j.info(message, th);
     }
 
     /**
@@ -131,6 +128,7 @@ public class Logger
      */
     public void warn(String message)
     {
+        log4j.warn(message);
     }
 
     /**
@@ -139,6 +137,16 @@ public class Logger
      */
     public void warn(String message, Throwable th)
     {
+        log4j.warn(message, th);
+    }
+
+    /**
+     * Log a message object with the DEBUG level.
+     * @param message the message object to log.
+     */
+    public void debug(String message)
+    {
+        log4j.debug(message);
     }
 
     /**
@@ -146,6 +154,10 @@ public class Logger
      */
     public boolean isDebugEnabled()
     {
-        return false;
+        return log4j.isDebugEnabled();
     }
+
+    private static Map loggers = new HashMap(); 
+    private org.apache.log4j.Logger log4j = null;
+    private Class id = null;
 }

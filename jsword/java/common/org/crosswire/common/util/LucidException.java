@@ -3,7 +3,7 @@ package org.crosswire.common.util;
 
 import java.text.MessageFormat;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * A LucidException adds 2 concepts to a base Exception, that of a wrapped

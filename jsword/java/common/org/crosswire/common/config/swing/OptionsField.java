@@ -5,7 +5,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.MultipleChoice;
 

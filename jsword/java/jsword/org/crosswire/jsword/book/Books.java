@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;

@@ -4,7 +4,7 @@ package org.crosswire.jsword.book;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * Handles the current default Books.

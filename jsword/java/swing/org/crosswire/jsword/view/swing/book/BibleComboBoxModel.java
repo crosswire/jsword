@@ -4,7 +4,7 @@ package org.crosswire.jsword.view.swing.book;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;

@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 
 /**
@@ -640,6 +640,30 @@ public class VerseRange implements VerseBase
         {
             throw new LogicError(ex);
         }
+    }
+
+    /**
+     * The OSIS defined specification for this VerseRange.
+     * Uses short books names, with "." as a verse part separator.
+     * @return a String containing the OSIS description of the verses
+     */
+    public String getOSISName()
+    {
+        // PENDING(joe): implement getOSISName() properly
+        return getName();
+    }
+
+    /**
+     * The OSIS defined specification for this VerseRange.
+     * This method makes with the assumption that the specified Verse has just
+     * been output, so if we are in the same book, we do not need to display the
+     * book name, and so on.
+     * @return a String containing the OSIS description of the verses
+     */
+    public String getOSISName(Verse base)
+    {
+        // PENDING(joe): implement getOSISName() properly
+        return getName(base);
     }
 
     /**

@@ -1,16 +1,25 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    exclude-result-prefixes="html"
+    >
 
-<xsl:template match="/">
+<xsl:template match="/jsp:root">
+  <jsp:root version="1.2">
+    <xsl:apply-templates/>
+  </jsp:root>
+</xsl:template>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>xsl:select match="/html/head/title"/</title>
-  <link rel="stylesheet" type="text/css" href="generic.css"/>
-  <link rel="stylesheet" type="text/css" href="sword.css"/>
-</head>
+<xsl:template match="html:html">
+
+<html>
+<xsl:apply-templates select="html:head"/>
 
 <body>
+<xsl:apply-templates select="html:body/@*"/>
 
 <table width="100%">
   <tr align="center">
@@ -31,9 +40,9 @@
 
 <table width="100%">
   <tr align="center">
-    <td class="navbutton" align="center"><a href="news.jsp">Latest News</a></td>
-    <td class="navbutton" align="center"><a href="devt.jsp">Getting Involved</a></td>
-    <td class="navbutton" align="center"><a href="screenshot.jsp">Screenshots</a></td>      
+    <td class="navbutton" align="center"><a href="news.html">Latest News</a></td>
+    <td class="navbutton" align="center"><a href="devt.html">Getting Involved</a></td>
+    <td class="navbutton" align="center"><a href="screenshot.html">Screenshots</a></td>      
     <td class="navbutton" align="center"><a href="download.jsp">Download</a></td>
     <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/modules/index.jsp">Module Add-ins</a></td>
   </tr>
@@ -45,27 +54,25 @@
     <td class="sidenav" valign="top"> 
       <p>About JSword</p>
       <ul>
-        <li><a href="index.jsp">Home</a></li>
-        <li><a href="faq.jsp">FAQ</a></li>
-        <li><a href="news.jsp">News</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="news.html">News</a></li>
       </ul>
       <p>Getting-JSword</p>
       <ul>
         <li><a href="demo.jsp">Web-Demo</a></li>
-        <li><a href="jnlp.jsp">Web-Start</a></li>
-        <li><a href="screenshot.jsp">Screenshots</a></li>
+        <li><a href="jnlp.html">Web-Start</a></li>
+        <li><a href="screenshot.html">Screenshots</a></li>
         <li><a href="download.jsp">Download</a></li>
         <li><a href="http://www.crosswire.org/sword/modules/index.jsp">Modules</a></li>
       </ul>
-      <p><a href="devt.jsp">Getting-Involved</a></p>
+      <p><a href="devt.html">Getting-Involved</a></p>
       <ul>
-        <li><a href="intro.jsp">Intro</a></li>
-        <li><a href="primaer.jsp">API Primer</a></li>
-        <li><a href="design.jsp">Design</a></li>
-        <li><a href="xml.jsp">XML</a></li>
+        <li><a href="writingcode.html">Intro</a></li>
+        <li><a href="primer.html">API Primer</a></li>
+        <li><a href="design.html">Design</a></li>
         <li><a href="osisCore.1.1.html">OSIS</a></li>
-        <li><a href="config.jsp">Config</a></li>
-        <li><a href="change.jsp">Changes</a></li>
+        <li><a href="config.html">Config</a></li>
+        <li><a href="change.html">Changes</a></li>
         <li><a href="api/index.html">JavaDoc</a></li>
         <li><a href="java2html/index.html">Java-Source</a></li>
         <li><a href="test/index.html">Test-Results</a></li>
@@ -83,7 +90,7 @@
       <table cellpadding="5" border="0" width="100%">
         <tr>
           <td>
-            <xsl:apply-templates select="/html/body"/>
+            <xsl:apply-templates select="html:body"/>
           </td>
         </tr>
       </table>
@@ -104,8 +111,16 @@
 
 </xsl:template>
 
-<xsl:template match="/html/body">
+<xsl:template match="html:head">
   <xsl:copy-of select="."/>
+</xsl:template>
+
+<xsl:template match="html:body">
+  <xsl:copy-of select="node()"/>
+</xsl:template>
+
+<xsl:template match="html:body/@*">
+  <xsl:copy/>
 </xsl:template>
 
 </xsl:stylesheet>

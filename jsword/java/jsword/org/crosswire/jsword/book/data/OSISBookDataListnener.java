@@ -6,13 +6,12 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Note;
-import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.OsisText;
 import org.crosswire.jsword.osis.Q;
 import org.crosswire.jsword.osis.Reference;
@@ -59,13 +58,15 @@ public class OSISBookDataListnener implements BookDataListener
         try
         {
             this.bdata = new BookData();
-            bdata.osis = ObjectFactory.createOsis();
+            bdata.osis = OSISUtil.factory().createOsis();
 
-            Work work = ObjectFactory.createWork();
-            Header header = ObjectFactory.createHeader();
+            Work work = OSISUtil.factory().createWork();
+            work.setOsisWork(osisid);
+
+            Header header = OSISUtil.factory().createHeader();
             header.getWork().add(work);
 
-            OsisText text = ObjectFactory.createOsisText();
+            OsisText text = OSISUtil.factory().createOsisText();
             text.setOsisIDWork("Bible."+osisid);
             text.setHeader(header);
 
@@ -88,10 +89,14 @@ public class OSISBookDataListnener implements BookDataListener
 
         // Check that we are properly tree structured
         if (!(top instanceof OsisText))
+        {
             throw new LogicError();
+        }
 
         if (!stack.isEmpty())
+        {
             throw new LogicError();
+        }
 
         return bdata;
     }
@@ -103,7 +108,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Div div = ObjectFactory.createDiv();
+            Div div = OSISUtil.factory().createDiv();
             div.setDivTitle(title);
 
             getCurrentList(OsisText.class).add(div);
@@ -127,7 +132,7 @@ public class OSISBookDataListnener implements BookDataListener
         if (!(top instanceof Div))
             throw new LogicError();
 
-        // PENDING(joe) remove this when we are more sure that there isn't a good reason for it to be here.
+        // NOTE(joe) remove this when we are more sure that there isn't a good reason for it to be here.
         // bdata.osis.getOsisText().getDiv().add((Div) top);
     }
 
@@ -138,7 +143,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Verse everse = ObjectFactory.createVerse();
+            Verse everse = OSISUtil.factory().createVerse();
             everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
 
             getCurrentList(Div.class).add(everse);
@@ -178,7 +183,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Note note = ObjectFactory.createNote();
+            Note note = OSISUtil.factory().createNote();
             note.setN(marker);
             note.getContent().add(addition);
 
@@ -197,7 +202,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            DivineName dname = ObjectFactory.createDivineName();
+            DivineName dname = OSISUtil.factory().createDivineName();
             dname.getContent().add(name);
 
             getCurrentList().add(dname);
@@ -215,11 +220,12 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Q q = ObjectFactory.createQ();
+            Q q = OSISUtil.factory().createQ();
+            q.setWho(who);
+            q.setLevel(level);
 
             getCurrentList().add(q);
 
-            // PENDING(joe): what do we do with who and level?
             stack.addFirst(q);
         }
         catch (JAXBException ex)
@@ -247,9 +253,8 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Reference rref = ObjectFactory.createReference();
-            // PENDING(joe): convert into an OSIS string
-            rref.setOsisRef(ref.toString());
+            Reference rref = OSISUtil.factory().createReference();
+            rref.setOsisRef(ref.getOSISName());
 
             getCurrentList().add(rref);
 
@@ -280,7 +285,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Seg seg = ObjectFactory.createSeg();
+            Seg seg = OSISUtil.factory().createSeg();
 
             getCurrentList().add(seg);
 
@@ -311,7 +316,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Speaker speaker = ObjectFactory.createSpeaker();
+            Speaker speaker = OSISUtil.factory().createSpeaker();
             speaker.setWho(who);
 
             getCurrentList().add(who);
@@ -343,7 +348,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Title title = ObjectFactory.createTitle();
+            Title title = OSISUtil.factory().createTitle();
 
             getCurrentList().add(title);
 
@@ -374,7 +379,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            TransChange trans = ObjectFactory.createTransChange();
+            TransChange trans = OSISUtil.factory().createTransChange();
             trans.setChangeType(type);
 
             getCurrentList().add(trans);
@@ -406,7 +411,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            W word = ObjectFactory.createW();
+            W word = OSISUtil.factory().createW();
 
             getCurrentList().add(word);
 

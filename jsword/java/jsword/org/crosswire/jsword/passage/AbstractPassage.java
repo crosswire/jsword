@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import org.crosswire.common.util.LogicError;
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * This is a base class to help with some of the common implementation
@@ -61,10 +61,8 @@ public abstract class AbstractPassage implements Passage
         this.original_name = original_name;
     }
 
-    /**
-     * Create a copy of ourselves
-     * @return A complete copy of ourselves
-     * @exception CloneNotSupportedException We don't do this but our kids might
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
      */
     public Object clone() throws CloneNotSupportedException
     {
@@ -77,13 +75,8 @@ public abstract class AbstractPassage implements Passage
         return copy;
     }
 
-    /**
-     * Is this Object equal to us. Points to note:<ul>
-     * <li>If you override equals(), you must override hashCode() too.
-     * <li>If you are doing this it is a good idea to be immutable.
-     * </ul>
-     * @param obj The thing to test against
-     * @return True/False is we are or are not equal to obj
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj)
     {
@@ -105,18 +98,16 @@ public abstract class AbstractPassage implements Passage
         return true;
     }
 
-    /**
-     * @return The hashing number
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
         return getName().hashCode();
     }
 
-    /**
-     * A Human readable version of the verse list. Uses short books names,
-     * and the shortest possible rendering eg "Mat 3:1-4, 6"
-     * @return a String containing a description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getName()
      */
     public String getName()
     {
@@ -143,19 +134,25 @@ public abstract class AbstractPassage implements Passage
         return retcode.toString();
     }
 
-    /**
-     * Simply bounce to getName() to help String concatenation.
-     * @return a String containing a description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getOSISName()
+     */
+    public String getOSISName()
+    {
+        // PENDING(joe): implement getOSISName() properly
+        return getName();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
         return getName();
     }
 
-    /**
-     * A summary of the verses in this Passage
-     * For example "Search (10 matches in 4 books)"
-     * @return a String containing an overview of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getOverview()
      */
     public String getOverview()
     {
@@ -173,20 +170,16 @@ public abstract class AbstractPassage implements Passage
         return verse_count+" "+verses+" "+book_count+" "+books;
     }
 
-    /**
-     * Does this Passage have 0 members
-     * @return true if the Passage is empty
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     public boolean isEmpty()
     {
         return countVerses() == 0;
     }
 
-    /**
-     * Returns the number of verses in this collection. Like Collection.size()
-     * This does not mean the Passage needs to use Verses, just that it understands the concept.
-     * @return the number of Verses in this collection
-     * @see Verse
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses()
     {
@@ -202,12 +195,8 @@ public abstract class AbstractPassage implements Passage
         return count;
     }
 
-    /**
-     * Like countVerses() that counts VerseRanges instead of Verses
-     * Returns the number of fragments in this collection.
-     * This does not mean the Passage needs to use VerseRanges, just that it understands the concept.
-     * @return the number of VerseRanges in this collection
-     * @see VerseRange
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges()
      */
     public int countRanges()
     {
@@ -223,9 +212,8 @@ public abstract class AbstractPassage implements Passage
         return count;
     }
 
-    /**
-     * How many books are there in this Passage
-     * @return The number of distinct books
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
     public int booksInPassage()
     {
@@ -246,11 +234,8 @@ public abstract class AbstractPassage implements Passage
         return book_count;
     }
 
-    /**
-     * How many chapters are there in a particular book in this Passage
-     * @param book The book to be checking (0 for distinct chapters in all books)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException if the book is invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
     public int chaptersInPassage(int book) throws NoSuchVerseException
     {
@@ -274,14 +259,8 @@ public abstract class AbstractPassage implements Passage
         return chapter_count;
     }
 
-    /**
-     * How many chapters are there in a particular book in this Passage.
-     * Note that <code>versesInPassage(ref, 0, 0) == ref.countVerses()</code>
-     * for all ref.
-     * @param book The book to be checking (0 for distinct chapters in all books)
-     * @param chapter The chapter to be checking (0 for distinct verses in all chapters)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException if the book/chapter is invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException
     {
@@ -303,11 +282,8 @@ public abstract class AbstractPassage implements Passage
         return verse_count;
     }
 
-    /**
-     * Get a specific Verse from this collection
-     * @param offset The verse offset (legal values are 0 to countVerses()-1)
-     * @return The Verse
-     * @throws ArrayIndexOutOfBoundsException If the offset is out of range
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException
     {
@@ -328,11 +304,8 @@ public abstract class AbstractPassage implements Passage
         return (Verse) retcode;
     }
 
-    /**
-     * Get a specific VerseRange from this collection
-     * @param offset The verse range offset (legal values are 0 to countRanges()-1)
-     * @return The Verse Range
-     * @throws ArrayIndexOutOfBoundsException If the offset is out of range
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int)
      */
     public VerseRange getVerseRangeAt(int offset) throws ArrayIndexOutOfBoundsException
     {
@@ -353,20 +326,16 @@ public abstract class AbstractPassage implements Passage
         return (VerseRange) retcode;
     }
 
-    /**
-     * Enumerate over the VerseRanges
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator()
      */
     public Iterator rangeIterator()
     {
         return new VerseRangeIterator();
     }
 
-    /**
-     * Returns true if this Passage contains all of the Verses
-     * in the that Passage.
-     * @param that Passage to be checked for containment in this Passage
-     * @return true if this reference contains all of the Verses in that Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
      */
     public boolean containsAll(Passage that)
     {
@@ -390,16 +359,8 @@ public abstract class AbstractPassage implements Passage
         return true;
     }
 
-    /**
-     * Ensures that there are a maximum of <code>count</code> Verses in
-     * this Passage. If there were more than <code>count</code> Verses
-     * then a new Passage is created containing the Verses from
-     * <code>count</code>+1 onwards. If there was not greater than
-     * <code>count</code> in the Passage, then the passage remains
-     * unchanged, and null is returned.
-     * @param count The maximum number of Verses to allow in this collection
-     * @return A new Passage conatining the remaining verses or null
-     * @see Verse
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#trimVerses(int)
      */
     public Passage trimVerses(int count)
     {
@@ -449,16 +410,8 @@ public abstract class AbstractPassage implements Passage
         }
     }
 
-    /**
-     * Ensures that there are a maximum of <code>count</code> VerseRanges
-     * in this Passage. If there were more than <code>count</code>
-     * VerseRanges then a new Passage is created containing the
-     * VerseRanges from <code>count</code>+1 onwards. If there was not
-     * greater than <code>count</code> in the Passage, then the passage
-     * remains unchanged, and null is returned.
-     * @param count The maximum number of VerseRanges to allow in this collection
-     * @return A new Passage conatining the remaining verses or null
-     * @see VerseRange
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int)
      */
     public Passage trimRanges(int count)
     {
@@ -508,11 +461,8 @@ public abstract class AbstractPassage implements Passage
         }
     }
 
-    /**
-     * Adds all of the elements in that Passage to this Passage.
-     * The behavior of this operation is undefined if that
-     * Passage is modified while the operation is in progress
-     * @param that elements to be inserted into this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
      */
     public void addAll(Passage that)
     {
@@ -542,11 +492,8 @@ public abstract class AbstractPassage implements Passage
             fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
     }
 
-    /**
-     * Removes all this Passage's Verses that are also contained in the
-     * that Passage.  After this call returns, this Passage
-     * will contain no Verses in common with the that Passage
-     * @param that Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
      */
     public void removeAll(Passage that)
     {
@@ -576,11 +523,8 @@ public abstract class AbstractPassage implements Passage
             fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
     }
 
-    /**
-     * Retains only the Verses in this Passage that are contained in that
-     * Passage. In other words, removes from this Passage all of its
-     * Verses that are not contained in that Passage
-     * @param that Verses to be retained in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
     public void retainAll(Passage that)
     {
@@ -612,9 +556,8 @@ public abstract class AbstractPassage implements Passage
             fireIntervalRemoved(this, null, null);
     }
 
-    /**
-     * Removes all of the Verses from this Passage.
-     * This implementation is ripe for optimization
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public void clear()
     {
@@ -627,12 +570,8 @@ public abstract class AbstractPassage implements Passage
             fireIntervalRemoved(this, null, null);
     }
 
-    /**
-     * Widen the range of the verses in this list. This is primarily for
-     * "find x within n verses of y" type applications.
-     * @param verses The number of verses to widen by
-     * @param restrict How should we restrict the blurring?
-     * @see Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
      */
     public void blur(int verses, int restrict)
     {
@@ -661,12 +600,8 @@ public abstract class AbstractPassage implements Passage
             fireIntervalAdded(this, null, null);
     }
 
-    /**
-     * To be compatible with humans we read/write ourselves to a file that
-     * a human can read and even edit. OLB verse.lst integration is a good
-     * goal here.
-     * @param out The stream to write to
-     * @exception java.io.IOException If the file/network etc breaks
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#writeDescription(java.io.Writer)
      */
     public void writeDescription(Writer out) throws IOException
     {
@@ -684,13 +619,8 @@ public abstract class AbstractPassage implements Passage
         bout.flush();
     }
 
-    /**
-     * To be compatible with humans we read/write ourselves to a file that
-     * a human can read and even edit. OLB verse.lst integration is a good
-     * goal here. This method does not clear before it starts reading.
-     * @param in The stream to read from
-     * @throws NoSuchVerseException if the description is invalid
-     * @exception java.io.IOException If the file/network etc breaks
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#readDescription(java.io.Reader)
      */
     public void readDescription(Reader in) throws IOException, NoSuchVerseException
     {
@@ -710,13 +640,8 @@ public abstract class AbstractPassage implements Passage
             fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses()-1));
     }
 
-    /**
-     * For preformance reasons we may well want to hint to the Passage that we
-     * have done editing it for now and that it is safe to cache certain
-     * values to speed up future reads. Any action taken by this method will be
-     * undone simply by making a future edit, and the only loss in calling
-     * optimizeReads() is a loss of time if you then persist in writing to the
-     * Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#optimizeReads()
      */
     public void optimizeReads()
     {
@@ -729,9 +654,8 @@ public abstract class AbstractPassage implements Passage
     {
     }
 
-    /**
-     * Event Listeners - Add Listener
-     * @param li The listener to add
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addPassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public void addPassageListener(PassageListener li)
     {
@@ -741,9 +665,8 @@ public abstract class AbstractPassage implements Passage
         }
     }
 
-    /**
-     * Event Listeners - Remove Listener
-     * @param li The listener to remove
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removePassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public void removePassageListener(PassageListener li)
     {
@@ -1029,17 +952,16 @@ public abstract class AbstractPassage implements Passage
             calculateNext();
         }
 
-        /**
-         * @return true if the iteration has more element
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public final boolean hasNext()
         {
             return next_range != null;
         }
 
-        /**
-         * @return the next element in the interation
-         * @throws NoSuchElementException if next() is called too often
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public final Object next() throws NoSuchElementException
         {
@@ -1048,9 +970,8 @@ public abstract class AbstractPassage implements Passage
             return retcode;
         }
 
-        /**
-         * Not supported
-         * @throws UnsupportedOperationException Every time ...
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException
         {

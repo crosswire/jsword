@@ -29,9 +29,9 @@ import junit.framework.TestSuite;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OsisAllTests extends TestCase
+public class OSISAllTests extends TestCase
 {
-    public OsisAllTests(String s)
+    public OSISAllTests(String s)
     {
         super(s);
     }

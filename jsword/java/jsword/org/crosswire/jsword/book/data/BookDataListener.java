@@ -22,8 +22,11 @@ import org.crosswire.jsword.passage.Verse;
  * <p>The &lt;verse&gt; element in OSIS does not have a counterpart in the TEI
  * Guidelines.</p>
  * 
- * PENDING(joe): What to do with paragraph boundaries?
- * 
+ * <p>NOTE(joe): Outstanding OSIS Questions ...
+ * <li>What to do with paragraph boundaries?</li>
+ * <li>What are the following OSIS attriibutes on the word element for: POS, morph, lemmua, gloss, src, xlit?</li>
+ * </p>
+ *  
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -245,8 +248,6 @@ public interface BookDataListener
      * <p><b>Implementation details</b></p>
      * <p>Ignored a host of optional attributes and the fact that the contents
      * can include a, index, seg.</p>
-     * 
-     * PENDING(joe): work out what to do with the attrs POS, morph, lemmua, gloss, src, xlit
      */
     public void startWord();
     public void endWord();

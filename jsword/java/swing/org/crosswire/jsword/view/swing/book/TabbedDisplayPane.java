@@ -13,7 +13,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 import javax.xml.transform.TransformerException;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;

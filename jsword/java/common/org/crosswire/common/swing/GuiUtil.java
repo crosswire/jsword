@@ -260,8 +260,9 @@ public class GuiUtil
 
     /**
      * A more restricted version of pack() when the component is being pack()ed
-     * for the first time so we are only concerned with screen size, and not
-     * any growths/shrinkages like {@see GuiUtil#restrainedRePack(Window)}.
+     * for the first time.
+     * Since this is a 'first time only' pack we are only concerned with screen
+     * size, and not any growths/shrinkages like {@see GuiUtil#restrainedRePack(Window)}.
      * @param win The window to be packed
      * @param maxx The maximum fraction (0.0 to 1.0) of the screen to be taken
      * up horizontally (-1 means no restrictions to the horizontal alterations)

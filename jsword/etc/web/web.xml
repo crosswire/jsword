@@ -9,6 +9,19 @@
   <display-name>JSword</display-name>
   <description>Servlet interface to the Bible</description>
 
+  <context-param>
+    <param-name>nightly-dir</param-name>
+    <param-value>@NIGHTLY-DIR@</param-value>
+  </context-param>
+  <context-param>
+    <param-name>release-dir</param-name>
+    <param-value>@RELEASE-DIR@</param-value>
+  </context-param>
+  <context-param>
+    <param-name>web-dl-prefix</param-name>
+    <param-value>@WEB-DL-PREFIX@</param-value>
+  </context-param>
+
   <servlet>
     <servlet-name>demo</servlet-name>
     <servlet-class>org.crosswire.jsword.view.web.DemoServlet</servlet-class>

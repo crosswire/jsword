@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.ser;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.ProgressListener;

@@ -2,7 +2,7 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.crosswire.jsword.view.swing.desktop.Desktop"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jsword"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=./target/ant/deploy/jsword/resource -Xmx256m"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=./target/ant/deploy/jsword/resource"/>
     <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
         <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
         <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>

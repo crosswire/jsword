@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.remote;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BibleMetaData;

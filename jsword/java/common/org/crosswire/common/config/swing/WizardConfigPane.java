@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;

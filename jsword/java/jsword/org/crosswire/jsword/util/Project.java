@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.util;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * The Project class looks after the source of project files.

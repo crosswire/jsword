@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.remote;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.jdom.Document;

@@ -6,7 +6,7 @@ import java.util.AbstractList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * This is a version of LinkedList that is not fail-fast.

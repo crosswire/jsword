@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;

@@ -9,6 +9,7 @@ import org.crosswire.jsword.book.Key;
 
 /**
  * An implementation KeyBackend to read Z format files.
+ * PENDING(joe): implement ZKeyBackend
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -38,7 +39,6 @@ public class ZKeyBackend implements KeyBackend
      */
     public List readIndex()
     {
-        // PENDING(joe): Auto-generated method stub        
         return new ArrayList();
     }
 
@@ -47,7 +47,6 @@ public class ZKeyBackend implements KeyBackend
      */
     public byte[] getRawText(Key key) throws BookException
     {
-        // PENDING(joe): Auto-generated method stub
         return null;
     }
 }

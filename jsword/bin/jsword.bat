@@ -1,19 +1,33 @@
 
-REM you probably need to change this line
-set JSWORD=%~dp0\..
-echo "JSWORD=%JSWORD%"
+REM STEP 1 - Initial setup
+REM @echo off
+if "%OS%"=="Windows_NT" @setlocal
 
-set CP=""
-set CP=%CP%;%JSWORD%\resource
-set CP=%CP%;%JSWORD%\lib\crimson.jar
-set CP=%CP%;%JSWORD%\lib\jaxp.jar
-set CP=%CP%;%JSWORD%\lib\jdom.jar
-set CP=%CP%;%JSWORD%\lib\jlfgr-1_0.jar
-set CP=%CP%;%JSWORD%\lib\jsword.jar
-set CP=%CP%;%JSWORD%\lib\xalan.jar
-set CP=%CP%;%JSWORD%\lib\log4j-1.2.7.jar
-set CP=%CP%;%JSWORD%\lib\jaxb-ri.jar
-set CP=%CP%;%JSWORD%\lib\jaxb-libs.jar
-set CP=%CP%;%JSWORD%\lib\jaxb-api.jar
+REM STEP 2 - Check we know where we are installed
+set DEFAULT_JSWORD=%~dp0\..
+if "%JSWORD%"=="" set JSWORD=%DEFAULT_JSWORD%
+set DEFAULT_JSWORD=
+if exist "%JSWORD%" goto DoneFindJSword
+REM have a blind guess ...
+if not exist "%SystemDrive%\Program Files\JSword" goto FailedFindJSword
+set JSWORD=%SystemDrive%\Program Files\JSword
+:DoneFindJSword
+echo "Using JSWORD=%JSWORD%"
 
-java -cp %CP% org.crosswire.jsword.view.swing.desktop.Desktop
+REM STEP 3 - Setup the classpath
+set LOCALCLASSPATH=%CLASSPATH%
+for %%i in ("%JSWORD%\lib\*.jar") do call "%JSWORD%\bin\lcp.bat" %%i
+
+REM STEP 4 - Run JSword
+REM we might need to get extra memory?
+REM set JSWORD_OPTS=-Xmx256M -classpath "%LOCALCLASSPATH%"
+%JAVA_HOME%\bin\java.exe -Djava.endorsed.dirs=%JSWORD%\lib -classpath %JSWORD%\resource "-Djsword.bible.dir=%JSWORD%\resource" %JSWORD_OPTS% org.crosswire.jsword.view.swing.desktop.Desktop
+goto End
+
+:FailedFindJSword
+echo "Can't find install directory. Please use %SystemDrive%\Program Files\JSword or set the JSWORD variable"
+
+:End
+set LOCALCLASSPATH=
+set _JAVACMD=
+if "%OS%"=="Windows_NT" @endlocal

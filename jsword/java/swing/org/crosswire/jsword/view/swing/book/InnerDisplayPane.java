@@ -15,7 +15,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;

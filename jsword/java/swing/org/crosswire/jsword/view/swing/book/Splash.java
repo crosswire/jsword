@@ -29,7 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.util.Project;
@@ -81,7 +81,7 @@ public class Splash extends JWindow
         }
         catch (IOException ex)
         {
-            log.error(ex);
+            log.error("Failed to load prediction times", ex);
         }
         
         // And the predictions for next time
@@ -195,7 +195,7 @@ public class Splash extends JWindow
         }
         catch (IOException ex)
         {
-            log.error(ex);
+            log.error("Failed to save prediction times", ex);
         }
 
         // shut up shop

@@ -3,7 +3,7 @@ package org.crosswire.common.config.swing;
 
 import java.util.Hashtable;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.MultipleChoice;
 import org.crosswire.common.util.Reporter;

@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * Various utilities used by different Sword classes.

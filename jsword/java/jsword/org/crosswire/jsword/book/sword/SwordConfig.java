@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.Filter;
 import org.crosswire.jsword.book.data.Filters;
@@ -312,7 +312,7 @@ public class SwordConfig
             return new SwordDictionaryMetaData(driver, this);
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
-            // PENDING(joe): what is this?
+            // PENDING(joe): how do we support books?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName()+" desire="+(++desire_rawgenbook));
             throw new BookException(Msg.TYPE_UNSUPPORTED, new Object[] { new Integer(type) });
 

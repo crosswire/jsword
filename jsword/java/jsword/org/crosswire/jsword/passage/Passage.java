@@ -79,6 +79,13 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
     public String getName();
 
     /**
+     * The OSIS defined specification for this Passage.
+     * Uses short books names, with "." as a verse part separator.
+     * @return a String containing the OSIS description of the verses
+     */
+    public String getOSISName();
+
+    /**
      * A summary of the verses in this Passage
      * For example "10 verses in 4 books"
      * @return a String containing an overview of the verses
@@ -93,7 +100,8 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
 
     /**
      * Returns the number of verses in this collection. Like Collection.size()
-     * This does not mean the Passage needs to use Verses, just that it understands the concept.
+     * This does not mean the Passage needs to use Verses, just that it
+     * understands the concept.
      * @return the number of Verses in this collection
      * @see Verse
      */
@@ -102,7 +110,8 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
     /**
      * Like countVerses() that counts VerseRanges instead of Verses
      * Returns the number of fragments in this collection.
-     * This does not mean the Passage needs to use VerseRanges, just that it understands the concept.
+     * This does not mean the Passage needs to use VerseRanges, just that it
+     * understands the concept.
      * @return the number of VerseRanges in this collection
      * @see VerseRange
      */

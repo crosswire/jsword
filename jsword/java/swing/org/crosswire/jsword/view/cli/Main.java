@@ -9,8 +9,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.util.Project;
 import org.jdom.JDOMException;
 import org.mozilla.javascript.Context;
@@ -49,7 +48,7 @@ public class Main
     public static void main(String[] args) throws MalformedURLException, JDOMException, IOException
     {
         Project.init();
-        Logger.getRootLogger().setLevel(Level.ERROR);
+        Logger.stopLogging();
 
         Reader in = new InputStreamReader(System.in);
         Writer out = new PrintWriter(System.out);

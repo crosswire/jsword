@@ -83,6 +83,9 @@ public interface PassageConstants
     /** What characters can we use to separate parts to a verse */
     public static final String VERSE_ALLOWED_DELIMS = " :.";
 
+    /** What characters should we use to separate parts of an OSIS verse reference */
+    public static final String VERSE_OSIS_DELIM = ".";
+
     /** What characters should we use to separate the book from the chapter */
     public static final String VERSE_PREF_DELIM1 = " ";
 

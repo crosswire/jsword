@@ -1,5 +1,5 @@
 
-body {
+html {
   background-color : #999966;
   font-family : Verdana, Arial, Geneva, Helvetica, Sans-Serif;
   font-size : 10pt;
@@ -102,4 +102,18 @@ td.maincell a:visited {
 td.maincell a:hover {
   color : #ff0000;
   text-decoration : none;
+}
+
+
+/* From the OSIS generated documentation */
+.src-attribute { font-family: Arial; font-size: 8pt; color: #FF0000; }
+.src-element { font-family: Arial; font-size: 8pt; color: #800000; }
+.tableHeader  { font-family: Arial; font-size: 10pt; color: #000000; }
+.tableHeader2 { font-family: Arial; font-size: 11pt; font-weight: bold; color: #000000; }
+.headings     { font-family: Arial; font-size: 10pt; font-weight: bold; color: #6633CC; }
+
+pre { margin-bottom: 0 }
+
+.comment {
+	color: #336600;
 }

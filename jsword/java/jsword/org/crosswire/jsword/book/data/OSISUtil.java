@@ -16,11 +16,12 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.Validator;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.xml.JAXBSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.util.Project;
 import org.xml.sax.SAXException;
@@ -62,6 +63,11 @@ public class OSISUtil
     protected static JAXBContext jc = null;
 
     /**
+     * The JAXB object factory
+     */
+    protected static ObjectFactory factory = null;
+
+    /**
      * The log stream
      */
     protected static Logger log = Logger.getLogger(OSISUtil.class);
@@ -90,13 +96,22 @@ public class OSISUtil
 
         try
         {
-            jc = JAXBContext.newInstance(OSISUtil.OSIS_PACKAGE);
+            jc = JAXBContext.newInstance(OSIS_PACKAGE);
+            factory = new ObjectFactory();
         }
         catch (JAXBException ex)
         {
             log.error("Failed to start JAXB", ex);
             initex = ex;
         }
+    }
+
+    /**
+     * An accessor for the ObjectFactory that creates OSIS objects
+     */
+    public static ObjectFactory factory()
+    {
+        return factory;
     }
 
     /**

@@ -73,7 +73,7 @@ public abstract class SearchableBibleMetaData extends AbstractBibleMetaData
     }
 
     /**
-     * @see org.crosswire.jsword.book.BookMetaData#delete()
+     * Pass the delete on to the Search index.
      */
     public void delete() throws BookException
     {

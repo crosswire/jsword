@@ -18,7 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.swing.SortedSetListModel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;

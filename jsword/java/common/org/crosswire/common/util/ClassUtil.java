@@ -1,3 +1,4 @@
+
 package org.crosswire.common.util;
 
 import java.io.File;
@@ -6,7 +7,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * Various Java Class Utilities.

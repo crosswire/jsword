@@ -18,7 +18,7 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SAXEventProviderInputSource;
 import org.crosswire.common.xml.SAXEventProviderXMLReader;

@@ -7,7 +7,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.stub.StubBook;
 import org.crosswire.jsword.passage.Passage;

@@ -1,7 +1,7 @@
 
 package org.crosswire.common.util;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.event.CaptureListener;
 import org.crosswire.common.util.event.ReporterEvent;
 import org.crosswire.common.util.event.ReporterListener;
@@ -72,7 +72,7 @@ public class Reporter
         Class cat = (source != null) ? source.getClass() : Reporter.class;
         Logger templog = Logger.getLogger(cat);
 
-        templog.debug(prob.getMessage(), prob);
+        templog.warn(prob.getMessage(), prob);
 
         if (prob instanceof ThreadDeath)
             throw (ThreadDeath) prob;

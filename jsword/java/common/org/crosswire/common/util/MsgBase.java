@@ -6,7 +6,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.enum.Enum;
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 
 /**
  * A base class for implementing type safe internationalization (i18n) that is

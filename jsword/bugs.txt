@@ -2,29 +2,15 @@
 This file is our equivalent of bugzilla for the time being.
 
 - chapter ranges are not displayed distinctly from verse ranges
-
-- select passage dialog opens too wide for long passage
-
-- CRTL+anything opens sel.psg.dialog
-
-- escape does not close sel.pasg.dia
-
 - scan gui layout and add to docs (in fellows folder)
-
-- provide support for:
-	COUNT	ID	TYPE
-	1	DRIVER_RAW_FILES	commentary
-	3	DRIVER_RAW_COM	commentary
-	15	DRIVER_Z_COM	commentary
-
+- write tests to check support for all modules
 - markup (PENDING etc) to add to docs
-
 - run ant FAQ to docs
-
 - double error dialogs
-
-- dict tabs do not alter with new/removed books
-
 - OSIS->text filter does not work for dictionaries
-
 - slow startup
+- escape and enter in sel.pasg.dia not 100%
+- CRTL+anything does not open sel.psg.dialog
+
+Check fix for:
+- select passage dialog opens too wide for long passage

@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.RobustList;

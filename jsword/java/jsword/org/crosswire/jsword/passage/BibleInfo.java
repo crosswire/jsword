@@ -4,7 +4,7 @@ package org.crosswire.jsword.passage;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
-import org.apache.log4j.Logger;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 
@@ -140,16 +140,16 @@ public class BibleInfo implements PassageConstants
     }
 
     /**
-     * Get the memory jogger letters for a book.
+     * Get the OSIS name for a book.
      * @param book The book number (1-66)
-     * @return A 2 character string containing the memory jogger characters
+     * @return the OSIS defined short name for a book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static String getBookJogger(int book) throws NoSuchVerseException
+    public final static String getOSISName(int book) throws NoSuchVerseException
     {
         try
         {
-            return jog_books[book-1];
+            return osis_books[book-1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -158,31 +158,6 @@ public class BibleInfo implements PassageConstants
             // I'd like to think that the norm is to get it right
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
-    }
-
-    /**
-     * Get the Short name of a book
-     * @param number The book number (1-66)
-     * @return A string containing the memory jogger characters
-     * @exception IllegalArgumentException If the number is negative
-     */
-    public final static String getNumberJogger(long number)
-    {
-        if (number < 0)
-        {
-            Object[] params = new Object[] { new Long(number) };
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_JOGGER, params));
-        }
-
-        String num = ""+number;
-        String retcode = "";
-
-        for (int i=0; i<num.length(); i++)
-        {
-            retcode = retcode + jog_numbers[Character.getNumericValue(num.charAt(i))];
-        }
-
-        return retcode;
     }
 
     /**
@@ -885,17 +860,19 @@ public class BibleInfo implements PassageConstants
         "2Pe",  "1Jo",  "2Jo",  "3Jo",  "Jude", "Rev",
     };
 
-    /** Standard names for the sections */
-    private static String[] sections =
+    /** Standard OSIS names for the book of the Bible, in mixed case */
+    private static String[] osis_books =
     {
-        "Pentateuch",
-        "History",
-        "Poetry",
-        "MajorProphets",
-        "MinorProphets",
-        "GospelsAndActs",
-        "Letters",
-        "Revelation",
+        "Gen",    "Exod",   "Lev",    "Num",    "Deut",   "Josh",   "Judg",
+        "Ruth",   "1Sam",   "2Sam",   "1Kgs",   "2Kgs",   "1Chr",   "2Chr",
+        "Ezra",   "Neh",    "Esth",   "Job",    "Pss",    "Prov",   "Eccl",
+        "Song",   "Isa",    "Jer",    "Lam",    "Ezek",   "Dan",    "Hos",
+        "Joel",   "Amos",   "Obad",   "Jonah",  "Mic",    "Nah",    "Hab",
+        "Zeph",   "Hag",    "Zech",   "Mal",    "Matt",   "Mark",   "Luke",
+        "John",   "Acts",   "Rom",    "1Cor",   "2Cor",   "Gal",    "Eph",
+        "Phil",   "Col",    "1Thess", "2Thess", "1Tim",   "2Tim",   "Titus",
+        "Phlm",   "Heb",    "Jas",    "1Pet",   "2Pet",   "1John",  "2John",
+        "3John",  "Jude",   "Rev",  
     };
 
     /** Alternative shortened names for the book of the Bible, in mixed case */
@@ -911,18 +888,18 @@ public class BibleInfo implements PassageConstants
         /* Rut */   { "Rth" },
         /* 1Sa */   { },
         /* 2Sa */   { },
-        /* 1Ki */   { },
-        /* 2Ki */   { },
-        /* 1Ch */   { },
-        /* 2Ch */   { },
+        /* 1Ki */   { "1Kgs" },
+        /* 2Ki */   { "2Kgs" },
+        /* 1Ch */   { "1Chr" },
+        /* 2Ch */   { "2Chr" },
         /* Ezr */   { },
         /* Neh */   { },
         /* Est */   { },
         /* Job */   { },
-        /* Psa */   { },
+        /* Psa */   { "Pss", "Ps" },
         /* Pro */   { },
-        /* Ecc */   { },
-        /* Son */   { "SS" },
+        /* Ecc */   { "Qohelot", },
+        /* Son */   { "SS", "Canticle of Canticles" },
         /* Isa */   { },
         /* Jer */   { },
         /* Lam */   { },
@@ -957,7 +934,7 @@ public class BibleInfo implements PassageConstants
         /* 1Ti */   { "1Tm" },
         /* 2Ti */   { "2Tm" },
         /* Tit */   { },
-        /* Phile */ { "Phm" },
+        /* Phile */ { "Phm", "Phlm" },
         /* Heb */   { },
         /* Jam */   { "Jas" },
         /* 1Pe */   { "1Pt" },
@@ -967,6 +944,19 @@ public class BibleInfo implements PassageConstants
         /* 3Jo */   { "3Jn" },
         /* Jude */  { },
         /* Rev */   { "Rv" },
+    };
+
+    /** Standard names for the sections */
+    private static String[] sections =
+    {
+        "Pentateuch",
+        "History",
+        "Poetry",
+        "MajorProphets",
+        "MinorProphets",
+        "GospelsAndActs",
+        "Letters",
+        "Revelation",
     };
 
     /** The full names of the book of the Bible, in lower case, generated at run time */
@@ -993,24 +983,6 @@ public class BibleInfo implements PassageConstants
     /* Alternative shortened names for the book of the Bible, in upper case, generated at run time */
     // Not needed as the lower version was only there to speed up searching.
     // private static String[][] alt_books_upper;
-
-    /** The memory jogger names for the books of the Bible */
-    private static final String[] jog_books =
-    {
-        "LT", "LN", "LM", "LR", "LL", "JT", "JN", "JM", "KT", "KN",
-        "KM", "KR", "KL", "KG", "RT", "RN", "RM", "ST", "SN", "SM",
-        "SR", "SL", "PT", "PN", "PM", "PR", "PL", "MT", "MN", "MM",
-        "MR", "ML", "MG", "NT", "NN", "NM", "NT", "NL", "NG", "GT",
-        "GN", "GM", "GR", "GL", "ST", "SN", "SM", "SR", "SL", "SG",
-        "SK", "TT", "TN", "TM", "TR", "TL", "TG", "TK", "DT", "DN",
-        "DM", "DR", "DL", "DG", "DK", "DB",
-    };
-
-    /** The memory jogger names for the numbers */
-    private static final String[] jog_numbers =
-    {
-        "S", "T", "N", "M", "R", "L", "G", "K", "B", "P",
-    };
 
     /** Constant for the number of books in the Bible */
     private static final int books_in_bible = 66;

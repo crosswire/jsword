@@ -44,184 +44,136 @@ public final class ReadOnlyPassage implements Passage
         this.ignore = ignore;
     }
 
-    /**
-     * A Human readable version of the verse list. Uses short books names,
-     * and the shortest sensible rendering eg "Mat 3:1-4"
-     * and "Mar 1:1, 3, 5" and "3Jo, Jude"
-     * @return a String containing a description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getName()
      */
     public String getName()
     {
         return ref.getName();
     }
 
-    /**
-     * A summary of the verses in this Passage For example
-     * "10 verses in 4 books"
-     * @return a String containing an overview of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getOSISName()
+     */
+    public String getOSISName()
+    {
+        return ref.getOSISName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getOverview()
      */
     public String getOverview()
     {
         return ref.getOverview();
     }
 
-    /**
-     * Does this Passage have 0 members
-     * @return true if the Passage is empty
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     public boolean isEmpty()
     {
         return ref.isEmpty();
     }
 
-    /**
-     * Returns the number of verses in this collection.
-     * Like Collection.size() this does not mean the Passage
-     * needs to use Verses, just that it understands the concept.
-     * @return the number of Verses in this collection
-     * @see <{Verse}>
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses()
     {
         return ref.countVerses();
     }
 
-    /**
-     * Like countVerses() that counts VerseRanges instead of Verses.
-     * Returns the number of fragments in this collection.
-     * This does not mean the Passage needs to use VerseRanges,
-     * just that it understands the concept.
-     * @return the number of VerseRanges in this collection
-     * @see <{VerseRange}>
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges()
      */
     public int countRanges()
     {
         return ref.countRanges();
     }
 
-    /**
-     * Ensures that there are a maximum of <code>count</code> Verses in
-     * this Passage. If there were more than <code>count</code> Verses
-     * then a new Passage is created containing the Verses from
-     * <code>count</code>+1 onwards. If there was not greater than
-     * <code>count</code> in the Passage, then the passage remains
-     * unchanged, and null is returned.
-     * @param count The maximum number of Verses to allow in this collection
-     * @return A new Passage conatining the remaining verses or null
-     * @see <{Verse}>
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#trimVerses(int)
      */
     public Passage trimVerses(int count)
     {
         return ref.trimVerses(count);
     }
 
-    /**
-     * Ensures that there are a maximum of <code>count</code> VerseRanges
-     * in this Passage. If there were more than <code>count</code>
-     * VerseRanges then a new Passage is created containing the
-     * VerseRanges from <code>count</code>+1 onwards. If there was not
-     * greater than <code>count</code> in the Passage, then the
-     * passage remains unchanged, and null is returned.
-     * @param count The maximum number of VerseRanges to allow in
-     * this collection
-     * @return A new Passage conatining the remaining verses or null
-     * @see <{VerseRange}>
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int)
      */
     public Passage trimRanges(int count)
     {
         return ref.trimRanges(count);
     }
 
-    /**
-     * How many books are there in this Passage
-     * @return The number of distinct books
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
     public int booksInPassage()
     {
         return ref.booksInPassage();
     }
 
-    /**
-     * How many chapters are there in a particular book in this Passage
-     * @param book The book to check (0 for distinct chapters in all books)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException if book is invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
     public int chaptersInPassage(int book) throws NoSuchVerseException
     {
         return ref.chaptersInPassage(book);
     }
 
-    /**
-     * How many chapters are there in a particular book in this Passage
-     * Note that <code>versesInPassage(ref, 0, 0) == ref.countVerses()</code>
-     * @param book The book to check (0 for distinct chapters in all books)
-     * @param chapter The chapter to check (0 for distinct verses in
-     * all chapters)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException if book/chapter is invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException
     {
         return ref.versesInPassage(book, chapter);
     }
 
-    /**
-     * Get a specific Verse from this collection
-     * @param offset The verse offset (legal values are 0 to countVerses()-1)
-     * @return The Verse
-     * @throws ArrayIndexOutOfBoundsException If the offset is out of range
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException
     {
         return ref.getVerseAt(offset);
     }
 
-    /**
-     * Get a specific VerseRange from this collection
-     * @param offset The verse range offset (legal values are 0 to
-     * countRanges()-1)
-     * @return The Verse Range
-     * @throws ArrayIndexOutOfBoundsException If the offset is out of range
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int)
      */
     public VerseRange getVerseRangeAt(int offset) throws ArrayIndexOutOfBoundsException
     {
         return ref.getVerseRangeAt(offset);
     }
 
-    /**
-     * Iterate over the Verses in this collection
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
     public Iterator verseIterator()
     {
         return ref.verseIterator();
     }
 
-    /**
-     * Like verseElements() that iterates over VerseRanges instead
-     * of Verses. Exactly the same data will be traversed, however using
-     * rangeIterator() will usually give less iterations (and never more)
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator()
      */
     public Iterator rangeIterator()
     {
         return ref.rangeIterator();
     }
 
-    /**
-     * Returns true if this collection contains all the specified Verse
-     * @param that Verse or VerseRange that may exist in this Passage
-     * @return true if this collection contains that
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
     public boolean contains(VerseBase that)
     {
         return ref.contains(that);
     }
 
-    /**
-     * Add this Verse/VerseRange to this Passage
-     * @param that The Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
     public void add(VerseBase that)
     {
@@ -231,9 +183,8 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * Remove this Verse/VerseRange from this Passage
-     * @param that The Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
     public void remove(VerseBase that)
     {
@@ -243,19 +194,16 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * Returns true if this Passage contains all of the verses in that Passage
-     * @param that Passage to be checked for containment in this collection.
-     * @return true if this reference contains all of the Verses in that Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
      */
     public boolean containsAll(Passage that)
     {
         return ref.containsAll(that);
     }
 
-    /**
-     * Adds all that Passage's verses to this Passage
-     * @param that The Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
      */
     public void addAll(Passage that)
     {
@@ -265,10 +213,8 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * Removes all this collection's elements that are also contained in the
-     * specified collection.
-     * @param that The Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
      */
     public void removeAll(Passage that)
     {
@@ -278,10 +224,8 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * Removes all the Verses from this reference that are not in that
-     * reference specified collection.
-     * @param that The Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
     public void retainAll(Passage that)
     {
@@ -291,8 +235,8 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * Removes all the verses is this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public void clear()
     {
@@ -302,12 +246,8 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * Widen the range of the verses in this list.
-     * This is primarily for "find x within n verses of y" type applications.
-     * @param verses The number of verses to widen by
-     * @param restrict How should we restrict the blurring?
-     * @see <{Passage}>
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
      */
     public void blur(int verses, int restrict)
     {
@@ -317,13 +257,8 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * To be compatible with humans we read/write ourselves to a file
-     * that a human can read and even edit.
-     * OLB verse.lst integration is a good goal here.
-     * @param in The stream to write to
-     * @exception IOException If the file/network etc breaks
-     * @exception NoSuchVerseException If the file was invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#readDescription(java.io.Reader)
      */
     public void readDescription(Reader in) throws IOException, NoSuchVerseException
     {
@@ -333,53 +268,38 @@ public final class ReadOnlyPassage implements Passage
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
     }
 
-    /**
-     * To be compatible with humans we read/write ourselves to a file
-     * that a human can read and even edit.
-     * OLB verse.lst integration is a good goal here.
-     * @param out The stream to read from
-     * @exception IOException If the file/network etc breaks
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#writeDescription(java.io.Writer)
      */
     public void writeDescription(Writer out) throws IOException
     {
         ref.writeDescription(out);
     }
 
-    /**
-     * For preformance reasons we may well want to hint to the Passage that we
-     * have done editing it for now and that it is safe to cache certain
-     * values to speed up future reads. Any action taken by this method will be
-     * undone simply by making a future edit, and the only loss in calling
-     * optimizeReads() is a loss of time if you then persist in writing to the
-     * Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#optimizeReads()
      */
     public void optimizeReads()
     {
         ref.optimizeReads();
     }
 
-    /**
-     * Event Listeners - Add Listener
-     * @param li The listener to add
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addPassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public void addPassageListener(PassageListener li)
     {
     }
 
-    /**
-     * Event Listeners - Remove Listener
-     * @param li The listener to remove
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removePassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public void removePassageListener(PassageListener li)
     {
     }
 
-    /**
-     * I'm not sure why we have to keep on redeclaring this. But If I don't
-     * Then I get accused of attempting to reduce access level of clone();
-     * Maybe this is a bug in MS JVM. It has been behaving strangely here.
-     * @return A complete copy of ourselves
-     * @exception java.lang.CloneNotSupportedException We don't do this but our kids might
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
      */
     public Object clone() throws CloneNotSupportedException
     {

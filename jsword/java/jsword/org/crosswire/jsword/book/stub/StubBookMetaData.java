@@ -85,7 +85,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
         return (Bible) getBookInternal();
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
      */
     public Dictionary getDictionary()
@@ -93,7 +93,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
         return (Dictionary) getBookInternal();
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
      */
     public Commentary getCommentary()
@@ -102,7 +102,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     }
 
     /**
-     * @return
+     * Decides if we need to create a new book, or re-use on already created.
      */
     private Book getBookInternal()
     {
