@@ -33,5 +33,6 @@
 	<classpathentry kind="lib" path="jar/jaf101/activation.jar"/>
 	<classpathentry sourcepath="/jsword-support/othersource/javatar-2.5.zip" kind="lib" path="jar/jtar25/tar.jar"/>
 	<classpathentry kind="lib" path="jar/winlaf04/winlaf-0.4.jar"/>
+	<classpathentry kind="lib" path="jar/jlfgr10/jlfgr-1_0.jar"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>
