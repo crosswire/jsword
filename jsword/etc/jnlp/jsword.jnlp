@@ -2,7 +2,7 @@
 <!-- JNLP File for SwingSet2 Demo Application -->
 <jnlp
   spec="1.0+"
-  codebase="http://thureos.dyndns.org/~mark/jsword/"
+  codebase="http://www.myhost.net/codebase/"
   href="jsword.jnlp">
   <information>
     <title>JSword Demo Application</title>
