@@ -87,7 +87,6 @@ public class BibleDriverManager
             if (driver.exists(name))
                 return driver;
         }
-
         throw new BookException("book_manager", new Object[] { name });
     }
 

@@ -6,6 +6,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -63,30 +65,52 @@ public class SwordBibleDriver extends AbstractBibleDriver
      */
     public String[] getBibleNames()
     {
-        if (nested == null)
-        {
-            log.warn("No directory set");
-            return new String[0];
-        }
-
-        if (!nested.getProtocol().equals("file"))
-        {
-            log.warn("SwordBibleDriver has file: URL. Ignoring.");
-            return new String[0];
-        }
-
-        File fdir = new File(nested.getFile());
-
-        // Check that the dir exists
-        if (!fdir.isDirectory())
-        {
-            log.debug("The directory '"+dir+"' does not exist.");
-            return new String[0];
-        }
-
-        // List all the versions
-        return fdir.list(new CustomFilenameFilter());
+    	if(dir==null)
+    	{ 
+    		return new String[0];
+    	}
+    	try
+    	{
+	    	// load each config withing mods.d, discard those which are not bibles, return names of remaining
+	    	URL mods = NetUtil.lengthenURL(dir,"mods.d");
+	    	if(!NetUtil.isDirectory(mods)) return new String[0];
+	    	File modsFile = new File(mods.getFile());
+	    	String[] filenames = modsFile.list(new CustomFilenameFilter());
+	    	SwordConfig[] configs = new SwordConfig[filenames.length];
+	    	ArrayList validNames = new ArrayList();
+	    	for(int i=0;i<filenames.length;i++)
+	    	{
+	    		String biblename=filenames[i].substring(0,filenames[i].indexOf(".conf"));
+	    		configs[i] = new SwordConfig(new File(modsFile,filenames[i]).toURL(),biblename);
+	    		// check to se if it's a bible
+	    		if(isBible(configs[i]))
+	    		{
+	    			validNames.add(biblename);
+	    			configCache.put(biblename,configs[i]);
+	    		}
+	    	}
+	    	String[] retVal = (String[]) validNames.toArray(new String[0]);
+	    	return retVal;
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+        return new String[0];
     }
+
+	/**
+	 * Method isBible.
+	 * @param swordConfig
+	 * @return boolean
+	 */
+	private boolean isBible(SwordConfig swordConfig) 
+	{
+		if(swordConfig.getModDrv()==SwordConstants.DRIVER_RAW_TEXT) return true;
+		if(swordConfig.getModDrv()==SwordConstants.DRIVER_Z_TEXT) return true;
+		return false;
+	}
+
 
     /**
      * Does the named Bible exist?
@@ -95,15 +119,8 @@ public class SwordBibleDriver extends AbstractBibleDriver
      */
     public boolean exists(String name)
     {
-        try
-        {
-            URL url = NetUtil.lengthenURL(nested, name);
-            return NetUtil.isDirectory(url);
-        }
-        catch (Exception ex)
-        {
-            return false;
-        }
+    	if(configCache.get(name)!=null)return true;
+    	else return false;
     }
 
     /**
@@ -113,19 +130,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
      */
     public Bible getBible(String name) throws BookException
     {
-        try
-        {
-            URL url = NetUtil.lengthenURL(nested, name);
-
-            if (!NetUtil.isDirectory(url))
-                throw new BookException("sword_driver_find", new Object[] { name });
-
-            return new SwordBible(name, url);
-        }
-        catch (MalformedURLException ex)
-        {
-            throw new BookException("sword_driver_dir", ex);
-        }
+    	return new SwordBible(dir,(SwordConfig)configCache.get(name));
     }
 
     /**
@@ -167,19 +172,16 @@ public class SwordBibleDriver extends AbstractBibleDriver
         if (sword_dir == null || sword_dir.trim().length() == 0)
         {
             driver.dir = null;
-            driver.nested = null;
             log.info("No sword dir set.");
             return;
         }
 
         URL dir_temp = new URL("file:"+sword_dir);
-        URL nest_temp = NetUtil.lengthenURL(dir_temp, "modules", "texts", "rawtext");
 
-        if (!NetUtil.isDirectory(nest_temp))
+        if (!NetUtil.isDirectory(dir_temp))
             throw new MalformedURLException("No sword source found under "+sword_dir);
 
         driver.dir = dir_temp;
-        driver.nested = nest_temp;
     }
 
     /**
@@ -194,11 +196,11 @@ public class SwordBibleDriver extends AbstractBibleDriver
         return driver.dir.toExternalForm().substring(5);
     }
 
-    /** The directory URL */
-    private URL dir;
+	/** config cache */
+	private Hashtable configCache = new Hashtable();
 
     /** The directory URL */
-    private URL nested;
+    private URL dir;
 
     /** The singleton driver */
     protected static SwordBibleDriver driver;
@@ -230,15 +232,8 @@ public class SwordBibleDriver extends AbstractBibleDriver
     {
         public boolean accept(File parent, String name)
         {
-            try
-            {
-                return new File(parent.getCanonicalPath() + File.separator + name).isDirectory();
-            }
-            catch (IOException ex)
-            {
-                Reporter.informUser(SwordBibleDriver.class, ex);
-                return false;
-            }
+        	if(name.endsWith(".conf")&&!name.startsWith("globals."))return true;
+        	else return false;
         }
     }
 }

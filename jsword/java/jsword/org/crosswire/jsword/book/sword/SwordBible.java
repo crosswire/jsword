@@ -53,12 +53,11 @@ import org.crosswire.jsword.passage.VerseRange;
  */
 public class SwordBible extends AbstractBible
 {
-    /**
-     * Open the sword data files.
-     * @param path - path of the directory where data and index files are located.
-     */
-    public SwordBible(String name, URL url) throws BookException
-    {
+	/**
+	 * Constructor SwordBible.
+	 * @param swordConfig
+	 */
+	public SwordBible(URL swordBase, SwordConfig swordConfig) throws BookException{
         if (mat11_ord == -1)
         {
             try
@@ -71,35 +70,16 @@ public class SwordBible extends AbstractBible
                 throw new LogicError(ex);
             }
         }
+        
+        if(swordConfig.getModDrv()==SwordConstants.DRIVER_RAW_TEXT) backend = new RawBibleBackend(swordBase, swordConfig);
+        if(swordConfig.getModDrv()==SwordConstants.DRIVER_Z_TEXT) backend = new CompressedBibleBackend(swordBase, swordConfig);
+        
+        this.name = swordConfig.getName();
+        if(backend==null) 
+        	// URGENT: Checkout exception hierarchy
+        	throw new BookException("No backend for "+SwordConstants.DRIVER_STRINGS[swordConfig.getModDrv()]);
+	}
 
-        this.name = name;
-
-        if (!url.getProtocol().equals("file"))
-            throw new BookException("sword_file_only", new Object[] { url.getProtocol() });
-
-        String path = url.getFile();
-
-        try
-        {
-            idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + "/ot.vss", "r");
-            txt_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + "/ot", "r");
-        }
-        catch (FileNotFoundException ex)
-        {
-        }
-
-        try
-        {
-            idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + "/nt.vss", "r");
-            txt_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + "/nt", "r");
-        }
-        catch (FileNotFoundException ex)
-        {
-        }
-
-        if (txt_raf[SwordConstants.TESTAMENT_OLD] == null && txt_raf[SwordConstants.TESTAMENT_NEW] == null)
-            throw new BookException("sword_missing_file", new Object[] { url.getFile() });
-    }
 
     /**
      * What driver is controlling this Bible?
@@ -161,11 +141,11 @@ public class SwordBible extends AbstractBible
                 // If this is an NT verse
                 if (verse_ord >= mat11_ord)
                 {
-                    reply.append(getText(SwordConstants.TESTAMENT_NEW, bookNo - Books.Names.Malachi, chapNo, verseNo));
+                	reply.append(backend.getText(SwordConstants.TESTAMENT_NEW, bookNo - Books.Names.Malachi, chapNo, verseNo));
                 }
                 else
                 {
-                    reply.append(getText(SwordConstants.TESTAMENT_OLD, bookNo, chapNo, verseNo));
+                    reply.append(backend.getText(SwordConstants.TESTAMENT_OLD, bookNo, chapNo, verseNo));
                 }
                 
 
@@ -188,42 +168,7 @@ public class SwordBible extends AbstractBible
      * @param chapter.
      * @param verse
      */
-        private String getText(int testament, int book, int chapter, int verse) throws IOException{
-        long start;
-        int size;
-
-		// work out the offset
-		int bookOffset = SwordConstants.bks[testament][book];
-		long chapOffset = SwordConstants.cps[testament][bookOffset+chapter];
-		
-		long offset=6*(chapOffset+verse);
-		
-        // Read the next 6 byes.
-        idx_raf[testament].seek(offset);
-        byte[] read = new byte[6];
-        idx_raf[testament].readFully(read);
-
-        // Un-2s-complement them
-        int[] temp = new int[6];
-        for (int i=0; i<temp.length; i++)
-        {
-            temp[i] = read[i] >= 0 ? read[i] : 256 + read[i];
-        }
-
-        // The data is little endian - extract the start and size
-        start = (temp[3] << 24) | (temp[2] << 16) | (temp[1] << 8) | temp[0];
-        size = (temp[5] << 8) | temp[4];
-
-        // Read from the data file.
-        // I wonder if it would be safe to do a readLine() from here.
-        // Probably be safer not to risk it since we know how long it is.
-        byte[] buffer = new byte[size];
-        txt_raf[testament].seek(start);
-        txt_raf[testament].read(buffer);
-
-        // We should probably think about encodings here?
-        return new String(buffer);
-    }
+   //     private 
 
     /**
      * Create an XML document for the specified Verses
@@ -309,7 +254,7 @@ public class SwordBible extends AbstractBible
             // To start with I'm going to hard code the path
             URL test = new URL("file:/usr/share/sword/modules/texts/rawtext/kjv/");
 
-            SwordBible data = new SwordBible("kjv", test);
+            /*SwordBible data = new SwordBible("kjv", test);
             
             String text = data.getText(SwordConstants.TESTAMENT_OLD,1,1,1);
 
@@ -317,19 +262,13 @@ public class SwordBible extends AbstractBible
             
             text = data.getText(SwordConstants.TESTAMENT_NEW,1,1,1);
 
-            log.debug("text="+text);
+            log.debug("text="+text);*/
         }
         catch (Exception ex)
         {
             log.info("Failure", ex);
         }
     }
-
-    /** The array of index files */
-    private RandomAccessFile[] idx_raf = new RandomAccessFile[3];
-
-    /** The array of data files */
-    private RandomAccessFile[] txt_raf = new RandomAccessFile[3];
 
     /** The name of this version */
     private String name;
@@ -342,4 +281,6 @@ public class SwordBible extends AbstractBible
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(SwordBible.class);
+    
+    private SwordBibleBackend backend;
 }
