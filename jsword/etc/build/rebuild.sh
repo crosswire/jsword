@@ -25,7 +25,6 @@ echo JSWORD_HOME=$JSWORD_HOME
 
 . $JSWORD_HOME/etc/build/commands.`dnsdomainname`.sh
 
-
 # keep the cvsup separate to allow build.xml to be updated
 # we used to use: "$ANT_HOME/bin/ant cvsup $PROPERTIES"
 # but this spawned a jvm just to do a "cvs -q up -d -P" which
@@ -33,35 +32,16 @@ echo JSWORD_HOME=$JSWORD_HOME
 
 echo ""
 echo "=============================================================================="
-echo "Updating from crosswire"
-cd $JSWORD_HOME/../common
-cvs -q up -d -P
-cd $JSWORD_HOME/../jsword-support
-cvs -q up -d -P
-cd $JSWORD_HOME/../jsword
-cvs -q up -d -P
-cd $JSWORD_HOME/../jsword-sword
-cvs -q up -d -P
-cd $JSWORD_HOME/../jsword-web
-cvs -q up -d -P
-cd $JSWORD_HOME/../bibledesktop
-cvs -q up -d -P
-cd $JSWORD_HOME/../bibledesktop-web
-cvs -q up -d -P
-cd $JSWORD_HOME/../biblemapper
-cvs -q up -d -P
+for PROJECT in common jsword-support jsword jsword-sword jsword-web biblemapper bibledesktop bibledesktop-web
+do
+  echo "Updating $PROJECT"
+  cd $JSWORD_HOME/../$PROJECT
+  cvs -q up -d -P
+done
 chmod 755 $JSWORD_HOME/etc/build/*.sh
-
 
 echo ""
 echo "=============================================================================="
 echo "Building jsword-web"
 cd $JSWORD_HOME/../jsword-web
 $ANT_HOME/bin/ant incremental $PROPERTIES
-
-echo ""
-echo "=============================================================================="
-echo "Building bibledesktop-web"
-cd $JSWORD_HOME/../bibledesktop-web
-$ANT_HOME/bin/ant incremental $PROPERTIES
-
