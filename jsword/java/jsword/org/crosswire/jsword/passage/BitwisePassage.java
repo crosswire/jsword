@@ -15,16 +15,6 @@ import java.util.NoSuchElementException;
  * <li>Static size, poor for small Passages, good for large Passages
  * </ul>
  *
- * <p>There is some optimization we could do here: The benchmark I have
- * been using spends a lot of time in VerseEnumeration. There is some
- * inefficiency here due to having to examine the bits of the BitSet
- * one by one, rather than being able to compare the underlying longs
- * with zero (clearing 64 bits in one shot). This would speed up the
- * (usual) case where there are relatively few matches in the BitSet,
- * but be a slowdown for fuller Passages.<br />
- * The bad news is that this would mean re-writing BitSet which I am
- * not all that keen to do right now.</p>
- *
  * <p>The BitSet has one more bit than the number of verses in the
  * Bible. This would waste 1 bit per BitSet but since this doesn't
  * cause BitSet to need an extra long it doesn't, and it saves us some
@@ -49,6 +39,7 @@ import java.util.NoSuchElementException;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class BitwisePassage extends AbstractPassage
@@ -103,18 +94,7 @@ public class BitwisePassage extends AbstractPassage
      */
     public int countVerses()
     {
-        int count = 0;
-
-        int vib = BibleInfo.versesInBible();
-        for (int i=1; i<=vib; i++)
-        {
-            if (store.get(i))
-            {
-                count++;
-            }
-        }
-
-        return count;
+        return store.cardinality();
     }
 
     /* (non-Javadoc)
@@ -122,16 +102,7 @@ public class BitwisePassage extends AbstractPassage
      */
     public boolean isEmpty()
     {
-        int vib = BibleInfo.versesInBible();
-        for (int i=1; i<=vib; i++)
-        {
-            if (store.get(i))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return store.isEmpty();
     }
 
     /* (non-Javadoc)
@@ -221,8 +192,8 @@ public class BitwisePassage extends AbstractPassage
 
         if (that instanceof BitwisePassage)
         {
-            BitwisePassage that_ref = (BitwisePassage) that;
-            store.or(that_ref.store);
+            BitwisePassage thatRef = (BitwisePassage) that;
+            store.or(thatRef.store);
         }
         else
         {
@@ -246,9 +217,9 @@ public class BitwisePassage extends AbstractPassage
 
         if (that instanceof BitwisePassage)
         {
-            BitwisePassage that_ref = (BitwisePassage) that;
+            BitwisePassage thatRef = (BitwisePassage) that;
 
-            store.andNot(that_ref.store);
+            store.andNot(thatRef.store);
         }
         else
         {
@@ -270,14 +241,14 @@ public class BitwisePassage extends AbstractPassage
     {
         optimizeWrites();
 
+        BitSet thatStore = null;
         if (that instanceof BitwisePassage)
         {
-            BitSet that_store = ((BitwisePassage) that).store;
-            store.and(that_store);
+            thatStore = ((BitwisePassage) that).store;
         }
         else
         {
-            BitSet new_store = new BitSet(BibleInfo.versesInBible());
+            thatStore = new BitSet(BibleInfo.versesInBible() + 1);
 
             Iterator it = that.verseIterator();
             while (it.hasNext())
@@ -285,12 +256,11 @@ public class BitwisePassage extends AbstractPassage
                 int ord = ((Verse) it.next()).getOrdinal();
                 if (store.get(ord))
                 {
-                    new_store.set(ord);
+                    thatStore.set(ord);
                 }
             }
-
-            store = new_store;
         }
+        store.and(thatStore);
 
         fireIntervalRemoved(this, null, null);
     }
@@ -302,11 +272,7 @@ public class BitwisePassage extends AbstractPassage
     {
         optimizeWrites();
 
-        int vib = BibleInfo.versesInBible();
-        for (int i=1; i<=vib; i++)
-        {
-            store.clear(i);
-        }
+        store.clear();
 
         fireIntervalRemoved(this, null, null);
     }
@@ -337,24 +303,21 @@ public class BitwisePassage extends AbstractPassage
         }
         else
         {
-            BitSet new_store = new BitSet(BibleInfo.versesInBible());
+            int versesInBible = BibleInfo.versesInBible();
+            BitSet newStore = new BitSet(versesInBible + 1);
 
-            int vib = BibleInfo.versesInBible();
-            for (int i=1; i<=vib; i++)
+            for (int i=store.nextSetBit(0); i>=0; i=store.nextSetBit(i+1))
             {
-                if (store.get(i))
-                {
-                    int start = Math.max(0, i-verses);
-                    int end = Math.min(BibleInfo.versesInBible(), i+verses);
+                int start = Math.max(0, i-verses);
+                int end = Math.min(versesInBible, i+verses);
 
-                    for (int j=start; j<=end; j++)
-                    {
-                        new_store.set(j);
-                    }
+                for (int j=start; j<=end; j++)
+                {
+                    newStore.set(j);
                 }
             }
 
-            store = new_store;
+            store = newStore;
         }
 
         lowerNormalizeProtection();
@@ -364,6 +327,7 @@ public class BitwisePassage extends AbstractPassage
     /**
      * Iterate over the Verses
      * @author Joe Walker
+     * @author DM Smith
      */
     private final class VerseIterator implements Iterator
     {
@@ -372,6 +336,7 @@ public class BitwisePassage extends AbstractPassage
          */
         public VerseIterator()
         {
+            next = -1;
             calculateNext();
         }
 
@@ -380,7 +345,7 @@ public class BitwisePassage extends AbstractPassage
          */
         public boolean hasNext()
         {
-            return next <= BibleInfo.versesInBible();
+            return next >= 0;
         }
 
         /* (non-Javadoc)
@@ -390,7 +355,7 @@ public class BitwisePassage extends AbstractPassage
         {
             try
             {
-                if (next > BibleInfo.versesInBible())
+                if (!hasNext())
                 {
                     throw new NoSuchElementException();
                 }
@@ -420,20 +385,13 @@ public class BitwisePassage extends AbstractPassage
          */
         private void calculateNext()
         {
-            while (next <= BibleInfo.versesInBible())
-            {
-                next++;
-                if (store.get(next))
-                {
-                    break;
-                }
-            }
+            next = store.nextSetBit(next+1);
         }
 
         /**
          * What is the next Verse to be considered
          */
-        private int next = 0;
+        private int next;
     }
 
     /**
