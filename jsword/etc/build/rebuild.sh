@@ -42,6 +42,6 @@ chmod 755 $JSWORD_HOME/etc/build/*.sh
 
 echo ""
 echo "=============================================================================="
-echo "Building jsword-web"
+echo "Building jsword-web at `date`"
 cd $JSWORD_HOME/../jsword-web
 $ANT_HOME/bin/ant incremental $PROPERTIES
