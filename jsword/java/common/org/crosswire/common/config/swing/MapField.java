@@ -74,8 +74,6 @@ public class MapField extends JPanel implements Field
         buttons.add(remove);
         buttons.add(update);
 
-        // PENDING(joe): consider custom cell editors
-
         add.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -169,20 +167,12 @@ public class MapField extends JPanel implements Field
     }
 
     /**
-     * PENDING(joe): Make this work
-     */
-    public void registerComboEditor(OptionsField field)
-    {
-    }
-
-    /**
      * Pop up a dialog to allow editing of a new value
      */
     public void addEntry()
     {
         InputPane input = new InputPane();
 
-        // PENDING(joe): Initial focus ...
         if (JOptionPane.showConfirmDialog(this, input, "New Class", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
             String new_class = input.class_field.getText();
@@ -219,7 +209,6 @@ public class MapField extends JPanel implements Field
 
     /**
      * Delete the current value in the hashtable
-     * PENDING(joe): do we need an "Are you sure?"
      */
     public void removeEntry()
     {

@@ -329,7 +329,7 @@ public class SerSearcher implements Searcher
      */
     public void delete() throws BookException
     {
-        // PENDING(joe)
+        // PENDING(joe): write delete()
     }
 
     /**

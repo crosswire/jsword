@@ -164,12 +164,12 @@ public class Desktop extends JFrame implements TitleChangedListener
             pnl_tbar = new JToolBar();
             bar_status = new StatusBar();
 
-			// PENDING(joe): add splash.setProgress stuff
+            splash.setProgress(20, "Creating GUI : Setting-up config");
             act_tools_options.createConfig();
             act_tools_options.loadConfig();
 
             // GUI setup
-            splash.setProgress(20, "Creating GUI : Init");
+            splash.setProgress(21, "Creating GUI : Init");
             jbInit();
             setViewLayout(VIEW_SDI);
 

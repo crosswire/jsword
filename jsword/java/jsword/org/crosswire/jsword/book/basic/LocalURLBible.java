@@ -1,8 +1,12 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.Properties;
 
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
@@ -88,6 +92,26 @@ public abstract class LocalURLBible extends SearchableBible
     public void setLocalURLBibleMetaData(LocalURLBibleMetaData lbmd)
     {
         this.lbmd = lbmd;
+    }
+
+    /**
+     * Flush the data written to disk
+     */
+    public void flush() throws BookException
+    {
+        try
+        {
+            Properties prop = new Properties();
+            prop.put("Version", getMetaData().getFullName());
+
+            URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
+            OutputStream prop_out = NetUtil.getOutputStream(prop_url);
+            prop.store(prop_out, "Bible Config");
+        }
+        catch (IOException ex)
+        {
+            throw new BookException("bible_flush", ex);
+        }
     }
 
     /**

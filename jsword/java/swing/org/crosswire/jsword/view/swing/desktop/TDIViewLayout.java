@@ -66,7 +66,7 @@ public class TDIViewLayout extends ViewLayout
         getDesktop().getContentPane().add(tab_main, BorderLayout.CENTER);
         getDesktop().getContentPane().repaint();
 
-        // PENDING(joe): Work out if this is a bug in swing or should I really
+        // I'm not sure if this is a bug in swing or should I really
         // be doing this to make the first tab be painted ...
         if (getSelected() != null)
             getSelected().setVisible(true);

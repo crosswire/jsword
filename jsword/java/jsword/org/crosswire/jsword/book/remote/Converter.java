@@ -19,7 +19,7 @@ import org.jdom.Element;
 /**
  * A set of converters to help implementing Bible[Driver] using XML as an
  * intermediate format for remoting.
- * <p>PENDING(joe) A number of the methods here can throw due to invalid input
+ * <p>PENDING(joe): A number of the methods here can throw due to invalid input
  * documents - should we create another new Exception type or re-use another.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>

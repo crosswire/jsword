@@ -2,13 +2,9 @@
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.Iterator;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
@@ -92,7 +88,7 @@ import org.crosswire.jsword.passage.VerseRange;
  *       iNext = InStr(iLast, sText, " ")
  *       iTemp = InStr(iLast, sText, "--")
  *       If iTemp = iLast Then iTemp = 0
- *       If iTemp <> 0 And iTemp < iNext Then
+ *       If iTemp <> 0 And iTemp &lt; iNext Then
  *         iNext = iTemp
  *         bDash = True
  *       Else
@@ -504,18 +500,13 @@ public class RawBible extends LocalURLBible
             para_insts.save();
 
             // generateSearchCache();
-
-            Properties prop = new Properties();
-            prop.put("Version", getLocalURLBibleMetaData().getFullName());
-
-            URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
-            OutputStream prop_out = NetUtil.getOutputStream(prop_url);
-            prop.store(prop_out, "RawBible Config");
         }
         catch (IOException ex)
         {
             throw new BookException("raw_bible_flush", ex);
         }
+
+        super.flush();
     }
 
     /**

@@ -72,25 +72,16 @@ public class Resource
     }
 
     /**
-     * Get the root of the project installation.
+     * Get a list of sylesheets for a given subject.
+     * PENDING(*): Is this sensible? I guess it is like this because it has to
+     * work over webstart, but it is all very similar to NetUtil. list() however
+     * this method does not make use of file: URLs.
      * @return The project root as a URL
      */
     public String[] getStyles(String subject) throws IOException
     {
-        String index = "xsl/"+subject;
-        return getIndex(index);
-    }
-
-    /**
-     * Generic utility to read a file list from an index.proerties file.
-     * PENDING(*): Is this sensible? I guess it is like this because it has to
-     * work over webstart, but it is all very similar to NetUtil.list() however
-     * this method does not make use of file: URLs.
-     * @see org.crosswire.common.util.NetUtil#list(URL, URLFilter)
-     */
-    private String[] getIndex(String index) throws IOException
-    {
-        String search = index+"/index"+PROPERTIES_EXTENSION;
+        String search = "xsl/"+subject+"/index"+PROPERTIES_EXTENSION;
+        
         InputStream in = getResourceAsStream(search);
         if (in == null)
             return new String[0];

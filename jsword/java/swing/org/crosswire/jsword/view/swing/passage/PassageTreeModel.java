@@ -9,7 +9,6 @@ import org.crosswire.jsword.passage.Passage;
 /**
  * The PassageTreeModel class implements TreeModel using various custom
  * TreeNodes, and simply extending DefaultTreeModel.
- * PENDING(joe): I think we oughtn't to need to pass the tree in here.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -37,7 +36,9 @@ import org.crosswire.jsword.passage.Passage;
 public class PassageTreeModel extends DefaultTreeModel
 {
     /**
-    * Basic constructor
+    * Basic constructor.
+    * At some stage when editing this and PassageTreeNode we should be able to
+    * remove the JTree param.
     */
     public PassageTreeModel(Passage ref, JTree tree)
     {

@@ -1,13 +1,7 @@
 
 package org.crosswire.jsword.book.ser;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
-import java.util.Properties;
-
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBible;
@@ -197,26 +191,11 @@ public class SerBible extends LocalURLBible
 
     /**
      * Flush the data written to disk.
-     * PENDING(joe): this must be promotable to LocalURL...?
      */
     public void flush() throws BookException
     {
         cache.flush();
-
-        try
-        {
-            // The Bible config info
-            Properties prop = new Properties();
-            prop.put("Version", getMetaData().getFullName());
-
-            URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
-            OutputStream prop_out = NetUtil.getOutputStream(prop_url);
-            prop.store(prop_out, "RawBible Config");
-        }
-        catch (IOException ex)
-        {
-            throw new BookException("ser_flush", ex);
-        }
+        super.flush();
     }
 
     /**

@@ -115,7 +115,11 @@ public class Splash extends JWindow
     }
 
     /**
-     * set progress bar
+     * Set progress bar.
+     * It might be useful for users to just pass a string in here, and we time
+     * each string and create a hashtable of how long each section takes,
+     * which we record for subsequent invacations allowing us to have a more
+     * accurate progress bar.
      */
     public void setProgress(final int percent, final String message)
     {

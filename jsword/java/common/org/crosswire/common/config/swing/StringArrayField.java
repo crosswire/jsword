@@ -61,8 +61,6 @@ public class StringArrayField extends JPanel implements Field
         buttons.add(remove);
         buttons.add(update);
 
-        // PENDING(joe): consider custom cell editors
-
         add.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -166,12 +164,7 @@ public class StringArrayField extends JPanel implements Field
     {
         InputPane input = new InputPane();
 
-        // PENDING(joe): Initial focus ...
-        if (JOptionPane.showConfirmDialog(this,
-                                          input,
-                                          "New Class",
-                                          JOptionPane.OK_CANCEL_OPTION)
-            == JOptionPane.OK_OPTION)
+        if (JOptionPane.showConfirmDialog(this, input, "New Class", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
             String new_name = input.name_field.getText();
 
@@ -187,11 +180,7 @@ public class StringArrayField extends JPanel implements Field
         InputPane input = new InputPane();
         input.name_field.setText(currentValue());
 
-        if (JOptionPane.showConfirmDialog(this,
-                                          input,
-                                          "Edit Class",
-                                          JOptionPane.OK_CANCEL_OPTION)
-            == JOptionPane.OK_OPTION)
+        if (JOptionPane.showConfirmDialog(this, input, "Edit Class", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
             String new_name = input.name_field.getText();
 
@@ -202,7 +191,6 @@ public class StringArrayField extends JPanel implements Field
 
     /**
      * Delete the current value in the hashtable
-     * PENDING(joe): do we need an "Are you sure?"
      */
     public void removeEntry()
     {

@@ -36,12 +36,10 @@ import org.crosswire.common.util.StackTrace;
 import org.crosswire.common.util.StringUtil;
 
 /**
- * A more detailed way of reporting problems to the user
- * This is probably too complex for a full-on public app
- * but it is probably simple enough for us to use here.
- * <p>PENDING(joe): Think about allowing the users to give us some feedback
- * PENDING(joe): Allow the configure system to set the source dirs
- * based on this dialog - even down to passing on edited source.
+ * A more detailed way of reporting problems to the user.
+ * 
+ * This is probably too complex for a full-on public app but it is probably
+ * simple enough for us to use here.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
