@@ -67,23 +67,6 @@
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
     </java>
-    <echo message="Compiling ${gener.root}/osis"/>
-    <mkdir dir="${target.classes}/osis"/>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
-      <src path="${gener.root}/osis"/>
-      <classpath>
-        <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
-    <copy todir="${target.classes}/resource">
-      <fileset dir="${gener.root}/osis">
-        <patternset refid="java.non.compile"/>
-      </fileset>
-    </copy>
-    <jar jarfile="${gener.root}/jsword-osis.jar">
-      <fileset dir="${target.classes}/osis"/>
-    </jar>
   </target>
   <target name="xjc.check" depends="init" description="Check to see if xjc is needed">
     <mkdir dir="${gener.root}/osis"/>
@@ -93,11 +76,32 @@
         <available file="${gener.root}/osis/org" type="dir"/>
         <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
           <uptodate targetfile="${source.etc}/osisCore.1.1.1.xsd">
-            <srcfiles dir="${gener.root}/osis"/>
+            <srcfiles dir="${gener.root}" includes="jsword-osis.jar"/>
           </uptodate>
         </not>
       </and>
     </condition>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="osis" depends="xjc">
+    <echo message="Compiling ${gener.root}/osis"/>
+    <mkdir dir="${target.classes}/osis"/>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
+      <src path="${gener.root}/osis"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${target.classes}/osis">
+      <fileset dir="${gener.root}/osis">
+        <patternset refid="java.non.compile"/>
+      </fileset>
+    </copy>
+    <jar jarfile="${gener.root}/jsword-osis.jar">
+      <fileset dir="${target.classes}/osis"/>
+    </jar>
   </target>
 
   <!--=======================================================================-->
@@ -111,48 +115,24 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="generate" depends="xjc, check.config" description="Generate/update source files">
+  <target name="generate" depends="osis, check.config" description="Generate/update source files">
   </target>
 
   <!--=======================================================================-->
-  <target name="compile" depends="init, generate" description="Validate source syntax">
+  <target name="compile" depends="osis, generate" description="Validate source syntax">
     <mkdir dir="${target.classes}/resource"/>
-    <antcall target="compile.section">
-      <param name="section" value="common"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="jsword"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="servlet"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="swing"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="sword"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="map"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="commontest"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="jswordtest"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="servlettest"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="swingtest"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="swordtest"/>
-    </antcall>
-    <antcall target="compile.section">
-      <param name="section" value="maptest"/>
-    </antcall>
+    <antcall target="compile.section"><param name="section" value="common"/></antcall>
+    <antcall target="compile.section"><param name="section" value="jsword"/></antcall>
+    <antcall target="compile.section"><param name="section" value="servlet"/></antcall>
+    <antcall target="compile.section"><param name="section" value="swing"/></antcall>
+    <antcall target="compile.section"><param name="section" value="sword"/></antcall>
+    <antcall target="compile.section"><param name="section" value="map"/></antcall>
+    <antcall target="compile.section"><param name="section" value="commontest"/></antcall>
+    <antcall target="compile.section"><param name="section" value="jswordtest"/></antcall>
+    <antcall target="compile.section"><param name="section" value="servlettest"/></antcall>
+    <antcall target="compile.section"><param name="section" value="swingtest"/></antcall>
+    <antcall target="compile.section"><param name="section" value="swordtest"/></antcall>
+    <antcall target="compile.section"><param name="section" value="maptest"/></antcall>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
       <src path="${gener.root}/config"/>
       <classpath>
@@ -319,8 +299,8 @@
       <formatter type="xml"/>
       <classpath>
         <!--
-        -->
         <fileset dir="${ant.lib}" includes="**/*.jar"/>
+        -->
         <fileset dir="${source.jar}" includes="**/*.jar"/>
         <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
         <pathelement path="${target.temp}/jcoverage"/>
@@ -577,8 +557,8 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html">
-    <!-- I've taken web.cpd web.javancss, out because it is very slow and not that useful -->
+  <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html, web.javancss">
+    <!-- I've taken web.cpd out because it is very slow and not that useful -->
   </target>
 
   <!--=======================================================================-->

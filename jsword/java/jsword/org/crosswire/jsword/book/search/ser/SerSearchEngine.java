@@ -53,7 +53,7 @@ import org.crosswire.jsword.passage.Verse;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
@@ -261,7 +261,6 @@ public class SerSearchEngine implements SearchEngine, Index
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
      */
     protected void generateSearchIndex(Job ajob) throws BookException
     {

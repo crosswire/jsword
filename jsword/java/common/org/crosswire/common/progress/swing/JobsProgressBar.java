@@ -39,7 +39,7 @@ import org.crosswire.common.util.Logger;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
@@ -93,11 +93,25 @@ public class JobsProgressBar extends JPanel implements WorkListener
      */
     private synchronized void addJob(Job job)
     {
-        JobData jobdata = new JobData();
-        jobdata.job = job;
-
-        jobs.put(job, jobdata);
         int i = findEmptyPosition();
+        log.debug("adding job to panel at "+i+": "+job.getJobDescription());
+
+        JProgressBar progress = new JProgressBar();
+        progress.setStringPainted(true);
+        progress.setToolTipText(job.getJobDescription());
+        if (font != null)
+        {
+            progress.setFont(font);
+        }
+        // Dimension preferred = progress.getPreferredSize();
+        // preferred.width = 50;
+        // progress.setPreferredSize(preferred);
+
+        this.add(progress, i);
+        this.revalidate();
+
+        JobData jobdata = new JobData(job, i, progress);
+        jobs.put(job, jobdata);
         if (i >= positions.size())
         {
             positions.add(jobdata);
@@ -106,24 +120,6 @@ public class JobsProgressBar extends JPanel implements WorkListener
         {
             positions.set(i, jobdata);
         }
-
-        jobdata.index = i;
-        jobdata.progress = new JProgressBar();
-        jobdata.progress.setStringPainted(true);
-        jobdata.progress.setToolTipText(job.getJobDescription());
-        if (font != null)
-        {
-            jobdata.progress.setFont(font);
-        }
-
-        // Dimension preferred = jobdata.progress.getPreferredSize();
-        // preferred.width = 50;
-        // jobdata.progress.setPreferredSize(preferred);
-
-        this.add(jobdata.progress, i);
-        this.revalidate();
-
-        log.debug("added job to panel: "+jobdata.job.getJobDescription());
     }
 
     /**
@@ -134,8 +130,8 @@ public class JobsProgressBar extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.progress.setString(job.getStateDescription()+": ("+percent+"%)");
-        jobdata.progress.setValue(percent);
+        jobdata.getProgress().setString(job.getStateDescription()+": ("+percent+"%)");
+        jobdata.getProgress().setValue(percent);
     }
 
     /**
@@ -145,16 +141,13 @@ public class JobsProgressBar extends JPanel implements WorkListener
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        positions.set(jobdata.index, null);
+        positions.set(jobdata.getIndex(), null);
         jobs.remove(job);
-        log.debug("removing job from panel: "+jobdata.job.getJobDescription());
+        log.debug("removing job from panel: "+jobdata.getJob().getJobDescription());
 
-        this.remove(jobdata.progress);
+        this.remove(jobdata.getProgress());
         this.revalidate();
-
-        jobdata.job = null;
-        jobdata.progress = null;
-        jobdata.index = -1;
+        jobdata.invalidate();
     }
 
     /**
@@ -206,8 +199,52 @@ public class JobsProgressBar extends JPanel implements WorkListener
      */
     private class JobData
     {
-        Job job = null;
-        JProgressBar progress = null;
-        int index = -1;
+        /**
+         * Simple ctor
+         */
+        JobData(Job job, int index, JProgressBar progress)
+        {
+            this.job = job;
+            this.progress = progress;
+            this.index = index;
+        }
+
+        /**
+         * ensure we can't be used again
+         */
+        void invalidate()
+        {
+            job = null;
+            progress = null;
+            index = -1;
+        }
+
+        /**
+         * Accessor for the Job
+         */
+        Job getJob()
+        {
+            return job;
+        }
+
+        /**
+         * Accessor for the Progress Bar
+         */
+        JProgressBar getProgress()
+        {
+            return progress;
+        }
+
+        /**
+         * Accessor for the index
+         */
+        int getIndex()
+        {
+            return index;
+        }
+
+        private Job job = null;
+        private JProgressBar progress = null;
+        private int index = -1;
     }
 }

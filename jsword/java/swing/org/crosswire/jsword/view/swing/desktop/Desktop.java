@@ -85,7 +85,7 @@ import org.jdom.JDOMException;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
@@ -329,11 +329,12 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         try
         {
             Class cl = pnl_tbar.getClass();
-            Method meth = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
-            meth.invoke(pnl_tbar, new Object[] { Boolean.TRUE });
+            Method method = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
+            method.invoke(pnl_tbar, new Object[] { Boolean.TRUE });
         }
         catch (NoSuchMethodException ex)
         {
+            log.debug("Assume 1.3 JVM since: "+ex);
             // we have a java < 1.4 user
         }
         catch (Exception ex)
@@ -721,8 +722,13 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             for (int j = 0; j < menu.getItemCount(); j++)
             {
                 JMenuItem item = menu.getItem(j);
-                Action action = item.getAction();
+                if (item == null)
+                {
+                    log.warn("null item at "+j+" when getMenuCount()="+menu.getItemCount());
+                    continue;
+                }
 
+                Action action = item.getAction();
                 if (action != null)
                 {
                     KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);

@@ -42,7 +42,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
  * @version $Id$

@@ -45,7 +45,7 @@ import org.crosswire.common.xml.SAXEventProviderXMLReader;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id: Style.java,v 1.5 2002/10/08 21:36:16 joe Exp $
  */
@@ -143,9 +143,9 @@ public class Style
             if (tinfo != null)
             {
                 log.debug("real modtime="+modtime);
-                log.debug("cached modtime="+tinfo.modtime);
+                log.debug("cached modtime="+tinfo.getModtime());
 
-                if (modtime > tinfo.modtime)
+                if (modtime > tinfo.getModtime())
                 {
                     txers.remove(style);
                     tinfo = null;
@@ -163,19 +163,16 @@ public class Style
             log.debug("generating templates for "+style);
 
             InputStream xsl_in = xsl_url.openStream();
+            Templates templates = transfact.newTemplates(new StreamSource(xsl_in));
 
-            tinfo = new TemplateInfo();
-            tinfo.modtime = modtime;
-            tinfo.templates = transfact.newTemplates(new StreamSource(xsl_in));
-            // Load the xsl document
-
+            tinfo = new TemplateInfo(templates, modtime);
             if (cache)
             {
                 txers.put(style, tinfo);
             }
         }
 
-        Transformer transformer = tinfo.templates.newTransformer();
+        Transformer transformer = tinfo.getTemplates().newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.transform(src_in, res_out);
 
@@ -234,7 +231,33 @@ public class Style
      */    
     class TemplateInfo
     {
-        Templates templates;
-        long modtime;
+        /**
+         * Simple ctor
+         */
+        public TemplateInfo(Templates templates, long modtime)
+        {
+            super();
+            this.templates = templates;
+            this.modtime = modtime;
+        }
+
+        /**
+         * 
+         */
+        Templates getTemplates()
+        {
+            return templates;
+        }
+
+        /**
+         * 
+         */
+        long getModtime()
+        {
+            return modtime;
+        }
+
+        private Templates templates;
+        private long modtime;
     }
 }

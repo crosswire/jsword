@@ -33,7 +33,7 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
@@ -128,6 +128,6 @@ public class DebugAction extends DesktopAbstractAction
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(JobManager.class);
+    protected static final Logger log = Logger.getLogger(DebugAction.class);
 }
 

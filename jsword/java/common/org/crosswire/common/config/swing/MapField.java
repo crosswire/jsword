@@ -49,7 +49,7 @@ import org.crosswire.common.util.Convert;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
@@ -264,19 +264,27 @@ public class MapField extends JPanel implements Field
      */
     static class NamedMapTableModel extends MapTableModel
     {
+        /**
+         * 
+         */
         protected NamedMapTableModel()
         {
             super(new Hashtable());
         }
 
+        /* (non-Javadoc)
+         * @see javax.swing.table.TableModel#getColumnName(int)
+         */
         public String getColumnName(int col)
         {
             return (col == 0) ? "Name" : "Class";
         }
 
-        public boolean isEditable(int col)
+        /* (non-Javadoc)
+         * @see javax.swing.table.TableModel#isCellEditable(int, int)
+         */
+        public boolean isCellEditable(int row, int col)
         {
-            if (col == 0) { /* ignore */ }
             return false;
         }
     }
@@ -287,6 +295,9 @@ public class MapField extends JPanel implements Field
      */
     static class InputPane extends JPanel
     {
+        /**
+         * 
+         */
         protected InputPane()
         {
             super(new FieldLayout(10, 10));
@@ -299,31 +310,49 @@ public class MapField extends JPanel implements Field
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
-        /** To edit a name (hashtable key) */
+        /**
+         * To edit a name (hashtable key)
+         */
         protected JTextField name_field = new JTextField();
 
-        /** To edit a class (hashtable value) */
+        /**
+         * To edit a class (hashtable value)
+         */
         protected JTextField class_field = new JTextField(20);
     }
 
-    /** The TableModel that points the JTable at the Hashtable */
+    /**
+     * The TableModel that points the JTable at the Hashtable
+     */
     private NamedMapTableModel table_model = new NamedMapTableModel();
 
-    /** The Table - displays the Hashtble */
+    /**
+     * The Table - displays the Hashtble
+     */
     private JTable table = new JTable(table_model);
 
-    /** The Scroller for the JTable */
+    /**
+     * The Scroller for the JTable
+     */
     private JScrollPane scroll = new JScrollPane();
 
-    /** Button bar: add */
+    /**
+     * Button bar: add
+     */
     private JButton add = new JButton("Add");
 
-    /** Button bar: remove */
+    /**
+     * Button bar: remove
+     */
     private JButton remove = new JButton("Remove");
 
-    /** Button bar: update */
+    /**
+     * Button bar: update
+     */
     private JButton update = new JButton("Update");
 
-    /** The class that everything must inherit from */
+    /**
+     * The class that everything must inherit from
+     */
     private Class superclass;
 }

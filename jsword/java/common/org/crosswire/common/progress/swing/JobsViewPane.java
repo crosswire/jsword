@@ -48,7 +48,7 @@ import org.crosswire.common.util.Logger;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
@@ -132,14 +132,39 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * Create a new set of components for the new Job
      */
-    private void addJob(Job job)
+    private void addJob(final Job job)
     {
-        final JobData jobdata = new JobData();
-        jobdata.job = job;
-        
-        // find the next empty position
-        jobs.put(job, jobdata);
         int i = findEmptyPosition();
+        log.debug("adding job to panel at "+i+": "+job.getJobDescription());
+
+        JProgressBar progress = new JProgressBar();
+        progress.setStringPainted(true);
+        progress.setString("0%");
+        progress.setToolTipText(job.getJobDescription());
+        progress.setValue(0);
+
+        JLabel label = new JLabel(job.getJobDescription() + ":");
+
+        JButton cancel = new JButton("Cancel");
+        if (!job.canInterrupt())
+        {
+            cancel.setEnabled(false);
+        }
+        cancel.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                job.interrupt();
+            }
+        });
+
+        pnl_ijobs.add(label, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+        pnl_ijobs.add(progress, new GridBagConstraints(1, i, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        pnl_ijobs.add(cancel, new GridBagConstraints(2, i, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+        this.revalidate();
+
+        JobData jobdata = new JobData(job, i, label, progress, cancel);
+        jobs.put(job, jobdata);
         if (i >= positions.size())
         {
             positions.add(jobdata);
@@ -148,36 +173,6 @@ public class JobsViewPane extends JPanel implements WorkListener
         {
             positions.set(i, jobdata);
         }
-        
-        jobdata.index = i;
-        jobdata.label = new JLabel(job.getJobDescription() + ":");
-        jobdata.progress = new JProgressBar();
-        jobdata.progress.setStringPainted(true);
-        jobdata.progress.setString("0%");
-        jobdata.progress.setToolTipText(job.getJobDescription());
-        jobdata.progress.setValue(0);
-
-        jobdata.cancel = new JButton("Cancel");
-        jobdata.cancel.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                jobdata.job.interrupt();
-            }
-        });
-        
-        if (!job.canInterrupt())
-        {
-            jobdata.cancel.setEnabled(false);
-        }
-        
-        pnl_ijobs.add(jobdata.label, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-        pnl_ijobs.add(jobdata.progress, new GridBagConstraints(1, i, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        pnl_ijobs.add(jobdata.cancel, new GridBagConstraints(2, i, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-
-        this.revalidate();
-
-        log.debug("added job to panel at "+jobdata.index+": "+jobdata.job.getJobDescription());
     }
 
     /**
@@ -188,9 +183,9 @@ public class JobsViewPane extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.progress.setString(""+percent+"%");
-        jobdata.progress.setToolTipText(job.getStateDescription());
-        jobdata.progress.setValue(percent);
+        jobdata.getProgress().setString(""+percent+"%");
+        jobdata.getProgress().setToolTipText(job.getStateDescription());
+        jobdata.getProgress().setValue(percent);
     }
 
     /**
@@ -200,22 +195,18 @@ public class JobsViewPane extends JPanel implements WorkListener
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        log.debug("removing job from panel at "+jobdata.index+": "+job.getJobDescription());
+        log.debug("removing job from panel at "+jobdata.getIndex()+": "+job.getJobDescription());
 
-        positions.set(jobdata.index, null);
+        positions.set(jobdata.getIndex(), null);
         jobs.remove(job);
         
-        pnl_ijobs.remove(jobdata.label);
-        pnl_ijobs.remove(jobdata.progress);
-        pnl_ijobs.remove(jobdata.cancel);
+        pnl_ijobs.remove(jobdata.getLabel());
+        pnl_ijobs.remove(jobdata.getProgress());
+        pnl_ijobs.remove(jobdata.getCancel());
         
         this.revalidate();
 
-        jobdata.job = null;
-        jobdata.label = null;
-        jobdata.progress = null;
-        jobdata.cancel = null;
-        jobdata.index = -1;
+        jobdata.invalidate();
     }
 
     /**
@@ -275,9 +266,24 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private List positions = new ArrayList();
 
+    /**
+     * 
+     */
     private JPanel pnl_ojobs = new JPanel();
+
+    /**
+     * 
+     */
     private JPanel pnl_ijobs = new JPanel();
+
+    /**
+     * 
+     */
     private JScrollPane scr_jobs = new JScrollPane();
+
+    /**
+     * 
+     */
     private JLabel lbl_nojobs = new JLabel();
 
     /**
@@ -285,10 +291,74 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private class JobData
     {
-        Job job = null;
-        JLabel label = null;
-        JProgressBar progress = null;
-        JButton cancel = null;
-        int index = -1;
+        /**
+         * Simple ctor
+         */
+        public JobData(Job job, int index, JLabel label, JProgressBar progress, JButton cancel)
+        {
+            this.job = job;
+            this.index = index;
+            this.label = label;
+            this.progress = progress;
+            this.cancel = cancel;
+        }
+
+        /**
+         * 
+         */
+        void invalidate()
+        {
+            this.job = null;
+            this.label = null;
+            this.progress = null;
+            this.cancel = null;
+            this.index = -1;
+        }
+
+        /**
+         * 
+         */
+        Job getJob()
+        {
+            return job;
+        }
+
+        /**
+         * 
+         */
+        JLabel getLabel()
+        {
+            return label;
+        }
+
+        /**
+         * 
+         */
+        JProgressBar getProgress()
+        {
+            return progress;
+        }
+
+        /**
+         * 
+         */
+        JButton getCancel()
+        {
+            return cancel;
+        }
+
+        /**
+         * 
+         */
+        int getIndex()
+        {
+            return index;
+        }
+
+        private Job job = null;
+        private JLabel label = null;
+        private JProgressBar progress = null;
+        private JButton cancel = null;
+        private int index = -1;
     }
 }

@@ -1,5 +1,5 @@
 
-package docs;
+package org.crosswire.jsword.examples;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +45,7 @@ import org.crosswire.jsword.util.Style;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */

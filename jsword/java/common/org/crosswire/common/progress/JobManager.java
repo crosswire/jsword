@@ -32,7 +32,7 @@ import org.crosswire.common.util.Logger;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
@@ -147,32 +147,30 @@ public class JobManager
             }
         };
         
-        boolean invoke = false;
         try
         {
-            invoke = SwingUtilities.isEventDispatchThread();
+            if (SwingUtilities.isEventDispatchThread())
+            {
+                firer.run();
+            }
+            else
+            {
+                try
+                {
+                    SwingUtilities.invokeAndWait(firer);
+                }
+                catch (Exception ex)
+                {
+                    log.warn("failed to propogate work progressed message", ex);
+                }
+            }
         }
         catch (Throwable ex)
         {
             // This can happen in a headerless environment, and we don't care
             // because we never need to invoke there, so just ignore.
             log.debug("ignoring error (assuming headerless): "+ex);
-        }
-
-        if (!invoke)
-        {
             firer.run();
-        }
-        else
-        {
-            try
-            {
-                SwingUtilities.invokeAndWait(firer);
-            }
-            catch (Exception ex)
-            {
-                log.warn("failed to propogate work progressed message", ex);
-            }
         }
 
         // Do we need to remove the job? Note that the section above will

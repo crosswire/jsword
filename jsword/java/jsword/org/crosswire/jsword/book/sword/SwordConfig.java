@@ -32,7 +32,7 @@ import org.crosswire.jsword.book.data.Filters;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung

@@ -121,7 +121,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::Disp - Sets/gets display name
  *
  * ENT:	idisp - value which to set disp
@@ -139,7 +139,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::Display - Calls this modules display object and passes itself
  *
  * RET:	error status
@@ -151,7 +151,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::SetKey - Sets a key to this module for position to a particular
  *			record or set of records
  *
@@ -176,7 +176,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::KeyText - Sets/gets module KeyText
  *
  * ENT:	ikeytext - value which to set keytext
@@ -194,7 +194,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::operator =(POSITION)	- Positions this modules to an entry
  *
  * ENT:	p	- position (e.g. TOP, BOTTOM)
@@ -208,7 +208,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::operator +=	- Increments module key a number of entries
  *
  * ENT:	increment	- Number of entries to jump forward
@@ -226,7 +226,7 @@ public class SWModule {
  */
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::operator -=	- Decrements module key a number of entries
  *
  * ENT:	decrement	- Number of entries to jump backward
@@ -240,7 +240,7 @@ public class SWModule {
  */
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::Search 	- Searches a module for a string
  *
  * ENT:	istr		- string for which to search
@@ -353,7 +353,7 @@ public class SWModule {
 	}
 
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::StripText() 	- calls all stripfilters on current text
  *
  * ENT:	buf	- buf to massage instead of this modules current text
@@ -381,7 +381,7 @@ public class SWModule {
 		return ""; //stripText(null, -1);
 	}
 
-/******************************************************************************
+/* *****************************************************************************
  * SWModule::RenderText 	- calls all renderfilters on current text
  *
  * ENT:	buf	- buffer to Render instead of current module position

@@ -31,7 +31,7 @@ import org.jdom.Document;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
  */

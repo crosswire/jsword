@@ -24,7 +24,7 @@ import org.crosswire.jsword.passage.Verse;
  * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see docs.Licence
+ * @see gnu.gpl.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author The Sword project (don't know who - no credits in original files (canon.h))
