@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
@@ -6,7 +5,7 @@ import java.awt.event.ActionEvent;
 import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.view.swing.book.FocusablePart;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
 
 /**
  * View the OSIS source to the current window.

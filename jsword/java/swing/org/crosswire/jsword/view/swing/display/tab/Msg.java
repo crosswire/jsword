@@ -1,16 +1,10 @@
 
-package org.crosswire.jsword.view.swing.desktop;
+package org.crosswire.jsword.view.swing.display.tab;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.KeyStroke;
-
-import org.crosswire.jsword.view.swing.display.FocusablePart;
+import org.crosswire.common.util.MsgBase;
 
 /**
- * Copy action.
+ * Compile safe Msg resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -33,27 +27,23 @@ import org.crosswire.jsword.view.swing.display.FocusablePart;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class EditCopyAction extends DesktopAbstractAction
+class Msg extends MsgBase
 {
+    static final Msg MORE = new Msg("More ...");
+
     /**
-     * Setup configuration
+     * Initialise any resource bundles
      */
-    public EditCopyAction(Desktop tools)
+    static
     {
-        super(tools,
-              "Copy",
-              "toolbarButtonGraphics/general/Copy16.gif",
-              "toolbarButtonGraphics/general/Copy24.gif",
-              "Copy", "Copy the selection.",
-              'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK, false));
+        init(Msg.class.getName());
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /**
+     * Passthrough ctor
      */
-    public void actionPerformed(ActionEvent ev)
+    private Msg(String name)
     {
-        FocusablePart da = getDesktop().getDisplayArea();
-        da.copy();
+        super(name);
     }
 }

@@ -216,7 +216,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static void setSwordPath(File[] dirs) throws BookException
     {
-        // Fist we need to unregister any registered books from ourselves
+        // First we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
         for (int i=0; i<matches.length; i++)
         {
@@ -237,7 +237,7 @@ public class SwordBookDriver extends AbstractBookDriver
         {
             if (!dirs[i].isDirectory())
             {
-                log.warn("No sword source found under: "+dirs[i]);
+                log.warn("No directory found for sword sources at: "+dirs[i]);
             }
         }
 

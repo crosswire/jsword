@@ -373,6 +373,27 @@ public class JAXBUtil
     }
 
     /**
+     * @param data
+     * @param i
+     * @return
+     */
+    public static List pagenate(BookData data, int i)
+    {
+        List reply = new ArrayList();
+        reply.add(data);
+        return reply;
+    }
+
+    /**
+     * @param data
+     * @param length
+     */
+    public static String getTitle(BookData data, int length)
+    {
+        return data.toString();
+    }
+
+    /**
      * Find all the instances of elements of type <code>find</code> under
      * the element <code>div</code>. For internal use only.
      */

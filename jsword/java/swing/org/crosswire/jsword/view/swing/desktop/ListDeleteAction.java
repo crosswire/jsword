@@ -1,10 +1,9 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
 
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
-import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
+import org.crosswire.jsword.view.swing.display.splitlist.OuterDisplayPane;
 
 /**
  * Show hide the list.

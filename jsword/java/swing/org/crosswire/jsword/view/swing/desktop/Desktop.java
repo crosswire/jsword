@@ -41,19 +41,25 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.Converter;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
-import org.crosswire.jsword.view.swing.book.FocusablePart;
-import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.SitesPane;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
 import org.crosswire.jsword.view.swing.book.TitleChangedListener;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
 import org.jdom.JDOMException;
 
 /**
@@ -188,7 +194,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         last = ((BibleViewPane) iter.next()).getPassagePane();
 
         // Preload the PassageInnerPane for faster initial view
-        InnerDisplayPane.preload();
+        Desktop.preload();
 
         startJob.done();
         splash.close();
@@ -780,6 +786,72 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     }
 
     /**
+     * Makes the second invocation much faster
+     */
+    public static void preload()
+    {
+        final Thread worker = new Thread("DisplayPreLoader")
+        {
+            public void run()
+            {
+                URL predicturl = Project.instance().getWritablePropertiesURL("display");
+                Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
+    
+                try
+                {
+                    job.setProgress("Setup");
+                    List booklist = Books.installed().getBookMetaDatas();
+                    if (booklist.size() == 0)
+                    {
+                        return;
+                    }
+    
+                    Book test = ((BookMetaData) booklist.get(0)).getBook();
+                    if (interrupted())
+                    {
+                        return;
+                    }
+    
+                    job.setProgress("Getting initial data");
+                    BookData data = test.getData(test.getGlobalKeyList().get(0));
+                    if (interrupted())
+                    {
+                        return;
+                    }
+    
+                    job.setProgress("Getting event provider");
+                    SAXEventProvider provider = data.getSAXEventProvider();
+                    if (interrupted())
+                    {
+                        return;
+                    }
+    
+                    job.setProgress("Compiling stylesheet");
+                    Converter converter = ConverterFactory.getConverter();
+                    converter.convert(provider);
+                    if (interrupted())
+                    {
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    job.ignoreTimings();
+                    log.error("View pre-load failed", ex);
+                }
+                finally
+                {
+                    job.done();
+                    log.debug("View pre-load finished");
+                }
+            }
+        };
+    
+        worker.setPriority(Thread.MIN_PRIORITY);
+        worker.start();
+    }
+
+    /**
      * Tabbed document interface
      */
     protected static final int LAYOUT_TYPE_TDI = 0;
@@ -827,7 +899,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Desktop.class);
+    protected static final Logger log = Logger.getLogger(Desktop.class);
 
     /*
      * GUI components

@@ -20,6 +20,7 @@ import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.view.swing.display.splitlist.OuterDisplayPane;
 
 /**
  * A quick Swing Bible display pane.
@@ -220,14 +221,6 @@ public class BibleViewPane extends JPanel
     public DisplaySelectPane getSelectPane()
     {
         return pnlSelect;
-    }
-
-    /**
-     * Accessor for the current InnerDisplayPane
-     *
-    private InnerDisplayPane getSelectedInnerDisplayPane()
-    {
-        return pnl_passg.getSelectedInnerDisplayPane();
     }
 
     /**

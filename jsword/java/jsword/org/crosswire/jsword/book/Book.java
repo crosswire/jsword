@@ -42,6 +42,7 @@ public interface Book extends Activatable, KeyFactory
     /**
      * Retrieval: Add to the given document some mark-up for the specified
      * Verses.
+     * TODO: If this given key can not be found null will be returned.
      * @param key The verses to search for
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method

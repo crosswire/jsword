@@ -55,9 +55,6 @@ public class ButtonPane extends JPanel
         // PENDING: find some way to do default buttons
         //dialog.getRootPane().setDefaultButton(ok);
 
-        JPanel buttons = new JPanel();
-        JPanel retcode = new JPanel();
-
         buttons.setLayout(new GridLayout(1, 2, 10, 10));
         buttons.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         buttons.add(ok);
@@ -93,10 +90,15 @@ public class ButtonPane extends JPanel
             }
         });
 
-        retcode.setBorder(new EdgeBorder(SwingConstants.NORTH));
-        retcode.setLayout(new BorderLayout(10, 10));
-        retcode.add("East", buttons);
+        this.setBorder(new EdgeBorder(SwingConstants.NORTH));
+        this.setLayout(new BorderLayout(10, 10));
+        this.add("East", buttons);
     }
+
+    /**
+     * A panel so we can right justify
+     */
+    private JPanel buttons = new JPanel();
 
     /**
      * PENDING: turn this into a [add|remove]ButtonPaneListener thing

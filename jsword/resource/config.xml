@@ -42,7 +42,7 @@
   </option>
 
   <option key="Bibles.Verses Per Tab" type="number">
-  	<introspect class="org.crosswire.jsword.view.swing.book.TabbedDisplayPane" property="PageSize"/>
+  	<introspect class="org.crosswire.jsword.view.swing.display.tab.TabbedDisplayPane" property="PageSize"/>
     <help>How many verses do you want to display on a page before spilling to tabbed mode.</help>
   </option>
 

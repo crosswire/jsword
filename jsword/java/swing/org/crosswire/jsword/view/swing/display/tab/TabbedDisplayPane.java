@@ -1,4 +1,4 @@
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.display.tab;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -16,10 +16,16 @@ import javax.swing.event.HyperlinkListener;
 
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.SerializingContentHandler;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.view.swing.display.BookDataDisplay;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
+import org.crosswire.jsword.view.swing.display.scrolled.ScrolledBookDataDisplay;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -52,7 +58,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
      */
     public TabbedDisplayPane()
     {
-        idps.add(pnlView);
+        displays.add(pnlView);
 
         initialize();
 
@@ -80,8 +86,8 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         });
 
         this.setLayout(new BorderLayout());
-        this.add(pnlView, BorderLayout.CENTER);
-        center = pnlView;
+        center = pnlView.getComponent();
+        this.add(center, BorderLayout.CENTER);
     }
 
     /**
@@ -90,13 +96,6 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     public synchronized void setBook(Book version)
     {
         this.book = version;
-
-        // Now go through all the known views and set the version
-        for (Iterator it = idps.iterator(); it.hasNext();)
-        {
-            InnerDisplayPane idp = (InnerDisplayPane) it.next();
-            idp.setBook(version);
-        }
     }
 
     /**
@@ -110,22 +109,21 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         {
             // Tabbed view or not we should clear out the old tabs
             tabMain.removeAll();
-
-            idps.clear();
-            idps.add(pnlView);
+            displays.clear();
+            displays.add(pnlView);
 
             // Do we need a tabbed view
-            if (ref != null && ref.countVerses() > pagesize)
+            tabs = (ref != null && ref.countVerses() > pagesize);
+            if (tabs)
             {
-                tabs = true;
-
                 // Calc the verses to display in this tab
                 Passage cut = (Passage) whole.clone();
                 waiting = cut.trimVerses(pagesize);
 
                 // Create the tab
-                InnerDisplayPane pnl_new = createInnerDisplayPane(cut);
-                tabMain.add(pnl_new, shortenName(cut.getName()));
+                BookDataDisplay pnlNew = createInnerDisplayPane(cut);
+                Component display = pnlNew.getComponent();
+                tabMain.add(display, shortenName(cut.getName()));
                 tabMain.add(pnlMore, "More ...");
 
                 // And show it is needed
@@ -138,17 +136,23 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
             }
             else
             {
-                tabs = false;
-
                 // Setup the front tab
-                pnlView.setPassage(ref);
+                if (ref == null || book == null)
+                {
+                    pnlView.setBookData(null);
+                }
+                else
+                {
+                    BookData data = book.getData(ref);
+                    pnlView.setBookData(data);
+                }
 
                 // And show it if needed
                 if (center != pnlView)
                 {
                     this.remove(center);
-                    this.add(pnlView, BorderLayout.CENTER);
-                    center = pnlView;
+                    center = pnlView.getComponent();
+                    this.add(center, BorderLayout.CENTER);
                 }
             }
         }
@@ -181,8 +185,9 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
             waiting = cut.trimVerses(pagesize);
 
             // Create a new tab
-            InnerDisplayPane pnl_new = createInnerDisplayPane(cut);
-            tabMain.add(pnl_new, shortenName(cut.getName()));
+            BookDataDisplay pnlNew = createInnerDisplayPane(cut);
+            Component display = pnlNew.getComponent();
+            tabMain.add(display, shortenName(cut.getName()));
 
             // Do we need a new more tab
             if (waiting != null)
@@ -191,7 +196,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
             }
 
             // Select the real new tab in place of any more tabs
-            tabMain.setSelectedComponent(pnl_new);
+            tabMain.setSelectedComponent(display);
         }
         catch (Exception ex)
         {
@@ -202,11 +207,11 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * Accessor for the current TextComponent
      */
-    public InnerDisplayPane getInnerDisplayPane()
+    public BookDataDisplay getInnerDisplayPane()
     {
         if (tabs)
         {
-            return (InnerDisplayPane) tabMain.getSelectedComponent();
+            return (BookDataDisplay) tabMain.getSelectedComponent();
         }
         else
         {
@@ -217,15 +222,23 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * Tab creation helper
      */
-    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws BookException
+    private synchronized BookDataDisplay createInnerDisplayPane(Passage cut) throws BookException
     {
-        InnerDisplayPane idp = new InnerDisplayPane();
-        idp.setBook(book);
-        idp.setPassage(cut);
+        BookDataDisplay idp = new ScrolledBookDataDisplay();
 
-        idps.add(idp);
+        if (cut == null || book == null)
+        {
+            pnlView.setBookData(null);
+        }
+        else
+        {
+            BookData data = book.getData(cut);
+            pnlView.setBookData(data);
+        }
 
-        // Add all the known listeners to this new InnerDisplayPane
+        displays.add(idp);
+
+        // Add all the known listeners to this new BookDataDisplay
         if (hyperlis != null)
         {
             for (Iterator it = hyperlis.iterator(); it.hasNext();)
@@ -311,9 +324,9 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         }
 
         // Now go through all the known syncs and add this one in
-        for (Iterator it = idps.iterator(); it.hasNext();)
+        for (Iterator it = displays.iterator(); it.hasNext();)
         {
-            InnerDisplayPane idp = (InnerDisplayPane) it.next();
+            BookDataDisplay idp = (BookDataDisplay) it.next();
             idp.addHyperlinkListener(li);
         }
     }
@@ -333,9 +346,9 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         }
 
         // Now remove from all the known syncs
-        for (Iterator it = idps.iterator(); it.hasNext();)
+        for (Iterator it = displays.iterator(); it.hasNext();)
         {
-            InnerDisplayPane idp = (InnerDisplayPane) it.next();
+            BookDataDisplay idp = (BookDataDisplay) it.next();
             idp.removeHyperlinkListener(li);
         }
     }
@@ -365,9 +378,9 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         }
 
         // Now go through all the known syncs and add this one in
-        for (Iterator it = idps.iterator(); it.hasNext();)
+        for (Iterator it = displays.iterator(); it.hasNext();)
         {
-            InnerDisplayPane idp = (InnerDisplayPane) it.next();
+            BookDataDisplay idp = (BookDataDisplay) it.next();
             idp.addMouseListener(li);
         }
     }
@@ -387,19 +400,11 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         }
         
         // Now remove from all the known syncs
-        for (Iterator it = idps.iterator(); it.hasNext();)
+        for (Iterator it = displays.iterator(); it.hasNext();)
         {
-            InnerDisplayPane idp = (InnerDisplayPane) it.next();
+            BookDataDisplay idp = (BookDataDisplay) it.next();
             idp.removeMouseListener(li);
         }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
-     */
-    public String getOSISSource()
-    {
-        return getInnerDisplayPane().getOSISSource();
     }
 
     /* (non-Javadoc)
@@ -415,7 +420,33 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
      */
     public Key getKey()
     {
-        return getInnerDisplayPane().getKey();
+        return whole;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
+     */
+    public String getOSISSource()
+    {
+        if (whole == null || book == null)
+        {
+            return "";
+        }
+
+        try
+        {
+            BookData data = book.getData(whole);
+            SAXEventProvider provider = data.getSAXEventProvider();
+            SerializingContentHandler handler = new SerializingContentHandler(true);
+            provider.provideSAXEvents(handler);
+
+            return handler.toString();
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+            return "";
+        }
     }
 
     /**
@@ -462,12 +493,12 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
     /**
      * If we are not using tabs, this is the main view
      */
-    private InnerDisplayPane pnlView = new InnerDisplayPane();
+    private BookDataDisplay pnlView = new ScrolledBookDataDisplay();
 
     /**
      * A list of all the InnerDisplayPanes so we can control listeners
      */
-    private List idps = new ArrayList();
+    private List displays = new ArrayList();
 
     /**
      * Pointer to whichever of the above is currently in use

@@ -1,4 +1,4 @@
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.display;
 
 import javax.swing.event.HyperlinkListener;
 

@@ -26,6 +26,7 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
 
 /**
  * Builds a set of tabs from the list of Books returned by a filtered list

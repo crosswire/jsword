@@ -25,6 +25,7 @@ import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
 import org.crosswire.jsword.view.swing.passage.KeyListListModel;
 
 /**

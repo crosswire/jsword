@@ -1,4 +1,4 @@
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.display.splitlist;
 
 import java.awt.BorderLayout;
 import java.util.List;
@@ -21,6 +21,12 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.view.swing.book.BibleViewPane;
+import org.crosswire.jsword.view.swing.book.DisplaySelectEvent;
+import org.crosswire.jsword.view.swing.book.DisplaySelectListener;
+import org.crosswire.jsword.view.swing.book.DisplaySelectPane;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
+import org.crosswire.jsword.view.swing.display.tab.*;
 import org.crosswire.jsword.view.swing.passage.PassageGuiUtil;
 import org.crosswire.jsword.view.swing.passage.PassageListModel;
 
@@ -149,15 +155,6 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
         DisplaySelectPane psel = view.getSelectPane();
         psel.setPassage(ref);
     }
-
-    /*
-     * Accessor for the current InnerDisplayPane
-     *
-    public InnerDisplayPane getSelectedInnerDisplayPane()
-    {
-        return txtPassg.getInnerDisplayPane();
-    }
-    */
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()

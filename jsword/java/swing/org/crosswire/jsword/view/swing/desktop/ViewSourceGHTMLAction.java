@@ -9,7 +9,7 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.StringSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.view.swing.book.FocusablePart;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
 import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**

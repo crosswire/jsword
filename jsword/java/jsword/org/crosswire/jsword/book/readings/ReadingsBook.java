@@ -113,6 +113,11 @@ public class ReadingsBook extends AbstractBook
      */
     public BookData getData(Key key) throws BookException
     {
+        if (!(key instanceof ReadingsKey))
+        {
+            throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
+        }
+
         try
         {
             Osis osis = JAXBUtil.createOsisFramework(getBookMetaData());

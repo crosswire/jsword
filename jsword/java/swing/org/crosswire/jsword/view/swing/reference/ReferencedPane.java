@@ -33,10 +33,10 @@ import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
 import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
-import org.crosswire.jsword.view.swing.book.FocusablePart;
 import org.crosswire.jsword.view.swing.book.KeyTreeNode;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
+import org.crosswire.jsword.view.swing.display.FocusablePart;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.

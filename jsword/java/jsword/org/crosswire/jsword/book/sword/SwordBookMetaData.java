@@ -101,7 +101,13 @@ public class SwordBookMetaData implements BookMetaData
         {
             initials = StringUtil.getInitials(name);
         }
-        mtype = ModuleType.getModuleType(getFirstValue(ConfigEntry.MOD_DRV));
+
+        String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
+        if (modTypeName != null)
+        {
+            mtype = ModuleType.getModuleType(modTypeName);
+        }
+
         speed = BookMetaData.SPEED_FAST;
         edition = "";
         openness = Openness.UNKNOWN;
@@ -115,13 +121,13 @@ public class SwordBookMetaData implements BookMetaData
         }
         if (mtype == null)
         {
-            log.warn("Missing module type for: "+internal+" checked: "+getFirstValue(ConfigEntry.MOD_DRV));
+            log.warn("Missing module type for: "+internal+" checked: "+modTypeName);
         }
         else
         {
             if (mtype.getBookType() == null)
             {
-                log.warn("Missing book type for: "+internal+" checked: "+getFirstValue(ConfigEntry.MOD_DRV));
+                log.warn("Missing book type for: "+internal+" checked: "+modTypeName);
             }
         }
 
