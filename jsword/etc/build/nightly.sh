@@ -32,4 +32,3 @@ rm -f $LOGFILE
   find $FTP_BASE/nightly -type f -mtime +7 -exec rm -v {} \;
   cat $LOGFILE
 } | /bin/mail -s "jsword buildlog (from `dnsdomainname`)" joe@eireneh.com
-

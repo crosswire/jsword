@@ -23,6 +23,16 @@ echo JSWORD_HOME=$JSWORD_HOME
 . $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
 . $JSWORD_HOME/etc/build/settings.global.sh
 
+. $JSWORD_HOME/etc/build/commands.`dnsdomainname`.sh
+. $JSWORD_HOME/etc/build/commands.global.sh
+
+
+#debug
+echo 'which ant'
+which ant
+echo $ANT_HOME/bin/ant
+
+
 # keep the cvsup separate to allow build.xml to be updated
 
 # This appears to be done by the jsword cvsup as a result of the ..?
@@ -30,10 +40,5 @@ cd $SUPPORT_HOME
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 
 cd $JSWORD_HOME
-
-echo 'which ant'
-which ant
-echo $ANT_HOME/bin/ant
-
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant nightly $PROPERTIES
