@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
@@ -159,7 +161,19 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
             li.startDocument(getDictionaryMetaData().getInitials());
             li.startSection(key.getText());
 
-            String text = new String(backend.getRawText(key));
+            byte[] data = backend.getRawText(key);
+            String moduleCharset = config.getModuleCharset();
+            String text = null;
+            try
+            {
+                text = new String(data, moduleCharset);
+            }
+            catch (UnsupportedEncodingException unSupEnEx)
+            {
+                // It is impossible! In case, use system default...
+                log.error("Encoding: " + moduleCharset + " not supported", unSupEnEx);
+                text = new String(data);
+            }
             config.getFilter().toOSIS(li, text);
 
             li.endSection();
@@ -191,6 +205,11 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
      */
     private SwordConfig config;
 
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(SwordDictionary.class);
+    
     /**
      * our meta data
      */

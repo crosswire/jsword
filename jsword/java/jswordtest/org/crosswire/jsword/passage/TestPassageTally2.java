@@ -1,8 +1,8 @@
 
 package org.crosswire.jsword.passage;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
@@ -298,14 +298,14 @@ public class TestPassageTally2 extends TestCase
 
     public void testObject() throws Exception
     {
-        FileOutputStream file_out = new FileOutputStream("tmp.ser");
-        ObjectOutputStream obj_out = new ObjectOutputStream(file_out);
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        ObjectOutputStream obj_out = new ObjectOutputStream(bout);
         obj_out.writeObject(tally);
         obj_out.writeObject(empty);
         obj_out.close();
         obj_out = null;
-        FileInputStream file_in = new FileInputStream("tmp.ser");
-        ObjectInputStream obj_in = new ObjectInputStream(file_in);
+        ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
+        ObjectInputStream obj_in = new ObjectInputStream(bin);
         Passage gen1_135_copy = (Passage) obj_in.readObject();
         Passage exo2a_3b_copy = (Passage) obj_in.readObject();
         obj_in.close();

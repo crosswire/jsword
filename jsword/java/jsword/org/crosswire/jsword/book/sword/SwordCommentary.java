@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
@@ -40,6 +41,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author Jacky Cheung
  * @version $Id$
  */
 public class SwordCommentary extends AbstractCommentary implements Commentary
@@ -87,6 +89,8 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
             BookDataListener li = DataFactory.getInstance().createBookDataListnener();
             li.startDocument(getCommentaryMetaData().getInitials());
     
+            String moduleCharset = config.getModuleCharset();
+            
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
             while (rit.hasNext())
@@ -102,9 +106,18 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
     
                     li.startVerse(verse);
 
-                    // We should probably think about encodings here?
                     byte[] data = backend.getRawText(verse);
-                    String text = new String(data);
+                    String text = null;
+                    try
+                    {
+                        text = new String(data, moduleCharset);
+                    }
+                    catch (UnsupportedEncodingException unSupEnEx)
+                    {
+                        // It is impossible! In case, use system default...
+                        log.error("Encoding: " + moduleCharset + " not supported", unSupEnEx);
+                        text = new String(data);
+                    }
                     config.getFilter().toOSIS(li, text);
 
                     li.endVerse();

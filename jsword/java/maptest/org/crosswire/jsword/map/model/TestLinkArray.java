@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.map.model;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 
 import junit.framework.TestCase;
@@ -55,7 +55,7 @@ public class TestLinkArray extends TestCase
         Bible bible = Defaults.getBibleMetaData().getBible();
         LinkArray la = new LinkArray(bible);
 
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("foo.la"));
+        ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream());
         out.writeObject(la);
         out.close();
     }

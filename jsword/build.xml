@@ -12,7 +12,6 @@
   <property name="source.web" value="${source.root}/web"/>
   <property name="source.etc" value="${source.root}/etc"/>
   <property name="source.jar" value="${source.root}/jar"/>
-  <property name="source.tools" value="${source.root}/tools"/>
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
   <property name="source.keystore" value="${basedir}/jsword.keystore"/>
@@ -29,7 +28,9 @@
   <property name="target.download" value="${target.root}/download"/>
   <property name="target.web" value="${target.root}/web"/>
   <property name="target.jnlp" value="${target.web}/jnlp"/>
-  <property name="notes.root" value="notes"/>
+  <property name="support.root" value="../jsword-support"/>
+  <property name="support.notes" value="${support.root}/notes"/>
+  <property name="support.tools" value="${support.root}/tools"/>
 
   <property name="jnlp.alias" value="test builds"/>
   <property name="jnlp.password" value="p455w0rd"/>
@@ -232,7 +233,7 @@
       <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </copy>
-    <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.swingui}/resource"/>
+    <unzip src="${support.notes}/versions/projectb-ser-av.zip" dest="${target.swingui}/resource"/>
   </target>
 
   <!--=======================================================================-->
@@ -267,7 +268,7 @@
       <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </copy>
-    <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.web}/WEB-INF/classes"/>
+    <unzip src="${support.notes}/versions/projectb-ser-av.zip" dest="${target.web}/WEB-INF/classes"/>
     <mkdir dir="${target.web}/WEB-INF/lib"/>
     <copy todir="${target.web}/WEB-INF/lib">
       <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
@@ -291,7 +292,8 @@
     <mkdir dir="${target.junit}"/>
     <echo message="If this fails you might need to:"/>
     <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar ${ant.home}/lib"/>
-    <junit haltonfailure="no" printsummary="on" showoutput="yes"> <!-- fork="yes" -->
+    <echo message="using -Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
+    <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
       <test name="JSwordAllTests" todir="${target.junit}"/>
@@ -299,6 +301,7 @@
       <formatter type="plain" usefile="false"/>
       <formatter type="xml"/>
       <classpath>
+        <fileset dir="${ant.home}/lib" includes="**/*.jar"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
         <pathelement path="${target.classes}/osis"/>
         <pathelement path="${target.classes}/common"/>
@@ -379,7 +382,7 @@
     <mkdir dir="${target.web}/java2html"/>
     <java fork="true" classname="j2h" output="${target.web}/java2html/output.txt">
       <classpath>
-        <fileset dir="${source.tools}/java2html12" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/java2html12" includes="**/*.jar"/>
       </classpath>
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/common"/>
@@ -410,7 +413,7 @@
     <mkdir dir="${target.jdepend}"/>
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to:"/>
-    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
+    <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
     <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml" fork="yes">
       <sourcespath>
         <pathelement path="${source.java}/common"/>
@@ -423,14 +426,14 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <fileset dir="${source.tools}/jdepend24" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/jdepend24" includes="**/*.jar"/>
       </classpath>
     </jdepend>
     <style
         basedir="${target.jdepend}"
         destdir="${target.web}/jdepend"
         includes="jdepend-report.xml"
-        style="${source.tools}/jdepend26/jdepend.xsl"/>
+        style="${support.tools}/jdepend26/jdepend.xsl"/>
   </target>
 
   <!--=======================================================================-->
@@ -439,11 +442,17 @@
     <mkdir dir="${target.web}/checkstyle"/>
     <taskdef resource="checkstyletask.properties">
       <classpath>
-        <fileset dir="${source.tools}/checkstyle30" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/checkstyle30" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    <!-- taskdef name="checkstyle" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask"/ -->
-    <checkstyle config="${source.tools}/checkstyle30/custom.xml" failOnViolation="false">
+    <copy file="${source.tools}/checkstyle30/custom.xml" overwrite="true"
+        tofile="${target.checkstyle}/custom.xml">
+      <filterset>
+        <filter token="source.java" value="${basedir}/${source.java}"/>
+        <filter token="target.checkstyle" value="${basedir}/${target.checkstyle}"/>
+      </filterset>
+    </copy>
+    <checkstyle config="${target.checkstyle}/custom.xml" failOnViolation="false">
       <fileset dir="${source.java}/common" includes="**/*.java"/>
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
       <fileset dir="${source.java}/servlet" includes="**/*.java"/>
@@ -456,18 +465,18 @@
         basedir="${target.checkstyle}"
         destdir="${target.web}/checkstyle"
         includes="checkstyle_errors.xml"
-        style="${source.tools}/checkstyle30/checkstyle-noframes.xsl"/>
+        style="${support.tools}/checkstyle30/checkstyle-noframes.xsl"/>
   </target>
 
   <!--=======================================================================-->
   <target name="web.pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
-        <fileset dir="${source.tools}/pmd104" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/pmd104" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.web}/pmd"/>
-    <pmd rulesetfiles="${basedir}/${source.tools}/pmd104/ruleset.xml" shortFilenames="true">
+    <pmd rulesetfiles="${basedir}/${support.tools}/pmd104/ruleset.xml" shortFilenames="true">
       <formatter type="html" toFile="${target.web}/pmd/index.html"/>
       <fileset dir="${source.java}/common" includes="**/*.java"/>
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
@@ -483,7 +492,7 @@
     <mkdir dir="${target.web}/cpd"/>
     <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
       <classpath>
-        <fileset dir="${source.tools}/pmd104" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/pmd104" includes="**/*.jar"/>
       </classpath>
       <arg value="100"/>
       <arg value="${source.java}"/>
@@ -493,10 +502,10 @@
   <!--=======================================================================-->
   <target name="web.javancss">
     <echo message="If this fails with a DTM ID exception you might need to:"/>
-    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
+    <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
     <taskdef name="javancss" classname="javancss.JavancssAntTask">
       <classpath>
-        <fileset dir="${source.tools}/javancss2141" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/javancss2141" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.javancss}"/>
@@ -510,7 +519,7 @@
     <style
     	in="${target.javancss}/javancss_metrics.xml"
     	out="${target.web}/javancss/index.html"
-    	style="${source.tools}/javancss2141/javancss2html.xsl"/>
+    	style="${support.tools}/javancss2141/javancss2html.xsl"/>
   </target>
 
   <!--=======================================================================-->
@@ -518,7 +527,7 @@
     <mkdir dir="${target.web}/findbugs"/>
     <java classname="edu.umd.cs.findbugs.FindBugs" output="${target.web}/findbugs/report.txt">
       <classpath>
-        <fileset dir="${source.tools}/findbugs052" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/findbugs052" includes="**/*.jar"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
       <arg value="-sortByClass"/>
@@ -528,9 +537,17 @@
 
   <!--=======================================================================-->
   <target name="clover">
-    <echo message="If this fails you might need to install clover:"/>
     <taskdef resource="clovertasks"/>
-    <clover-setup initString="demo_coverage.db"/>
+    <mkdir dir="${target.clover}"/>
+    <clover-setup initString="${target.clover}/demo_coverage.db"/>
+  </target>
+  <target name="web.clover" depends="clover">
+    <mkdir dir="${target.web}/clover"/>
+    <clover-report>
+      <current outfile="${target.web}/clover" title="Clover Report">
+        <format type="html"/> 
+      </current>	 
+    </clover-report>
   </target>
 
   <!--=======================================================================-->
@@ -586,7 +603,7 @@
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="projectb-ser-av.zip"/>
-      <param name="dir" value="${notes.root}/versions"/>
+      <param name="dir" value="${support.notes}/versions"/>
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="jsword.jar"/>
@@ -677,7 +694,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean, swingui, web" description="Run a full clean/build/deploy/test cycle">
+  <target name="all" depends="clean, swingui" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->

@@ -236,13 +236,16 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
         if (root == null)
         {
             String sysprop = System.getProperty("jsword.bible.dir");
+            log.debug("Testing system property jsword.bible.dir="+sysprop);
+
             if (sysprop != null)
             {
                 URL found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
                 URL test = NetUtil.lengthenURL(found, "locator.properties");
+
                 if (NetUtil.isFile(test))
                 {
-                    log.debug("Found BibleRoot from system property jsword.bible.dir at "+sysprop+"");
+                    log.debug("Found BibleRoot using system property jsword.bible.dir at "+test);
                     root = found;
                 }
                 else
@@ -260,7 +263,7 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
             if (NetUtil.isFile(test))
             {
                 log.debug("Found BibleRoot from current directory: "+test.toExternalForm());
-                root = found;
+                root = test;
             }
             else
             {

@@ -3,6 +3,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.net.URL;
 import java.util.Iterator;
+import java.io.UnsupportedEncodingException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BibleMetaData;
@@ -43,6 +44,7 @@ import org.crosswire.jsword.util.Project;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
+ * @author Jacky Cheung
  * @version $Id$
  */
 public class SwordBible extends AbstractBible
@@ -93,6 +95,8 @@ public class SwordBible extends AbstractBible
             BookDataListener li = DataFactory.getInstance().createBookDataListnener();
             li.startDocument(getBibleMetaData().getInitials());
     
+            String moduleCharset = config.getModuleCharset();
+            
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
             while (rit.hasNext())
@@ -108,9 +112,18 @@ public class SwordBible extends AbstractBible
     
                     li.startVerse(verse);
 
-                    // We should probably think about encodings here?
                     byte[] data = backend.getRawText(verse);
-                    String text = new String(data);
+                    String text = null;
+                    try
+                    {
+                        text = new String(data, moduleCharset);
+                    }
+                    catch (UnsupportedEncodingException unSupEnEx)
+                    {
+                        // It is impossible! In case, use system default...
+                        log.error("Encoding: " + moduleCharset + " not supported", unSupEnEx);
+                        text = new String(data);
+                    }
                     config.getFilter().toOSIS(li, text);
 
                     li.endVerse();
@@ -139,7 +152,7 @@ public class SwordBible extends AbstractBible
 
         return searcher.findPassage(match);
     }
-
+    
     /*=-0
      * The search implementation
      */

@@ -35,6 +35,7 @@ import org.crosswire.jsword.book.data.Filters;
  * @see docs.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
+ * @author Jacky Cheung
  * @version $Id$
  */
 public class SwordConfig
@@ -113,7 +114,9 @@ public class SwordConfig
                 String distributionLicenseString = tok.nextToken().trim();
                 int index = matchingIndex(SwordConstants.DISTIBUTION_LICENSE_STRINGS, distributionLicenseString);
                 if (index != -1)
+                {
                     distributionLicense |= 1 << index;
+                }
                 else
                 {
                     if (!distributionLicenseAdditionalInfo.equals(""))
@@ -143,7 +146,9 @@ public class SwordConfig
         {
             String installSizeString = reader.getFirstValue("InstallSize");
             if (installSizeString != null)
+            {
                 Integer.parseInt(installSizeString);
+            }
         }
         catch (NumberFormatException nfe)
         {
@@ -215,12 +220,18 @@ public class SwordConfig
 
         String encodingString = reader.getFirstValue("Encoding");
         encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, encodingString);
+        if (encoding < 0)
+        {
+            encoding = 1; // default is Latin-1, but why not encoding is a String object?
+        }
 
         try
         {
             String displayLevelString = reader.getFirstValue("DisplayLevel");
             if (displayLevelString != null)
+            {
                 displayLevel = Integer.parseInt(displayLevelString);
+            }
         }
         catch (NumberFormatException nfe)
         {
@@ -254,7 +265,9 @@ public class SwordConfig
         {
             String blockCountString = reader.getFirstValue("BlockCount");
             if (blockCountString != null)
+            {
                 blockCount = Integer.parseInt(blockCountString);
+            }
         }
         catch (NumberFormatException nfe)
         {
@@ -281,11 +294,16 @@ public class SwordConfig
     {
         int matchNo = -1;
         if (array == null || s == null)
+        {
             return -1;
+        }
+
         for (int i = 0; i < array.length; i++)
         {
             if (s.equalsIgnoreCase(array[i]))
+            {
                 matchNo = i;
+            }
         }
         return matchNo;
     }
@@ -545,6 +563,22 @@ public class SwordConfig
     public int getEncoding()
     {
         return encoding;
+    }
+    
+    /**
+     * Returns the Charset of the module based on the encoding attribute
+     *
+     * @return the charset of the module.
+     */
+    public String getModuleCharset()
+    {
+        switch(encoding)
+        {
+            case 0:
+                return "UTF-8";
+            default:
+                return "ISO-8859-1"; // Latin-1
+        }
     }
 
     /**
