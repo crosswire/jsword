@@ -101,7 +101,7 @@ public class LocalParser implements Parser
      * @return Passage
      * @throws SearchException
      */
-    protected Passage bestMatch(String sought) throws BookException
+    private Passage bestMatch(String sought) throws BookException
     {
         String[] words = BookUtil.getWords(sought);
         words = Grammar.stripSmallWords(words);

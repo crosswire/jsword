@@ -36,7 +36,7 @@ class Msg extends MsgBase
     public static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");
     public static final Msg MISSING_FILE = new Msg("Missing file.");
     public static final Msg NOT_FOUND = new Msg("Module directory not found.");
-    public static final Msg READ_FAIL = new Msg("Error reading data.");
+    public static final Msg READ_FAIL = new Msg("Error reading {0}");
     public static final Msg READ_ONLY = new Msg("Sword modules are read-only");
     public static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type: {0}");
     public static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0}");

@@ -163,14 +163,12 @@ public class GZIPBackend implements Backend
             // These 2 bits of data are never read.
             int bstart = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
             int bsize = SwordUtil.decodeLittleEndian16(temp, 8);
-            log.debug("for "+verse.getName()+" bstart="+bstart+", bsize="+bsize);
 
             // Can we get the data from the cache
             byte[] uncompr = null;
             if (buffernum == lastbuffernum)
             {
                 uncompr = lastuncompr;
-                log.debug("cache hit on buffernum="+buffernum);
             }
             else
             {
@@ -231,7 +229,7 @@ public class GZIPBackend implements Backend
         }
         catch (Exception ex)
         {
-            throw new BookException(Msg.READ_FAIL, ex);
+            throw new BookException(Msg.READ_FAIL, ex, new Object[] { verse.getName() });
         }
     }
 

@@ -4,6 +4,7 @@ package org.crosswire.jsword.book;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.jsword.passage.PassageUtil;
 
 /**
@@ -121,7 +122,21 @@ public class BookUtil
      */
     public static String[] getWords(String sentance)
     {
-        String words[] = tokenize(sentance);
+        // First there are some things we regard as word delimitters even if
+        // they are not near space. Note that "-" should not be in this list
+        // because words like abel-beth-maiacha comtain them.
+        sentance = StringUtils.replace(sentance, "--", " ");
+        sentance = StringUtils.replace(sentance, ".", " ");
+        sentance = StringUtils.replace(sentance, "!", " ");
+        sentance = StringUtils.replace(sentance, "?", " ");
+        sentance = StringUtils.replace(sentance, ":", " ");
+        sentance = StringUtils.replace(sentance, ";", " ");
+        sentance = StringUtils.replace(sentance, "\"", " ");
+        sentance = StringUtils.replace(sentance, "\'", " ");
+        sentance = StringUtils.replace(sentance, "(", " ");
+        sentance = StringUtils.replace(sentance, ")", " ");
+
+        String words[] = StringUtils.split(sentance, " ");
         String[] retcode = new String[words.length];
 
         // Remove the punctuation from the ends of the words.

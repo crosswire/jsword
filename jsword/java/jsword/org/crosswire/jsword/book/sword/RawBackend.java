@@ -104,12 +104,12 @@ public class RawBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
      */
-    public byte[] getRawText(Verse v) throws BookException
+    public byte[] getRawText(Verse verse) throws BookException
     {
         try
         {
-            int testament = SwordConstants.getTestament(v);
-            long index = SwordConstants.getIndex(v);
+            int testament = SwordConstants.getTestament(verse);
+            long index = SwordConstants.getIndex(verse);
 
             // If this is a single testament Bible, return nothing.
             if (idx_raf[testament] == null)
@@ -131,7 +131,7 @@ public class RawBackend implements Backend
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.READ_FAIL, ex);
+            throw new BookException(Msg.READ_FAIL, ex, new Object[] { verse.getName() });
         }
     }
 

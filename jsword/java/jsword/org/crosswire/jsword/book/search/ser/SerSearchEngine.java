@@ -62,7 +62,7 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Constructor for SerSearchEngine.
      */
-    public void init(Bible bible, URL url, ProgressListener li) throws BookException
+    public void init(Bible bible, URL url, final ProgressListener li) throws BookException
     {
         try
         {
@@ -77,8 +77,25 @@ public class SerSearchEngine implements SearchEngine, Index
             else
             {
                 createEmptyIndex();
-                generateSearchIndex(li);
-                saveIndexes();
+
+                // At this point the index is usable, even if it doesn't always
+                // return full results so we can do the rest in a thread.
+                // NOTE(joe): at some stage have a better monitor for this.
+                new Thread(new Runnable()
+                {
+                    public void run()
+                    {
+                        try
+                        {
+                            generateSearchIndex(li);
+                            saveIndexes();
+                        }
+                        catch (BookException ex)
+                        {
+                            Reporter.informUser(SerSearchEngine.this, ex);
+                        }
+                    }
+                }).start();
             }
         }
         catch (IOException ex)
@@ -178,17 +195,22 @@ public class SerSearchEngine implements SearchEngine, Index
 
         // We don't need to create any indexes, they just need loading
         BufferedReader ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
-        ref_map = new TreeMap();
+
         while (true)
         {
             String line = ref_idy_bin.readLine();
             if (line == null)
+            {
                 break;
+            }
+
             int colon1 = line.indexOf(":");
             int colon2 = line.lastIndexOf(":");
             String word = line.substring(0, colon1);
+
             long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
             int length = Integer.parseInt(line.substring(colon2 + 1));
+
             Section section = new Section(offset, length);
             ref_map.put(word, section);
         }
@@ -206,8 +228,7 @@ public class SerSearchEngine implements SearchEngine, Index
      */
     private void createEmptyIndex() throws IOException
     {
-        // Create blank indexes
-        ref_map = new TreeMap();
+        ref_map.clear();
 
         // Open the Passage RAF
         URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
@@ -218,43 +239,66 @@ public class SerSearchEngine implements SearchEngine, Index
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    private void generateSearchIndex(ProgressListener li) throws BookException
+    protected void generateSearchIndex(ProgressListener li) throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
+
+        // If we get an error reading a verse dont give up straight away
+        int errors = 0;
 
         // loop through all the verses
         for (Iterator it = WHOLE.verseIterator(); it.hasNext();)
         {
             Verse verse = (Verse) it.next();
-
-            if (li != null)
+            try
             {
-                li.progressMade(new ProgressEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
-            }
-
-            // loop through all the words in this verse
-            Passage current = PassageFactory.createPassage();
-            current.add(verse);
-            String text = bible.getData(current).getPlainText();
-            String[] words = BookUtil.getWords(text);
-            for (int i = 0; i < words.length; i++)
-            {
-                // ensure there is a Passage for this word in the word/passage hashmap
-                Passage matches = (Passage) matchmap.get(words[i]);
-                if (matches == null)
+                if (li != null)
                 {
-                    matches = PassageFactory.createPassage();
-                    matchmap.put(words[i], matches);
+                    li.progressMade(new ProgressEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
                 }
 
-                // add this verse to this words passage
-                matches.add(verse);
+                // loop through all the words in this verse
+                Passage current = PassageFactory.createPassage();
+                current.add(verse);
+                String text = bible.getData(current).getPlainText();
+                String[] words = BookUtil.getWords(text);
+                for (int i = 0; i < words.length; i++)
+                {
+                    // ensure there is a Passage for this word in the word/passage hashmap
+                    Passage matches = (Passage) matchmap.get(words[i]);
+                    if (matches == null)
+                    {
+                        matches = PassageFactory.createPassage();
+                        matchmap.put(words[i], matches);
+                    }
 
-                // This could take a long time ...
-                Thread.yield();
-                if (Thread.currentThread().isInterrupted())
-                    break;
+                    // add this verse to this words passage
+                    matches.add(verse);
+
+                    // This could take a long time ...
+                    Thread.yield();
+                    if (Thread.currentThread().isInterrupted())
+                    {
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errors++;
+                log.error("Error reading "+verse.getName()+" in "+bible.getBibleMetaData().getFullName()+": errors="+errors, ex);
+                if (errors > MAX_ERRORS)
+                {
+                    if (ex instanceof BookException)
+                    {
+                        throw (BookException) ex;
+                    }
+                    else
+                    {
+                        throw new BookException(Msg.READ_ERROR, ex);
+                    }
+                }
             }
         }
 
@@ -270,7 +314,9 @@ public class SerSearchEngine implements SearchEngine, Index
 
             // Fire a progress event?
             if (li != null)
+            {
                 li.progressMade(new ProgressEvent(bible, "Writing Words:", 90 + (10 * count++ / words)));
+            }
 
             // This could take a long time ...
             Thread.yield();
@@ -295,20 +341,12 @@ public class SerSearchEngine implements SearchEngine, Index
 
         try
         {
-            log.debug("s " + word + " " + System.currentTimeMillis());
             byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
-            log.debug("e " + word + " " + System.currentTimeMillis());
 
             Section section = new Section(ref_dat.getFilePointer(), buffer.length);
 
             ref_dat.write(buffer);
             ref_map.put(word.toLowerCase(), section);
-
-            // log.debug(this, "Written:");
-            // log.debug(this, "  word="+word);
-            // log.debug(this, "  ref_ptr="+ref_ptr);
-            // log.debug(this, "  ref_length="+ref_blob.length);
-            // log.debug(this, "  ref_blob="+new String(ref_blob));
         }
         catch (Exception ex)
         {
@@ -319,7 +357,7 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Write the indexes to disk
      */
-    private void saveIndexes() throws BookException
+    protected void saveIndexes() throws BookException
     {
         // Store the indexes on disk
         try
@@ -341,6 +379,11 @@ public class SerSearchEngine implements SearchEngine, Index
             throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
+
+    /**
+     * When generating the index, how many tries before we give up?
+     */
+    private static final int MAX_ERRORS = 256;
 
     /**
      * The Bible we are indexing
@@ -365,7 +408,7 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * The hash of indexes into the passages file
      */
-    private SortedMap ref_map;
+    private SortedMap ref_map = new TreeMap();
 
     /**
      * The Whole Bible

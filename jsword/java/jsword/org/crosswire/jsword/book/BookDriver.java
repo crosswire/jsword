@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book;
 
-
 /**
  * The BibleDriver class allows creation of new Books.
  * 

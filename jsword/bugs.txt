@@ -15,3 +15,6 @@ This file is our equivalent of bugzilla for the time being.
 - ISV (NT only?) refs in with text????
 - RSV for Rev 22:21 contains [bizarre]
 - KJV1769+Strong and Young's - stange <small><br>
+- ACV/AKJV dies on Jer 7:1-7:34, Mal 1:1-14
+- add incomplete index warning to sersearchengine
+

@@ -39,6 +39,7 @@ public class ParserFactory
         {
             Class impl = Project.resource().getImplementor(Parser.class);
             Parser parser = (Parser) impl.newInstance();
+            parser.init(index);
             
             return parser;
         }
