@@ -4,10 +4,10 @@
 <jnlp spec="1.0+" codebase="http://www.crosswire.org/jsword/stable" href="jsword.jnlp">
 
   <information>
-    <title>J-Sword Demo Application</title>
-    <vendor>The J-Sword project</vendor>
+    <title>J-Sword</title>
+    <vendor>Crosswire Bible Society</vendor>
     <homepage href="http://www.crosswire.org/jsword/"/>
-    <description>J-Sword Bible Desktop Application</description>
+    <description>J-Sword Bible Desktop Application version 0.9.7</description>
     <description kind="short">J-Sword is a Bible study package available over the internet</description>
     <description kind="tooltip">J-Sword Bible Desktop Application</description>
     <icon href="../images/icon.gif"/>
