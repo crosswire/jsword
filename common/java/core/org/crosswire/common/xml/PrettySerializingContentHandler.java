@@ -153,7 +153,15 @@ public class PrettySerializingContentHandler implements ContentHandler
                 emitWhitespace(depth - 1);
             }
 
-            write(getEmptyTagEnd());
+            // Hack alert JTextPane cannot handle <br/>
+            if (localname.equalsIgnoreCase("br")) //$NON-NLS-1$
+            {
+                write(getTagEnd());
+            }
+            else
+            {
+                write(getEmptyTagEnd());
+            }
         }
         else
         {
