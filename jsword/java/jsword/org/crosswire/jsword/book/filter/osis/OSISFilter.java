@@ -48,16 +48,18 @@ public class OSISFilter implements Filter
      */
     public List toOSIS(String plain) throws FilterException
     {
-        Element ele = OSISUtil.factory().createDiv();
+//        Element ele = OSISUtil.factory().createDiv();
 
+        Element ele = null;
         try
         {
-            parse(ele, plain);
+            ele = parse(plain);
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse (1) original failed: " + ex1.getMessage()); //$NON-NLS-1$
-            DataPolice.report("  while parsing: " + FilterUtil.forOutput(plain)); //$NON-NLS-1$
+            DataPolice.report("parse (1) original failed: " + ex1.getMessage() + //$NON-NLS-1$
+                              "\n  while parsing: " + plain); //$NON-NLS-1$
+//            DataPolice.report("  while parsing: " + FilterUtil.forOutput(plain)); //$NON-NLS-1$
 
             // Attempt to fix broken entities, that could be a low damage
             // way to fix a broken input string
@@ -65,7 +67,7 @@ public class OSISFilter implements Filter
 
             try
             {
-                parse(ele, cropped);
+                ele = parse(cropped);
             }
             catch (Exception ex2)
             {
@@ -77,7 +79,7 @@ public class OSISFilter implements Filter
 
                 try
                 {
-                    parse(ele, shawn);
+                    ele = parse(shawn);
                 }
                 catch (Exception ex3)
                 {
@@ -104,7 +106,7 @@ public class OSISFilter implements Filter
      * If the string is invalid then we might want to have more than one
      * crack at parsing it
      */
-    private void parse(Element ele, String plain) throws JDOMException, IOException
+    private Element parse(String plain) throws JDOMException, IOException
     {
         // create a root element to house our document fragment
         StringReader in = new StringReader("<div>" + plain + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -117,8 +119,8 @@ public class OSISFilter implements Filter
         // XML so we need to add the content of the div and not the div
         // itself
 
-        List data = div.removeContent();
-        ele.addContent(data);
+//        List data = div.removeContent();
+        return div;
     }
 
     /**
