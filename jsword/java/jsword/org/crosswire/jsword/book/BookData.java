@@ -85,8 +85,12 @@ public class BookData
                 Object data = dit.next();
                 if (data instanceof Element)
                 {
-                    String txt = OSISUtil.getPlainText((Element) data);
-                    buffer.append(txt);
+                    Element ele = (Element) data;
+                    if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                    {
+                        String txt = OSISUtil.getPlainText((Element) data);
+                        buffer.append(txt);
+                    }
                 }
             }
         }
