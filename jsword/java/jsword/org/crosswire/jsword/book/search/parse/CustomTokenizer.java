@@ -84,6 +84,25 @@ public class CustomTokenizer
                 currentType = CHAR_SPACE;
                 i = end + 1;
             }
+            
+            // Pass through everything between pairs of :: e.g. ::bread::
+            // as a single word. If there is no trailing :: take it
+            // to the end of the line
+            if (i < sought.length() - 4 && sought.indexOf("::", i) != -1) //$NON-NLS-1$
+            {
+                int end = sought.indexOf("::", i+2); //$NON-NLS-1$
+                if (end == -1)
+                {
+                    addWord(output, commands, sought.substring(i+1));
+                    i = sought.length();
+                }
+                else
+                {
+                    addWord(output, commands, sought.substring(i+1, end));
+                    i = end + 2;
+                }
+                currentType = CHAR_SPACE;
+            }
 
             // If this is the last word then so long as this letter is not
             // a space (in which case it has been added already) then add all
