@@ -30,7 +30,7 @@ import java.io.Serializable;
 * </font></td></tr></table>
 * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
 * @see <{docs.Licence}>
-* @author Joe Walker
+* @author Joe Walker [joe at eireneh dot com]
 */
 public interface Choice extends Serializable
 {
