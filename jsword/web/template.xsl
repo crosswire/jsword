@@ -64,6 +64,7 @@
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="news.html">News</a></li>
+        <li><a href="change.html">Changes</a></li>
       </ul>
       <p>Getting-JSword</p>
       <ul>
@@ -73,17 +74,30 @@
         <li><a href="download.jsp">Download</a></li>
         <li><a href="http://www.crosswire.org/sword/modules/index.jsp">Modules</a></li>
       </ul>
-      <p><a href="devt.html">Getting-Involved</a></p>
+      <p>Getting-Involved</p>
       <ul>
-        <li><a href="writingcode.html">Intro</a></li>
+        <li><a href="cvs.html">CVS</a></li>
+        <li><a href="maillists.html">Mailing Lists</a></li>
+      </ul>
+      <p>Documentation</p>
+      <ul>
+        <li><a href="devt.html">Introduction</a></li>
+        <li><a href="writingcode.html">Writing Code</a></li>
         <li><a href="java2html/docs/APIExamples.java.html">API Primer</a></li>
         <li><a href="design.html">Design</a></li>
         <li><a href="osisCore.1.1.html">OSIS</a></li>
-        <li><a href="api/org/crosswire/common/config/package-summary.html">Config</a></li>
-        <li><a href="change.html">Changes</a></li>
+        <li><a href="api/org/crosswire/common/config/package-summary.html">Config API</a></li>
         <li><a href="api/index.html">JavaDoc</a></li>
         <li><a href="java2html/index.html">Java-Source</a></li>
         <li><a href="test/index.html">Test-Results</a></li>
+        <li><a href="jcoverage/index.html">Test-Coverage</a></li>
+        <li><a href="checkstyle/checkstyle_errors.html">CheckStyle</a></li>
+        <li><a href="pmd/index.html">PMD Report</a></li>
+        <li><a href="http://cpd/report.txt">CMD Report</a></li>
+        <li><a href="findbugs/report.txt">FindBugs Report</a></li>
+        <li><a href="jdepend/jdepend-report.html">JDepend Report</a></li>
+        <li><a href="javancss/index.html">NCSS Report</a></li>
+        <li><a href="buildlog.txt">Build Log</a></li>
       </ul>
       <p>Other-Projects</p>
       <ul>
