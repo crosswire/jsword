@@ -108,7 +108,7 @@ public class SWConfig {
     }
 
     /**
-     * Usage: java org.crosswire.sword.mgr.SWConfig <file> [<file> <file> ...]
+     * Usage: java org.crosswire.sword.mgr.SWConfig <file> [<file>].
      *
      * Prints the contents of each configuration file to STDOUT.
      */

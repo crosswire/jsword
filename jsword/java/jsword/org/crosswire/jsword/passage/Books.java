@@ -443,10 +443,10 @@ public class Books implements PassageConstants
     }
 
     /**
-     * Does the following represent a real verse? It is code like this
-     * that makes me wonder if I18 is done well/worth doing. All this
-     * code does is check if the numbers are valid, but the exception
-     * handling code is huge :(
+     * Does the following represent a real verse?.
+     * It is code like this that makes me wonder if I18 is done well/worth
+     * doing. All this code does is check if the numbers are valid, but the
+     * exception handling code is huge :(
      * @param book The book part of the reference.
      * @param chapter The chapter part of the reference.
      * @param verse The verse part of the reference.
@@ -716,7 +716,7 @@ public class Books implements PassageConstants
      * How many books are there in each of the above sections
      * @param section The section
      * @return The number of books in the given section
-     * @see getSection(int)
+     * @see #getSection(int)
      */
     public final static int booksInSection(int section)
     {

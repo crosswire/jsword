@@ -753,10 +753,10 @@ public class VerseRange implements VerseBase
     }
 
     /**
-     * Are the 2 VerseRanges in question contigious. ie - could they be
-     * represented by a single VerseRange. Note that one range could be
-     * entirely contained within the other and they would be considered
-     * adjacentTo()
+     * Are the 2 VerseRanges in question contigious.
+     * ie - could they be represented by a single VerseRange. Note that one
+     * range could be entirely contained within the other and they would be
+     * considered adjacentTo()
      * For example Gen 1:1-2 is adjacent to Gen 1:1-5 and Gen 1:3-4 but
      * not to Gen 1:4-10. Also Gen 1:29-30 is adjacent to Gen 2:1-10
      * @param that The VerseRange to compare to
@@ -1127,19 +1127,22 @@ public class VerseRange implements VerseBase
     static final long serialVersionUID = 8307795549869653580L;
 
     /**
-     * The real data - how many verses long are we? All ctors init this so leave default
+     * The real data - how many verses long are we?.
+     * All ctors init this so leave default
      */
     private transient int verse_count;
 
     /**
-     * The real data - where do we end? All ctors init this so leave default
+     * The real data - where do we end?.
+     * All ctors init this so leave default
      * @label end
      * @supplierCardinality 1
      */
     private transient Verse end;
 
     /**
-     * The real data - where do we start? All ctors init this so leave default
+     * The real data - where do we start?.
+     * All ctors init this so leave default
      * @label start
      * @supplierCardinality 1
      */

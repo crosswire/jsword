@@ -52,7 +52,7 @@ public interface Rule
     * It is only a preferred length, so non-perfect Rules are free to
     * miss by one or 2.
     * @param scale The preferred length of the desired position array
-    * @see getDesiredPosition(Map, int)
+    * @see #getDesiredPosition(Map, int)
     */
     public void setScale(int scale);
 
@@ -60,7 +60,7 @@ public interface Rule
     * Each call to getDesiredPosition() returns an array of Positions,
     * this method gets the preferred length of that returned array.
     * @return The preferred length of the desired position array
-    * @see getDesiredPosition(Map, int)
+    * @see #getDesiredPosition(Map, int)
     */
     public int getScale();
 }

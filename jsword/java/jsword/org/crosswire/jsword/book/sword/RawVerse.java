@@ -10,7 +10,7 @@ import org.crosswire.common.util.Level;
 import org.crosswire.common.util.Logger;
 
 /**
- * Code for class 'RawVerse'- a module that reads raw text files
+ * Code for class 'RawVerse'- a module that reads raw text files.
  * ot and nt using indexs ??.bks ??.cps ??.vss and provides lookup and parsing
  * functions based on class VerseKey
  */
@@ -271,8 +271,9 @@ public class RawVerse
     }
 
     /**
-     * There has to be a better method than this. findoffset() returned a start
-     * and and offset, and multiple return values are not possible in Java.
+     * There has to be a better method than this.
+     * findoffset() returned a start and and offset, and multiple return values
+     * are not possible in Java.
      * It seems to me that returning start and size from a public i/f represents
      * showing our callers more than we should and I expect that the solution
      * lies in a thorough sorting out if the interface, but I want to keep

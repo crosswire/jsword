@@ -63,8 +63,8 @@ public class TreeConfigPane extends PanelConfigPane
 
     /**
     * Now this wasn't created with JBuilder but maybe, just maybe, by
-    * calling my method this, JBuilder may grok it.<br />
-    * Danger - this method is not called by the TreeConfigPane
+    * calling my method this, JBuilder may grok it.
+    * <br />Danger - this method is not called by the TreeConfigPane
     * constructor, it is called by the PanelConfigPane constructor so
     * any field initializers will be called AFTER THIS METHOD EXECUTES
     * so don't use field initializers.

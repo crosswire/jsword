@@ -309,7 +309,7 @@ public class Verse implements VerseBase
 
     /**
      * This returns the ordinal number of the verse
-     * so <code>new Verse("Rev 22:21").hashCode() = 31104</code>
+     * so <code>new Verse("Rev 22:21").hashCode() = 31104</code>.
      * <p><b>However should should not reply on this being true</b>
      * @return The hashing number
      */
@@ -663,9 +663,9 @@ public class Verse implements VerseBase
     }
 
     /**
-     * Enumerate over the verse in this verse! This may seem silly,
-     * however is is very useful to be able to treat Verses and Ranges
-     * the same (VerseBase) and this is a common accessor.
+     * Enumerate over the verse in this verse!.
+     * This may seem silly, however is is very useful to be able to treat
+     * Verses and Ranges the same (VerseBase) and this is a common accessor.
      * @return A verse iterator
      */
     public Iterator verseIterator()

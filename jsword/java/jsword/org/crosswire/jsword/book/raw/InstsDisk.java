@@ -64,7 +64,8 @@ public abstract class InstsDisk extends Disk implements Insts
 
     /**
     * This really should be a constructor, however the StringBuffer ctor
-    * wants to trap and muffle exceptions. and I can't do this:
+    * wants to trap and muffle exceptions.
+    * |I can't do this:
     * <code>try { this(...) } ...</code>
     * @param raw Reference to the RawBible that is using us
     * @param leafname The leaf name to read/write

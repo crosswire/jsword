@@ -47,9 +47,10 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, PassageC
     public String getName(Verse base);
 
     /**
-     * Create an array of Verses. See note on verseElements()
+     * Create an array of Verses.
+     * See note on verseElements()
      * @return The array of verses that this makes up
-     * @see verseElements()
+     * @see #verseIterator()
      */
     public Verse[] toVerseArray();
 

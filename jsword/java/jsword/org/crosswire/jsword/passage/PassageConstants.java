@@ -29,7 +29,7 @@ package org.crosswire.jsword.passage;
 */
 public interface PassageConstants
 {
-    /** A word is lower case if all the letters lower case, or if the word is blank - i.e. it is a default */
+    /** A word is lower case if all the letters lower case, or if the word is blank - that is it is a default */
     public static final int CASE_LOWER = 0;
 
     /** A word is sentance case if the first letter is upper case, and all subsequent letters are lower case */

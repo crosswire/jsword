@@ -33,8 +33,8 @@ public interface CommandWord extends SearchWord
 {
     /**
     * Alter a Passage in whatever manner is appropriate for
-    * this command. for example the "~" command does something
-    * like this:
+    * this command.
+    * For example the "~" command does something like this:
     * <code>ref.blur(engine.elements.next.getWord);</code>
     * The "&" command looks like this:
     * <code>ref.addAll(engine.elements.next.getPassage);</code>

@@ -37,7 +37,7 @@ public final class StringUtil
 {
     /**
     * Create a debug version of an array by calling toString on all the
-    * objects in the array
+    * objects in the array.
     * @param array The array to debug
     * @return The debug version of the array
     */
@@ -526,7 +526,7 @@ public final class StringUtil
     }
 
     /**
-    * Take a String array and create a String out of some elements
+    * Take a String array and create a String out of some elements.
     * EG:<pre>
     *   String[] arr = "a", "b", "c", "d", "e";
     *   StringUtil.cat(arr, 2, "-")) = "c-d-e"
@@ -542,7 +542,7 @@ public final class StringUtil
     }
 
     /**
-    * Take a String array and create a String out of some elements
+    * Take a String array and create a String out of some elements.
     * EG:<pre>
     *   String[] arr = "a", "b", "c", "d", "e";
     *   StringUtil.cat(arr, 2, 3, "-")) = "c-d"
@@ -582,7 +582,7 @@ public final class StringUtil
     }
 
     /**
-    * Run String.trim on all the elements of this array
+    * Run String.trim() on all the elements of this array.
     * @param cmd The array of Strings to be trimmed
     * @return The same array, with trim() called on all its elements
     */
@@ -841,7 +841,7 @@ public final class StringUtil
     * what I can see of the docs but works!
     * @param The phrase from which to get the capital letters.
     * @return The capital letters in the given words.
-    * @see getInitials(String)
+    * @see #getInitials(String)
     */
     public static String getCapitals(String words)
     {

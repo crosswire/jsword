@@ -156,10 +156,19 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc" depends="init" description="Create project document documentation">
+  <target name="files" depends="init" description="Copy the file based documentation">
     <mkdir dir="${target.doc}"/>
+    <copy todir="${target.doc}">
+      <fileset dir="${source.doc}" />
+    </copy>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="javadoc" depends="init" description="Create JavaDoc">
+    <mkdir dir="${target.doc}/api"/>
+    <echo message="Building to: ${build.root}"/>
     <javadoc
-        destdir="${target.doc}"
+        destdir="${target.doc}/api"
         overview="${source.java}/jsword/overview.html"
         private="true"
         author="true"
@@ -190,6 +199,34 @@
       </classpath>
       <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.doc}/jdk14api"/>
     </javadoc>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="java2html" depends="init" description="HTML versions of the java code">
+    <mkdir dir="${target.doc}/java2html"/>
+    <java
+        classname="j2h">
+      <classpath>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+      <arg value="-js"/>
+      <arg value="${basedir}/${source.java}"/>
+      <arg value="-d" />
+      <arg value="${target.doc}/java2html"/>
+      <arg value="-n"/>
+      <arg value="${ant.project.name}"/>
+      <arg value="-m"/>
+      <arg value="4"/>
+      <arg value="-jd"/>
+      <arg value="${javadoc.jdk130.local}"/>
+      <arg value="${javadoc.jdk130.web}"/>
+    </java>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="docs" depends="files, javadoc, java2html" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->
