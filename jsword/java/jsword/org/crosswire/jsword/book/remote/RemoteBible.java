@@ -11,7 +11,6 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.jdom.Document;
 import org.xml.sax.SAXException;
@@ -109,7 +108,7 @@ public class RemoteBible extends AbstractBible
 
             return Converter.convertDocumentToPassage(doc);
         }
-        catch (NoSuchVerseException ex)
+        catch (ConverterException ex)
         {
             throw new BookException("parse exception", ex);
         }
@@ -138,9 +137,9 @@ public class RemoteBible extends AbstractBible
 
             return Converter.convertDocumentToStartsWith(doc);
         }
-        catch (RemoterException ex)
+        catch (Exception ex)
         {
-            throw new BookException("remoting failure", ex);
+            throw new BookException("remote_failure", ex);
         }
     }
 

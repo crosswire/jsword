@@ -356,13 +356,11 @@ public class GeneratorPane extends EirPanel
             {
                 // Get the values
                 // This cast is safe because the ctor filers for Bibles
-                // PENDING(joe): uncast
                 Bible source = (Bible) mdl_source.getSelectedBookMetaData().getBook();
                 BookDriver dest_driver = mdl_driver.getSelectedDriver();
 
                 // The real work
                 // This cast is safe because we passed in a Bible
-                // PENDING(joe): uncast
                 Bible dest_version = (Bible) dest_driver.create(source, cpl);
 
                 // Check

@@ -74,9 +74,10 @@ public class Resource
     /**
      * Get a list of sylesheets for a given subject.
      * PENDING(*): Is this sensible? I guess it is like this because it has to
-     * work over webstart, but it is all very similar to NetUtil. list() however
+     * work over webstart, but it is all very similar to NetUtil.list() however
      * this method does not make use of file: URLs.
      * @return The project root as a URL
+     * @see NetUtil#list(URL, URLFilter)
      */
     public String[] getStyles(String subject) throws IOException
     {

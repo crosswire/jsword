@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.remote.Converter;
+import org.crosswire.jsword.book.remote.ConverterException;
 import org.crosswire.jsword.book.remote.LocalRemoter;
 import org.crosswire.jsword.book.remote.RemoteConstants;
 import org.crosswire.jsword.book.remote.RemoteMethod;
@@ -78,8 +79,15 @@ public class RemoterServlet extends HttpServlet
         {
             Reporter.informUser(this, ex);
 
-            Document doc = Converter.convertExceptionToDocument(ex);
-            output.output(doc, response.getOutputStream());
+            try
+            {
+                Document doc = Converter.convertExceptionToDocument(ex);
+                output.output(doc, response.getOutputStream());
+            }
+            catch (ConverterException ex2)
+            {
+                throw new ServletException(ex2);
+            }
         }
     }
 

@@ -14,6 +14,9 @@ import javax.swing.border.EmptyBorder;
 
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
@@ -84,9 +87,8 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
                 ref.add(range);
                 if (text == null)
                 {
-                    //BibleData data = Books.getDefaultBible().getData(ref);
-                    // PENDING(joe): Invoke the stylizer here to get plain text
-                    String simple = "";
+                    BibleData data = Defaults.getBibleMetaData().getBible().getData(ref);
+                    String simple = OsisUtil.getPlainText(data);
                     text = "<html><b>"+range.getName()+"</b> "+simple;
                     hash.put(range, text);
                 }

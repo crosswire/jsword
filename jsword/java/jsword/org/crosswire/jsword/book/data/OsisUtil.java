@@ -103,7 +103,6 @@ public class OsisUtil
 
     /**
      * Create a default BibleElement.
-     * URGENT(joe): add param BibleMetaData bmd?
      */
     public static BibleData createBibleData(BibleMetaData bmd)
     {

@@ -51,7 +51,6 @@ public class BibleDataCache
 {
     /**
      * Constructor for BibleDataCache.
-     * PENDING(joe): surely the bmd is our responsibility not our users?
      */
     public BibleDataCache(URL url, BibleMetaData bmd) throws BookException, FileNotFoundException, IOException
     {

@@ -48,9 +48,21 @@ public class Defaults
     private static Logger log = Logger.getLogger(Books.class);
 
     /**
+     * Has the default Bible been manually set or are we picking the fastest
+     * as the default?
+     */
+    private static boolean autobdeft = true;
+
+    /**
      * The default Bible
      */
     private static BibleMetaData bdeft = null;
+
+    /**
+     * Has the default Commentary been manually set or are we picking the fastest
+     * as the default?
+     */
+    private static boolean autocdeft = true;
 
     /**
      * The default Commentary
@@ -58,15 +70,15 @@ public class Defaults
     private static CommentaryMetaData cdeft = null;
 
     /**
+     * Has the default Dictionary been manually set or are we picking the fastest
+     * as the default?
+     */
+    private static boolean autoddeft = true;
+
+    /**
      * The default Dictionary
      */
     private static DictionaryMetaData ddeft = null;
-
-    /**
-     * Has the default Bible been manually set or are we picking the fastest
-     * as the default?
-     */
-    private static boolean autodef = true;
 
     /**
      * Set the default Bible. The new name must be equal() to a string
@@ -77,7 +89,7 @@ public class Defaults
      */
     public static void setBibleMetaData(BibleMetaData bmd) throws BookException
     {
-        autodef = false;
+        autobdeft = false;
         bdeft = bmd;
     }
 
@@ -124,7 +136,7 @@ public class Defaults
      */
     public static void setBibleByName(String name) throws BookException
     {
-        autodef = false;
+        autobdeft = false;
 
         List lbmds = Books.getBooks();
         for (Iterator it=lbmds.iterator(); it.hasNext();)
@@ -149,18 +161,43 @@ public class Defaults
         if (bmd == null)
             throw new NullPointerException("null BookMetaData");
 
-        // PENDING(joe): currently there is no concept of preference for non-bibles, should there be?
-        if (!(bmd instanceof BibleMetaData))
-            return;
-
-        // Do we even think about replacing the default Bible?
-        if (autodef || bdeft == null)
+        if (bmd instanceof BibleMetaData)
         {
-            // If there is no default or this is faster
-            if (bdeft == null || bmd.getSpeed() > bdeft.getSpeed())
+            // Do we even think about replacing the default Bible?
+            if (autobdeft || bdeft == null)
             {
-                bdeft = (BibleMetaData) bmd;
-                log.debug("setting as default since speed="+bdeft.getSpeed());
+                // If there is no default or this is faster
+                if (bdeft == null || bmd.getSpeed() > bdeft.getSpeed())
+                {
+                    bdeft = (BibleMetaData) bmd;
+                    log.debug("setting as default bible since speed="+bdeft.getSpeed());
+                }
+            }
+        }
+        else if (bmd instanceof CommentaryMetaData)
+        {
+            // Do we even think about replacing the default Bible?
+            if (autocdeft || cdeft == null)
+            {
+                // If there is no default or this is faster
+                if (cdeft == null || bmd.getSpeed() > cdeft.getSpeed())
+                {
+                    cdeft = (CommentaryMetaData) bmd;
+                    log.debug("setting as default commentary since speed="+cdeft.getSpeed());
+                }
+            }
+        }
+        else if (bmd instanceof DictionaryMetaData)
+        {
+            // Do we even think about replacing the default Bible?
+            if (autoddeft || ddeft == null)
+            {
+                // If there is no default or this is faster
+                if (ddeft == null || bmd.getSpeed() > ddeft.getSpeed())
+                {
+                    ddeft = (DictionaryMetaData) bmd;
+                    log.debug("setting as default dictionary since speed="+ddeft.getSpeed());
+                }
             }
         }
     }

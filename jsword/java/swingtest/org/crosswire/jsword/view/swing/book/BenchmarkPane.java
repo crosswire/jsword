@@ -127,7 +127,6 @@ public class BenchmarkPane extends EirPanel
         try
         {
             // This cast is safe because Bibles are filtered below
-            // PENDING(joe): uncast
             Bible book = (Bible) mdl_bible.getSelectedBookMetaData().getBook();
     
             Speed speed = new Speed(book);

@@ -19,8 +19,6 @@ import org.jdom.Element;
 /**
  * A set of converters to help implementing Bible[Driver] using XML as an
  * intermediate format for remoting.
- * <p>PENDING(joe): A number of the methods here can throw due to invalid input
- * documents - should we create another new Exception type or re-use another.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -62,39 +60,50 @@ public class Converter
      * @param doc
      * @return BibleMetaData[]
      */
-    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(Document doc, Remoter remoter, int speed) throws MalformedURLException, ParseException
+    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(Document doc, Remoter remoter, int speed) throws ConverterException
     {
-        Element root = doc.getRootElement();
-        List bmds = root.getChildren("metadata");
-        RemoteBibleMetaData[] rbmds = new RemoteBibleMetaData[bmds.size()];
-        int i = 0;
-
-        for (Iterator it = bmds.iterator(); it.hasNext();)
+        try
         {
-            Element bmdele = (Element) it.next();
-
-            String id = bmdele.getAttributeValue("id");
-            String name = bmdele.getChildTextTrim("name");
-            String edition = bmdele.getChildTextTrim("edition");
-            String initials = bmdele.getChildTextTrim("initials");
-            String pub = bmdele.getChildTextTrim("pub");
-            String open = bmdele.getChildTextTrim("openness");
-            String licence = bmdele.getChildTextTrim("licence");
-
-            rbmds[i++] = new RemoteBibleMetaData(remoter, id, name, edition, initials, pub, open, licence, speed);
+            Element root = doc.getRootElement();
+            List bmds = root.getChildren("metadata");
+            RemoteBibleMetaData[] rbmds = new RemoteBibleMetaData[bmds.size()];
+            int i = 0;
+            
+            for (Iterator it = bmds.iterator(); it.hasNext();)
+            {
+                Element bmdele = (Element) it.next();
+            
+                String id = bmdele.getAttributeValue("id");
+                String name = bmdele.getChildTextTrim("name");
+                String edition = bmdele.getChildTextTrim("edition");
+                String initials = bmdele.getChildTextTrim("initials");
+                String pub = bmdele.getChildTextTrim("pub");
+                String open = bmdele.getChildTextTrim("openness");
+                String licence = bmdele.getChildTextTrim("licence");
+            
+                rbmds[i++] = new RemoteBibleMetaData(remoter, id, name, edition, initials, pub, open, licence, speed);
+            }
+            
+            return rbmds;
         }
-
-        return rbmds;
+        catch (MalformedURLException ex)
+        {
+            throw new ConverterException("convert_bmd", ex);
+        }
+        catch (ParseException ex)
+        {
+            throw new ConverterException("convert_bmd", ex);
+        }
     }
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
      * @see Converter#convertDocumentToBibleMetaDatas(Document, Remoter, int)
      */
-    public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids)
+    public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids) throws ConverterException
     {
         if (bmds.length != ids.length)
-            throw new IllegalArgumentException("bmds.length != ids.length");
+            throw new ConverterException("converter_length");
 
         Element root = new Element("root");
         for (int i = 0; i < bmds.length; i++)
@@ -134,19 +143,26 @@ public class Converter
      * @return Passage
      * @throws NoSuchVerseException
      */
-    public static Passage convertDocumentToPassage(Document doc) throws NoSuchVerseException
+    public static Passage convertDocumentToPassage(Document doc) throws ConverterException
     {
-        Element root = doc.getRootElement();
-        String refstr = root.getChild("ref").getTextTrim();
-
-        return PassageFactory.createPassage(refstr);
+        try
+        {
+            Element root = doc.getRootElement();
+            String refstr = root.getChild("ref").getTextTrim();
+            
+            return PassageFactory.createPassage(refstr);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new ConverterException("convert_noverse", ex);
+        }
     }
 
     /**
      * Reverse of convertDocumentToPassage().
      * @see Converter#convertDocumentToPassage(Document)
      */
-    public static Document convertPassageToDocument(Passage ref)
+    public static Document convertPassageToDocument(Passage ref) throws ConverterException
     {
         Element root = new Element("root");
         root.addContent(new Element("ref").addContent(ref.getName()));
@@ -166,7 +182,7 @@ public class Converter
      * @param doc
      * @return Iterator
      */
-    public static Iterator convertDocumentToStartsWith(Document doc)
+    public static Iterator convertDocumentToStartsWith(Document doc) throws ConverterException
     {
         List words = new ArrayList();
 
@@ -187,7 +203,7 @@ public class Converter
      * Reverse of convertDocumentToStartsWith().
      * @see Converter#convertDocumentToStartsWith(Document)
      */
-    public static Document convertStartsWithToDocument(Iterator it)
+    public static Document convertStartsWithToDocument(Iterator it) throws ConverterException
     {
         Element root = new Element("root");
         while (it.hasNext())
@@ -202,7 +218,7 @@ public class Converter
      * Throw an exception if this document represents one, do nothing otherwise
      * @param doc The document to test
      */
-    public static void testRethrow(Document doc) throws RemoterException, ClassNotFoundException
+    public static void testRethrow(Document doc) throws RemoterException, ConverterException
     {
         if (doc.getRootElement().getName().equals("exception"))
         {
@@ -223,22 +239,29 @@ public class Converter
      * [/exception]
      * </pre>
      */
-    public static RemoterException convertDocumentToException(Document doc) throws ClassNotFoundException
+    public static RemoterException convertDocumentToException(Document doc) throws ConverterException
     {
-        Element exce = doc.getRootElement();
-        String message = exce.getChildTextTrim("message");
-        String typename = exce.getChildTextTrim("type");
-
-        Class type = Class.forName(typename);
-
-        return new RemoterException(message, type);
+        try
+        {
+            Element exce = doc.getRootElement();
+            String message = exce.getChildTextTrim("message");
+            String typename = exce.getChildTextTrim("type");
+            
+            Class type = Class.forName(typename);
+            
+            return new RemoterException(message, type);
+        }
+        catch (ClassNotFoundException ex)
+        {
+            throw new ConverterException("convert_noclass", ex);
+        }
     }
 
     /**
      * Reverse of convertDocumentToException().
      * @see Converter#convertDocumentToException(Document)
      */
-    public static Document convertExceptionToDocument(Throwable ex)
+    public static Document convertExceptionToDocument(Throwable ex) throws ConverterException
     {
         Element exce = new Element("exception");
 

@@ -178,7 +178,6 @@ public class ComparePane extends EirPanel
         try
         {
             // These casts are safe because we have asked for Bibles below
-            // PENDING(joe): uncast
             Bible bible1 = (Bible) bmd1.getBook();
             Bible bible2 = (Bible) bmd2.getBook();
     

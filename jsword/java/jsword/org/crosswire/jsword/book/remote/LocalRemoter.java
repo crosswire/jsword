@@ -9,7 +9,6 @@ import java.util.Map;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.book.data.BibleData;
@@ -62,17 +61,17 @@ public class LocalRemoter implements Remoter
     {
         String methodname = method.getMethodName();
 
-        if (RemoteConstants.METHOD_GETBIBLES.equals(methodname))
+        try
         {
-            List lbmds = Books.getBooks(Filters.getFaster(Books.SPEED_SLOWEST));
-            BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
-
-            String[] uids = getUIDs(bmds);
-            return Converter.convertBibleMetaDatasToDocument(bmds, uids);
-        }
-        else if (RemoteConstants.METHOD_GETDATA.equals(methodname))
-        {
-            try
+            if (RemoteConstants.METHOD_GETBIBLES.equals(methodname))
+            {
+                List lbmds = Books.getBooks(Filters.getFaster(Books.SPEED_SLOWEST));
+                BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
+                
+                String[] uids = getUIDs(bmds);
+                return Converter.convertBibleMetaDatasToDocument(bmds, uids);
+            }
+            else if (RemoteConstants.METHOD_GETDATA.equals(methodname))
             {
                 String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
                 BibleMetaData bmd = lookupBibleMetaData(uid);
@@ -86,14 +85,7 @@ public class LocalRemoter implements Remoter
                 provider.provideSAXEvents(handler);
                 return handler.getDocument();
             }
-            catch (Exception ex)
-            {
-                throw new RemoterException("remote_getdata_fail", ex);
-            }
-        }
-        else if (RemoteConstants.METHOD_FINDPASSAGE.equals(methodname))
-        {
-            try
+            else if (RemoteConstants.METHOD_FINDPASSAGE.equals(methodname))
             {
                 String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
                 BibleMetaData bmd = lookupBibleMetaData(uid);
@@ -102,14 +94,7 @@ public class LocalRemoter implements Remoter
                 Passage ref = bible.findPassage(word);
                 return Converter.convertPassageToDocument(ref);
             }
-            catch (BookException ex)
-            {
-                throw new RemoterException("remote_findpassage_fail", ex);
-            }
-        }
-        else if (RemoteConstants.METHOD_STARTSWITH.equals(methodname))
-        {
-            try
+            else if (RemoteConstants.METHOD_STARTSWITH.equals(methodname))
             {
                 String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
                 BibleMetaData bmd = lookupBibleMetaData(uid);
@@ -118,14 +103,18 @@ public class LocalRemoter implements Remoter
                 Iterator it = bible.getStartsWith(word);
                 return Converter.convertStartsWithToDocument(it);
             }
-            catch (BookException ex)
+            else
             {
-                throw new RemoterException("remote_startswith_fail", ex);
+                throw new RemoterException("method not supported. given: "+methodname);
             }
         }
-        else
+        catch (RemoterException ex)
         {
-            throw new RemoterException("method not supported. given: "+methodname);
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new RemoterException("remote_fail", ex);
         }
     }
 
