@@ -10,6 +10,7 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -70,7 +71,7 @@ public class XMLUtil
      */
     public static String writeToString(SAXEventProvider provider) throws SAXException
     {
-        SerializingContentHandler ser = new SerializingContentHandler();
+        ContentHandler ser = new PrettySerializingContentHandler();
         provider.provideSAXEvents(ser);
         return ser.toString();
     }
@@ -347,7 +348,7 @@ public class XMLUtil
             }
 
             // So we have the end of the tag, delete it ...
-            //DataPolice.report("disguarding tag: " + working.substring(lt, i + 1));
+            //DataPolice.report("discarding tag: " + working.substring(lt, i + 1));
             working = working.substring(0, lt) + working.substring(i + 1);
         }
 
