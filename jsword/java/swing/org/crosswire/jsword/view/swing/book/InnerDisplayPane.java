@@ -19,9 +19,11 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Style;
 import org.xml.sax.SAXException;
 
@@ -49,14 +51,37 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PassageInnerPane extends JPanel
+public class InnerDisplayPane extends JPanel
 {
     /**
      * Simple Constructor
      */
-    public PassageInnerPane()
+    public InnerDisplayPane()
     {
         jbInit();
+    }
+
+    /**
+     * Makes the second invocation much faster
+     */
+    public static void preload()
+    {
+        try
+        {
+            Passage ref = PassageFactory.createPassage("Gen 1:1");
+            Bible version = Defaults.getBibleMetaData().getBible();
+            
+            
+            BibleData data = version.getData(ref);
+            SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
+            
+            Style style = new Style("swing");
+            style.applyStyleToString(provider, "simple.xsl");
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -140,12 +165,11 @@ public class PassageInnerPane extends JPanel
     }
 
     /** What is being displayed */
-    private Passage ref = null;
     private Bible version = null;
     private Style style = new Style("swing");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(PassageInnerPane.class);
+    protected static Logger log = Logger.getLogger(InnerDisplayPane.class);
 
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();

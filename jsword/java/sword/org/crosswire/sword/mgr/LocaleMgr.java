@@ -26,17 +26,17 @@ package org.crosswire.sword.mgr;
 //typedef map <string, SWLocale *, less<string> > LocaleMap;
 
 public class LocaleMgr {
+    /*
 	private void deleteLocales() {
 
-/*
 		LocaleMap::iterator it;
 
 		for (it = locales.begin(); it != locales.end(); it++)
 			delete (*it).second;
 
 		locales.erase(locales.begin(), locales.end());
-*/
 	}
+    */
 	private String defaultLocaleName;
 
 /*

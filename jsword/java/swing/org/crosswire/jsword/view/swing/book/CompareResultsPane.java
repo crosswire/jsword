@@ -254,7 +254,7 @@ public class CompareResultsPane extends JPanel implements Runnable
     private DocumentWriter dout = new DocumentWriter();
 
     /** Work in progress */
-    private Thread work;
+    protected Thread work;
 
     /** The progress listener */
     private CustomProgressListener cpl = new CustomProgressListener();
@@ -263,11 +263,11 @@ public class CompareResultsPane extends JPanel implements Runnable
     private JPanel pnl_results = new JPanel();
     private JScrollPane scr_results = new JScrollPane();
     private JTextArea txt_results = new JTextArea();
-    private JProgressBar bar_progress = new JProgressBar();
+    protected JProgressBar bar_progress = new JProgressBar();
     private Box box_bibles;
     private JLabel lbl_bible1 = new JLabel();
     private JPanel pnl_buttons = new JPanel();
-    private JButton btn_stop = new JButton();
+    protected JButton btn_stop = new JButton();
     private JButton btn_close = null;
     private JLabel lbl_bible2 = new JLabel();
 

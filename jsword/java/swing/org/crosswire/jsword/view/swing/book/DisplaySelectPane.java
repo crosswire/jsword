@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -33,10 +35,8 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.view.swing.event.CommandEvent;
-import org.crosswire.jsword.view.swing.event.CommandListener;
-import org.crosswire.jsword.view.swing.event.VersionEvent;
-import org.crosswire.jsword.view.swing.event.VersionListener;
+import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
+import org.crosswire.jsword.view.swing.event.DisplaySelectListener;
 
 /**
  * Passage Selection area.
@@ -62,12 +62,12 @@ import org.crosswire.jsword.view.swing.event.VersionListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SelectPane extends JPanel
+public class DisplaySelectPane extends JPanel
 {
     /**
      * General constructor
      */
-    public SelectPane()
+    public DisplaySelectPane()
     {
         // search() and version() rely on this returning only Bibles
         mdl_versn = new BooksComboBoxModel(BookFilters.getBibles());
@@ -113,7 +113,7 @@ public class SelectPane extends JPanel
         {
             public void itemStateChanged(ItemEvent ev)
             {
-                version();
+                changeVersion();
             }
         });
         pnl_radios.add(rdo_passg, null);
@@ -128,14 +128,23 @@ public class SelectPane extends JPanel
         grp_type.add(rdo_search);
         grp_type.add(rdo_match);
 
-        lbl_passg.setDisplayedMnemonic('V');
+        lbl_passg.setDisplayedMnemonic('W');
         lbl_passg.setText("View:");
         pnl_passg.setLayout(new GridBagLayout());
+        txt_passg.setToolTipText("Enter a passage to display. Press CTRL+ENTER or press the ... button for a Passage selection window.");
         txt_passg.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {
-                view();
+                doPassageAction();
+            }
+        });
+        txt_passg.addKeyListener(new KeyAdapter()
+        {
+            public void keyTyped(KeyEvent ev)
+            {
+                if (ev.getModifiers() == ActionEvent.CTRL_MASK)
+                    showSelectDialog();
             }
         });
         btn_dialg.setText("...");
@@ -144,15 +153,15 @@ public class SelectPane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                select();
+                showSelectDialog();
             }
         });
         btn_passg.setText("Go");
-        btn_search.addActionListener(new ActionListener()
+        btn_passg.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {
-                passage();
+                doPassageAction();
             }
         });
 
@@ -171,7 +180,7 @@ public class SelectPane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                search();
+                doSearchAction();
             }
         });
         chk_srestrict.setSelected(false);
@@ -192,7 +201,7 @@ public class SelectPane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                search();
+                doSearchAction();
             }
         });
 
@@ -210,7 +219,7 @@ public class SelectPane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                match();
+                doMatchAction();
             }
         });
         chk_mrestrict.setText("Restrict to:");
@@ -230,7 +239,7 @@ public class SelectPane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                match();
+                doMatchAction();
             }
         });
 
@@ -253,7 +262,7 @@ public class SelectPane extends JPanel
     /**
      * Someone pressed return in the search area
      */
-    protected void search()
+    protected void doSearchAction()
     {
         try
         {
@@ -268,7 +277,10 @@ public class SelectPane extends JPanel
             Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
             Passage ref = version.findPassage(search);
 
-            setPassage(ref);
+            txt_passg.setText(ref.getName());
+
+            updateDisplay();
+            setDefaultName(param);
         }
         catch (Exception ex)
         {
@@ -279,7 +291,7 @@ public class SelectPane extends JPanel
     /**
      * Someone pressed return in the search area
      */
-    protected void match()
+    protected void doMatchAction()
     {
         try
         {
@@ -302,7 +314,10 @@ public class SelectPane extends JPanel
                 tally.trimRanges(20);
             }
 
-            setPassage(ref);
+            txt_passg.setText(ref.getName());
+
+            updateDisplay();
+            setDefaultName(param);
         }
         catch (Exception ex)
         {
@@ -311,27 +326,72 @@ public class SelectPane extends JPanel
     }
 
     /**
-     * Someone pressed return in the search area
-     * PENDING(joe): write
+     * Someone pressed return in the passage area
      */
-    protected void passage()
+    protected void doPassageAction()
     {
+        updateDisplay();
+        setDefaultName(txt_passg.getText());
     }
 
     /**
-     * The Search string
+     * Sync the viewed passage with the passage text box
      */
-    public String getSearchString()
+    private void updateDisplay()
     {
-        return txt_search.getText();
+        try
+        {
+            Bible bible = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
+            Passage ref = getPassage();
+
+            fireCommandMade(new DisplaySelectEvent(this, ref, bible));
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 
     /**
-     * The exact string in the passage window - without any parsing
+     * What is the currently displayed action?
+     * @param action one of the constants PASSAGE, SEARCH or MATCH;
      */
-    public String getPassageString()
+    public void setCurrentAction(String action)
     {
-        return txt_passg.getText();
+        lay_cards.show(pnl_cards, action);
+
+        if (action == PASSAGE)
+        {
+            rdo_passg.setSelected(true);
+        }
+        else if (action == SEARCH)
+        {
+            rdo_search.setSelected(true);
+        }
+        else if (action == MATCH)
+        {
+            rdo_match.setSelected(true);
+        }
+        else
+        {
+            throw new IllegalArgumentException("action is not PASSAGE, SEARCH or MATCH");
+        }
+    }
+
+    /**
+     * Accessor for the default name
+     */
+    public String getDefaultName()
+    {
+        return title;
+    }
+
+    /**
+     * Sets the default name
+     */
+    public void setDefaultName(String title)
+    {
+        this.title = title;
     }
 
     /**
@@ -350,38 +410,21 @@ public class SelectPane extends JPanel
     {
         txt_passg.setText(ref.getName());
 
-        fireCommandMade(new CommandEvent(this, ref));
-
-        rdo_passg.setSelected(true);
-        txt_passg.grabFocus();
-    }
-
-    /**
-     * Someone pressed return in the passage area
-     */
-    protected void view()
-    {
-        try
-        {
-            Passage ref = getPassage();
-            fireCommandMade(new CommandEvent(this, ref));
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(this, ex);
-        }
+        doPassageAction();
     }
 
     /**
      * Someone changed the version combo
      */
-    protected void version()
+    protected void changeVersion()
     {
         try
         {
             // This cast is safe because we asked for Bibles in the ctor
             Bible bible = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
-            fireVersionChanged(new VersionEvent(this, bible));
+            Passage ref = getPassage();
+
+            fireVersionChanged(new DisplaySelectEvent(this, ref, bible));
         }
         catch (Exception ex)
         {
@@ -392,16 +435,17 @@ public class SelectPane extends JPanel
     /**
      * Someone clicked the "..." button
      */
-    protected void select()
+    protected void showSelectDialog()
     {
         String passg = dlg_select.showInDialog(this, "Select Passage", true, txt_passg.getText());
         txt_passg.setText(passg);
+        doPassageAction();
     }
 
     /**
      * Add a command listener
      */
-    public synchronized void removeCommandListener(CommandListener li)
+    public synchronized void removeCommandListener(DisplaySelectListener li)
     {
         if (commandListeners != null && commandListeners.contains(li))
         {
@@ -414,7 +458,7 @@ public class SelectPane extends JPanel
     /**
      * Remove a command listener
      */
-    public synchronized void addCommandListener(CommandListener li)
+    public synchronized void addCommandListener(DisplaySelectListener li)
     {
         Vector v = commandListeners == null ? new Vector(2) : (Vector) commandListeners.clone();
         if (!v.contains(li))
@@ -425,35 +469,9 @@ public class SelectPane extends JPanel
     }
 
     /**
-     * Add a version listener
-     */
-    public synchronized void removeVersionListener(VersionListener l)
-    {
-        if (versionListeners != null && versionListeners.contains(l))
-        {
-            Vector v = (Vector) versionListeners.clone();
-            v.removeElement(l);
-            versionListeners = v;
-        }
-    }
-
-    /**
-     * Remove a version listener
-     */
-    public synchronized void addVersionListener(VersionListener l)
-    {
-        Vector v = versionListeners == null ? new Vector(2) : (Vector) versionListeners.clone();
-        if (!v.contains(l))
-        {
-            v.addElement(l);
-            versionListeners = v;
-        }
-    }
-
-    /**
      * Inform the command listeners
      */
-    protected void fireCommandMade(CommandEvent ev)
+    protected void fireCommandMade(DisplaySelectEvent ev)
     {
         if (commandListeners != null)
         {
@@ -461,7 +479,7 @@ public class SelectPane extends JPanel
             int count = listeners.size();
             for (int i = 0; i < count; i++)
             {
-                ((CommandListener) listeners.elementAt(i)).commandMade(ev);
+                ((DisplaySelectListener) listeners.elementAt(i)).passageSelected(ev);
             }
         }
     }
@@ -469,7 +487,7 @@ public class SelectPane extends JPanel
     /**
      * Inform the version listeners
      */
-    protected void fireVersionChanged(VersionEvent ev)
+    protected void fireVersionChanged(DisplaySelectEvent ev)
     {
         if (versionListeners != null)
         {
@@ -477,18 +495,22 @@ public class SelectPane extends JPanel
             int count = listeners.size();
             for (int i = 0; i < count; i++)
             {
-                ((VersionListener) listeners.elementAt(i)).versionChanged(ev);
+                ((DisplaySelectListener) listeners.elementAt(i)).bookChosen(ev);
             }
         }
     }
 
-    private String PASSAGE = "p";
-    private String SEARCH = "s";
-    private String MATCH = "m";
+    public static final String PASSAGE = "p";
+    public static final String SEARCH = "s";
+    public static final String MATCH = "m";
 
-    private BooksComboBoxModel mdl_versn = null;
+    private static int base = 1;
+
+    private String title = "Untitled " + (base++);
+
     private transient Vector commandListeners;
     private transient Vector versionListeners;
+    private BooksComboBoxModel mdl_versn = null;
     private PassageSelectionPane dlg_select = new PassageSelectionPane();
     private JLabel lbl_passg = new JLabel();
     private JPanel pnl_passg = new JPanel();
@@ -499,15 +521,15 @@ public class SelectPane extends JPanel
     private JPanel pnl_match = new JPanel();
     private JLabel lbl_search = new JLabel();
     private JTextField txt_search = new JTextField();
-    private JCheckBox chk_srestrict = new JCheckBox();
-    private JTextField txt_srestrict = new JTextField();
+    protected JCheckBox chk_srestrict = new JCheckBox();
+    protected JTextField txt_srestrict = new JTextField();
     private JButton btn_search = new JButton();
     private JLabel lbl_match = new JLabel();
     private JTextField txt_match = new JTextField();
     private JButton btn_match = new JButton();
     private JButton btn_passg = new JButton();
-    private JCheckBox chk_mrestrict = new JCheckBox();
-    private JTextField txt_mrestrict = new JTextField();
+    protected JCheckBox chk_mrestrict = new JCheckBox();
+    protected JTextField txt_mrestrict = new JTextField();
     private JPanel pnl_select = new JPanel();
     private JPanel pnl_radios = new JPanel();
     private JPanel pnl_versn = new JPanel();
@@ -515,6 +537,6 @@ public class SelectPane extends JPanel
     private JRadioButton rdo_match = new JRadioButton();
     private JRadioButton rdo_search = new JRadioButton();
     private JRadioButton rdo_passg = new JRadioButton();
-    private JPanel pnl_cards = new JPanel();
-    private CardLayout lay_cards = new CardLayout();
+    protected JPanel pnl_cards = new JPanel();
+    protected CardLayout lay_cards = new CardLayout();
 }

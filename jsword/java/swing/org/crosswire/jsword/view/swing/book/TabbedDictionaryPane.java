@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
@@ -133,7 +134,7 @@ public class TabbedDictionaryPane extends JPanel
     /**
      * @param ev
      */
-    private void link(HyperlinkEvent ev)
+    protected void link(HyperlinkEvent ev)
     {
         log.warn("No listener for "+ev.getURL());
     }
@@ -146,12 +147,12 @@ public class TabbedDictionaryPane extends JPanel
     /**
      * The stylizer
      */
-    private Style style = new Style("swing");
+    protected Style style = new Style("swing");
 
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(PassageInnerPane.class);
+    protected static Logger log = Logger.getLogger(InnerDisplayPane.class);
 
     /**
      * So we can update the dictionary display when the list is used

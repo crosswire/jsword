@@ -325,10 +325,9 @@ public class RobustList extends AbstractList implements List, Serializable
         }
     }
 
-    private Entry head = null;
-    private Entry foot = null;
-    private int size = 0;
-    private Object sync = new Object();
+    protected Entry head = null;
+    protected Entry foot = null;
+    protected int size = 0;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(RobustList.class);

@@ -631,16 +631,11 @@ public class PassageUtil implements PassageConstants
     protected static String getResource(String id, Object[] params)
     {
         MessageFormat formatter = new MessageFormat(getResource(id));
-        // log.fine(pattern);
-        // formatter.applyPattern(pattern);
         return formatter.format(params);
     }
 
     /** The ResourceBundle containing the name customizations */
     private static ResourceBundle res = null;
-
-    /** The formatter to make your message make sense */
-    private static MessageFormat formatter = new MessageFormat("");
 
     /** Do we store the original string? */
     private static boolean persistent_naming = getDefaultPersistentNaming();

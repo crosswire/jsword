@@ -380,11 +380,6 @@ public class DetailedExceptionPane
         return source_path;
     }
 
-    /** The message for the user about the source code */
-    private static final String MESSAGE = "This area contains the source code for this program. You can see the "+
-                                          "section that caused this message. Don't worry you can't break anything "+
-                                          "from here.";
-
     /** The StackTrace */
     protected static String[] source_path = new String[0];
 }

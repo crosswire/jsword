@@ -749,7 +749,7 @@ public class PassageTally extends AbstractPassage
     public static final int MAX_TALLY = 20000;
 
     /** The tallyboard itself */
-    private int[] board = new int[BibleInfo.versesInBible()];
+    protected int[] board = new int[BibleInfo.versesInBible()];
 
     /** The maximum tally possible */
     private int max = 0;

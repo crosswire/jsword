@@ -279,7 +279,7 @@ public class MainFrame extends JFrame {
     }
 
     void imComboBox_itemStateChanged(ItemEvent e) {
-        // TODO: let's set focus back to text box after IM is changed
+        // let's set focus back to text box after IM is changed
     }
 
     void jMenuItem1_actionPerformed(ActionEvent e) {

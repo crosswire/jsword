@@ -1,15 +1,17 @@
 
 package org.crosswire.jsword.view.swing.book;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.view.swing.event.*;
-import javax.swing.*;
-import java.awt.*;
+import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
+import org.crosswire.jsword.view.swing.event.DisplaySelectListener;
 
 /**
  * A quick Swing Bible display pane.
@@ -50,36 +52,24 @@ public class BibleViewPane extends JPanel
      */
     private void jbInit()
     {
-        pnl_select.addCommandListener(new CommandListener()
+        pnl_select.addCommandListener(pnl_passg.getDisplaySelectListener());
+        pnl_select.addCommandListener(new DisplaySelectListener()
         {
-            public void commandMade(CommandEvent ev)
+            public void passageSelected(DisplaySelectEvent ev)
             {
                 if (saved == null)
                     fireTitleChanged(new TitleChangedEvent(BibleViewPane.this, getTitle()));
             }
+
+            public void bookChosen(DisplaySelectEvent ev)
+            {
+            }
         });
         pnl_passg.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
 
-        // pnl_select.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        pnl_select.addCommandListener(pnl_passg);
-        pnl_select.addVersionListener(pnl_passg);
-
-        spt_books.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        spt_books.add(tab_conc, JSplitPane.TOP);
-        spt_books.add(tab_dict, JSplitPane.BOTTOM);
-        spt_books.setDividerLocation(150);
-
-        pnl_top.setLayout(new BorderLayout());
-        pnl_top.add(pnl_select, BorderLayout.NORTH);
-        pnl_top.add(pnl_passg, BorderLayout.CENTER);
-
-        spt_top.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        spt_top.add(spt_books, JSplitPane.RIGHT);
-        spt_top.add(pnl_top, JSplitPane.LEFT);
-        spt_top.setDividerLocation(200);
-
         this.setLayout(new BorderLayout());
-        this.add(pnl_top, BorderLayout.CENTER);
+        this.add(pnl_select, BorderLayout.NORTH);
+        this.add(pnl_passg, BorderLayout.CENTER);
     }
 
     /**
@@ -88,27 +78,15 @@ public class BibleViewPane extends JPanel
     public String getTitle()
     {
         if (saved == null)
-            return getDefaultName();
-
-        return saved.getName();
-    }
-
-    /**
-     *
-     */
-    public String getDefaultName()
-    {
-        String deft = pnl_select.getSearchString();
-
-        if (deft == null | deft.trim().length() == 0)
         {
-            deft = pnl_select.getPassageString();
+            String deft = pnl_select.getDefaultName();
+            if (deft.length() > shortlen)
+                deft = StringUtil.shorten(deft, shortlen);
 
-            if (deft == null | deft.trim().length() == 0)
-                deft = "Untitled "+number;
+            return deft;
         }
 
-        return StringUtil.shorten(deft, shortlen);
+        return saved.getName();
     }
 
     /**
@@ -129,17 +107,17 @@ public class BibleViewPane extends JPanel
     }
 
     /**
-     * Accessor for the PassagePane
+     * Accessor for the OuterDisplayPane
      */
-    public PassagePane getPassagePane()
+    public OuterDisplayPane getPassagePane()
     {
         return pnl_passg;
     }
 
     /**
-     * Accessor for the SelectPane
+     * Accessor for the DisplaySelectPane
      */
-    public SelectPane getSelectPane()
+    public DisplaySelectPane getSelectPane()
     {
         return pnl_select;
     }
@@ -189,6 +167,14 @@ public class BibleViewPane extends JPanel
         }
     }
 
+    protected File saved = null;
+    private transient Vector listeners;
+
+    private DisplaySelectPane pnl_select = new DisplaySelectPane();
+    private OuterDisplayPane pnl_passg = new OuterDisplayPane();
+
+    private static int shortlen = 30;
+
     /**
      * Returns the shortlen.
      * @return int
@@ -206,17 +192,4 @@ public class BibleViewPane extends JPanel
     {
         BibleViewPane.shortlen = shortlen;
     }
-
-    private static int shortlen = 30;
-    private int number = base++;
-    private File saved = null;
-    private SelectPane pnl_select = new SelectPane();
-    private PassagePane pnl_passg = new PassagePane();
-    private transient Vector listeners;
-    private static int base = 1;
-    private JSplitPane spt_top = new JSplitPane();
-    private JSplitPane spt_books = new JSplitPane();
-    private JTabbedPane tab_conc = new JTabbedPane();
-    private JTabbedPane tab_dict = new JTabbedPane();
-    private JPanel pnl_top = new JPanel();
 }

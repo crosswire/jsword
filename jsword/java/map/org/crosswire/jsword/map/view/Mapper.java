@@ -17,7 +17,6 @@ import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -42,8 +41,8 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.map.model.AdjustOriginRule;
 import org.crosswire.jsword.map.model.AntiGravityRule;
 import org.crosswire.jsword.map.model.BrownianRule;
@@ -756,7 +755,7 @@ public class Mapper extends JFrame
     /**
      * Method deserializeLinks.
      */
-    private void deserializeLinks()
+    protected void deserializeLinks()
     {
         try
         {
@@ -784,7 +783,7 @@ public class Mapper extends JFrame
     /**
      * Method serializeLinks.
      */
-    private void serializeLinks()
+    protected void serializeLinks()
     {
         try
         {
@@ -883,7 +882,7 @@ public class Mapper extends JFrame
     /**
      * Method pickVersion.
      */
-    private void pickVersion()
+    protected void pickVersion()
     {
         try
         {
@@ -1033,9 +1032,6 @@ public class Mapper extends JFrame
     /** File filter for VB files */
     private ExtensionFileFilter bas_filter = new ExtensionFileFilter(new String[] { "bas" }, "Word VBA Macro (*.bas)");
 
-    /** Where is this config info stored */
-    private URL config_url;
-
     /** The Configuration options */
     private Config config = new Config("Mapper Options");
 
@@ -1093,7 +1089,6 @@ public class Mapper extends JFrame
     private JMenuItem item_lopen = new JMenuItem();
     private JMenuItem item_lsave = new JMenuItem();
     private JMenuItem item_lsaveas = new JMenuItem();
-    private JMenuItem item_close = new JMenuItem();
     private JMenuItem item_word = new JMenuItem();
     private JMenuItem item_print = new JMenuItem();
     private JMenuItem item_exit = new JMenuItem();

@@ -96,9 +96,6 @@ public class LinkAttractionRule extends AbstractRule
         this.la = la;
     }
 
-    /** The number of positions given to the best matching link */
-    private static final float BEST_MATCH = 3.0F;
-
     /** The number of links we remember for a node */
     private LinkArray la;
 }

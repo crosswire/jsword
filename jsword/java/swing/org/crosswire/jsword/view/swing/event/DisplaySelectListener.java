@@ -1,11 +1,11 @@
+
 package org.crosswire.jsword.view.swing.event;
 
-import java.util.EventObject;
-
-import org.crosswire.jsword.book.Bible;
+import java.util.EventListener;
 
 /**
- * A VersionEvent happens whenever a user changes version.
+ * Implement DisplaySelectListener to recieve CommandEvents whenever someone makes
+ * a command for you to execute.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,26 +28,17 @@ import org.crosswire.jsword.book.Bible;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class VersionEvent extends EventObject
+public interface DisplaySelectListener extends EventListener
 {
     /**
-     * A new version is required
+     * This method is called to indicate that a command has been made.
+     * @param ev Describes the change
      */
-    public VersionEvent(Object source, Bible bible)
-    {
-        super(source);
-
-        this.bible = bible;
-    }
+    public void passageSelected(DisplaySelectEvent ev);
 
     /**
-     * Accessor fot the chosen Bible
+     * This method is called to indicate that a command has been made.
+     * @param ev Describes the change
      */
-    public Bible getBible()
-    {
-        return bible;
-    }
-
-    /** The version name */
-    private Bible bible;
+    public void bookChosen(DisplaySelectEvent ev);
 }

@@ -36,6 +36,7 @@ import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.ComparePane;
 import org.crosswire.jsword.view.swing.book.GeneratorPane;
+import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.Splash;
 import org.crosswire.jsword.view.swing.book.StatusBar;
@@ -182,6 +183,10 @@ public class Desktop extends JFrame implements TitleChangedListener
             splash.setProgress("Creating GUI : Init");
             jbInit();
             setViewLayout(VIEW_SDI);
+
+            // Preload the PassageInnerPane for faster initial view
+            splash.setProgress("Creating GUI : Preloading view system");
+            InnerDisplayPane.preload();
 
             // Configuration
             splash.setProgress("General configuration");
@@ -556,7 +561,7 @@ public class Desktop extends JFrame implements TitleChangedListener
     private Action act_file_close = null;
     private Action act_file_closeall = null;
     private Action act_file_print = null;
-    private Action act_file_exit = null;
+    protected Action act_file_exit = null;
 
     private Action act_edit_cut = null;
     private Action act_edit_copy = null;

@@ -1135,16 +1135,16 @@ public class VerseRange implements VerseBase
     private transient int verse_count;
 
     /**
-     * The real data - where do we end?.
-     * All ctors init this so leave default
-     */
-    private transient Verse end;
-
-    /**
      * The real data - where do we start?.
      * All ctors init this so leave default
      */
-    private transient Verse start;
+    protected transient Verse start;
+
+    /**
+     * The real data - where do we end?.
+     * All ctors init this so leave default
+     */
+    protected transient Verse end;
 
     /**
      * The original string for picky users

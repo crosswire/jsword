@@ -8,10 +8,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -26,18 +28,20 @@ import javax.swing.event.DocumentListener;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.swing.GuiUtil;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageEvent;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageListener;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.passage.PassageListModel;
 import org.crosswire.jsword.view.swing.passage.WholeBibleTreeModel;
 import org.crosswire.jsword.view.swing.passage.WholeBibleTreeNode;
 
 /**
- * A nice way to select passages.
+ * A JPanel (or dialog) that presents a interactive GUI way to select passages.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -67,9 +71,31 @@ public class PassageSelectionPane extends JPanel
      */
     public PassageSelectionPane()
     {
+        try
+        {
+            URL url_good = Project.resource().getResource("/toolbarButtonGraphics/general/About24.gif");
+            if (url_good != null)
+            {
+                ico_good = new ImageIcon(url_good);
+            }
+            
+            URL url_bad = Project.resource().getResource("/toolbarButtonGraphics/general/Stop24.gif");
+            if (url_bad != null)
+            {
+                ico_bad = new ImageIcon(url_bad);
+            }
+        }
+        catch (MalformedURLException ex)
+        {
+            throw new LogicError(ex);
+        }
+
         jbInit();
     }
 
+    /**
+     * GUI init
+     */
     private void jbInit()
     {
         tre_all.setModel(new WholeBibleTreeModel());
@@ -106,73 +132,44 @@ public class PassageSelectionPane extends JPanel
 
         lbl_display.setDisplayedMnemonic('V');
         lbl_display.setLabelFor(txt_display);
-        lbl_display.setText("Verses:");
+        lbl_display.setText("Verses: ");
         txt_display.getDocument().addDocumentListener(new CustomDocumentEvent());
-        btn_go.setText("Done");
-        btn_go.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                close();
-            }
-        });
         pnl_display.setLayout(new BorderLayout());
-        pnl_display.add(btn_go, BorderLayout.EAST);
         pnl_display.add(txt_display, BorderLayout.CENTER);
         pnl_display.add(lbl_display, BorderLayout.WEST);
 
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.setLayout(new GridBagLayout());
-        this.add(lbl_all, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(scr_all, new GridBagConstraints(0, 1, 1, 4, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 5, 10, 2), 0, 0));
+        this.add(lbl_all, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 10, 5, 5), 0, 0));
+        this.add(scr_all, new GridBagConstraints(0, 1, 1, 4, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 10, 10, 2), 0, 0));
         this.add(pnl_space1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         this.add(btn_del, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
         this.add(btn_add, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
         this.add(pnl_space2, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(lbl_sel, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(scr_sel, new GridBagConstraints(2, 1, 1, 4, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 10, 5), 0, 0));
-        this.add(pnl_display, new GridBagConstraints(0, 5, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    }
-
-    /**
-     * Setup the various models
-     */
-    public void setPassage(String refstr)
-    {
-        try
-        {
-            ref = PassageFactory.createPassage(refstr);
-
-            lst_sel.setModel(new PassageListModel(ref, PassageListModel.LIST_RANGES));
-
-            ref.addPassageListener(new CustomPassageListener());
-        }
-        catch (NoSuchVerseException ex)
-        {
-            lst_sel.setEnabled(false);
-            tre_all.setEnabled(false);
-            btn_add.setEnabled(false);
-            btn_del.setEnabled(false);
-        }
+        this.add(lbl_sel, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 10), 0, 0));
+        this.add(scr_sel, new GridBagConstraints(2, 1, 1, 4, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 2, 10, 10), 0, 0));
+        this.add(lbl_message, new GridBagConstraints(0, 5, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 10, 5, 10), 0, 0));
+        this.add(pnl_display, new GridBagConstraints(0, 6, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 10, 0, 10), 0, 0));
     }
 
     /**
      * Called whenever the passage changes to update the text box.
      */
-    private void updateTextDisplay()
+    protected void copyListToText()
     {
         if (changing)
             return;
 
         changing = true;
         txt_display.setText(ref.getName());
+        updateMessageSummary();
         changing = false;
     }
 
     /**
      * Called whenever the text box changes to update the list
      */
-    private void updateList()
+    protected void copyTextToList()
     {
         if (changing)
             return;
@@ -185,16 +182,48 @@ public class PassageSelectionPane extends JPanel
             temp = PassageFactory.createPassage(refstr);
             ref.clear();
             ref.addAll(temp);
-            
-            lst_sel.setEnabled(true);
-            btn_go.setEnabled(true);
+
+            setValidPassage(true);
+            updateMessageSummary();
         }
         catch (NoSuchVerseException ex)
         {
-            lst_sel.setEnabled(false);
-            btn_go.setEnabled(false);
+            setValidPassage(false);
+            updateMessage(ex);
         }
         changing = false;
+    }
+
+    /**
+     * Update the UI when the validity of the passage changes
+     * @param valid
+     */
+    private void setValidPassage(boolean valid)
+    {
+        lst_sel.setEnabled(valid);
+        tre_all.setEnabled(valid);
+        btn_add.setEnabled(valid);
+        btn_del.setEnabled(valid);
+    }
+
+    /**
+     * Write out an error message to the message label
+     * @param ex
+     */
+    private void updateMessage(NoSuchVerseException ex)
+    {
+        lbl_message.setText("Error: "+ex.getMessage());
+        lbl_message.setIcon(ico_bad);
+    }
+
+    /**
+     * Write out an summary message to the message label
+     * @param ex
+     */
+    private void updateMessageSummary()
+    {
+        lbl_message.setText("Summary: "+ref.getOverview());
+        lbl_message.setIcon(ico_good);
     }
 
     /**
@@ -205,20 +234,46 @@ public class PassageSelectionPane extends JPanel
      */
     public String showInDialog(Component parent, String title, boolean modal, String refstr)
     {
-        setPassage(refstr);
-
-        if (dlg_main == null)
+        try
         {
-            dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
-            dlg_main.getContentPane().add(this);
-            dlg_main.getRootPane().setDefaultButton(btn_go);
-            dlg_main.setTitle(title);
-            dlg_main.setModal(modal);
-            dlg_main.addWindowListener(new WindowAdapter()
-            {
-                public void windowClosed(WindowEvent ev) { close(); }
-            });
+            txt_display.setText(refstr);
+
+            ref = PassageFactory.createPassage(refstr);
+            lst_sel.setModel(new PassageListModel(ref, PassageListModel.LIST_RANGES));
+        
+            ref.addPassageListener(new CustomPassageListener());
+            updateMessageSummary();
         }
+        catch (NoSuchVerseException ex)
+        {
+            setValidPassage(false);
+            updateMessage(ex);
+        }
+
+        final JDialog dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
+        JButton btn_go = new JButton();
+        JPanel pnl_action = new JPanel();
+
+        btn_go.setText("Done");
+        btn_go.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                dlg_main.dispose();
+            }
+        });
+
+        pnl_action.setLayout(new BorderLayout());
+        pnl_action.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 20));
+        pnl_action.add(btn_go, BorderLayout.EAST);
+
+        dlg_main.getContentPane().setLayout(new BorderLayout());
+        dlg_main.getContentPane().add(this, BorderLayout.CENTER);
+        dlg_main.getContentPane().add(pnl_action, BorderLayout.SOUTH);
+        dlg_main.getRootPane().setDefaultButton(btn_go);
+        dlg_main.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg_main.setTitle(title);
+        dlg_main.setModal(modal);
 
         GuiUtil.centerWindow(dlg_main);
         dlg_main.pack();
@@ -254,21 +309,10 @@ public class PassageSelectionPane extends JPanel
         }
     }
 
-    /**
-     * Close this dialog
-     */
-    protected void close()
-    {
-        if (dlg_main != null)
-        {
-            dlg_main.dispose();
-            dlg_main = null;
-        }
-    }
-
-    private JDialog dlg_main;
     private Passage ref;
     private boolean changing = false;
+    private Icon ico_good;
+    private Icon ico_bad;
 
     private JScrollPane scr_all = new JScrollPane();
     private JScrollPane scr_sel = new JScrollPane();
@@ -283,7 +327,7 @@ public class PassageSelectionPane extends JPanel
     private JPanel pnl_display = new JPanel();
     private JLabel lbl_display = new JLabel();
     private JTextField txt_display = new JTextField();
-    private JButton btn_go = new JButton();
+    private JLabel lbl_message = new JLabel();
 
     /**
      * Update the list whenever the textbox changes
@@ -295,7 +339,7 @@ public class PassageSelectionPane extends JPanel
          */
         public void insertUpdate(DocumentEvent ev)
         {
-            updateList();
+            copyTextToList();
         }
 
         /**
@@ -303,7 +347,7 @@ public class PassageSelectionPane extends JPanel
          */
         public void removeUpdate(DocumentEvent ev)
         {
-            updateList();
+            copyTextToList();
         }
 
         /**
@@ -311,7 +355,7 @@ public class PassageSelectionPane extends JPanel
          */
         public void changedUpdate(DocumentEvent ev)
         {
-            updateList();
+            copyTextToList();
         }
     }
 
@@ -325,7 +369,7 @@ public class PassageSelectionPane extends JPanel
          */
         public void versesAdded(PassageEvent ev)
         {
-            updateTextDisplay();
+            copyListToText();
         }
 
         /**
@@ -333,7 +377,7 @@ public class PassageSelectionPane extends JPanel
          */
         public void versesRemoved(PassageEvent ev)
         {
-            updateTextDisplay();
+            copyListToText();
         }
 
         /**
@@ -341,7 +385,7 @@ public class PassageSelectionPane extends JPanel
          */
         public void versesChanged(PassageEvent ev)
         {
-            updateTextDisplay();
+            copyListToText();
         }
     }
 }

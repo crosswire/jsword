@@ -58,7 +58,7 @@ public class Defaults
     /**
      * The default Bible
      */
-    private static BibleMetaData bdeft = null;
+    protected static BibleMetaData bdeft = null;
 
     /**
      * Has the default Commentary been manually set or are we picking the fastest
@@ -69,7 +69,7 @@ public class Defaults
     /**
      * The default Commentary
      */
-    private static CommentaryMetaData cdeft = null;
+    protected static CommentaryMetaData cdeft = null;
 
     /**
      * Has the default Dictionary been manually set or are we picking the fastest
@@ -80,7 +80,7 @@ public class Defaults
     /**
      * The default Dictionary
      */
-    private static DictionaryMetaData ddeft = null;
+    protected static DictionaryMetaData ddeft = null;
 
     /**
      * Set the default Bible. The new name must be equal() to a string
@@ -159,7 +159,7 @@ public class Defaults
      * Go through all of the current books checking to see if we need to replace
      * the current defaults with one of these.
      */
-    private static void checkAllPreferable()
+    protected static void checkAllPreferable()
     {
         List bmds = Books.getBooks();
         for (Iterator it = bmds.iterator(); it.hasNext();)
@@ -172,7 +172,7 @@ public class Defaults
     /**
      * Should this Bible become the default?
      */
-    private static void checkPreferable(BookMetaData bmd)
+    protected static void checkPreferable(BookMetaData bmd)
     {
         if (bmd == null)
             throw new NullPointerException("null BookMetaData");

@@ -206,7 +206,7 @@ public class Splash extends JWindow
     /**
      * Set progress bar.
      */
-    private void setProgress(int percent, String message)
+    protected void setProgress(int percent, String message)
     {
         try
         {
@@ -358,11 +358,11 @@ public class Splash extends JWindow
 
     private static final String START = "Start";
 
-    private final int wait;
+    protected final int wait;
     private Icon icon;
     private JPanel pnl_info = new JPanel();
     private JLabel lbl_picture = new JLabel();
-    private JProgressBar prg_info = new JProgressBar();
+    protected JProgressBar prg_info = new JProgressBar();
     private JLabel lbl_info = new JLabel();
     private URL predicturl;
     private Properties current;

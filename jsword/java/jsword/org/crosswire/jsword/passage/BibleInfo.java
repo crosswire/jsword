@@ -3,7 +3,6 @@ package org.crosswire.jsword.passage;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
@@ -755,11 +754,10 @@ public class BibleInfo implements PassageConstants
         }
     }
 
-    /** How the book names are reported */
+    /**
+     * How the book names are reported
+     */
     private static int book_case = CASE_SENTANCE;
-
-    /** The resource file, for book names */
-    private static ResourceBundle resources;
 
     /**
      * Handy section finder. There is a bit of moderately bad programming

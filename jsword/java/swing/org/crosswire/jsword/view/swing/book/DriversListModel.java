@@ -113,7 +113,7 @@ public class DriversListModel extends AbstractListModel
     protected BookDriver[] drivers;
 
     /** The small version icon */
-    private final static ImageIcon small_icon = new ImageIcon("/org/crosswire/resources/task_small.gif");
+    protected final static ImageIcon small_icon = new ImageIcon("/org/crosswire/resources/task_small.gif");
 
     /** border if we do not have focus */
     protected static Border no_focus;

@@ -308,6 +308,33 @@ public class Resource
     }
 
     /**
+     * Get the preferred implementor of some interface or abstract class.
+     * This is currently done by looking up a properties file by the name of
+     * the given class, and assuming that the "default" key is an implemention
+     * of said class. Warnings are given otherwise.
+     * @param class The class or interface to find an implementation of.
+     * @return Class The configured implementing class.
+     * @throws MalformedURLException if the properties file can not be found
+     * @throws IOException if there is a problem reading the found file
+     * @throws ClassNotFoundException if the read contents are not found
+     * @throws ClassCastException if the read contents are not valid
+     * @see Resource#getImplementors(Class)
+     */
+    public Class getImplementor(Class clazz) throws MalformedURLException, IOException, ClassNotFoundException, ClassCastException
+    {
+        Properties props = getProperties(clazz.getName());
+        String name = props.getProperty("default");
+        
+        Class impl = Class.forName(name);
+        if (!clazz.isAssignableFrom(impl))
+        {
+            throw new ClassCastException("Class "+impl.getName()+" does not implement "+clazz.getName());
+        }
+        
+        return impl;
+    }
+
+    /**
      * Get and load an XML file from the classpath and a few other places
      * into a JDOM Document object.
      * @return The project root as a URL

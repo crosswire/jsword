@@ -124,7 +124,4 @@ public class AppletFrame extends JFrame
         public AppletContext getAppletContext() { return null; }
         public void appletResize(int w, int h)  { }
     }
-
-    /** Are we still running */
-    private boolean dying = false;
 }

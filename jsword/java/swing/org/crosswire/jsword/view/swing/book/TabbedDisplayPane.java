@@ -20,7 +20,6 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.util.Style;
 import org.xml.sax.SAXException;
 
 /**
@@ -47,12 +46,12 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PassageTabbedPane extends JPanel
+public class TabbedDisplayPane extends JPanel
 {
     /**
      * Simple Constructor
      */
-    public PassageTabbedPane()
+    public TabbedDisplayPane()
     {
         jbInit();
 
@@ -72,7 +71,10 @@ public class PassageTabbedPane extends JPanel
         tab_main.setTabPlacement(JTabbedPane.BOTTOM);
         tab_main.addChangeListener(new ChangeListener()
         {
-            public void stateChanged(ChangeEvent ev) { newTab(ev); }
+            public void stateChanged(ChangeEvent ev)
+            {
+                newTab(ev);
+            }
         });
 
         this.setLayout(new BorderLayout());
@@ -119,7 +121,7 @@ public class PassageTabbedPane extends JPanel
                 }
 
                 // Create the tab
-                PassageInnerPane pnl_new = new PassageInnerPane();
+                InnerDisplayPane pnl_new = new InnerDisplayPane();
                 pnl_new.setVersion(version);
                 pnl_new.setPassage(cut);
                 tab_main.add(pnl_new, tabname);
@@ -181,9 +183,8 @@ public class PassageTabbedPane extends JPanel
                         + tabname.substring(len-9, len);
             }
 
-
             // Create a new tab
-            PassageInnerPane pnl_new = new PassageInnerPane();
+            InnerDisplayPane pnl_new = new InnerDisplayPane();
             pnl_new.setVersion(version);
             pnl_new.setPassage(cut);
             tab_main.add(pnl_new, tabname);
@@ -214,7 +215,7 @@ public class PassageTabbedPane extends JPanel
         }
         else
         {
-            PassageInnerPane view = (PassageInnerPane) tab_main.getSelectedComponent();
+            InnerDisplayPane view = (InnerDisplayPane) tab_main.getSelectedComponent();
             return view.getJTextComponent();
         }
     }
@@ -224,7 +225,7 @@ public class PassageTabbedPane extends JPanel
      */
     public static void setPageSize(int page_size)
     {
-        PassageTabbedPane.page_size = page_size;
+        TabbedDisplayPane.page_size = page_size;
     }
 
     /**
@@ -260,15 +261,13 @@ public class PassageTabbedPane extends JPanel
     private Passage whole = null;
     private Passage waiting = null;
     private Bible version = null;
-    private Style style = new Style("swing");
     private boolean tabs = false;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(PassageTabbedPane.class);
+    protected static Logger log = Logger.getLogger(TabbedDisplayPane.class);
 
     private JTabbedPane tab_main = new JTabbedPane();
     private JPanel pnl_more = new JPanel();
-    private PassageInnerPane pnl_view = new PassageInnerPane();
+    private InnerDisplayPane pnl_view = new InnerDisplayPane();
     private Component center = null;
-    private int pageSize;
 }

@@ -1,11 +1,13 @@
 
 package org.crosswire.jsword.view.swing.event;
 
-import java.util.EventListener;
+import java.util.EventObject;
+
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.passage.Passage;
 
 /**
- * Implement CommandListener to recieve CommandEvents whenever someone makes
- * a command for you to execute.
+ * A DisplaySelectEvent happens whenever a user makes a command.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,11 +30,46 @@ import java.util.EventListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface CommandListener extends EventListener
+public class DisplaySelectEvent extends EventObject
 {
     /**
-     * This method is called to indicate that a command has been made.
-     * @param ev Describes the change
+     * For when a command has been made
+     * @param source The thing that started this off
+     * @param param The parameter to this event
      */
-    public void commandMade(CommandEvent ev);
+    public DisplaySelectEvent(Object source, Passage ref, Book book)
+    {
+        super(source);
+
+        this.ref = ref;
+        this.book = book;
+    }
+
+    /**
+     * Get the type of command
+     * @return The type of command
+     */
+    public Passage getPassage()
+    {
+        return ref;
+    }
+
+    /**
+     * Get the type of command
+     * @return The type of command
+     */
+    public Book getBook()
+    {
+        return book;
+    }
+
+    /**
+     * The new passage
+     */
+    private Passage ref = null;
+
+    /**
+     * The new Book
+     */
+    private Book book;
 }

@@ -8,7 +8,6 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.book.search.ser.*;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
 
@@ -49,9 +48,12 @@ public abstract class SearchableBible extends AbstractBible
         try
         {
             URL url = getIndexDirectory();
-            searcher = new SerSearcher(this, url, li);
+
+            Class impl = Project.resource().getImplementor(org.crosswire.jsword.book.search.Searcher.class);
+            searcher = (Searcher) impl.newInstance();
+            searcher.init(this, url, li);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new BookException("ser_init", ex);
         }

@@ -158,7 +158,7 @@ public class ComparePane extends EirPanel
     /**
      * Actually preform the comparison.
      */
-    private void compare()
+    protected void compare()
     {
         BookMetaData bmd1 = mdl_bibles1.getSelectedBookMetaData(); 
         BookMetaData bmd2 = mdl_bibles2.getSelectedBookMetaData(); 

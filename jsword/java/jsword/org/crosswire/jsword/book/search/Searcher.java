@@ -1,8 +1,12 @@
 
 package org.crosswire.jsword.book.search;
 
+import java.net.URL;
+
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Passage;
 
 /**
@@ -31,6 +35,12 @@ import org.crosswire.jsword.passage.Passage;
  */
 public interface Searcher
 {
+    /**
+     * An initializer type method so we can configure the Search engine at
+     * runtime.
+     */
+    public void init(Bible bible, URL url, ProgressListener li) throws BookException;
+
     /**
      * For a given word find a list of references to it
      * @param word The text to search for

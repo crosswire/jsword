@@ -108,9 +108,6 @@ public class ColorField extends JPanel implements Field
     /** The name of the Color selection */
     protected String name = "Edit";
 
-    /** What to do when we are clicked */
-    private Runnable runner;
-
     /** The browse button */
     protected JButton edit = new JButton(name);
 

@@ -26,8 +26,6 @@ import org.crosswire.jsword.passage.VerseRange;
 /**
  * A BibleDriver to read Sword format data.
  * 
- * URGENT(joe): fix sword drivers
- * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

@@ -470,5 +470,5 @@ public class BitwisePassage extends AbstractPassage
     static final long serialVersionUID = -5931560451407396276L;
 
     /** The place the real data is stored */
-    private transient BitSet store = new BitSet(BibleInfo.versesInBible()+1);
+    protected transient BitSet store = new BitSet(BibleInfo.versesInBible()+1);
 }

@@ -60,7 +60,7 @@ public class SerSearcher implements Searcher
     /**
      * Constructor for SerSearcher.
      */
-    public SerSearcher(Bible bible, URL url, ProgressListener li) throws BookException
+    public void init(Bible bible, URL url, ProgressListener li) throws BookException
     {
         try
         {

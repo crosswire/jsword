@@ -515,7 +515,6 @@ public class NetUtil
         }
         
         private URLFilter filter;
-        private URL base;
     }
 
     /**

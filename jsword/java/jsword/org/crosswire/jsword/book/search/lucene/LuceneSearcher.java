@@ -2,7 +2,6 @@
 package org.crosswire.jsword.book.search.lucene;
 
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -54,23 +53,30 @@ public class LuceneSearcher implements Searcher
     /**
      * Constructor for LuceneSearcher.
      */
-    public LuceneSearcher(Bible bible, URL url, ProgressListener li) throws IOException
+    public void init(Bible bible, URL url, ProgressListener li) throws BookException
     {
-        // An index is created by opening an IndexWriter with the
-        // create argument set to true.
-        IndexWriter writer = new IndexWriter(NetUtil.getAsFile(url), new SimpleAnalyzer(), false);
-
-        // We create a Document with two Fields, one which contains
-        // the file path, and one the file's contents.
-        Document doc = new Document();
-        doc.add(Field.UnIndexed("path", "somefile"));
-        doc.add(Field.Text("body", new FileReader("somefile")));
-    
-        writer.addDocument(doc);
-
-        writer.close();
-
-        searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
+        try
+        {
+            // An index is created by opening an IndexWriter with the
+            // create argument set to true.
+            IndexWriter writer = new IndexWriter(NetUtil.getAsFile(url), new SimpleAnalyzer(), false);
+            
+            // We create a Document with two Fields, one which contains
+            // the file path, and one the file's contents.
+            Document doc = new Document();
+            doc.add(Field.UnIndexed("path", "somefile"));
+            doc.add(Field.Text("body", new FileReader("somefile")));
+            
+            writer.addDocument(doc);
+            
+            writer.close();
+            
+            searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
+        }
+        catch (Exception ex)
+        {
+            throw new BookException("lucene_init", ex);
+        }
     }
 
     /**

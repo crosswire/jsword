@@ -115,7 +115,7 @@ public class BooksListModel extends AbstractListModel
     /**
      * Setup the data-stores of the current Bibles and drivers
      */
-    private void cacheData()
+    protected void cacheData()
     {
         bmds = Books.getBooks(filter);
     }
@@ -148,6 +148,22 @@ public class BooksListModel extends AbstractListModel
             cacheData();
             fireIntervalRemoved(ev.getSource(), 0, old_size);
         }    
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(java.lang.Object, int, int)
+     */
+    protected void fireIntervalAdded(Object source, int index0, int index1)
+    {
+        super.fireIntervalAdded(source, index0, index1);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(java.lang.Object, int, int)
+     */
+    protected void fireIntervalRemoved(Object source, int index0, int index1)
+    {
+        super.fireIntervalRemoved(source, index0, index1);
     }
 
     /**

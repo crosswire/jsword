@@ -122,7 +122,7 @@ public class BenchmarkPane extends EirPanel
     /**
      * Run the benchmark on the selected Bible
      */
-    private void benchmark()
+	protected void benchmark()
     {
         try
         {

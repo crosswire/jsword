@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -16,10 +17,8 @@ import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.view.swing.event.CommandEvent;
-import org.crosswire.jsword.view.swing.event.CommandListener;
-import org.crosswire.jsword.view.swing.event.VersionEvent;
-import org.crosswire.jsword.view.swing.event.VersionListener;
+import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
+import org.crosswire.jsword.view.swing.event.DisplaySelectListener;
 import org.crosswire.jsword.view.swing.passage.PassageList;
 
 /**
@@ -46,12 +45,12 @@ import org.crosswire.jsword.view.swing.passage.PassageList;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PassagePane extends JPanel implements VersionListener, CommandListener
+public class OuterDisplayPane extends JPanel
 {
     /**
-     * Initialize the PassagePane
+     * Initialize the OuterDisplayPane
      */
-    public PassagePane()
+    public OuterDisplayPane()
     {
         try
         {
@@ -73,7 +72,10 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     {
         lst_passg.addListSelectionListener(new ListSelectionListener()
         {
-            public void valueChanged(ListSelectionEvent ev) { selection(); }
+            public void valueChanged(ListSelectionEvent ev)
+            {
+                selection();
+            }
         });
 
         spt_passg.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -89,23 +91,11 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     }
 
     /**
-     * Someone wants us to show in a new version
+     * Accessor for a notifier from the DisplaySelectPane
      */
-    public void versionChanged(VersionEvent ev)
+    public DisplaySelectListener getDisplaySelectListener()
     {
-        version = ev.getBible();
-        txt_passg.setVersion(version);
-
-        // refresh the view
-        selection();
-    }
-
-    /**
-     * Someone wants us to display a new passage
-     */
-    public void commandMade(CommandEvent ev)
-    {
-        setPassage(ev.getPassage());
+        return dsli;
     }
 
     /**
@@ -125,7 +115,8 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     }
 
     /**
-     * Get the passage being displayed
+     * Get the passage being displayed.
+     * For the ListDeleteAction
      */
     public Passage getPassage()
     {
@@ -133,7 +124,8 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     }
 
     /**
-     * Accessor for the PassageList
+     * Accessor for the PassageList.
+     * For cut, copy and paste
      */
     public PassageList getPassageList()
     {
@@ -184,14 +176,48 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
         }
     }
 
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(PassagePane.class);
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(OuterDisplayPane.class);
 
-    /** What is being displayed */
-    private Bible version = null;
+    /**
+     * What is being displayed
+     */
+    protected Bible version = null;
 
     private JSplitPane spt_passg = new JSplitPane();
     private JScrollPane scr_passg = new JScrollPane();
-    private PassageTabbedPane txt_passg = new PassageTabbedPane();
+    protected TabbedDisplayPane txt_passg = new TabbedDisplayPane();
     private PassageList lst_passg = new PassageList();
+
+    private DisplaySelectListener dsli = new CustomDisplaySelectListener();
+
+    /**
+     * Update stuff whenever the selection changes
+     */
+    private class CustomDisplaySelectListener implements DisplaySelectListener
+    {
+        /**
+         * Someone wants us to show in a new version
+         * @see org.crosswire.jsword.view.swing.event.DisplaySelectListener#bookChosen(DisplaySelectEvent)
+         */
+        public void bookChosen(DisplaySelectEvent ev)
+        {
+            version = (Bible) ev.getBook();
+            txt_passg.setVersion(version);
+    
+            // refresh the view
+            selection();
+        }
+    
+        /**
+         * Someone wants us to display a new passage
+         * @see org.crosswire.jsword.view.swing.event.DisplaySelectListener#passageSelected(DisplaySelectEvent)
+         */
+        public void passageSelected(DisplaySelectEvent ev)
+        {
+            setPassage(ev.getPassage());
+        }
+    }
 }

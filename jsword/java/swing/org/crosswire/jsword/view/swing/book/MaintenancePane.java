@@ -62,7 +62,7 @@ public class MaintenancePane extends EirPanel
     /**
      * Ensure that the buttons are enabled correctly
      */
-    private void updateButtons()
+    protected void updateButtons()
     {
         boolean selected = (lst_versions.getSelectedIndex() != -1);
         btn_remove.setEnabled(selected);

@@ -226,11 +226,6 @@ public class GeneratorPane extends EirPanel
     }
     
     /**
-     * The list of available drivers
-     */
-    private String[] drivers = null;
-    
-    /**
      * Holder for the source and destination area
      */
     private Box box_main;
@@ -253,13 +248,13 @@ public class GeneratorPane extends EirPanel
     /**
      * The source picker
      */
-    private JComboBox cbo_source = new JComboBox();
+    protected JComboBox cbo_source = new JComboBox();
 
     /**
      * The model for the sources.
      * Bibles are required in GeneratorRunnable.run()
      */
-    private BooksComboBoxModel mdl_source = new BooksComboBoxModel(BookFilters.getBibles());
+    protected BooksComboBoxModel mdl_source = new BooksComboBoxModel(BookFilters.getBibles());
 
     /**
      * Layout for the destination panel
@@ -279,12 +274,12 @@ public class GeneratorPane extends EirPanel
     /**
      * Input field for the name class
      */
-    private JComboBox cbo_driver = new JComboBox();
+    protected JComboBox cbo_driver = new JComboBox();
 
     /**
      * The model for the drivers
      */
-    private DriversComboBoxModel mdl_driver = new DriversComboBoxModel(false);
+    protected DriversComboBoxModel mdl_driver = new DriversComboBoxModel(false);
 
     /**
      * The progress area
@@ -294,7 +289,7 @@ public class GeneratorPane extends EirPanel
     /**
      * The progress bar
      */
-    private JProgressBar bar_prog = new JProgressBar();
+    protected JProgressBar bar_prog = new JProgressBar();
 
     /**
      * The button bar
@@ -309,27 +304,27 @@ public class GeneratorPane extends EirPanel
     /**
      * The generate button
      */
-    private JButton btn_generate = new JButton();
+    protected JButton btn_generate = new JButton();
 
     /**
      * The close button, only used if we are in our own Frame
      */
-    private JButton btn_close = null;
+    protected JButton btn_close = null;
 
     /**
      * The verify checkbox
      */
-    private JCheckBox chk_verify = new JCheckBox();
+    protected JCheckBox chk_verify = new JCheckBox();
 
     /**
      * Work in progress
      */
-    private Thread work;
+    protected Thread work;
 
     /**
      * The progress listener
      */
-    private CustomProgressListener cpl = new CustomProgressListener();
+    protected CustomProgressListener cpl = new CustomProgressListener();
 
     /**
      * A class to be run in a Thread to do the real work of generating the
