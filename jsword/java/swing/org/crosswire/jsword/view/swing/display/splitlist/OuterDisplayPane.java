@@ -64,31 +64,19 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
     {
         try
         {
-            log.debug("odp start");
-
             List booklist = Books.installed().getBookMetaDatas(BookFilters.getBibles());
-            if (booklist.size() == 0)
+            if (booklist.size() != 0)
             {
-                return;
+                Book book = ((BookMetaData) booklist.get(0)).getBook();
+                txtPassg.setBook(book);
+                log.debug("foo");
             }
-
-            log.debug("odp got booklist");
-
-            Book book = ((BookMetaData) booklist.get(0)).getBook();
-            txtPassg.setBook(book);
-
-            log.debug("odp set book done");
 
             initialize();
         }
-        // TODO: make this into an Exception again
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             log.error("Failed to set default book", ex);
-        }
-        finally
-        {
-            log.debug("odp end");
         }
     }
 
