@@ -1,9 +1,10 @@
 package org.crosswire.common.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
 
-import org.apache.log4j.Level;
 
 /**
  * This class is very similar to Commons-Logging except it should be even
@@ -47,23 +48,23 @@ public final class Logger
      */
     public static void outputNothing()
     {
-        org.apache.log4j.Logger.getRootLogger().setLevel(Level.ERROR);
+        java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(Level.OFF);
     }
 
     /**
-     * Stop all logging output
+     * Output a minimum of stuff
      */
     public static void outputInfoMinimum()
     {
-        org.apache.log4j.Logger.getRootLogger().setLevel(Level.INFO);
+        java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(Level.WARNING);
     }
 
     /**
-     * Stop all logging output
+     * Output everything
      */
     public static void outputEverything()
     {
-        org.apache.log4j.Logger.getRootLogger().setLevel(Level.DEBUG);
+        java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(Level.FINEST);
     }
 
     /**
@@ -71,20 +72,7 @@ public final class Logger
      */
     private Logger(Class id)
     {
-        log4j = org.apache.log4j.Logger.getLogger(id);
-
-        Object check = loggers.get(id);
-        if (check != null)
-        {
-            log4j.error("Logger reuse for: " + id.getName()); //$NON-NLS-1$
-            log4j.debug("Javascript creates a new classloader so this might not be a problem"); //$NON-NLS-1$
-        }
-
-        loggers.put(id, this);
-
-        // This can be useful in tracking down Logger reuse
-        // ex = new Exception();
-        // ex.fillInStackTrace();
+        logger = java.util.logging.Logger.getLogger(id.getName());
     }
 
     /**
@@ -93,7 +81,7 @@ public final class Logger
      */
     public void fatal(String message)
     {
-        log4j.fatal(message);
+        doLogging(Level.SEVERE, message, null);
     }
 
     /**
@@ -102,7 +90,7 @@ public final class Logger
      */
     public void fatal(String message, Throwable th)
     {
-        log4j.fatal(message, th);
+        doLogging(Level.SEVERE, message, th);
     }
 
     /**
@@ -111,7 +99,7 @@ public final class Logger
      */
     public void error(String message)
     {
-        log4j.error(message);
+        doLogging(Level.WARNING, message, null);
     }
 
     /**
@@ -120,7 +108,7 @@ public final class Logger
      */
     public void error(String message, Throwable th)
     {
-        log4j.error(message, th);
+        doLogging(Level.WARNING, message, th);
     }
 
     /**
@@ -129,7 +117,7 @@ public final class Logger
      */
     public void info(String message)
     {
-        log4j.info(message);
+        doLogging(Level.CONFIG, message, null);
     }
 
     /**
@@ -138,7 +126,7 @@ public final class Logger
      */
     public void info(String message, Throwable th)
     {
-        log4j.info(message, th);
+        doLogging(Level.CONFIG, message, th);
     }
 
     /**
@@ -147,7 +135,7 @@ public final class Logger
      */
     public void warn(String message)
     {
-        log4j.warn(message);
+        doLogging(Level.INFO, message, null);
     }
 
     /**
@@ -156,7 +144,7 @@ public final class Logger
      */
     public void warn(String message, Throwable th)
     {
-        log4j.warn(message, th);
+        doLogging(Level.INFO, message, th);
     }
 
     /**
@@ -165,18 +153,73 @@ public final class Logger
      */
     public void debug(String message)
     {
-        log4j.debug(message);
+        logger.fine(message);
+    }
+
+    // Private method to infer the caller's class and method names
+    private void doLogging(Level level, String message, Throwable th)
+    {
+        String className = null;
+        String methodName = null;
+        int lineNumber = -1;
+        // Get the stack trace.
+        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+        // First, search back to a method in the Logger class.
+        int ix = 0;
+        while (ix < stack.length)
+        {
+            StackTraceElement frame = stack[ix];
+            String cname = frame.getClassName();
+            if (cname.equals(CLASS_NAME))
+            {
+                break;
+            }
+            ix++;
+        }
+        // Now search for the first frame before the "Logger" class.
+        while (ix < stack.length)
+        {
+            StackTraceElement frame = stack[ix];
+            String cname = frame.getClassName();
+            if (!cname.equals(CLASS_NAME))
+            {
+                // We've found the relevant frame.
+                className = cname;
+                methodName = frame.getMethodName();
+                lineNumber = frame.getLineNumber();
+                break;
+            }
+            ix++;
+        }
+        LogRecord logRecord = new LogRecord(level, message);
+        logRecord.setLoggerName(logger.getName());
+        logRecord.setSourceClassName(className);
+        logRecord.setSourceMethodName(methodName);
+        logRecord.setThrown(th);
+        // This is a non-standard use of sequence number.
+        // We could just subclass LogRecord and add line number.
+        logRecord.setSequenceNumber(lineNumber);
+        logger.log(logRecord);
+    }
+
+    static
+    {
+        // Establish a class that will load logging properties into java.util.logging.LogManager
+        System.setProperty("java.util.logging.config.class", LogConfig.class.getName()); //$NON-NLS-1$
     }
 
     /**
-     * Check whether this category is enabled for the <code>DEBUG</code> Level.
+     * This class will read the CWLogging.properties and load it into the java.util.logging.LogManager
      */
-    public boolean isDebugEnabled()
+    static public class LogConfig
     {
-        return log4j.isDebugEnabled();
+        public LogConfig() throws SecurityException, IOException
+        {
+            LogManager.getLogManager().readConfiguration(ResourceUtil.getResourceAsStream("CWLogging.properties")); //$NON-NLS-1$
+        }
     }
 
-    private static Map loggers = new HashMap();
-    private org.apache.log4j.Logger log4j;
-    // private Exception ex;
+    private static final String ROOT_LOGGER = ""; //$NON-NLS-1$
+    private static final String CLASS_NAME = Logger.class.getName();
+    private java.util.logging.Logger logger;
 }
