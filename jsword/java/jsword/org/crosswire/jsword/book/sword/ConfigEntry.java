@@ -205,6 +205,11 @@ public class ConfigEntry
     public void addValue(String aValue)
     {
         String confEntryName = getName();
+        // Filter known types of entries
+        if (type != null)
+        {
+            aValue = type.filter(aValue);            
+        }
         aValue = handleRTF(aValue);
         if (mayRepeat())
         {

@@ -152,7 +152,15 @@ public class ConfigEntryType implements Serializable
          */
         public boolean isAllowed(String value)
         {
-            return choices.contains(value);
+            return choices.contains(filter(value));
+        }
+        
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
+         */
+        public String filter(String value)
+        {
+            return value.toUpperCase();
         }
 
         /* (non-Javadoc)
@@ -243,7 +251,15 @@ public class ConfigEntryType implements Serializable
          */
         public boolean isAllowed(String value)
         {
-            return choices.contains(value);
+            return choices.contains(filter(value));
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
+         */
+        public String filter(String value)
+        {
+            return value.toUpperCase();
         }
 
         /* (non-Javadoc)
@@ -952,7 +968,23 @@ public class ConfigEntryType implements Serializable
          */
         public boolean isAllowed(String value)
         {
-            return choices.contains(value);
+            return choices.contains(filter(value));
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
+         */
+        public String filter(String value)
+        {
+
+            for (int i = 0; i < choiceArray.length; i++)
+            {
+                if (choiceArray[i].equalsIgnoreCase(value))
+                {
+                    return choiceArray[i];
+                }
+            }
+            return value;
         }
 
         /* (non-Javadoc)
@@ -972,15 +1004,19 @@ public class ConfigEntryType implements Serializable
         }
 
         /**
+         * The array of choices.
+         */
+        private final String[] choiceArray = new String[]
+            {
+                "Plaintext", //$NON-NLS-1$
+                "GBF", //$NON-NLS-1$
+                "ThML", //$NON-NLS-1$
+                "OSIS", //$NON-NLS-1$
+            };
+        /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "Plaintext", //$NON-NLS-1$
-            "GBF", //$NON-NLS-1$
-            "ThML", //$NON-NLS-1$
-            "OSIS", //$NON-NLS-1$
-        }));
+        private final Set choices = new HashSet(Arrays.asList(choiceArray));
 
         /**
          * Serialization ID
@@ -1072,8 +1108,8 @@ public class ConfigEntryType implements Serializable
         public boolean isAllowed(String aValue)
         {
             return aValue != null
-                && aValue.equalsIgnoreCase("true") //$NON-NLS-1$
-                && aValue.equalsIgnoreCase("false"); //$NON-NLS-1$
+                && (aValue.equalsIgnoreCase("true") //$NON-NLS-1$
+                || aValue.equalsIgnoreCase("false")); //$NON-NLS-1$
         }
 
         /* (non-Javadoc)
@@ -1234,6 +1270,16 @@ public class ConfigEntryType implements Serializable
     public boolean isAllowed(String value)
     {
         return value != null;
+    }
+
+    /**
+     * Modify the value if necessary.
+     * @param value the input
+     * @return either value or a modified version of it.
+     */
+    public String filter(String value)
+    {
+        return value;
     }
 
     /**
