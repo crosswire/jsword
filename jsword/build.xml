@@ -54,7 +54,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="xjc" depends="init, xjc.check" unless="xjc.notrequired" description="Run XJC">
+  <target name="xjc" depends="init, xjc.check" unless="xjc.uptodate" description="Run XJC">
     <delete dir="${gener.root}/osis"/>
     <mkdir dir="${gener.root}/osis"/>
     <java fork="true" classname="com.sun.tools.xjc.Driver">
@@ -70,7 +70,7 @@
   </target>
   <target name="xjc.check" depends="init" description="Check to see if xjc is needed">
     <mkdir dir="${gener.root}/osis"/>
-    <condition property="xjc.notrequired">
+    <condition property="xjc.uptodate">
       <and>
         <available file="${target.jar}/jsword-osis.jar" type="file"/>
         <available file="${gener.root}/osis/org" type="dir"/>
@@ -159,44 +159,44 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jar" unless="jar.notrequired" depends="compile, jar.dir, jar.api, jar.swing, jar.servlet, resource.jar" description="create the jar files">
+  <target name="jar" unless="jar.uptodate" depends="compile, jar.dir, jar.api, jar.swing, jar.servlet, resource.jar" description="create the jar files">
   </target>
   <target name="jar.dir" description="Create the directory for jars">
     <mkdir dir="${target.jar}"/>
   </target>
-  <target name="jar.api" unless="jar.notrequired" depends="jar.api.check" description="Create a api jar file">
+  <target name="jar.api" unless="jar.uptodate" depends="jar.api.check" description="Create a api jar file">
     <jar jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/jsword"/>
     </jar>
   </target>
   <target name="jar.api.check" description="Check to see that the api jar file is up to date">
-    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword.jar">
+    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword.jar">
       <srcfiles dir="${target.classes}/common"/>
       <srcfiles dir="${target.classes}/jsword"/>
     </uptodate>
   </target>
-  <target name="jar.swing" unless="jar.notrequired" depends="jar.swing.check" description="Create a gui jar file">
+  <target name="jar.swing" unless="jar.uptodate" depends="jar.swing.check" description="Create a gui jar file">
     <jar jarfile="${target.jar}/jsword-swing.jar">
       <fileset dir="${target.classes}/swing"/>
     </jar>
   </target>
   <target name="jar.swing.check" description="Check to see that the gui jar file is up to date">
-    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword-swing.jar">
+    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword-swing.jar">
       <srcfiles dir="${target.classes}/swing"/>
     </uptodate>
   </target>
-  <target name="jar.servlet" unless="jar.notrequired" depends="jar.servlet.check" description="Create a servlet jar file">
+  <target name="jar.servlet" unless="jar.uptodate" depends="jar.servlet.check" description="Create a servlet jar file">
     <jar jarfile="${target.jar}/jsword-servlet.jar">
       <fileset dir="${target.classes}/servlet"/>
     </jar>
   </target>
   <target name="jar.servlet.check" description="Check to see that the servlet jar file is up to date">
-    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword-servlet.jar">
+    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword-servlet.jar">
       <srcfiles dir="${target.classes}/servlet"/>
     </uptodate>
   </target>
-  <target name="resource.jar" unless="jar.notrequired" description="Create a resource jar file">
+  <target name="resource.jar" unless="jar.uptodate" description="Create a resource jar file">
     <jar destfile="${target.jar}/resource.jar">
       <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
@@ -213,76 +213,41 @@
         <filter token="WEBAPP" value="${ant.project.name}"/>
       </filterset>
     </copy>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jsword.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jsword-swing.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="resource.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jsword-osis.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="commons-lang-2.0.jar"/>
-      <param name="dir" value="${source.jar}/lang200"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="commons-net-1.1.0.jar"/>
-      <param name="dir" value="${source.jar}/net110"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jaxb-api.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jaxb-libs.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jaxb-ri.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jdom.jar"/>
-      <param name="dir" value="${source.jar}/jdom09"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="log4j-1.2.7.jar"/>
-      <param name="dir" value="${source.jar}/log4j127"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="lucene-1.3-final.jar"/>
-      <param name="dir" value="${source.jar}/lucene13"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="tar.jar"/>
-      <param name="dir" value="${source.jar}/jtar25"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="winlaf-0.4.jar"/>
-      <param name="dir" value="${source.jar}/winlaf04"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jlfgr-1.0.jar"/>
-      <param name="dir" value="${source.jar}/jlfgr10"/>
-    </antcall>
+    <jnlp.sign jar="jsword.jar" dir="${target.jar}"/>
+    <jnlp.sign jar="jsword-swing.jar" dir="${target.jar}"/>
+    <jnlp.sign jar="resource.jar" dir="${target.jar}"/>
+    <jnlp.sign jar="jsword-osis.jar" dir="${target.jar}"/>
+    <jnlp.sign jar="commons-lang-2.0.jar" dir="${source.jar}/lang200"/>
+    <jnlp.sign jar="commons-net-1.1.0.jar" dir="${source.jar}/net110"/>
+    <jnlp.sign jar="jaxb-api.jar" dir="${source.jar}/jaxb10"/>
+    <jnlp.sign jar="jaxb-libs.jar" dir="${source.jar}/jaxb10"/>
+    <jnlp.sign jar="jaxb-ri.jar" dir="${source.jar}/jaxb10"/>
+    <jnlp.sign jar="jdom.jar" dir="${source.jar}/jdom09"/>
+    <jnlp.sign jar="log4j-1.2.7.jar" dir="${source.jar}/log4j127"/>
+    <jnlp.sign jar="lucene-1.3-final.jar" dir="${source.jar}/lucene13"/>
+    <jnlp.sign jar="tar.jar" dir="${source.jar}/jtar25"/>
+    <jnlp.sign jar="winlaf-0.4.jar" dir="${source.jar}/winlaf04"/>
+    <jnlp.sign jar="jlfgr-1_0.jar" dir="${source.jar}/jlfgr10"/>
   </target>
 
   <!--=======================================================================-->
-  <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.notrequired" depends="jnlp.section.check">
+  <macrodef name="jnlp.sign" description="Signs the jar files for jnlp">
+    <attribute name="jar"/>
+    <attribute name="dir"/>
+    <sequential>
+      <antcall target="jnlp.section">
+        <param name="jar" value="@{jar}"/>
+        <param name="dir" value="@{dir}"/>
+      </antcall>
+    </sequential>
+  </macrodef>
+  <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.uptodate.${jar}" depends="jnlp.section.check">
     <echo message="JNLP prepare: ${jar}"/>
     <copy todir="${target.web}/jnlp" file="${dir}/${jar}"/>
     <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${basedir}/${ant.project.name}.keystore" keypass="${jnlp.password}" jar="${target.web}/jnlp/${jar}"/>
   </target>
   <target name="jnlp.section.check" description="Check to see that the signed jars are up to date">
-    <uptodate property="jnlp.section.notrequired" srcfile="${dir}/${jar}" targetfile="${target.web}/jnlp/${jar}"/>
+    <uptodate property="jnlp.section.uptodate.${jar}" srcfile="${dir}/${jar}" targetfile="${target.web}/jnlp/${jar}"/>
   </target>
 
   <!--=======================================================================-->
@@ -674,7 +639,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="jnlp.keygen.notrequired" depends="init, jnlp.keygen.check">
+  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="jnlp.keygen.uptodate" depends="init, jnlp.keygen.check">
     <echo message="Generating keystore for webstart testing"/>
     <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${basedir}/${ant.project.name}.keystore">
       <dname>
@@ -686,7 +651,7 @@
     </genkey>
   </target>
   <target name="jnlp.keygen.check" description="Check the keystore is there">
-    <available property="jnlp.keygen.notrequired" file="${basedir}/${ant.project.name}.keystore"/>
+    <available property="jnlp.keygen.uptodate" file="${basedir}/${ant.project.name}.keystore"/>
   </target>
 
   <!--=======================================================================-->
