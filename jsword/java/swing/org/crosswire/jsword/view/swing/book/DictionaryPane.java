@@ -271,6 +271,6 @@ public class DictionaryPane extends JPanel implements DisplayArea
     private JSplitPane sptmain = new JSplitPane();
     private JScrollPane screntries = new JScrollPane();
     private JScrollPane scrdisplay =new JScrollPane();
-    private JTextPane txtdisplay = new JTextPane();;
+    private JTextPane txtdisplay = new JTextPane();
     private JList lstentries = new JList();
 }

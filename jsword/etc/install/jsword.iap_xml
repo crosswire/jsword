@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 5.5 Now, Build 1983
      STATUS: Fully-Functional UNLICENSED Trial Edition
-     DATE:   Mon Jun 09 15:17:53 BST 2003 -->
-<InstallAnywhere_Deployment_Project increments="1413">
+     DATE:   Wed Jun 18 12:08:24 BST 2003 -->
+<InstallAnywhere_Deployment_Project increments="1497">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="5" minor="5" revision="-1"/>
@@ -10,9 +10,9 @@
 		<scriptID>12,42,11,85,78,76,73,67,69,78,83,69,68</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,50,48,48,48,44,32,53,46,48,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,71,66,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-16,-88,-21,17,-64,64,99,70,101,125,121,100,96,105,48,48,49,56,52,67,98,113,112,124,44,81,100,99,62,57,15,14,4,13,14,124,5,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-16,-40,-103,-47,0,64,99,70,101,125,121,100,96,105,48,48,49,56,52,67,98,113,112,124,44,81,100,99,62,57,15,14,1,15,9,122,5,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="73">
+	<installationObjects uniqueObjects="76">
 		<object class="com.zerog.ia.installer.Installer" objectID="c06b59b08776">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="c06b7381878d">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="c06dddb387ee">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="ee12ff9b8789">
 									<property name="propertyValue">
 										<string><![CDATA[org.crosswire.jsword.view.swing.desktop.Desktop]]></string>
 									</property>
@@ -602,6 +602,9 @@ and any path to a file to read from that file]]></string>
 						<string><![CDATA[Choose $SHORTCUT_NAME$ Folder]]></string>
 					</method>
 					<method name="addElement">
+						<string><![CDATA[Choose Java Virtual Machine]]></string>
+					</method>
+					<method name="addElement">
 						<string><![CDATA[Pre-Installation Summary]]></string>
 					</method>
 					<method name="addElement">
@@ -613,7 +616,7 @@ and any path to a file to read from that file]]></string>
 				</object>
 			</property>
 			<property name="installProgressLabelIndex">
-				<int>4</int>
+				<int>5</int>
 			</property>
 			<property name="installProgressLabelOption">
 				<int>2</int>
@@ -664,6 +667,9 @@ and any path to a file to read from that file]]></string>
 				<int>0</int>
 			</property>
 			<property name="unixPermissions">
+				<string><![CDATA[775]]></string>
+			</property>
+			<property name="macOSXPermissions">
 				<string><![CDATA[775]]></string>
 			</property>
 			<property name="preInstallActions">
@@ -780,6 +786,44 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 						</object>
 					</method>
 					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.ChooseJavaVMAction" objectID="ee191e0a87f5">
+							<property name="imageOption">
+								<int>1</int>
+							</property>
+							<property name="userHasVMChoice">
+								<boolean>true</boolean>
+							</property>
+							<property name="title">
+								<string><![CDATA[Choose Java Virtual Machine]]></string>
+							</property>
+							<property name="header">
+								<string><![CDATA[Please Choose a Java VM for Use by the Installed Application]]></string>
+							</property>
+							<property name="canUseJRE">
+								<boolean>true</boolean>
+							</property>
+							<property name="canUseMicrosoft">
+								<boolean>false</boolean>
+							</property>
+							<property name="canUseJDK">
+								<boolean>true</boolean>
+							</property>
+							<property name="labelOption">
+								<int>2</int>
+							</property>
+							<property name="labelIndex">
+								<int>3</int>
+							</property>
+							<property name="help">
+								<object class="com.zerog.ia.installer.util.Help" objectID="ee191e0b87f5">
+									<property name="showHelp">
+										<boolean>false</boolean>
+									</property>
+								</object>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
 						<object class="com.zerog.ia.installer.actions.InstallSummary" objectID="c06b5ab48787">
 							<property name="imageOption">
 								<int>1</int>
@@ -803,13 +847,13 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<boolean>true</boolean>
 							</property>
 							<property name="showInstallSets">
-								<boolean>false</boolean>
+								<boolean>true</boolean>
 							</property>
 							<property name="showInstallBundles">
-								<boolean>false</boolean>
+								<boolean>true</boolean>
 							</property>
 							<property name="showJREDir">
-								<boolean>false</boolean>
+								<boolean>true</boolean>
 							</property>
 							<property name="showDiskSpace">
 								<boolean>true</boolean>
@@ -818,7 +862,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<int>2</int>
 							</property>
 							<property name="labelIndex">
-								<int>3</int>
+								<int>4</int>
 							</property>
 							<property name="fieldList">
 								<object class="java.util.Vector"/>
@@ -845,7 +889,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<int>2</int>
 							</property>
 							<property name="labelIndex">
-								<int>5</int>
+								<int>6</int>
 							</property>
 							<property name="help">
 								<object class="com.zerog.ia.installer.util.Help" objectID="c06b5abe8788">
@@ -991,11 +1035,48 @@ Press ""Done"" to quit the installer.]]></string>
 			<property name="JREDirectoryName">
 				<string><![CDATA[jre]]></string>
 			</property>
+			<property name="RPMSpec">
+				<object class="com.zerog.ia.installer.RPMSpec" objectID="ee1481fc87f5">
+					<property name="enabled">
+						<boolean>true</boolean>
+					</property>
+					<property name="name">
+						<string><![CDATA[JSword]]></string>
+					</property>
+					<property name="version">
+						<string><![CDATA[1.0.0.0]]></string>
+					</property>
+					<property name="release">
+						<string><![CDATA[1.0.0.0]]></string>
+					</property>
+					<property name="summary">
+						<string><![CDATA[<none>]]></string>
+					</property>
+					<property name="copyright">
+						<string><![CDATA[2003]]></string>
+					</property>
+					<property name="url">
+						<string><![CDATA[http://www.crosswire.org/jsword]]></string>
+					</property>
+					<property name="distribution">
+						<string><![CDATA[<none>]]></string>
+					</property>
+					<property name="vendor">
+						<string><![CDATA[Crosswire]]></string>
+					</property>
+					<property name="group">
+						<string><![CDATA[Applications/System]]></string>
+					</property>
+					<property name="packager">
+						<string><![CDATA[]]></string>
+					</property>
+				</object>
+			</property>
 			<property name="buildSettings">
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Mon Jun 09 15:17:53 BST 2003]]></string>
+						<string><![CDATA[Wed Jun 18 12:08:23 BST 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -1024,6 +1105,10 @@ Press ""Done"" to quit the installer.]]></string>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
 						<string><![CDATA[Mon Jun 09 15:17:53 BST 2003]]></string>
+					</method>
+					<method name="put">
+						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
+						<string><![CDATA[$USER_INSTALL_DIR$$/$stderr.log]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.heap.size.initial]]></string>
@@ -1058,6 +1143,10 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[true]]></string>
 					</method>
 					<method name="put">
+						<string><![CDATA[com.zerog.ia.build.vmpack.windows.path]]></string>
+						<string><![CDATA[SunJRE131_08Win32.vm]]></string>
+					</method>
+					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.valid.vm.list]]></string>
 						<string><![CDATA[J2 J1 MSJ MRJ]]></string>
 					</method>
@@ -1080,6 +1169,10 @@ Press ""Done"" to quit the installer.]]></string>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.windows.vm]]></string>
 						<string><![CDATA[true]]></string>
+					</method>
+					<method name="put">
+						<string><![CDATA[com.zerog.ia.installer.options.stdout.redirect]]></string>
+						<string><![CDATA[$USER_INSTALL_DIR$$/$stdout.log]]></string>
 					</method>
 				</object>
 			</property>
@@ -1212,6 +1305,9 @@ Press ""Done"" to quit the installer.]]></string>
 								<string><![CDATA[c06b59c5-1ec7-11b2-8778-f1d8ff249d8a]]></string>
 							</method>
 						</object>
+					</property>
+					<property name="productURL">
+						<string><![CDATA[http://www.crosswire.org/jsword]]></string>
 					</property>
 					<property name="productVersionMajor">
 						<int>1</int>
@@ -1568,32 +1664,6 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[]]></string>
 											</property>
 										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="c06cdbca8792">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\bin]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[bin]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
 										<object refID="c06cdc1a8793"/>
 										<object refID="c06cdc1b8793"/>
 										<object refID="c06cdc1a8794"/>
@@ -1643,6 +1713,32 @@ and any path to a file to read from that file]]></string>
 												<object refID="c06cdc248797"/>
 												<object refID="c06cdc258797"/>
 											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="c06cdbca8792">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\bin]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[bin]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
 										</object>
 										<object refID="c06cdc248798"/>
 									</installChildren>

@@ -10,7 +10,6 @@ Tests
 
 Filters
 - Check THML debug tags needing work (Joe)
-- OSIS->text filter does not work for dictionaries
 
 GUI
 - escape and enter in sel.pasg.dia not 100%

@@ -21,7 +21,7 @@ for %%i in ("%JSWORD%\lib\*.jar") do call "%JSWORD%\bin\lcp.bat" %%i
 REM STEP 4 - Run JSword
 REM we might need to get extra memory?
 REM set JSWORD_OPTS=-Xmx256M -classpath "%LOCALCLASSPATH%"
-%JAVA_HOME%\bin\java.exe "-Djava.endorsed.dirs=%JSWORD%\lib" -classpath "%JSWORD%\resource" "-Djsword.bible.dir=%JSWORD%\resource" %JSWORD_OPTS% org.crosswire.jsword.view.swing.desktop.Desktop
+"%JAVA_HOME%\bin\java.exe" "-Djava.endorsed.dirs=%JSWORD%\lib" -classpath "%JSWORD%\resource" "-Djsword.bible.dir=%JSWORD%\resource" %JSWORD_OPTS% org.crosswire.jsword.view.swing.desktop.Desktop
 goto End
 
 :FailedFindJSword

@@ -13,20 +13,19 @@
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
   <property name="source.web" value="${source.root}/web"/>
-  <property name="source.keystore" value="${basedir}/jsword.keystore"/>
   <property name="gener.root" value="target/gener"/>
   <property name="target.root" value="target/ant"/>
   <property name="target.temp" value="${target.root}/temp"/>
   <property name="target.classes" value="${target.temp}/classes"/>
   <property name="target.jar" value="${target.temp}/jar"/>
   <property name="target.swingui" value="${target.root}/swingui/jsword"/>
-  <property name="target.download" value="${target.root}/download"/>
-  <property name="target.web" value="${target.root}/web"/>
-  <property name="target.jnlp" value="${target.web}/jnlp"/>
+  <property name="target.download" value="${target.root}/download"/> <!-- designed for override -->
+  <property name="target.web" value="${target.root}/web"/> <!-- designed for override -->
   <property name="support.root" value="../jsword-support"/>
   <property name="support.notes" value="${support.root}/notes"/>
   <property name="support.tools" value="${support.root}/tools"/>
 
+  <property name="ant.lib" value="${ant.home}/lib"/>
   <property name="jnlp.alias" value="test builds"/>
   <property name="jnlp.password" value="p455w0rd"/>
   <property name="product.version" value="0.9.5"/>
@@ -168,7 +167,7 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <pathelement path="${ant.home}/lib/clover.jar"/>
+        <!-- <pathelement path="${ant.home}/lib/clover.jar"/> -->
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -179,9 +178,9 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jar" unless="jar.notrequired" depends="compile, jar.check" description="Create a jsword jar file">
+  <target name="jar" unless="jar.notrequired" depends="compile, jar.check" description="Create a jar file">
     <mkdir dir="${target.jar}"/>
-    <jar manifest="${source.etc}/desktop/MANIFEST.MF" jarfile="${target.jar}/jsword.jar">
+    <jar manifest="${source.etc}/desktop/MANIFEST.MF" jarfile="${target.jar}/${ant.project.name}.jar">
       <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/osis"/>
       <fileset dir="${target.classes}/jsword"/>
@@ -190,7 +189,7 @@
     </jar>
   </target>
   <target name="jar.check" description="Check to see that the jar file is up to date">
-    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword.jar">
+    <uptodate property="jar.notrequired" targetfile="${target.jar}/${ant.project.name}.jar">
       <srcfiles dir="${target.classes}/common"/>
       <srcfiles dir="${target.classes}/osis"/>
       <srcfiles dir="${target.classes}/jsword"/>
@@ -221,7 +220,7 @@
         <include name="jaxb-ri.jar"/>
         <include name="jaxb-libs.jar"/>
       </fileset>
-      <fileset dir="${target.jar}" includes="jsword.jar"/>
+      <fileset dir="${target.jar}" includes="${ant.project.name}.jar"/>
     </copy>
     <mkdir dir="${target.swingui}/resource"/>
     <copy todir="${target.swingui}/resource">
@@ -290,41 +289,41 @@
       </classpath>
     </taskdef>
     <instrument todir="${target.temp}/jcoverage">
-      <ignore regex="org.apache.log4j.*"/>
       <fileset dir="${target.classes}/common" includes="**/*.class"/>
     </instrument>
-      <!--
     <instrument todir="${target.temp}/jcoverage">
       <fileset dir="${target.classes}/jsword" includes="**/*.class"/>
+      <!--
+      <ignore regex="org.apache.log4j.*"/>
       <fileset dir="${target.classes}/swing" includes="**/*.class"/>
       <fileset dir="${target.classes}/servlet" includes="**/*.class"/>
       <fileset dir="${target.classes}/map" includes="**/*.class"/>
       <fileset dir="${target.classes}/sword" includes="**/*.class"/>
-    </instrument>
       -->
+    </instrument>
     <mkdir dir="${target.temp}/junit"/>
-    <echo message="This needs jars in ${ant.home}/lib. See the antlibs task."/>
+    <echo message="This needs jars in ${ant.lib}. See the antlibs task."/>
     <echo message="Using -Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.temp}/junit"/>
-      <!--
       <test name="JSwordAllTests" todir="${target.temp}/junit"/>
+      <!--
       <test name="MapAllTests" todir="${target.temp}/junit"/>
       -->
       <formatter type="plain" usefile="false"/>
       <formatter type="xml"/>
       <classpath>
         <!--
-        <fileset dir="${ant.home}/lib" includes="**/*.jar"/>
         -->
+        <fileset dir="${ant.lib}" includes="**/*.jar"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
         <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
         <pathelement path="${target.temp}/jcoverage"/>
         <!--
         <pathelement path="${target.classes}/common"/>
-        -->
         <pathelement path="${target.classes}/jsword"/>
+        -->
         <pathelement path="${target.classes}/servlet"/>
         <pathelement path="${target.classes}/swing"/>
         <pathelement path="${target.classes}/map"/>
@@ -345,7 +344,7 @@
   <!--=======================================================================-->
   <target name="web.testreport" depends="test" description="Compile test report">
     <mkdir dir="${target.web}/test"/>
-    <junitreport> <!-- todir="${target.temp}/junit"> -->
+    <junitreport todir="${target.temp}/junit">
       <fileset dir="${target.temp}/junit">
         <include name="TEST-*.xml"/>
       </fileset>
@@ -393,9 +392,7 @@
       </packageset>
       <tag name="todo" scope="all" description="To do:" />
       <tag name="label" scope="all" description="Together label:" />
-      <doctitle>JSword</doctitle>
-      <header>JSword</header>
-      <footer>Copyright &#168; 2002</footer>
+      <footer>Copyright &#168; 2003</footer>
       <classpath>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
@@ -425,7 +422,7 @@
       <arg value="-d" />
       <arg value="${target.web}/java2html"/>
       <arg value="-n"/>
-      <arg value="JSword"/>
+      <arg value="${ant.project.name}"/>
       <arg value="-m"/>
       <arg value="4"/>
       <arg value="-jd"/>
@@ -556,7 +553,7 @@
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
       <arg value="-sortByClass"/>
-      <arg value="${target.jar}/jsword.jar"/>
+      <arg value="${target.jar}/${ant.project.name}.jar"/>
     </java>
   </target>
 
@@ -587,11 +584,11 @@
   <!--=======================================================================-->
   <target name="jnlp" description="moves files to correct location for JNLP deploy" depends="jar, jnlp.keygen">
   <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
-    <mkdir dir="${target.jnlp}"/>
-    <copy todir="${target.jnlp}" file="${source.etc}/jnlp/jsword.jnlp" filtering="true">
+    <mkdir dir="${target.web}/jnlp"/>
+    <copy todir="${target.web}/jnlp" file="${source.etc}/jnlp/${ant.project.name}.jnlp" filtering="true">
       <filterset>
         <filter token="HOSTNAME" value="${jnlp.hostname}"/>
-        <filter token="WEBAPP" value="jsword"/>
+        <filter token="WEBAPP" value="${ant.project.name}"/>
       </filterset>
     </copy>
     <jar destfile="${target.jar}/resource.jar">
@@ -631,7 +628,7 @@
       <param name="dir" value="${support.notes}/versions"/>
     </antcall>
     <antcall target="jnlp.section">
-      <param name="jar" value="jsword.jar"/>
+      <param name="jar" value="${ant.project.name}.jar"/>
       <param name="dir" value="${target.jar}"/>
     </antcall>
     <antcall target="jnlp.section">
@@ -643,17 +640,17 @@
   <!--=======================================================================-->
   <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.notrequired" depends="jnlp.section.check">
     <echo message="JNLP prepare: ${jar}"/>
-    <copy todir="${target.jnlp}" file="${dir}/${jar}"/>
-    <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${source.keystore}" keypass="${jnlp.password}" jar="${target.jnlp}/${jar}"/>
+    <copy todir="${target.web}/jnlp" file="${dir}/${jar}"/>
+    <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${basedir}/${ant.project.name}.keystore" keypass="${jnlp.password}" jar="${target.web}/jnlp/${jar}"/>
   </target>
   <target name="jnlp.section.check" description="Check to see that the signed jars are up to date">
-    <uptodate property="jnlp.section.notrequired" srcfile="${dir}/${jar}" targetfile="${target.jnlp}/${jar}"/>
+    <uptodate property="jnlp.section.notrequired" srcfile="${dir}/${jar}" targetfile="${target.web}/jnlp/${jar}"/>
   </target>
 
   <!--=======================================================================-->
   <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="jnlp.keygen.notrequired" depends="init, jnlp.keygen.check">
     <echo message="Generating keystore for webstart testing"/>
-    <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${source.keystore}">
+    <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${basedir}/${ant.project.name}.keystore">
       <dname>
         <param name="CN" value="JSword Project"/>
         <param name="OU" value="Test Builds"/>
@@ -663,7 +660,7 @@
     </genkey>
   </target>
   <target name="jnlp.keygen.check" description="Check the keystore is there">
-    <available property="jnlp.keygen.notrequired" file="${source.keystore}"/>
+    <available property="jnlp.keygen.notrequired" file="${basedir}/${ant.project.name}.keystore"/>
   </target>
 
   <!--=======================================================================-->
@@ -690,31 +687,31 @@
     <echo message="Building release ${version} to ${directory}"/>
     <!-- source packages -->
     <mkdir dir="${directory}"/>
-    <zip zipfile="${directory}/jsword-${version}-src.zip">
-      <zipfileset prefix="jsword-${version}" dir="${source.root}">
+    <zip zipfile="${directory}/${ant.project.name}-${version}-src.zip">
+      <zipfileset prefix="${ant.project.name}-${version}" dir="${source.root}">
         <exclude name="target/**"/>
         <exclude name="notes/**"/>
       </zipfileset>
     </zip>
-    <tar tarfile="${directory}/jsword-${version}-src.tar.gz" compression="gzip">
-      <tarfileset prefix="jsword-${version}" dir="${source.root}">
+    <tar tarfile="${directory}/${ant.project.name}-${version}-src.tar.gz" compression="gzip">
+      <tarfileset prefix="${ant.project.name}-${version}" dir="${source.root}">
         <exclude name="target/**"/>
         <exclude name="notes/**"/>
       </tarfileset>
     </tar>
     <!-- binary packages -->
-    <zip zipfile="${directory}/jsword-${version}-bin.zip">
-      <zipfileset prefix="jsword-${version}" dir="${target.swingui}"/>
+    <zip zipfile="${directory}/${ant.project.name}-${version}-bin.zip">
+      <zipfileset prefix="${ant.project.name}-${version}" dir="${target.swingui}"/>
     </zip>
-    <tar tarfile="${directory}/jsword-${version}-bin.tar.gz" compression="gzip">
-      <tarfileset prefix="jsword-${version}" dir="${target.swingui}"/>
+    <tar tarfile="${directory}/${ant.project.name}-${version}-bin.tar.gz" compression="gzip">
+      <tarfileset prefix="${ant.project.name}-${version}" dir="${target.swingui}"/>
     </tar>
     <!-- documentation packages -->
-    <zip zipfile="${directory}/jsword-${version}-doc.zip">
-      <zipfileset prefix="jsword-${version}" dir="${target.web}"/>
+    <zip zipfile="${directory}/${ant.project.name}-${version}-doc.zip">
+      <zipfileset prefix="${ant.project.name}-${version}" dir="${target.web}"/>
     </zip>
-    <tar tarfile="${directory}/jsword-${version}-doc.tar.gz" compression="gzip">
-      <tarfileset prefix="jsword-${version}" dir="${target.web}"/>
+    <tar tarfile="${directory}/${ant.project.name}-${version}-doc.tar.gz" compression="gzip">
+      <tarfileset prefix="${ant.project.name}-${version}" dir="${target.web}"/>
     </tar>
   </target>
 
