@@ -35,7 +35,7 @@ import org.crosswire.jsword.view.swing.book.DisplayArea;
 public class ViewSourceOSISAction extends DesktopAbstractAction
 {
     /**
-     * Setup configutarion
+     * Setup configuration
      */
     public ViewSourceOSISAction(Desktop tools)
     {

@@ -36,7 +36,7 @@ import org.crosswire.jsword.view.swing.book.DisplayArea;
 public class EditCopyAction extends DesktopAbstractAction
 {
     /**
-     * Setup configutarion
+     * Setup configuration
      */
     public EditCopyAction(Desktop tools)
     {

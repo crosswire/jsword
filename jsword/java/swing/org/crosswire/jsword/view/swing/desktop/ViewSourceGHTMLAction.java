@@ -38,7 +38,7 @@ import org.crosswire.jsword.view.swing.book.DisplayArea;
 public class ViewSourceGHTMLAction extends DesktopAbstractAction
 {
     /**
-     * Setup configutarion
+     * Setup configuration
      */
     public ViewSourceGHTMLAction(Desktop tools)
     {

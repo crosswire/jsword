@@ -28,7 +28,7 @@
   <property name="ant.lib" value="${ant.home}/lib"/>
   <property name="jnlp.alias" value="test builds"/>
   <property name="jnlp.password" value="p455w0rd"/>
-  <property name="product.version" value="0.9.5"/>
+  <property name="product.version" value="0.9.6"/>
   <!-- override this with -Djnlp.hostname=www.crosswire.org to build in live -->
   <property name="jnlp.hostname" value="localhost:8080"/>
   <!-- override this to build in live. This probably won't work without overriding -->

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This script was automatically generated using Zero G's InstallAnywhere 5.5 Now, Build 1983
-     STATUS: Fully-Functional UNLICENSED Trial Edition
-     DATE:   Fri Aug 08 10:16:11 BST 2003 -->
-<InstallAnywhere_Deployment_Project increments="1499">
+<!-- This script was automatically generated using Zero G's InstallAnywhere 5.5.1 Now, Build 2032
+     STATUS: Fully Functional LICENSED Edition
+     DATE:   Wed Nov 05 19:48:53 GMT 2003 -->
+<InstallAnywhere_Deployment_Project increments="1529">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
-		<versionID major="5" minor="5" revision="-1"/>
-		<editionID>53,46,53,32,78,111,119,32,66,117,105,108,100,32,49,57,56,51</editionID>
-		<scriptID>12,42,11,85,78,76,73,67,69,78,83,69,68</scriptID>
-		<buildID>3,13,71,87,105,110,100,111,119,115,32,50,48,48,48,44,32,53,46,48,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,71,66,59,32,67,112,49,50,53,50</buildID>
+		<versionID major="5" minor="5" revision="1"/>
+		<editionID>53,46,53,46,49,32,78,111,119,32,66,117,105,108,100,32,50,48,51,50</editionID>
+		<scriptID>12,42,11,90,83,56,48,53,53,76,81,66,70,67,78,72</scriptID>
+		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,71,66,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-16,-24,-39,113,32,64,99,70,101,125,121,100,96,105,48,48,49,56,52,67,98,113,112,124,44,81,100,99,62,57,15,14,12,4,7,112,6,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-16,-88,120,-79,-96,80,112,112,97,87,98,113,97,113,65,81,51,74,65,78,68,71,68,64,69,66,69,48,79,87,5,2,13,0,0,125,8,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="76">
+	<installationObjects uniqueObjects="77">
 		<object class="com.zerog.ia.installer.Installer" objectID="c06b59b08776">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="c06b7381878d">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="f458324c9da0">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="c0e25141a460">
 									<property name="propertyValue">
 										<string><![CDATA[org.crosswire.jsword.view.swing.desktop.Desktop]]></string>
 									</property>
@@ -208,161 +208,6 @@ and any path to a file to read from that file]]></string>
 			<property name="classpath">
 				<object class="java.util.Vector">
 					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8793">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[commons-lang-1.0.1.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[commons-lang-1.0.1.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>63980</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1b8793">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[dom.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[dom.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>26865</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8794">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[jaxb-api.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[jaxb-api.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>38293</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1b8794">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[jaxb-libs.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[jaxb-libs.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>989461</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8795">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[jaxb-ri.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[jaxb-ri.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>171516</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
 						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1b8795">
 							<property name="unixPermissions">
 								<string><![CDATA[664]]></string>
@@ -374,7 +219,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -384,68 +229,6 @@ and any path to a file to read from that file]]></string>
 							</property>
 							<property name="fileSize">
 								<long>135368</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8796">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[jsword.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[jsword.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>1926683</long>
-							</property>
-							<property name="macBinary">
-								<boolean>false</boolean>
-							</property>
-							<property name="targetCheckKind">
-								<int>0</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc248796">
-							<property name="unixPermissions">
-								<string><![CDATA[664]]></string>
-							</property>
-							<property name="sourceName">
-								<string><![CDATA[log4j-1.2.7.jar]]></string>
-							</property>
-							<property name="overrideUnixPermissions">
-								<boolean>false</boolean>
-							</property>
-							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
-							</property>
-							<property name="shouldUninstall">
-								<boolean>true</boolean>
-							</property>
-							<property name="destinationName">
-								<string><![CDATA[log4j-1.2.7.jar]]></string>
-							</property>
-							<property name="fileSize">
-								<long>350677</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -467,7 +250,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -487,27 +270,27 @@ and any path to a file to read from that file]]></string>
 						</object>
 					</method>
 					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc248797">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1b8793">
 							<property name="unixPermissions">
 								<string><![CDATA[664]]></string>
 							</property>
 							<property name="sourceName">
-								<string><![CDATA[xalan.jar]]></string>
+								<string><![CDATA[dom.jar]]></string>
 							</property>
 							<property name="overrideUnixPermissions">
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
 							</property>
 							<property name="destinationName">
-								<string><![CDATA[xalan.jar]]></string>
+								<string><![CDATA[dom.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>1267125</long>
+								<long>26865</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -529,7 +312,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -549,30 +332,219 @@ and any path to a file to read from that file]]></string>
 						</object>
 					</method>
 					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="c06cdc248798">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8795">
 							<property name="unixPermissions">
-								<string><![CDATA[775]]></string>
+								<string><![CDATA[664]]></string>
 							</property>
 							<property name="sourceName">
-								<string><![CDATA[]]></string>
+								<string><![CDATA[jaxb-ri.jar]]></string>
 							</property>
 							<property name="overrideUnixPermissions">
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\resource]]></string>
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
 							</property>
 							<property name="destinationName">
-								<string><![CDATA[resource]]></string>
+								<string><![CDATA[jaxb-ri.jar]]></string>
 							</property>
-							<property name="removeRecursively">
-								<boolean>false</boolean>
+							<property name="fileSize">
+								<long>171516</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc248796">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[log4j-1.2.7.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[log4j-1.2.7.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>350677</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1b8794">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[jaxb-libs.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[jaxb-libs.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>989461</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8796">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[jsword.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[jsword.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>2066092</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc1a8794">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[jaxb-api.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[jaxb-api.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>38293</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="c06cdc248797">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[xalan.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[xalan.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>1267125</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="bb6641fba4df">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[commons-lang-2.0.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[commons-lang-2.0.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>169763</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
 							</property>
 						</object>
 					</method>
@@ -1044,10 +1016,10 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[JSword]]></string>
 					</property>
 					<property name="version">
-						<string><![CDATA[1.0.0.0]]></string>
+						<string><![CDATA[0.9.6.0]]></string>
 					</property>
 					<property name="release">
-						<string><![CDATA[1.0.0.0]]></string>
+						<string><![CDATA[0.9.6.0]]></string>
 					</property>
 					<property name="description">
 						<string><![CDATA[]]></string>
@@ -1059,7 +1031,7 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[2003]]></string>
 					</property>
 					<property name="url">
-						<string><![CDATA[http://www.crosswire.org/jsword]]></string>
+						<string><![CDATA[http://www.crosswire.org/jsword/]]></string>
 					</property>
 					<property name="distribution">
 						<string><![CDATA[<none>]]></string>
@@ -1071,7 +1043,7 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[Applications/System]]></string>
 					</property>
 					<property name="packager">
-						<string><![CDATA[]]></string>
+						<string><![CDATA[Crosswire]]></string>
 					</property>
 				</object>
 			</property>
@@ -1079,7 +1051,7 @@ Press ""Done"" to quit the installer.]]></string>
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Fri Aug 08 10:16:10 BST 2003]]></string>
+						<string><![CDATA[Wed Nov 05 19:48:52 GMT 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -1090,12 +1062,24 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[50331648]]></string>
 					</method>
 					<method name="put">
+						<string><![CDATA[com.zerog.ia.build.vmpack.unix.path]]></string>
+						<string><![CDATA[SunJRE142_02LinuxINTEL.vm]]></string>
+					</method>
+					<method name="put">
+						<string><![CDATA[com.zerog.ia.build.platform.linux.vm]]></string>
+						<string><![CDATA[true]]></string>
+					</method>
+					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.named_unix.vm]]></string>
 						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.cdrom]]></string>
 						<string><![CDATA[false]]></string>
+					</method>
+					<method name="put">
+						<string><![CDATA[com.zerog.ia.installer.options.platform.macosx.vm.version]]></string>
+						<string><![CDATA[1.4.1]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.auto-populate.labels]]></string>
@@ -1107,7 +1091,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Fri Aug 08 10:16:10 BST 2003]]></string>
+						<string><![CDATA[Wed Nov 05 19:48:52 GMT 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -1118,6 +1102,10 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[16777216]]></string>
 					</method>
 					<method name="put">
+						<string><![CDATA[com.zerog.ia.build.vmpack.linux.path]]></string>
+						<string><![CDATA[SunJRE142_02LinuxINTEL.vm]]></string>
+					</method>
+					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.platform.macosx.authentication]]></string>
 						<string><![CDATA[false]]></string>
 					</method>
@@ -1126,12 +1114,12 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
-						<string><![CDATA[com.zerog.ia.installer.options.platform.unix.ui.default]]></string>
-						<string><![CDATA[GUI]]></string>
-					</method>
-					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.linux.novm]]></string>
 						<string><![CDATA[true]]></string>
+					</method>
+					<method name="put">
+						<string><![CDATA[com.zerog.ia.installer.options.platform.unix.ui.default]]></string>
+						<string><![CDATA[GUI]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.java.novm]]></string>
@@ -1147,7 +1135,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.vmpack.windows.path]]></string>
-						<string><![CDATA[SunJRE131_08Win32.vm]]></string>
+						<string><![CDATA[SunJRE142_02Win32.vm]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.valid.vm.list]]></string>
@@ -1297,7 +1285,7 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[JSword]]></string>
 					</property>
 					<property name="installerName">
-						<string><![CDATA[jsword]]></string>
+						<string><![CDATA[jsword-0.9.6]]></string>
 					</property>
 					<property name="productName">
 						<string><![CDATA[JSword]]></string>
@@ -1310,19 +1298,28 @@ Press ""Done"" to quit the installer.]]></string>
 						</object>
 					</property>
 					<property name="productURL">
-						<string><![CDATA[http://www.crosswire.org/jsword]]></string>
+						<string><![CDATA[http://www.crosswire.org/jsword/]]></string>
+					</property>
+					<property name="productDescription">
+						<string><![CDATA[J-Sword is a platform for various Bible programs. It is written in Java, and it has a number of user interfaces, including a Swing GUI, a Servlet, and an MS-Word plug-in. It also supports a number of back-end formats, including its own format and the Sword format.]]></string>
 					</property>
 					<property name="productVersionMajor">
-						<int>1</int>
+						<int>0</int>
 					</property>
 					<property name="productVersionMinor">
-						<int>0</int>
+						<int>9</int>
 					</property>
 					<property name="productVersionRevision">
-						<int>0</int>
+						<int>6</int>
 					</property>
 					<property name="productVersionSubRevision">
 						<int>0</int>
+					</property>
+					<property name="supportURL">
+						<string><![CDATA[http://www.crosswire.org/jsword/]]></string>
+					</property>
+					<property name="vendorName">
+						<string><![CDATA[Crosswire]]></string>
 					</property>
 					<property name="vendorID">
 						<object class="com.zerog.registry.UUID">
@@ -1330,6 +1327,12 @@ Press ""Done"" to quit the installer.]]></string>
 								<string><![CDATA[c06b59c4-1ec7-11b2-8778-f1d8ff249d8a]]></string>
 							</method>
 						</object>
+					</property>
+					<property name="vendorURL">
+						<string><![CDATA[http://www.crosswire.org/]]></string>
+					</property>
+					<property name="email">
+						<string><![CDATA[joe@eireneh.com]]></string>
 					</property>
 					<property name="copyright">
 						<string><![CDATA[2003]]></string>
@@ -1660,6 +1663,22 @@ and any path to a file to read from that file]]></string>
 											<property name="workingDir">
 												<string><![CDATA[]]></string>
 											</property>
+											<property name="shortcutIcon">
+												<object class="com.zerog.ia.installer.util.BindingWin32" objectID="bbb87590a4df">
+													<property name="smallIconName">
+														<string><![CDATA[bible32.gif]]></string>
+													</property>
+													<property name="largeIconName">
+														<string><![CDATA[bible32.gif]]></string>
+													</property>
+													<property name="smallIconPath">
+														<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\resource\images\]]></string>
+													</property>
+													<property name="largeIconPath">
+														<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\resource\images\]]></string>
+													</property>
+												</object>
+											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
 											</property>
@@ -1667,7 +1686,6 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[]]></string>
 											</property>
 										</object>
-										<object refID="c06cdc1a8793"/>
 										<object refID="c06cdc1b8793"/>
 										<object refID="c06cdc1a8794"/>
 										<object refID="c06cdc1b8794"/>
@@ -1678,6 +1696,7 @@ and any path to a file to read from that file]]></string>
 										<object refID="c06cdc258796"/>
 										<object refID="c06cdc248797"/>
 										<object refID="c06cdc258797"/>
+										<object refID="bb6641fba4df"/>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="c06cdbd58793">
 											<property name="unixPermissions">
 												<string><![CDATA[775]]></string>
@@ -1689,7 +1708,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\lib]]></string>
+												<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\lib\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -1704,7 +1723,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<visualChildren>
-												<object refID="c06cdc1a8793"/>
+												<object refID="bb6641fba4df"/>
 												<object refID="c06cdc1b8793"/>
 												<object refID="c06cdc1a8794"/>
 												<object refID="c06cdc1b8794"/>
@@ -1728,7 +1747,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\Documents and Settings\Local\Joe\jsword\target\ant\swingui\jsword\bin]]></string>
+												<string><![CDATA[C:\Share\joe\jsword\etc\bin\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -1743,7 +1762,32 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 										</object>
-										<object refID="c06cdc248798"/>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="c06cdc248798">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\Share\joe\jsword\target\ant\swingui\jsword\resource\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[resource]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
 									</installChildren>
 								</object>
 							</installChildren>
@@ -1792,7 +1836,7 @@ and any path to a file to read from that file]]></string>
 		</object>
 	</installationObjects>
 	<restorationObjects count="2">
-		<object refID="c06cdc248798"/>
 		<object refID="c06cdbca8792"/>
+		<object refID="c06cdc248798"/>
 	</restorationObjects>
 </InstallAnywhere_Deployment_Project>

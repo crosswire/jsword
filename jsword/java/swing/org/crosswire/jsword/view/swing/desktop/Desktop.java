@@ -243,7 +243,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         act_help_system = SystemPropertiesPane.createOpenAction(this);
         act_help_about = Splash.createOpenAction(this);
         act_help_log = AdvancedToolsPane.createOpenAction(this);
-        act_help_debug = new DebugAction(this);
+        //act_help_debug = new DebugAction(this);
 
         rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
         rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
@@ -331,8 +331,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_help.add(act_help_log).addMouseListener(bar_status);
         menu_help.addSeparator();
         menu_help.add(act_help_about).addMouseListener(bar_status);
-        menu_help.addSeparator();
-        menu_help.add(act_help_debug).addMouseListener(bar_status);
+        //menu_help.addSeparator();
+        //menu_help.add(act_help_debug).addMouseListener(bar_status);
 
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
@@ -791,7 +791,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     protected ViewLayout[] layouts; 
 
     /**
-     * The current way the views are layed out
+     * The current way the views are laid out
      */
     private int current = initial;
 
@@ -856,7 +856,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private Action act_help_system = null;
     private Action act_help_about = null;
     private Action act_help_log = null;
-    private Action act_help_debug = null;
+    //private Action act_help_debug = null;
 
     private JRadioButtonMenuItem rdo_view_tdi = null;
     private JRadioButtonMenuItem rdo_view_mdi = null;

@@ -30,6 +30,9 @@ import java.awt.event.ActionEvent;
  */
 public class ViewStatusBarAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public ViewStatusBarAction(Desktop tools)
     {
         super(tools,
@@ -40,6 +43,9 @@ public class ViewStatusBarAction extends DesktopAbstractAction
               'A', null);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         getDesktop().setStatusBarVisible(!getDesktop().isStatusBarVisible());

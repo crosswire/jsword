@@ -30,6 +30,9 @@ import java.awt.event.ActionEvent;
  */
 public class ViewToolBarAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public ViewToolBarAction(Desktop tools)
     {
         super(tools,
@@ -40,6 +43,9 @@ public class ViewToolBarAction extends DesktopAbstractAction
               'A', null);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         getDesktop().setToolbarVisible(getDesktop().isToolbarVisible());

@@ -10,8 +10,6 @@
 
 <jsp:directive.page import="org.crosswire.jsword.view.web.DownloadSet" contentType="text/html"/>
 
-<h1>Download</h1>
-
 <jsp:scriptlet><![CDATA[
   String localprefix = application.getInitParameter("localprefix");
   if (localprefix == null)
@@ -22,46 +20,39 @@
   	throw new NullPointerException("webprefix");
 ]]></jsp:scriptlet>
 
-<h3>Official Releases</h3>
-<p>
-Version 0.9.5 is the first beta for JSword 1.0.
-</p>
-<table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
+<h1>Download</h1>
+
+<h2>Official Installer Based Releases</h2>
+<p>From Version 0.9.6 we are using ZeroG based installers.</p>
+<table cellpadding="2" cellspacing="0" bordercolor="#000000" border="1" align="center" width="90%">
   <tr>
-	<td>-</td>
-	<td colspan="2" align="center">Binary</td>
-	<td colspan="2" align="center">Source</td>
-	<td colspan="2" align="center">Docs</td>
+    <td>-</td>
+    <td align="center" colspan="2">Windows</td>
+    <td align="center" colspan="2">Linux</td>
+    <td align="center">MacOS</td>
+    <td align="center">Other</td>
   </tr>
   <tr>
-    <td>Compression</td>
-    <td>.zip</td>
-    <td>.tar.gz</td>
-    <td>.zip</td>
-    <td>.tar.gz</td>
-    <td>.zip</td>
-    <td>.tar.gz</td>
+    <td>Includes JVM?</td>
+    <td>No VM</td>
+    <td>With VM</td>
+    <td>No VM</td>
+    <td>With VM</td>
+    <td>No VM</td>
+    <td>No VM</td>
   </tr>
-  <jsp:scriptlet><![CDATA[
-  DownloadSet[] dls = DownloadSet.getDownloadSets(localprefix+"/release", webprefix+"/release", false);
-  for (int i=0; i<dls.length; i++)
-  {
-  ]]></jsp:scriptlet>
   <tr>
-	<td><jsp:expression>dls[i].getVersionString()</jsp:expression></td>
-	<td><jsp:expression>dls[i].getLinkString(DownloadSet.BIN_ZIP)</jsp:expression></td>
-	<td><jsp:expression>dls[i].getLinkString(DownloadSet.BIN_TGZ)</jsp:expression></td>
-	<td><jsp:expression>dls[i].getLinkString(DownloadSet.SRC_ZIP)</jsp:expression></td>
-	<td><jsp:expression>dls[i].getLinkString(DownloadSet.SRC_TGZ)</jsp:expression></td>
-	<td><jsp:expression>dls[i].getLinkString(DownloadSet.DOC_ZIP)</jsp:expression></td>
-	<td><jsp:expression>dls[i].getLinkString(DownloadSet.DOC_TGZ)</jsp:expression></td>
+    <td>Version 0.9.6</td>
+    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-winnovm.exe">7.88 Mb</a></td
+    ><td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-winvm.exe">7.81 Mb</a></td>
+    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linuxnovm.bin">14.56 Mb</a></td>
+    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linuxvm.bin">13.98 Mb</a></td>
+    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-macosx.zip">27.53 Mb</a></td>
+    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-other.jar">23.22 Mb</a>
   </tr>
-  <jsp:scriptlet><![CDATA[
-  }
-  ]]></jsp:scriptlet>
 </table>
 
-<h3>Nightly Releases</h3>
+<h2>Nightly Releases</h2>
 <p>
 Regular releases are made and stored for a short time. You will need to use GNU
 tar to extract the doc.tar.gz files, although any tar should do for the others.
