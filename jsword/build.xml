@@ -445,7 +445,7 @@
         <fileset dir="${support.tools}/checkstyle30" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    <copy file="${source.tools}/checkstyle30/custom.xml" overwrite="true"
+    <copy file="${support.tools}/checkstyle30/custom.xml" overwrite="true"
         tofile="${target.checkstyle}/custom.xml">
       <filterset>
         <filter token="source.java" value="${basedir}/${source.java}"/>
