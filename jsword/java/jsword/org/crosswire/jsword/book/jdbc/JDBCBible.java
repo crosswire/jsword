@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.jdbc;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,9 +14,7 @@ import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
@@ -62,18 +61,10 @@ import org.crosswire.jsword.passage.VerseRange;
  */
 public class JDBCBible extends LocalURLBible implements Index
 {
-    /**
-     * Startup
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#init()
      */
-    public void init(Bible source, ProgressListener li)
-    {
-        throw new LogicError();
-    }
-
-    /**
-     * Startup
-     */
-    public void init(ProgressListener li)
+    public void init() throws BookException
     {
         LocalURLBibleMetaData lbmd = getLocalURLBibleMetaData();
 
@@ -131,17 +122,38 @@ public class JDBCBible extends LocalURLBible implements Index
             start_stmt = null;
             words_query = null;
 
-            log.error("Failed to connect", ex);
+            throw new BookException(Msg.BIBLE_CONNECT, ex);
         }
 
         try
         {
-            searcher = SearchEngineFactory.createSearchEngine(this, li, lbmd.getURL());
+            URL url = lbmd.getURL();
+            searcher = SearchEngineFactory.createSearchEngine(this, url);
+        }
+        catch (BookException ex)
+        {
+            throw ex;
         }
         catch (Exception ex)
         {
-            log.error("Bad index", ex);
+            throw new BookException(Msg.BIBLE_CONNECT, ex);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#activate()
+     */
+    public void activate()
+    {
+        searcher.activate();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#deactivate()
+     */
+    public void deactivate()
+    {
+        searcher.deactivate();
     }
 
     /* (non-Javadoc)

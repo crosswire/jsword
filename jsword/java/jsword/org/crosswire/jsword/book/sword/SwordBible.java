@@ -61,7 +61,7 @@ public class SwordBible extends AbstractBible
             backend.init(config);
 
             URL url = Project.resource().getTempScratchSpace(getBibleMetaData().getFullName());
-            searcher = SearchEngineFactory.createSearchEngine(this, null, url);
+            searcher = SearchEngineFactory.createSearchEngine(this, url);
         }
         catch (Exception ex)
         {

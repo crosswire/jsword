@@ -122,7 +122,7 @@ public abstract class AbstractBible implements Bible
      * @param li How progress is reported
      * @throws BookException If generation fails
      */
-    protected void generateText(Bible source, ProgressListener li) throws BookException
+    public void generateText(Bible source, ProgressListener li) throws BookException
     {
         Passage temp = PassageFactory.createPassage(PassageFactory.SPEED);
 

@@ -7,7 +7,6 @@ import java.net.URL;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -48,11 +47,11 @@ public class SearchEngineFactory
      * @throws IllegalAccessException
      * @throws BookException
      */
-    public static SearchEngine createSearchEngine(Bible bible, ProgressListener li, URL indexdir) throws MalformedURLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, BookException
+    public static SearchEngine createSearchEngine(Bible bible, URL indexdir) throws MalformedURLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, BookException
     {
         Class impl = Project.resource().getImplementor(SearchEngine.class);
         SearchEngine searcher = (SearchEngine) impl.newInstance();
-        searcher.init(bible, indexdir, li);
+        searcher.init(bible, indexdir);
         
         return searcher;
     }

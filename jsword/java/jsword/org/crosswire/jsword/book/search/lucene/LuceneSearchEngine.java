@@ -16,7 +16,6 @@ import org.apache.lucene.search.Searcher;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.Passage;
@@ -50,9 +49,9 @@ import org.crosswire.jsword.passage.Verse;
 public class LuceneSearchEngine implements SearchEngine
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL, org.crosswire.jsword.book.ProgressListener)
+     * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
-    public void init(Bible bible, URL url, ProgressListener li) throws BookException
+    public void init(Bible bible, URL url) throws BookException
     {
         try
         {
@@ -76,6 +75,20 @@ public class LuceneSearchEngine implements SearchEngine
         {
             throw new BookException(Msg.LUCENE_INIT, ex);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
+     */
+    public void activate()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
+     */
+    public void deactivate()
+    {
     }
 
     /* (non-Javadoc)

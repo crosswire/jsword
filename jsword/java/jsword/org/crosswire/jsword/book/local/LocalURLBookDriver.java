@@ -165,7 +165,7 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
 
             LocalURLBible dest = (LocalURLBible) bibleclass.newInstance();
             dest.setLocalURLBibleMetaData(bbmd);
-            dest.init(source, li);
+            dest.generateText(source, li);
 
             return dest;
         }
@@ -190,13 +190,17 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
     public BookMetaData[] getBooks()
     {
         if (dir == null)
+        {
             return new BibleMetaData[0];
+        }
 
         try
         {
             String[] names = NetUtil.list(dir, new CustomURLFilter(dir));
             if (names == null)
+            {
                 return new BibleMetaData[0];
+            }
 
             BibleMetaData[] versions = new BibleMetaData[names.length]; 
 
@@ -216,6 +220,8 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
         }
         catch (Exception ex)
         {
+            Reporter.informUser(this, ex);
+
             log.warn("failed to load "+name+" Bibles because source directory is not present: "+dir.toExternalForm());
             return new BibleMetaData[0];
         }
@@ -244,13 +250,21 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
                     log.warn("Missing jsword.bible.dir under: "+test.toExternalForm());
                 }
             }
+        }
 
-            // If not then try a wild guess
-            if (root == null)
+        // If not then try a wild guess
+        if (root == null)
+        {
+            URL found = ResourceUtil.getResource("versions/locator.properties");
+            URL test = NetUtil.shortenURL(found, "locator.properties");
+            if (NetUtil.isFile(test))
             {
-                URL found = ResourceUtil.getResource("versions/locator.properties");
-                root = NetUtil.shortenURL(found, "locator.properties");
-                log.debug("Guessing we'll find it at: "+root);
+                log.debug("Found BibleRoot from current directory: "+test.toExternalForm());
+                root = found;
+            }
+            else
+            {
+                log.warn("Missing BibleRoot from current directory: "+test.toExternalForm());
             }
         }
 

@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
@@ -70,22 +71,57 @@ public class BibleDataCache
         // Open the XML RAF
         URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
         xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), "r");
+
+        // Open the index file
+        URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
+        xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
     }
 
     /**
      * Load the indexes from disk
      */
-    public void load() throws IOException, NumberFormatException
+    public void activate()
     {
         // Load the ascii XML index
-        URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
-        BufferedReader xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
         for (int i = 0; i < BibleInfo.versesInBible(); i++)
         {
-            String line = xml_idy_bin.readLine();
-            xml_arr[i] = Integer.parseInt(line);
+            String line = null;
+
+            try
+            {
+                line = xml_idy_bin.readLine();
+            }
+            catch (IOException ex)
+            {
+                log.error("Error reading xml_idy_bin", ex);
+                break;
+            }
+
+            if (line == null)
+            {
+                break;
+            }
+
+            try
+            {
+                xml_arr[i] = Integer.parseInt(line);
+            }
+            catch (NumberFormatException ex)
+            {
+                xml_arr[i] = -1;
+                log.error("Error parsing line: "+line, ex);
+            }
         }
-        xml_idy_bin.close();
+
+        // xml_idy_bin.close();
+    }
+
+    /**
+     * Conserve memory
+     */
+    public void deactivate()
+    {
+        // NOTE(joe): is there anything we can do to conserve memory?
     }
 
     /**
@@ -113,7 +149,13 @@ public class BibleDataCache
                     Verse verse = (Verse) vit.next();
 
                     // Seek to the correct point
-                    xml_dat.seek(xml_arr[verse.getOrdinal() - 1]);
+                    long location = xml_arr[verse.getOrdinal() - 1];
+                    if (location == -1)
+                    {
+                        throw new BookException(Msg.READ_ERROR);
+                    }
+
+                    xml_dat.seek(location);
 
                     // Read the XML text
                     String text = xml_dat.readUTF();
@@ -209,9 +251,19 @@ public class BibleDataCache
     private RandomAccessFile xml_dat;
 
     /**
+     * The index file reader
+     */
+    private BufferedReader xml_idy_bin;
+
+    /**
      * The hash of indexes into the text file, one per verse. Note that the
      * index in use is NOT the ordinal number of the verse since ordinal nos are
      * 1 based. The index into xml_arr is verse.getOrdinal() - 1
      */
     private long[] xml_arr;
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(BibleDataCache.class);
 }

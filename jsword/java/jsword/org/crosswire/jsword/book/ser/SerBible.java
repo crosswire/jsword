@@ -1,14 +1,10 @@
 
 package org.crosswire.jsword.book.ser;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.local.LocalURLBible;
@@ -144,38 +140,44 @@ import org.crosswire.jsword.passage.Verse;
  */
 public class SerBible extends LocalURLBible
 {
-    /**
-     * Ctor
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#init()
      */
-    public SerBible() throws BookException, FileNotFoundException, IOException
-    {
-        cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
-    }
-
-    /**
-     * Startup a SerBible.
-     * PENDING(joe): so when does the searchengine get setup?
-     */
-    public void init(Bible source, ProgressListener li) throws BookException
-    {
-    }
-
-    /**
-     * Startup a SerBible.
-     */
-    public void init(ProgressListener li)
+    public void init() throws BookException
     {
         try
         {
-            cache.load();
-
+            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
+            
             URL url = getLocalURLBibleMetaData().getURL();
-            searcher = SearchEngineFactory.createSearchEngine(this, li, url);
+            searcher = SearchEngineFactory.createSearchEngine(this, url);
+        }
+        catch (BookException ex)
+        {
+            throw ex;
         }
         catch (Exception ex)
         {
-            log.error("Failed to initialize", ex);
+            throw new BookException(Msg.SER_INIT, ex);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#activate()
+     */
+    public void activate()
+    {
+        cache.activate();
+        searcher.activate();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#deactivate()
+     */
+    public void deactivate()
+    {
+        cache.deactivate();
+        searcher.deactivate();
     }
 
     /* (non-Javadoc)

@@ -216,28 +216,31 @@ public class RawBible extends LocalURLBible implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.local.LocalURLBible#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.ProgressListener)
      */
-    public void init(Bible source, ProgressListener li) throws BookException
+    public void generateText(Bible source, ProgressListener li) throws BookException
     {
         init(true);
-
-        generateText(source, li);
+        super.generateText(source, li);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchableBible#init(org.crosswire.jsword.book.events.ProgressListener)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#init()
      */
-    public void init(ProgressListener li)
+    public void init() throws BookException
     {
         init(false);
 
         try
         {
             URL url = getLocalURLBibleMetaData().getURL();
-            searcher = SearchEngineFactory.createSearchEngine(this, li, url);
+            searcher = SearchEngineFactory.createSearchEngine(this, url);
+        }
+        catch (BookException ex)
+        {
+            throw ex;
         }
         catch (Exception ex)
         {
-            log.error("Bad index", ex);
+            throw new BookException(Msg.INIT_FAIL, ex);
         }
     }
 
@@ -296,6 +299,22 @@ public class RawBible extends LocalURLBible implements Index
         {
             log.error("Failed to load indexes.", ex);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#activate()
+     */
+    public void activate()
+    {
+        searcher.activate();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#deactivate()
+     */
+    public void deactivate()
+    {
+        searcher.deactivate();
     }
 
     /* (non-Javadoc)

@@ -19,14 +19,11 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.book.ProgressEvent;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.book.search.SearchEngine;
-import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
@@ -62,46 +59,79 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Constructor for SerSearchEngine.
      */
-    public void init(Bible bible, URL url, final ProgressListener li) throws BookException
+    public void init(Bible bible, URL url) throws BookException
     {
         try
         {
             this.bible = bible;
             this.url = url;
 
-            // Load the ascii Passage index
-            if (isIndexed())
+            isindexed = isIndexed();
+            
+            URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
+
+            if (isindexed)
             {
-                loadIndexes();
+                URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
+
+                // We don't need to create any indexes, they just need loading
+                ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
+
+                // Open the Passage RAF
+                ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "r");
             }
             else
             {
-                createEmptyIndex();
-
-                // At this point the index is usable, even if it doesn't always
-                // return full results so we can do the rest in a thread.
-                // NOTE(joe): at some stage have a better monitor for this.
-                new Thread(new Runnable()
-                {
-                    public void run()
-                    {
-                        try
-                        {
-                            generateSearchIndex(li);
-                            saveIndexes();
-                        }
-                        catch (BookException ex)
-                        {
-                            Reporter.informUser(SerSearchEngine.this, ex);
-                        }
-                    }
-                }).start();
+                // Open the Passage RAF
+                ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "rw");
             }
         }
         catch (IOException ex)
         {
             throw new BookException(Msg.INITIALIZE, ex);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
+     */
+    public void activate()
+    {
+        // Load the ascii Passage index
+        if (isindexed)
+        {
+            loadIndexes();
+            // ref_idy_bin.close();
+        }
+        else
+        {
+            // At this point the index is usable, even if it doesn't always
+            // return full results so we can do the rest in a thread.
+            // NOTE(joe): at some stage have a better monitor for this.
+            new Thread(new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        generateSearchIndex();
+                        saveIndexes();
+                    }
+                    catch (BookException ex)
+                    {
+                        Reporter.informUser(SerSearchEngine.this, ex);
+                    }
+                }
+            }).start();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
+     */
+    public void deactivate()
+    {
+        ref_map.clear();
     }
 
     /* (non-Javadoc)
@@ -189,57 +219,51 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Loads the index files from disk ready for searching
      */
-    private void loadIndexes() throws IOException, NumberFormatException
+    private void loadIndexes()
     {
-        URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
-
-        // We don't need to create any indexes, they just need loading
-        BufferedReader ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
-
         while (true)
         {
-            String line = ref_idy_bin.readLine();
+            String line = null;
+
+            try
+            {
+                line = ref_idy_bin.readLine();
+            }
+            catch (IOException ex)
+            {
+                log.error("Read failed on ref_idy_bin", ex);
+                break;
+            }
+
             if (line == null)
             {
                 break;
             }
 
-            int colon1 = line.indexOf(":");
-            int colon2 = line.lastIndexOf(":");
-            String word = line.substring(0, colon1);
+            try
+            {
+                int colon1 = line.indexOf(":");
+                int colon2 = line.lastIndexOf(":");
+                String word = line.substring(0, colon1);
 
-            long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
-            int length = Integer.parseInt(line.substring(colon2 + 1));
+                long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
+                int length = Integer.parseInt(line.substring(colon2 + 1));
 
-            Section section = new Section(offset, length);
-            ref_map.put(word, section);
+                Section section = new Section(offset, length);
+                ref_map.put(word, section);
+            }
+            catch (NumberFormatException ex)
+            {
+                log.error("NumberFormatException reading line: "+line, ex);
+            }
         }
-        ref_idy_bin.close();
-
-        // Open the Passage RAF
-        URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
-        ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "r");
-    }
-
-    /**
-     * Generate the Objects with no contents waiting to be filled
-     * @param url
-     * @throws IOException
-     */
-    private void createEmptyIndex() throws IOException
-    {
-        ref_map.clear();
-
-        // Open the Passage RAF
-        URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
-        ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "rw");
     }
 
     /**
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    protected void generateSearchIndex(ProgressListener li) throws BookException
+    protected void generateSearchIndex() throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
@@ -253,10 +277,12 @@ public class SerSearchEngine implements SearchEngine, Index
             Verse verse = (Verse) it.next();
             try
             {
+                /*
                 if (li != null)
                 {
                     li.progressMade(new ProgressEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
                 }
+                */
 
                 // loop through all the words in this verse
                 Passage current = PassageFactory.createPassage();
@@ -302,8 +328,10 @@ public class SerSearchEngine implements SearchEngine, Index
             }
         }
 
+        /* For the progress listener
         int count = 0;
         int words = matchmap.size();
+        */
 
         // Now we need to write the words into our index
         for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
@@ -313,10 +341,12 @@ public class SerSearchEngine implements SearchEngine, Index
             recordFoundPassage(word, match);
 
             // Fire a progress event?
+            /*
             if (li != null)
             {
                 li.progressMade(new ProgressEvent(bible, "Writing Words:", 90 + (10 * count++ / words)));
             }
+            */
 
             // This could take a long time ...
             Thread.yield();
@@ -380,6 +410,8 @@ public class SerSearchEngine implements SearchEngine, Index
         }
     }
 
+    private boolean isindexed;
+
     /**
      * When generating the index, how many tries before we give up?
      */
@@ -404,6 +436,8 @@ public class SerSearchEngine implements SearchEngine, Index
      * The passages random access file
      */
     private RandomAccessFile ref_dat;
+
+    private BufferedReader ref_idy_bin;
 
     /**
      * The hash of indexes into the passages file

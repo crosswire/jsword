@@ -8,10 +8,8 @@ import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.basic.AbstractBible;
 
 /**
@@ -44,14 +42,19 @@ import org.crosswire.jsword.book.basic.AbstractBible;
 public abstract class LocalURLBible extends AbstractBible
 {
     /**
-     * Method init.
+     * Initializer to check on resources.
      */
-    public abstract void init(Bible source, ProgressListener li) throws BookException;
+    public abstract void init() throws BookException;
 
     /**
-     * Method init.
+     * Initializer to check on resources.
      */
-    public abstract void init(ProgressListener li) throws BookException;
+    public abstract void activate();
+
+    /**
+     * Initializer to check on resources.
+     */
+    public abstract void deactivate();
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#getBibleMetaData()

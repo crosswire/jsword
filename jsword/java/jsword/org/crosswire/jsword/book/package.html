@@ -59,5 +59,28 @@ more details.</p>
 <p>More work is needed here to with Strongs numbers and non-Biblical text
 sources. (Lexicons and such like)</p>
 
+
+<h3>Startup</h3>
+
+<p>The startup procedure goes like this. When <code>Books</code> is first called
+it looks up the implementations of BookDriver (using Project.resource()) and
+calls registerDriver() for each. This calls getBooks() on the new BookDriver
+which should return an array of BookMetaData objects.</p>
+
+<p>Ideally when the BookDriver creates a BookMetaData object it should also
+create a Book to go with it, and do everything it can to ensure that future reads
+from the Book will be Exception free, but without consuming significant system
+resources. So the process of constructing a BookMetaData and associated Book
+should check that the index file exists and is readable, but not actually load
+it. BookDriver is allowed to complain that it can't do everything it wants, but
+it should not hand BookMetaData objects back that are faulty.</p>
+
+<p>This means that the user can browse through the BookMetaData objects without
+causing any stress to the system, and yet be fairly assured that when they do
+call getBook() on the BookMetaData that everything will work fine.</p>
+
+<p>Finally when BookMetaData.getBook() is called, it should ask the Book to load
+any system resources that are needed to fulfil the requests.</p>
+
 </body>
 </html>

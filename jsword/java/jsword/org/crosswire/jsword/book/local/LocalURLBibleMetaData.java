@@ -47,12 +47,12 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData
     {
         super(driver, basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
 
+        this.dir = dir;
+        this.prop = new Properties();
+
         // Check that we can do this (but ignore the results) to ensure that
         // it will work in getBible()
         driver.bibleclass.newInstance();
-
-        this.dir = dir;
-        this.prop = new Properties();
     }
 
     /**
@@ -62,12 +62,12 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData
     {
         super(driver, prop);
 
+        this.dir = dir;
+        this.prop = prop;
+
         // Check that we can do this (but ignore the results) to ensure that
         // it will work in getBible()
         driver.bibleclass.newInstance();
-
-        this.dir = dir;
-        this.prop = prop;
     }
 
     /* (non-Javadoc)
@@ -95,10 +95,12 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData
     {
         try
         {
-            LocalURLBookDriver driver = (LocalURLBookDriver) getDriver(); 
+            LocalURLBookDriver driver = (LocalURLBookDriver) getDriver();
+
             LocalURLBible bible = (LocalURLBible) driver.bibleclass.newInstance();
             bible.setLocalURLBibleMetaData(this);
-            bible.init(null);
+            bible.init();
+
             return bible;
         }
         catch (Exception ex)
