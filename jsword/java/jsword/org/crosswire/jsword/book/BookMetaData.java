@@ -40,7 +40,7 @@ import java.util.Properties;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BookMetaData
+public interface BookMetaData extends Comparable
 {
     /**
      * The name of the book, for example "King James Version" or

@@ -1,5 +1,7 @@
 package org.crosswire.jsword.view.swing.book;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -144,7 +146,9 @@ public class BooksListModel extends AbstractListModel
      */
     protected void cacheData()
     {
-        bmds = books.getBookMetaDatas(filter);
+        bmds = new ArrayList();
+        bmds.addAll(books.getBookMetaDatas(filter));
+        Collections.sort(bmds);
     }
 
     /**

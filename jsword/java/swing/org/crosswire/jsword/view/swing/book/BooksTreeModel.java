@@ -1,5 +1,7 @@
 package org.crosswire.jsword.view.swing.book;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.event.EventListenerList;
@@ -298,9 +300,17 @@ public class BooksTreeModel implements TreeModel
      */
     protected void cacheBooks()
     {
-        bibles = books.getBookMetaDatas(BookFilters.getBibles());
-        commentaries = books.getBookMetaDatas(BookFilters.getCommentaries());
-        dictionaries = books.getBookMetaDatas(BookFilters.getDictionaries());
+        bibles = new ArrayList();
+        bibles.addAll(books.getBookMetaDatas(BookFilters.getBibles()));
+        Collections.sort(bibles);
+
+        commentaries = new ArrayList();
+        commentaries.addAll(books.getBookMetaDatas(BookFilters.getCommentaries()));
+        Collections.sort(commentaries);
+
+        dictionaries = new ArrayList();
+        dictionaries.addAll(books.getBookMetaDatas(BookFilters.getDictionaries()));
+        Collections.sort(dictionaries);
     }
 
     /**

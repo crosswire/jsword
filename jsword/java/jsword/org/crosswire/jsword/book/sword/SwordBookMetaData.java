@@ -116,11 +116,14 @@ public class SwordBookMetaData implements BookMetaData
         {
             log.warn("Missing module type for: "+internal+" checked: "+getFirstValue(ConfigEntry.MOD_DRV));
         }
-        if (mtype.getBookType() == null)
+        else
         {
-            log.warn("Missing book type for: "+internal+" checked: "+getFirstValue(ConfigEntry.MOD_DRV));
+            if (mtype.getBookType() == null)
+            {
+                log.warn("Missing book type for: "+internal+" checked: "+getFirstValue(ConfigEntry.MOD_DRV));
+            }
         }
-        
+
         // merge entries into proerties file
         for (Iterator kit = getKeys(); kit.hasNext(); )
         {
@@ -140,8 +143,13 @@ public class SwordBookMetaData implements BookMetaData
         // set the key property file entries
         prop.setProperty(KEY_NAME, name);
         prop.setProperty(KEY_INITIALS, initials);
-        BookType type = mtype.getBookType();
-        prop.setProperty(KEY_TYPE, type != null ? type.getName() : "");
+        
+        if (mtype != null)
+        {
+            BookType type = mtype.getBookType();
+            prop.setProperty(KEY_TYPE, type != null ? type.getName() : "");
+        }
+
         prop.setProperty(KEY_SPEED, Integer.toString(speed));
         prop.setProperty(KEY_EDITION, edition);
         prop.setProperty(KEY_OPENNESS, openness.getName());
@@ -562,6 +570,15 @@ public class SwordBookMetaData implements BookMetaData
     public String toString()
     {
         return getFullName();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        BookMetaData that = (BookMetaData) obj;
+        return this.getName().compareTo(that.getName());
     }
 
     /**

@@ -523,6 +523,15 @@ public class DefaultBookMetaData implements BookMetaData
         return getFullName();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        BookMetaData that = (BookMetaData) obj;
+        return this.getName().compareTo(that.getName());
+    }
+
     /**
      * Convert a published Date into the standard (String) format
      */
