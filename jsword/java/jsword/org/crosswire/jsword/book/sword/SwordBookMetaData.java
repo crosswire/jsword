@@ -436,7 +436,7 @@ public class SwordBookMetaData implements BookMetaData
     
     /**
      * Get the next line from the input
-     * @param bin
+     * @param bin The reader to get data from
      * @return the next line
      * @throws IOException
      */
@@ -485,8 +485,7 @@ public class SwordBookMetaData implements BookMetaData
     }
 
     /**
-     * @param line
-     * @return
+     * Does this line of text represent a key/value pair?
      */
     private boolean isKeyLine(String line)
     {

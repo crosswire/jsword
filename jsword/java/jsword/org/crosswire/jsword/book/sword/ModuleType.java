@@ -272,9 +272,6 @@ public abstract class ModuleType implements Serializable
 
     /**
      * Create a Book appropriate for the BookMetaData
-     * @param sbmd
-     * @param progdir
-     * @return
      * @throws BookException
      */
     public Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException

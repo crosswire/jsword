@@ -410,7 +410,7 @@ public class Books implements BookList
     private EventListenerList listeners;
 
     /**
-     * Do we try to get clever in registering books?
+     * Do we try to get clever in registering books?.
      * Not until we can get it to work!
      * At this time there is no way to set this or influence it
      * So it just acts as a means of commenting out code.
