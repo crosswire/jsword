@@ -480,7 +480,7 @@ public class EditSitePane extends JPanel
             cboType.setEnabled(true);
             pnlBean.setEditable(true);
 
-            // TODO: lblMesg.setIcon(null);
+            // PENDING: lblMesg.setIcon(null);
             break;
 
         default:

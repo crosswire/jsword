@@ -1,32 +1,25 @@
 package org.crosswire.common.config.swing;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.ConfigEvent;
 import org.crosswire.common.config.ConfigListener;
-import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
@@ -54,7 +47,7 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class AbstractConfigEditor extends JPanel implements ConfigEditor
+public abstract class AbstractConfigEditor extends JPanel implements ConfigEditor, ButtonPaneListener
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.swing.ConfigEditor#init(org.crosswire.common.config.Config)
@@ -104,9 +97,9 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
         if (dialog == null)
         {
             dialog = new JDialog((JFrame) SwingUtilities.getRoot(parent));
-            LookAndFeelUtil.addComponentToUpdate(dialog);
+            // NOTE: when we tried dynamic laf update, dialog needed special treatment
+            // LookAndFeelUtil.addComponentToUpdate(dialog);
 
-            dialog.getRootPane().setDefaultButton(ok);
             dialog.getContentPane().add(this);
 
             // Why is this only available in Frames?
@@ -138,76 +131,49 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
      */
     protected abstract void updateTree();
 
-    /**
-     * A Config panel does not have buttons. These are they.
-     * @return A button panel
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.ButtonPaneListener#ok(java.awt.event.ActionEvent)
      */
-    protected JComponent getButtonPane()
+    public void okPressed(ActionEvent ev)
     {
-        JPanel buttons = new JPanel();
-        JPanel retcode = new JPanel();
-
-        buttons.setLayout(new GridLayout(1, 2, 10, 10));
-        buttons.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttons.add(ok);
-        buttons.add(cancel);
-        buttons.add(apply);
-        buttons.add(help);
-        help.setEnabled(false);
-
-        ok.setMnemonic('O');
-        cancel.setMnemonic('C');
-        apply.setMnemonic('A');
-        help.setMnemonic('H');
-
-        ok.addActionListener(new ActionListener()
+        try
         {
-            public void actionPerformed(ActionEvent ev)
-            {
-                try
-                {
-                    screenToLocal();
-                    al.actionPerformed(ev);
-                    hideDialog();
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(this, ex);
-                }
-            }
-        });
-        cancel.addActionListener(new ActionListener()
+            screenToLocal();
+            al.actionPerformed(ev);
+            hideDialog();
+        }
+        catch (Exception ex)
         {
-            public void actionPerformed(ActionEvent ev)
-            {
-                hideDialog();
-            }
-        });
-        apply.addActionListener(new ActionListener()
+            Reporter.informUser(this, ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.ButtonPaneListener#cancel(java.awt.event.ActionEvent)
+     */
+    public void cancelPressed(ActionEvent ev)
+    {
+        hideDialog();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.ButtonPaneListener#apply(java.awt.event.ActionEvent)
+     */
+    public void applyPressed(ActionEvent ev)
+    {
+        try
         {
-            public void actionPerformed(ActionEvent ev)
+            screenToLocal();
+            al.actionPerformed(ev);
+            if (dialog != null)
             {
-                try
-                {
-                    screenToLocal();
-                    al.actionPerformed(ev);
-                    if (dialog != null)
-                    {
-                        dialog.pack();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(this, ex);
-                }
+                dialog.pack();
             }
-        });
-
-        retcode.setBorder(new EdgeBorder(SwingConstants.NORTH));
-        retcode.setLayout(new BorderLayout(10, 10));
-        retcode.add("East", buttons);
-
-        return retcode;
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 
     /**
@@ -288,7 +254,8 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     {
         if (dialog != null)
         {
-            LookAndFeelUtil.removeComponentToUpdate(dialog);
+            // NOTE: when we tried dynamic laf update, dialog needed special treatment
+            //LookAndFeelUtil.removeComponentToUpdate(dialog);
             dialog.setVisible(false);
         }
     }
@@ -372,26 +339,6 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
      * The class that represents the Fields that we display
      */
     protected Config config;
-
-    /**
-     * The Ok button
-     */
-    protected JButton ok = new JButton("OK");
-
-    /**
-     * The cancel button
-     */
-    protected JButton cancel = new JButton("Cancel");
-
-    /**
-     * The apply button
-     */
-    protected JButton apply = new JButton("Apply");
-
-    /**
-     * The help button
-     */
-    protected JButton help = new JButton("Help");
 
     /**
      * The dialog that we are displayed in

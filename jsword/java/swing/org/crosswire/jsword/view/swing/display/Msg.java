@@ -1,4 +1,4 @@
-package org.crosswire.jsword.book.filter.gbf;
+package org.crosswire.jsword.view.swing.display;
 
 import org.crosswire.common.util.MsgBase;
 
@@ -28,8 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg GBF_JAXB = new Msg("Parse Error");
-    static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
+    static final Msg TRANSFORM_FAIL = new Msg("Transformation failure");
 
     /**
      * Initialise any resource bundles

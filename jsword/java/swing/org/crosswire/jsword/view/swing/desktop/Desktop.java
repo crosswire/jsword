@@ -47,7 +47,7 @@ import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.book.FocusablePart;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.SitesPane;
@@ -182,14 +182,15 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
 
         // Configuration
         startJob.setProgress("General configuration");
-        LookAndFeelUtil.addComponentToUpdate(frame);
+        // NOTE: when we tried dynamic laf update, frame needed special treatment
+        //LookAndFeelUtil.addComponentToUpdate(frame);
 
-        // Keep track of the selected DisplayArea
+        // Keep track of the selected FocusablePart
         FocusManager.getCurrentManager().addPropertyChangeListener(new PropertyChangeListener()
         {
             public void propertyChange(PropertyChangeEvent ev)
             {
-                DisplayArea da = recurseDisplayArea();
+                FocusablePart da = recurseDisplayArea();
                 if (da != null)
                 {
                     last = da;
@@ -454,11 +455,11 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     }
 
     /**
-     * Find the currently highlighted DisplayArea
+     * Find the currently highlighted FocusablePart
      */
-    public DisplayArea getDisplayArea()
+    public FocusablePart getDisplayArea()
     {
-        DisplayArea da = recurseDisplayArea();
+        FocusablePart da = recurseDisplayArea();
         if (da != null)
         {
             return da;
@@ -469,9 +470,9 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
 
     /**
      * Get the currently selected component and the walk up the component tree
-     * trying to find a component that implements DisplayArea
+     * trying to find a component that implements FocusablePart
      */
-    protected DisplayArea recurseDisplayArea()
+    protected FocusablePart recurseDisplayArea()
     {
         Component comp = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
@@ -479,9 +480,9 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         // to find something that we recognize.
         while (comp != null)
         {
-            if (comp instanceof DisplayArea)
+            if (comp instanceof FocusablePart)
             {
-                return (DisplayArea) comp;
+                return (FocusablePart) comp;
             }
         
             comp = comp.getParent();
@@ -833,9 +834,9 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     private boolean viewTool = true;
 
     /**
-     * The last selected DisplayArea
+     * The last selected FocusablePart
      */
-    protected DisplayArea last = null;
+    protected FocusablePart last = null;
 
     /**
      * The log stream

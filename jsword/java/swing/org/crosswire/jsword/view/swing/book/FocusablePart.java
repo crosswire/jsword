@@ -1,10 +1,13 @@
-package org.crosswire.jsword.book.filter.gbf;
+package org.crosswire.jsword.view.swing.book;
 
-import org.crosswire.common.util.MsgBase;
+import javax.swing.event.HyperlinkListener;
+
+import org.crosswire.jsword.passage.Key;
 
 /**
- * Compile safe Msg resource settings.
- * 
+ * A parent to all things that display some Book output.
+ * PENDING: get rid of this interface, I don't like it.
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -26,24 +29,36 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public interface FocusablePart
 {
-    static final Msg GBF_JAXB = new Msg("Parse Error");
-    static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
+    /**
+     * Copy the selection to the clipboard
+     */
+    public void copy();
 
     /**
-     * Initialise any resource bundles
+     * Add a listener for when someone clicks on a browser 'link'
      */
-    static
-    {
-        init(Msg.class.getName());
-    }
+    public void addHyperlinkListener(HyperlinkListener li);
 
     /**
-     * Passthrough ctor
+     * Remove a listener for when someone clicks on a browser 'link'
      */
-    private Msg(String name)
-    {
-        super(name);
-    }
+    public void removeHyperlinkListener(HyperlinkListener li);
+
+    /**
+     * The display source in OSIS
+     */
+    public String getOSISSource();
+
+    /**
+     * The display source in HTML
+     */
+    public String getHTMLSource();
+
+    /**
+     * The Book Key that we are displaying, or null if we are not displaying
+     * anything
+     */
+    public Key getKey();
 }

@@ -1,15 +1,11 @@
 package org.crosswire.common.swing;
 
-import java.awt.Component;
-import java.awt.Window;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.crosswire.common.util.Logger;
 
@@ -38,6 +34,7 @@ import org.crosswire.common.util.Logger;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
+ * @author DM Smith [dmsmith555 at hotmail dot com]
  * @version $Id$
  */
 public class LookAndFeelUtil
@@ -60,80 +57,21 @@ public class LookAndFeelUtil
     /**
      * The Options customization
      */
-    public static void setLookAndFeel(Class new_class) throws InstantiationException, IllegalAccessException
+    public static void setLookAndFeel(Class new_class) throws InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
     {
+        LookAndFeel laf = (LookAndFeel) new_class.newInstance();
+
+        // new_class is null if the user enters a bogus value
+        if (current != null && !new_class.equals(current))
+        {
+            JOptionPane.showMessageDialog(null, "The Look and Feel will change on the next startup.");
+        }
+        else
+        {
+            UIManager.setLookAndFeel(laf);
+        }
+
         current = new_class;
-
-        LookAndFeel laf = (LookAndFeel) current.newInstance();
-        setLookAndFeel(laf);
-    }
-
-    /**
-     * Make the specified PLAF the current
-     * @param plaf The PLAF to install
-     */
-    public static void setLookAndFeel(LookAndFeel plaf)
-    {
-        // The global new setting
-        try
-        {
-            UIManager.setLookAndFeel(plaf);
-        }
-        catch (Exception ex)
-        {
-            throw new IllegalArgumentException("Invalid Look and Feel name");
-        }
-
-        updateComponents();
-    }
-
-    /**
-     * Make all the windows fall into line with the current look
-     */
-    public static void updateComponents()
-    {
-        // Re-jig all the frames
-        Iterator it = windows.iterator();
-        while (it.hasNext())
-        {
-            Component comp = (Component) it.next();
-            SwingUtilities.updateComponentTreeUI(comp);
-
-            if (comp instanceof Window)
-            {
-                GuiUtil.restrainedRePack((Window) comp);
-            }
-        }
-    }
-
-    /**
-     * Add a Component to the list that need to be updated when the L&F changes.
-     * In general you will only need to add Windows to this list because the
-     * changes recurse down the hierachy, however if you have Components that
-     * are temporarily (whenever a L&F change could occur) not part of this
-     * hierachy then add them in also so they get updated with everything else.
-     * when the PLAF changes.
-     * @param comp The Component to be registered
-     */
-    public static void addComponentToUpdate(Component comp)
-    {
-        // Should we add ourselves as a ComponentListener?
-        // Probably not. Knowning what is registered may
-        // then be complex.
-
-        windows.add(comp);
-        SwingUtilities.updateComponentTreeUI(comp);
-        // window.addContainerListener(new CustomContainerListener());
-    }
-
-    /**
-     * Remove a Frame from the list that need to be updated
-     * when the PLAF changes.
-     * @param comp The Component to be de-registered
-     */
-    public static void removeComponentToUpdate(Component comp)
-    {
-        windows.remove(comp);
     }
 
     /**
@@ -149,7 +87,7 @@ public class LookAndFeelUtil
             Method init = clazz.getMethod("initialize", new Class[0]);
             init.invoke(null, new Object[0]);
 
-            log.debug("installed LookAndFeelPatchManager");
+            log.debug("installed Windows LookAndFeelPatchManager");
         }
         catch (Exception ex)
         {
@@ -187,11 +125,6 @@ public class LookAndFeelUtil
     }
 
     /**
-     * The frames to update 
-     */
-    private static transient List windows = new ArrayList();
-
-    /**
      * The current PLAF (and the default value)
      */
     private static Class current;
@@ -209,9 +142,11 @@ public class LookAndFeelUtil
         // try to set the default look and feel to the system default
         try
         {
-            current = Class.forName(UIManager.getSystemLookAndFeelClassName());
+            String lafClassName = UIManager.getSystemLookAndFeelClassName();
+            current = Class.forName(lafClassName);
+            UIManager.setLookAndFeel(lafClassName);
         }
-        catch (ClassNotFoundException ex)
+        catch (Exception ex)
         {
             log.warn("Failed to initialise system default LAF", ex);
             current = javax.swing.plaf.metal.MetalLookAndFeel.class;

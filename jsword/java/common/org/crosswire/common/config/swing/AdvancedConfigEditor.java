@@ -82,7 +82,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add("Center", scroll);
-        add("South", getButtonPane());
+        add("South", new ButtonPane(this));
     }
 
     /**

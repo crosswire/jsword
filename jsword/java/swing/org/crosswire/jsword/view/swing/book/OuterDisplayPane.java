@@ -48,7 +48,7 @@ import org.crosswire.jsword.view.swing.passage.PassageListModel;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OuterDisplayPane extends JPanel implements DisplayArea
+public class OuterDisplayPane extends JPanel implements FocusablePart
 {
     /**
      * Initialize the OuterDisplayPane
@@ -160,15 +160,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     */
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
-     */
-    public void cut()
-    {
-        txtPassg.cut();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()
      */
     public void copy()
     {
@@ -176,15 +168,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
-     */
-    public void paste()
-    {
-        txtPassg.paste();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
@@ -192,7 +176,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -200,7 +184,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
      */
     public String getOSISSource()
     {
@@ -208,7 +192,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getHTMLSource()
      */
     public String getHTMLSource()
     {
@@ -216,7 +200,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getKey()
      */
     public Key getKey()
     {

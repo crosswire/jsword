@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 
 import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.book.FocusablePart;
 
 /**
  * View the HTML source to the current window.
@@ -51,7 +51,7 @@ public class ViewSourceHTMLAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        DisplayArea da = getDesktop().getDisplayArea();
+        FocusablePart da = getDesktop().getDisplayArea();
         String html = da.getHTMLSource();
         Key ref = da.getKey();
 

@@ -4,6 +4,7 @@ This file is our equivalent of bugzilla for the time being.
 GUI
 - status bar re-size
 - better display mechanism
+	(consider http://jrex.mozdev.org/releases.html)
 - what ui tweaker to use
 
 Other

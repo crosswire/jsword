@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.book.FocusablePart;
 
 /**
  * Copy action.
@@ -53,7 +53,7 @@ public class EditCopyAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        DisplayArea da = getDesktop().getDisplayArea();
+        FocusablePart da = getDesktop().getDisplayArea();
         da.copy();
     }
 }

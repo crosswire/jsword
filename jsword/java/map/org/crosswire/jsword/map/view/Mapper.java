@@ -38,7 +38,6 @@ import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.ExtensionFileFilter;
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
@@ -143,7 +142,8 @@ public class Mapper extends JFrame
 
         try
         {
-            LookAndFeelUtil.addComponentToUpdate(this);
+            // NOTE: when we tried dynamic laf update, 'this' needed special treatment
+            //LookAndFeelUtil.addComponentToUpdate(this);
 
             Document xmlconfig = Project.instance().getDocument("config");
             config.add(xmlconfig);

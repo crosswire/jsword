@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.book.FocusablePart;
 
 /**
  * View the OSIS source to the current window.
@@ -54,7 +54,7 @@ public class ViewSourceOSISAction extends DesktopAbstractAction
     {
         try
         {
-            DisplayArea da = getDesktop().getDisplayArea();
+            FocusablePart da = getDesktop().getDisplayArea();
             String html = da.getOSISSource();
             Key key = da.getKey();
 

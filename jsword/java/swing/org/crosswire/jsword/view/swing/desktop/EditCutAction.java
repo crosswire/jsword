@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
@@ -7,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.common.util.Reporter;
 
 /**
  * cut action.
@@ -55,7 +54,7 @@ public class EditCutAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        DisplayArea da = getDesktop().getDisplayArea();
-        da.cut();
+        Reporter.informUser(this, "Not implemented");
+        //getDesktop().getDisplayArea().cut();
     }
 }

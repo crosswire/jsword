@@ -124,7 +124,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
             add("West", new JScrollPane(tree));
 
         add("Center", panel);
-        add("South", getButtonPane());
+        add("South", new ButtonPane(this));
     }
 
 

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.Component;
@@ -8,7 +7,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
 
-import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -43,7 +41,8 @@ public class TDIViewLayout implements ViewLayout
     public TDIViewLayout()
     {
         tab_main.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-        LookAndFeelUtil.addComponentToUpdate(tab_main);
+        // NOTE: when we tried dynamic laf update, tab_main needed special treatment
+        //LookAndFeelUtil.addComponentToUpdate(tab_main);
     }
 
     /* (non-Javadoc)

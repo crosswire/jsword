@@ -9,7 +9,7 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.StringSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.book.FocusablePart;
 import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**
@@ -58,7 +58,7 @@ public class ViewSourceGHTMLAction extends DesktopAbstractAction
     {
         try
         {
-            DisplayArea da = getDesktop().getDisplayArea();
+            FocusablePart da = getDesktop().getDisplayArea();
             String osis = da.getOSISSource();
             Key ref = da.getKey();
 

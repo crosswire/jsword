@@ -9,7 +9,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.HyperlinkListener;
@@ -17,16 +16,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
-import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
@@ -37,9 +33,9 @@ import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
 import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
-import org.crosswire.jsword.view.swing.book.DisplayArea;
+import org.crosswire.jsword.view.swing.book.FocusablePart;
 import org.crosswire.jsword.view.swing.book.KeyTreeNode;
-import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
+import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.
@@ -65,7 +61,7 @@ import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReferencedPane extends JPanel implements DisplayArea
+public class ReferencedPane extends JPanel implements FocusablePart
 {
     /**
      * Simple ctor
@@ -117,9 +113,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
         });
         scrEntries.setViewportView(treEntries);
 
-        txtDisplay.setEditable(false);
-        txtDisplay.setEditorKit(new HTMLEditorKit());
-        scrDisplay.setViewportView(txtDisplay);
+        scrDisplay.setViewportView(txtDisplay.getComponent());
 
         sptMain.setOrientation(JSplitPane.VERTICAL_SPLIT);
         sptMain.setTopComponent(scrEntries);
@@ -132,15 +126,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
-     */
-    public void cut()
-    {
-        txtDisplay.cut();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()
      */
     public void copy()
     {
@@ -148,15 +134,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
-     */
-    public void paste()
-    {
-        txtDisplay.paste();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
      */
     public String getOSISSource()
     {
@@ -184,15 +162,15 @@ public class ReferencedPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getHTMLSource()
      */
     public String getHTMLSource()
     {
-        return txtDisplay.getText();
+        return txtDisplay.getHTMLSource();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getKey()
      */
     public Key getKey()
     {
@@ -208,7 +186,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
@@ -216,7 +194,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -307,12 +285,7 @@ public class ReferencedPane extends JPanel implements DisplayArea
             if (key != null)
             {
                 BookData bdata = book.getData(key);
-                SAXEventProvider osissep = bdata.getSAXEventProvider();
-                SAXEventProvider htmlsep = style.convert(osissep);
-                String text = XMLUtil.writeToString(htmlsep);
-
-                txtDisplay.setText(text);
-                txtDisplay.select(0, 0);
+                txtDisplay.setBookData(bdata);
             }
         }
         catch (Exception ex)
@@ -322,10 +295,13 @@ public class ReferencedPane extends JPanel implements DisplayArea
     }
 
     /**
-     * The stylizer
+     * The display of OSIS data
      */
-    protected Converter style = new SimpleSwingConverter();
+    private BookDataDisplay txtDisplay = new BookDataDisplay();
 
+    /*
+     * Gui components
+     */
     private BookFilter filter = null;
     private BooksComboBoxModel mdlBooks = new BooksComboBoxModel();
     private Book book = null;
@@ -334,6 +310,5 @@ public class ReferencedPane extends JPanel implements DisplayArea
     private JSplitPane sptMain = new JSplitPane();
     private JScrollPane scrEntries = new JScrollPane();
     private JScrollPane scrDisplay =new JScrollPane();
-    private JTextPane txtDisplay = new JTextPane();
     private JTree treEntries = new JTree();
 }

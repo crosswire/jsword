@@ -7,18 +7,14 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.html.HTMLEditorKit;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
-import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
@@ -27,7 +23,7 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.util.ConverterFactory;
+import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 import org.crosswire.jsword.view.swing.passage.KeyListListModel;
 
 /**
@@ -54,7 +50,7 @@ import org.crosswire.jsword.view.swing.passage.KeyListListModel;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DictionaryPane extends JPanel implements DisplayArea
+public class DictionaryPane extends JPanel implements FocusablePart
 {
     /**
      * Setup the GUI 
@@ -92,9 +88,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
         });
         screntries.setViewportView(lstentries);
 
-        txtdisplay.setEditable(false);
-        txtdisplay.setEditorKit(new HTMLEditorKit());
-        scrdisplay.setViewportView(txtdisplay);
+        scrdisplay.setViewportView(txtdisplay.getComponent());
 
         sptmain.setOrientation(JSplitPane.VERTICAL_SPLIT);
         sptmain.setTopComponent(screntries);
@@ -107,15 +101,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
-     */
-    public void cut()
-    {
-        txtdisplay.cut();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()
      */
     public void copy()
     {
@@ -123,15 +109,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
-     */
-    public void paste()
-    {
-        txtdisplay.paste();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
      */
     public String getOSISSource()
     {
@@ -159,15 +137,15 @@ public class DictionaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getHTMLSource()
      */
     public String getHTMLSource()
     {
-        return txtdisplay.getText();
+        return txtdisplay.getHTMLSource();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getKey()
      */
     public Key getKey()
     {
@@ -175,7 +153,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
@@ -183,7 +161,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -263,13 +241,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
             if (key != null)
             {
                 BookData bdata = dict.getData(key);
-                SAXEventProvider osissep = bdata.getSAXEventProvider();
-                Converter converter = ConverterFactory.getConverter();
-                SAXEventProvider htmlsep = converter.convert(osissep);
-                String text = XMLUtil.writeToString(htmlsep);
-
-                txtdisplay.setText(text);
-                txtdisplay.select(0, 0);
+                txtdisplay.setBookData(bdata);
             }
         }
         catch (Exception ex)
@@ -277,6 +249,11 @@ public class DictionaryPane extends JPanel implements DisplayArea
             Reporter.informUser(this, ex);
         }
     }
+
+    /**
+     * The display of OSIS data
+     */
+    private BookDataDisplay txtdisplay = new BookDataDisplay();
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdldicts = new BooksComboBoxModel(filter);
@@ -287,6 +264,5 @@ public class DictionaryPane extends JPanel implements DisplayArea
     private JSplitPane sptmain = new JSplitPane();
     private JScrollPane screntries = new JScrollPane();
     private JScrollPane scrdisplay =new JScrollPane();
-    private JTextPane txtdisplay = new JTextPane();
     private JList lstentries = new JList();
 }

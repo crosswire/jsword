@@ -13,16 +13,13 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkListener;
-import javax.xml.transform.TransformerException;
 
-import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
-import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -48,7 +45,7 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TabbedDisplayPane extends JPanel implements DisplayArea
+public class TabbedDisplayPane extends JPanel implements FocusablePart
 {
     /**
      * Simple Constructor
@@ -59,12 +56,13 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
 
         initialize();
 
+        // NOTE: when we tried dynamic laf update, these needed special treatment
         // There are times when tab_main or pnl_view are not in visible or
         // attached to the main widget hierachy, so when we change L&F the
         // changes do not get propogated through. The solution is to register
         // them with the L&F handler to be altered when the L&F changes.
-        LookAndFeelUtil.addComponentToUpdate(pnlView);
-        LookAndFeelUtil.addComponentToUpdate(tabMain);
+        //LookAndFeelUtil.addComponentToUpdate(pnlView);
+        //LookAndFeelUtil.addComponentToUpdate(tabMain);
     }
 
     /**
@@ -104,7 +102,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the passage being viewed
      */
-    public synchronized void setPassage(Passage ref) throws BookException, SAXException, TransformerException
+    public synchronized void setPassage(Passage ref) throws BookException
     {
         this.whole = ref;
 
@@ -219,7 +217,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Tab creation helper
      */
-    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws BookException, SAXException, TransformerException
+    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws BookException
     {
         InnerDisplayPane idp = new InnerDisplayPane();
         idp.setBook(book);
@@ -281,15 +279,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
-     */
-    public void cut()
-    {
-        getInnerDisplayPane().cut();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()
      */
     public void copy()
     {
@@ -297,15 +287,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
-     */
-    public void paste()
-    {
-        getInnerDisplayPane().paste();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public synchronized void addHyperlinkListener(HyperlinkListener li)
     {
@@ -337,7 +319,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public synchronized void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -413,7 +395,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
      */
     public String getOSISSource()
     {
@@ -421,7 +403,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getHTMLSource()
      */
     public String getHTMLSource()
     {
@@ -429,7 +411,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getKey()
      */
     public Key getKey()
     {

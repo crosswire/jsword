@@ -6,12 +6,9 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.List;
 
-import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.xml.transform.TransformerException;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
@@ -20,7 +17,6 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
-import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -30,7 +26,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
-import org.xml.sax.SAXException;
+import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -56,7 +52,7 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class InnerDisplayPane extends JPanel implements DisplayArea
+public class InnerDisplayPane extends JPanel implements FocusablePart
 {
     /**
      * Simple Constructor
@@ -137,11 +133,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     private void initialize()
     {
-        txtView.setEditable(false);
-        txtView.setEditorKit(new HTMLEditorKit());
-
         scrView.getViewport().setPreferredSize(new Dimension(500, 400));
-        scrView.getViewport().add(txtView, null);
+        scrView.getViewport().add(txtView.getComponent(), null);
 
         this.setLayout(new BorderLayout());
         this.add(scrView, BorderLayout.CENTER);
@@ -158,36 +151,31 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the passage being viewed
      */
-    public void setPassage(Passage ref) throws BookException, SAXException, TransformerException
+    public void setPassage(Passage ref) throws BookException
     {
         this.ref = ref;
 
         if (ref == null || book == null)
         {
-            txtView.setText("");
-            return;
+            txtView.setBookData(null);
         }
-
-        BookData data = book.getData(ref);
-        SAXEventProvider osissep = data.getSAXEventProvider();
-        Converter converter = ConverterFactory.getConverter();
-        SAXEventProvider htmlsep = converter.convert(osissep);
-        String text = XMLUtil.writeToString(htmlsep);
-
-        txtView.setText(text);
-        txtView.select(0, 0);
+        else
+        {
+            BookData data = book.getData(ref);
+            txtView.setBookData(data);
+        }
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getHTMLSource()
      */
     public String getHTMLSource()
     {
-        return txtView.getText();
+        return txtView.getHTMLSource();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
      */
     public String getOSISSource()
     {
@@ -221,7 +209,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getKey()
      */
     public Key getKey()
     {
@@ -229,15 +217,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
-     */
-    public void cut()
-    {
-        txtView.cut();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()
      */
     public void copy()
     {
@@ -245,15 +225,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
-     */
-    public void paste()
-    {
-        txtView.paste();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
@@ -261,7 +233,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -299,6 +271,13 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     private Passage ref = null;
 
+    /**
+     * The scroller for the BookDataDisplay component
+     */
     private JScrollPane scrView = new JScrollPane();
-    private JEditorPane txtView = new JEditorPane();
+
+    /**
+     * The display of OSIS data
+     */
+    private BookDataDisplay txtView = new BookDataDisplay();
 }

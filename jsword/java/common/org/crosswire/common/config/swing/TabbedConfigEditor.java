@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -45,7 +44,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
      */
     protected void jbInit()
     {
-        JComponent bar = getButtonPane();
+        JComponent bar = new ButtonPane(this);
 
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

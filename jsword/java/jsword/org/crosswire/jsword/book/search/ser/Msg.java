@@ -26,7 +26,7 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Msg extends MsgBase
+class Msg extends MsgBase
 {
     static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
     static final Msg INITIALIZE = new Msg("Error initializing.");

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.filter;
 
 import org.crosswire.common.util.MsgBase;

@@ -1,13 +1,10 @@
+package org.crosswire.common.config.swing;
 
-package org.crosswire.jsword.view.swing.book;
-
-import javax.swing.event.HyperlinkListener;
-
-import org.crosswire.jsword.passage.Key;
+import java.awt.event.ActionEvent;
 
 /**
- * A parent to all things that display some Book output.
- *
+ * A listener for button presses in a ButtonPane.
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -29,46 +26,23 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface DisplayArea
+public interface ButtonPaneListener
 {
     /**
-     * Cut the selection to the clipboard
+     * Someone has pressed OK
+     * @param ev The button press event
      */
-    public void cut();
+    public void okPressed(ActionEvent ev);
 
     /**
-     * Copy the selection to the clipboard
+     * Someone has pressed cancel
+     * @param ev The button press event
      */
-    public void copy();
+    public void cancelPressed(ActionEvent ev);
 
     /**
-     * Paste the selection from the clipboard
+     * Someone has pressed apply
+     * @param ev The button press event
      */
-    public void paste();
-
-    /**
-     * Add a listener for when someone clicks on a browser 'link'
-     */
-    public void addHyperlinkListener(HyperlinkListener li);
-
-    /**
-     * Remove a listener for when someone clicks on a browser 'link'
-     */
-    public void removeHyperlinkListener(HyperlinkListener li);
-
-    /**
-     * The display source in OSIS
-     */
-    public String getOSISSource();
-
-    /**
-     * The display source in HTML
-     */
-    public String getHTMLSource();
-
-    /**
-     * The Book Key that we are displaying, or null if we are not displaying
-     * anything
-     */
-    public Key getKey();
+    public void applyPressed(ActionEvent ev);
 }

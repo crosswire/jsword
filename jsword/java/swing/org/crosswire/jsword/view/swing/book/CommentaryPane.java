@@ -8,17 +8,13 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
-import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
@@ -28,7 +24,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.util.ConverterFactory;
+import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 
 /**
  * Builds a set of tabs from the list of Books returned by a filtered list
@@ -55,7 +51,7 @@ import org.crosswire.jsword.util.ConverterFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class CommentaryPane extends JPanel implements DisplayArea
+public class CommentaryPane extends JPanel implements FocusablePart
 {
     /**
      * Simple constructor that uses all the Books
@@ -108,10 +104,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
         pnltop.add(pnlselect, BorderLayout.NORTH);
         pnltop.add(cbocomments, BorderLayout.SOUTH);
 
-        txtdisplay.setEditable(false);
-        txtdisplay.setEditorKit(new HTMLEditorKit());
-
-        scrdisplay.getViewport().add(txtdisplay, null);
+        scrdisplay.getViewport().add(txtdisplay.getComponent(), null);
 
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -134,14 +127,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
             BookMetaData bmd = (BookMetaData) cmds.get(index);
 
             BookData bdata = bmd.getBook().getData(ref);
-            SAXEventProvider osissep = bdata.getSAXEventProvider();
-
-            Converter converter = ConverterFactory.getConverter();
-            SAXEventProvider htmlsep = converter.convert(osissep);
-            String text = XMLUtil.writeToString(htmlsep);
-
-            txtdisplay.setText(text);
-            txtdisplay.select(0, 0);
+            txtdisplay.setBookData(bdata);
         }
         catch (Exception ex)
         {
@@ -150,15 +136,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#cut()
-     */
-    public void cut()
-    {
-        txtdisplay.cut();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#copy()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#copy()
      */
     public void copy()
     {
@@ -166,15 +144,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#paste()
-     */
-    public void paste()
-    {
-        txtdisplay.paste();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getOSISSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getOSISSource()
      */
     public String getOSISSource()
     {
@@ -204,15 +174,15 @@ public class CommentaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getHTMLSource()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getHTMLSource()
      */
     public String getHTMLSource()
     {
-        return txtdisplay.getText();
+        return txtdisplay.getHTMLSource();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#getKey()
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#getKey()
      */
     public Key getKey()
     {
@@ -242,7 +212,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
     {
@@ -250,7 +220,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
+     * @see org.crosswire.jsword.view.swing.book.FocusablePart#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
     {
@@ -272,6 +242,11 @@ public class CommentaryPane extends JPanel implements DisplayArea
      */
     private BookFilter filter = BookFilters.getCommentaries();
 
+    /**
+     * The display of OSIS data
+     */
+    private BookDataDisplay txtdisplay = new BookDataDisplay();
+
     /*
      * GUI components
      */
@@ -283,6 +258,5 @@ public class CommentaryPane extends JPanel implements DisplayArea
     private JComboBox cboverse = new JComboBox();
     private JPanel pnlselect = new JPanel();
     private JPanel pnltop = new JPanel();
-    protected JEditorPane txtdisplay = new JEditorPane();
     private JScrollPane scrdisplay = new JScrollPane();
 }

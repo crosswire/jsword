@@ -27,7 +27,6 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
-import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
@@ -252,7 +251,8 @@ public class WizardConfigEditor extends AbstractConfigEditor
     public void showDialog(Component parent)
     {
         dialog = new JDialog((JFrame) SwingUtilities.getRoot(parent));
-        LookAndFeelUtil.addComponentToUpdate(dialog);
+        // NOTE: when we tried dynamic laf update, dialog needed special treatment
+        //LookAndFeelUtil.addComponentToUpdate(dialog);
 
         dialog.getRootPane().setDefaultButton(apply);
         dialog.getContentPane().add(this);
@@ -302,6 +302,26 @@ public class WizardConfigEditor extends AbstractConfigEditor
      * Layout for the config panels
      */
     private CardLayout layout = new CardLayout();
+
+    /**
+     * The Ok button
+     */
+    private JButton ok = new JButton("OK");
+
+    /**
+     * The cancel button
+     */
+    private JButton cancel = new JButton("Cancel");
+
+    /**
+     * The apply button
+     */
+    private JButton apply = new JButton("Apply");
+
+    /**
+     * The help button
+     */
+    private JButton help = new JButton("Help");
 
     /**
      * The Back button
