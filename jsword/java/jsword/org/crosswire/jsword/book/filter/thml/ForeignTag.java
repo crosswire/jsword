@@ -1,10 +1,7 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Foreign;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,18 +39,18 @@ public class ForeignTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
-        Foreign div = JAXBUtil.factory().createForeign();
+        Element div = OSISUtil.factory().createForeign();
 
         String lang = attrs.getValue("lang"); //$NON-NLS-1$
         if (lang != null)
         {
-            div.setLang(lang);
+            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_LANG, lang);
         }
 
-        JAXBUtil.getList(ele).add(div);
+        ele.addContent(div);
     }
 }

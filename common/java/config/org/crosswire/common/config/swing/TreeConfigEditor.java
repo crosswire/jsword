@@ -428,8 +428,8 @@ public class TreeConfigEditor extends AbstractConfigEditor
             this.name = name;
         }
 
-        /**
-         * How we are displayed
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
          */
         public String toString()
         {

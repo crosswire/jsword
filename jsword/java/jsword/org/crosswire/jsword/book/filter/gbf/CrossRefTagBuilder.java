@@ -2,15 +2,12 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Reference;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.jdom.Element;
 
 /**
  * Handle Footnotes: FR and Fr.
@@ -47,15 +44,15 @@ public class CrossRefTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
-                    Reference seg = JAXBUtil.factory().createReference();
+                    Element seg = OSISUtil.factory().createReference();
 
                     String refstr = name.substring(2);
                     try
                     {
                         Passage ref = PassageFactory.createPassage(refstr);
-                        seg.setOsisRef(ref.getOSISName());
+                        seg.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, ref.getOSISName());
                     }
                     catch (NoSuchVerseException ex)
                     {
@@ -63,7 +60,7 @@ public class CrossRefTagBuilder implements TagBuilder
                     }
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(seg);
+                    current.addContent(seg);
                     stack.addFirst(seg);
                 }
             };

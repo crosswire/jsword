@@ -46,7 +46,6 @@ public class ReadEverything
     {
         // Load JAXB so we don't mess up any timings later
         Logger.outputInfoMinimum();
-        JAXBUtil.getJAXBContext();
 
         // Load the desktop configuration so we can find the sword drivers
         Config config = new Config("Desktop Options"); //$NON-NLS-1$

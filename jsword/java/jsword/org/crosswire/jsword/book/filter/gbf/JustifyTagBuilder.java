@@ -2,11 +2,9 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
+import org.jdom.Element;
 
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.book.OSISUtil;
 
 /**
  * Handle Footnotes: FR and Fr.
@@ -43,14 +41,14 @@ public class JustifyTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
                     // LATER(joe): is div the right thing?
-                    Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(JAXBUtil.SEG_JUSTIFYRIGHT);
+                    Element seg = OSISUtil.factory().createSeg();
+                    seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(seg);
+                    current.addContent(seg);
                     stack.addFirst(seg);
                 }
             };

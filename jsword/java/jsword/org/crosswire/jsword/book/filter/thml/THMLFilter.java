@@ -2,9 +2,7 @@ package org.crosswire.jsword.book.filter.thml;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.List;
 
-import javax.xml.bind.Element;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -13,10 +11,10 @@ import javax.xml.parsers.SAXParserFactory;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterUtil;
-import org.crosswire.jsword.osis.P;
+import org.jdom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -106,10 +104,9 @@ public class THMLFilter implements Filter
 
                         try
                         {
-                            P p = JAXBUtil.factory().createP();
-                            List list = JAXBUtil.getList(ele);
-                            list.add(p);
-                            list.add(plain);
+                            Element p = OSISUtil.factory().createP();
+                            ele.addContent(p);
+                            p.addContent(plain);
                         }
                         catch (Exception ex5)
                         {

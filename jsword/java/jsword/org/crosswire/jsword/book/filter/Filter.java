@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.filter;
 
-import javax.xml.bind.Element;
+import org.jdom.Element;
 
 /**
  * A generic interface for things that can convert a String into OSIS data.

@@ -2,9 +2,7 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-
-import org.crosswire.jsword.book.JAXBUtil;
+import org.jdom.Element;
 
 /**
  * Represent a trunc of bible text without any tags.
@@ -49,7 +47,7 @@ public class TextTagBuilder implements TagBuilder
                 else
                 {
                     Element ele = (Element) stack.get(0);
-                    JAXBUtil.getList(ele).add(name);
+                    ele.addContent(name);
                 }
             }
         };

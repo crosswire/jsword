@@ -305,8 +305,8 @@ public class AdvancedConfigEditor extends TreeConfigEditor
             this.path = path;
         }
 
-        /**
-         * How we are displayed
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
          */
         public String toString()
         {
@@ -337,30 +337,28 @@ public class AdvancedConfigEditor extends TreeConfigEditor
          */
         public Component getTreeCellRendererComponent(JTree jtree, Object value, boolean isselected, boolean expanded, boolean leaf, int row, boolean focus)
         {
-            if (value instanceof CompNode)
-            {
-                JComponent comp = (JComponent) comps.get(value.toString());
-
-                if (comp == null)
-                {
-                    return super.getTreeCellRendererComponent(jtree, value, isselected, expanded, leaf, row, focus);
-                }
-
-                if (isselected)
-                {
-                    comp.setBorder(BorderFactory.createLineBorder(Color.black));
-                }
-                else
-                {
-                    comp.setBorder(BorderFactory.createEmptyBorder());
-                }
-
-                return comp;
-            }
-            else
+            if (!(value instanceof CompNode))
             {
                 return super.getTreeCellRendererComponent(jtree, value, isselected, expanded, leaf, row, focus);
             }
+
+            JComponent comp = (JComponent) comps.get(value.toString());
+
+            if (comp == null)
+            {
+                return super.getTreeCellRendererComponent(jtree, value, isselected, expanded, leaf, row, focus);
+            }
+
+            if (isselected)
+            {
+                comp.setBorder(BorderFactory.createLineBorder(Color.black));
+            }
+            else
+            {
+                comp.setBorder(BorderFactory.createEmptyBorder());
+            }
+
+            return comp;
         }
     }
 }

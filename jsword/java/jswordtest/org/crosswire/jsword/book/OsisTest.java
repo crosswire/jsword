@@ -1,29 +1,9 @@
-
 package org.crosswire.jsword.book;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
-import javax.xml.bind.Validator;
 
 import junit.framework.TestCase;
 
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.Header;
-import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisText;
-import org.crosswire.jsword.osis.Seg;
-import org.crosswire.jsword.osis.Verse;
-import org.crosswire.jsword.osis.Work;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 
 /**
  * JUnit Test.
@@ -58,92 +38,42 @@ public class OsisTest extends TestCase
 
     protected void setUp() throws Exception
     {
-        jc = JAXBContext.newInstance(JAXBUtil.OSIS_PACKAGE);
-        val = jc.createValidator();
-        umarsh = jc.createUnmarshaller();
-        m = jc.createMarshaller();
     }
 
     protected void tearDown() throws Exception
     {
     }
 
-    private JAXBContext jc = null;
-    private Validator val = null;
-    private Unmarshaller umarsh = null;
-    private Marshaller m = null;
-
     public void testManual() throws Exception
     {
-        try
-        {
-            Seg seg = JAXBUtil.factory().createSeg();
-            seg.getContent().add("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
+        Element seg = OSISUtil.factory().createSeg();
+        seg.getContent().add("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
 
-            Verse verse = JAXBUtil.factory().createVerse();
-            verse.setOsisID("Gen.1.1"); //$NON-NLS-1$
-            verse.getContent().add(seg);
-    
-            Div div = JAXBUtil.factory().createDiv();
-            div.setType("chapter"); //$NON-NLS-1$
-            div.setOsisID("Gen.1.1"); //$NON-NLS-1$
-            div.getContent().add(verse);
-    
-            Work work = JAXBUtil.factory().createWork();
-    
-            Header header = JAXBUtil.factory().createHeader();
-            header.getWork().add(work);
-    
-            OsisText osistext = JAXBUtil.factory().createOsisText();
-            osistext.setOsisIDWork("Bible.KJV"); //$NON-NLS-1$
-            osistext.getDiv().add(div);
-            osistext.setHeader(header);
+        Element verse = OSISUtil.factory().createVerse();
+        verse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, "Gen.1.1"); //$NON-NLS-1$
+        verse.getContent().add(seg);
 
-            Osis blank = JAXBUtil.factory().createOsis();
-            blank.setOsisText(osistext);
-    
-            val.setEventHandler(new ValidationEventHandler()
-            {
-                public boolean handleEvent(ValidationEvent ev)
-                {
-                    return false;
-                }
-            });
-            val.validateRoot(blank);
-    
-            // create a Marshaller and marshal to System.out
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(blank, System.out);
-        }
-        catch (JAXBException ex)
-        {
-            ex.printStackTrace();
-        }
+        Element div = OSISUtil.factory().createDiv();
+        div.setAttribute("type", "chapter"); //$NON-NLS-1$ //$NON-NLS-2$
+        div.setAttribute("osisID", "Gen.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
+        div.getContent().add(verse);
+
+        Element work = OSISUtil.factory().createWork();
+
+        Element header = OSISUtil.factory().createHeader();
+        header.addContent(work);
+
+        Element osistext = OSISUtil.factory().createOsisText();
+        osistext.setAttribute(OSISUtil.ATTRIBUTE_OSISTEXT_OSISIDWORK, "Bible.KJV"); //$NON-NLS-1$
+        osistext.addContent(header);
+        osistext.addContent(div);
+
+        Element blank = OSISUtil.factory().createOsis();
+        blank.addContent(osistext);
+
+        // create a Marshaller and marshal to System.out
+        outputter.output(blank, System.out);
     }
 
-    public void testLoadSave() throws Exception
-    {
-        try
-        {
-            String zipfile = "T:\\share\\joe\\jsword\\notes\\kjv.zip"; //$NON-NLS-1$
-            
-            ZipFile zfile = new ZipFile(new File(zipfile));
-            ZipEntry zentry = zfile.getEntry("kjv.xml"); //$NON-NLS-1$
-            InputStream zin = zfile.getInputStream(zentry);
-            
-            Osis kjv = (Osis) umarsh.unmarshal(zin);
-            val.setEventHandler(new ValidationEventHandler()
-            {
-                public boolean handleEvent(ValidationEvent ev)
-                {
-                    return false;
-                }
-            });
-            val.validateRoot(kjv);
-        }
-        catch (JAXBException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+    private XMLOutputter outputter = new XMLOutputter();
 }

@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Handle Bold: FB and Fb.
@@ -43,13 +40,13 @@ public class BoldTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
-                    Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(JAXBUtil.SEG_BOLD);
+                    Element seg = OSISUtil.factory().createSeg();
+                    seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_BOLD);
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(seg);
+                    current.addContent(seg);
                     stack.addFirst(seg);
                 }
             };

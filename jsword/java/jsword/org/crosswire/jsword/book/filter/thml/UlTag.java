@@ -1,10 +1,7 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.List;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,11 +39,11 @@ public class UlTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
-        List list = JAXBUtil.factory().createList();
-        JAXBUtil.getList(ele).add(list);
+        Element list = OSISUtil.factory().createList();
+        ele.addContent(list);
     }
 }

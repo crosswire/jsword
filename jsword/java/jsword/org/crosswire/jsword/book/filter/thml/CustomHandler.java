@@ -3,12 +3,10 @@ package org.crosswire.jsword.book.filter.thml;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -56,38 +54,31 @@ public class CustomHandler extends DefaultHandler
      */
     public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException
     {
-        try
+        Element ele = (Element) stack.getFirst();
+
+        for (int i = 0; i < TAGS.length; i++)
         {
-            Element ele = (Element) stack.getFirst();
-
-            for (int i = 0; i < TAGS.length; i++)
+            if (qname.equals(TAGS[i].getTagName()))
             {
-                if (qname.equals(TAGS[i].getTagName()))
-                {
-                    TAGS[i].processTag(ele, attrs);
-                    return;
-                }
+                TAGS[i].processTag(ele, attrs);
+                return;
             }
-
-            // Some of the THML modules are broken in that they use uppercase
-            // element names, which the spec disallows, but we might as well
-            // look out for them
-            for (int i = 0; i < TAGS.length; i++)
-            {
-                if (qname.equalsIgnoreCase(TAGS[i].getTagName()))
-                {
-                    DataPolice.report("Wrong case used in element: "+qname); //$NON-NLS-1$
-                    TAGS[i].processTag(ele, attrs);
-                    return;
-                }
-            }
-
-            log.warn("unknown thml element: "+localname+" qname="+qname); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        catch (JAXBException ex)
+
+        // Some of the THML modules are broken in that they use uppercase
+        // element names, which the spec disallows, but we might as well
+        // look out for them
+        for (int i = 0; i < TAGS.length; i++)
         {
-            throw new SAXException(ex);
+            if (qname.equalsIgnoreCase(TAGS[i].getTagName()))
+            {
+                DataPolice.report("Wrong case used in element: "+qname); //$NON-NLS-1$
+                TAGS[i].processTag(ele, attrs);
+                return;
+            }
         }
+
+        log.warn("unknown thml element: "+localname+" qname="+qname); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /* (non-Javadoc)
@@ -97,7 +88,7 @@ public class CustomHandler extends DefaultHandler
     {
         // What we are adding to
         Element current = (Element) stack.getFirst();
-        List list = JAXBUtil.getList(current); 
+        List list = OSISUtil.getList(current); 
 
         // what we are adding
         String text = new String(data, offset, length);

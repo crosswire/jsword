@@ -5,11 +5,8 @@ import java.util.Iterator;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisTextType;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
@@ -21,6 +18,7 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
+import org.jdom.Element;
 
 /**
  * An abstract implementation of Book that lets implementors just concentrate
@@ -61,8 +59,8 @@ public abstract class PassageAbstractBook extends AbstractBook
 
         try
         {
-            Osis osis = JAXBUtil.createOsisFramework(getBookMetaData());
-            OsisTextType text = osis.getOsisText();
+            Element osis = OSISUtil.createOsisFramework(getBookMetaData());
+            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
 
             // For all the ranges in this Passage
             KeyList keylist = DefaultKeyList.getKeyList(key);
@@ -72,10 +70,12 @@ public abstract class PassageAbstractBook extends AbstractBook
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                Div div = JAXBUtil.factory().createDiv();
-                div.setDivTitle(range.getName());
 
-                text.getDiv().add(div);
+                Element div = OSISUtil.factory().createDiv();
+                Element title = OSISUtil.factory().createTitle();
+                title.addContent(range.getName());
+                div.addContent(title);
+                text.addContent(div);
 
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
@@ -87,8 +87,8 @@ public abstract class PassageAbstractBook extends AbstractBook
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
-                        everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse()); //$NON-NLS-1$ //$NON-NLS-2$
+                        Element everse = OSISUtil.factory().createVerse();
+                        everse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, verse.getOSISName());
 
                         div.getContent().add(everse);
 
@@ -127,19 +127,19 @@ public abstract class PassageAbstractBook extends AbstractBook
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {
         // For all of the sections
-        Iterator sit = bdata.getOsis().getOsisText().getDiv().iterator();
+        Iterator sit = bdata.getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
         while (sit.hasNext())
         {
-            Div div = (Div) sit.next();
+            Element div = (Element) sit.next();
 
             // For all of the Verses in the section
             for (Iterator vit = div.getContent().iterator(); vit.hasNext(); )
             {
                 Object data = vit.next();
-                if (data instanceof org.crosswire.jsword.osis.Verse)
+                if (data instanceof Element)
                 {
-                    org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) data;
-                    String text = JAXBUtil.getPlainText(overse);
+                    Element overse = (Element) data;
+                    String text = OSISUtil.getPlainText(overse);
 
                     setText(verse, text);
                 }

@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
+import org.jdom.Element;
 
 /**
  * Filter to convert GBF data to OSIS format.
@@ -46,29 +44,22 @@ public class GBFFilter implements Filter
      */
     public void toOSIS(Element ele, String plain) throws FilterException
     {
-        try
-        {
-            LinkedList stack = new LinkedList();
-            stack.addFirst(ele);
+        LinkedList stack = new LinkedList();
+        stack.addFirst(ele);
 
-            List taglist = parseTags(plain.trim());
-            while (true)
+        List taglist = parseTags(plain.trim());
+        while (true)
+        {
+            if (taglist.isEmpty())
             {
-                if (taglist.isEmpty())
-                {
-                    break;
-                }
-
-                Tag tag = (Tag) taglist.remove(0);
-                tag.updateOsisStack(stack);
+                break;
             }
-        
-            stack.removeFirst();
+
+            Tag tag = (Tag) taglist.remove(0);
+            tag.updateOsisStack(stack);
         }
-        catch (JAXBException ex)
-        {
-            throw new FilterException(Msg.GBF_JAXB, ex);
-        }
+    
+        stack.removeFirst();
     }
 
     /**

@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Q;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Handle Footnotes: FO and Fo.
@@ -43,12 +40,12 @@ public class OTQuoteTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
-                    Q q = JAXBUtil.factory().createQ();
+                    Element q = OSISUtil.factory().createQ();
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(q);
+                    current.addContent(q);
                     stack.addFirst(q);
                 }
             };

@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Note;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Tag syntax: <RB>Words<RF>note<Rf>.
@@ -46,13 +43,13 @@ public class TextFootnoteTagBuilder implements TagBuilder
 
         return new Tag()
         {
-            public void updateOsisStack(LinkedList stack) throws JAXBException
+            public void updateOsisStack(LinkedList stack)
             {
-                Note note = JAXBUtil.factory().createNote();
-                note.setNoteType(JAXBUtil.NOTETYPE_STUDY);
+                Element note = OSISUtil.factory().createNote();
+                note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
 
                 Element current = (Element) stack.get(0);
-                JAXBUtil.getList(current).add(note);
+                current.addContent(note);
                 stack.addFirst(note);
             }
         };

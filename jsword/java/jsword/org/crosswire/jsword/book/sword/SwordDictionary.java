@@ -10,15 +10,13 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
-import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisTextType;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
+import org.jdom.Element;
 
 /**
  * A Sword version of Dictionary.
@@ -118,13 +116,14 @@ public class SwordDictionary extends AbstractBook
 
         try
         {
-            Osis osis = JAXBUtil.createOsisFramework(getBookMetaData());
-            OsisTextType text = osis.getOsisText();
+            Element osis = OSISUtil.createOsisFramework(getBookMetaData());
+            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
 
-            Div div = JAXBUtil.factory().createDiv();
-            div.setDivTitle(key.getName());
-
-            text.getDiv().add(div);
+            Element div = OSISUtil.factory().createDiv();
+            Element title = OSISUtil.factory().createTitle();
+            title.addContent(key.getName());
+            div.addContent(title);
+            text.addContent(div);
 
             byte[] data = backend.getRawText(key);
             String charset = sbmd.getModuleCharset();

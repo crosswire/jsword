@@ -1,8 +1,6 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -45,5 +43,5 @@ public interface Tag
      * @param ele The OSIS element to use as a parent
      * @param attrs The source document attributes.
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException;
+    public void processTag(Element ele, Attributes attrs);
 }

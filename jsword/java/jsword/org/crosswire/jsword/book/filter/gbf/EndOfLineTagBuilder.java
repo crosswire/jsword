@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.P;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Represent a trunc of bible text without any tags.
@@ -46,9 +43,9 @@ public class EndOfLineTagBuilder implements TagBuilder
 
         return new Tag()
         {
-            public void updateOsisStack(LinkedList stack) throws JAXBException
+            public void updateOsisStack(LinkedList stack)
             {
-                P p = JAXBUtil.factory().createP();
+                Element p = OSISUtil.factory().createP();
 
                 if (stack.size() == 0)
                 {
@@ -58,7 +55,7 @@ public class EndOfLineTagBuilder implements TagBuilder
                 else
                 {
                     Element ele = (Element) stack.get(0);
-                    JAXBUtil.getList(ele).add(p);
+                    ele.addContent(p);
                 }
             }
         };

@@ -2,8 +2,6 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.JAXBException;
-
 /**
  * GBF Tag interface.
  * <p>For copy and paste purposes, the canonical single Tag is
@@ -35,5 +33,5 @@ public interface Tag
     /**
      * Sub-classes should implement this method to generate OSIS Object
      */
-    public void updateOsisStack(LinkedList osisStack) throws JAXBException;
+    public void updateOsisStack(LinkedList osisStack);
 }

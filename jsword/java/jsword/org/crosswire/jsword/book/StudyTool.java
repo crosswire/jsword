@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.passage.KeyList;
+import org.jdom.Element;
 
 /**
  * StudyTool is-an extension to Bible that knows about the original
@@ -51,19 +50,19 @@ public class StudyTool
         Map reply = new HashMap();
 
         // Loop through all the divs in this BookData
-        Iterator oit = data.getOsis().getOsisText().getDiv().iterator();
+        Iterator oit = data.getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
         while (oit.hasNext())
         {
-            Div div = (Div) oit.next();
+            Element div = (Element) oit.next();
 
             // And loop over the content in this div
-            Iterator dit = JAXBUtil.getDeepContent(div, W.class).iterator();
+            Iterator dit = OSISUtil.getDeepContent(div, OSISUtil.OSIS_ELEMENT_W).iterator();
             while (dit.hasNext())
             {
                 // LATER(joe): This only looks at L1 content, we need a deep scan for 'W's.
                 Object ele = dit.next();
-                W w = (W) ele;
-                String content = JAXBUtil.getPlainText(w);
+                Element w = (Element) ele;
+                String content = OSISUtil.getPlainText(w);
 
                 // There will be many words in the passage in question,
                 // but not all of them will be translations of our word
@@ -78,7 +77,7 @@ public class StudyTool
                         reply.put(strongs, trans);
                     }
 
-                    trans.getRef().add(JAXBUtil.getVerse(w, loc));
+                    trans.getRef().add(OSISUtil.getVerse(w, loc));
                 }
             }
         }
@@ -101,18 +100,18 @@ public class StudyTool
         Map reply = new HashMap();
 
         // Loop through all the divs in this BookData
-        Iterator oit = data.getOsis().getOsisText().getDiv().iterator();
+        Iterator oit = data.getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
         while (oit.hasNext())
         {
-            Div div = (Div) oit.next();
+            Element div = (Element) oit.next();
 
-            // And loop over the content in this div        
-            Iterator dit = JAXBUtil.getDeepContent(div, W.class).iterator();
+            // And loop over the content in this div
+            Iterator dit = OSISUtil.getDeepContent(div, OSISUtil.OSIS_ELEMENT_W).iterator();
             while (dit.hasNext())
             {
                 // see note above on deep scanning for W
                 Object ele = dit.next();
-                W w = (W) ele;
+                Element w = (Element) ele;
                 Strongs strongs = new Strongs(w);
 
                 // There will be many strongs number in the passage in
@@ -120,7 +119,7 @@ public class StudyTool
                 // strongs number
                 if (strongs.equals(number))
                 {
-                    String translated = JAXBUtil.getPlainText(w);
+                    String translated = OSISUtil.getPlainText(w);
 
                     Translation trans = (Translation) reply.get(translated);
                     if (trans == null)
@@ -129,7 +128,7 @@ public class StudyTool
                         reply.put(translated, trans);
                     }
 
-                    trans.getRef().add(JAXBUtil.getVerse(w, loc));
+                    trans.getRef().add(OSISUtil.getVerse(w, loc));
                 }
             }
         }

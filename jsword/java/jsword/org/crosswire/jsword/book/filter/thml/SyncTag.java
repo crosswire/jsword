@@ -1,12 +1,8 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.W;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -44,30 +40,30 @@ public class SyncTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
         // Strongs reference
         String type = attrs.getValue("type"); //$NON-NLS-1$
         String value = attrs.getValue("value"); //$NON-NLS-1$
         if ("Strongs".equals(type)) //$NON-NLS-1$
         {
-            W w = JAXBUtil.factory().createW();
-            w.setLemma(JAXBUtil.LEMMA_STRONGS+value);
-            JAXBUtil.getList(ele).add(w);
+            Element w = OSISUtil.factory().createW();
+            w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_STRONGS+value);
+            ele.addContent(w);
         }
         else if ("Dict".equals(type)) //$NON-NLS-1$
         {
-            Div div = JAXBUtil.factory().createDiv();
-            div.setOsisID("dict://"+value); //$NON-NLS-1$
-            JAXBUtil.getList(ele).add(div);
+            Element div = OSISUtil.factory().createDiv();
+            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "dict://"+value); //$NON-NLS-1$
+            ele.addContent(div);
         }
         else if ("morph".equals(type)) //$NON-NLS-1$
         {
-            Div div = JAXBUtil.factory().createDiv();
-            div.setOsisID("morph://"+value); //$NON-NLS-1$
-            JAXBUtil.getList(ele).add(div);
+            Element div = OSISUtil.factory().createDiv();
+            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "morph://"+value); //$NON-NLS-1$
+            ele.addContent(div);
         }
         else
         {

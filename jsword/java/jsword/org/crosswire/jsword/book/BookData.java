@@ -2,18 +2,12 @@ package org.crosswire.jsword.book;
 
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.UnmarshallerHandler;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
-import javax.xml.bind.Validator;
-
+import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.Verse;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,7 +39,7 @@ public class BookData
     /**
      * Ctor
      */
-    public BookData(Osis osis, Book book, Key key)
+    public BookData(Element osis, Book book, Key key)
     {
         this.osis = osis;
         this.book = book;
@@ -57,24 +51,16 @@ public class BookData
      */
     public BookData(SAXEventProvider provider) throws SAXException
     {
-        try
-        {
-            Unmarshaller unm = JAXBUtil.getJAXBContext().createUnmarshaller();
-            UnmarshallerHandler unmh = unm.getUnmarshallerHandler();
-            provider.provideSAXEvents(unmh);
-
-            osis = (Osis) unmh.getResult();
-        }
-        catch (JAXBException ex)
-        {
-            throw new SAXException(ex);
-        }
+        provider.provideSAXEvents(handler);
+        osis = handler.getDocument().getRootElement();
     }
+
+    private SAXHandler handler = new SAXHandler();
 
     /**
      * Accessor for the root OSIS element
      */
-    public Osis getOsis()
+    public Element getOsis()
     {
         return osis;
     }
@@ -88,18 +74,18 @@ public class BookData
     {
         StringBuffer buffer = new StringBuffer();
     
-        Iterator oit = getOsis().getOsisText().getDiv().iterator();
+        Iterator oit = getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
         while (oit.hasNext())
         {
-            Div div = (Div) oit.next();
+            Element div = (Element) oit.next();
     
             Iterator dit = div.getContent().iterator();
             while (dit.hasNext())
             {
                 Object data = dit.next();
-                if (data instanceof Verse)
+                if (data instanceof Element)
                 {
-                    String txt = JAXBUtil.getPlainText((Verse) data);
+                    String txt = OSISUtil.getPlainText((Element) data);
                     buffer.append(txt);
                 }
             }
@@ -109,21 +95,14 @@ public class BookData
     }
 
     /**
-     * Check that a BibleData is valid. Currently (probably as a result of a bug
-     * in JAXB) this method will always fail.
-     * @throws JAXBException
+     * Check that a BibleData is valid.
+     * Currently, this does nothing, and isn't used. it was broken when we used
+     * JAXB, however it wasn't much use then becuase JAXB did a lot to keep the
+     * document valid anyway. Under JDOM there is more point, but I don't think
+     * JDOM supports this out of the box.
      */
-    public void validate() throws JAXBException
+    public void validate()
     {
-        Validator val = JAXBUtil.getJAXBContext().createValidator();
-        val.setEventHandler(new ValidationEventHandler()
-        {
-            public boolean handleEvent(ValidationEvent ev)
-            {
-                return false;
-            }
-        });
-        val.validateRoot(osis);
     }
 
     /**
@@ -132,7 +111,7 @@ public class BookData
      */
     public SAXEventProvider getSAXEventProvider()
     {
-        return new JAXBSAXEventProvider(JAXBUtil.getJAXBContext(), osis);
+        return new JDOMSAXEventProvider(new Document(osis));
     }
 
     /**
@@ -168,5 +147,5 @@ public class BookData
     /**
      * The root where we read data from
      */
-    private Osis osis;
+    private Element osis;
 }

@@ -3,12 +3,9 @@ package org.crosswire.jsword.book.filter.gbf;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.W;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Tag syntax: word&lt;WTxxxx>.
@@ -48,12 +45,12 @@ public class StrongsMorphTagBuilder implements TagBuilder
 
         return new Tag()
         {
-            public void updateOsisStack(LinkedList stack) throws JAXBException
+            public void updateOsisStack(LinkedList stack)
             {
                 String name = tagname.trim();
 
                 Element ele = (Element) stack.get(0);
-                List list = JAXBUtil.getList(ele);
+                List list = OSISUtil.getList(ele);
                 if (list.isEmpty())
                 {
                     DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -62,17 +59,17 @@ public class StrongsMorphTagBuilder implements TagBuilder
 
                 int lastIndex = list.size() - 1;
                 Object prevObj = list.get(lastIndex);
-                W word = null;
+                Element word = null;
 
                 if (prevObj instanceof String)
                 {
-                    word = JAXBUtil.factory().createW();
+                    word = OSISUtil.factory().createW();
                     word.getContent().add(prevObj);
                     list.set(lastIndex, word);
                 }
-                else if (prevObj instanceof W)
+                else if (prevObj instanceof Element)
                 {
-                    word = (W) prevObj;
+                    word = (Element) prevObj;
                 }
                 else
                 {
@@ -80,15 +77,15 @@ public class StrongsMorphTagBuilder implements TagBuilder
                     return;
                 }
 
-                String existingMorph = word.getMorph();
+                String existingMorph = word.getAttributeValue(OSISUtil.ATTRIBUTE_WORD_MORPH);
                 StringBuffer newMorph = new StringBuffer();
 
                 if (existingMorph != null && existingMorph.length() > 0)
                 {
                     newMorph.append(existingMorph).append('|');
                 }
-                newMorph.append(JAXBUtil.MORPH_STRONGS).append(name.substring(2));
-                word.setMorph(newMorph.toString());
+                newMorph.append(OSISUtil.MORPH_STRONGS).append(name.substring(2));
+                word.setAttribute(OSISUtil.ATTRIBUTE_WORD_MORPH, newMorph.toString());
             }
         };
     }

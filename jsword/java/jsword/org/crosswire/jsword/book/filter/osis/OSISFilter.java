@@ -1,23 +1,20 @@
-
 package org.crosswire.jsword.book.filter.osis;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.book.filter.FilterUtil;
-import org.crosswire.jsword.osis.P;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
 /**
@@ -51,19 +48,6 @@ public class OSISFilter implements Filter
      */
     public void toOSIS(Element ele, String plain) throws FilterException
     {
-        if (unm == null)
-        {
-            try
-            {
-                unm = JAXBUtil.getJAXBContext().createUnmarshaller();
-                unm.setEventHandler(new CustomValidationEventHandler());
-            }
-            catch (JAXBException ex)
-            {
-                throw new FilterException(Msg.OSIS_INIT, ex);
-            }
-        }
-
         try
         {
             parse(ele, plain);
@@ -113,10 +97,9 @@ public class OSISFilter implements Filter
 
                         try
                         {
-                            P p = JAXBUtil.factory().createP();
-                            List list = JAXBUtil.getList(ele);
-                            list.add(p);
-                            list.add(plain);
+                            Element p = OSISUtil.factory().createP();
+                            ele.addContent(p);
+                            p.addContent(plain);
                         }
                         catch (Exception ex5)
                         {
@@ -132,46 +115,32 @@ public class OSISFilter implements Filter
      * If the string is invalid then we might want to have more than one
      * crack at parsing it
      */
-    private void parse(Element ele, String plain) throws JAXBException
+    private void parse(Element ele, String plain) throws JDOMException, IOException
     {
         // create a root element to house our document fragment
         StringReader in = new StringReader("<div>"+plain+"</div>"); //$NON-NLS-1$ //$NON-NLS-2$
         InputSource is = new InputSource(in);
 
-        Element data = (Element) unm.unmarshal(is);
+        Document doc = builder.build(is);
+        Element data = doc.getRootElement();
 
         // data is the div we added above so the input was a well formed
         // XML so we need to add the content of the div and not the div
         // itself
 
-        List host = JAXBUtil.getList(ele);
-        List content = JAXBUtil.getList(data);
+        List host = OSISUtil.getList(ele);
+        List content = OSISUtil.getList(data);
 
         host.addAll(content);
     }
 
     /**
+     * The JDOM parser
+     */
+    private SAXBuilder builder = new SAXBuilder();
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(OSISFilter.class);
-
-    /**
-     * The JAXB unmarshaller
-     */
-    private Unmarshaller unm = null;
-
-    /**
-     * Catcher for all the Unmarshallers warnings
-     */
-    private static class CustomValidationEventHandler implements ValidationEventHandler
-    {
-        /* (non-Javadoc)
-         * @see javax.xml.bind.ValidationEventHandler#handleEvent(javax.xml.bind.ValidationEvent)
-         */
-        public boolean handleEvent(ValidationEvent ev)
-        {
-            DataPolice.report("OSIS parse error: "+ev.getMessage()+" More information is available."); //$NON-NLS-1$ //$NON-NLS-2$
-            return true;
-        }
-    }
 }

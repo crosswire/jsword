@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Speaker;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Handle Footnotes: FR and Fr.
@@ -43,13 +40,13 @@ public class RedLetterTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
-                    Speaker speaker = JAXBUtil.factory().createSpeaker();
-                    speaker.setWho(Msg.NAME_JESUS.toString());
+                    Element speaker = OSISUtil.factory().createSpeaker();
+                    speaker.setAttribute(OSISUtil.ATTRIBUTE_SPEAKER_WHO, Msg.NAME_JESUS.toString());
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(speaker);
+                    current.addContent(speaker);
                     stack.addFirst(speaker);
                 }
             };

@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Title;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Handle Footnotes: FR and Fr.
@@ -43,12 +40,12 @@ public class HeaderTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
-                    Title title = JAXBUtil.factory().createTitle();
+                    Element title = OSISUtil.factory().createTitle();
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(title);
+                    current.addContent(title);
                     stack.addFirst(title);
                 }
             };

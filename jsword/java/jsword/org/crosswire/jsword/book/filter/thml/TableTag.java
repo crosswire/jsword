@@ -1,10 +1,7 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Table;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,11 +39,11 @@ public class TableTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
-        Table table = JAXBUtil.factory().createTable();
-        JAXBUtil.getList(ele).add(table);
+        Element table = OSISUtil.factory().createTable();
+        ele.addContent(table);
     }
 }

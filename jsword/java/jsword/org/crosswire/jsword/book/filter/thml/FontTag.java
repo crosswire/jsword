@@ -1,12 +1,9 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -44,35 +41,36 @@ public class FontTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
-        Seg seg = JAXBUtil.factory().createSeg();
+        Element seg = OSISUtil.factory().createSeg();
         StringBuffer buf = new StringBuffer();
 
         String color = attrs.getValue("color"); //$NON-NLS-1$
         if (color != null)
         {
-            buf.append(JAXBUtil.SEG_COLORPREFIX+color+";"); //$NON-NLS-1$
+            buf.append(OSISUtil.SEG_COLORPREFIX+color+";"); //$NON-NLS-1$
         }
 
         String size = attrs.getValue("size"); //$NON-NLS-1$
         if (size != null)
         {
-            buf.append(JAXBUtil.SEG_SIZEPREFIX+size+";"); //$NON-NLS-1$
+            buf.append(OSISUtil.SEG_SIZEPREFIX+size+";"); //$NON-NLS-1$
         }
 
         String type = buf.toString();
         if (type != null)
         {
-            seg.setType(type);
+            seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, type);
         }
         else
         {
             DataPolice.report("Missing color/size attribute."); //$NON-NLS-1$
             XMLUtil.debugSAXAttributes(attrs);
         }
-        JAXBUtil.getList(ele).add(seg);
+
+        ele.addContent(seg);
     }
 }

@@ -3,13 +3,10 @@ package org.crosswire.jsword.book.filter.gbf;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.apache.commons.lang.ClassUtils;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Note;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Handle Footnotes: RF and Rf.
@@ -46,17 +43,14 @@ public class FootnoteTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
                     Element current = (Element) stack.get(0);
-                    if (!(current instanceof Note))
-                    {
-                        Note note = JAXBUtil.factory().createNote();
-                        note.setNoteType(JAXBUtil.NOTETYPE_STUDY);
+                    Element note = OSISUtil.factory().createNote();
+                    note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
 
-                        JAXBUtil.getList(current).add(note);
-                        stack.addFirst(note);
-                    }
+                    current.addContent(note);
+                    stack.addFirst(note);
                 }
             };
         }
@@ -68,14 +62,14 @@ public class FootnoteTagBuilder implements TagBuilder
                 public void updateOsisStack(LinkedList stack)
                 {
                     Object pop = stack.removeFirst();
-                    if (pop instanceof Note)
+                    if (pop instanceof Element)
                     {
-                        Note note = (Note) pop;
-                        List list = JAXBUtil.getList(note);
+                        Element note = (Element) pop;
+                        List list = OSISUtil.getList(note);
     
                         if (list.size() < 1)
                         {
-                            JAXBUtil.getList((Element) stack.get(0)).remove(note);
+                            OSISUtil.getList((Element) stack.get(0)).remove(note);
                         }
                     }
                     else

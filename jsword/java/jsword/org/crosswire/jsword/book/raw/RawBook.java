@@ -14,20 +14,20 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchEngine;
-import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
+import org.jdom.Element;
 
 /**
  * RawBook is a custom Bible. It is designed to be:<ul>
@@ -397,20 +397,20 @@ public class RawBook extends PassageAbstractBook implements Index
     public void setDocument(Verse verse, BookData bdata)
     {
         // For all of the sections
-        Iterator sit = bdata.getOsis().getOsisText().getDiv().iterator();
+        Iterator sit = bdata.getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
         while (sit.hasNext())
         {
-            Div div = (Div) sit.next();
+            Element div = (Element) sit.next();
 
             // For all of the Verses in the section
             for (Iterator vit=div.getContent().iterator(); vit.hasNext(); )
             {
                 Object data = vit.next();
-                if (data instanceof org.crosswire.jsword.osis.Verse)
+                if (data instanceof Element)
                 {
-                    org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) data;
+                    Element overse = (Element) data;
 
-                    String text = JAXBUtil.getPlainText(overse);
+                    String text = OSISUtil.getPlainText(overse);
 
                     // Is this verse part of a new paragraph? Since the move to OSIS
                     // the concept of new para is not what it was. I don't intend to

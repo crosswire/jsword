@@ -1,7 +1,6 @@
-
 package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.osis.W;
+import org.jdom.Element;
 
 /**
  * Strongs is a convenience way of recording a Strongs number instead of
@@ -98,9 +97,9 @@ public class Strongs
      * Work out what the Strongs number is from the W element
      * @param w The element to investigate
      */
-    public Strongs(W w) throws BookException
+    public Strongs(Element w) throws BookException
     {
-        String lemma = w.getLemma();
+        String lemma = w.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
 
         // LATER(joe): I think it goes x-study:[H|G]number, but this will need fixing...
         int colonpos = lemma.indexOf(":"); //$NON-NLS-1$
@@ -108,7 +107,7 @@ public class Strongs
         {
             lemma = lemma.substring(colonpos+1);
         }
-        
+
         int newtype = -1;
         if (lemma.charAt(0) == 'H')
         {
@@ -124,7 +123,7 @@ public class Strongs
         {
             newtype = Strongs.PARSING;
         }
-        
+
         int newnum = Integer.parseInt(lemma);
 
         set(newtype, newnum);

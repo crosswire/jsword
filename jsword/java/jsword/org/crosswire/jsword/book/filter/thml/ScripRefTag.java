@@ -1,14 +1,11 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -46,11 +43,11 @@ public class ScripRefTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
-        Div div = JAXBUtil.factory().createDiv();
+        Element div = OSISUtil.factory().createDiv();
 
         String refstr = attrs.getValue("passage"); //$NON-NLS-1$
         if (refstr != null)
@@ -59,7 +56,7 @@ public class ScripRefTag implements Tag
             {
                 Passage ref = PassageFactory.createPassage(refstr);
                 String osisname = ref.getOSISName();
-                div.setOsisID(osisname);
+                div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, osisname);
             }
             catch (NoSuchVerseException ex)
             {
@@ -73,6 +70,6 @@ public class ScripRefTag implements Tag
             //XMLUtil.debugSAXAttributes(attrs);
         }
 
-        JAXBUtil.getList(ele).add(div);
+        ele.addContent(div);
     }
 }

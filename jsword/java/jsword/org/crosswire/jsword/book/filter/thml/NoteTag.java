@@ -1,10 +1,7 @@
 package org.crosswire.jsword.book.filter.thml;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Note;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,12 +39,12 @@ public class NoteTag implements Tag
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
-        Note note = JAXBUtil.factory().createNote();
-        note.setNoteType(JAXBUtil.NOTETYPE_STUDY);
-        JAXBUtil.getList(ele).add(note);
+        Element note = OSISUtil.factory().createNote();
+        note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
+        ele.addContent(note);
     }
 }

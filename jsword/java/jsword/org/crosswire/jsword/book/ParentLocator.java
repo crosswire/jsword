@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.xml.bind.Element;
+import org.jdom.Element;
 
 /**
  * A cheat way to find parents of nodes in a JAXB tree.
@@ -54,7 +54,7 @@ public class ParentLocator
      */
     private void recurseChildren(Element parent)
     {
-        Iterator it = JAXBUtil.getList(parent).iterator();
+        Iterator it = OSISUtil.getList(parent).iterator();
         while (it.hasNext())
         {
             Element child = (Element) it.next();

@@ -1,72 +1,8 @@
 <project name="jsword" default="all">
 
-  <!--=======================================================================-->
-  <!--
-  When you first check files out of CVS you should run ant using the all target
-  to generate all the source files required for tools like eclipse.
-  -->
-
   <!-- This build uses the core build targets -->
   <import file="../common/core.xml"/>
   <property name="dependency" value="common"/>
   <property name="dependency.jar" value="../${dependency}/target/ant/jar"/>
-
-  <!--=======================================================================-->
-  <property name="osis.schema" value="${source.etc}/osis/osisCore.1.1.1.xsd"/>
-  <property name="osis.root" value="target/osis"/>
-  <property name="osis.source" value="${osis.root}/src"/>
-  <property name="osis.classes" value="${osis.root}/classes"/>
-  <property name="osis.jar" value="${osis.root}"/>
-
-  <!--=======================================================================-->
-  <target name="xjc" depends="init, xjc.check" unless="xjc.uptodate" description="Run XJC">
-    <mkdir dir="${osis.source}"/>
-    <java fork="true" classname="com.sun.tools.xjc.Driver">
-      <arg value="-d"/>
-      <arg value="${osis.source}"/>
-      <arg value="-p"/>
-      <arg value="org.crosswire.jsword.osis"/>
-      <arg value="${osis.schema}"/>
-      <classpath>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </java>
-  </target>
-  <target name="xjc.check" depends="init" description="Check to see if xjc is needed">
-    <condition property="xjc.uptodate">
-      <and>
-        <available file="${target.jar}/jsword-osis.jar" type="file"/>
-        <available file="${osis.source}/org" type="dir"/>
-        <not><!-- the sense of <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
-          <uptodate targetfile="${osis.schema}">
-            <srcfiles dir="${target.jar}" includes="jsword-osis.jar"/>
-          </uptodate>
-        </not>
-      </and>
-    </condition>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="prepare.extra" depends="xjc">
-    <echo message="Compiling ${osis.source}"/>
-    <mkdir dir="${osis.classes}"/>
-    <javac debug="on" includes="**/*.java" destdir="${osis.classes}">
-      <src path="${osis.root}/src"/>
-      <classpath>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
-    <copy todir="${osis.classes}">
-      <fileset dir="${osis.source}">
-        <patternset refid="java.non.compile"/>
-      </fileset>
-    </copy>
-    <jar jarfile="${osis.jar}/jsword-osis.jar">
-      <fileset dir="${osis.classes}"/>
-    </jar>
-    <!-- Sign the generated jar -->
-    <copy todir="${target.jar}" file="${osis.jar}/jsword-osis.jar"/>
-    <jar.sign jar="jsword-osis.jar"/>
-  </target>
 
 </project>

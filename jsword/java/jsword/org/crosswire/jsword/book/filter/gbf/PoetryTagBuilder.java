@@ -2,11 +2,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
-
-import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.osis.Speech;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
  * Handle Footnotes: FR and Fr.
@@ -43,13 +40,13 @@ public class PoetryTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
                     // LATER(joe): is speech the right thing?
-                    Speech speech = JAXBUtil.factory().createSpeech();
+                    Element speech = OSISUtil.factory().createSpeech();
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(speech);
+                    current.addContent(speech);
                     stack.addFirst(speech);
                 }
             };
