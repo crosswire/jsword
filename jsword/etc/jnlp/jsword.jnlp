@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp spec="1.0+" codebase="http://@HOSTNAME@/@WEBAPP@/" href="jsword.jnlp">
+
+  <information>
+    <title>JSword Demo Application</title>
+    <vendor>The JSWord project</vendor>
+    <homepage href="http://@HOSTNAME@/@WEBAPP@/"/>
+    <description>JSword</description>
+    <description kind="short">A demo of the JSword UI</description>
+    <offline-allowed/>
+  </information>
+
+  <security>
+    <!-- todo work out what set we really need -->
+    <all-permissions/>
+  </security>
+
+  <resources>
+    <j2se version="1.3+"/>
+    <jar href="jsword.jar"/>
+    <jar href="crimson.jar"/>
+    <jar href="jdom.jar"/>
+    <jar href="log4j.jar"/>
+    <jar href="xalan.jar"/>
+    <jar href="jaxp.jar"/>
+    <jar href="jlfgr-1_0.jar"/>
+    <jar href="resource.jar"/>
+    <jar href="projectb-ser-av.zip"/>
+  </resources>
+
+  <application-desc main-class="org.crosswire.jsword.view.swing.desktop.Desktop"/>
+
+</jnlp>

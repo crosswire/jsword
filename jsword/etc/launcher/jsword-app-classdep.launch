@@ -17,22 +17,22 @@
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     externalArchive=&quot;C:/Program Files/j2sdk1.4.1/jre/lib/ext/dnsns.jar&quot;
-    path=&quot;2&quot; sourceAttachmentPath=&quot;&quot; sourceRootPath=&quot;&quot; type=&quot;2&quot;/&gt;
+    path=&quot;2&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     externalArchive=&quot;C:/Program Files/j2sdk1.4.1/jre/lib/ext/ldapsec.jar&quot;
-    path=&quot;2&quot; sourceAttachmentPath=&quot;&quot; sourceRootPath=&quot;&quot; type=&quot;2&quot;/&gt;
+    path=&quot;2&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     externalArchive=&quot;C:/Program Files/j2sdk1.4.1/jre/lib/ext/localedata.jar&quot;
-    path=&quot;2&quot; sourceAttachmentPath=&quot;&quot; sourceRootPath=&quot;&quot; type=&quot;2&quot;/&gt;
+    path=&quot;2&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     externalArchive=&quot;C:/Program Files/j2sdk1.4.1/jre/lib/ext/sunjce_provider.jar&quot;
-    path=&quot;2&quot; sourceAttachmentPath=&quot;&quot; sourceRootPath=&quot;&quot; type=&quot;2&quot;/&gt;
+    path=&quot;2&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
@@ -40,7 +40,7 @@
 "/>
     </listAttribute>
     <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_default"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="T:\share\joe\jsword\etc\classdep.properties"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="T:\share\joe\jsword\etc\launcher\classdep.properties"/>
     <stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.eclipse.jdt.debug.ui.javaSourceLocator"/>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
 </launchConfiguration>
