@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.crosswire.common.config.Config;
-import org.crosswire.common.util.EventException;
+import org.crosswire.common.util.LucidRuntimeException;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
 
@@ -104,7 +104,7 @@ public class ConfigEditorFactory
             }
             catch (IOException ex)
             {
-                throw new EventException("config_save_fail", ex, new Object[] { url });
+                throw new LucidRuntimeException(Msg.CONFIG_SAVE_FAILED, ex, new Object[] { url });
             }
         }
 

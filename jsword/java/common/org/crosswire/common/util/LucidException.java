@@ -42,7 +42,7 @@ import java.text.MessageFormat;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see EventException
+ * @see LucidRuntimeException
  * @see LogicError
  */
 public class LucidException extends Exception
@@ -86,9 +86,8 @@ public class LucidException extends Exception
      */
     public LucidException(MsgBase msg, Throwable cause, Object[] params)
     {
-        super(msg.toString());
+        super(msg.toString(), cause);
 
-        this.cause = cause;
         this.params = params;
     }
 
@@ -97,11 +96,12 @@ public class LucidException extends Exception
      * runtime, and can't be parameterized.
      * @param msg The resource id to read
      * @see org.crosswire.jsword.book.remote.RemoterException#RemoterException(String, Class)
+     * @deprecated Use constructor with a MsgBase instead
      */
-    public LucidException(String msg, boolean literal)
+    public LucidException(String msg)
     {
         this(new MsgBase(msg), null, null);
-        this.literal = literal;
+        this.deprecated = true;
     }
 
     /**
@@ -112,17 +112,16 @@ public class LucidException extends Exception
     {
         String out = super.getMessage();
 
-        if (literal || params == null)
+        if (deprecated || params == null)
         {
             return out;
         }
 
         try
         {
-            MessageFormat formatter = new MessageFormat(out);
-            return formatter.format(params);
+            return MessageFormat.format(out, params);
         }
-        catch (Exception ex)
+        catch (IllegalArgumentException ex)
         {
             log.warn("Format fail for '"+out+"'", ex);
             return "Error formatting message '"+out+"'";
@@ -135,6 +134,7 @@ public class LucidException extends Exception
      */
     public String getDetailedMessage()
     {
+        Throwable cause = getCause();
         if (cause == null)
         {
             return getMessage();
@@ -152,29 +152,15 @@ public class LucidException extends Exception
     }
 
     /**
-     * The nested Exception (if any)
-     * @return The Exception
-     */
-    public Throwable getCause()
-    {
-        return cause;
-    }
-
-    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(LucidException.class);
 
     /**
-     * Is the message to be included literally, or should we look it up as a
-     * resource.
+     * Is the message to be included literally (i.e. passed a string), or should we look it up as a
+     * resource (i.e. passed a MsgBase).
      */
-    private boolean literal = false;
-
-    /**
-     * An embedded exception
-     */
-    protected Throwable cause;
+    private boolean deprecated;
 
     /**
      * The array of parameters

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
@@ -55,6 +54,9 @@ import org.crosswire.jsword.util.Project;
  */
 public class Splash extends JWindow
 {
+    private static final String SPLASH_FONT = "SanSerif";
+    private static final String THUMB_COLOR = "ScrollBar.thumbHighlight";
+
     /**
      * Create a splash window
      */
@@ -63,7 +65,7 @@ public class Splash extends JWindow
         super(JOptionPane.getFrameForComponent(comp));
         this.wait = wait;
 
-        jbInit();
+        init();
 
         new Thread(new CloseRunnable()).start();
     }
@@ -71,27 +73,33 @@ public class Splash extends JWindow
     /**
      * Init the graphics
      */
-    private void jbInit()
+    private void init()
     {
-        URL url = getClass().getResource("/images/splash.png");
+        URL url = getClass().getResource(Msg.SPLASH_IMAGE.toString());
+        Icon icon = null;
         if (url != null)
         {
             icon = new ImageIcon(url);
         }
 
+        JLabel lbl_picture = new JLabel();
         lbl_picture.setBackground(Color.black);
         lbl_picture.setOpaque(true);
         lbl_picture.setIcon(icon);
         lbl_picture.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
+        JLabel lbl_info = new JLabel();
         lbl_info.setBackground(Color.black);
-        lbl_info.setFont(new Font("SansSerif", 1, 14));
-        lbl_info.setForeground(UIManager.getColor("ScrollBar.thumbHighlight"));
+        lbl_info.setFont(new Font(SPLASH_FONT, 1, 14));
+        lbl_info.setForeground(UIManager.getColor(THUMB_COLOR));
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        lbl_info.setText("Version "+Project.instance().getVersion());
+        Object [] msg = { Project.instance().getVersion() };
+        lbl_info.setText(Msg.VERSION_TITLE.toString(msg));
 
+        JPanel pnl_info = new JPanel();
+        JobsProgressBar pnl_jobs = new JobsProgressBar(false);
         pnl_info.setLayout(new BorderLayout(5, 0));
         pnl_info.setBackground(Color.black);
         pnl_info.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
@@ -153,9 +161,4 @@ public class Splash extends JWindow
     }
 
     protected final int wait;
-    private Icon icon;
-    private JPanel pnl_info = new JPanel();
-    private JLabel lbl_picture = new JLabel();
-    private JLabel lbl_info = new JLabel();
-    private JobsProgressBar pnl_jobs = new JobsProgressBar(false);
 }

@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Iterator;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.crosswire.common.config.swing.ConfigEditorFactory;
@@ -66,6 +68,42 @@ import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
  */
 public class DesktopActions implements ActionListener
 {
+    // Enumeration of all the keys to known actions
+    public static final String FILE = "File";
+    public static final String EDIT = "Edit";
+    public static final String VIEW = "View";
+    public static final String TOOLS = "Tools";
+    public static final String HELP = "Help";
+    public static final String NEW_WINDOW = "NewWindow";
+    public static final String OPEN = "Open";
+    public static final String CLOSE = "Close";
+    public static final String CLOSE_ALL = "CloseAll";
+    public static final String SAVE = "Save";
+    public static final String SAVE_AS = "SaveAs";
+    public static final String SAVE_ALL = "SaveAll";
+    public static final String EXIT = "Exit";
+    public static final String CUT = "Cut";
+    public static final String COPY = "Copy";
+    public static final String PASTE = "Paste";
+    public static final String TAB_MODE = "TabMode";
+    public static final String WINDOW_MODE = "WindowMode";
+    public static final String VIEW_GHTML = "ViewGHTML";
+    public static final String VIEW_HTML = "ViewHTML";
+    public static final String VIEW_OSIS = "ViewOSIS";
+    public static final String BLUR1 = "Blur1";
+    public static final String BLUR5 = "Blur5";
+    public static final String DELETE_SELECTED = "DeleteSelected";
+    public static final String BOOKS = "Books";
+    public static final String OPTIONS = "Options";
+    public static final String CONTENTS = "Contents";
+    public static final String ABOUT = "About";
+
+    // Enumeration of error strings used in this class
+    private static final String EMPTY_ACTION_ERROR = "Empty action: No Action Command Key";
+    private static final String UNKNOWN_ACTION_ERROR = "Unknown action : {0}";
+    private static final String UNEXPECTED_ERROR = "Stupid Programmer Error";
+    private static final String METHOD_PREFIX = "do";
+
     /**
      * Create the actions for the desktop
      * @param d the desktop for which these actions apply
@@ -96,32 +134,32 @@ public class DesktopActions implements ActionListener
         String action = e.getActionCommand();
         if (action == null || action.length() == 0)
         {
-            throw new LogicError("Empty action: No Action Command Key");
+            throw new LogicError(EMPTY_ACTION_ERROR);
         }
 
         // Instead of cascading if/then/else
         // use reflecton to do a direct lookup and call
         try
         {
-            Method doMethod = DesktopActions.class.getDeclaredMethod("do"+action, new Class[] { });
+            Method doMethod = DesktopActions.class.getDeclaredMethod(METHOD_PREFIX+action, new Class[] { });
             doMethod.invoke(this, null);
             log.info(action);
         }
         catch (NoSuchMethodException e1)
         {
-            log.error("Unknown action: " + action);
+            log.error(MessageFormat.format(UNKNOWN_ACTION_ERROR, new Object[] { action }));
         }
         catch (IllegalArgumentException e2)
         {
-            log.error("Stupid programmer error", e2);
+            log.error(UNEXPECTED_ERROR, e2);
         }
         catch (IllegalAccessException e3)
         {
-            log.error("Stupid programmer error", e3);
+            log.error(UNEXPECTED_ERROR, e3);
         }
         catch (InvocationTargetException e4)
         {
-            log.error("Stupid programmer error", e4);
+            log.error(UNEXPECTED_ERROR, e4);
         }
     }
 
@@ -131,6 +169,18 @@ public class DesktopActions implements ActionListener
     public Desktop getDesktop()
     {
         return desktop;
+    }
+
+    /**
+     * @return the Bible installer dialog
+     */
+    public SitesPane getSites()
+    {
+        if (sites == null)
+        {
+            sites = new SitesPane();
+        }
+        return sites;
     }
 
     /**
@@ -193,7 +243,7 @@ public class DesktopActions implements ActionListener
             BibleViewPane view = getDesktop().getSelectedBibleViewPane();
             if (!view.maySave())
             {
-                Reporter.informUser(getDesktop().getJFrame(), "No Passage to Save");
+                Reporter.informUser(getDesktop().getJFrame(), Msg.NO_PASSAGE);
                 return;
             }
 
@@ -215,7 +265,7 @@ public class DesktopActions implements ActionListener
             BibleViewPane view = getDesktop().getSelectedBibleViewPane();
             if (!view.maySave())
             {
-                Reporter.informUser(getDesktop().getJFrame(), "No Passage to Save");
+                Reporter.informUser(getDesktop().getJFrame(), Msg.NO_PASSAGE);
                 return;
             }
 
@@ -246,7 +296,7 @@ public class DesktopActions implements ActionListener
         
         if (!ok)
         {
-            Reporter.informUser(getDesktop().getJFrame(), "No Passage to Save");
+            Reporter.informUser(getDesktop().getJFrame(), Msg.NO_PASSAGE);
             return;
         }
 
@@ -279,7 +329,7 @@ public class DesktopActions implements ActionListener
      */
     protected void doCut()
     {
-        doNothing("Cut");        
+        doNothing(CUT);
     }
 
     /**
@@ -296,7 +346,7 @@ public class DesktopActions implements ActionListener
      */
     protected void doPaste()
     {
-        doNothing("Paste");        
+        doNothing(PASTE);
     }
 
     /**
@@ -328,9 +378,10 @@ public class DesktopActions implements ActionListener
             String osis = da.getOSISSource();
             Key ref = da.getKey();
 
+            Object [] msg = { Msg.GHTML.toString() };
             if (osis == null || osis.equals("") || ref == null)
             {
-                Reporter.informUser(getDesktop().getJFrame(), "No Generated HTML source to view.");
+                Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, msg);
                 return;
             }
 
@@ -338,7 +389,7 @@ public class DesktopActions implements ActionListener
             SAXEventProvider htmlsep = simplestyle.convert(osissep);
             String html = XMLUtil.writeToString(htmlsep);
             
-            TextViewPanel viewer = new TextViewPanel(html, "Generated source to " + ref.getName());
+            TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_MISSING.toString(msg));
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop().getJFrame());
         }
@@ -362,13 +413,14 @@ public class DesktopActions implements ActionListener
             String html = da.getHTMLSource();
             Key ref = da.getKey();
 
+            Object [] msg = { Msg.HTML.toString() };
             if (html == null || html.equals("") || ref == null)
             {
-                Reporter.informUser(getDesktop().getJFrame(), "No HTML source to view.");
+                Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, msg);
                 return;
             }
 
-            TextViewPanel viewer = new TextViewPanel(html, "HTML source to "+ref.getName());
+            TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_MISSING.toString(msg));
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop().getJFrame());
         }
@@ -389,13 +441,14 @@ public class DesktopActions implements ActionListener
             String html = da.getOSISSource();
             Key key = da.getKey();
 
+            Object [] msg = { Msg.OSIS.toString() };
             if (html == null || html.equals("") || key == null)
             {
-                Reporter.informUser(getDesktop().getJFrame(), "No OSIS source to view.");
+                Reporter.informUser(getDesktop().getJFrame(), Msg.SOURCE_MISSING, msg);
                 return;
             }
 
-            TextViewPanel viewer = new TextViewPanel(html, "OSIS source to "+key.getName());
+            TextViewPanel viewer = new TextViewPanel(html, Msg.SOURCE_FOUND.toString(msg));
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop().getJFrame());
         }
@@ -525,7 +578,8 @@ public class DesktopActions implements ActionListener
      */
     protected void doNothing(String action)
     {
-        log.warn(action + " is not implemented");        
+        Object[] msg = { getAction(action).getValue(Action.NAME) };
+        Reporter.informUser(getDesktop().getJFrame(), Msg.NOT_IMPLEMENTED, msg);
     }
 
     /**
@@ -557,4 +611,5 @@ public class DesktopActions implements ActionListener
      * The log stream
      */
     private static final Logger log = Logger.getLogger(DesktopActions.class);
+
 }

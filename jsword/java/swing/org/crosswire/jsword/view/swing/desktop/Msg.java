@@ -30,6 +30,50 @@ public class Msg extends MsgBase
 {
     static final Msg NO_HELP = new Msg("Currently on-line help is only available via the J-Sword website:\nhttp://www.crosswire.org/jsword");
 
+    // Strings used by Desktop
+    static final Msg UNKNOWN_PROTOCOL = new Msg("Unknown protocol {0}");
+    static final Msg BAD_PROTOCOL_URL = new Msg("Missing : in {0}");
+
+    // Strings for the preloading job
+    static final Msg PRELOAD_TITLE = new Msg("Display Pre-load");
+    static final Msg PRELOAD_SETUP = new Msg("Setup");
+    static final Msg PRELOAD_DATA = new Msg("Getting initial data");
+    static final Msg PRELOAD_PROVIDER = new Msg("Getting event provider");
+    static final Msg PRELOAD_STYLE = new Msg("Compiling stylesheet");
+
+    // Strings for the startup job
+    static final Msg STARTUP_TITLE = new Msg("Startup");
+    static final Msg STARTUP_CONFIG = new Msg("Setting-up config");
+    static final Msg STARTUP_LOAD_CONFIG = new Msg("Loading Configuration System");
+    static final Msg STARTUP_LOAD_SETTINGS = new Msg("Loading Stored Settings");
+    static final Msg STARTUP_GENERATE = new Msg("Generating Components");
+    static final Msg STARTUP_GENERAL_CONFIG = new Msg("General configuration");
+
+    // Strings for DesktopAction
+    static final Msg NOT_IMPLEMENTED = new Msg("{0} is not implemented");
+    static final Msg NO_PASSAGE = new Msg("No Passage to Save");
+    static final Msg SOURCE_MISSING = new Msg("No {0} source to view");
+    static final Msg GHTML = new Msg("Generated HTML");
+    static final Msg HTML = new Msg("HTML");
+    static final Msg OSIS = new Msg("OSIS");
+    static final Msg SOURCE_FOUND = new Msg("{0} source to {1}");
+
+    // Strings for AboutPane and Splash
+    // The splash image is of an English version of the application
+    static final Msg SPLASH_IMAGE = new Msg("/images/splash.png");
+    static final Msg VERSION_TITLE = new Msg("Version {0}");
+    static final Msg ABOUT_TITLE = new Msg("About {0}");
+    static final Msg TASK_TAB_TITLE = new Msg("Running Tasks");
+    static final Msg ERROR_TAB_TITLE = new Msg("Errors");
+    static final Msg SYSTEM_PROPS_TAB_TITLE = new Msg("System Properties");
+    static final Msg DEBUG_TAB_TITLE = new Msg("Debug");
+
+    // Strings for StatusBar
+    static final Msg STATUS_DEFAULT = new Msg("Ready ...        ");
+
+    // Strings for OptionsAction
+    static final Msg CONFIG_TITLE = new Msg("Desktop Options");
+
     /**
      * Initialise any resource bundles
      */

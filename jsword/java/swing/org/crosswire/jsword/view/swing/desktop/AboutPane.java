@@ -55,62 +55,46 @@ import org.crosswire.jsword.util.Project;
  */
 public class AboutPane
 {
+    private static final String SPLASH_FONT = "SanSerif";
+    
     /**
      * Basic constructor
      */
     public AboutPane(Desktop desktop)
     {
-        // Object creation that must be postponed
-        pnl_debug = new DebugPane(desktop);
-
-        jbInit();
+        jbInit(desktop);
     }
 
     /**
      * Build the GUI components
      */
-    private void jbInit()
+    private void jbInit(Desktop desktop)
     {
-        URL url = getClass().getResource("/images/splash.png");
+        URL url = getClass().getResource(Msg.SPLASH_IMAGE.toString());
+        Icon icon = null;
         if (url != null)
         {
             icon = new ImageIcon(url);
         }
 
+        JLabel lbl_picture = new JLabel();
         lbl_picture.setIcon(icon);
         lbl_picture.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         lbl_picture.setHorizontalAlignment(SwingConstants.CENTER);
         lbl_picture.setVerticalAlignment(SwingConstants.CENTER);
 
-        lbl_info.setFont(new Font("SansSerif", 1, 14));
+        JLabel lbl_info = new JLabel();
+        lbl_info.setFont(new Font(SPLASH_FONT, 1, 14));
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        lbl_info.setText("Version "+Project.instance().getVersion());
+        Object[] msg = { Project.instance().getVersion() };
+        lbl_info.setText(Msg.VERSION_TITLE.toString(msg));
 
-        pnl_splash.setLayout(new BorderLayout(5, 0));
-        pnl_splash.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        pnl_splash.add(lbl_picture, BorderLayout.CENTER);
-        pnl_splash.add(lbl_info, BorderLayout.SOUTH);
+        JTabbedPane tab_main = new JTabbedPane();
 
-        pnl_hshelf.setLayout(new BorderLayout());
-        pnl_hshelf.add(pnl_shelf, BorderLayout.NORTH);
-        pnl_hshelf.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        tbl_props.setModel(mdl_props);
-        scr_props.setPreferredSize(new Dimension(500, 300));
-        scr_props.getViewport().add(tbl_props);
-        pnl_props.setLayout(new BorderLayout());
-        pnl_props.add(scr_props, BorderLayout.CENTER);
-        pnl_props.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        tab_main.add(pnl_splash, Project.instance().getName());
-        tab_main.add(pnl_jobs, "Running Tasks");
-        tab_main.add(pnl_hshelf, "Errors");
-        tab_main.add(pnl_props, "System Properties");
-        //tab_main.add(pnl_logs, "Logs");
-        tab_main.add(pnl_debug, "Debug");
-
+        // TODO: Turn into an ActionFactory action
+        JButton btn_ok = new JButton();
         btn_ok.setText("OK");
         btn_ok.setMnemonic('O');
         btn_ok.addActionListener(new ActionListener()
@@ -121,12 +105,60 @@ public class AboutPane
             }
         });
 
+        JPanel pnl_buttons = new JPanel();
         pnl_buttons.add(btn_ok);
 
+        pnl_main = new JPanel();
         pnl_main.setLayout(new BorderLayout(5, 5));
         pnl_main.add(pnl_buttons, BorderLayout.SOUTH);
         pnl_main.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         pnl_main.add(tab_main, BorderLayout.CENTER);
+
+        // Create and add the splash tab
+        JPanel pnl_splash = new JPanel();
+        pnl_splash.setLayout(new BorderLayout(5, 0));
+        pnl_splash.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        pnl_splash.add(lbl_picture, BorderLayout.CENTER);
+        pnl_splash.add(lbl_info, BorderLayout.SOUTH);
+        tab_main.add(pnl_splash, Project.instance().getName());
+
+        if (advanced)
+        {
+            // create and add the Exception shelf
+            ExceptionShelf pnl_shelf = new ExceptionShelf();
+            JPanel pnl_hshelf = new JPanel();
+            pnl_hshelf.setLayout(new BorderLayout());
+            pnl_hshelf.add(pnl_shelf, BorderLayout.NORTH);
+            pnl_hshelf.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            tab_main.add(pnl_hshelf, Msg.ERROR_TAB_TITLE.toString());
+
+            // create and add the System Properties tab
+            JTable tbl_props = new JTable();
+            MapTableModel mdl_props = new MapTableModel(System.getProperties());
+            tbl_props.setModel(mdl_props);
+
+            JScrollPane scr_props = new JScrollPane();
+            scr_props.setPreferredSize(new Dimension(500, 300));
+            scr_props.getViewport().add(tbl_props);
+
+            JPanel pnl_props = new JPanel();
+            pnl_props.setLayout(new BorderLayout());
+            pnl_props.add(scr_props, BorderLayout.CENTER);
+            pnl_props.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            tab_main.add(pnl_props, Msg.SYSTEM_PROPS_TAB_TITLE.toString());
+
+            // create and add the Tasks tab
+            JobsViewPane pnl_jobs = new JobsViewPane();
+            tab_main.add(pnl_jobs, Msg.TASK_TAB_TITLE.toString());
+
+            if (debugging)
+            {
+                // create and add the Debug tab
+                //tab_main.add(pnl_logs, "Logs");
+                DebugPane pnl_debug = new DebugPane(desktop);
+                tab_main.add(pnl_debug, Msg.DEBUG_TAB_TITLE.toString());
+            }
+        }
     }
 
     /**
@@ -149,7 +181,8 @@ public class AboutPane
     {
         dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
         dlg_main.getContentPane().add(pnl_main);
-        dlg_main.setTitle("About "+Project.instance().getName());
+        Object[] msg = { Project.instance().getName() };
+        dlg_main.setTitle(Msg.ABOUT_TITLE.toString(msg));
         dlg_main.setModal(true);
         dlg_main.addWindowListener(new WindowAdapter()
         {
@@ -166,7 +199,7 @@ public class AboutPane
     /**
      * Is the debug tab visible?
      */
-    public static boolean isDebugging()
+    public synchronized static boolean isDebugging()
     {
         return debugging;
     }
@@ -179,24 +212,24 @@ public class AboutPane
         AboutPane.debugging = debugging;
     }
 
-    private static boolean debugging = false;
-    private Icon icon;
-    private JLabel lbl_picture = new JLabel();
-    private JLabel lbl_info = new JLabel();
-    private JPanel pnl_splash = new JPanel();
-    private MapTableModel mdl_props = new MapTableModel(System.getProperties());
-    private JScrollPane scr_props = new JScrollPane();
-    private JPanel pnl_props = new JPanel();
-    private JTable tbl_props = new JTable();
-    private ExceptionShelf pnl_shelf = new ExceptionShelf();
-    private JPanel pnl_hshelf = new JPanel();
-    private JobsViewPane pnl_jobs = new JobsViewPane();
-    private JTabbedPane tab_main = new JTabbedPane();
-    //private JPanel pnl_logs = new JPanel();
-    private DebugPane pnl_debug = null;
+    /**
+     * @return Returns whether the window should show an advanced view.
+     */
+    public static synchronized boolean isAdvanced()
+    {
+        return advanced;
+    }
 
+    /**
+     * @param advanced Turn on an advanced view of the window.
+     */
+    public static synchronized void setAdvanced(boolean advanced)
+    {
+        AboutPane.advanced = advanced;
+    }
+
+    private static boolean advanced = true; // TODO: Add to config.xml
+    private static boolean debugging;
     private JDialog dlg_main;
-    private JPanel pnl_main = new JPanel();
-    private JPanel pnl_buttons = new JPanel();
-    private JButton btn_ok = new JButton();
+    private JPanel pnl_main;
 }

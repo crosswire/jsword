@@ -1,13 +1,12 @@
 package org.crosswire.common.util;
 
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 /**
  * EventExceptions are generally used for passing problems through
  * the event system which does not allow checked exceptions through.
  *
- * <p>So EventException is a LucidException in all but inheritance -
+ * <p>So LucidRuntimeException is a LucidException in all but inheritance -
  * LucidException inherits from Exception and so is checked, where
  * EventEception inherits from RuntimeException and so is not
  * checked. In general you would create a subclass of LucidException
@@ -36,54 +35,49 @@ import java.util.ResourceBundle;
  * @version $Id$
  * @see LucidException
 */
-public class EventException extends RuntimeException
+public class LucidRuntimeException extends RuntimeException
 {
     /**
-     * All LucidExceptions are constructed with references to resources in
+     * All LucidRuntimeException are constructed with references to resources in
      * an I18N properties file.
      * @param msg The resource id to read
      */
-    public EventException(String msg)
+    public LucidRuntimeException(MsgBase msg)
     {
-        super(msg);
+        this(msg, null, null);
     }
 
     /**
-     * All LucidExceptions are constructed with references to resources in
+     * All LucidRuntimeException are constructed with references to resources in
      * an I18N properties file.
      * @param msg The resource id to read
      */
-    public EventException(String msg, Throwable cause)
+    public LucidRuntimeException(MsgBase msg, Throwable cause)
     {
-        super(msg);
-
-        this.cause = cause;
+        this(msg, cause, null);
     }
 
     /**
-     * All LucidExceptions are constructed with references to resources in
+     * All LucidRuntimeException are constructed with references to resources in
      * an I18N properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public EventException(String msg, Object[] params)
+    public LucidRuntimeException(MsgBase msg, Object[] params)
     {
-        super(msg);
-
-        this.params = params;
+        this(msg, null, params);
     }
 
     /**
-     * All LucidExceptions are constructed with references to resources in
+     * All LucidRuntimeException are constructed with references to resources in
      * an I18N properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public EventException(String msg, Throwable cause, Object[] params)
+    public LucidRuntimeException(MsgBase msg, Throwable cause, Object[] params)
     {
-        super(msg);
+        super(msg.toString(), cause);
 
-        this.cause = cause;
         this.params = params;
     }
 
@@ -93,50 +87,31 @@ public class EventException extends RuntimeException
      */
     public String getMessage()
     {
-        String id = super.getMessage();
-        String msg;
+        String out = super.getMessage();
 
-        try
+        if (params == null)
         {
-            msg = res.getString(id);
-        }
-        catch (Exception ex)
-        {
-            return "Error fetching resource for '"+id+"'";
+            return out;
         }
 
         try
         {
-            MessageFormat formatter = new MessageFormat(msg);
-            return formatter.format(params);
+            return MessageFormat.format(out, params);
         }
-        catch (Exception ex)
+        catch (IllegalArgumentException ex)
         {
-            return "Error formatting message '"+msg+"'";
+            log.warn("Format fail for '"+out+"'", ex);
+            return "Error formatting message '"+out+"'";
         }
-    }
+     }
 
     /**
-     * The nested Exception (is any)
-     * @return The Exception
+     * The log stream
      */
-    public Throwable getException()
-    {
-        return cause;
-    }
-
-    /**
-     * An embedded exception
-     */
-    protected Throwable cause = null;
+    private static final Logger log = Logger.getLogger(LucidRuntimeException.class);
 
     /**
      * The array of parameters
      */
     protected Object[] params = null;
-
-    /**
-     * The resource hash
-     */
-    protected static final ResourceBundle res = ResourceBundle.getBundle("Exception");
 }

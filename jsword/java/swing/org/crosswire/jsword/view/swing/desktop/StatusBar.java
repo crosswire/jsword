@@ -66,7 +66,7 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
     private void jbInit()
     {
         lbl_message.setBorder(BorderFactory.createEtchedBorder());
-        lbl_message.setText(DEFAULT);
+        lbl_message.setText(Msg.STATUS_DEFAULT.toString());
 
         pnl_progr.setBorder(BorderFactory.createEtchedBorder());
         Font font = pnl_progr.getFont();
@@ -103,7 +103,7 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
         }
         else if (type == HyperlinkEvent.EventType.EXITED)
         {
-            lbl_message.setText(DEFAULT);
+            lbl_message.setText(Msg.STATUS_DEFAULT.toString());
         }
     }
 
@@ -137,7 +137,7 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
      */
     public void mouseExited(MouseEvent ev)
     {
-        lbl_message.setText(DEFAULT);
+        lbl_message.setText(Msg.STATUS_DEFAULT.toString());
     }
 
     /**
@@ -166,11 +166,6 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
     public void mouseReleased(MouseEvent ev)
     {
     }
-
-    /**
-     * The default text
-     */
-    private static final String DEFAULT = "Ready ...        ";
 
     /**
      * Where the progress bars go

@@ -62,6 +62,9 @@ public class Reporter
      * Called to fire a commandEntered event to all the Listeners
      * @param source The cause of the problem, a Component if possible.
      * @param prob The Exception that was thrown
+     * TODO(joe): think about this - isn't this method useful?
+     * deprecated use either informUser(Object source, LucidException prob)
+     * or informUser(Object source, LucidRuntimeException prob)
      */
     public static void informUser(Object source, Throwable prob)
     {
@@ -71,6 +74,56 @@ public class Reporter
         templog.warn(prob.getMessage(), prob);
 
         fireCapture(new ReporterEvent(source, prob));
+    }
+
+    /**
+     * Something has gone wrong. We need to tell the user or someone, but
+     * we can carry on. In general having caught an exception and passed
+     * it to Reporter.informUser(), you should not throw another Exception.
+     * Called to fire a commandEntered event to all the Listeners
+     * @param source The cause of the problem, a Component if possible.
+     * @param prob The Exception that was thrown
+     */
+    public static void informUser(Object source, LucidException prob)
+    {
+        Class cat = (source != null) ? source.getClass() : Reporter.class;
+        Logger templog = Logger.getLogger(cat);
+
+        templog.warn(prob.getMessage(), prob);
+
+        fireCapture(new ReporterEvent(source, prob));
+    }
+
+    /**
+     * Something has gone wrong. We need to tell the user or someone, but
+     * we can carry on. In general having caught an exception and passed
+     * it to Reporter.informUser(), you should not throw another Exception.
+     * Called to fire a commandEntered event to all the Listeners
+     * @param source The cause of the problem, a Component if possible.
+     * @param prob The Exception that was thrown
+     */
+    public static void informUser(Object source, LucidRuntimeException prob)
+    {
+        Class cat = (source != null) ? source.getClass() : Reporter.class;
+        Logger templog = Logger.getLogger(cat);
+
+        templog.warn(prob.getMessage(), prob);
+
+        fireCapture(new ReporterEvent(source, prob));
+    }
+
+    /**
+     * Something has happened. We need to tell the user or someone.
+     *
+     * @param source The cause of the message, a Component if possible.
+     * @param message The message to pass to the user
+     * @deprecated Use informUser(Object source, MsgBase message) instead
+     */
+    public static void informUser(Object source, String message)
+    {
+        log.debug(message);
+
+        fireCapture(new ReporterEvent(source, message));
     }
 
     /**
@@ -84,11 +137,32 @@ public class Reporter
      * @param source The cause of the message, a Component if possible.
      * @param message The message to pass to the user
      */
-    public static void informUser(Object source, String message)
+    public static void informUser(Object source, MsgBase message)
     {
-        log.debug(message);
+        String msg = message.toString();
+        log.debug(msg);
 
-        fireCapture(new ReporterEvent(source, message));
+        fireCapture(new ReporterEvent(source, msg));
+    }
+
+    /**
+     * Something has happened. We need to tell the user or someone.
+     *
+     * <p>Maybe we should have an extra parameter (or even several
+     * versions of this method like log*()) that describes the severity
+     * of the message. A Sw*ng listener could use this to decide the
+     * icon in the OptionPane for example.</p>
+     *
+     * @param source The cause of the message, a Component if possible.
+     * @param message The message to pass to the user
+     * @param params The parameters to the message
+     */
+    public static void informUser(Object source, MsgBase message, Object [] params)
+    {
+        String msg = message.toString(params);
+        log.debug(msg);
+
+        fireCapture(new ReporterEvent(source, msg));
     }
 
     /**
