@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.io.PipedReader;
@@ -55,25 +54,7 @@ public class StringUtilTest extends TestCase
         out.println("f g h i j"); //$NON-NLS-1$
         out.close();
         pout.close();
-        assertEquals(StringUtil.read(in), "a b c d e"+StringUtil.NEWLINE+"f g h i j"+StringUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    public void testSetLength() throws Exception
-    {
-        assertEquals(StringUtil.setLengthRightPad("12345", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.setLengthRightPad("1234567890", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.setLengthRightPad("123", 5), "123  "); //$NON-NLS-1$ //$NON-NLS-2$
-
-        assertEquals(StringUtil.setLengthLeftPad("12345", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.setLengthLeftPad("1234567890", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.setLengthLeftPad("123", 5), "  123"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    public void testShorten() throws Exception
-    {
-        assertEquals(StringUtil.shorten("12345", 5), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.shorten("1234567890", 5), "12..."); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.shorten("123", 5), "123"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.read(in), "a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testGetInitials() throws Exception
@@ -81,13 +62,6 @@ public class StringUtilTest extends TestCase
         assertEquals(StringUtil.getInitials("Church of England"), "CoE"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.getInitials(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    public void testGetCapitals() throws Exception
-    {
-        assertEquals(StringUtil.getCapitals("Church of England"), "CE"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.getCapitals("Java DataBase Connectivity"), "JDBC"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.getCapitals(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testCreateTitle() throws Exception
@@ -98,13 +72,5 @@ public class StringUtilTest extends TestCase
         assertEquals(StringUtil.createTitle("One_Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.createTitle("One _Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.createTitle("one  _Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    public void testCreateJavaName() throws Exception
-    {
-        assertEquals(StringUtil.createJavaName("one  _Two"), "OneTwo"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createJavaName("one_two"), "OneTwo"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createJavaName("onetwo"), "Onetwo"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createJavaName("ONetwo"), "ONetwo"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }
