@@ -34,6 +34,7 @@
     <p>About JSword</p>
     <ul>
       <li><a href="index.jsp">Home</a></li>
+      <li><a href="faq.jsp">FAQ</a></li>
       <li><a href="news.jsp">News</a></li>
     </ul>
     <p>Getting&nbsp;JSword</p>
@@ -49,6 +50,7 @@
       <li><a href="intro.jsp">Intro</a></li>
       <li><a href="design.jsp">Design</a></li>
       <li><a href="xml.jsp">XML</a></li>
+      <li><a href="config.jsp">Config</a></li>
       <li><a href="change.jsp">Changes</a></li>
       <li><a href="api/index.html">JavaDoc</a></li>
       <li><a href="java2html/index.html">Java&nbsp;Source</a></li>

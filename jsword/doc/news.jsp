@@ -14,6 +14,12 @@
 <%@ include file="header.jsp" %>
 
             <h1>News</h1>
+            <h3>15 Oct 2002</h3>
+            <p>Sword module compatibility hits CVS. The number of Bible versions available 
+              to Sword users goes up something like 10-fold overnight.</p>
+            <h3>13 Oct 2002</h3>
+            <p>Bug Fixes! The WebStart version of JSword should now work most places. 
+              It is known to work on Windows, Linux and OS-X.</p>
             <h3>11 Oct 2002</h3>
             <p>Added a new JNLP section. JSword should now work over WebStart. For 
               the time being the download comes with a complete Bible version so it 

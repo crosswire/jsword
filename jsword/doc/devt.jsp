@@ -42,6 +42,11 @@
                   - there are a few sections that reflect where we will be given a 
                   bit more re-factoring. </td>
               </tr>
+              <tr>
+                <td><a href="config.jsp">Config</a></td>
+                <td>The config system is an almost totally separate library that could 
+                  be used in other projects. This is a high level over-view.</td>
+              </tr>
               <tr> 
                 <td><a href="change.jsp">Changes</a></td>
                 <td> A list of the changes that have taken place in each of the released 

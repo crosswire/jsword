@@ -106,11 +106,6 @@ class link200 {
 */
 class reference {
 }/**
-@__ref <oiref:java#Class#org.crosswire.common.config.ChoiceException:oiref><oihard>
-@__modelType reference 
-*/
-class reference23 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.common.config.ChoiceFactory:oiref><oihard>
 @__modelType reference 
 */
@@ -120,11 +115,6 @@ class reference24 {
 @__modelType reference 
 */
 class reference25 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.common.config.OptionsChoice:oiref><oihard>
-@__modelType reference 
-*/
-class reference26 {
 }/**
 @__ref <oiref:java#Class#org.crosswire.common.config.FileChoice:oiref><oihard>
 @__modelType reference 
@@ -155,6 +145,31 @@ class reference31 {
 @__modelType reference 
 */
 class reference32 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.IntOptionsChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference1 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.AbstractChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference2 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.ReflectedChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference3 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.StringOptionsChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference4 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.MultipleChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference5 {
 }}/**
 @__tags
 @shapeType ClassDiagram 
@@ -165,33 +180,51 @@ class __tags {
 */
 class __options {
 }/**
-@__positions <oigroup:<oiref:java#Extends#org.crosswire.common.config.FontChoice#org.crosswire.common.config.Choice:oiref>=648,617,648,550:oigroup>
+@__positions <oigroup:<oiref:java#Extends#org.crosswire.common.config.DirectoryChoice#org.crosswire.common.config.Choice:oiref>=602,918,602,550:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.StringChoice#org.crosswire.common.config.Choice:oiref>=913,918,671,550:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.Choice:oiref>=522,24,219,526,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.ClassChoice:oiref>=811,765,219,109,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.FontChoice#org.crosswire.common.config.ReflectedChoice:oiref>=666,617,814,582:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.common.config.ReflectedChoice#org.crosswire.common.config.Choice:oiref>=742,182,707,182:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.PathChoice:oiref>=326,918,219,100,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.PathChoice#org.crosswire.common.config.ReflectedChoice:oiref>=435,918,790,582:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.DirectoryChoice:oiref>=565,918,219,100,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.common.config.ConfigEvent:oiref>=1023,34,219,146,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.PathChoice:oiref>=326,918,219,119,1:oigroup>
-<oigroup:MemberLink#<oiref:java#Member#org.crosswire.common.config.ConfigEvent#model:oiref>=1023,107,741,107:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.Config:oiref>=53,22,219,621,1:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.common.config.PathChoice#org.crosswire.common.config.Choice:oiref>=435,918,578,550:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.common.config.FileChoice#org.crosswire.common.config.Choice:oiref>=436,763,555,550:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.NumberChoice#org.crosswire.common.config.ReflectedChoice:oiref>=936,617,936,582:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.FontChoice#org.crosswire.common.config.Choice:oiref>=648,617,648,550:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.ChoiceFactory:oiref>=294,27,203,109,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.IntOptionsChoice:oiref>=282,555,219,147,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.common.config.ConfigListener:oiref>=1036,200,203,118,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.NumberChoice:oiref>=796,617,219,119,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.OptionsChoice#org.crosswire.common.config.Choice:oiref>=427,617,536,550:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.FontChoice:oiref>=557,617,219,119,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.StringChoice:oiref>=804,918,219,119,1:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.common.config.ClassChoice#org.crosswire.common.config.Choice:oiref>=920,765,694,550:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.DirectoryChoice:oiref>=565,918,219,119,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.OptionsChoice:oiref>=318,617,219,119,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.ClassChoice:oiref>=811,765,219,128,1:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.common.config.NumberChoice#org.crosswire.common.config.Choice:oiref>=905,617,717,550:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.BooleanChoice:oiref>=566,763,219,119,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.ChoiceException:oiref>=1084,359,203,137,1:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.common.config.DirectoryChoice#org.crosswire.common.config.Choice:oiref>=602,918,602,550:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.ChoiceFactory:oiref>=294,27,203,71,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.ReflectedChoice:oiref>=742,75,219,507,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.Config:oiref>=53,22,219,583,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.FileChoice#org.crosswire.common.config.ReflectedChoice:oiref>=436,763,766,582:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.common.config.ConfigEvent#model:oiref>=1023,107,707,107:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.StringChoice#org.crosswire.common.config.ReflectedChoice:oiref>=886,918,886,582:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.AbstractChoice:oiref>=289,302,184,157,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.PathChoice#org.crosswire.common.config.Choice:oiref>=435,918,578,550:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref>=1278,36,156,414,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.BooleanChoice#org.crosswire.common.config.Choice:oiref>=625,763,625,550:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.StringChoice:oiref>=804,918,219,100,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.BooleanChoice#org.crosswire.common.config.ReflectedChoice:oiref>=675,763,838,582:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.common.config.AbstractChoice#org.crosswire.common.config.Choice:oiref>=473,350,522,350:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.DirectoryChoice#org.crosswire.common.config.ReflectedChoice:oiref>=674,918,862,582:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.FileChoice#org.crosswire.common.config.Choice:oiref>=436,763,555,550:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.BooleanChoice:oiref>=566,763,219,100,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.ClassChoice#org.crosswire.common.config.ReflectedChoice:oiref>=911,765,911,582:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.MultipleChoice:oiref>=484,437,134,80,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.common.config.IntOptionsChoice#org.crosswire.common.config.MultipleChoice:oiref>=391,555,551,517:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.FontChoice:oiref>=557,617,219,100,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.ClassChoice#org.crosswire.common.config.Choice:oiref>=920,765,694,550:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.NumberChoice#org.crosswire.common.config.Choice:oiref>=905,617,717,550:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.IntOptionsChoice#org.crosswire.common.config.ReflectedChoice:oiref>=501,568,742,568:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.common.config.StartupException:oiref>=1085,530,203,137,1:oigroup>
-<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref>=1278,36,144,243,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.common.config.FileChoice:oiref>=327,763,219,119,1:oigroup> 
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.MultipleChoice#org.crosswire.common.config.Choice:oiref>=570,437,570,398:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.Choice:oiref>=522,24,185,374,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.FileChoice:oiref>=327,763,219,100,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.NumberChoice:oiref>=796,617,219,100,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.common.config.StringOptionsChoice:oiref>=292,155,219,128,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.common.config.StringOptionsChoice#org.crosswire.common.config.MultipleChoice:oiref>=497,283,497,437:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.common.config.StringOptionsChoice#org.crosswire.common.config.ReflectedChoice:oiref>=511,232,742,232:oigroup>
 */
 class __positions {
 }
