@@ -120,6 +120,8 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                 URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
                 Job job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
 
+                yield();
+
                 try
                 {
                     job.setProgress(Msg.JOB_INIT.toString());
@@ -144,7 +146,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                     sbmd.save(configurl);
 
                     SwordBookDriver.registerNewBook(sbmd, dldir);
-                    
+
                     // inform the user that we are done
                     Reporter.informUser(this, Msg.INSTALL_DONE, sbmd.getName());
                 }
@@ -366,6 +368,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                 OutputStream out = NetUtil.getOutputStream(child);
 
                 ftp.retrieveFile(name, out);
+                Thread.yield();
 
                 int reply = ftp.getReplyCode();
                 if (!FTPReply.isPositiveCompletion(reply))
@@ -392,6 +395,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
         // First connect
         ftp.connect(site);
+        Thread.yield();
 
         log.info(ftp.getReplyString());
         int reply = ftp.getReplyCode();
@@ -403,6 +407,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
         // Authenticate
         ftp.login(user, password);
+        Thread.yield();
 
         log.info(ftp.getReplyString());
         reply = ftp.getReplyCode();
@@ -414,6 +419,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
         // Change directory
         ftp.changeWorkingDirectory(dir);
+        Thread.yield();
 
         log.info(ftp.getReplyString());
         reply = ftp.getReplyCode();
@@ -424,6 +430,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         }
 
         ftp.setFileType(FTP.BINARY_FILE_TYPE);
+        Thread.yield();
     }
 
     /**
