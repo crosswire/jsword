@@ -171,7 +171,7 @@ public interface BookMetaData extends Comparable
      * Arabic and Hebrew in their propper orientation.
      * @return true if the orientation for the dominate language is LeftToRight.
      */
-    
+
     public boolean isLeftToRight();
 
     /**

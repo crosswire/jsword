@@ -64,7 +64,7 @@ public abstract class ModuleType implements Serializable
         {
             return getCompressedBackend(sbmd, path);
         }
-        
+
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return isCompressedBackendSupported(sbmd);

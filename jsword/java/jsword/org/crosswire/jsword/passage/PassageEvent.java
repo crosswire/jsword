@@ -6,7 +6,7 @@ import java.util.EventObject;
  * Defines an event that encapsulates changes to a Passage. For many
  * operations on a Passage, calculating the extent of the changes is
  * hard. In these cases we default the range to Gen 1:1-Rev 22:21
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -28,7 +28,7 @@ import java.util.EventObject;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PassageEvent extends EventObject 
+public class PassageEvent extends EventObject
 {
     /**
      * Constructs a PassageEvent object.

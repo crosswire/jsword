@@ -457,12 +457,12 @@ public class RangedPassage extends AbstractPassage
             {
                 next = (VerseRange) real.next();
             }
-            
+
             if (next == null)
             {
                 throw new NoSuchElementException();
             }
-            
+
             // So we know what is broadly next, however the range might need
             // splitting according to restrict
             if (restrict.isSameScope(next.start, next.end))

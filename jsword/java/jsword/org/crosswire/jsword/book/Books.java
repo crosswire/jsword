@@ -278,7 +278,7 @@ public class Books implements BookList
                 matches.add(driver);
             }
         }
-        
+
         return (BookDriver[]) matches.toArray(new BookDriver[matches.size()]);
     }
 
@@ -306,7 +306,7 @@ public class Books implements BookList
                 i++;
             }
         }
-        
+
         BookDriver[] reply = new BookDriver[i];
 
         i = 0;

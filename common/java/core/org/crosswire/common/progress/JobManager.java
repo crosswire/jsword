@@ -139,7 +139,7 @@ public class JobManager
             listeners = temp;
         }
     }
-    
+
     /**
      * Accessor for the currently known jobs
      */

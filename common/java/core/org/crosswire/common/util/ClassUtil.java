@@ -158,7 +158,7 @@ public class ClassUtil
                     log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
                 }
             }
-    
+
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             return (Class[]) matches.toArray(new Class[0]);
         }
@@ -183,7 +183,7 @@ public class ClassUtil
     public static Map getImplementorsMap(Class clazz)
     {
         Map matches = new HashMap();
-    
+
         try
         {
             Properties props = ResourceUtil.getProperties(clazz);
@@ -209,14 +209,14 @@ public class ClassUtil
                     log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
                 }
             }
-    
+
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (Exception ex)
         {
             log.error("Failed to get any classes.", ex); //$NON-NLS-1$
         }
-    
+
         return matches;
     }
 
@@ -237,13 +237,13 @@ public class ClassUtil
     {
         Properties props = ResourceUtil.getProperties(clazz);
         String name = props.getProperty(DEFAULT);
-    
+
         Class impl = Class.forName(name);
         if (!clazz.isAssignableFrom(impl))
         {
             throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] { impl.getName(), clazz.getName() }));
         }
-    
+
         return impl;
     }
 

@@ -371,7 +371,7 @@ public class ConfigEntry extends Enum
      * single value string, unknown use
      */
     public static final ConfigEntry VERSION = new ConfigEntry("Version"); //$NON-NLS-1$
-    
+
     /**
      * Find a ConfigEntry for a given name.
      */
@@ -379,7 +379,7 @@ public class ConfigEntry extends Enum
     {
         return (ConfigEntry) Enum.getEnum(ConfigEntry.class, name);
     }
-    
+
     /**
      * Simple ctor
      */

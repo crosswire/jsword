@@ -47,7 +47,7 @@ public class Msg extends MsgBase
     static final Msg BOOKS_DECODE = new Msg("BibleInfo.Decode"); //$NON-NLS-1$
     static final Msg BOOKS_CHAPTER = new Msg("BibleInfo.Chapter"); //$NON-NLS-1$
     static final Msg BOOKS_VERSE = new Msg("BibleInfo.Verse"); //$NON-NLS-1$
-    
+
     static final Msg RANGE_BLURBOOK = new Msg("VerseRange.BlurBook"); //$NON-NLS-1$
     static final Msg RANGE_BLURNONE = new Msg("VerseRange.BlurNone"); //$NON-NLS-1$
     static final Msg RANGE_HICOUNT = new Msg("VerseRange.HiCount"); //$NON-NLS-1$

@@ -7,7 +7,7 @@ import org.jdom.Element;
 
 /**
  * Handle Footnotes: FR and Fr.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -50,7 +50,7 @@ public class HeaderTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         if ("Ts".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
@@ -61,7 +61,7 @@ public class HeaderTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         return null;
-    }        
+    }
 }

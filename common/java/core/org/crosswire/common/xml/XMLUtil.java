@@ -136,7 +136,7 @@ public class XMLUtil
                     String entity = working.substring(amp, i + 1);
                     String replace = guessEntity(entity);
                     //DataPolice.report("replacing entity: '" + entity + "' with: '" + replace + "'");
-                    
+
                     working = working.substring(0, amp) + replace + working.substring(i + 1);
                     break singleEntity;
                 }
@@ -232,7 +232,7 @@ public class XMLUtil
 
         return ""; //$NON-NLS-1$
     }
-    
+
     /**
      * XML parse failed, so we can try getting rid of all the tags and having
      * another go. We define a tag to start at a &lt; and end at the end of the
@@ -275,7 +275,7 @@ public class XMLUtil
                     i--;
                     break singletag;
                 }
-                
+
                 char c = working.charAt(i);
 
                 // normal end of tag
@@ -312,7 +312,7 @@ public class XMLUtil
             //DataPolice.report("disguarding tag: " + working.substring(lt, i + 1));
             working = working.substring(0, lt) + working.substring(i + 1);
         }
-        
+
         return working;
     }
 

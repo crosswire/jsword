@@ -7,7 +7,7 @@ import org.jdom.Element;
 
 /**
  * Handle Footnotes: FO and Fo.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -50,7 +50,7 @@ public class OTQuoteTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         if ("Fo".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
@@ -61,7 +61,7 @@ public class OTQuoteTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         return null;
-    }        
+    }
 }

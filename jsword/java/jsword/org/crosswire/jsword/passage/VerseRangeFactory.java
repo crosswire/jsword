@@ -36,7 +36,7 @@ public final class VerseRangeFactory
     private VerseRangeFactory()
     {
     }
-    
+
       /**
       * Construct a VerseRange from a human readable string. For example
       * "Gen 1:1-3" in case the user does not want to have their typing

@@ -1,15 +1,10 @@
 package org.crosswire.common.swing;
 
-import java.awt.Color;
-import java.lang.reflect.Method;
-
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import org.crosswire.common.util.Logger;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 /**
  * LookAndFeelUtil declares the Choices and actions
@@ -53,18 +48,22 @@ public class LookAndFeelUtil
      */
     public static Class getLookAndFeel()
     {
-        return current;
+        if (currentLAF == null)
+        {
+            return defaultLAF;
+        }
+        return currentLAF;
     }
 
     /**
-     * The Options customization
+     * Set the look and feel to a new class.
      */
-    public static void setLookAndFeel(Class new_class) throws InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
+    public static void setLookAndFeel(Class newLaFClass) throws InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
     {
-        LookAndFeel laf = (LookAndFeel) new_class.newInstance();
+        LookAndFeel laf = (LookAndFeel) newLaFClass.newInstance();
 
-        // new_class is null if the user enters a bogus value
-        if (current != null && !new_class.equals(current))
+        // newLaFClass is null if the user enters a bogus value
+        if (currentLAF != null && !currentLAF.equals(newLaFClass))
         {
             JOptionPane.showMessageDialog(null, Msg.PLAF_CHANGE);
         }
@@ -73,100 +72,32 @@ public class LookAndFeelUtil
             UIManager.setLookAndFeel(laf);
         }
 
-        current = new_class;
+        currentLAF = newLaFClass;
     }
 
     /**
-     * Hack the windows look and feel to make the fonts more readable on
-     * bigger screens.
+     * The current PLAF
      */
-    public static void tweakLookAndFeel()
-    {
-        LookAndFeel currentlnf = UIManager.getLookAndFeel();
-        if (currentlnf.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel")) //$NON-NLS-1$
-        {
-            UIDefaults defaults = UIManager.getDefaults();
-
-            Color panebg = defaults.getColor("Panel.background"); //$NON-NLS-1$
-            defaults.put("SplitPane.darkShadow", panebg); //$NON-NLS-1$
-            defaults.put("SplitPane.highlight", panebg); //$NON-NLS-1$
-            defaults.put("SplitPane.shadow", panebg); //$NON-NLS-1$
-
-            /*
-            Font menufont = defaults.getFont("Menu.font"); //$NON-NLS-1$
-
-            defaults.put("ProgressBar.font", menufont); //$NON-NLS-1$
-            defaults.put("ToggleButton.font", menufont); //$NON-NLS-1$
-            defaults.put("Panel.font", menufont); //$NON-NLS-1$
-            defaults.put("TableHeader.font", menufont); //$NON-NLS-1$
-            defaults.put("TextField.font", menufont); //$NON-NLS-1$
-            defaults.put("Button.font", menufont); //$NON-NLS-1$
-            defaults.put("Label.font", menufont); //$NON-NLS-1$
-            defaults.put("ScrollPane.font", menufont); //$NON-NLS-1$
-            defaults.put("List.font", menufont); //$NON-NLS-1$
-            defaults.put("EditorPane.font", menufont); //$NON-NLS-1$
-            defaults.put("Table.font", menufont); //$NON-NLS-1$
-            defaults.put("TabbedPane.font", menufont); //$NON-NLS-1$
-            defaults.put("RadioButton.font", menufont); //$NON-NLS-1$
-            defaults.put("TextPane.font", menufont); //$NON-NLS-1$
-            defaults.put("TitledBorder.font", menufont); //$NON-NLS-1$
-            defaults.put("ComboBox.font", menufont); //$NON-NLS-1$
-            defaults.put("CheckBox.font", menufont); //$NON-NLS-1$
-            defaults.put("Tree.font", menufont); //$NON-NLS-1$
-            defaults.put("Viewport.font", menufont); //$NON-NLS-1$
-            // */
-        }
-    }
+    private static Class currentLAF;
 
     /**
-     * The current PLAF (and the default value)
+     * The default PLAF (and the default value)
      */
-    private static Class current;
+    private static Class defaultLAF;
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(LookAndFeelUtil.class);
-
-    /**
-     * Setup the defaults Hashtable
+     * Setup the default PLAF
      */
     static
     {
         try
         {
-            System.setProperty("winlaf.forceTahoma", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-            Class clazz = Class.forName("net.java.plaf.LookAndFeelPatchManager"); //$NON-NLS-1$
-            Method init = clazz.getMethod("initialize", new Class[0]); //$NON-NLS-1$
-            init.invoke(null, new Object[0]);
-
-            log.debug("installed Windows LookAndFeelPatchManager"); //$NON-NLS-1$
+            defaultLAF = Class.forName(UIManager.getSystemLookAndFeelClassName());
         }
-        catch (Exception ex)
+        catch (ClassNotFoundException e)
         {
-            log.warn("Failed to install windows laf tweak tool: " + ex); //$NON-NLS-1$
+            assert false;
+            defaultLAF = MetalLookAndFeel.class;
         }
-
-        // try to set the default look and feel to the system default
-        try
-        {
-            String lafClassName = UIManager.getSystemLookAndFeelClassName();
-            current = Class.forName(lafClassName);
-            UIManager.setLookAndFeel(lafClassName);
-        }
-        catch (Exception ex)
-        {
-            log.warn("Failed to initialise system default LAF", ex); //$NON-NLS-1$
-            current = javax.swing.plaf.metal.MetalLookAndFeel.class;
-        }
- 
-        /*
-        Class[] impls = Project.resource().getImplementors(LookAndFeel.class);
-        for (int i = 0; i < impls.length; i++)
-        {
-            LookAndFeel lnf = (LookAndFeel) impls[i].newInstance();
-            defaults.put(lnf.getName(), impls[i].getName());
-        }
-        */
     }
 }

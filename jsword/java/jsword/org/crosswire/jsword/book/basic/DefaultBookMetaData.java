@@ -205,7 +205,7 @@ public class DefaultBookMetaData implements BookMetaData
     {
         return map;
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getFullName()
      */
@@ -470,7 +470,7 @@ public class DefaultBookMetaData implements BookMetaData
         {
             return false;
         }
-        
+
         // We might consider checking for equality against all BookMetaDatas?
         // However currently we dont.
 

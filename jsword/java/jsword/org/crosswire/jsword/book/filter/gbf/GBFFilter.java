@@ -60,7 +60,7 @@ public class GBFFilter implements Filter
             Tag tag = (Tag) taglist.remove(0);
             tag.updateOsisStack(stack);
         }
-    
+
         stack.removeFirst();
         return ele.removeContent();
     }
@@ -77,7 +77,7 @@ public class GBFFilter implements Filter
         {
             int ltpos = remains.indexOf('<');
             int gtpos = remains.indexOf('>');
-    
+
             if (ltpos == -1 && gtpos == -1)
             {
                 // no more tags to decode
@@ -85,7 +85,7 @@ public class GBFFilter implements Filter
                 remains = null;
                 break;
             }
-    
+
             // check that we don't have unmatched tags
             if (ltpos == -1 || gtpos == -1)
             {
@@ -94,7 +94,7 @@ public class GBFFilter implements Filter
                 remains = null;
                 break;
             }
-    
+
             // check that the tags are in a sensible order
             if (ltpos > gtpos)
             {
@@ -124,7 +124,7 @@ public class GBFFilter implements Filter
                         inSepStr = false;
                     }
                 }
-    
+
                 if (beginIndex < strLen)
                 {
                     taglist.add(createText(start.substring(beginIndex)));
@@ -135,7 +135,7 @@ public class GBFFilter implements Filter
             if (tag.length() > 0)
             {
                 Tag reply = null;
-                
+
                 for (int i = 0; i < BUILDERS.length; i++)
                 {
                     reply = BUILDERS[i].createTag(tag);
@@ -144,7 +144,7 @@ public class GBFFilter implements Filter
                         break;
                     }
                 }
-                
+
                 if (reply == null)
                 {
                     // I'm not confident enough that we handle all the GBF tags
@@ -156,7 +156,7 @@ public class GBFFilter implements Filter
 
                 taglist.add(reply);
             }
-    
+
             remains = remains.substring(gtpos + 1);
         }
 

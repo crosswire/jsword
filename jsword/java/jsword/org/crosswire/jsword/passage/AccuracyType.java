@@ -341,7 +341,7 @@ public abstract class AccuracyType implements Serializable
     {
         return false;
     }
-    
+
     /**
      * Interprets the chapter value, which is either a number or "ff" or "$" (meaning "what follows")
      * @param lbook the integer representation of the book

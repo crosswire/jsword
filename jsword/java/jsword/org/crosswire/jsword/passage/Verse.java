@@ -69,7 +69,6 @@ public final class Verse implements VerseBase, Comparable
         verse = DEFAULT.verse;
     }
 
-
     /**
      * Create a Verse from book, chapter and verse numbers, throwing up
      * if the specified Verse does not exist. This constructor is
@@ -863,7 +862,7 @@ public final class Verse implements VerseBase, Comparable
             {
                 throw new NoSuchElementException();
             }
-        
+
             done = true;
             return Verse.this;
         }

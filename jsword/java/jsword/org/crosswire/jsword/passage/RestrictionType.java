@@ -2,7 +2,6 @@ package org.crosswire.jsword.passage;
 
 import java.io.Serializable;
 
-
 /**
  * Types of Passage Restrictions.
  * 
@@ -231,7 +230,7 @@ public abstract class RestrictionType implements Serializable
      * @return a verse range after blurring
      */
     public abstract VerseRange blur(Verse verse, int blurDown, int blurUp);
-    
+
     /**
      * Create a range from the verse having the specified number of verses.
      * @param verse
@@ -247,7 +246,7 @@ public abstract class RestrictionType implements Serializable
     {
         this.name = name;
     }
-    
+
     /**
      * Get an integer representation for this RestrictionType
      */
@@ -349,7 +348,7 @@ public abstract class RestrictionType implements Serializable
      * A default restriction type for blurring.
      */
     private static RestrictionType defaultBlurRestriction = RestrictionType.CHAPTER;
-    
+
     /**
      * The name of the PassageListType
      */

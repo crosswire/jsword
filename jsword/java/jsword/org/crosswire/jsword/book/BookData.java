@@ -73,12 +73,12 @@ public class BookData
     public String getPlainText()
     {
         StringBuffer buffer = new StringBuffer();
-    
+
         Iterator oit = getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
         while (oit.hasNext())
         {
             Element div = (Element) oit.next();
-    
+
             Iterator dit = div.getContent().iterator();
             while (dit.hasNext())
             {

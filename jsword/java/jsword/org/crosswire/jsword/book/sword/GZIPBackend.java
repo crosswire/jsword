@@ -298,11 +298,11 @@ public class GZIPBackend implements Backend
             // compressed buffer start
             long start = idx_raf[testament - 1].readInt();
             start = swordtoarch32(start);
-            
+
             // buffer size compressed (was long but can't use long as array index)
             int size = idx_raf[testament - 1].readInt();
             size = swordtoarch32(size);
-            
+
             // buffer size uncompressed (was long but can't use long as array index)
             int endsize = idx_raf[testament - 1].readInt();
             endsize = swordtoarch32(endsize);

@@ -8,7 +8,7 @@ import org.crosswire.jsword.book.OSISUtil;
 
 /**
  * Handle Footnotes: FR and Fr.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -53,7 +53,7 @@ public class JustifyTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         if ("JL".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
@@ -64,7 +64,7 @@ public class JustifyTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         return null;
-    }        
+    }
 }

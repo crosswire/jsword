@@ -7,7 +7,7 @@ import org.jdom.Element;
 
 /**
  * Handle Footnotes: FI and Fi.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -64,5 +64,5 @@ public class ItalicTagBuilder implements TagBuilder
         }
 
         return null;
-    }        
+    }
 }

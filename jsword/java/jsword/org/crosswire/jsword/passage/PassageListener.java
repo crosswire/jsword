@@ -36,7 +36,7 @@ public interface PassageListener extends EventListener
      * @param ev a PassageEvent encapuslating the event information
      */
     public void versesAdded(PassageEvent ev);
-    
+
     /**
      * Sent after stuff has been removed from the Passage, more info about what
      * and where can be had from the Event
@@ -51,4 +51,3 @@ public interface PassageListener extends EventListener
      */
     public void versesChanged(PassageEvent ev);
 }
-

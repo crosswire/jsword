@@ -34,7 +34,7 @@ import org.crosswire.jsword.passage.VerseFactory;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -252,7 +252,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     protected void loadIndexes() throws IOException
     {
         searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
-    } 
+    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.AbstractSearchEngine#unloadIndexes()

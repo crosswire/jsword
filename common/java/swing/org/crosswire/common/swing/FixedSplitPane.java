@@ -1,26 +1,37 @@
 package org.crosswire.common.swing;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
+import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
 /**
- * This is a hack to fix the setDividerLocation problem
+ * This is a hack to fix the setDividerLocation problem and other layout problems.
+ * <p>
  * See Bug Parade 4101306, 4485465 for a description of the WIDE divider problem.
- * 
- * Bug Reports on JSplitpane setDividerLocation
+ * <p>
+ * Bug Reports on JSplitpane setDividerLocation<br>
  * 4101306, 4125713, 4148530
- *
+ *<p>
  * From the javadoc for setDividerLocation(double):
- * -------------------------------------------
+ * -------------------------------------------<br>
  * <p>This method is implemented in terms of setDividerLocation(int).
  * This method immediately changes the size of the receiver based on
  * its current size. If the receiver is not correctly realized and on
  * screen, this method will have no effect (new divider location will
- * become (current size * proportionalLocation) which is 0).
- * -------------------------------------------
+ * become (current size * proportionalLocation) which is 0).<br>
+ * -------------------------------------------<br>
  * So, as you can see the JSplitPane MUST be visible invoking this method
  * otherwise it will not have the desired effect.
+ * <p>
+ * Another, Bug Report 4786896 notes that if the preferred sizes of the
+ * two components plus the divider of the split pane adds up to more than
+ * the preferred size of the JSplitPane, then JSplitPane will use the
+ * minimum size of the components.
+ * <p>
+ * Since the preferred way of managing the sizes of containers is not with
+ * pixel counts, the solution here is to set the preferred size to zero.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -41,6 +52,7 @@ import javax.swing.JSplitPane;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class FixedSplitPane extends JSplitPane
@@ -85,6 +97,66 @@ public class FixedSplitPane extends JSplitPane
         super(arg0, arg1, arg2, arg3);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.Container#addImpl(java.awt.Component, java.lang.Object, int)
+     */
+    protected void addImpl(Component comp, Object constraints, int index)
+    {
+        if (comp instanceof JComponent)
+        {
+            ((JComponent) comp).setPreferredSize(DOT);
+        }
+        super.addImpl(comp, constraints, index);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.JSplitPane#setBottomComponent(java.awt.Component)
+     */
+    public void setBottomComponent(Component comp)
+    {
+        if (comp instanceof JComponent)
+        {
+            ((JComponent) comp).setPreferredSize(DOT);
+        }
+        super.setBottomComponent(comp);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.JSplitPane#setLeftComponent(java.awt.Component)
+     */
+    public void setLeftComponent(Component comp)
+    {
+        if (comp instanceof JComponent)
+        {
+            ((JComponent) comp).setPreferredSize(DOT);
+        }
+        super.setLeftComponent(comp);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.JSplitPane#setRightComponent(java.awt.Component)
+     */
+    public void setRightComponent(Component comp)
+    {
+        if (comp instanceof JComponent)
+        {
+            ((JComponent) comp).setPreferredSize(DOT);
+        }
+        super.setRightComponent(comp);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.JSplitPane#setTopComponent(java.awt.Component)
+     */
+    public void setTopComponent(Component comp)
+    {
+        if (comp instanceof JComponent)
+        {
+            ((JComponent) comp).setPreferredSize(DOT);
+        }
+        super.setTopComponent(comp);
+    }
+
     /**
      * Validates this container and all of its subcomponents. The first time
      * this method is called, the initial divider position is set.
@@ -118,6 +190,7 @@ public class FixedSplitPane extends JSplitPane
         }
     }
 
+    private static final Dimension DOT = new Dimension(0, 0);
     private boolean firstValidate = true;
     private boolean hasProportionalLocation = false;
     private double proportionalLocation;

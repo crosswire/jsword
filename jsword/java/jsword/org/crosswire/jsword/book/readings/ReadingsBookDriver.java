@@ -13,7 +13,7 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * A driver for the readings dictionary.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -48,7 +48,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
         };
 
         bmds = new BookMetaData[books.length];
-        
+
         for (int i = 0; i < books.length; i++)
         {
             bmds[i] = books[i].getBookMetaData();
@@ -114,7 +114,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
 
         return set;
     }
-    
+
     /**
      * Accessor for the current readings set
      */
@@ -130,6 +130,6 @@ public class ReadingsBookDriver extends AbstractBookDriver
 
     /**
      * The current readings set
-     */    
+     */
     private static String set = null;
 }

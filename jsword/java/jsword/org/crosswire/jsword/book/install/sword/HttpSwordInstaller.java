@@ -42,7 +42,7 @@ import com.ice.tar.TarInputStream;
 
 /**
  * An implementation of Installer for reading data from Sword Web sites.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -167,7 +167,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
             }
         }
     }
-    
+
     /**
      * Utility to download a file by HTTP from a remote site
      * @param job
@@ -314,7 +314,6 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                 }
             }
         };
-
 
         // this actually starts the thread off
         worker.setPriority(Thread.MIN_PRIORITY);

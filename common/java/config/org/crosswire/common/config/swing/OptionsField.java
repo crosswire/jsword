@@ -46,7 +46,7 @@ public class OptionsField implements Field
         {
             MultipleChoice mc = (MultipleChoice) param;
             list = mc.getOptions();
-            
+
             if (list == null)
             {
                 throw new IllegalArgumentException("getOptions() returns null for option with help text " + mc.getHelpText()); //$NON-NLS-1$

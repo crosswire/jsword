@@ -46,7 +46,7 @@ public class ParserFactory
             Class impl = ClassUtil.getImplementor(Parser.class);
             Parser parser = (Parser) impl.newInstance();
             parser.init(index);
-            
+
             return parser;
         }
         catch (Exception ex)

@@ -2,7 +2,6 @@ package org.crosswire.jsword.passage;
 
 import java.io.Serializable;
 
-
 /**
  * Types of Passage Lists.
  * 
@@ -78,7 +77,6 @@ public abstract class PassageListType implements Serializable
         }
     };
 
-
     /**
      * Simple ctor
      */
@@ -89,7 +87,7 @@ public abstract class PassageListType implements Serializable
 
     public abstract Object getElementAt(Passage ref, int index, RestrictionType restrict);
     public abstract int count(Passage ref, RestrictionType restrict);
-    
+
     /**
      * Lookup method to convert from a String
      */

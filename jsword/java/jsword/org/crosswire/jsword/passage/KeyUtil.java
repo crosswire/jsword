@@ -99,12 +99,12 @@ public class KeyUtil
         {
             return null;
         }
-    
+
         if (key instanceof Passage)
         {
             return (Passage) key;
         }
-    
+
         Key ref = null;
         try
         {

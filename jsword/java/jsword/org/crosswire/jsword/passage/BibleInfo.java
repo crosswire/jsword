@@ -67,7 +67,7 @@ public class BibleInfo
         sections = new String[SECTIONS_IN_BIBLE];
         sectionsLower = new String[SECTIONS_IN_BIBLE];
         sectionsUpper = new String[SECTIONS_IN_BIBLE];
-        
+
         osisBooks = new String[BOOKS_IN_BIBLE];
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleInfo.class.getName(), Locale.getDefault(), new CWClassLoader(BibleInfo.class));
@@ -78,12 +78,12 @@ public class BibleInfo
             fullBooks[i] = fullBook;
             fullBooksLower[i] = fullBook.toLowerCase();
             fullBooksUpper[i] = fullBook.toUpperCase();
-            
+
             String shortBook = getString(resources, SHORT_KEY + (i + 1));
             shortBooks[i] = shortBook;
             shortBooksLower[i] = shortBook.toLowerCase();
             shortBooksUpper[i] = shortBook.toUpperCase();
-            
+
             String altBook = getString(resources, ALT_KEY + (i + 1));
             alt_books[i] = StringUtils.split(altBook, ',');
             altBooksLower[i] = StringUtils.split(altBook.toLowerCase(), ',');
@@ -191,7 +191,7 @@ public class BibleInfo
             {
                 return fullBooksLower[book - 1];
             }
-            
+
             if (bookCase.equals(CaseType.UPPER))
             {
                 return fullBooksUpper[book - 1];

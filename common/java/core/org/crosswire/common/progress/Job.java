@@ -71,7 +71,7 @@ public final class Job
         {
             loadPredictions();
         }
-        
+
         // And the predictions for next time
         current = new Properties();
         start = System.currentTimeMillis();
@@ -118,9 +118,9 @@ public final class Job
             this.statedesc = statedesc;
             this.reportedpc = percent;
             this.guessedpc = percent;
-    
+
             predictSection(statedesc);
-    
+
             current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 
@@ -143,7 +143,7 @@ public final class Job
             {
                 updater.stop();
             }
-    
+
             current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 
@@ -392,7 +392,7 @@ public final class Job
             }
         }
         //long length = end - start;
-        
+
         // Now we know the start and the end we can convert all times to percents
         Properties predictions = new Properties();
         for (Iterator it = current.keySet().iterator(); it.hasNext(); )
@@ -401,7 +401,7 @@ public final class Job
             int age = getAgeFromMap(current, message);
             predictions.setProperty(message, Integer.toString(age));
         }
-        
+
         // And save. It's not a disaster if this goes wrong
         try
         {
@@ -473,12 +473,12 @@ public final class Job
      * The timings loaded from where they were saved after the last run
      */
     private Map predicted;
-    
+
     /**
      * How long to we predict this job is going to last?
      */
     private int predictedlen = -1;
-    
+
     /**
      * The URL to which we load and save timings
      */

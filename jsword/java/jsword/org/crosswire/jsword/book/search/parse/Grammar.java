@@ -3,8 +3,8 @@ package org.crosswire.jsword.book.search.parse;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * A class representing various grammatical constructs (in English). 
- * 
+ * A class representing various grammatical constructs (in English).
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -162,7 +162,7 @@ public class Grammar
     /**
      * The one hundred most used words, and the instance count
      */
-    private static final String[] WORD_FREQ = 
+    private static final String[] WORD_FREQ =
     {
         // word     instance count (in AV & NIV)
         "the",      // 119135 //$NON-NLS-1$

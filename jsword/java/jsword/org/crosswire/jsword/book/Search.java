@@ -4,10 +4,10 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * Search is a way of specifying what we are searching for.
- * 
+ *
  * We are using a class rather than a simple String so we can add meta-data to
  * the search.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -81,7 +81,7 @@ public class Search
     }
 
     /**
-     * Sets the restriction. To unset a restriction, use a restriction of null. 
+     * Sets the restriction. To unset a restriction, use a restriction of null.
      * @param restriction The restriction to set
      */
     public void setRestriction(Key restriction)
@@ -107,7 +107,7 @@ public class Search
     /**
      * the whole Bible - ie no restrictions.
      */
-    public static final Key UNRESTRICTED = null; 
+    public static final Key UNRESTRICTED = null;
 
     /**
      * default to no restrictions

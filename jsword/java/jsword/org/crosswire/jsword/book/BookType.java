@@ -65,7 +65,7 @@ public class BookType extends Enum
     {
         return (BookType) getEnum(BookType.class, typestr);
     }
-    
+
     /* (non-Javadoc)
      * @see org.apache.commons.lang.enum.Enum#toString()
      */

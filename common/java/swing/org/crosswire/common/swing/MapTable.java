@@ -61,7 +61,7 @@ public class MapTable extends JTable
         super.setModel(dm);
         setDefaultRenderer();
     }
-    
+
     /* (non-Javadoc)
      * @see javax.swing.JTable#setDefaultRenderer(java.lang.Class, javax.swing.table.TableCellRenderer)
      */
@@ -126,7 +126,7 @@ public class MapTable extends JTable
      * mulitline text.
      */
     private static final TableCellRenderer TCR = new MapCellRenderer();
-    
+
     /**
      * <code>initialized</code> indicates that a TableCellRenderer
      * can be set in setModel.

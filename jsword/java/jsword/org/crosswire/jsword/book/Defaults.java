@@ -7,10 +7,10 @@ import org.crosswire.common.util.Logger;
 
 /**
  * Handles the current default Books.
- * 
+ *
  * <p>This is used whenever the user works with one Book at a time and many
  * parts of the system want to know what the current is.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -157,7 +157,7 @@ public class Defaults
                 return;
             }
         }
-    
+
         throw new BookException(Msg.BIBLE_NOTFOUND, new Object[] { name });
     }
 
@@ -241,7 +241,7 @@ public class Defaults
                 return;
             }
         }
-    
+
         throw new BookException(Msg.COMMENTARY_NOTFOUND, new Object[] { name });
     }
 
@@ -325,7 +325,7 @@ public class Defaults
                 return;
             }
         }
-    
+
         throw new BookException(Msg.DICTIONARY_NOTFOUND, new Object[] { name });
     }
 
@@ -413,7 +413,7 @@ public class Defaults
          */
         public void bookAdded(BooksEvent ev)
         {
-            BookMetaData bmd = ev.getBookMetaData(); 
+            BookMetaData bmd = ev.getBookMetaData();
             checkPreferable(bmd);
         }
 
@@ -422,7 +422,7 @@ public class Defaults
          */
         public void bookRemoved(BooksEvent ev)
         {
-            BookMetaData bmd = ev.getBookMetaData(); 
+            BookMetaData bmd = ev.getBookMetaData();
 
             // Was this a default?
             if (getBibleMetaData().equals(bmd))

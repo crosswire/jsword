@@ -47,23 +47,23 @@ public abstract class CaseType implements Serializable
             {
                 return toSentenceCase(word);
             }
-    
+
             // So there is a "-", however first some exceptions
             if (word.equalsIgnoreCase("maher-shalal-hash-baz")) //$NON-NLS-1$
             {
                 return "Maher-Shalal-Hash-Baz"; //$NON-NLS-1$
             }
-    
+
             if (word.equalsIgnoreCase("no-one")) //$NON-NLS-1$
             {
                 return "No-one"; //$NON-NLS-1$
             }
-    
+
             if (word.substring(0, 4).equalsIgnoreCase("god-")) //$NON-NLS-1$
             {
                 return toSentenceCase(word);
             }
-    
+
             // So cut by the -
             return toSentenceCase(word.substring(0, index))
                    + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
@@ -92,7 +92,7 @@ public abstract class CaseType implements Serializable
     };
 
     public abstract String setCase(String word);
-    
+
     /**
      * Simple ctor
      */
@@ -100,7 +100,7 @@ public abstract class CaseType implements Serializable
     {
         this.name = name;
     }
-    
+
     /**
      * Change to sentence case - ie first character in caps, the rest in lower.
      * @param word The word to be manipulated
@@ -109,12 +109,12 @@ public abstract class CaseType implements Serializable
     protected static String toSentenceCase(String word)
     {
         assert word != null;
-    
+
         if (word.equals("")) //$NON-NLS-1$
         {
             return ""; //$NON-NLS-1$
         }
-    
+
         return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
     }
 
@@ -134,32 +134,32 @@ public abstract class CaseType implements Serializable
     public static CaseType getCase(String word)
     {
         assert word != null;
-    
+
         // Blank word
         if (word.equals("")) //$NON-NLS-1$
         {
             return LOWER;
         }
-    
+
         // Lower case?
         if (word.equals(word.toLowerCase()))
         {
             return LOWER;
         }
-    
+
         // Upper case?
         // A string length of 1 is no good ('I' or 'A' is sentence case)
         if (word.equals(word.toUpperCase()) && word.length() != 1)
         {
             return UPPER;
         }
-    
+
         // If initial is lower then it must be mixed
         if (Character.isLowerCase(word.charAt(0)))
         {
             return MIXED;
         }
-    
+
         // Hack the only real caseMixed is LORD's
         // And we don't want to bother sorting out Tubal-Cain
         // as SENTENCE, so for now ...
@@ -167,11 +167,11 @@ public abstract class CaseType implements Serializable
         {
             return MIXED;
         }
-    
+
         // So ...
         return SENTENCE;
     }
-    
+
     /**
      * Get an integer representation for this RestrictionType
      */

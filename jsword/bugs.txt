@@ -17,13 +17,33 @@ Swing
 - Make Bible selection combo size better
 - Right click tab closer
 - New tab tool-tip is "new window"
+- Split panes resize when they should not.
+  (Probably due to packing issues when flipping components)
+- Menu shortcuts are duplicated on several menus and don't work as expected.
+- After switching to sub-window mode, the sub-windows can be very wide (> 1 screen width)
+  Maybe limit them to the size of the JDesktop
 
 BookData Display
 - Naves shows internal markup around verse references.
 - some nt verses badly displayed in ot refs
+- Notify the user when a single testament bible is installed.
+- Need a better font under FC2.
 
 SplitBookDataDisplay
 - Selection not maintained when blur button is clicked.
+- Consider a context menu to open a verse in a new tab.
+- blur should reflect in "Passage Lookup" passage display.
+- Reuse tabs when possible. When opening a daily reading,
+  check to see if it is already a BibleView.
+
+Reference Sidebar:
+- Readings might be a little prettier if they were bulleted
+- Selecting a commentary should (possibly) display the comments for the currently displayed passage
+- I don't see any entries after selecting "Webster's Revised Unabridged Dictionary"
+    - I think it's waiting for me to type something in, but that's not obvious from the UI
+    - When I tried to type something into the text field, it didn't work
+    - Maybe the sidebar text area should clear or display a message like "Type a word in the text field above to see its definition."
+- Selecting a commentary does not display the contents of that commentary for the passage shown (e.g. Gen 1:1)
 
 Web
 - auto test for web demo
@@ -32,13 +52,38 @@ Install
 - save install sites
 - pop-up install dialog if no modules present
 - warning about web access in install
-- Install does not work behind a firewall. WinXP SP2, FC2, Mac OS.
-  It throws a NPE.
+- Cannot see any bibles until hitting "Update Index" for the first time
+- Need a progress bar (even with .setIndeterminate(true)) instead of two dialogs
+- Cannot see all of the text on the "Values" column of the table
+- "Keys" and "Values" are not very friendly column titles
+  Key names are internal names, not user-friendly names
+- Perhaps replace the keys/values table with an HTML description of the module
+- make indexing progress bar display better
+- Allow only one indexing at a time
+
+About box:
+- Appears to be in a tab for no particular reason
+- Just shows the version, seems kinda pointless
+    - Maybe add a list of developers or something
 
 Search
 - debate ser vs. lucene
 - make index creation happen at a better time
-- match does not support restrict
+
+Options:
+- Even after installation, there are no bibles/dictionaries/commentaries to select from for the defaults ("Bibles" item)
+- Internationalize the text of some of the options and make them friendly.
+  Many of the options are rather user-unfriendly and need help text, e.g.:
+    - What's "ot1nt2"?
+    - What's "Persistent Naming"?
+    - The user is never going to input a L&F class name
+- Hide options that are not useful to regular users.
+- Hide options that really are not options.
+  Some "options" have only one selectable item (e.g. "Configurable Stylesheet" in "Bible Display"), so they're not really options :)
+- It's not obvious that "Advanced" has items of its own (although that's probably just me)
+- Make sure tree has horizontal and vertical lines on all platforms.
+	Under FC2: tree has only horizontal lines, no vertical lines
+- Turning on "Advanced tabs" in the About dialog does nothing
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.9
@@ -58,6 +103,7 @@ Swing
 - FontChooser should show a sample of text in Greek, Hebrew and user's language.
   Font name should be in the default font, not in the font's font.
 - Highlighting of searches
+- In View Source, it would be nice to have the source syntax-highlighted and maybe tidied
 
 Search
 - Create the index in the background after the module is downloaded.
@@ -66,6 +112,8 @@ Search
 - Use IBM's ICU4J to do this.
 - Add the ability to search transliterations of Greek and Hebrew.
 - Add the ability to search by word stems.
+  Find occurrences of various forms of Greek/Hebrew words
+  e.g. blepo, blepeis, eidon, blepamenos, etc. could all match a search for blepein
 
 Modules
 - Sword GenBook
@@ -76,7 +124,9 @@ Modules
 
 General
 - Make config use Preferences
+- Use preferences: When starting the program it would be nice to have the same state as when the program was closed.
 - other application installation systems (rpm, deb, nullsoft, msi, etc)
+- Add a personal commentary ability.
 
 BookData Display
 - Mixed language text support (like Kittel's or Vines).
@@ -89,6 +139,9 @@ BookData Display
   other lemma values
   morph values
 - Switch to the right dictionary/commentary/... when link is activated
+- Handle pictures (e.g. in the Illustrated New Testament ;)
+- For Greek or Hebrew texts, show hover-help for each word with basic definition (from default Greek/Hebrew dictionary)
+- For Greek or Hebrew texts, have a RMB menu to open a dictionary for the selected text or something
 
 Install
 - Add a language filter

@@ -99,11 +99,6 @@ public class OSISUtil
      */
     public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
 
-    /**
-     * For links that point to Biblical passages
-     */
-    public static final String PROTOCOL_BIBLE = "bible://"; //$NON-NLS-1$
-
     public static final String OSIS_ELEMENT_TITLE = "title"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_TABLE = "table"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_SPEECH = "speech"; //$NON-NLS-1$

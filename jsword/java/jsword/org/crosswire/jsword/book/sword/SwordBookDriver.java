@@ -22,7 +22,7 @@ import org.crosswire.jsword.util.Project;
 
 /**
  * This represents all of the SwordBibles.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -96,7 +96,7 @@ public class SwordBookDriver extends AbstractBookDriver
                     {
                         log.warn("Couldn't create SwordBookMetaData", ex); //$NON-NLS-1$
                     }
-                }            
+                }
             }
             else
             {
@@ -186,14 +186,14 @@ public class SwordBookDriver extends AbstractBookDriver
         {
             return;
         }
-        
+
         // First we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.installed().getDriversByClass(SwordBookDriver.class);
         for (int i = 0; i < matches.length; i++)
         {
             Books.installed().unregisterDriver(matches[i]);
         }
-        
+
         SwordBookDriver.dirs = dirs;
 
         // Now we need to register ourselves
@@ -219,7 +219,7 @@ public class SwordBookDriver extends AbstractBookDriver
             files = getDefaultPaths();
             useDefaultPaths = true;
         }
-        
+
         // If there is no change then there is nothing to do
         if (Arrays.equals(files, SwordBookDriver.dirs))
         {
@@ -254,7 +254,7 @@ public class SwordBookDriver extends AbstractBookDriver
                 for (int i = pos; i > 0; i--)
                 {
                     files[pos] = files[pos - 1];
-                }                    
+                }
                 files[0] = downloadDir;
             }
         }
@@ -277,7 +277,7 @@ public class SwordBookDriver extends AbstractBookDriver
     private static File[] getDefaultPaths()
     {
         List reply = new ArrayList();
-        
+
         // .jsword in the users home directory is the first location
         reply.add(new File(System.getProperty(PROPERTY_USER_HOME) + File.separator + Project.DIR_PROJECT));
 

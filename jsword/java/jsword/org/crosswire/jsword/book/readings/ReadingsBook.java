@@ -141,18 +141,19 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                 KeyFactory keyf = PassageKeyFactory.instance();
                 Passage ref = (Passage) keyf.getKey(readings);
 
+                Element list = OSISUtil.factory().createList();
+                div.getContent().add(list);
                 for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext(); )
                 {
                     VerseRange range = (VerseRange) it.next();
 
-                    Element reading = OSISUtil.factory().createDiv();
-                    reading.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, OSISUtil.PROTOCOL_BIBLE + range.getOSISName());
+                    Element reading = OSISUtil.factory().createReference();
+                    reading.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, range.getOSISName());
                     reading.addContent(range.getName());
 
-                    Element p = OSISUtil.factory().createP();
-                    p.getContent().add(reading);
-
-                    div.getContent().add(p);
+                    Element item = OSISUtil.factory().createItem();
+                    item.getContent().add(reading);
+                    list.getContent().add(item);
                 }
             }
             catch (NoSuchVerseException ex)

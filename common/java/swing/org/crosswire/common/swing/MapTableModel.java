@@ -116,7 +116,7 @@ public class MapTableModel extends AbstractTableModel
         map.put(key, value);
         setMap(map);
     }
-    
+
     /**
      * @param key
      */

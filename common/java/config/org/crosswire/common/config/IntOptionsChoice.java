@@ -45,7 +45,6 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
 
         String prefix = option.getAttributeValue("key") + ".alternative."; //$NON-NLS-1$  //$NON-NLS-2$
 
-
         List list = new ArrayList();
         List alts = option.getChildren("alternative"); //$NON-NLS-1$
         Iterator it = alts.iterator();
@@ -106,7 +105,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
                     return new Integer(i);
                 }
             }
-        
+
             Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
             return options[0];
         }

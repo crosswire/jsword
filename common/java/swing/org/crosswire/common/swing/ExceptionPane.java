@@ -153,7 +153,7 @@ public class ExceptionPane extends JPanel
         JPanel heading = new JPanel(new BorderLayout());
         heading.add(traces, BorderLayout.CENTER);
 
-        JSplitPane split = new JSplitPane();
+        JSplitPane split = new FixedSplitPane();
         split.setOrientation(JSplitPane.VERTICAL_SPLIT);
         split.setContinuousLayout(true);
         split.setTopComponent(new JScrollPane(list));
@@ -314,7 +314,7 @@ public class ExceptionPane extends JPanel
             classname = classname.substring(0, classname.length() - "Error".length());
         classname = StringUtil.createTitle(classname);
         if (classname.equals("IO")) classname = "Input / Output";
-    
+
         retcode.append("<font size=\"-1\"><strong>");
         retcode.append(classname);
         retcode.append("</strong></font>");

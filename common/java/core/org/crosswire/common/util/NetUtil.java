@@ -227,7 +227,7 @@ public class NetUtil
     /**
      * Return a File from the URL either by extracting from a file: URL or
      * by downloading to a temp dir first
-     * @param url The original URL to the file. 
+     * @param url The original URL to the file.
      * @return The URL as a file
      */
     public static File getAsFile(URL url) throws IOException
@@ -474,7 +474,7 @@ public class NetUtil
         try
         {
             URL search = NetUtil.lengthenURL(url, INDEX_FILE);
-            reply = listByIndexFile(search, filter); 
+            reply = listByIndexFile(search, filter);
         }
         catch (FileNotFoundException ex)
         {
@@ -538,7 +538,7 @@ public class NetUtil
     {
         InputStream in = index.openStream();
         String contents = StringUtil.read(new InputStreamReader(in));
-        
+
         // We still need to do the filtering
         List list = new ArrayList();
         String[] names = StringUtils.split(contents, "\n"); //$NON-NLS-1$
@@ -627,7 +627,7 @@ public class NetUtil
         {
             return filter.accept(name);
         }
-        
+
         private URLFilter filter;
     }
 

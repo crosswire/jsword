@@ -48,7 +48,7 @@ public class FtpSwordInstallerFactory implements InstallerFactory
         {
             throw new IllegalArgumentException(Msg.INVALID_URL.toString(url));
         }
-        
+
         FtpSwordInstaller reply = new FtpSwordInstaller();
         // part[0] is the 'protocol' which we don't care about
         // part[1] is the blank between the first 2 slashes
@@ -66,7 +66,7 @@ public class FtpSwordInstallerFactory implements InstallerFactory
             {
                 throw new IllegalArgumentException(Msg.URL_COLON_COUNT.toString(url));
             }
-            
+
             reply.setUsername(chop3[0]);
             reply.setPassword(chop3[1]);
             reply.setHost(chop2[1]);

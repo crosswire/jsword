@@ -46,7 +46,7 @@ public class LocalURLBookDriver
         {
             throw new BookException(Msg.DELETE_FAIL, new Object[] { bmd.getName()});
         }
-        
+
         LocalURLBook lbook = (LocalURLBook) book;
         try
         {

@@ -218,7 +218,7 @@ public class SwordDictionary extends AbstractBook
 
         throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text });
     }
-    
+
     // TODO(DM): Hack alert!!! This is not in the right place!!!
     private Key getStrongsKey(String text)
     {

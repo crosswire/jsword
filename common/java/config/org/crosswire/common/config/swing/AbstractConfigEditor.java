@@ -274,7 +274,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
                 String key = (String) it.next();
                 Field field = (Field) fields.get(key);
                 String value = field.getValue();
-                
+
                 if (value == null)
                 {
                     log.error("null value from key=" + key); //$NON-NLS-1$

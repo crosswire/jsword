@@ -388,7 +388,7 @@ public final class VerseRange implements VerseBase
                 total += BibleInfo.chaptersInBook(b);
             }
             total += endChap;
-            
+
             return total;
         }
         catch (NoSuchVerseException ex)
@@ -973,7 +973,7 @@ public final class VerseRange implements VerseBase
             {
                 throw new NoSuchElementException();
             }
-            
+
             try
             {
                 return new Verse(next++);

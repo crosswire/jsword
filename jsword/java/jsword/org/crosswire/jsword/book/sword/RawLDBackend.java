@@ -153,7 +153,7 @@ public class RawLDBackend implements Backend
                 default:
                     assert false : datasize;
                 }
-                
+
                 // Now read the data file for this key using the offset and size
                 byte[] data = SwordUtil.readRAF(datRaf, offset, size);
 
@@ -166,7 +166,7 @@ public class RawLDBackend implements Backend
 
                 byte[] keydata = new byte[keyend];
                 System.arraycopy(data, 0, keydata, 0, keyend);
-                
+
                 String keytitle = new String(keydata).trim();
                 // for some wierd reason plain text (i.e. SourceType=0) dicts
                 // all get \ added to the ends of the index entries.

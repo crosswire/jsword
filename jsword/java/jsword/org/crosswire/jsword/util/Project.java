@@ -130,7 +130,7 @@ public class Project
     public URL getTempScratchSpace(String subject, boolean create) throws IOException
     {
         URL temp = NetUtil.lengthenURL(base, subject);
-        
+
         if (create && !NetUtil.isDirectory(temp))
         {
             NetUtil.makeDirectory(temp);

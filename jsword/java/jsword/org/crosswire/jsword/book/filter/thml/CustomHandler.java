@@ -15,11 +15,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * To convert SAX events into OSIS events.
- * 
+ *
  * <p>I used the THML ref page:
  * <a href="http://www.ccel.org/ThML/ThML1.04.htm">http://www.ccel.org/ThML/ThML1.04.htm</a>
  * to work out what the tags meant.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -107,7 +107,7 @@ public class CustomHandler extends DefaultHandler
             return;
         }
 
-        List list = current.getContent(); 
+        List list = current.getContent();
 
         // what we are adding
         String text = new String(data, offset, length);
@@ -123,12 +123,12 @@ public class CustomHandler extends DefaultHandler
             if (last instanceof String)
             {
                 list.remove(list.size() - 1);
-                text = ((String) last) + text; 
+                text = ((String) last) + text;
             }
             else if (last instanceof Text)
             {
                 list.remove(list.size() - 1);
-                text = ((Text) last).getText() + text; 
+                text = ((Text) last).getText() + text;
             }
         }
 
@@ -151,7 +151,7 @@ public class CustomHandler extends DefaultHandler
             rootElement = finished;
         }
     }
-    
+
     public Element getRootElement()
     {
         return rootElement;
@@ -167,12 +167,12 @@ public class CustomHandler extends DefaultHandler
      * The stack of elements that we have created
      */
     private LinkedList stack;
-    
+
     /**
      * The known tag types
      */
     private static final Map TAG_MAP = new HashMap();
-    
+
     static {
         Tag[] tags = new Tag[]
             {
@@ -225,7 +225,6 @@ public class CustomHandler extends DefaultHandler
             TAG_MAP.put(tagName, t);
         }
     }
-
 
     /**
      * The log stream

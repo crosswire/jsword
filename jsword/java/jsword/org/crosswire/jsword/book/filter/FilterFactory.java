@@ -10,7 +10,7 @@ import org.crosswire.common.util.Logger;
 
 /**
  * A simple container for all the known filters.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -68,7 +68,7 @@ public class FilterFactory
         try
         {
             Class cdeft = (Class) map.remove("default"); //$NON-NLS-1$
-            deft = (Filter) cdeft.newInstance();            
+            deft = (Filter) cdeft.newInstance();
         }
         catch (Exception ex)
         {
@@ -90,7 +90,7 @@ public class FilterFactory
                 log.error("Failed to add filter", ex); //$NON-NLS-1$
             }
         }
-        
+
         // if the default didn't work then make a stab at an answer
         if (deft == null)
         {

@@ -56,7 +56,6 @@ public class PassageKeyFactory implements KeyFactory
      */
     public static final int TALLY = 4;
 
-
     /**
      * This class implements a Singleton pattern. So the ctor is private
      */
@@ -128,7 +127,7 @@ public class PassageKeyFactory implements KeyFactory
         {
             createPassage(defaultType);
         }
-    
+
         return createPassage(defaultType, name);
     }
 
@@ -182,19 +181,19 @@ public class PassageKeyFactory implements KeyFactory
         {
         case PassageKeyFactory.MIX:
             return new RangedPassage(name);
-    
+
         case PassageKeyFactory.WRITE_SPEED:
             return new BitwisePassage(name);
-    
+
         case PassageKeyFactory.SPEED:
             return new RocketPassage(name);
-    
+
         case PassageKeyFactory.SIZE:
             return new DistinctPassage(name);
-    
+
         case PassageKeyFactory.TALLY:
             return new PassageTally(name);
-    
+
         default:
             throw new IllegalArgumentException(Integer.toString(type));
         }

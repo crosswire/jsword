@@ -52,29 +52,29 @@ public class SentanceUtil
     public static String[] tokenize(String sentence)
     {
         ArrayList tokens = new ArrayList();
-    
+
         int pos = 0;
         String temp;
         boolean alive = true;
-    
+
         while (alive)
         {
             // Find the next space and double dash
             int nextSpace = sentence.indexOf(" ", pos); //$NON-NLS-1$
             int nextDDash = sentence.indexOf("--", pos); //$NON-NLS-1$
-    
+
             // If there is a space just after the ddash then ignore the ddash
             if (nextSpace == nextDDash + 2)
             {
                 nextDDash = -1;
             }
-    
+
             // If there is a ddash just after the space then ignore the space
             if (nextDDash == nextSpace + 1)
             {
                 nextSpace = -1;
             }
-    
+
             // if there are no more tokens then just add in what we've got.
             if (nextSpace == -1 && nextDDash == -1)
             {
@@ -94,13 +94,13 @@ public class SentanceUtil
                 temp = sentence.substring(pos, nextDDash) + "--"; //$NON-NLS-1$
                 pos = nextDDash + 2;
             }
-    
+
             if (temp != null && !temp.trim().equals("")) //$NON-NLS-1$
             {
                 tokens.add(temp);
             }
         }
-    
+
         // Create a String[]
         String[] retcode = new String[tokens.size()];
         int i = 0;
@@ -108,7 +108,7 @@ public class SentanceUtil
         {
             retcode[i++] = (String) it.next();
         }
-    
+
         return retcode;
     }
 
@@ -121,13 +121,13 @@ public class SentanceUtil
     public static String[] stripPunctuation(String[] words)
     {
         String[] retcode = new String[words.length];
-    
+
         // Remove the punctuation from the ends of the words.
         for (int i = 0; i < words.length; i++)
         {
             retcode[i] = stripPunctuationWord(words[i]);
         }
-    
+
         return retcode;
     }
 
@@ -143,9 +143,9 @@ public class SentanceUtil
         {
             return new String[0];
         }
-    
+
         String[] retcode = new String[words.length + 1];
-    
+
         // The first bit of punctuation is what comes in front of the first word
         int first = firstLetter(words[0]);
         if (first == 0)
@@ -156,13 +156,13 @@ public class SentanceUtil
         {
             retcode[0] = words[0].substring(0, first);
         }
-    
+
         // The rest of the words
         for (int i = 1; i < words.length; i++)
         {
             retcode[i] = stripWords(words[i - 1], words[i]);
         }
-    
+
         // The last bit of punctuation is what comes at the end of the last word
         int last = lastLetter(words[words.length - 1]);
         if (last == words[words.length - 1].length())
@@ -173,7 +173,7 @@ public class SentanceUtil
         {
             retcode[words.length] = words[words.length - 1].substring(last + 1);
         }
-    
+
         return retcode;
     }
 

@@ -128,7 +128,7 @@ public class GuiConvert
 
         return "#" + red + green + blue; //$NON-NLS-1$
     }
-    
+
     /**
      * The log stream
      */

@@ -92,7 +92,7 @@ public class ButtonPane extends JPanel
     {
         li.cancelPressed(ev);
     }
-    
+
     /**
      * Do the Apply action
      * @param ev

@@ -50,10 +50,10 @@ public class ReflectionUtil
         {
             calledTypes[i] = params[i].getClass();
         }
-    
+
         // Reflection
         Class clazz = base.getClass();
-    
+
         // The bad news is that we can't use something like:
         // called_class.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
@@ -67,11 +67,11 @@ public class ReflectionUtil
             {
                 continue outer;
             }
-    
+
             // The right number of params
             Class[] testTypes = testMethods[i].getParameterTypes();
             if (testTypes.length != calledTypes.length) continue;
-    
+
             // Of the right types?
             for (int j = 0; j < testTypes.length; j++)
             {
@@ -80,11 +80,11 @@ public class ReflectionUtil
                     continue outer;
                 }
             }
-    
+
             // So this is a match
             return testMethods[i].invoke(base, params);
         }
-    
+
         throw new NoSuchMethodException(methodName);
     }
 
@@ -123,11 +123,11 @@ public class ReflectionUtil
             {
                 continue outer;
             }
-    
+
             // The right number of params
             Class[] testTypes = testMethods[i].getParameterTypes();
             if (testTypes.length != calledTypes.length) continue;
-    
+
             // Of the right types?
             for (int j = 0; j < testTypes.length; j++)
             {
@@ -136,11 +136,11 @@ public class ReflectionUtil
                     continue outer;
                 }
             }
-    
+
             // So this is a match
             return testMethods[i].invoke(null, params);
         }
-    
+
         throw new NoSuchMethodException(methodName);
     }
 }

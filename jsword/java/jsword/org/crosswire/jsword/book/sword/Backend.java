@@ -44,7 +44,7 @@ public interface Backend extends Activatable
      * @throws BookException If the data can not be read.
      */
     public String getRawText(Key key, String charset) throws BookException;
-    
+
     /**
      * Returns whether this Backend is implemented.
      * @return true if this Backend is implemented.

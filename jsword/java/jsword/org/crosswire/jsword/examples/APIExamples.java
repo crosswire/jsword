@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 
 /**
  * All the methods in this class highlight some are of the API and how to use it.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -169,7 +169,7 @@ public class APIExamples
         books = Books.installed().getBookMetaDatas(BookFilters.getBibles());
 
         // There are implementations of BookFilter for all sorts of things in
-        // the BookFilters class 
+        // the BookFilters class
 
         // If you are wanting to get really fancy you can implement your own
         // Bookfilter easily

@@ -75,7 +75,7 @@ public class RobustList extends AbstractList implements List
         Entry e = findEntry(index);
         e.remove();
         //debug("post-remove "+index);
-        
+
         return e.object;
     }
 

@@ -49,7 +49,7 @@ public class SearchEngineFactory
             Class impl = ClassUtil.getImplementor(SearchEngine.class);
             SearchEngine searcher = (SearchEngine) impl.newInstance();
             searcher.init(bible, indexdir);
-            
+
             return searcher;
         }
         catch (Exception ex)

@@ -62,7 +62,7 @@ public class BookFilterIterator implements Iterator
         {
             throw new NoSuchElementException();
         }
-        
+
         try
         {
             return next;
@@ -92,7 +92,7 @@ public class BookFilterIterator implements Iterator
             next = null;
             return;
         }
-        
+
         do
         {
             if (!it.hasNext())

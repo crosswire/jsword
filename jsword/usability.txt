@@ -1,0 +1,97 @@
+Installation dialog:
+--------------------
+Cannot see any bibles until hitting "Update Index" for the first time
+Need a progress bar (even with .setIndeterminate(true)) instead of two dialogs
+Cannot see all of the text on the "Values" column of the table
+"Keys" and "Values" are not very friendly column titles
+Key names are internal names, not user-friendly names
+Perhaps replace the keys/values table with an HTML description of the module
+Aren't there general books (e.g. some of Josephus' works) available?
+
+Sidebar:
+--------
+Readings might be a little prettier if they were bulleted
+Selecting a commentary should (possibly) display the comments for the currently displayed passage
+I don't see any entries after selecting "Webster's Revised Unabridged Dictionary"
+    - I think it's waiting for me to type something in, but that's not obvious from the UI
+    - When I tried to type something into the text field, it didn't work
+    - Maybe the sidebar text area should clear or display a message like "Type a word in the text field above to see its definition."
+Selecting a commentary does not display the contents of that commentary for the passage shown (e.g. Gen 1:1)
+I don't see any pictures in the Illustrated New Testament ;)
+
+Options:
+--------
+Even after installation, there are no bibles/dictionaries/commentaries to select from for the defaults ("Bibles" item)
+Many of the options are rather user-unfriendly and need help text, e.g.:
+    - What's "ot1nt2"?
+    - What's "Persistent Naming"?
+    - The user is never going to input a L&F class name
+Some "options" have only one selectable item (e.g. "Configurable Stylesheet" in "Bible Display"), so they're not really options :)
+It's not obvious that "Advanced" has items of its own (although that's probably just me)
+My tree has only horizontal lines, no vertical lines
+
+Main text:
+----------
+Pretty!
+It would be nice to either:
+    - put the footnotes to the right side of the text where they occur; or
+    - have Back/Forward buttons to jump back and forth
+If there is no OT or NT text for a book, would be nice to display a message to that effect instead of a blank screen
+Each time the daily reading link is clicked, a new tab opens (even if the same link is clicked twice)
+The default font is a little odd (with Metal L&F at least)
+    - In particular, footnotes are hard to read
+    - What about anti-aliasing?
+Nothing happened when I clicked on a link to a Strong's number
+    - I think it was building the index
+
+Main GUI:
+---------
+Need a Mozilla-style or Eclipse-style X button to close a tab; I think Ctrl-W is the standard accelerator
+The "More ..." tab is a little odd (not "conventional" UI)
+    - What about a link or something instead?  Although that wouldn't allow random access, hmmm...
+    - Or could display an entire chapter in one tab
+The "..." button (Passage Lookup) seems to be a button inside a button, rather odd-looking with Metal L&F
+The "Go" button looks out of place in the Passage Lookup section
+    - Maybe it could go on the same line as the "View" field (although this would be inconsistent with the other Go buttons)
+    - In any case, the "Go" button moves depending on whether you have Passage Lookup or one of the other radio buttons selected
+Tooltip for "Search" is huge
+    - Maybe this belongs in a little help popup or something
+    - Certainly the tooltip disappears before I can read it all
+After searching for a passage ("balaam / balak" in YLT 1898, as per the tooltip) without an index pre-built:
+    - I got a progress bar that showed it searching
+        - It stayed at 0% while "Finding Words" (although it showed lots of books & chapters as it went)
+        - Only when "Writing words" did the progress start to go up
+    - I got a blank screen for the search results
+    - Searching again (after the index was created) produced the correct search results
+Searching works with Greek, excellent!
+What's the difference between Search and Match?
+After switching to sub-window mode, the sub-windows can be very wide (> 1 screen width)
+    - Maybe limit them to the size of the JDesktop
+Performing a Search or Match at least sometimes seems to switch back to Passage Lookup
+    - Seems more intuitive to leave the use where they are
+    - If they want to go back to Passage Lookup, they can click it themselves
+A few more icons in various places would be nice:
+    - Days for daily readings (e.g. a calendar)
+    - Dictionary entries
+    - Verse list entries
+Building two indices at once slowed my machine to a crawl
+    - At one point in the middle, I lowered then raised the Bible Desktop window; it took at least 5 minutes to redraw
+
+About box:
+----------
+Appears to be in a tab for no particular reason
+Just shows the version, seems kinda pointless
+    - Maybe add a list of developers or something
+I tried turning on "Advanced tabs" in the About dialog, but nothing happened
+
+Suggested features:
+-------------------
+What about a parallel version mode, where verses are shown side-by-side in different translations?
+    - Sub-window mode is not the same; verses may not line up
+Would be nice if "See marginal note on ..." were a hyperlink
+For Greek or Hebrew texts, show hover-help for each word with basic definition (from default Greek/Hebrew dictionary)
+For Greek or Hebrew texts, have a RMB menu to open a dictionary for the selected text or something
+In View Source, it would be nice to have the source syntax-highlighted and maybe tidied
+Find occurrences of various forms of Greek/Hebrew words
+    - e.g. blepo, blepeis, eidon, blepamenos, etc. could all match a search for blepein
+Print would be nice (although I personally probably wouldn't use it)

@@ -52,7 +52,7 @@ public class SwordConstants
      * Index file extensions
      */
     public static final String EXTENSION_VSS = ".vss"; //$NON-NLS-1$
-    
+
     /**
      * Extension for index files
      */
@@ -343,7 +343,7 @@ public class SwordConstants
             877, 890, 905, 909, 919, 921, 926,
             934, 938, 942, 946, 949, 964
         };
-       
+
         int[] bksnt =
         {
             0, 1, 30, 47, 72, 94,

@@ -74,7 +74,7 @@ public class TransformingSAXEventProvider implements SAXEventProvider
         {
             tinfo = (TemplateInfo) txers.get(xslurl);
 
-            // But check it is up to date        
+            // But check it is up to date
             if (tinfo != null)
             {
                 if (modtime > tinfo.getModtime())
@@ -111,11 +111,11 @@ public class TransformingSAXEventProvider implements SAXEventProvider
         try
         {
             Source src_in = new SAXSource(new SAXEventProviderXMLReader(xmlsep), new SAXEventProviderInputSource());
-    
+
             TemplateInfo tinfo = getTemplateInfo();
-    
+
             SAXResult res_out = new SAXResult(handler);
-    
+
             Transformer transformer = tinfo.getTemplates().newTransformer();
 
             for (Iterator it = outputs.keySet().iterator(); it.hasNext(); )
@@ -280,7 +280,7 @@ public class TransformingSAXEventProvider implements SAXEventProvider
      * How we get the transformer objects
      */
     private TransformerFactory transfact = TransformerFactory.newInstance();
-    
+
     /**
      * Do we cache the transformers - speed vs devt ease trade off
      */
