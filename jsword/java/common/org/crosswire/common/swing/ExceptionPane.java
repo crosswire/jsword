@@ -76,6 +76,9 @@ public class ExceptionPane extends JPanel
         jbInit();
     }
 
+    /**
+     * Setup the GUI
+     */
     private void jbInit()
     {
         String exmsg = "<html><font size=\"-1\">An error has occured:</font> "+ExceptionPane.getHTMLDescription(ex);
@@ -235,7 +238,10 @@ public class ExceptionPane extends JPanel
 
         pane.ok.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { dialog.dispose(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                dialog.dispose();
+            }
         });
 
         //dialog.setModal(true);
@@ -310,7 +316,9 @@ public class ExceptionPane extends JPanel
         // The message in the exception
         String message = ex.getMessage();
         if (message == null || message.equals(""))
+        {
             message = "No description available";
+        }
         String orig = message;
         message = StringUtils.replace(orig, "\n", "<br>");
     
@@ -374,7 +382,10 @@ public class ExceptionPane extends JPanel
          */
         public void valueChanged(ListSelectionEvent ev)
         {
-            if (ev.getValueIsAdjusting() == true) return;
+            if (ev.getValueIsAdjusting())
+            {
+                return;
+            }
 
             // Wait cursor
             SwingUtilities.getRoot(label).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

@@ -176,14 +176,26 @@ public class WizardConfigPane extends PanelConfigPane
         apply.setMnemonic('N');
         ok.setMnemonic('F');
 
-        cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { hideDialog(); }
+        cancel.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                hideDialog();
+            }
         });
-        back.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { move(-1); }
+        back.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                move(-1);
+            }
         });
-        apply.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { move(1); }
+        apply.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                move(1);
+            }
         });
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev)

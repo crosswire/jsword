@@ -58,13 +58,16 @@ public class EirPanel extends JPanel
         btn_ok.setText("Close");
         btn_ok.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { close(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                close();
+            }
         });
 
         pnl_buttons = new JPanel();
         pnl_buttons.add(btn_ok, null);
 
-        this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         pnl_main = new JPanel();
         pnl_main.setLayout(new BorderLayout());
@@ -77,9 +80,11 @@ public class EirPanel extends JPanel
         dlg_main.setModal(modal);
         dlg_main.addWindowListener(new WindowAdapter()
         {
-            public void windowClosed(WindowEvent ev) { close(); }
+            public void windowClosed(WindowEvent ev)
+            {
+                close();
+            }
         });
-
         dlg_main.pack();
         dlg_main.setVisible(true);
     }

@@ -117,7 +117,7 @@ public class DriversListModel extends AbstractListModel
     protected BookDriver[] drivers;
 
     /** The small version icon */
-    protected final static ImageIcon small_icon = new ImageIcon("/org/crosswire/resources/task_small.gif");
+    protected static final ImageIcon SMALL_ICON = new ImageIcon("/org/crosswire/resources/task_small.gif");
 
     /** border if we do not have focus */
     protected static Border no_focus;
@@ -169,7 +169,7 @@ public class DriversListModel extends AbstractListModel
             }
 
             setText((value == null) ? "" : value.toString());
-            setIcon(small_icon);
+            setIcon(SMALL_ICON);
 
             setEnabled(list.isEnabled());
             setFont(list.getFont());

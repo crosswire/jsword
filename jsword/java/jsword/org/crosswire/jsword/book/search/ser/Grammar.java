@@ -39,12 +39,12 @@ public class Grammar
      */
     public static String getRoot(String word)
     {
-        for (int i=0; i<endings.length; i++)
+        for (int i=0; i<ENDINGS.length; i++)
         {
-            if (word.endsWith(endings[i]))
+            if (word.endsWith(ENDINGS[i]))
             {
                 // Make the assumption that we never have 2 ending on a word
-                return word.substring(0, word.length() - endings[i].length());
+                return word.substring(0, word.length() - ENDINGS[i].length());
             }
         }
 
@@ -62,9 +62,9 @@ public class Grammar
         if (word.equals(""))
             return true;
 
-        for (int i=0; i<word_freq.length; i++)
+        for (int i=0; i<WORD_FREQ.length; i++)
         {
-            if (word.equalsIgnoreCase(word_freq[i]))
+            if (word.equalsIgnoreCase(WORD_FREQ[i]))
             {
                 return true;
             }
@@ -134,7 +134,7 @@ public class Grammar
      * These are matched in order so there is no point in having "s"
      * before "es" because the second will not be tried.
      */
-    private static final String[] endings =
+    private static final String[] ENDINGS =
     {
         "es",
         "'s",
@@ -148,7 +148,7 @@ public class Grammar
     /**
      * The one hundred most used words, and the instance count
      */
-    private static final String[] word_freq = 
+    private static final String[] WORD_FREQ = 
     {
         // word     instance count (in AV & NIV)
         "the",      // 119135

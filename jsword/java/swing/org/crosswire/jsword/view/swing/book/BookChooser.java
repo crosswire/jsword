@@ -80,28 +80,44 @@ public class BookChooser extends JPanel
         lst_bibles.setModel(bmod);
         lst_bibles.setCellRenderer(new BibleListCellRenderer());
         lst_bibles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lst_bibles.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent ev) { selection(); }
+        lst_bibles.addListSelectionListener(new ListSelectionListener()
+        {
+            public void valueChanged(ListSelectionEvent ev)
+            {
+                selection();
+            }
         });
 
         btn_ok.setText("OK");
         btn_ok.setMnemonic('o');
-        btn_ok.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { okPressed(); }
+        btn_ok.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                okPressed();
+            }
         });
         btn_ok.setEnabled(selected != null);
         btn_ok.setDefaultCapable(true);
 
         btn_cancel.setText("Cancel");
         btn_cancel.setMnemonic('C');
-        btn_cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { cancelPressed(); }
+        btn_cancel.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                cancelPressed();
+            }
         });
 
         btn_help.setText("Help");
         btn_help.setMnemonic('H');
-        btn_help.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { helpPressed(); }
+        btn_help.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                helpPressed();
+            }
         });
         btn_help.setEnabled(false);
 
@@ -130,8 +146,12 @@ public class BookChooser extends JPanel
         dialog.getContentPane().add(this, BorderLayout.CENTER);
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
-        dialog.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent ev) { cancelPressed(); }
+        dialog.addWindowListener(new WindowAdapter()
+        {
+            public void windowClosed(WindowEvent ev)
+            {
+                cancelPressed();
+            }
         });
 
         dialog.setVisible(true);

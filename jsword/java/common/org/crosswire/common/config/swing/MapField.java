@@ -301,10 +301,10 @@ public class MapField extends JPanel implements Field
         }
 
         /** To edit a name (hashtable key) */
-        JTextField name_field = new JTextField();
+        protected JTextField name_field = new JTextField();
 
         /** To edit a class (hashtable value) */
-        JTextField class_field = new JTextField(20);
+        protected JTextField class_field = new JTextField(20);
     }
 
     /** The TableModel that points the JTable at the Hashtable */

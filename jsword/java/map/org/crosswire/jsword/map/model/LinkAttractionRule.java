@@ -62,7 +62,7 @@ public class LinkAttractionRule extends AbstractRule
 
             for (int d=0; d<total_pos.length; d++)
             {
-                total_pos[d] = total_pos[d] + ( dest_pos[d] * links[i].getStrength());
+                total_pos[d] = total_pos[d] + (dest_pos[d] * links[i].getStrength());
             }
 
             total_strength += links[i].getStrength();

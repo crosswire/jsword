@@ -50,7 +50,7 @@ public class SwingConfig
     {
         try
         {
-            Constructor ctor = display_class.getConstructor(new Class[] { Config.class });
+            Constructor ctor = display.getConstructor(new Class[] { Config.class });
             BaseConfig base = (BaseConfig) ctor.newInstance(new Object[] { config });
             base.showDialog(parent, al);
         }
@@ -78,19 +78,19 @@ public class SwingConfig
      */
     public static Class getDisplayClass()
     {
-        return display_class;
+        return display;
     }
 
     /**
      * Which display style to we use
      * @param display_class The new display style
      */
-    public static void setDisplayClass(Class display_class) throws ClassCastException
+    public static void setDisplayClass(Class display) throws ClassCastException
     {
-        if (!BaseConfig.class.isAssignableFrom(display_class))
-            throw new ClassCastException(display_class.getName());
+        if (!BaseConfig.class.isAssignableFrom(display))
+            throw new ClassCastException(display.getName());
 
-        SwingConfig.display_class = display_class;
+        SwingConfig.display = display;
     }
 
     /** The new tree display style */
@@ -103,7 +103,7 @@ public class SwingConfig
     public static final int DISPLAY_WIZARD = 2;
 
     /** Which display style to we use */
-    private static Class display_class = TreeConfigPane.class;
+    private static Class display = TreeConfigPane.class;
 
     /**
      * A quick class to save a config to a url

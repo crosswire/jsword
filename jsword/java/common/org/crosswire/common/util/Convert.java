@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.crosswire.common.util.Logger;
 
 /**
  * Conversions between various types and Strings.
@@ -48,12 +47,30 @@ public class Convert
      */
     public static boolean string2Boolean(String data)
     {
-        if (data.equalsIgnoreCase("true")) return true;
-        if (data.equalsIgnoreCase("yes")) return true;
-        if (data.equalsIgnoreCase("ok")) return true;
-        if (data.equalsIgnoreCase("okay")) return true;
-        if (data.equalsIgnoreCase("on")) return true;
-        if (data.equalsIgnoreCase("1")) return true;
+        if (data.equalsIgnoreCase("true"))
+        {
+            return true;
+        }
+        if (data.equalsIgnoreCase("yes"))
+        {
+            return true;
+        }
+        if (data.equalsIgnoreCase("ok"))
+        {
+            return true;
+        }
+        if (data.equalsIgnoreCase("okay"))
+        {
+            return true;
+        }
+        if (data.equalsIgnoreCase("on"))
+        {
+            return true;
+        }
+        if (data.equalsIgnoreCase("1"))
+        {
+            return true;
+        }
 
         return false;
     }
@@ -156,7 +173,9 @@ public class Convert
                 Class clazz = Class.forName(value);
 
                 if (clazz.isAssignableFrom(superclass))
+                {
                     throw new ClassCastException("Type Error");
+                }
 
                 commands.put(key, value);
             }

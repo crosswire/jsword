@@ -636,8 +636,8 @@ public class Verse implements VerseBase
             try
             {
                 // Does it start with a book?
-                int book = BibleInfo.getBookNumber(parts[0]);
-                if (BibleInfo.chaptersInBook(book) == 1)
+                int pbook = BibleInfo.getBookNumber(parts[0]);
+                if (BibleInfo.chaptersInBook(pbook) == 1)
                 {
                     return ACCURACY_BOOK_VERSE;
                 }
@@ -646,10 +646,12 @@ public class Verse implements VerseBase
                     return ACCURACY_BOOK_CHAPTER;
                 }
             }
-            catch (NoSuchVerseException ex) { }
-            checkValidChapterOrVerse(parts[0]);
-            checkValidChapterOrVerse(parts[1]);
-            return ACCURACY_CHAPTER_VERSE;
+            catch (NoSuchVerseException ex)
+            {
+                checkValidChapterOrVerse(parts[0]);
+                checkValidChapterOrVerse(parts[1]);
+                return ACCURACY_CHAPTER_VERSE;
+            }
 
         case 3:
             BibleInfo.getBookNumber(parts[0]);
@@ -667,10 +669,12 @@ public class Verse implements VerseBase
      * @param text The string to test for validity
      * @throws NoSuchVerseException If the text is invalid
      */
-    private final static void checkValidChapterOrVerse(String text) throws NoSuchVerseException
+    private static final void checkValidChapterOrVerse(String text) throws NoSuchVerseException
     {
         if (!isEndMarker(text))
+        {
             parseInt(text);
+        }
     }
 
     /**
@@ -680,7 +684,7 @@ public class Verse implements VerseBase
      * @param b The second verse to compare
      * @return The bigger of the 2 verses
      */
-    public final static Verse max(Verse a, Verse b)
+    public static final Verse max(Verse a, Verse b)
     {
         if (a.compareTo(b) == -1)
         {
@@ -699,7 +703,7 @@ public class Verse implements VerseBase
      * @param b The second verse to compare
      * @return The smaller of the 2 verses
      */
-    public final static Verse min(Verse a, Verse b)
+    public static final Verse min(Verse a, Verse b)
     {
         if (a.compareTo(b) == 1)
         {
@@ -789,8 +793,8 @@ public class Verse implements VerseBase
         {
             // Check that the "v" is surrounded my non letters - i.e.
             // it is not part of "prov"
-            if (!Character.isLetter(command.charAt(idx-1)) &&
-                !Character.isLetter(command.charAt(idx+1)))
+            if (!Character.isLetter(command.charAt(idx-1))
+                && !Character.isLetter(command.charAt(idx+1)))
             {
                 command = command.substring(0, idx) + VERSE_PREF_DELIM2 + command.substring(idx+1);
             }
@@ -856,7 +860,7 @@ public class Verse implements VerseBase
             // before the number is one of the numeric book identifiers,
             // in that case #2 means Exo and not the book of # chapter 2
             boolean is_numeric_book = false;
-            for (int i=0; i<VERSE_NUMERIC_BOOK.length && is_numeric_book==false; i++)
+            for (int i=0; i<VERSE_NUMERIC_BOOK.length && !is_numeric_book; i++)
             {
                 // so if we start with a book number id mark
                 if (word.startsWith(VERSE_NUMERIC_BOOK[i]))

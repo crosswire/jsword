@@ -1006,41 +1006,41 @@ public class VerseRange implements VerseBase
      */
     public static VerseRange[] remainder(VerseRange a, VerseRange b)
     {
-        VerseRange start = null;
-        VerseRange end = null;
+        VerseRange rstart = null;
+        VerseRange rend = null;
 
         // If a starts before b get the Range of the prequel
         if (a.getStart().compareTo(b.getStart()) == -1)
         {
-            start = new VerseRange(a.getStart(), b.getEnd().subtract(1));
+            rstart = new VerseRange(a.getStart(), b.getEnd().subtract(1));
         }
 
         // If a ends after b get the Range of the sequel
         if (a.getEnd().compareTo(b.getEnd()) == 1)
         {
-            end = new VerseRange(b.getEnd().add(1), a.getEnd());
+            rend = new VerseRange(b.getEnd().add(1), a.getEnd());
         }
 
-        if (start == null)
+        if (rstart == null)
         {
-            if (end == null)
+            if (rend == null)
             {
                 return new VerseRange[] { };
             }
             else
             {
-                return new VerseRange[] { end };
+                return new VerseRange[] { rend };
             }
         }
         else
         {
-            if (end == null)
+            if (rend == null)
             {
-                return new VerseRange[] { start };
+                return new VerseRange[] { rstart };
             }
             else
             {
-                return new VerseRange[] { start, end };
+                return new VerseRange[] { rstart, rend };
             }
         }
     }
@@ -1220,10 +1220,10 @@ public class VerseRange implements VerseBase
     /**
      * The whole Bible VerseRange
      */
-    private transient static VerseRange whole;
+    private static transient VerseRange whole;
 
     /**
      * The log stream
      */
-    protected transient static Logger log = Logger.getLogger(VerseRange.class);
+    protected static transient Logger log = Logger.getLogger(VerseRange.class);
 }

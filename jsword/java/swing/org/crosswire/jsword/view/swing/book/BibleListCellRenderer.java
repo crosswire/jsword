@@ -47,7 +47,9 @@ public class BibleListCellRenderer extends JLabel implements ListCellRenderer
     public BibleListCellRenderer()
     {
         if (no_focus == null)
+        {
             no_focus = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+        }
 
         setOpaque(true);
         setBorder(no_focus);
@@ -77,7 +79,7 @@ public class BibleListCellRenderer extends JLabel implements ListCellRenderer
         
         BibleMetaData bmd = (BibleMetaData) value;
         setText((bmd == null) ? "" : bmd.getFullName());
-        setIcon(small_icon);
+        setIcon(ICON_SMALL);
 
         setEnabled(list.isEnabled());
         setFont(list.getFont());
@@ -87,7 +89,7 @@ public class BibleListCellRenderer extends JLabel implements ListCellRenderer
     }
 
     /** The small version icon */
-    private final static ImageIcon small_icon = GuiUtil.getIcon("images/Passage16.gif");
+    private static final ImageIcon ICON_SMALL = GuiUtil.getIcon("images/Passage16.gif");
 
     /** border if we do not have focus */
     protected static Border no_focus;

@@ -29,16 +29,25 @@ import org.crosswire.common.util.Convert;
  */
 public class NumberChoice extends ReflectedChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return Integer.TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return Convert.int2String(((Integer) orig).intValue());
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         return new Integer(Convert.string2Int(orig));

@@ -87,7 +87,7 @@ public class AdvancedConfigPane extends TreeConfigPane
         Color bg = new Color(orig.getRed(), orig.getGreen(), orig.getBlue());
 
         // This seems to be broken ...
-        render.setLeafIcon(task_small);
+        render.setLeafIcon(tasksm);
         render.setBackgroundNonSelectionColor(bg);
 
         scroll.setPreferredSize(new Dimension(150, 150));

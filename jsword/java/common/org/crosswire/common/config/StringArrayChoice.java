@@ -30,22 +30,34 @@ import org.jdom.Element;
  */
 public class StringArrayChoice extends ReflectedChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     */
     public void init(Element option) throws StartupException
     {
         super.init(option);
         separator = option.getAttributeValue("separator");
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return String[].class;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return Convert.stringArray2String((String[]) orig, separator);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         return Convert.string2StringArray(orig, separator);

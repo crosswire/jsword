@@ -292,9 +292,9 @@ public class Config implements Serializable
                         // If a value has not changed, we only call setString()
                         // if force==true or if a higher priority choice has
                         // changed.
-                        if (force ||
-                            priority < highest_change ||
-                            !new_value.equals(old_value))
+                        if (force
+                            || priority < highest_change
+                            || !new_value.equals(old_value))
                         {
                             log.info("Setting "+key+"="+new_value+" (was "+old_value+")");
                             model.setString(new_value);

@@ -40,7 +40,7 @@ public class OptionsField extends JComboBox implements Field
      */
     public OptionsField()
     {
-        super(new String[] { "No Options Set" } );
+        super(new String[] { "No Options Set" });
     }
 
     /**

@@ -78,6 +78,9 @@ public class SWMgr {
 
         if (autoload)
             Load();
+
+        // shut eclipse up
+        myconfig.hashCode(); mysysconfig.hashCode();
      }
 
 

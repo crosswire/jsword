@@ -59,8 +59,8 @@ import javax.swing.UIManager;
 public class FontChooser extends JPanel
 {
     /**
-    * Create a FontChooser.
-    */
+     * Create a FontChooser.
+     */
     public FontChooser()
     {
         FontChangeListener changer = new FontChangeListener();
@@ -91,8 +91,8 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * Display a FontChooser in a dialog
-    */
+     * Display a FontChooser in a dialog
+     */
     public static Font showDialog(Component parent, String title, Font initial)
     {
         JPanel buttons = new JPanel();
@@ -154,9 +154,9 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * Set the Font displayed
-    * @param font The current Font
-    */
+     * Set the Font displayed
+     * @param font The current Font
+     */
     public void setStyle(Font font)
     {
         suppress_events = true;
@@ -173,8 +173,8 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * @return The currently selected font
-    */
+     * @return The currently selected font
+     */
     public Font getStyle()
     {
         Hashtable hash = (Hashtable) name.getSelectedItem();
@@ -187,8 +187,8 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * Helper class to note changes in the Font
-    */
+     * Helper class to note changes in the Font
+     */
     class FontChangeListener implements ItemListener
     {
         public void itemStateChanged(ItemEvent ev)
@@ -198,8 +198,8 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * Helper class to note changes in the Font
-    */
+     * Helper class to note changes in the Font
+     */
     class NameListener implements PropertyChangeListener
     {
         public void propertyChange(PropertyChangeEvent ev)
@@ -209,42 +209,47 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * Interface for people to be notified of changes to the
-    * current Font.
-    * @param li The new listener class
-    */
+     * Interface for people to be notified of changes to the
+     * current Font.
+     * @param li The new listener class
+     */
     public void addPropertyChangeListener(PropertyChangeListener li)
     {
         listeners.addPropertyChangeListener(li);
     }
 
     /**
-    * Interface for people to be notified of changes to the
-    * current Font.
-    * @param li The listener class to be deleted
-    */
+     * Interface for people to be notified of changes to the
+     * current Font.
+     * @param li The listener class to be deleted
+     */
     public void removePropertyChangeListener(PropertyChangeListener li)
     {
         listeners.removePropertyChangeListener(li);
     }
 
     /**
-    * When something chenages we must inform out listeners.
-    */
+     * When something chenages we must inform out listeners.
+     */
     protected void fireStateChange()
     {
+        Font old = font;
+        font = getStyle();
+
         if (!suppress_events)
-            listeners.firePropertyChange("style", font, font = getStyle());
+        {
+            listeners.firePropertyChange("style", old, font);
+        }
     }
 
     /**
-    * Model for the font style drop down
-    */
+     * Model for the font style drop down
+     */
     class CustomComboBoxModel extends AbstractListModel implements ComboBoxModel
     {
         /**
-        * Create a custom data model for a JComboBox
-        */
+         * Create a custom data model for a JComboBox
+         */
         public CustomComboBoxModel()
         {
             font_names = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
@@ -259,9 +264,9 @@ public class FontChooser extends JPanel
         }
 
         /**
-        * Make this object the current one
-        * @param selection The list item
-        */
+         * Make this object the current one
+         * @param selection The list item
+         */
         public void setSelectedItem(Object selection)
         {
             this.selection = selection;
@@ -269,9 +274,9 @@ public class FontChooser extends JPanel
         }
 
         /**
-        * Choose a Font from the available list
-        * @param font The font to make current
-        */
+         * Choose a Font from the available list
+         * @param font The font to make current
+         */
         public void setSelectedFont(Font font)
         {
             for (int i=0; i<fonts.length; i++)
@@ -286,27 +291,27 @@ public class FontChooser extends JPanel
         }
 
         /**
-        * @return The currently selected Font
-        */
+         * @return The currently selected Font
+         */
         public Object getSelectedItem()
         {
             return selection;
         }
 
         /**
-        * The number of fonts in the list
-        * @return The font count
-        */
+         * The number of fonts in the list
+         * @return The font count
+         */
         public int getSize()
         {
             return fonts.length;
         }
 
         /**
-        * Get the font at a given offset
-        * @param index The offset of the Font to retrieve
-        * @return The selected font
-        */
+         * Get the font at a given offset
+         * @param index The offset of the Font to retrieve
+         * @return The selected font
+         */
         public Object getElementAt(int index)
         {
             if (cache[index] != null)
@@ -337,29 +342,29 @@ public class FontChooser extends JPanel
     }
 
     /**
-    * An extension of JLabel that resets it's font so that
-    * it can be used to render the items in a JComboBox
-    */
+     * An extension of JLabel that resets it's font so that
+     * it can be used to render the items in a JComboBox
+     */
     class TestCellRenderer extends JLabel implements ListCellRenderer
     {
         /**
-        * Create a specialized JLabel
-        * @param combobox The thing we are custimizing for
-        */
+         * Create a specialized JLabel
+         * @param combobox The thing we are custimizing for
+         */
         public TestCellRenderer(JComboBox combobox)
         {
             setOpaque(true);
         }
 
         /**
-        * Set ourselves up to render for this particular font
-        * @param listbox The list being displyed by the ComboBox
-        * @param value The hash created by the CustomComboBoxModel
-        * @param index The item in the list to render
-        * @param selected Is this item selected?
-        * @param focus Are we pointing at the item?
-        * @return <code>this</code> customized for the given item
-        */
+         * Set ourselves up to render for this particular font
+         * @param listbox The list being displyed by the ComboBox
+         * @param value The hash created by the CustomComboBoxModel
+         * @param index The item in the list to render
+         * @param selected Is this item selected?
+         * @param focus Are we pointing at the item?
+         * @return <code>this</code> customized for the given item
+         */
         public Component getListCellRendererComponent(JList listbox, Object value, int index, boolean selected, boolean focus)
         {
             Hashtable hash = (Hashtable) value;

@@ -29,16 +29,25 @@ import java.io.File;
  */
 public class DirectoryChoice extends ReflectedChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return File.class;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return (String) orig;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         return orig;

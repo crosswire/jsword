@@ -148,10 +148,11 @@ public class GZIPBackend implements Backend
     {
         try
         {
-            VerseIndex vi = new VerseIndex(verse);
+            int testament = SwordConstants.getTestament(verse);
+            long index = SwordConstants.getIndex(verse);
 
             // 10 because we the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(comp_raf[vi.getTestament()], vi.getIndex() * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+            byte[] temp = SwordUtil.readRAF(comp_raf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
             // The data is little endian - extract the start, size and endsize
             int buffernum = SwordUtil.decodeLittleEndian32AsInt(temp, 0);
@@ -171,14 +172,14 @@ public class GZIPBackend implements Backend
             else
             {
                 // Then seek using this index into the idx file
-                temp = SwordUtil.readRAF(idx_raf[vi.getTestament()], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                temp = SwordUtil.readRAF(idx_raf[testament], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
 
                 long start = SwordUtil.decodeLittleEndian32(temp, 0);
                 int size = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
                 int endsize = SwordUtil.decodeLittleEndian32AsInt(temp, 8);
 
                 // Read from the data file.
-                byte[] compressed = SwordUtil.readRAF(text_raf[vi.getTestament()], start, size);
+                byte[] compressed = SwordUtil.readRAF(text_raf[testament], start, size);
 
                 // PENDING(joe): implement encryption?
                 // byte[] decrypted = decrypt(compressed);
@@ -249,7 +250,7 @@ public class GZIPBackend implements Backend
         
         if (!decompressor.finished() || realendsize != endsize)
         {
-            throw new BookException(Msg.GZIP_FORMAT, new Object[] { "wrong uncompressed size", } );
+            throw new BookException(Msg.GZIP_FORMAT, new Object[] { "wrong uncompressed size", });
         }
 
         return uncompressed;
@@ -296,219 +297,3 @@ public class GZIPBackend implements Backend
      */
     private static final int IDX_ENTRY_SIZE = 12;
 }
-
-// CODE THAT I'm FAIRLY SURE WE DONT NEED
-/**
- * RawVerse::linkentry  - links one entry to another
- *
- * ENT: testmt  - testament to find (0 - Bible/module introduction)
- *  destidxoff  - dest offset into .vss
- *  srcidxoff       - source offset into .vss
- *
-private void doLinkEntry(char testmt, long destidxoff, long srcidxoff)
-{
-    long bufidx;
-    long start;
-    short size;
-
-    destidxoff *= 10;
-    srcidxoff *= 10;
-
-    if (!testmt)
-        testmt = ((idxfp[1]) ? 1 : 2);
-
-    // get source
-    lseek(compfp[testmt - 1] - > getFd(), srcidxoff, SEEK_SET);
-    read(compfp[testmt - 1] - > getFd(), & bufidx, 4);
-    read(compfp[testmt - 1] - > getFd(), & start, 4);
-    read(compfp[testmt - 1] - > getFd(), & size, 2);
-
-    // write dest
-    lseek(compfp[testmt - 1] - > getFd(), destidxoff, SEEK_SET);
-    write(compfp[testmt - 1] - > getFd(), & bufidx, 4);
-    write(compfp[testmt - 1] - > getFd(), & start, 4);
-    write(compfp[testmt - 1] - > getFd(), & size, 2);
-}
-
-
-/*
- * zVerse::preptext - Prepares the text before returning it to external
- *              objects
- *
- * ENT: buf - buffer where text is stored and where to store the prep'd
- *          text.
- *
-private void prepText(SWBuf buf)
-{
-    int to;
-    int from;
-
-    char space = 0;
-    char cr = 0;
-    char realdata = 0;
-    char nlcnt = 0;
-
-    for (to = from = 0; buf[from]; from++)
-    {
-        switch (buf[from])
-        {
-            case 10 :
-                if (!realdata)
-                    continue;
-                space = (cr) ? 0 : 1;
-                cr = 0;
-                nlcnt++;
-                if (nlcnt > 1)
-                {
-                    //              *to++ = nl;
-                    buf[to++] = 10;
-                    //              *to++ = nl[1];
-                    //              nlcnt = 0;
-                }
-                continue;
-            case 13 :
-                if (!realdata)
-                    continue;
-                //          *to++ = nl[0];
-                buf[to++] = 10;
-                space = 0;
-                cr = 1;
-                continue;
-        }
-        realdata = 1;
-        nlcnt = 0;
-
-        if (space != 0)
-        {
-            space = 0;
-            if (buf[from] != ' ')
-            {
-                buf[to++] = ' ';
-                from--;
-                continue;
-            }
-        }
-        buf[to++] = buf[from];
-    }
-    buf.setSize(to);
-
-    while (to > 1)
-    { // remove trailing excess
-        to--;
-        if ((buf[to] == 10) || (buf[to] == ' '))
-        {
-            buf.setSize(to);
-        }
-        else
-        {
-            break;
-        }
-    }
-}
-
-/**
- * zVerse::settext  - Sets text for current offset
- *
- * ENT: testmt  - testament to find (0 - Bible/module introduction)
- *  idxoff  - offset into .vss
- *  buf - buffer to store
- *      len     - length of buffer (0 - null terminated)
- *
-private void doSetText(char testmt, long idxoff, String buf, long len)
-{
-
-    len = (len < 0) ? strlen(buf) : len;
-    if (!testmt)
-        testmt = ((idxfp[0]) ? 1 : 2);
-
-    if ((!dirtyCache) || (cacheBufIdx < 0))
-    {
-        cacheBufIdx = lseek(idxfp[testmt - 1].getFD(), 0, SEEK_END) / 12;
-        cacheTestament = testmt;
-        if (cacheBuf)
-            free(cacheBuf);
-        cacheBuf = (String) calloc(len + 1, 1);
-    }
-    else
-    {
-        cacheBuf = (String) ((cacheBuf) ? realloc(cacheBuf, strlen(cacheBuf) + (len + 1)) : calloc((len + 1), 1));
-    }
-
-    dirtyCache = true;
-
-    long start, outstart;
-    long outBufIdx = cacheBufIdx;
-    short size;
-    short outsize;
-
-    idxoff *= 10;
-    size = outsize = len;
-
-    start = strlen(cacheBuf);
-
-    if (!size)
-        start = outBufIdx = 0;
-
-    outBufIdx = archtosword32(outBufIdx);
-    outstart = archtosword32(start);
-    outsize = archtosword16(size);
-
-    lseek(compfp[testmt - 1].getFD(), idxoff, SEEK_SET);
-    write(compfp[testmt - 1].getFD(), outBufIdx, 4);
-    write(compfp[testmt - 1].getFD(), outstart, 4);
-    write(compfp[testmt - 1].getFD(), outsize, 2);
-    strcat(cacheBuf, buf);
-}
-
-private void flushCache()
-{
-    if (dirtyCache)
-    {
-        long idxoff;
-        long start;
-        long outstart;
-        long size;
-        long outsize;
-        long zsize;
-        long outzsize;
-
-        idxoff = cacheBufIdx * 12;
-        if (cacheBuf)
-        {
-            size = outsize = zsize = outzsize = strlen(cacheBuf);
-            if (size)
-            {
-                //          if (compressor) {
-                //              delete compressor;
-                //              compressor = new LZSSCompress();
-                //          }
-                compressor - > Buf(cacheBuf);
-                compressor - > zBuf(& zsize);
-                outzsize = zsize;
-
-                char * buf = new char[zsize * 2];
-                memcpy(buf, compressor - > zBuf(& zsize), zsize);
-                rawZFilter(buf, zsize, 1); // 1 = encipher
-
-                start = outstart = lseek(textfp[cacheTestament - 1] - > getFd(), 0, SEEK_END);
-
-                outstart = archtosword32(start);
-                outsize = archtosword32(size);
-                outzsize = archtosword32(zsize);
-
-                write(textfp[cacheTestament - 1] - > getFd(), buf, zsize);
-
-                delete[] buf;
-
-                lseek(idxfp[cacheTestament - 1] - > getFd(), idxoff, SEEK_SET);
-                write(idxfp[cacheTestament - 1] - > getFd(), & outstart, 4);
-                write(idxfp[cacheTestament - 1] - > getFd(), & outzsize, 4);
-                write(idxfp[cacheTestament - 1] - > getFd(), & outsize, 4);
-            }
-            free(cacheBuf);
-            cacheBuf = 0;
-        }
-        dirtyCache = false;
-    }
-}
-/**/

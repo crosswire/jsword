@@ -32,6 +32,9 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  */
 public class BlurAction extends DesktopAbstractAction
 {
+    /**
+     * Ctor
+     */
     public BlurAction(Desktop tools, int amount, int restrict)
     {
         super(tools,
@@ -39,12 +42,15 @@ public class BlurAction extends DesktopAbstractAction
               null,
               null,
               "Blur passage by "+amount+" verse", "Blur the current passage by "+amount+" verse.",
-              '0'+(char)amount, null);
+              '0'+(char) amount, null);
 
         this.amount = amount;
         this.restrict = restrict;
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         BibleViewPane view = getDesktop().getSelectedBibleViewPane();

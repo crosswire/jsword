@@ -29,16 +29,25 @@ import org.crosswire.common.util.Logger;
  */
 public class ClassChoice extends ReflectedChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return Class.class;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return ((Class) orig).getName();
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         try

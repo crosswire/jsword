@@ -285,7 +285,7 @@ public class TextViewPanel extends JPanel
             {
                 try
                 {
-                    InputStream pmin = new ProgressMonitorInputStream(TextViewPanel.this, "Loading text ...",in);
+                    InputStream pmin = new ProgressMonitorInputStream(TextViewPanel.this, "Loading text ...", in);
                     Reader rin = new InputStreamReader(pmin);
                     final String data = StringUtil.read(rin);
 

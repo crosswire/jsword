@@ -1,9 +1,7 @@
 
 package org.crosswire.jsword.book.sword;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -57,7 +55,11 @@ public class SwordConstants
     static final int DRIVER_RAW_GEN_BOOK = 9;
 
     /** Strings for name type matching */
-    static final String[] DRIVER_STRINGS = { "RawText", "zText", "RawCom", "zCom", "HREFCom", "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook" };
+    static final String[] DRIVER_STRINGS =
+    {
+        "RawText", "zText", "RawCom", "zCom", "HREFCom",
+        "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook"
+    };
 
     /** constants for block types */
     static final int BLOCK_BOOK = 0;
@@ -91,12 +93,16 @@ public class SwordConstants
     static final int GOF_UTF8_CANTILLATION = 1 << 12;
     static final int GOF_UTF8_GREEK_ACCENTS = 1 << 13;
     static final int GOF_UTF8_HEBREW_VOWELS = 1 << 14;
-	
-	/** Strings for global option filter */
-	static final String[] GOF_STRINGS = 
-	{"GBFStrongs","GBFFootnotes","GBFScripref","GBFMorph","GBFHeadings","ThMLStrongs","ThMLFootnotes","ThMLScripref",
-	"ThMLMorph","ThMLHeadings","ThMLVariants","THMLLemma","UTF8Cantillation","UTF8GreekAccents","UTF8HebrewVowels"};
-	
+
+    /** Strings for global option filter */
+    static final String[] GOF_STRINGS =
+    {
+        "GBFStrongs",  "GBFFootnotes",  "GBFScripref",  "GBFMorph",  "GBFHeadings",
+        "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings",
+        "ThMLVariants", "THMLLemma",
+        "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewVowels",
+    };
+
     /** Constants for direction */
     static final int DIRECTION_L_TO_R = 0;
     static final int DIRECTION_R_TO_L = 1;
@@ -130,8 +136,12 @@ public class SwordConstants
     static final int FEATURE_GLOSSARY = 1 << 6;
 
     /** Strings for feature */
-    static final String[] FEATURE_STRINGS = { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary" };
-    
+    static final String[] FEATURE_STRINGS =
+    {
+        "StrongsNumbers", "GreekDef", "HebrewDef",
+        "GreekParse", "HebrewParse", "DailyDevotion", "Glossary"
+    };
+
     /** public domain */
     static final int DISTRIBUTION_LICENSE_PD = 1;
     /** copyrighted but free for distribution */
@@ -140,49 +150,92 @@ public class SwordConstants
     static final int DISTRIBUTION_LICENSE_CBLFDBC = 1 << 2;
     /** copyrighted */
     static final int DISTRIBUTION_LICENSE_C = 1 << 3;
-    
-    /** Strings for distribution license */
-	static final String[] DISTIBUTION_LICENSE_STRINGS = {"public domain","copyrighted but free for distribution"
-			,"copyrighted by licensed for distribution by crosswire","copyrighted"};
 
-	/**
+    /** Strings for distribution license */
+    static final String[] DISTIBUTION_LICENSE_STRINGS =
+    {
+        "public domain",
+        "copyrighted but free for distribution",
+        "copyrighted by licensed for distribution by crosswire",
+        "copyrighted"
+    };
+
+    /**
+     * Get the testament of a given verse
+     */
+    static int getTestament(Verse v)
+    {
+        int ord = v.getOrdinal();
+
+        if (ord >= SwordConstants.ORDINAL_MAT11)
+        {
+            // This is an NT verse
+            return SwordConstants.TESTAMENT_NEW;
+        }
+        else
+        {
+            // This is an OT verse
+            return SwordConstants.TESTAMENT_OLD;
+        }
+    }
+
+    /**
+     * Get the sword index of the given verse
+     */
+    static long getIndex(Verse v)
+    {
+        int ord = v.getOrdinal();
+        int book = v.getBook();
+        int chapter = v.getChapter();
+        int verse = v.getVerse();
+        int testament = -1;
+
+        if (ord >= SwordConstants.ORDINAL_MAT11)
+        {
+            // This is an NT verse
+            testament = SwordConstants.TESTAMENT_NEW;
+            book = book - BibleInfo.Names.MALACHI;
+        }
+        else
+        {
+            // This is an OT verse
+            testament = SwordConstants.TESTAMENT_OLD;
+        };
+
+        int bookOffset = SwordConstants.bks[testament][book];
+        long chapOffset = SwordConstants.cps[testament][bookOffset + chapter];
+
+        return verse + chapOffset;
+    }
+
+    /**
      * array containing LUT of offsets in the chapter table.
-	 */
-	static int[][] bks;
-	
-	/**
+     */
+    private static int[][] bks;
+
+    /**
      * array containing LUT of positions of initial verses per chapter.
      * This and all the cps* below were longs but I have no idea why so I made
      * them all ints
-	 */
-	static int[][] cps;
+     */
+    private static int[][] cps;
 
     /** The start of the new testament */
-    static int ORDINAL_MAT11 = -1;
-
-	/**
+    static final int ORDINAL_MAT11 = new Verse(BibleInfo.Names.MATTHEW, 1, 1, true).getOrdinal();
+    
+    /**
      * initialise our LUTs with data shamelessly stolen from our sister project (Sword)
      * taken from canon.h.
      * There are arrays of data like this in BibleInfo. I guess we could merge
      * them at some stage.
      * @see org.crosswire.jsword.passage.BibleInfo
-	 */
-	static
-	{
-        try
-        {
-            Verse mat11 = new Verse(BibleInfo.Names.Matthew, 1, 1);
-            SwordConstants.ORDINAL_MAT11 = mat11.getOrdinal();
-        }
-        catch (NoSuchVerseException ex)
-        {
-            throw new LogicError(ex);
-        }
+     */
+    static
+    {
+        bks = new int[3][];
+        cps = new int[3][];
 
-		bks = new int[3][];
-		cps = new int[3][];
-		
-		int bksot[] =
+        int bksot[] =
         {
             0, 1, 52, 93, 121, 158,
             193, 218, 240, 245, 277, 302, 325,
@@ -191,8 +244,8 @@ public class SwordConstants
             877, 890, 905, 909, 919, 921, 926,
             934, 938, 942, 946, 949, 964
         };
-	   
-		int bksnt[] =
+       
+        int bksnt[] =
         {
             0, 1, 30, 47, 72, 94,
             123, 140, 157, 171, 178, 185, 190,
@@ -200,11 +253,11 @@ public class SwordConstants
             237, 243, 249, 253, 259, 261, 263,
             265
         };
-	   
-		bks[SwordConstants.TESTAMENT_OLD] = bksot;
-	  	bks[SwordConstants.TESTAMENT_NEW] = bksnt;
-	  	
-	  	int cpsot[] =
+
+        bks[SwordConstants.TESTAMENT_OLD] = bksot;
+        bks[SwordConstants.TESTAMENT_NEW] = bksnt;
+
+        int cpsot[] =
         {
             0, 2, 3, 35, 61, 86,
             113, 146, 169, 194, 217, 247, 280,
@@ -347,7 +400,7 @@ public class SwordConstants
             34056, 24071, 24089, 24108
         }; 
 
-		int cpsnt[] =
+        int cpsnt[] =
         {
             0, 2, 3, 29, 53, 71,
             97, 146, 181, 211, 246, 285, 328,
@@ -392,8 +445,8 @@ public class SwordConstants
             8062, 8083, 8092, 8114, 8133, 8158, 8180,
             8196, 8224
         };
-	  
-		cps[SwordConstants.TESTAMENT_OLD] = cpsot;
-		cps[SwordConstants.TESTAMENT_NEW] = cpsnt;
-	}
+
+        cps[SwordConstants.TESTAMENT_OLD] = cpsot;
+        cps[SwordConstants.TESTAMENT_NEW] = cpsnt;
+    }
 }

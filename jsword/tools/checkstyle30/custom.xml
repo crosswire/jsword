@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.0//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_0.dtd">
+
+<module name="Checker">
+
+  <property name="basedir" value="T:\share\joe\jsword\java\"/>
+
+  <!-- enforce package documentation -->
+  <module name="PackageHtml"/>
+
+  <module name="TreeWalker">
+
+    <property name="cacheFile" value="T:\share\joe\jsword\target\ant\temp\checkstyle\cachefile.dat"/>
+
+    <!-- JavaDoc checks -->
+    <module name="IllegalImport"/>
+    <module name="RedundantImport"/>
+    <module name="UnusedImports"/>
+
+    <!-- Coding style -->
+    <module name="ParenPad">
+      <property name="option" value="nospace"/>
+    </module>
+    <module name="TabCharacter"/>
+    <module name="WhitespaceAfter"/>
+    <!-- module name="WhitespaceAround"/ -->
+    <module name="NoWhitespaceAfter">
+      <property name="tokens" value="BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS"/><!-- ARRAY_INIT, -->
+    </module>
+    <module name="NoWhitespaceBefore"/>
+    <module name="OperatorWrap"/> <!-- ? -->
+    <module name="LeftCurly">
+      <property name="option" value="nl"/>
+    </module>
+    <module name="RightCurly">
+      <property name="option" value="alone"/>
+    </module>
+    <module name="NeedBraces">
+      <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/> <!-- LITERAL_IF, -->
+    </module>
+    <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,9})*$"/>
+    </module>
+    <module name="TypeName"/>
+    <module name="ConstantName"/>
+    <module name="LocalFinalVariableName">
+      <property name="format" value="[a-z][a-zA-Z0-9_]*$"/>
+    </module>
+    <module name="LocalVariableName">
+      <property name="format" value="[a-z][a-zA-Z0-9_]*$"/>
+    </module>
+    <module name="MemberName">
+      <property name="format" value="[a-z][a-zA-Z0-9_]*$"/>
+    </module>
+    <module name="MethodName"/>
+    <module name="ParameterName">
+      <property name="format" value="[a-z][a-zA-Z0-9_]*$"/>
+    </module>
+    <module name="StaticVariableName">
+      <property name="format" value="[a-z][a-zA-Z0-9_]*$"/>
+    </module>
+
+    <!-- Syntax optimizations -->
+    <!--
+    <module name="RedundantModifier">
+      <property name="tokens" value="VARIABLE_DEF"/>
+    </module>
+    -->
+    <module name="ModifierOrder"/>
+    <module name="VisibilityModifier">
+      <property name="protectedAllowed" value="true"/>
+    </module>
+
+    <!-- Make the code simpler -->
+    <module name="InnerAssignment"/>
+    <module name="IllegalInstantiation">
+      <property name="classes" value="java.lang.Boolean, java.lang.String"/>
+    </module>
+    <module name="EmptyBlock">
+      <property name="option" value="text"/>
+    </module>
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="UpperEll"/>
+    <!--
+    <module name="LineLength">
+      <property name="max" value="256"/>
+    </module>
+    <module name="MethodLength">
+      <property name="tokens" value="METHOD_DEF"/>
+      <property name="max" value="300"/>
+    </module>
+    <module name="MethodLength">
+      <property name="tokens" value="CTOR_DEF"/>
+      <property name="max" value="500"/>
+    </module>
+    -->
+    <module name="FileLength">
+      <property name="max" value="2000"/>
+    </module>
+
+    <!-- Potential Bugs -->
+    <module name="EqualsHashCode"/>
+    <module name="GenericIllegalRegexp">
+      <property name="format" value="((public)|(protected))\s+void\s+finalize\(\s*\)"/>
+    </module>
+    <!-- This is buggy, confusing static and non-static
+    <module name="HiddenField">
+      <property name="tokens" value="VARIABLE_DEF"/>
+    </module>
+    -->
+
+    <!-- Work in progress -->
+    <module name="TodoComment"/>
+
+  </module>
+
+</module>
+

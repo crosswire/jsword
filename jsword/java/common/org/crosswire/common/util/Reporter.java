@@ -1,7 +1,6 @@
 
 package org.crosswire.common.util;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.event.CaptureListener;
 import org.crosswire.common.util.event.ReporterEvent;
 import org.crosswire.common.util.event.ReporterListener;

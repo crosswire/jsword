@@ -31,16 +31,25 @@ import org.crosswire.common.util.Convert;
  */
 public class PathChoice extends ReflectedChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return String[].class;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return Convert.stringArray2String((String[]) orig, File.pathSeparator);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         return Convert.string2StringArray(orig, File.pathSeparator);

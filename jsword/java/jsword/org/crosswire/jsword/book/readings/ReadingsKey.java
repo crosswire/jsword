@@ -40,7 +40,7 @@ public class ReadingsKey implements Key, Comparable
      */
     public ReadingsKey(String text) throws ParseException
     {
-        date = df.parse(text);
+        date = DF.parse(text);
     }
 
     /**
@@ -57,7 +57,7 @@ public class ReadingsKey implements Key, Comparable
      */
     public String getText()
     {
-        return df.format(date);
+        return DF.format(date);
     }
 
     /* (non-Javadoc)
@@ -85,10 +85,10 @@ public class ReadingsKey implements Key, Comparable
     /**
      * Date formatter
      */
-    private static final DateFormat df = new SimpleDateFormat("d MMMM");
+    private static final DateFormat DF = new SimpleDateFormat("d MMMM");
     
     static
     {
-        df.setLenient(true);
+        DF.setLenient(true);
     }
 }

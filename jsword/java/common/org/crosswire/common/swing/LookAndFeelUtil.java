@@ -93,7 +93,9 @@ public class LookAndFeelUtil
             SwingUtilities.updateComponentTreeUI(comp);
 
             if (comp instanceof Window)
+            {
                 GuiUtil.restrainedRePack((Window) comp);
+            }
         }
     }
 
@@ -121,7 +123,7 @@ public class LookAndFeelUtil
      * Remove a Frame from the list that need to be updated
      * when the PLAF changes.
      * @param frame The frame to be de-registered
-    */
+     */
     public static void removeComponentToUpdate(Component comp)
     {
         windows.remove(comp);
@@ -133,9 +135,6 @@ public class LookAndFeelUtil
     /** The current PLAF (and the default value) */
     private static Class current;
 
-    /** The default Configs */
-    //private static Hashtable defaults = new Hashtable();
-
     /**
      * The log stream
      */
@@ -145,17 +144,18 @@ public class LookAndFeelUtil
      * Setup the defaults Hashtable
      */
     static
-    { 
-    	// try to set the default look and feel to the system default
-    	try
-    	{
-			current = Class.forName(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (ClassNotFoundException ex) 
-		{
-			log.warn("Failed to initialise system default LAF", ex);
-			current = javax.swing.plaf.metal.MetalLookAndFeel.class;
-		}
+    {
+        // try to set the default look and feel to the system default
+        try
+        {
+            current = Class.forName(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (ClassNotFoundException ex)
+        {
+            log.warn("Failed to initialise system default LAF", ex);
+            current = javax.swing.plaf.metal.MetalLookAndFeel.class;
+        }
+ 
         /*
         Class[] impls = Project.resource().getImplementors(LookAndFeel.class);
         for (int i=0; i<impls.length; i++)

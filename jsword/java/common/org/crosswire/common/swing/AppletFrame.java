@@ -51,8 +51,12 @@ public class AppletFrame extends JFrame
      */
     public AppletFrame(String name, Applet app, int width, int height)
     {
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e)    { close(); }
+        addWindowListener(new WindowAdapter()
+        {
+            public void windowClosing(WindowEvent e)
+            {
+                close();
+            }
         });
 
         app.setStub(new AppletFrameStub());
@@ -117,11 +121,51 @@ public class AppletFrame extends JFrame
      */
     public class AppletFrameStub implements AppletStub
     {
-        public boolean isActive()               { return true; }
-        public URL getDocumentBase()            { return null; }
-        public URL getCodeBase()                { return null; }
-        public String getParameter(String name) { return ""; }
-        public AppletContext getAppletContext() { return null; }
-        public void appletResize(int w, int h)  { }
+        /* (non-Javadoc)
+         * @see java.applet.AppletStub#isActive()
+         */
+        public boolean isActive()
+        {
+            return true;
+        }
+
+        /* (non-Javadoc)
+         * @see java.applet.AppletStub#getDocumentBase()
+         */
+        public URL getDocumentBase()
+        {
+            return null;
+        }
+
+        /* (non-Javadoc)
+         * @see java.applet.AppletStub#getCodeBase()
+         */
+        public URL getCodeBase()
+        {
+            return null;
+        }
+
+        /* (non-Javadoc)
+         * @see java.applet.AppletStub#getParameter(java.lang.String)
+         */
+        public String getParameter(String name)
+        {
+            return "";
+        }
+
+        /* (non-Javadoc)
+         * @see java.applet.AppletStub#getAppletContext()
+         */
+        public AppletContext getAppletContext()
+        {
+            return null;
+        }
+
+        /* (non-Javadoc)
+         * @see java.applet.AppletStub#appletResize(int, int)
+         */
+        public void appletResize(int w, int h)
+        {
+        }
     }
 }

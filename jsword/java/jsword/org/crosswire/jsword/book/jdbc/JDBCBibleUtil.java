@@ -121,8 +121,8 @@ public class JDBCBibleUtil
                 throw new IllegalArgumentException("Unmatched or nested delimitters");
             }
 
-            orig = orig.substring(0, next_start) +
-                   orig.substring(next_end+end_delim.length());
+            orig = orig.substring(0, next_start)
+                 + orig.substring(next_end+end_delim.length());
         }
 
         return orig;
@@ -151,19 +151,19 @@ public class JDBCBibleUtil
 
                 // If there are no more give up
                 if (next_start == -1 || next_end == -1)
+                {
                     break;
+                }
 
                 // The text to be considered for chopping out
-                String chopped_text = orig.substring(next_start+start_delim.length(),
-                                                     next_end);
+                String chopped_text = orig.substring(next_start+start_delim.length(), next_end);
 
                 // Check to see that what we are chopping out really is a number
                 try
                 {
                     Integer.parseInt(chopped_text);
 
-                    orig = orig.substring(0, next_start) +
-                           orig.substring(next_end+end_delim.length());
+                    orig = orig.substring(0, next_start) + orig.substring(next_end+end_delim.length());
                 }
                 catch (NumberFormatException ex)
                 {

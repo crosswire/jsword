@@ -203,7 +203,7 @@ public class Verifier
 
         // For every word in the word list
         // NOTE(joe): think of a new way to do this
-        Iterator it = null;//bible1.getSearcher().getStartsWith(starts);
+        Iterator it = null; //bible1.getSearcher().getStartsWith(starts);
 
         while (it.hasNext())
         {
@@ -271,12 +271,12 @@ public class Verifier
      * there is actual progress since last time.
      * @param percent The percentage of the way through that we are now
      */
-    protected void fireProgressMade(String name, int percent)
+    protected void fireProgressMade(String name, int newpercent)
     {
-        if (this.percent == percent)
+        if (this.percent == newpercent)
             return;
 
-        this.percent = percent;
+        this.percent = newpercent;
 
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -289,7 +289,9 @@ public class Verifier
             if (contents[i] == ProgressListener.class)
             {
                 if (ev == null)
+                {
                     ev = new ProgressEvent(bible2, name, percent);
+                }
 
                 ((ProgressListener) contents[i + 1]).progressMade(ev);
             }
@@ -304,7 +306,7 @@ public class Verifier
     /**
      * The Whole Bible
      */
-    public static Passage WHOLE = PassageFactory.getWholeBiblePassage();
+    public static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 
     /**
      * The list of listeners

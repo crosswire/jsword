@@ -3,8 +3,6 @@ package org.crosswire.common.util;
 
 import java.text.MessageFormat;
 
-import org.crosswire.common.util.Logger;
-
 /**
  * A LucidException adds 2 concepts to a base Exception, that of a wrapped
  * Exception, that of internationalised (i18n) messages.

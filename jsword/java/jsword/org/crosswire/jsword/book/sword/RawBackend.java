@@ -108,10 +108,11 @@ public class RawBackend implements Backend
     {
         try
         {
-            VerseIndex vi = new VerseIndex(v);
+            int testament = SwordConstants.getTestament(v);
+            long index = SwordConstants.getIndex(v);
             
             // Read the next ENTRY_SIZE byes.
-            byte[] read = SwordUtil.readRAF(idx_raf[vi.getTestament()], vi.getIndex() * ENTRY_SIZE, ENTRY_SIZE);
+            byte[] read = SwordUtil.readRAF(idx_raf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
 
             // The data is little endian - extract the start and size
             long start = SwordUtil.decodeLittleEndian32(read, 0);
@@ -120,7 +121,7 @@ public class RawBackend implements Backend
             // Read from the data file.
             // I wonder if it would be safe to do a readLine() from here.
             // Probably be safer not to risk it since we know how long it is.
-            return SwordUtil.readRAF(txt_raf[vi.getTestament()], start, size);
+            return SwordUtil.readRAF(txt_raf[testament], start, size);
         }
         catch (IOException ex)
         {

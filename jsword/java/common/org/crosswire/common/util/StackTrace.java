@@ -190,7 +190,7 @@ public final class StackTrace
         }
 
         /** Are there more stack levels */
-        int level = 0;
+        protected int level = 0;
     }
 
     /**
@@ -200,7 +200,10 @@ public final class StackTrace
     {
         return new AbstractStackEnumeration()
         {
-            public Object nextElement() { return getClassName(level++); }
+            public Object nextElement()
+            {
+                return getClassName(level++);
+            }
         };
     }
 
@@ -211,7 +214,10 @@ public final class StackTrace
     {
         return new AbstractStackEnumeration()
         {
-            public Object nextElement() { return getFunctionName(level++); }
+            public Object nextElement()
+            {
+                return getFunctionName(level++);
+            }
         };
     }
 
@@ -222,7 +228,10 @@ public final class StackTrace
     {
         return new AbstractStackEnumeration()
         {
-            public Object nextElement() { return getFullFunctionName(level++); }
+            public Object nextElement()
+            {
+                return getFullFunctionName(level++);
+            }
         };
     }
 

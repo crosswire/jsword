@@ -89,7 +89,7 @@ public class TreeConfigPane extends PanelConfigPane
         deck.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         deck.add(blank, BLANK);
 
-        dtcr.setLeafIcon(task_small);
+        dtcr.setLeafIcon(tasksm);
 
         tree.setCellRenderer(dtcr);
         tree.setPreferredSize(new Dimension(150, 150));
@@ -97,8 +97,12 @@ public class TreeConfigPane extends PanelConfigPane
         tree.setRootVisible(false);
         tree.setModel(ctm);
         tree.setSelectionRow(0);
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent ev) { selectCard(); }
+        tree.addTreeSelectionListener(new TreeSelectionListener()
+        {
+            public void valueChanged(TreeSelectionEvent ev)
+            {
+                selectCard();
+            }
         });
 
         title.setIcon(task);
@@ -201,7 +205,9 @@ public class TreeConfigPane extends PanelConfigPane
         for (int i=1; i<list.length; i++)
         {
             if (i > 1)
+            {
                 path.append(".");
+            }
 
             path.append(list[i].toString());
         }
@@ -271,16 +277,22 @@ public class TreeConfigPane extends PanelConfigPane
                     // Chop off the similar start
                     temp = temp.substring(path.length());
                     if (temp.startsWith("."))
+                    {
                         temp = temp.substring(1);
+                    }
 
                     // Chop off all after the first dot
                     int dot_pos = temp.indexOf(".");
                     if (dot_pos != -1)
+                    {
                         temp = temp.substring(0, dot_pos);
+                    }
 
                     // Add it to the list if needed
                     if (temp.length() > 0 && !retcode.contains(temp))
+                    {
                         retcode.add(temp);
+                    }
                 }
             }
 
@@ -405,7 +417,9 @@ public class TreeConfigPane extends PanelConfigPane
                 {
                     // Lazily create the event:
                     if (ev == null)
+                    {
                         ev = new TreeModelEvent(source, path);
+                    }
 
                     ((TreeModelListener) array[i+1]).treeStructureChanged(ev);
                 }

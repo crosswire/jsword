@@ -151,16 +151,22 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     {
         // Since this can not be null
         if (obj == null)
+        {
             return false;
+        }
 
         // Check that that is the same type as this
         // Don't use instanceof since that breaks inheritance
         if (!obj.getClass().equals(this.getClass()))
+        {
             return false;
+        }
 
         // If super does equals ...
-        if (super.equals(obj) == false)
+        if (!super.equals(obj))
+        {
             return false;
+        }
 
         // The real bit ...
         LocalURLBibleMetaData that = (LocalURLBibleMetaData) obj;

@@ -284,9 +284,13 @@ public class MapTableModel extends AbstractTableModel
         {
             if (!SwingUtilities.isEventDispatchThread())
             {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() { mapChanged(ev); }
-                    });
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        mapChanged(ev);
+                    }
+                });
                 return;
             }
 
@@ -314,9 +318,13 @@ public class MapTableModel extends AbstractTableModel
         {
             if (!SwingUtilities.isEventDispatchThread())
             {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() { mapRewritten(ev); }
-                    });
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        mapRewritten(ev);
+                    }
+                });
                 return;
             }
 

@@ -178,22 +178,30 @@ public abstract class SwordBookMetaData implements BookMetaData
     {
         // Since this can not be null
         if (obj == null)
+        {
             return false;
+        }
 
         // Check that 'that' is the same as this
         // Don't use instanceof since that breaks inheritance
         if (!obj.getClass().equals(this.getClass()))
+        {
             return false;
+        }
 
         // If super does equals ...
-        if (super.equals(obj) == false)
+        if (!super.equals(obj))
+        {
             return false;
+        }
 
         // The real bit ...
         SwordBookMetaData that = (SwordBookMetaData) obj;
 
         if (!getName().equals(that.getName()))
+        {
             return false;
+        }
 
         return getEdition().equals(that.getEdition());
     }

@@ -66,7 +66,7 @@ public class PassageUtil implements PassageConstants
      * @param test The restriction to be tested for validity
      * @return True if the number is OK, False otherwise
      */
-    public final static boolean isValidBlurRestriction(int test)
+    public static final boolean isValidBlurRestriction(int test)
     {
         switch (test)
         {
@@ -94,7 +94,7 @@ public class PassageUtil implements PassageConstants
      * @param test The case to be tested for validity
      * @return True if the number is OK, False otherwise
      */
-    public final static boolean isValidCase(int test)
+    public static final boolean isValidCase(int test)
     {
         switch (test)
         {
@@ -123,7 +123,7 @@ public class PassageUtil implements PassageConstants
      * @param test The accuracy to be tested for validity
      * @return True if the number is OK, False otherwise
      */
-    public final static boolean isValidAccuracy(int test)
+    public static final boolean isValidAccuracy(int test)
     {
         switch (test)
         {
@@ -145,7 +145,7 @@ public class PassageUtil implements PassageConstants
      * @param persistent_naming True to keep the old string
      *        False (default) to generate a new better one
      */
-    public final static void setPersistentNaming(boolean persistent_naming)
+    public static final void setPersistentNaming(boolean persistent_naming)
     {
         PassageUtil.persistent_naming = persistent_naming;
     }
@@ -155,7 +155,7 @@ public class PassageUtil implements PassageConstants
      * @return True if we keep the old string
      *         False (default) if we generate a new better one
      */
-    public final static boolean isPersistentNaming()
+    public static final boolean isPersistentNaming()
     {
         return persistent_naming;
     }
@@ -164,7 +164,7 @@ public class PassageUtil implements PassageConstants
      * By default do we remember the original string used to configure us?
      * @return false getDefaultPersistentNaming() is always false
      */
-    public final static boolean getDefaultPersistentNaming()
+    public static final boolean getDefaultPersistentNaming()
     {
         return false;
     }
@@ -580,7 +580,7 @@ public class PassageUtil implements PassageConstants
      * @param delim A string containing the spacing characters.
      * @return The string array
      */
-    protected final static String[] tokenize(String command, String delim)
+    protected static final String[] tokenize(String command, String delim)
     {
         StringTokenizer tokenize = new StringTokenizer(command, delim);
         String[] args = new String[tokenize.countTokens()];

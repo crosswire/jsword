@@ -52,7 +52,7 @@ public class LogPane extends EirPanel
         this.setLayout(new BorderLayout());
         this.add(pnl_shelf, BorderLayout.NORTH);
         //pnl_log.add(pnl_status, BorderLayout.CENTER);
-        this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
 
     /**

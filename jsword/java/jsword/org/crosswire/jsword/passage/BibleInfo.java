@@ -57,7 +57,7 @@ public class BibleInfo implements PassageConstants
      * @see Passage
      * @see #getCase()
      */
-    public final static void setCase(int book_case)
+    public static final void setCase(int book_case)
     {
         if (book_case < 0 || book_case > 2)
         {
@@ -74,7 +74,7 @@ public class BibleInfo implements PassageConstants
      * @see Passage
      * @see #setCase
      */
-    public final static int getCase()
+    public static final int getCase()
     {
         return BibleInfo.book_case;
     }
@@ -86,7 +86,7 @@ public class BibleInfo implements PassageConstants
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static String getLongBookName(int book) throws NoSuchVerseException
+    public static final String getLongBookName(int book) throws NoSuchVerseException
     {
         try
         {
@@ -116,7 +116,7 @@ public class BibleInfo implements PassageConstants
      * @return The short name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static String getShortBookName(int book) throws NoSuchVerseException
+    public static final String getShortBookName(int book) throws NoSuchVerseException
     {
         try
         {
@@ -145,7 +145,7 @@ public class BibleInfo implements PassageConstants
      * @return the OSIS defined short name for a book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static String getOSISName(int book) throws NoSuchVerseException
+    public static final String getOSISName(int book) throws NoSuchVerseException
     {
         try
         {
@@ -166,7 +166,7 @@ public class BibleInfo implements PassageConstants
      * @return The book number (1 to 66)
      * @exception NoSuchVerseException If the text can not be matched
      */
-    public final static int getBookNumber(String find) throws NoSuchVerseException
+    public static final int getBookNumber(String find) throws NoSuchVerseException
     {
         String match = find.toLowerCase();
 
@@ -226,7 +226,7 @@ public class BibleInfo implements PassageConstants
      * @return The book number (1 to 66)
      * @exception NoSuchVerseException If the text can not be matched
      */
-    public final static boolean isBookName(String find) throws NoSuchVerseException
+    public static final boolean isBookName(String find) throws NoSuchVerseException
     {
         String match = find.toLowerCase();
 
@@ -251,18 +251,18 @@ public class BibleInfo implements PassageConstants
      * Count the books in the Bible.
      * @return 66 always - the number of books in the Bible
      */
-    public final static int booksInBible()
+    public static final int booksInBible()
     {
-        return books_in_bible;
+        return BOOKS_IN_BIBLE;
     }
 
     /**
      * Count the chapters in the Bible.
      * @return 1189 always - the number of chapters in the Bible
      */
-    public final static int chaptersInBible()
+    public static final int chaptersInBible()
     {
-        return chapters_in_bible;
+        return CHAPTERS_IN_BIBLE;
     }
 
     /**
@@ -271,9 +271,9 @@ public class BibleInfo implements PassageConstants
      * by some versions missing out some verses as 'there in error'
      * @return 31102 always - the number of verses in the Bible
      */
-    public final static int versesInBible()
+    public static final int versesInBible()
     {
-        return verses_in_bible;
+        return VERSES_IN_BIBLE;
     }
 
     /**
@@ -282,11 +282,11 @@ public class BibleInfo implements PassageConstants
      * @return The number of chapters
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static int chaptersInBook(int book) throws NoSuchVerseException
+    public static final int chaptersInBook(int book) throws NoSuchVerseException
     {
         try
         {
-            return chapters_in_book[book-1];
+            return CHAPTERS_IN_BOOK[book-1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -304,11 +304,11 @@ public class BibleInfo implements PassageConstants
      * @return The number of verses
      * @exception NoSuchVerseException If the book or chapter number is not valid
      */
-    public final static int versesInChapter(int book, int chapter) throws NoSuchVerseException
+    public static final int versesInChapter(int book, int chapter) throws NoSuchVerseException
     {
         try
         {
-            return verses_in_chapter[book-1][chapter-1];
+            return VERSES_IN_CHAPTER[book-1][chapter-1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -327,11 +327,11 @@ public class BibleInfo implements PassageConstants
      * @return The number of verses
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static int versesInBook(int book) throws NoSuchVerseException
+    public static final int versesInBook(int book) throws NoSuchVerseException
     {
         try
         {
-            return verses_in_book[book-1];
+            return VERSES_IN_BOOK[book-1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -352,10 +352,10 @@ public class BibleInfo implements PassageConstants
      * @return The ordinal number of verses
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public final static int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException
+    public static final int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException
     {
         validate(book, chapter, verse);
-        return ordinal_at_start_of_chapter[book-1][chapter-1] + verse - 1;
+        return ORDINAL_AT_START_OF_CHAPTER[book-1][chapter-1] + verse - 1;
     }
 
     /**
@@ -366,7 +366,7 @@ public class BibleInfo implements PassageConstants
      * @return The ordinal number of the verse
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public final static int verseOrdinal(int[] ref) throws NoSuchVerseException
+    public static final int verseOrdinal(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
             throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
@@ -382,7 +382,7 @@ public class BibleInfo implements PassageConstants
      * @return An array of 3 ints, book, chapter, verse
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public final static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException
+    public static final int[] decodeOrdinal(int ordinal) throws NoSuchVerseException
     {
         if (ordinal < 1 || ordinal > BibleInfo.versesInBible())
         {
@@ -390,16 +390,16 @@ public class BibleInfo implements PassageConstants
             throw new NoSuchVerseException(Msg.BOOKS_DECODE, params);
         }
 
-        for (int b=books_in_bible; b>0; b--)
+        for (int b=BOOKS_IN_BIBLE; b>0; b--)
         {
-            if (ordinal >= ordinal_at_start_of_book[b-1])
+            if (ordinal >= ORDINAL_AT_START_OF_BOOK[b-1])
             {
                 int cib = BibleInfo.chaptersInBook(b);
                 for (int c=cib; c>0; c--)
                 {
-                    if (ordinal >= ordinal_at_start_of_chapter[b-1][c-1])
+                    if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[b-1][c-1])
                     {
-                        return new int[] { b, c, ordinal - ordinal_at_start_of_chapter[b-1][c-1] + 1 };
+                        return new int[] { b, c, ordinal - ORDINAL_AT_START_OF_CHAPTER[b-1][c-1] + 1 };
                     }
                 }
             }
@@ -418,10 +418,10 @@ public class BibleInfo implements PassageConstants
      * @param verse The verse part of the reference.
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public final static void validate(int book, int chapter, int verse) throws NoSuchVerseException
+    public static final void validate(int book, int chapter, int verse) throws NoSuchVerseException
     {
         // Check the book
-        if (book < 1 || book > books_in_bible)
+        if (book < 1 || book > BOOKS_IN_BIBLE)
         {
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
@@ -456,7 +456,7 @@ public class BibleInfo implements PassageConstants
      * @param ref An array of 3 ints, book, chapter, verse
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public final static void validate(int[] ref) throws NoSuchVerseException
+    public static final void validate(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
             throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
@@ -484,7 +484,7 @@ public class BibleInfo implements PassageConstants
      * @param ref An array of 3 ints, book, chapter, verse. This array will be changed.
      * @return The original array that has been patched.
      */
-    public final static int[] patch(int[] ref)
+    public static final int[] patch(int[] ref)
     {
         try
         {
@@ -494,9 +494,9 @@ public class BibleInfo implements PassageConstants
             if (ref[VERSE] <= 0) ref[VERSE] = 1;
 
             // If they are too big
-            if (ref[BOOK] > books_in_bible)
+            if (ref[BOOK] > BOOKS_IN_BIBLE)
             {
-                ref[BOOK] = Names.Revelation;
+                ref[BOOK] = Names.REVELATION;
                 ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                 ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                 return ref;
@@ -507,9 +507,9 @@ public class BibleInfo implements PassageConstants
                 ref[CHAPTER] -= chaptersInBook(ref[BOOK]);
                 ref[BOOK] += 1;
 
-                if (ref[BOOK] > books_in_bible)
+                if (ref[BOOK] > BOOKS_IN_BIBLE)
                 {
-                    ref[BOOK] = Names.Revelation;
+                    ref[BOOK] = Names.REVELATION;
                     ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                     ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                     return ref;
@@ -526,9 +526,9 @@ public class BibleInfo implements PassageConstants
                     ref[CHAPTER] -= chaptersInBook(ref[BOOK]);
                     ref[BOOK] += 1;
 
-                    if (ref[BOOK] > books_in_bible)
+                    if (ref[BOOK] > BOOKS_IN_BIBLE)
                     {
-                        ref[BOOK] = Names.Revelation;
+                        ref[BOOK] = Names.REVELATION;
                         ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                         ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                         return ref;
@@ -555,7 +555,7 @@ public class BibleInfo implements PassageConstants
      * @return the number of verses
      * @exception NoSuchVerseException If either reference is illegal
      */
-    public final static int verseCount(int book1, int chapter1, int verse1, int book2, int chapter2, int verse2) throws NoSuchVerseException
+    public static final int verseCount(int book1, int chapter1, int verse1, int book2, int chapter2, int verse2) throws NoSuchVerseException
     {
         int verse_ord1 = verseOrdinal(book1, chapter1, verse1);
         int verse_ord2 = verseOrdinal(book2, chapter2, verse2);
@@ -570,7 +570,7 @@ public class BibleInfo implements PassageConstants
      * @return the number of verses
      * @exception NoSuchVerseException If either reference is illegal
      */
-    public final static int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
+    public static final int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
     {
         if (ref1.length != 3 || ref2.length != 3)
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.BOOKS_ORDINAL));
@@ -583,9 +583,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isPentateuch(int book)
+    public static final boolean isPentateuch(int book)
     {
-        return book >= Names.Genesis && book <= Names.Deuteronomy;
+        return book >= Names.GENESIS && book <= Names.DEUTERONOMY;
     }
 
     /**
@@ -593,9 +593,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isHistory(int book)
+    public static final boolean isHistory(int book)
     {
-        return book >= Names.Joshua && book <= Names.Esther;
+        return book >= Names.JOSHUA && book <= Names.ESTHER;
     }
 
     /**
@@ -603,9 +603,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isPoetry(int book)
+    public static final boolean isPoetry(int book)
     {
-        return book >= Names.Job && book <= Names.SongOfSolomon;
+        return book >= Names.JOB && book <= Names.SONGOFSOLOMON;
     }
 
     /**
@@ -613,9 +613,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isMajorProphet(int book)
+    public static final boolean isMajorProphet(int book)
     {
-        return book >= Names.Isaiah && book <= Names.Daniel;
+        return book >= Names.ISAIAH && book <= Names.DANIEL;
     }
 
     /**
@@ -623,9 +623,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isMinorProphet(int book)
+    public static final boolean isMinorProphet(int book)
     {
-        return book >= Names.Hosea && book <= Names.Malachi;
+        return book >= Names.HOSEA && book <= Names.MALACHI;
     }
 
     /**
@@ -633,9 +633,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isGospel(int book)
+    public static final boolean isGospel(int book)
     {
-        return book >= Names.Matthew && book <= Names.John;
+        return book >= Names.MATTHEW && book <= Names.JOHN;
     }
 
     /**
@@ -643,9 +643,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isGospelOrActs(int book)
+    public static final boolean isGospelOrActs(int book)
     {
-        return book >= Names.Matthew && book <= Names.Acts;
+        return book >= Names.MATTHEW && book <= Names.ACTS;
     }
 
     /**
@@ -653,9 +653,9 @@ public class BibleInfo implements PassageConstants
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public final static boolean isLetter(int book)
+    public static final boolean isLetter(int book)
     {
-        return book >= Names.Romans && book <= Names.Jude;
+        return book >= Names.ROMANS && book <= Names.JUDE;
     }
 
     /**
@@ -664,17 +664,17 @@ public class BibleInfo implements PassageConstants
      * @return True The section
      * @see BibleInfo.Section
      */
-    public final static int getSection(int book)
+    public static final int getSection(int book)
     {
         // Ordered by section size for speed
-        if (isLetter(book))       return Section.Letters;        // 21
-        if (isHistory(book))      return Section.History;        // 12
-        if (isMinorProphet(book)) return Section.MinorProphets;  // 12
-        if (isGospelOrActs(book)) return Section.GospelsAndActs; // 5
-        if (isPentateuch(book))   return Section.Pentateuch;     // 5
-        if (isPoetry(book))       return Section.Poetry;         // 5
-        if (isMajorProphet(book)) return Section.MajorProphets;  // 5
-        return Section.Revelation;
+        if (isLetter(book))       return Section.LETTERS;          // 21
+        if (isHistory(book))      return Section.HISTORY;          // 12
+        if (isMinorProphet(book)) return Section.MINOR_PROPHETS;   // 12
+        if (isGospelOrActs(book)) return Section.GOSPELS_AND_ACTS; // 5
+        if (isPentateuch(book))   return Section.PENTATEUCH;       // 5
+        if (isPoetry(book))       return Section.POETRY;           // 5
+        if (isMajorProphet(book)) return Section.MAJOR_PROPHETS;   // 5
+        return Section.REVELATION;
     }
 
     /**
@@ -683,9 +683,9 @@ public class BibleInfo implements PassageConstants
      * @return The number of books in the given section
      * @see #getSection(int)
      */
-    public final static int booksInSection(int section)
+    public static final int booksInSection(int section)
     {
-        return books_in_section[section];
+        return BOOKS_IN_SECTION[section];
     }
 
     /**
@@ -695,7 +695,7 @@ public class BibleInfo implements PassageConstants
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public final static String getSectionName(int section) throws NoSuchVerseException
+    public static final String getSectionName(int section) throws NoSuchVerseException
     {
         if (section == 0)
             throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section) });
@@ -736,14 +736,14 @@ public class BibleInfo implements PassageConstants
      */
     public static class Section
     {
-        public static final byte Pentateuch = 1;
-        public static final byte History = 2;
-        public static final byte Poetry = 3;
-        public static final byte MajorProphets = 4;
-        public static final byte MinorProphets = 5;
-        public static final byte GospelsAndActs = 6;
-        public static final byte Letters = 7;
-        public static final byte Revelation = 8;
+        public static final byte PENTATEUCH = 1;
+        public static final byte HISTORY = 2;
+        public static final byte POETRY = 3;
+        public static final byte MAJOR_PROPHETS = 4;
+        public static final byte MINOR_PROPHETS = 5;
+        public static final byte GOSPELS_AND_ACTS = 6;
+        public static final byte LETTERS = 7;
+        public static final byte REVELATION = 8;
     }
 
     /**
@@ -751,72 +751,72 @@ public class BibleInfo implements PassageConstants
      */
     public static class Names
     {
-        public static final byte Genesis = 1;
-        public static final byte Exodus = 2;
-        public static final byte Leviticus = 3;
-        public static final byte Numbers = 4;
-        public static final byte Deuteronomy = 5;
-        public static final byte Joshua = 6;
-        public static final byte Judges = 7;
-        public static final byte Ruth = 8;
-        public static final byte Samuel1 = 9;
-        public static final byte Samuel2 = 10;
-        public static final byte Kings1 = 11;
-        public static final byte Kings2 = 12;
-        public static final byte Chronicles1 = 13;
-        public static final byte Chronicles2 = 14;
-        public static final byte Ezra = 15;
-        public static final byte Nehemiah = 16;
-        public static final byte Esther = 17;
-        public static final byte Job = 18;
-        public static final byte Psalms = 19;
-        public static final byte Proberbs = 20;
-        public static final byte Ecclesiastes = 21;
-        public static final byte SongOfSolomon = 22;
-        public static final byte Isaiah = 23;
-        public static final byte Jeremiah = 24;
-        public static final byte Lamentations = 25;
-        public static final byte Ezekiel = 26;
-        public static final byte Daniel = 27;
-        public static final byte Hosea = 28;
-        public static final byte Joel = 29;
-        public static final byte Amos = 30;
-        public static final byte Obdiah = 31;
-        public static final byte Jonah = 32;
-        public static final byte Micah = 33;
-        public static final byte Nahum = 34;
-        public static final byte Habakuk = 35;
-        public static final byte Zephaniah = 36;
-        public static final byte Haggai = 37;
-        public static final byte Zechariah = 38;
-        public static final byte Malachi = 39;
-        public static final byte Matthew = 40;
-        public static final byte Mark = 41;
-        public static final byte Luke = 42;
-        public static final byte John = 43;
-        public static final byte Acts = 44;
-        public static final byte Romans = 45;
-        public static final byte Corinthians1 = 46;
-        public static final byte Corinthians2 = 47;
-        public static final byte Galatians = 48;
-        public static final byte Ephesians = 49;
-        public static final byte Philippians = 50;
-        public static final byte Colossians = 51;
-        public static final byte Thessalonians1 = 52;
-        public static final byte Thessalonians2 = 53;
-        public static final byte Timothy1 = 54;
-        public static final byte Timothy2 = 55;
-        public static final byte Titus = 56;
-        public static final byte Philemon = 57;
-        public static final byte Hebrews = 58;
-        public static final byte James = 59;
-        public static final byte Peter1 = 60;
-        public static final byte Peter2 = 61;
-        public static final byte John1 = 62;
-        public static final byte John2 = 63;
-        public static final byte John3 = 64;
-        public static final byte Jude = 65;
-        public static final byte Revelation = 66;
+        public static final byte GENESIS = 1;
+        public static final byte EXODUS = 2;
+        public static final byte LEVITICUS = 3;
+        public static final byte NUMBERS = 4;
+        public static final byte DEUTERONOMY = 5;
+        public static final byte JOSHUA = 6;
+        public static final byte JUDGES = 7;
+        public static final byte RUTH = 8;
+        public static final byte SAMUEL1 = 9;
+        public static final byte SAMUEL2 = 10;
+        public static final byte KINGS1 = 11;
+        public static final byte KINGS2 = 12;
+        public static final byte CHRONICLES1 = 13;
+        public static final byte CHRONICLES2 = 14;
+        public static final byte EZRA = 15;
+        public static final byte NEHEMIAH = 16;
+        public static final byte ESTHER = 17;
+        public static final byte JOB = 18;
+        public static final byte PSALMS = 19;
+        public static final byte PROBERBS = 20;
+        public static final byte ECCLESIASTES = 21;
+        public static final byte SONGOFSOLOMON = 22;
+        public static final byte ISAIAH = 23;
+        public static final byte JEREMIAH = 24;
+        public static final byte LAMENTATIONS = 25;
+        public static final byte EZEKIEL = 26;
+        public static final byte DANIEL = 27;
+        public static final byte HOSEA = 28;
+        public static final byte JOEL = 29;
+        public static final byte AMOS = 30;
+        public static final byte OBDIAH = 31;
+        public static final byte JONAH = 32;
+        public static final byte MICAH = 33;
+        public static final byte NAHUM = 34;
+        public static final byte HABAKUK = 35;
+        public static final byte ZEPHANIAH = 36;
+        public static final byte HAGGAI = 37;
+        public static final byte ZECHARIAH = 38;
+        public static final byte MALACHI = 39;
+        public static final byte MATTHEW = 40;
+        public static final byte MARK = 41;
+        public static final byte LUKE = 42;
+        public static final byte JOHN = 43;
+        public static final byte ACTS = 44;
+        public static final byte ROMANS = 45;
+        public static final byte CORINTHIANS1 = 46;
+        public static final byte CORINTHIANS2 = 47;
+        public static final byte GALATIANS = 48;
+        public static final byte EPHESIANS = 49;
+        public static final byte PHILIPPIANS = 50;
+        public static final byte COLOSSIANS = 51;
+        public static final byte THESSALONIANS1 = 52;
+        public static final byte THESSALONIANS2 = 53;
+        public static final byte TIMOTHY1 = 54;
+        public static final byte TIMOTHY2 = 55;
+        public static final byte TITUS = 56;
+        public static final byte PHILEMON = 57;
+        public static final byte HEBREWS = 58;
+        public static final byte JAMES = 59;
+        public static final byte PETER1 = 60;
+        public static final byte PETER2 = 61;
+        public static final byte JOHN1 = 62;
+        public static final byte JOHN2 = 63;
+        public static final byte JOHN3 = 64;
+        public static final byte JUDE = 65;
+        public static final byte REVELATION = 66;
     }
 
     /** Used for methods with int[3] parameters, for the book */
@@ -831,21 +831,72 @@ public class BibleInfo implements PassageConstants
     /** The full names of the book of the Bible, in mixed case */
     private static String[] full_books =
     {
-        "Genesis",      "Exodus",       "Leviticus",    "Numbers",      "Deuteronomy",
-        "Joshua",       "Judges",       "Ruth",         "1 Samuel",     "2 Samuel",
-        "1 Kings",      "2 Kings",      "1 Chronicles", "2 Chronicles",
-        "Ezra",         "Nehemiah",     "Esther",
-        "Job",          "Psalms",       "Proberbs",     "Ecclesiastes", "Song of Solomon",
-        "Isaiah",       "Jeremiah",     "Lamentations",
-        "Ezekiel",      "Daniel",       "Hosea",        "Joel",         "Amos",
-        "Obdiah",       "Jonah",        "Micah",        "Nahum",
-        "Habakuk",      "Zephaniah",    "Haggai",       "Zechariah",    "Malachi",
-        "Matthew",      "Mark",         "Luke",         "John",         "Acts",
-        "Romans",       "1 Corinthians","2 Corinthians","Galatians",    "Ephesians",
-        "Philippians",  "Colossians",   "1 Thessalonians","2 Thessalonians",
-        "1 Timothy",    "2 Timothy",    "Titus",        "Philemon",     "Hebrews",
-        "James",        "1 Peter",      "2 Peter",
-        "1 John",       "2 John",       "3 John",       "Jude",         "Revelation",
+        "Genesis",
+        "Exodus",
+        "Leviticus",
+        "Numbers",
+        "Deuteronomy",
+        "Joshua",
+        "Judges",
+        "Ruth",
+        "1 Samuel",
+        "2 Samuel",
+        "1 Kings",
+        "2 Kings",
+        "1 Chronicles",
+        "2 Chronicles",
+        "Ezra",
+        "Nehemiah",
+        "Esther",
+        "Job",
+        "Psalms",
+        "Proberbs",
+        "Ecclesiastes",
+        "Song of Solomon",
+        "Isaiah",
+        "Jeremiah",
+        "Lamentations",
+        "Ezekiel",
+        "Daniel",
+        "Hosea",
+        "Joel",
+        "Amos",
+        "Obdiah",
+        "Jonah",
+        "Micah",
+        "Nahum",
+        "Habakuk",
+        "Zephaniah",
+        "Haggai",
+        "Zechariah",
+        "Malachi",
+        "Matthew",
+        "Mark",
+        "Luke",
+        "John",
+        "Acts",
+        "Romans",
+        "1 Corinthians",
+        "2 Corinthians",
+        "Galatians",
+        "Ephesians",
+        "Philippians",
+        "Colossians",
+        "1 Thessalonians",
+        "2 Thessalonians",
+        "1 Timothy",
+        "2 Timothy",
+        "Titus",
+        "Philemon",
+        "Hebrews",
+        "James",
+        "1 Peter",
+        "2 Peter",
+        "1 John",
+        "2 John",
+        "3 John",
+        "Jude",
+        "Revelation",
     };
 
     /** Standard shortened names for the book of the Bible, in mixed case */
@@ -856,7 +907,7 @@ public class BibleInfo implements PassageConstants
         "Ecc",  "Son",  "Isa",  "Jer",  "Lam",  "Eze",  "Dan",  "Hos",  "Joe",  "Amo",
         "Obd",  "Jon",  "Mic",  "Nah",  "Hab",  "Zep",  "Hag",  "Zec",  "Mal",  "Mat",
         "Mar",  "Luk",  "Joh",  "Act",  "Rom",  "1Co",  "2Co",  "Gal",  "Eph",  "Phili",
-        "Col",  "1Th",  "2Th",  "1Ti",  "2Ti",  "Tit",  "Phile","Heb",  "Jam",  "1Pe",
+        "Col",  "1Th",  "2Th",  "1Ti",  "2Ti",  "Tit",  "Phile", "Heb", "Jam",  "1Pe",
         "2Pe",  "1Jo",  "2Jo",  "3Jo",  "Jude", "Rev",
     };
 
@@ -985,16 +1036,16 @@ public class BibleInfo implements PassageConstants
     // private static String[][] alt_books_upper;
 
     /** Constant for the number of books in the Bible */
-    private static final int books_in_bible = 66;
+    private static final int BOOKS_IN_BIBLE = 66;
 
     /** Constant for the number of chapters in the Bible */
-    private static final int chapters_in_bible = 1189;
+    private static final int CHAPTERS_IN_BIBLE = 1189;
 
     /** Constant for the number of chapters in each book */
-    private static final int[] chapters_in_book =
+    private static final int[] CHAPTERS_IN_BOOK =
     {
         50, 40, 27, 36, 34, 24, 21,  4, 31, 24,
-        22, 25, 29, 36, 10, 13, 10, 42,150, 31,
+        22, 25, 29, 36, 10, 13, 10, 42, 150, 31,
         12,  8, 66, 52,  5, 48, 12, 14,  3,  9,
         1,  4,  7,  3,  3,  3,  2, 14,  4, 28,
         16, 24, 21, 28, 16, 16, 13,  6,  6,  4,
@@ -1003,10 +1054,10 @@ public class BibleInfo implements PassageConstants
     };
 
     /** Constant for the number of verses in the Bible */
-    private static final int verses_in_bible = 31102;
+    private static final int VERSES_IN_BIBLE = 31102;
 
     /** Constant for the number of verses in each book */
-    private static final int[] verses_in_book =
+    private static final int[] VERSES_IN_BOOK =
     {
         1533, 1213,  859, 1288,  959,  658,  618,   85,  810,  695,
         816,  719,  942,  822,  280,  406,  167, 1070, 2461,  915,
@@ -1018,7 +1069,7 @@ public class BibleInfo implements PassageConstants
     };
 
     /** Constant for the number of verses in each chapter */
-    private static final int[][] verses_in_chapter =
+    private static final int[][] VERSES_IN_CHAPTER =
     {
         { 31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26 },
         { 22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22, 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31, 43, 38 },
@@ -1038,7 +1089,7 @@ public class BibleInfo implements PassageConstants
         { 11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31 },
         { 22, 23, 15, 17, 14, 14, 10, 17, 32, 03 },
         { 22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28, 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25,  6, 14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41, 30, 24, 34, 17 },
-        {  6, 12,  8,  8, 12, 10, 17,  9, 20, 18,  7,  8,  6,  7,  5, 11, 15, 50, 14,  9, 13, 31,  6, 10, 22, 12, 14,  9, 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13, 11,  5, 26, 17, 11,  9, 14, 20, 23, 19,  9,  6,  7, 23, 13, 11, 11, 17, 12,  8, 12, 11, 10, 13, 20,  7, 35, 36,  5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19, 16,  8, 18, 12, 13, 17,  7, 18, 52, 17, 16, 15,  5, 23, 11, 13, 12,  9,  9,  5,  8, 28, 22, 35, 45, 48, 43, 13, 31,  7, 10, 10,  9,  8, 18, 19,  2, 29,176,  7,  8,  9,  4,  8,  5,  6,  5,  6,  8,  8,  3, 18,  3,  3, 21, 26, 9,  8, 24, 13, 10,  7, 12, 15, 21, 10, 20, 14,  9,  6 },
+        {  6, 12,  8,  8, 12, 10, 17,  9, 20, 18,  7,  8,  6,  7,  5, 11, 15, 50, 14,  9, 13, 31,  6, 10, 22, 12, 14,  9, 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13, 11,  5, 26, 17, 11,  9, 14, 20, 23, 19,  9,  6,  7, 23, 13, 11, 11, 17, 12,  8, 12, 11, 10, 13, 20,  7, 35, 36,  5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19, 16,  8, 18, 12, 13, 17,  7, 18, 52, 17, 16, 15,  5, 23, 11, 13, 12,  9,  9,  5,  8, 28, 22, 35, 45, 48, 43, 13, 31,  7, 10, 10,  9,  8, 18, 19,  2, 29, 176,  7,  8,  9,  4,  8,  5,  6,  5,  6,  8,  8,  3, 18,  3,  3, 21, 26, 9,  8, 24, 13, 10,  7, 12, 15, 21, 10, 20, 14,  9,  6 },
         { 33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25, 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28, 28, 27, 28, 27, 33, 31 },
         { 18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14 },
         { 17, 17, 11, 16, 16, 13, 13, 14 },
@@ -1089,7 +1140,7 @@ public class BibleInfo implements PassageConstants
     };
 
     /** Constant for the ordinal number of the first verse in each book */
-    private static final int[] ordinal_at_start_of_book =
+    private static final int[] ORDINAL_AT_START_OF_BOOK =
     {
         1,  1534,  2747,  3606,  4894,  5853,  6511,  7129,  7214,  8024,
         8719,  9535, 10254, 11196, 12018, 12298, 12704, 12871, 13941, 16402,
@@ -1106,7 +1157,7 @@ public class BibleInfo implements PassageConstants
      * this module) then you will need to cut the psalms line in half to
      * get it to compile under JBuilder.
      */
-    private static final int[][] ordinal_at_start_of_chapter =
+    private static final int[][] ORDINAL_AT_START_OF_CHAPTER =
     {
         {     1,    32,    57,    81,   107,   139,   161,   185,   207,   236,   268,   300,   320,   338,   362,   383,   399,   426,   459,   497,   515,   549,   573,   593,   660,   694,   729,   775,   797,   832,   875,   930,   962,   982,  1013,  1042,  1085,  1121,  1151,  1174,  1197,  1254,  1292,  1326,  1360,  1388,  1422,  1453,  1475,  1508, },
         {  1534,  1556,  1581,  1603,  1634,  1657,  1687,  1712,  1744,  1779,  1808,  1818,  1869,  1891,  1922,  1949,  1985,  2001,  2028,  2053,  2079,  2115,  2146,  2179,  2197,  2237,  2274,  2295,  2338,  2384,  2422,  2440,  2475,  2498,  2533,  2568,  2606,  2635,  2666,  2709, },
@@ -1180,7 +1231,7 @@ public class BibleInfo implements PassageConstants
     /**
      * The number of books in each section
      */
-    private static final int[] books_in_section =
+    private static final int[] BOOKS_IN_SECTION =
     {
         0, // Does not exist
         5, // Pentateuch = 1;
@@ -1210,7 +1261,7 @@ public class BibleInfo implements PassageConstants
             String key = "";
             boolean success = true;
 
-            for (int i=0; i<BibleInfo.books_in_bible; i++)
+            for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
             {
                 // Read any customized versions of the Book names
                 try
@@ -1272,16 +1323,16 @@ public class BibleInfo implements PassageConstants
         try
         {
             // Create the book name arrays
-            full_books_lower = new String[books_in_bible];
-            short_books_lower = new String[books_in_bible];
-            full_books_upper = new String[books_in_bible];
-            short_books_upper = new String[books_in_bible];
-            alt_books_lower = new String[books_in_bible][];
+            full_books_lower = new String[BOOKS_IN_BIBLE];
+            short_books_lower = new String[BOOKS_IN_BIBLE];
+            full_books_upper = new String[BOOKS_IN_BIBLE];
+            short_books_upper = new String[BOOKS_IN_BIBLE];
+            alt_books_lower = new String[BOOKS_IN_BIBLE][];
 
             sections_lower = new String[sections.length];
             sections_upper = new String[sections.length];
 
-            for (int i=0; i<BibleInfo.books_in_bible; i++)
+            for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
             {
                 // Cache the upper and lower case versions of the book names
                 full_books_lower[i] = full_books[i].toLowerCase();
@@ -1309,11 +1360,11 @@ public class BibleInfo implements PassageConstants
     }
 
     /**
-    * This is the code used to create ordinal_at_start_of_chapter and
-    * ordinal_at_start_of_book. It is usually commented out because I
-    * don't see any point in making .class files bigger for no reason
-    * and this is needed only very rarely.
-    *
+     * This is the code used to create ordinal_at_start_of_chapter and
+     * ordinal_at_start_of_book. It is usually commented out because I
+     * don't see any point in making .class files bigger for no reason
+     * and this is needed only very rarely.
+     *
     public static void main(String[] args) throws NoSuchVerseException
     {
         int verse_num;

@@ -228,19 +228,19 @@ public class Strongs
     }
 
     /** This is a Hebrew word */
-    public final static int HEBREW = 0;
+    public static final int HEBREW = 0;
 
     /** This is a Greek word */
-    public final static int GREEK = 1;
+    public static final int GREEK = 1;
 
     /** This is a Parsing note */
-    public final static int PARSING = 2;
+    public static final int PARSING = 2;
 
     /** This largest legal value for a Greek number */
-    public final static int GREEK_MAX = 5624;
+    public static final int GREEK_MAX = 5624;
 
     /** This largest legal value for a Hebrew number */
-    public final static int HEBREW_MAX = 8674;
+    public static final int HEBREW_MAX = 8674;
 
     /** The type of this Strongs number */
     private int type = 0;

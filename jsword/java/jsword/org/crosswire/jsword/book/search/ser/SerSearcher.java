@@ -378,13 +378,13 @@ public class SerSearcher implements Searcher
      */
     public static class Section
     {
-        public Section(long offset, int length)
+        protected Section(long offset, int length)
         {
             this.offset = offset;
             this.length = length;
         }
 
-        public long offset;
-        public int length;
+        protected long offset;
+        protected int length;
     }
 }

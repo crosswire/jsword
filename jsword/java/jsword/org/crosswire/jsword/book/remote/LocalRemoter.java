@@ -176,7 +176,7 @@ public class LocalRemoter implements Remoter
     /**
      * The filter to select the bibles we are exporting
      */
-    private static BookFilter FILTER = BookFilters.both(BookFilters.getFaster(Books.SPEED_SLOWEST), BookFilters.getBibles());
+    private static final BookFilter FILTER = BookFilters.both(BookFilters.getFaster(Books.SPEED_SLOWEST), BookFilters.getBibles());
 
     /**
      * To help finding uids from bmds

@@ -111,13 +111,17 @@ public class CustomTokenizer
      * @param sought The string to be searched for
      * @return The chatacter class
      */
-    private final static int charType(char sought, String commands)
+    private static final int charType(char sought, String commands)
     {
         if (Character.isWhitespace(sought))
+        {
             return CHAR_SPACE;
+        }
 
-        if (commands.indexOf(""+sought) != -1)
+        if (commands.indexOf("" + sought) != -1)
+        {
             return CHAR_COMMAND;
+        }
 
         return CHAR_PARAM;
     }
@@ -132,7 +136,9 @@ public class CustomTokenizer
     {
         Object word_obj = commands.get(word);
         if (word_obj == null)
+        {
             word_obj = new DefaultParamWord(word);
+        }
 
         output.add(word_obj);
     }

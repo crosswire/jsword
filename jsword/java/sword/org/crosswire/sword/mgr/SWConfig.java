@@ -11,13 +11,13 @@ import java.util.List;
 
 public class SWConfig {
 
-    private String filename;
+    //private String filename;
     private HashMap propMap = null;
 
     public SWConfig(String filename)
         throws IOException
     {
-        this.filename = filename;
+        //this.filename = filename;
         propMap = new HashMap();
         load(filename);
     }

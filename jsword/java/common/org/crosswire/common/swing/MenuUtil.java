@@ -48,17 +48,17 @@ import org.apache.commons.lang.StringUtils;
 public class MenuUtil
 {
     /**
-    * Create the menubar for the app.  By default this pulls the
-    * definition of the menu from the associated resource file.
-    */
+     * Create the menubar for the app.  By default this pulls the
+     * definition of the menu from the associated resource file.
+     */
     public static void setResourceBundle(ResourceBundle resource)
     {
         MenuUtil.resource = resource;
     }
 
     /**
-    *
-    */
+     *
+     */
     public static void addActions(Action[] actions)
     {
         for (int i=0; i<actions.length; i++)
@@ -68,9 +68,9 @@ public class MenuUtil
     }
 
     /**
-    * Create the menubar for the app.  By default this pulls the
-    * definition of the menu from the associated resource file.
-    */
+     * Create the menubar for the app.  By default this pulls the
+     * definition of the menu from the associated resource file.
+     */
     public static JMenuBar createMenubar()
     {
         JMenuBar menubar = new JMenuBar();
@@ -85,13 +85,13 @@ public class MenuUtil
     }
 
     /**
-    * Create a menu for the app.  By default this pulls the
-    * definition of the menu from the associated resource file.
-    */
+     * Create a menu for the app.  By default this pulls the
+     * definition of the menu from the associated resource file.
+     */
     public static JMenu createMenu(String name)
     {
         String[] item_names = StringUtils.split(getResourceString(name));
-        JMenu menu = new JMenu(getResourceString(name+labelSuffix));
+        JMenu menu = new JMenu(getResourceString(name+SUFFIX_LABEL));
         for (int i=0; i<item_names.length; i++)
         {
             if (item_names[i].equals("-"))
@@ -108,20 +108,20 @@ public class MenuUtil
     }
 
     /**
-    * This is the hook through which all menu items are
-    * created.  It registers the result with the menuitem
-    * hashtable so that it can be fetched with getMenuItem().
-    */
+     * This is the hook through which all menu items are
+     * created.  It registers the result with the menuitem
+     * hashtable so that it can be fetched with getMenuItem().
+     */
     protected static JMenuItem createMenuItem(String name)
     {
-        JMenuItem menuitem = new JMenuItem(getResourceString(name+labelSuffix));
-        URL url = getResource(name+imageSuffix);
+        JMenuItem menuitem = new JMenuItem(getResourceString(name+SUFFIX_LABEL));
+        URL url = getResource(name+SUFFIX_IMAGE);
         if (url != null)
         {
             menuitem.setHorizontalTextPosition(JButton.RIGHT);
             menuitem.setIcon(new ImageIcon(url));
         }
-        String action_name = getResourceString(name+actionSuffix);
+        String action_name = getResourceString(name+SUFFIX_ACTIOIN);
         if (action_name == null) action_name = name;
         menuitem.setActionCommand(action_name);
         Action action = getAction(action_name);
@@ -138,27 +138,31 @@ public class MenuUtil
         menuitems.put(name, menuitem);
         return menuitem;
     }
+    
+    /**
+     *
+     */
     protected static Action getAction(String cmd)
     {
         return (Action) commands.get(cmd);
     }
 
     /**
-    * Fetch the menu item that was created for the given
-    * command.
-    * @param cmd  Name of the action.
-    * @return item created for the given command or null
-    *  if one wasn't created.
-    */
+     * Fetch the menu item that was created for the given
+     * command.
+     * @param cmd  Name of the action.
+     * @return item created for the given command or null
+     *  if one wasn't created.
+     */
     protected JMenuItem getMenuItem(String cmd)
     {
         return (JMenuItem) menuitems.get(cmd);
     }
 
     /**
-    * Create the toolbar.  By default this reads the
-    * resource file for the definition of the toolbar.
-    */
+     * Create the toolbar.  By default this reads the
+     * resource file for the definition of the toolbar.
+     */
     public static Component createToolbar()
     {
         JToolBar toolbar = new JToolBar();
@@ -197,15 +201,18 @@ public class MenuUtil
      */
     protected static JButton createToolbarButton(String key)
     {
-        URL url = getResource(key + imageSuffix);
+        URL url = getResource(key + SUFFIX_IMAGE);
         JButton button = new JButton(new ImageIcon(url)
         {
-            public float getAlignmentY() { return 0.5f; }
+            public float getAlignmentY()
+            {
+                return 0.5f;
+            }
         });
         button.setRequestFocusEnabled(false);
-        button.setMargin(new Insets(1,1,1,1));
+        button.setMargin(new Insets(1, 1, 1, 1));
 
-        String astr = getResourceString(key + actionSuffix);
+        String astr = getResourceString(key + SUFFIX_ACTIOIN);
         if (astr == null) astr = key;
         Action a = getAction(astr);
         if (a != null)
@@ -218,24 +225,28 @@ public class MenuUtil
             button.setEnabled(false);
         }
 
-        String tip = getResourceString(key + tipSuffix);
+        String tip = getResourceString(key + SUFFIX_TIP);
         if (tip != null) button.setToolTipText(tip);
 
         return button;
     }
 
-    // Yarked from JMenu, ideally this would be public.
+    /**
+     * Yarked from JMenu, ideally this would be public.
+     * @see JMenu#createActionChangeListener(javax.swing.JMenuItem)
+     */
     protected static PropertyChangeListener createActionChangeListener(JMenuItem b)
     {
         return new ActionChangedListener(b);
     }
 
-    // Yarked from JMenu, ideally this would be public.
+    /**
+     * Yarked from JMenu, ideally this would be public.
+     * @see JMenu
+     */
     private static class ActionChangedListener implements PropertyChangeListener
     {
-        JMenuItem menuItem;
-
-        ActionChangedListener(JMenuItem mi)
+        private ActionChangedListener(JMenuItem mi)
         {
             super();
             this.menuItem = mi;
@@ -256,11 +267,13 @@ public class MenuUtil
                 menuItem.setEnabled(enabled.booleanValue());
             }
         }
+
+        private JMenuItem menuItem;
     }
 
     /**
-    * Get a string from a resource bundle
-    */
+     * Get a string from a resource bundle
+     */
     protected static String getResourceString(String name)
     {
         try
@@ -272,9 +285,10 @@ public class MenuUtil
             return null;
         }
     }
+
     /**
-    * Get a URL from a resource bundle
-    */
+     * Get a URL from a resource bundle
+     */
     protected static URL getResource(String key)
     {
         String name = getResourceString(key);
@@ -282,33 +296,34 @@ public class MenuUtil
 
         return resource.getClass().getResource(name);
     }
-    /**
-    * Suffix applied to the key used in resource file
-    * lookups for an image.
-    */
-    public static final String imageSuffix = "Image";
 
     /**
-    * Suffix applied to the key used in resource file
-    * lookups for a label.
-    */
-    public static final String labelSuffix = "Label";
+     * Suffix applied to the key used in resource file
+     * lookups for an image.
+     */
+    public static final String SUFFIX_IMAGE = "Image";
 
     /**
-    * Suffix applied to the key used in resource file
-    * lookups for an action.
-    */
-    public static final String actionSuffix = "Action";
+     * Suffix applied to the key used in resource file
+     * lookups for a label.
+     */
+    public static final String SUFFIX_LABEL = "Label";
 
     /**
-    * Suffix applied to the key used in resource file
-    * lookups for tooltip text.
-    */
-    public static final String tipSuffix = "Tooltip";
+     * Suffix applied to the key used in resource file
+     * lookups for an action.
+     */
+    public static final String SUFFIX_ACTIOIN = "Action";
+
+    /**
+     * Suffix applied to the key used in resource file
+     * lookups for tooltip text.
+     */
+    public static final String SUFFIX_TIP = "Tooltip";
 
     /*
-    * Data
-    */
+     * Data
+     */
     private static Hashtable menuitems = new Hashtable();
     private static Hashtable commands = new Hashtable();
     private static ResourceBundle resource = null;

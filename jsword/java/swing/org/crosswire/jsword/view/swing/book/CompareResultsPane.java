@@ -81,7 +81,10 @@ public class CompareResultsPane extends JPanel implements Runnable
         btn_stop.setText("Start");
         btn_stop.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { startStop(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                startStop();
+            }
         });
         pnl_buttons.add(btn_stop, null);
 
@@ -101,10 +104,12 @@ public class CompareResultsPane extends JPanel implements Runnable
 
         btn_close = new JButton("Close");
         btn_close.setMnemonic('C');
-        btn_close.addActionListener(new ActionListener() {
+        btn_close.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
-                if (work != null) startStop();
+                if (work != null)
+                    startStop();
                 frame.setVisible(false);
                 frame.dispose();
             }
@@ -113,10 +118,12 @@ public class CompareResultsPane extends JPanel implements Runnable
 
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
-        frame.addWindowListener(new WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter()
+        {
             public void windowClosed(WindowEvent ev)
             {
-                if (work != null) startStop();
+                if (work != null)
+                    startStop();
             }
         });
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -172,16 +179,20 @@ public class CompareResultsPane extends JPanel implements Runnable
      */
     private void setTitles()
     {
-        lbl_bible1.setText("<html><b>Books:</b> "+
-                           ver.getBible1().getBookMetaData().getName()+" / "+
-                           ver.getBible2().getBookMetaData().getName());
+        lbl_bible1.setText("<html><b>Books:</b> "
+                           +ver.getBible1().getBookMetaData().getName()+" / "
+                           +ver.getBible2().getBookMetaData().getName());
 
         String compare = "<html><b>Comparing:</b> ";
         if (check_ref != null)
-            compare += "Passage="+check_ref+" ";
+        {
+            compare += "Passage=" + check_ref + " ";
+        }
 
         if (check_text != null)
-            compare += "Word="+(check_text.equals("") ? "*" : check_text);
+        {
+            compare += "Word=" + (check_text.equals("") ? "*" : check_text);
+        }
 
         lbl_bible2.setText(compare);
     }
@@ -193,7 +204,8 @@ public class CompareResultsPane extends JPanel implements Runnable
     public void run()
     {
         // While we are working stop anyone editing the values
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             public void run()
             {
                 btn_stop.setText("Stop");
@@ -210,14 +222,19 @@ public class CompareResultsPane extends JPanel implements Runnable
             ver.addProgressListener(cpl);
 
             if (check_text != null && check_text.equals("") && alive)
+            {
                 ver.checkPassage(check_text, out);
+            }
 
             if (check_ref != null && check_ref.isEmpty() && alive)
+            {
                 ver.checkText(check_ref, out);
+            }
         }
         catch (final Exception ex)
         {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable()
+            {
                 public void run()
                 {
                     ExceptionPane.showExceptionDialog(CompareResultsPane.this, ex);
@@ -230,7 +247,8 @@ public class CompareResultsPane extends JPanel implements Runnable
         }
 
         // Re-enable the values
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             public void run()
             {
                 btn_stop.setText("Start");
@@ -283,11 +301,12 @@ public class CompareResultsPane extends JPanel implements Runnable
         */
         public void progressMade(final ProgressEvent ev)
         {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable()
+            {
                 public void run()
                 {
                     int percent = ev.getPercent();
-                    bar_progress.setString(ev.getDescription()+" "+percent+"%");
+                    bar_progress.setString(ev.getDescription() + " " + percent + "%");
                     bar_progress.setValue(percent);
                 }
             });

@@ -94,7 +94,7 @@ public class Splash extends JWindow
     }
 
     /**
-     * init the graphics
+     * Init the graphics
      */
     private void jbInit()
     {
@@ -107,12 +107,12 @@ public class Splash extends JWindow
         lbl_picture.setBackground(Color.black);
         lbl_picture.setOpaque(true);
         lbl_picture.setIcon(icon);
-        lbl_picture.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
+        lbl_picture.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
         lbl_info.setBackground(Color.black);
         lbl_info.setFont(new java.awt.Font("SansSerif", 1, 14));
         lbl_info.setForeground(UIManager.getColor("ScrollBar.thumbHighlight"));
-        lbl_info.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
+        lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
         lbl_info.setText("Version "+Project.getVersion());
@@ -120,9 +120,9 @@ public class Splash extends JWindow
         prg_info.setString("Loading ...");
         prg_info.setStringPainted(true);
 
-        pnl_info.setLayout(new BorderLayout(5,0));
+        pnl_info.setLayout(new BorderLayout(5, 0));
         pnl_info.setBackground(Color.black);
-        pnl_info.setBorder(BorderFactory.createEmptyBorder(0,5,5,5));
+        pnl_info.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         pnl_info.add(lbl_info, BorderLayout.NORTH);
         pnl_info.add(prg_info, BorderLayout.CENTER);
 

@@ -112,8 +112,8 @@ public class DownloadSet implements Comparable
         {
             try
             {
-                Date thisdate = diskdf.parse(this.setname);
-                Date thatdate = diskdf.parse(that.setname);
+                Date thisdate = DF_DISK.parse(this.setname);
+                Date thatdate = DF_DISK.parse(that.setname);
                 return thatdate.compareTo(thisdate);
             }
             catch (ParseException ex)
@@ -133,8 +133,8 @@ public class DownloadSet implements Comparable
      */
     public String getDateString() throws ParseException
     {
-        Date date = diskdf.parse(setname);
-        return userdf.format(date);
+        Date date = DF_DISK.parse(setname);
+        return DF_USER.format(date);
     }
 
     /**
@@ -155,7 +155,7 @@ public class DownloadSet implements Comparable
     public String getLinkString(String extension)
     {
         File file = new File(localprefix, TEST_PREFIX + setname + extension);
-        String size = nf.format(((float) file.length()) / (1024F * 1024F));
+        String size = NF.format(((float) file.length()) / (1024F * 1024F));
         String reply = "<a href='"+ webprefix + "/" + TEST_PREFIX + setname + extension + "'>"+size+" Mb</a>";
 
         log.debug("link="+reply);
@@ -171,22 +171,12 @@ public class DownloadSet implements Comparable
     private static final String TEST_PREFIX = "jsword-";
     private static final String TEST_SUFFIX = BIN_ZIP;
 
-    private static String[] EXTENSIONS = 
-    {
-        BIN_ZIP,
-        BIN_TGZ,
-        SRC_ZIP,
-        SRC_TGZ,
-        DOC_ZIP,
-        DOC_TGZ,
-    };
-
-    private static final NumberFormat nf = NumberFormat.getNumberInstance();
-    private static final DateFormat diskdf = new SimpleDateFormat("yyyyMMdd");
-    private static final DateFormat userdf = new SimpleDateFormat("dd MMM yyyy");
+    private static final NumberFormat NF = NumberFormat.getNumberInstance();
+    private static final DateFormat DF_DISK = new SimpleDateFormat("yyyyMMdd");
+    private static final DateFormat DF_USER = new SimpleDateFormat("dd MMM yyyy");
     static
     {
-        nf.setMaximumFractionDigits(2);
+        NF.setMaximumFractionDigits(2);
     }
 
     /**

@@ -34,8 +34,8 @@ import org.jdom.Element;
  */
 public abstract class ReflectedChoice implements Choice, Serializable
 {
-    /**
-     * Setup the available options
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
     public void init(Element option) throws StartupException
     {
@@ -44,15 +44,21 @@ public abstract class ReflectedChoice implements Choice, Serializable
         // The important 3 things saying what we update and how we describe ourselves
         Element introspector = option.getChild("introspect");
         if (introspector == null)
+        {
             throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "introspect" });
+        }
 
         String clazzname = introspector.getAttributeValue("class");
         if (clazzname == null)
+        {
             throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "class" });
+        }
 
         propertyname = introspector.getAttributeValue("property");
         if (propertyname == null)
+        {
             throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "property" });
+        }
 
         log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
 
@@ -99,7 +105,9 @@ public abstract class ReflectedChoice implements Choice, Serializable
         // Help text
         Element childele = option.getChild("help");
         if (childele == null)
+        {
             helptext = "";
+        }
         helptext = childele.getTextTrim();
 
         // 2 optional config attrubites
@@ -114,9 +122,8 @@ public abstract class ReflectedChoice implements Choice, Serializable
         }
     }
 
-    /**
-     * The type by which UIs can pick an appropriate editor
-     * @return String The type string as supplied in config.xml
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getType()
      */
     public String getType()
     {
@@ -133,10 +140,8 @@ public abstract class ReflectedChoice implements Choice, Serializable
      */
     public abstract Object convertToObject(String orig);
 
-    /**
-     * Get some help on this Field. In this case we are just providing
-     * a default help text, that isn't much use.
-     * @return The default help text
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getHelpText()
      */
     public String getHelpText()
     {
@@ -153,11 +158,8 @@ public abstract class ReflectedChoice implements Choice, Serializable
         this.helptext = helptext;
     }
 
-    /**
-     * Is this Choice OK to write out to a file, or should we use settings
-     * in this run of the program, but forget them for next time. A
-     * typical use of this is for password configuration.
-     * @return True if it is safe to store the value in a config file.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#isSaveable()
      */
     public boolean isSaveable()
     {
@@ -186,17 +188,15 @@ public abstract class ReflectedChoice implements Choice, Serializable
         this.priority = priority;
     }
 
-    /**
-     * Do we need to restart the program in order for this change to have
-     * effect?
-     * @return True if a restart is required
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#requiresRestart()
      */
     public boolean requiresRestart()
     {
         return false;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getString()
      */
     public String getString()
@@ -218,8 +218,8 @@ public abstract class ReflectedChoice implements Choice, Serializable
         }
     }
 
-    /**
-     * @see org.crosswire.common.config.Choice#setString(String)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#setString(java.lang.String)
      */
     public void setString(String value) throws Exception
     {
@@ -262,7 +262,7 @@ public abstract class ReflectedChoice implements Choice, Serializable
     public static final int PRIORITY_LOWEST = 0;
 
     /**
-     * Th type that we reflect to
+     * The type that we reflect to
      */
     private Class clazz;
 

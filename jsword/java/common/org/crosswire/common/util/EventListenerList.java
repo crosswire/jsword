@@ -81,11 +81,6 @@ import java.util.EventListener;
  */
 public class EventListenerList implements Serializable
 {
-    /* A null array to be shared by all empty listener lists*/
-    private final static Object[] NULL_ARRAY = new Object[0];
-    /* The list of ListenerType - Listener pairs */
-    protected transient Object[] listenerList = NULL_ARRAY;
-
     /**
      * This passes back the event listener list as an array
      * of ListenerType - listener pairs.  Note that for
@@ -127,10 +122,13 @@ public class EventListenerList implements Serializable
         for (int i = 0; i < lList.length; i += 2)
         {
             if (t == (Class) lList[i])
+            {
                 count++;
+            }
         }
         return count;
     }
+
     /**
      * Add the listener as a listener of the specified type.
      * @param t the type of the listener to be added
@@ -145,10 +143,12 @@ public class EventListenerList implements Serializable
             // something wrong
             return;
         }
+
         if (!t.isInstance(l))
         {
             throw new IllegalArgumentException("Listener " + l + " is not of type " + t);
         }
+
         if (listenerList == NULL_ARRAY)
         {
             // if this is the first listener added,
@@ -183,15 +183,17 @@ public class EventListenerList implements Serializable
             // something wrong
             return;
         }
+
         if (!t.isInstance(l))
         {
             throw new IllegalArgumentException("Listener " + l + " is not of type " + t);
         }
+
         // Is l on the list?
         int index = -1;
         for (int i = listenerList.length - 2; i >= 0; i -= 2)
         {
-            if ((listenerList[i] == t) && (listenerList[i + 1].equals(l) == true))
+            if (listenerList[i] == t && listenerList[i + 1].equals(l))
             {
                 index = i;
                 break;
@@ -202,13 +204,18 @@ public class EventListenerList implements Serializable
         if (index != -1)
         {
             Object[] tmp = new Object[listenerList.length - 2];
+
             // Copy the list up to index
             System.arraycopy(listenerList, 0, tmp, 0, index);
+
             // Copy from two past the index, up to
             // the end of tmp (which is two elements
             // shorter than the old list)
             if (index < tmp.length)
+            {
                 System.arraycopy(listenerList, index + 2, tmp, index, tmp.length - index);
+            }
+
             // set the listener array to the new array or null
             listenerList = (tmp.length == 0) ? NULL_ARRAY : tmp;
         }
@@ -266,4 +273,10 @@ public class EventListenerList implements Serializable
         }
         return s;
     }
+
+    /* A null array to be shared by all empty listener lists*/
+    private static final Object[] NULL_ARRAY = new Object[0];
+
+    /* The list of ListenerType - Listener pairs */
+    protected transient Object[] listenerList = NULL_ARRAY;
 }

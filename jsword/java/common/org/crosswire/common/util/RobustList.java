@@ -6,8 +6,6 @@ import java.util.AbstractList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
-
 /**
  * This is a version of LinkedList that is not fail-fast.
  * 
@@ -132,7 +130,8 @@ public class RobustList extends AbstractList implements List, Serializable
     public void clear()
     {
         debug("pre-clear");
-        head = foot = null;
+        head = null;
+        foot = null;
         size = 0;
         debug("post-clear");
     }
@@ -153,7 +152,9 @@ public class RobustList extends AbstractList implements List, Serializable
     private Entry findEntry(int index)
     {
         if (index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("Index: "+index+ ", Size: "+size);
+        {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
 
         Entry e;
         if (index < size/2)
@@ -258,11 +259,11 @@ public class RobustList extends AbstractList implements List, Serializable
      */
     private class Entry
     {
-        Object object;
-        Entry next;
-        Entry prev;
+        protected Object object;
+        protected Entry next;
+        protected Entry prev;
 
-        Entry(Object object)
+        private Entry(Object object)
         {
             this.object = object;
             this.next = null;
@@ -283,7 +284,10 @@ public class RobustList extends AbstractList implements List, Serializable
             size++;
         }
 
-        void remove()
+        /**
+         * 
+         */
+        protected void remove()
         {
             if (this == foot)
             {
@@ -318,7 +322,10 @@ public class RobustList extends AbstractList implements List, Serializable
             size--;
         }
 
-        void debug()
+        /**
+         * 
+         */
+        protected void debug()
         {
             log.debug("  prev="+prev);
             log.debug("  this="+this);

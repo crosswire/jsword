@@ -91,7 +91,10 @@ public class InnerDisplayPane extends JPanel
         txt_view.setEditorKit(new HTMLEditorKit());
         txt_view.addHyperlinkListener(new HyperlinkListener()
         {
-            public void hyperlinkUpdate(HyperlinkEvent ev) { link(ev); }
+            public void hyperlinkUpdate(HyperlinkEvent ev)
+            {
+                link(ev);
+            }
         });
         scr_view.getViewport().setPreferredSize(new Dimension(500, 400));
         scr_view.getViewport().add(txt_view, null);

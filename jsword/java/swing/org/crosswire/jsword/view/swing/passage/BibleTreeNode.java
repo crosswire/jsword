@@ -183,7 +183,7 @@ public class BibleTreeNode implements TreeNode
             return kids[index++];
         }
 
-        int index = 0;
+        private int index = 0;
     }
 
     /** If we are only displaying some of the verses */

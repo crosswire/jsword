@@ -946,10 +946,10 @@ public class PassageTally extends AbstractPassage
             }
 
             /** The verse id */
-            public int ord = 0;
+            protected int ord = 0;
 
             /** The rank of the verse */
-            public int tally = 0;
+            protected int tally = 0;
 
             /**
              * @param obj The thing to compare against
@@ -1069,10 +1069,10 @@ public class PassageTally extends AbstractPassage
             }
 
             /** The verse range */
-            public VerseRange range;
+            protected VerseRange range;
 
             /** The rank of the verse */
-            public int tally = 0;
+            protected int tally = 0;
 
             /**
              * @param obj The thing to compare against

@@ -87,21 +87,30 @@ public class MaintenancePane extends EirPanel
         lst_versions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lst_versions.addListSelectionListener(new ListSelectionListener()
         {
-            public void valueChanged(ListSelectionEvent ev) { updateButtons(); }
+            public void valueChanged(ListSelectionEvent ev)
+            {
+                updateButtons();
+            }
         });
 
         btn_add.setText("Add ...");
         btn_add.setMnemonic('A');
         btn_add.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { add(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                add();
+            }
         });
 
         btn_remove.setText("Remove");
         btn_remove.setMnemonic('R');
         btn_remove.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { delete(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                delete();
+            }
         });
 
         lay_buttons.setAlignment(FlowLayout.RIGHT);

@@ -223,7 +223,7 @@ public class StringArrayField extends JPanel implements Field
         }
 
         /** To edit a name (hashtable key) */
-        JTextField name_field = new JTextField();
+        protected JTextField name_field = new JTextField();
     }
     
     private String separator = "#";

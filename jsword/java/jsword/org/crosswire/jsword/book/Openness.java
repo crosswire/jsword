@@ -1,9 +1,7 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  * A definition of how open a Bible is. Can is be freely copied or is
@@ -30,14 +28,8 @@ import java.util.Map;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Openness
+public class Openness extends Enum
 {
-    /**
-     * A collection of all the Opennesses. This MUST come before all the
-     * definitions below so that they can add themselves to this map.
-     */
-    private static final Map all = new HashMap();
-
     /**
      * If the data of unknown distribution status
      */
@@ -64,51 +56,18 @@ public class Openness
     public static final Openness COMMERCIAL = new Openness("Commercial");
 
     /**
-     * debug the opennesses
+     * Find a constant given a name.
      */
-    public static void debugX()
+    public static Openness get(String name)
     {
-        System.out.println("all.length="+all.size());
-        Iterator it = all.keySet().iterator();
-        while (it.hasNext())
-        {
-            String desc = (String) it.next();
-            Openness open = (Openness) all.get(desc);
-            System.out.println(desc+".toString="+open.toString());
-        }
+        return (Openness) Enum.getEnum(Openness.class, name);
     }
 
     /**
-     * Get an openness by its name.
-     */
-    public static Openness get(String desc)
-    {
-        if (desc == null)
-            return UNKNOWN;
-
-        Openness reply = (Openness) all.get(desc);
-        if (reply != null)
-            return reply;
-
-        return UNKNOWN;
-    }
-
-    /**
-     * 
+     * Prevent anyone else from doing this
      */
     private Openness(String desc)
     {
-        this.desc = desc;
-        all.put(desc, this);
+        super(desc);
     }
-
-    /**
-     * String representation of this Object
-     */
-    public String toString()
-    {
-        return desc;
-    }
-
-    private String desc;
 }

@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.crosswire.common.util.Logger;
 
 /**
  * The NetUtil class looks after general utility stuff around the
@@ -56,12 +55,12 @@ public class NetUtil
     /**
      * For directory listings
      */
-    public static String INDEX_FILE = "index.txt";
+    public static final String INDEX_FILE = "index.txt";
 
     /**
      * URL separator
      */
-    public static final String separator = "/";
+    public static final String SEPARATOR = "/";
 
     /**
      * If the directory does not exist, create it.
@@ -343,10 +342,10 @@ public class NetUtil
             return new URL(orig.getProtocol(),
                            orig.getHost(),
                            orig.getPort(),
-                           orig.getFile()+
-                                File.separator+extra1+
-                                File.separator+extra2+
-                                File.separator+extra3);
+                           orig.getFile()
+                                +File.separator+extra1
+                                +File.separator+extra2
+                                +File.separator+extra3);
         }
         else
         {
@@ -483,7 +482,7 @@ public class NetUtil
         // We still need to do the filtering
         List list = new ArrayList();
         String[] names = StringUtils.split(contents, "\n");
-        for (int i=0;i<names.length;i++)
+        for (int i=0; i<names.length; i++)
         {
             // we need to trim, as we may have \r\n not \n
             String name = names[i].trim();

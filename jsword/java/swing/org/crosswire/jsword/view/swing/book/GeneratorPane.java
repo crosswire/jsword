@@ -117,8 +117,12 @@ public class GeneratorPane extends EirPanel
         box_main.add(pnl_source, null);
         box_main.add(pnl_dest, null);
 
-        btn_generate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { generate(); }
+        btn_generate.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                generate();
+            }
         });
         btn_generate.setText("Generate");
         btn_generate.setMnemonic('G');

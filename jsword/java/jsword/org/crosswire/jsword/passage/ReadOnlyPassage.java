@@ -177,7 +177,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void add(VerseBase that)
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -188,7 +188,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void remove(VerseBase that)
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -207,7 +207,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void addAll(Passage that)
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -218,7 +218,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void removeAll(Passage that)
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -229,7 +229,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void retainAll(Passage that)
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -240,7 +240,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void clear()
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -251,7 +251,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void blur(int verses, int restrict)
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
@@ -262,7 +262,7 @@ public final class ReadOnlyPassage implements Passage
      */
     public void readDescription(Reader in) throws IOException, NoSuchVerseException
     {
-        if (ignore == true)
+        if (ignore)
             return;
 
         throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));

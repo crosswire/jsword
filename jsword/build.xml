@@ -21,6 +21,7 @@
   <property name="target.classes" value="${target.root}/temp/classes"/>
   <property name="target.jar" value="${target.root}/temp/jar"/>
   <property name="target.jdepend" value="${target.root}/temp/jdepend"/>
+  <property name="target.checkstyle" value="${target.root}/temp/checkstyle"/>
   <property name="target.javancss" value="${target.root}/temp/javancss"/>
   <property name="target.junit" value="${target.root}/temp/junit"/>
   <property name="target.swingui" value="${target.root}/swingui/jsword"/>
@@ -442,6 +443,32 @@
   </target>
 
   <!--=======================================================================-->
+  <target name="web.checkstyle">
+    <mkdir dir="${target.checkstyle}"/>
+    <mkdir dir="${target.web}/checkstyle"/>
+    <taskdef resource="checkstyletask.properties">
+      <classpath>
+        <fileset dir="${source.tools}/checkstyle30" includes="**/*.jar"/>
+      </classpath>
+    </taskdef>
+    <!-- taskdef name="checkstyle" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask"/ -->
+    <checkstyle config="${source.tools}/checkstyle30/custom.xml" failOnViolation="false">
+      <fileset dir="${source.java}/common" includes="**/*.java"/>
+      <fileset dir="${source.java}/jsword" includes="**/*.java"/>
+      <fileset dir="${source.java}/servlet" includes="**/*.java"/>
+      <fileset dir="${source.java}/swing" includes="**/*.java"/>
+      <fileset dir="${source.java}/map" includes="**/*.java"/>
+      <formatter type="plain"/>
+      <formatter type="xml" toFile="${target.checkstyle}/checkstyle_errors.xml"/>
+    </checkstyle>
+    <style
+        basedir="${target.checkstyle}"
+        destdir="${target.web}/checkstyle"
+        includes="checkstyle_errors.xml"
+        style="${source.tools}/checkstyle30/checkstyle-noframes.xsl"/>
+  </target>
+
+  <!--=======================================================================-->
   <target name="web.pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
@@ -496,7 +523,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.analysis" depends="web.jdepend, web.pmd, web.java2html">
+  <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html">
     <!-- I've taken web.cpd web.javancss, out because it is very slow and not that useful -->
   </target>
 

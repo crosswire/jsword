@@ -92,11 +92,11 @@ public class Mapper extends JFrame
     */
     public static void main(String[] args)
     {
-        Mapper map = new Mapper(args);
+        Mapper mapper = new Mapper(args);
 
-        map.pack();
-        GuiUtil.centerWindow(map);
-        map.setVisible(true);
+        mapper.pack();
+        GuiUtil.centerWindow(mapper);
+        mapper.setVisible(true);
     }
 
     /**
@@ -110,13 +110,13 @@ public class Mapper extends JFrame
         vcols = new VerseColor[76];
         vcols[0] = new RainbowVerseColor();
         vcols[1] = new GroupVerseColor();
-        for (int i = BibleInfo.Section.Pentateuch; i <= BibleInfo.Section.Letters; i++)
+        for (int i = BibleInfo.Section.PENTATEUCH; i <= BibleInfo.Section.LETTERS; i++)
         {
             vcols[i + 1] = new SectionVerseColor(i);
         }
-        for (int i = BibleInfo.Names.Genesis; i <= BibleInfo.Names.Revelation; i++)
+        for (int i = BibleInfo.Names.GENESIS; i <= BibleInfo.Names.REVELATION; i++)
         {
-            vcols[i + 1 + BibleInfo.Section.Letters] = new BookVerseColor(i);
+            vcols[i + 1 + BibleInfo.Section.LETTERS] = new BookVerseColor(i);
         }
 
         jbInit();

@@ -92,7 +92,9 @@ public class Main
 
             String line = cin.readLine();
             if (line == null)
+            {
                 break;
+            }
 
             String reply = "";
             try
@@ -103,9 +105,13 @@ public class Main
             {
                 Object th = ex.getValue();
                 if (th instanceof Throwable)
+                {
                     handle((Throwable) th);
+                }
                 else
+                {
                     handle(ex);
+                }
             }
             catch (Throwable ex)
             {

@@ -138,7 +138,7 @@ public class ThreadUtil
      * @param millis The length of time to wait in milliseconds
      * @see java.lang.InterruptedException
      */
-    public synchronized static void soundSleep(long millis)
+    public static synchronized void soundSleep(long millis)
     {
         try
         {

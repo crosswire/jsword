@@ -68,7 +68,10 @@ public class RuleSlider extends JPanel
 
         sdr_rule.addChangeListener(new ChangeListener()
         {
-            public void stateChanged(ChangeEvent ev) { changed(); }
+            public void stateChanged(ChangeEvent ev)
+            {
+                changed();
+            }
         });
         sdr_rule.setPaintLabels(true);
         sdr_rule.setPaintTicks(true);

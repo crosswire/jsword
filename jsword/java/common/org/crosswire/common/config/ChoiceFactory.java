@@ -73,7 +73,7 @@ public abstract class ChoiceFactory
     /**
      * Store of the known ChoiceTypes
      */
-    private static final Map map = new HashMap();
+    private static Map map = new HashMap();
 
     /**
      * Setup the map of Choices

@@ -34,6 +34,9 @@ import org.jdom.Element;
  */
 public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     */
     public void init(Element option) throws StartupException
     {
         super.init(option);
@@ -52,21 +55,33 @@ public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
         options = (String[]) list.toArray(new String[0]);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.MultipleChoice#getOptions()
+     */
     public String[] getOptions()
     {
         return options;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return Integer.TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return options[((Integer) orig).intValue()];
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         // First check to see if this is a number

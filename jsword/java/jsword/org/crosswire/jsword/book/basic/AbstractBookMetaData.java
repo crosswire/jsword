@@ -329,7 +329,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         }
 
         // If super does equals ...
-        if (super.equals(obj) == false)
+        if (!super.equals(obj))
         {
             return false;
         }
@@ -378,35 +378,21 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /**
-     * 
-     */
-    public static final DateFormat PUBLISHED_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
-    /**
-     * The default creation date
-     */
-    private static Date DEFAULT;
-
-    /**
      * The log stream
      */
     private static Logger log = Logger.getLogger(AbstractBookMetaData.class);
 
     /**
-     * Setup the default publish date
+     * 
      */
-    static
-    {
-        try
-        {
-            DEFAULT = PUBLISHED_FORMAT.parse("1970-01-01");
-        }
-        catch (ParseException ex)
-        {
-            log.error("Failed to set default fallback date", ex);
-            DEFAULT = new Date();
-        }
-    }
+    public static final DateFormat PUBLISHED_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    /**
+     * The default creation date.
+     * Using new Date(0) is the same as PUBLISHED_FORMAT.parse("1970-01-01")
+     * but does not throw
+     */
+    private static final Date DEFAULT = new Date(0L);
 
     /**
      * The driver behind this Book

@@ -303,8 +303,8 @@ public class TestBooks extends TestCase
 
     public void testNames() throws Exception
     {
-        assertEquals(BibleInfo.Names.Genesis,  1);
-        assertEquals(BibleInfo.Names.Revelation,  66);
+        assertEquals(BibleInfo.Names.GENESIS,  1);
+        assertEquals(BibleInfo.Names.REVELATION,  66);
     }
 
     /**

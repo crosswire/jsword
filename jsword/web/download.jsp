@@ -61,7 +61,8 @@ Version 0.9.5 is the first beta for JSword 1.0.
 
 <h3>Nightly Releases</h3>
 <p>
-Regular releases are made and stored for a short time:
+Regular releases are made and stored for a short time. You will need to use GNU
+tar to extract the doc.tar.gz files, although any tar should do for the others.
 </p>
 
 <table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">

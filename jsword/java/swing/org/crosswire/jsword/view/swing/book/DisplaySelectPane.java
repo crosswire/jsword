@@ -406,15 +406,15 @@ public class DisplaySelectPane extends JPanel
      */
     public void adjustFocus()
     {
-        if (rdo_passg.isSelected() == true)
+        if (rdo_passg.isSelected())
         {
             txt_passg.grabFocus();
         }
-        else if (rdo_search.isSelected() == true)
+        else if (rdo_search.isSelected())
         {
             txt_search.grabFocus();
         }
-        else if (rdo_match.isSelected() == true)
+        else if (rdo_match.isSelected())
         {
             txt_match.grabFocus();
         }

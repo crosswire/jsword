@@ -56,15 +56,6 @@ public class CliMapper
     }
 
     /**
-     * Constructor for CliMapper.
-     */
-    public CliMapper()
-    {
-    }
-
-    public static final int LINKS_PER_CHAPTER = 200;
-
-    /**
      * Create a new Map
      */
     public void run()
@@ -135,10 +126,9 @@ public class CliMapper
                         el.setAttribute("rating", ""+total.getIndexOf(link));
                         ec.addContent(el);
 
-                        dbout.println(
-                            base.getName()+","+base.getStart().getBook()+","+base.getStart().getChapter()+","+
-                            chap.getName()+","+link.getBook()+","+link.getChapter()+","+
-                            total.getIndexOf(link));
+                        dbout.println(base.getName()+","+base.getStart().getBook()+","+base.getStart().getChapter()+","
+                            +chap.getName()+","+link.getBook()+","+link.getChapter()+","
+                            +total.getIndexOf(link));
 
                         for (int tb=1; tb<=BibleInfo.booksInBible(); tb++)
                         {
@@ -194,9 +184,10 @@ public class CliMapper
             }
         }        
     }
-    
-    /*
 
+    public static final int LINKS_PER_CHAPTER = 200;
+
+    /*
     // Remove the original wherever it was
     tally.remove(verse);
 
