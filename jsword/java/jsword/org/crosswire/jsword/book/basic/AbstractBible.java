@@ -10,7 +10,6 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
@@ -48,21 +47,16 @@ import org.crosswire.jsword.passage.Verse;
  */
 public abstract class AbstractBible implements Bible
 {
-    /**
-     * Because Java does not allow sensible return type overloading
-     * @return BookMetaData
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
     public BookMetaData getBookMetaData()
     {
         return getBibleMetaData();
     }
 
-    /**
-     * Someone has typed in a reference to find, but we need a Key to actually
-     * look it up.
-     * @param text The string to create a Key from
-     * @return The Key corresponding to the input text
-     * @throws BookException If there is a problem converting the text
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getKey(java.lang.String)
      */
     public Key getKey(String text) throws BookException
     {
@@ -72,15 +66,12 @@ public abstract class AbstractBible implements Bible
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException("bible_no_verse");
+            throw new BookException(I18N.NO_VERSE);
         }
     }
 
-    /**
-     * Retrieval: For a given search spec find a list of references to it.
-     * @param base
-     * @return Iterator
-     * @throws BookException
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
     public Key find(Search search) throws BookException
     {
@@ -88,11 +79,8 @@ public abstract class AbstractBible implements Bible
         return new PassageKey(ref);
     }
 
-    /**
-     * Retrieval: Get BookData for the given Key.
-     * @param key The position to search for
-     * @return The found BookData document
-     * @throws BookException If anything goes wrong with this method
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
      */
     public BookData getData(Key key) throws BookException
     {
@@ -113,9 +101,9 @@ public abstract class AbstractBible implements Bible
      * @param verse The verse to write
      * @param text The data to write
      */
-    public void setDocument(Verse verse, BibleData text) throws BookException
+    public void setDocument(Verse verse, BookData text) throws BookException
     {
-        throw new BookException("bible_driver_readonly");
+        throw new BookException(I18N.DRIVER_READONLY);
     }
 
     /**
@@ -126,12 +114,14 @@ public abstract class AbstractBible implements Bible
      */
     public void foundPassage(String word, Passage ref) throws BookException
     {
-        throw new BookException("bible_driver_readonly");
+        throw new BookException(I18N.DRIVER_READONLY);
     }
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
+     * @param source The Bible to read data from
+     * @param li How progress is reported
+     * @throws BookException If generation fails
      */
     protected void generateText(Bible source, ProgressListener li) throws BookException
     {
@@ -150,7 +140,7 @@ public abstract class AbstractBible implements Bible
             li.progressMade(new ProgressEvent(this, "Writing Verses:", 100 * verse.getOrdinal() / BibleInfo.versesInBible()));
 
             // Read the document from the original version
-            BibleData doc = source.getData(temp);
+            BookData doc = source.getData(temp);
 
             // Write the document to the mutable version
             setDocument(verse, doc);

@@ -31,34 +31,38 @@ import java.util.Map;
 public class SearchDefault
 {
     /**
-    * Ensure that we can not be instansiated
-    */
+     * Ensure that we can not be instansiated
+     */
     private SearchDefault()
     {
     }
 
     /**
-    * The Search Hashtable
-    * @return The default search hash
-    */
+     * The Search Hashtable
+     * @return The default search hash
+     */
     public static Map getMap()
     {
         return command;
     }
 
     /**
-    * The Search Hashtable
-    * @return The default search hash
-    */
+     * The Search Hashtable
+     * @return The default search hash
+     */
     public static void setMap(Map value)
     {
         command = value;
     }
 
     /**
-    * The Search Hashtable
-    */
+     * The Search Hashtable
+     */
     private static Map command = new HashMap();
+
+    /**
+     * Initialiser
+     */
     static
     {
         // "/ | & + , - ~ ( ) [ ] sw startswith gr grammar"

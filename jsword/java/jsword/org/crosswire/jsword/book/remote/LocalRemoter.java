@@ -12,8 +12,8 @@ import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
@@ -79,9 +79,9 @@ public class LocalRemoter implements Remoter
                 Bible bible = bmd.getBible();
                 String refstr = method.getParameter(RemoteConstants.PARAM_PASSAGE);
                 Passage ref = PassageFactory.createPassage(refstr);
-                BibleData data = bible.getData(ref);
+                BookData data = bible.getData(ref);
 
-                SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
+                SAXEventProvider provider = OSISUtil.getSAXEventProvider(data);
                 SAXHandler handler = new SAXHandler();
                 provider.provideSAXEvents(handler);
                 return handler.getDocument();
@@ -104,7 +104,7 @@ public class LocalRemoter implements Remoter
             }
             else
             {
-                throw new RemoterException("method not supported. given: "+methodname);
+                throw new RemoterException(I18N.REMOTE_NOSUPPORT, new Object[] {methodname});
             }
         }
         catch (RemoterException ex)
@@ -113,7 +113,7 @@ public class LocalRemoter implements Remoter
         }
         catch (Exception ex)
         {
-            throw new RemoterException("remote_fail", ex);
+            throw new RemoterException(I18N.REMOTE_FAIL, ex);
         }
     }
 

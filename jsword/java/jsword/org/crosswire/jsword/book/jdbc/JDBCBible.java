@@ -15,9 +15,10 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
@@ -59,7 +60,7 @@ public class JDBCBible extends LocalURLBible
      */
     public void init(Bible source, ProgressListener li) throws BookException
     {
-        throw new BookException("jdbc_no_create");
+        throw new BookException(I18N.DRIVER_READONLY);
     }
 
     /**
@@ -77,8 +78,9 @@ public class JDBCBible extends LocalURLBible
             String driver = lbmd.getProperty(property);
 
             if (driver == null)
-                throw new BookException("jdbc_bible_load",
-                    new Object[] { new Integer(driver_attempt-1) });
+            {
+                throw new BookException(I18N.BIBLE_LOAD, new Object[] { new Integer(driver_attempt-1) });
+            }
 
             try
             {
@@ -87,8 +89,7 @@ public class JDBCBible extends LocalURLBible
             }
             catch (Exception ex)
             {
-                log.debug("Failed to load JDBC name: "+
-                                  driver+" (System Message: "+ex+")");
+                log.debug("Failed to load JDBC name: "+driver+" (System Message: "+ex+")");
             }
 
             driver_attempt++;
@@ -120,7 +121,7 @@ public class JDBCBible extends LocalURLBible
         }
         catch (Exception ex)
         {
-            throw new BookException("jdbc_bible_connect", ex);
+            throw new BookException(I18N.BIBLE_CONNECT, ex);
         }
 
         super.init(li);
@@ -132,12 +133,13 @@ public class JDBCBible extends LocalURLBible
      * @param ele The Element to start adding at. null if the doc is empty
      * @param ref The verses to search for
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
-        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
-
         try
         {
+            BookDataListener li = new OSISBookDataListnener();
+            li.startDocument(getBibleMetaData());
+
             Iterator it = ref.rangeIterator();
             while (it.hasNext())
             {
@@ -147,7 +149,7 @@ public class JDBCBible extends LocalURLBible
                 int start_id = BibleInfo.verseOrdinal(start.getRefArray());
                 int end_id = BibleInfo.verseOrdinal(end.getRefArray());
 
-                SectionData section = OsisUtil.createSectionData(doc, range.getName());
+                li.startSection(range.getName());
 
                 doc_stmt.setInt(1, start_id);
                 doc_stmt.setInt(2, end_id);
@@ -156,17 +158,20 @@ public class JDBCBible extends LocalURLBible
                 while (rs.next())
                 {
                     Verse verse = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
-                    rs.getBoolean(4); // ignored, but perhaps we should wtill be getting things in order?
+                    rs.getBoolean(4); // ignored, but perhaps we should still be getting things in order?
                     String text = rs.getString(5);
                     if (text == null) text = "";
 
-                    OsisUtil.createRefData(section, verse, JDBCBibleUtil.processText(text));
+                    li.startVerse(verse);
+                    Filters.PLAIN_TEXT.toOSIS(li, JDBCBibleUtil.processText(text));
+                    li.endVerse();
                 }
 
+                li.endSection();
                 rs.close();
             }
 
-            return doc;
+            return li.endDocument();
         }
         catch (NoSuchVerseException ex)
         {
@@ -174,7 +179,7 @@ public class JDBCBible extends LocalURLBible
         }
         catch (SQLException ex)
         {
-            throw new BookException("jdbc_bible_db", ex);
+            throw new BookException(I18N.BIBLE_DB, ex);
         }
     }
 
@@ -212,7 +217,7 @@ public class JDBCBible extends LocalURLBible
         catch (SQLException ex)
         {
             log.warn("word="+word);
-            throw new BookException("jdbc_bible_db", ex);
+            throw new BookException(I18N.BIBLE_DB, ex);
         }
     }
 
@@ -240,7 +245,7 @@ public class JDBCBible extends LocalURLBible
         catch (SQLException ex)
         {
             log.warn("word="+word);
-            throw new BookException("jdbc_bible_db", ex);
+            throw new BookException(I18N.BIBLE_DB, ex);
         }
     }
 
@@ -267,7 +272,9 @@ public class JDBCBible extends LocalURLBible
     public int verseOrdinal(int[] ref) throws NoSuchVerseException, SQLException
     {
         if (ref.length != 3)
-            throw new NoSuchVerseException("jdbc_bible_verse");
+        {
+            throw new NoSuchVerseException(I18N.BIBLE_VERSE);
+        }
 
         return verseOrdinal(ref[0], ref[1], ref[2]);
     }
@@ -291,7 +298,9 @@ public class JDBCBible extends LocalURLBible
         ResultSet rs = verse_stmt.executeQuery();
 
         if (!rs.next())
-            throw new NoSuchVerseException("jdbc_bible_lost");
+        {
+            throw new NoSuchVerseException(I18N.BIBLE_LOST);
+        }
 
         retcode = rs.getInt(1);
 
@@ -343,7 +352,7 @@ public class JDBCBible extends LocalURLBible
             }
             catch (SQLException ex)
             {
-                throw new BookException("jdbc_bible_db", ex);
+                throw new BookException(I18N.BIBLE_DB, ex);
             }
         }
 
@@ -376,7 +385,8 @@ public class JDBCBible extends LocalURLBible
             }
             catch (SQLException ex)
             {
-                throw new NoSuchElementException("Database Error. System message: "+ex);
+                log.warn("SQL error in iteration", ex);
+                throw new NoSuchElementException(ex.getMessage());
             }
         }
 

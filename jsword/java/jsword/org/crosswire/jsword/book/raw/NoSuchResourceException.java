@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.raw;
 
+import org.crosswire.common.util.I18NBase;
 import org.crosswire.jsword.book.BookException;
 
 /**
@@ -59,15 +60,14 @@ public class NoSuchResourceException extends BookException
     }
 
     /**
-    * Construct the Exception with a message, a nested Exception
-    * and some I18N params
-    * @param msg The resource id to read
-    * @param ex The nested Exception
-    * @param params An array of parameters
-    */
-    public NoSuchResourceException(String msg, Throwable ex, Object[] params)
+     * Construct the Exception with a message, a nested Exception
+     * and some I18N params
+     * @param msg The resource id to read
+     * @param ex The nested Exception
+     * @param params An array of parameters
+     */
+    public NoSuchResourceException(I18NBase id, Throwable ex, Object[] params)
     {
-        super(msg, ex, params);
+        super(id, ex, params);
     }
 }
-

@@ -16,8 +16,8 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
@@ -118,8 +118,8 @@ public class DemoServlet extends HttpServlet
                     request.setAttribute("next-overview", waiting.getOverview());
                 }
     
-                BibleData data = version.getData(ref);
-                SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
+                BookData data = version.getData(ref);
+                SAXEventProvider provider = OSISUtil.getSAXEventProvider(data);
                 String text = style.applyStyleToString(provider, "simple.xsl");
     
                 request.setAttribute("reply", text);

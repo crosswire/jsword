@@ -20,7 +20,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.search.Searcher;
@@ -81,7 +81,7 @@ public class SerSearcher implements Searcher
         }
         catch (IOException ex)
         {
-            throw new BookException("ser_init", ex);
+            throw new BookException(I18N.INITIALIZE, ex);
         }
     }
 
@@ -242,7 +242,7 @@ public class SerSearcher implements Searcher
             // loop through all the words in this verse
             Passage current = PassageFactory.createPassage();
             current.add(verse);
-            String text = OsisUtil.getPlainText(bible.getData(current));
+            String text = OSISUtil.getPlainText(bible.getData(current));
             String[] words = BookUtil.getWords(text);
             for (int i = 0; i < words.length; i++)
             {
@@ -314,7 +314,7 @@ public class SerSearcher implements Searcher
         }
         catch (Exception ex)
         {
-            throw new BookException("ser_write", ex);
+            throw new BookException(I18N.WRITE_ERROR, ex);
         }
     }
 
@@ -340,7 +340,7 @@ public class SerSearcher implements Searcher
         }
         catch (IOException ex)
         {
-            throw new BookException("ser_index", ex);
+            throw new BookException(I18N.WRITE_ERROR, ex);
         }
     }
 

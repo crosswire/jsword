@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 
 /**
@@ -53,7 +53,7 @@ public interface Bible extends Book
      * @throws BookException If anything goes wrong with this method
      * @see Book#getData(Key)
      */
-    public BibleData getData(Passage ref) throws BookException;
+    public BookData getData(Passage ref) throws BookException;
 
     /**
      * Retrieval: For a given word find a list of references to it

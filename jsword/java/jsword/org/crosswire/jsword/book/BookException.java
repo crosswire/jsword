@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book;
 
+import org.crosswire.common.util.I18NBase;
 import org.crosswire.common.util.LucidException;
 
 /**
@@ -33,7 +34,7 @@ public class BookException extends LucidException
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
-    public BookException(String msg)
+    public BookException(I18NBase msg)
     {
         super(msg);
     }
@@ -43,7 +44,7 @@ public class BookException extends LucidException
      * @param msg The resource id to read
      * @param ex The nested Exception
      */
-    public BookException(String msg, Throwable ex)
+    public BookException(I18NBase msg, Throwable ex)
     {
         super(msg, ex);
     }
@@ -53,7 +54,7 @@ public class BookException extends LucidException
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public BookException(String msg, Object[] params)
+    public BookException(I18NBase msg, Object[] params)
     {
         super(msg, params);
     }
@@ -64,9 +65,41 @@ public class BookException extends LucidException
      * @param ex The nested Exception
      * @param params An array of parameters
      */
-    public BookException(String msg, Throwable ex, Object[] params)
+    public BookException(I18NBase msg, Throwable ex, Object[] params)
     {
         super(msg, ex, params);
+    }
+
+    /**
+     * Construct the Exception with a message
+     * @param msg The resource id to read
+     * @ deprecated
+     */
+    public BookException(String msg)
+    {
+        super(msg);
+    }
+
+    /**
+     * Construct the Exception with a message and a nested Exception
+     * @param msg The resource id to read
+     * @param ex The nested Exception
+     * @ deprecated
+     */
+    public BookException(String msg, Throwable ex)
+    {
+        super(msg, ex);
+    }
+
+    /**
+     * Construct the Exception with a message and some I18N params
+     * @param msg The resource id to read
+     * @param params An array of parameters
+     * @deprecated
+     */
+    public BookException(String msg, Object[] params)
+    {
+        super(msg, params);
     }
 }
 

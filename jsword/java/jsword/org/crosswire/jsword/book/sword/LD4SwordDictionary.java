@@ -1,11 +1,13 @@
 
 package org.crosswire.jsword.book.sword;
 
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.data.BookData;
 
 /**
- * A stub for the Compressed sword Bible backend.
+ * A backend file reader
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,33 +27,36 @@ import org.crosswire.jsword.passage.Verse;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see docs.Licence
- * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
- * @author The Sword project (don't know who - no credits in original files (canon.h))
  * @version $Id$
  */
-public class CompressedSwordBible extends SwordBible
+public class LD4SwordDictionary extends SwordDictionary
 {
     /**
      * Simple ctor
      */
-    public CompressedSwordBible(SwordBibleMetaData sbmd, SwordConfig config) throws BookException
+    public LD4SwordDictionary(SwordDictionaryMetaData data, SwordConfig config)
     {
-        super(sbmd, config);
+        super(data);
+        log.warn("No support for dictionary type: DRIVER_RAW_LD4 in "+config.getName()+" desire="+(++desire_rawld4));
     }
 
-    public String getText(Verse verse) throws BookException
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
+     */
+    public BookData getData(Key ref) throws BookException
     {
-        if (getConfig().getCompressType() == SwordConstants.COMPRESSION_LZSS)
-        {
-            // plug in LZSS de / compressor
-        }
-
-        if (getConfig().getCompressType() == SwordConstants.COMPRESSION_ZIP)
-        {
-            // plug in ZIP de / compressor
-        }
-
-        return "A stub for compressed bible backend.";
+        // PENDING(joe): support DRIVER_RAW_LD4
+        return null;
     }
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(LD4SwordDictionary.class);
+
+    /**
+     * So we know wha the demand for this is
+     */
+    private static int desire_rawld4 = 0;
 }

@@ -127,7 +127,7 @@ public class SwordConstants
     static final int FEATURE_HEBREW_PARSE = 1 << 4;
     static final int FEATURE_DAILY_DEVOTION = 1 << 5;
     static final int FEATURE_GLOSSARY = 1 << 6;
-    
+
     /** Strings for feature */
     static final String[] FEATURE_STRINGS = { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary" };
     

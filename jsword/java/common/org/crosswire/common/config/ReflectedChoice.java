@@ -44,15 +44,15 @@ public abstract class ReflectedChoice implements Choice, Serializable
         // The important 3 things saying what we update and how we describe ourselves
         Element introspector = option.getChild("introspect");
         if (introspector == null)
-            throw new StartupException("config_missingele", new Object[] { "introspect" });
+            throw new StartupException(I18N.CONFIG_MISSINGELE, new Object[] { "introspect" });
 
         String clazzname = introspector.getAttributeValue("class");
         if (clazzname == null)
-            throw new StartupException("config_missingele", new Object[] { "class" });
+            throw new StartupException(I18N.CONFIG_MISSINGELE, new Object[] { "class" });
 
         propertyname = introspector.getAttributeValue("property");
         if (propertyname == null)
-            throw new StartupException("config_missingele", new Object[] { "property" });
+            throw new StartupException(I18N.CONFIG_MISSINGELE, new Object[] { "property" });
 
         log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
 
@@ -62,7 +62,7 @@ public abstract class ReflectedChoice implements Choice, Serializable
         }
         catch (ClassNotFoundException ex)
         {
-            throw new StartupException("config_no_class", ex, new Object[] { clazzname });
+            throw new StartupException(I18N.CONFIG_NOCLASS, ex, new Object[] { clazzname });
         }
 
         try
@@ -71,7 +71,7 @@ public abstract class ReflectedChoice implements Choice, Serializable
         }
         catch (NoSuchMethodException ex)
         {
-            throw new StartupException("Specified method not found "+clazz.getName()+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)", ex);
+            throw new StartupException(I18N.CONFIG_NOSETTER, ex, new Object[] { clazz.getName(), propertyname, getConvertionClass().getName() });
         }
 
         try
@@ -87,13 +87,13 @@ public abstract class ReflectedChoice implements Choice, Serializable
         }
         catch (NoSuchMethodException ex)
         {
-            throw new StartupException("Specified method not found "+clazz.getName()+".get"+propertyname+"()", ex);
+            throw new StartupException(I18N.CONFIG_NOGETTER, ex, new Object[] { clazz.getName(), propertyname });
         }
 
         if (getter.getReturnType() != getConvertionClass())
         {
             log.debug("Not using "+propertyname+" from "+clazz.getName()+" because the return type of the getter is not "+getConvertionClass().getName());
-            throw new StartupException("Mismatch of return types, found: "+getter.getReturnType()+" required:"+getConvertionClass());
+            throw new StartupException(I18N.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConvertionClass() });
         }
 
         // Help text

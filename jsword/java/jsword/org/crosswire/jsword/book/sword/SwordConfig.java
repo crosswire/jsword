@@ -10,9 +10,8 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.book.data.Filter;
+import org.crosswire.jsword.book.data.Filters;
 
 /**
  * A utility class for loading and representing Sword module configs.
@@ -181,10 +180,40 @@ public class SwordConfig
 
         String directionString = reader.getFirstValue("Direction");
         direction = matchingIndex(SwordConstants.DIRECTION_STRINGS, directionString);
+
         String sourceTypeString = reader.getFirstValue("SourceType");
-        sourceType = matchingIndex(SwordConstants.SOURCE_STRINGS, sourceTypeString);
+        int sourceType = matchingIndex(SwordConstants.SOURCE_STRINGS, sourceTypeString);
+        switch (sourceType)
+        {
+        case SwordConstants.SOURCE_PLAINTEXT:
+            filter = Filters.PLAIN_TEXT;
+            break;
+
+        case SwordConstants.SOURCE_GBF:
+            log.debug("Found GBF source: "+getName()+" desire="+(++desire_gbf));
+            filter = Filters.GBF;
+            break;
+
+        case SwordConstants.SOURCE_THML:
+            log.debug("Found THML source: "+getName()+" desire="+(++desire_thml));
+            filter = Filters.THML;
+            break;
+
+        case SwordConstants.SOURCE_OSIS:
+            log.debug("Found OSIS source: "+getName()+" desire="+(++desire_osis));
+            filter = Filters.OSIS;
+            break;
+
+        default:
+            log.warn("SourceType set to invalid value: " + sourceTypeString);
+            filter = Filters.PLAIN_TEXT;
+            break;
+
+        }
+
         String encodingString = reader.getFirstValue("Encoding");
         encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, encodingString);
+
         try
         {
             String displayLevelString = reader.getFirstValue("DisplayLevel");
@@ -196,8 +225,13 @@ public class SwordConfig
             log.warn("DisplayLevel was broken: " + url.toString());
             // probably not fatal - a default is specified in documentation, but if one was specified it may cause problems
         }
+
         font = reader.getFirstValue("Font");
     }
+
+    private static int desire_gbf = 0;
+    private static int desire_thml = 0;
+    private static int desire_osis = 0;
 
     /**
      * Method setModuleAccess.
@@ -267,13 +301,31 @@ public class SwordConfig
             };
 
         case SwordConstants.DRIVER_Z_TEXT:
-            return new SwordBibleMetaData(this)
+            int ctype = getCompressType(); 
+            if (ctype == SwordConstants.COMPRESSION_LZSS)
             {
-                public Book createBook() throws BookException
+                return new SwordBibleMetaData(this)
                 {
-                    return new CompressedSwordBible(this, SwordConfig.this);
-                }
-            };
+                    public Book createBook() throws BookException
+                    {
+                        return new LZSSCompressedSwordBible(this, SwordConfig.this);
+                    }
+                };
+            }
+            else if (ctype == SwordConstants.COMPRESSION_ZIP)
+            {
+                return new SwordBibleMetaData(this)
+                {
+                    public Book createBook() throws BookException
+                    {
+                        return new ZipCompressedSwordBible(this, SwordConfig.this);
+                    }
+                };
+            }
+            else
+            {
+                throw new BookException("Unsupported compression type: "+ctype);
+            }
 
         case SwordConstants.DRIVER_RAW_COM:
             return new SwordCommentaryMetaData(this)
@@ -285,108 +337,61 @@ public class SwordConfig
             };
 
         case SwordConstants.DRIVER_Z_COM:
-            log.warn("No support for commentary type: DRIVER_Z_COM in "+this.getName()+" desire="+(++desire_zcom));
             return new SwordCommentaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    // PENDING(joe): support DRIVER_Z_COM
-                    return new SwordCommentary(this, SwordConfig.this)
-                    {
-                        public String getText(Verse verse) throws BookException
-                        {
-                            return "";
-                        }
-                    };
+                    return new CompressedSwordCommentary(this, SwordConfig.this);
                 }
             };
     
         case SwordConstants.DRIVER_HREF_COM:
-            log.warn("No support for commentary type: DRIVER_HREF_COM in "+this.getName()+" desire="+(++desire_hrefcom));
             return new SwordCommentaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    // PENDING(joe): support DRIVER_HREF_COM
-                    return new SwordCommentary(this, SwordConfig.this)
-                    {
-                        public String getText(Verse verse) throws BookException
-                        {
-                            return "";
-                        }
-                    };
+                    return new HRefSwordCommentary(this, SwordConfig.this);
                 }
             };
 
         case SwordConstants.DRIVER_RAW_FILES:
-            log.warn("No support for commentary type: DRIVER_RAW_FILES in "+this.getName()+" desire="+(++desire_rawfiles));
             return new SwordCommentaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    // PENDING(joe): support DRIVER_RAW_FILES
-                    return new SwordCommentary(this, SwordConfig.this)
-                    {
-                        public String getText(Verse verse) throws BookException
-                        {
-                            return "";
-                        }
-                    };
+                    return new RawFilesSwordCommentary(this, SwordConfig.this);
                 }
             };
 
         case SwordConstants.DRIVER_RAW_LD:
-            log.warn("No support for dictionary type: DRIVER_RAW_LD in "+this.getName()+" desire="+(++desire_rawld));
             return new SwordDictionaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    // PENDING(joe): support DRIVER_RAW_LD
-                    return new SwordDictionary(this)
-                    {
-                        public BookData getData(Key ref) throws BookException
-                        {
-                            return null;
-                        }
-                    };
+                    return new RawSwordDictionary(this, SwordConfig.this);
                 }
             };
 
         case SwordConstants.DRIVER_RAW_LD4:
-            log.warn("No support for dictionary type: DRIVER_RAW_LD4 in "+this.getName()+" desire="+(++desire_rawld4));
             return new SwordDictionaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    // PENDING(joe): support DRIVER_RAW_LD4
-                    return new SwordDictionary(this)
-                    {
-                        public BookData getData(Key ref) throws BookException
-                        {
-                            return null;
-                        }
-                    };
+                    return new LD4SwordDictionary(this, SwordConfig.this);
                 }
             };
     
         case SwordConstants.DRIVER_Z_LD:
-            log.warn("No support for dictionary type: DRIVER_Z_LD in "+this.getName()+" desire="+(++desire_zld));
             return new SwordDictionaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    // PENDING(joe): support DRIVER_Z_LD
-                    return new SwordDictionary(this)
-                    {
-                        public BookData getData(Key ref) throws BookException
-                        {
-                            return null;
-                        }
-                    };
+                    return new CompressedSwordDictionary(this, SwordConfig.this);
                 }
             };
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
+            // PENDING(joe): what is this?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName()+" desire="+(++desire_rawgenbook));
             throw new BookException("Unsupported type: "+type);
 
@@ -394,12 +399,7 @@ public class SwordConfig
             throw new BookException("Unknown type: "+type);
         }
     }
-    private static int desire_zcom = 0;
-    private static int desire_hrefcom = 0;
-    private static int desire_rawfiles = 0;
-    private static int desire_rawld = 0;
-    private static int desire_rawld4 = 0;
-    private static int desire_zld = 0;
+
     private static int desire_rawgenbook = 0;
 
     /**
@@ -683,9 +683,9 @@ public class SwordConfig
      * Returns the sourceType.
      * @return int
      */
-    public int getSourceType()
+    public Filter getFilter()
     {
-        return sourceType;
+        return filter;
     }
 
     /**
@@ -738,7 +738,7 @@ public class SwordConfig
     // required for proper rendering
     private int globalOptionFilter;
     private int direction;
-    private int sourceType;
+    private Filter filter;
     private int encoding;
     private int displayLevel = 1;
     private String font;

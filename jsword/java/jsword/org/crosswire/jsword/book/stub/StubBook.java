@@ -19,9 +19,10 @@ import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -92,16 +93,17 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
      * @param ele The elemenet to append to
      * @param ref The verses to search for
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
-        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
+        BookDataListener li = new OSISBookDataListnener();
+        li.startDocument(getBibleMetaData());
 
         // For all the ranges in this Passage
         Iterator rit = ref.rangeIterator();
         while (rit.hasNext())
         {
             VerseRange range = (VerseRange) rit.next();
-            SectionData section = OsisUtil.createSectionData(doc, range.toString());
+            li.startSection(range.toString());
 
             // For all the verses in this range
             Iterator vit = range.verseIterator();
@@ -109,17 +111,21 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
             {
                 Verse verse = (Verse) vit.next();
 
-                OsisUtil.createRefData(section, verse, "stub implementation");
+                li.startVerse(verse);
+                Filters.PLAIN_TEXT.toOSIS(li, "stub implementation");
+                li.endVerse();
             }
+
+            li.endSection();
         }
 
-        return doc;
+        return li.endDocument();
     }
 
     /**
      * @see org.crosswire.jsword.book.Commentary#getComments(org.crosswire.jsword.passage.Passage)
      */
-    public BibleData getComments(Passage ref) throws BookException
+    public BookData getComments(Passage ref) throws BookException
     {
         return getData(ref);
     }
@@ -141,7 +147,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     {
         try
         {
-            return PassageFactory.createPassage("Gen 1:1-Rev22:21");
+            return PassageFactory.createPassage("Gen 1:1-Rev 22:21");
         }
         catch (Exception ex)
         {
@@ -158,7 +164,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     {
         try
         {
-            return PassageFactory.createPassage("Gen 1:1-Rev22:21");
+            return PassageFactory.createPassage("Gen 1:1-Rev 22:21");
         }
         catch (Exception ex)
         {

@@ -1,0 +1,521 @@
+
+package org.crosswire.jsword.book.data;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.xml.bind.JAXBException;
+
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.DivineName;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Note;
+import org.crosswire.jsword.osis.ObjectFactory;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Q;
+import org.crosswire.jsword.osis.Reference;
+import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.osis.Speaker;
+import org.crosswire.jsword.osis.Title;
+import org.crosswire.jsword.osis.TransChange;
+import org.crosswire.jsword.osis.Verse;
+import org.crosswire.jsword.osis.W;
+import org.crosswire.jsword.osis.Work;
+import org.crosswire.jsword.passage.Passage;
+
+/**
+ * A BookDataListener that adds to an OSIS bean model.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
+public class OSISBookDataListnener implements BookDataListener
+{
+    /**
+     * @param sdata
+     */
+    public OSISBookDataListnener()
+    {
+    }
+
+    /**
+     * Find the current node and get a list from it.
+     */
+    private List getCurrentList(Class parenttype)
+    {
+        Object current = stack.getFirst();
+
+        if (!parenttype.isInstance(current))
+        {
+            throw new LogicError("found type="+current.getClass().getName()+" but expecting="+parenttype.getName());
+        }
+        
+        return getCurrentList();
+    }
+
+    /**
+     * Find the current node and get a list from it.
+     */
+    private List getCurrentList()
+    {
+        Object current = stack.getFirst();
+
+        if (current instanceof Verse)
+        {
+            return ((Verse) current).getContent();
+        }
+        else if (current instanceof Q)
+        {
+            return ((Q) current).getContent();
+        }
+        else if (current instanceof Reference)
+        {
+            return ((Reference) current).getContent();
+        }
+        else if (current instanceof Seg)
+        {
+            return ((Seg) current).getContent();
+        }
+        else if (current instanceof Speaker)
+        {
+            return ((Speaker) current).getContent();
+        }
+        else if (current instanceof Title)
+        {
+            return ((Title) current).getContent();
+        }
+        else if (current instanceof TransChange)
+        {
+            return ((TransChange) current).getContent();
+        }
+        else if (current instanceof W)
+        {
+            return ((W) current).getContent();
+        }
+        else if (current instanceof Div)
+        {
+            return ((Div) current).getContent();
+        }
+        else if (current instanceof OsisText)
+        {
+            return ((OsisText) current).getDiv();
+        }
+
+        log.error("unknown element: "+current.getClass().getName());
+        throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startDocument(org.crosswire.jsword.book.BookMetaData)
+     */
+    public void startDocument(BookMetaData bmd)
+    {
+        try
+        {
+            this.bdata = new BookData();
+            bdata.osis = ObjectFactory.createOsis();
+
+            Work work = ObjectFactory.createWork();
+            Header header = ObjectFactory.createHeader();
+            header.getWork().add(work);
+
+            OsisText text = ObjectFactory.createOsisText();
+            text.setOsisIDWork("Bible."+bmd.getInitials());
+            text.setHeader(header);
+
+            bdata.osis.setOsisText(text);
+
+            stack.addFirst(text);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endDocument()
+     */
+    public BookData endDocument()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof OsisText))
+            throw new LogicError();
+
+        if (!stack.isEmpty())
+            throw new LogicError();
+
+        return bdata;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startSection()
+     */
+    public void startSection(String title)
+    {
+        try
+        {
+            Div div = ObjectFactory.createDiv();
+            div.setDivTitle(title);
+
+            getCurrentList(OsisText.class).add(div);
+
+            stack.addFirst(div);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endSection()
+     */
+    public void endSection()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Div))
+            throw new LogicError();
+
+        bdata.osis.getOsisText().getDiv().add((Div) top);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startVerse(org.crosswire.jsword.passage.Verse)
+     */
+    public void startVerse(org.crosswire.jsword.passage.Verse verse)
+    {
+        try
+        {
+            Verse everse = ObjectFactory.createVerse();
+            everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+
+            getCurrentList(Div.class).add(everse);
+
+            stack.addFirst(everse);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endVerse()
+     */
+    public void endVerse()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Verse))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#addText(java.lang.String)
+     */
+    public void addText(String text)
+    {
+        getCurrentList().add(text);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#addNote(java.lang.String, java.lang.String)
+     */
+    public void addNote(String marker, String addition)
+    {
+        try
+        {
+            Note note = ObjectFactory.createNote();
+            note.setN(marker);
+            note.getContent().add(addition);
+
+            getCurrentList().add(note);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#addDivineName(java.lang.String)
+     */
+    public void addDivineName(String name)
+    {
+        try
+        {
+            DivineName dname = ObjectFactory.createDivineName();
+            dname.getContent().add(name);
+
+            getCurrentList().add(dname);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startQuote(java.lang.String, java.lang.String)
+     */
+    public void startQuote(String who, String level)
+    {
+        try
+        {
+            Q q = ObjectFactory.createQ();
+
+            getCurrentList().add(q);
+
+            // PENDING(joe): what do we do with who and level?
+            stack.addFirst(q);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endQuote()
+     */
+    public void endQuote()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Q))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startReference(org.crosswire.jsword.passage.Passage)
+     */
+    public void startReference(Passage ref)
+    {
+        try
+        {
+            Reference rref = ObjectFactory.createReference();
+            // PENDING(joe): convert into an OSIS string
+            rref.setOsisRef(ref.toString());
+
+            getCurrentList().add(rref);
+
+            stack.addFirst(ref);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endReference()
+     */
+    public void endReference()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Reference))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startSegment()
+     */
+    public void startSegment()
+    {
+        try
+        {
+            Seg seg = ObjectFactory.createSeg();
+
+            getCurrentList().add(seg);
+
+            stack.addFirst(seg);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endSegment()
+     */
+    public void endSegment()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Seg))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startSpeaker(java.lang.String)
+     */
+    public void startSpeaker(String who)
+    {
+        try
+        {
+            Speaker speaker = ObjectFactory.createSpeaker();
+            speaker.setWho(who);
+
+            getCurrentList().add(who);
+
+            stack.addFirst(speaker);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endSpeaker()
+     */
+    public void endSpeaker()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Speaker))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startTitle(java.lang.String)
+     */
+    public void startTitle()
+    {
+        try
+        {
+            Title title = ObjectFactory.createTitle();
+
+            getCurrentList().add(title);
+
+            stack.addFirst(title);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endTitle()
+     */
+    public void endTitle()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof Title))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startTransChange(java.lang.String)
+     */
+    public void startTransChange(String type)
+    {
+        try
+        {
+            TransChange trans = ObjectFactory.createTransChange();
+            trans.setChangeType(type);
+
+            getCurrentList().add(trans);
+
+            stack.addFirst(trans);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endTransChange()
+     */
+    public void endTransChange()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof TransChange))
+            throw new LogicError();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#startWord()
+     */
+    public void startWord()
+    {
+        try
+        {
+            W word = ObjectFactory.createW();
+
+            getCurrentList().add(word);
+
+            stack.addFirst(word);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.BookDataListener#endWord()
+     */
+    public void endWord()
+    {
+        Object top = stack.removeFirst();
+
+        // Check that we are properly tree structured
+        if (!(top instanceof W))
+            throw new LogicError();
+    }
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(OSISBookDataListnener.class);
+
+    /**
+     * The proxied OSIS bean that we add to
+     */
+    private BookData bdata;
+
+    /**
+     * The stack of current OSIS beans
+     */
+    private LinkedList stack = new LinkedList();
+}

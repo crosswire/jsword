@@ -9,9 +9,9 @@ import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractCommentary;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -63,16 +63,17 @@ public abstract class SwordCommentary extends AbstractCommentary implements Comm
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#getComments(org.crosswire.jsword.passage.Passage)
      */
-    public BibleData getComments(Passage ref) throws BookException
+    public BookData getComments(Passage ref) throws BookException
     {
-        BibleData doc = OsisUtil.createBibleData(getCommentaryMetaData());
+        BookDataListener li = new OSISBookDataListnener();
+        li.startDocument(getCommentaryMetaData());
 
         // For all the ranges in this Passage
         Iterator rit = ref.rangeIterator();
         while (rit.hasNext())
         {
             VerseRange range = (VerseRange) rit.next();
-            SectionData section = OsisUtil.createSectionData(doc, range.toString());
+            li.startSection(range.toString());
 
             // For all the verses in this range
             Iterator vit = range.verseIterator();
@@ -80,11 +81,16 @@ public abstract class SwordCommentary extends AbstractCommentary implements Comm
             {
                 Verse verse = (Verse) vit.next();
                 String text = getText(verse);
-                OsisUtil.createRefData(section, verse, text);
+
+                li.startVerse(verse);
+                config.getFilter().toOSIS(li, text);
+                li.endVerse();
             }
+            
+            li.endSection();
         }
 
-        return doc;
+        return li.endDocument();
     }
 
     /**

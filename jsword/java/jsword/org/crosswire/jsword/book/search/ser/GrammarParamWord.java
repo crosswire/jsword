@@ -34,38 +34,27 @@ import org.crosswire.jsword.passage.Passage;
  */
 public class GrammarParamWord implements ParamWord
 {
-    /**
-    * Get a word for something else to word on.
-    */
-    public GrammarParamWord()
-    {
-    }
-
-    /**
-    * Get a word for something else to word on.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return The requested text
-    * @exception SearchException If this action is not appropriate
-    */
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getWord(org.crosswire.jsword.book.search.ser.Parser)
+     */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException("search_grammar_word");
+        throw new BookException(I18N.GRAMMAR_WORD);
     }
 
     /**
-    * Get a Passage for something else to work on. WARNING the return from
-    * this method is a PassageTally which is not a 100% match for the
-    * Passage interface. Maybe this needs to be fixed somehow.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return A Passage relevant to this command
-    * @exception SearchException If this action is not appropriate
-    */
+     * Get a Passage for something else to work on. WARNING the return from
+     * this method is a PassageTally which is not a 100% match for the
+     * Passage interface. Maybe this needs to be fixed somehow.
+     * @exception SearchException If this action is not appropriate
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getPassage(org.crosswire.jsword.book.search.ser.Parser)
+     */
     public Passage getPassage(Parser engine) throws BookException
     {
         if (!engine.iterator().hasNext())
-            throw new BookException("search_grammar_blank");
+        {
+            throw new BookException(I18N.GRAMMAR_BLANK);
+        }
 
         ParamWord param = (ParamWord) engine.iterator().next();
         String root = Grammar.getRoot(param.getWord(engine));

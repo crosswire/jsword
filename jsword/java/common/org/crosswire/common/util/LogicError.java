@@ -38,6 +38,16 @@ public class LogicError extends RuntimeException
     }
 
     /**
+     * Logic Errors should never happen so there is no need for an error
+     * message as a description describes how this happened.
+     */
+    public LogicError(String message)
+    {
+        super(message);
+        this.ex = null;
+    }
+
+    /**
      * Logic Errors should never happen. This passes on the presumably
      * checked Exception
      */

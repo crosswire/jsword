@@ -9,9 +9,12 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.OSISUtil;
+import org.crosswire.jsword.book.data.VerseData;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
@@ -347,18 +350,33 @@ public class RawBible extends LocalURLBible
      * @param doc The XML document
      * @param ref The verses to search for
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
-        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
+        BookDataListener li = new OSISBookDataListnener();
+        li.startDocument(getBibleMetaData());
 
         Iterator it = ref.rangeIterator();
         while (it.hasNext())
         {
             VerseRange range = (VerseRange) it.next();
-            append(doc, range);
+            li.startSection(range.getName());
+            
+            Verse[] array = range.toVerseArray();
+            for (int i=0; i<array.length; i++)
+            {
+                Verse verse = array[i];
+                li.startVerse(verse);
+            
+                String text = getText(new VerseRange(verse));
+                Filters.PLAIN_TEXT.toOSIS(li, text);
+            
+                li.endVerse();
+            }
+            
+            li.endSection();
         }
 
-        return doc;
+        return li.endDocument();
     }
 
     /**
@@ -434,19 +452,19 @@ public class RawBible extends LocalURLBible
      * @param verse The verse to write
      * @param text The data to write
      */
-    public void setDocument(Verse verse, BibleData doc) throws BookException
+    public void setDocument(Verse verse, BookData doc) throws BookException
     {
         // For all of the sections
-        for (Iterator sit=OsisUtil.getSectionDatas(doc); sit.hasNext(); )
+        for (Iterator sit=OSISUtil.getSectionDatas(doc); sit.hasNext(); )
         {
             SectionData section = (SectionData) sit.next();
 
             // For all of the Verses in the section
-            for (Iterator vit=OsisUtil.getRefDatas(section); vit.hasNext(); )
+            for (Iterator vit=OSISUtil.getRefDatas(section); vit.hasNext(); )
             {
-                RefData vel = (RefData) vit.next();
+                VerseData vel = (VerseData) vit.next();
 
-                String text = OsisUtil.getPlainText(vel);
+                String text = OSISUtil.getPlainText(vel);
 
                 // Is this verse part of a new paragraph? Since the move to OSIS
                 // the concept of new para is not what it was. I don't intend to
@@ -523,23 +541,6 @@ public class RawBible extends LocalURLBible
     protected WordInstsMem getWordData()
     {
         return (WordInstsMem) word_insts;
-    }
-
-    /**
-     * Fetch the Bible text for a single reference from a PassageID and a Bible
-     */
-    private void append(BibleData doc, VerseRange range) throws BookException
-    {
-        SectionData section = OsisUtil.createSectionData(doc, range.getName());
-
-        Verse[] array = range.toVerseArray();
-        for (int i=0; i<array.length; i++)
-        {
-            Verse verse = array[i];
-            String text = getText(new VerseRange(verse));
-
-            OsisUtil.createRefData(section, verse, text);
-        }
     }
 
     /**

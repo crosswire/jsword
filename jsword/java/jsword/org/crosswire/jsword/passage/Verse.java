@@ -158,7 +158,9 @@ public class Verse implements VerseBase
     public Verse(int book, int chapter, int verse, boolean patch_up)
     {
         if (!patch_up)
-            throw new IllegalArgumentException(PassageUtil.getResource("verse_error_patch"));
+        {
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.ERROR_PATCH));
+        }
 
         original_name = null;
         setAndPatch(book, chapter, verse);
@@ -599,7 +601,7 @@ public class Verse implements VerseBase
             return ACCURACY_BOOK_VERSE;
         }
 
-        throw new NoSuchVerseException("passg_verse_parts", new Object[] { VERSE_ALLOWED_DELIMS });
+        throw new NoSuchVerseException(I18N.VERSE_PARTS, new Object[] { VERSE_ALLOWED_DELIMS });
     }
 
     /**
@@ -840,7 +842,7 @@ public class Verse implements VerseBase
         }
         catch (NumberFormatException ex)
         {
-            throw new NoSuchVerseException("passg_verse_parse", new Object[] { text });
+            throw new NoSuchVerseException(I18N.VERSE_PARSE, new Object[] { text });
         }
     }
 

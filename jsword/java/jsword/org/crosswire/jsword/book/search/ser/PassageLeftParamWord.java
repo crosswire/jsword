@@ -35,25 +35,17 @@ import org.crosswire.jsword.passage.PassageFactory;
  */
 public class PassageLeftParamWord implements ParamWord
 {
-    /**
-    * Get a word for something else to word on.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return The requested text
-    * @exception SearchException If this action is not appropriate
-    */
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getWord(org.crosswire.jsword.book.search.ser.Parser)
+     */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException("search_left_param");
+        throw new BookException(I18N.LEFT_PARAM);
     }
 
-    /**
-    * Get a Passage for something else to word on.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return A Passage relevant to this command
-    * @exception SearchException If this action is not appropriate
-    */
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getPassage(org.crosswire.jsword.book.search.ser.Parser)
+     */
     public Passage getPassage(Parser engine) throws BookException
     {
         Iterator it = engine.iterator();
@@ -63,7 +55,7 @@ public class PassageLeftParamWord implements ParamWord
         while (true)
         {
             if (!engine.iterator().hasNext())
-                throw new BookException("search_left_brackets");
+                throw new BookException(I18N.LEFT_BRACKETS);
 
             SearchWord word = (SearchWord) it.next();
 
@@ -82,7 +74,7 @@ public class PassageLeftParamWord implements ParamWord
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException("search_illegal_passage", ex, new Object[] { buff.toString() });
+            throw new BookException(I18N.ILLEGAL_PASSAGE, ex, new Object[] { buff.toString() });
         }
     }
 }

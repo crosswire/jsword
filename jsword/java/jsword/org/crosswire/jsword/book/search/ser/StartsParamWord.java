@@ -8,8 +8,8 @@ import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.passage.Passage;
 
 /**
- * The Search Word for a Word to search for. The default
- * if no other SearchWords match.
+ * The Search Word for a Word to search for. The default if no other SearchWords
+ * match.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -34,38 +34,26 @@ import org.crosswire.jsword.passage.Passage;
  */
 public class StartsParamWord implements ParamWord
 {
-    /**
-    * Get a word for something else to word on.
-    */
-    public StartsParamWord()
-    {
-    }
-
-    /**
-    * Get a word for something else to word on.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return The requested text
-    * @exception SearchException If this action is not appropriate
-    */
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getWord(org.crosswire.jsword.book.search.ser.Parser)
+     */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException("search_starts_word");
+        throw new BookException(I18N.STARTS_WORD);
     }
 
     /**
-    * Get a Passage for something else to work on. WARNING the return from
-    * this method is a PassageTally which is not a 100% match for the
-    * Passage interface. Maybe this needs to be fixed somehow.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return A Passage relevant to this command
-    * @exception SearchException If this action is not appropriate
-    */
+     * Get a Passage for something else to work on. WARNING the return from
+     * this method is a PassageTally which is not a 100% match for the
+     * Passage interface. Maybe this needs to be fixed somehow.
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getPassage(org.crosswire.jsword.book.search.ser.Parser)
+     */
     public Passage getPassage(Parser engine) throws BookException
     {
         if (!engine.iterator().hasNext())
-            throw new BookException("search_starts_blank");
+        {
+            throw new BookException(I18N.STARTS_BLANK);
+        }
 
         ParamWord param = (ParamWord) engine.iterator().next();
         String word = param.getWord(engine);

@@ -254,11 +254,8 @@ public abstract class AbstractBookMetaData implements BookMetaData
             this.open = Openness.get(openstr);
     }
 
-    /**
-     * Not sure about this one - Do we need a way of getting at the dist.
-     * licence? Are we going to be able to tie it down to a single Version
-     * policy like this?
-     * @return String detailing the users right to distribute this version
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLicence()
      */
     public URL getLicence()
     {
@@ -284,10 +281,8 @@ public abstract class AbstractBookMetaData implements BookMetaData
             this.licence = new URL(licencestr);
     }
 
-    /**
-     * Do the 2 versions have matching names, editions and drivers.
-     * @param obj The object to compare to
-     * @return true if the names and editions match
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj)
     {
@@ -313,53 +308,44 @@ public abstract class AbstractBookMetaData implements BookMetaData
         return getEdition().equals(that.getEdition());
     }
 
-    /**
-     * Get a moderately unique id for this Object.
-     * @return The hashing number
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
         return (getName() + getEdition()).hashCode();
     }
 
-    /**
-     * The full name including edition of the version, for example
-     * "New International Version, Anglicised". The format is "name, edition"
-     * @return The full name of this version
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
      */
     public String getFullName()
     {
         return getName() + ", " + getEdition() + " (" + getDriverName() + ")";
     }
 
-    /**
-     * Get a human readable version of this Version -just bounce to
-     * getFullName()
-     * @return The full name of this version
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
         return getFullName();
     }
 
-    /**
-     * Do the 2 versions have matching names.
-     * @param version The version to compare to
-     * @return true if the names match
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isSameFamily(org.crosswire.jsword.book.BookMetaData)
      */
     public boolean isSameFamily(BookMetaData version)
     {
         return getName().equals(version.getName());
     }
 
-    /**
-     * Delete a Bible
-     * @throws BookException If anything goes wrong with this method
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#delete()
      */
     public void delete() throws BookException
     {
-        throw new BookException("book_nodel", new Object[] { getName() });
+        throw new BookException(I18N.DELETE_NOTIMPL, new Object[] { getName() });
     }
 
     /**

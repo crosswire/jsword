@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.util.I18NBase;
 
 /**
  * A Utility class containing various static methods.
@@ -44,7 +45,7 @@ public class PassageUtil implements PassageConstants
     public static void setBlurRestriction(int value)
     {
         if (!PassageUtil.isValidBlurRestriction(value))
-            throw new IllegalArgumentException(getResource("util_error_blur"));
+            throw new IllegalArgumentException(getResource(I18N.ERROR_BLUR));
 
         blur = value;
     }
@@ -255,10 +256,10 @@ public class PassageUtil implements PassageConstants
         case CASE_MIXED:
             if (word.toLowerCase().equals("lord's")) return "LORD's";
             // This should not happen
-            throw new IllegalArgumentException(getResource("util_error_mixed"));
+            throw new IllegalArgumentException(getResource(I18N.ERROR_MIXED));
 
         default:
-            throw new IllegalArgumentException(getResource("util_error_case"));
+            throw new IllegalArgumentException(getResource(I18N.ERROR_BADCASE));
         }
     }
 
@@ -437,7 +438,7 @@ public class PassageUtil implements PassageConstants
             break;
 
         default:
-            throw new NoSuchVerseException(PassageUtil.getResource("abstract_error_cast"));
+            throw new NoSuchVerseException(I18N.PASSAGE_UNKNOWN);
         }
 
         // Some speedups
@@ -492,9 +493,14 @@ public class PassageUtil implements PassageConstants
     protected static int toBinary(byte[] buffer, int index, int number, int max)
     {
         if (number < 0)
+        {
             throw new IllegalArgumentException("No -ve output "+number);
+        }
+
         if (number > max)
+        {
             throw new IllegalArgumentException("number "+number+" > max "+max);
+        }
 
         // 1 byte (2^8)
         if (max < 256)
@@ -625,10 +631,42 @@ public class PassageUtil implements PassageConstants
      * Utility that enables us to have a single resource file for all the
      * passage classes
      * @param id The resource id to fetch
+     * @return The String from the resource file
+     */
+    protected static String getResource(I18NBase id)
+    {
+        try
+        {
+            return res.getString(id.toString());
+        }
+        catch (MissingResourceException ex)
+        {
+            return "Missing resource for: "+id;
+        }
+    }
+
+    /**
+     * Utility that enables us to have a single resource file for all the
+     * passage classes
+     * @param id The resource id to fetch
+     * @param params The params to format
+     * @return The String from the resource file
+     * @deprecated
+     */
+    protected static String getResource(String id, Object[] params)
+    {
+        MessageFormat formatter = new MessageFormat(getResource(id));
+        return formatter.format(params);
+    }
+
+    /**
+     * Utility that enables us to have a single resource file for all the
+     * passage classes
+     * @param id The resource id to fetch
      * @param params The params to format
      * @return The String from the resource file
      */
-    protected static String getResource(String id, Object[] params)
+    protected static String getResource(I18NBase id, Object[] params)
     {
         MessageFormat formatter = new MessageFormat(getResource(id));
         return formatter.format(params);

@@ -32,45 +32,47 @@ import org.crosswire.jsword.passage.Passage;
 public class DefaultParamWord implements ParamWord
 {
     /**
-    * Create a the default rule with the (presumably) Bible
-    * word that formed part of the original search string
-    * @param text The word to search (or otherwise) for
-    */
+     * Create a the default rule with the (presumably) Bible
+     * word that formed part of the original search string
+     * @param text The word to search (or otherwise) for
+     */
     public DefaultParamWord(String text)
     {
         this.text = text;
     }
 
     /**
-    * Get a word for something else to word on.
-    * @return The word to search for
-    */
+     * Get a word for something else to word on.
+     * @return The word to search for
+     */
     public String getWord(Parser engine)
     {
         return text;
     }
 
     /**
-    * To help error reporting.
-    * @return The word to search for
-    */
+     * To help error reporting.
+     * @return The word to search for
+     */
     public String toString()
     {
         return text;
     }
 
     /**
-    * Get a Passage for something else to word on.
-    * @param word_stack The set of words in the command line
-    * @param current The Passage to alter (if necessary)
-    * @param bible The Bible to use to search against
-    * @return An array of alternative words
-    */
+     * Get a Passage for something else to word on.
+     * @param word_stack The set of words in the command line
+     * @param current The Passage to alter (if necessary)
+     * @param bible The Bible to use to search against
+     * @return An array of alternative words
+     */
     public Passage getPassage(Parser engine) throws BookException
     {
         return engine.wordSearch(text);
     }
 
-    /** The word that we represent */
+    /**
+     * The word that we represent
+     */
     private String text = null;
 }

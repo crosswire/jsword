@@ -8,9 +8,9 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -64,16 +64,17 @@ public abstract class SwordBible extends AbstractBible
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
-        BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
+        BookDataListener li = new OSISBookDataListnener();
+        li.startDocument(getBibleMetaData());
 
         // For all the ranges in this Passage
         Iterator rit = ref.rangeIterator();
         while (rit.hasNext())
         {
             VerseRange range = (VerseRange) rit.next();
-            SectionData section = OsisUtil.createSectionData(doc, range.toString());
+            li.startSection(range.toString());
 
             // For all the verses in this range
             Iterator vit = range.verseIterator();
@@ -81,16 +82,22 @@ public abstract class SwordBible extends AbstractBible
             {
                 Verse verse = (Verse) vit.next();
                 String text = getText(verse);
-                OsisUtil.createRefData(section, verse, text);
+
+                li.startVerse(verse);
+                config.getFilter().toOSIS(li, text);
+                li.endVerse();
             }
+
+            li.endSection();
         }
 
-        return doc;
+        return li.endDocument();
     }
 
     /**
      * This is very similar in function to getData(Passage) except that we only
-     * fetch the data for a single verse.
+     * fetch the data for a single verse, and we get it back in string form
+     * without having to parse it.
      * @param verse The verse to get data for
      * @return String The corresponding text
      */

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -88,11 +89,11 @@ public class Converter
         }
         catch (MalformedURLException ex)
         {
-            throw new ConverterException("convert_bmd", ex);
+            throw new ConverterException(I18N.CONVERT_BMD, ex);
         }
         catch (ParseException ex)
         {
-            throw new ConverterException("convert_bmd", ex);
+            throw new ConverterException(I18N.CONVERT_BMD, ex);
         }
     }
 
@@ -103,7 +104,7 @@ public class Converter
     public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids) throws ConverterException
     {
         if (bmds.length != ids.length)
-            throw new ConverterException("converter_length");
+            throw new LogicError();
 
         Element root = new Element("root");
         for (int i = 0; i < bmds.length; i++)
@@ -145,16 +146,18 @@ public class Converter
      */
     public static Passage convertDocumentToPassage(Document doc) throws ConverterException
     {
+        String refstr = null;
+
         try
         {
             Element root = doc.getRootElement();
-            String refstr = root.getChild("ref").getTextTrim();
+            refstr = root.getChild("ref").getTextTrim();
             
             return PassageFactory.createPassage(refstr);
         }
         catch (NoSuchVerseException ex)
         {
-            throw new ConverterException("convert_noverse", ex);
+            throw new ConverterException(I18N.CONVERT_NOVERSE, ex, new Object[] { refstr });
         }
     }
 
@@ -241,11 +244,13 @@ public class Converter
      */
     public static RemoterException convertDocumentToException(Document doc) throws ConverterException
     {
+        String typename = null;
+
         try
         {
             Element exce = doc.getRootElement();
             String message = exce.getChildTextTrim("message");
-            String typename = exce.getChildTextTrim("type");
+            typename = exce.getChildTextTrim("type");
             
             Class type = Class.forName(typename);
             
@@ -253,7 +258,7 @@ public class Converter
         }
         catch (ClassNotFoundException ex)
         {
-            throw new ConverterException("convert_noclass", ex);
+            throw new ConverterException(I18N.CONVERT_NOCLASS, ex, new Object[] { typename });
         }
     }
 

@@ -320,7 +320,7 @@ public abstract class AbstractPassage implements Passage
         {
             if (!it.hasNext())
             {
-                String message = PassageUtil.getResource("abstract_error_index", new Object[] { new Integer(offset), new Integer(countVerses()) });
+                String message = PassageUtil.getResource(I18N.ABSTRACT_INDEX, new Object[] { new Integer(offset), new Integer(countVerses()) });
                 throw new ArrayIndexOutOfBoundsException(message);
             }
 
@@ -345,7 +345,7 @@ public abstract class AbstractPassage implements Passage
         {
             if (!it.hasNext())
             {
-                String message = PassageUtil.getResource("abstract_error_index", new Object[] { new Integer(offset), new Integer(countVerses()) });
+                String message = PassageUtil.getResource(I18N.ABSTRACT_INDEX, new Object[] { new Integer(offset), new Integer(countVerses()) });
                 throw new ArrayIndexOutOfBoundsException(message);
             }
 
@@ -958,7 +958,7 @@ public abstract class AbstractPassage implements Passage
             return new VerseRange((Verse) base);
         }
 
-        throw new ClassCastException(PassageUtil.getResource("abstract_error_cast"));
+        throw new ClassCastException(PassageUtil.getResource(I18N.ABSTRACT_CAST));
     }
 
     /**
@@ -983,7 +983,7 @@ public abstract class AbstractPassage implements Passage
             return new Verse[] { (Verse) base };
         }
 
-        throw new ClassCastException(PassageUtil.getResource("abstract_error_cast"));
+        throw new ClassCastException(PassageUtil.getResource(I18N.ABSTRACT_CAST));
     }
 
     /**
@@ -1205,7 +1205,7 @@ public abstract class AbstractPassage implements Passage
                 break;
 
             default:
-                throw new ClassCastException(PassageUtil.getResource("abstract_error_cast"));
+                throw new ClassCastException(PassageUtil.getResource(I18N.ABSTRACT_CAST));
             }
         }
         catch (NoSuchVerseException ex)

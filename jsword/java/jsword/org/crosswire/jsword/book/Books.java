@@ -241,7 +241,9 @@ public class Books
         }
 
         if (!drivers.remove(driver))
+        {
             throw new BookException("book_not_registered", new Object[] { driver.getClass().getName() });
+        }
 
         log.debug("end un-registering driver: "+driver.getClass().getName());
     }

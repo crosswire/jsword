@@ -14,9 +14,12 @@ import java.util.Iterator;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.OSISUtil;
+import org.crosswire.jsword.book.data.VerseData;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
@@ -90,18 +93,19 @@ public class BibleDataCache
      * Create an XML document for the specified Verses
      * @param ref The verses to search for
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
-        BibleData doc = OsisUtil.createBibleData(bmd);
-
         try
         {
+            BookDataListener li = new OSISBookDataListnener();
+            li.startDocument(bmd);
+
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                SectionData section = OsisUtil.createSectionData(doc, range.toString());
+                li.startSection(range.toString());
 
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
@@ -115,15 +119,19 @@ public class BibleDataCache
                     // Read the XML text
                     String text = xml_dat.readUTF();
 
-                    OsisUtil.createRefData(section, verse, text);
+                    li.startVerse(verse);
+                    Filters.PLAIN_TEXT.toOSIS(li, text);
+                    li.endVerse();
                 }
+
+                li.endSection();
             }
 
-            return doc;
+            return li.endDocument();
         }
         catch (Exception ex)
         {
-            throw new BookException("ser_read", ex);
+            throw new BookException(I18N.READ_ERROR, ex);
         }
     }
 
@@ -131,20 +139,20 @@ public class BibleDataCache
      * Write the XML to disk
      * @param doc The data to write
      */
-    public void setDocument(Verse verse, BibleData doc) throws BookException
+    public void setDocument(Verse verse, BookData doc) throws BookException
     {
         try
         {
             // For all of the sections
-            for (Iterator sit = OsisUtil.getSectionDatas(doc); sit.hasNext(); )
+            for (Iterator sit = OSISUtil.getSectionDatas(doc); sit.hasNext(); )
             {
                 SectionData section = (SectionData) sit.next();
 
                 // For all of the Verses in the section
-                for (Iterator vit = OsisUtil.getRefDatas(section); vit.hasNext(); )
+                for (Iterator vit = OSISUtil.getRefDatas(section); vit.hasNext(); )
                 {
-                    RefData vel = (RefData) vit.next();
-                    String text = OsisUtil.getPlainText(vel);
+                    VerseData vel = (VerseData) vit.next();
+                    String text = OSISUtil.getPlainText(vel);
 
                     // Remember where we were so we can read it back later
                     xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();
@@ -156,7 +164,7 @@ public class BibleDataCache
         }
         catch (IOException ex)
         {
-            throw new BookException("ser_write", ex);
+            throw new BookException(I18N.WRITE_ERROR, ex);
         }
     }
 
@@ -182,7 +190,7 @@ public class BibleDataCache
         }
         catch (IOException ex)
         {
-            throw new BookException("ser_index", ex);
+            throw new BookException(I18N.WRITE_ERROR, ex);
         }
     }
 

@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.search.ser;
 import org.crosswire.common.util.StringUtil;
 
 /**
- * Grammar. 
+ * A class representing various grammatical constructs (in English). 
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,13 +30,13 @@ import org.crosswire.common.util.StringUtil;
 public class Grammar
 {
     /**
-    * Strip of any parts of speech to leave a root word.
-    * This class may not be the best place for this code, however I'm not
-    * sure if we have a better place for it at the mo. Maybe it should be
-    * in passage.PassageUtil?
-    * @param word The word to strip
-    * @return The root word
-    */
+     * Strip of any parts of speech to leave a root word.
+     * This class may not be the best place for this code, however I'm not
+     * sure if we have a better place for it at the mo. Maybe it should be
+     * in passage.PassageUtil?
+     * @param word The word to strip
+     * @return The root word
+     */
     public static String getRoot(String word)
     {
         for (int i=0; i<endings.length; i++)
@@ -52,10 +52,10 @@ public class Grammar
     }
 
     /**
-    * Is this word one of those small words that can slaughter a DB
-    * query. An empty string IS a small word.
-    * @param word The word to test
-    */
+     * Is this word one of those small words that can slaughter a DB
+     * query. An empty string IS a small word.
+     * @param word The word to test
+     */
     public static boolean isSmallWord(String word)
     {
         word = word.trim();
@@ -74,9 +74,9 @@ public class Grammar
     }
 
     /**
-    * Is this word one of those small words that can slaughter a DB query
-    * @param word The word to test
-    */
+     * Is this word one of those small words that can slaughter a DB query
+     * @param word The word to test
+     */
     public static String[] stripSmallWords(String[] words)
     {
         // How many long words are there?
@@ -100,10 +100,10 @@ public class Grammar
     }
 
     /**
-    * Like PassageUtil.tokenize that leaves out the small words
-    * @param word The word to split up
-    * @param delims The word separators
-    * @return The long words in the string
+     * Like PassageUtil.tokenize that leaves out the small words
+     * @param word The word to split up
+     * @param delims The word separators
+     * @return The long words in the string
     */
     public static String[] tokenizeWithoutSmallWords(String original, String delims)
     {
@@ -130,10 +130,10 @@ public class Grammar
     }
 
     /**
-    * The Endings a word can have.
-    * These are matched in order so there is no point in having "s"
-    * before "es" because the second will not be tried.
-    */
+     * The Endings a word can have.
+     * These are matched in order so there is no point in having "s"
+     * before "es" because the second will not be tried.
+     */
     private static final String[] endings =
     {
         "es",
@@ -146,8 +146,8 @@ public class Grammar
     };
 
     /**
-    * The one hundred most used words, and the instance count
-    */
+     * The one hundred most used words, and the instance count
+     */
     private static final String[] word_freq = 
     {
         // word     instance count (in AV & NIV)

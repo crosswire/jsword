@@ -146,8 +146,7 @@ public class VerseRange implements VerseBase
             break;
 
         default:
-            throw new NoSuchVerseException("passg_range_parts",
-                                           new Object[] { RANGE_ALLOWED_DELIMS, desc });
+            throw new NoSuchVerseException(I18N.RANGE_PARTS, new Object[] { RANGE_ALLOWED_DELIMS, desc });
         }
 
         verifyData();
@@ -255,8 +254,7 @@ public class VerseRange implements VerseBase
             break;
 
         default:
-            throw new NoSuchVerseException("passg_range_parts",
-                                           new Object[] { RANGE_ALLOWED_DELIMS, desc });
+            throw new NoSuchVerseException(I18N.RANGE_PARTS, new Object[] { RANGE_ALLOWED_DELIMS, desc });
         }
 
         verifyData();
@@ -270,7 +268,9 @@ public class VerseRange implements VerseBase
     public VerseRange(Verse start)
     {
         if (start == null)
-            throw new NullPointerException(PassageUtil.getResource("range_error_null"));
+        {
+            throw new NullPointerException();
+        }
 
         this.original_name = null;
         this.start = start;
@@ -289,7 +289,9 @@ public class VerseRange implements VerseBase
     public VerseRange(Verse start, int verse_count) throws NoSuchVerseException
     {
         if (verse_count < 1)
-            throw new NoSuchVerseException(PassageUtil.getResource("range_error_count"));
+        {
+            throw new NoSuchVerseException(I18N.RANGE_LOCOUNT);
+        }
 
         if (start.getOrdinal()+verse_count-1 > BibleInfo.versesInBible())
         {
@@ -299,7 +301,7 @@ public class VerseRange implements VerseBase
                 new Integer(BibleInfo.versesInBible()-start.getOrdinal()),
                 new Integer(verse_count)
             };
-            throw new NoSuchVerseException(PassageUtil.getResource("range_error_size", params));
+            throw new NoSuchVerseException(I18N.RANGE_HICOUNT, params);
         }
 
         this.original_name = null;
@@ -323,12 +325,16 @@ public class VerseRange implements VerseBase
     public VerseRange(Verse start, int verse_count, boolean patch_up)
     {
         if (!patch_up)
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_patch"));
+        {
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.ERROR_PATCH));
+        }
 
         // Not sure that any of the code below (except verifyData() which may not stay there)
         // Checks for null so we do it explictly here.
         if (start == null)
-            throw new NullPointerException(PassageUtil.getResource("range_error_null"));
+        {
+            throw new NullPointerException();
+        }
 
         this.original_name = null;
         this.start = start;
@@ -347,7 +353,7 @@ public class VerseRange implements VerseBase
     public VerseRange(Verse start, Verse end)
     {
         if (start == null || end == null)
-            throw new NullPointerException(PassageUtil.getResource("range_error_null"));
+            throw new NullPointerException();
 
         this.original_name = null;
 
@@ -391,10 +397,14 @@ public class VerseRange implements VerseBase
     public VerseRange(Verse base_start, int blur_down, int blur_up, int restrict)
     {
         if (base_start == null)
-            throw new NullPointerException(PassageUtil.getResource("range_error_null"));
+        {
+            throw new NullPointerException();
+        }
 
         if (blur_down < 0 || blur_up < 0)
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_blur_negative"));
+        {
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.RANGE_BLURS));
+        }
 
         this.original_name = null;
 
@@ -428,10 +438,10 @@ public class VerseRange implements VerseBase
             break;
 
         case RESTRICT_BOOK:
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_blur_book"));
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.RANGE_BLURBOOK));
 
         default:
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_blur_mode"));
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.RANGE_BLURNONE));
         }
 
         verifyData();
@@ -450,10 +460,14 @@ public class VerseRange implements VerseBase
     public VerseRange(VerseRange base_start, int blur_down, int blur_up, int restrict)
     {
         if (base_start == null)
-            throw new NullPointerException(PassageUtil.getResource("range_error_null"));
+        {
+            throw new NullPointerException();
+        }
 
         if (blur_down < 0 || blur_up < 0)
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_blur_negative"));
+        {
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.RANGE_BLURS));
+        }
 
         this.original_name = null;
 
@@ -491,10 +505,10 @@ public class VerseRange implements VerseBase
             break;
 
         case RESTRICT_BOOK:
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_blur_book"));
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.RANGE_BLURBOOK));
 
         default:
-            throw new IllegalArgumentException(PassageUtil.getResource("range_error_blur_mode"));
+            throw new IllegalArgumentException(PassageUtil.getResource(I18N.RANGE_BLURNONE));
         }
 
         verifyData();

@@ -77,7 +77,7 @@ public class HttpRemoter implements Remoter
         }
         catch (Exception ex)
         {
-            throw new RemoterException("remote_execute", ex);
+            throw new RemoterException(I18N.REMOTE_FAIL, ex);
         }
     }
 

@@ -38,11 +38,11 @@ import org.crosswire.jsword.book.BookException;
 public class CustomTokenizer
 {
     /**
-    * Convenience method to generate a Vector of SearchWords
-    * @param sought The text to parse
-    * @param commands The Hashtable of SearchWords to select from
-    * @return An Vector of selected SearchWords
-    */
+     * Convenience method to generate a Vector of SearchWords
+     * @param sought The text to parse
+     * @param commands The Hashtable of SearchWords to select from
+     * @return An Vector of selected SearchWords
+     */
     public static List tokenize(String sought, Map commands) throws BookException
     {
         List output = new ArrayList();
@@ -105,10 +105,10 @@ public class CustomTokenizer
     }
 
     /**
-    * What class of character is this?
-    * @param sought The string to be searched for
-    * @return The chatacter class
-    */
+     * What class of character is this?
+     * @param sought The string to be searched for
+     * @return The chatacter class
+     */
     private final static int charType(char sought, String commands)
     {
         if (Character.isWhitespace(sought))
@@ -121,11 +121,11 @@ public class CustomTokenizer
     }
 
     /**
-    * Convenience function to add a SearchWord to the Vector being created.
-    * @param output The Vector to alter
-    * @param commands The SearchWord source
-    * @param word The trigger to look for
-    */
+     * Convenience function to add a SearchWord to the Vector being created.
+     * @param output The Vector to alter
+     * @param commands The SearchWord source
+     * @param word The trigger to look for
+     */
     private static void addWord(List output, Map commands, String word)
     {
         Object word_obj = commands.get(word);
@@ -136,11 +136,11 @@ public class CustomTokenizer
     }
 
     /**
-    * Convenience function to add a SearchWord to the Vector being created.
-    * @param output The Vector to alter
-    * @param commands The SearchWord source
-    * @param word The trigger to look for
-    */
+     * Convenience function to add a SearchWord to the Vector being created.
+     * @param output The Vector to alter
+     * @param commands The SearchWord source
+     * @param word The trigger to look for
+     */
     private static String getSingleCharWords(Map commands)
     {
         Iterator it = commands.keySet().iterator();
@@ -155,12 +155,18 @@ public class CustomTokenizer
         return buf.toString();
     }
 
-    /** The type of character (see charType) */
+    /**
+     * The type of character (see charType)
+     */
     private static final int CHAR_PARAM = 0;
 
-    /** The type of character (see charType) */
+    /**
+     * The type of character (see charType)
+     */
     private static final int CHAR_COMMAND = 1;
 
-    /** The type of character (see charType) */
+    /**
+     * The type of character (see charType)
+     */
     private static final int CHAR_SPACE = 2;
 }

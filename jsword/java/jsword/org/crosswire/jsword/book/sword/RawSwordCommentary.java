@@ -44,9 +44,10 @@ public class RawSwordCommentary extends SwordCommentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.SwordCommentary#getText(org.crosswire.jsword.passage.Verse)
      */
-    public String getText(Verse v) throws BookException
+    public String getText(Verse verse) throws BookException
     {
-        return backend.getRawText(v);
+        // We should probably think about encodings here?
+        return new String(backend.getRawText(verse));
     }
 
     private RawBackend backend;

@@ -29,32 +29,47 @@ import org.jdom.Element;
  */
 public class StringOptionsChoice extends ReflectedChoice implements MultipleChoice
 {
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     */
     public void init(Element option) throws StartupException
     {
         super.init(option);
         Element map = option.getChild("map");
         if (map == null)
-            throw new StartupException("config_missing_map");
+            throw new StartupException(I18N.CONFIG_NOMAP);
 
         String name = map.getAttributeValue("name");
         array = (String[]) ChoiceFactory.getDataMap().get(name);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.MultipleChoice#getOptions()
+     */
     public String[] getOptions()
     {
         return array;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getConvertionClass()
+     */
     public Class getConvertionClass()
     {
         return String.class;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     */
     public String convertToString(Object orig)
     {
         return (String) orig;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     */
     public Object convertToObject(String orig)
     {
         return orig;

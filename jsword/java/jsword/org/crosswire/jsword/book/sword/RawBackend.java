@@ -108,7 +108,7 @@ public class RawBackend
      * @return String
      * @throws IOException
      */
-    public String getRawText(Verse v) throws BookException
+    public byte[] getRawText(Verse v) throws BookException
     {
         try
         {
@@ -162,8 +162,7 @@ public class RawBackend
             txt_raf[testament].seek(start);
             txt_raf[testament].read(buffer);
             
-            // We should probably think about encodings here?
-            return new String(buffer);
+            return buffer;
         }
         catch (IOException ex)
         {

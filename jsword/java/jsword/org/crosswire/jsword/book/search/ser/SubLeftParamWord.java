@@ -8,8 +8,8 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
 
 /**
- * The Search Word for a Word to search for. The default
- * if no other SearchWords match.
+ * The Search Word for a Word to search for. The default if no other SearchWords
+ * match.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -34,24 +34,16 @@ import org.crosswire.jsword.passage.Passage;
  */
 public class SubLeftParamWord implements ParamWord
 {
-    /**
-     * Get a word for something else to word on.
-     * @param engine The controller that can provide access to the search
-     *               string or a default Bible.
-     * @return The requested text
-     * @exception SearchException If this action is not appropriate
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getWord(org.crosswire.jsword.book.search.ser.Parser)
      */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException("search_left_param");
+        throw new BookException(I18N.LEFT_PARAM);
     }
 
-    /**
-     * Get a Passage for something else to word on.
-     * @param engine The controller that can provide access to the search
-     *               string or a default Bible.
-     * @return A Passage relevant to this command
-     * @exception SearchException If this action is not appropriate
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.ParamWord#getPassage(org.crosswire.jsword.book.search.ser.Parser)
      */
     public Passage getPassage(Parser engine) throws BookException
     {
@@ -62,7 +54,9 @@ public class SubLeftParamWord implements ParamWord
         while (true)
         {
             if (!engine.iterator().hasNext())
-                throw new BookException("search_left_brackets");
+            {
+                throw new BookException(I18N.LEFT_BRACKETS);
+            }
 
             SearchWord word = (SearchWord) it.next();
 

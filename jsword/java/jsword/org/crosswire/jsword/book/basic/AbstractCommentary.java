@@ -7,7 +7,6 @@ import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -57,7 +56,7 @@ public abstract class AbstractCommentary implements Commentary
     {
         Passage ref = PassageFactory.createPassage();
         ref.add(verse);
-        BibleData bdata = getComments(ref);
+        BookData bdata = getComments(ref);
         
         return bdata != null;
     }
@@ -73,7 +72,7 @@ public abstract class AbstractCommentary implements Commentary
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException("bible_no_verse");
+            throw new BookException(I18N.NO_VERSE, ex);
         }
     }
 

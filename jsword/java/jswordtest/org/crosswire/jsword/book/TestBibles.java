@@ -8,7 +8,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.stub.StubBook;
 import org.crosswire.jsword.passage.Passage;
@@ -150,7 +149,7 @@ public class TestBibles extends TestCase
         for (int i=0; i<bibles.length; i++)
         {
             Bible bible = bibles[i];
-            BibleData data = bible.getData(gen11);
+            BookData data = bible.getData(gen11);
             assertNotNull(data);
         }
     }

@@ -35,21 +35,21 @@ import org.crosswire.jsword.passage.Passage;
 public interface ParamWord extends SearchWord
 {
     /**
-    * Get a word for something else to word on.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return The requested text
-    * @exception SearchException If this action is not appropriate
-    */
+     * Get a word for something else to word on.
+     * @param engine The controller that can provide access to the search
+     *               string or a default Bible.
+     * @return The requested text
+     * @exception SearchException If this action is not appropriate
+     */
     public String getWord(Parser engine) throws BookException;
 
     /**
-    * Get a Passage or throw-up if that is not appropriate
-    * for this Word.
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @return A Passage relevant to this command
-    * @exception SearchException If this action is not appropriate
-    */
+     * Get a Passage or throw-up if that is not appropriate
+     * for this Word.
+     * @param engine The controller that can provide access to the search
+     *               string or a default Bible.
+     * @return A Passage relevant to this command
+     * @exception SearchException If this action is not appropriate
+     */
     public Passage getPassage(Parser engine) throws BookException;
 }

@@ -20,8 +20,8 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Style;
@@ -72,8 +72,8 @@ public class InnerDisplayPane extends JPanel
             Bible version = Defaults.getBibleMetaData().getBible();
             
             
-            BibleData data = version.getData(ref);
-            SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
+            BookData data = version.getData(ref);
+            SAXEventProvider provider = OSISUtil.getSAXEventProvider(data);
             
             Style style = new Style("swing");
             style.applyStyleToString(provider, "simple.xsl");
@@ -121,8 +121,8 @@ public class InnerDisplayPane extends JPanel
             return;
         }
 
-        BibleData data = version.getData(ref);
-        SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
+        BookData data = version.getData(ref);
+        SAXEventProvider provider = OSISUtil.getSAXEventProvider(data);
         String text = style.applyStyleToString(provider, "simple.xsl");
 
         txt_view.setText(text);

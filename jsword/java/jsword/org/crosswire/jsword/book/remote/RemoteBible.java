@@ -8,8 +8,8 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.jdom.Document;
 import org.xml.sax.SAXException;
@@ -68,7 +68,7 @@ public class RemoteBible extends AbstractBible
      * @param ele The elemenet to append to
      * @param ref The verses to search for
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
         try
         {
@@ -79,7 +79,7 @@ public class RemoteBible extends AbstractBible
             Document doc = remoter.execute(method);
             SAXEventProvider provider = new JDOMSAXEventProvider(doc);
 
-            return OsisUtil.createBibleData(provider);
+            return OSISUtil.createBibleData(provider);
         }
         catch (RemoterException ex)
         {

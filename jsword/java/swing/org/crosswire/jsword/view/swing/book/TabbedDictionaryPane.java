@@ -30,7 +30,7 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.util.Style;
 
 /**
@@ -177,7 +177,7 @@ public class TabbedDictionaryPane extends JPanel
             {
                 Key key = (Key) list.getSelectedValue();
                 BookData bdata = dict.getData(key);
-                SAXEventProvider provider = OsisUtil.getSAXEventProvider(bdata);
+                SAXEventProvider provider = OSISUtil.getSAXEventProvider(bdata);
                 String text = style.applyStyleToString(provider, "simple.xsl");
 
                 edit.setText(text);

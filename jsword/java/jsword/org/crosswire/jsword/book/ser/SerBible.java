@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.ser;
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.passage.Passage;
@@ -176,7 +176,7 @@ public class SerBible extends LocalURLBible
      * Create an XML document for the specified Verses
      * @param ref The verses to search for
      */
-    public BibleData getData(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
         return cache.getData(ref);
     }
@@ -185,7 +185,7 @@ public class SerBible extends LocalURLBible
      * Write the XML to disk
      * @param doc The data to write
      */
-    public void setDocument(Verse verse, BibleData doc) throws BookException
+    public void setDocument(Verse verse, BookData doc) throws BookException
     {
         cache.setDocument(verse, doc);
     }

@@ -14,8 +14,8 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -233,8 +233,8 @@ public class LinkArray implements Serializable
                 Passage ref = PassageFactory.createPassage();
                 ref.add(find);
 
-                BibleData data = bible.getData(ref);
-                String text = OsisUtil.getPlainText(data);   
+                BookData data = bible.getData(ref);
+                String text = OSISUtil.getPlainText(data);   
                 PassageTally temp = (PassageTally) bible.findPassage(new Search(text, false));
                 temp.setOrdering(PassageTally.ORDER_TALLY);
                 total.addAll(temp);

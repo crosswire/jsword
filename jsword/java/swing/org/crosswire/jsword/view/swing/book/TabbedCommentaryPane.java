@@ -24,7 +24,7 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OsisUtil;
+import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -138,7 +138,7 @@ public class TabbedCommentaryPane extends JPanel
             Passage ref = PassageFactory.createPassage();
             ref.add(verse);
             BookData bdata = cmd.getCommentary().getComments(ref);
-            SAXEventProvider provider = OsisUtil.getSAXEventProvider(bdata);
+            SAXEventProvider provider = OSISUtil.getSAXEventProvider(bdata);
             String text = style.applyStyleToString(provider, "simple.xsl");
                 
             txt_display.setText(text);

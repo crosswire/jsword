@@ -1,9 +1,6 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.crosswire.jsword.osis.Div;
 
 /**
@@ -35,17 +32,12 @@ import org.crosswire.jsword.osis.Div;
 public class SectionData
 {
     /**
-     * We only want to be created by OsisUtil
-     * @see OsisUtil
+     * We only want to be created by OSISUtil
+     * @see OSISUtil
      */
     protected SectionData()
     {
     }
-
-    /**
-     * The list of references
-     */
-    protected List refs = new ArrayList();
 
     /**
      * JAXB element

@@ -32,16 +32,15 @@ import org.crosswire.jsword.passage.PassageUtil;
  */
 public class BlurCommandWord implements CommandWord
 {
-    /**
-     * Alter the Passage by calling blur with a
-     * number grabbed from the next word in the search string
-     * @param engine The controller that can provide access to the search string or a default Bible.
-     * @param ref The Passage to alter (if necessary)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.CommandWord#updatePassage(org.crosswire.jsword.book.search.ser.Parser, org.crosswire.jsword.passage.Passage)
      */
     public void updatePassage(Parser engine, Passage ref) throws BookException
     {
         if (!engine.iterator().hasNext())
-            throw new BookException("search_blur_blank");
+        {
+            throw new BookException(I18N.BLUR_BLANK);
+        }
 
         ParamWord param = (ParamWord) engine.iterator().next();
         String word = param.getWord(engine);
@@ -52,7 +51,7 @@ public class BlurCommandWord implements CommandWord
         }
         catch (NumberFormatException ex)
         {
-            throw new BookException("search_blur_format", ex, new Object[] { word });
+            throw new BookException(I18N.BLUR_FORMAT, ex, new Object[] { word });
         }
     }
 }

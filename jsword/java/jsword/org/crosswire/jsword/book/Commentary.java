@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
@@ -54,7 +54,7 @@ public interface Commentary extends Book
      * @see Bible#getData(Passage)
      * @see Book#getData(Key)
      */
-    public BibleData getComments(Passage ref) throws BookException;
+    public BookData getComments(Passage ref) throws BookException;
 
     /**
      * Does the specified verse have any data behind it.

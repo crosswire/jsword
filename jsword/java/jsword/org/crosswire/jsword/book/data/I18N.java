@@ -1,9 +1,10 @@
 
 package org.crosswire.jsword.book.data;
 
+import org.crosswire.common.util.I18NBase;
 
 /**
- * Basic section of BookData.
+ * Compile safe I18N resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,13 +27,20 @@ package org.crosswire.jsword.book.data;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BibleData extends BookData
+class I18N extends I18NBase
 {
-    /**
-     * We only want to be created by OsisUtil
-     * @see OsisUtil
-     */
-    protected BibleData()
+    public static final I18N GBF_JAXB = new I18N("Parse Error");
+    public static final I18N GBF_BADTOKEN = new I18N("Illegal token: {0}.");
+
+    /** Initialise any resource bundles */
+    static
     {
+        init(I18N.class.getName());
+    }
+
+    /** Passthrough ctor */
+    private I18N(String name)
+    {
+        super(name);
     }
 }

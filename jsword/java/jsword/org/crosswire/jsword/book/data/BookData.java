@@ -1,11 +1,7 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisText;
 
 /**
  * Basic section of BookData.
@@ -34,8 +30,8 @@ import org.crosswire.jsword.osis.OsisText;
 public class BookData
 {
     /**
-     * We only want to be created by OsisUtil
-     * @see OsisUtil
+     * We only want to be created by OSISUtil
+     * @see OSISUtil
      */
     protected BookData()
     {
@@ -45,14 +41,4 @@ public class BookData
      * The root where we read data from
      */
     protected Osis osis;
-
-    /**
-     * The place we add sections to
-     */
-    protected OsisText text;
-
-    /**
-     * The list of Sections
-     */
-    protected List sections = new ArrayList();
 }

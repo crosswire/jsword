@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.data;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -21,14 +22,8 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.xml.JAXBSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.Header;
-import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.Work;
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.util.Project;
 import org.xml.sax.SAXException;
 
@@ -56,7 +51,7 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OsisUtil
+public class OSISUtil
 {
     /**
      * The package into which JAXB generates its stuff
@@ -71,7 +66,7 @@ public class OsisUtil
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(OsisUtil.class);
+    protected static Logger log = Logger.getLogger(OSISUtil.class);
 
     /**
      * Something went wrong at startup
@@ -97,7 +92,7 @@ public class OsisUtil
 
         try
         {
-            jc = JAXBContext.newInstance(OsisUtil.OSIS_PACKAGE);
+            jc = JAXBContext.newInstance(OSISUtil.OSIS_PACKAGE);
         }
         catch (JAXBException ex)
         {
@@ -107,69 +102,21 @@ public class OsisUtil
     }
 
     /**
-     * Constructor DefaultBibleData.
+     * Create a BibleData from a SAXEventProvider
      * @param doc
      */
-    public static BibleData createBibleData(SAXEventProvider provider) throws SAXException
+    public static BookData createBibleData(SAXEventProvider provider) throws SAXException
     {
         checkJAXBContext();
 
         try
         {
-            BibleData bdata = new BibleData();
+            BookData bdata = new BookData();
 
             Unmarshaller unm = jc.createUnmarshaller();
             UnmarshallerHandler unmh = unm.getUnmarshallerHandler();
             provider.provideSAXEvents(unmh);
             bdata.osis = (Osis) unmh.getResult();
-
-            bdata.text = bdata.osis.getOsisText();
-            List divs = bdata.text.getDiv();
-            for (Iterator dit = divs.iterator(); dit.hasNext();)
-            {
-                SectionData section = new SectionData();
-                section.div = (Div) dit.next();
-                bdata.sections.add(section);
-                
-                List everses = section.div.getContent();
-                for (Iterator cit = everses.iterator(); cit.hasNext();)
-                {
-                    Object element = cit.next();
-                    if (element instanceof org.crosswire.jsword.osis.Verse)
-                    {
-                        RefData ref = new RefData();
-                        section.refs.add(ref);
-                    }
-                }
-            }
-
-            return bdata;
-        }
-        catch (JAXBException ex)
-        {
-            throw new LogicError(ex);
-        }
-    }
-
-    /**
-     * Create a default BibleElement.
-     */
-    public static BibleData createBibleData(BookMetaData bmd)
-    {
-        try
-        {
-            BibleData bdata = new BibleData();
-
-            bdata.osis = ObjectFactory.createOsis();            
-            Work work = ObjectFactory.createWork();
-
-            bdata.text = ObjectFactory.createOsisText();
-            bdata.text.setOsisIDWork("Bible."+bmd.getInitials());
-            bdata.osis.setOsisText(bdata.text);
-
-            Header header = ObjectFactory.createHeader();
-            header.getWork().add(work);
-            bdata.text.setHeader(header);
 
             return bdata;
         }
@@ -185,7 +132,7 @@ public class OsisUtil
      * @param bdata The BibleData to check
      * @throws JAXBException
      */
-    public static void validate(BibleData bdata) throws JAXBException
+    public static void validate(BookData bdata) throws JAXBException
     {
         checkJAXBContext();
 
@@ -198,67 +145,6 @@ public class OsisUtil
             }
         });
         val.validateRoot(bdata.osis);
-    }
-
-    /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
-     */
-    public static SectionData createSectionData(BibleData bdata, String title) throws BookException
-    {
-        try
-        {
-            SectionData sdata = new SectionData();
-
-            sdata.div = ObjectFactory.createDiv();
-            sdata.div.setDivTitle(title);
-
-            bdata.sections.add(sdata);
-            bdata.text.getDiv().add(sdata.div);
-
-            return sdata;
-        }
-        catch (JAXBException ex)
-        {
-            throw new BookException("osis_create", ex);
-        }
-    }
-
-    /**
-     * Get a reference to the real W3C Document.
-     * @param verse The reference marker
-     * @param para True if this is the start of a new section
-     */
-    public static RefData createRefData(SectionData sdata, Verse verse, String text) throws BookException
-    {
-        try
-        {
-            RefData ref = new RefData();
-
-            ref.everse = ObjectFactory.createVerse();
-            ref.everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
-            ref.everse.getContent().add(text);
-
-            sdata.refs.add(ref);
-            sdata.div.getContent().add(ref.everse);
-            
-            return ref;
-        }
-        catch (JAXBException ex)
-        {
-            throw new BookException("osis_create", ex);
-        }
-    }
-
-    /**
-     * Get a reference to the real W3C Document.
-     * @param verse The reference marker
-     * @param para True if this is the start of a new section
-     */
-    public static void addSectionText(SectionData sdata, String text) throws BookException
-    {
-        sdata.div.getContent().add(text);
     }
 
     /**
@@ -278,9 +164,18 @@ public class OsisUtil
      * that it contains.
      * @return The list of sections
      */
-    public static Iterator getSectionDatas(BibleData bdata)
+    public static Iterator getSectionDatas(BookData bdata)
     {
-        return bdata.sections.iterator();
+        List reply = new ArrayList();
+        
+        for (Iterator dit = bdata.osis.getOsisText().getDiv().iterator(); dit.hasNext();)
+        {
+            SectionData sdata = new SectionData();
+            sdata.div = (Div) dit.next();
+            reply.add(sdata);
+        }
+
+        return reply.iterator();
     }
 
     /**
@@ -290,7 +185,20 @@ public class OsisUtil
      */
     public static Iterator getRefDatas(SectionData sdata)
     {
-        return sdata.refs.iterator();
+        List reply = new ArrayList();
+
+        for (Iterator it = sdata.div.getContent().iterator(); it.hasNext();)
+        {
+            Object element = it.next();
+            if (element instanceof org.crosswire.jsword.osis.Verse)
+            {
+                VerseData rdata = new VerseData();
+                rdata.everse = (org.crosswire.jsword.osis.Verse) element;
+                reply.add(rdata);
+            }
+        }
+
+        return reply.iterator();
     }
 
     /**
@@ -298,15 +206,15 @@ public class OsisUtil
      * the markup stripped out.
      * @return The Bible text without markup
      */
-    public static String getPlainText(BibleData bdata)
+    public static String getPlainText(BookData bdata)
     {
         StringBuffer buffer = new StringBuffer();
 
-        Iterator it = OsisUtil.getSectionDatas(bdata);
+        Iterator it = OSISUtil.getSectionDatas(bdata);
         while (it.hasNext())
         {
             SectionData sdata = (SectionData) it.next();
-            buffer.append(OsisUtil.getPlainText(sdata));
+            buffer.append(OSISUtil.getPlainText(sdata));
         }
 
         return buffer.toString().trim();
@@ -321,11 +229,11 @@ public class OsisUtil
     {
         StringBuffer buffer = new StringBuffer();
 
-        Iterator it = OsisUtil.getRefDatas(sdata);
+        Iterator it = OSISUtil.getRefDatas(sdata);
         while (it.hasNext())
         {
-            RefData vel = (RefData) it.next();
-            buffer.append(OsisUtil.getPlainText(vel));
+            VerseData vel = (VerseData) it.next();
+            buffer.append(OSISUtil.getPlainText(vel));
         }
 
         return buffer.toString();
@@ -336,7 +244,7 @@ public class OsisUtil
      * the markup stripped out.
      * @return The Bible text without markup
      */
-    public static String getPlainText(RefData rdata)
+    public static String getPlainText(VerseData rdata)
     {
         StringBuffer buffer = new StringBuffer();
 

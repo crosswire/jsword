@@ -31,16 +31,15 @@ import org.crosswire.jsword.passage.Passage;
  */
 public class AddCommandWord implements CommandWord
 {
-    /**
-     * Alter the Passage by calling addAll with a
-     * Passage grabbed from the next word in the search string
-     * @param engine The controller that can provide access to the search string or a default Bible.
-     * @param ref The Passage to alter (if necessary)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.CommandWord#updatePassage(org.crosswire.jsword.book.search.ser.Parser, org.crosswire.jsword.passage.Passage)
      */
     public void updatePassage(Parser engine, Passage ref) throws BookException
     {
         if (!engine.iterator().hasNext())
-            throw new BookException("search_add_blank");
+        {
+            throw new BookException(I18N.ADD_BLANK);
+        }
 
         ParamWord param = (ParamWord) engine.iterator().next();
         ref.addAll(param.getPassage(engine));

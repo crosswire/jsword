@@ -5,8 +5,8 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
 
 /**
- * Alter the Passage by calling retainAll with a
- * Passage grabbed from the next word in the search string.
+ * Alter the Passage by calling retainAll with a Passage grabbed from the next
+ * word in the search string.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,17 +31,15 @@ import org.crosswire.jsword.passage.Passage;
  */
 public class RetainCommandWord implements CommandWord
 {
-    /**
-    * Alter the Passage by calling retainAll with a
-    * Passage grabbed from the next word in the search string
-    * @param engine The controller that can provide access to the search
-    *               string or a default Bible.
-    * @param ref The Passage to alter (if necessary)
-    */
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.ser.CommandWord#updatePassage(org.crosswire.jsword.book.search.ser.Parser, org.crosswire.jsword.passage.Passage)
+     */
     public void updatePassage(Parser engine, Passage ref) throws BookException
     {
         if (!engine.iterator().hasNext())
-            throw new BookException("search_retain_blank");
+        {
+            throw new BookException(I18N.RETAIN_BLANK);
+        }
 
         ParamWord param = (ParamWord) engine.iterator().next();
         ref.retainAll(param.getPassage(engine));

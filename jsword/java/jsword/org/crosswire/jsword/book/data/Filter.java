@@ -1,10 +1,10 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.osis.Verse;
+import org.crosswire.jsword.book.BookException;
 
 /**
- * A RefData represents a Verse that exists inside a BibleData.
+ * A generic interface for things that can convert a String into OSIS data.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,18 +27,13 @@ import org.crosswire.jsword.osis.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RefData
+public interface Filter
 {
     /**
-     * We only want to be created by OsisUtil
-     * @see OsisUtil
+     * Converter from plain (encoded) text to OSIS data
+     * @param verse The verse we are encoding
+     * @param plain The encoded text
+     * @return Verse OSIS data
      */
-    protected RefData()
-    {
-    }
-
-    /**
-     * JAXB element that we encapsulate. 
-     */
-    protected Verse everse;
+    public void toOSIS(BookDataListener li, String plain) throws BookException;
 }

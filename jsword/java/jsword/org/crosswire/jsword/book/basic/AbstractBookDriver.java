@@ -33,28 +33,19 @@ import org.crosswire.jsword.book.events.ProgressListener;
  */
 public abstract class AbstractBookDriver implements BookDriver
 {
-    /**
-     * Is this name capable of creating writing data in the correct format
-     * as well as reading it?
-     * @return true/false to indicate ability to write data
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#isWritable()
      */
     public boolean isWritable()
     {
         return false;
     }
 
-    /**
-     * Create a new Book, copied from the source
-     * @param source The book to copy
-     * @param li The place to report progress
-     * @exception BookException If creation fails
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.events.ProgressListener)
      */
     public Book create(Book source, ProgressListener li) throws BookException
     {
-        // if (!(source instanceof Bible))
-        //     throw new BookException("bible_invalid_source");
-
-        throw new BookException("bible_driver_readonly");
+        throw new BookException(I18N.DRIVER_READONLY);
     }
 }

@@ -57,6 +57,73 @@ public class LucidException extends Exception
      * an I18N properties file.
      * @param msg The resource id to read
      */
+    public LucidException(I18NBase msg)
+    {
+        this(msg, null, null);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file.
+     * @param msg The resource id to read
+     */
+    public LucidException(I18NBase msg, boolean literal)
+    {
+        this(msg, null, null);
+        this.literal = literal;
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file.
+     * @param msg The resource id to read
+     */
+    public LucidException(I18NBase msg, Throwable ex)
+    {
+        this(msg, ex, null);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file. This version allows us to add parameters
+     * @param msg The resource id to read
+     * @param params An array of parameters
+     */
+    public LucidException(I18NBase msg, Object[] params)
+    {
+        this(msg, null, params);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file. This version allows us to add parameters
+     * @param msg The resource id to read
+     * @param params An array of parameters
+     */
+    public LucidException(I18NBase msg, Throwable ex, Object[] params)
+    {
+        super(msg.toString());
+
+        this.ex = ex;
+        this.params = params;
+
+        try
+        {
+            if (res == null)
+                setDefaultResourceBundleName();
+        }
+        catch (Throwable ex2)
+        {
+            Reporter.informUser(this, ex2);
+        }
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file.
+     * @param msg The resource id to read
+     * @deprecated use I18N version
+     */
     public LucidException(String msg)
     {
         this(msg, null, null);
@@ -66,6 +133,7 @@ public class LucidException extends Exception
      * All LucidExceptions are constructed with references to resources in
      * an I18N properties file.
      * @param msg The resource id to read
+     * @deprecated use I18N version
      */
     public LucidException(String msg, boolean literal)
     {
@@ -77,6 +145,7 @@ public class LucidException extends Exception
      * All LucidExceptions are constructed with references to resources in
      * an I18N properties file.
      * @param msg The resource id to read
+     * @deprecated use I18N version
      */
     public LucidException(String msg, Throwable ex)
     {
@@ -88,6 +157,7 @@ public class LucidException extends Exception
      * an I18N properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
+     * @deprecated use I18N version
      */
     public LucidException(String msg, Object[] params)
     {
@@ -99,6 +169,7 @@ public class LucidException extends Exception
      * an I18N properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
+     * @deprecated use I18N version
      */
     public LucidException(String msg, Throwable ex, Object[] params)
     {

@@ -17,10 +17,9 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -148,11 +147,14 @@ public class ReadingsDictionary implements Dictionary
         if (readings == null)
             throw new BookException("readings_not_found", new Object[] { key.getText() });
 
-        BibleData bdata = OsisUtil.createBibleData(dmd);
-        SectionData sdata = OsisUtil.createSectionData(bdata, "Readings for "+key.getText());
-        OsisUtil.addSectionText(sdata, readings);
+        BookDataListener li = new OSISBookDataListnener();
 
-        return bdata;
+        li.startDocument(dmd);
+        li.startSection("Readings for "+key.getText());
+        li.addText(readings);
+        li.endSection();
+
+        return li.endDocument();
     }
 
     /**
