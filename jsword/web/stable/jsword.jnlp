@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE jnlp PUBLIC "-//Sun Microsystems, Inc//DTD JNLP Descriptor 1.0//EN" "jnlp.dtd">
+
+<jnlp spec="1.0+" codebase="http://www.crosswire.org/jsword/jnlp" href="jsword.jnlp">
+
+  <information>
+    <title>J-Sword Demo Application</title>
+    <vendor>The J-Sword project</vendor>
+    <homepage href="http://www.crosswire.org/jsword/"/>
+    <description>J-Sword Bible Desktop Application</description>
+    <description kind="short">J-Sword is a Bible study package available over the internet</description>
+    <description kind="tooltip">J-Sword Bible Desktop Application</description>
+    <icon href="../images/icon.gif"/>
+    <icon kind="splash" href="../images/jsword.gif"/>    
+    <offline-allowed/>
+  </information>
+
+  <security>
+    <!--
+    We need disk io to read installed Sword Bibles,
+    network access to install new ones, and the ability to read system vars
+    I'm not sure there is much point in askin for less that everything
+    -->
+    <all-permissions/>
+  </security>
+
+  <resources>
+    <j2se version="1.4+" max-heap-size="512m"/>
+    <jar href="jsword-swing.jar"/>
+    <jar href="jsword.jar"/>
+    <jar href="jsword-osis.jar"/>
+    <jar href="jdom.jar"/>
+    <jar href="log4j-1.2.7.jar"/>
+    <jar href="resource.jar"/>
+    <jar href="commons-lang-2.0.jar"/>
+    <jar href="commons-net-1.1.0.jar"/>
+    <jar href="jaxb-api.jar"/>
+    <jar href="jaxb-libs.jar"/>
+    <jar href="jaxb-ri.jar"/>
+    <jar href="lucene-1.3-final.jar"/>
+    <jar href="tar.jar"/>
+    <jar href="winlaf-0.4.jar"/>
+    <jar href="jlfgr-1_0.jar"/>
+  </resources>
+
+  <application-desc main-class="org.crosswire.jsword.view.swing.desktop.Desktop"/>
+
+</jnlp>
