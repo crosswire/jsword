@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE jnlp PUBLIC "-//Sun Microsystems, Inc//DTD JNLP Descriptor 1.0//EN" "jnlp.dtd">
 
-<jnlp spec="1.0+" codebase="http://www.crosswire.org/jsword/jnlp" href="jsword.jnlp">
+<jnlp spec="1.0+" codebase="http://www.crosswire.org/jsword/stable" href="jsword.jnlp">
 
   <information>
     <title>J-Sword Demo Application</title>
