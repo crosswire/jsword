@@ -2,7 +2,6 @@
 package org.crosswire.jsword.map.model;
 
 import org.crosswire.jsword.passage.Books;
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -43,7 +42,7 @@ public class DefraggingRule extends AbstractRule
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
-    public Position[] getDesiredPosition(Map map, int ord)
+    public Position[] getDesiredPosition(Map map, int book, int chapter)
     {
         if (scale == 0)
             return new Position[] { };
@@ -51,18 +50,14 @@ public class DefraggingRule extends AbstractRule
         try
         {
             Position reply;
-            Verse verse = new Verse(ord);
-            int b = verse.getBook();
-            int c = verse.getChapter();
-            int v = verse.getVerse();
 
-            boolean at_start = (v == 1 && c == 1);
-            boolean at_end = (v == Books.versesInChapter(b, c) && c == Books.chaptersInBook(b));
+            boolean at_start = (chapter == 1);
+            boolean at_end = (chapter == Books.chaptersInBook(book));
 
             if (at_start || at_end)
             {
                 // Where we are now
-                float[] current = map.getPosition(ord);
+                float[] current = map.getPosition(book, chapter);
 
                 // What are we trying to get away from
                 /*
@@ -89,8 +84,8 @@ public class DefraggingRule extends AbstractRule
             }
             else
             {
-                Position prev = new Position(map.getPosition(ord-1));
-                Position next = new Position(map.getPosition(ord+1));
+                Position prev = new Position(map.getPosition(book, chapter));
+                Position next = new Position(map.getPosition(book, chapter));
                 Position[] both = new Position[] { prev, next };
 
                 reply = Map.average(both);

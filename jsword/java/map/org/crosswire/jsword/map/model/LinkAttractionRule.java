@@ -28,26 +28,26 @@ package org.crosswire.jsword.map.model;
 public class LinkAttractionRule extends AbstractRule
 {
     /**
-    * Basic constructor
-    */
+     * Basic constructor
+     */
     public LinkAttractionRule(LinkArray la)
     {
         this.la = la;
     }
 
     /**
-    * Specify where it would like a node to be positioned in space.
-    * Rules return an array of positions where the average of them
-    * specifies the real desired position. So to specify a single place
-    * simply return an array of one position. The positions are added
-    * to the results from all Rules so to specify a single position
-    * more strongly, return an array conataining that position many
-    * times.
-    * @param map The Map to select a node from
-    * @param ord The ordinal number (1 - 31104) of the verse
-    * @return An array of desired positions.
-    */
-    public Position[] getDesiredPosition(Map map, int ord)
+     * Specify where it would like a node to be positioned in space.
+     * Rules return an array of positions where the average of them
+     * specifies the real desired position. So to specify a single place
+     * simply return an array of one position. The positions are added
+     * to the results from all Rules so to specify a single position
+     * more strongly, return an array conataining that position many
+     * times.
+     * @param map The Map to select a node from
+     * @param ord The ordinal number (1 - 31104) of the verse
+     * @return An array of desired positions.
+     */
+    public Position[] getDesiredPosition(Map map, int b, int c)
     {
         if (scale == 0)
             return new Position[] { };
@@ -57,14 +57,15 @@ public class LinkAttractionRule extends AbstractRule
         int reply_index = 0;
 
         // For all the links for this verse
-        Link[] links = la.getLinks(ord);
+        Link[] links = la.getLinks(b, c);
         float factor = BEST_MATCH / links[0].getStrength();
         for (int i=0; i<links.length; i++)
         {
             // How many times do we include this link position
             int reps = (int) (factor * links[i].getStrength());
-            int dest_ord = links[i].getDestinationOrdinal();
-            Position p = new Position(map.getPosition(dest_ord));
+            int dest_book = links[i].getDestinationBook();
+            int dest_chap = links[i].getDestinationChapter();
+            Position p = new Position(map.getPosition(dest_book, dest_chap));
 
             // This can take some time
             Thread.currentThread().yield();
@@ -80,7 +81,7 @@ public class LinkAttractionRule extends AbstractRule
         }
 
         // Blank out the rest
-        Position me = new Position(map.getPosition(ord));
+        Position me = new Position(map.getPosition(b, c));
         for (int i=reply_index; i<scale_copy; i++)
         {
             reply[i] = me;

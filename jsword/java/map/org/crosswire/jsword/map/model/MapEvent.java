@@ -5,8 +5,6 @@ import java.util.EventObject;
 
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.common.util.LogicError;
 
 /**
  * A MapEvent happens whenever a Map changes.
@@ -35,63 +33,65 @@ import org.crosswire.common.util.LogicError;
 public class MapEvent extends EventObject
 {
     /**
-    * Initialize a MapEvent
-    * @param source The map that started this off
-    * @param ord The verse ordinal that changed position
-    */
-    public MapEvent(Map source, int ord)
+     * Initialize a MapEvent
+     * @param source The map that started this off
+     * @param ord The verse ordinal that changed position
+     */
+    public MapEvent(Map source, int book, int chapter)
     {
         super(source);
 
-        if (ord < 1 || ord > Books.versesInBible())
-            throw new IllegalArgumentException("Invalid verse ordinal");
+        try
+        {
+            if (chapter < 1 || chapter > Books.chaptersInBook(book))
+                throw new IllegalArgumentException("Invalid chapter");
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new IllegalArgumentException("Invalid book");
+        }
 
-        this.ord = ord;
+        this.book = book;
+        this.chapter = chapter;
     }
 
     /**
-    * Initialize a MapEvent
-    * @param source The Object that started this off
-    * @param command The command typed
-    * @param lang The Progress that interprets this command
-    */
+     * Initialize a MapEvent
+     * @param source The Object that started this off
+     * @param command The command typed
+     * @param lang The Progress that interprets this command
+     */
     public MapEvent(Map source)
     {
         super(source);
 
-        ord = -1;
+        book = -1;
+        chapter = -1;
     }
 
     /**
-    * Get the verse ordinal that changed position or null if the whole
-    * table changed
-    * @return The progress
-    */
-    public int getChangedOrdinal()
+     * Get the verse ordinal that changed position or null if the whole
+     * table changed
+     * @return The progress
+     */
+    public int getChangedBook()
     {
-        return ord;
+        return book;
     }
 
     /**
-    * Get the verse that changed position or null if the whole table
-    * changed.
-    * @return The progress
-    */
-    public Verse getChangedVerse()
+     * Get the verse ordinal that changed position or null if the whole
+     * table changed
+     * @return The progress
+     */
+    public int getChangedChapter()
     {
-        if (ord == -1) return null;
-
-        try
-        {
-            return new Verse(ord);
-        }
-        catch (NoSuchVerseException ex)
-        {
-            // This should not happen because of the check above
-            throw new LogicError(ex);
-        }
+        return chapter;
     }
 
-    /** The ordinal number of the node that changed or -1 if the whole table changed */
-    private int ord;
+    /** The book number */
+    private int book;
+
+    /** The chapter number */
+    private int chapter;
 }

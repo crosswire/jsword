@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.map.view;
 
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.Bible;
@@ -70,12 +72,15 @@ public class CliMapper
         {
             Project.init();
 
+            PrintWriter dbout = new PrintWriter(new FileOutputStream("c:\\database.csv"));
+            PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
+
             Bible bible = Bibles.getBible("av-ser");
             Matcher engine = new Matcher(bible);
 
             Element links = new Element("links");
 
-            for (int b=1; b<=1/*Books.booksInBible()*/; b++)
+            for (int b=1; b<=2/*Books.booksInBible()*/; b++)
             {
                 Element eb = new Element("book");
                 eb.setAttribute("num", ""+b);
@@ -88,7 +93,7 @@ public class CliMapper
                 Verse end = new Verse(b, chff, vsff);
                 VerseRange book = new VerseRange(start, end);
 
-                for (int c=1; c<=5/*Books.chaptersInBook(b)*/; c++)
+                for (int c=1; c<=2/*Books.chaptersInBook(b)*/; c++)
                 {
                     Element ec = new Element("chapter");
                     ec.setAttribute("num", ""+c);
@@ -123,19 +128,39 @@ public class CliMapper
                         Verse link = (Verse) it.next();
                         VerseRange chap = new VerseRange(link, new Verse(link.getBook(), link.getChapter(), Books.versesInChapter(link.getBook(), link.getChapter())));
                         Element el = new Element("link");
-                        el.setAttribute("ord", ""+link.getOrdinal());
+                        el.setAttribute("book", ""+link.getBook());
+                        el.setAttribute("chapter", ""+link.getChapter());
                         el.setAttribute("name", chap.getName());
                         el.setAttribute("rating", ""+total.getIndexOf(link));
                         ec.addContent(el);
-                    }
 
-                    System.out.println("Working on: "+base.getName()+" - "+total.getNameAndTally());
+                        dbout.println(
+                            base.getName()+","+base.getStart().getBook()+","+base.getStart().getChapter()+","+
+                            chap.getName()+","+link.getBook()+","+link.getChapter()+","+
+                            total.getIndexOf(link));
+
+                        for (int tb=1; tb<=Books.booksInBible(); tb++)
+                        {
+                            for (int tc=0; tc<Books.chaptersInBook(tb); tc++)
+                            {
+                                Verse t = new Verse(tb, tc, 1);
+                                total.getIndexOf(t);
+                            }
+                        }
+                    }
                 }
             }
-            
+
+            xlout.close();
+            dbout.close();
+
+            PrintWriter xmlout = new PrintWriter(new FileOutputStream("c:\\links.xml"));
             Document doc = new Document(links);
             XMLOutputter output = new XMLOutputter();
-            output.output(doc, System.out);
+            output.setNewlines(true);
+            output.setIndent(2);
+            output.output(doc, xmlout);
+            xmlout.close();
         }
         catch (Exception ex)
         {

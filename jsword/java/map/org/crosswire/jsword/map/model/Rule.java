@@ -29,38 +29,39 @@ package org.crosswire.jsword.map.model;
 public interface Rule
 {
     /**
-    * Specify where it would like a node to be positioned in space.
-    * Rules return an array of positions where the average of them
-    * specifies the real desired position. So to specify a single place
-    * simply return an array of one position. The positions are added
-    * to the results from all Rules so to specify a single position
-    * more strongly, return an array conataining that position many
-    * times.
-    * <br />
-    * I expect that any Rule will not return more than 30 positions.
-    * This expectation may be useful in colouring how many times to
-    * include your Position(s) in the array.
-    * @param map The Map to select a node from
-    * @param ord The ordinal number (1 - 31104) of the verse
-    * @return An array of desired positions.
-    */
-    public Position[] getDesiredPosition(Map map, int ord);
+     * Specify where it would like a node to be positioned in space.
+     * Rules return an array of positions where the average of them
+     * specifies the real desired position. So to specify a single place
+     * simply return an array of one position. The positions are added
+     * to the results from all Rules so to specify a single position
+     * more strongly, return an array conataining that position many
+     * times.
+     * <br />
+     * I expect that any Rule will not return more than 30 positions.
+     * This expectation may be useful in colouring how many times to
+     * include your Position(s) in the array.
+     * @param map The Map to select a node from
+     * @param book The book number
+     * @param chapter The chapter 
+     * @return An array of desired positions.
+     */
+    public Position[] getDesiredPosition(Map map, int book, int chapter);
 
     /**
-    * Each call to getDesiredPosition() returns an array of Positions,
-    * this method sets the preferred length of that returned array.
-    * It is only a preferred length, so non-perfect Rules are free to
-    * miss by one or 2.
-    * @param scale The preferred length of the desired position array
-    * @see #getDesiredPosition(Map, int)
-    */
+     * Each call to getDesiredPosition() returns an array of Positions,
+     * this method sets the preferred length of that returned array.
+     * It is only a preferred length, so non-perfect Rules are free to
+     * miss by one or 2.
+     * @param scale The preferred length of the desired position array
+     * @see #getDesiredPosition(Map, int)
+     */
     public void setScale(int scale);
 
     /**
-    * Each call to getDesiredPosition() returns an array of Positions,
-    * this method gets the preferred length of that returned array.
-    * @return The preferred length of the desired position array
-    * @see #getDesiredPosition(Map, int)
-    */
+     * Each call to getDesiredPosition() returns an array of Positions,
+     * this method gets the preferred length of that returned array.
+     * @return The preferred length of the desired position array
+     * @see #getDesiredPosition(Map, int)
+     */
     public int getScale();
 }

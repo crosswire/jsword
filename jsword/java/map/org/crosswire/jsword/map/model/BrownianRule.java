@@ -30,37 +30,37 @@ import java.util.Random;
 public class BrownianRule extends AbstractRule
 {
     /**
-    * Basic Constructor.
-    * How much is it possible to a node to move randomly each turn.
-    * A heat of 1.0 means that any node could move roughly anywhere across the
-    * board each turn, so a heat of 0.001 is probably more useful.
-    * To be precise the heat is the standard deviation in a gaussian
-    * distribution.
-    * @param heat The maximum random jiggle each turn
-    */
+     * Basic Constructor.
+     * How much is it possible to a node to move randomly each turn.
+     * A heat of 1.0 means that any node could move roughly anywhere across the
+     * board each turn, so a heat of 0.001 is probably more useful.
+     * To be precise the heat is the standard deviation in a gaussian
+     * distribution.
+     * @param heat The maximum random jiggle each turn
+     */
     public BrownianRule(float heat)
     {
         this.heat = heat;
     }
 
     /**
-    * Specify where it would like a node to be positioned in space.
-    * Rules return an array of positions where the average of them
-    * specifies the real desired position. So to specify a single place
-    * simply return an array of one position. The positions are added
-    * to the results from all Rules so to specify a single position
-    * more strongly, return an array conataining that position many
-    * times.
-    * @param map The Map to select a node from
-    * @param ord The ordinal number (1 - 31104) of the verse
-    * @return An array of desired positions.
-    */
-    public Position[] getDesiredPosition(Map map, int ord)
+     * Specify where it would like a node to be positioned in space.
+     * Rules return an array of positions where the average of them
+     * specifies the real desired position. So to specify a single place
+     * simply return an array of one position. The positions are added
+     * to the results from all Rules so to specify a single position
+     * more strongly, return an array conataining that position many
+     * times.
+     * @param map The Map to select a node from
+     * @param ord The ordinal number (1 - 31104) of the verse
+     * @return An array of desired positions.
+     */
+    public Position[] getDesiredPosition(Map map, int book, int chapter)
     {
         if (scale == 0)
             return new Position[] { };
 
-        float[] pos = map.getPosition(ord);
+        float[] pos = map.getPosition(book, chapter);
 
         for (int i=0; i<pos.length; i++)
         {

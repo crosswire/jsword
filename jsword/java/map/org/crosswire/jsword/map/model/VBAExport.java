@@ -223,7 +223,6 @@ public class VBAExport
         out.println("");
         out.println("Public Sub RouteMain()");
 
-        int ord;
         int x;
         int y;
 
@@ -232,20 +231,16 @@ public class VBAExport
             int bie = Books.booksInBible();
             for (int b=1; b<=bie; b++)
             {
-                ord = Books.verseOrdinal(b, 1, 1);
-
-                x = (int) (map.getPositionDimension(ord, 0) * x_mag);
-                y = (int) (map.getPositionDimension(ord, 1) * y_mag);
+                x = (int) (map.getPositionDimension(b, 1, 0) * x_mag);
+                y = (int) (map.getPositionDimension(b, 1, 1) * y_mag);
 
                 out.println("  RouteStart "+x+"#, "+y+"#, \""+Books.getShortBookName(b)+"\"");
 
                 int cib = Books.chaptersInBook(b);
                 for (int c=2; c<=cib; c++)
                 {
-                    ord = Books.verseOrdinal(b, c, 1);
-
-                    x = (int) (map.getPositionDimension(ord, 0) * x_mag);
-                    y = (int) (map.getPositionDimension(ord, 1) * y_mag);
+                    x = (int) (map.getPositionDimension(b, c, 0) * x_mag);
+                    y = (int) (map.getPositionDimension(b, c, 1) * y_mag);
 
                     out.println("  RouteContinue "+x+"#, "+y+"#, \""+c+"\"");
                 }

@@ -45,8 +45,8 @@ import org.crosswire.common.util.LogicError;
 public class MapperPane extends JPanel implements Scrollable
 {
     /**
-    * Basic Constructor
-    */
+     * Basic Constructor
+     */
     public MapperPane(Map map)
     {
         setMap(map);
@@ -54,8 +54,8 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Basic Constructor
-    */
+     * Basic Constructor
+     */
     public MapperPane()
     {
         setMap(null);
@@ -63,9 +63,9 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Setup a new map to view
-    * @param map The new map to model
-    */
+     * Setup a new map to view
+     * @param map The new map to model
+     */
     public void setMap(Map map)
     {
         if (map != null)
@@ -80,18 +80,18 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Get the map being viewed
-    * @return The current map
-    */
+     * Get the map being viewed
+     * @return The current map
+     */
     public Map getMap()
     {
         return map;
     }
 
     /**
-    * Set the way in which we color the map
-    * @param versecolor The new map colorizer
-    */
+     * Set the way in which we color the map
+     * @param versecolor The new map colorizer
+     */
     public void setVerseColor(VerseColor versecolor)
     {
         this.versecolor = versecolor;
@@ -99,36 +99,36 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Get the way in which we color the map
-    * @return The current map colorizer
-    */
+     * Get the way in which we color the map
+     * @return The current map colorizer
+     */
     public VerseColor getVerseColor()
     {
         return versecolor;
     }
 
     /**
-    * Do we force the height and width of this panel to be the same
-    * @param lock_aspect The new aspect locking state
-    */
+     * Do we force the height and width of this panel to be the same
+     * @param lock_aspect The new aspect locking state
+     */
     public void setLockAspectRation(boolean lock_aspect)
     {
         this.lock_aspect = lock_aspect;
     }
 
     /**
-    * Do we force the height and width of this panel to be the same
-    * @return The current aspect locking state
-    */
+     * Do we force the height and width of this panel to be the same
+     * @return The current aspect locking state
+     */
     public boolean getLockAspectRation()
     {
         return lock_aspect;
     }
 
     /**
-    * Paint the map
-    * @param g The graphics instance to paint with
-    */
+     * Paint the map
+     * @param g The graphics instance to paint with
+     */
     public void paintComponent(Graphics g)
     {
         g.setColor(versecolor.getBackground());
@@ -146,15 +146,12 @@ public class MapperPane extends JPanel implements Scrollable
 
         try
         {
-            int bie = Books.booksInBible();
-            int ord = 1;
-
             int[] pos;
             int[] prev;
 
-            for (int b=1; b<=bie; b++)
+            for (int b=1; b<=Books.booksInBible(); b++)
             {
-                pos = getPosition(ord);
+                pos = getPosition(b, 1);
 
                 Color col = versecolor.getForeground();
                 g.setColor(col);
@@ -166,20 +163,15 @@ public class MapperPane extends JPanel implements Scrollable
                 int cib = Books.chaptersInBook(b);
                 for (int c=1; c<=cib; c++)
                 {
-                    pos = getPosition(ord);
+                    pos = getPosition(b, 1);
                     g.fillOval(pos[X]-1, pos[Y]-1, 3, 3);
 
-                    int vic = Books.versesInChapter(b, c);
-                    for (int v=1; v<=vic; v++)
+                    if (c != 1)
                     {
-                        if (c != 1 || v != 1)
-                        {
-                            prev = getPosition(ord-1);
-                            pos = getPosition(ord);
+                        prev = getPosition(b, c-1);
+                        pos = getPosition(b, c);
 
-                            g.drawLine(prev[X], prev[Y], pos[X], pos[Y]);
-                        }
-                        ord++;
+                        g.drawLine(prev[X], prev[Y], pos[X], pos[Y]);
                     }
                 }
             }
@@ -191,22 +183,22 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Get a (2D) position based on a verse ordinal
-    * @param ord The verse id
-    * @return A position array
-    */
-    private int[] getPosition(int ord)
+     * Get a (2D) position based on a verse ordinal
+     * @param ord The verse id
+     * @return A position array
+     */
+    private int[] getPosition(int book, int chapter)
     {
-        float[] fpos = map.getPosition(ord);
+        float[] fpos = map.getPosition(book, chapter);
         return translate(fpos);
     }
 
     /**
-    * Map a (0-1) float coordinate into the int based coordinate that we
-    * can paint with
-    * @param orig The (x,y) float array
-    * @return A int position array
-    */
+     * Map a (0-1) float coordinate into the int based coordinate that we
+     * can paint with
+     * @param orig The (x,y) float array
+     * @return A int position array
+     */
     private final int[] translate(float[] orig)
     {
         int[] pos = new int[2];
@@ -216,31 +208,31 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Map a (0-1) float width into the int based coordinate that we
-    * can paint with
-    * @param orig The width as a float
-    * @return The width as an int
-    */
+     * Map a (0-1) float width into the int based coordinate that we
+     * can paint with
+     * @param orig The width as a float
+     * @return The width as an int
+     */
     private final int translateX(float orig)
     {
         return (int) (orig*getWidth());
     }
 
     /**
-    * Map a (0-1) float height into the int based coordinate that we
-    * can paint with
-    * @param orig The height as a float
-    * @return The height as an int
-    */
+     * Map a (0-1) float height into the int based coordinate that we
+     * can paint with
+     * @param orig The height as a float
+     * @return The height as an int
+     */
     private final int translateY(float orig)
     {
         return (int) (orig*getHeight());
     }
 
     /**
-    * The size of this map
-    * public void reshape(int x, int y, int w, int h)
-    */
+     * The size of this map
+     * public void reshape(int x, int y, int w, int h)
+     */
     public void setSize(Dimension x)
     {
         if (lock_aspect)
@@ -264,14 +256,14 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Get the unit or block increment in pixels. The Rectangle parameter
-    * is the bounds of the currently visible rectangle. The first int
-    * parameter is either SwingConstants.HORIZONTAL or
-    * SwingConstants.VERTICAL depending on what scroll bar the user
-    * clicked on. The second int parameter indicates which direction to
-    * scroll. A value less than 0 indicates up or left. A value greater
-    * than 0 indicates down or right.
-    */
+     * Get the unit or block increment in pixels. The Rectangle parameter
+     * is the bounds of the currently visible rectangle. The first int
+     * parameter is either SwingConstants.HORIZONTAL or
+     * SwingConstants.VERTICAL depending on what scroll bar the user
+     * clicked on. The second int parameter indicates which direction to
+     * scroll. A value less than 0 indicates up or left. A value greater
+     * than 0 indicates down or right.
+     */
     public int getScrollableUnitIncrement(Rectangle rec, int bar, int dir)
     {
         if (bar == SwingConstants.HORIZONTAL)
@@ -281,14 +273,14 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Set the unit or block increment in pixels. The Rectangle parameter
-    * is the bounds of the currently visible rectangle. The first int
-    * parameter is either SwingConstants.HORIZONTAL or
-    * SwingConstants.VERTICAL depending on what scroll bar the user
-    * clicked on. The second int parameter indicates which direction to
-    * scroll. A value less than 0 indicates up or left. A value greater
-    * than 0 indicates down or right.
-    */
+     * Set the unit or block increment in pixels. The Rectangle parameter
+     * is the bounds of the currently visible rectangle. The first int
+     * parameter is either SwingConstants.HORIZONTAL or
+     * SwingConstants.VERTICAL depending on what scroll bar the user
+     * clicked on. The second int parameter indicates which direction to
+     * scroll. A value less than 0 indicates up or left. A value greater
+     * than 0 indicates down or right.
+     */
     public int getScrollableBlockIncrement(Rectangle rec, int bar, int dir)
     {
         if (bar == SwingConstants.HORIZONTAL)
@@ -298,23 +290,23 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * Get the preferred size of the viewport. This allows the client to
-    * influence the size of the viewport in which it will be displayed.
-    * If the viewport size is unimportant, implement this method to
-    * return getPreferredSize.
-    */
+     * Get the preferred size of the viewport. This allows the client to
+     * influence the size of the viewport in which it will be displayed.
+     * If the viewport size is unimportant, implement this method to
+     * return getPreferredSize.
+     */
     public Dimension getPreferredScrollableViewportSize()
     {
         return getPreferredSize();
     }
 
     /**
-    * If we are is displayed in a JViewport, don't change its width
-    * when the viewports width changes.  This allows horizontal
-    * scrolling if the JViewport is itself embedded in a JScrollPane.
-    * @return False - don't track the viewports width.
-    * @see Scrollable#getScrollableTracksViewportWidth
-    */
+     * If we are is displayed in a JViewport, don't change its width
+     * when the viewports width changes.  This allows horizontal
+     * scrolling if the JViewport is itself embedded in a JScrollPane.
+     * @return False - don't track the viewports width.
+     * @see Scrollable#getScrollableTracksViewportWidth
+     */
     public boolean getScrollableTracksViewportWidth()
     {
         /*
@@ -329,12 +321,12 @@ public class MapperPane extends JPanel implements Scrollable
     }
 
     /**
-    * If we are is displayed in a JViewport, don't change its height
-    * when the viewports height changes.  This allows vertical
-    * scrolling if the JViewport is itself embedded in a JScrollPane.
-    * @return False - don't track the viewports width.
-    * @see Scrollable#getScrollableTracksViewportWidth
-    */
+     * If we are is displayed in a JViewport, don't change its height
+     * when the viewports height changes.  This allows vertical
+     * scrolling if the JViewport is itself embedded in a JScrollPane.
+     * @return False - don't track the viewports width.
+     * @see Scrollable#getScrollableTracksViewportWidth
+     */
     public boolean getScrollableTracksViewportHeight()
     {
         /*

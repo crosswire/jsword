@@ -33,13 +33,13 @@ public class AntiGravityRule extends AbstractRule
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
-    public Position[] getDesiredPosition(Map map, int ord)
+    public Position[] getDesiredPosition(Map map, int book, int chapter)
     {
         if (scale == 0)
             return new Position[] { };
 
         // The start point
-        float[] fpos = map.getPosition(ord);
+        float[] fpos = map.getPosition(book, chapter);
 
         // Where we move away from
         float[] cog = map.getCenterOfGravity().getPosition();

@@ -3,8 +3,10 @@ package org.crosswire.jsword.map.model;
 
 import java.io.Serializable;
 
+import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.common.util.LogicError;
 
 /**
@@ -34,40 +36,50 @@ import org.crosswire.common.util.LogicError;
 public class Link implements Serializable
 {
     /**
-    * Basic constructor
-    */
-    public Link(int dest, int strength)
+     * Basic constructor
+     */
+    public Link(int book, int chapter, int strength)
     {
-        this.dest = dest;
+        this.book = book;
+        this.chapter = chapter;
         this.strength = strength;
     }
 
     /**
-    * The destination verse as an ordinal number (gen 1:1 = 1)
-    * @return the verse number
-    */
-    public int getDestinationOrdinal()
+     * The destination book
+     * @return the book
+     */
+    public int getDestinationBook()
     {
-        return dest;
+        return book;
     }
 
     /**
-    * The strength of the attraction - an integer probably between 1 and 10
-    * @return The strength of the attraction
-    */
+     * The destination chapter
+     * @return the chapter
+     */
+    public int getDestinationChapter()
+    {
+        return chapter;
+    }
+
+    /**
+     * The strength of the attraction - an integer probably between 1 and 10
+     * @return The strength of the attraction
+     */
     public int getStrength()
     {
         return strength;
     }
 
     /**
-    * Simple bit of debug
-    */
+     * Simple bit of debug
+     */
     public String toString()
     {
         try
         {
-            return ""+new Verse(dest)+"("+strength+")";
+            return ""+new VerseRange(new Verse(book, chapter, 1), new Verse(book, chapter, Books.versesInChapter(book, chapter)))+"("+strength+")";
         }
         catch (NoSuchVerseException ex)
         {
@@ -78,8 +90,11 @@ public class Link implements Serializable
     /** To make serialization work across new versions */
     static final long serialVersionUID = -3293524580874173927L;
 
-    /** The destination verse as an ordinal number (gen 1:1 = 1) */
-    private int dest;
+    /** The destination book */
+    private int book;
+
+    /** The destination chapter */
+    private int chapter;
 
     /** The strength of the link */
     private int strength;
