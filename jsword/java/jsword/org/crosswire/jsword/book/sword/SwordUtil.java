@@ -3,12 +3,14 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * Various utilities used by different Sword classes.
@@ -169,6 +171,58 @@ public class SwordUtil
     
         return uncompressed;
     }
+    /**
+     * Transform a byte array into a string given the encoding.
+     * If the encoding is bad then it just does it as a string.
+     * @param data The byte array to be converted
+     * @param charset The encoding of the byte array
+     * @return a string that is UTF-8 internally
+     */
+    public static String decode(Key key, byte[] data, String charset)
+    {
+        String txt = ""; //$NON-NLS-1$
+        try
+        {
+            txt = new String(data, charset);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            // It is impossible! In case, use system default...
+            log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
+            txt = new String(data);
+        }
+
+        return clean(key, txt);
+    }
+
+    /**
+     * Remove rogue characters in the source.
+     * These are characters that are not valid in ISO-LATIN-1 (8859-1)
+     * and in UTF-8 or are non-printing control characters in the range
+     * of 0-32.
+     * @param data
+     * @param key
+     * @return
+     */
+    public static String clean(Key key, String data)
+    {
+        char [] buffer = data.toCharArray();
+        for (int i = 0; i < buffer.length; i++)
+        {
+            // between 0-32 only allow whitespace
+            // characters 127-159 are undefined in ISO-8859-1 and UTF-8
+            //    Microsoft uses them in cp1250 and cp1252 for their own purpose
+            //    Microsoft and others frequently call that "Latin 1" when it is not
+            char c = buffer[i];
+            if ((c >= 0 && c < 32 && c != 9 && c != 10 && c != 13) || c == 255 || (c >= 127 && c <= 159))
+            {
+                buffer[i] = ' ';
+                // NOTE: Should this be a call to DataPolice???
+                log.debug(key.getName() + " has bad character " + (int)c + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+        }
+        return new String(buffer);
+	}
 
     /**
      * The log stream

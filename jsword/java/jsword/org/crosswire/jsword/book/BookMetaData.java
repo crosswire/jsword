@@ -166,6 +166,15 @@ public interface BookMetaData extends Comparable
     public String getDriverName();
 
     /**
+     * Return the orientation of the language of the Book. If a book contains more than one language,
+     * it refers to the dominate language of the book. This will be used to present
+     * Arabic and Hebrew in their propper orientation.
+     * @return true if the orientation for the dominate language is LeftToRight.
+     */
+    
+    public boolean isLeftToRight();
+
+    /**
      * Get a list of all the properties available to do with this Book.
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.

@@ -1,13 +1,11 @@
 package org.crosswire.jsword.book.sword;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
@@ -125,19 +123,7 @@ public class SwordDictionary extends AbstractBook
             div.addContent(title);
             text.addContent(div);
 
-            byte[] data = backend.getRawText(key);
-            String charset = sbmd.getModuleCharset();
-            String txt = null;
-            try
-            {
-                txt = new String(data, charset);
-            }
-            catch (UnsupportedEncodingException ex)
-            {
-                // It is impossible! In case, use system default...
-                log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
-                txt = new String(data);
-            }
+            String txt = backend.getRawText(key, sbmd.getModuleCharset());
 
             sbmd.getFilter().toOSIS(div, txt);
 
@@ -157,33 +143,12 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        if (key == null)
-        {
-            throw new NullPointerException();
-        }
-
-        if (backend == null)
-        {
-            throw new BookException(Msg.MISSING_BACKEND);
-        }
+        assert key != null;
+        assert backend != null;
 
         try
         {
-            byte[] data = backend.getRawText(key);
-            String charset = sbmd.getModuleCharset();
-            String txt = null;
-            try
-            {
-                txt = new String(data, charset);
-            }
-            catch (UnsupportedEncodingException ex)
-            {
-                // It is impossible! In case, use system default...
-                log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
-                txt = new String(data);
-            }
-
-            return txt;
+            return backend.getRawText(key, sbmd.getModuleCharset());
         }
         catch (Exception ex)
         {
@@ -211,38 +176,36 @@ public class SwordDictionary extends AbstractBook
         Key key = (Key) map.get(text);
         if (key == null)
         {
+            String keyName = null;
             // So we need to find a matching key.
 
             // First check for keys that match ignoring case
             for (Iterator it = map.keySet().iterator(); it.hasNext();)
             {
-                key = (Key) it.next();
-                String match = key.getName();
-                if (match.equalsIgnoreCase(text))
+                keyName = (String)it.next();
+                if (keyName.equalsIgnoreCase(text))
                 {
-                    return key;
+                    return (Key) map.get(keyName);
                 }
             }
 
             // Next keys that start with the given text
             for (Iterator it = map.keySet().iterator(); it.hasNext();)
             {
-                key = (Key) it.next();
-                String match = key.getName();
-                if (match.startsWith(text))
+                keyName = (String)it.next();
+                if (keyName.startsWith(text))
                 {
-                    return key;
+                    return (Key) map.get(keyName);
                 }
             }
 
             // Next try keys that contain the given text
             for (Iterator it = map.keySet().iterator(); it.hasNext();)
             {
-                key = (Key) it.next();
-                String match = key.getName();
-                if (match.indexOf(text) != -1)
+                keyName = (String)it.next();
+                if (keyName.indexOf(text) != -1)
                 {
-                    return key;
+                    return (Key) map.get(keyName);
                 }
             }
 
@@ -292,9 +255,4 @@ public class SwordDictionary extends AbstractBook
      * The Sword configuration file
      */
     private SwordBookMetaData sbmd;
-
-    /**
-     * The log stream
-     */
-    private static Logger log = Logger.getLogger(SwordDictionary.class);
 }

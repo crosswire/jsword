@@ -158,10 +158,11 @@ public class GZIPBackend implements Backend
         active = false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public byte[] getRawText(Key key) throws BookException
+    public String getRawText(Key key, String charset) throws BookException
     {
         checkActive();
 
@@ -175,7 +176,7 @@ public class GZIPBackend implements Backend
             // If this is a single testament Bible, return nothing.
             if (compRaf[testament] == null)
             {
-                return new byte[0];
+                return ""; //$NON-NLS-1$
             }
 
             // 10 because we the index is 10 bytes long for each verse
@@ -184,7 +185,7 @@ public class GZIPBackend implements Backend
             // On occasion the index is short so just do nothing.
             if (temp == null || temp.length == 0)
             {
-                return temp;
+                return ""; //$NON-NLS-1$
             }
 
             // The data is little endian - extract the start, size and endsize
@@ -206,7 +207,7 @@ public class GZIPBackend implements Backend
                 temp = SwordUtil.readRAF(idxRaf[testament], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
                 if (temp == null || temp.length == 0)
                 {
-                    return new byte[0];
+                    return ""; //$NON-NLS-1$
                 }
 
                 long start = SwordUtil.decodeLittleEndian32(temp, 0);
@@ -230,7 +231,7 @@ public class GZIPBackend implements Backend
             byte[] chopped = new byte[bsize];
             System.arraycopy(uncompr, bstart, chopped, 0, bsize);
 
-            return chopped;
+            return SwordUtil.decode(key, chopped, charset);
 
             /* The code converted from Sword looked like this, but we can do better
             // buffer number

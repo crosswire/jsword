@@ -1,7 +1,5 @@
 package org.crosswire.jsword.book.sword;
 
-import java.io.UnsupportedEncodingException;
-
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
@@ -70,24 +68,11 @@ public class SwordBook extends PassageAbstractBook
     }
 
     /**
-     * Read the unfiltered data for a given verVerse
+     * Read the unfiltered data for a given verse
      */
     protected String getText(Verse verse) throws BookException
     {
-        byte[] data = backend.getRawText(verse);
-        String charset = sbmd.getModuleCharset();
-
-        String result = null;
-        try
-        {
-            result = new String(data, charset);
-        }
-        catch (UnsupportedEncodingException ex)
-        {
-            // It is impossible! In case, use system default...
-            log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
-            result = new String(data);
-        }
+        String result = backend.getRawText(verse, sbmd.getModuleCharset());
 
         assert result != null;
         // We often get rogue characters in the source so we have to chop them

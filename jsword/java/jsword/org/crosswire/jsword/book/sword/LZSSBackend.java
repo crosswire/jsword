@@ -54,9 +54,9 @@ public class LZSSBackend implements Backend
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
+     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public byte[] getRawText(Key key) throws BookException
+    public String getRawText(Key key, String charset) throws BookException
     {
         // LATER(joe): implement this
         throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { sbmd.toString() });

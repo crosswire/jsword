@@ -6,14 +6,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.event.EventListenerList;
-
 import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.CollectionUtil;
+import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.util.Project;

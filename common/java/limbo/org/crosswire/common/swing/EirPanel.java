@@ -40,7 +40,6 @@ import javax.swing.JPanel;
  */
 public class EirPanel extends JPanel
 {
-    // DEAD(DM): This class is not used. Find a use for it or delete it.
     // I18N: This class has not been internationalized, because it is not used.
     /**
      * A method to be exposed by our children

@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
@@ -27,8 +29,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -74,6 +74,7 @@ public class ExceptionPane extends JPanel
     {
         this.ex = ex;
         initialise();
+        setDisplayedException(ex);
     }
 
     /**
@@ -84,52 +85,61 @@ public class ExceptionPane extends JPanel
         String exmsg = "<html><font size=\"-1\">" + Msg.ERROR_OCCURED + "</font> " + ExceptionPane.getHTMLDescription(ex); //$NON-NLS-1$ //$NON-NLS-2$
 
         // The upper pane
+        JLabel message = new JLabel();
         message.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         message.setText(exmsg);
         message.setIcon(GuiUtil.getIcon("toolbarButtonGraphics/general/Stop24.gif")); //$NON-NLS-1$
         message.setIconTextGap(20);
 
-        banner.setLayout(new BorderLayout());
+        JPanel banner = new JPanel(new BorderLayout());
         banner.add(message, BorderLayout.CENTER);
+        list = new JList();
         list.setVisibleRowCount(6);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        Font courier = new Font("Monospaced", Font.PLAIN, 12); //$NON-NLS-1$
         list.setFont(courier);
 
-        setDisplayedException(ex);
-
         // The buttons at the bottom
+        ok = new JButton();
         ok.setText(Msg.OK.toString());
         ok.setMnemonic(Msg.OK.toString().charAt(0));
 
-        detail.addChangeListener(new ChangeListener()
+        detail = new JCheckBox();
+        detail.addItemListener(new ItemListener()
         {
-            public void stateChanged(ChangeEvent ev)
+            public void itemStateChanged(ItemEvent ev)
             {
+                System.err.println("In itemStateChanged"); //$NON-NLS-1$
+
                 changeDetail();
             }
         });
         detail.setText(Msg.DETAILS.toString());
 
-        spacer.setLayout(new FlowLayout());
+        JPanel spacer = new JPanel(new FlowLayout());
         spacer.add(ok);
 
-        buttons.setLayout(new BorderLayout());
+        JPanel buttons = new JPanel(new BorderLayout());
         buttons.add(spacer, BorderLayout.CENTER);
         buttons.add(detail, BorderLayout.WEST);
 
-        upper.setLayout(new BorderLayout());
+        upper = new JPanel(new BorderLayout());
         upper.add(banner, BorderLayout.NORTH);
         upper.add(buttons, BorderLayout.CENTER);
 
         // The lower pane
+        label = new JLabel();
         label.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         label.setFont(courier);
         label.setText(Msg.NO_FILE.toString());
+        text = new JTextArea();
         text.setEditable(false);
         text.setFont(courier);
-        text_scroll.setColumnHeaderView(label);
+        JScrollPane textScroll = new JScrollPane(text);
+        textScroll.setColumnHeaderView(label);
 
         Throwable[] exs = ExceptionUtils.getThrowables(ex);
+        final JComboBox traces = new JComboBox();
         traces.setModel(new DefaultComboBoxModel(exs));
         traces.addActionListener(new ActionListener()
         {
@@ -140,19 +150,20 @@ public class ExceptionPane extends JPanel
             }
         });
 
-        heading.setLayout(new BorderLayout());
+        JPanel heading = new JPanel(new BorderLayout());
         heading.add(traces, BorderLayout.CENTER);
 
-        lower.setLayout(new BorderLayout());
-        lower.add(split, BorderLayout.CENTER);
-        lower.add(heading, BorderLayout.NORTH);
-
+        JSplitPane split = new JSplitPane();
         split.setOrientation(JSplitPane.VERTICAL_SPLIT);
         split.setContinuousLayout(true);
-        split.setTopComponent(list_scroll);
-        split.setBottomComponent(text_scroll);
+        split.setTopComponent(new JScrollPane(list));
+        split.setBottomComponent(textScroll);
         split.setBorder(BorderFactory.createEmptyBorder());
         split.setPreferredSize(new Dimension(500, 300));
+
+        lower = new JPanel(new BorderLayout());
+        lower.add(split, BorderLayout.CENTER);
+        lower.add(heading, BorderLayout.NORTH);
 
         this.setLayout(new BorderLayout());
         this.add(upper, BorderLayout.NORTH);
@@ -184,40 +195,6 @@ public class ExceptionPane extends JPanel
         list.addListSelectionListener(new ExceptionPane.CustomLister(st, text, label));
         list.setModel(new StackTraceListModel(st));
     }
-
-    /**
-     * The exception we are displaying
-     */
-    private Throwable ex;
-
-    // The components - contained, top to containing, bottom
-    private JLabel message = new JLabel();
-    private JPanel banner = new JPanel();
-    private Font courier = new Font("Monospaced", Font.PLAIN, 12); //$NON-NLS-1$
-    private JList list = new JList();
-    private JScrollPane list_scroll = new JScrollPane(list);
-    private JPanel upper = new JPanel();
-    private JLabel label = new JLabel();
-    private JTextArea text = new JTextArea();
-    private JScrollPane text_scroll = new JScrollPane(text);
-    private JSplitPane split = new JSplitPane();
-    private JButton ok = new JButton();
-    private JCheckBox detail = new JCheckBox();
-    private JPanel buttons = new JPanel();
-    private JPanel spacer = new JPanel();
-    private JPanel lower = new JPanel();
-    protected JComboBox traces = new JComboBox();
-    private JPanel heading = new JPanel();
-
-    /**
-     * The directories searched for source
-     */
-    protected static File[] sources = new File[0];
-
-    /**
-     * The listener that pops up the ExceptionPanes
-     */
-    private static ExceptionPaneReporterListener li;
 
     /**
      * Show a dialog containing the exception
@@ -412,6 +389,8 @@ public class ExceptionPane extends JPanel
 
             int line_num = st.getLineNumber(level);
             String orig = name;
+            Integer errorLine = new Integer(line_num);
+            mylabel.setText(Msg.NO_FILE.toString());
 
             // Find a file
             name = File.separator + StringUtils.replace(orig, ".", "" + File.separatorChar) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
@@ -429,7 +408,8 @@ public class ExceptionPane extends JPanel
 
                     try
                     {
-                        mylabel.setText(file.getCanonicalPath());
+                        String found = Msg.SOURCE_FOUND.toString(new Object[] { errorLine, file.getCanonicalPath() });
+                        mylabel.setText(found);
                         LineNumberReader in = new LineNumberReader(new FileReader(file));
                         while (true)
                         {
@@ -467,7 +447,7 @@ public class ExceptionPane extends JPanel
             }
 
             // If we can't find a matching file
-            String error = Msg.SOURCE_NOT_FOUND.toString(new Object[] { st.getClassName(level), new Integer(line_num) });
+            String error = Msg.SOURCE_NOT_FOUND.toString(new Object[] { st.getClassName(level), errorLine });
             for (int i = 0; i < sources.length; i++)
             {
                 error += Msg.SOURCE_ATTEMPT.toString(new Object[] { sources[i].getAbsolutePath() + name });
@@ -544,4 +524,29 @@ public class ExceptionPane extends JPanel
             });
         }
     }
+
+    /**
+     * The exception we are displaying
+     */
+    private Throwable ex;
+
+    // The components - contained, top to containing, bottom
+    private JList list;
+    private JPanel upper;
+    private JLabel label;
+    private JTextArea text;
+    private JButton ok;
+    private JCheckBox detail;
+    private JPanel lower;
+
+    /**
+     * The directories searched for source
+     */
+    protected static File[] sources = new File[0];
+
+    /**
+     * The listener that pops up the ExceptionPanes
+     */
+    private static ExceptionPaneReporterListener li;
+
 }

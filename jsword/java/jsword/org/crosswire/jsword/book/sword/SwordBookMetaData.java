@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.sword;
 
+import java.awt.ComponentOrientation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -132,6 +134,14 @@ public class SwordBookMetaData implements BookMetaData
         {
             log.warn("Missing description for: "+internal); //$NON-NLS-1$
             name = internal;
+        }
+
+        String lang = getFirstValue(ConfigEntry.LANG);
+        if (lang != null) //$NON-NLS-1$
+        {
+            // This returns ComponentOrientation.LEFT_TO_RIGHT if
+            // it does not know what it is.
+            leftToRight = ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
         }
 
         // merge entries into properties file
@@ -654,6 +664,14 @@ public class SwordBookMetaData implements BookMetaData
         return driver.getDriverName();
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#lsLeftToRight()
+     */
+    public boolean isLeftToRight()
+    {
+        return leftToRight;
+    }
+
     /**
      * @param book The book to set.
      */
@@ -765,6 +783,7 @@ public class SwordBookMetaData implements BookMetaData
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;
     private URL licence = null;
+    private boolean leftToRight = true;
     private StringBuffer data = new StringBuffer();
     private String readahead = null;
 }

@@ -251,6 +251,15 @@ public class DefaultBookMetaData implements BookMetaData
         return driver.getDriverName();
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
+     */
+    public boolean isLeftToRight()
+    {
+        // TODO: Do this correctly
+        return true;
+    }
+
     /**
      * @param book The book to set.
      */

@@ -37,19 +37,9 @@ import org.crosswire.common.util.NetUtil;
 public class Project
 {
     /**
-     * A file so we know if we have the right versions directory
-     */
-    public static final String FILE_LOCATOR = "locator.properties"; //$NON-NLS-1$
-
-    /**
      * The cache of downloaded files inside the project directory
      */
     public static final String DIR_NETCACHE = "netcache"; //$NON-NLS-1$
-
-    /**
-     * Versions subdirectory of the project directory
-     */
-    public static final String DIR_VERSIONS = "versions"; //$NON-NLS-1$
 
     /**
      * The JSword user settings directory

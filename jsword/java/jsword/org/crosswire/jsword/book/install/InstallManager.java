@@ -8,9 +8,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.swing.event.EventListenerList;
-
 import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;

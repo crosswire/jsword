@@ -7,16 +7,11 @@ We are here
 --------------------------------------------------------------------------------
 
 Swing
-- Add raw/original text to view-source
 - Interrupting/cancelling a download does not cleanup the download.
   This is perhaps a bigger problem of the semantic of job cancellation merely
   interrupting a thread.
 
 BookData Display
-- BHS does not display the text in the right order.
-  Each verse is shown RtoL, which is correct, but the verses are ordered from
-  LtoR. Also the verse numbers need to be at the beginning of the verse, which
-  is on the right
 - Vines shows internal markup around verse references.
 - some nt verses badly displayed in ot refs
 - SwordBook.getText(Verse v) gets called 4 times for the same verse when that
@@ -37,7 +32,10 @@ Build
 - get nightly build to work again
 
 Data Problems
-- Notes in Ruth 1-2 are corrupt in BHS
+- Notes in Ruth 1-2 (and everywhere else) are corrupt in BHS
+- dict: urls in a book w/ strong's numbering does not distinguish Hebrew from
+  Greek numbers. The result is that in the OT, with the Greek Strongs choosen, a
+  Greek word may be shown.
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.8

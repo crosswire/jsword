@@ -116,9 +116,9 @@ public class RawBackend implements Backend
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
+     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public byte[] getRawText(Key key) throws BookException
+    public String getRawText(Key key, String charset) throws BookException
     {
         checkActive();
 
@@ -132,14 +132,14 @@ public class RawBackend implements Backend
             // If this is a single testament Bible, return nothing.
             if (idxRaf[testament] == null)
             {
-                return new byte[0];
+                return ""; //$NON-NLS-1$
             }
 
             // Read the next ENTRY_SIZE byes.
             byte[] read = SwordUtil.readRAF(idxRaf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
             if (read == null || read.length == 0)
             {
-                return new byte[0];
+                return ""; //$NON-NLS-1$
             }
 
             // The data is little endian - extract the start and size
@@ -149,7 +149,9 @@ public class RawBackend implements Backend
             // Read from the data file.
             // I wonder if it would be safe to do a readLine() from here.
             // Probably be safer not to risk it since we know how long it is.
-            return SwordUtil.readRAF(txtRaf[testament], start, size);
+            byte[] data = SwordUtil.readRAF(txtRaf[testament], start, size);
+
+            return SwordUtil.decode(key, data, charset);
         }
         catch (IOException ex)
         {

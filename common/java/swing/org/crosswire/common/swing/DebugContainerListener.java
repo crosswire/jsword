@@ -40,7 +40,6 @@ import org.crosswire.common.util.Logger;
  */
 public class DebugContainerListener implements ContainerListener
 {
-    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /* (non-Javadoc)
      * @see java.awt.event.ContainerListener#componentAdded(java.awt.event.ContainerEvent)
      */

@@ -40,6 +40,7 @@ class Msg extends MsgBase
     static final Msg CAUSED_BY = new Msg("ExceptionPane.CausedBy"); //$NON-NLS-1$
     static final Msg NO_DESC = new Msg("ExceptionPane.NoDesc"); //$NON-NLS-1$
     static final Msg SOURCE_NOT_FOUND = new Msg("ExceptionPane.SourceNotFound"); //$NON-NLS-1$
+    static final Msg SOURCE_FOUND = new Msg("ExceptionPane.SourceFound"); //$NON-NLS-1$
     static final Msg SOURCE_ATTEMPT = new Msg("ExceptionPane.SourceAttempt"); //$NON-NLS-1$
     static final Msg NO_PROBLEMS = new Msg("ExceptionShelf.NoProblems"); //$NON-NLS-1$
     static final Msg STATUS = new Msg("ExceptionShelf.Status"); //$NON-NLS-1$
@@ -51,8 +52,6 @@ class Msg extends MsgBase
     static final Msg BOLD = new Msg("FontChooser.Bold"); //$NON-NLS-1$
     static final Msg ITALIC = new Msg("FontChooser.Italic"); //$NON-NLS-1$
     static final Msg PLAF_CHANGE = new Msg("LookAndFeelUtil.PlafChange"); //$NON-NLS-1$
-    static final Msg ERROR_TABLE_MODEL = new Msg("MapTable.ErrorTableModel"); //$NON-NLS-1$
-    static final Msg ERROR_CELL_RENDER = new Msg("MapTable.ErrorCellRender"); //$NON-NLS-1$
     static final Msg KEYS = new Msg("MapTableModel.Keys"); //$NON-NLS-1$
     static final Msg VALUES = new Msg("MapTableModel.Values"); //$NON-NLS-1$
 

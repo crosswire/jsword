@@ -40,10 +40,11 @@ public interface Backend extends Activatable
     /**
      * Get the bytes alotted for the given verse
      * @param key The key to fetch
-     * @return byte[] The data for the verse in question
+     * @param charset the Java standard charset to convert the text into
+     * @return String The data for the verse in question
      * @throws BookException If the data can not be read.
      */
-    public byte[] getRawText(Key key) throws BookException;
+    public String getRawText(Key key, String charset) throws BookException;
     
     /**
      * Returns whether this Backend is implemented.

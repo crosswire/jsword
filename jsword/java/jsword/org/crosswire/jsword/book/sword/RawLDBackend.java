@@ -188,11 +188,11 @@ public class RawLDBackend implements Backend
         return reply;
     }
 
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.KeyBackend#getRawText(org.crosswire.jsword.book.Key)
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public byte[] getRawText(Key key) throws BookException
+    public String getRawText(Key key, String charset) throws BookException
     {
         checkActive();
 
@@ -217,7 +217,7 @@ public class RawLDBackend implements Backend
             byte[] reply = new byte[remainder];
             System.arraycopy(data, keyend + 1, reply, 0, remainder);
 
-            return reply;
+            return SwordUtil.decode(key, reply, charset);
         }
         catch (IOException ex)
         {

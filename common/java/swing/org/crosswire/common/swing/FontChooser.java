@@ -100,7 +100,6 @@ public class FontChooser extends JPanel
      */
     public static Font showDialog(Component parent, String title, Font initial)
     {
-        // DEAD(DM): This method is not used. Find a use for it or delete it.
         JPanel buttons = new JPanel();
         // I18N: migrate this to an ActionFactory
         JButton ok = new JButton(Msg.OK.toString());
