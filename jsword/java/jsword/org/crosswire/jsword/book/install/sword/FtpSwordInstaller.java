@@ -88,6 +88,9 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#toURL(org.crosswire.jsword.book.BookMetaData)
+     */
     public URL toURL(BookMetaData bmd)
     {
         if (!(bmd instanceof SwordBookMetaData))
@@ -100,9 +103,9 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
 
 	    try
         {
-            return new URL("ftp://ftp.crosswire.org/pub/sword/packages/rawzip/" + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
+            return new URL(NetUtil.PROTOCOL_FTP + "://" + host + directory + "/" + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        catch (MalformedURLException e)
+        catch (MalformedURLException ex)
         {
             return null;
         }

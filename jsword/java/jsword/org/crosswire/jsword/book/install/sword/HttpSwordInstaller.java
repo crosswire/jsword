@@ -314,6 +314,9 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         worker.start();
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#toURL(org.crosswire.jsword.book.BookMetaData)
+     */
     public URL toURL(BookMetaData bmd)
     {
         if (!(bmd instanceof SwordBookMetaData))
