@@ -1,0 +1,111 @@
+<project name="common" default="all">
+
+  <!--=======================================================================-->
+  <!--
+  When you first check files out of CVS you should run ant using the all target
+  to generate all the source files required for tools like eclipse.
+  -->
+
+  <!--=======================================================================-->
+  <property name="source.root" value="."/>
+  <property name="source.etc" value="${source.root}/etc"/>
+  <property name="source.jar" value="${source.root}/jar"/>
+  <property name="source.java" value="${source.root}/java"/>
+  <property name="source.res" value="${source.root}/resource"/>
+  <property name="target.root" value="target/ant"/>
+  <property name="target.temp" value="${target.root}/temp"/>
+  <property name="target.classes" value="${target.temp}/classes"/>
+  <property name="target.jar" value="${target.temp}/jar"/>
+  <property name="support.root" value="../jsword-support"/>
+  <property name="support.notes" value="${support.root}/notes"/>
+  <property name="support.tools" value="${support.root}/tools"/>
+
+  <property name="ant.lib" value="${ant.home}/lib"/>
+
+  <!--=======================================================================-->
+  <patternset id="java.non.compile">
+    <include name="**/*.properties"/>
+    <include name="**/*.gif"/>
+    <include name="**/*.jpg"/>
+    <include name="**/*.png"/>
+    <include name="**/*.ser"/>
+  </patternset>
+  <property name="java.non.compile" value="**/*.properties,**/*.gif,**/*.jpg,**/*.png,**/*.ser"/>
+
+  <!--=======================================================================-->
+  <target name="init" description="Prepare for other tasks">
+    <tstamp/>
+    <echo message="Building to: ${target.root}"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="compile" description="Validate source syntax">
+    <mkdir dir="${target.classes}/resource"/>
+    <antcall target="compile.section"><param name="section" value="core"/></antcall>
+    <antcall target="compile.section"><param name="section" value="swing"/></antcall>
+    <antcall target="compile.section"><param name="section" value="config"/></antcall>
+    <antcall target="compile.section"><param name="section" value="test"/></antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="compile.section">
+    <echo message="Compiling ${source.java}/${section}"/>
+    <mkdir dir="${target.classes}/${section}"/>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/${section}" source="1.4">
+      <src path="${source.java}/${section}"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${target.classes}/resource">
+      <fileset dir="${source.java}/${section}">
+        <patternset refid="java.non.compile"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="jar" depends="compile, jar.check" unless="jar.uptodate" description="create the jar files">
+    <mkdir dir="${target.jar}"/>
+    <jar jarfile="${target.jar}/${ant.project.name}.jar">
+      <fileset dir="${target.classes}/core"/>
+      <fileset dir="${target.classes}/swing"/>
+      <fileset dir="${target.classes}/config"/>
+      <fileset dir="${source.res}"/>
+    </jar>
+  </target>
+  <target name="jar.check" description="Check to see that the api jar file is up to date">
+    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword.jar">
+      <srcfiles dir="${target.classes}/core"/>
+      <srcfiles dir="${target.classes}/swing"/>
+      <srcfiles dir="${target.classes}/config"/>
+      <srcfiles dir="${source.res}"/>
+    </uptodate>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="all" depends="clean, jar" description="Run a full clean/build/deploy/test cycle">
+  </target>
+
+  <!--=======================================================================-->
+  <target name="clean" depends="init" description="Remove the target directory">
+    <delete dir="${target.root}"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="cvsup" description="cvs update">
+    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" dest=".">
+      <commandline>
+        <argument value="-q"/>
+        <argument value="update"/>
+        <argument value="-d"/>
+        <argument value="-P"/>
+      </commandline>
+    </cvs>
+    <chmod perm="755">
+      <fileset dir="${source.etc}/build" includes="**/*.sh"/>
+    </chmod>
+  </target>
+
+</project>

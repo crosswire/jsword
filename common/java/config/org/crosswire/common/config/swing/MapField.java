@@ -52,56 +52,51 @@ import org.crosswire.common.util.Convert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class MapField extends JPanel implements Field
+public class MapField extends JPanel implements Field, ActionListener
 {
+    private static final String ADD = "AddMapEntry"; //$NON-NLS-1$
+    private static final String REMOVE = "RemoveMapEntry"; //$NON-NLS-1$
+    private static final String UPDATE = "UpdateMapEntry"; //$NON-NLS-1$
+
     /**
      * Create a PropertyHashtableField for editing Hashtables.
      */
     public MapField()
     {
+        tableModel = new NamedMapTableModel();
+        table = new JTable(tableModel);
+
+        actions = ButtonActionFactory.instance();
+        actions.addActionListener(this);
+
         JPanel buttons = new JPanel(new FlowLayout());
 
         table.setFont(new Font("Monospaced", Font.PLAIN, 12)); //$NON-NLS-1$
         table.setPreferredScrollableViewportSize(new Dimension(30, 100));
         table.setColumnSelectionAllowed(false);
 
+        JScrollPane scroll = new JScrollPane();
         scroll.setViewportView(table);
 
-        buttons.add(add);
-        buttons.add(remove);
-        buttons.add(update);
-
-        add.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                addEntry();
-            }
-        });
-
-        remove.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                removeEntry();
-            }
-        });
-
-        update.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                updateEntry();
-            }
-        });
+        buttons.add(new JButton(actions.getAction(ADD)));
+        buttons.add(new JButton(actions.getAction(REMOVE)));
+        buttons.add(new JButton(actions.getAction(UPDATE)));
 
         Border title = BorderFactory.createTitledBorder(Msg.COMPONENT_EDITOR.toString());
         Border pad = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(title, pad));
 
         setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, scroll);
-        add(BorderLayout.SOUTH, buttons);
+        add(scroll, BorderLayout.CENTER);
+        add(buttons, BorderLayout.PAGE_END);
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        actions.actionPerformed(e, this);
     }
 
     /**
@@ -157,7 +152,7 @@ public class MapField extends JPanel implements Field
     /**
      * Pop up a dialog to allow editing of a new value
      */
-    public void addEntry()
+    public void doAddEntry(ActionEvent e)
     {
         InputPane input = new InputPane();
 
@@ -176,7 +171,7 @@ public class MapField extends JPanel implements Field
     /**
      * Pop up a dialog to allow editing of a current value
      */
-    public void updateEntry()
+    public void doUpdateEntry(ActionEvent e)
     {
         InputPane input = new InputPane();
         input.name_field.setText(currentKey());
@@ -197,7 +192,7 @@ public class MapField extends JPanel implements Field
     /**
      * Delete the current value in the Map
      */
-    public void removeEntry()
+    public void doRemoveEntry(ActionEvent e)
     {
         tableModel.remove(currentKey());
     }
@@ -293,6 +288,9 @@ public class MapField extends JPanel implements Field
         {
             super(new FieldLayout(10, 10));
 
+            name_field = new JTextField();
+            class_field = new JTextField(20);
+            
             add(new JLabel(Msg.NAME+":")); //$NON-NLS-1$
             add(name_field);
             add(new JLabel(Msg.CLASS+":")); //$NON-NLS-1$
@@ -304,43 +302,25 @@ public class MapField extends JPanel implements Field
         /**
          * To edit a name (Map key)
          */
-        protected JTextField name_field = new JTextField();
+        protected JTextField name_field;
 
         /**
          * To edit a class (Map value)
          */
-        protected JTextField class_field = new JTextField(20);
+        protected JTextField class_field;
     }
 
+    private ButtonActionFactory actions;
+    
     /**
      * The TableModel that points the JTable at the Map
      */
-    private NamedMapTableModel tableModel = new NamedMapTableModel();
+    private NamedMapTableModel tableModel;
 
     /**
      * The Table - displays the Hashtble
      */
-    private JTable table = new JTable(tableModel);
-
-    /**
-     * The Scroller for the JTable
-     */
-    private JScrollPane scroll = new JScrollPane();
-
-    /**
-     * Button bar: add
-     */
-    private JButton add = new JButton(Msg.ADD.toString());
-
-    /**
-     * Button bar: remove
-     */
-    private JButton remove = new JButton(Msg.REMOVE.toString());
-
-    /**
-     * Button bar: update
-     */
-    private JButton update = new JButton(Msg.UPDATE.toString());
+    private JTable table;
 
     /**
      * The class that everything must inherit from

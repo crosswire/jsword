@@ -33,6 +33,7 @@ import java.io.Serializable;
  */
 public abstract class AbstractLayout implements LayoutManager2, Serializable
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Defaults the horizontal and vertical gaps to 0
      */

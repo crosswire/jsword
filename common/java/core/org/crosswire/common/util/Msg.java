@@ -26,19 +26,19 @@ package org.crosswire.common.util;
  */
 class Msg extends MsgBase
 {
-    static final Msg REASON = new Msg("Reason: "); //$NON-NLS-1$
-    static final Msg SECURITY = new Msg("Could not create ClassResolver: "); //$NON-NLS-1$
-    static final Msg UNAVILABLE = new Msg("<Unavailable>"); //$NON-NLS-1$
-    static final Msg NO_RESOURCE = new Msg("Can't find resource: {0}"); //$NON-NLS-1$
-    static final Msg NOT_ASSIGNABLE = new Msg("Class {0} does not implement {1}"); //$NON-NLS-1$
-    static final Msg IS_FILE = new Msg("The given URL {0} is a file."); //$NON-NLS-1$
-    static final Msg CREATE_DIR_FAIL = new Msg("The given URL {0} could not be created as a directory."); //$NON-NLS-1$
-    static final Msg IS_DIR = new Msg("The given URL {0} is a directory."); //$NON-NLS-1$
-    static final Msg CREATE_FILE_FAIL = new Msg("The given URL {0} could not be created as a file."); //$NON-NLS-1$
-    static final Msg CANT_STRIP = new Msg("The URL {0} does not end in {1}."); //$NON-NLS-1$
-    static final Msg NOT_DIR = new Msg("URL {0} is not a directory"); //$NON-NLS-1$
-    static final Msg NOT_FILE_URL = new Msg("The given URL {0} is not a file: URL."); //$NON-NLS-1$
-    static final Msg WRONG_TYPE = new Msg("Listener {0} is not of type {1}"); //$NON-NLS-1$
+    static final Msg SECURITY = new Msg("CallContext.Security"); //$NON-NLS-1$
+    static final Msg WRONG_TYPE = new Msg("EventListenerList.WrongType"); //$NON-NLS-1$
+    static final Msg REASON = new Msg("LucidException.Reason"); //$NON-NLS-1$
+    static final Msg CANT_STRIP = new Msg("NetUtil.CantStrip"); //$NON-NLS-1$
+    static final Msg CREATE_DIR_FAIL = new Msg("NetUtil.CreateDirFail"); //$NON-NLS-1$
+    static final Msg CREATE_FILE_FAIL = new Msg("NetUtil.CreateFileFail"); //$NON-NLS-1$
+    static final Msg IS_DIR = new Msg("NetUtil.IsDir"); //$NON-NLS-1$
+    static final Msg IS_FILE = new Msg("NetUtil.IsFile"); //$NON-NLS-1$
+    static final Msg NOT_DIR = new Msg("NetUtil.NotDir"); //$NON-NLS-1$
+    static final Msg NOT_FILE_URL = new Msg("NetUtil.NotFileURL"); //$NON-NLS-1$
+    static final Msg NO_RESOURCE = new Msg("ResourceUtil.NoResource"); //$NON-NLS-1$
+    static final Msg NOT_ASSIGNABLE = new Msg("ResourceUtil.NotAssignable"); //$NON-NLS-1$
+    static final Msg UNAVILABLE = new Msg("ThreadUtil.Unavailable"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

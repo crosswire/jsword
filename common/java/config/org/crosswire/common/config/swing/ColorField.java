@@ -42,28 +42,47 @@ import org.crosswire.common.swing.GuiConvert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ColorField extends JPanel implements Field
+public class ColorField extends JPanel implements Field, ActionListener
 {
+    private static final String EDIT = "EditColor"; //$NON-NLS-1$
+
     /**
      * Create a new FileField
      */
     public ColorField()
     {
+        initialize();
+    }
+
+    private void initialize()
+    {
+        actions = ButtonActionFactory.instance();
+        actions.addActionListener(this);
+
+        JButton edit = new JButton(actions.getAction(EDIT));
         edit.setIcon(new CustomIcon());
         edit.setMargin(new Insets(1, 2, 1, 1));
-        edit.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ex)
-            {
-                color = JColorChooser.showDialog(ColorField.this, Msg.EDIT.toString(), color);
-                //text.setText(Convert.color2String(color));
-                edit.repaint();
-            }
-        });
 
         setLayout(new BorderLayout());
         add(edit, BorderLayout.WEST);
         //add(text, BorderLayout.EAST);
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        actions.actionPerformed(e, this);
+    }
+
+    /**
+     * Do the edit action
+     * @param ex
+     */
+    public void doEditColor(ActionEvent ex)
+    {
+        color = JColorChooser.showDialog(ColorField.this, Msg.EDIT.toString(), color);
     }
 
     /**
@@ -92,8 +111,6 @@ public class ColorField extends JPanel implements Field
     public void setValue(String value)
     {
         color = GuiConvert.string2Color(value);
-        //text.setText(value);
-        edit.repaint();
     }
 
     /**
@@ -106,14 +123,9 @@ public class ColorField extends JPanel implements Field
     }
 
     /**
-     * The browse button
+     * The action factory for the buttons
      */
-    protected JButton edit = new JButton(Msg.EDIT.toString());
-
-    /**
-     * Some feedback on the color
-     */
-    //private JLabel text = new JLabel();
+    private ButtonActionFactory actions;
 
     /**
      * The current Color

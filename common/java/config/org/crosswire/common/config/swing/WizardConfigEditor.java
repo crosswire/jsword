@@ -61,17 +61,28 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class WizardConfigEditor extends AbstractConfigEditor
+public class WizardConfigEditor extends AbstractConfigEditor implements ActionListener
 {
-    /**
-     * Now this wasn't created with JBuilder but maybe, just maybe, by
-     * calling my method this, JBuilder may grok it.
-     */
-    protected void jbInit()
-    {
-        JPanel panel = new JPanel();
+    private static final String NEXT = "WizardNext"; //$NON-NLS-1$
+    private static final String CANCEL = "WizardCancel"; //$NON-NLS-1$
+    private static final String FINISH = "WizardFinish"; //$NON-NLS-1$
+    private static final String HELP = "WizardHelp"; //$NON-NLS-1$
+    private static final String BACK = "WizardBack"; //$NON-NLS-1$
 
-        deck.setLayout(layout);
+    /**
+     * <br />Danger - this method is not called by the TreeConfigEditor
+     * constructor, it is called by the AbstractConfigEditor constructor so
+     * any field initializers will be called AFTER THIS METHOD EXECUTES
+     * so don't use field initializers.
+     */
+    protected void initialize()
+    {
+        actions = ButtonActionFactory.instance();
+        actions.addActionListener(this);
+
+        names = new ArrayList();
+        layout = new CardLayout();
+        deck = new JPanel(layout);
 
         // We need to Enumerate thru the Model names not the Path names in the
         // deck because the deck is a Hashtable that re-orders them.
@@ -92,10 +103,11 @@ public class WizardConfigEditor extends AbstractConfigEditor
                 wcards++;
 
                 // The name for the title bar
-                names.add(StringUtils.replace(path, ".", " "));  //$NON-NLS-1$//$NON-NLS-2$
+                names.add(StringUtils.replaceChars(path, '.', ' '));  //$NON-NLS-1$//$NON-NLS-2$
             }
         }
 
+        title = new JLabel(Msg.PROPERTIES.toString(), SwingConstants.LEFT);
         title.setIcon(task);
         title.setFont(new Font(getFont().getName(), Font.PLAIN, 16));
         title.setPreferredSize(new Dimension(30, 30));
@@ -113,18 +125,26 @@ public class WizardConfigEditor extends AbstractConfigEditor
         // content.setLayout(new BorderLayout());
         // content.add(BorderLayout.CENTER, deck);
 
-        panel.setLayout(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-        panel.add(BorderLayout.NORTH, title);
-        panel.add(BorderLayout.CENTER, deck);
+        panel.add(title, BorderLayout.PAGE_START);
+        panel.add(deck, BorderLayout.CENTER);
 
         setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        add(BorderLayout.CENTER, panel);
-        add(BorderLayout.SOUTH, getButtonPane());
+        add(panel, BorderLayout.CENTER);
+        add(getButtonPane(), BorderLayout.PAGE_END);
 
         SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        actions.actionPerformed(e, this);
     }
 
     /**
@@ -139,82 +159,71 @@ public class WizardConfigEditor extends AbstractConfigEditor
      * A Config panel does not have buttons. These are they.
      * @return A button panel
      */
-    protected JComponent getButtonPane()
+    private JComponent getButtonPane()
     {
-        // relabel the buttons
-        cancel.setText(Msg.CANCEL.toString());
-        apply.setText(Msg.NEXT.toString());
-        ok.setText(Msg.FINISH.toString());
+
+        finish = new JButton(actions.getAction(FINISH));
+        next = new JButton(actions.getAction(NEXT));
 
         JPanel buttons = new JPanel();
-        JPanel retcode = new JPanel();
 
         buttons.setLayout(new GridLayout(1, 2, 10, 10));
         buttons.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttons.add(help);
-        buttons.add(cancel);
-        buttons.add(back);
-        buttons.add(apply);
-        buttons.add(ok);
+        buttons.add(new JButton(actions.getAction(HELP)));
+        buttons.add(new JButton(actions.getAction(CANCEL)));
+        buttons.add(new JButton(actions.getAction(BACK)));
+        buttons.add(next);
+        buttons.add(finish);
 
-        help.setEnabled(false);
-        back.setEnabled(false);
+        actions.getAction(HELP).setEnabled(false);
+        actions.getAction(BACK).setEnabled(false);
 
-        help.setMnemonic('H');
-        cancel.setMnemonic('C');
-        back.setMnemonic('B');
-        apply.setMnemonic('N');
-        ok.setMnemonic('F');
-
-        cancel.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                hideDialog();
-            }
-        });
-        back.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                move(-1);
-            }
-        });
-        apply.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                move(1);
-            }
-        });
-        ok.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                try
-                {
-                    screenToLocal();
-                    al.actionPerformed(ev);
-                    hideDialog();
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(this, ex);
-                }
-            }
-        });
+        JPanel retcode = new JPanel(new BorderLayout(10, 10));
 
         retcode.setBorder(new EdgeBorder(SwingConstants.NORTH));
-        retcode.setLayout(new BorderLayout(10, 10));
-        retcode.add(BorderLayout.EAST, buttons);
+        retcode.add(buttons, BorderLayout.LINE_END);
 
         return retcode;
+    }
+
+    protected void doWizardCancel(ActionEvent ev)
+    {
+        hideDialog();
+    }
+
+    protected void doWizardHelp(ActionEvent ev)
+    {
+        
+    }
+
+    protected void doWizardBack(ActionEvent ev)
+    {
+        move(-1);
+    }
+
+    protected void doWizardNext(ActionEvent ev)
+    {
+        move(1);
+    }
+
+    protected void doWizardFinish(ActionEvent ev)
+    {
+        try
+        {
+            screenToLocal();
+            al.actionPerformed(ev);
+            hideDialog();
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 
     /**
      * Set a new card to be visible
      */
-    protected void move(int dirn)
+    private void move(int dirn)
     {
         if (dirn == -1 && posn > 0)
         {
@@ -230,16 +239,16 @@ public class WizardConfigEditor extends AbstractConfigEditor
 
         title.setText(names.get(posn) + Msg.PROPERTIES_POSN.toString(new Object[] { new Integer(posn+1), new Integer(wcards) }));
 
-        back.setEnabled(posn != 0);
-        apply.setEnabled(posn != (wcards-1));
+        actions.getAction(BACK).setEnabled(posn != 0);
+        actions.getAction(NEXT).setEnabled(posn != (wcards-1));
 
         if (posn == wcards-1)
         {
-            dialog.getRootPane().setDefaultButton(ok);
+            dialog.getRootPane().setDefaultButton(finish);
         }
         else
         {
-            dialog.getRootPane().setDefaultButton(apply);
+            dialog.getRootPane().setDefaultButton(next);
         }
     }
 
@@ -254,7 +263,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
         // NOTE: when we tried dynamic laf update, dialog needed special treatment
         //LookAndFeelUtil.addComponentToUpdate(dialog);
 
-        dialog.getRootPane().setDefaultButton(apply);
+        dialog.getRootPane().setDefaultButton(next);
         dialog.getContentPane().add(this);
         dialog.setTitle(config.getTitle());
         dialog.setSize(800, 500);
@@ -273,60 +282,48 @@ public class WizardConfigEditor extends AbstractConfigEditor
         }
     }
 
+    private ButtonActionFactory actions;
+    
     /**
      * The current position
      */
-    private int posn = 0;
+    private int posn;
 
     /**
      * The number of cards
      */
-    private int wcards = 0;
+    private int wcards;
 
     /**
      * The list of path names
      */
-    private List names = new ArrayList();
+    private List names;
 
     /**
      * The title for the config panels
      */
-    private JLabel title = new JLabel(Msg.PROPERTIES.toString(), SwingConstants.LEFT);
+    private JLabel title;
 
     /**
      * Contains the configuration panels
      */
-    private JPanel deck = new JPanel();
+    private JPanel deck;
 
     /**
      * Layout for the config panels
      */
-    private CardLayout layout = new CardLayout();
+    private CardLayout layout;
 
     /**
      * The Ok button
      */
-    private JButton ok = new JButton(Msg.OK.toString());
+    private JButton finish;
 
     /**
-     * The cancel button
+     * The next button
      */
-    private JButton cancel = new JButton(Msg.CANCEL.toString());
+    private JButton next;
 
-    /**
-     * The apply button
-     */
-    private JButton apply = new JButton(Msg.APPLY.toString());
-
-    /**
-     * The help button
-     */
-    private JButton help = new JButton(Msg.HELP.toString());
-
-    /**
-     * The Back button
-     */
-    private JButton back = new JButton(Msg.BACK.toString());
 
     /**
      * The log stream

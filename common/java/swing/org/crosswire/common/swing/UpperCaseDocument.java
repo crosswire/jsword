@@ -33,6 +33,7 @@ import javax.swing.text.PlainDocument;
  */
 public class UpperCaseDocument extends PlainDocument
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
     * Override insertString to force upper case
     */

@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileFilter;
  */
 public class ExtensionFileFilter extends FileFilter
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Basic constructor
      * @param extensions An array of allowed extensions without the .

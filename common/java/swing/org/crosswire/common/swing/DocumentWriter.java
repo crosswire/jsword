@@ -37,6 +37,7 @@ import javax.swing.text.Document;
  */
 public class DocumentWriter extends Writer
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Create the DocumentWriter with no Document, that just
      * dumps the text it get into the bin

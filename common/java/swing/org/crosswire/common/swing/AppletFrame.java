@@ -42,6 +42,7 @@ import javax.swing.JFrame;
  */
 public class AppletFrame extends JFrame
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Creates a Frame and runs an Applet in the frame.
      * Mirrors the actions of a Browser in an application.

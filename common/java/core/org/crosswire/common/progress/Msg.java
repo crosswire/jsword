@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg DONE = new Msg("Done"); //$NON-NLS-1$
+    static final Msg DONE = new Msg("Job.Done"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

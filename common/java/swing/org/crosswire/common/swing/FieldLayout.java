@@ -35,6 +35,7 @@ import java.awt.Dimension;
  */
 public class FieldLayout extends AbstractLayout
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
     * A default FieldLayout with intercomponent
     * spacing of 0.

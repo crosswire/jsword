@@ -36,8 +36,13 @@ import org.crosswire.common.swing.EdgeBorder;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ButtonPane extends JPanel
+public class ButtonPane extends JPanel implements ActionListener
 {
+    private static final String OK = "OK"; //$NON-NLS-1$
+    private static final String CANCEL = "Cancel"; //$NON-NLS-1$
+    private static final String APPLY = "Apply"; //$NON-NLS-1$
+    private static final String HELP = "Help"; //$NON-NLS-1$
+
     /**
      * Simple ctor
      */
@@ -52,76 +57,78 @@ public class ButtonPane extends JPanel
      */
     protected void init()
     {
+        actions = ButtonActionFactory.instance();
+        actions.addActionListener(this);
+
         // PENDING: find some way to do default buttons
         //dialog.getRootPane().setDefaultButton(ok);
 
+         // A panel so we can right justify
+        JPanel buttons = new JPanel();
+
         buttons.setLayout(new GridLayout(1, 2, 10, 10));
         buttons.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttons.add(ok);
-        buttons.add(cancel);
-        buttons.add(apply);
-        buttons.add(help);
-        help.setEnabled(false);
-
-        ok.setMnemonic('O');
-        cancel.setMnemonic('C');
-        apply.setMnemonic('A');
-        help.setMnemonic('H');
-
-        ok.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                li.okPressed(ev);
-            }
-        });
-        cancel.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                li.cancelPressed(ev);
-            }
-        });
-        apply.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                li.applyPressed(ev);
-            }
-        });
+        buttons.add(new JButton(actions.getAction(OK)));
+        buttons.add(new JButton(actions.getAction(CANCEL)));
+        buttons.add(new JButton(actions.getAction(APPLY)));
+        buttons.add(new JButton(actions.getAction(HELP)));
 
         this.setBorder(new EdgeBorder(SwingConstants.NORTH));
         this.setLayout(new BorderLayout(10, 10));
-        this.add(BorderLayout.EAST, buttons);
+        this.add(buttons, BorderLayout.LINE_END);
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        actions.actionPerformed(e, this);
     }
 
     /**
-     * A panel so we can right justify
+     * Do the OK action
+     * @param ev
      */
-    private JPanel buttons = new JPanel();
+    protected void doOK(ActionEvent ev)
+    {
+        li.okPressed(ev);
+    }
+    /**
+     * Do the Cancel action
+     * @param ev
+     */
+    protected void doCancel(ActionEvent ev)
+    {
+        li.cancelPressed(ev);
+    }
+    
+    /**
+     * Do the Apply action
+     * @param ev
+     */
+    protected void doApply(ActionEvent ev)
+    {
+        li.applyPressed(ev);
+    }
+
+    /**
+     * Do the Help action
+     * @param ev
+     */
+    protected void doHelp(ActionEvent ev)
+    {
+        // TODO: Help is not implemented.
+        //li.helpPressed(ev);
+    }
+
+    /**
+     * The action factory for the buttons
+     */
+    private static ButtonActionFactory actions;
 
     /**
      * PENDING: turn this into a [add|remove]ButtonPaneListener thing
      */
     protected ButtonPaneListener li;
-
-    /**
-     * The Ok button
-     */
-    private JButton ok = new JButton(Msg.OK.toString());
-
-    /**
-     * The cancel button
-     */
-    private JButton cancel = new JButton(Msg.CANCEL.toString());
-
-    /**
-     * The apply button
-     */
-    private JButton apply = new JButton(Msg.APPLY.toString());
-
-    /**
-     * The help button
-     */
-    private JButton help = new JButton(Msg.HELP.toString());
 }

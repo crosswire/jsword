@@ -1,7 +1,7 @@
 package org.crosswire.common.xml;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -11,8 +11,6 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import com.sun.xml.bind.StringInputStream;
 
 /**
  * A SAXEventProvider that provides SAX events from a String.
@@ -60,8 +58,8 @@ public class StringSAXEventProvider implements SAXEventProvider
     {
         try
         {
-            InputStream in = new StringInputStream(xmlstr);
-            InputSource is = new InputSource(in);
+            StringReader sr = new StringReader(xmlstr);
+            InputSource is = new InputSource(sr);
 
             reader.setContentHandler(handler);
             reader.parse(is);

@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg NOT_IMPLEMENTED = new Msg("Not Implemented"); //$NON-NLS-1$
+    static final Msg NOT_IMPLEMENTED = new Msg("Activator.NotImplemented"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

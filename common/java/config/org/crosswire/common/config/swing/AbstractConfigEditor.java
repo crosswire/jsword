@@ -56,7 +56,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     {
         this.config = aConfig;
 
-        jbInit();
+        initialize();
 
         config.addConfigListener(new ConfigListener()
         {
@@ -124,7 +124,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
      * Now this wasn't created with JBuilder but maybe, just maybe, by
      * calling my method this, JBuilder may grok it.
      */
-    protected abstract void jbInit();
+    protected abstract void initialize();
 
     /**
      * Update the tree structure

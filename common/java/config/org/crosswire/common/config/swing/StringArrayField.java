@@ -5,20 +5,22 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
 import org.crosswire.common.config.Choice;
+import org.crosswire.common.swing.FieldLayout;
 import org.crosswire.common.util.Convert;
 
 /**
@@ -47,56 +49,51 @@ import org.crosswire.common.util.Convert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PathField extends JPanel implements Field
+public class StringArrayField extends JPanel implements Field, ActionListener
 {
+    private static final String ADD = "AddStringEntry"; //$NON-NLS-1$
+    private static final String REMOVE = "RemoveStringEntry"; //$NON-NLS-1$
+    private static final String UPDATE = "UpdateStringEntry"; //$NON-NLS-1$
+
     /**
      * Create a PropertyHashtableField for editing String arrays.
      */
-    public PathField()
+    public StringArrayField()
     {
+        actions = ButtonActionFactory.instance();
+        actions.addActionListener(this);
+
+        list_model = new DefaultComboBoxModel();
+        list = new JList(list_model);
+
         JPanel buttons = new JPanel(new FlowLayout());
 
         list.setFont(new Font("Monospaced", Font.PLAIN, 12)); //$NON-NLS-1$
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // list.setPreferredScrollableViewportSize(new Dimension(30, 100));
 
+        JScrollPane scroll = new JScrollPane();
         scroll.setViewportView(list);
 
-        buttons.add(add);
-        buttons.add(remove);
-        buttons.add(update);
+        buttons.add(new JButton(actions.getAction(ADD)));
+        buttons.add(new JButton(actions.getAction(REMOVE)));
+        buttons.add(new JButton(actions.getAction(UPDATE)));
 
-        add.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                addEntry();
-            }
-        });
-
-        remove.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                removeEntry();
-            }
-        });
-
-        update.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                updateEntry();
-            }
-        });
-
-        Border title = BorderFactory.createTitledBorder(Msg.PATH_EDITOR.toString());
+        Border title = BorderFactory.createTitledBorder(Msg.COMPONENT_EDITOR.toString());
         Border pad = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(title, pad));
 
         setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, scroll);
-        add(BorderLayout.SOUTH, buttons);
+        add(scroll, BorderLayout.CENTER);
+        add(buttons, BorderLayout.PAGE_END);
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        actions.actionPerformed(e, this);
     }
 
     /**
@@ -115,7 +112,7 @@ public class PathField extends JPanel implements Field
      */
     public String getValue()
     {
-        return Convert.stringArray2String(getArray(), File.pathSeparator);
+        return Convert.stringArray2String(getArray(), separator);
     }
 
     /**
@@ -124,10 +121,10 @@ public class PathField extends JPanel implements Field
      */
     public String[] getArray()
     {
-        String[] retcode = new String[model.getSize()];
+        String[] retcode = new String[list_model.getSize()];
         for (int i=0; i<retcode.length; i++)
         {
-            retcode[i] = (String) model.getElementAt(i);
+            retcode[i] = (String) list_model.getElementAt(i);
         }
 
         return retcode;
@@ -139,7 +136,7 @@ public class PathField extends JPanel implements Field
      */
     public void setValue(String value)
     {
-        setArray(Convert.string2StringArray(value, File.pathSeparator));
+        setArray(Convert.string2StringArray(value, separator));
     }
 
     /**
@@ -148,8 +145,8 @@ public class PathField extends JPanel implements Field
      */
     public void setArray(String[] value)
     {
-        model = new DefaultComboBoxModel(value);
-        list.setModel(model);
+        list_model = new DefaultComboBoxModel(value);
+        list.setModel(list_model);
     }
 
     /**
@@ -165,39 +162,41 @@ public class PathField extends JPanel implements Field
     /**
      * Pop up a dialog to allow editing of a new value
      */
-    public void addEntry()
+    public void doAddEntry(ActionEvent e)
     {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        InputPane input = new InputPane();
+
+        if (JOptionPane.showConfirmDialog(this, input, Msg.NEW_CLASS.toString(), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
-            String path = chooser.getSelectedFile().getPath();
-            model.addElement(path);
+            String new_name = input.name_field.getText();
+
+            list_model.addElement(new_name);
         }
     }
 
     /**
      * Pop up a dialog to allow editing of a current value
      */
-    public void updateEntry()
+    public void doUpdateEntry(ActionEvent e)
     {
-        JFileChooser chooser = new JFileChooser(currentValue());
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-        {
-            String path = chooser.getSelectedFile().getPath();
+        InputPane input = new InputPane();
+        input.name_field.setText(currentValue());
 
-            model.removeElement(currentValue());
-            model.addElement(path);
+        if (JOptionPane.showConfirmDialog(this, input, Msg.EDIT_CLASS.toString(), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
+        {
+            String new_name = input.name_field.getText();
+
+            list_model.removeElement(currentValue());
+            list_model.addElement(new_name);
         }
     }
 
     /**
      * Delete the current value in the hashtable
      */
-    public void removeEntry()
+    public void doRemoveEntry(ActionEvent e)
     {
-        model.removeElement(currentValue());
+        list_model.removeElement(currentValue());
     }
 
     /**
@@ -206,36 +205,49 @@ public class PathField extends JPanel implements Field
      */
     private final String currentValue()
     {
-        return (String) model.getElementAt(list.getSelectedIndex());
+        return (String) list_model.getElementAt(list.getSelectedIndex());
     }
 
     /**
+     * The panel for a JOptionPane that allows editing a name/class
+     * combination.
+     */
+    public static class InputPane extends JPanel
+    {
+        /**
+         * Simple ctor
+         */
+        public InputPane()
+        {
+            super(new FieldLayout(10, 10));
+
+            add(new JLabel(Msg.NAME.toString()+':')); //$NON-NLS-1$
+            add(name_field);
+
+            setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        }
+
+        /**
+         * To edit a name (hashtable key)
+         */
+        protected JTextField name_field = new JTextField();
+    }
+    
+    /**
+     * What character do we use to separate strings?
+     */
+    final private static String separator = "#"; //$NON-NLS-1$
+
+    private ButtonActionFactory actions;
+    
+    /**
      * The TableModel that points the JTable at the Hashtable
      */
-    private DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private DefaultComboBoxModel list_model;
 
     /**
      * The Table - displays the Hashtble
      */
-    private JList list = new JList(model);
+    private JList list;
 
-    /**
-     * The Scroller for the JTable
-     */
-    private JScrollPane scroll = new JScrollPane();
-
-    /**
-     * Button bar: add
-     */
-    private JButton add = new JButton(Msg.ADD.toString());
-
-    /**
-     * Button bar: remove
-     */
-    private JButton remove = new JButton(Msg.REMOVE.toString());
-
-    /**
-     * Button bar: update
-     */
-    private JButton update = new JButton(Msg.UPDATE.toString());
 }

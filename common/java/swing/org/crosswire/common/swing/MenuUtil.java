@@ -47,6 +47,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class MenuUtil
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Create the menubar for the app.  By default this pulls the
      * definition of the menu from the associated resource file.

@@ -36,6 +36,7 @@ import org.crosswire.common.util.Logger;
  */
 public class TextViewPanelBeanInfo extends SimpleBeanInfo
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
     * Info about the extra properties we provide
     * @return an array of property descriptors

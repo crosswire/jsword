@@ -39,10 +39,12 @@ import org.crosswire.common.swing.FormPane;
 public class TabbedConfigEditor extends AbstractConfigEditor
 {
     /**
-     * Now this wasn't created with JBuilder but maybe, just maybe, by
-     * calling my method this, JBuilder may grok it.
+     * <br />Danger - this method is not called by the TreeConfigEditor
+     * constructor, it is called by the AbstractConfigEditor constructor so
+     * any field initializers will be called AFTER THIS METHOD EXECUTES
+     * so don't use field initializers.
      */
-    protected void jbInit()
+    protected void initialize()
     {
         JComponent bar = new ButtonPane(this);
 

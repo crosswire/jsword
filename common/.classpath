@@ -2,9 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="java/gpl"/>
-	<classpathentry kind="src" path="java/test"/>
 	<classpathentry kind="src" path="java/core"/>
 	<classpathentry kind="src" path="java/swing"/>
+	<classpathentry kind="src" path="java/config"/>
+	<classpathentry kind="src" path="java/test"/>
 	<classpathentry exported="true" kind="lib" path="resource"/>
 	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jdom-b10.zip" kind="lib" path="jar/jdom-1.0.b10/jdom.jar"/>
 	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jakarta-log4j-1.2.8.zip" kind="lib" path="jar/log4j-1.2.8/log4j-1.2.8.jar"/>

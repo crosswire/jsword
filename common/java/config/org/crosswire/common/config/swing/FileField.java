@@ -36,30 +36,38 @@ import org.crosswire.common.config.Choice;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FileField extends JPanel implements Field
+public class FileField extends JPanel implements Field, ActionListener
 {
+    private static final String BROWSE = "Browse"; //$NON-NLS-1$
+
     /**
      * Create a new FileField
      */
     public FileField()
     {
-        setLayout(new BorderLayout(10, 0));
-        add(BorderLayout.CENTER, text);
-        add(BorderLayout.EAST, browse);
+        ButtonActionFactory actions = ButtonActionFactory.instance();
+        actions.addActionListener(this);
 
-        browse.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ex)
-            {
-                browse();
-            }
-        });
+        text = new JTextField();
+        
+        setLayout(new BorderLayout(10, 0));
+        add(text, BorderLayout.CENTER);
+        add(new JButton(actions.getAction(BROWSE)), BorderLayout.LINE_END);
+
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        ButtonActionFactory.instance().actionPerformed(e, this);
     }
 
     /**
      * Open a browse dialog
      */
-    protected void browse()
+    protected void doBrowse(ActionEvent e)
     {
         JFileChooser chooser = new JFileChooser(text.getText());
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -103,10 +111,5 @@ public class FileField extends JPanel implements Field
     /**
      * The text field
      */
-    protected JTextField text = new JTextField();
-
-    /**
-     * The browse button
-     */
-    private JButton browse = new JButton(Msg.BROWSE.toString());
+    protected JTextField text;
 }
