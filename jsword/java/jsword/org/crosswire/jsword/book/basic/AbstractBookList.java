@@ -14,6 +14,8 @@ import org.crosswire.jsword.book.BooksListener;
 
 /**
  * A basic implementation of BookList.
+ * The methods in this abstract class are duplicates of those in Books, so
+ * bugs fixed in one should be fixed in the other too.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -102,5 +104,4 @@ public abstract class AbstractBookList implements BookList
      * The list of listeners
      */
     private static EventListenerList listeners = new EventListenerList();
-
 }

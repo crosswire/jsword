@@ -348,7 +348,7 @@ public class FontChooser extends JPanel
     /**
      * The default size of the rendered font
      */
-    private final static int RENDERED_FONT_SIZE = 16;
+    private static final int RENDERED_FONT_SIZE = 16;
 
     /**
      * The choice of font name

@@ -98,17 +98,21 @@ public class MapTableModel extends AbstractTableModel
      */
     public void add(String key, String value)
     {
-        if (value == null) {
+        if (value == null)
+        {
             value = "";
         }
+
         if (key == null || key.length() == 0)
         {
             return;
         }
+
         if (map.containsKey(key) && value.equals(map.get(key)))
         {
             return;
         }
+
         map.put(key, value);
         setMap(map);
     }
@@ -118,7 +122,8 @@ public class MapTableModel extends AbstractTableModel
      */
     public void remove(String key)
     {
-        if (map != null) {
+        if (map != null)
+        {
             map.remove(key);
             setMap(map);
         }
@@ -131,10 +136,13 @@ public class MapTableModel extends AbstractTableModel
      */
     public void update(String oldkey, String newkey, String newvalue)
     {
-        if (map != null) {
-            if (! oldkey.equals(newkey)) {
+        if (map != null)
+        {
+            if (!oldkey.equals(newkey))
+            {
                 map.remove(oldkey);
             }
+
             add(newkey, newvalue);
         }
     }
@@ -192,6 +200,7 @@ public class MapTableModel extends AbstractTableModel
         {
             return null;
         }
+
         StringPair entry = (StringPair) list.get(row);
         if (col == 0)
         {
@@ -220,7 +229,7 @@ public class MapTableModel extends AbstractTableModel
      */
     public String getColumnName(int col)
     {
-        return col_names[col];
+        return colNames[col];
     }
 
     /**
@@ -230,7 +239,7 @@ public class MapTableModel extends AbstractTableModel
      */
     public void setColumnName(int col, String name)
     {
-        col_names[col] = name;
+        colNames[col] = name;
     }
 
     /**
@@ -238,6 +247,7 @@ public class MapTableModel extends AbstractTableModel
      * A list is used for direct access performance.
      */
     private List list;
+
     /**
      * The backing map
      */
@@ -246,9 +256,9 @@ public class MapTableModel extends AbstractTableModel
     /**
      * The default column names
      */
-    private String[] col_names = new String[]
+    private String[] colNames = new String[]
     {
-                    "Keys", "Values"
+        "Keys", "Values"
     };
 
     /**

@@ -35,7 +35,8 @@ import org.crosswire.jsword.book.BookException;
 public interface BookDataDisplay
 {
     /**
-     * @param data
+     * Set the BookData to be displayed
+     * @param data The new BookData
      */
     public void setBookData(BookData data) throws BookException;
 

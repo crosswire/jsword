@@ -1,4 +1,3 @@
-
 package org.crosswire.common.progress;
 
 import java.net.URL;
@@ -6,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.SwingUtilities;
 
 import org.crosswire.common.util.Logger;
 
@@ -169,47 +166,15 @@ public class JobManager
             temp.addAll(listeners);
         }
 
-        Runnable firer = new Runnable()
+        // We ought only to tell listeners about jobs that are in our
+        // list of jobs so we need to fire before delete.
+        if (listeners != null)
         {
-            public void run()
+            int count = temp.size();
+            for (int i = 0; i < count; i++)
             {
-                // We ought only to tell listeners about jobs that are in our
-                // list of jobs so we need to fire before delete.
-                if (listeners != null)
-                {
-                    int count = temp.size();
-                    for (int i = 0; i < count; i++)
-                    {
-                        ((WorkListener) temp.get(i)).workProgressed(ev);
-                    }
-                }
+                ((WorkListener) temp.get(i)).workProgressed(ev);
             }
-        };
-        
-        try
-        {
-            if (SwingUtilities.isEventDispatchThread())
-            {
-                firer.run();
-            }
-            else
-            {
-                try
-                {
-                    SwingUtilities.invokeAndWait(firer);
-                }
-                catch (Exception ex)
-                {
-                    log.warn("failed to propogate work progressed message", ex);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            // This can happen in a headerless environment, and we don't care
-            // because we never need to invoke there, so just ignore.
-            log.debug("ignoring error (assuming headerless): "+ex);
-            firer.run();
         }
 
         // Do we need to remove the job? Note that the section above will

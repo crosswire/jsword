@@ -67,7 +67,7 @@ public class PassageGuiUtil
     }
 
     /**
-     * @param tree
+     * @param tree The tree to delete selected verses from
      */
     public static void deleteSelectedVersesFromTree(JTree tree)
     {
@@ -90,7 +90,7 @@ public class PassageGuiUtil
     }
 
     /**
-     * @return
+     * @return The selected keys in the tree
      */
     public static KeyList getSelectedKeys(JTree tree)
     {

@@ -674,7 +674,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="release.version" depends="swingui, ser-av, web.javadoc">
+  <target name="release.version" depends="swingui, ser-av">
     <echo message="Building release ${version} to ${directory}"/>
     <!-- source packages -->
     <mkdir dir="${directory}"/>

@@ -98,8 +98,8 @@ public class BooksComboBoxModel extends BooksListModel implements ComboBoxModel
         }
         
         // If it was not found then either set to first element or null
-        if (!found) {
-            
+        if (!found)
+        {
             if (getSize() > 0)
             {
                 current = (BookMetaData) getElementAt(0);

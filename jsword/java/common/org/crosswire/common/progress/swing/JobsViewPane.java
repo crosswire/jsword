@@ -1,4 +1,3 @@
-
 package org.crosswire.common.progress.swing;
 
 import java.awt.BorderLayout;
@@ -21,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
@@ -100,39 +100,45 @@ public class JobsViewPane extends JPanel implements WorkListener
     /* (non-Javadoc)
      * @see org.crosswire.common.progress.WorkListener#workProgressed(org.crosswire.common.progress.WorkEvent)
      */
-    public synchronized void workProgressed(WorkEvent ev)
+    public synchronized void workProgressed(final WorkEvent ev)
     {
-        Job job = ev.getJob();
-
-        if (!jobs.containsKey(job))
+        SwingUtilities.invokeLater(new Runnable()
         {
-            // do we need an 'empty' label
-            if (jobs.isEmpty())
+            public void run()
             {
-                removeEmptyLabel();
+                Job job = ev.getJob();
+
+                if (!jobs.containsKey(job))
+                {
+                    // do we need an 'empty' label
+                    if (jobs.isEmpty())
+                    {
+                        removeEmptyLabel();
+                    }
+
+                    addJob(job);
+                }
+
+                updateJob(job);
+
+                if (job.isFinished())
+                {
+                    removeJob(job);
+
+                    // do we need an 'empty' label
+                    if (jobs.isEmpty())
+                    {
+                        addEmptyLabel();
+                    }
+                }
             }
-
-            addJob(job);
-        }
-
-        updateJob(job);
-
-        if (job.isFinished())
-        {
-            removeJob(job);
-
-            // do we need an 'empty' label
-            if (jobs.isEmpty())
-            {
-                addEmptyLabel();
-            }
-        }
+        });
     }
 
     /**
      * Create a new set of components for the new Job
      */
-    private void addJob(final Job job)
+    protected void addJob(final Job job)
     {
         int i = findEmptyPosition();
         log.debug("adding job to panel at "+i+": "+job.getJobDescription());
@@ -178,7 +184,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * Update the job details because it have just progressed
      */
-    private void updateJob(Job job)
+    protected void updateJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
@@ -191,7 +197,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * Remove the set of components from the panel
      */
-    private void removeJob(Job job)
+    protected void removeJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
@@ -212,7 +218,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * Add the "no jobs" label
      */
-    private void addEmptyLabel()
+    protected void addEmptyLabel()
     {
         pnl_ijobs.add(lbl_nojobs, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
         this.revalidate();
@@ -221,7 +227,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * Get rid of the "no jobs" label
      */
-    private void removeEmptyLabel()
+    protected void removeEmptyLabel()
     {
         pnl_ijobs.remove(lbl_nojobs);
         this.revalidate();
@@ -259,7 +265,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * Map of Jobs to JobDatas
      */
-    private Map jobs = new HashMap();
+    protected Map jobs = new HashMap();
 
     /**
      * Array telling us what y position the jobs have in the window

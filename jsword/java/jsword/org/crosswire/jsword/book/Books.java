@@ -10,10 +10,11 @@ import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.util.CollectionUtil;
+import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -41,7 +42,7 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Books extends AbstractBookList
+public class Books implements BookList
 {
     /**
      * Prevent Instansiation
@@ -93,6 +94,71 @@ public class Books extends AbstractBookList
 
         return null;
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas(org.crosswire.jsword.book.BookFilter)
+     */
+    public List getBookMetaDatas(BookFilter filter)
+    {
+        List temp = CollectionUtil.createList(new BookFilterIterator(getBookMetaDatas().iterator(), filter));
+        return Collections.unmodifiableList(temp);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword.book.BooksListener)
+     */
+    public synchronized void addBooksListener(BooksListener li)
+    {
+        listeners.add(BooksListener.class, li);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.jsword.book.BooksListener)
+     */
+    public synchronized void removeBooksListener(BooksListener li)
+    {
+        listeners.remove(BooksListener.class, li);
+    }
+
+    /**
+     * Kick of an event sequence
+     * @param source The event source
+     * @param bmd The meta-data of the changed Bible
+     * @param added Is it added?
+     */
+    protected static synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
+    {
+        // Guaranteed to return a non-null array
+        Object[] contents = listeners.getListenerList();
+
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        BooksEvent ev = null;
+        for (int i = contents.length - 2; i >= 0; i -= 2)
+        {
+            if (contents[i] == BooksListener.class)
+            {
+                if (ev == null)
+                {
+                    ev = new BooksEvent(source, bmd, added);
+                }
+
+                if (added)
+                {
+                    ((BooksListener) contents[i + 1]).bookAdded(ev);
+                }
+                else
+                {
+                    ((BooksListener) contents[i + 1]).bookRemoved(ev);
+                }
+            }
+        }
+    }
+
+    /**
+     * The list of listeners
+     */
+    private static EventListenerList listeners = new EventListenerList();
 
     /**
      * The list of Books

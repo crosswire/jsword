@@ -295,9 +295,10 @@ public class DisplaySelectPane extends JPanel
         BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
         if (bmd == null)
         {
-        	noBookInstalled();
-        	return;
+            noBookInstalled();
+            return;
         }
+
         try
         {
             String param = txtSearch.getText();
@@ -331,9 +332,10 @@ public class DisplaySelectPane extends JPanel
         BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
         if (bmd == null)
         {
-        	noBookInstalled();
-        	return;
+            noBookInstalled();
+            return;
         }
+
         try
         {
             String param = txtMatch.getText();
@@ -384,9 +386,10 @@ public class DisplaySelectPane extends JPanel
         BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
         if (bmd == null)
         {
-        	noBookInstalled();
-        	return;
+            noBookInstalled();
+            return;
         }
+
         try
         {
         	Book bible = bmd.getBook();
@@ -494,9 +497,10 @@ public class DisplaySelectPane extends JPanel
         BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
         if (bmd == null)
         {
-        	noBookInstalled();
-        	return;
+            noBookInstalled();
+            return;
         }
+
         try
         {
         	Book book = bmd.getBook();

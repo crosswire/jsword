@@ -177,8 +177,8 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     {
         try
         {
-        	// Try to honor current chapter and verse
-        	// Use 1 if it is not possible
+            // Try to honor current chapter and verse
+            // Use 1 if it is not possible
             Verse old = set.getVerse();
             int chapter = old.getChapter();
             int verse = old.getVerse();
@@ -209,8 +209,8 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     {
         try
         {
-        	// Try to honor current verse
-        	// Use 1 if it is not possible
+            // Try to honor current verse
+            // Use 1 if it is not possible
             Verse old = set.getVerse();
             int book = old.getBook();
             int verse = old.getVerse();

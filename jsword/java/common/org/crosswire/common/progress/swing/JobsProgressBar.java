@@ -1,4 +1,3 @@
-
 package org.crosswire.common.progress.swing;
 
 import java.awt.Font;
@@ -12,6 +11,7 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
@@ -71,27 +71,33 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /* (non-Javadoc)
      * @see org.crosswire.common.progress.WorkListener#workProgressed(org.crosswire.common.progress.WorkEvent)
      */
-    public synchronized void workProgressed(WorkEvent ev)
+    public synchronized void workProgressed(final WorkEvent ev)
     {
-        Job job = ev.getJob();
-
-        if (!jobs.containsKey(job))
+        SwingUtilities.invokeLater(new Runnable()
         {
-            addJob(job);
-        }
+            public void run()
+            {
+                Job job = ev.getJob();
 
-        updateJob(job);
+                if (!jobs.containsKey(job))
+                {
+                    addJob(job);
+                }
 
-        if (job.isFinished())
-        {
-            removeJob(job);
-        }
+                updateJob(job);
+
+                if (job.isFinished())
+                {
+                    removeJob(job);
+                }
+            }
+        });
     }
 
     /**
      * Create a new set of components for the new Job
      */
-    private synchronized void addJob(Job job)
+    protected synchronized void addJob(Job job)
     {
         int i = findEmptyPosition();
         log.debug("adding job to panel at "+i+": "+job.getJobDescription());
@@ -125,7 +131,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * Update the job details because it has just progressed
      */
-    private synchronized void updateJob(Job job)
+    protected synchronized void updateJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
@@ -137,7 +143,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * Remove the set of components from the panel
      */
-    private synchronized void removeJob(Job job)
+    protected synchronized void removeJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
@@ -182,7 +188,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * Where we store the currently displayed jobs
      */
-    private Map jobs = new HashMap();
+    protected Map jobs = new HashMap();
 
     /**
      * Array telling us what y position the jobs have in the window
