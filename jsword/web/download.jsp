@@ -40,7 +40,7 @@ Sword drivers.
     <td>.tar.gz</td>
   </tr>
   <jsp:scriptlet><![CDATA[
-  DownloadSet[] dls = DownloadSet.getDownloadSets(releasedir, webdlprefix);
+  DownloadSet[] dls = DownloadSet.getDownloadSets(releasedir, webdlprefix, false);
   for (int i=0; i<dls.length; i++)
   {
   ]]></jsp:scriptlet>
@@ -79,7 +79,7 @@ Regular releases are made and stored for a short time:
     <td>.tar.gz</td>
   </tr>
   <jsp:scriptlet><![CDATA[
-  dls = DownloadSet.getDownloadSets(nightlydir, webdlprefix);
+  dls = DownloadSet.getDownloadSets(nightlydir, webdlprefix, true);
   for (int i=0; i<dls.length; i++)
   {
   ]]></jsp:scriptlet>

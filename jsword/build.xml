@@ -280,8 +280,8 @@
       <fileset dir="${target.jar}" includes="**/*.jar"/>
     </copy>
     <!-- needed by the download servlet -->
-    <mkdir dir="${target.download}/release"/>
-    <mkdir dir="${target.download}/nightly"/>
+    <mkdir dir="${nightly.dir}"/>
+    <mkdir dir="${release.dir}"/>
   </target>
 
   <!--=======================================================================-->
@@ -590,7 +590,7 @@
     </tstamp>
     <antcall target="release.version">
       <param name="version" value="${today}"/>
-      <param name="directory" value="${target.download}/nightly"/>
+      <param name="directory" value="${nightly.dir}"/>
     </antcall>
   </target>
 
@@ -598,7 +598,7 @@
   <target name="release.final">
     <antcall target="release.version">
       <param name="version" value="${product.version}"/>
-      <param name="directory" value="${target.download}/release"/>
+      <param name="directory" value="${release.dir}"/>
     </antcall>
   </target>
 
