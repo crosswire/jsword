@@ -10,6 +10,7 @@ import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractCommentary;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.passage.Passage;
@@ -41,15 +42,18 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SwordCommentary extends AbstractCommentary implements Commentary
+public class SwordCommentary extends AbstractCommentary implements Commentary
 {
     /**
      * @param data
      */
-    public SwordCommentary(SwordCommentaryMetaData data, SwordConfig config)
+    public SwordCommentary(SwordCommentaryMetaData scmd, SwordConfig config) throws BookException
     {
-        this.data = data;
+        this.scmd = scmd;
         this.config = config;
+
+        backend = config.getBackend();
+        backend.init(config);
     }
 
     /* (non-Javadoc)
@@ -57,7 +61,7 @@ public abstract class SwordCommentary extends AbstractCommentary implements Comm
      */
     public CommentaryMetaData getCommentaryMetaData()
     {
-        return data;
+        return scmd;
     }
 
     /* (non-Javadoc)
@@ -65,41 +69,54 @@ public abstract class SwordCommentary extends AbstractCommentary implements Comm
      */
     public BookData getComments(Passage ref) throws BookException
     {
-        BookDataListener li = new OSISBookDataListnener();
-        li.startDocument(getCommentaryMetaData());
-
-        // For all the ranges in this Passage
-        Iterator rit = ref.rangeIterator();
-        while (rit.hasNext())
+        try
         {
-            VerseRange range = (VerseRange) rit.next();
-            li.startSection(range.toString());
-
-            // For all the verses in this range
-            Iterator vit = range.verseIterator();
-            while (vit.hasNext())
+            BookDataListener li = new OSISBookDataListnener();
+            li.startDocument(getCommentaryMetaData().getInitials());
+    
+            // For all the ranges in this Passage
+            Iterator rit = ref.rangeIterator();
+            while (rit.hasNext())
             {
-                Verse verse = (Verse) vit.next();
-                String text = getText(verse);
-
-                li.startVerse(verse);
-                config.getFilter().toOSIS(li, text);
-                li.endVerse();
+                VerseRange range = (VerseRange) rit.next();
+                li.startSection(range.toString());
+    
+                // For all the verses in this range
+                Iterator vit = range.verseIterator();
+                while (vit.hasNext())
+                {
+                    Verse verse = (Verse) vit.next();
+                    String text = getText(verse);
+    
+                    li.startVerse(verse);
+                    config.getFilter().toOSIS(li, text);
+                    li.endVerse();
+                }
+                
+                li.endSection();
             }
-            
-            li.endSection();
+    
+            return li.endDocument();
         }
-
-        return li.endDocument();
+        catch (FilterException ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
     }
 
     /**
      * This is very similar in function to getData(Passage) except that we only
-     * fetch the data for a single verse.
+     * fetch the data for a single verse, and we get it back in string form
+     * without having to parse it.
      * @param verse The verse to get data for
      * @return String The corresponding text
      */
-    public abstract String getText(Verse verse) throws BookException;
+    public String getText(Verse verse) throws BookException
+    {
+        // We should probably think about encodings here?
+        return new String(backend.getRawText(verse));
+    }
+
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
@@ -118,9 +135,14 @@ public abstract class SwordCommentary extends AbstractCommentary implements Comm
     }
 
     /**
+     * To read the data from the disk
+     */
+    private Backend backend;
+
+    /**
      * Our meta data
      */
-    private SwordCommentaryMetaData data;
+    private SwordCommentaryMetaData scmd;
 
     /**
      * The configuration file

@@ -160,13 +160,17 @@ public class RobustList extends AbstractList implements List, Serializable
         {
             e = head;
             for (int i=0; i!=index; i++)
+            {
                 e = e.next;
+            }
         }
         else
         {
             e = foot;
             for (int i=size-1; i!=index; i--)
+            {
                 e = e.prev;
+            }
         }
 
         return e;
@@ -187,7 +191,9 @@ public class RobustList extends AbstractList implements List, Serializable
             while (e != null)
             {
                 if (e.object == null)
+                {
                     return index;
+                }
 
                 e = e.next;
                 index++;
@@ -199,7 +205,9 @@ public class RobustList extends AbstractList implements List, Serializable
             while (e != null)
             {
                 if (o.equals(e.object))
+                {
                     return index;
+                }
 
                 e = e.next;
                 index++;
@@ -261,10 +269,15 @@ public class RobustList extends AbstractList implements List, Serializable
             this.prev = foot;
 
             if (head == null)
+            {
                 head = this;
+            }
 
             if (foot != null)
+            {
                 foot.next = this;
+            }
+
             foot = this;
 
             size++;
@@ -275,7 +288,9 @@ public class RobustList extends AbstractList implements List, Serializable
             if (this == foot)
             {
                 if (prev != null)
+                {
                     prev.next = null;
+                }
 
                 foot = prev;
             }
@@ -283,16 +298,22 @@ public class RobustList extends AbstractList implements List, Serializable
             if (this == head)
             {
                 if (next != null)
+                {
                     next.prev = null;
+                }
 
                 head = next;
             }
 
             if (prev != null)
+            {
                 prev.next = next;
+            }
 
             if (next != null)
+            {
                 next.prev = prev;
+            }
 
             size--;
         }
@@ -314,6 +335,7 @@ public class RobustList extends AbstractList implements List, Serializable
         log.debug(title);
         log.debug(" head ="+head);
         log.debug(" foot ="+foot);
+
         int i = 0;
         Entry e = head;
         while (e != null)

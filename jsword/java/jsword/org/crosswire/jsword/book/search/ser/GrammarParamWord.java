@@ -39,7 +39,7 @@ public class GrammarParamWord implements ParamWord
      */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException(I18N.GRAMMAR_WORD);
+        throw new BookException(Msg.GRAMMAR_WORD);
     }
 
     /**
@@ -53,7 +53,7 @@ public class GrammarParamWord implements ParamWord
     {
         if (!engine.iterator().hasNext())
         {
-            throw new BookException(I18N.GRAMMAR_BLANK);
+            throw new BookException(Msg.GRAMMAR_BLANK);
         }
 
         ParamWord param = (ParamWord) engine.iterator().next();

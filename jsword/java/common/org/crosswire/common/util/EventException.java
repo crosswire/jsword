@@ -40,51 +40,46 @@ import java.text.*;
 public class EventException extends RuntimeException
 {
     /**
-    * All LucidExceptions are constructed with references to resources in
-    * an I18N properties file.
-    * @param msg The resource id to read
-    */
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file.
+     * @param msg The resource id to read
+     */
     public EventException(String msg)
     {
         super(msg);
-
-        this.ex = null;
-        this.params = null;
     }
 
     /**
-    * All LucidExceptions are constructed with references to resources in
-    * an I18N properties file.
-    * @param msg The resource id to read
-    */
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file.
+     * @param msg The resource id to read
+     */
     public EventException(String msg, Throwable ex)
     {
         super(msg);
 
         this.ex = ex;
-        this.params = null;
     }
 
     /**
-    * All LucidExceptions are constructed with references to resources in
-    * an I18N properties file. This version allows us to add parameters
-    * @param msg The resource id to read
-    * @param params An array of parameters
-    */
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file. This version allows us to add parameters
+     * @param msg The resource id to read
+     * @param params An array of parameters
+     */
     public EventException(String msg, Object[] params)
     {
         super(msg);
 
-        this.ex = null;
         this.params = params;
     }
 
     /**
-    * All LucidExceptions are constructed with references to resources in
-    * an I18N properties file. This version allows us to add parameters
-    * @param msg The resource id to read
-    * @param params An array of parameters
-    */
+     * All LucidExceptions are constructed with references to resources in
+     * an I18N properties file. This version allows us to add parameters
+     * @param msg The resource id to read
+     * @param params An array of parameters
+     */
     public EventException(String msg, Throwable ex, Object[] params)
     {
         super(msg);
@@ -94,9 +89,9 @@ public class EventException extends RuntimeException
     }
 
     /**
-    * We only unravel the message when we need to to save time
-    * @return The unraveled I18N string
-    */
+     * We only unravel the message when we need to to save time
+     * @return The unraveled I18N string
+     */
     public String getMessage()
     {
         String id = super.getMessage();
@@ -123,19 +118,19 @@ public class EventException extends RuntimeException
     }
 
     /**
-    * The nested Exception (is any)
-    * @return The Exception
-    */
+     * The nested Exception (is any)
+     * @return The Exception
+     */
     public Throwable getException()
     {
         return ex;
     }
 
     /** An embedded exception */
-    protected Throwable ex;
+    protected Throwable ex = null;
 
     /** The array of parameters */
-    protected Object[] params;
+    protected Object[] params = null;
 
     /** The resource hash */
     protected static ResourceBundle res = ResourceBundle.getBundle("Exception");

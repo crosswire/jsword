@@ -8,7 +8,6 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
 import org.crosswire.jsword.osis.Header;
@@ -52,84 +51,10 @@ import org.crosswire.jsword.passage.Passage;
  */
 public class OSISBookDataListnener implements BookDataListener
 {
-    /**
-     * @param sdata
-     */
-    public OSISBookDataListnener()
-    {
-    }
-
-    /**
-     * Find the current node and get a list from it.
-     */
-    private List getCurrentList(Class parenttype)
-    {
-        Object current = stack.getFirst();
-
-        if (!parenttype.isInstance(current))
-        {
-            throw new LogicError("found type="+current.getClass().getName()+" but expecting="+parenttype.getName());
-        }
-        
-        return getCurrentList();
-    }
-
-    /**
-     * Find the current node and get a list from it.
-     */
-    private List getCurrentList()
-    {
-        Object current = stack.getFirst();
-
-        if (current instanceof Verse)
-        {
-            return ((Verse) current).getContent();
-        }
-        else if (current instanceof Q)
-        {
-            return ((Q) current).getContent();
-        }
-        else if (current instanceof Reference)
-        {
-            return ((Reference) current).getContent();
-        }
-        else if (current instanceof Seg)
-        {
-            return ((Seg) current).getContent();
-        }
-        else if (current instanceof Speaker)
-        {
-            return ((Speaker) current).getContent();
-        }
-        else if (current instanceof Title)
-        {
-            return ((Title) current).getContent();
-        }
-        else if (current instanceof TransChange)
-        {
-            return ((TransChange) current).getContent();
-        }
-        else if (current instanceof W)
-        {
-            return ((W) current).getContent();
-        }
-        else if (current instanceof Div)
-        {
-            return ((Div) current).getContent();
-        }
-        else if (current instanceof OsisText)
-        {
-            return ((OsisText) current).getDiv();
-        }
-
-        log.error("unknown element: "+current.getClass().getName());
-        throw new LogicError();
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.BookDataListener#startDocument(org.crosswire.jsword.book.BookMetaData)
      */
-    public void startDocument(BookMetaData bmd)
+    public void startDocument(String osisid)
     {
         try
         {
@@ -141,7 +66,7 @@ public class OSISBookDataListnener implements BookDataListener
             header.getWork().add(work);
 
             OsisText text = ObjectFactory.createOsisText();
-            text.setOsisIDWork("Bible."+bmd.getInitials());
+            text.setOsisIDWork("Bible."+osisid);
             text.setHeader(header);
 
             bdata.osis.setOsisText(text);
@@ -502,6 +427,73 @@ public class OSISBookDataListnener implements BookDataListener
         // Check that we are properly tree structured
         if (!(top instanceof W))
             throw new LogicError();
+    }
+
+    /**
+     * Find the current node and get a list from it.
+     */
+    private List getCurrentList(Class parenttype)
+    {
+        Object current = stack.getFirst();
+
+        if (!parenttype.isInstance(current))
+        {
+            throw new LogicError("found type="+current.getClass().getName()+" but expecting="+parenttype.getName());
+        }
+        
+        return getCurrentList();
+    }
+
+    /**
+     * Find the current node and get a list from it.
+     */
+    private List getCurrentList()
+    {
+        Object current = stack.getFirst();
+
+        if (current instanceof Verse)
+        {
+            return ((Verse) current).getContent();
+        }
+        else if (current instanceof Q)
+        {
+            return ((Q) current).getContent();
+        }
+        else if (current instanceof Reference)
+        {
+            return ((Reference) current).getContent();
+        }
+        else if (current instanceof Seg)
+        {
+            return ((Seg) current).getContent();
+        }
+        else if (current instanceof Speaker)
+        {
+            return ((Speaker) current).getContent();
+        }
+        else if (current instanceof Title)
+        {
+            return ((Title) current).getContent();
+        }
+        else if (current instanceof TransChange)
+        {
+            return ((TransChange) current).getContent();
+        }
+        else if (current instanceof W)
+        {
+            return ((W) current).getContent();
+        }
+        else if (current instanceof Div)
+        {
+            return ((Div) current).getContent();
+        }
+        else if (current instanceof OsisText)
+        {
+            return ((OsisText) current).getDiv();
+        }
+
+        log.error("unknown element: "+current.getClass().getName());
+        throw new LogicError();
     }
 
     /**

@@ -345,7 +345,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public void delete() throws BookException
     {
-        throw new BookException(I18N.DELETE_NOTIMPL, new Object[] { getName() });
+        throw new BookException(Msg.DELETE_NOTIMPL, new Object[] { getName() });
     }
 
     /**

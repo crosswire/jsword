@@ -12,6 +12,7 @@
   <property name="source.web" value="${source.root}/web"/>
   <property name="source.etc" value="${source.root}/etc"/>
   <property name="source.jar" value="${source.root}/jar"/>
+  <property name="source.tools" value="${source.root}/tools"/>
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
   <property name="source.keystore" value="${basedir}/jsword.keystore"/>
@@ -19,6 +20,8 @@
   <property name="target.root" value="target/ant"/>
   <property name="target.classes" value="${target.root}/temp/classes"/>
   <property name="target.jar" value="${target.root}/temp/jar"/>
+  <property name="target.jdepend" value="${target.root}/temp/jdepend"/>
+  <property name="target.javancss" value="${target.root}/temp/javancss"/>
   <property name="target.deploy" value="${target.root}/deploy/jsword"/>
   <property name="target.web" value="${target.root}/web"/>
   <property name="target.jnlp" value="${target.web}/jnlp"/>
@@ -262,6 +265,17 @@
   <!--=======================================================================-->
   <target name="test" depends="deploy" description="Run the standard test suite">
     <mkdir dir="${target.junit}"/>
+    <echo message="If this fails you might need to:"/>
+    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar {ANT}/lib"/>
+    <!-- Why does this not work?
+    <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+      <classpath>
+        <fileset dir="${source.jar}/junit381">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    -->
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.deploy}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
@@ -290,6 +304,13 @@
 
   <!--=======================================================================-->
   <target name="web.testreport" depends="test" description="Compile test report">
+    <taskdef name="junitreport" classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
+      <classpath>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
     <junitreport todir="${target.junit}">
       <fileset dir="${target.junit}">
         <include name="TEST-*.xml"/>
@@ -375,11 +396,16 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.java2html" depends="init" description="HTML versions of the java code">
+  <target name="analysis" depends="jdepend, pmd, javancss, java2html">
+    <!-- I've taken cpd out because it is very slow and not that useful -->
+  </target>
+
+  <!--=======================================================================-->
+  <target name="java2html" depends="init" description="HTML versions of the java code">
     <mkdir dir="${target.web}/java2html"/>
     <java fork="true" classname="j2h" output="${target.web}/java2html/output.txt">
       <classpath>
-        <fileset dir="${source.jar}">
+        <fileset dir="${source.tools}/java2html12">
           <include name="**/*.jar"/>
         </fileset>
       </classpath>
@@ -398,7 +424,7 @@
       <arg value="-d" />
       <arg value="${target.web}/java2html"/>
       <arg value="-n"/>
-      <arg value="jsword"/>
+      <arg value="JSword"/>
       <arg value="-m"/>
       <arg value="4"/>
       <arg value="-jd"/>
@@ -408,8 +434,20 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.jdepend">
+  <target name="jdepend">
+    <mkdir dir="${target.jdepend}"/>
     <mkdir dir="${target.web}/jdepend"/>
+    <echo message="If this fails you might need to:"/>
+    <echo message="copy ${basedir}/${source.tools}/jdepend26/jdepend.jar {ANT}/lib"/>
+    <!-- Why does this not work?
+    <taskdef name="jdepend" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
+      <classpath>
+        <fileset dir="${source.tools}/jdepend26">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    -->
     <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml">
       <sourcespath>
         <pathelement location="${source.java}/common"/>
@@ -429,7 +467,71 @@
         basedir="${target.jdepend}"
         destdir="${target.web}/jdepend"
         includes="jdepend-report.xml"
-        style="${source.etc}/jdepend.xsl"/>
+        style="${source.tools}/jdepend26/jdepend.xsl"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="pmd">
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+      <classpath>
+        <fileset dir="${source.tools}/pmd104">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    <mkdir dir="${target.web}/pmd"/>
+    <pmd rulesetfiles="${source.tools}/pmd104/ruleset.xml" shortFilenames="true">
+      <formatter type="html" toFile="${target.web}/pmd/index.html"/>
+      <fileset dir="${source.java}/common" includes="**/*.java"/>
+      <fileset dir="${source.java}/jsword" includes="**/*.java"/>
+      <fileset dir="${source.java}/servlet" includes="**/*.java"/>
+      <fileset dir="${source.java}/swing" includes="**/*.java"/>
+      <!-- <fileset dir="${source.java}/sword" includes="**/*.java"/> -->
+      <fileset dir="${source.java}/map" includes="**/*.java"/>
+    </pmd>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="cpd">
+    <mkdir dir="${target.web}/cpd"/>
+    <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
+      <classpath>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${source.tools}/pmd104">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+      <arg value="100"/>
+      <arg value="${source.java}"/>
+    </java>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="javancss">
+    <taskdef name="javancss" classname="javancss.JavancssAntTask">
+      <classpath>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${source.tools}/javancss2141">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    <mkdir dir="${target.javancss}"/>
+    <javancss
+    	srcdir="${source.java}"
+    	includes="**/*.java"
+    	generateReport="true"
+    	outputfile="${target.javancss}/javancss_metrics.xml"
+    	format="xml"/>
+    <mkdir dir="${target.web}/javancss"/>
+    <style
+    	in="${target.javancss}/javancss_metrics.xml"
+    	out="${target.web}/javancss/index.html"
+    	style="${source.tools}/javancss2141/javancss2html.xsl"/>
   </target>
 
   <!--=======================================================================-->
@@ -511,7 +613,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web" depends="web.files, web.javadoc, web.java2html, web.testreport" description="All the documentation tasks">
+  <target name="web" depends="web.files, web.javadoc, web.testreport, analysis" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->

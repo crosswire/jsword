@@ -2,8 +2,6 @@
 package org.crosswire.common.util;
 
 import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
@@ -57,7 +55,7 @@ public class LucidException extends Exception
      * an I18N properties file.
      * @param msg The resource id to read
      */
-    public LucidException(I18NBase msg)
+    public LucidException(MsgBase msg)
     {
         this(msg, null, null);
     }
@@ -67,18 +65,7 @@ public class LucidException extends Exception
      * an I18N properties file.
      * @param msg The resource id to read
      */
-    public LucidException(I18NBase msg, boolean literal)
-    {
-        this(msg, null, null);
-        this.literal = literal;
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
-     * @param msg The resource id to read
-     */
-    public LucidException(I18NBase msg, Throwable ex)
+    public LucidException(MsgBase msg, Throwable ex)
     {
         this(msg, ex, null);
     }
@@ -89,7 +76,7 @@ public class LucidException extends Exception
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidException(I18NBase msg, Object[] params)
+    public LucidException(MsgBase msg, Object[] params)
     {
         this(msg, null, params);
     }
@@ -100,93 +87,23 @@ public class LucidException extends Exception
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidException(I18NBase msg, Throwable ex, Object[] params)
+    public LucidException(MsgBase msg, Throwable ex, Object[] params)
     {
         super(msg.toString());
 
         this.ex = ex;
         this.params = params;
-
-        try
-        {
-            if (res == null)
-                setDefaultResourceBundleName();
-        }
-        catch (Throwable ex2)
-        {
-            Reporter.informUser(this, ex2);
-        }
     }
 
     /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
+     * Special ctor, not for general use where the string is generated at
+     * runtime, and can't be parameterized.
      * @param msg The resource id to read
-     * @deprecated use I18N version
-     */
-    public LucidException(String msg)
-    {
-        this(msg, null, null);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
-     * @param msg The resource id to read
-     * @deprecated use I18N version
+     * @see org.crosswire.jsword.book.remote.RemoterException#RemoterException(String, Class)
      */
     public LucidException(String msg, boolean literal)
     {
-        this(msg, null, null);
-        this.literal = literal;
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
-     * @param msg The resource id to read
-     * @deprecated use I18N version
-     */
-    public LucidException(String msg, Throwable ex)
-    {
-        this(msg, ex, null);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
-     * @param msg The resource id to read
-     * @param params An array of parameters
-     * @deprecated use I18N version
-     */
-    public LucidException(String msg, Object[] params)
-    {
-        this(msg, null, params);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
-     * @param msg The resource id to read
-     * @param params An array of parameters
-     * @deprecated use I18N version
-     */
-    public LucidException(String msg, Throwable ex, Object[] params)
-    {
-        super(msg);
-
-        this.ex = ex;
-        this.params = params;
-
-        try
-        {
-            if (res == null)
-                setDefaultResourceBundleName();
-        }
-        catch (Throwable ex2)
-        {
-            Reporter.informUser(this, ex2);
-        }
+        this(new MsgBase(msg), null, null);
     }
 
     /**
@@ -195,11 +112,12 @@ public class LucidException extends Exception
      */
     public String getMessage()
     {
-        if (literal)
-            return super.getMessage();
+        String out = super.getMessage();
 
-        String id = super.getMessage();
-        String out = getResource(id);
+        if (literal || params == null)
+        {
+            return out;
+        }
 
         try
         {
@@ -219,39 +137,18 @@ public class LucidException extends Exception
     public String getDetailedMessage()
     {
         if (ex == null)
+        {
             return getMessage();
+        }
 
-        // avoid an NPE if res has not been set up.
-        String reason = getResource("reason");
         if (ex instanceof LucidException)
         {
             LucidException lex = (LucidException) ex;
-            return getMessage() + reason + lex.getDetailedMessage();
+            return getMessage() + Msg.REASON + lex.getDetailedMessage();
         }
         else
         {
-            return getMessage() + reason + ex.getMessage();
-        }
-    }
-
-    /**
-     * Utility that enables us to have a single resource file for all the
-     * passage classes
-     * @param id The resource id to fetch
-     * @return The String from the resource file
-     */
-    protected static String getResource(String id)
-    {
-        if (res == null)
-            return "Missing resources when looking up: "+id;
-
-        try
-        {
-            return res.getString(id);
-        }
-        catch (MissingResourceException ex)
-        {
-            return "Missing resource for: "+id;
+            return getMessage() + Msg.REASON + ex.getMessage();
         }
     }
 
@@ -262,29 +159,6 @@ public class LucidException extends Exception
     public Throwable getCause()
     {
         return ex;
-    }
-
-    /**
-     * A way of setting the name of the resource bundle to use. The default
-     * bundle is named Exception
-     * @param name The new resource bundle name
-     */
-    public static final void setResourceBundleName(String name)
-    {
-        res = ResourceBundle.getBundle(name);
-        
-        if (res == null)
-            log.error("Failed to find ResourceBundle for "+name);
-    }
-
-    /**
-     * A way of setting the name of the resource bundle to use. The default
-     * bundle is named Exception
-     * @param name The new resource bundle name
-     */
-    public static final void setDefaultResourceBundleName()
-    {
-        setResourceBundleName("Exception");
     }
 
     /**
@@ -307,9 +181,4 @@ public class LucidException extends Exception
      * The array of parameters
      */
     protected Object[] params;
-
-    /**
-     * The resource lookup
-     */
-    protected static ResourceBundle res = null;
 }

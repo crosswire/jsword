@@ -9,6 +9,10 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
 
 /**
  * A Sword version of Dictionary.
@@ -34,14 +38,18 @@ import org.crosswire.jsword.book.basic.AbstractDictionary;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SwordDictionary extends AbstractDictionary implements Dictionary
+public class SwordDictionary extends AbstractDictionary implements Dictionary
 {
     /**
      * @param data
      */
-    public SwordDictionary(SwordDictionaryMetaData data)
+    public SwordDictionary(SwordDictionaryMetaData data, SwordConfig config) throws BookException
     {
+        this.config = config;
         this.data = data;
+
+        backend = config.getKeyBackend();
+        backend.init(config);
     }
 
     /* (non-Javadoc)
@@ -76,12 +84,40 @@ public abstract class SwordDictionary extends AbstractDictionary implements Dict
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
-     *
+     */
     public BookData getData(Key ref) throws BookException
     {
-        return null;
+        try
+        {
+            BookDataListener li = new OSISBookDataListnener();
+
+            li.startDocument(getDictionaryMetaData().getInitials());
+            li.startSection(ref.getText());
+
+            String text = new String(backend.getRawText(ref));
+            config.getFilter().toOSIS(li, text);
+
+            li.endSection();
+            return li.endDocument();
+        }
+        catch (FilterException ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
     }
 
-    /** our meta data */
+    /**
+     * To read data from disk
+     */
+    private KeyBackend backend;
+
+    /**
+     * Sword configuration data
+     */
+    private SwordConfig config;
+
+    /**
+     * our meta data
+     */
     private SwordDictionaryMetaData data;
 }

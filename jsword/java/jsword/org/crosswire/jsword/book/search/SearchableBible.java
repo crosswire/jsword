@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
 
@@ -55,7 +55,7 @@ public abstract class SearchableBible extends AbstractBible
         }
         catch (Exception ex)
         {
-            throw new BookException("ser_init", ex);
+            throw new BookException(Msg.SEARCH_INIT, ex);
         }
     }
 

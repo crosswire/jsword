@@ -159,7 +159,7 @@ public class Verse implements VerseBase
     {
         if (!patch_up)
         {
-            throw new IllegalArgumentException(PassageUtil.getResource(I18N.ERROR_PATCH));
+            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_PATCH));
         }
 
         original_name = null;
@@ -601,7 +601,7 @@ public class Verse implements VerseBase
             return ACCURACY_BOOK_VERSE;
         }
 
-        throw new NoSuchVerseException(I18N.VERSE_PARTS, new Object[] { VERSE_ALLOWED_DELIMS });
+        throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { VERSE_ALLOWED_DELIMS });
     }
 
     /**
@@ -842,7 +842,7 @@ public class Verse implements VerseBase
         }
         catch (NumberFormatException ex)
         {
-            throw new NoSuchVerseException(I18N.VERSE_PARSE, new Object[] { text });
+            throw new NoSuchVerseException(Msg.VERSE_PARSE, new Object[] { text });
         }
     }
 

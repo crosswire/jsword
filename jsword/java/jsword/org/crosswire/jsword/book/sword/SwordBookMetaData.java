@@ -192,7 +192,7 @@ public abstract class SwordBookMetaData implements BookMetaData
      */
     public final void delete() throws BookException
     {
-        throw new BookException("book_nodel", new Object[] { getName() });
+        throw new BookException(Msg.READ_ONLY);
     }
 
     /* (non-Javadoc)

@@ -89,11 +89,11 @@ public class Converter
         }
         catch (MalformedURLException ex)
         {
-            throw new ConverterException(I18N.CONVERT_BMD, ex);
+            throw new ConverterException(Msg.CONVERT_BMD, ex);
         }
         catch (ParseException ex)
         {
-            throw new ConverterException(I18N.CONVERT_BMD, ex);
+            throw new ConverterException(Msg.CONVERT_BMD, ex);
         }
     }
 
@@ -157,7 +157,7 @@ public class Converter
         }
         catch (NoSuchVerseException ex)
         {
-            throw new ConverterException(I18N.CONVERT_NOVERSE, ex, new Object[] { refstr });
+            throw new ConverterException(Msg.CONVERT_NOVERSE, ex, new Object[] { refstr });
         }
     }
 
@@ -258,7 +258,7 @@ public class Converter
         }
         catch (ClassNotFoundException ex)
         {
-            throw new ConverterException(I18N.CONVERT_NOCLASS, ex, new Object[] { typename });
+            throw new ConverterException(Msg.CONVERT_NOCLASS, ex, new Object[] { typename });
         }
     }
 

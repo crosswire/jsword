@@ -350,9 +350,13 @@ public class Config implements Serializable
 
             Choice model = getChoice(key);
             if (model.isSaveable())
+            {
                 prop.put(key, value);
+            }
             else
+            {
                 prop.remove(key);
+            }
         }
 
         return prop;

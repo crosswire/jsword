@@ -226,7 +226,7 @@ public class Parser
             }
             catch (ClassCastException ex)
             {
-                throw new BookException(I18N.ENGINE_SYNTAX, new Object[] { temp });
+                throw new BookException(Msg.ENGINE_SYNTAX, new Object[] { temp });
             }
         }
 

@@ -7,7 +7,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.BookException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -42,7 +41,7 @@ public class THMLFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(BookDataListener li, String plain) throws BookException
+    public void toOSIS(BookDataListener li, String plain) throws FilterException
     {
         try
         {
@@ -57,7 +56,7 @@ public class THMLFilter implements Filter
         }
         catch (Exception ex)
         {
-            throw new BookException("sword_toosis", ex);
+            throw new FilterException(Msg.THML_BADTOKEN, ex);
         }
     }
 

@@ -39,7 +39,7 @@ public class BlurCommandWord implements CommandWord
     {
         if (!engine.iterator().hasNext())
         {
-            throw new BookException(I18N.BLUR_BLANK);
+            throw new BookException(Msg.BLUR_BLANK);
         }
 
         ParamWord param = (ParamWord) engine.iterator().next();
@@ -51,7 +51,7 @@ public class BlurCommandWord implements CommandWord
         }
         catch (NumberFormatException ex)
         {
-            throw new BookException(I18N.BLUR_FORMAT, ex, new Object[] { word });
+            throw new BookException(Msg.BLUR_FORMAT, ex, new Object[] { word });
         }
     }
 }

@@ -79,7 +79,9 @@ public class WordInstsDisk extends InstsDisk
             // skip over the data
             int insts = raf.readByte();
             for (int j=0; j<insts; j++)
+            {
                 raf.readShort();
+            }
         }
     }
 

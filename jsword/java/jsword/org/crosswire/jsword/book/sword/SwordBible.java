@@ -9,8 +9,9 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -41,7 +42,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
-public abstract class SwordBible extends AbstractBible
+public class SwordBible extends AbstractBible
 {
     /**
      * Constructor SwordBible.
@@ -51,6 +52,9 @@ public abstract class SwordBible extends AbstractBible
     {
         this.sbmd = sbmd;
         this.config = config;
+
+        backend = config.getBackend();
+        backend.init(config);
     }
 
     /* (non-Javadoc)
@@ -66,32 +70,39 @@ public abstract class SwordBible extends AbstractBible
      */
     public BookData getData(Passage ref) throws BookException
     {
-        BookDataListener li = new OSISBookDataListnener();
-        li.startDocument(getBibleMetaData());
-
-        // For all the ranges in this Passage
-        Iterator rit = ref.rangeIterator();
-        while (rit.hasNext())
+        try
         {
-            VerseRange range = (VerseRange) rit.next();
-            li.startSection(range.toString());
-
-            // For all the verses in this range
-            Iterator vit = range.verseIterator();
-            while (vit.hasNext())
+            BookDataListener li = new OSISBookDataListnener();
+            li.startDocument(getBibleMetaData().getInitials());
+    
+            // For all the ranges in this Passage
+            Iterator rit = ref.rangeIterator();
+            while (rit.hasNext())
             {
-                Verse verse = (Verse) vit.next();
-                String text = getText(verse);
-
-                li.startVerse(verse);
-                config.getFilter().toOSIS(li, text);
-                li.endVerse();
+                VerseRange range = (VerseRange) rit.next();
+                li.startSection(range.toString());
+    
+                // For all the verses in this range
+                Iterator vit = range.verseIterator();
+                while (vit.hasNext())
+                {
+                    Verse verse = (Verse) vit.next();
+                    String text = getText(verse);
+    
+                    li.startVerse(verse);
+                    config.getFilter().toOSIS(li, text);
+                    li.endVerse();
+                }
+    
+                li.endSection();
             }
-
-            li.endSection();
+    
+            return li.endDocument();
         }
-
-        return li.endDocument();
+        catch (FilterException ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
     }
 
     /**
@@ -101,7 +112,11 @@ public abstract class SwordBible extends AbstractBible
      * @param verse The verse to get data for
      * @return String The corresponding text
      */
-    public abstract String getText(Verse verse) throws BookException;
+    public String getText(Verse verse) throws BookException
+    {
+        // We should probably think about encodings here?
+        return new String(backend.getRawText(verse));
+    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
@@ -118,6 +133,11 @@ public abstract class SwordBible extends AbstractBible
     {
         return config;
     }
+
+    /**
+     * To read the data from the disk
+     */
+    private Backend backend;
 
     /**
      * Our meta data

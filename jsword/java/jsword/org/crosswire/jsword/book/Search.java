@@ -34,7 +34,7 @@ import org.crosswire.jsword.passage.PassageFactory;
 public class Search
 {
     /**
-     * Simple constructor
+     * Simple constructor.
      * @param search the string to find
      * @param match Are we doing a best match search or a boolean style search
      */
@@ -85,7 +85,6 @@ public class Search
 
     /**
      * Test to see is the restriction is equal to the constant UNRESTRICTED.
-     * @return boolean
      */
     public boolean isRestricted()
     {
@@ -93,7 +92,7 @@ public class Search
     }
 
     /**
-     * the whole Bible - i.e. no restrictions.
+     * the whole Bible - ie no restrictions.
      */
     private static final Passage UNRESTRICTED = PassageFactory.getWholeBiblePassage(); 
 

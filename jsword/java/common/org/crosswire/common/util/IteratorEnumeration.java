@@ -1,7 +1,8 @@
 
 package org.crosswire.common.util;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -33,24 +34,24 @@ import java.util.NoSuchElementException;
 public final class IteratorEnumeration implements Enumeration
 {
     /**
-    * Create an Enumeration that proxies to an Iterator
-    */
+     * Create an Enumeration that proxies to an Iterator
+     */
     public IteratorEnumeration(Iterator it)
     {
         this.it = it;
     }
 
     /**
-    * Returns true if the iteration has more elements
-    */
+     * Returns true if the iteration has more elements
+     */
     public final boolean hasMoreElements()
     {
         return it.hasNext();
     }
 
     /**
-    *  Returns the next element in the interation
-    */
+     *  Returns the next element in the interation
+     */
     public final Object nextElement() throws NoSuchElementException
     {
         return it.next();

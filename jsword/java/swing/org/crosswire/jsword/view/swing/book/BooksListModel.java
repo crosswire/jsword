@@ -8,8 +8,8 @@ import javax.swing.event.ListDataListener;
 
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.events.BooksEvent;
-import org.crosswire.jsword.book.events.BooksListener;
+import org.crosswire.jsword.book.BooksEvent;
+import org.crosswire.jsword.book.BooksListener;
 
 /**
  * BooksListModel creates a Swing ListModel from the available Bibles.

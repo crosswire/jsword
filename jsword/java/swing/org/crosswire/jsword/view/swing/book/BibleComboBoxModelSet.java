@@ -10,7 +10,7 @@ import javax.swing.event.EventListenerList;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A set of correctly constructed and linked BibleComboBoxModels 
+ * A set of correctly constructed and linked BibleComboBoxModels.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -116,11 +116,11 @@ public class BibleComboBoxModelSet
     }
 
     /**
-     * Called after the verse changes
+     * Called after the verse changes.
      * @param source The ListModel that changed, typically "this".
      * @param index1 The other end of the new interval.
      * @see EventListenerList
-     * @see DefaultListModel
+     * @see javax.swing.DefaultListModel
      */
     protected void fireContentsChanged()
     {

@@ -164,7 +164,7 @@ public class TabbedDictionaryPane extends JPanel
      */
     private class CustomListSelectionListener implements ListSelectionListener
     {
-        private CustomListSelectionListener(Dictionary dict, JList list, JEditorPane edit)
+        CustomListSelectionListener(Dictionary dict, JList list, JEditorPane edit)
         {
             this.dict = dict;
             this.list = list;

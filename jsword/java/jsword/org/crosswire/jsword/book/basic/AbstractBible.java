@@ -9,10 +9,10 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.book.ProgressEvent;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.events.ProgressEvent;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -66,7 +66,7 @@ public abstract class AbstractBible implements Bible
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException(I18N.NO_VERSE);
+            throw new BookException(Msg.NO_VERSE);
         }
     }
 
@@ -103,7 +103,7 @@ public abstract class AbstractBible implements Bible
      */
     public void setDocument(Verse verse, BookData text) throws BookException
     {
-        throw new BookException(I18N.DRIVER_READONLY);
+        throw new BookException(Msg.DRIVER_READONLY);
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class AbstractBible implements Bible
      */
     public void foundPassage(String word, Passage ref) throws BookException
     {
-        throw new BookException(I18N.DRIVER_READONLY);
+        throw new BookException(Msg.DRIVER_READONLY);
     }
 
     /**

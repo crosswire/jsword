@@ -98,7 +98,7 @@ public class BibleDataCache
         try
         {
             BookDataListener li = new OSISBookDataListnener();
-            li.startDocument(bmd);
+            li.startDocument(bmd.getInitials());
 
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
@@ -131,7 +131,7 @@ public class BibleDataCache
         }
         catch (Exception ex)
         {
-            throw new BookException(I18N.READ_ERROR, ex);
+            throw new BookException(Msg.READ_ERROR, ex);
         }
     }
 
@@ -164,7 +164,7 @@ public class BibleDataCache
         }
         catch (IOException ex)
         {
-            throw new BookException(I18N.WRITE_ERROR, ex);
+            throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
 
@@ -190,7 +190,7 @@ public class BibleDataCache
         }
         catch (IOException ex)
         {
-            throw new BookException(I18N.WRITE_ERROR, ex);
+            throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
 

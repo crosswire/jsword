@@ -8,10 +8,9 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.BookException;
 
 /**
- * Filter to convert GBF data to OSIS format
+ * Filter to convert GBF data to OSIS format.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -39,7 +38,7 @@ public class GBFFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(BookDataListener li, String plain) throws BookException
+    public void toOSIS(BookDataListener li, String plain) throws FilterException
     {
         try
         {
@@ -48,14 +47,14 @@ public class GBFFilter implements Filter
         }
         catch (JAXBException ex)
         {
-            throw new BookException(I18N.GBF_JAXB, ex);
+            throw new FilterException(Msg.GBF_JAXB, ex);
         }
     }
 
     /**
      * Go through a list of tokens and add them to the listener
      */
-    public void parseTokens(BookDataListener li, List tokens) throws JAXBException, BookException
+    public void parseTokens(BookDataListener li, List tokens) throws JAXBException, FilterException
     {
         // For notes
         int marker = 1;
@@ -106,7 +105,7 @@ public class GBFFilter implements Filter
             }
             else
             {
-                throw new BookException(I18N.GBF_BADTOKEN, new Object[] { token });
+                throw new FilterException(Msg.GBF_BADTOKEN, new Object[] { token });
             }
         }
     }

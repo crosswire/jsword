@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.raw;
 
-import org.crosswire.common.util.I18NBase;
+import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.BookException;
 
 /**
@@ -31,42 +31,42 @@ import org.crosswire.jsword.book.BookException;
 public class NoSuchResourceException extends BookException
 {
     /**
-    * Construct the Exception with a message
-    * @param msg The resource id to read
-    */
-    public NoSuchResourceException(String msg)
+     * Construct the Exception with a message
+     * @param msg The resource id to read
+     */
+    public NoSuchResourceException(MsgBase msg)
     {
         super(msg);
     }
 
     /**
-    * Construct the Exception with a message and a nested Exception
-    * @param msg The resource id to read
-    * @param ex The nested Exception
-    */
-    public NoSuchResourceException(String msg, Throwable ex)
+     * Construct the Exception with a message and a nested Exception
+     * @param msg The resource id to read
+     * @param ex The nested Exception
+     */
+    public NoSuchResourceException(MsgBase msg, Throwable ex)
     {
         super(msg, ex);
     }
 
     /**
-    * Construct the Exception with a message and some I18N params
-    * @param msg The resource id to read
-    * @param params An array of parameters
-    */
-    public NoSuchResourceException(String msg, Object[] params)
+     * Construct the Exception with a message and some Msg params
+     * @param msg The resource id to read
+     * @param params An array of parameters
+     */
+    public NoSuchResourceException(MsgBase msg, Object[] params)
     {
         super(msg, params);
     }
 
     /**
      * Construct the Exception with a message, a nested Exception
-     * and some I18N params
+     * and some Msg params
      * @param msg The resource id to read
      * @param ex The nested Exception
      * @param params An array of parameters
      */
-    public NoSuchResourceException(I18NBase id, Throwable ex, Object[] params)
+    public NoSuchResourceException(MsgBase id, Throwable ex, Object[] params)
     {
         super(id, ex, params);
     }

@@ -9,9 +9,10 @@ import java.util.Iterator;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressEvent;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.events.ProgressEvent;
-import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -132,20 +133,17 @@ public class Verifier
             try
             {
                 // Read the document from the first bible
-                //BibleData text1 = bible1.getData(ref2);
-                //BibleData text2 = bible2.getData(ref2);
+                BookData text1 = bible1.getData(ref2);
+                BookData text2 = bible2.getData(ref2);
 
-                // Check
-
-                /*
+                // Check - this needs some work
                 if (!text1.equals(text2))
                 {
                     out.println("Verse: "+range);
-                    out.println(bible1.getName()+": "+text1);
-                    out.println(bible2.getName()+": "+text2);
+                    out.println(bible1.getBookMetaData().getName()+": "+text1);
+                    out.println(bible2.getBookMetaData().getName()+": "+text2);
                     out.println();
                 }
-                */
             }
             catch (Exception ex)
             {

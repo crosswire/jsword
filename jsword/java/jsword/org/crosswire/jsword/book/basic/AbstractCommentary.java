@@ -72,7 +72,7 @@ public abstract class AbstractCommentary implements Commentary
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException(I18N.NO_VERSE, ex);
+            throw new BookException(Msg.NO_VERSE, ex);
         }
     }
 

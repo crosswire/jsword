@@ -104,7 +104,7 @@ public class LocalRemoter implements Remoter
             }
             else
             {
-                throw new RemoterException(I18N.REMOTE_NOSUPPORT, new Object[] {methodname});
+                throw new RemoterException(Msg.REMOTE_NOSUPPORT, new Object[] {methodname});
             }
         }
         catch (RemoterException ex)
@@ -113,7 +113,7 @@ public class LocalRemoter implements Remoter
         }
         catch (Exception ex)
         {
-            throw new RemoterException(I18N.REMOTE_FAIL, ex);
+            throw new RemoterException(Msg.REMOTE_FAIL, ex);
         }
     }
 

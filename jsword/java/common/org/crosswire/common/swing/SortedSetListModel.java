@@ -8,7 +8,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
 /**
- * A simple implementation of ListModel that is backed by a SortedSet
+ * A simple implementation of ListModel that is backed by a SortedSet.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

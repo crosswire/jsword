@@ -291,7 +291,7 @@ public class Splash extends JWindow
      */
     private final class SplashUpdater implements Runnable
     {
-        private SplashUpdater(String message, int percent)
+        SplashUpdater(String message, int percent)
         {
             this.message = message;
             this.percent = percent;

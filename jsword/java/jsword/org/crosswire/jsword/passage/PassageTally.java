@@ -389,7 +389,9 @@ public class PassageTally extends AbstractPassage
         Verse[] verses = toVerseArray(that);
 
         for (int i=0; i<verses.length; i++)
+        {
             kill(verses[i].getOrdinal());
+        }
 
         fireIntervalRemoved(this, null, null);
     }
@@ -701,7 +703,9 @@ public class PassageTally extends AbstractPassage
         Verse[] verses = toVerseArray(that);
 
         for (int i=0; i<verses.length; i++)
+        {
             increment(verses[i].getOrdinal(), tally);
+        }
 
         if (tally > 0)
             incrementMax(tally);

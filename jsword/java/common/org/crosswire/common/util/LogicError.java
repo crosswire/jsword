@@ -34,7 +34,6 @@ public class LogicError extends RuntimeException
      */
     public LogicError()
     {
-        this.ex = null;
     }
 
     /**
@@ -44,7 +43,6 @@ public class LogicError extends RuntimeException
     public LogicError(String message)
     {
         super(message);
-        this.ex = null;
     }
 
     /**
@@ -58,5 +56,5 @@ public class LogicError extends RuntimeException
     }
 
     /** The error that caused this exception */
-    private Throwable ex;
+    private Throwable ex = null;
 }

@@ -38,7 +38,7 @@ public class RemoveCommandWord implements CommandWord
     {
         if (!engine.iterator().hasNext())
         {
-            throw new BookException(I18N.REMOVE_BLANK);
+            throw new BookException(Msg.REMOVE_BLANK);
         }
 
         ParamWord param = (ParamWord) engine.iterator().next();

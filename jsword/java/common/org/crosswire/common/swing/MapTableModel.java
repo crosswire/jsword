@@ -95,7 +95,9 @@ public class MapTableModel extends AbstractTableModel
         try
         {
             for (int i=0; i<row; i++)
+            {
                 it.next();
+            }
 
             return it.next();
         }
@@ -134,7 +136,9 @@ public class MapTableModel extends AbstractTableModel
         Iterator it = hash.keySet().iterator();
 
         for (int i=0; i<row; i++)
+        {
             it.hasNext();
+        }
 
         Object old_key = it.next();
         Object old_val = hash.get(old_key);

@@ -19,10 +19,10 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
+import org.crosswire.jsword.book.ProgressEvent;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.OSISUtil;
-import org.crosswire.jsword.book.events.ProgressEvent;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
@@ -81,7 +81,7 @@ public class SerSearcher implements Searcher
         }
         catch (IOException ex)
         {
-            throw new BookException(I18N.INITIALIZE, ex);
+            throw new BookException(Msg.INITIALIZE, ex);
         }
     }
 
@@ -150,9 +150,8 @@ public class SerSearcher implements Searcher
         }
     }
 
-    /**
-     * Pass the search onto a search parser
-     * @see org.crosswire.jsword.book.basic.Searcher#findPassage(org.crosswire.jsword.book.Search)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException
     {
@@ -160,8 +159,8 @@ public class SerSearcher implements Searcher
         return parser.search(search);
     }
 
-    /**
-     * Remove all the files that make up this index.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#delete()
      */
     public void delete() throws BookException
     {
@@ -314,7 +313,7 @@ public class SerSearcher implements Searcher
         }
         catch (Exception ex)
         {
-            throw new BookException(I18N.WRITE_ERROR, ex);
+            throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
 
@@ -340,7 +339,7 @@ public class SerSearcher implements Searcher
         }
         catch (IOException ex)
         {
-            throw new BookException(I18N.WRITE_ERROR, ex);
+            throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
 

@@ -11,7 +11,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A ComboBoxModel for selecting book/chapter/verse
+ * A ComboBoxModel for selecting book/chapter/verse.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

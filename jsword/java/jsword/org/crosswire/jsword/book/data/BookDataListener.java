@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
@@ -51,7 +50,7 @@ public interface BookDataListener
     /**
      * Start a Book Document
      */
-    public void startDocument(BookMetaData bmd);
+    public void startDocument(String initials);
     public BookData endDocument();
 
     /**
@@ -72,7 +71,9 @@ public interface BookDataListener
     public void addText(String text);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;note&gt; element abounds in Bible translations, commentaries
      * and other works about biblical literature. The actual text of the
@@ -92,7 +93,9 @@ public interface BookDataListener
     public void addNote(String marker, String addition);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;divineName&gt; element is to be used to mark the name of the
      * diety in biblical and other texts. Traditions vary on the writing of the
@@ -113,7 +116,9 @@ public interface BookDataListener
     public void addDivineName(String name);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say on q:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;q&gt; element is used for quotes, block quotes, embedded
      * quotes, and (quotes within quotes). There is no real difference between
@@ -135,7 +140,9 @@ public interface BookDataListener
     public void endQuote();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;reference&gt; element will be the subject of extension to
      * include XLink/XPointer syntax in a later OSIS release. At present it
@@ -152,7 +159,9 @@ public interface BookDataListener
     public void endReference();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say on seg:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;seg&gt; element is a generic phrase container element.
      * Its primary use should be for phrase level markup that was omitted in
@@ -169,7 +178,9 @@ public interface BookDataListener
     public void endSegment();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;speaker&gt; element can be used to enclose the name of a
      * speaker in the text (when reported) but can also bear speaker information
@@ -184,7 +195,9 @@ public interface BookDataListener
     public void endSpeaker();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;title&gt; element is used for titles both in the sense of
      * those of divisions in a work, i.e., chapters, books, but also for titles
@@ -201,7 +214,9 @@ public interface BookDataListener
     public void endTitle();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;transChange&gt; element was formulated to deal with cases
      * where a literal translation has added words to clarify the translation.
@@ -219,7 +234,9 @@ public interface BookDataListener
     public void endTransChange();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say about w:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;w&gt; element is used to mark tokens separated by whitespace,
      * which is probably an inadequate definition of word. It is provided to
@@ -236,7 +253,9 @@ public interface BookDataListener
 
 /*
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;a&gt; element is a clone of &lt;reference&gt; and was added to
      * allow simple links to be built with the current OSIS release.
@@ -250,7 +269,9 @@ public interface BookDataListener
     public void addA(String href);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;abbr&gt; element contains abbreviations and the expansion of
      * abbreviations is placed in the expansion attribute. To illustrate:
@@ -267,7 +288,9 @@ public interface BookDataListener
     public void addAbbr(String expansion, String shortened);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;date&gt; element is used to record the type of date found in a
      * text. It bears an optional calendarType attribute which will allow the
@@ -288,7 +311,9 @@ public interface BookDataListener
     public void addDate(String calendarType, String date);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;foreign&gt; element is used to mark foreign words or phrases
      * that occur in a text. In some cases that may be for purposes of special
@@ -308,7 +333,9 @@ public interface BookDataListener
     public void addForeign(String quoted);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;hi&gt; element is a generic element that can be used to record
      * emphasis and the type of emphasis for an authored text. It should not be
@@ -327,7 +354,9 @@ public interface BookDataListener
     public void addHi(String highlighted);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;index&gt; element is an empty element that is used to mark
      * index locations in a text. It follows the TEI Guidelines in most
@@ -366,7 +395,9 @@ public interface BookDataListener
     public void addIndex(String index, String level1, String level2, String level3, String level4, String see);
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;list&gt; element is used for common lists of items, as well as
      * simple glossaries and definition lists. The &lt;list&gt; element can
@@ -379,7 +410,9 @@ public interface BookDataListener
     public void addList();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;milestone&gt; element is a true empty element that is used to
      * mark locations in a text. It carries not semantics other than a location
@@ -395,7 +428,9 @@ public interface BookDataListener
     public void addMilestone();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;milestoneEnd&gt; element is used with the
      * &lt;milestoneStart&gt; element to carry a semantic of containership for
@@ -410,7 +445,9 @@ public interface BookDataListener
     public void addMilestoneEnd();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;milestoneStart&gt; element element is used with the
      * &lt;milestoneStart&gt; element to carry a semantic of containership.
@@ -427,7 +464,9 @@ public interface BookDataListener
     public void addMilestoneStart();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;inscription&gt; element should not be used for quotations but
      * only in cases where an actual physical inscription is being reported or
@@ -441,7 +480,9 @@ public interface BookDataListener
     public void addInscription();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;mentioned&gt; element is used to mark words (or phrases) that
      * are mentioned but not used. When illustrating a grammatical point, a
@@ -456,7 +497,9 @@ public interface BookDataListener
     public void addMentioned();
 
     /**
-     * Add to a VerseData - OSIS v1.1.1 has this to say:
+     * Add to a VerseData.
+     * 
+     * <p>OSIS v1.1.1 has this to say:
      * 
      * <p>The &lt;name&gt; element is useful as it allows the user to declare a
      * regular form for a name that may be written in different forms in the

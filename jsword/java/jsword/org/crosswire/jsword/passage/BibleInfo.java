@@ -62,7 +62,7 @@ public class BibleInfo implements PassageConstants
         if (book_case < 0 || book_case > 2)
         {
             Object[] params = new Object[] { new Integer(book_case) };
-            throw new IllegalArgumentException(PassageUtil.getResource(I18N.ERROR_CASE, params));
+            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_CASE, params));
         }
 
         BibleInfo.book_case = book_case;
@@ -105,7 +105,7 @@ public class BibleInfo implements PassageConstants
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
     }
 
@@ -135,7 +135,7 @@ public class BibleInfo implements PassageConstants
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
     }
 
@@ -156,7 +156,7 @@ public class BibleInfo implements PassageConstants
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
     }
 
@@ -171,7 +171,7 @@ public class BibleInfo implements PassageConstants
         if (number < 0)
         {
             Object[] params = new Object[] { new Long(number) };
-            throw new IllegalArgumentException(PassageUtil.getResource(I18N.ERROR_JOGGER, params));
+            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_JOGGER, params));
         }
 
         String num = ""+number;
@@ -207,7 +207,7 @@ public class BibleInfo implements PassageConstants
             }
 
             if (!numeric_book)
-                throw new NoSuchVerseException(I18N.BOOKS_NUMBER, new Object[] { find });
+                throw new NoSuchVerseException(Msg.BOOKS_NUMBER, new Object[] { find });
         }
 
         // Does it match a long version of the book
@@ -235,13 +235,13 @@ public class BibleInfo implements PassageConstants
                 int book = Integer.parseInt(find.substring(VERSE_NUMERIC_BOOK[i].length()));
                 if (book < 1 || book > 66)
                 {
-                    throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+                    throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
                 }
                 return book;
             }
         }
 
-        throw new NoSuchVerseException(I18N.BOOKS_FIND, new Object[] { find });
+        throw new NoSuchVerseException(Msg.BOOKS_FIND, new Object[] { find });
     }
 
     /**
@@ -318,7 +318,7 @@ public class BibleInfo implements PassageConstants
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
     }
 
@@ -342,7 +342,7 @@ public class BibleInfo implements PassageConstants
             // I'd like to think that the norm is to get it right
 
             Object[] params = new Object[] { new Integer(book), new Integer(chapter) };
-            throw new NoSuchVerseException(I18N.BOOKS_BOOKCHAP, params);
+            throw new NoSuchVerseException(Msg.BOOKS_BOOKCHAP, params);
         }
     }
 
@@ -363,7 +363,7 @@ public class BibleInfo implements PassageConstants
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
     }
 
@@ -394,7 +394,7 @@ public class BibleInfo implements PassageConstants
     public final static int verseOrdinal(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
-            throw new NoSuchVerseException(I18N.BOOKS_ORDINAL);
+            throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
 
         return verseOrdinal(ref[0], ref[1], ref[2]);
     }
@@ -412,7 +412,7 @@ public class BibleInfo implements PassageConstants
         if (ordinal < 1 || ordinal > BibleInfo.versesInBible())
         {
             Object[] params = new Object[] { new Integer(BibleInfo.versesInBible()), new Integer(ordinal) };
-            throw new NoSuchVerseException(I18N.BOOKS_DECODE, params);
+            throw new NoSuchVerseException(Msg.BOOKS_DECODE, params);
         }
 
         for (int b=books_in_bible; b>0; b--)
@@ -448,7 +448,7 @@ public class BibleInfo implements PassageConstants
         // Check the book
         if (book < 1 || book > books_in_bible)
         {
-            throw new NoSuchVerseException(I18N.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
         }
 
         // Check the chapter
@@ -459,7 +459,7 @@ public class BibleInfo implements PassageConstants
                 new Integer(chaptersInBook(book)),
                 full_books[book-1], new Integer(chapter),
             };
-            throw new NoSuchVerseException(I18N.BOOKS_CHAPTER, params);
+            throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
 
         // Check the verse
@@ -472,7 +472,7 @@ public class BibleInfo implements PassageConstants
                 new Integer(chapter),
                 new Integer(verse),
             };
-            throw new NoSuchVerseException(I18N.BOOKS_VERSE, params);
+            throw new NoSuchVerseException(Msg.BOOKS_VERSE, params);
         }
     }
 
@@ -484,7 +484,7 @@ public class BibleInfo implements PassageConstants
     public final static void validate(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
-            throw new NoSuchVerseException(I18N.BOOKS_ORDINAL);
+            throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
 
         validate(ref[BOOK], ref[CHAPTER], ref[VERSE]);
     }
@@ -598,7 +598,7 @@ public class BibleInfo implements PassageConstants
     public final static int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
     {
         if (ref1.length != 3 || ref2.length != 3)
-            throw new IllegalArgumentException(PassageUtil.getResource(I18N.BOOKS_ORDINAL));
+            throw new IllegalArgumentException(PassageUtil.getResource(Msg.BOOKS_ORDINAL));
 
         return verseCount(ref1[0], ref1[1], ref1[2], ref2[0], ref2[1], ref2[2]);
     }
@@ -723,7 +723,7 @@ public class BibleInfo implements PassageConstants
     public final static String getSectionName(int section) throws NoSuchVerseException
     {
         if (section == 0)
-            throw new NoSuchVerseException(I18N.BOOKS_SECTION, new Object[] { new Integer(section) });
+            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section) });
 
         try
         {
@@ -742,7 +742,7 @@ public class BibleInfo implements PassageConstants
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(I18N.BOOKS_SECTION, new Object[] { new Integer(section) });
+            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section) });
         }
     }
 
@@ -1225,9 +1225,9 @@ public class BibleInfo implements PassageConstants
     protected static Logger log = Logger.getLogger(BibleInfo.class);
 
     /**
-     * Set up the Internationalization (I18N), and cache the upper and
+     * Set up the Internationalization (Msg), and cache the upper and
      * lower versions of the book names. I have not used I18Ned strings
-     * for this code, because it copes with I18N failures. The bad news
+     * for this code, because it copes with Msg failures. The bad news
      * is that a non-english speaker may have trouble understanding the
      * error message.
      */

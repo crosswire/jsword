@@ -182,7 +182,9 @@ public class NetUtil
     public static boolean delete(URL orig) throws IOException
     {
         if (!orig.getProtocol().equals("file"))
+        {
             throw new MalformedURLException("The given URL '" + orig + "' is not a file: URL.");
+        }
 
         File file = new File(orig.getFile());
         return file.delete();

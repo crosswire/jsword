@@ -111,7 +111,9 @@ public class BitwisePassage extends AbstractPassage
 
         int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
+        {
             if (store.get(i)) count++;
+        }
 
         return count;
     }
@@ -123,7 +125,9 @@ public class BitwisePassage extends AbstractPassage
     {
         int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
+        {
             if (store.get(i)) return false;
+        }
 
         return true;
     }
@@ -196,7 +200,9 @@ public class BitwisePassage extends AbstractPassage
         Verse[] verses = toVerseArray(obj);
 
         for (int i=0; i<verses.length; i++)
+        {
             store.clear(verses[i].getOrdinal());
+        }
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
@@ -242,12 +248,14 @@ public class BitwisePassage extends AbstractPassage
         {
             BitwisePassage that_ref = (BitwisePassage) that;
 
-            // We'd like to use store.andNot(that_ref.store); which would
-            // probably be quicker (they can work on the longs) but it is
-            // not available on JDK 1.1
-            int vib = BibleInfo.versesInBible();
-            for (int i=1; i<=vib; i++)
-                if (that_ref.store.get(i)) store.clear(i);
+            store.andNot(that_ref.store);
+
+            // When we need to work on JDK 1.1 we can do
+            //  int vib = BibleInfo.versesInBible();
+            //  for (int i=1; i<=vib; i++)
+            //  {
+            //      if (that_ref.store.get(i)) store.clear(i);
+            //  }
         }
         else
         {
@@ -358,7 +366,9 @@ public class BitwisePassage extends AbstractPassage
                     int end = Math.min(BibleInfo.versesInBible(), i+verses);
 
                     for (int j=start; j<=end; j++)
+                    {
                         new_store.set(j);
+                    }
                 }
             }
 

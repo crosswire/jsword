@@ -87,6 +87,8 @@ public class Desktop extends JFrame implements TitleChangedListener
         desktop.pack();
         GuiUtil.centerWindow(desktop);
         desktop.setVisible(true);
+        
+        log.debug("desktop main exiting.");
     }
 
     /**

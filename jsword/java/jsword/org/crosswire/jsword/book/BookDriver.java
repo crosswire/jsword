@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * The BibleDriver class allows creation of new Books.

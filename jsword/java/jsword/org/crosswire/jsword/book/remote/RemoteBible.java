@@ -83,11 +83,11 @@ public class RemoteBible extends AbstractBible
         }
         catch (RemoterException ex)
         {
-            throw new BookException("remoting failure", ex);
+            throw new BookException(Msg.REMOTE_FAIL, ex);
         }
         catch (SAXException ex)
         {
-            throw new BookException("remoting failure", ex);
+            throw new BookException(Msg.REMOTE_FAIL, ex);
         }
     }
 
@@ -111,11 +111,11 @@ public class RemoteBible extends AbstractBible
         }
         catch (ConverterException ex)
         {
-            throw new BookException("parse exception", ex);
+            throw new BookException(Msg.PARSE_FAIL, ex);
         }
         catch (RemoterException ex)
         {
-            throw new BookException("remoting failure", ex);
+            throw new BookException(Msg.REMOTE_FAIL, ex);
         }
     }
 

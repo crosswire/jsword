@@ -2,7 +2,6 @@
 package org.crosswire.jsword.book.future;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.future.*;
 import org.crosswire.jsword.passage.Passage;
 
 /**

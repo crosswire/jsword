@@ -13,9 +13,9 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Document;
 
+import org.crosswire.jsword.book.ProgressEvent;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.basic.Verifier;
-import org.crosswire.jsword.book.events.ProgressEvent;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.common.swing.DocumentWriter;
 import org.crosswire.common.swing.ExceptionPane;

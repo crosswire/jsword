@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.crosswire.common.util.Reporter;
 
 /**
- * Handle AWT exceptions that reach the event thread
+ * Handle AWT exceptions that reach the event thread.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

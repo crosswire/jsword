@@ -67,7 +67,9 @@ public class CustomTokenizer
             {
                 int end = sought.indexOf("]", i);
                 if (end == -1)
-                    throw new BookException("search_unmatched_escape");
+                {
+                    throw new BookException(Msg.UNMATCHED_ESCAPE);
+                }
 
                 addWord(output, commands, "[");
                 addWord(output, commands, sought.substring(i+1, end));

@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.basic;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.book.ProgressListener;
 
 /**
  * The AbstractBookDriver class implements some BibleDriver methods, making a
@@ -46,6 +46,6 @@ public abstract class AbstractBookDriver implements BookDriver
      */
     public Book create(Book source, ProgressListener li) throws BookException
     {
-        throw new BookException(I18N.DRIVER_READONLY);
+        throw new BookException(Msg.DRIVER_READONLY);
     }
 }

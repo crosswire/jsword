@@ -69,7 +69,7 @@ public interface Commentary extends Book
      * @param word The text to search for
      * @return The references to the word
      * @throws BookException If anything goes wrong with this method
-     * @see Book#find(String)
+     * @see Book#find(Search)
      */
     public Passage findPassage(Search search) throws BookException;
 }

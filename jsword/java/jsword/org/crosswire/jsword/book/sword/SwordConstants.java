@@ -68,6 +68,7 @@ public class SwordConstants
     static final String[] BLOCK_STRINGS = { "BOOK", "CHAPTER", "VERSE" };
 
     /** constants for compression types */
+    static final int COMPRESSION_NONE = -1;
     static final int COMPRESSION_ZIP = 0;
     static final int COMPRESSION_LZSS = 1;
 
@@ -144,11 +145,17 @@ public class SwordConstants
 	static final String[] DISTIBUTION_LICENSE_STRINGS = {"public domain","copyrighted but free for distribution"
 			,"copyrighted by licensed for distribution by crosswire","copyrighted"};
 
-	/** array containing LUT of offsets in the chapter table */
+	/**
+     * array containing LUT of offsets in the chapter table.
+	 */
 	static int[][] bks;
 	
-	/** array containing LUT of positions of initial verses per chapter */
-	static long[][] cps;
+	/**
+     * array containing LUT of positions of initial verses per chapter.
+     * This and all the cps* below were longs but I have no idea why so I made
+     * them all ints
+	 */
+	static int[][] cps;
 
     /** The start of the new testament */
     static int ORDINAL_MAT11 = -1;
@@ -173,7 +180,7 @@ public class SwordConstants
         }
 
 		bks = new int[3][];
-		cps = new long[3][];
+		cps = new int[3][];
 		
 		int bksot[] =
         {
@@ -197,7 +204,7 @@ public class SwordConstants
 		bks[SwordConstants.TESTAMENT_OLD] = bksot;
 	  	bks[SwordConstants.TESTAMENT_NEW] = bksnt;
 	  	
-	  	long cpsot[] =
+	  	int cpsot[] =
         {
             0, 2, 3, 35, 61, 86,
             113, 146, 169, 194, 217, 247, 280,
@@ -340,7 +347,7 @@ public class SwordConstants
             34056, 24071, 24089, 24108
         }; 
 		
-		long cpsnt[] =
+		int cpsnt[] =
         {
             0, 2, 3, 29, 53, 71,
             97, 146, 181, 211, 246, 285, 328,

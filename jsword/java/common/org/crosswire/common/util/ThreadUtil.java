@@ -221,10 +221,14 @@ public class ThreadUtil
             }
 
             for (int i=0; i<num_threads; i++)
+            {
                 listThread(vec, depth+1, threads[i]);
+            }
 
             for (int i=0; i<num_groups; i++)
+            {
                 listThreads(vec, depth+1, groups[i]);
+            }
         }
         catch (Exception ex)
         {

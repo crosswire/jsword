@@ -79,18 +79,34 @@ to generate all the source files required for tools like eclipse.
 </table>
 <h2>Generated Documentation</h2>
 <table width="100%" cellpadding="5" cellspacing="0">
-  <tr> 
+  <tr>
 	<td><a href="api/index.html">JavaDoc</a></td>
 	<td>Built from the source-code - all the low-level documentation.</td>
   </tr>
-  <tr> 
+  <tr>
 	<td><a href="java2html/index.html">Java&nbsp;Source</a></td>
 	<td>A copy of the source-code colourized and made very navigable using 
 	  hyperlinks in a JavaDoc like frameset.</td>
   </tr>
-  <tr> 
+  <tr>
 	<td><a href="test/index.html">Test&nbsp;Results</a></td>
 	<td>Summary of all the test results, including % fail rate.</td>
+  </tr>
+  <tr>
+	<td><a href="jdepend/jdepend-report.html">JDepend&nbsp;Report</a></td>
+	<td>Package dependency report generated using JDepend.</td>
+  </tr>
+  <tr>
+	<td><a href="pmd/index.html">PMD&nbsp;Report</a></td>
+	<td>Lint like report generated using PMD.</td>
+  </tr>
+  <tr>
+	<td><a href="cpd/report.txt">CPD&nbsp;Report</a></td>
+	<td>Cut and Paste Detection report generated using CPD/PMD.</td>
+  </tr>
+  <tr>
+	<td><a href="javancss/index.html">NCSS&nbsp;Report</a></td>
+	<td>Non-Comment Source Lines report generated using JavaNCSS.</td>
   </tr>
 </table>
 <br>

@@ -40,7 +40,7 @@ public class PassageLeftParamWord implements ParamWord
      */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException(I18N.LEFT_PARAM);
+        throw new BookException(Msg.LEFT_PARAM);
     }
 
     /* (non-Javadoc)
@@ -55,7 +55,7 @@ public class PassageLeftParamWord implements ParamWord
         while (true)
         {
             if (!engine.iterator().hasNext())
-                throw new BookException(I18N.LEFT_BRACKETS);
+                throw new BookException(Msg.LEFT_BRACKETS);
 
             SearchWord word = (SearchWord) it.next();
 
@@ -74,7 +74,7 @@ public class PassageLeftParamWord implements ParamWord
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException(I18N.ILLEGAL_PASSAGE, ex, new Object[] { buff.toString() });
+            throw new BookException(Msg.ILLEGAL_PASSAGE, ex, new Object[] { buff.toString() });
         }
     }
 }

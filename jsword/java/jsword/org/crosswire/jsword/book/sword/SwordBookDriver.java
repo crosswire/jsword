@@ -169,10 +169,7 @@ public class SwordBookDriver extends AbstractBookDriver
     {
         public boolean accept(File parent, String name)
         {
-            if (name.endsWith(".conf") && !name.startsWith("globals."))
-                return true;
-            else
-                return false;
+            return name.endsWith(".conf") && !name.startsWith("globals.");
         }
     }
 }

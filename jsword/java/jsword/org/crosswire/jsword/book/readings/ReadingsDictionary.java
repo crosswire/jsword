@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.book.readings;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.util.Project;
 
 /**
+ * A Dictionary that displays daily Readings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -67,7 +69,7 @@ public class ReadingsDictionary implements Dictionary
             GregorianCalendar greg = new GregorianCalendar(1972, GregorianCalendar.JANUARY, 1);
             while (greg.get(GregorianCalendar.YEAR) == 1972)
             {
-                String key = "readings." + (1+greg.get(GregorianCalendar.MONTH)) + "." + greg.get(GregorianCalendar.DATE);
+                String key = KEYBASE + (1+greg.get(GregorianCalendar.MONTH)) + "." + greg.get(GregorianCalendar.DATE);
                 String readings = (String) prop.remove(key);
                 if (readings == null)
                 {
@@ -90,11 +92,11 @@ public class ReadingsDictionary implements Dictionary
         }
         catch (IOException ex)
         {
-            throw new BookException("readings_init", ex);
+            throw new BookException(Msg.INIT_FAIL, ex);
         }
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
      */
     public DictionaryMetaData getDictionaryMetaData()
@@ -104,17 +106,18 @@ public class ReadingsDictionary implements Dictionary
 
     /**
      * We are slightly evil here in that we ignore the startswith paramter and
-     * just return the whole list anyway. startswith was a bit strange when the
-     * keys are dates.
+     * just return the whole list anyway.
+     * startswith was a bit strange when the keys are dates.
+     * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
      */
     public SortedSet getIndex(String startswith) throws BookException
-    {        
+    {
         SortedSet keys = new TreeSet();
         keys.addAll(hash.keySet());
         return keys;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
     public BookMetaData getBookMetaData()
@@ -122,7 +125,7 @@ public class ReadingsDictionary implements Dictionary
         return getDictionaryMetaData();
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getKey(java.lang.String)
      */
     public Key getKey(String text) throws BookException
@@ -133,11 +136,11 @@ public class ReadingsDictionary implements Dictionary
         }
         catch (ParseException ex)
         {
-            throw new BookException("readings_parse", ex);
+            throw new BookException(Msg.PARSE_FAIL, ex, new Object[] { text });
         }
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
      */
     public BookData getData(Key key) throws BookException
@@ -145,11 +148,13 @@ public class ReadingsDictionary implements Dictionary
         String readings = (String) hash.get(key);
         
         if (readings == null)
-            throw new BookException("readings_not_found", new Object[] { key.getText() });
+        {
+            throw new BookException(Msg.NOT_FOUND, new Object[] { key.getText() });
+        }
 
         BookDataListener li = new OSISBookDataListnener();
 
-        li.startDocument(dmd);
+        li.startDocument(dmd.getInitials());
         li.startSection("Readings for "+key.getText());
         li.addText(readings);
         li.endSection();
@@ -157,13 +162,18 @@ public class ReadingsDictionary implements Dictionary
         return li.endDocument();
     }
 
-    /**
-     * We don't implement search yet.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
     public Key find(Search search) throws BookException
     {
         return null;
     }
+
+    /**
+     * The base for the keys in the properties file.
+     */
+    private static final String KEYBASE = "readings.";
 
     /**
      * The store of keys and data

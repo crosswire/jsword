@@ -15,11 +15,12 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -60,7 +61,7 @@ public class JDBCBible extends LocalURLBible
      */
     public void init(Bible source, ProgressListener li) throws BookException
     {
-        throw new BookException(I18N.DRIVER_READONLY);
+        throw new BookException(Msg.DRIVER_READONLY);
     }
 
     /**
@@ -79,7 +80,7 @@ public class JDBCBible extends LocalURLBible
 
             if (driver == null)
             {
-                throw new BookException(I18N.BIBLE_LOAD, new Object[] { new Integer(driver_attempt-1) });
+                throw new BookException(Msg.BIBLE_LOAD, new Object[] { new Integer(driver_attempt-1) });
             }
 
             try
@@ -121,7 +122,7 @@ public class JDBCBible extends LocalURLBible
         }
         catch (Exception ex)
         {
-            throw new BookException(I18N.BIBLE_CONNECT, ex);
+            throw new BookException(Msg.BIBLE_CONNECT, ex);
         }
 
         super.init(li);
@@ -138,7 +139,7 @@ public class JDBCBible extends LocalURLBible
         try
         {
             BookDataListener li = new OSISBookDataListnener();
-            li.startDocument(getBibleMetaData());
+            li.startDocument(getBibleMetaData().getInitials());
 
             Iterator it = ref.rangeIterator();
             while (it.hasNext())
@@ -177,9 +178,13 @@ public class JDBCBible extends LocalURLBible
         {
             throw new LogicError(ex);
         }
+        catch (FilterException ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
         catch (SQLException ex)
         {
-            throw new BookException(I18N.BIBLE_DB, ex);
+            throw new BookException(Msg.BIBLE_DB, ex);
         }
     }
 
@@ -217,7 +222,7 @@ public class JDBCBible extends LocalURLBible
         catch (SQLException ex)
         {
             log.warn("word="+word);
-            throw new BookException(I18N.BIBLE_DB, ex);
+            throw new BookException(Msg.BIBLE_DB, ex);
         }
     }
 
@@ -245,7 +250,7 @@ public class JDBCBible extends LocalURLBible
         catch (SQLException ex)
         {
             log.warn("word="+word);
-            throw new BookException(I18N.BIBLE_DB, ex);
+            throw new BookException(Msg.BIBLE_DB, ex);
         }
     }
 
@@ -273,7 +278,7 @@ public class JDBCBible extends LocalURLBible
     {
         if (ref.length != 3)
         {
-            throw new NoSuchVerseException(I18N.BIBLE_VERSE);
+            throw new NoSuchVerseException(Msg.BIBLE_VERSE);
         }
 
         return verseOrdinal(ref[0], ref[1], ref[2]);
@@ -299,7 +304,7 @@ public class JDBCBible extends LocalURLBible
 
         if (!rs.next())
         {
-            throw new NoSuchVerseException(I18N.BIBLE_LOST);
+            throw new NoSuchVerseException(Msg.BIBLE_LOST);
         }
 
         retcode = rs.getInt(1);
@@ -352,7 +357,7 @@ public class JDBCBible extends LocalURLBible
             }
             catch (SQLException ex)
             {
-                throw new BookException(I18N.BIBLE_DB, ex);
+                throw new BookException(Msg.BIBLE_DB, ex);
             }
         }
 

@@ -38,7 +38,7 @@ public class RetainCommandWord implements CommandWord
     {
         if (!engine.iterator().hasNext())
         {
-            throw new BookException(I18N.RETAIN_BLANK);
+            throw new BookException(Msg.RETAIN_BLANK);
         }
 
         ParamWord param = (ParamWord) engine.iterator().next();

@@ -12,7 +12,7 @@
     Bible b = Defaults.getBibleMetaData().getBible();
     Passage p = PassageFactory.createPassage("Eph 1:18");
     BibleData bd = b.getData(p);
-    String s = OsisUtil.getPlainText(bd);
+    String s = OSISUtil.getPlainText(bd);
 </pre>
 <p>
   Now this is over simplified in 2 ways. Firstly it assumes you always only 
@@ -47,7 +47,7 @@
 <h2>How do I get something better than plain text?</h2>
 <p>The short version would be something like:</p>
 <pre>
-    SAXEventProvider provider = OsisUtil.getSAXEventProvider(bd);
+    SAXEventProvider provider = OSISUtil.getSAXEventProvider(bd);
     Style style = new Style("swing");
     String html = style.applyStyleToString(provider, "simple.xsl");
 </pre>

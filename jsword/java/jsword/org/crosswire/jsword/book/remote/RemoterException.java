@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.remote;
 
-import org.crosswire.common.util.I18NBase;
+import org.crosswire.common.util.MsgBase;
 import org.crosswire.common.util.LucidException;
 
 /**
@@ -32,27 +32,8 @@ public class RemoterException extends LucidException
 {
     /**
      * Constructor RemoterException.
-     * @deprecated
      */
-    public RemoterException(String message)
-    {
-        super(message);
-    }
-
-    /**
-     * Constructor RemoterException.
-     * @deprecated
-     */
-    public RemoterException(String message, Throwable cause)
-    {
-        super(message);
-        this.cause = cause;
-    }
-
-    /**
-     * Constructor RemoterException.
-     */
-    public RemoterException(I18NBase message)
+    public RemoterException(MsgBase message)
     {
         super(message);
     }
@@ -60,7 +41,7 @@ public class RemoterException extends LucidException
     /**
      * Constructor RemoterException.
      */
-    public RemoterException(I18NBase message, Object[] params)
+    public RemoterException(MsgBase message, Object[] params)
     {
         super(message, params);
     }
@@ -68,7 +49,7 @@ public class RemoterException extends LucidException
     /**
      * Constructor RemoterException.
      */
-    public RemoterException(I18NBase message, Throwable cause)
+    public RemoterException(MsgBase message, Throwable cause)
     {
         super(message);
         this.cause = cause;
@@ -77,7 +58,7 @@ public class RemoterException extends LucidException
     /**
      * Constructor RemoterException.
      */
-    public RemoterException(I18NBase message, Throwable cause, Object[] params)
+    public RemoterException(MsgBase message, Throwable cause, Object[] params)
     {
         super(message, cause, params);
         this.cause = cause;

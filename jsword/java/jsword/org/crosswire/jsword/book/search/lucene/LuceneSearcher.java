@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.search.lucene;
 
 import java.io.FileReader;
 import java.net.URL;
-import java.util.Iterator;
 
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
@@ -16,8 +15,8 @@ import org.apache.lucene.search.Query;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageTally;
@@ -75,26 +74,18 @@ public class LuceneSearcher implements Searcher
         }
         catch (Exception ex)
         {
-            throw new BookException("lucene_init", ex);
+            throw new BookException(Msg.LUCENE_INIT, ex);
         }
     }
 
-    /**
-     * @see org.crosswire.jsword.book.basic.Searcher#getStartsWith(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Iterator getStartsWith(String word) throws BookException
-    {
-        return null;
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.basic.Searcher#findPassage(java.lang.String)
-     */
-    public Passage findPassage(String word) throws BookException
+    public Passage findPassage(Search search) throws BookException
     {
         try
         {
-            Query query = QueryParser.parse(word, "body", new SimpleAnalyzer());
+            Query query = QueryParser.parse(search.getMatch(), "body", new SimpleAnalyzer());
             Hits hits = searcher.search(query);
             
             PassageTally tally = new PassageTally();
@@ -109,27 +100,20 @@ public class LuceneSearcher implements Searcher
         }
         catch (Exception ex)
         {
-            throw new BookException("search_failed", ex);
+            throw new BookException(Msg.SEARCH_FAILED, ex);
         }
     }
 
-    /**
-     * For a given word find a list of references to it
-     * @param word The text to search for
-     * @return The references to the word
-     */
-    public Passage findPassage(Search search) throws BookException
-    {
-        return null;
-    }
-
-    /**
-     * Remove all the files that make up this index.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#delete()
      */
     public void delete() throws BookException
     {
         // write this
     }
 
+    /**
+     * The Lucene search engine
+     */
     private org.apache.lucene.search.Searcher searcher;
 }

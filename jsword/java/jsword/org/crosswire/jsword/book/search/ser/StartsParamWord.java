@@ -39,7 +39,7 @@ public class StartsParamWord implements ParamWord
      */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException(I18N.STARTS_WORD);
+        throw new BookException(Msg.STARTS_WORD);
     }
 
     /**
@@ -52,7 +52,7 @@ public class StartsParamWord implements ParamWord
     {
         if (!engine.iterator().hasNext())
         {
-            throw new BookException(I18N.STARTS_BLANK);
+            throw new BookException(Msg.STARTS_BLANK);
         }
 
         ParamWord param = (ParamWord) engine.iterator().next();

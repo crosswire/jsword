@@ -38,7 +38,7 @@ public class AddCommandWord implements CommandWord
     {
         if (!engine.iterator().hasNext())
         {
-            throw new BookException(I18N.ADD_BLANK);
+            throw new BookException(Msg.ADD_BLANK);
         }
 
         ParamWord param = (ParamWord) engine.iterator().next();

@@ -22,3 +22,7 @@ This file is our equivalent of bugzilla for the time being.
 - markup (PENDING etc) to add to docs
 
 - run ant FAQ to docs
+
+- double error dialogs
+
+- modal problems with details on exception pane

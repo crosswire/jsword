@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.I18NBase;
+import org.crosswire.common.util.MsgBase;
 
 /**
  * A Utility class containing various static methods.
@@ -45,7 +45,7 @@ public class PassageUtil implements PassageConstants
     public static void setBlurRestriction(int value)
     {
         if (!PassageUtil.isValidBlurRestriction(value))
-            throw new IllegalArgumentException(getResource(I18N.ERROR_BLUR));
+            throw new IllegalArgumentException(getResource(Msg.ERROR_BLUR));
 
         blur = value;
     }
@@ -256,10 +256,10 @@ public class PassageUtil implements PassageConstants
         case CASE_MIXED:
             if (word.toLowerCase().equals("lord's")) return "LORD's";
             // This should not happen
-            throw new IllegalArgumentException(getResource(I18N.ERROR_MIXED));
+            throw new IllegalArgumentException(getResource(Msg.ERROR_MIXED));
 
         default:
-            throw new IllegalArgumentException(getResource(I18N.ERROR_BADCASE));
+            throw new IllegalArgumentException(getResource(Msg.ERROR_BADCASE));
         }
     }
 
@@ -438,7 +438,7 @@ public class PassageUtil implements PassageConstants
             break;
 
         default:
-            throw new NoSuchVerseException(I18N.PASSAGE_UNKNOWN);
+            throw new NoSuchVerseException(Msg.PASSAGE_UNKNOWN);
         }
 
         // Some speedups
@@ -633,7 +633,7 @@ public class PassageUtil implements PassageConstants
      * @param id The resource id to fetch
      * @return The String from the resource file
      */
-    protected static String getResource(I18NBase id)
+    protected static String getResource(MsgBase id)
     {
         try
         {
@@ -666,7 +666,7 @@ public class PassageUtil implements PassageConstants
      * @param params The params to format
      * @return The String from the resource file
      */
-    protected static String getResource(I18NBase id, Object[] params)
+    protected static String getResource(MsgBase id, Object[] params)
     {
         MessageFormat formatter = new MessageFormat(getResource(id));
         return formatter.format(params);

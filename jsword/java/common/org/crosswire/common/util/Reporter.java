@@ -143,14 +143,20 @@ public class Reporter
                     try
                     {
                         if (ev.getException() != null)
+                        {
                             li.reportException(ev);
+                        }
                         else
+                        {
                             li.reportMessage(ev);
+                        }
                     }
                     catch (Throwable ex)
                     {
                         if (ex instanceof ThreadDeath)
+                        {
                             throw (ThreadDeath) ex;
+                        }
             
                         inform_list.remove(CaptureListener.class, li);
             

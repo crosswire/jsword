@@ -251,7 +251,10 @@ public final class StringUtil
 
         // Skip to the next non-delimitter
         while (curr < command.length() && delim.indexOf(command.charAt(curr)) >= 0)
+        {
             curr++;
+        }
+
         start = curr;
 
         // Read the elements into the Vector
@@ -634,8 +637,11 @@ public final class StringUtil
                 if (next_end == -1) break;
                 else throw new IllegalArgumentException("Unmatched or nested delimitters");
             }
+
             if (next_end == -1)
+            {
                 throw new IllegalArgumentException("Unmatched or nested delimitters");
+            }
 
             orig = orig.substring(0, next_start) +
                    orig.substring(next_end+end_delim.length());
@@ -717,7 +723,9 @@ public final class StringUtil
         String retcode = "";
 
         for (int i=0; i<num; i++)
+        {
             retcode += ch;
+        }
 
         return retcode;
     }
@@ -732,7 +740,9 @@ public final class StringUtil
         String retcode = "";
 
         for (int i=0; i<=(num/str.length()); i++)
+        {
             retcode += str;
+        }
 
         return retcode.substring(0, num);
     }

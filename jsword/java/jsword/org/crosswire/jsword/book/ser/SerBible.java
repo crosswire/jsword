@@ -4,8 +4,8 @@ package org.crosswire.jsword.book.ser;
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -148,7 +148,7 @@ public class SerBible extends LocalURLBible
         }
         catch (Exception ex)
         {
-            throw new BookException("ser_init", ex);
+            throw new BookException(Msg.SER_INIT, ex);
         }
 
         super.init(source, li);
@@ -166,7 +166,7 @@ public class SerBible extends LocalURLBible
         }
         catch (Exception ex)
         {
-            throw new BookException("ser_init", ex);
+            throw new BookException(Msg.SER_INIT, ex);
         }
 
         super.init(li);

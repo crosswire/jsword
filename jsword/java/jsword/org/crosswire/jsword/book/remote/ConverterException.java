@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.remote;
 
-import org.crosswire.common.util.I18NBase;
+import org.crosswire.common.util.MsgBase;
 import org.crosswire.common.util.LucidException;
 
 /**
@@ -35,7 +35,7 @@ public class ConverterException extends LucidException
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
-    public ConverterException(I18NBase msg)
+    public ConverterException(MsgBase msg)
     {
         super(msg);
     }
@@ -45,28 +45,28 @@ public class ConverterException extends LucidException
      * @param msg The resource id to read
      * @param ex The nested Exception
      */
-    public ConverterException(I18NBase msg, Throwable ex)
+    public ConverterException(MsgBase msg, Throwable ex)
     {
         super(msg, ex);
     }
 
     /**
-     * Construct the Exception with a message and some I18N params
+     * Construct the Exception with a message and some Msg params
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public ConverterException(I18NBase msg, Object[] params)
+    public ConverterException(MsgBase msg, Object[] params)
     {
         super(msg, params);
     }
 
     /**
-     * Construct the Exception with a message, a nested Exception and some I18N params
+     * Construct the Exception with a message, a nested Exception and some Msg params
      * @param msg The resource id to read
      * @param ex The nested Exception
      * @param params An array of parameters
      */
-    public ConverterException(I18NBase msg, Throwable ex, Object[] params)
+    public ConverterException(MsgBase msg, Throwable ex, Object[] params)
     {
         super(msg, ex, params);
     }

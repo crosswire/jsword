@@ -70,7 +70,9 @@ public class FontChooser extends JPanel
         name.addItemListener(changer);
 
         for (int i=5; i<20; i++)
+        {
             size.addItem(new Integer(i));
+        }
 
         size.addItemListener(changer);
 

@@ -5,8 +5,8 @@ import java.net.URL;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Passage;
 
 /**

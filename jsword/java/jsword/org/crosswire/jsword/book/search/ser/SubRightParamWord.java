@@ -35,7 +35,7 @@ public class SubRightParamWord implements ParamWord
      */
     public String getWord(Parser engine) throws BookException
     {
-        throw new BookException(I18N.RIGHT_PARAM);
+        throw new BookException(Msg.RIGHT_PARAM);
     }
 
     /* (non-Javadoc)
@@ -43,6 +43,6 @@ public class SubRightParamWord implements ParamWord
      */
     public Passage getPassage(Parser engine) throws BookException
     {
-        throw new BookException(I18N.RIGHT_BRACKETS);
+        throw new BookException(Msg.RIGHT_BRACKETS);
     }
 }

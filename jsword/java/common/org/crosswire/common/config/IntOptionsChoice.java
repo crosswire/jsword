@@ -77,18 +77,17 @@ public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
         }
         catch (NumberFormatException ex)
         {
-        }
-
-        // Then work on the name list
-        for (int i = 0; i < options.length; i++)
-        {
-            String option = (String) options[i];
-            if (option.equalsIgnoreCase(orig))
-                return new Integer(i);
-        }
+            // Then work on the name list
+            for (int i = 0; i < options.length; i++)
+            {
+                String option = (String) options[i];
+                if (option.equalsIgnoreCase(orig))
+                    return new Integer(i);
+            }
         
-        Reporter.informUser(this, "Ignoring invalid option: "+orig);
-        return options[0];
+            Reporter.informUser(this, "Ignoring invalid option: "+orig);
+            return options[0];
+        }
     }
 
     /**

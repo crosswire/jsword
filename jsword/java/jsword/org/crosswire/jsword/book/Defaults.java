@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.events.BooksEvent;
-import org.crosswire.jsword.book.events.BooksListener;
 
 /**
  * Handles the current default Books.
@@ -152,7 +150,7 @@ public class Defaults
             }
         }
     
-        throw new BookException("bibles_not_found", new Object[] { name });
+        throw new BookException(Msg.BOOK_NOTFOUND, new Object[] { name });
     }
 
     /**
@@ -175,7 +173,9 @@ public class Defaults
     protected static void checkPreferable(BookMetaData bmd)
     {
         if (bmd == null)
-            throw new NullPointerException("null BookMetaData");
+        {
+            throw new NullPointerException();
+        }
 
         if (bmd instanceof BibleMetaData)
         {

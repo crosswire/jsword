@@ -87,7 +87,7 @@ public class BookChooser extends JPanel
         btn_ok.setText("OK");
         btn_ok.setMnemonic('o');
         btn_ok.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { ok(); }
+            public void actionPerformed(ActionEvent ev) { okPressed(); }
         });
         btn_ok.setEnabled(selected != null);
         btn_ok.setDefaultCapable(true);
@@ -95,13 +95,13 @@ public class BookChooser extends JPanel
         btn_cancel.setText("Cancel");
         btn_cancel.setMnemonic('C');
         btn_cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { cancel(); }
+            public void actionPerformed(ActionEvent ev) { cancelPressed(); }
         });
 
         btn_help.setText("Help");
         btn_help.setMnemonic('H');
         btn_help.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) { help(); }
+            public void actionPerformed(ActionEvent ev) { helpPressed(); }
         });
         btn_help.setEnabled(false);
 
@@ -131,7 +131,7 @@ public class BookChooser extends JPanel
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
         dialog.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent ev) { cancel(); }
+            public void windowClosed(WindowEvent ev) { cancelPressed(); }
         });
 
         dialog.setVisible(true);
@@ -178,7 +178,7 @@ public class BookChooser extends JPanel
     /**
      * OK is selected
      */
-    public void ok()
+    public void okPressed()
     {
         reply = APPROVE_OPTION;
         dialog.setVisible(false);
@@ -187,7 +187,7 @@ public class BookChooser extends JPanel
     /**
      * Cancel is selected
      */
-    public void cancel()
+    public void cancelPressed()
     {
         reply = CANCEL_OPTION;
         dialog.setVisible(false);
@@ -196,7 +196,7 @@ public class BookChooser extends JPanel
     /**
      * Not implemented
      */
-    public void help()
+    public void helpPressed()
     {
     }
 

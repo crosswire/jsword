@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.events.BooksEvent;
-import org.crosswire.jsword.book.events.BooksListener;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -171,7 +169,7 @@ public class Books
         }
         else
         {
-            throw new BookException("bibles_booknotfound");
+            throw new BookException(Msg.BOOK_NOREMOVE);
         }
     }
 
@@ -213,7 +211,9 @@ public class Books
         log.debug("begin registering driver: "+driver.getClass().getName());
 
         if (drivers.contains(driver))
-            throw new BookException("book_duplicate_driver");
+        {
+            throw new BookException(Msg.DUPLICATE_DRIVER);
+        }
 
         drivers.add(driver);
 
@@ -242,7 +242,7 @@ public class Books
 
         if (!drivers.remove(driver))
         {
-            throw new BookException("book_not_registered", new Object[] { driver.getClass().getName() });
+            throw new BookException(Msg.DRIVER_NOREMOVE, new Object[] { driver.getClass().getName() });
         }
 
         log.debug("end un-registering driver: "+driver.getClass().getName());

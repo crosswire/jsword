@@ -20,6 +20,7 @@ import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.book.data.BookDataListener;
@@ -95,31 +96,38 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
      */
     public BookData getData(Passage ref) throws BookException
     {
-        BookDataListener li = new OSISBookDataListnener();
-        li.startDocument(getBibleMetaData());
-
-        // For all the ranges in this Passage
-        Iterator rit = ref.rangeIterator();
-        while (rit.hasNext())
+        try
         {
-            VerseRange range = (VerseRange) rit.next();
-            li.startSection(range.toString());
-
-            // For all the verses in this range
-            Iterator vit = range.verseIterator();
-            while (vit.hasNext())
+            BookDataListener li = new OSISBookDataListnener();
+            li.startDocument(getBibleMetaData().getInitials());
+    
+            // For all the ranges in this Passage
+            Iterator rit = ref.rangeIterator();
+            while (rit.hasNext())
             {
-                Verse verse = (Verse) vit.next();
-
-                li.startVerse(verse);
-                Filters.PLAIN_TEXT.toOSIS(li, "stub implementation");
-                li.endVerse();
+                VerseRange range = (VerseRange) rit.next();
+                li.startSection(range.toString());
+    
+                // For all the verses in this range
+                Iterator vit = range.verseIterator();
+                while (vit.hasNext())
+                {
+                    Verse verse = (Verse) vit.next();
+    
+                    li.startVerse(verse);
+                    Filters.PLAIN_TEXT.toOSIS(li, "stub implementation");
+                    li.endVerse();
+                }
+    
+                li.endSection();
             }
-
-            li.endSection();
+    
+            return li.endDocument();
         }
-
-        return li.endDocument();
+        catch (FilterException ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
     }
 
     /**

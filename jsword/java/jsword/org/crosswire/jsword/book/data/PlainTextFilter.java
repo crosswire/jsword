@@ -1,10 +1,8 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.book.BookException;
-
 /**
- * Filter to convert plain text to OSIS format
+ * Filter to convert plain text to OSIS format.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,7 +30,7 @@ public class PlainTextFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(BookDataListener li, String plain) throws BookException
+    public void toOSIS(BookDataListener li, String plain) throws FilterException
     {
         li.addText(plain);
     }

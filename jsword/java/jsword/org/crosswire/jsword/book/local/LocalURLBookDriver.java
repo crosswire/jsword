@@ -11,13 +11,12 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.util.URLFilter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.search.SearchableBookDriver;
 import org.crosswire.jsword.util.Project;
 
@@ -86,7 +85,9 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
             URL search = NetUtil.lengthenURL(dir, "list.txt");
             InputStream in = search.openStream();
             if (in == null)
+            {
                 log.debug("The remote listing file at '"+search+"' does not exist.");
+            }
         }       
     }
 
@@ -102,7 +103,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
     /**
      * Do the real creation using the right meta data
      */
-    public Bible getBible(LocalURLBibleMetaData lbmd, ProgressListener li) throws BookException
+    protected Bible getBible(LocalURLBibleMetaData lbmd, ProgressListener li) throws BookException
     {
         try
         {
@@ -113,14 +114,14 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         }
         catch (Exception ex)
         {
-            throw new BookException("book_create", ex);
+            throw new BookException(Msg.CREATE_FAIL, ex);
         }
     }
 
-    /**
+    /*
      * A new Bible with new source data
-     */
-    public Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
+     *
+    private Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
     {
         try
         {
@@ -131,9 +132,51 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         }
         catch (Exception ex)
         {
-            throw new BookException("book_create", ex);
+            throw new BookException(Msg.CREATE_FAIL, ex);
         }
     }
+
+    /*
+     * PENDING(joe): delete this?
+     * Create a new blank Bible read for writing
+     * @param name The name of the version to create
+     * @exception BookException If the name is not valid
+     *
+    private Bible create(Bible source, ProgressListener li) throws BookException
+    {
+        try
+        {
+            BibleMetaData basis = source.getBibleMetaData();
+
+            String base = source.getBibleMetaData().getFullName();
+            base = StringUtil.createJavaName(base);
+            base = StringUtil.shorten(base, 10);
+
+            URL url = NetUtil.lengthenURL(dir, base);
+            if (NetUtil.isDirectory(url) || NetUtil.isFile(url))
+            {
+                int count = 1;
+                while (true)
+                {
+                    url = NetUtil.lengthenURL(dir, base + count);
+                    if (!NetUtil.isDirectory(url))
+                        break;
+
+                    count++;
+                }
+            }
+
+            NetUtil.makeDirectory(url);
+
+            LocalURLBibleMetaData bbmd = new LocalURLBibleMetaData(this, url, basis);
+            return createBible(bbmd, source, li);
+        }
+        catch (MalformedURLException ex)
+        {
+            throw new BookException(Msg.CREATE_FAIL, ex);
+        }
+    }
+    */
 
     /**
      * A simple name description name.
@@ -144,7 +187,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         return name;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
     public BookMetaData[] getBooks()
@@ -178,46 +221,6 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         {
             log.warn("failed to load "+name+" Bibles because source directory is not present: "+dir.toExternalForm());
             return new BibleMetaData[0];
-        }
-    }
-
-    /**
-     * Create a new blank Bible read for writing
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     */
-    public Bible create(Bible source, ProgressListener li) throws BookException
-    {
-        try
-        {
-            BibleMetaData basis = source.getBibleMetaData();
-
-            String base = source.getBibleMetaData().getFullName();
-            base = StringUtil.createJavaName(base);
-            base = StringUtil.shorten(base, 10);
-
-            URL url = NetUtil.lengthenURL(dir, base);
-            if (NetUtil.isDirectory(url) || NetUtil.isFile(url))
-            {
-                int count = 1;
-                while (true)
-                {
-                    url = NetUtil.lengthenURL(dir, base + count);
-                    if (!NetUtil.isDirectory(url))
-                        break;
-
-                    count++;
-                }
-            }
-
-            NetUtil.makeDirectory(url);
-
-            LocalURLBibleMetaData bbmd = new LocalURLBibleMetaData(this, url, basis);
-            return createBible(bbmd, source, li);
-        }
-        catch (MalformedURLException ex)
-        {
-            throw new BookException("raw_driver_dir", ex);
         }
     }
 

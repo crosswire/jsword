@@ -242,7 +242,9 @@ public class RangedPassage extends AbstractPassage
                 VerseRange[] vra = VerseRange.remainder(this_range, that_range);
 
                 for (int i=0; i<vra.length; i++)
+                {
                     store.add(vra[i]);
+                }
 
                 removed = true;
             }

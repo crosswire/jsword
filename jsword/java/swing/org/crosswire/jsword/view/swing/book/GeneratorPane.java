@@ -33,9 +33,9 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.ProgressEvent;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.basic.Verifier;
-import org.crosswire.jsword.book.events.ProgressEvent;
-import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * Bible Generator allows the creation of new Books - although it
@@ -100,12 +100,10 @@ public class GeneratorPane extends EirPanel
         cbo_driver.setModel(mdl_driver);
         pnl_dest.setLayout(lay_dest);
         pnl_dest.setBorder(BorderFactory.createTitledBorder("Destination"));
-        pnl_dest.add(lbl_name, GuiUtil.getConstraints(0, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
-        pnl_dest.add(lbl_driver, GuiUtil.getConstraints(0, 2, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 0), 0, 0));
-        pnl_dest.add(cbo_driver, GuiUtil.getConstraints(1, 2, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
+
+        pnl_dest.add(lbl_name, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
+        pnl_dest.add(lbl_driver, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 0), 0, 0));
+        pnl_dest.add(cbo_driver, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
 
         bar_prog.setBorderPainted(true);
         bar_prog.setMaximum(100);

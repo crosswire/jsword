@@ -11,7 +11,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.search.SearchableBible;
 
 /**
@@ -52,9 +52,8 @@ public abstract class LocalURLBible extends SearchableBible
         super.init(li);
     }
 
-    /**
-     * Where can we write the search indexes.
-     * @return A file: URL of a place to store indexes. 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchableBible#getIndexDirectory()
      */
     protected URL getIndexDirectory() throws IOException
     {
@@ -70,9 +69,8 @@ public abstract class LocalURLBible extends SearchableBible
         return lbmd;
     }
 
-    /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
      */
     public BibleMetaData getBibleMetaData()
     {
@@ -112,7 +110,7 @@ public abstract class LocalURLBible extends SearchableBible
         }
         catch (IOException ex)
         {
-            throw new BookException("bible_flush", ex);
+            throw new BookException(Msg.FLUSH_FAIL, ex);
         }
     }
 

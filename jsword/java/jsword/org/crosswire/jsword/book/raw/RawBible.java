@@ -5,18 +5,20 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
+import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.book.data.VerseData;
 import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -230,8 +232,8 @@ public class RawBible extends LocalURLBible
      */
     private static boolean defaultmemory = true;
 
-    /**
-     * Startup
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.events.ProgressListener)
      */
     public void init(Bible source, ProgressListener li) throws BookException
     {
@@ -243,8 +245,8 @@ public class RawBible extends LocalURLBible
         super.init(source, li);
     }
 
-    /**
-     * Startup
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchableBible#init(org.crosswire.jsword.book.events.ProgressListener)
      */
     public void init(ProgressListener li) throws BookException
     {
@@ -265,21 +267,36 @@ public class RawBible extends LocalURLBible
         {
             word_items = new WordItemsMem(this, create);
 
-            if (memory) word_insts = new WordInstsMem(this, create);
-            else        word_insts = new WordInstsDisk(this, create);
+            if (memory)
+            {
+                word_insts = new WordInstsMem(this, create);
+            } 
+            else
+            {
+                word_insts = new WordInstsDisk(this, create);
+            }
+        }
+        catch (BookException ex)
+        {
+            throw ex;
         }
         catch (Exception ex)
         {
-            if (ex instanceof BookException) throw (BookException) ex;
-            throw new BookException("Error initializing resource. System error: "+ex);
+            throw new BookException(Msg.INIT_FAIL, ex);
         }
 
         // We can still produce text without these though so they
         // should not except if the load fails.
         StringBuffer messages = new StringBuffer();
 
-        if (memory) punc_insts = new PuncInstsMem(this, create, messages);
-        else        punc_insts = new PuncInstsDisk(this, create, messages);
+        if (memory)
+        {
+            punc_insts = new PuncInstsMem(this, create, messages);
+        }
+        else
+        {
+            punc_insts = new PuncInstsDisk(this, create, messages);
+        }
 
         punc_items = new PuncItemsMem(this, create, messages);
         case_insts = new CaseInstsMem(this, create, messages);
@@ -292,91 +309,43 @@ public class RawBible extends LocalURLBible
         //createSearchCache();
     }
 
-    /**
-     * Create an String for the specified Verses
-     * @param range The verses to search for
-     * @return The Bible text
-     */
-    public String getText(VerseRange range) throws BookException
-    {
-        StringBuffer retcode = new StringBuffer();
-
-        Verse[] verses = range.toVerseArray();
-        for (int i=0; i<verses.length; i++)
-        {
-            int[] word_idxs = word_insts.getIndexes(verses[i]);
-            int[] case_idxs = case_insts.getIndexes(verses[i]);
-            int[] punc_idxs = punc_insts.getIndexes(verses[i]);
-
-            for (int j=0; j<word_idxs.length; j++)
-            {
-                String punc = null;
-                String word = null;
-
-                try
-                {
-                    int punc_idx = punc_idxs[j];
-                    int word_idx = word_idxs[j];
-                    int case_idx = case_idxs[j];
-
-                    punc = punc_items.getItem(punc_idx);
-                    word = PassageUtil.setCase(word_items.getItem(word_idx), case_idx);
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(this, ex);
-                }
-
-                retcode.append(punc);
-                retcode.append(word);
-            }
-
-            try
-            {
-                if (punc_idxs.length != 0)
-                    retcode.append(punc_items.getItem(punc_idxs[punc_idxs.length-1]));
-            }
-            catch (Exception ex)
-            {
-                Reporter.informUser(this, ex);
-            }
-        }
-
-        return retcode.toString().trim();
-    }
-
-    /**
-     * Create an XML document for the specified Verses
-     * @param doc The XML document
-     * @param ref The verses to search for
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
     public BookData getData(Passage ref) throws BookException
     {
-        BookDataListener li = new OSISBookDataListnener();
-        li.startDocument(getBibleMetaData());
-
-        Iterator it = ref.rangeIterator();
-        while (it.hasNext())
+        try
         {
-            VerseRange range = (VerseRange) it.next();
-            li.startSection(range.getName());
-            
-            Verse[] array = range.toVerseArray();
-            for (int i=0; i<array.length; i++)
+            BookDataListener li = new OSISBookDataListnener();
+            li.startDocument(getBibleMetaData().getInitials());
+    
+            Iterator it = ref.rangeIterator();
+            while (it.hasNext())
             {
-                Verse verse = array[i];
-                li.startVerse(verse);
-            
-                String text = getText(new VerseRange(verse));
-                Filters.PLAIN_TEXT.toOSIS(li, text);
-            
-                li.endVerse();
+                VerseRange range = (VerseRange) it.next();
+                li.startSection(range.getName());
+                
+                Verse[] array = range.toVerseArray();
+                for (int i=0; i<array.length; i++)
+                {
+                    Verse verse = array[i];
+                    li.startVerse(verse);
+                
+                    String text = getText(new VerseRange(verse));
+                    Filters.PLAIN_TEXT.toOSIS(li, text);
+                
+                    li.endVerse();
+                }
+                
+                li.endSection();
             }
-            
-            li.endSection();
+    
+            return li.endDocument();
         }
-
-        return li.endDocument();
+        catch (FilterException ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
     }
 
     /**
@@ -409,13 +378,15 @@ public class RawBible extends LocalURLBible
                 for (int i=0; i<word_items.length; i++)
                 {
                     if (word_items[i] == word_idx)
+                    {
                         ref.add(new Verse(ord));
+                    }
                 }
             }
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException("raw_bible_find", ex);
+            throw new LogicError(ex);
         }
 
         return ref;
@@ -521,10 +492,63 @@ public class RawBible extends LocalURLBible
         }
         catch (IOException ex)
         {
-            throw new BookException("raw_bible_flush", ex);
+            throw new BookException(Msg.FLUSH_FAIL, ex);
         }
 
         super.flush();
+    }
+
+    /**
+     * Create an String for the specified Verses
+     * @param range The verses to search for
+     * @return The Bible text
+     */
+    private String getText(VerseRange range) throws BookException
+    {
+        StringBuffer retcode = new StringBuffer();
+
+        Verse[] verses = range.toVerseArray();
+        for (int i=0; i<verses.length; i++)
+        {
+            int[] word_idxs = word_insts.getIndexes(verses[i]);
+            int[] case_idxs = case_insts.getIndexes(verses[i]);
+            int[] punc_idxs = punc_insts.getIndexes(verses[i]);
+
+            for (int j=0; j<word_idxs.length; j++)
+            {
+                String punc = null;
+                String word = null;
+
+                try
+                {
+                    int punc_idx = punc_idxs[j];
+                    int word_idx = word_idxs[j];
+                    int case_idx = case_idxs[j];
+
+                    punc = punc_items.getItem(punc_idx);
+                    word = PassageUtil.setCase(word_items.getItem(word_idx), case_idx);
+                }
+                catch (Exception ex)
+                {
+                    Reporter.informUser(this, ex);
+                }
+
+                retcode.append(punc);
+                retcode.append(word);
+            }
+
+            try
+            {
+                if (punc_idxs.length != 0)
+                    retcode.append(punc_items.getItem(punc_idxs[punc_idxs.length-1]));
+            }
+            catch (Exception ex)
+            {
+                Reporter.informUser(this, ex);
+            }
+        }
+
+        return retcode.toString().trim();
     }
 
     /**
@@ -545,7 +569,7 @@ public class RawBible extends LocalURLBible
 
     /**
      * Create a cache to speed up searches.
-     */
+     *
     private void createSearchCache() throws BookException
     {
         try
@@ -571,14 +595,14 @@ public class RawBible extends LocalURLBible
         }
         catch (NoSuchVerseException ex)
         {
-            throw new BookException("raw_bible_find", ex);
+            throw new BookException(Msg.FIND_FAIL, ex);
         }
     }
 
     /**
      * Create a cache to speed up searches.
-     */
-    protected void deleteSearchCache() throws BookException
+     *
+    private void deleteSearchCache() throws BookException
     {
         cache = null;
     }

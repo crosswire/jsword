@@ -41,35 +41,35 @@ import org.crosswire.common.util.LogicError;
 public class DocumentWriter extends Writer
 {
     /**
-    * Create the DocumentWriter with no Document, that just
-    * dumps the text it get into the bin
-    */
+     * Create the DocumentWriter with no Document, that just
+     * dumps the text it get into the bin
+     */
     public DocumentWriter()
     {
     }
 
     /**
-    * Create the DocumentWriter with a Document to write to
-    * @param doc The destination Document
-    */
+     * Create the DocumentWriter with a Document to write to
+     * @param doc The destination Document
+     */
     public DocumentWriter(Document doc)
     {
         this.doc = doc;
     }
 
     /**
-    * Accessor for the Document that we are updating
-    * @param doc The current document
-    */
+     * Accessor for the Document that we are updating
+     * @param doc The current document
+     */
     public Document getDocument()
     {
         return doc;
     }
 
     /**
-    * Accessor for the Document that we are updating
-    * @return The new document
-    */
+     * Accessor for the Document that we are updating
+     * @return The new document
+     */
     public void setDocument(Document doc)
     {
         try
@@ -90,12 +90,12 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Write a portion of an array of characters.
-    * @param cbuf Array of characters
-    * @param off Offset from which to start writing characters
-    * @param len Number of characters to write
-    * @exception IOException If an I/O error occurs
-    */
+     * Write a portion of an array of characters.
+     * @param cbuf Array of characters
+     * @param off Offset from which to start writing characters
+     * @param len Number of characters to write
+     * @exception IOException If an I/O error occurs
+     */
     public void write(char[] cbuf, int off, int len) throws IOException
     {
         synchronized (lock)
@@ -106,13 +106,13 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Write a single character.  The character to be written is contained in
-    * the 16 low-order bits of the given integer value; the 16 high-order bits
-    * are ignored.
-    * <p> Subclasses that intend to support efficient single-character output
-    * should override this method.
-    * @exception  IOException  If an I/O error occurs
-    */
+     * Write a single character.  The character to be written is contained in
+     * the 16 low-order bits of the given integer value; the 16 high-order bits
+     * are ignored.
+     * <p> Subclasses that intend to support efficient single-character output
+     * should override this method.
+     * @exception  IOException  If an I/O error occurs
+     */
     public void write(int c) throws IOException
     {
         synchronized (lock)
@@ -123,10 +123,10 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Write an array of characters.
-    * @param cbuf Array of characters to be written
-    * @exception IOException If an I/O error occurs
-    */
+     * Write an array of characters.
+     * @param cbuf Array of characters to be written
+     * @exception IOException If an I/O error occurs
+     */
     public void write(char[] cbuf) throws IOException
     {
         synchronized (lock)
@@ -137,10 +137,10 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Write a string.
-    * @param str String to be written
-    * @exception IOException If an I/O error occurs
-    */
+     * Write a string.
+     * @param str String to be written
+     * @exception IOException If an I/O error occurs
+     */
     public void write(String str) throws IOException
     {
         synchronized (lock)
@@ -151,12 +151,12 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Write a portion of a string.
-    * @param str A String
-    * @param off Offset from which to start writing characters
-    * @param len Number of characters to write
-    * @exception IOException If an I/O error occurs
-    */
+     * Write a portion of a string.
+     * @param str A String
+     * @param off Offset from which to start writing characters
+     * @param len Number of characters to write
+     * @exception IOException If an I/O error occurs
+     */
     public void write(String str, int off, int len) throws IOException
     {
         synchronized (lock)
@@ -167,9 +167,9 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Set up the gui to read an update. Note this must only be called
-    * from within a synchronized (lock) section of code
-    */
+     * Set up the gui to read an update. Note this must only be called
+     * from within a synchronized (lock) section of code
+     */
     private void update()
     {
         if (updater == null)
@@ -180,13 +180,13 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Flush the stream.  If the stream has saved any characters from the
-    * various write() methods in a buffer, write them immediately to their
-    * intended destination.  Then, if that destination is another character or
-    * byte stream, flush it.  Thus one flush() invocation will flush all the
-    * buffers in a chain of Writers and OutputStreams.
-    * @exception  IOException  If an I/O error occurs
-    */
+     * Flush the stream.  If the stream has saved any characters from the
+     * various write() methods in a buffer, write them immediately to their
+     * intended destination.  Then, if that destination is another character or
+     * byte stream, flush it.  Thus one flush() invocation will flush all the
+     * buffers in a chain of Writers and OutputStreams.
+     * @exception  IOException  If an I/O error occurs
+     */
     public void flush() throws IOException
     {
         if (updater != null)
@@ -212,11 +212,11 @@ public class DocumentWriter extends Writer
     }
 
     /**
-    * Close the stream, flushing it first.  Once a stream has been closed,
-    * further write() or flush() invocations will cause an IOException to be
-    * thrown.  Closing a previously-closed stream, however, has no effect.
-    * @exception IOException If an I/O error occurs
-    */
+     * Close the stream, flushing it first.  Once a stream has been closed,
+     * further write() or flush() invocations will cause an IOException to be
+     * thrown.  Closing a previously-closed stream, however, has no effect.
+     * @exception IOException If an I/O error occurs
+     */
     public void close() throws IOException
     {
         closed = true;
@@ -238,8 +238,8 @@ public class DocumentWriter extends Writer
     protected Updater updater = null;
 
     /**
-    * For Thread/Swing correctness we should only update in the GUI thread
-    */
+     * For Thread/Swing correctness we should only update in the GUI thread
+     */
     class Updater implements Runnable
     {
         public void run()

@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Label;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
@@ -52,11 +51,11 @@ import org.crosswire.common.util.StringUtil;
 public class GuiUtil
 {
     /**
-    * Load an Icon using an absolute class name. The normal method of
-    * using new ImageIcon(blah) is poor because is requires a relative
-    * URL
-    * @param name The classname of the Icon
-    */
+     * Load an Icon using an absolute class name. The normal method of
+     * using new ImageIcon(blah) is poor because is requires a relative
+     * URL
+     * @param name The classname of the Icon
+     */
     public static ImageIcon loadImageIcon(String name)
     {
         // Get the images
@@ -76,16 +75,16 @@ public class GuiUtil
     }
 
     /**
-    * Convenience for adding a set of components with similar
-    * layout constraints to a grid.
-    * @param pan The Panel to add to
-    * @param com The object to add
-    * @param cons The constraints object
-    * @param x The x grid position
-    * @param y The y grid position
-    * @param w The width (in grid squares)
-    * @param h The height (in grid squares)
-    */
+     * Convenience for adding a set of components with similar
+     * layout constraints to a grid.
+     * @param pan The Panel to add to
+     * @param com The object to add
+     * @param cons The constraints object
+     * @param x The x grid position
+     * @param y The y grid position
+     * @param w The width (in grid squares)
+     * @param h The height (in grid squares)
+     */
     public static void addConstrained(Container pan, Component com, GridBagConstraints cons, int x, int y, int w, int h)
     {
         GridBagLayout grid = (GridBagLayout) pan.getLayout();
@@ -98,48 +97,13 @@ public class GuiUtil
     }
 
     /**
-    * The full constructor for GridBagConstraints is not available at
-    * JDK 1.1, so this is a shortcut.
-    * @param gridx The initial gridx value.
-    * @param gridy The initial gridy value.
-    * @param gridwidth The initial gridwidth value.
-    * @param gridheight The initial gridheight value.
-    * @param weightx The initial weightx value.
-    * @param weighty The initial weighty value.
-    * @param anchor The initial anchor value.
-    * @param fill The initial fill value.
-    * @param insets The initial insets value.
-    * @param ipadx The initial ipadx value.
-    * @param ipady The initial ipady value.
-    * @return The formatted GridBagConstraints
-    */
-    public static GridBagConstraints getConstraints(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int anchor, int fill, Insets insets, int ipadx, int ipady)
-    {
-        GridBagConstraints cons = new GridBagConstraints();
-
-        cons.gridx = gridx;
-        cons.gridy = gridy;
-        cons.gridwidth = gridwidth;
-        cons.gridheight = gridheight;
-        cons.weightx = weightx;
-        cons.weighty = weighty;
-        cons.anchor = anchor;
-        cons.fill = fill;
-        cons.insets = insets;
-        cons.ipadx = ipadx;
-        cons.ipady = ipady;
-
-        return cons;
-    }
-
-    /**
-    * To add a component at a specific place.
-    * @param cons The constraints object
-    * @param x The x grid position
-    * @param y The y grid position
-    * @param w The width (in grid squares)
-    * @param h The height (in grid squares)
-    */
+     * To add a component at a specific place.
+     * @param cons The constraints object
+     * @param x The x grid position
+     * @param y The y grid position
+     * @param w The width (in grid squares)
+     * @param h The height (in grid squares)
+     */
     public static void addAt(Container pan, Component com, int x, int y, int w, int h)
     {
         pan.add(com);
@@ -147,10 +111,10 @@ public class GuiUtil
     }
 
     /**
-    * Find the parent window.
-    * @param com a component to find the frame of.
-    * @return The parent Window
-    */
+     * Find the parent window.
+     * @param com a component to find the frame of.
+     * @return The parent Window
+     */
     public static Window getWindow(Component com)
     {
         Component temp = com;
@@ -165,10 +129,10 @@ public class GuiUtil
     }
 
     /**
-    * Find the parent window
-    * @param com a component to find the frame of.
-    * @return The parent Window
-    */
+     * Find the parent window
+     * @param com a component to find the frame of.
+     * @return The parent Window
+     */
     public static Frame getFrame(Component com)
     {
         Component temp = com;
@@ -183,9 +147,9 @@ public class GuiUtil
     }
 
     /**
-    * Move the specified window to the centre of the screen
-    * @param win The window to be moved
-    */
+     * Move the specified window to the centre of the screen
+     * @param win The window to be moved
+     */
     public static void centerWindow(Window win)
     {
         Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -209,10 +173,10 @@ public class GuiUtil
     }
 
     /**
-    * Maximize the specified window. It would be good if we could detect
-    * where the taskbar was and not obscure it ...
-    * @param win The window to be moved
-    */
+     * Maximize the specified window. It would be good if we could detect
+     * where the taskbar was and not obscure it ...
+     * @param win The window to be moved
+     */
     public static void maximizeWindow(Window win)
     {
         Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -221,9 +185,9 @@ public class GuiUtil
     }
 
     /**
-    * Do a pack, but don't let the window grow or shrink by more than 10%
-    * @param win The window to be packed
-    */
+     * Do a pack, but don't let the window grow or shrink by more than 10%
+     * @param win The window to be packed
+     */
     public static void restrainedPack(Window win)
     {
         Dimension orig = win.getSize();
@@ -267,8 +231,8 @@ public class GuiUtil
     }
 
     /**
-    * Set the size of a component
-    */
+     * Set the size of a component
+     */
     public static void enforceMinimumSize(Component comp, int min_width, int min_height)
     {
         if (comp.getSize().width < min_width)
@@ -283,20 +247,20 @@ public class GuiUtil
     }
 
     /**
-    * Attempts to get the text from a generic Component.
-    * The Components that we can get some text from include:
-    * <li> JTextComponent
-    * <li> JLabel
-    * <li> AbstractButton
-    * <li> JComboBox
-    * <li> JToolTip
-    * <li> TextComponent
-    * <li> Button
-    * <li> Label
-    * <li> JScrollPane (recurse using the View)
-    * The others are done using toString()
-    * @param comp The object containing the needed text.
-    */
+     * Attempts to get the text from a generic Component.
+     * The Components that we can get some text from include:
+     * <li> JTextComponent
+     * <li> JLabel
+     * <li> AbstractButton
+     * <li> JComboBox
+     * <li> JToolTip
+     * <li> TextComponent
+     * <li> Button
+     * <li> Label
+     * <li> JScrollPane (recurse using the View)
+     * The others are done using toString()
+     * @param comp The object containing the needed text.
+     */
     public static String getText(Component comp)
     {
         if (comp instanceof JTextComponent)

@@ -9,7 +9,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import org.apache.log4j.Logger;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -120,9 +119,6 @@ public class MDIViewLayout extends ViewLayout
         Component comp = frame.getContentPane().getComponent(0);
         return (BibleViewPane) comp;
     }
-
-    /** The log stream */
-    private static Logger log = Logger.getLogger(Desktop.class);
 
     private JDesktopPane mdi_main = new JDesktopPane();
 

@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.local;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -71,11 +72,13 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
         try
         {
             if (!NetUtil.delete(getURL()))
-                throw new BookException("raw_driver_deldir", new Object[] { getName() });
+            {
+                throw new BookException(Msg.DELETE_FAIL, new Object[] { getName() });
+            }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            throw new BookException("raw_driver_dir", ex);
+            throw new BookException(Msg.DELETE_FAIL, ex, new Object[] { getName() });
         }
     }
 
@@ -105,7 +108,9 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
             synchronized(this)
             {
                 if (bible == null)
+                {
                     bible = driver.getBible(this, null);
+                }
             }
         }
 
@@ -135,7 +140,9 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     private void setDriver(LocalURLBookDriver driver)
     {
         if (driver == null)
-            throw new NullPointerException("name");
+        {
+            throw new NullPointerException();
+        }
 
         this.driver = driver;
     }

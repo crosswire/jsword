@@ -241,6 +241,11 @@ public class SwordConfig
         cipherKey = reader.getFirstValue("CipherKey");
         String blockString = reader.getFirstValue("BlockType");
         blockType = matchingIndex(SwordConstants.BLOCK_STRINGS, blockString);
+
+        log.debug("DEBUG: " + getName() + " <- getName()");
+        log.debug("DEBUG: " + blockString + " <- blockString");
+        log.debug("DEBUG: " + blockType + " <- blockType");
+
         String compressString = reader.getFirstValue("CompressType");
         compressType = matchingIndex(SwordConstants.COMPRESSION_STRINGS, compressString);
         try
@@ -292,115 +297,94 @@ public class SwordConfig
         switch (type)
         {
         case SwordConstants.DRIVER_RAW_TEXT:
+        case SwordConstants.DRIVER_Z_TEXT:
             return new SwordBibleMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    return new RawSwordBible(this, SwordConfig.this);
+                    return new SwordBible(this, SwordConfig.this);
                 }
             };
-
-        case SwordConstants.DRIVER_Z_TEXT:
-            int ctype = getCompressType(); 
-            if (ctype == SwordConstants.COMPRESSION_LZSS)
-            {
-                return new SwordBibleMetaData(this)
-                {
-                    public Book createBook() throws BookException
-                    {
-                        return new LZSSCompressedSwordBible(this, SwordConfig.this);
-                    }
-                };
-            }
-            else if (ctype == SwordConstants.COMPRESSION_ZIP)
-            {
-                return new SwordBibleMetaData(this)
-                {
-                    public Book createBook() throws BookException
-                    {
-                        return new ZipCompressedSwordBible(this, SwordConfig.this);
-                    }
-                };
-            }
-            else
-            {
-                throw new BookException("Unsupported compression type: "+ctype);
-            }
 
         case SwordConstants.DRIVER_RAW_COM:
-            return new SwordCommentaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new RawSwordCommentary(this, SwordConfig.this);
-                }
-            };
-
         case SwordConstants.DRIVER_Z_COM:
-            return new SwordCommentaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new CompressedSwordCommentary(this, SwordConfig.this);
-                }
-            };
-    
         case SwordConstants.DRIVER_HREF_COM:
-            return new SwordCommentaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new HRefSwordCommentary(this, SwordConfig.this);
-                }
-            };
-
         case SwordConstants.DRIVER_RAW_FILES:
             return new SwordCommentaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    return new RawFilesSwordCommentary(this, SwordConfig.this);
-                }
-            };
-
-        case SwordConstants.DRIVER_RAW_LD:
-            return new SwordDictionaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new RawSwordDictionary(this, SwordConfig.this);
-                }
-            };
-
-        case SwordConstants.DRIVER_RAW_LD4:
-            return new SwordDictionaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new LD4SwordDictionary(this, SwordConfig.this);
+                    return new SwordCommentary(this, SwordConfig.this);
                 }
             };
     
+        case SwordConstants.DRIVER_RAW_LD:
+        case SwordConstants.DRIVER_RAW_LD4:
         case SwordConstants.DRIVER_Z_LD:
             return new SwordDictionaryMetaData(this)
             {
                 public Book createBook() throws BookException
                 {
-                    return new CompressedSwordDictionary(this, SwordConfig.this);
+                    return new SwordDictionary(this, SwordConfig.this);
                 }
             };
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
             // PENDING(joe): what is this?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName()+" desire="+(++desire_rawgenbook));
-            throw new BookException("Unsupported type: "+type);
+            throw new BookException(Msg.TYPE_UNSUPPORTED, new Object[] { new Integer(type) });
 
         default:
-            throw new BookException("Unknown type: "+type);
+            throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { new Integer(type) });
         }
     }
 
     private static int desire_rawgenbook = 0;
+
+
+    /**
+     * Get the configured method of reading a block of data from disk.
+     */
+    public Backend getBackend() throws BookException
+    {
+        int ctype = getCompressType(); 
+        switch (ctype)
+        {
+        case SwordConstants.COMPRESSION_NONE:
+            return new RawBackend();
+
+        case SwordConstants.COMPRESSION_ZIP:
+            return new GZIPBackend();
+
+        case SwordConstants.COMPRESSION_LZSS:
+            return new LZSSBackend();
+
+        default:
+            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { new Integer(ctype) });
+        }
+    }
+
+    /**
+     * Get the configured method of reading a block of data from disk.
+     */
+    public KeyBackend getKeyBackend() throws BookException
+    {
+        int ctype = getModDrv(); 
+        switch (ctype)
+        {
+        case SwordConstants.DRIVER_RAW_LD:
+            return new RawKeyBackend();
+
+        case SwordConstants.DRIVER_RAW_LD4:
+            return new LD4KeyBackend();
+
+        case SwordConstants.DRIVER_Z_LD:
+            return new ZKeyBackend();
+
+        default:
+            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { new Integer(ctype) });
+        }
+    }
 
     /**
      * Returns the about.
