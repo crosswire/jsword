@@ -36,6 +36,9 @@
   <property name="jnlp.hostname" value="localhost:8080"/>
   <!-- override this to build in live. This probably won't work without overriding -->
   <property name="web.dl.prefix" value="../download"/>
+  <property name="ftp.base" value="${basedir}/${target.download}"/>
+  <property name="nightly.dir" value="${ftp.base}/nightly"/>
+  <property name="release.dir" value="${ftp.base}/release"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -251,8 +254,8 @@
     <mkdir dir="${target.web}/WEB-INF"/>
     <copy todir="${target.web}/WEB-INF" filtering="true">
       <filterset>
-        <filter token="NIGHTLY-DIR" value="${basedir}/${target.download}/nightly"/>
-        <filter token="RELEASE-DIR" value="${basedir}/${target.download}/release"/>
+        <filter token="NIGHTLY-DIR" value="${nightly.dir}"/>
+        <filter token="RELEASE-DIR" value="${release.dir}"/>
         <filter token="WEB-DL-PREFIX" value="${web.dl.prefix}"/>
       </filterset>
       <fileset dir="${source.etc}/web"/>
@@ -634,12 +637,18 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="nightly" depends="clean, release.nightly" description="Run a full clean/build/deploy/test cycle">
+  <target name="nightly" depends="veryclean, cvsup, release.nightly" description="To be run nightly at crosswire">
   </target>
 
   <!--=======================================================================-->
   <target name="clean" depends="init" description="Remove the target directory">
     <delete dir="${target.root}"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="veryclean" depends="init" description="Remove the target directory">
+    <delete dir="${target.root}"/>
+    <delete dir="${gener.root}"/>
   </target>
 
   <!--=======================================================================-->
