@@ -3,7 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry sourcepath="/jsword-support/othersource/commons-net-1.1.0-src.zip" kind="lib" path="jar/net-1.1.0/commons-net-1.1.0.jar"/>
 	<classpathentry sourcepath="/jsword-support/othersource/lucene-1.3-final-src.zip" kind="lib" path="jar/lucene-1.3/lucene-1.3-final.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/javatar-2.5.zip" kind="lib" path="jar/jtar-2.5/tar.jar"/>
 	<classpathentry kind="src" path="/common"/>
 	<classpathentry kind="src" path="java/jsword"/>
 	<classpathentry kind="src" path="java/limbo"/>
