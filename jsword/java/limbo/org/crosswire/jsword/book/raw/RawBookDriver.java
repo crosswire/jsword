@@ -11,6 +11,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
+import org.crosswire.jsword.book.basic.BookRoot;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -46,7 +47,7 @@ public class RawBookDriver extends AbstractBookDriver
     {
         try
         {
-            URL dir = Project.instance().findBibleRoot(getDriverName());
+            URL dir = BookRoot.findBibleRoot(getDriverName());
 
             if (!NetUtil.isDirectory(dir))
             {

@@ -43,11 +43,6 @@ import org.jdom.input.SAXBuilder;
 public class Project
 {
     /**
-     * System property to let people re-direct where the project directory is stored
-     */
-    public static final String PROP_HOMEDIR = "jsword.bible.dir"; //$NON-NLS-1$
-
-    /**
      * A file so we know if we have the right versions directory
      */
     public static final String FILE_LOCATOR = "locator.properties"; //$NON-NLS-1$
@@ -244,59 +239,6 @@ public class Project
     }
 
     /**
-     * Search for versions directories
-     */
-    public URL findBibleRoot(String subdir) throws MalformedURLException
-    {
-        URL root = null;
-
-        // First see if there is a System property that can help us out
-        String sysprop = System.getProperty(PROP_HOMEDIR);
-        log.debug("Testing system property "+PROP_HOMEDIR+"="+sysprop); //$NON-NLS-1$ //$NON-NLS-2$
-
-        if (sysprop != null)
-        {
-            URL found = NetUtil.lengthenURL(new URL(NetUtil.PROTOCOL_FILE, null, sysprop), DIR_VERSIONS);
-            URL test = NetUtil.lengthenURL(found, FILE_LOCATOR);
-
-            if (NetUtil.isFile(test))
-            {
-                log.debug("Found BibleRoot using system property jsword.bible.dir at "+test); //$NON-NLS-1$
-                root = found;
-            }
-            else
-            {
-                log.warn("Missing jsword.bible.dir under: "+test.toExternalForm()); //$NON-NLS-1$
-            }
-        }
-
-        // If not then try a wild guess
-        if (root == null)
-        {
-            URL found = ResourceUtil.getResource(DIR_VERSIONS + File.separator + FILE_LOCATOR);
-            URL test = NetUtil.shortenURL(found, FILE_LOCATOR);
-            if (NetUtil.isFile(test))
-            {
-                log.debug("Found BibleRoot from current directory: "+test.toExternalForm()); //$NON-NLS-1$
-                root = test;
-            }
-            else
-            {
-                log.warn("Missing BibleRoot from current directory: "+test.toExternalForm()); //$NON-NLS-1$
-            }
-        }
-
-        if (root == null)
-        {
-            return null;
-        }
-        else
-        {
-            return NetUtil.lengthenURL(root, subdir);
-        }
-    }
-
-    /**
      * Check that the directories in the version directory really
      * represent versions.
      */
@@ -335,5 +277,4 @@ public class Project
      * The log stream
      */
     private static final Logger log = Logger.getLogger(Project.class);
-
 }

@@ -99,9 +99,6 @@ public class APIExamples
         String text = XMLUtil.writeToString(htmlsep);
 
         System.out.println("The html text of Gen 1:1 is "+text); //$NON-NLS-1$
-
-        // This just shuts eclipse up.
-        osissep.hashCode();
     }
 
     /**
@@ -162,36 +159,25 @@ public class APIExamples
      */
     public void pickBible()
     {
-        BookMetaData bmd;
-
         // The Default Bible - JSword does everything it can to make this work
-        bmd = Books.installed().getBookMetaData(BIBLE_NAME);
-        Book bible = bmd.getBook();
+        BookMetaData bmd = Books.installed().getBookMetaData(BIBLE_NAME);
 
-        // You can only get a Bible (or any other Book) via a MetaData object
-        // to help save resources. It means you can find out all about a Book
-        // without reading indexes off disk or similar.
+        // You get a Book via a MetaData object to help save resources.
+        Book book = bmd.getBook();
+
+        // And you can get back to the MetaData object to find out more too:
+        bmd = book.getBookMetaData();
+        System.out.println(bmd.getEdition());
 
         // If you want a greater selection of Books:
-        List everything = Books.installed().getBookMetaDatas();
+        List books = Books.installed().getBookMetaDatas();
+        bmd = (BookMetaData) books.get(0);
 
         // Or you can narrow the range a bit
-        List bibles = Books.installed().getBookMetaDatas(BookFilters.getBibles());
+        books = Books.installed().getBookMetaDatas(BookFilters.getBibles());
 
         // There are implementations of BookFilter for all sorts of things in
         // the BookFilters class 
-
-        // Assuming that we got some Bibles then we can use an Iterator or just
-        // go to one direct ... Remember that we always go via a MetaData object.
-        bmd = (BookMetaData) bibles.get(0);
-
-        // The code above is safe - we know we are only going to get
-        // BibleMetaData objects in the List if we've asked from them with a
-        // BookFilter. However this *could* fail.
-        bmd = (BookMetaData) everything.get(0);
-
-        // If you asked for a mixed list then you should use this: 
-        BookMetaData md = (BookMetaData) everything.get(0);
 
         // If you are wanting to get really fancy you can implement your own
         // Bookfilter easily
@@ -204,10 +190,7 @@ public class APIExamples
         });
         bmd = (BookMetaData) test.get(0);
 
-        // This is exactly the same as getting an Iterator on the 'everything'
-        // List from above except that you can pass the BookFilter around and
-        // store it in a local variable.
-
+        // If you want to know about new books as they arrive:
         Books.installed().addBooksListener(new BooksListener()
         {
             /* (non-Javadoc)
@@ -224,9 +207,6 @@ public class APIExamples
             {
             }
         });
-
-        // NOWARN: Ignore this line: it just shuts eclipse up
-        md.hashCode(); bible.hashCode();
     }
 
     /**
