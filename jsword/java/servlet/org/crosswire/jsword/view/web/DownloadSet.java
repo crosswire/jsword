@@ -50,15 +50,15 @@ public class DownloadSet implements Comparable
     /**
      * Get an Iterator over all the Downloads in the specified Directory
      */
-    public static DownloadSet[] getDownloadSets(String localdir, String webprefix, boolean datesort) throws IOException
+    public static DownloadSet[] getDownloadSets(String localprefix, String webprefix, boolean datesort) throws IOException
     {
-        File dir = new File(localdir);
+        File dir = new File(localprefix);
         if (!dir.isDirectory())
         {
-            throw new IOException(localdir+" is not a directory");
+            throw new IOException(localprefix+" is not a directory");
         }
 
-        log.debug("dig "+localdir);
+        log.debug("dig "+localprefix);
         File[] files = dir.listFiles(new FileFilter()
         {
             public boolean accept(File file)
@@ -77,7 +77,7 @@ public class DownloadSet implements Comparable
             String name = files[i].getName();
             log.debug("adding "+name);
             String setname = name.substring(TEST_PREFIX.length(), name.length() - TEST_SUFFIX.length());
-            reply.add(new DownloadSet(localdir, setname, webprefix, datesort));
+            reply.add(new DownloadSet(localprefix, webprefix, setname, datesort));
         }
 
         return (DownloadSet[]) reply.toArray(new DownloadSet[reply.size()]);
@@ -86,9 +86,9 @@ public class DownloadSet implements Comparable
     /**
      * Create a set of downloads
      */
-    public DownloadSet(String localdir, String setname, String webprefix, boolean datesort)
+    private DownloadSet(String localprefix, String webprefix, String setname, boolean datesort)
     {
-        this.localdir = localdir;
+        this.localprefix = localprefix;
         this.webprefix = webprefix;
         this.setname = setname;
         this.datesort = datesort;
@@ -154,7 +154,7 @@ public class DownloadSet implements Comparable
      */
     public String getLinkString(String extension)
     {
-        File file = new File(localdir, TEST_PREFIX + setname + extension);
+        File file = new File(localprefix, TEST_PREFIX + setname + extension);
         String size = nf.format(((float) file.length()) / (1024F * 1024F));
         String reply = "<a href='"+ webprefix + "/" + TEST_PREFIX + setname + extension + "'>"+size+" Mb</a>";
 
@@ -165,7 +165,7 @@ public class DownloadSet implements Comparable
 
     private boolean datesort;
     private String webprefix;
-    private String localdir;
+    private String localprefix;
     private String setname;
     private Date date;
 

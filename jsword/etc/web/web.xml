@@ -10,16 +10,12 @@
   <description>Servlet interface to the Bible</description>
 
   <context-param>
-    <param-name>nightly-dir</param-name>
-    <param-value>@NIGHTLY-DIR@</param-value>
+    <param-name>localprefix</param-name>
+    <param-value>@localprefix@</param-value>
   </context-param>
   <context-param>
-    <param-name>release-dir</param-name>
-    <param-value>@RELEASE-DIR@</param-value>
-  </context-param>
-  <context-param>
-    <param-name>web-dl-prefix</param-name>
-    <param-value>@WEB-DL-PREFIX@</param-value>
+    <param-name>webprefix</param-name>
+    <param-value>@webprefix@</param-value>
   </context-param>
 
   <servlet>

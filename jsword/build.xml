@@ -35,10 +35,10 @@
   <!-- override this with -Djnlp.hostname=www.crosswire.org to build in live -->
   <property name="jnlp.hostname" value="localhost:8080"/>
   <!-- override this to build in live. This probably won't work without overriding -->
-  <property name="web.dl.prefix" value="../download"/>
-  <property name="ftp.base" value="${basedir}/${target.download}"/>
-  <property name="nightly.dir" value="${ftp.base}/nightly"/>
-  <property name="release.dir" value="${ftp.base}/release"/>
+  <property name="webprefix" value="../download"/>
+  <property name="localprefix" value="${basedir}/${target.download}"/>
+  <property name="nightly.dir" value="${localprefix}/nightly"/>
+  <property name="release.dir" value="${localprefix}/release"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -254,9 +254,8 @@
     <mkdir dir="${target.web}/WEB-INF"/>
     <copy todir="${target.web}/WEB-INF" filtering="true">
       <filterset>
-        <filter token="NIGHTLY-DIR" value="${nightly.dir}"/>
-        <filter token="RELEASE-DIR" value="${release.dir}"/>
-        <filter token="WEB-DL-PREFIX" value="${web.dl.prefix}"/>
+        <filter token="localprefix" value="${localprefix}"/>
+        <filter token="webprefix" value="${webprefix}"/>
       </filterset>
       <fileset dir="${source.etc}/web"/>
     </copy>
