@@ -163,11 +163,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                     download(job, directory + '/' + PACKAGE_DIR, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
+                    // Once the unzipping is started, we need to continue
+                    job.setInterruptable(false);
                     File dldir = SwordBookDriver.getDownloadDir();
-                    IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
+                    if (!job.isFinished())
+                    {
+                        IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
+                        job.setProgress(Msg.JOB_CONFIG.toString());
+                        SwordBookDriver.registerNewBook(sbmd, dldir);
+                    }
 
-                    job.setProgress(Msg.JOB_CONFIG.toString());
-                    SwordBookDriver.registerNewBook(sbmd, dldir);
                 }
                 catch (Exception ex)
                 {

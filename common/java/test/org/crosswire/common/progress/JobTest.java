@@ -54,7 +54,7 @@ public class JobTest extends TestCase
         job = JobManager.createJob(WIBBLE, false);
         assertEquals(job.getJobDescription(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.canInterrupt(), false);
+        assertEquals(job.isInterruptable(), false);
         assertEquals(job.getStateDescription(), WIBBLE);
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
@@ -62,12 +62,12 @@ public class JobTest extends TestCase
         assertEquals(job.isFinished(), true);
         assertEquals(job.getPercent(), 100);
         assertEquals(job.getReportedPercent(), 100);
-        assertEquals(job.canInterrupt(), false);
+        assertEquals(job.isInterruptable(), false);
 
         job = JobManager.createJob(WIBBLE, Thread.currentThread(), false);
         assertEquals(job.getJobDescription(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.canInterrupt(), true);
+        assertEquals(job.isInterruptable(), true);
         assertEquals(job.getStateDescription(), WIBBLE);
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
@@ -75,12 +75,12 @@ public class JobTest extends TestCase
         assertEquals(job.isFinished(), true);
         assertEquals(job.getPercent(), 100);
         assertEquals(job.getReportedPercent(), 100);
-        assertEquals(job.canInterrupt(), false);
+        assertEquals(job.isInterruptable(), false);
 
         job = JobManager.createJob(WIBBLE, url, false);
         assertEquals(job.getJobDescription(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.canInterrupt(), false);
+        assertEquals(job.isInterruptable(), false);
         assertEquals(job.getStateDescription(), WIBBLE);
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
@@ -88,12 +88,12 @@ public class JobTest extends TestCase
         assertEquals(job.isFinished(), true);
         assertEquals(job.getPercent(), 100);
         assertEquals(job.getReportedPercent(), 100);
-        assertEquals(job.canInterrupt(), false);
+        assertEquals(job.isInterruptable(), false);
 
         job = JobManager.createJob(WIBBLE, url, Thread.currentThread(), false);
         assertEquals(job.getJobDescription(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.canInterrupt(), true);
+        assertEquals(job.isInterruptable(), true);
         assertEquals(job.getStateDescription(), WIBBLE);
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
@@ -101,6 +101,6 @@ public class JobTest extends TestCase
         assertEquals(job.isFinished(), true);
         assertEquals(job.getPercent(), 100);
         assertEquals(job.getReportedPercent(), 100);
-        assertEquals(job.canInterrupt(), false);
+        assertEquals(job.isInterruptable(), false);
     }
 }

@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.search.lucene;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -103,10 +104,13 @@ public class LuceneIndex implements Index, Activatable
             synchronized (CREATING)
             {
                 book.getBookMetaData().setIndexStatus(IndexStatus.CREATING);
-
+                File finalPath = NetUtil.getAsFile(storage);
+                String finalCanonicalPath = finalPath.getCanonicalPath();
+                File tempPath = new File(finalCanonicalPath + ".building"); //$NON-NLS-1$
+                
                 // An index is created by opening an IndexWriter with the
                 // create argument set to true.
-                IndexWriter writer = new IndexWriter(NetUtil.getAsFile(storage).getCanonicalPath(), new SimpleAnalyzer(), true);
+                IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);
 
                 generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
 
@@ -115,9 +119,16 @@ public class LuceneIndex implements Index, Activatable
                 writer.optimize();
                 writer.close();
 
-                searcher = new IndexSearcher(NetUtil.getAsFile(storage).getCanonicalPath());
+                job.setInterruptable(false);
+                if (!job.isFinished())
+                {
 
-                book.getBookMetaData().setIndexStatus(IndexStatus.DONE);
+                    tempPath.renameTo(finalPath);
+
+                    searcher = new IndexSearcher(finalPath.getCanonicalPath());
+
+                    book.getBookMetaData().setIndexStatus(IndexStatus.DONE);
+                }
             }
         }
         catch (Exception ex)

@@ -1,6 +1,8 @@
 package org.crosswire.common.progress;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -58,7 +60,11 @@ public final class Job
         this.work = work;
         this.reportedpc = 0;
         this.finished = false;
-
+        this.interruptable = work != null;
+        this.listeners = new PropertyChangeSupport(this);
+        this.start = -1;
+        this.predictedlen = -1;
+        
         if (fakeupdates)
         {
             Action actupdate = new PredictAction();
@@ -179,6 +185,8 @@ public final class Job
     {
         if (work != null && !finished)
         {
+            ignoreTimings();
+            done();
             work.interrupt();
         }
     }
@@ -186,11 +194,26 @@ public final class Job
     /**
      * Might the job be interruptable?
      */
-    public boolean canInterrupt()
+    public boolean isInterruptable()
     {
-        return work != null && !finished;
+        return interruptable;
     }
 
+    /**
+     * @param newInterruptable The interruptable to set.
+     */
+    public void setInterruptable(boolean newInterruptable)
+    {
+        if (work == null || finished)
+        {
+            return;
+        }
+        Boolean oldValue = Boolean.valueOf(interruptable);
+        Boolean newValue = Boolean.valueOf(newInterruptable);
+        interruptable = newInterruptable;
+        listeners.firePropertyChange("interruptable", oldValue, newValue); //$NON-NLS-1$
+    }
+    
     /**
      * Shortcut to check if percent == 100
      */
@@ -415,6 +438,31 @@ public final class Job
     }
 
     /**
+     * Interface for people to be notified of changes to the
+     * current Font.
+     * @param li The new listener class
+     */
+    public void addPropertyChangeListener(PropertyChangeListener li)
+    {
+        listeners.addPropertyChangeListener(li);
+    }
+
+    /**
+     * Interface for people to be notified of changes to the
+     * current Font.
+     * @param li The listener class to be deleted
+     */
+    public void removePropertyChangeListener(PropertyChangeListener li)
+    {
+        listeners.removePropertyChangeListener(li);
+    }
+
+    /**
+     * Does this job allow interruptions?
+     */
+    private boolean interruptable;
+
+    /**
      * Have we just finished?
      */
     private boolean finished;
@@ -462,7 +510,7 @@ public final class Job
     /**
      * When did this job start?
      */
-    private long start = -1;
+    private long start;
 
     /**
      * The timings as measured this time
@@ -477,7 +525,7 @@ public final class Job
     /**
      * How long to we predict this job is going to last?
      */
-    private int predictedlen = -1;
+    private int predictedlen;
 
     /**
      * The URL to which we load and save timings
@@ -488,6 +536,11 @@ public final class Job
      * The swing timer that lets us post fake progress events
      */
     private Timer updater;
+
+    /**
+     * People that want to know about "interruptable" changes
+     */
+    protected PropertyChangeSupport listeners;
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing

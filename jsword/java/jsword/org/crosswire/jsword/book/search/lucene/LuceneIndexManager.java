@@ -100,7 +100,11 @@ public class LuceneIndexManager implements IndexManager
                 {
                     URL storage = getStorageArea(book.getBookMetaData());
                     Index index = new LuceneIndex(book, storage, true);
-                    INDEXES.put(book, index);
+                    // We were successful if the directory exists.
+                    if (NetUtil.getAsFile(storage).exists())
+                    {
+                        INDEXES.put(book, index);
+                    }
                 }
                 catch (Exception ex)
                 {

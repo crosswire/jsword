@@ -160,7 +160,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         // 2) not have a mnemonic
         // 3) not have an accelerator
         JButton cancel = new JButton(Msg.CANCEL.toString());
-        if (!job.canInterrupt())
+        if (!job.isInterruptable())
         {
             cancel.setEnabled(false);
         }
