@@ -364,6 +364,7 @@ public class Config implements Serializable
     /**
      * Take the data stored permanently and copy it to the local
      * storage area, using the configured storage area
+     * @TODO: suss out what the sin.readObject() line does
      */
     public void permanentToLocal(String host, int port) throws IOException
     {
@@ -372,7 +373,7 @@ public class Config implements Serializable
             Socket sock = new Socket(host, port);
             InputStream in = sock.getInputStream();
             ObjectInputStream sin = new ObjectInputStream(in);
-            Config config = (Config) sin.readObject();
+            /*Config config = (Config)*/ sin.readObject();
 
             Properties prop = new Properties();
             PropertiesUtil.load(prop, in);
@@ -392,6 +393,7 @@ public class Config implements Serializable
     /**
      * Take the data in the local storage area and store it permanently,
      * using the configured storage area.
+     * @TODO: suss out what the sin.readObject() line does
      */
     public void localToPermanent(String host, int port) throws IOException
     {
@@ -404,7 +406,7 @@ public class Config implements Serializable
             InputStream in = sock.getInputStream();
 
             ObjectInputStream sin = new ObjectInputStream(in);
-            Config config = (Config) sin.readObject();
+            /*Config config = (Config)*/ sin.readObject();
 
             PropertiesUtil.load(new Properties(), in);
 

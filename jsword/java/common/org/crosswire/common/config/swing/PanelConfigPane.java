@@ -82,7 +82,6 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
         while (en.hasMoreElements())
         {
             String key = (String) en.nextElement();
-            String path = Config.getPath(key);
             Choice model = config.getChoice(key);
 
             addChoice(key, model);

@@ -1,8 +1,6 @@
 
 package org.crosswire.common.config.choices;
 
-import org.crosswire.common.config.*;
-
 /**
 * OptionsChoice.
 *

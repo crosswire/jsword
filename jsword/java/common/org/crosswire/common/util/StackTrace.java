@@ -1,8 +1,9 @@
 
 package org.crosswire.common.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Enumeration;
 
 /**
 * Unscramble the current stack, and present the data from it to the
@@ -223,7 +224,7 @@ public final class StackTrace
     }
 
     /** Array containing the class names */
-    private String[] class_names;
+    protected String[] class_names;
 
     /** Array containing the method names */
     private String[] method_names;

@@ -137,7 +137,7 @@ public class ExceptionShelf extends JPanel
      * Show the previous Exception in the list. If there are no more
      * Exceptions to view we do nothing.
      */
-    public void previousException()
+    protected void previousException()
     {
         if (current < 1) return;
 
@@ -152,7 +152,7 @@ public class ExceptionShelf extends JPanel
      * Show the next Exception in the list. If there are no more
      * Exceptions to view we do nothing.
      */
-    private void nextException()
+    protected void nextException()
     {
         if (current > (total-1)) return;
 
@@ -175,7 +175,7 @@ public class ExceptionShelf extends JPanel
     /**
      *
      */
-    private void reporter()
+    protected void reporter()
     {
         if (total == 0)
         {
@@ -194,7 +194,7 @@ public class ExceptionShelf extends JPanel
     /**
      *
      */
-    private void remover()
+    protected void remover()
     {
         removeException((Throwable) exceptions.elementAt(current));
     }
@@ -348,7 +348,7 @@ public class ExceptionShelf extends JPanel
     private static ShelfCaptureListener li = new ShelfCaptureListener();
 
     /** All the ExceptionShelves that we know about */
-    private static Vector shelves = new Vector();
+    protected static Vector shelves = new Vector();
 
     /** The font for the remove button */
     private static Font small;

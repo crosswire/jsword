@@ -1,12 +1,10 @@
 
 package org.crosswire.common.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 
-import org.crosswire.common.swing.*;
+import javax.swing.BorderFactory;
 
 /**
  * A Simple pane to hold log messages to aid debugging.

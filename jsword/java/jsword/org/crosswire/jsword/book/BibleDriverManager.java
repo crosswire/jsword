@@ -125,5 +125,7 @@ public class BibleDriverManager
         for_name = org.crosswire.jsword.book.jdbc.JDBCBibleDriver.class;
         for_name = org.crosswire.jsword.book.ser.SerBibleDriver.class;
         for_name = org.crosswire.jsword.book.raw.RawBibleDriver.class;
+
+        for_name = for_name;
     }
 }

@@ -97,7 +97,7 @@ public class FileField extends JPanel implements Field
     }
 
     /** The text field */
-    private JTextField text = new JTextField();
+    protected JTextField text = new JTextField();
 
     /** The browse button */
     private JButton browse = new JButton("Browse");

@@ -130,7 +130,7 @@ public class DocumentWriter extends Writer
     {
         synchronized (lock)
         {
-            queue = queue + cbuf;
+            queue = queue + new String(cbuf);
             update();
         }
     }

@@ -3,11 +3,13 @@ package org.crosswire.common.config.swing.fields;
 
 import java.awt.GridLayout;
 import java.util.StringTokenizer;
-import javax.swing.*;
-import javax.swing.border.*;
 
-import org.crosswire.common.config.*;
-import org.crosswire.common.config.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
+
+import org.crosswire.common.config.swing.Field;
 
 /**
 * A Rectangle Property viewer.

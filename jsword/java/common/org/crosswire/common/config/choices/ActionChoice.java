@@ -1,8 +1,6 @@
 
 package org.crosswire.common.config.choices;
 
-import org.crosswire.common.config.*;
-
 /**
 * An ActionChoice just presents a button for some custom action.
 *

@@ -72,7 +72,6 @@ public class MenuUtil
     */
     public static JMenuBar createMenubar()
     {
-        JMenuItem mi;
         JMenuBar menubar = new JMenuBar();
 
         String[] menu_names = StringUtil.tokenize(getResourceString("menubar"));

@@ -125,7 +125,6 @@ public class FieldLayout extends AbstractLayout
     public void layoutContainer(Container target)
     {
         int left = 0;
-        int height = 0;
         Insets insets = target.getInsets();
         int ncomponents = target.getComponentCount();
 

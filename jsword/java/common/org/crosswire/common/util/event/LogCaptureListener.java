@@ -1,9 +1,8 @@
 
 package org.crosswire.common.util.event;
 
-import java.io.*;
-
-import org.crosswire.common.util.*;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
 
 /**
  * This class listens to Reporter captures and copies them to a

@@ -4,8 +4,6 @@ package org.crosswire.common.config.swing;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 
-import org.crosswire.common.config.*;
-
 /**
 * Some static methods for using the Config package.
 *

@@ -1,13 +1,15 @@
 
 package org.crosswire.common.config.swing.fields;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.crosswire.common.config.*;
-import org.crosswire.common.config.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.crosswire.common.config.swing.Field;
 
 /**
 * A Filename selection.
@@ -88,7 +90,7 @@ public class ActionField extends JPanel implements Field
     }
 
     /** What to do when we are clicked */
-    private Runnable runner;
+    protected Runnable runner;
 
     /** The browse button */
     private JButton edit = new JButton("Edit");

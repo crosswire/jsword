@@ -13,7 +13,21 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -120,7 +134,7 @@ public class Status implements CaptureListener
     /**
      * Show the options dialog box
      */
-    private void options()
+    protected void options()
     {
         config.applicationToLocal();
         SwingConfig.showDialog(config, null, url);
@@ -345,10 +359,10 @@ public class Status implements CaptureListener
     }
 
     /** The index of log streams */
-    private static Hashtable streams = new Hashtable();
+    protected static Hashtable streams = new Hashtable();
 
     /** The index of log streams */
-    private static Vector visible = new Vector();
+    protected static Vector visible = new Vector();
 
     /**
      * Where we store the messages
@@ -499,14 +513,14 @@ public class Status implements CaptureListener
     }
 
     /** The instructions for the Renderer */
-    private static CellRendererAdvice[] advice = new CellRendererAdvice[10];
+    protected static CellRendererAdvice[] advice = new CellRendererAdvice[10];
 
     static
     {
         Font norm_ss = new Font("SansSerif", Font.PLAIN, 12);
         Font small_ss = new Font("SansSerif", Font.PLAIN, 10);
-        Font norm_s = new Font("Serif", Font.PLAIN, 12);
-        Font small_s = new Font("Serif", Font.PLAIN, 10);
+        //Font norm_s = new Font("Serif", Font.PLAIN, 12);
+        //Font small_s = new Font("Serif", Font.PLAIN, 10);
 
         Icon cup = UIManager.getIcon("InternalFrame.icon");
 

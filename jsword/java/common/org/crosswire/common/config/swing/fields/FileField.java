@@ -1,13 +1,17 @@
 
 package org.crosswire.common.config.swing.fields;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.crosswire.common.config.*;
-import org.crosswire.common.config.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.crosswire.common.config.swing.Field;
 
 /**
 * A Filename selection.
@@ -94,7 +98,7 @@ public class FileField extends JPanel implements Field
     }
 
     /** The text field */
-    private JTextField text = new JTextField();
+    protected JTextField text = new JTextField();
 
     /** The browse button */
     private JButton browse = new JButton("Browse");

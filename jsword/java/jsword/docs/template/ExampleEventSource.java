@@ -1,8 +1,6 @@
 
 package docs.template;
 
-import java.io.*;
-
 import org.crosswire.common.util.EventListenerList;
 
 /**

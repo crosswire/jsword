@@ -1,12 +1,8 @@
 
 package org.crosswire.common.util;
 
-import java.awt.Font;
-import java.awt.Color;
-import java.util.Hashtable;
 import java.util.Enumeration;
-
-import org.crosswire.common.util.*;
+import java.util.Hashtable;
 
 /**
  * Conversions between various types and Strings.

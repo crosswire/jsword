@@ -12,7 +12,21 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -373,5 +387,5 @@ public class DetailedExceptionPane
                                           "from here.";
 
     /** The StackTrace */
-    private static String[] source_path = new String[0];
+    protected static String[] source_path = new String[0];
 }

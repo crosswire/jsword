@@ -1,8 +1,6 @@
 
 package docs.future.translation;
 
-import org.crosswire.jsword.passage.PassageUtil;
-
 /**
 * Strongs is a convenience way of recording a Strongs number instead of
 * using a String with a number in it. (A Strongs number can not be a number
@@ -197,7 +195,7 @@ public class Strongs
         case HEBREW:
             if (number > HEBREW_MAX || number < 1)
             {
-                Object[] params = new Object[] { new Integer(HEBREW_MAX), new Integer(number) };
+                // Object[] params = new Object[] { new Integer(HEBREW_MAX), new Integer(number) };
                 throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_hebrew\", params)");
             }
             break;
@@ -205,7 +203,7 @@ public class Strongs
         case GREEK:
             if (number > GREEK_MAX || number < 1)
             {
-                Object[] params = new Object[] { new Integer(GREEK_MAX), new Integer(number) };
+                // Object[] params = new Object[] { new Integer(GREEK_MAX), new Integer(number) };
                 throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_greek\", params)");
             }
             // We have not checked for 1418, 2717, 3203-3302, 4452 which do not appear to
@@ -215,7 +213,7 @@ public class Strongs
         case PARSING:
             if (number < 1)
             {
-                Object[] params = new Object[] { new Integer(number) };
+                // Object[] params = new Object[] { new Integer(number) };
                 throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_parsing\", params)");
             }
             // The correct range seems to be: 0, 5625-5773, 8675-8809, but not 5626, 5653, 5687, 5767, 8679

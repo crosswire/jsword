@@ -346,7 +346,7 @@ public class TextViewPanel extends JPanel
     private JButton btn_close = null;
 
     /** The frame that we are displayed in */
-    private JDialog frame = null;
+    protected JDialog frame = null;
 
     /** Property change listener collection */
     private transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);

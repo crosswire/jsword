@@ -1,8 +1,7 @@
 
 package org.crosswire.common.config;
 
-import java.util.*;
-import java.io.*;
+import java.io.Serializable;
 
 /**
 * Choice is the fundamental building block of the config system.

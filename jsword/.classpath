@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
-    <classpathentry kind="lib" path="jar/junit37/junit.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/crimson.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/jaxp.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/jdom.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/xalan.jar"/>
     <classpathentry kind="lib" path="jar/jlf10/jlfgr-1_0.jar"/>
     <classpathentry kind="lib" path="jar/servlet23/servlet.jar"/>
-    <classpathentry kind="src" path="java/swordtest"/>
-    <classpathentry kind="src" path="java/sword"/>
-    <classpathentry kind="src" path="java/jswordtest"/>
-    <classpathentry kind="src" path="java/jsword"/>
-    <classpathentry kind="src" path="java/commontest"/>
+    <classpathentry kind="lib" path="jar/junit37/junit.jar"/>
     <classpathentry kind="src" path="java/common"/>
-    <classpathentry kind="src" path="java/maptest"/>
+    <classpathentry kind="src" path="java/commontest"/>
+    <classpathentry kind="src" path="java/sword"/>
+    <classpathentry kind="src" path="java/swordtest"/>
+    <classpathentry kind="src" path="java/jsword"/>
+    <classpathentry kind="src" path="java/jswordtest"/>
     <classpathentry kind="src" path="java/map"/>
+    <classpathentry kind="src" path="java/maptest"/>
     <classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

@@ -48,7 +48,6 @@ public abstract class ClassChoices implements Serializable
 
         // Check that the options all inherit from base
         Enumeration en = options.keys();
-        int i = 0;
         while (en.hasMoreElements())
         {
             String key = (String) en.nextElement();

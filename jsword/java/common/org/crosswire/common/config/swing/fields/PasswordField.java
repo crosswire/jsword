@@ -1,10 +1,10 @@
 
 package org.crosswire.common.config.swing.fields;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JPasswordField;
 
-import org.crosswire.common.config.*;
-import org.crosswire.common.config.swing.*;
+import org.crosswire.common.config.swing.Field;
 
 /**
 * PasswordField.

@@ -1,11 +1,13 @@
 
 package org.crosswire.common.swing;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.applet.*;
+import java.applet.Applet;
+import java.applet.AppletContext;
+import java.applet.AppletStub;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.swing.JFrame;
 

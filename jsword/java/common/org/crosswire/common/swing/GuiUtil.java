@@ -1,8 +1,18 @@
 
 package org.crosswire.common.swing;
 
-import java.awt.*;
-import java.io.InputStream;
+import java.awt.Button;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Label;
+import java.awt.TextComponent;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.net.URL;
 
 import javax.swing.AbstractButton;
@@ -48,9 +58,6 @@ public class GuiUtil
     */
     public static ImageIcon loadImageIcon(String name)
     {
-        InputStream in;
-        byte[] bytes;
-
         // Get the images
         // Don't know why the originals don't work, these sometimes do better:
         try

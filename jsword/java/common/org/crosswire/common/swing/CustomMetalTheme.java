@@ -1,11 +1,12 @@
 
 package org.crosswire.common.swing;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 
-import javax.swing.plaf.metal.*;
-import javax.swing.plaf.*;
-import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.metal.MetalTheme;
 
 /**
 * This class describes a customizable default Metal Theme.

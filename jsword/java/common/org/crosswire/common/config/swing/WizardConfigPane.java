@@ -216,7 +216,7 @@ public class WizardConfigPane extends PanelConfigPane
     /**
      * Set a new card to be visible
      */
-    private void move(int dirn)
+    protected void move(int dirn)
     {
         if (dirn == -1 && posn > 0)
         {

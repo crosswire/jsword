@@ -108,21 +108,21 @@ public class FontButtonField extends JPanel implements Field
     }
 
     /** The name of the Font selection */
-    private String name = "Edit";
+    protected String name = "Edit";
 
     /** What to do when we are clicked */
     private Runnable runner;
 
     /** The browse button */
-    private JButton edit = new JButton(name);
+    protected JButton edit = new JButton(name);
 
     /** Some feedback on the color */
     //private JLabel text = new JLabel();
 
     /** The current Font */
-    private Font font = null;
+    protected Font font = null;
 
     /** To stop the button changing size all the time */
-    private Dimension dim = null;
+    protected Dimension dim = null;
 }
 

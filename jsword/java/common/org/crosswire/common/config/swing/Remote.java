@@ -90,10 +90,10 @@ public class Remote
     }
 
     /** The host to talk to */
-    private String host = "localhost";
+    protected String host = "localhost";
 
     /** The port number to talk on */
-    private int port = 8888;
+    protected int port = 8888;
 
     /**
      *

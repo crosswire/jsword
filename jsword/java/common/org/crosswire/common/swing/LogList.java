@@ -201,23 +201,23 @@ public class LogList extends JList
     // private static Hashtable streams = new Hashtable();
 
     /** The log messages */
-    private static Vector visible = new Vector();
+    protected static Vector visible = new Vector();
 
     /** The listener that pops up the ExceptionPanes */
     private static ListCaptureListener li = null;
 
     /** Where we store the messages */
-    private static CustomListModel logpile = new CustomListModel();
+    protected static CustomListModel logpile = new CustomListModel();
 
     /** The instructions for the Renderer */
-    private static CellRendererAdvice[] advice = new CellRendererAdvice[10];
+    protected static CellRendererAdvice[] advice = new CellRendererAdvice[10];
 
     static
     {
         Font norm_ss = new Font("SansSerif", Font.PLAIN, 12);
         Font small_ss = new Font("SansSerif", Font.PLAIN, 10);
-        Font norm_s = new Font("Serif", Font.PLAIN, 12);
-        Font small_s = new Font("Serif", Font.PLAIN, 10);
+        //Font norm_s = new Font("Serif", Font.PLAIN, 12);
+        //Font small_s = new Font("Serif", Font.PLAIN, 10);
 
         Icon cup = UIManager.getIcon("InternalFrame.icon");
 

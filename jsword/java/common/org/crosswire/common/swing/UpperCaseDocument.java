@@ -1,8 +1,9 @@
 
 package org.crosswire.common.swing;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 /**
 * An upper case document simply extends document to make all

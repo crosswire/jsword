@@ -133,8 +133,6 @@ public class AdvancedConfigPane extends TreeConfigPane
     {
         try
         {
-            String path = Config.getPath(key);
-
             Field field = FieldMap.getField(model.getType(), model.getTypeOptions());
             fields.put(key, field);
 

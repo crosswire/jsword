@@ -3,8 +3,6 @@ package org.crosswire.common.config.choices;
 
 import java.net.URL;
 
-import org.crosswire.common.config.*;
-
 /**
 * The Log file stylizer.
 *

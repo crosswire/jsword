@@ -1,9 +1,12 @@
 
 package org.crosswire.common.util;
 
-import java.util.*;
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
 * The NetUtil class looks after general utility stuff around the

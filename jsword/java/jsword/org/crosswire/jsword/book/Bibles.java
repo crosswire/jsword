@@ -119,8 +119,8 @@ public class Bibles
         try
         {
             Bible version = getBible(dest_name);
-            throw new BookException("book_exists",
-                new Object[] { dest_name });
+            version = version;
+            throw new BookException("book_exists", new Object[] { dest_name });
         }
         catch (BookException ex) { }
 
