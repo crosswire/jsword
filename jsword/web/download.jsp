@@ -16,7 +16,7 @@
   	throw new NullPointerException("localprefix");
 
   String webprefix = application.getInitParameter("webprefix");
-  if (nightlydir == null)
+  if (webprefix == null)
   	throw new NullPointerException("webprefix");
 ]]></jsp:scriptlet>
 
@@ -41,7 +41,7 @@ Version 0.9.5 is the first beta for JSword 1.0.
     <td>.tar.gz</td>
   </tr>
   <jsp:scriptlet><![CDATA[
-  DownloadSet[] dls = DownloadSet.getDownloadSets(localprefix+"/release", webdlprefix+"/release", false);
+  DownloadSet[] dls = DownloadSet.getDownloadSets(localprefix+"/release", webprefix+"/release", false);
   for (int i=0; i<dls.length; i++)
   {
   ]]></jsp:scriptlet>
