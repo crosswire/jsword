@@ -91,6 +91,11 @@
           	font-size: 75%;
           	color: gray;
           }
+          SUP.note
+          {
+          	font-size: 75%;
+          	color: green;
+          }
           FONT.verse
           {
           	font-size: 125%;
@@ -98,8 +103,19 @@
         </style>
       </head>
       <body>
-        <xsl:apply-templates/>
-        <xsl:apply-templates select="//note" mode="print-notes"/>
+        <table width="100%">
+          <tr>
+            <td width="3%">&#160;</td>
+            <td valign="top" width="80%">
+              <xsl:apply-templates/>
+            </td>
+            <td width="2%">&#160;</td>
+            <td valign="top" width="15%" style="background:#f4f4e8;">
+              <p>&#160;</p>
+              <xsl:apply-templates select="//note" mode="print-notes"/>
+            </td>
+          </tr>
+        </table>
       </body>
     </html>
   </xsl:template>
@@ -125,7 +141,7 @@
   <!--=======================================================================-->
   <xsl:template match="div">
     <xsl:if test="@divTitle">
-      <h2><xsl:value-of select="@divTitle"/></h2>
+      <h1><xsl:value-of select="@divTitle"/></h1>
     </xsl:if>
     <xsl:if test="@type = 'testament'">
       <h2>
@@ -175,42 +191,27 @@
 
   <!--=======================================================================-->
   <xsl:template match="note">
-    <!-- if the note length is less than 4 chars this must be an insertion point and not the text -->
-    <xsl:text> </xsl:text>
-    <xsl:if test="string-length(.) &lt; 4">
-      <a href="#{generate-id(.)}">
-        <font size="-1">
-          <xsl:number level="any" from="/" count="note[string-length(.) &lt; 4]" format="a"/>
-        </font>
-      </a>
-    </xsl:if>
+    <a href="#note-{generate-id(.)}">
+      <sup class="note"><xsl:number level="any" from="/" format="a"/></sup>
+    </a>
   </xsl:template>
 
   <!--=======================================================================-->
   <xsl:template match="note" mode="print-notes">
-    <xsl:if test="string-length(.) &gt; 4">
-      <xsl:choose>
-        <xsl:when test="@type">
-          <xsl:value-of select="concat('note-', @type)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text>note</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-      <a name="{generate-id(.)}">
-        <a href="#{ancestor::verse[1]/@osisID}">
-          <xsl:number level="any" from="/" count="note[string-length(.) &lt; 4]" format="a"/>
-        </a>
-      </a>
+    <b><xsl:number level="any" from="/" format="a"/></b>
+    <a name="note-{generate-id(.)}">
       <xsl:text> </xsl:text>
-      <xsl:apply-templates/>
-      <p><xsl:comment>fix jtextpane</xsl:comment></p>
-    </xsl:if>
+    </a>
+    <xsl:apply-templates/>
+    [<a href="#{ancestor::verse[1]/@osisID}">verse</a>]
+    <br/>
   </xsl:template>
 
   <!--=======================================================================-->
   <xsl:template match="p">
-    <p><xsl:comment>fix jtextpane</xsl:comment></p>
+    <p>
+      <xsl:apply-templates/>
+    </p>
   </xsl:template>
   
   <!--=======================================================================-->
@@ -327,6 +328,13 @@
     </b><br/>
   </xsl:template>
 
+  <!--=======================================================================-->
+  <xsl:template match="reference">
+    <a href="bible://{@osisRef}">
+      <xsl:apply-templates/>
+    </a>
+  </xsl:template>
+  
   <!--=======================================================================-->
 
   <xsl:template match="caption">
@@ -530,32 +538,7 @@
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-  
-  <xsl:template match="reference">
-    <!--
-        osisRefType conforms to the following regular expression, where:
-        
-            X = (\p{L}|\p{N}|_)+
-            Y = (\p{L}|\p{N}|_)*
-            Z = (\p{L}|\p{N}|\s)*
-            W = (X)((\.X)*)?
-        
-        Here goes:
-        
-            (W:)?W(@(cp:\[(\p{Nd})*\]|s:\[Z\]))?(\-(W)(@(cp:\[(\p{Nd})*\]|s:\[Z\]))?)?
-                                                    ^ almost [actually (Y)((\.X)*)]
-        
-        Since I have no clue what this is supposed to mean (no examples or
-        explanation in the spec), I don't treat the osisRef attribute here.  I
-        assume it's some sort of reference to an osisID in another work, but I
-        don't really know.  (Maybe cp: is a page number?  I don't know what s:
-        is.)
-    -->
-    <span class="reference">
-      <xsl:apply-templates/>
-    </span>
-  </xsl:template>
-  
+
   <!--
       <row> is handled near <table> below and so does not appear here.
   -->
