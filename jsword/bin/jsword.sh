@@ -103,4 +103,4 @@ if $cygwin; then
   CYGHOME=`cygpath --windows "$HOME"`
 fi
 
-"$JAVACMD" "-Djava.endorsed.dirs=${JSWORD}\lib" -classpath "${JSWORD}\resource" "-Djsword.bible.dir=${JSWORD}\resource" org.crosswire.jsword.view.swing.desktop.Desktop
+"$JAVACMD" "-Djava.endorsed.dirs=${JSWORD}/lib" -classpath "${JSWORD}/resource" "-Djsword.bible.dir=${JSWORD}/resource" org.crosswire.jsword.view.swing.desktop.Desktop
