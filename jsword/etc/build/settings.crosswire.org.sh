@@ -5,6 +5,8 @@ export WEB_HOME=/var/tomcat4/webapps/jsword
 export FTP_BASE=/home/ftp/pub/jsword
 export ANT_HOME=/home/joe/local/ant
 export JAVA_HOME=/usr/local/java
+export WEB_PREFIX=http://www.crosswire.org/ftpmirror/pub/jsword
+export JNLP_HOST=www.crosswire.org
 
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/bin

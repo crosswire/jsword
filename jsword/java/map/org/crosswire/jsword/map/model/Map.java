@@ -23,7 +23,7 @@ import org.crosswire.common.util.LogicError;
 
 /**
  * A map is an array of Nodes (verses with position).
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -181,11 +181,11 @@ public class Map implements Serializable
      */
     public void setLayoutSimple()
     {
-		if (dimensions != 2)
-		{
-			throw new IllegalArgumentException("Can't set simple layout for maps with "
-					+ dimensions + " dimensions.");
-		}
+        if (dimensions != 2)
+        {
+            throw new IllegalArgumentException("Can't set simple layout for maps with "
+                    + dimensions + " dimensions.");
+        }
 
         float start = 0.05F;
         float end = 0.95F;
@@ -365,10 +365,10 @@ public class Map implements Serializable
         {
             if (contents[i] == MapListener.class)
             {
-				if (ev == null)
-				{
-					ev = new MapEvent(this, book, chapter);
-				}
+                if (ev == null)
+                {
+                    ev = new MapEvent(this, book, chapter);
+                }
 
                 ((MapListener) contents[i+1]).mapChanged(ev);
             }
@@ -392,10 +392,10 @@ public class Map implements Serializable
         {
             if (contents[i] == MapListener.class)
             {
-				if (ev == null)
-				{
-					ev = new MapEvent(this);
-				}
+                if (ev == null)
+                {
+                    ev = new MapEvent(this);
+                }
 
                 ((MapListener) contents[i+1]).mapRewritten(ev);
             }
@@ -465,10 +465,10 @@ public class Map implements Serializable
      */
     public void fromXML(Element epos) throws JDOMException
     {
-		if (!epos.getName().equals("positions"))
-		{
-			throw new JDOMException("root element is not called 'links'");
-		}
+        if (!epos.getName().equals("positions"))
+        {
+            throw new JDOMException("root element is not called 'links'");
+        }
 
         dimensions = Integer.parseInt(epos.getAttributeValue("dimensions"));
 
@@ -478,7 +478,7 @@ public class Map implements Serializable
         {
             Element eb = (Element) bit.next();
             int b = Integer.parseInt(eb.getAttributeValue("num"));
-            
+
             List ecs = eb.getChildren("chapter");
             Iterator cit = ecs.iterator();
             while (cit.hasNext())
@@ -561,10 +561,10 @@ public class Map implements Serializable
      */
     private Position cog = null;
 
-	/**
+    /**
      * How long until we next calculate the center of gravity
      */
-	private int replies = 0;
+    private int replies = 0;
 
     /**
      * The array of verse nodes
@@ -591,3 +591,4 @@ public class Map implements Serializable
      */
     static final long serialVersionUID = -193572391252539071L;
 }
+

@@ -8,7 +8,7 @@ export ANT_OPTS="-Xmx512m"
 
 export PROPERTIES=
 export PROPERTIES="$PROPERTIES -Dtarget.web=$WEB_HOME"
-export PROPERTIES="$PROPERTIES -Djnlp.hostname=www.crosswire.org"
+export PROPERTIES="$PROPERTIES -Djnlp.hostname=$JNLP_HOST"
 export PROPERTIES="$PROPERTIES -Dlocalprefix=$FTP_BASE"
-export PROPERTIES="$PROPERTIES -Dwebprefix=http://www.crosswire.org/ftpmirror/pub/jsword"
+export PROPERTIES="$PROPERTIES -Dwebprefix=$WEB_PREFIX"
 

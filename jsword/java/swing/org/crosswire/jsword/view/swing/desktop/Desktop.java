@@ -723,14 +723,14 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
                 JMenuItem item = menu.getItem(j);
                 Action action = item.getAction();
 
-				if (action != null)
-				{
-				    KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-				    if (accel != null)
-				    {
-				        item.setAccelerator(accel);
-				    }
-				}
+                if (action != null)
+                {
+                    KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+                    if (accel != null)
+                    {
+                        item.setAccelerator(accel);
+                    }
+                }
             }
         }
     }

@@ -59,10 +59,10 @@ public class BibleViewPane extends JPanel
         {
             public void passageSelected(DisplaySelectEvent ev)
             {
-				if (saved == null)
-				{
-					fireTitleChanged(new TitleChangedEvent(BibleViewPane.this, getTitle()));
-				}
+                if (saved == null)
+                {
+                    fireTitleChanged(new TitleChangedEvent(BibleViewPane.this, getTitle()));
+                }
             }
 
             public void bookChosen(DisplaySelectEvent ev)
@@ -93,10 +93,10 @@ public class BibleViewPane extends JPanel
         if (saved == null)
         {
             String deft = pnl_select.getDefaultName();
-			if (deft.length() > shortlen)
-			{
-				deft = StringUtil.shorten(deft, shortlen);
-			}
+            if (deft.length() > shortlen)
+            {
+                deft = StringUtil.shorten(deft, shortlen);
+            }
 
             return deft;
         }
@@ -166,22 +166,22 @@ public class BibleViewPane extends JPanel
      */
     public synchronized void addTitleChangedListener(TitleChangedListener li)
     {
-		List temp = new ArrayList();
-    	if (listeners == null)
-		{
-			temp.add(li);
-			listeners = temp;
-		}
-		else
-    	{
-			temp.addAll(listeners);
+        List temp = new ArrayList();
+        if (listeners == null)
+        {
+            temp.add(li);
+            listeners = temp;
+        }
+        else
+        {
+            temp.addAll(listeners);
 
-			if (!temp.contains(li))
-			{
-				temp.add(li);
-				listeners = temp;
-			}
-    	}
+            if (!temp.contains(li))
+            {
+                temp.add(li);
+                listeners = temp;
+            }
+        }
     }
 
     /**

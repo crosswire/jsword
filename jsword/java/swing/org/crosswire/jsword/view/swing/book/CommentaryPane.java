@@ -232,7 +232,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
     public void setPassage(Passage ref)
     {
         this.ref = ref;
-        
+
         if (ref != null && ref.countVerses() > 0)
         {
             set.setVerse(ref.getVerseAt(0));
@@ -240,21 +240,21 @@ public class CommentaryPane extends JPanel implements DisplayArea
         }
     }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
-	{
-		txtdisplay.addHyperlinkListener(li);
-	}
+    {
+        txtdisplay.addHyperlinkListener(li);
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
-	{
-		txtdisplay.removeHyperlinkListener(li);
-	}
+    {
+        txtdisplay.removeHyperlinkListener(li);
+    }
 
     /**
      * The CommentaryMetaDatas
@@ -290,3 +290,4 @@ public class CommentaryPane extends JPanel implements DisplayArea
     protected JEditorPane txtdisplay = new JEditorPane();
     private JScrollPane scrdisplay = new JScrollPane();
 }
+

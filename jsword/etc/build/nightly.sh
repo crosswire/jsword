@@ -18,8 +18,8 @@ fi
 cd $BUILD_HOME/../..
 JSWORD_HOME=`pwd`
 
-. /bin/sh $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
-. /bin/sh $JSWORD_HOME/etc/build/settings.global.sh
+. $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
+. $JSWORD_HOME/etc/build/settings.global.sh
 
 rm -f $LOGFILE
 
@@ -29,7 +29,7 @@ rm -f $LOGFILE
 
 {
   find $FTP_BASE/nightly -type f -mtime +7 -exec echo rm {} \;
-  find $FTP_BASE/nightly -type f -mtime +7 -exec rm {} \;
+  find $FTP_BASE/nightly -type f -mtime +7 -exec rm -v {} \;
   cat $LOGFILE
 } | /bin/mail -s "jsword buildlog (from `dnsdomainname`)" joe@eireneh.com
 

@@ -153,25 +153,25 @@ public final class StringUtil
 
             lastlower = !Character.isUpperCase(c);
 
-			if (lastspace)
-			{
-				c = Character.toUpperCase(c);
-			}
+            if (lastspace)
+            {
+                c = Character.toUpperCase(c);
+            }
 
-			if (c == '_')
-			{
-				c = ' ';
-			}
+            if (c == '_')
+            {
+                c = ' ';
+            }
 
-			if (!lastspace || c != ' ')
-			{
-				retcode.append(c);
-			}
+            if (!lastspace || c != ' ')
+            {
+                retcode.append(c);
+            }
 
             lastspace = (c == ' ');
         }
 
-		return "" + retcode;
+        return "" + retcode;
     }
 
     /**
@@ -248,3 +248,4 @@ public final class StringUtil
         return retcode.toString();
     }
 }
+

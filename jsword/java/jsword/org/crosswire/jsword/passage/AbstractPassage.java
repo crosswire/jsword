@@ -508,7 +508,7 @@ public abstract class AbstractPassage implements Passage
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest())
         {
-        	fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
         }
     }
 
@@ -664,9 +664,9 @@ public abstract class AbstractPassage implements Passage
         }
 
         lowerNormalizeProtection();
-		if (lowerEventSuppresionAndTest())
-		{
-			fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses() - 1));
+        if (lowerEventSuppresionAndTest())
+        {
+            fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses() - 1));
         }
     }
 
@@ -717,10 +717,10 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireIntervalAdded(Object source, Verse start, Verse end)
     {
-		if (suppress_events != 0)
-		{
-			return;
-		}
+        if (suppress_events != 0)
+        {
+            return;
+        }
 
         // Create Event
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_ADDED, start, end);
@@ -752,10 +752,10 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireIntervalRemoved(Object source, Verse start, Verse end)
     {
-		if (suppress_events != 0)
-		{
-			return;
-		}
+        if (suppress_events != 0)
+        {
+            return;
+        }
 
         // Create Event
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_REMOVED, start, end);
@@ -787,10 +787,10 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireContentsChanged(Object source, Verse start, Verse end)
     {
-		if (suppress_events != 0)
-		{
-			return;
-		}
+        if (suppress_events != 0)
+        {
+            return;
+        }
 
         // Create Event
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_CHANGED, start, end);
@@ -1234,7 +1234,9 @@ public abstract class AbstractPassage implements Passage
         lowerNormalizeProtection();
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(AbstractPassage.class);
 
     /** Serialization type constant for a BitWise layout */
@@ -1269,3 +1271,4 @@ public abstract class AbstractPassage implements Passage
      */
     protected transient int skip_normalization = 0;
 }
+

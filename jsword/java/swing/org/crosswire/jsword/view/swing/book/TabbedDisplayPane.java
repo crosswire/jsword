@@ -175,7 +175,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
             if (tab_main.getSelectedComponent() != pnl_more)
             {
                 return;
-			}
+            }
 
             // First remove the old more ... tab that the user has just selected
             tab_main.remove(pnl_more);
@@ -185,7 +185,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
             waiting = cut.trimVerses(page_size);
 
             // Create a new tab
-			InnerDisplayPane pnl_new = createInnerDisplayPane(cut);
+            InnerDisplayPane pnl_new = createInnerDisplayPane(cut);
             tab_main.add(pnl_new, shortenName(cut.getName()));
 
             // Do we need a new more tab
@@ -322,14 +322,14 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
         else
         {
             temp.addAll(hyperlis);
-    
+
             if (!temp.contains(li))
             {
                 temp.add(li);
                 hyperlis = temp;
             }
         }
-        
+
         // Now go through all the known syncs and add this one in
         for (Iterator it = idps.iterator(); it.hasNext();)
         {
@@ -351,7 +351,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
             temp.remove(li);
             hyperlis = temp;
         }
-        
+
         // Now remove from all the known syncs
         for (Iterator it = idps.iterator(); it.hasNext();)
         {
@@ -383,7 +383,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
                 mouselis = temp;
             }
         }
-        
+
         // Now go through all the known syncs and add this one in
         for (Iterator it = idps.iterator(); it.hasNext();)
         {
@@ -499,3 +499,4 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      */
     private JPanel pnl_more = new JPanel();
 }
+

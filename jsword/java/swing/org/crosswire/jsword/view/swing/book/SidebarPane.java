@@ -55,23 +55,23 @@ public class SidebarPane extends JPanel
         this.add(split,  BorderLayout.CENTER);
     }
 
-	/**
-	 * Add a listener when someone clicks on a browser 'link'
-	 */
-	public void addHyperlinkListener(HyperlinkListener li)
-	{
-		dicts.addHyperlinkListener(li);
-		comments.addHyperlinkListener(li);
-	}
+    /**
+     * Add a listener when someone clicks on a browser 'link'
+     */
+    public void addHyperlinkListener(HyperlinkListener li)
+    {
+        dicts.addHyperlinkListener(li);
+        comments.addHyperlinkListener(li);
+    }
 
-	/**
-	 * Remove a listener when someone clicks on a browser 'link'
-	 */
-	public void removeHyperlinkListener(HyperlinkListener li)
-	{
-		dicts.removeHyperlinkListener(li);
-		comments.removeHyperlinkListener(li);
-	}
+    /**
+     * Remove a listener when someone clicks on a browser 'link'
+     */
+    public void removeHyperlinkListener(HyperlinkListener li)
+    {
+        dicts.removeHyperlinkListener(li);
+        comments.removeHyperlinkListener(li);
+    }
 
     /**
      * Accessor for the CommentaryPane
@@ -93,3 +93,4 @@ public class SidebarPane extends JPanel
     private JSplitPane split = new JSplitPane();
     private DictionaryPane dicts = new DictionaryPane();
 }
+

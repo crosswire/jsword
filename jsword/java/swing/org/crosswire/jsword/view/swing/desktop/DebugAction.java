@@ -15,7 +15,7 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
  * For creating a new window.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -112,6 +112,7 @@ public class DebugAction extends DesktopAbstractAction
                     }
                     catch (InterruptedException ex)
                     {
+                        // ignore
                     }
 
                     job.setProgress((i * 100) / steps, "Step "+i+"/"+steps);
@@ -129,3 +130,4 @@ public class DebugAction extends DesktopAbstractAction
      */
     protected static final Logger log = Logger.getLogger(JobManager.class);
 }
+

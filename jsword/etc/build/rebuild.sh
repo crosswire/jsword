@@ -20,8 +20,8 @@ JSWORD_HOME=`pwd`
 
 echo JSWORD_HOME=$JSWORD_HOME
 
-. /bin/sh $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
-. /bin/sh $JSWORD_HOME/etc/build/settings.global.sh
+. $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
+. $JSWORD_HOME/etc/build/settings.global.sh
 
 # keep the cvsup separate to allow build.xml to be updated
 

@@ -58,7 +58,7 @@ import org.crosswire.jsword.util.Style;
  */
 public class DictionaryPane extends JPanel implements DisplayArea
 {
-	/**
+    /**
      * Setup the GUI 
      */
     public DictionaryPane()
@@ -174,21 +174,21 @@ public class DictionaryPane extends JPanel implements DisplayArea
         return (Key) lstentries.getSelectedValue();
     }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
-	{
-		txtdisplay.addHyperlinkListener(li);
-	}
+    {
+        txtdisplay.addHyperlinkListener(li);
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
-	{
-		txtdisplay.removeHyperlinkListener(li);
-	}
+    {
+        txtdisplay.removeHyperlinkListener(li);
+    }
 
     /**
      * Find the first dictionary that has a mention of the word in question.
@@ -274,3 +274,4 @@ public class DictionaryPane extends JPanel implements DisplayArea
     private JTextPane txtdisplay = new JTextPane();
     private JList lstentries = new JList();
 }
+

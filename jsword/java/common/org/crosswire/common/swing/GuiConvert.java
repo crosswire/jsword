@@ -71,10 +71,10 @@ public class GuiConvert
      */
     public static Color string2Color(String value)
     {
-		if (value == null || value.equals(""))
-		{
-			return null;
-		}
+        if (value == null || value.equals(""))
+        {
+            return null;
+        }
 
         // log.fine("input="+value);
         String red = value.substring(1, 3);

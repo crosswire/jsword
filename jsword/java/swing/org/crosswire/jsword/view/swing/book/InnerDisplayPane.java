@@ -243,21 +243,21 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
         txt_view.paste();
     }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#addHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void addHyperlinkListener(HyperlinkListener li)
-	{
-		txt_view.addHyperlinkListener(li);
-	}
+    {
+        txt_view.addHyperlinkListener(li);
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.view.swing.book.DisplayArea#removeHyperlinkListener(javax.swing.event.HyperlinkListener)
      */
     public void removeHyperlinkListener(HyperlinkListener li)
-	{
-		txt_view.removeHyperlinkListener(li);
-	}
+    {
+        txt_view.removeHyperlinkListener(li);
+    }
 
     /**
      * Forward the mouse listener to our child components
@@ -294,3 +294,4 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();
 }
+
