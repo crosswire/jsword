@@ -67,6 +67,7 @@ import org.crosswire.jsword.view.swing.book.TitleChangedListener;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
 public class Desktop extends JFrame implements TitleChangedListener
@@ -163,6 +164,10 @@ public class Desktop extends JFrame implements TitleChangedListener
             pnl_tbar = new JToolBar();
             bar_status = new StatusBar();
 
+			//TODO: add splash.setProgress stuff
+            act_tools_options.createConfig();
+            act_tools_options.loadConfig();
+
             // GUI setup
             splash.setProgress(20, "Creating GUI : Init");
             jbInit();
@@ -171,12 +176,6 @@ public class Desktop extends JFrame implements TitleChangedListener
             // Configuration
             splash.setProgress(80, "General configuration");
             LookAndFeelUtil.addComponentToUpdate(this);
-
-            // Create a default view for the tdi and mdi schemes
-            splash.setProgress(90, "Creating config");
-            act_tools_options.createConfig();
-            splash.setProgress(95, "Loading config");
-            act_tools_options.loadConfig();
 
             splash.setProgress(100, "Done");
             splash.setVisible(false);
