@@ -94,7 +94,7 @@ public class PassageTabbedPane extends JPanel
             tab_main.removeAll();
 
             // Do we need a tabbed view
-            if (ref.countVerses() > page_size)
+            if (ref != null && ref.countVerses() > page_size)
             {
                 // Calc the verses to display in this tab
                 Passage cut = (Passage) whole.clone();
@@ -146,7 +146,7 @@ public class PassageTabbedPane extends JPanel
     /**
      * Tabs changed, generate some stuff
      */
-    private void newTab(ChangeEvent ev)
+    protected void newTab(ChangeEvent ev)
     {
         try
         {

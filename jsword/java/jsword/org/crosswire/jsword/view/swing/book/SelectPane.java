@@ -117,7 +117,7 @@ public class SelectPane extends JPanel
     /**
      * Someone pressed return in the search area
      */
-    private void search()
+    protected void search()
     {
         try
         {
@@ -183,7 +183,7 @@ public class SelectPane extends JPanel
     /**
      * Someone pressed return in the passage area
      */
-    private void view()
+    protected void view()
     {
         try
         {
@@ -199,7 +199,7 @@ public class SelectPane extends JPanel
     /**
      * Someone changed the version combo
      */
-    private void version()
+    protected void version()
     {
         try
         {

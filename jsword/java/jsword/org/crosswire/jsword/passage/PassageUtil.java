@@ -613,7 +613,14 @@ public class PassageUtil implements PassageConstants
      */
     protected static String getResource(String id)
     {
-        return res.getString(id);
+        try
+        {
+            return res.getString(id);
+        }
+        catch (MissingResourceException ex)
+        {
+            return "Missing resource for: "+id;
+        }
     }
 
     /**
@@ -625,7 +632,7 @@ public class PassageUtil implements PassageConstants
      */
     protected static String getResource(String id, Object[] params)
     {
-        MessageFormat formatter = new MessageFormat(res.getString(id));
+        MessageFormat formatter = new MessageFormat(getResource(id));
         // log.fine(pattern);
         // formatter.applyPattern(pattern);
         return formatter.format(params);

@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
@@ -136,9 +135,7 @@ public class Tools extends JFrame
             config.add("Advanced.User Level", new UserLevelChoice());
             config.add("Advanced.Available Drivers", new DriversChoice());
 
-            Properties prop = Project.resource().getProperties("Tools");
-            if (prop != null)
-                config.setProperties(prop);
+            config.setProperties(Project.resource().getProperties("Tools"));
             config.localToApplication(true);
 
             // GUI setup
@@ -509,8 +506,8 @@ public class Tools extends JFrame
         public FileCloseAction()
         {
             super("Close",
-                  "/toolbarButtonGraphics/general/Close16.gif",
-                  "/toolbarButtonGraphics/general/Close24.gif",
+                  null,
+                  null,
                   "Close Passages", "Close the current passage.",
                   'C', KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.CTRL_MASK, false));
         }
@@ -539,8 +536,8 @@ public class Tools extends JFrame
         public FileCloseAllAction()
         {
             super("Close All",
-                  "/toolbarButtonGraphics/general/CloseAll16.gif",
-                  "/toolbarButtonGraphics/general/CloseAll24.gif",
+                  null,
+                  null,
                   "Close All Passages", "Close all the passages.",
                   'L', null);
         }
@@ -619,8 +616,8 @@ public class Tools extends JFrame
         public ExitAction()
         {
             super("Exit",
-                  "/toolbarButtonGraphics/general/Exit16.gif",
-                  "/toolbarButtonGraphics/general/Exit24.gif",
+                  null,
+                  null,
                   "Exit", "Exit the Tools application.",
                   'X', KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK, false));
         }

@@ -114,6 +114,9 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
      */
     public String getBibleName(Object test)
     {
+        if (test == null)
+            return null;
+
         String item = test.toString();
         int end = item.indexOf(" (");
 

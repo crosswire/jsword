@@ -231,7 +231,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     /**
      * Someone clicked on a value in the list
      */
-    private void selection()
+    protected void selection()
     {
         try
         {
@@ -308,5 +308,5 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     private JSplitPane spt_top = new JSplitPane();
     private JScrollPane scr_ranges = new JScrollPane();
     private PassageTabbedPane txt_view = new PassageTabbedPane();
-    private JPopupMenu menu_view = new JPopupMenu();
+    protected JPopupMenu menu_view = new JPopupMenu();
 }

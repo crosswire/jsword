@@ -160,12 +160,31 @@ public class Resource
     public Properties getProperties(String subject) throws IOException, MalformedURLException
     {
         Properties prop = new Properties();
+        InputStream in;
 
-        InputStream in = getClass().getClassLoader().getSystemResourceAsStream(subject+".properties");
-        if (in == null)
-            return null;
+        in = getClass().getClassLoader().getSystemResourceAsStream(subject+".properties");
+        if (in != null)
+        {
+            System.out.println("Loading "+subject+".properties from classpath: [OK]");
+            PropertiesUtil.load(prop, in);
+        }
+        else
+        {
+            System.out.println("Loading "+subject+".properties from classpath: [NOT FOUND]");
+        }
 
-        PropertiesUtil.load(prop, in);
+        String path = System.getProperty("user.home") + File.separator + ".jsword/" + subject + ".properties";
+        File file = new File(path);
+        if (file.isFile() && file.canRead())
+        {
+            System.out.println("Loading "+subject+".properties from ~/.jsword/" + subject + ".properties: [OK]");
+            in = new FileInputStream(file);
+            PropertiesUtil.load(prop, in);
+        }
+        else
+        {
+            System.out.println("Loading "+subject+".properties from ~/.jsword/" + subject + ".properties: [NOT FOUND]");
+        }
 
         return prop;
     }
@@ -412,6 +431,7 @@ public class Resource
     {
         URL test;
 
+        // is there a versions dir as a subdir of base
         try
         {
             test = NetUtil.lengthenURL(base, "versions");
@@ -424,6 +444,7 @@ public class Resource
         {
         }
 
+        // remove the last leaf of the path
         String file = base.getFile();
         if (file.endsWith("/"))
             file = file.substring(0, file.length()-1);
@@ -433,6 +454,7 @@ public class Resource
         else
             file = file.substring(0, lastslash);
 
+        // is there a versions dir as a subdir of that?
         try
         {
             URL temp = new URL(base.getProtocol(), base.getHost(), base.getPort(), file);

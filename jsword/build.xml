@@ -90,7 +90,9 @@
       <fileset dir="${source.bin}"/>
     </copy>
     <chmod perm="a+x">
-      <fileset dir="${target.deploy}/${ant.project.name}/*.sh"/>
+      <fileset dir="${target.deploy}/${ant.project.name}">
+        <include name="*.sh"/>
+      </fileset>
     </chmod>
     <copy todir="${target.deploy}/${ant.project.name}/resource">
       <fileset dir="${source.res}"/>

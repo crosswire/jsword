@@ -89,6 +89,12 @@ public class PassageInnerPane extends JPanel
      */
     public void setPassage(Passage ref) throws IOException, SAXException, BookException, TransformerException
     {
+        if (ref == null || version == null)
+        {
+            txt_view.setText("");
+            return;
+        }
+
         BibleData data = version.getData(ref);
         Document xml = data.getDocument();
 

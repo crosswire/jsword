@@ -1,6 +1,7 @@
 
 package org.crosswire.common.util;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.text.*;
 
@@ -60,11 +61,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg)
     {
-        super(msg);
-
-        this.ex = null;
-        this.params = null;
-        this.internal = null;
+        this(msg, null, null, null);
     }
 
     /**
@@ -74,11 +71,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Throwable ex)
     {
-        super(msg);
-
-        this.ex = ex;
-        this.params = null;
-        this.internal = null;
+        this(msg, ex, null, null);
     }
 
     /**
@@ -89,11 +82,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Object[] params)
     {
-        super(msg);
-
-        this.ex = null;
-        this.params = params;
-        this.internal = null;
+        this(msg, null, params, null);
     }
 
     /**
@@ -104,11 +93,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Throwable ex, Object[] params)
     {
-        super(msg);
-
-        this.ex = ex;
-        this.params = params;
-        this.internal = null;
+        this(msg, ex, params, null);
     }
 
     /**
@@ -118,11 +103,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, String internal)
     {
-        super(msg);
-
-        this.ex = null;
-        this.params = null;
-        this.internal = internal;
+        this(msg, null, null, internal);
     }
 
     /**
@@ -132,11 +113,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Throwable ex, String internal)
     {
-        super(msg);
-
-        this.ex = ex;
-        this.params = null;
-        this.internal = internal;
+        this(msg, ex, null, internal);
     }
 
     /**
@@ -147,11 +124,7 @@ public class LucidException extends Exception
      */
     public LucidException(String msg, Object[] params, String internal)
     {
-        super(msg);
-
-        this.ex = null;
-        this.params = params;
-        this.internal = internal;
+        this(msg, null, params, internal);
     }
 
     /**
@@ -167,6 +140,9 @@ public class LucidException extends Exception
         this.ex = ex;
         this.params = params;
         this.internal = internal;
+        
+        if (res == null)
+            setDefaultResourceBundleName();
     }
 
     /**
@@ -176,16 +152,7 @@ public class LucidException extends Exception
     public String getMessage()
     {
         String id = super.getMessage();
-        String out;
-
-        try
-        {
-            out = res.getString(id);
-        }
-        catch (Exception ex)
-        {
-            return "Error fetching resource for '"+id+"'";
-        }
+        String out = getResource(id);
 
         try
         {
@@ -207,9 +174,8 @@ public class LucidException extends Exception
         if (ex == null)
             return getMessage();
 
-        String reason = res.getString("reason");
-        if (reason == null)
-            reason = " The cause of this is ...";
+        // avoid an NPE is res has not been set up.
+        String reason = getResource("reason");
 
         if (ex instanceof LucidException)
         {
@@ -219,6 +185,27 @@ public class LucidException extends Exception
         else
         {
             return getMessage() + reason + ex.getMessage();
+        }
+    }
+
+    /**
+     * Utility that enables us to have a single resource file for all the
+     * passage classes
+     * @param id The resource id to fetch
+     * @return The String from the resource file
+     */
+    protected static String getResource(String id)
+    {
+        if (res == null)
+            return "Missing resources when looking up: "+id;
+
+        try
+        {
+            return res.getString(id);
+        }
+        catch (MissingResourceException ex)
+        {
+            return "Missing resource for: "+id;
         }
     }
 
@@ -242,12 +229,25 @@ public class LucidException extends Exception
 
     /**
      * A way of setting the name of the resource bundle to use. The default
-     * bundle is named org.crosswire.common.resource.Exception
+     * bundle is named Exception
      * @param name The new resource bundle name
      */
     public static final void setResourceBundleName(String name)
     {
         res = ResourceBundle.getBundle(name);
+        
+        if (res == null)
+            System.err.println("Failed to find ResourceBundle for "+name);
+    }
+
+    /**
+     * A way of setting the name of the resource bundle to use. The default
+     * bundle is named Exception
+     * @param name The new resource bundle name
+     */
+    public static final void setDefaultResourceBundleName()
+    {
+        setResourceBundleName("Exception");
     }
 
     /** An embedded exception */
@@ -260,5 +260,5 @@ public class LucidException extends Exception
     protected String internal;
 
     /** The resource hash */
-    protected static ResourceBundle res = ResourceBundle.getBundle("Exception");
+    protected static ResourceBundle res = null;
 }
