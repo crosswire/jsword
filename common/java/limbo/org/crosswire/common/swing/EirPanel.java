@@ -40,7 +40,7 @@ import javax.swing.JPanel;
  */
 public class EirPanel extends JPanel
 {
-    // I18N: This class has not been internationalized, because it is not used.
+	// I18N: This class has not been internationalized, because it is not used.
     /**
      * A method to be exposed by our children
      * @param parent The component to which to attach the new dialog
@@ -49,16 +49,16 @@ public class EirPanel extends JPanel
      */
     public void showInDialog(Component parent, String title, boolean modal)
     {
-        if (dlg_main != null)
+        if (dlgMain != null)
         {
-            dlg_main.setVisible(true);
+            dlgMain.setVisible(true);
             return;
         }
 
         // I18N: migrate this to an ActionFactory
-        btn_ok = new JButton();
-        btn_ok.setText(Msg.CLOSE.toString());
-        btn_ok.addActionListener(new ActionListener()
+        btnOk = new JButton();
+        btnOk.setText(Msg.CLOSE.toString());
+        btnOk.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {
@@ -66,30 +66,30 @@ public class EirPanel extends JPanel
             }
         });
 
-        pnl_buttons = new JPanel();
-        pnl_buttons.add(btn_ok, null);
+        pnlButtons = new JPanel();
+        pnlButtons.add(btnOk, null);
 
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        pnl_main = new JPanel();
-        pnl_main.setLayout(new BorderLayout());
-        pnl_main.add(pnl_buttons, BorderLayout.SOUTH);
-        pnl_main.add(this, BorderLayout.CENTER);
+        pnlMain = new JPanel();
+        pnlMain.setLayout(new BorderLayout());
+        pnlMain.add(pnlButtons, BorderLayout.SOUTH);
+        pnlMain.add(this, BorderLayout.CENTER);
 
-        dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
-        dlg_main.getContentPane().add(pnl_main);
-        dlg_main.setTitle(title);
-        dlg_main.setModal(modal);
-        dlg_main.addWindowListener(new WindowAdapter()
+        dlgMain = new JDialog(JOptionPane.getFrameForComponent(parent));
+        dlgMain.getContentPane().add(pnlMain);
+        dlgMain.setTitle(title);
+        dlgMain.setModal(modal);
+        dlgMain.addWindowListener(new WindowAdapter()
         {
             public void windowClosed(WindowEvent ev)
             {
                 close();
             }
         });
-        dlg_main.pack();
-        dlg_main.setVisible(true);
-        dlg_main.setLocationRelativeTo(parent);
+        dlgMain.pack();
+        dlgMain.setVisible(true);
+        dlgMain.setLocationRelativeTo(parent);
     }
 
     /**
@@ -97,15 +97,20 @@ public class EirPanel extends JPanel
      */
     protected void close()
     {
-        if (dlg_main != null)
+        if (dlgMain != null)
         {
-            dlg_main.dispose();
-            dlg_main = null;
+            dlgMain.dispose();
+            dlgMain = null;
         }
     }
 
-    private JDialog dlg_main;
-    private JPanel pnl_main;
-    private JPanel pnl_buttons;
-    private JButton btn_ok;
+    private JDialog dlgMain;
+    private JPanel pnlMain;
+    private JPanel pnlButtons;
+    private JButton btnOk;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3617013061509265206L;
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import org.crosswire.common.util.MsgBase;
@@ -30,7 +29,7 @@ import org.crosswire.jsword.book.BookException;
  */
 public class NoSuchResourceException extends BookException
 {
-    /**
+	/**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
@@ -70,4 +69,9 @@ public class NoSuchResourceException extends BookException
     {
         super(msg, ex, params);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257567321470809397L;
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import org.crosswire.common.util.LucidException;
@@ -31,7 +30,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class ConverterException extends LucidException
 {
-    /**
+	/**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
@@ -70,4 +69,9 @@ public class ConverterException extends LucidException
     {
         super(msg, ex, params);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3256728359672100401L;
 }

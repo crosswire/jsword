@@ -2,7 +2,6 @@ package org.crosswire.jsword.book.remote;
 
 import java.io.Serializable;
 
-
 /**
  * Set of constants for the types of RemoteMethod.
  * 
@@ -109,7 +108,13 @@ public class MethodName implements Serializable
 
     private static final MethodName[] VALUES =
     {
-                    GETBIBLES, GETDATA, FINDPASSAGE
+        GETBIBLES,
+        GETDATA,
+        FINDPASSAGE
     };
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3905528202582701873L;
 }

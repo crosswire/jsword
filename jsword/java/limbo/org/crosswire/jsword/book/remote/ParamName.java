@@ -28,7 +28,7 @@ import java.io.Serializable;
  */
 public class ParamName implements Serializable
 {
-    static final ParamName PARAM_BIBLE = new ParamName("bible"); //$NON-NLS-1$
+	static final ParamName PARAM_BIBLE = new ParamName("bible"); //$NON-NLS-1$
     static final ParamName PARAM_PASSAGE = new ParamName("passage"); //$NON-NLS-1$
     static final ParamName PARAM_FINDSTRING = new ParamName("word"); //$NON-NLS-1$
 
@@ -112,4 +112,9 @@ public class ParamName implements Serializable
         PARAM_PASSAGE,
         PARAM_FINDSTRING,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257290244624626230L;
 }

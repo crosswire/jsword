@@ -41,7 +41,7 @@ import javax.swing.JFrame;
  */
 public class AppletFrame extends JFrame
 {
-    /**
+	/**
      * Creates a Frame and runs an Applet in the frame.
      * Mirrors the actions of a Browser in an application.
      * @param name The text that should appear in the title bar.
@@ -115,6 +115,11 @@ public class AppletFrame extends JFrame
         dispose();
         System.exit(0);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3256727290326364725L;
 
     /**
      * So that we can be an AppletStub

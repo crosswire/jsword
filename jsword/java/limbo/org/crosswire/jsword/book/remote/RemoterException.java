@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class RemoterException extends LucidException
 {
-    /**
+	/**
      * Constructor RemoterException.
      */
     public RemoterException(MsgBase message)
@@ -76,7 +76,7 @@ public class RemoterException extends LucidException
      */
     public Class getOriginalType()
     {
-        return original_type;
+        return originalType;
     }
 
     /**
@@ -87,5 +87,10 @@ public class RemoterException extends LucidException
     /**
      * The original type of that caused this
      */
-    private Class original_type;
+    private Class originalType;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3689064041213408309L;
 }
