@@ -142,7 +142,7 @@ public class SwordDictionary extends AbstractBook
 
             sbmd.getFilter().toOSIS(div, txt);
 
-            BookData bdata = new BookData(osis);
+            BookData bdata = new BookData(osis, this, key);
             return bdata;
         }
         catch (Exception ex)

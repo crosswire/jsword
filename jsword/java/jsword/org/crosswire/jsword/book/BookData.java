@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
@@ -15,6 +14,7 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.Verse;
+import org.crosswire.jsword.passage.Key;
 import org.xml.sax.SAXException;
 
 /**
@@ -46,9 +46,11 @@ public class BookData
     /**
      * Ctor
      */
-    public BookData(Osis osis)
+    public BookData(Osis osis, Book book, Key key)
     {
         this.osis = osis;
+        this.book = book;
+        this.key = key;
     }
 
     /**
@@ -133,6 +135,36 @@ public class BookData
     {
         return new JAXBSAXEventProvider(JAXBUtil.getJAXBContext(), osis);
     }
+
+    /**
+     * Who created this data.
+     * @return Returns the book.
+     */
+    public Book getBook()
+    {
+        return book;
+    }
+
+    /**
+     * What key was used to create this data.
+     * It should be true that bookdata.getBook().getBookData(bookdata.getKey())
+     * equals (but not necessarily ==) the original bookdata.
+     * @return Returns the key.
+     */
+    public Key getKey()
+    {
+        return key;
+    }
+
+    /**
+     * Who created this data
+     */
+    private Book book;
+
+    /**
+     * What key was used to create this data
+     */
+    private Key key;
 
     /**
      * The root where we read data from

@@ -82,7 +82,7 @@ public class BooksListModel extends AbstractListModel
     /* (non-Javadoc)
      * @see javax.swing.ListModel#getElementAt(int)
      */
-    public Object getElementAt(int index)
+    public synchronized Object getElementAt(int index)
     {
         // PARANOIA(joe): this check shouldn't be needed
         if (index > bmds.size())
@@ -99,7 +99,7 @@ public class BooksListModel extends AbstractListModel
      * @param test the object to find
      * @return an int representing the index position, where 0 is the first position
      */
-    public int getIndexOf(Object test)
+    public synchronized int getIndexOf(Object test)
     {
         return bmds.indexOf(test);
     }
@@ -144,7 +144,7 @@ public class BooksListModel extends AbstractListModel
     /**
      * Setup the data-stores of the current Bibles and drivers
      */
-    protected void cacheData()
+    protected synchronized void cacheData()
     {
         bmds = new ArrayList();
         bmds.addAll(books.getBookMetaDatas(filter));
@@ -209,7 +209,10 @@ public class BooksListModel extends AbstractListModel
     private CustomListDataListener listener = new CustomListDataListener();
 
     /**
-     * The array of versions
+     * The array of versions.
+     * All methods that access this variable have been marked synchronized to
+     * ensure that one thread can't update the list of books while another is
+     * trying to create a JList based on this class.
      */
     protected List bmds = null;
 

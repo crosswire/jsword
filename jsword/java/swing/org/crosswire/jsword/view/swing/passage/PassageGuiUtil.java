@@ -1,10 +1,18 @@
-
 package org.crosswire.jsword.view.swing.passage;
 
-import javax.swing.JList;
+import java.util.Iterator;
 
+import javax.swing.JList;
+import javax.swing.JTree;
+import javax.swing.tree.TreePath;
+
+import org.crosswire.jsword.passage.DefaultKeyList;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.view.swing.book.KeyTreeModel;
+import org.crosswire.jsword.view.swing.book.KeyTreeNode;
 
 /**
  * A Simple extension to JList to customize it to hold a Passage and
@@ -56,5 +64,45 @@ public class PassageGuiUtil
         }
 
         list.setSelectedIndices(new int[0]);
+    }
+
+    /**
+     * @param tree
+     */
+    public static void deleteSelectedVersesFromTree(JTree tree)
+    {
+        KeyList selected = getSelectedKeys(tree);
+
+        KeyTreeModel mdl = (KeyTreeModel) tree.getModel();
+        Key root = mdl.getKey();
+
+        if (root instanceof KeyList)
+        {
+            KeyList set = (KeyList) root;
+            for (Iterator it = selected.iterator(); it.hasNext();)
+            {
+                Key key = (Key) it.next();
+                set.remove(key);
+            }
+        }
+
+        mdl.setKey(root);
+    }
+
+    /**
+     * @return
+     */
+    public static KeyList getSelectedKeys(JTree tree)
+    {
+        KeyList selected = new DefaultKeyList();
+        TreePath[] paths = tree.getSelectionPaths();
+
+        for (int i = 0; i < paths.length; i++)
+        {
+            KeyTreeNode node = (KeyTreeNode) paths[1].getLastPathComponent();
+            selected.add(node.getKey());
+        }
+
+        return selected;
     }
 }

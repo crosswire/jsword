@@ -76,7 +76,7 @@ public class StubDictionary extends AbstractBook
 
             FilterFactory.getDefaultFilter().toOSIS(div, "stub implementation");
 
-            BookData bdata = new BookData(osis);
+            BookData bdata = new BookData(osis, this, key);
             return bdata;
         }
         catch (Exception ex)

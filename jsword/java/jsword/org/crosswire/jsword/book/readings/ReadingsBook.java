@@ -152,7 +152,7 @@ public class ReadingsBook extends AbstractBook
                 div.getContent().add("Error decoding: "+readings);
             }
 
-            BookData bdata = new BookData(osis);
+            BookData bdata = new BookData(osis, this, key);
             return bdata;
         }
         catch (Exception ex)
