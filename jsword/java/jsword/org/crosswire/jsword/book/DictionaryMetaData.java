@@ -40,5 +40,5 @@ public interface DictionaryMetaData extends BookMetaData
      * Since Dictionary are read-only once setup thread safety should not be
      * hard.
      */
-    public Dictionary getDictionary() throws BookException;
+    public Dictionary getDictionary();
 }

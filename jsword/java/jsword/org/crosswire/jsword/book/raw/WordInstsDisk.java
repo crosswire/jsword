@@ -3,12 +3,11 @@ package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * WordInstsDisk is like WordInstsMem however the entire block of data is
@@ -42,7 +41,7 @@ public class WordInstsDisk extends InstsDisk
      * @param raw Reference to the RawBible that is using us
      * @param create Should we start all over again
      */
-    public WordInstsDisk(RawBible raw, boolean create) throws Exception
+    public WordInstsDisk(RawBible raw, boolean create) throws IOException
     {
         super(raw, "wordinst.idx", create);
     }
@@ -61,7 +60,7 @@ public class WordInstsDisk extends InstsDisk
     /**
      * Load the Resource from a named file
      */
-    public void load() throws IOException, ClassNotFoundException, MalformedURLException
+    public void load() throws IOException
     {
         URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
         raf = new RandomAccessFile(url.getFile(), "r");

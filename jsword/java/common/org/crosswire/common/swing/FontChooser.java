@@ -365,8 +365,14 @@ public class FontChooser extends JPanel
         {
             Hashtable hash = (Hashtable) value;
 
-            if (UIManager.getLookAndFeel().getName().equals("CDE/Motif"))   setOpaque(index != -1);
-            else                                                            setOpaque(true);
+            if (UIManager.getLookAndFeel().getName().equals("CDE/Motif"))
+            {
+                setOpaque(index != -1);
+            }
+            else
+            {
+                setOpaque(true);
+            }
 
             if (value == null)
             {

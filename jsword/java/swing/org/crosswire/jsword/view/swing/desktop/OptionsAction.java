@@ -13,10 +13,11 @@ import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.readings.ReadingsBookDriver;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
@@ -94,17 +95,31 @@ public class OptionsAction extends DesktopAbstractAction
     private static void fillChoiceFactory() throws BookException
     {
         // Create the array of Bibles
-        List bmds = Books.getBooks(BookFilters.getBibles());
-        List names = new ArrayList();
-        for (Iterator it = bmds.iterator(); it.hasNext();)
-        {
-            BibleMetaData bmd = (BibleMetaData) it.next();
-            names.add(bmd.getFullName());
-        }
-        ChoiceFactory.getDataMap().put("biblenames", names.toArray(new String[names.size()]));
+        String[] bnames = getFullNameArray(BookFilters.getBibles());
+        ChoiceFactory.getDataMap().put("biblenames", bnames);
+
+        // Create the array of Commentaries
+        String[] cnames = getFullNameArray(BookFilters.getCommentaries());
+        ChoiceFactory.getDataMap().put("commentarynames", cnames);
+
+        // Create the array of Dictionaries
+        String[] dnames = getFullNameArray(BookFilters.getDictionaries());
+        ChoiceFactory.getDataMap().put("dictionarynames", dnames);
 
         // Create the array of readings sets
         ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
+    }
+
+    private static String[] getFullNameArray(BookFilter filter)
+    {
+        List bmds = Books.getBooks(filter);
+        List names = new ArrayList();
+        for (Iterator it = bmds.iterator(); it.hasNext();)
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            names.add(bmd.getFullName());
+        }
+        return (String[]) names.toArray(new String[names.size()]);
     }
 
     private Config config = null;

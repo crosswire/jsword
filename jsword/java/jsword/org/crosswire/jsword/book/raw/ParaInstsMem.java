@@ -39,40 +39,40 @@ import org.crosswire.jsword.passage.Verse;
 public class ParaInstsMem extends InstsMem
 {
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    */
-    public ParaInstsMem(RawBible raw, boolean create) throws Exception
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     */
+    public ParaInstsMem(RawBible raw, boolean create) throws IOException
     {
         super(raw, "parainst.idx", create);
     }
 
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    */
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     */
     public ParaInstsMem(RawBible raw, boolean create, StringBuffer messages)
     {
         super(raw, "parainst.idx", create, messages);
     }
 
     /**
-    * Start all over again and clear the decks for more data.
-    */
+     * Start all over again and clear the decks for more data.
+     */
     public void init()
     {
         ref = PassageFactory.createPassage();
     }
 
     /**
-    * Load the Resource from a stream
-    * @param in The stream to read from
-    */
-    public void load(InputStream in) throws IOException, ClassNotFoundException
+     * Load the Resource from a stream
+     * @param in The stream to read from
+     */
+    public void load(InputStream in) throws IOException
     {
         ObjectInputStream oin = new ObjectInputStream(in);
 
@@ -82,16 +82,23 @@ public class ParaInstsMem extends InstsMem
         if (!ssig.equals("RAW:AI"))
             throw new IOException("This file is not a ParaInst file");
 
-        ref = (Passage) oin.readObject();
+        try
+        {
+            ref = (Passage) oin.readObject();
+        }
+        catch (ClassNotFoundException ex)
+        {
+            throw new IOException("Class not found: "+ex.getMessage());
+        }
 
         oin.close();
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a
+     * stream
+     * @param out The stream to write to
+     */
     public void save(OutputStream out) throws IOException
     {
         ObjectOutputStream oout = new ObjectOutputStream(out);
@@ -103,10 +110,10 @@ public class ParaInstsMem extends InstsMem
     }
 
     /**
-    * Set the new paragraph status for a verse
-    * @param para The paragraph status
-    * @param verse The Verse to set data on
-    */
+     * Set the new paragraph status for a verse
+     * @param para The paragraph status
+     * @param verse The Verse to set data on
+     */
     public void setPara(boolean para, Verse verse)
     {
         if (para)
@@ -120,10 +127,10 @@ public class ParaInstsMem extends InstsMem
     }
 
     /**
-    * Set the new paragraph status for a verse.
-    * If the load failed then we treat each verse as a new paragraph
-    * @param verse The Verse to get data on
-    */
+     * Set the new paragraph status for a verse.
+     * If the load failed then we treat each verse as a new paragraph
+     * @param verse The Verse to get data on
+     */
     public boolean getPara(Verse verse)
     {
         return ref.contains(verse);

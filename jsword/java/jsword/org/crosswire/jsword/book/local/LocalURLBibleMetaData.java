@@ -7,6 +7,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Properties;
 
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
@@ -42,30 +43,35 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     /**
      * Constructor LocalURLBibleMetaData.
      */
-    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, BibleMetaData basis)
+    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, BibleMetaData basis) throws InstantiationException, IllegalAccessException
     {
-        super(basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
+        super(driver, basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
+
+        // Check that we can do this (but ignore the results) to ensure that
+        // it will work in getBible()
+        driver.bibleclass.newInstance();
+
         this.dir = dir;
         this.prop = new Properties();
-
-        setDriver(driver);
     }
 
     /**
      * Basic constructor
      */
-    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException
+    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException, InstantiationException, IllegalAccessException
     {
-        super(prop);
+        super(driver, prop);
+
+        // Check that we can do this (but ignore the results) to ensure that
+        // it will work in getBible()
+        driver.bibleclass.newInstance();
+
         this.dir = dir;
         this.prop = prop;
-
-        setDriver(driver);
     }
 
-    /**
-     * Delete the set of files that make up this version.
-     * @throws BookException If anything goes wrong with this method
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#delete()
      */
     public void delete() throws BookException
     {
@@ -82,6 +88,27 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBibleMetaData#createBible()
+     */
+    protected Bible createBible()
+    {
+        try
+        {
+            LocalURLBookDriver driver = (LocalURLBookDriver) getDriver(); 
+            LocalURLBible bible = (LocalURLBible) driver.bibleclass.newInstance();
+            bible.setLocalURLBibleMetaData(this);
+            bible.init(null);
+            return bible;
+        }
+        catch (Exception ex)
+        {
+            // This may sound harsh but we tried this in the ctor
+            // so it really should not break here.
+            throw new LogicError(ex);
+        }
+    }
+
     /**
      * Accessor for keys from our properties file.
      * @param property
@@ -93,31 +120,6 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     }
 
     /**
-     * Fetch a currently existing Bible, read-only
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     */
-    public Bible getBible() throws BookException
-    {
-        // DCL
-        // I know double checked locking is theoretically broken however it isn't
-        // practically broken 99% of the time, and even if the 1% comes up here
-        // the only effect is some temporary wasted memory
-        if (bible == null)
-        {
-            synchronized(this)
-            {
-                if (bible == null)
-                {
-                    bible = driver.getBible(this, null);
-                }
-            }
-        }
-
-        return bible;
-    }
-
-    /**
      * Method getURL.
      * @return URL
      */
@@ -126,31 +128,24 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
         return dir;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
      */
     public String getDriverName()
     {
-        return driver.getDriverName();
+        return ((LocalURLBookDriver) getDriver()).getDriverName();
     }
 
-    /**
-     * Internal setter for the BookDriver
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
      */
-    private void setDriver(LocalURLBookDriver driver)
+    public int getSpeed()
     {
-        if (driver == null)
-        {
-            throw new NullPointerException();
-        }
-
-        this.driver = driver;
+        return ((LocalURLBookDriver) getDriver()).getSpeed();
     }
 
-    /**
-     * Do the 2 versions have matching names, editions and drivers.
-     * @param obj The object to compare to
-     * @return true if the names and editions match
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj)
     {
@@ -158,7 +153,7 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
         if (obj == null)
             return false;
 
-        // Check that that is the same as this
+        // Check that that is the same type as this
         // Don't use instanceof since that breaks inheritance
         if (!obj.getClass().equals(this.getClass()))
             return false;
@@ -170,23 +165,16 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
         // The real bit ...
         LocalURLBibleMetaData that = (LocalURLBibleMetaData) obj;
 
-        return driver.equals(that.driver);
+        return getDriver().equals(that.getDriver());
     }
 
-
-    /**
-     * The expected speed at which this implementation gets correct answers.
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#hashCode()
      */
-    public int getSpeed()
+    public int hashCode()
     {
-        return driver.getSpeed();
+        return getDriver().hashCode();
     }
-
-    /**
-     * The name
-     */
-    private LocalURLBookDriver driver;
 
     /**
      * The properties by which we got our data
@@ -197,9 +185,4 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
      * The location of our home directory
      */
     private URL dir;
-
-    /**
-     * The cached bible so we don't have to create too many
-     */
-    private Bible bible = null;
 }

@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.readings;
 
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
@@ -37,15 +37,15 @@ public class ReadingsDictionaryMetaData extends AbstractBookMetaData implements 
     /**
      * Simple constructor
      */
-    public ReadingsDictionaryMetaData()
+    public ReadingsDictionaryMetaData(BookDriver driver)
     {
-        super("Daily Readings", "", "Readings", null, Openness.UNKNOWN, null);
+        super(driver, "Daily Readings", "", "Readings", null, Openness.UNKNOWN, null);
     }
 
     /**
      * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
      */
-    public Dictionary getDictionary() throws BookException
+    public Dictionary getDictionary()
     {
         return new ReadingsDictionary(this);
     }
@@ -69,7 +69,7 @@ public class ReadingsDictionaryMetaData extends AbstractBookMetaData implements 
     /**
      * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public Book getBook() throws BookException
+    public Book getBook()
     {
         return getDictionary();
     }

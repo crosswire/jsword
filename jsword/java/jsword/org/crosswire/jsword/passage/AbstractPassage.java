@@ -264,8 +264,7 @@ public abstract class AbstractPassage implements Passage
         {
             Verse verse = (Verse) it.next();
 
-            if ((book == 0 || verse.getBook() == book)
-                && current_chapter != verse.getChapter())
+            if ((book == 0 || verse.getBook() == book) && current_chapter != verse.getChapter())
             {
                 current_chapter = verse.getChapter();
                 chapter_count++;
@@ -295,8 +294,7 @@ public abstract class AbstractPassage implements Passage
         {
             Verse verse = (Verse) it.next();
 
-            if ((book == 0 || verse.getBook() == book)
-                && (chapter == 0 || verse.getChapter() == chapter))
+            if ((book == 0 || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter))
             {
                 verse_count++;
             }
@@ -374,8 +372,14 @@ public abstract class AbstractPassage implements Passage
     {
         Iterator that_it = null;
 
-        if (that instanceof RangedPassage) that_it = ((RangedPassage) that).rangeIterator();
-        else                               that_it = that.verseIterator();
+        if (that instanceof RangedPassage)
+        {
+            that_it = ((RangedPassage) that).rangeIterator();
+        }
+        else
+        {
+            that_it = that.verseIterator();
+        }
 
         while (that_it.hasNext())
         {
@@ -435,8 +439,14 @@ public abstract class AbstractPassage implements Passage
         lowerNormalizeProtection();
         // The event notification is done by the remove above
 
-        if (overflow)   return remainder;
-        else            return null;
+        if (overflow)
+        {
+            return remainder;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -488,8 +498,14 @@ public abstract class AbstractPassage implements Passage
         lowerNormalizeProtection();
         // The event notification is done by the remove above
 
-        if (overflow)   return remainder;
-        else            return null;
+        if (overflow)
+        {
+            return remainder;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -506,8 +522,14 @@ public abstract class AbstractPassage implements Passage
 
         Iterator that_it = null;
 
-        if (that instanceof Passage)  that_it = ((Passage) that).rangeIterator();
-        else                          that_it = that.verseIterator();
+        if (that instanceof Passage)
+        {
+            that_it = ((Passage) that).rangeIterator();
+        }
+        else
+        {
+            that_it = that.verseIterator();
+        }
 
         while (that_it.hasNext())
         {
@@ -534,8 +556,14 @@ public abstract class AbstractPassage implements Passage
 
         Iterator that_it = null;
 
-        if (that instanceof Passage)  that_it = ((Passage) that).rangeIterator();
-        else                          that_it = that.verseIterator();
+        if (that instanceof Passage)
+        {
+            that_it = ((Passage) that).rangeIterator();
+        }
+        else
+        {
+            that_it = that.verseIterator();
+        }
 
         while (that_it.hasNext())
         {

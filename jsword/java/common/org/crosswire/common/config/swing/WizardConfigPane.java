@@ -23,13 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.StringUtil;
 
 /**
  * A mutable view of Fields setting array.
@@ -108,7 +108,7 @@ public class WizardConfigPane extends PanelConfigPane
                 cards++;
 
                 // The name for the title bar
-                names.addElement(StringUtil.swap(path, ".", " "));
+                names.addElement(StringUtils.replace(path, ".", " "));
             }
         }
 

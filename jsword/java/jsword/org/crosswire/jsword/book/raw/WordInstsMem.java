@@ -58,7 +58,7 @@ public class WordInstsMem extends InstsMem
      * @param raw Reference to the RawBible that is using us
      * @param create Should we start all over again
      */
-    public WordInstsMem(RawBible raw, boolean create) throws Exception
+    public WordInstsMem(RawBible raw, boolean create) throws IOException
     {
         super(raw, "wordinst.idx", create);
     }
@@ -67,7 +67,7 @@ public class WordInstsMem extends InstsMem
      * Load the Resource from a stream
      * @param in The stream to read from
      */
-    public void load(InputStream in) throws IOException, ClassNotFoundException
+    public void load(InputStream in) throws IOException
     {
         DataInputStream din = new DataInputStream(in);
 

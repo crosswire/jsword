@@ -7,9 +7,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Openness;
 
 /**
@@ -41,41 +42,77 @@ public abstract class AbstractBibleMetaData extends AbstractBookMetaData impleme
     /**
      * Basic constructor
      */
-    public AbstractBibleMetaData(Properties prop) throws MalformedURLException, ParseException
+    public AbstractBibleMetaData(BookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
-        super(prop);
+        super(driver, prop);
     }
 
     /**
      * Basic constructor where the user is expected to create correct
      * Date, Openness and URL objects
      */
-    public AbstractBibleMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public AbstractBibleMetaData(BookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
-        super(name, edition, initials, pub, open, licence);
+        super(driver, name, edition, initials, pub, open, licence);
     }
-    
+
     /**
      * Basic constructor where we do all the string conversion for the user
      */
-    public AbstractBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public AbstractBibleMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
-        super(name, edition, initials, pubstr, openstr, licencestr);
+        super(driver, name, edition, initials, pubstr, openstr, licencestr);
     }
 
     /**
      * Ctor for when we only know the book name
      */
-    public AbstractBibleMetaData(String name)
+    public AbstractBibleMetaData(BookDriver driver, String name)
     {
-        super(name);
+        super(driver, name);
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public Book getBook() throws BookException
+    public Book getBook()
     {
         return getBible();
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
+     */
+    public final Bible getBible()
+    {
+        // DCL
+        // I know double checked locking is theoretically broken however it isn't
+        // practically broken 99% of the time, and even if the 1% comes up here
+        // the only effect is some temporary wasted memory
+        if (bible == null)
+        {
+            synchronized(this)
+            {
+                if (bible == null)
+                {
+                    return createBible();
+                }
+            }
+        }
+
+        return bible;
+    }
+
+    /**
+     * A simple create method that does not need to worry about checking that
+     * a Bible has already been created. This method should only be called once
+     * for many calls to getBible()
+     * @see BibleMetaData#getBible()
+     */
+    protected abstract Bible createBible();
+
+    /**
+     * The cached bible so we don't have to create too many
+     */
+    private Bible bible = null;
 }

@@ -83,9 +83,17 @@ public class PassageListModel extends AbstractListModel implements PassageListen
      */
     public int getSize()
     {
-        if (ref == null)            return 0;
-        if (mode == LIST_RANGES)    return ref.countRanges();
-        else                        return ref.countVerses();
+        if (ref == null)
+        {
+            return 0;
+        }
+
+        if (mode == LIST_RANGES)
+        {
+            return ref.countRanges();
+        }
+
+        return ref.countVerses();
     }
 
     /**
@@ -95,9 +103,17 @@ public class PassageListModel extends AbstractListModel implements PassageListen
      */
     public Object getElementAt(int index)
     {
-        if (ref == null)            return null;
-        if (mode == LIST_RANGES)    return ref.getVerseRangeAt(index);
-        else                        return ref.getVerseAt(index);
+        if (ref == null)
+        {
+            return null;
+        }
+
+        if (mode == LIST_RANGES)
+        {
+            return ref.getVerseRangeAt(index);
+        }
+        
+        return ref.getVerseAt(index);
     }
 
     /**

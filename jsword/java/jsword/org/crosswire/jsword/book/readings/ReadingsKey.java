@@ -36,7 +36,7 @@ public class ReadingsKey implements Key, Comparable
     /**
      * Simple Constructor.
      * @param text The textual version of the date for these readings in the
-     * format "dd mmm"
+     * format "d mmmm"
      */
     public ReadingsKey(String text) throws ParseException
     {
@@ -52,7 +52,7 @@ public class ReadingsKey implements Key, Comparable
         this.date = date;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Key#getText()
      */
     public String getText()
@@ -60,7 +60,7 @@ public class ReadingsKey implements Key, Comparable
         return df.format(date);
     }
 
-    /**
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     public String toString()
@@ -68,7 +68,7 @@ public class ReadingsKey implements Key, Comparable
         return getText();
     }
 
-    /**
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object obj)

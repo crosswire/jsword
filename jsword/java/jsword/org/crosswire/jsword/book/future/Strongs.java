@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.future;
 
+import org.crosswire.common.util.LogicError;
+
 /**
  * Strongs is a convenience way of recording a Strongs number instead of
  * using a String with a number in it. (A Strongs number can not be a number
@@ -101,9 +103,9 @@ public class Strongs
             return "<0" + number + ">";
         case PARSING:
             return "(" + number + ")";
+        default:
+            throw new LogicError();
         }
-
-        return "";
     }
 
     /**
@@ -120,9 +122,9 @@ public class Strongs
             return "PassageUtil.getResource(\"strongs_hebrew\")" + number;
         case PARSING:
             return "PassageUtil.getResource(\"strongs_parsing\")" + number;
+        default:
+            throw new LogicError();
         }
-
-        return "";
     }
 
     /**

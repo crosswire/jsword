@@ -97,9 +97,13 @@ public class WholeBibleTreeNode implements TreeNode
     private WholeBibleTreeNode(TreeNode parent, VerseRange range, int level)
     {
         if (parent != null)
+        {
             this.parent = parent;
+        }
         else
+        {
             this.parent = this;
+        }
 
         this.range = range;
         this.level = level;

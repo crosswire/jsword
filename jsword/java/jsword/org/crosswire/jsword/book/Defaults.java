@@ -94,31 +94,25 @@ public class Defaults
     }
 
     /**
-     * Get the current default Bible.
-     * <p>If there are no Bibles that can be accessed (sounds like an
-     * installation problem or something) then a BookException results.
-     * Otherwise this should always get you something useful.
-     * <p>In general if you are calling this method from <b>outside</b> GUI code
-     * the there is probably something wrong.
+     * Get the current default Bible or null if there are no Bibles.
      * @return the current default version
-     * @throws BookException If anything goes wrong with this method
      */
-    public static BibleMetaData getBibleMetaData() throws BookException
+    public static BibleMetaData getBibleMetaData()
     {
         return bdeft;
     }
 
     /**
-     * This method is identical to <code>getBible().getFullName()</code> and is
-     * only used by Config which works best with strings under reflection.
-     * <p>Generally <code>getBible().getFullName()</code> is a better way of
-     * getting what you want.
+     * This method is identical to <code>getBibleMetaData().getFullName()</code>
+     * and is only used by Config which works best with strings under reflection.
      * @param name The version to use as default.
-     * @exception BookException If the name is not valid
      */
-    public static String getBibleByName() throws BookException
+    public static String getBibleByName()
     {
-        return getBibleMetaData().getFullName();
+        if (bdeft == null)
+            return null;
+
+        return bdeft.getFullName();
     }
 
     /**
@@ -138,7 +132,7 @@ public class Defaults
     {
         autobdeft = false;
 
-        List lbmds = Books.getBooks();
+        List lbmds = Books.getBooks(BookFilters.getBibles());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
         {
             BibleMetaData bmd = (BibleMetaData) it.next();
@@ -146,6 +140,142 @@ public class Defaults
             if (tname.equals(name))
             {
                 setBibleMetaData(bmd);
+                return;
+            }
+        }
+    
+        throw new BookException(Msg.BOOK_NOTFOUND, new Object[] { name });
+    }
+
+    /**
+     * Set the default Commentary. The new name must be equal() to a string
+     * returned from getCommentaryNames. (if does not need to be == however)
+     * A BookException results if you get it wrong.
+     * @param bmd The version to use as default.
+     */
+    public static void setCommentaryMetaData(CommentaryMetaData cmd)
+    {
+        autocdeft = false;
+        cdeft = cmd;
+    }
+
+    /**
+     * Get the current default Commentary or null if none exist.
+     * @return the current default version
+     */
+    public static CommentaryMetaData getCommentaryMetaData()
+    {
+        return cdeft;
+    }
+
+    /**
+     * This method is identical to <code>getCommentaryMetaData().getFullName()</code>
+     * and is only used by Config which works best with strings under reflection.
+     * <p>Generally <code>getCommentaryByName().getFullName()</code> is a better
+     * way of getting what you want.
+     * @param name The version to use as default.
+     */
+    public static String getCommentaryByName()
+    {
+        if (cdeft == null)
+            return null;
+
+        return cdeft.getFullName();
+    }
+
+    /**
+     * Trawl through all the known Commentary looking for the one closest to
+     * the given name.
+     * <p>This method is for use with config scripts and other things that
+     * <b>need</b> to work with Strings. The preferred method is to use
+     * BibleMetaData objects.
+     * <p>This method is picky in that it only matches when the driver and the
+     * version are the same. The user (probably) only cares about the version
+     * though, and so might be dissapointed when we fail to match AV (FooDriver)
+     * against AV (BarDriver).
+     * @param name The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static void setCommentaryByName(String name) throws BookException
+    {
+        autocdeft = false;
+
+        List lbmds = Books.getBooks(BookFilters.getCommentaries());
+        for (Iterator it=lbmds.iterator(); it.hasNext();)
+        {
+            CommentaryMetaData cmd = (CommentaryMetaData) it.next();
+            String tname = cmd.getFullName();
+            if (tname.equals(name))
+            {
+                setCommentaryMetaData(cmd);
+                return;
+            }
+        }
+    
+        throw new BookException(Msg.BOOK_NOTFOUND, new Object[] { name });
+    }
+
+    /**
+     * Set the default Dictionary. The new name must be equal() to a string
+     * returned from getDictionaryNames. (if does not need to be == however)
+     * A BookException results if you get it wrong.
+     * @param bmd The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static void setDictionaryMetaData(DictionaryMetaData dmd)
+    {
+        autoddeft = false;
+        ddeft = dmd;
+    }
+
+    /**
+     * Get the current default Dictionary or null if none exist.
+     * @return the current default version
+     */
+    public static DictionaryMetaData getDictionaryMetaData()
+    {
+        return ddeft;
+    }
+
+    /**
+     * This method is identical to <code>getDictionaryMetaData().getFullName()</code>
+     * and is only used by Config which works best with strings under reflection.
+     * <p>Generally <code>getDictionaryByName().getFullName()</code> is a better
+     * way of getting what you want.
+     */
+    public static String getDictionaryByName()
+    {
+        if (ddeft == null)
+            return null;
+
+        return ddeft.getFullName();
+    }
+
+    /**
+     * Trawl through all the known Dictionaries looking for the one closest to
+     * the given name.
+     * <p>This method is for use with config scripts and other things that
+     * <b>need</b> to work with Strings. The preferred method is to use
+     * BibleMetaData objects.
+     * <p>This method is picky in that it only matches when the driver and the
+     * version are the same. The user (probably) only cares about the version
+     * though, and so might be dissapointed when we fail to match AV (FooDriver)
+     * against AV (BarDriver).
+     * @param name The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static void setDictionaryByName(String name) throws BookException
+    {
+        autobdeft = false;
+
+        List lbmds = Books.getBooks(BookFilters.getDictionaries());
+        for (Iterator it=lbmds.iterator(); it.hasNext();)
+        {
+            DictionaryMetaData dmd = (DictionaryMetaData) it.next();
+            String tname = dmd.getFullName();
+            if (tname.equals(name))
+            {
+                setDictionaryMetaData(dmd);
                 return;
             }
         }
@@ -186,6 +316,7 @@ public class Defaults
                 if (bdeft == null || bmd.getSpeed() > bdeft.getSpeed())
                 {
                     bdeft = (BibleMetaData) bmd;
+                    autobdeft = true;
                     log.debug("setting as default bible since speed="+bdeft.getSpeed());
                 }
             }
@@ -199,6 +330,7 @@ public class Defaults
                 if (cdeft == null || bmd.getSpeed() > cdeft.getSpeed())
                 {
                     cdeft = (CommentaryMetaData) bmd;
+                    autocdeft = true;
                     log.debug("setting as default commentary since speed="+cdeft.getSpeed());
                 }
             }
@@ -212,6 +344,7 @@ public class Defaults
                 if (ddeft == null || bmd.getSpeed() > ddeft.getSpeed())
                 {
                     ddeft = (DictionaryMetaData) bmd;
+                    autoddeft = true;
                     log.debug("setting as default dictionary since speed="+ddeft.getSpeed());
                 }
             }
@@ -223,33 +356,47 @@ public class Defaults
      */
     static
     {
-        if (bdeft == null)
-        {
-            checkAllPreferable();
-        }
-
         Books.addBooksListener(new DefaultsBookListener());
+        checkAllPreferable();
     }
 
     /**
-     * 
+     * To keep us up to date with changes in the available Books
      */
     private static class DefaultsBookListener implements BooksListener
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
+         */
         public void bookAdded(BooksEvent ev)
         {
             BookMetaData bmd = ev.getBookMetaData(); 
             checkPreferable(bmd);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
+         */
         public void bookRemoved(BooksEvent ev)
         {
             BookMetaData bmd = ev.getBookMetaData(); 
 
             // Was this a default?
-            if (bmd.equals(bdeft) || bmd.equals(cdeft) || bmd.equals(ddeft))
+            if (bmd.equals(bdeft))
             {
-                // find the next fastest
+                bdeft = null;
+                checkAllPreferable();
+            }
+
+            if (bmd.equals(cdeft))
+            {
+                cdeft = null;
+                checkAllPreferable();
+            }
+
+            if (bmd.equals(ddeft))
+            {
+                ddeft = null;
                 checkAllPreferable();
             }
         }

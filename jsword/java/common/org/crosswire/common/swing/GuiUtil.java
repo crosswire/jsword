@@ -4,6 +4,7 @@ package org.crosswire.common.swing;
 import java.awt.Button;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -21,8 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.text.JTextComponent;
-
-import org.crosswire.common.util.StringUtil;
 
 /**
  * Various Gui Utilities.
@@ -51,27 +50,23 @@ import org.crosswire.common.util.StringUtil;
 public class GuiUtil
 {
     /**
-     * Load an Icon using an absolute class name. The normal method of
-     * using new ImageIcon(blah) is poor because is requires a relative
-     * URL
-     * @param name The classname of the Icon
+     * Returns the Icon associated with the name from the resources.
+     * The resouce should be in the path.
+     * @param name Name of the icon file i.e., help16.gif
+     * @return the name of the image or null if the icon is not found.
      */
-    public static ImageIcon loadImageIcon(String name)
+    public static ImageIcon getIcon(String name)
     {
-        // Get the images
-        // Don't know why the originals don't work, these sometimes do better:
-        try
+        URL url = GuiUtil.class.getResource(name);
+        if (url != null)
         {
-            URL url = StringUtil.getLocalURL(name);
             return new ImageIcon(url);
         }
-        catch (Exception ex)
-        {
-            // perhaps we should return a blank icon here?
-            // Reporter.informUser(PanelConfig.class, ex);
-
-            return null;
-        }
+    
+        // This should be log.warning() however the log may not be configured
+        System.out.println("Failed to find resource name='"+name+"'");
+    
+        return null;
     }
 
     /**
@@ -129,9 +124,9 @@ public class GuiUtil
     }
 
     /**
-     * Find the parent window
+     * Find the parent Frame
      * @param com a component to find the frame of.
-     * @return The parent Window
+     * @return The parent Frame
      */
     public static Frame getFrame(Component com)
     {
@@ -144,6 +139,24 @@ public class GuiUtil
         }
 
         return (Frame) temp;
+    }
+
+    /**
+     * Find the parent Frame
+     * @param com a component to find the frame of.
+     * @return The parent Frame
+     */
+    public static Dialog getDialog(Component com)
+    {
+        Component temp = com;
+
+        while (!(temp instanceof Dialog))
+        {
+            temp = temp.getParent();
+            if (temp == null) return null;
+        }
+
+        return (Dialog) temp;
     }
 
     /**
@@ -185,10 +198,13 @@ public class GuiUtil
     }
 
     /**
-     * Do a pack, but don't let the window grow or shrink by more than 10%
+     * A more restricted version of pack() for component responding to live
+     * component tweaks.
+     * Assuming that the window already has a sensible on screen size, do a
+     * pack, but don't let the window grow or shrink by more than 10%.
      * @param win The window to be packed
      */
-    public static void restrainedPack(Window win)
+    public static void restrainedRePack(Window win)
     {
         Dimension orig = win.getSize();
         Dimension max = new Dimension((int) (orig.width * 1.1), (int) (orig.height * 1.1));
@@ -198,29 +214,77 @@ public class GuiUtil
 
         // If the window is wider than 110% of its original size, clip it
         if (win.getSize().width > max.width)
+        {
             win.setSize(max.width, win.getSize().height);
+        }
 
         // If the window is taller than 110% of its original size, clip it
         if (win.getSize().height > max.height)
+        {
             win.setSize(win.getSize().width, max.height);
+        }
 
         // If the window is narrower than 90% of its original size, grow it
         if (win.getSize().width < min.width)
+        {
             win.setSize(min.width, win.getSize().height);
+        }
 
         // If the window is shorter than 90% of its original size, grow it
         if (win.getSize().height < min.height)
+        {
             win.setSize(win.getSize().width, min.height);
+        }
 
         Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         // If the window is wider than the screen, clip it
         if (screen_dim.width < win.getSize().width)
+        {
             win.setSize(screen_dim.width, win.getSize().height);
+        }
 
         // If the window is taller than the screen, clip it
         if (screen_dim.height < win.getSize().height)
+        {
             win.setSize(win.getSize().width, screen_dim.height);
+        }
+
+        win.invalidate();
+        win.validate();
+
+        // log.log(Level.INFO, "Failure", ex);
+        // log.fine("Size was "+orig);
+        // log.fine("Size is "+win.getSize());
+    }
+
+    /**
+     * A more restricted version of pack() when the component is being pack()ed
+     * for the first time so we are only concerned with screen size, and not
+     * any growths/shrinkages like {@see GuiUtil#restrainedRePack(Window)}.
+     * @param win The window to be packed
+     * @param maxx The maximum fraction (0.0 to 1.0) of the screen to be taken
+     * up horizontally (-1 means no restrictions to the horizontal alterations)
+     * @param maxy The maximum fraction (0.0 to 1.0) of the screen to be taken
+     * up vertically (-1 means no restrictions to the vertical alterations)
+     */
+    public static void restrainedPack(Window win, float maxx, float maxy)
+    {
+        win.pack();
+
+        Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // If the window is wider than the screen, clip it
+        if (maxx != -1 && win.getSize().width > (screen_dim.width * maxx))
+        {
+            win.setSize((int) (screen_dim.width * maxx), win.getSize().height);
+        }
+
+        // If the window is taller than the screen, clip it
+        if (maxy != -1 && win.getSize().height > (screen_dim.height * maxy))
+        {
+            win.setSize(win.getSize().width, (int) (screen_dim.height * maxy));
+        }
 
         win.invalidate();
         win.validate();

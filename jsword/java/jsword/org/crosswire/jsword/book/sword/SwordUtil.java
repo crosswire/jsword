@@ -92,7 +92,7 @@ public class SwordUtil
     {        
         int byte1 = SwordUtil.un2complement(data[0+offset]);
         int byte2 = SwordUtil.un2complement(data[1+offset]) << 8;
-    
+
         return byte2 | byte1;
     }
 
@@ -102,6 +102,24 @@ public class SwordUtil
     protected static int un2complement(byte data)
     {
         return data >= 0 ? data : 256 + data;
+    }
+
+    /**
+     * Find a byte of data in an array
+     * @param data The array to search
+     * @param sought The data to search for
+     * @return The index of the found position or -1 if not found
+     * @throws BookException
+     */
+    protected static int findByte(byte[] data, byte sought)
+    {
+        for (int i=0; i<data.length; i++)
+        {
+            if (data[i] == sought)
+                return i;
+        }
+        
+        return -1;
     }
 
     /**

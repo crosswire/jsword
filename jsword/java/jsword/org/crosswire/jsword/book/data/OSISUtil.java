@@ -2,14 +2,12 @@
 package org.crosswire.jsword.book.data;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -251,11 +249,27 @@ public class OSISUtil
         List content = rdata.everse.getContent();
         for (Iterator it = content.iterator(); it.hasNext();)
         {
-            Element ele = (Element) it.next();
-            recurseElements(ele, buffer);
+            Object ele = it.next();
+            recurseElement(ele, buffer);
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * If we have a String just add it to the buffer, but if we have an Element
+     * then try to dig the strings out of it.
+     */
+    private static void recurseElement(Object sub, StringBuffer buffer)
+    {
+        if (sub instanceof String)
+        {
+            buffer.append((String) sub);
+        }
+        else
+        {
+            recurseChildren(sub, buffer);
+        }
     }
 
     /**
@@ -263,7 +277,7 @@ public class OSISUtil
      * @param ele The JAXB Element to dig into
      * @param buffer The place we accumulate strings.
      */
-    private static void recurseElements(Element ele, StringBuffer buffer)
+    private static void recurseChildren(Object ele, StringBuffer buffer)
     {
         // ele is a JAXBElement that might have a getContent() method
         Class clazz = ele.getClass();
@@ -276,32 +290,14 @@ public class OSISUtil
                 for (Iterator it = content.iterator(); it.hasNext();)
                 {
                     Object sub = it.next();
-                    if (sub instanceof Element)
-                    {
-                        recurseElements((Element) ele, buffer);
-                    }
-                    else if (sub instanceof String)
-                    {
-                        buffer.append((String) sub);
-                    }
-                    else
-                    {
-                        throw new LogicError();
-                    }
+                    recurseElement(sub, buffer);
                 }
             }
         }
-        catch (NoSuchMethodException ex)
+        catch (Exception ex)
         {
-            // Ignore
-        }
-        catch (IllegalAccessException ex)
-        {
-            // Ignore
-        }
-        catch (InvocationTargetException ex)
-        {
-            // Ignore
+            // We can continue, but we should report a problem
+            log.error("Error interrogating: "+ele.getClass().getName(), ex);
         }
     }
 

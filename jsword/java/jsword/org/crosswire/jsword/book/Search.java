@@ -78,9 +78,13 @@ public class Search
     public void setRestriction(Passage restriction)
     {
         if (restriction == null)
+        {
             this.restriction = UNRESTRICTED;
+        }
         else
+        {
             this.restriction = restriction;
+        }
     }
 
     /**

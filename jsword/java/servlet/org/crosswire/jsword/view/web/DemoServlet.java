@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
@@ -62,7 +61,7 @@ public class DemoServlet extends HttpServlet
             Project.init();
             version = Defaults.getBibleMetaData().getBible();
         }
-        catch (BookException ex)
+        catch (Exception ex)
         {
             throw new ServletException("Failed to initialize", ex);
         }

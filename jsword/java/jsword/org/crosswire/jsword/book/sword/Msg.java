@@ -29,6 +29,8 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
+    public static final Msg NO_KEY = new Msg("No '{0}' in index.");
+    public static final Msg BAD_KEY = new Msg("Invalid Key type '{0}'");
     public static final Msg GZIP_FORMAT = new Msg("Error whilst reading field '{0}'");
     public static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
     public static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");

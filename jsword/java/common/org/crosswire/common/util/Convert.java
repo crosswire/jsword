@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -143,7 +144,7 @@ public class Convert
     {
         Map commands = new HashMap();
 
-        String[] data_arr = StringUtil.tokenize(data, " ");
+        String[] data_arr = StringUtils.split(data, " ");
 
         for (int i=0; i<data_arr.length; i++)
         {
@@ -221,7 +222,7 @@ public class Convert
      */
     public static String[] string2StringArray(String value, String separator)
     {
-        return StringUtil.tokenize(value, separator);
+        return StringUtils.split(value, separator);
     }
 
     /**
@@ -231,7 +232,7 @@ public class Convert
      */
     public static String stringArray2String(String[] value, String separator)
     {
-        return StringUtil.cat(value, separator);
+        return StringUtils.join(value, separator);
     }
 
     /** The log stream */

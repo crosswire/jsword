@@ -40,5 +40,5 @@ public interface CommentaryMetaData extends BookMetaData
      * Since Commentary are read-only once setup thread safety should not be
      * hard.
      */
-    public Commentary getCommentary() throws BookException;
+    public Commentary getCommentary();
 }

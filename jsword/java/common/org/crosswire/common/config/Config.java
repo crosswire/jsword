@@ -260,7 +260,9 @@ public class Config implements Serializable
         int highest_change = Choice.PRIORITY_LOWEST;
 
         if (force)
+        {
             log.info("Force=true, all changes will propogate regardless");
+        }
 
         for (int priority=Choice.PRIORITY_SYSTEM; priority>=Choice.PRIORITY_LOWEST; priority--)
         {

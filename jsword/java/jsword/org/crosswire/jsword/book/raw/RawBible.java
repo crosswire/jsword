@@ -248,7 +248,7 @@ public class RawBible extends LocalURLBible
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchableBible#init(org.crosswire.jsword.book.events.ProgressListener)
      */
-    public void init(ProgressListener li) throws BookException
+    public void init(ProgressListener li)
     {
         memory = defaultmemory;
 
@@ -260,13 +260,13 @@ public class RawBible extends LocalURLBible
     /**
      * Lazy initialization
      */
-    public void init(boolean create) throws BookException
+    public void init(boolean create)
     {
-        // Without these we can't go on
         try
         {
+            // Without these we can't go on
             word_items = new WordItemsMem(this, create);
-
+            
             if (memory)
             {
                 word_insts = new WordInstsMem(this, create);
@@ -275,38 +275,34 @@ public class RawBible extends LocalURLBible
             {
                 word_insts = new WordInstsDisk(this, create);
             }
+            
+            // We can still produce text without these though so they
+            // should not except if the load fails.
+            StringBuffer messages = new StringBuffer();
+            
+            if (memory)
+            {
+                punc_insts = new PuncInstsMem(this, create, messages);
+            }
+            else
+            {
+                punc_insts = new PuncInstsDisk(this, create, messages);
+            }
+            
+            punc_items = new PuncItemsMem(this, create, messages);
+            case_insts = new CaseInstsMem(this, create, messages);
+            para_insts = new ParaInstsMem(this, create, messages);
+            
+            // So if any of them have failed to load we have a record of it.
+            // We can carry on work fine, but shouldn't we be telling someone?
+            
+            /* should have this configurable? */
+            //createSearchCache();
         }
-        catch (BookException ex)
+        catch (IOException ex)
         {
-            throw ex;
+            log.error("Failed to load indexes.", ex);
         }
-        catch (Exception ex)
-        {
-            throw new BookException(Msg.INIT_FAIL, ex);
-        }
-
-        // We can still produce text without these though so they
-        // should not except if the load fails.
-        StringBuffer messages = new StringBuffer();
-
-        if (memory)
-        {
-            punc_insts = new PuncInstsMem(this, create, messages);
-        }
-        else
-        {
-            punc_insts = new PuncInstsDisk(this, create, messages);
-        }
-
-        punc_items = new PuncItemsMem(this, create, messages);
-        case_insts = new CaseInstsMem(this, create, messages);
-        para_insts = new ParaInstsMem(this, create, messages);
-
-        // So if any of them have failed to load we have a record of it.
-        // We can carry on work fine, but shouldn't we be telling someone?
-
-        /* should have this configurable? */
-        //createSearchCache();
     }
 
     /* (non-Javadoc)

@@ -99,8 +99,14 @@ public class Verse implements VerseBase
         switch (getAccuracy(parts))
         {
         case ACCURACY_BOOK_VERSE:
-            if (parts.length == 3) set(parts[0], parts[1], parts[2]);
-            else                   set(parts[0], 1, parts[1]);
+            if (parts.length == 3)
+            {
+                set(parts[0], parts[1], parts[2]);
+            }
+            else
+            {
+                set(parts[0], 1, parts[1]);
+            }
             break;
 
         case ACCURACY_BOOK_CHAPTER:
@@ -328,8 +334,14 @@ public class Verse implements VerseBase
     public int compareTo(Object obj)
     {
         Verse that = null;
-        if (obj instanceof Verse)   that = (Verse) obj;
-        else                        that = ((VerseRange) obj).getStart();
+        if (obj instanceof Verse)
+        {
+            that = (Verse) obj;
+        }
+        else
+        {
+            that = ((VerseRange) obj).getStart();
+        }
 
         int that_start = that.getOrdinal();
         int this_start = this.getOrdinal();
@@ -469,7 +481,7 @@ public class Verse implements VerseBase
         try
         {
             return verse == BibleInfo.versesInChapter(book, chapter)
-                   && chapter == BibleInfo.chaptersInBook(book);
+                && chapter == BibleInfo.chaptersInBook(book);
         }
         catch (NoSuchVerseException ex)
         {
@@ -586,8 +598,14 @@ public class Verse implements VerseBase
             {
                 // Does it start with a book?
                 int book = BibleInfo.getBookNumber(parts[0]);
-                if (BibleInfo.chaptersInBook(book) == 1)    return ACCURACY_BOOK_VERSE;
-                else                                    return ACCURACY_BOOK_CHAPTER;
+                if (BibleInfo.chaptersInBook(book) == 1)
+                {
+                    return ACCURACY_BOOK_VERSE;
+                }
+                else
+                {
+                    return ACCURACY_BOOK_CHAPTER;
+                }
             }
             catch (NoSuchVerseException ex) { }
             checkValidChapterOrVerse(parts[0]);
@@ -599,9 +617,10 @@ public class Verse implements VerseBase
             checkValidChapterOrVerse(parts[1]);
             checkValidChapterOrVerse(parts[2]);
             return ACCURACY_BOOK_VERSE;
-        }
 
-        throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { VERSE_ALLOWED_DELIMS });
+        default:
+            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { VERSE_ALLOWED_DELIMS });
+        }
     }
 
     /**
@@ -624,8 +643,14 @@ public class Verse implements VerseBase
      */
     public final static Verse max(Verse a, Verse b)
     {
-        if (a.compareTo(b) == -1) return b;
-        else                      return a;
+        if (a.compareTo(b) == -1)
+        {
+            return b;
+        }
+        else
+        {
+            return a;
+        }
     }
 
     /**
@@ -637,8 +662,14 @@ public class Verse implements VerseBase
      */
     public final static Verse min(Verse a, Verse b)
     {
-        if (a.compareTo(b) == 1) return b;
-        else                     return a;
+        if (a.compareTo(b) == 1)
+        {
+            return b;
+        }
+        else
+        {
+            return a;
+        }
     }
 
     /**
@@ -648,8 +679,15 @@ public class Verse implements VerseBase
      */
     public static boolean isEndMarker(String text)
     {
-        if (text.equals(VERSE_END_MARK1)) return true;
-        if (text.equals(VERSE_END_MARK2)) return true;
+        if (text.equals(VERSE_END_MARK1))
+        {
+            return true;
+        }
+
+        if (text.equals(VERSE_END_MARK2))
+        {
+            return true;
+        }
 
         return false;
     }
@@ -902,8 +940,14 @@ public class Verse implements VerseBase
         int book = BibleInfo.getBookNumber(book_str);
 
         int chapter = 0;
-        if (isEndMarker(chapter_str))   chapter = BibleInfo.chaptersInBook(book);
-        else                            chapter = parseInt(chapter_str);
+        if (isEndMarker(chapter_str))
+        {
+            chapter = BibleInfo.chaptersInBook(book);
+        }
+        else
+        {
+            chapter = parseInt(chapter_str);
+        }
 
         set(book, chapter, verse);
     }
@@ -921,12 +965,24 @@ public class Verse implements VerseBase
         int book = BibleInfo.getBookNumber(book_str);
 
         int chapter = 0;
-        if (isEndMarker(chapter_str))   chapter = BibleInfo.chaptersInBook(book);
-        else                            chapter = parseInt(chapter_str);
+        if (isEndMarker(chapter_str))
+        {
+            chapter = BibleInfo.chaptersInBook(book);
+        }
+        else
+        {
+            chapter = parseInt(chapter_str);
+        }
 
         int verse = 0;
-        if (isEndMarker(verse_str))     verse = BibleInfo.versesInChapter(book, chapter);
-        else                            verse = parseInt(verse_str);
+        if (isEndMarker(verse_str))
+        {
+            verse = BibleInfo.versesInChapter(book, chapter);
+        }
+        else
+        {
+            verse = parseInt(verse_str);
+        }
 
         set(book, chapter, verse);
     }
@@ -944,8 +1000,14 @@ public class Verse implements VerseBase
         int book = BibleInfo.getBookNumber(book_str);
 
         int verse = 0;
-        if (isEndMarker(verse_str))     verse = BibleInfo.versesInChapter(book, chapter);
-        else                            verse = parseInt(verse_str);
+        if (isEndMarker(verse_str))
+        {
+            verse = BibleInfo.versesInChapter(book, chapter);
+        }
+        else
+        {
+            verse = parseInt(verse_str);
+        }
 
         set(book, chapter, verse);
     }
@@ -961,12 +1023,24 @@ public class Verse implements VerseBase
     private final void set(int book, String chapter_str, String verse_str) throws NoSuchVerseException
     {
         int chapter = 0;
-        if (isEndMarker(chapter_str))   chapter = BibleInfo.chaptersInBook(book);
-        else                            chapter = parseInt(chapter_str);
+        if (isEndMarker(chapter_str))
+        {
+            chapter = BibleInfo.chaptersInBook(book);
+        }
+        else
+        {
+            chapter = parseInt(chapter_str);
+        }
 
         int verse = 0;
-        if (isEndMarker(verse_str))     verse = BibleInfo.versesInChapter(book, chapter);
-        else                            verse = parseInt(verse_str);
+        if (isEndMarker(verse_str))
+        {
+            verse = BibleInfo.versesInChapter(book, chapter);
+        }
+        else
+        {
+            verse = parseInt(verse_str);
+        }
 
         set(book, chapter, verse);
     }
@@ -982,8 +1056,14 @@ public class Verse implements VerseBase
     private final void set(int book, int chapter, String verse_str) throws NoSuchVerseException
     {
         int verse = 0;
-        if (isEndMarker(verse_str))     verse = BibleInfo.versesInChapter(book, chapter);
-        else                            verse = parseInt(verse_str);
+        if (isEndMarker(verse_str))
+        {
+            verse = BibleInfo.versesInChapter(book, chapter);
+        }
+        else
+        {
+            verse = parseInt(verse_str);
+        }
 
         set(book, chapter, verse);
     }

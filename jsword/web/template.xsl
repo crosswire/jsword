@@ -5,9 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Language" content="en-gb"/>
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-  <title><xsl:select match="/html/head/title"/></title>
+  <title>xsl:select match="/html/head/title"/</title>
   <link rel="stylesheet" type="text/css" href="generic.css"/>
   <link rel="stylesheet" type="text/css" href="sword.css"/>
 </head>
@@ -51,15 +49,15 @@
         <li><a href="faq.jsp">FAQ</a></li>
         <li><a href="news.jsp">News</a></li>
       </ul>
-      <p>Getting&nbsp;JSword</p>
+      <p>Getting-JSword</p>
       <ul>
-        <li><a href="demo.jsp">Web&nbsp;Demo</a></li>
-        <li><a href="jnlp.jsp">Web&nbsp;Start</a></li>
+        <li><a href="demo.jsp">Web-Demo</a></li>
+        <li><a href="jnlp.jsp">Web-Start</a></li>
         <li><a href="screenshot.jsp">Screenshots</a></li>
         <li><a href="download.jsp">Download</a></li>
         <li><a href="http://www.crosswire.org/sword/modules/index.jsp">Modules</a></li>
       </ul>
-      <p><a href="devt.jsp">Getting&nbsp;Involved</a></p>
+      <p><a href="devt.jsp">Getting-Involved</a></p>
       <ul>
         <li><a href="intro.jsp">Intro</a></li>
         <li><a href="primaer.jsp">API Primer</a></li>
@@ -69,10 +67,10 @@
         <li><a href="config.jsp">Config</a></li>
         <li><a href="change.jsp">Changes</a></li>
         <li><a href="api/index.html">JavaDoc</a></li>
-        <li><a href="java2html/index.html">Java&nbsp;Source</a></li>
-        <li><a href="test/index.html">Test&nbsp;Results</a></li>
+        <li><a href="java2html/index.html">Java-Source</a></li>
+        <li><a href="test/index.html">Test-Results</a></li>
       </ul>
-      <p>Other&nbsp;Projects</p>
+      <p>Other-Projects</p>
       <ul>
         <li><a href="http://www.crosswire.org/">Crosswire</a></li>
         <li><a href="http://www.crosswire.org/sword/index.jsp">Sword</a></li>
@@ -105,4 +103,9 @@
 </html>
 
 </xsl:template>
+
+<xsl:template match="/html/body">
+  <xsl:copy-of select="."/>
+</xsl:template>
+
 </xsl:stylesheet>

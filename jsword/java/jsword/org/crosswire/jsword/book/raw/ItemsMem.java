@@ -39,37 +39,37 @@ import java.util.Map;
 public abstract class ItemsMem extends Mem implements Items
 {
     /**
-    * Create a WordResource from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    */
-    public ItemsMem(RawBible raw, String leafname, boolean create) throws Exception
+     * Create a WordResource from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     */
+    public ItemsMem(RawBible raw, String leafname, boolean create) throws IOException
     {
         super(raw, leafname, create);
     }
 
     /**
-    * Create a WordResource from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    * @param messages We append stuff here if something went wrong
-    */
+     * Create a WordResource from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     * @param messages We append stuff here if something went wrong
+     */
     public ItemsMem(RawBible raw, String leafname, boolean create, StringBuffer messages)
     {
         super(raw, leafname, create, messages);
     }
 
     /**
-    * How many items are there in this index?
-    * @return The number of items that we must remember
-    */
+     * How many items are there in this index?
+     * @return The number of items that we must remember
+     */
     public abstract int getMaxItems();
 
     /**
-    * Start all over again and clear the decks for more data.
-    */
+     * Start all over again and clear the decks for more data.
+     */
     public void init()
     {
         hash = new HashMap(getMaxItems());
@@ -77,10 +77,10 @@ public abstract class ItemsMem extends Mem implements Items
     }
 
     /**
-    * Load the Resource from a stream. This has been renamed from the
-    * default load() to ensure that the custom versions are called.
-    * @param in The stream to read from
-    */
+     * Load the Resource from a stream. This has been renamed from the
+     * default load() to ensure that the custom versions are called.
+     * @param in The stream to read from
+     */
     protected void defaultLoad(InputStream in) throws IOException, ClassNotFoundException
     {
         ObjectInputStream obj_in = new ObjectInputStream(in);
@@ -92,11 +92,11 @@ public abstract class ItemsMem extends Mem implements Items
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream. This has been renamed from the default save() to ensure
-    * that the custom versions are called.
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a
+     * stream. This has been renamed from the default save() to ensure
+     * that the custom versions are called.
+     * @param out The stream to write to
+     */
     protected void defaultSave(OutputStream out) throws IOException
     {
         ObjectOutputStream obj_out = new ObjectOutputStream(out);
@@ -108,19 +108,19 @@ public abstract class ItemsMem extends Mem implements Items
     }
 
     /**
-    * Get an Enumeration through the words
-    * @return An Enumeration
-    */
+     * Get an Enumeration through the words
+     * @return An Enumeration
+     */
     public Iterator iterator()
     {
         return hash.keySet().iterator();
     }
 
     /**
-    * Fetch an item from the dictionary by an id.
-    * @param index The id of the word to fetch
-    * @exception NoSuchWordException
-    */
+     * Fetch an item from the dictionary by an id.
+     * @param index The id of the word to fetch
+     * @exception NoSuchWordException
+     */
     public String getItem(int index) throws NoSuchResourceException
     {
         try
@@ -134,13 +134,13 @@ public abstract class ItemsMem extends Mem implements Items
     }
 
     /**
-    * This method is called during the creation of the index to add a
-    * word to the index or to get a current id. If the IndexedResource
-    * was created without create=true then we do not create a new id
-    * we just return -1
-    * @param data The word to find/create an id for
-    * @return The (new) id for the item, or -1
-    */
+     * This method is called during the creation of the index to add a
+     * word to the index or to get a current id. If the IndexedResource
+     * was created without create=true then we do not create a new id
+     * we just return -1
+     * @param data The word to find/create an id for
+     * @return The (new) id for the item, or -1
+     */
     public int getIndex(String data)
     {
         Object obj = hash.get(data);
@@ -162,10 +162,10 @@ public abstract class ItemsMem extends Mem implements Items
     }
 
     /**
-    * Set a list of word indexes as the test to a Verse
-    * @param verse The Verse to set the words for
-    * @param data The array of wordd to be indexed
-    */
+     * Set a list of word indexes as the test to a Verse
+     * @param verse The Verse to set the words for
+     * @param data The array of wordd to be indexed
+     */
     public int[] getIndex(String[] data)
     {
         int len = data.length;
@@ -180,9 +180,9 @@ public abstract class ItemsMem extends Mem implements Items
     }
 
     /**
-    * How many items are there in the current dictionary
-    * @return the Item count
-    */
+     * How many items are there in the current dictionary
+     * @return the Item count
+     */
     public int size()
     {
         return hash.size();

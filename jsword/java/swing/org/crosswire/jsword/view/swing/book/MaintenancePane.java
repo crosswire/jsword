@@ -145,7 +145,7 @@ public class MaintenancePane extends EirPanel
                 "Delete Bible",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                bmd.delete();
+                bmd.getDriver().delete(bmd);
             }
         }
         catch (Exception ex)

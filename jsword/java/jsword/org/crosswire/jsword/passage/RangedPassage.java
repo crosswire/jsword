@@ -270,8 +270,14 @@ public class RangedPassage extends AbstractPassage
         SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
 
         Iterator that_it = null;
-        if (that instanceof Passage)  that_it = ((Passage) that).rangeIterator();
-        else                          that_it = that.verseIterator();
+        if (that instanceof Passage)
+        {
+            that_it = ((Passage) that).rangeIterator();
+        }
+        else
+        {
+            that_it = that.verseIterator();
+        }
 
         while (that_it.hasNext())
         {

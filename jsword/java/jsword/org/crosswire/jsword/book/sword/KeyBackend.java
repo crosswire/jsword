@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.util.List;
+
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Key;
 
@@ -33,11 +35,12 @@ import org.crosswire.jsword.book.Key;
 public interface KeyBackend
 {
     /**
-     * Initialise a Backend before use
+     * Initialise a Backend before use. This method needs to call addKey() a
+     * number of times on SwordDictionary
      * @param config The settings object
      * @throws BookException If we should not be used for some reason
      */
-    public void init(SwordConfig config) throws BookException;
+    public List readIndex();
 
     /**
      * Return the bytes that make up the data for the given key

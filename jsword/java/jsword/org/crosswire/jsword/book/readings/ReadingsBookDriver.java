@@ -37,7 +37,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public BookMetaData[] getBooks()
     {
-        return new BookMetaData[] { new ReadingsDictionaryMetaData() };
+        return new BookMetaData[] { new ReadingsDictionaryMetaData(this) };
     }
 
     /**

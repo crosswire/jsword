@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -61,7 +62,7 @@ public class Converter
      * @param doc
      * @return BibleMetaData[]
      */
-    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(Document doc, Remoter remoter, int speed) throws ConverterException
+    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(BookDriver driver, Document doc, Remoter remoter, int speed) throws ConverterException
     {
         try
         {
@@ -82,7 +83,7 @@ public class Converter
                 String open = bmdele.getChildTextTrim("openness");
                 String licence = bmdele.getChildTextTrim("licence");
             
-                rbmds[i++] = new RemoteBibleMetaData(remoter, id, name, edition, initials, pub, open, licence, speed);
+                rbmds[i++] = new RemoteBibleMetaData(driver, remoter, id, name, edition, initials, pub, open, licence, speed);
             }
             
             return rbmds;

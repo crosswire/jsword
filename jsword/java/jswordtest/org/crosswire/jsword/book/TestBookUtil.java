@@ -3,7 +3,7 @@ package org.crosswire.jsword.book;
 
 import junit.framework.TestCase;
 
-import org.crosswire.common.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.jsword.passage.BibleInfo;
 
 /**
@@ -255,14 +255,14 @@ public class TestBookUtil extends TestCase
 
     public void testStripWordsStringArray() throws Exception
     {
-        sa = BookUtil.stripWords(StringUtil.tokenize(" 'One's' ,Two? !Three-Four\" "));
+        sa = BookUtil.stripWords(StringUtils.split(" 'One's' ,Two? !Three-Four\" "));
         assertEquals(sa.length, 4);
         assertEquals(sa[0], "'");
         assertEquals(sa[1], "',");
         assertEquals(sa[2], "?!");
         assertEquals(sa[3], "\"");
 
-        sa = BookUtil.stripWords(StringUtil.tokenize(" 'One's' ,Two? !Three-- Four\" "));
+        sa = BookUtil.stripWords(StringUtils.split(" 'One's' ,Two? !Three-- Four\" "));
         assertEquals(sa.length, 5);
         assertEquals(sa[0], "'");
         assertEquals(sa[1], "',");

@@ -4,13 +4,11 @@ package org.crosswire.jsword.book.sword;
 import java.net.URL;
 import java.util.Date;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Commentary;
-import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.Openness;
 
 /**
@@ -43,45 +41,16 @@ public abstract class SwordBookMetaData implements BookMetaData
     /**
      * Simple ctor
      */
-    public SwordBookMetaData(SwordConfig config)
+    public SwordBookMetaData(SwordBookDriver driver, SwordConfig config)
     {
+        this.driver = driver;
         this.config = config;
     }
-    
-    /**
-     * Neat way to make our children easier to implement. We don't implement
-     * BibleMetaData (of which this is a method) but our children do.
-     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
-     */
-    public Bible getBible() throws BookException
-    {
-        return (Bible) getBook();
-    }
 
-    /**
-     * Neat way to make our children easier to implement. We don't implement
-     * CommentaryMetaData (of which this is a method) but our children do.
-     * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
-     */
-    public Commentary getCommentary() throws BookException
-    {
-        return (Commentary) getBook();
-    }
-
-    /**
-     * Neat way to make our children easier to implement. We don't implement
-     * DictionaryMetaData (of which this is a method) but our children do.
-     * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
-     */
-    public Dictionary getDictionary() throws BookException
-    {
-        return (Dictionary) getBook();
-    }
-
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public Book getBook() throws BookException
+    public Book getBook()
     {
         // DCL
         // I know double checked locking is theoretically broken however it isn't
@@ -105,7 +74,15 @@ public abstract class SwordBookMetaData implements BookMetaData
      * A simple concrete implementation ctor
      * @throws BookException
      */
-    public abstract Book createBook() throws BookException;
+    public abstract Book createBook();
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriver()
+     */
+    public BookDriver getDriver()
+    {
+        return driver;
+    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
@@ -190,7 +167,7 @@ public abstract class SwordBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#delete()
      */
-    public final void delete() throws BookException
+    private final void delete() throws BookException
     {
         throw new BookException(Msg.READ_ONLY);
     }
@@ -239,9 +216,14 @@ public abstract class SwordBookMetaData implements BookMetaData
     }
 
     /**
+     * The driver that works this stuff
+     */
+    private SwordBookDriver driver;
+
+    /**
      * Our store of config data
      */
-    private SwordConfig config;
+    protected SwordConfig config;
 
     /**
      * The cached bible so we don't have to create too many

@@ -3,7 +3,9 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
 
 /**
  * Simple BibleMetaData for the sword implementation.
@@ -29,13 +31,29 @@ import org.crosswire.jsword.book.BibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SwordBibleMetaData extends SwordBookMetaData implements BibleMetaData
+public class SwordBibleMetaData extends SwordBookMetaData implements BibleMetaData
 {
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(SwordConfig config) throws IOException
+    public SwordBibleMetaData(SwordBookDriver driver, SwordConfig config) throws IOException
     {
-        super(config);
+        super(driver, config);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
+     */
+    public Bible getBible()
+    {
+        return (Bible) getBook();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.SwordBookMetaData#createBook()
+     */
+    public Book createBook()
+    {
+        return new SwordBible(this, config);
     }
 }

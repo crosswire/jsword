@@ -40,8 +40,8 @@ public class StubBookDriver extends AbstractBookDriver
     {
         return new BookMetaData[]
         {
-            new StubBookMetaData("Stub Version"),
-            new StubBookMetaData("New Stub Version"),
+            new StubBookMetaData(this, "Stub Version"),
+            new StubBookMetaData(this, "New Stub Version"),
         };
     }
 }

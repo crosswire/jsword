@@ -38,33 +38,33 @@ import org.crosswire.jsword.passage.BibleInfo;
 public class PuncInstsMem extends InstsMem
 {
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    */
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     */
     public PuncInstsMem(RawBible raw, boolean create) throws Exception
     {
         super(raw, "puncinst.idx", create);
     }
 
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    * @param messages We append stuff here if something went wrong
-    */
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     * @param messages We append stuff here if something went wrong
+     */
     public PuncInstsMem(RawBible raw, boolean create, StringBuffer messages)
     {
         super(raw, "puncinst.idx", create, messages);
     }
 
     /**
-    * Load the Resource from a stream
-    * @param in The stream to read from
-    */
-    public void load(InputStream in) throws IOException, ClassNotFoundException
+     * Load the Resource from a stream
+     * @param in The stream to read from
+     */
+    public void load(InputStream in) throws IOException
     {
         DataInputStream din = new DataInputStream(in);
 
@@ -88,10 +88,10 @@ public class PuncInstsMem extends InstsMem
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a
+     * stream
+     * @param out The stream to write to
+     */
     public void save(OutputStream out) throws IOException
     {
         DataOutputStream dout = new DataOutputStream(out);

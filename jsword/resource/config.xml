@@ -34,10 +34,22 @@
 ]>
 
 <config>
-  <option key="Bibles.Default" type="string-options">
+  <option key="Bibles.Default Bible" type="string-options">
   	<introspect class="org.crosswire.jsword.book.Defaults" property="BibleByName"/>
     <help>Which of the available Bibles is the default.</help>
     <map name="biblenames"/>
+  </option>
+
+  <option key="Bibles.Default Dictionary" type="string-options">
+  	<introspect class="org.crosswire.jsword.book.Defaults" property="DictionaryByName"/>
+    <help>Which of the available Bibles is the default.</help>
+    <map name="dictionarynames"/>
+  </option>
+
+  <option key="Bibles.Default Commentary" type="string-options">
+  	<introspect class="org.crosswire.jsword.book.Defaults" property="CommentaryByName"/>
+    <help>Which of the available Bibles is the default.</help>
+    <map name="commentarynames"/>
   </option>
 
   <option key="Bibles.Verses Per Tab" type="number">
@@ -112,7 +124,7 @@
   </option>
 
   <option key="Advanced.Source Path" type="path">
-  	<introspect class="org.crosswire.common.swing.DetailedExceptionPane" property="SourcePath"/>
+  	<introspect class="org.crosswire.common.swing.ExceptionPane" property="SourcePath"/>
     <help>The directories to search for source code in when investigating an exception.</help>
   </option>
 

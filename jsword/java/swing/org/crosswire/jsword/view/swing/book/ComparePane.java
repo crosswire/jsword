@@ -23,11 +23,9 @@ import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.Verifier;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 
@@ -197,11 +195,7 @@ public class ComparePane extends EirPanel
             results.showInFrame(GuiUtil.getFrame(this));
             results.startStop();
         }
-        catch (NoSuchVerseException ex)
-        {
-            Reporter.informUser(this, ex);
-        }
-        catch (BookException ex)
+        catch (Exception ex)
         {
             Reporter.informUser(this, ex);
         }

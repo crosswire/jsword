@@ -224,18 +224,11 @@ public class GBFFilter implements Filter
      */
     private static class Tag
     {
-        /**
-         * Sets the tag.
-         * @param tag The tag to set
-         */
         public Tag(String tag)
         {
             this.tag = tag;
         }
 
-        /**
-         * @return String
-         */
         public String getTag()
         {
             return tag;
@@ -251,6 +244,11 @@ public class GBFFilter implements Filter
 
             Tag that = (Tag) obj;
             return this.tag.equals(that.tag);
+        }
+        
+        public int hashCode()
+        {
+            return tag.hashCode();
         }
 
         private String tag;

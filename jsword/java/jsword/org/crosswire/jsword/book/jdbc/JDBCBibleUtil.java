@@ -1,9 +1,9 @@
 
 package org.crosswire.jsword.book.jdbc;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.StringUtil;
 
 /**
  * JDBCBible was getting a bit long winded, so I took all the static
@@ -66,25 +66,25 @@ public class JDBCBibleUtil
      */
     protected static String processText(String text)
     {
-        text = StringUtil.chop(text, "{", "}");
-        text = chop(text, "<", ">");
-        text = chop(text, "(", ")");
-        text = StringUtil.removeChar(text, '[');
-        text = StringUtil.removeChar(text, ']');
+        text = chop1(text, "{", "}");
+        text = chop2(text, "<", ">");
+        text = chop2(text, "(", ")");
+        text = StringUtils.replace(text, "[", "");
+        text = StringUtils.replace(text, "]", "");
 
-        text = StringUtil.swap(text, "    ", " ");
-        text = StringUtil.swap(text, "   ", " ");
-        text = StringUtil.swap(text, "  ", " ");
+        text = StringUtils.replace(text, "    ", " ");
+        text = StringUtils.replace(text, "   ", " ");
+        text = StringUtils.replace(text, "  ", " ");
 
-        text = StringUtil.swap(text, " ,", ",");
-        text = StringUtil.swap(text, " .", ".");
-        text = StringUtil.swap(text, " !", "!");
-        text = StringUtil.swap(text, " ?", "?");
-        text = StringUtil.swap(text, " :", ":");
-        text = StringUtil.swap(text, " ;", ";");
-        text = StringUtil.swap(text, " '", "'");
-        text = StringUtil.swap(text, " )", ")");
-        text = StringUtil.swap(text, " -", "-");
+        text = StringUtils.replace(text, " ,", ",");
+        text = StringUtils.replace(text, " .", ".");
+        text = StringUtils.replace(text, " !", "!");
+        text = StringUtils.replace(text, " ?", "?");
+        text = StringUtils.replace(text, " :", ":");
+        text = StringUtils.replace(text, " ;", ";");
+        text = StringUtils.replace(text, " '", "'");
+        text = StringUtils.replace(text, " )", ")");
+        text = StringUtils.replace(text, " -", "-");
 
         text = text.trim();
 
@@ -97,7 +97,44 @@ public class JDBCBibleUtil
      * Delimiters currently do not nest. So:
      * <code>chop("12(34(56)78)9", "(", ")") = Exception</code>
      */
-    protected static String chop(String orig, String start_delim, String end_delim)
+    protected static String chop1(String orig, String start_delim, String end_delim)
+    {
+        while (true)
+        {
+            int next_start = orig.indexOf(start_delim);
+            int next_end = orig.indexOf(end_delim);
+
+            if (next_start == -1)
+            {
+                if (next_end == -1)
+                {
+                    break;
+                }
+                else
+                {
+                    throw new IllegalArgumentException("Unmatched or nested delimitters");
+                }
+            }
+
+            if (next_end == -1)
+            {
+                throw new IllegalArgumentException("Unmatched or nested delimitters");
+            }
+
+            orig = orig.substring(0, next_start) +
+                   orig.substring(next_end+end_delim.length());
+        }
+
+        return orig;
+    }
+
+    /**
+     * Strips the text between a pair of delimitters. For example:
+     * <code>chop("123(456)789", "(", ")") = "123789"</code>
+     * Delimiters currently do not nest. So:
+     * <code>chop("12(34(56)78)9", "(", ")") = Exception</code>
+     */
+    protected static String chop2(String orig, String start_delim, String end_delim)
     {
         try
         {

@@ -41,9 +41,13 @@ public class FrictionRule extends AbstractRule
     public void setScale(int scale)
     {
         if (scale == 0)
+        {
             super.setScale(1);
+        }
         else
+        {
             super.setScale(scale);
+        }
     }
 
     /**

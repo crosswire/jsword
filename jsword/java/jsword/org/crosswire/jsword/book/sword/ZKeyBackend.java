@@ -1,6 +1,9 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Key;
 
@@ -31,11 +34,12 @@ import org.crosswire.jsword.book.Key;
 public class ZKeyBackend implements KeyBackend
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.KeyBackend#init(org.crosswire.jsword.book.sword.SwordConfig)
+     * @see org.crosswire.jsword.book.sword.KeyBackend#readIndex()
      */
-    public void init(SwordConfig config) throws BookException
+    public List readIndex()
     {
-        // TODO Auto-generated method stub
+        // PENDING(joe): Auto-generated method stub        
+        return new ArrayList();
     }
 
     /* (non-Javadoc)
@@ -43,7 +47,7 @@ public class ZKeyBackend implements KeyBackend
      */
     public byte[] getRawText(Key key) throws BookException
     {
-        // TODO Auto-generated method stub
-        return "".getBytes();
+        // PENDING(joe): Auto-generated method stub
+        return null;
     }
 }

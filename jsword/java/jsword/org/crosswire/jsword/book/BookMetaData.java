@@ -41,6 +41,25 @@ import java.util.Date;
 public interface BookMetaData
 {
     /**
+     * Accessor for the real Book to read data.
+     * <p>Note that constructing a Book may well consume system resources far
+     * more than the construction of a BookMetaData so you should only get a
+     * Book if you intend to use it.
+     * <p>For implementors of BookMetaData - the objects returned by 2
+     * successive calls to getBook() should be the same (i.e. return true to an
+     * == test) unless for some reason the objects are not thread safe. Since
+     * Books are read-only once setup thread safety should not be hard.
+     */
+    public Book getBook();
+
+    /**
+     * Accessor for the driver that runs this Book.
+     * Note this method should only be used to delete() Books. Everything else
+     * you should want to do to a Book should be available in other ways.
+     */
+    public BookDriver getDriver();
+
+    /**
      * The name of the version, for example "King James Version" or
      * "Bible in Basic English" or "Greek".
      * In general it should be possible to deduce the initials from the name by
@@ -127,26 +146,4 @@ public interface BookMetaData
      * @return String detailing the users right to distribute this version
      */
     public URL getLicence();
-
-    /**
-     * Accessor for the real Book to read data.
-     * <p>Note that constructing a Book may well consume system resources far
-     * more than the construction of a BookMetaData so you should only get a
-     * Book if you intend to use it.
-     * <p>For implementors of BookMetaData - the objects returned by 2
-     * successive calls to getBook() should be the same (i.e. return true to an
-     * == test) unless for some reason the objects are not thread safe. Since
-     * Books are read-only once setup thread safety should not be hard.
-     */
-    public Book getBook() throws BookException;
-
-    /**
-     * Delete this Book from the system.
-     * Take care with this method for obvious reasons. For most implemenations
-     * of Book etc, this method will throw up because most will be read-only.
-     * <p>This method is here rather than on the BookDriver because we want to
-     * avoid user contact with the Drivers where possible.
-     * @throws BookException If the Book can't be deleted.
-     */
-    public void delete() throws BookException;
 }

@@ -53,20 +53,4 @@ public class CollectionUtil
 
         return reply;
     }
-
-    /**
-     * Create a List (actually an ArrayList) from an Iterator.
-     * @param it The source of data for the list
-     * @return List
-     */
-    public static Object[] createArray(Iterator it, Object[] base)
-    {
-        List reply = new ArrayList();
-        while (it.hasNext())
-        {
-            reply.add(it.next());
-        }
-
-        return reply.toArray(base);
-    }
 }

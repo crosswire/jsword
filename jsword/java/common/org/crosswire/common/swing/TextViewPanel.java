@@ -143,7 +143,8 @@ public class TextViewPanel extends JPanel
         txt_text.setColumns(80);
         txt_text.setRows(24);
 
-        btn_clipboard.addActionListener(new ActionListener() {
+        btn_clipboard.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
                 clipboard();
@@ -170,7 +171,8 @@ public class TextViewPanel extends JPanel
 
         btn_close = new JButton("Close");
         btn_close.setMnemonic('L');
-        btn_close.addActionListener(new ActionListener() {
+        btn_close.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
                 frame.setVisible(false);
@@ -209,9 +211,13 @@ public class TextViewPanel extends JPanel
         lbl_main.setText(new_header);
 
         if (new_header != null)
+        {
             this.add(lbl_main, BorderLayout.NORTH);
+        }
         else
+        {
             this.remove(lbl_main);
+        }
 
         listeners.firePropertyChange("header", old_header, new_header);
     }
@@ -236,7 +242,9 @@ public class TextViewPanel extends JPanel
         txt_text.setCaretPosition(0);
 
         if (frame != null)
-            GuiUtil.restrainedPack(frame);
+        {
+            GuiUtil.restrainedRePack(frame);
+        }
 
         listeners.firePropertyChange("text", old_text, new_text);
     }
@@ -271,18 +279,22 @@ public class TextViewPanel extends JPanel
         // "Thread work = " bit and just tacked ".start()" to the end
         // This simply creates a thread to read the file, and then a
         // Runnable to update the GUI (swing is single threaded)
-        Thread work = new Thread(new Runnable() {
+        Thread work = new Thread(new Runnable()
+        {
             public void run()
             {
                 try
                 {
-                    InputStream pmin = new ProgressMonitorInputStream(TextViewPanel.this,
-                                                                      "Loading text ...",in);
+                    InputStream pmin = new ProgressMonitorInputStream(TextViewPanel.this, "Loading text ...",in);
                     Reader rin = new InputStreamReader(pmin);
                     final String data = StringUtil.read(rin);
 
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() { setText(data); }
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        public void run()
+                        {
+                            setText(data);
+                        }
                     });
                 }
                 catch (IOException ex)

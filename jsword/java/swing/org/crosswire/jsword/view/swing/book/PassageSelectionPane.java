@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -15,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.tree.TreePath;
@@ -253,15 +256,18 @@ public class PassageSelectionPane extends JPanel
         final JDialog dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
         JButton btn_go = new JButton();
         JPanel pnl_action = new JPanel();
+        KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
-        btn_go.setText("Done");
-        btn_go.addActionListener(new ActionListener()
+        ActionListener closer = new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {
                 dlg_main.dispose();
             }
-        });
+        };
+
+        btn_go.setText("Done");
+        btn_go.addActionListener(closer);
 
         pnl_action.setLayout(new BorderLayout());
         pnl_action.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 20));
@@ -271,12 +277,13 @@ public class PassageSelectionPane extends JPanel
         dlg_main.getContentPane().add(this, BorderLayout.CENTER);
         dlg_main.getContentPane().add(pnl_action, BorderLayout.SOUTH);
         dlg_main.getRootPane().setDefaultButton(btn_go);
+        dlg_main.getRootPane().registerKeyboardAction(closer, esc, JComponent.WHEN_IN_FOCUSED_WINDOW);
         dlg_main.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dlg_main.setTitle(title);
         dlg_main.setModal(modal);
 
+        GuiUtil.restrainedPack(dlg_main, 0.5f, 0.75f);
         GuiUtil.centerWindow(dlg_main);
-        dlg_main.pack();
         dlg_main.setVisible(true);
 
         return txt_display.getText();

@@ -65,6 +65,7 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.TestBookUtil.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleDriver.class);
+        suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleUtil.class);
         suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.book.remote.TestLocalRemoteBible.class);

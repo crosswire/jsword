@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
@@ -41,34 +42,34 @@ public abstract class SearchableBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SearchableBibleMetaData.
      */
-    public SearchableBibleMetaData(Properties prop) throws MalformedURLException, ParseException
+    public SearchableBibleMetaData(BookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
-        super(prop);
+        super(driver, prop);
     }
 
     /**
      * Constructor for SearchableBibleMetaData.
      */
-    public SearchableBibleMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public SearchableBibleMetaData(BookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
-        super(name, edition, initials, pub, open, licence);
+        super(driver, name, edition, initials, pub, open, licence);
     }
 
     /**
      * Constructor for SearchableBibleMetaData.
      */
-    public SearchableBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public SearchableBibleMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
-        super(name, edition, initials, pubstr, openstr, licencestr);
+        super(driver, name, edition, initials, pubstr, openstr, licencestr);
     }
 
     /**
      * Constructor for SearchableBibleMetaData.
      * @param name
      */
-    public SearchableBibleMetaData(String name)
+    public SearchableBibleMetaData(BookDriver driver, String name)
     {
-        super(name);
+        super(driver, name);
     }
 
     /**

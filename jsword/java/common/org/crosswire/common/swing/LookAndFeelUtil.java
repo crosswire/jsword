@@ -93,7 +93,7 @@ public class LookAndFeelUtil
             SwingUtilities.updateComponentTreeUI(comp);
 
             if (comp instanceof Window)
-                GuiUtil.restrainedPack((Window) comp);
+                GuiUtil.restrainedRePack((Window) comp);
         }
     }
 

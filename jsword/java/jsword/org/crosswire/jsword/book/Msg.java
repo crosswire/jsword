@@ -29,6 +29,10 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
+    public static final Msg NO_COMMENTARIES = new Msg("No Commentaries found");
+    public static final Msg NO_DICTIONARIES = new Msg("No Dictionaries found");
+    public static final Msg NO_BIBLES = new Msg("No Bibles found");
+
     public static final Msg BOOK_NOREMOVE = new Msg("Could not remove unregistered Book");
     public static final Msg DUPLICATE_DRIVER = new Msg("Driver already registered");
     public static final Msg DRIVER_NOREMOVE = new Msg("Could not remove unregistered Driver");

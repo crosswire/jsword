@@ -39,5 +39,5 @@ public interface BibleMetaData extends BookMetaData
      * == test) unless for some reason the objects are not thread safe. Since
      * Bibles are read-only once setup thread safety should not be hard.
      */
-    public Bible getBible() throws BookException;
+    public Bible getBible();
 }

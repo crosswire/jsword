@@ -10,8 +10,8 @@
     <classpathentry kind="lib" path="jar/jaxb10b/jaxb-api.jar" sourcepath="/jsword-support/jar/jaxb10b/jaxb-api-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10b/jaxb-ri.jar" sourcepath="/jsword-support/jar/jaxb10b/jaxb-api-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10b/jaxb-libs.jar" sourcepath="/jsword-support/jar/jaxb10b/jaxb-api-src.zip"/>
-    <classpathentry kind="lib" path="jar/jlf10/jlfgr-1_0.jar"/>
     <classpathentry kind="lib" path="jar/servlet23/servlet.jar" sourcepath="/jsword-support/jar/servlet23/jakarta-servletapi-4-src-20021215.zip"/>
+    <classpathentry kind="lib" path="jar/bsf23/js.jar" sourcepath="/jsword-support/othersource/rhino15R4.zip"/>
     <classpathentry kind="lib" path="jar/lucene12/lucene-1.2.jar" sourcepath="/jsword-support/jar/lucene12/lucene-1.2-src.zip"/>
     <classpathentry kind="src" path="java/common"/>
     <classpathentry kind="src" path="target/gener/osis"/>

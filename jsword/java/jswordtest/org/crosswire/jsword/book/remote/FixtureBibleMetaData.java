@@ -5,8 +5,8 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 
 import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
@@ -38,24 +38,24 @@ public class FixtureBibleMetaData extends AbstractBibleMetaData
     /**
      * Basic constructor where we do all the string conversion for the user
      */
-    public FixtureBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public FixtureBibleMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
-        super(name, edition, initials, pubstr, openstr, licencestr);
+        super(driver, name, edition, initials, pubstr, openstr, licencestr);
     }
 
     /**
      * Constructor for FixtureBibleMetaData.
      * @param name
      */
-    public FixtureBibleMetaData(String name)
+    public FixtureBibleMetaData(BookDriver driver, String name)
     {
-        super(name);
+        super(driver, name);
     }
 
     /**
      * @see org.crosswire.jsword.book.BibleMetaData#getBible()
      */
-    public Bible getBible() throws BookException
+    public Bible createBible()
     {
         return null;
     }

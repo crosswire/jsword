@@ -52,4 +52,12 @@ public interface BookDriver
      * @exception BookException If the name is not valid
      */
     public Book create(Book source, ProgressListener li) throws BookException;
+    
+    /**
+     * Delete this Book from the system.
+     * Take care with this method for obvious reasons. For most implemenations
+     * of Book etc, this method will throw up because most will be read-only.
+     * @throws BookException If the Book can't be deleted.
+     */
+    public void delete(BookMetaData dead) throws BookException;
 }

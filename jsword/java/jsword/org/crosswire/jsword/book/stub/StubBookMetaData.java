@@ -10,8 +10,8 @@ import java.util.Properties;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.Dictionary;
@@ -48,41 +48,39 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     /**
      * Constructor for StubBookMetaData.
      */
-    public StubBookMetaData(Properties prop) throws MalformedURLException, ParseException
+    public StubBookMetaData(BookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
-        super(prop);
+        super(driver, prop);
     }
 
     /**
      * Constructor for StubBookMetaData.
      */
-    public StubBookMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public StubBookMetaData(BookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
-        super(name, edition, initials, pub, open, licence);
+        super(driver, name, edition, initials, pub, open, licence);
     }
 
     /**
      * Constructor for StubBookMetaData.
      */
-    public StubBookMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public StubBookMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
-        super(name, edition, initials, pubstr, openstr, licencestr);
+        super(driver, name, edition, initials, pubstr, openstr, licencestr);
     }
 
     /**
      * Constructor for StubBookMetaData.
      */
-    public StubBookMetaData(String name)
+    public StubBookMetaData(BookDriver driver, String name)
     {
-        super(name);
+        super(driver, name);
     }
 
-    /**
-     * Fetch a currently existing Bible, read-only
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBibleMetaData#createBible()
      */
-    public Bible getBible() throws BookException
+    public Bible createBible()
     {
         return (Bible) getBookInternal();
     }
@@ -90,7 +88,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     /**
      * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
      */
-    public Dictionary getDictionary() throws BookException
+    public Dictionary getDictionary()
     {
         return (Dictionary) getBookInternal();
     }
@@ -98,11 +96,14 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     /**
      * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
      */
-    public Commentary getCommentary() throws BookException
+    public Commentary getCommentary()
     {
         return (Commentary) getBookInternal();
     }
 
+    /**
+     * @return
+     */
     private Book getBookInternal()
     {
         // DCL
@@ -121,7 +122,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
         return book;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
      */
     public String getDriverName()
@@ -129,8 +130,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
         return "Stub";
     }
 
-    /**
-     * The expected speed at which this implementation gets correct answers.
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
      */
     public int getSpeed()

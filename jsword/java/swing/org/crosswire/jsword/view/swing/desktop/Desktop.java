@@ -505,9 +505,10 @@ public class Desktop extends JFrame implements TitleChangedListener
     }
 
     /**
-     * If there are no current BibleViewPane then add one in
+     * If there are no current BibleViewPane then add one in.
+     * final because the ctor calls this method
      */
-    public void ensureAvailableBibleViewPane()
+    public final void ensureAvailableBibleViewPane()
     {
         // If there are no views in the pool, create one
         if (!iterateBibleViewPanes().hasNext())

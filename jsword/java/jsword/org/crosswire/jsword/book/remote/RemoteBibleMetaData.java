@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
@@ -37,9 +37,10 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for RemoteBibleMetaData.
      */
-    public RemoteBibleMetaData(Remoter remoter, String id, String name, String edition, String initials, String pubstr, String openstr, String licencestr, int speed) throws ParseException, MalformedURLException
+    public RemoteBibleMetaData(BookDriver driver, Remoter remoter, String id, String name, String edition, String initials, String pubstr, String openstr, String licencestr, int speed) throws ParseException, MalformedURLException
     {
-        super(name, edition, initials, pubstr, openstr, licencestr);
+        super(driver, name, edition, initials, pubstr, openstr, licencestr);
+
         this.remoter = remoter;
         this.id = id;
         this.speed = speed;
@@ -50,22 +51,9 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
      * @param name The name of the version to create
      * @exception BookException If the name is not valid
      */
-    public Bible getBible() throws BookException
+    public Bible createBible()
     {
-        // DCL
-        // I know double checked locking is theoretically broken however it isn't
-        // practically broken 99% of the time, and even if the 1% comes up here
-        // the only effect is some temporary wasted memory
-        if (bible == null)
-        {
-            synchronized(this)
-            {
-                if (bible == null)
-                    bible = new RemoteBible(remoter, this);
-            }
-        }
-        
-        return bible;
+        return new RemoteBible(remoter, this);
     }
 
     /**

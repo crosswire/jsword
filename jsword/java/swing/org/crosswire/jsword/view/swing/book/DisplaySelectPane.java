@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,15 +138,14 @@ public class DisplaySelectPane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                doPassageAction();
-            }
-        });
-        txt_passg.addKeyListener(new KeyAdapter()
-        {
-            public void keyTyped(KeyEvent ev)
-            {
                 if (ev.getModifiers() == ActionEvent.CTRL_MASK)
+                {
                     showSelectDialog();
+                }
+                else
+                {
+                    doPassageAction();
+                }
             }
         });
         btn_dialg.setText("...");

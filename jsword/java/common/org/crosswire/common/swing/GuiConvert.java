@@ -4,7 +4,7 @@ package org.crosswire.common.swing;
 import java.awt.Color;
 import java.awt.Font;
 
-import org.crosswire.common.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Conversions between various types and Strings.
@@ -48,7 +48,7 @@ public class GuiConvert
     {
         if (value == null || value.equals("")) return null;
 
-        String[] values = StringUtil.tokenize(value, ",");
+        String[] values = StringUtils.split(value, ",");
         return new Font(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
     }
 

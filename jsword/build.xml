@@ -35,6 +35,7 @@
   <property name="product.version" value="0.9.5"/>
   <!-- override this with -Djnlp.hostname=www.crosswire.org to build in live -->
   <property name="jnlp.hostname" value="localhost:8080"/>
+  <property name="download.base" value="../deploy/download"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -223,13 +224,13 @@
     <mkdir dir="${target.junit}"/>
     <echo message="If this fails you might need to:"/>
     <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar {ANT}/lib"/>
-    <!-- Why does this not work?
+    <!-- Why does this not work? - ->
     <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
       <classpath>
         <fileset dir="${source.jar}/junit381" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    -->
+    <!- - -->
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
@@ -238,6 +239,7 @@
       <formatter type="plain" usefile="false"/>
       <formatter type="xml"/>
       <classpath>
+        <pathelement path="${target.classes}/osis"/>
         <pathelement path="${target.classes}/common"/>
         <pathelement path="${target.classes}/commontest"/>
         <pathelement path="${target.classes}/jsword"/>
@@ -251,19 +253,13 @@
         <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/swordtest"/>
         <pathelement path="${target.swingui}/resource"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
     </junit>
   </target>
 
   <!--=======================================================================-->
   <target name="web.testreport" depends="test" description="Compile test report">
-    <!--
-    <taskdef name="junitreport" classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
-      <classpath>
-        <fileset dir="${source.jar}/junit381" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    -->
     <junitreport todir="${target.junit}">
       <fileset dir="${target.junit}">
         <include name="TEST-*.xml"/>
@@ -273,14 +269,21 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.files" depends="jar, jnlp.deploy" description="Copy the file based documentation">
+  <target name="web.files" depends="jar" description="Copy the file based documentation">
     <mkdir dir="${target.web}"/>
     <copy todir="${target.web}" filtering="true">
       <filterset>
-        <filter token="DOWNLOAD" value="${target.download}"/>
+        <filter token="DOWNLOAD" value="${basedir}/${target.download}"/>
+        <filter token="BASEURL" value="${download.base}"/>
       </filterset>
       <fileset dir="${source.web}"/>
     </copy>
+    <style basedir="${source.web}" extension=".html" style="${source.web}/template.xsl" destdir="${target.web}">
+      <include name="*.xml"/>
+    </style>
+    <style basedir="${source.web}" extension=".jsp" style="${source.web}/template.xsl" destdir="${target.web}">
+      <include name="*.jsp"/>
+    </style>
     <mkdir dir="${target.web}/WEB-INF/lib"/>
     <copy todir="${target.web}/WEB-INF/lib">
       <fileset dir="${source.jar}/jdom08" includes="**/*.jar"/>
@@ -387,11 +390,11 @@
     <mkdir dir="${target.jdepend}"/>
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to:"/>
-    <echo message="copy ${basedir}/${source.tools}/jdepend26/jdepend.jar {ANT}/lib"/>
+    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar {ANT}/lib"/>
     <!-- Why does this not work?
     <taskdef name="jdepend" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
       <classpath>
-        <fileset dir="${source.tools}/jdepend26" includes="**/*.jar"/>
+        <fileset dir="${source.tools}/jdepend24" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     -->
@@ -425,7 +428,7 @@
       </classpath>
     </taskdef>
     <mkdir dir="${target.web}/pmd"/>
-    <pmd rulesetfiles="${source.tools}/pmd104/ruleset.xml" shortFilenames="true">
+    <pmd rulesetfiles="${basedir}/${source.tools}/pmd104/ruleset.xml" shortFilenames="true">
       <formatter type="html" toFile="${target.web}/pmd/index.html"/>
       <fileset dir="${source.java}/common" includes="**/*.java"/>
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
@@ -552,12 +555,12 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.analysis" depends="web.jdepend, web.pmd, web.javancss, web.java2html">
-    <!-- I've taken cpd out because it is very slow and not that useful -->
+  <target name="web.analysis" depends="web.jdepend, web.pmd, web.java2html">
+    <!-- I've taken web.javancss, cpd out because it is very slow and not that useful -->
   </target>
 
   <!--=======================================================================-->
-  <target name="web" depends="web.files, web.javadoc, web.testreport, web.analysis" description="All the documentation tasks">
+  <target name="web" depends="web.files, jnlp.deploy, web.javadoc, web.testreport, web.analysis" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->
@@ -654,7 +657,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="install" description="Install web application" depends="tomcatinit, web.files">
+  <target name="install" description="Install web application" depends="tomcatinit, jnlp.deploy, web.files">
     <install url="${url}" username="${username}" password="${password}" path="${path}" war="file://$basedir}/${target.root}/web"/>
   </target>
 

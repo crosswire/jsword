@@ -3,7 +3,6 @@ package org.crosswire.jsword.view.swing.book;
 
 import javax.swing.ComboBoxModel;
 
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookMetaData;
 
@@ -50,7 +49,7 @@ public class BooksComboBoxModel extends BooksListModel implements ComboBoxModel
         super(filter);
 
         if (bmds.size() > 0)
-            current = (BibleMetaData) bmds.get(0);
+            current = (BookMetaData) bmds.get(0);
     }
 
     /**

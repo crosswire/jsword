@@ -39,23 +39,23 @@ import org.crosswire.common.util.NetUtil;
 public abstract class Mem
 {
     /**
-    * Create a WordResource from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param leafname The leaf name to read/write
-    * @param create Should we start all over again
-    */
-    public Mem(RawBible raw, String leafname, boolean create) throws Exception
+     * Create a WordResource from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param leafname The leaf name to read/write
+     * @param create Should we start all over again
+     */
+    public Mem(RawBible raw, String leafname, boolean create) throws IOException
     {
         ctor(raw, leafname, create);
     }
 
     /**
-    * Create a WordResource from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param leafname The leaf name to read/write
-    * @param create Should we start all over again
-    * @param messages We append stuff here if something went wrong
-    */
+     * Create a WordResource from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param leafname The leaf name to read/write
+     * @param create Should we start all over again
+     * @param messages We append stuff here if something went wrong
+     */
     public Mem(RawBible raw, String leafname, boolean create, StringBuffer messages)
     {
         try
@@ -69,15 +69,15 @@ public abstract class Mem
     }
 
     /**
-    * This really should be a constructor, however the StringBuffer ctor
-    * wants to trap and muffle exceptions.
-    * I can't do this:
-    * <code>try { this(...) } ...</code>
-    * @param raw Reference to the RawBible that is using us
-    * @param leafname The leaf name to read/write
-    * @param create Should we start all over again
-    */
-    private void ctor(RawBible raw, String leafname, boolean create) throws Exception
+     * This really should be a constructor, however the StringBuffer ctor
+     * wants to trap and muffle exceptions.
+     * I can't do this:
+     * <code>try { this(...) } ...</code>
+     * @param raw Reference to the RawBible that is using us
+     * @param leafname The leaf name to read/write
+     * @param create Should we start all over again
+     */
+    private void ctor(RawBible raw, String leafname, boolean create) throws IOException
     {
         this.raw = raw;
         this.leafname = leafname;
@@ -95,20 +95,20 @@ public abstract class Mem
     }
 
     /**
-    * Start all over again and clear the decks for more data.
-    */
+     * Start all over again and clear the decks for more data.
+     */
     public abstract void init();
 
     /**
-    * Load the Resource from a stream
-    * @param in The stream to read from
-    */
-    public abstract void load(InputStream in) throws IOException, ClassNotFoundException;
+     * Load the Resource from a stream
+     * @param in The stream to read from
+     */
+    public abstract void load(InputStream in) throws IOException;
 
     /**
-    * Load the Resource from a named file
-    */
-    public void load() throws IOException, ClassNotFoundException
+     * Load the Resource from a named file
+     */
+    public void load() throws IOException
     {
         URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
 
@@ -134,15 +134,15 @@ public abstract class Mem
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a
+     * stream
+     * @param out The stream to write to
+     */
     public abstract void save(OutputStream out) throws IOException;
 
     /**
-    * Ensure that all changes to the index of words are written to disk
-    */
+     * Ensure that all changes to the index of words are written to disk
+     */
     public void save() throws IOException
     {
         URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);

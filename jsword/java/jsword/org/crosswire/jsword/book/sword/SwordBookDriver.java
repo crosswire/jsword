@@ -96,7 +96,7 @@ public class SwordBookDriver extends AbstractBookDriver
         {
             try
             {
-                SwordConfig config = new SwordConfig(modsdir, bookdirs[i]);
+                SwordConfig config = new SwordConfig(this, modsdir, bookdirs[i]);
                 SwordBookMetaData bmd = config.getMetaData();
                 valid.add(bmd);
             }

@@ -38,41 +38,41 @@ import org.crosswire.jsword.passage.Verse;
 public abstract class InstsMem extends Mem implements Insts
 {
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    */
-    public InstsMem(RawBible raw, String leafname, boolean create) throws Exception
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     */
+    public InstsMem(RawBible raw, String leafname, boolean create) throws IOException
     {
         super(raw, leafname, create);
     }
 
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    * @param messages We append stuff here if something went wrong
-    */
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     * @param messages We append stuff here if something went wrong
+     */
     public InstsMem(RawBible raw, String leafname, boolean create, StringBuffer messages)
     {
         super(raw, leafname, create, messages);
     }
 
     /**
-    * Start all over again and clear the decks for more data.
-    */
+     * Start all over again and clear the decks for more data.
+     */
     public void init()
     {
         array = new int[BibleInfo.versesInBible()][];
     }
 
     /**
-    * Load the Resource from a stream. This has been renamed from the
-    * default load() to ensure that the custom versions are called.
-    * @param in The stream to read from
-    */
+     * Load the Resource from a stream. This has been renamed from the
+     * default load() to ensure that the custom versions are called.
+     * @param in The stream to read from
+     */
     protected void defaultLoad(InputStream in) throws IOException, ClassNotFoundException
     {
         ObjectInputStream obj_in = new ObjectInputStream(in);
@@ -82,11 +82,11 @@ public abstract class InstsMem extends Mem implements Insts
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream. This has been renamed from the default save() to ensure
-    * that the custom versions are called.
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a
+     * stream. This has been renamed from the default save() to ensure
+     * that the custom versions are called.
+     * @param out The stream to write to
+     */
     public void defaultSave(OutputStream out) throws IOException
     {
         ObjectOutputStream obj_out = new ObjectOutputStream(out);
@@ -96,30 +96,30 @@ public abstract class InstsMem extends Mem implements Insts
     }
 
     /**
-    * Retrieve an ordered list of the words in a Verse
-    * @param verse The Verse to retrieve words for
-    * @return An array of word indexes
-    */
+     * Retrieve an ordered list of the words in a Verse
+     * @param verse The Verse to retrieve words for
+     * @return An array of word indexes
+     */
     public int[] getIndexes(Verse verse)
     {
         return array[verse.getOrdinal()-1];
     }
 
     /**
-    * Retrieve an ordered list of the words in a Verse
-    * @param verse The Verse to retrieve words for
-    * @return An array of word indexes
-    */
+     * Retrieve an ordered list of the words in a Verse
+     * @param verse The Verse to retrieve words for
+     * @return An array of word indexes
+     */
     public int[] getIndexes(int ordinal)
     {
         return array[ordinal-1];
     }
 
     /**
-    * Set a list of word indexes as the test to a Verse
-    * @param verse The Verse to set the words for
-    * @param indexes The array of word indexes
-    */
+     * Set a list of word indexes as the test to a Verse
+     * @param verse The Verse to set the words for
+     * @param indexes The array of word indexes
+     */
     public void setIndexes(int[] indexes, Verse verse)
     {
         array[verse.getOrdinal()-1] = indexes;

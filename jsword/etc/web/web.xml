@@ -18,7 +18,6 @@
     <servlet-class>org.crosswire.jsword.view.web.RemoterServlet</servlet-class>
   </servlet>
 
-
   <servlet-mapping>
     <servlet-name>demo</servlet-name>
     <url-pattern>/demo</url-pattern>
@@ -27,6 +26,5 @@
     <servlet-name>remoter</servlet-name>
     <url-pattern>/remoter</url-pattern>
   </servlet-mapping>
-
 
 </web-app>

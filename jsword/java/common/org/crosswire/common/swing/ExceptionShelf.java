@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.crosswire.common.util.LogUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.event.ReporterEvent;
 import org.crosswire.common.util.event.ReporterListener;
@@ -181,15 +180,11 @@ public class ExceptionShelf extends JPanel
     {
         if (total == 0)
         {
-            JOptionPane.showMessageDialog(this,
-                    "No detected problems.",
-                    "Status",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No detected problems.", "Status", JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
-            DetailedExceptionPane.showExceptionDialog(this,
-                    (Throwable) exceptions.get(current));
+            ExceptionPane.showExceptionDialog(this, (Throwable) exceptions.get(current));
         }
     }
 
@@ -263,7 +258,7 @@ public class ExceptionShelf extends JPanel
         }
         else
         {
-            report.setText("<html>"+LogUtil.getHTMLDescription(ex));
+            report.setText("<html>"+ExceptionPane.getHTMLDescription(ex));
             report.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
             remove.setEnabled(true);
         }

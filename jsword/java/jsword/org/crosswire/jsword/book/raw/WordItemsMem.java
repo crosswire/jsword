@@ -107,7 +107,7 @@ public class WordItemsMem extends ItemsMem
      * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
-    public WordItemsMem(RawBible raw, boolean create) throws Exception
+    public WordItemsMem(RawBible raw, boolean create) throws IOException
     {
         super(raw, "word.idx", create);
     }
@@ -167,7 +167,7 @@ public class WordItemsMem extends ItemsMem
      * Load the Resource from a stream
      * @param in The stream to read from
      */
-    public void load(InputStream in) throws IOException, ClassNotFoundException
+    public void load(InputStream in) throws IOException
     {
         DataInputStream din = new DataInputStream(in);
 

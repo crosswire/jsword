@@ -14,10 +14,8 @@ This file is our equivalent of bugzilla for the time being.
 - provide support for:
 	COUNT	ID	TYPE
 	1	DRIVER_RAW_FILES	commentary
-	1	DRIVER_RAW_LD4	dictionary
 	3	DRIVER_RAW_COM	commentary
 	15	DRIVER_Z_COM	commentary
-	20	DRIVER_RAW_LD	dictionary
 
 - markup (PENDING etc) to add to docs
 
@@ -25,4 +23,8 @@ This file is our equivalent of bugzilla for the time being.
 
 - double error dialogs
 
-- modal problems with details on exception pane
+- dict tabs do not alter with new/removed books
+
+- OSIS->text filter does not work for dictionaries
+
+- slow startup

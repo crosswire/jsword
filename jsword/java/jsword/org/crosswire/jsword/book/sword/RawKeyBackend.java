@@ -1,12 +1,23 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.basic.DefaultKey;
 
 /**
  * An implementation KeyBackend to read RAW format files.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -30,13 +41,103 @@ import org.crosswire.jsword.book.Key;
  */
 public class RawKeyBackend implements KeyBackend
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.KeyBackend#init(org.crosswire.jsword.book.sword.SwordConfig)
+    /**
+     * We need to know how many bytes in the size portion of the index
+     * @param datasize
      */
-    public void init(SwordConfig config) throws BookException
+    public RawKeyBackend(SwordConfig config, int datasize) throws BookException
     {
-        // TODO Auto-generated method stub
+        this.datasize = datasize;
 
+        if (datasize != 2 && datasize != 4)
+        {
+            throw new BookException(Msg.TYPE_UNKNOWN);
+        }
+
+        try
+        {
+            // Open the files
+            URL url = NetUtil.lengthenURL(SwordBookDriver.dir, config.getDataPath());
+            if (!url.getProtocol().equals("file"))
+            {
+                throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
+            }
+            
+            String path = url.getFile();
+            
+            idx_raf = new RandomAccessFile(path + ".idx", "r");
+            dat_raf = new RandomAccessFile(path + ".dat", "r");
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.READ_FAIL, ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.KeyBackend#readIndex()
+     */
+    public List readIndex()
+    {
+        List reply = new ArrayList();
+
+        int entrysize = OFFSETSIZE + datasize;
+        long entries;
+        try
+        {
+            entries = idx_raf.length() / entrysize;
+        }
+        catch (IOException ex)
+        {
+            Reporter.informUser(this, ex);
+            return reply;
+        }
+
+        for (int entry=0; entry<entries; entry++)
+        {
+            try
+            {
+                // Read the offset and size for this key from the index
+                byte[] buffer = SwordUtil.readRAF(idx_raf, entry*entrysize, entrysize);
+                long offset = SwordUtil.decodeLittleEndian32(buffer, 0);
+                int size = -1;
+                switch (datasize)
+                {
+                case 2:
+                    size = SwordUtil.decodeLittleEndian16(buffer, 4);
+                    break;
+                case 4:
+                    size = SwordUtil.decodeLittleEndian32AsInt(buffer, 4);
+                    break;
+                default:
+                    throw new LogicError();
+                }
+                
+                // Now read the data file for this key using the offset and size
+                byte[] data = SwordUtil.readRAF(dat_raf, offset, size);
+
+                int keyend = SwordUtil.findByte(data, SEPARATOR);
+                if (keyend == -1)
+                {
+                    log.error("Failed to find keyname. offset="+offset+" data='"+new String(data)+"'");
+                    continue;
+                }
+
+                byte[] keydata = new byte[keyend];
+                System.arraycopy(data, 0, keydata, 0, keyend);
+                
+                String keytitle = new String(keydata).trim();
+                Key key = new IndexKey(keytitle, offset, size);
+                
+                reply.add(key);
+            }
+            catch (IOException ex)
+            {
+                log.error("Ignoring entry", ex);
+            }
+        }
+
+        return reply;
     }
 
     /* (non-Javadoc)
@@ -44,7 +145,82 @@ public class RawKeyBackend implements KeyBackend
      */
     public byte[] getRawText(Key key) throws BookException
     {
-        // TODO Auto-generated method stub
-        return "".getBytes();
+        if (!(key instanceof IndexKey))
+        {
+            throw new BookException(Msg.BAD_KEY, new Object[] { key.getClass().getName()});
+        }
+
+        IndexKey ikey = (IndexKey) key;
+
+        try
+        {
+            byte[] data = SwordUtil.readRAF(dat_raf, ikey.offset, ikey.size);
+
+            int keyend = SwordUtil.findByte(data, SEPARATOR);
+            if (keyend == -1)
+            {
+                throw new BookException(Msg.READ_FAIL);
+            }
+
+            int remainder = data.length - (keyend + 1);
+            byte[] reply = new byte[remainder];
+            System.arraycopy(data, keyend + 1, reply, 0, remainder);
+
+            return reply;
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.READ_FAIL, ex);
+        }
+    }
+
+    /**
+     * Used to separate the key name from the key value
+     */
+    private static final byte SEPARATOR = 10; // ^M=CR=13=0x0d=\r ^J=LF=10=0x0a=\n
+
+    /**
+     * How many bytes in the offset pointers in the index
+     */
+    private static final int OFFSETSIZE = 4;
+
+    /**
+     * How many bytes in the size count in the index
+     */
+    private int datasize = -1;
+
+    /**
+     * The data file
+     */
+    private RandomAccessFile dat_raf;
+
+    /**
+     * The index file
+     */
+    private RandomAccessFile idx_raf;
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(RawKeyBackend.class);
+
+    /**
+     * A Key that knows where the data is in the real file.
+     */
+    class IndexKey extends DefaultKey
+    {
+        /**
+         * Setup with the key name and positions of data in the file
+         */
+        public IndexKey(String text, long offset, int size)
+        {
+            super(text);
+
+            this.offset = offset;
+            this.size = size;
+        }
+
+        protected long offset;
+        protected int size;
     }
 }

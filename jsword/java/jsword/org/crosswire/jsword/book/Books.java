@@ -192,12 +192,18 @@ public class Books
             if (contents[i] == BooksListener.class)
             {
                 if (ev == null)
+                {
                     ev = new BooksEvent(source, bmd, added);
+                }
 
                 if (added)
+                {
                     ((BooksListener) contents[i + 1]).bookAdded(ev);
+                }
                 else
+                {
                     ((BooksListener) contents[i + 1]).bookRemoved(ev);
+                }
             }
         }
     }
@@ -288,7 +294,9 @@ public class Books
         {
             BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
+            {
                 i++;
+            }
         }
         
         BookDriver[] reply = new BookDriver[i];
@@ -298,7 +306,9 @@ public class Books
         {
             BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
+            {
                 reply[i++] = driver;
+            }
         }
 
         return reply;

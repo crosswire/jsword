@@ -47,13 +47,21 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
     /**
      * @param data
      */
-    public SwordCommentary(SwordCommentaryMetaData scmd, SwordConfig config) throws BookException
+    public SwordCommentary(SwordCommentaryMetaData scmd, SwordConfig config)
     {
         this.scmd = scmd;
         this.config = config;
 
-        backend = config.getBackend();
-        backend.init(config);
+        try
+        {
+            backend = config.getBackend();
+            backend.init(config);
+        }
+        catch (BookException ex)
+        {
+            backend = null;
+            log.error("Failed to init", ex);
+        }
     }
 
     /* (non-Javadoc)
@@ -69,6 +77,9 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
      */
     public BookData getComments(Passage ref) throws BookException
     {
+        if (backend == null)
+            failedGetData(ref, Msg.READ_FAIL);
+
         try
         {
             BookDataListener li = new OSISBookDataListnener();
@@ -86,10 +97,14 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
                 while (vit.hasNext())
                 {
                     Verse verse = (Verse) vit.next();
-                    String text = getText(verse);
     
                     li.startVerse(verse);
+
+                    // We should probably think about encodings here?
+                    byte[] data = backend.getRawText(verse);
+                    String text = new String(data);
                     config.getFilter().toOSIS(li, text);
+
                     li.endVerse();
                 }
                 
@@ -104,34 +119,12 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
         }
     }
 
-    /**
-     * This is very similar in function to getData(Passage) except that we only
-     * fetch the data for a single verse, and we get it back in string form
-     * without having to parse it.
-     * @param verse The verse to get data for
-     * @return String The corresponding text
-     */
-    public String getText(Verse verse) throws BookException
-    {
-        // We should probably think about encodings here?
-        return new String(backend.getRawText(verse));
-    }
-
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search word) throws BookException
     {
         return PassageFactory.createPassage();
-    }
-
-    /**
-     * Accessor for the SwordConfig
-     */
-    protected SwordConfig getConfig()
-    {
-        return config;
     }
 
     /**

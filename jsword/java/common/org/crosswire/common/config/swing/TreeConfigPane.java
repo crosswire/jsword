@@ -207,8 +207,14 @@ public class TreeConfigPane extends PanelConfigPane
         }
 
         String key = path.toString();
-        if (decks.containsKey(key)) layout.show(deck, key);
-        else                        layout.show(deck, BLANK);
+        if (decks.containsKey(key))
+        {
+            layout.show(deck, key);
+        }
+        else
+        {
+            layout.show(deck, BLANK);
+        }
 
         deck.repaint();
     }
@@ -441,9 +447,13 @@ public class TreeConfigPane extends PanelConfigPane
         public String getFullName()
         {
             if (path.length() == 0 || name.length() == 0)
-                return path+name;
+            {
+                return path + name;
+            }
             else
-                return path+"."+name;
+            {
+                return path + "." + name;
+            }
         }
 
         /** The displayed string */

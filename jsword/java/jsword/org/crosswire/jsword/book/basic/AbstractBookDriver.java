@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.basic;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.ProgressListener;
 
 /**
@@ -45,6 +46,17 @@ public abstract class AbstractBookDriver implements BookDriver
      * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.events.ProgressListener)
      */
     public Book create(Book source, ProgressListener li) throws BookException
+    {
+        throw new BookException(Msg.DRIVER_READONLY);
+    }
+    
+    /**
+     * Delete this Book from the system.
+     * Take care with this method for obvious reasons. For most implemenations
+     * of Book etc, this method will throw up because most will be read-only.
+     * @throws BookException If the Book can't be deleted.
+     */
+    public void delete(BookMetaData dead) throws BookException
     {
         throw new BookException(Msg.DRIVER_READONLY);
     }

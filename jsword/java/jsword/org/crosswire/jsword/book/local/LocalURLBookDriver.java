@@ -12,11 +12,9 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.URLFilter;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.search.SearchableBookDriver;
 import org.crosswire.jsword.util.Project;
 
@@ -77,7 +75,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
             File fdir = new File(dir.getFile());
             if (!fdir.isDirectory())
             {
-                log.debug("The directory '"+dir+"' does not exist.");
+                log.debug("The directory '"+dir+"' does not exist. cwd="+new File(".").getCanonicalPath());
             }
         }
         else
@@ -100,21 +98,27 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         return speed;
     }
 
-    /**
-     * Do the real creation using the right meta data
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#delete()
      */
-    protected Bible getBible(LocalURLBibleMetaData lbmd, ProgressListener li) throws BookException
+    public void delete(BookMetaData bmd) throws BookException
     {
+        if (!(bmd instanceof LocalURLBibleMetaData))
+        {
+            throw new BookException(Msg.DELETE_FAIL, new Object[] { bmd.getName()});
+        }
+        
+        LocalURLBibleMetaData lbmd = (LocalURLBibleMetaData) bmd;
         try
         {
-            LocalURLBible bible = (LocalURLBible) bibleclass.newInstance();
-            bible.setLocalURLBibleMetaData(lbmd);
-            bible.init(li);
-            return bible;
+            if (!NetUtil.delete(lbmd.getURL()))
+            {
+                throw new BookException(Msg.DELETE_FAIL, new Object[] { bmd.getName() });
+            }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            throw new BookException(Msg.CREATE_FAIL, ex);
+            throw new BookException(Msg.DELETE_FAIL, ex, new Object[] { bmd.getName() });
         }
     }
 
@@ -272,7 +276,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
     /**
      * The type of Bible we are to create
      */
-    private Class bibleclass;
+    protected Class bibleclass;
 
     /**
      * The diriver name

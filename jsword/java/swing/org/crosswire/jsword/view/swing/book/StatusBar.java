@@ -91,9 +91,11 @@ public class StatusBar extends JComponent implements MouseListener
                 Object value = action.getValue(Action.LONG_DESCRIPTION);
 
                 if (value != null)
+                {
                     lbl_message.setText(value.toString());
+                }
             }
-       }
+        }
     }
 
     /**

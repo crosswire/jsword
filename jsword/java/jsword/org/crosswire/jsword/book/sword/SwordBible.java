@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -50,13 +48,21 @@ public class SwordBible extends AbstractBible
      * Constructor SwordBible.
      * @param swordConfig
      */
-    public SwordBible(SwordBibleMetaData sbmd, SwordConfig config) throws BookException
+    public SwordBible(SwordBibleMetaData sbmd, SwordConfig config)
     {
         this.sbmd = sbmd;
         this.config = config;
 
-        backend = config.getBackend();
-        backend.init(config);
+        try
+        {
+            backend = config.getBackend();
+            backend.init(config);
+        }
+        catch (BookException ex)
+        {
+            backend = null;
+            log.error("Failed to init", ex);
+        }
     }
 
     /* (non-Javadoc)
@@ -72,6 +78,9 @@ public class SwordBible extends AbstractBible
      */
     public BookData getData(Passage ref) throws BookException
     {
+        if (backend == null)
+            throw new BookException(Msg.READ_FAIL);
+
         try
         {
             BookDataListener li = new OSISBookDataListnener();
@@ -92,7 +101,9 @@ public class SwordBible extends AbstractBible
     
                     li.startVerse(verse);
 
-                    String text = getText(verse);
+                    // We should probably think about encodings here?
+                    byte[] data = backend.getRawText(verse);
+                    String text = new String(data);
                     config.getFilter().toOSIS(li, text);
 
                     li.endVerse();
@@ -109,45 +120,12 @@ public class SwordBible extends AbstractBible
         }
     }
 
-    /**
-     * This is very similar in function to getData(Passage) except that we only
-     * fetch the data for a single verse, and we get it back in string form
-     * without having to parse it.
-     * @param verse The verse to get data for
-     * @return String The corresponding text
-     */
-    public String getText(Verse verse) throws BookException
-    {
-        // We should probably think about encodings here?
-        byte[] data = backend.getRawText(verse);
-
-        try
-        {
-            FileOutputStream debug = new FileOutputStream("c:\\debug.txt");
-            debug.write(data);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return new String(data);
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search word) throws BookException
     {
         return PassageFactory.createPassage();
-    }
-
-    /**
-     * Accessor for the SwordConfig
-     */
-    protected SwordConfig getConfig()
-    {
-        return config;
     }
 
     /**

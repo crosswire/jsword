@@ -1,8 +1,9 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.IOException;
-
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 
 /**
@@ -29,14 +30,34 @@ import org.crosswire.jsword.book.DictionaryMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SwordDictionaryMetaData extends SwordBookMetaData implements DictionaryMetaData
+public class SwordDictionaryMetaData extends SwordBookMetaData implements DictionaryMetaData
 {
     /**
      * Simple ctor
      * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
      */
-    public SwordDictionaryMetaData(SwordConfig config) throws IOException
+    public SwordDictionaryMetaData(SwordBookDriver driver, SwordConfig config) throws BookException
     {
-        super(config);
+        super(driver, config);
+        dict = new SwordDictionary(this, config);
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
+     */
+    public Dictionary getDictionary()
+    {
+        return (Dictionary) getBook();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.SwordBookMetaData#createBook()
+     */
+    public Book createBook()
+    {
+        dict.init();
+        return dict;
+    }
+    
+    private SwordDictionary dict;
 }

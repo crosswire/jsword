@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book.readings;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -19,8 +18,8 @@ import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -53,46 +52,48 @@ public class ReadingsDictionary implements Dictionary
      * Constructor ReadingsDictionary.
      * @param readingsDictionaryMetaData
      */
-    public ReadingsDictionary(ReadingsDictionaryMetaData dmd) throws BookException
+    public ReadingsDictionary(ReadingsDictionaryMetaData dmd)
     {
         this.dmd = dmd;
 
+        String name = ReadingsBookDriver.getReadingsSet();
+
+        Properties prop;
         try
         {
-            String name = ReadingsBookDriver.getReadingsSet();
-
-            Properties prop = Project.resource().getReadingsSet(name);
-            
-            /*String title = (String)*/ prop.remove("title");
-
-            // We use 1972 because it is a leap year.
-            GregorianCalendar greg = new GregorianCalendar(1972, GregorianCalendar.JANUARY, 1);
-            while (greg.get(GregorianCalendar.YEAR) == 1972)
-            {
-                String key = KEYBASE + (1+greg.get(GregorianCalendar.MONTH)) + "." + greg.get(GregorianCalendar.DATE);
-                String readings = (String) prop.remove(key);
-                if (readings == null)
-                {
-                    log.warn("Missing resource: "+key+" while parsing: "+name);
-                    readings = "";
-                }
-
-                hash.put(new ReadingsKey(greg.getTime()), readings);
-
-                greg.add(GregorianCalendar.DATE, 1);
-            }
-
-            // Anything left is probably in error
-            for (Iterator it = prop.keySet().iterator(); it.hasNext();)
-            {
-                String key = (String) it.next();
-                String val = prop.getProperty(key);
-                log.warn("Extra resource: "+key+"="+val+" while parsing: "+name);
-            }
+            prop = Project.resource().getReadingsSet(name);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
-            throw new BookException(Msg.INIT_FAIL, ex);
+            prop = new Properties();
+            log.error("Failed to read readings set", ex);
+        }
+            
+        /*String title = (String)*/ prop.remove("title");
+
+        // We use 1972 because it is a leap year.
+        GregorianCalendar greg = new GregorianCalendar(1972, GregorianCalendar.JANUARY, 1);
+        while (greg.get(GregorianCalendar.YEAR) == 1972)
+        {
+            String key = KEYBASE + (1+greg.get(GregorianCalendar.MONTH)) + "." + greg.get(GregorianCalendar.DATE);
+            String readings = (String) prop.remove(key);
+            if (readings == null)
+            {
+                log.warn("Missing resource: "+key+" while parsing: "+name);
+                readings = "";
+            }
+
+            hash.put(new ReadingsKey(greg.getTime()), readings);
+
+            greg.add(GregorianCalendar.DATE, 1);
+        }
+
+        // Anything left is probably in error
+        for (Iterator it = prop.keySet().iterator(); it.hasNext();)
+        {
+            String key = (String) it.next();
+            String val = prop.getProperty(key);
+            log.warn("Extra resource: "+key+"="+val+" while parsing: "+name);
         }
     }
 

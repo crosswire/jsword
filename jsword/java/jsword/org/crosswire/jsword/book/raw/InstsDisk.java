@@ -2,8 +2,8 @@
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Verse;
 
@@ -35,21 +35,21 @@ import org.crosswire.jsword.passage.Verse;
 public abstract class InstsDisk extends Disk implements Insts
 {
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param create Should we start all over again
-    */
-    public InstsDisk(RawBible raw, String leafname, boolean create) throws Exception
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param create Should we start all over again
+     */
+    public InstsDisk(RawBible raw, String leafname, boolean create) throws IOException
     {
         ctor(raw, leafname, create);
     }
 
     /**
-    * Create a WordResource from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param create Should we start all over again
-    * @param messages We append stuff here if something went wrong
-    */
+     * Create a WordResource from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param create Should we start all over again
+     * @param messages We append stuff here if something went wrong
+     */
     public InstsDisk(RawBible raw, String leafname, boolean create, StringBuffer messages)
     {
         try
@@ -63,15 +63,15 @@ public abstract class InstsDisk extends Disk implements Insts
     }
 
     /**
-    * This really should be a constructor, however the StringBuffer ctor
-    * wants to trap and muffle exceptions.
-    * |I can't do this:
-    * <code>try { this(...) } ...</code>
-    * @param raw Reference to the RawBible that is using us
-    * @param leafname The leaf name to read/write
-    * @param create Should we start all over again
-    */
-    private void ctor(RawBible raw, String leafname, boolean create) throws Exception
+     * This really should be a constructor, however the StringBuffer ctor
+     * wants to trap and muffle exceptions.
+     * |I can't do this:
+     * <code>try { this(...) } ...</code>
+     * @param raw Reference to the RawBible that is using us
+     * @param leafname The leaf name to read/write
+     * @param create Should we start all over again
+     */
+    private void ctor(RawBible raw, String leafname, boolean create) throws IOException
     {
         this.raw = raw;
         this.leafname = leafname;
@@ -79,39 +79,46 @@ public abstract class InstsDisk extends Disk implements Insts
 
         index = new long[BibleInfo.versesInBible()];
 
-        if (create) save();
-        else        load();
+        if (create)
+        {
+            save();
+        }
+        else
+        {
+            load();
+        }
     }
 
     /**
-    * Load the Resource from a named file
-    */
-    public abstract void load() throws IOException, ClassNotFoundException, MalformedURLException;
+     * Load the Resource from a named file
+     */
+    public abstract void load() throws IOException;
 
     /**
-    * Lzay resources can not be used for creation
-    * @param out The stream to write to
-    */
-    public void save() throws IOException
+     * Lzay resources can not be used for creation
+     * @param out The stream to write to
+     */
+    public void save()
     {
-        throw new Error("You must use a WordInstsMem to write data");
+        // You must use a WordInstsMem to write data
+        throw new LogicError();
     }
 
     /**
-    * Retrieve an ordered list of the words in a Verse
-    * @param verse The Verse to retrieve words for
-    * @return An array of word indexes
-    */
+     * Retrieve an ordered list of the words in a Verse
+     * @param verse The Verse to retrieve words for
+     * @return An array of word indexes
+     */
     public int[] getIndexes(Verse verse)
     {
         return getIndexes(verse.getOrdinal());
     }
 
     /**
-    * Set a list of word indexes as the test to a Verse
-    * @param verse The Verse to set the words for
-    * @param indexes The array of word indexes
-    */
+     * Set a list of word indexes as the test to a Verse
+     * @param verse The Verse to set the words for
+     * @param indexes The array of word indexes
+     */
     public void setIndexes(int[] indexes, Verse verse)
     {
         throw new Error("You must use a PuncInstsMem to write data");

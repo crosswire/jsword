@@ -63,20 +63,28 @@ public class CaptureEvent extends EventObject
     */
     public String getSourceName()
     {
-        Class clazz;
         Object source = getSource();
+
+        Class clazz;
         if (source instanceof Class)
+        {
             clazz = (Class) source;
+        }
         else
+        {
             clazz = source.getClass();
+        }
 
         String full = clazz.getName();
         int last_dot = full.lastIndexOf(".");
-
         if (last_dot == -1)
+        {
             return full;
+        }
         else
-            return full.substring(last_dot+1);
+        {
+            return full.substring(last_dot + 1);
+        }
     }
 
     /**

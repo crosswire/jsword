@@ -60,7 +60,9 @@ public class Project
     public static Resource resource()
     {
         if (resource == null)
+        {
             log.error("attempt to use Resource before project is init()ed");
+        }
             
         return resource;
     }

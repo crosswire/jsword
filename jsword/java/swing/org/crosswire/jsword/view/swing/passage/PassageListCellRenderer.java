@@ -56,7 +56,7 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
 
         label.setBorder(border);
         label.setOpaque(true);
-        label.setIcon(GuiUtil.loadImageIcon("org/crosswire/resources/page.gif"));
+        label.setIcon(GuiUtil.getIcon("images/Passage16.gif"));
     }
 
     /**

@@ -1,16 +1,19 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page">
+<html>
+<head>
+  <title>JSword - Web Demo</title>
+</head>
 
-<jsp:include page="header.jsp">
-  <jsp:param name="title" value="JSword - Web Demo" />
-</jsp:include>
+<body>
 
-<%
-String search = (String) request.getAttribute("search");
-if (search == null) search = "";
-String match = (String) request.getAttribute("match");
-if (match == null) match = "";
-String view = (String) request.getAttribute("view");
-if (view == null) view = "";
-%>
+<jsp:scriptlet><![CDATA[
+  String search = (String) request.getAttribute("search");
+  if (search == null) search = "";
+  String match = (String) request.getAttribute("match");
+  if (match == null) match = "";
+  String view = (String) request.getAttribute("view");
+  if (view == null) view = "";
+]]></jsp:scriptlet>
 
 <h1>Live</h1>
 <p>
@@ -22,9 +25,9 @@ to JSword.
 <table width="100%">
   <tr>
 	<td>Search:</td>
-	<td nowrap>
+	<td nowrap="nowrap">
 	  <form name="search" method="post" action="demo">
-		<input type="text" name="search" value="<%= search %>" />
+		<input type="text" name="search" value="%= search %" />
 		<input name="GO" type="submit" id="GO" value="GO" />
 	  </form>
 	</td>
@@ -34,9 +37,9 @@ to JSword.
   </tr>
   <tr> 
 	<td>Best Match: </td>
-	<td nowrap>
+	<td nowrap="nowrap">
 	  <form name="match" method="post" action="demo">
-		<input type="text" name="match" value="<%= match %>" />
+		<input type="text" name="match" value="%= match %" />
 		<input name="GO" type="submit" id="GO" value="GO" />
 	  </form>
 	</td>
@@ -45,9 +48,9 @@ to JSword.
   </tr>
   <tr>
 	<td>View:</td>
-	<td nowrap>
+	<td nowrap="nowrap">
 	  <form name="view" method="post" action="demo">
-		<input type="text" name="view" value="<%= view %>" />
+		<input type="text" name="view" value="%= view %" />
 		<input name="GO" type="submit" id="GO" value="GO" />
 	  </form>
 	</td>
@@ -57,19 +60,30 @@ to JSword.
 </table>
 <br/>
 
-<% String reply = (String) request.getAttribute("reply");
-if (reply != null) { %>
-<%= reply %>
-<% } %>
+<jsp:scriptlet><![CDATA[
+  String reply = (String) request.getAttribute("reply");
+  if (reply != null) {
+]]></jsp:scriptlet>
+<jsp:expression>reply</jsp:expression>
+<jsp:scriptlet><![CDATA[ } ]]></jsp:scriptlet>
 
-<% String link = (String) request.getAttribute("next-link");
-if (link != null) { %>
+<jsp:scriptlet><![CDATA[
+String link = (String) request.getAttribute("next-link");
+if (link != null) {
+]]></jsp:scriptlet>
 <hr />
-<p>The following <%= (String) request.getAttribute("next-overview") %> were trimmed to avoid overloading server.</p>
-<p><font size="-1">
-<%= (String) request.getAttribute("next-name") %>
-</font></p>
-<p>To see them <a href="demo?view=<%= link %>">click here</a>.</p>
-<% } %>
 
-<jsp:include page="footer.jsp" />
+<p>The following <jsp:expression>request.getAttribute("next-overview")</jsp:expression>
+were trimmed to avoid overloading server.</p>
+
+<p><font size="-1">
+<jsp:expression>request.getAttribute("next-name")</jsp:expression>
+</font></p>
+
+<p>To see them <a href="demo?view=%= link %">click here</a>.</p>
+
+<jsp:scriptlet><![CDATA[ } ]]></jsp:scriptlet>
+
+</body>
+</html>
+</jsp:root>

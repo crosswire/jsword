@@ -38,7 +38,6 @@ import org.jdom.Document;
  */
 public class LocalRemoterTest extends TestCase
 {
-
     /**
      * Constructor for LocalRemoterTest.
      * @param arg0
@@ -59,7 +58,7 @@ public class LocalRemoterTest extends TestCase
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
         Document doc = remote.execute(method);
-        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
+        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(null, doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
 
         assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)

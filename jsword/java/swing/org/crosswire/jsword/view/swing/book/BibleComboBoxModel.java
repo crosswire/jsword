@@ -64,6 +64,9 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
         case LEVEL_VERSE:
             selected = new Integer(set.getVerse().getVerse());
             break;
+
+        default:
+            throw new LogicError();
         }
     }
 

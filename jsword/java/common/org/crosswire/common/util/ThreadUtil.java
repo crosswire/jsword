@@ -3,7 +3,10 @@ package org.crosswire.common.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Various utilities for examining the running Threads and
@@ -183,11 +186,11 @@ public class ThreadUtil
      */
     public static String[] getListing(ThreadGroup base)
     {
-        Vector vec = new Vector();
+        List vec = new ArrayList();
 
         listThreads(vec, 0, base);
 
-        return StringUtil.getStringArray(vec);
+        return (String[]) vec.toArray(new String[vec.size()]);
     }
 
     /**
@@ -196,9 +199,12 @@ public class ThreadUtil
      * @param depth The current recursion depth
      * @param group The ThreadGroup to detail
      */
-    private static void listThreads(Vector vec, int depth, ThreadGroup group)
+    private static void listThreads(List vec, int depth, ThreadGroup group)
     {
-        if (group == null) return;
+        if (group == null)
+        {
+            return;
+        }
 
         try
         {
@@ -242,7 +248,7 @@ public class ThreadUtil
      * @param depth The current recursion depth
      * @param group The ThreadGroup to detail
      */
-    private static void listThread(Vector vec, int depth, Thread thread)
+    private static void listThread(List vec, int depth, Thread thread)
     {
         if (thread == null) return;
 
@@ -262,8 +268,8 @@ public class ThreadUtil
      * @param depth The current recursion depth
      * @param group The ThreadGroup to detail
      */
-    private static void addItem(Vector vec, int depth, String item)
+    private static void addItem(List vec, int depth, String item)
     {
-        vec.addElement(StringUtil.chain(depth*2, " ") + item);
+        vec.add(StringUtils.leftPad("", depth*2) + item);
     }
 }

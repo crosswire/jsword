@@ -1,6 +1,9 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.util.Iterator;
+
+import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Commentary;
@@ -8,10 +11,15 @@ import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseRange;
 
 /**
  * An AbstractCommentary implements a few of the more generic methods of Commentary.
@@ -99,5 +107,45 @@ public abstract class AbstractCommentary implements Commentary
         {
             return null;
         }
+    }
+
+    /**
+     * For when we need to patch up for a getData() that has failed.
+     * @see Bible#getData(Passage)
+     */
+    protected BookData failedGetData(Passage ref, MsgBase message)
+    {
+        BookDataListener li = new OSISBookDataListnener();
+        li.startDocument(getBookMetaData().getInitials());
+
+        // For all the ranges in this Passage
+        Iterator rit = ref.rangeIterator();
+        while (rit.hasNext())
+        {
+            VerseRange range = (VerseRange) rit.next();
+            li.startSection(range.toString());
+
+            // For all the verses in this range
+            Iterator vit = range.verseIterator();
+            while (vit.hasNext())
+            {
+                Verse verse = (Verse) vit.next();
+
+                li.startVerse(verse);
+                try
+                {
+                    Filters.PLAIN_TEXT.toOSIS(li, message.getName());
+                }
+                catch (FilterException ex)
+                {
+                    // Ignore. There is not a lot we can do more.
+                }
+                li.endVerse();
+            }
+
+            li.endSection();
+        }
+
+        return li.endDocument();
     }
 }

@@ -37,7 +37,6 @@ import org.jdom.Document;
  */
 public class ConverterTest extends TestCase
 {
-
     /**
      * Constructor for ConverterTest.
      * @param arg0
@@ -56,11 +55,11 @@ public class ConverterTest extends TestCase
  
         t1 = new BibleMetaData[]
         {
-            new FixtureBibleMetaData("v1"),
-            new FixtureBibleMetaData("v2"),
-            new FixtureBibleMetaData("v3"),
-            new FixtureBibleMetaData("test version", "easy", "tv", "1900-10-20", "PD", "http://nowhere.com/test"),
-            new FixtureBibleMetaData("test version", null, null, null, null, null),
+            new FixtureBibleMetaData(null, "v1"),
+            new FixtureBibleMetaData(null, "v2"),
+            new FixtureBibleMetaData(null, "v3"),
+            new FixtureBibleMetaData(null, "test version", "easy", "tv", "1900-10-20", "PD", "http://nowhere.com/test"),
+            new FixtureBibleMetaData(null, "test version", null, null, null, null, null),
         };
         uid1 = new String[]
         {
@@ -72,7 +71,7 @@ public class ConverterTest extends TestCase
         };
 
         doc = Converter.convertBibleMetaDatasToDocument(t1, uid1);
-        t2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
+        t2 = Converter.convertDocumentToBibleMetaDatas(null, doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
         assertEquals(t1.length, 5);
         assertEquals(t2.length, 5);
 
@@ -91,7 +90,7 @@ public class ConverterTest extends TestCase
 
         t1 = new FixtureBibleMetaData[] { };
         doc = Converter.convertBibleMetaDatasToDocument(t1, new String[] { });
-        t2 = Converter.convertDocumentToBibleMetaDatas(doc, null, Books.SPEED_INACCURATE);
+        t2 = Converter.convertDocumentToBibleMetaDatas(null, doc, null, Books.SPEED_INACCURATE);
         assertEquals(t1.length, 0);
         assertEquals(t2.length, 0);
     }

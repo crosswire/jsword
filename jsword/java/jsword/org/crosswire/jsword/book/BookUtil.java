@@ -83,8 +83,7 @@ public class BookUtil
                 alive = false;
             }
             // Space is next if it is not -1 and it is less than ddash
-            else if ((next_space != -1 && next_space < next_ddash) ||
-                    (next_ddash == -1))
+            else if ((next_space != -1 && next_space < next_ddash) || (next_ddash == -1))
             {
                 // The next separator is a space
                 temp = sentance.substring(pos, next_space) + " ";
@@ -98,7 +97,9 @@ public class BookUtil
             }
 
             if (temp != null && !temp.trim().equals(""))
+            {
                 tokens.add(temp);
+            }
         }
 
         // Create a String[]
@@ -161,7 +162,10 @@ public class BookUtil
         int first = firstLetter(word);
         int last = lastLetter(word)+1;
 
-        if (first > last) return word;
+        if (first > last)
+        {
+            return word;
+        }
 
         return word.substring(first, last);
     }
@@ -175,14 +179,22 @@ public class BookUtil
     public static String[] stripWords(String[] words)
     {
         if (words.length == 0)
+        {
             return new String[0];
+        }
 
         String[] retcode = new String[words.length+1];
 
         // The first bit of punctuation is what comes in front of the first word
         int first = firstLetter(words[0]);
-        if (first == 0) retcode[0] = "";
-        else            retcode[0] = words[0].substring(0, first);
+        if (first == 0)
+        {
+            retcode[0] = "";
+        }
+        else
+        {
+            retcode[0] = words[0].substring(0, first);
+        }
 
         // The rest of the words
         for (int i=1; i<words.length; i++)
@@ -192,10 +204,14 @@ public class BookUtil
 
         // The last bit of punctuation is what comes at the end of the last word
         int last = lastLetter(words[words.length-1]);
-        if (last == words[words.length-1].length())
+        if (last == words[words.length - 1].length())
+        {
             retcode[words.length] = "";
+        }
         else
-            retcode[words.length] = words[words.length-1].substring(last+1);
+        {
+            retcode[words.length] = words[words.length - 1].substring(last + 1);
+        }
 
         return retcode;
     }
@@ -249,7 +265,9 @@ public class BookUtil
         {
             char c = word.charAt(first);
             if (Character.isLetterOrDigit(c))
+            {
                 break;
+            }
         }
 
         return first;
@@ -268,7 +286,9 @@ public class BookUtil
         {
             char c = word.charAt(last);
             if (Character.isLetterOrDigit(c))
+            {
                 break;
+            }
         }
 
         return last;

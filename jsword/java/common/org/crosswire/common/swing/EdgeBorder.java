@@ -60,8 +60,14 @@ public class EdgeBorder implements Border, SwingConstants
     */
     public void paintBorder(Component component, Graphics g, int x, int y, int w, int h)
     {
-        if (lift == RAISED) g.setColor(component.getBackground().brighter());
-        else                g.setColor(component.getBackground().darker());
+        if (lift == RAISED)
+        {
+            g.setColor(component.getBackground().brighter());
+        }
+        else
+        {
+            g.setColor(component.getBackground().darker());
+        }
 
         switch (edge)
         {
@@ -78,8 +84,14 @@ public class EdgeBorder implements Border, SwingConstants
             g.drawLine(x, y, x + w, y);
         }
 
-        if (lift == RAISED) g.setColor(component.getBackground().darker());
-        else                g.setColor(component.getBackground().brighter());
+        if (lift == RAISED)
+        {
+            g.setColor(component.getBackground().darker());
+        }
+        else
+        {
+            g.setColor(component.getBackground().brighter());
+        }
 
         switch (edge)
         {

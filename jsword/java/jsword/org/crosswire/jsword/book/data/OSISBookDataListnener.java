@@ -127,7 +127,8 @@ public class OSISBookDataListnener implements BookDataListener
         if (!(top instanceof Div))
             throw new LogicError();
 
-        bdata.osis.getOsisText().getDiv().add((Div) top);
+        // PENDING(joe) remove this when we are more sure that there isn't a good reason for it to be here.
+        // bdata.osis.getOsisText().getDiv().add((Div) top);
     }
 
     /* (non-Javadoc)

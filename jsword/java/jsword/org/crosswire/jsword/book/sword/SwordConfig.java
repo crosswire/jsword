@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.Filter;
 import org.crosswire.jsword.book.data.Filters;
@@ -43,10 +42,11 @@ public class SwordConfig
     /**
      * Loads a sword config from a given URL.
      */
-    public SwordConfig(File parent, String bookdir) throws IOException
+    public SwordConfig(SwordBookDriver driver, File parent, String bookdir) throws IOException
     {
         URL url = new File(parent, bookdir).toURL();
 
+        this.driver = driver;
         this.url = url;
         this.name = bookdir.substring(0, bookdir.indexOf(".conf"));;
         this.reader = new ConfigReader(url.openStream());
@@ -298,36 +298,18 @@ public class SwordConfig
         {
         case SwordConstants.DRIVER_RAW_TEXT:
         case SwordConstants.DRIVER_Z_TEXT:
-            return new SwordBibleMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new SwordBible(this, SwordConfig.this);
-                }
-            };
+            return new SwordBibleMetaData(driver, this);
 
         case SwordConstants.DRIVER_RAW_COM:
         case SwordConstants.DRIVER_Z_COM:
         case SwordConstants.DRIVER_HREF_COM:
         case SwordConstants.DRIVER_RAW_FILES:
-            return new SwordCommentaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new SwordCommentary(this, SwordConfig.this);
-                }
-            };
+            return new SwordCommentaryMetaData(driver, this);
     
         case SwordConstants.DRIVER_RAW_LD:
         case SwordConstants.DRIVER_RAW_LD4:
         case SwordConstants.DRIVER_Z_LD:
-            return new SwordDictionaryMetaData(this)
-            {
-                public Book createBook() throws BookException
-                {
-                    return new SwordDictionary(this, SwordConfig.this);
-                }
-            };
+            return new SwordDictionaryMetaData(driver, this);
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
             // PENDING(joe): what is this?
@@ -358,28 +340,6 @@ public class SwordConfig
 
         case SwordConstants.COMPRESSION_LZSS:
             return new LZSSBackend();
-
-        default:
-            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { new Integer(ctype) });
-        }
-    }
-
-    /**
-     * Get the configured method of reading a block of data from disk.
-     */
-    public KeyBackend getKeyBackend() throws BookException
-    {
-        int ctype = getModDrv(); 
-        switch (ctype)
-        {
-        case SwordConstants.DRIVER_RAW_LD:
-            return new RawKeyBackend();
-
-        case SwordConstants.DRIVER_RAW_LD4:
-            return new LD4KeyBackend();
-
-        case SwordConstants.DRIVER_Z_LD:
-            return new ZKeyBackend();
 
         default:
             throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { new Integer(ctype) });
@@ -706,6 +666,8 @@ public class SwordConfig
     private ConfigReader reader;
     private URL url;
     private String name;
+
+    private SwordBookDriver driver;
 
     // the elements of a sword config
     // mandatory

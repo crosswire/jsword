@@ -59,15 +59,15 @@ public class JDBCBible extends LocalURLBible
     /**
      * Startup
      */
-    public void init(Bible source, ProgressListener li) throws BookException
+    public void init(Bible source, ProgressListener li)
     {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new LogicError();
     }
 
     /**
      * Startup
      */
-    public void init(ProgressListener li) throws BookException
+    public void init(ProgressListener li)
     {
         LocalURLBibleMetaData lbmd = getLocalURLBibleMetaData();
 
@@ -77,11 +77,6 @@ public class JDBCBible extends LocalURLBible
         {
             String property = "JdbcDriver" + driver_attempt;
             String driver = lbmd.getProperty(property);
-
-            if (driver == null)
-            {
-                throw new BookException(Msg.BIBLE_LOAD, new Object[] { new Integer(driver_attempt-1) });
-            }
 
             try
             {
@@ -120,9 +115,17 @@ public class JDBCBible extends LocalURLBible
 
             words_query = lbmd.getProperty("WordsQuery");
         }
-        catch (Exception ex)
+        catch (SQLException ex)
         {
-            throw new BookException(Msg.BIBLE_CONNECT, ex);
+            text = null;
+            concord = null;
+            doc_stmt = null;
+            ref_stmt = null;
+            verse_stmt = null;
+            start_stmt = null;
+            words_query = null;
+
+            log.error("Failed to connect", ex);
         }
 
         super.init(li);

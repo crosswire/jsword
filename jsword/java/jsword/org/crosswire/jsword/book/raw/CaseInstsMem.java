@@ -71,7 +71,7 @@ public class CaseInstsMem extends InstsMem
     * Load the Resource from a stream
     * @param in The stream to read from
     */
-    public void load(InputStream in) throws IOException, ClassNotFoundException
+    public void load(InputStream in) throws IOException
     {
         DataInputStream din = new DataInputStream(in);
 

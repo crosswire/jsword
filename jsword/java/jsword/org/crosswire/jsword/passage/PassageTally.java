@@ -271,9 +271,13 @@ public class PassageTally extends AbstractPassage
     public Iterator verseIterator()
     {
         if (order == ORDER_BIBLICAL)
+        {
             return new VerseIterator();
+        }
         else
+        {
             return new OrderedVerseIterator();
+        }
     }
 
     /**
@@ -283,9 +287,13 @@ public class PassageTally extends AbstractPassage
     public Iterator rangeIterator()
     {
         if (order == ORDER_BIBLICAL)
+        {
             return new VerseRangeIterator();
+        }
         else
+        {
             return new OrderedVerseRangeIterator();
+        }
     }
 
     /**
@@ -567,8 +575,14 @@ public class PassageTally extends AbstractPassage
             throw new LogicError(ex);
         }
 
-        if (overflow)   return remainder;
-        else            return null;
+        if (overflow)
+        {
+            return remainder;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -583,7 +597,9 @@ public class PassageTally extends AbstractPassage
         for (int i=0; i<vib; i++)
         {
             if (board[i] != 0)
+            {
                 board[i] = 1;
+            }
         }
 
         max = 1;

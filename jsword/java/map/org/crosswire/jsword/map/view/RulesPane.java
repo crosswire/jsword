@@ -63,7 +63,7 @@ public class RulesPane extends JPanel
             pnl_main.add(new RuleSlider(rules[i]));
         }
 
-        GuiUtil.restrainedPack(GuiUtil.getWindow(this));
+        GuiUtil.restrainedRePack(GuiUtil.getWindow(this));
     }
     
     private JPanel pnl_main = new JPanel();

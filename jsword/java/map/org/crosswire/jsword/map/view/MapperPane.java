@@ -69,12 +69,16 @@ public class MapperPane extends JPanel implements Scrollable
     public void setMap(Map map)
     {
         if (map != null)
+        {
             map.removeMapListener(cml);
+        }
 
         this.map = map;
 
         if (map != null)
+        {
             map.addMapListener(cml);
+        }
 
         repaint();
     }
@@ -267,9 +271,13 @@ public class MapperPane extends JPanel implements Scrollable
     public int getScrollableUnitIncrement(Rectangle rec, int bar, int dir)
     {
         if (bar == SwingConstants.HORIZONTAL)
+        {
             return getWidth() / 60;
+        }
         else
+        {
             return getHeight() / 60;
+        }
     }
 
     /**
@@ -284,9 +292,13 @@ public class MapperPane extends JPanel implements Scrollable
     public int getScrollableBlockIncrement(Rectangle rec, int bar, int dir)
     {
         if (bar == SwingConstants.HORIZONTAL)
+        {
             return getWidth() / 6;
+        }
         else
+        {
             return getHeight() / 6;
+        }
     }
 
     /**
@@ -372,8 +384,12 @@ public class MapperPane extends JPanel implements Scrollable
         {
             if (!SwingUtilities.isEventDispatchThread())
             {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() { mapChanged(ev); }
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        mapChanged(ev);
+                    }
                 });
                 return;
             }
@@ -389,8 +405,12 @@ public class MapperPane extends JPanel implements Scrollable
         {
             if (!SwingUtilities.isEventDispatchThread())
             {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() { mapRewritten(ev); }
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        mapRewritten(ev);
+                    }
                 });
                 return;
             }

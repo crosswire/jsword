@@ -208,8 +208,14 @@ public class VerseRange implements VerseBase
                     // This should be ACCURACY_CHAPTER_ONLY if it existed
                     int book = basis.getStart().getBook();
                     int chapter = 0;
-                    if (Verse.isEndMarker(parts[0]))    chapter = BibleInfo.chaptersInBook(book);
-                    else                                chapter = Verse.parseInt(parts[0]);
+                    if (Verse.isEndMarker(parts[0]))
+                    {
+                        chapter = BibleInfo.chaptersInBook(book);
+                    }
+                    else
+                    {
+                        chapter = Verse.parseInt(parts[0]);
+                    }
 
                     start = new Verse(book, chapter, 1);
                     end = new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter));
@@ -752,8 +758,14 @@ public class VerseRange implements VerseBase
     {
         // This ensures a ClassCastException without further test
         Verse that = null;
-        if (obj instanceof Verse)   that = (Verse) obj;
-        else                        that = ((VerseRange) obj).getStart();
+        if (obj instanceof Verse)
+        {
+            that = (Verse) obj;
+        }
+        else
+        {
+            that = ((VerseRange) obj).getStart();
+        }
 
         int start_compare = getStart().compareTo(that);
         if (start_compare != 0) return start_compare;
@@ -987,13 +999,25 @@ public class VerseRange implements VerseBase
 
         if (start == null)
         {
-            if (end == null)    return new VerseRange[] { };
-            else                return new VerseRange[] { end };
+            if (end == null)
+            {
+                return new VerseRange[] { };
+            }
+            else
+            {
+                return new VerseRange[] { end };
+            }
         }
         else
         {
-            if (end == null)    return new VerseRange[] { start };
-            else                return new VerseRange[] { start, end };
+            if (end == null)
+            {
+                return new VerseRange[] { start };
+            }
+            else
+            {
+                return new VerseRange[] { start, end };
+            }
         }
     }
 
@@ -1027,7 +1051,9 @@ public class VerseRange implements VerseBase
         for (int i=0; i<RANGE_ALLOWED_DELIMS.length(); i++)
         {
             if (desc.indexOf(RANGE_ALLOWED_DELIMS.charAt(i)) != -1)
+            {
                 return true;
+            }
         }
 
         return false;
@@ -1042,7 +1068,9 @@ public class VerseRange implements VerseBase
         try
         {
             if (whole == null)
+            {
                 whole = new VerseRange(new Verse(1, 1, 1), new Verse(66, 22, 21));
+            }
         }
         catch (NoSuchVerseException ex)
         {

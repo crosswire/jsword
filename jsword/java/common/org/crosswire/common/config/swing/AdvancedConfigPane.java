@@ -162,11 +162,15 @@ public class AdvancedConfigPane extends TreeConfigPane
         {
             Field field = (Field) fields.get(key);
             if (field != null)
+            {
                 fields.remove(field);
+            }
 
             Component comp = (Component) comps.get(key);
             if (comp != null)
+            {
                 comps.remove(key);
+            }
         }
         catch (Exception ex)
         {
@@ -193,14 +197,22 @@ public class AdvancedConfigPane extends TreeConfigPane
         for (int i=1; i<list.length; i++)
         {
             if (i > 1)
+            {
                 path.append(".");
+            }
 
             path.append(list[i].toString());
         }
 
         String key = path.toString();
-        if (decks.containsKey(key)) layout.show(deck, key);
-        else                        layout.show(deck, BLANK);
+        if (decks.containsKey(key))
+        {
+            layout.show(deck, key);
+        }
+        else
+        {
+            layout.show(deck, BLANK);
+        }
 
         deck.repaint();
     }
@@ -232,16 +244,22 @@ public class AdvancedConfigPane extends TreeConfigPane
                     // Chop off the similar start
                     temp = temp.substring(path.length());
                     if (temp.startsWith("."))
+                    {
                         temp = temp.substring(1);
+                    }
 
                     // Chop off all after the first dot
                     int dot_pos = temp.indexOf(".");
                     if (dot_pos != -1)
+                    {
                         temp = temp.substring(0, dot_pos);
+                    }
 
                     // Add it to the list if needed
                     if (temp.length() > 0 && !retcode.contains(temp))
+                    {
                         retcode.add(temp);
+                    }
                 }
             }
 
@@ -359,9 +377,13 @@ public class AdvancedConfigPane extends TreeConfigPane
                 }
 
                 if (selected)
+                {
                     comp.setBorder(BorderFactory.createLineBorder(Color.black));
+                }
                 else
+                {
                     comp.setBorder(BorderFactory.createEmptyBorder());
+                }
 
                 return comp;
             }

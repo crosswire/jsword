@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Openness;
@@ -45,8 +46,10 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * Basic constructor
      */
-    public AbstractBookMetaData(Properties prop) throws MalformedURLException, ParseException
+    public AbstractBookMetaData(BookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
+        this.driver = driver;
+
         setName(prop.getProperty("Version"));
         setEdition(prop.getProperty("Edition"));
         setOpenness(prop.getProperty("Openness"));
@@ -59,8 +62,10 @@ public abstract class AbstractBookMetaData implements BookMetaData
      * Basic constructor where the user is expected to create correct
      * Date, Openness and URL objects
      */
-    public AbstractBookMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public AbstractBookMetaData(BookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
+        this.driver = driver;
+
         setName(name);
         setEdition(edition);
         setFirstPublished(pub);
@@ -71,8 +76,10 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * Basic constructor where we do all the string conversion for the user
      */
-    public AbstractBookMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public AbstractBookMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
+        this.driver = driver;
+
         setName(name);
         setEdition(edition);
         setFirstPublished(pubstr);
@@ -83,8 +90,10 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * Ctor for when we only know the book name
      */
-    public AbstractBookMetaData(String name)
+    public AbstractBookMetaData(BookDriver driver, String name)
     {
+        this.driver = driver;
+
         setName(name);
         setEdition(null);
         setFirstPublished((Date) null);
@@ -99,7 +108,9 @@ public abstract class AbstractBookMetaData implements BookMetaData
     public static Date parsePublishedDate(String pubstr)
     {
         if (pubstr == null)
+        {
             return DEFAULT;
+        }
 
         try
         {
@@ -112,6 +123,14 @@ public abstract class AbstractBookMetaData implements BookMetaData
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriver()
+     */
+    public BookDriver getDriver()
+    {
+        return driver;
+    }
+
     /**
      * Convert a published Date into the standard (String) format
      */
@@ -120,12 +139,8 @@ public abstract class AbstractBookMetaData implements BookMetaData
         return PUBLISHED_FORMAT.format(pub);
     }
 
-    /**
-     * The name of the version, for example "King James Version" or
-     * "Bible in Basic English" or "Greek". In general it should be
-     * possible to deduce the initials from the name by removing all the
-     * non-capital letters.
-     * @return The name of this version
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName()
     {
@@ -143,13 +158,8 @@ public abstract class AbstractBookMetaData implements BookMetaData
         this.initials = StringUtil.getInitials(name);
     }
 
-    /**
-     * The edition of this version, for example "Anglicised" (NIV),
-     * "Stephanus" (Greek). For 2 versions to be equal both the name and
-     * the edition must be equal. In general the text returned by this
-     * method should not include the word "Edition". Empty string is
-     * used over null.
-     * @return The name of the edition
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getEdition()
      */
     public String getEdition()
     {
@@ -162,15 +172,17 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setEdition(String edition)
     {
         if (edition == null)
+        {
             this.edition = "";
+        }
         else
+        {
             this.edition = edition;
+        }
     }
 
-    /**
-     * The initials of the version - how most people will know it, for
-     * example "NIV", "KJV"
-     * @return The versions initials
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials()
     {
@@ -183,17 +195,17 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setInitials(String initials)
     {
         if (initials == null)
+        {
             this.initials = StringUtil.getInitials(name);
+        }
         else
+        {
             this.initials = initials;
+        }
     }
 
-    /**
-     * The date of first publishing. This does not need to be accurate and
-     * 2 versions can be considered equal even if they have different
-     * first publishing dates for that reason. In general "1 Jan 1970"
-     * means published in 1970, and so on.
-     * @return The date of first publishing
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getFirstPublished()
      */
     public Date getFirstPublished()
     {
@@ -206,9 +218,13 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setFirstPublished(Date pub)
     {
         if (pub == null)
+        {
             this.pub = DEFAULT;
+        }
         else
+        {
             this.pub = pub;
+        }
     }
 
     /**
@@ -217,15 +233,17 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setFirstPublished(String pubstr) throws ParseException
     {
         if (pubstr == null)
+        {
             this.pub = DEFAULT;
+        }
         else
+        {
             this.pub = PUBLISHED_FORMAT.parse(pubstr);
+        }
     }
 
-    /**
-     * Is this version sold for commercial profit like the NIV, or kept
-     * open like the NET version.
-     * @return A STATUS_* constant
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getOpenness()
      */
     public Openness getOpenness()
     {
@@ -238,9 +256,13 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setOpenness(Openness open)
     {
         if (open == null)
+        {
             this.open = Openness.UNKNOWN;
+        }
         else
+        {
             this.open = open;
+        }
     }
 
     /**
@@ -249,9 +271,13 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setOpenness(String openstr)
     {
         if (openstr == null)
+        {
             this.open = Openness.UNKNOWN;
+        }
         else
+        {
             this.open = Openness.get(openstr);
+        }
     }
 
     /* (non-Javadoc)
@@ -276,9 +302,13 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private void setLicense(String licencestr) throws MalformedURLException
     {
         if (licencestr == null)
+        {
             this.licence = null;
+        }
         else
+        {
             this.licence = new URL(licencestr);
+        }
     }
 
     /* (non-Javadoc)
@@ -288,22 +318,30 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         // Since this can not be null
         if (obj == null)
+        {
             return false;
+        }
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance
         if (!obj.getClass().equals(this.getClass()))
+        {
             return false;
+        }
 
         // If super does equals ...
         if (super.equals(obj) == false)
+        {
             return false;
+        }
 
         // The real bit ...
         AbstractBookMetaData that = (AbstractBookMetaData) obj;
 
         if (!getName().equals(that.getName()))
+        {
             return false;
+        }
 
         return getEdition().equals(that.getEdition());
     }
@@ -343,7 +381,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#delete()
      */
-    public void delete() throws BookException
+    private final void delete() throws BookException
     {
         throw new BookException(Msg.DELETE_NOTIMPL, new Object[] { getName() });
     }
@@ -378,6 +416,11 @@ public abstract class AbstractBookMetaData implements BookMetaData
             DEFAULT = new Date();
         }
     }
+
+    /**
+     * The driver behind this Book
+     */
+    private BookDriver driver;
 
     /**
      * The name of the version

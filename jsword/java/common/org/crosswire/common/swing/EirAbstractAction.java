@@ -1,11 +1,8 @@
 
 package org.crosswire.common.swing;
 
-import java.net.URL;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 /**
@@ -47,9 +44,9 @@ public abstract class EirAbstractAction extends AbstractAction
 
         // For JDK1.2/1.3/1.4 compatibility
         if (large_icon != null)
-            putValue("LargeIcon"/*Action.LARGE_ICON*/, getIcon(large_icon));
+            putValue("LargeIcon"/*Action.LARGE_ICON*/, GuiUtil.getIcon(large_icon));
         if (small_icon != null)
-            putValue(Action.SMALL_ICON, getIcon(small_icon));
+            putValue(Action.SMALL_ICON, GuiUtil.getIcon(small_icon));
 
         if (short_desc != null)
             putValue(Action.SHORT_DESCRIPTION, short_desc);
@@ -60,25 +57,5 @@ public abstract class EirAbstractAction extends AbstractAction
             putValue("MnemonicKey"/*Action.MNEMONIC_KEY*/, new Integer(mnemonic));
         if (accel != null)
             putValue("AcceleratorKey"/*Action.ACCELERATOR_KEY*/, accel);
-    }
-
-    /**
-     * Returns the Icon associated with the name from the resources.
-     * The resouce should be in the path.
-     * @param name Name of the icon file i.e., help16.gif
-     * @return the name of the image or null if the icon is not found.
-     */
-    public static ImageIcon getIcon(String name)
-    {
-        URL url = EirAbstractAction.class.getResource(name);
-        if (url != null)
-        {
-            return new ImageIcon(url);
-        }
-
-        // This should be log.warning() however the log may not be configured
-        System.out.println("Failed to find resource name='"+name+"'");
-
-        return null;
     }
 }

@@ -43,7 +43,7 @@ public abstract class SearchableBible extends AbstractBible
      * loading a known index, or generating one by reading the whole Bible.
      * @param li Optional progress listener if you think this might take ages.
      */
-    public void init(ProgressListener li) throws BookException
+    public void init(ProgressListener li)
     {
         try
         {
@@ -55,7 +55,7 @@ public abstract class SearchableBible extends AbstractBible
         }
         catch (Exception ex)
         {
-            throw new BookException(Msg.SEARCH_INIT, ex);
+            log.error("Init failed", ex);
         }
     }
 
@@ -76,6 +76,9 @@ public abstract class SearchableBible extends AbstractBible
      */
     public Passage findPassage(Search match) throws BookException
     {
+        if (searcher == null)
+            throw new BookException(Msg.SEARCH_INIT);
+
         return searcher.findPassage(match);
     }
 

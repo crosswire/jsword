@@ -148,7 +148,7 @@ public class SerBible extends LocalURLBible
         }
         catch (Exception ex)
         {
-            throw new BookException(Msg.SER_INIT, ex);
+            log.error("Failed to initialize", ex);
         }
 
         super.init(source, li);
@@ -157,7 +157,7 @@ public class SerBible extends LocalURLBible
     /**
      * Startup a SerBible.
      */
-    public void init(ProgressListener li) throws BookException
+    public void init(ProgressListener li)
     {
         try
         {
@@ -166,7 +166,7 @@ public class SerBible extends LocalURLBible
         }
         catch (Exception ex)
         {
-            throw new BookException(Msg.SER_INIT, ex);
+            log.error("Failed to initialize", ex);
         }
 
         super.init(li);
@@ -178,6 +178,9 @@ public class SerBible extends LocalURLBible
      */
     public BookData getData(Passage ref) throws BookException
     {
+        if (cache == null)
+            throw new BookException(Msg.READ_ERROR);
+
         return cache.getData(ref);
     }
 
@@ -195,7 +198,11 @@ public class SerBible extends LocalURLBible
      */
     public void flush() throws BookException
     {
-        cache.flush();
+        if (cache != null)
+        {
+            cache.flush();
+        }
+
         super.flush();
     }
 

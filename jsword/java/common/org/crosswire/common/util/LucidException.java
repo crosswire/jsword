@@ -126,6 +126,7 @@ public class LucidException extends Exception
         }
         catch (Exception ex)
         {
+            log.warn("Format fail for '"+out+"'", ex);
             return "Error formatting message '"+out+"'";
         }
     }

@@ -47,9 +47,13 @@ public class DriversListModel extends AbstractListModel
     public DriversListModel(boolean include_ro)
     {
         if (include_ro)
+        {
             drivers = Books.getDrivers();
+        }
         else
+        {
             drivers = Books.getWritableDrivers();
+        }
     }
 
     /**

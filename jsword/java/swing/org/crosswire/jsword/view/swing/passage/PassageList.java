@@ -55,7 +55,7 @@ public class PassageList extends JList
     public PassageList(Passage ref, int scope)
     {
         plm = new PassageListModel(null, scope);
-        setPassage(ref);
+        plm.setPassage(ref);
         setModel(plm);
     }
 

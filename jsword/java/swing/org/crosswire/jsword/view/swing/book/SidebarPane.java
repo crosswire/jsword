@@ -54,7 +54,7 @@ public class SidebarPane extends JPanel
         this.add(spt_books,  BorderLayout.CENTER);
     }
 
-    private TabbedCommentaryPane tab_conc = new TabbedCommentaryPane();
+    private CommentaryPane tab_conc = new CommentaryPane();
     private JSplitPane spt_books = new JSplitPane();
-    private TabbedDictionaryPane tab_dict = new TabbedDictionaryPane();
+    private DictionaryPane tab_dict = new DictionaryPane();
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -481,7 +482,7 @@ public class NetUtil
         
         // We still need to do the filtering
         List list = new ArrayList();
-        String[] names = StringUtil.tokenize(contents, "\n");
+        String[] names = StringUtils.split(contents, "\n");
         for (int i=0;i<names.length;i++)
         {
             // we need to trim, as we may have \r\n not \n
