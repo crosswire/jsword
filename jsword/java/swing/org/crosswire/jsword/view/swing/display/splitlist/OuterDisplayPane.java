@@ -73,13 +73,14 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
 
             Book book = ((BookMetaData) booklist.get(0)).getBook();
             txtPassg.setBook(book);
+
+            initialize();
         }
         catch (Exception ex)
         {
             log.error("Failed to set default book", ex);
         }
 
-        initialize();
         log.debug("odp end");
     }
 
