@@ -531,7 +531,7 @@ public class NetUtil
             }
             catch (IOException ex)
             {
-                log.debug("Could not get the file from the jar." + ex); //$NON-NLS-1$
+                log.debug("Could not get the file " + url + " from the jar." + ex); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             // If we got here we did not get the timestamp of the file in the jar
