@@ -35,8 +35,8 @@
 </div>
 
 <p>
-  You may need to download Java to get Webstart working. If so, the
-  <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK download page</a>
+  You may need to download Java to get Webstart working. If so,
+  the <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK download page</a>
   is the place to get started.
 </p>
 
