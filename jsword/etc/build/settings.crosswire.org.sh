@@ -15,3 +15,6 @@ export PATH=$PATH:/usr/X11R6/bin
 export PATH=$PATH:/home/joe/local/bin
 export PATH=$PATH:$JAVA_HOME/bin
 export PATH=$PATH:$ANT_HOME/bin
+
+# extssh makes cvs get the dir perms wrong, but we can fix it
+chgrp -R -c jswordcvs /cvs/jsword/*
