@@ -60,6 +60,7 @@
     <p><a href="devt.jsp">Getting&nbsp;Involved</a></p>
     <ul>
       <li><a href="intro.jsp">Intro</a></li>
+      <li><a href="primaer.jsp">API Primer</a></li>
       <li><a href="design.jsp">Design</a></li>
       <li><a href="xml.jsp">XML</a></li>
       <li><a href="osisCore.1.1.html">OSIS</a></li>

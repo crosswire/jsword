@@ -37,6 +37,11 @@ to generate all the source files required for tools like eclipse.
 	</td>
   </tr>
   <tr> 
+	<td><a href="primer.jsp">API Primer</a></td>
+	<td> This describes how to go about reading and formatting data
+	  from JSword, using Bibles, Commentaries and Dictionaries.</td>
+  </tr>
+  <tr> 
 	<td><a href="design.jsp">Design</a></td>
 	<td> This is overview documentation that explains how the Book and 
 	  Bible interfaces are arranged and justifies the design decisions. 

@@ -5,6 +5,13 @@
 
 <h1>News</h1>
 
+<h3>17 Feb 2003</h3>
+<p>
+There is a new <a href="primer.jsp">API Primer</a> link on the left.
+The API Primer describes how to go about reading and formatting data
+from JSword, using Bibles, Commentaries and Dictionaries.
+</p>
+
 <h3>15 Feb 2003</h3>
 <p>
 Sword drivers are now fixed in CVS once more amd we've made lots of GUI bug fixes.
