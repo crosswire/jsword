@@ -78,9 +78,9 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[0], "one-two--"); //$NON-NLS-1$
         assertEquals(sa[1], "three "); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("one!£ \"*(two-three"); //$NON-NLS-1$
+        sa = SentanceUtil.tokenize("one! \"*(two-three"); //$NON-NLS-1$
         assertEquals(sa.length, 2);
-        assertEquals(sa[0], "one!£ "); //$NON-NLS-1$
+        assertEquals(sa[0], "one! "); //$NON-NLS-1$
         assertEquals(sa[1], "\"*(two-three"); //$NON-NLS-1$
 
         // moved from TestRawBible
@@ -351,11 +351,11 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentanceUtil.stripPunctuationWord("#'-a'''e-'}"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("#'-a'e-e-'}"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("#'-12345-'}"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("£'-abcde-'/"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("£'-a---e-'/"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("£'-a'''e-'/"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("£'-a'e-e-'/"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("£'-12345-'/"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentanceUtil.stripPunctuationWord("%'-abcde-'/"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentanceUtil.stripPunctuationWord("%'-a---e-'/"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentanceUtil.stripPunctuationWord("%'-a'''e-'/"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentanceUtil.stripPunctuationWord("%'-a'e-e-'/"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentanceUtil.stripPunctuationWord("%'-12345-'/"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertEquals(SentanceUtil.stripPunctuationWord("test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord(" test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -385,8 +385,8 @@ public class SentanceUtilTest extends TestCase
     {
         assertEquals(SentanceUtil.firstLetter("abcde"), 0); //$NON-NLS-1$
         assertEquals(SentanceUtil.firstLetter(" abcde"), 1); //$NON-NLS-1$
-        assertEquals(SentanceUtil.firstLetter(" \"£abcde"), 3); //$NON-NLS-1$
-        assertEquals(SentanceUtil.firstLetter(" \"£abcde--!   "), 3); //$NON-NLS-1$
+        assertEquals(SentanceUtil.firstLetter(" \"%abcde"), 3); //$NON-NLS-1$
+        assertEquals(SentanceUtil.firstLetter(" \"%abcde--!   "), 3); //$NON-NLS-1$
     }
 
     public void testLastLetter() throws Exception
@@ -394,13 +394,13 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentanceUtil.lastLetter("abcde"), 4); //$NON-NLS-1$
         assertEquals(SentanceUtil.lastLetter("abcde "), 4); //$NON-NLS-1$
         assertEquals(SentanceUtil.lastLetter("abcde\" "), 4); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter("abcde\"£$ "), 4); //$NON-NLS-1$
+        assertEquals(SentanceUtil.lastLetter("abcde\"%$ "), 4); //$NON-NLS-1$
         assertEquals(SentanceUtil.lastLetter(" abcde"), 5); //$NON-NLS-1$
         assertEquals(SentanceUtil.lastLetter(" abcde "), 5); //$NON-NLS-1$
         assertEquals(SentanceUtil.lastLetter(" abcde\" "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde\"£$ "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde--\"£$ "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde\"£$-- "), 5); //$NON-NLS-1$
+        assertEquals(SentanceUtil.lastLetter(" abcde\"%$ "), 5); //$NON-NLS-1$
+        assertEquals(SentanceUtil.lastLetter(" abcde--\"%$ "), 5); //$NON-NLS-1$
+        assertEquals(SentanceUtil.lastLetter(" abcde\"%$-- "), 5); //$NON-NLS-1$
     }
 
     public void testStripWords()

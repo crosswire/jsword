@@ -41,7 +41,7 @@ $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
 cd $JSWORD_HOME/../jsword-sword
-$ANT_HOME/bin/ant cvsup $PROPERTIES
+cvs -d up -q -P
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
 cd $JSWORD_HOME/../jsword-web

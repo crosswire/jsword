@@ -34,7 +34,7 @@ public class XMLUtilTest extends TestCase
 
         assertEquals("", XMLUtil.cleanInvalidCharacters("")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(" one two three four five ", XMLUtil.cleanInvalidCharacters(" one two three four five ")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("!\"£$%^&*() -=_+", XMLUtil.cleanInvalidCharacters("!\"£$%^&*() -=_+")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("!\"$%^&*() -=_+", XMLUtil.cleanInvalidCharacters("!\"$%^&*() -=_+")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("{}[]:@~;'#<>?,./", XMLUtil.cleanInvalidCharacters("{}[]:@~;\'#<>?,./")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("ONETWOTHREEZZ", XMLUtil.cleanInvalidCharacters("ONETWOTHREEZZ")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("1234567890", XMLUtil.cleanInvalidCharacters("1234567890")); //$NON-NLS-1$ //$NON-NLS-2$
