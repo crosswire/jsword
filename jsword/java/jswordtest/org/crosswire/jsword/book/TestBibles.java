@@ -34,11 +34,11 @@ public class TestBibles extends TestCase
         super(s);
     }
 
-    String[] names = null;
+    BibleMetaData[] names = null;
 
     protected void setUp() throws Exception
     {
-        names = Bibles.getBibleNames();
+        names = Bibles.getBibles();
     }
 
     protected void tearDown()
@@ -54,38 +54,13 @@ public class TestBibles extends TestCase
     {
         for (int i=0; i<names.length; i++)
         {
-            Bible b = Bibles.getBible(names[i]);
+            Bible b = names[i].getBible();
             assertTrue(b != null);
         }
-        try { Bibles.getBible("NONE"); fail(); }
-        catch (BookException ex) { }
     }
 
     public void testCreateBible() throws Exception
     {
         // Bible b2 = Bibles.createBible("dest_name", dest_driver);
-    }
-
-    public void testDefaultBible() throws Exception
-    {
-        String deft = Bibles.getDefaultName();
-        for (int i=0; i<names.length; i++)
-        {
-            Bibles.setDefaultName(names[0]);
-            assertEquals(Bibles.getDefaultName(), names[0]);
-        }
-        try { Bibles.setDefaultName("NONE"); fail(); }
-        catch (BookException ex) { }
-        Bibles.setDefaultName(deft);
-    }
-
-    public void testCacheingBibles() throws Exception
-    {
-        boolean cb = Bibles.getCacheingBibles();
-        Bibles.setCacheingBibles(true);
-        assertTrue(Bibles.getCacheingBibles());
-        Bibles.setCacheingBibles(false);
-        assertTrue(!Bibles.getCacheingBibles());
-        Bibles.setCacheingBibles(cb);
     }
 }

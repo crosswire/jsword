@@ -51,7 +51,6 @@ public class DefaultRefData implements RefData
         this.section = section;
         this.doc = section.getParent();
         this.verse = verse;
-        this.xml = xml;
         this.para = para;
 
         this.ref = new Element("ref");

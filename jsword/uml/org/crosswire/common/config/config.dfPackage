@@ -202,7 +202,7 @@ class __options {
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.StringChoice#org.crosswire.common.config.ReflectedChoice:oiref>=886,918,886,582:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.common.config.AbstractChoice:oiref>=289,302,184,157,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.PathChoice#org.crosswire.common.config.Choice:oiref>=435,918,578,550:oigroup>
-<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref>=1278,36,156,414,1:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref>=1278,36,144,414,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.BooleanChoice#org.crosswire.common.config.Choice:oiref>=625,763,625,550:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.common.config.StringChoice:oiref>=804,918,219,100,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.common.config.BooleanChoice#org.crosswire.common.config.ReflectedChoice:oiref>=675,763,838,582:oigroup>

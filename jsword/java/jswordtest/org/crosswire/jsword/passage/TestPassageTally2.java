@@ -138,7 +138,7 @@ public class TestPassageTally2 extends TestCase
 
     public void testAddPassageListener() throws Exception
     {
-        TestPassageListener li = new TestPassageListener();
+        FixturePassageListener li = new FixturePassageListener();
         temp = (PassageTally) tally.clone();
         temp.addPassageListener(li);
         assertTrue(li.check(0, 0, 0));

@@ -115,7 +115,7 @@ public class SelectPane extends JPanel
         {
             String param = txt_search.getText();
             String type = (String) cbo_search.getSelectedItem();
-            Bible version = mdl_versn.getSelectedBible();
+            Bible version = mdl_versn.getSelectedBibleMetaData().getBible();
 
             if (MATCH.equals(type))
             {
@@ -203,7 +203,7 @@ public class SelectPane extends JPanel
     {
         try
         {
-            Bible bible = mdl_versn.getSelectedBible();
+            Bible bible = mdl_versn.getSelectedBibleMetaData().getBible();
             fireVersionChanged(new VersionEvent(this, bible));
         }
         catch (Exception ex)

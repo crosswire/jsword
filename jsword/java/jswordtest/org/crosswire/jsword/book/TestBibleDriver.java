@@ -37,11 +37,11 @@ public class TestBibleDriver extends TestCase
     }
 
     BibleDriver driver = null;
-    String[] names = null;
+    BibleMetaData[] names = null;
 
     protected void setUp()
     {
-        names = driver.getBibleNames();
+        names = driver.getBibles();
     }
 
     protected void tearDown()
@@ -59,28 +59,12 @@ public class TestBibleDriver extends TestCase
         assertTrue(names.length > 0);
     }
 
-    public void testCountBibles() throws Exception
-    {
-        assertEquals(driver.countBibles(), names.length);
-    }
-
-    public void testExists() throws Exception
-    {
-        for (int i=0; i<names.length; i++)
-        {
-            assertTrue(driver.exists(names[i]));
-        }
-        assertTrue(!driver.exists("NONE"));
-    }
-
     public void testGetBible() throws Exception
     {
         for (int i=0; i<names.length; i++)
         {
-            Bible b = driver.getBible(names[i]);
+            Bible b = names[i].getBible();
             assertTrue(b != null);
         }
-        try { driver.getBible("NONE"); fail(); }
-        catch (BookException ex) { }
     }
 }

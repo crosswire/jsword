@@ -4,7 +4,6 @@ package org.crosswire.jsword.view.swing.book;
 import javax.swing.ComboBoxModel;
 
 import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.WritableBibleDriver;
 
 /**
  * The DriverModels class implements ComboBoxModel by extending the
@@ -67,18 +66,6 @@ public class DriversComboBoxModel extends DriversListModel implements ComboBoxMo
     public BibleDriver getSelectedDriver()
     {
         return drivers[getIndexOf(current)];
-    }
-
-    /**
-     * Given an item, work out the name of the Driver that it represents
-     * @todo tie this in with the method of selecting only WritiableBibleDrivers
-     * that needs adding to DriversListModel
-     * @param The item from the list
-     * @return A Driver
-     */
-    public WritableBibleDriver getSelectedWritableDriver()
-    {
-        return (WritableBibleDriver) drivers[getIndexOf(current)];
     }
 
     /** The currently selected version */

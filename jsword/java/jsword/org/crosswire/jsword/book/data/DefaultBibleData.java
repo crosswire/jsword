@@ -45,6 +45,16 @@ import org.jdom.Element;
 public class DefaultBibleData implements BibleData
 {
     /**
+     * Constructor DefaultBibleData.
+     * @param doc
+     */
+    public DefaultBibleData(Document doc)
+    {
+        this.bible = doc.getRootElement();
+        this.doc = doc;
+    }
+
+    /**
      * Create a default BibleElement.
      */
     public DefaultBibleData()

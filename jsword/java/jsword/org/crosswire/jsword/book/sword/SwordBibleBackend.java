@@ -1,8 +1,8 @@
+
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 
-/**
 /**
  * An interface representing a Sword Bible backend.
  * 
@@ -27,7 +27,8 @@ import java.io.IOException;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id: $
  */
-public interface SwordBibleBackend {
-	// gets the Bible text from the backend
-	public String getText(int testament, int book, int chapter, int verse) throws IOException;
+public interface SwordBibleBackend
+{
+    // gets the Bible text from the backend
+    public String getText(int testament, int book, int chapter, int verse) throws IOException;
 }

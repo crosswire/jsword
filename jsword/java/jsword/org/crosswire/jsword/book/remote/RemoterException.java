@@ -1,9 +1,8 @@
 
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.book.remote;
 
 /**
- * The WritableBibleDriver is a specialization of BibleDriver that adds the
- * ability to record Bible data for later retrieval.
+ * For use in Remoter calls that fail.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,28 +25,43 @@ package org.crosswire.jsword.book;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface WritableBibleDriver extends BibleDriver
+public class RemoterException extends Exception
 {
     /**
-    * Create a new blank Bible ready for writing
-    * @param name The name of the version to create
-    * @return The new WritableBible
-    * @exception BookException If the name is not valid
-    */
-    public WritableBible createBible(String name) throws BookException;
+     * Constructor RemoterException.
+     */
+    public RemoterException(String string)
+    {
+        super(string);
+    }
 
     /**
-    * Rename a Book.
-    * @param old_name The current name for the version
-    * @param new_name The name we would like the driver to have
-    * @exception BookException If the names are not valid
-    */
-    public void renameBible(String old_name, String new_name) throws BookException;
+     * Constructor RemoterException.
+     */
+    public RemoterException(String string, Throwable cause)
+    {
+        super(string);
+        this.cause = cause;
+    }
 
     /**
-    * Delete  Book
-    * @param name The name of the version to delete
-    * @exception BookException If the name is not valid
-    */
-    public void deleteBible(String name) throws BookException;
+     * Constructor RemoterException.
+     */
+    public RemoterException(Throwable cause)
+    {
+        this.cause = cause;
+    }
+
+    /**
+     * Accessor for the cause of this exception
+     */
+    public Throwable getCause()
+    {
+        return cause;
+    }
+
+    /**
+     * The cause of this exception
+     */
+    private Throwable cause;
 }

@@ -215,10 +215,10 @@ public class Resource
             reply = getClass().getClassLoader().getResource("/"+search);
 
         if (reply == null)
-            reply = getClass().getClassLoader().getSystemResource(search);
+            reply = ClassLoader.getSystemResource(search);
 
         if (reply == null)
-            reply = getClass().getClassLoader().getSystemResource("/"+search);
+            reply = ClassLoader.getSystemResource("/"+search);
 
         return reply;
     }

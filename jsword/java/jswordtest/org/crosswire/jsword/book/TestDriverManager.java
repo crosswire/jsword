@@ -45,17 +45,15 @@ public class TestDriverManager extends TestCase
 
     public void testGetDriverForBible() throws Exception
     {
-        String[] names = Bibles.getBibleNames();
+        /*
+        BibleMetaData[] names = Bibles.getBibles();
 
         for (int i=0; i<names.length; i++)
         {
-            BibleDriver driver = BibleDriverManager.getDriverForBible(names[i]);
+            BibleDriver driver = names[i].getBibleDriver();
             assertTrue(driver != null);
         }
-        try { BibleDriverManager.getDriverForBible("NONE"); fail(); }
-        catch (BookException ex) { }
 
-        /*
         for (int i=0; i<names.length; i++)
         {
             try { BibleDriverManager.getDriverForBible(names[i]); fail(); }

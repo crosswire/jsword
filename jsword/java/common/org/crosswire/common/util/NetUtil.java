@@ -1,12 +1,17 @@
+
 package org.crosswire.common.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The NetUtil class looks after general utility stuff around the
@@ -42,6 +47,8 @@ public class NetUtil
     private NetUtil()
     {
     }
+
+    public static final String separator = "/";
 
     /**
      * If the directory does not exist, create it.
@@ -104,13 +111,20 @@ public class NetUtil
      * @param orig The URL to check
      * @return true if the URL points at a file
      */
-    public static boolean isFile(URL orig) throws MalformedURLException
+    public static boolean isFile(URL url)
     {
-        if (!orig.getProtocol().equals("file"))
-            throw new MalformedURLException("The given URL '" + orig + "' is not a file: URL.");
-
-        File file = new File(orig.getFile());
-        return file.isFile();
+        try
+        {
+            // This will throw if the resource does not exist
+            InputStream is = url.openStream();
+            is.close();
+            return true;
+        }
+        catch (IOException ex)
+        {
+            // the resource does not exist!
+            return false;
+        }
     }
 
     /**
@@ -367,6 +381,65 @@ public class NetUtil
         {
             return url.openConnection().getOutputStream();
         }
+    }
+
+    /**
+     * List the items available assuming that this URL points to a directory 
+     */
+    public static String[] list(URL url, URLFilter filter) throws MalformedURLException, IOException
+    {
+        if (url.getProtocol().equals("file"))
+        {
+            File fdir = new File(url.getFile());
+
+            // Check that the dir exists
+            if (!fdir.isDirectory())
+            {
+                return null;
+            }
+
+            return fdir.list(new URLFilterFilenameFilter(filter, url));
+        }
+        else
+        {
+            // We should probably cache this in some way? This is going
+            // to get very slow calling this often across a network
+            URL search = NetUtil.lengthenURL(url, "list.txt");
+            InputStream in = search.openStream();
+            String contents = StringUtil.read(new InputStreamReader(in));
+
+            // We still need to do the filtering
+            List reply = new ArrayList();
+            String[] names = StringUtil.tokenize(contents, "\n");
+            for (int i=0;i<names.length;i++)
+            {
+                // we need to trim, as we may have \r\n not \n
+                names[i]=names[i].trim();
+                if (filter.accept(url, names[i]))
+                    reply.add(names[i]);
+            }
+
+            return (String[]) reply.toArray(new String[reply.size()]);
+        }
+    }
+
+    /**
+     * Quick implementation of FilenameFilter that uses a URLFilter
+     */
+    public static class URLFilterFilenameFilter implements FilenameFilter
+    {
+        public URLFilterFilenameFilter(URLFilter filter, URL base)
+        {
+            this.filter = filter;
+        }
+
+        public boolean accept(File arg0, String name)
+        {
+            return filter.accept(base, name);
+        }
+        
+        private URLFilter filter;
+        private URL base;
     }
 
     /**

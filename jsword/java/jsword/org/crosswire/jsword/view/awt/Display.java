@@ -102,10 +102,10 @@ public class Display extends Panel
     {
         String input = txt_query.getText();
 
-        String next_type = OPTIONS[QUERY_PASSAGE];
-        String next_input = DEFAULT_PASSAGE;
+        // String next_type = OPTIONS[QUERY_PASSAGE];
+        // String next_input = DEFAULT_PASSAGE;
         Passage ref = null;
-        Passage remainder = null;
+        // Passage remainder = null;
         //String error = null;
         String results = "";
 
@@ -118,12 +118,8 @@ public class Display extends Panel
             case QUERY_PASSAGE:
             case QUERY_FAST_PASS:
                 ref = PassageFactory.createPassage(input);
-                remainder = ref.trimVerses(VERSES_MAX);
-                next_input = remainder == null ? ref.getName() : remainder.getName();
-
-                // clean compile fixes
-                next_input = next_input;
-                next_type = next_type;
+                // remainder = ref.trimVerses(VERSES_MAX);
+                // next_input = remainder == null ? ref.getName() : remainder.getName();
 
                 BibleData data = version.getData(ref);
                 // @todo: Invoke stylizer

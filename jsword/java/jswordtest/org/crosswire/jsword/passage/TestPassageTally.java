@@ -25,7 +25,7 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestPassageTally extends TestPassage
+public class TestPassageTally extends ParentTstPassage
 {
     public TestPassageTally(String s)
     {

@@ -55,7 +55,7 @@ public class OptionsAction extends DesktopAbstractAction
     public void createConfig() throws IOException, JDOMException, BookException
     {
         config = new Config("Tool Shed Options");
-        ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibleNames());
+        ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibles());
 
         Document xmlconfig = Project.resource().getDocument("config");
         config.add(xmlconfig);

@@ -3,6 +3,7 @@ package org.crosswire.jsword.book.basic;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.data.BookData;
@@ -35,6 +36,15 @@ import org.crosswire.jsword.passage.Passage;
  */
 public abstract class AbstractBible implements Bible
 {
+    /**
+     * Because Java does not allow sensible return type overloading
+     * @return BookMetaData
+     */
+    public BookMetaData getBookMetaData()
+    {
+        return getBibleMetaData();
+    }
+
     /**
      * To tie in with the Book find method
      * @param word The word to search for

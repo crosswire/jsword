@@ -94,11 +94,6 @@ class reference467 {
 */
 class reference468 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractWritableBibleDriver:oiref><oihard>
-@__modelType reference 
-*/
-class reference469 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractBible:oiref><oihard>
 @__modelType reference 
 */
@@ -114,10 +109,25 @@ class reference471 {
 */
 class reference472 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractWritableBible:oiref><oihard>
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.BasicBibleMetaData:oiref><oihard>
 @__modelType reference 
 */
-class reference473 {
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractBookMetaData:oiref><oihard>
+@__modelType reference 
+*/
+class reference11 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.LocalURLBibleMetaData:oiref><oihard>
+@__modelType reference 
+*/
+class reference12 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.LocalURLBibleDriver:oiref><oihard>
+@__modelType reference 
+*/
+class reference13 {
 }}/**
 @__tags
 @shapeType ClassDiagram 

@@ -21,10 +21,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * BibleChooser is like JFileChooser except that it allows the user to
@@ -158,8 +158,8 @@ public class BibleChooser extends JPanel
     {
         try
         {
-            String name = bmod.getBibleName(lst_bibles.getSelectedValue());
-            return Bibles.getBible(name);
+            BibleMetaData bmd = (BibleMetaData) lst_bibles.getSelectedValue();
+            return bmd.getBible();
         }
         catch (BookException ex)
         {

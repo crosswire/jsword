@@ -13,9 +13,20 @@
     <servlet-name>demo</servlet-name>
     <servlet-class>org.crosswire.jsword.view.web.DemoServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>remoter</servlet-name>
+    <servlet-class>org.crosswire.jsword.view.web.RemoterServlet</servlet-class>
+  </servlet>
+
+
   <servlet-mapping>
     <servlet-name>demo</servlet-name>
     <url-pattern>/demo</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>remoter</servlet-name>
+    <url-pattern>/remoter</url-pattern>
+  </servlet-mapping>
+
 
 </web-app>

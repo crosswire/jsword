@@ -1,8 +1,10 @@
 
-package org.crosswire.jsword.passage;
+package org.crosswire.jsword.book.basic;
+
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
- * To help us test the VerseCollectionListener interface.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,48 +27,45 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class TestPassageListener implements PassageListener
+public abstract class LocalURLBible extends VersewiseBible
 {
-    public int adds = 0;
-    public int removals = 0;
-    public int changes = 0;
-
-    public TestPassageListener()
+    /**
+     * Simple constructor
+     */
+    public LocalURLBible(LocalURLBibleMetaData lbmd)
     {
+        this.lbmd = lbmd;
     }
 
-    public void versesAdded(PassageEvent ev)
+    /**
+     * Meta-Information: What version of the Bible is this?
+     * @return A Version for this Bible
+     */
+    public BookMetaData getMetaData()
     {
-        adds++;
+        return lbmd;
     }
 
-    public void versesRemoved(PassageEvent ev)
+    /**
+     * Meta-Information: What version of the Bible is this?
+     * @return A Version for this Bible
+     */
+    public BibleMetaData getBibleMetaData()
     {
-        removals++;
+        return lbmd;
     }
 
-    public void versesChanged(PassageEvent ev)
+    /**
+     * Meta-Information: What version of the Bible is this?
+     * @return A Version for this Bible
+     */
+    public LocalURLBibleMetaData getLocalURLBibleMetaData()
     {
-        changes++;
+        return lbmd;
     }
 
-    public boolean check(int adds, int removals, int changes) throws Exception
-    {
-        if (this.adds != adds)
-        {
-            throw new Exception("ADD: should have: "+adds+", noted "+this.adds);
-        }
-
-        if (this.removals != removals)
-        {
-            throw new Exception("REMOVALS: should have: "+removals+", noted "+this.removals);
-        }
-
-        if (this.changes != changes)
-        {
-            throw new Exception("CHANGES: should have: "+changes+", noted "+this.changes);
-        }
-
-        return true;
-    }
+    /**
+     * The Version of the Bible that this produces
+     */
+    private LocalURLBibleMetaData lbmd;
 }

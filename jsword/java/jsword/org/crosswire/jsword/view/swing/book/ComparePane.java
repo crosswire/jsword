@@ -18,16 +18,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.basic.Verifier;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.basic.Verifier;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
 
 /**
  * A ComparePane allows you to compare 2 differing version of the Bible
@@ -158,10 +159,10 @@ public class ComparePane extends EirPanel
      */
     private void compare()
     {
-        Bible bible1 = mdl_bibles1.getSelectedBible();
-        Bible bible2 = mdl_bibles2.getSelectedBible();
+        BibleMetaData bmd1 = mdl_bibles1.getSelectedBibleMetaData(); 
+        BibleMetaData bmd2 = mdl_bibles2.getSelectedBibleMetaData(); 
 
-        if (bible1.equals(bible2))
+        if (bmd1.equals(bmd2))
         {
             if (JOptionPane.showConfirmDialog(this,
                 "You are attempting to compare 2 Bibles that are identical.\n" +
@@ -173,25 +174,11 @@ public class ComparePane extends EirPanel
             }
         }
 
-        BookMetaData version1 = bible1.getMetaData();
-        BookMetaData version2 = bible2.getMetaData();
-
-        if (!version1.equals(version2))
-        {
-            if (JOptionPane.showConfirmDialog(this,
-                "You are attempting to compare 2 Bibles that are of different versions.\n" +
-                bible1.getMetaData().getName() + " is a " + version1 + "\n" +
-                bible2.getMetaData().getName() + " is a " + version2 + "\n" +
-                "Do you want to continue?",
-                "Compare Differing Versions?",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
-            {
-                return;
-            }
-        }
-
         try
         {
+            Bible bible1 = bmd1.getBible();
+            Bible bible2 = bmd2.getBible();
+    
             String words = txt_words.getText();
             String ref_text = txt_verses.getText();
             Passage ref = PassageFactory.createPassage(ref_text);
@@ -209,6 +196,10 @@ public class ComparePane extends EirPanel
             results.startStop();
         }
         catch (NoSuchVerseException ex)
+        {
+            Reporter.informUser(this, ex);
+        }
+        catch (BookException ex)
         {
             Reporter.informUser(this, ex);
         }

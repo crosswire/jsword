@@ -9,13 +9,13 @@ import org.crosswire.jsword.passage.PassageFactory;
 * A test SearchParamWord
 * @author Joe Walker
 */
-class TestParamWord implements ParamWord
+class FixtureParamWord implements ParamWord
 {
     /**
      * Setup the Passage to edit
      * @param ref The Passage to edit
      */
-    public TestParamWord(String ref)
+    public FixtureParamWord(String ref)
     {
         this.ref = ref;
     }

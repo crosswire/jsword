@@ -63,7 +63,7 @@ public class PuncInstsDisk extends InstsDisk
      */
     public void load() throws IOException, ClassNotFoundException, MalformedURLException
     {
-        URL url = NetUtil.lengthenURL(raw.getBaseURL(), leafname);
+        URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
         raf = new RandomAccessFile(url.getFile(), "r");
 
         byte[] asig = new byte[6];

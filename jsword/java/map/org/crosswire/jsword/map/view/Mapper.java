@@ -1121,7 +1121,7 @@ public class Mapper extends JFrame
             {
                 saved = false;
                 map.applyRules(rules);
-                Thread.currentThread().yield();
+                Thread.yield();
             }
         }
 

@@ -123,15 +123,15 @@ public class BenchmarkPane extends EirPanel
      */
     private void benchmark()
     {
-        Bible bible = mdl_bible.getSelectedBible();
-
-        Speed speed = new Speed(bible);
-        speed.run();
-
         try
         {
+            Bible bible = mdl_bible.getSelectedBibleMetaData().getBible();
+    
+            Speed speed = new Speed(bible);
+            speed.run();
+    
             float time = speed.getBenchmark() / 1000;
-            txt_results.append("Benchmark for '" + bible.getMetaData().getName() + "': " + time + "s\n");
+            txt_results.append("Benchmark for '" + bible.getBookMetaData().getName() + "': " + time + "s\n");
         }
         catch (Exception ex)
         {

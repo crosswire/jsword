@@ -42,25 +42,35 @@ public interface BookMetaData
 {
     /**
      * The name of the version, for example "King James Version" or
-     * "Bible in Basic English" or "Greek". In general it should be
-     * possible to deduce the initials from the name by removing all the
-     * non-capital letters.
+     * "Bible in Basic English" or "Greek".
+     * In general it should be possible to deduce the initials from the name by
+     * removing all the non-capital letters. Although this is only a generalization.
+     * This method should not return null or a blank string.
      * @return The name of this version
      */
     public String getName();
 
     /**
      * The edition of this version, for example "Anglicised" (NIV),
-     * "Stephanus" (Greek). For 2 versions to be equal both the name and
-     * the edition must be equal. In general the text returned by this
-     * method should not include the word "Edition"
+     * "Stephanus" (Greek).
+     * For 2 versions to be equal both the name and the edition must be equal.
+     * In general the text returned by this method should not include the word
+     * "Edition". It is valid for an edition to be a blank string but not for it
+     * to be null.
      * @return The name of the edition
      */
     public String getEdition();
 
     /**
+     * The name of the driver, which could be helpful to distinguish similar
+     * Books available through 2 BookDrivers.
+     * @return The driver name
+     */
+    public String getDriverName();
+
+    /**
      * The full name including edition of the version, for example
-     * "New International Version, Anglicised". The format is "name, edition"
+     * "New International Version, Anglicised (Ser)". The format is "name, edition (Driver)"
      * @return The full name of this version
      */
     public String getFullName();
@@ -74,18 +84,20 @@ public interface BookMetaData
 
     /**
      * The initials of the version - how most people will know it, for
-     * example "NIV", "KJV"
+     * example "NIV", "KJV".
      * @return The versions initials
      */
     public String getInitials();
 
     /**
-     * The date of first publishing. This does not need to be accurate and
-     * 2 versions can be considered equal even if they have different
-     * first publishing dates for that reason. In general "1 Jan 1970"
-     * means published in 1970, and so on. <b>A null return from this
-     * method is entirely valid</b> if the date of first publishing is not
-     * known.
+     * The date of first publishing.
+     * This does not need to be accurate and 2 versions can be considered equal
+     * even if they have different first publishing dates for that reason.
+     * In general "1 Jan 1970" means published in 1970, and so on.
+     * <b>A null return from this method is entirely valid</b> if the date of
+     * first publishing is not known.
+     * If the date is required in string form it should be in the format
+     * YYYY-MM-DD so save US/UK confusion over MM/DD and DD/MM.
      * @return The date of first publishing
      */
     public Date getFirstPublished();
@@ -100,8 +112,27 @@ public interface BookMetaData
     /**
      * Not sure about this one - Do we need a way of getting at the dist.
      * licence? Are we going to be able to tie it down to a single Version
-     * policy like this?
+     * policy like this? A null return is valid if the licence URL is not
+     * known.
      * @return String detailing the users right to distribute this version
      */
     public URL getLicence();
+
+    /**
+     * Accessor for the real Book to read data.
+     * Note that constructing a Book may well consume system resources far more
+     * than the construction of a BookMetaData so you should only get a Book if
+     * you intend to use it.
+     */
+    public Book getBook() throws BookException;
+
+    /**
+     * Delete this Book from the system.
+     * Take care with this method for obvious reasons. For most implemenations
+     * of Book etc, this method will throw up because most will be read-only.
+     * <p>This method is here rather than on the BookDriver because we want to
+     * avoid user contact with the Drivers where possible.
+     * @throws BookException If the Book can't be deleted.
+     */
+    public void delete() throws BookException;
 }

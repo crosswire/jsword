@@ -52,7 +52,7 @@ public class TestLinkArray extends TestCase
     public void testLinkArray() throws Exception
     {
         RawBibleDriver.setDefaultCacheData(true);
-        Bible bible = Bibles.getBible("AV-SER");
+        Bible bible = Bibles.getDefaultBible();
         LinkArray la = new LinkArray(bible);
 
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("foo.la"));

@@ -2,22 +2,21 @@
 package org.crosswire.jsword.book.basic;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.events.ProgressEvent;
+import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.common.util.LogicError;
-import org.crosswire.common.util.NetUtil;
 
 /**
  * The VersewiseMutableBook class makes it easier to implement
@@ -46,7 +45,7 @@ import org.crosswire.common.util.NetUtil;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class VersewiseBible extends AbstractWritableBible
+public abstract class VersewiseBible extends AbstractBible
 {
     /**
      * Write the XML to disk. Children will almost certainly want to
@@ -65,12 +64,6 @@ public abstract class VersewiseBible extends AbstractWritableBible
     public abstract void foundPassage(String word, Passage ref) throws BookException;
 
     /**
-     * Setup the Version information
-     * @param version The version that this Bible is becoming
-     */
-    public abstract void setVersion(BookMetaData version);
-
-    /**
      * Flush the data written to disk
      */
     public void flush() throws BookException
@@ -78,33 +71,21 @@ public abstract class VersewiseBible extends AbstractWritableBible
     }
 
     /**
-     * Get a URL in which we can save a generation report
-     * @return A directory URL into which we can save files
-     */
-    public abstract URL getBaseURL();
-
-    /**
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    public void generate(Bible version) throws BookException
+    public void generate(Bible source, ProgressListener li) throws BookException
     {
         try
         {
-            URL url = NetUtil.lengthenURL(getBaseURL(), "generate.log");
-            PrintWriter out = new PrintWriter(NetUtil.getOutputStream(url));
-
-            out.println("Generating Bible");
-            out.println("Dest driver = "+getClass().getName());
-            out.println("Dest url = "+getBaseURL());
-            out.println("Source name = "+version.getMetaData().getName());
-            out.println("Source driver = "+version.getClass().getName());
-            out.flush();
+            log.debug("Generating Bible");
+            log.debug("Dest driver = "+getClass().getName());
+            log.debug("Source name = "+source.getBookMetaData().getName());
+            log.debug("Source driver = "+source.getClass().getName());
 
             // Generate
-            setVersion(version.getMetaData());
-            generatePassages(version);
-            generateText(version);
+            generatePassages(source, li);
+            generateText(source, li);
             flush();
         }
         catch (IOException ex)
@@ -121,7 +102,7 @@ public abstract class VersewiseBible extends AbstractWritableBible
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    protected void generateText(Bible source) throws IOException, NoSuchVerseException, BookException
+    protected void generateText(Bible source, ProgressListener li) throws IOException, NoSuchVerseException, BookException
     {
         Passage temp = PassageFactory.createPassage(PassageFactory.SPEED);
 
@@ -135,7 +116,7 @@ public abstract class VersewiseBible extends AbstractWritableBible
             temp.add(verse);
 
             // Fire a progress event?
-            fireProgressMade("Writing Verses:", 100 * verse.getOrdinal() / Books.versesInBible());
+            li.progressMade(new ProgressEvent(this, "Writing Verses:", 100 * verse.getOrdinal() / Books.versesInBible()));
 
             // Read the document from the original version
             BibleData doc = source.getData(temp);
@@ -144,7 +125,7 @@ public abstract class VersewiseBible extends AbstractWritableBible
             setDocument(doc);
 
             // This could take a long time ...
-            Thread.currentThread().yield();
+            Thread.yield();
             if (Thread.currentThread().isInterrupted())
                 break;
         }
@@ -154,7 +135,7 @@ public abstract class VersewiseBible extends AbstractWritableBible
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    protected void generatePassages(Bible source) throws IOException, NoSuchVerseException, BookException
+    protected void generatePassages(Bible source, ProgressListener li) throws IOException, NoSuchVerseException, BookException
     {
         int count = 0;
 
@@ -172,14 +153,17 @@ public abstract class VersewiseBible extends AbstractWritableBible
             foundPassage(word, ref_source);
 
             // Fire a progress event?
-            fireProgressMade("Writing Words:", 100 * count++ / Verifier.GUESS_WORDS);
+            li.progressMade(new ProgressEvent(this, "Writing Words:", 100 * count++ / Verifier.GUESS_WORDS));
 
             // This could take a long time ...
-            Thread.currentThread().yield();
+            Thread.yield();
             if (Thread.currentThread().isInterrupted())
                 break;
         }
     }
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(VersewiseBible.class);
 
     /** The Whole Bible */
     private static Passage whole = PassageFactory.getWholeBiblePassage();

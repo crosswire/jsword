@@ -155,7 +155,7 @@ public class Verifier
             }
 
             // This could take a long time ...
-            Thread.currentThread().yield();
+            Thread.yield();
             if (Thread.currentThread().isInterrupted())
                 break;
         }
@@ -185,7 +185,7 @@ public class Verifier
             fireProgressMade("Checking Words:", 100 * count++ / GUESS_WORDS);
 
             // This could take a long time ...
-            Thread.currentThread().yield();
+            Thread.yield();
             if (Thread.currentThread().isInterrupted())
                 break;
         }
@@ -218,7 +218,7 @@ public class Verifier
             fireProgressMade("Checking Words:", 100 * count++ / GUESS_WORDS);
 
             // This could take a long time ...
-            Thread.currentThread().yield();
+            Thread.yield();
             if (Thread.currentThread().isInterrupted())
                 break;
         }
@@ -237,8 +237,8 @@ public class Verifier
         if (!ref1.equals(ref2))
         {
             out.println("Word:   " + word);
-            out.println(bible1.getMetaData().getName() + ": " + ref1);
-            out.println(bible2.getMetaData().getName() + ": " + ref2);
+            out.println(bible1.getBookMetaData().getName() + ": " + ref1);
+            out.println(bible2.getBookMetaData().getName() + ": " + ref2);
             out.println();
         }
     }

@@ -2,10 +2,7 @@
 package org.crosswire.jsword.book.ser;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -17,19 +14,18 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.ArrayEnumeration;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.basic.BasicBookMetaData;
-import org.crosswire.jsword.book.basic.VersewiseBible;
+import org.crosswire.jsword.book.basic.LocalURLBible;
+import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -162,88 +158,100 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
-public class SerBible extends VersewiseBible
+public class SerBible extends LocalURLBible
 {
-    /**
-     * Basic constructor for a SerBible
+   /**
+     * Constructor SerBible.
+     * @param lbmd
+     * @param source
+     * @param li
      */
-    public SerBible(String name, URL url, boolean create) throws BookException
+    public SerBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
     {
-        this.name = name;
+        super(lbmd);
+        URL url = lbmd.getURL();
 
         if (!url.getProtocol().equals("file"))
         {
-            log.debug("NOT A FILE URL");
-            if (create)
-                throw new BookException("ser_write");
+            throw new BookException("ser_write");
         }
 
-        this.url = url;
+        try
+        {
+            // Create blank indexes
+            // we used to use new StringComparator() here because
+            // jdk1.1 String did not implement Comparable. I assume that
+            // the rules I used  in writing StringComparator are the same
+            // as the rules in jdk1.2 String Comparable ...
+            // The same comments are valid for the else code below.
+            ref_map = new TreeMap();
+            xml_arr = new long[Books.versesInBible()];
+
+            // Open the random access files read write
+            String file_mode = "rw";
+
+            // Open the Passage RAF
+            URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
+            ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), file_mode);
+
+            // Open the XML RAF
+            URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
+            xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), file_mode);
+
+            generate(source, li);
+        }
+        catch (Exception ex)
+        {
+            throw new BookException("ser_init", ex);
+        }
+    }
+
+    /**
+     * Constructor SerBible.
+     * @param bbmd
+     */
+    public SerBible(LocalURLBibleMetaData lbmd) throws BookException
+    {
+        super(lbmd);
+        URL url = lbmd.getURL();
 
         try
         {
             String file_mode;
 
-            if (create)
+            // Load the ascii Passage index
+            // See above notes on StringComparator()
+            URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
+            BufferedReader ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
+            ref_map = new TreeMap();
+            while (true)
             {
-                // We leave the Version unknown until we have data
-                version = null;
-
-                // Create blank indexes
-                // we used to use new StringComparator() here because
-                // jdk1.1 String did not implement Comparable. I assume that
-                // the rules I used  in writing StringComparator are the same
-                // as the rules in jdk1.2 String Comparable ...
-                // The same comments are valid for the else code below.
-                ref_map = new TreeMap();
-                xml_arr = new long[Books.versesInBible()];
-
-                // Open the random access files read write
-                file_mode = "rw";
+                String line = ref_idy_bin.readLine();
+                if (line == null)
+                    break;
+                int colon1 = line.indexOf(":");
+                int colon2 = line.lastIndexOf(":");
+                String word = line.substring(0, colon1);
+                long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
+                int length = Integer.parseInt(line.substring(colon2 + 1));
+                Section section = new Section(offset, length);
+                ref_map.put(word, section);
             }
-            else
+            ref_idy_bin.close();
+
+            // Load the ascii XML index
+            URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
+            BufferedReader xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
+            xml_arr = new long[Books.versesInBible()];
+            for (int i = 0; i < Books.versesInBible(); i++)
             {
-                // The version information
-                URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
-                InputStream prop_in = prop_url.openStream();
-                Properties prop = new Properties();
-                PropertiesUtil.load(prop, prop_in);
-                version = new BasicBookMetaData(prop);
-
-                // Load the ascii Passage index
-                // See above notes on StringComparator()
-                URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
-                BufferedReader ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
-                ref_map = new TreeMap();
-                while (true)
-                {
-                    String line = ref_idy_bin.readLine();
-                    if (line == null)
-                        break;
-                    int colon1 = line.indexOf(":");
-                    int colon2 = line.lastIndexOf(":");
-                    String word = line.substring(0, colon1);
-                    long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
-                    int length = Integer.parseInt(line.substring(colon2 + 1));
-                    Section section = new Section(offset, length);
-                    ref_map.put(word, section);
-                }
-                ref_idy_bin.close();
-
-                // Load the ascii XML index
-                URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
-                BufferedReader xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
-                xml_arr = new long[Books.versesInBible()];
-                for (int i = 0; i < Books.versesInBible(); i++)
-                {
-                    String line = xml_idy_bin.readLine();
-                    xml_arr[i] = Integer.parseInt(line);
-                }
-                xml_idy_bin.close();
-
-                // Open the random access files read only
-                file_mode = "r";
+                String line = xml_idy_bin.readLine();
+                xml_arr[i] = Integer.parseInt(line);
             }
+            xml_idy_bin.close();
+
+            // Open the random access files read only
+            file_mode = "r";
 
             // Open the Passage RAF
             URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
@@ -257,45 +265,6 @@ public class SerBible extends VersewiseBible
         {
             throw new BookException("ser_init", ex);
         }
-
-        log.debug("Started SerBible url=" + url + " name=" + name + " create=" + create);
-    }
-
-    /**
-     * What driver is controlling this Bible?
-     * @return A BibleDriver relevant to this Bible
-     */
-    public BibleDriver getDriver()
-    {
-        return SerBibleDriver.driver;
-    }
-
-    /**
-     * Meta-Information: What name can I use to get this Bible in a call
-     * to Bibles.getBible(name);
-     * @return The name of this Bible
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
-     */
-    public BookMetaData getMetaData()
-    {
-        return version;
-    }
-
-    /**
-     * Setup the Version information
-     * @param version The version that this Bible is becoming
-     */
-    public void setVersion(BookMetaData version)
-    {
-        this.version = version;
     }
 
     /**
@@ -483,6 +452,8 @@ public class SerBible extends VersewiseBible
     {
         try
         {
+            URL url = getLocalURLBibleMetaData().getURL();
+
             // Save the ascii Passage index
             URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
             PrintWriter ref_idy_out = new PrintWriter(NetUtil.getOutputStream(ref_idy_url));
@@ -518,30 +489,6 @@ public class SerBible extends VersewiseBible
     }
 
     /**
-     * The directory that holds the RawBible files
-     * @return The index file directory
-     */
-    public URL getBaseURL()
-    {
-        return url;
-    }
-
-    /**
-     * The SAX parser to use
-     */
-    private static final String PARSER = "com.ibm.xml.parsers.SAXParser";
-
-    /**
-     * The base url
-     */
-    private URL url;
-
-    /**
-     * The name of this version
-     */
-    private String name;
-
-    /**
      * The passages random access file
      */
     private RandomAccessFile ref_dat;
@@ -564,16 +511,6 @@ public class SerBible extends VersewiseBible
     private long[] xml_arr;
 
     /**
-     * Some shortcuts into the list of names to help startsWith
-     */
-    private long[] letters = new long[26];
-
-    /**
-     * The Version of the Bible that this produces
-     */
-    private BookMetaData version;
-
-    /**
      * The log stream
      */
     protected static Logger log = Logger.getLogger(SerBible.class);
@@ -592,58 +529,5 @@ public class SerBible extends VersewiseBible
 
         public long offset;
         public int length;
-    }
-
-    /**
-     * This customization just clips of the .ser from the array members
-     */
-    static class CustomArrayEnumeration extends ArrayEnumeration
-    {
-        /**
-         * This is the only of the ArrayEnumeration ctors that we need
-         */
-        CustomArrayEnumeration(Object[] array)
-        {
-            super(array);
-        }
-
-        /**
-         * Get the next item from the database
-         * @return The next object in the list
-         */
-        public Object nextElement()
-        {
-            String file = (String) array[pos++];
-            return file.substring(0, file.length() - 4);
-        }
-    }
-
-    /**
-     * Check that the directories in the version directory really
-     * represent versions.
-     */
-    static class CustomFilenameFilter implements FilenameFilter
-    {
-        /**
-         * Create a CustomFilenameFilter with a word to match
-         * the start of
-         */
-        public CustomFilenameFilter(String word)
-        {
-            this.word = word;
-        }
-
-        /**
-         * Match word
-         */
-        public boolean accept(File parent, String name)
-        {
-            return name.startsWith(word);
-        }
-
-        /**
-         * The word to match
-         */
-        private String word;
     }
 }

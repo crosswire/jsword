@@ -1,13 +1,14 @@
 
 package org.crosswire.jsword.book.basic;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.util.Project;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * The AbstractBibleDriver class implements some of the BibleDriver
@@ -37,48 +38,87 @@ import org.crosswire.jsword.util.Project;
 public abstract class AbstractBibleDriver implements BibleDriver
 {
     /**
+     * @see org.crosswire.jsword.book.BookDriver#getBooks()
+     */
+    public BookMetaData[] getBooks()
+    {
+        return getBibles();
+    }
+
+    /**
+     * Method getBibleMetaDataFromName.
+     * @param name
+     * @return String
+     */
+    private BibleMetaData getBibleMetaDataFromName(String name)
+    {
+        BibleMetaData[] bbmds = getBibles();
+        for (int i=0; i<bbmds.length; i++)
+        {
+            if (bbmds[i].getName().equals(name))
+            {
+                return bbmds[i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get a list of the Books available from the driver
+     * @return an array of book names
+     */
+    public String[] getBibleNames()
+    {
+        BibleMetaData[] bmds = getBibles();
+        String[] names = new String[bmds.length];
+
+        for (int i=0; i<bmds.length; i++)
+        {
+            names[i] = bmds[i].getName();
+        }
+        
+        return names;
+    }
+
+    /**
      * How many Bibles does this driver control?
      * @return A count of the Bibles
      */
     public int countBibles()
     {
-        return getBibleNames().length;
+        return getBibles().length;
     }
 
     /**
-     * Search for versions directories
+     * Is this driver capable of creating writing data in the correct format
+     * as well as reading it?
+     * @return true/false to indicate ability to write data
      */
-    protected URL findBibleRoot() throws MalformedURLException
+    public boolean isWritable()
     {
-        URL found;
+        return false;
+    }
 
-        log.debug("Looking for Bibles:");
+    /**
+     * Create a new Bible read from the source
+     * @param name The name of the version to create
+     * @exception BookException If the name is not valid
+     */
+    public Bible create(Bible source, ProgressListener li) throws BookException
+    {
+        throw new BookException("bible_driver_readonly");
+    }
 
-        // First see if there is a System property that can help us out
-        String sysprop = System.getProperty("jsword.bible.dir");
-        if (sysprop != null)
-        {
-            found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
-            URL test = NetUtil.lengthenURL(found, "locator.properties");
-            if (NetUtil.isFile(test))
-            {
-                log.debug("-- Found from system property jsword.bible.dir at "+sysprop+"");
-                return found;
-            }
+    /**
+     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.events.ProgressListener)
+     */
+    public Book create(Book source, ProgressListener li) throws BookException
+    {
+        if (!(source instanceof Bible))
+            throw new BookException("bible_invalid_source");
 
-            log.debug("-- Not found from system property jsword.bible.dir at "+sysprop+"");
-        }
-        else
-        {
-            log.debug("-- Unset system property jsword.bible.dir");
-        }
-
-        String locator = "/versions/locator.properties";
-        found = Project.resource().getResource(locator);
-        if (found == null)
-            throw new MalformedURLException("Missing locator.properties.");
-
-        return NetUtil.shortenURL(found, "/locator.properties");
+        return create((Bible) source, li);
     }
 
     /** The log stream */

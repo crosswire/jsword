@@ -4,12 +4,12 @@ package org.crosswire.jsword.view.swing.book;
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataListener;
 
-import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.events.BiblesEvent;
 import org.crosswire.jsword.book.events.BiblesListener;
-import org.crosswire.common.util.Reporter;
 
 /**
  * BiblesListModel creates a Swing ListModel from the available Bibles.
@@ -56,19 +56,12 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
     {
         try
         {
-            bibles = Bibles.getBibleNames();
-            drivers = new String[bibles.length];
-
-            for (int i=0; i<drivers.length; i++)
-            {
-                drivers[i] = BibleDriverManager.getDriverForBible(bibles[i]).getDriverName();
-            }
+            bmds = Bibles.getBibles();
         }
         catch (BookException ex)
         {
             Reporter.informUser(this, ex);
-            bibles = new String[0];
-            drivers = new String[0];
+            bmds = new BibleMetaData[0];
         }
     }
 
@@ -77,7 +70,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
      */
     public int getSize()
     {
-        return bibles.length;
+        return bmds.length;
     }
 
     /**
@@ -85,10 +78,10 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
      */
     public Object getElementAt(int index)
     {
-        if (index >= bibles.length)
+        if (index >= bmds.length)
             return null;
 
-        return bibles[index] + " (" + drivers[index] + ")";
+        return bmds[index].getFullName();
     }
 
     /**
@@ -98,45 +91,13 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
      */
     public int getIndexOf(Object test)
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i=0; i<bmds.length; i++)
         {
-            if (test == bibles[i])
+            if (test == bmds[i])
                 return i;
         }
 
         return -1;
-    }
-
-    /**
-     * Given an item, work out the name of the Bible that it represents
-     * @param The item from the list
-     * @return A Bible name
-     */
-    public String getBibleName(Object test)
-    {
-        if (test == null)
-            return null;
-
-        String item = test.toString();
-        int end = item.indexOf(" (");
-
-        // This may be paranoia, but in JDK 1.4b1 I don't get a () thing so...
-        if (end == -1)
-            return item;
-
-        return item.substring(0, end);
-    }
-
-    /**
-     * Given an item, work out the name of the Driver that it represents
-     * @param The item from the list
-     * @return A Driver
-     */
-    public String getDriverName(Object test)
-    {
-        String item = test.toString();
-        int end = item.indexOf(" (");
-        return item.substring(end+2, item.length()-1);
     }
 
     /**
@@ -183,8 +144,5 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
     }
 
     /** The array of versions */
-    protected String[] bibles;
-
-    /** The array of driver names */
-    protected String[] drivers;
+    protected BibleMetaData[] bmds;
 }

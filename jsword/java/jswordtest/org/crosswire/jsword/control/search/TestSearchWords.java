@@ -45,9 +45,9 @@ public class TestSearchWords extends TestCase
     {
         commands = SearchDefault.getMap();
 
-        commands.put("t1", new TestParamWord("Rut 2"));
-        commands.put("t2", new TestParamWord("Deu 28-1Sa 1:1"));
-        commands.put("t3", new TestParamWord("Mar 2:3"));
+        commands.put("t1", new FixtureParamWord("Rut 2"));
+        commands.put("t2", new FixtureParamWord("Deu 28-1Sa 1:1"));
+        commands.put("t3", new FixtureParamWord("Mar 2:3"));
 
         engine = new Engine(Bibles.getDefaultBible(), commands);
     }

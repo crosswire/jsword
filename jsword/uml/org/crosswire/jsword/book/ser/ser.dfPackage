@@ -96,11 +96,6 @@ class reference509 {
 @__modelType reference 
 */
 class reference510 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.jsword.book.ser.SerUtil:oiref><oihard>
-@__modelType reference 
-*/
-class reference511 {
 }}
 /**
 @__tags

@@ -25,7 +25,7 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestPassageMix extends TestPassage
+public class TestPassageMix extends ParentTstPassage
 {
     public TestPassageMix(String s)
     {

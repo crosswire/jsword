@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book;
 
+import org.crosswire.jsword.book.events.ProgressListener;
+
 /**
  * The BibleDriver class is an gateway to all the instances of the Books
  * controlled by this driver.
@@ -28,4 +30,33 @@ package org.crosswire.jsword.book;
  */
 public interface BookDriver
 {
+    /**
+     * A simple driver description name. This should be callable before
+     * init() is called, so that we can find the friendly name of a
+     * Bible without having to fully initialize it.
+     * @return A short identifing string
+     */
+    public String getDriverName();
+
+    /**
+     * Get a list of the Books available from the driver
+     * @return an array of book names
+     */
+    public BookMetaData[] getBooks();
+
+    /**
+     * Is this driver capable of creating writing data in the correct format
+     * as well as reading it?
+     * @return true/false to indicate ability to write data
+     */
+    public boolean isWritable();
+
+    /**
+     * Create a new Book based on a source
+     * @param name The name of the version to create
+     * @param li Somewhere to repost progress (can be null)
+     * @return The new WritableBible
+     * @exception BookException If the name is not valid
+     */
+    public Book create(Book source, ProgressListener li) throws BookException;
 }

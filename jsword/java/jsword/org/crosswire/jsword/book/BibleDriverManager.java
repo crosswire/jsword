@@ -1,9 +1,8 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.crosswire.jsword.util.Project;
 
@@ -75,44 +74,6 @@ public class BibleDriverManager
     }
 
     /**
-     * Get the driver for a particular book name.
-     * @param name The Book name to find
-     * @return The BibleDriver that owns the book
-     */
-    public static BibleDriver getDriverForBible(String name) throws BookException
-    {
-        for (Iterator it = drivers.iterator(); it.hasNext();)
-        {
-            BibleDriver driver = (BibleDriver) it.next();
-            if (driver.exists(name))
-                return driver;
-        }
-        throw new BookException("book_manager", new Object[] { name });
-    }
-
-    /**
-     * Get the driver for a particular book name.
-     * @param name The Book name to find
-     * @return The BibleDriver that owns the book
-     */
-    public static WritableBibleDriver getWritableDriverForBible(String name) throws BookException
-    {
-        for (Iterator it = drivers.iterator(); it.hasNext();)
-        {
-            Object next = (BibleDriver) it.next();
-            if (next instanceof WritableBibleDriver)
-            {
-                WritableBibleDriver driver = (WritableBibleDriver) next;
-
-                if (driver.exists(name))
-                    return driver;
-            }
-        }
-
-        throw new BookException("book_manager", new Object[] { name });
-    }
-
-    /**
      * An array of BookDrivers
      */
     private static List drivers = new ArrayList();
@@ -123,7 +84,6 @@ public class BibleDriverManager
     static
     {
         // This will classload them all and they will register themselves.
-        Class[] impls = Project.resource().getImplementors(BibleDriver.class);
-        impls = impls;
+        Project.resource().getImplementors(BibleDriver.class);
     }
 }

@@ -75,7 +75,7 @@ public class CliMapper
             PrintWriter dbout = new PrintWriter(new FileOutputStream("c:\\database.csv"));
             PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
 
-            Bible bible = Bibles.getBible("av-ser");
+            Bible bible = Bibles.getDefaultBible();
             Matcher engine = new Matcher(bible);
 
             Element links = new Element("links");

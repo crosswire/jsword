@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Map;
 
 /**
  * A utility class for loading Sword module config data.
@@ -36,126 +36,118 @@ import java.util.NoSuchElementException;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
-public class ConfigReader 
+public class ConfigReader
 {
-	private BufferedReader bufferedReader;
-	private Hashtable table = new Hashtable();
-	
-	public ConfigReader(InputStream is) throws IOException
-	{
-		InputStreamReader r = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(r);
-		this.bufferedReader = br;
-		
-		String currentLine = "";
-		while(currentLine!=null){
-			currentLine = bufferedReader.readLine();
-			if(currentLine!=null) parseLine(currentLine);
-		}
-	}
+    private BufferedReader bufferedReader;
+    private Map table = new HashMap();
 
-	/**
-	 * Method parseLine.
-	 * @param currentLine
-	 */
-	private void parseLine(String currentLine) 
-	{
-		// don't use a tokenizer - a value may have an =
-		int eqIdx = currentLine.indexOf('=');
-		if(eqIdx>=0&&eqIdx<currentLine.length()-1)
-		{
-			String key = currentLine.substring(0,eqIdx).trim();
-			if(key.length()>0)
-			{
-				String value = currentLine.substring(eqIdx+1);
-				// check to see if there already values for this key...
-				ArrayList list = (ArrayList) table.get(key);
-				if(list!=null)
-				{
-					list.add(value);
-				}
-				else
-				{
-					list = new ArrayList();
-					list.add(value);
-					table.put(key,list);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Returns an Enumeration of all the keys found in the config file.
-	 */
-	public Enumeration getKeys()
-	{
-		return table.keys();
-	}
-	
-	/**
-	 * Returns only one value for the key (for cases where only one value is expected).
-	 */
-	public String getFirstValue(String key)
-	{
-		String retVal = null;
-		ArrayList list = (ArrayList) table.get(key);
-		if(list!=null)
-		{
-			return (String) list.get(0);
-		}
-		return retVal;
-	}
-	
-	/**
-	 * Returns all values for the key (for cases where many values are expected).
-	 */
-	public Iterator getAllValues(String key)
-	{
-		ArrayList list = (ArrayList) table.get(key);
-		if(list!=null)
-		{
-			return list.iterator();
-		}
-		return  new Iterator()
-		{
-			public boolean hasNext()
-			{
-				return false;
-			}
-			public Object next()
-			{
-				throw new NoSuchElementException();
-			}
-			public void remove()
-			{
-			}
-		};
-	}
-	
-	public static void main(String[] args) 
-	{
-		// A little test
-		// TODO: MDG.
-		// JUnit tests..... (ask joe about a ${project.root}/misc/testdata dir - this (and many other tests) are data dependant)
-		try
-		{
-			File f = new File("/usr/share/sword/mods.d/kjv.conf");
-			FileInputStream fis= new FileInputStream(f);
-			ConfigReader reader = new ConfigReader(fis);
-			
-			Enumeration en = reader.getKeys();
-			while(en.hasMoreElements())
-			{
-				String key = (String) en.nextElement();
-				Iterator it = reader.getAllValues(key);
-				while(it.hasNext()){
-					String value = (String) it.next();
-					System.out.println(key+" = "+value);
-				}
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+    public ConfigReader(InputStream is) throws IOException
+    {
+        InputStreamReader r = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(r);
+        this.bufferedReader = br;
+
+        String currentLine = "";
+        while (currentLine != null)
+        {
+            currentLine = bufferedReader.readLine();
+            if (currentLine != null)
+                parseLine(currentLine);
+        }
+    }
+
+    /**
+     * Method parseLine.
+     * @param currentLine
+     */
+    private void parseLine(String currentLine)
+    {
+        // don't use a tokenizer - a value may have an =
+        int eqIdx = currentLine.indexOf('=');
+        if (eqIdx >= 0 && eqIdx < currentLine.length() - 1)
+        {
+            String key = currentLine.substring(0, eqIdx).trim();
+            if (key.length() > 0)
+            {
+                String value = currentLine.substring(eqIdx + 1);
+                // check to see if there already values for this key...
+                ArrayList list = (ArrayList) table.get(key);
+                if (list != null)
+                {
+                    list.add(value);
+                }
+                else
+                {
+                    list = new ArrayList();
+                    list.add(value);
+                    table.put(key, list);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns an Enumeration of all the keys found in the config file.
+     */
+    public Iterator getKeys()
+    {
+        return table.keySet().iterator();
+    }
+
+    /**
+     * Returns only one value for the key (for cases where only one value is expected).
+     */
+    public String getFirstValue(String key)
+    {
+        ArrayList list = (ArrayList) table.get(key);
+        if (list != null)
+        {
+            return null;
+        }
+
+        return (String) list.get(0);
+    }
+
+    /**
+     * Returns all values for the key (for cases where many values are expected).
+     */
+    public Iterator getAllValues(String key)
+    {
+        ArrayList list = (ArrayList) table.get(key);
+        if (list == null)
+        {
+            return Collections.EMPTY_LIST.iterator();
+        }
+
+        return list.iterator();
+    }
+
+    public static void main(String[] args)
+    {
+        // A little test
+        // TODO: MDG.
+        // JUnit tests..... (ask joe about a ${project.root}/misc/testdata dir - this (and many other tests) are data dependant)
+        try
+        {
+            File f = new File("/usr/share/sword/mods.d/kjv.conf");
+            FileInputStream fis = new FileInputStream(f);
+            ConfigReader reader = new ConfigReader(fis);
+
+            Iterator kit = reader.getKeys();
+            while (kit.hasNext())
+            {
+                String key = (String) kit.next();
+                Iterator vit = reader.getAllValues(key);
+                while (vit.hasNext())
+                {
+                    String value = (String) vit.next();
+                    System.out.println(key + " = " + value);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

@@ -2,14 +2,13 @@
 package org.crosswire.jsword.book.remote;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriverManager;
-import org.jdom.Document;
 
 /**
- * A fullfilment of Remote BibleDriver that uses HTTP to communicate.
+ * A fullfilment of RemoteBibleDriver that uses a Local commection for test
+ * purposes.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,23 +29,25 @@ import org.jdom.Document;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
+ * @version $Id$
  */
-public class HttpBibleDriver extends RemoteBibleDriver
+public class LocalRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
      * 
      */
-    public HttpBibleDriver() throws MalformedURLException, IOException
+    private LocalRemoteBibleDriver() throws IOException
     {
     }
 
     /**
+     * Accessor for the current remoter.
      * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
+     * @return The remoter or null if none is available.
      */
-    protected Document getXML(String string)
+    protected Remoter getRemoter()
     {
-        return null;
+        return remoter;
     }
 
     /**
@@ -54,8 +55,12 @@ public class HttpBibleDriver extends RemoteBibleDriver
      */
     public String getDriverName()
     {
-        return "Remote (HTTP)";
+        return "Remote (Local)";
     }
+
+    private static Remoter remoter = new LocalRemoter();
+
+    private static LocalRemoteBibleDriver driver;
 
     /**
      * Register ourselves with the Driver Manager
@@ -64,7 +69,7 @@ public class HttpBibleDriver extends RemoteBibleDriver
     {
         try
         {
-            driver = new HttpBibleDriver();
+            driver = new LocalRemoteBibleDriver();
             BibleDriverManager.registerDriver(driver);
         }
         catch (Exception ex)

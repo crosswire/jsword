@@ -19,13 +19,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.crosswire.jsword.book.Bibles;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.config.swing.TabbedConfigPane;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BibleMetaData;
 
 /**
  * Allows various maintenance procedures to be done on Bibles like
@@ -72,7 +72,6 @@ public class MaintenancePane extends EirPanel
         boolean selected = (lst_versions.getSelectedIndex() != -1);
         btn_remove.setEnabled(selected);
         btn_props.setEnabled(selected);
-        btn_rename.setEnabled(selected);
     }
 
     /**
@@ -126,19 +125,11 @@ public class MaintenancePane extends EirPanel
             public void actionPerformed(ActionEvent ev) { properties(); }
         });
 
-        btn_rename.setText("Rename");
-        btn_rename.setMnemonic('R');
-        btn_rename.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev) { rename(); }
-        });
-
         lay_buttons.setAlignment(FlowLayout.RIGHT);
         pnl_buttons.setLayout(lay_buttons);
         pnl_buttons.add(btn_add, null);
         pnl_buttons.add(btn_remove, null);
         pnl_buttons.add(btn_props, null);
-        pnl_buttons.add(btn_rename, null);
 
         this.setLayout(new BorderLayout());
         this.add(scr_versions, BorderLayout.CENTER);
@@ -155,51 +146,14 @@ public class MaintenancePane extends EirPanel
     }
 
     /**
-     * Rename the selected Bible
-     */
-    public void rename()
-    {
-        try
-        {
-            String old_name = getSelected();
-            if (old_name == null)
-            {
-                JOptionPane.showMessageDialog(this,
-                    "Please select a Bible to rename.",
-                    "Delete Bible",
-                    JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-
-            Object data = JOptionPane.showInputDialog(this,
-                            "Enter new name for the Bible formerly known as "+old_name,
-                            "Rename Bible",
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            null,
-                            old_name);
-
-            if (data == null)
-                return;
-
-            String new_name = data.toString().trim();
-            Bibles.renameBible(old_name, new_name);
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(this, ex);
-        }
-    }
-
-    /**
      * Delete a selected Bible
      */
     public void delete()
     {
         try
         {
-            String name = getSelected();
-            if (name == null)
+            BibleMetaData bmd = getSelected();
+            if (bmd == null)
             {
                 JOptionPane.showMessageDialog(this,
                     "Please select a Bible to delete.",
@@ -209,11 +163,11 @@ public class MaintenancePane extends EirPanel
             }
 
             if (JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete "+name+"?\nDeleted Bibles can not be recovered",
+                "Are you sure you want to delete "+bmd.getName()+"?\nDeleted Bibles can not be recovered",
                 "Delete Bible",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                Bibles.deleteBible(name);
+                bmd.delete();
             }
         }
         catch (Exception ex)
@@ -237,8 +191,8 @@ public class MaintenancePane extends EirPanel
 
         try
         {
-            String name = getSelected();
-            if (name == null)
+            BibleMetaData bmd = getSelected();
+            if (bmd == null)
             {
                 JOptionPane.showMessageDialog(this,
                     "Please select a Bible to view notes on.",
@@ -254,7 +208,7 @@ public class MaintenancePane extends EirPanel
             if (config == null)
             {
                 JOptionPane.showMessageDialog(this,
-                    "There are no options to configure for the "+name+" Bible.",
+                    "There are no options to configure for the "+bmd.getName()+" Bible.",
                     "Bible Properties",
                     JOptionPane.INFORMATION_MESSAGE);
             }
@@ -290,20 +244,9 @@ public class MaintenancePane extends EirPanel
      * What is the selected Bible name?
      * @return The version name or null if none is selected
      */
-    private String getSelected()
+    private BibleMetaData getSelected()
     {
-        Object selected = lst_versions.getSelectedValue();
-        if (selected == null)
-            return null;
-
-        return mdl_versions.getBibleName(selected);
-
-        /*
-        // To have versions displayed as "name (driver)"
-        String list = selected.toString();
-        int space = list.indexOf(" ");
-        return list.substring(0, space);
-        */
+        return (BibleMetaData) lst_versions.getSelectedValue();
     }
 
     /** The version list scroller */
@@ -326,9 +269,6 @@ public class MaintenancePane extends EirPanel
 
     /** Delete Bible button */
     private JButton btn_remove = new JButton();
-
-    /** Rename Bible button */
-    private JButton btn_rename = new JButton();
 
     /** Layout for the button bar */
     private FlowLayout lay_buttons = new FlowLayout();

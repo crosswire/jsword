@@ -110,7 +110,7 @@ public abstract class Mem
     */
     public void load() throws IOException, ClassNotFoundException
     {
-        URL url = NetUtil.lengthenURL(raw.getBaseURL(), leafname);
+        URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
 
         // For the pkzip version
         //String filename = raw.getDir()+leafname+".zip";
@@ -145,7 +145,7 @@ public abstract class Mem
     */
     public void save() throws IOException
     {
-        URL url = NetUtil.lengthenURL(raw.getBaseURL(), leafname);
+        URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
 
         // For the pkzip version
         //String filename = raw.getDir()+leafname+".zip";

@@ -20,18 +20,22 @@ public class JSwordAllTests extends TestCase
 
         Project.init();
 
-        suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBibleDriver.class);
+        suite.addTestSuite(org.crosswire.jsword.book.TestBible.class);
+        suite.addTestSuite(org.crosswire.jsword.book.TestBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBibles.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookMetaData.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookUtil.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestDriverManager.class);
+        suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
+        suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBible.class);
+        suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBible.class);
+        suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.control.dictionary.TestDictionary.class);
+
         suite.addTestSuite(org.crosswire.jsword.control.search.TestCustomTokenizer.class);
         suite.addTestSuite(org.crosswire.jsword.control.search.TestEngine.class);
         suite.addTestSuite(org.crosswire.jsword.control.search.TestSearchWords.class);
+
         suite.addTestSuite(org.crosswire.jsword.passage.TestBooks.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageConstants.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageMix.class);
@@ -45,6 +49,9 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageWriteSpeed.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestVerse.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestVerseRange.class);
+        suite.addTestSuite(org.crosswire.jsword.util.remoter.ConverterTest.class);
+        suite.addTestSuite(org.crosswire.jsword.util.remoter.LocalRemoterTest.class);
+        suite.addTestSuite(org.crosswire.jsword.util.remoter.RemoteMethodTest.class);
         suite.addTestSuite(org.crosswire.jsword.view.style.TestStyle.class);
 
         return suite;

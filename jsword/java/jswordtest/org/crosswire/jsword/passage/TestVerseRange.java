@@ -685,7 +685,7 @@ public class TestVerseRange extends TestCase
         assertTrue(!VerseRange.isVerseRange("VerseRange"));
         assertTrue(VerseRange.isVerseRange("Gen 1:1-2"));
         assertTrue(VerseRange.isVerseRange("Gen 1:1-Rev 22:21"));
-        try { gen_all.isVerseRange(null); fail(); }
+        try { VerseRange.isVerseRange(null); fail(); }
         catch (NullPointerException ex) { }
     }
 }

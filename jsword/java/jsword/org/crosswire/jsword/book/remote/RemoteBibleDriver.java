@@ -3,15 +3,13 @@ package org.crosswire.jsword.book.remote;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * This represents all of the SerBibles.
@@ -37,7 +35,7 @@ import org.jdom.Element;
  * @author Joe Walker
  * @version $Id$
  */
-public abstract class RemoteBibleDriver implements BibleDriver
+public abstract class RemoteBibleDriver extends AbstractBibleDriver
 {
     /**
      * Some basic driver initialization
@@ -48,44 +46,46 @@ public abstract class RemoteBibleDriver implements BibleDriver
     }
 
     /**
-     * Method getXML.
-     * @param string
-     * @return Document
+     * Accessor for the current remoter.
+     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
+     * @return The remoter or null if none is available.
      */
-    protected abstract Document getXML(String string);
+    protected abstract Remoter getRemoter();
 
     /**
-     * @see org.crosswire.jsword.book.BibleDriver#countBibles()
-     */
-    public int countBibles()
-    {
-        if (names == null)
-            getBibleNames();
-
-        return names.length;            
-    }
-
-    /**
-     * Get a list of the Books available from the driver
+     * Get a list of the Books available from the driver.
+     * We cache the reply, for speed but we probably ought to have some way to
+     * flush the cache because the list of Bibles on the server could change.
      * @return an array of book names
      */
-    public String[] getBibleNames()
+    public BibleMetaData[] getBibles()
     {
-        synchronized(names)
+        synchronized (names)
         {
             if (names == null)
             {
-                Document doc = getXML("method=getBibleNames");
-                Element root = doc.getRootElement();
-                List namelist = root.getChildren("biblename");
-    
-                names = new String[namelist.size()];
-                Iterator it = namelist.iterator();
-                int i = 0;
-                while (it.hasNext())
+                try
                 {
-                    Element name = (Element) it.next();
-                    names[i++] = name.getTextTrim();
+                    Remoter remoter = getRemoter();
+                    if (remoter == null)
+                    {
+                        names = new RemoteBibleMetaData[0];
+                    }
+
+                    RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
+                    Document doc = remoter.execute(method);
+
+                    names = Converter.convertDocumentToBibleMetaDatas(doc, this);
+
+                    for (int i=0; i<names.length; i++)
+                    {
+                        ids.put(names[i].getID(), names[i]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.warn("failed to remote getBibleNames", ex);
+                    names = new RemoteBibleMetaData[0];
                 }
             }
         }
@@ -94,43 +94,18 @@ public abstract class RemoteBibleDriver implements BibleDriver
     }
 
     /**
-     * Does the named Bible exist?
-     * @param name The name of the version to test for
-     * @return true if the Bible exists
+     * The log stream
      */
-    public boolean exists(String name)
-    {
-        if (names == null)
-            getBibleNames();
-            
-        for (int i=0; i<names.length; i++)
-        {
-            if (names[i].equals(name))
-                return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Featch a currently existing Bible, read-only
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     */
-    public Bible getBible(String name) throws BookException
-    {
-        return new RemoteBible(this, name, null);
-    }
-
-    /** The singleton driver */
-    protected static RemoteBibleDriver driver;
-
-    /** The log stream */
     protected static Logger log = Logger.getLogger(RemoteBibleDriver.class);
 
     /**
      * The cache of Bible names.
      * At some stage it would be good to work out a way to clear the cache.
      */
-    private String[] names;
+    private RemoteBibleMetaData[] names;
+
+    /**
+     * The id to metadata map
+     */
+    private Map ids = new HashMap();
 }

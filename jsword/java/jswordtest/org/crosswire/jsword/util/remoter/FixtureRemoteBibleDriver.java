@@ -1,10 +1,14 @@
 
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.util.remoter;
 
-import org.crosswire.jsword.book.events.ProgressListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.crosswire.jsword.book.remote.RemoteBibleDriver;
+import org.crosswire.jsword.book.remote.Remoter;
 
 /**
- * A Bible that can store new data.
+ * A Fixture to help testing Converters and Remoters
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,31 +29,33 @@ import org.crosswire.jsword.book.events.ProgressListener;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
+ * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
  */
-public interface WritableBible extends Bible
+public class FixtureRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
-     * Generation: Read from the given source version to generate
-     * ourselves. It should periodically call:
-     *   <code>Thread.currentThread().isInterrupted()</code>
-     * to check that it is safe to continue, and clear up if not.
-     * @param version The source
-     * @throws BookException If anything goes wrong with this method
+     * Constructor for FixtureRemoteBibleDriver.
+     * @throws MalformedURLException
+     * @throws IOException
      */
-    public void generate(Bible version) throws BookException;
+    public FixtureRemoteBibleDriver() throws MalformedURLException, IOException
+    {
+        super();
+    }
 
     /**
-     * Generation: Add a progress listener to the list of things wanting
-     * to know whenever we make some progress
-     * @param li The listener to add
+     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
      */
-    public void addProgressListener(ProgressListener li);
+    protected Remoter getRemoter()
+    {
+        return null;
+    }
 
     /**
-     * Generation: Remove a progress listener from the list of things
-     * wanting to know whenever we make some progress
-     * @param li The listener to remove
+     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
      */
-    public void removeProgressListener(ProgressListener li);
+    public String getDriverName()
+    {
+        return "Fixture Remote";
+    }
 }

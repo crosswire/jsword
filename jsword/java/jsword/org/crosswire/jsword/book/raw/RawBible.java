@@ -2,7 +2,6 @@
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Iterator;
@@ -12,17 +11,17 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.book.basic.BasicBookMetaData;
-import org.crosswire.jsword.book.basic.VersewiseBible;
+import org.crosswire.jsword.book.basic.LocalURLBible;
+import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DataUtil;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -208,122 +207,40 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawBible extends VersewiseBible
+public class RawBible extends LocalURLBible
 {
     /**
-     * Create a new set of resources based on a URL.
+     * Constructor RawBible.
+     * @param lbmd
+     * @param source
+     * @param li
      */
-    public RawBible(String name, URL url, int mode) throws BookException
+    public RawBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
     {
-        this.name = name;
-        this.dir = url;
+        super(lbmd);
+        memory = false;
 
-        setMode(mode);
-
-        if (mode != MODE_WRITE)
-        {
-            try
-            {
-                // The version information
-                URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
-                InputStream prop_in = prop_url.openStream();
-                Properties prop = new Properties();
-                PropertiesUtil.load(prop, prop_in);
-                version = new BasicBookMetaData(prop);
-            }
-            catch (Exception ex)
-            {
-                throw new BookException("raw_init", ex);
-            }
-        }
-
-        log.debug("Started RawBible url="+url+ " name="+name+" mode="+mode);
+        init(true);
+        generate(source, li);
     }
 
     /**
-     * Does this Bible cache everything in memory or leave it on disk and
-     * then read it at query time.
-     * @return True if we are cacheing data in memory
+     * Constructor RawBible.
+     * @param bbmd
      */
-    public int getMode()
+    public RawBible(LocalURLBibleMetaData lbmd) throws BookException
     {
-        if (create)
-        {
-            return MODE_WRITE;
-        }
-        else
-        {
-            if (memory) return MODE_READ_MEMORY;
-            else        return MODE_READ_DISK;
-        }
-    }
+        super(lbmd);
+        memory = RawBibleDriver.getDefaultCacheData();
 
-    /**
-     * Does this Bible cache everything in memory or leave it on disk and
-     * then read it at query time. I wonder if this is an over complex and
-     * redundant function? Maybe it is something to simplify at some point.
-     * @param memory True if we are cacheing data in memory
-     */
-    public void setMode(int mode) throws BookException
-    {
-        // Do we need to patch-up if we have started reading.
-        if (started)
-        {
-            if (mode == MODE_WRITE)
-                throw new IllegalStateException("Can't change to write mode once reading has started.");
-
-            try
-            {
-                if (this.memory && mode != MODE_READ_MEMORY)
-                {
-                    word_insts = new WordInstsDisk(this, create);
-                }
-                else if (!this.memory && mode == MODE_READ_MEMORY)
-                {
-                    word_insts = new WordInstsMem(this, create);
-                }
-            }
-            catch (BookException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new BookException("raw_bible_mode", ex);
-            }
-        }
-
-        // Change the state
-        switch (mode)
-        {
-        case MODE_READ_DISK:
-            create = false;
-            memory = false;
-            break;
-
-        case MODE_READ_MEMORY:
-            create = false;
-            memory = true;
-            break;
-
-        case MODE_WRITE:
-            create = true;
-            memory = false;
-            break;
-
-        default:
-            throw new IllegalArgumentException("Mode must be one of MODE_[WRITE|READ_[DISK|MEMORY]]");
-        }
+        init(false);
     }
 
     /**
      * Lazy initialization
      */
-    public void init() throws BookException
+    public void init(boolean create) throws BookException
     {
-        if (started) return;
-        started = true;
-
         // Without these we can't go on
         try
         {
@@ -357,48 +274,12 @@ public class RawBible extends VersewiseBible
     }
 
     /**
-     * Shut the Bible down.
-     */
-    public void destroy() throws BookException
-    {
-    }
-
-    /**
-     * What driver is controlling this Bible?
-     * @return A BibleDriver relevant to this Bible
-     */
-    public BibleDriver getDriver()
-    {
-        return RawBibleDriver.driver;
-    }
-
-    /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
-     */
-    public BookMetaData getMetaData()
-    {
-        return version;
-    }
-
-    /**
-     * Setup the Version information
-     * @param version The version that this Bible is becoming
-     */
-    public void setVersion(BookMetaData version)
-    {
-        this.version = version;
-    }
-
-    /**
      * Create an String for the specified Verses
      * @param range The verses to search for
      * @return The Bible text
      */
     public String getText(VerseRange range) throws BookException
     {
-        if (!started) init();
-
         StringBuffer retcode = new StringBuffer();
 
         Verse[] verses = range.toVerseArray();
@@ -454,8 +335,6 @@ public class RawBible extends VersewiseBible
     {
         BibleData doc = new DefaultBibleData();
 
-        if (!started) init();
-
         Iterator it = ref.rangeIterator();
         while (it.hasNext())
         {
@@ -473,7 +352,6 @@ public class RawBible extends VersewiseBible
      */
     public Passage findPassage(String word) throws BookException
     {
-        if (!started) init();
         if (word == null)
             return PassageFactory.createPassage();
 
@@ -529,7 +407,6 @@ public class RawBible extends VersewiseBible
      */
     public Iterator listWords() throws BookException
     {
-        if (!started) init();
         return word_items.iterator();
     }
 
@@ -543,8 +420,6 @@ public class RawBible extends VersewiseBible
      */
     public void setDocument(BibleData doc) throws BookException
     {
-        if (!started) init();
-
         // For all of the sections
         for (Iterator sit=doc.getSectionDatas(); sit.hasNext(); )
         {
@@ -596,8 +471,6 @@ public class RawBible extends VersewiseBible
      */
     public void flush() throws BookException
     {
-        if (!started) init();
-
         try
         {
             word_items.save();
@@ -612,8 +485,8 @@ public class RawBible extends VersewiseBible
             // generateSearchCache();
 
             Properties prop = new Properties();
-            prop.put("Version", getMetaData().getFullName());
-            URL prop_url = NetUtil.lengthenURL(dir, "bible.properties");
+            prop.put("Version", getLocalURLBibleMetaData().getFullName());
+            URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
             OutputStream prop_out = NetUtil.getOutputStream(prop_url);
             PropertiesUtil.save(prop, prop_out, "RawBible Config");
         }
@@ -621,15 +494,6 @@ public class RawBible extends VersewiseBible
         {
             throw new BookException("raw_bible_flush", ex);
         }
-    }
-
-    /**
-     * The directory that holds the RawBible files
-     * @return The index file directory
-     */
-    public URL getBaseURL()
-    {
-        return dir;
     }
 
     /**
@@ -649,10 +513,9 @@ public class RawBible extends VersewiseBible
     }
 
     /**
-     * Part of the Bible interface - Get the text for this reference.
      * Fetch the Bible text for a single reference from a PassageID and a Bible
      */
-    protected void append(BibleData doc, VerseRange range) throws BookException
+    private void append(BibleData doc, VerseRange range) throws BookException
     {
         SectionData section = doc.createSectionData(range.getName(), "AV");
 
@@ -671,7 +534,7 @@ public class RawBible extends VersewiseBible
     /**
      * Create a cache to speed up searches.
      */
-    protected void createSearchCache() throws BookException
+    private void createSearchCache() throws BookException
     {
         try
         {
@@ -717,15 +580,6 @@ public class RawBible extends VersewiseBible
     /** Constant for create mode */
     public static final int MODE_WRITE = 2;
 
-    /** The directory that the data files are stored in */
-    private URL dir;
-
-    /** Are we in create mode? */
-    private boolean create;
-
-    /** Has init() been called? */
-    private boolean started = false;
-
     /** The Source of Words */
     private Items word_items;
 
@@ -744,17 +598,15 @@ public class RawBible extends VersewiseBible
     /** The source of Para Instances */
     private ParaInstsMem para_insts;
 
-    /** The name of this version */
-    private String name;
-
     /** The cache of word searches */
     private Passage[] cache;
 
-    /** Are we cacheing or in on disk mode */
+    /**
+     * Are we cacheing or in on disk mode?.
+     * Does this Bible cache everything in
+     * memory or leave it on disk and then read it at query time.
+     */
     private boolean memory = true;
-
-    /** The Version of the Bible that this produces */
-    private BookMetaData version;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(RawBible.class);

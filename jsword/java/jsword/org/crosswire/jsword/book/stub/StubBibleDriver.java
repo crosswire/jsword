@@ -2,9 +2,8 @@
 package org.crosswire.jsword.book.stub;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 
 /**
@@ -56,37 +55,13 @@ public class StubBibleDriver extends AbstractBibleDriver
      * Get a list of the Books available from the driver
      * @return an array of book names
      */
-    public String[] getBibleNames()
+    public BibleMetaData[] getBibles()
     {
-        return new String[] { "av-stub", "niv-stub" };
-    }
-
-    /**
-     * Get a list of the Books available from the driver
-     * @return an array of book names
-     */
-    public boolean exists(String name)
-    {
-        return name.equals("av-stub") || name.equals("niv-stub");
-    }
-
-    /**
-     * Get a list of the Books available from the driver
-     * @return an array of book names
-     */
-    public Bible getBible(String name) throws BookException
-    {
-        return new StubBible(name);
-    }
-
-    /**
-     * Create a new blank Bible read for writing
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     */
-    public Bible createBible(String name) throws BookException
-    {
-        throw new BookException("stub_driver_readonly");
+        return new BibleMetaData[]
+        {
+            new StubBibleMetaData("Stub Version"),
+            new StubBibleMetaData("New Stub Version"),
+        };
     }
 
     /**

@@ -32,9 +32,7 @@ import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.WritableBible;
-import org.crosswire.jsword.book.WritableBibleDriver;
+import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
@@ -319,15 +317,13 @@ public class GeneratorPane extends EirPanel
             try
             {
                 // Get the values
-                Bible source = mdl_source.getSelectedBible();
-                String dest_name = txt_name.getText();
-                WritableBibleDriver dest_driver = mdl_driver.getSelectedWritableDriver();
+                Bible source = mdl_source.getSelectedBibleMetaData().getBible();
+                // TODO
+                //String dest_name = txt_name.getText();
+                BibleDriver dest_driver = mdl_driver.getSelectedDriver();
 
                 // The real work
-                WritableBible dest_version = Bibles.createBible(dest_name, dest_driver);
-                dest_version.addProgressListener(cpl);
-                dest_version.generate(source);
-                dest_version.removeProgressListener(cpl);
+                Bible dest_version = dest_driver.create(source, cpl);
 
                 // Now it MAY make sense to do something like:
                 //   versions.put(dest_name, dest_version);

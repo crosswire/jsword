@@ -1,23 +1,15 @@
 
 package org.crosswire.jsword.book.jdbc;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertiesUtil;
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.basic.AbstractBibleDriver;
+import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
+import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
+import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * This represents all of the JDBCBibles.
@@ -43,7 +35,7 @@ import org.crosswire.jsword.book.basic.AbstractBibleDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDBCBibleDriver extends AbstractBibleDriver
+public class JDBCBibleDriver extends LocalURLBibleDriver
 {
     /**
      * Some basic driver initialization. If we couldn't get a Bibles root
@@ -52,35 +44,7 @@ public class JDBCBibleDriver extends AbstractBibleDriver
      */
     private JDBCBibleDriver() throws MalformedURLException, IOException
     {
-        log.debug("Starting");
-
-        URL root = findBibleRoot();
-        if (root == null)
-        {
-            log.warn("Cant find Bibles root, restart needed before service can resume.");
-            dir = null;
-            return;
-        }
-
-        dir = NetUtil.lengthenURL(root, "jdbc");
-
-        // To save giving off hundreds of warnings later we'll do a check on the
-        // setup and available Bibles now ...
-        if (dir.getProtocol().equals("file"))
-        {
-            File fdir = new File(dir.getFile());
-            if (!fdir.isDirectory())
-            {
-                log.debug("The directory '"+dir+"' does not exist.");
-            }
-        }
-        else
-        {
-            URL search = NetUtil.lengthenURL(dir, "list.txt");
-            InputStream in = search.openStream();
-            if (in == null)
-                log.debug("The remote listing file at '"+search+"' does not exist.");
-        }       
+        super("jdbc");
     }
 
     /**
@@ -89,132 +53,37 @@ public class JDBCBibleDriver extends AbstractBibleDriver
      */
     public String getDriverName()
     {
-        return "JDBC";
+        return "Database";
     }
 
     /**
-     * Get a list of the Books available from the driver
-     * @return an array of book names
+     * Do the real creation using the right meta data
      */
-    public String[] getBibleNames()
+    public Bible getBible(LocalURLBibleMetaData bbmd) throws BookException
     {
-        if (dir == null)
-            return new String[0];
-
-        try
-        {
-            if (dir.getProtocol().equals("file"))
-            {
-                File fdir = new File(dir.getFile());
-
-                // Check that the dir exists
-                if (!fdir.isDirectory())
-                {
-                    return new String[0];
-                }
-                else
-                {
-                    // List all the versions
-                    String[] temp = fdir.list(new FilenameFilter() {
-                        public boolean accept(File parent, String name)
-                        {
-                            return name.endsWith(".properties");
-                        }
-                    });
-
-                    // Chop off the .properties bit
-                    for (int i=0; i<temp.length; i++)
-                    {
-                        temp[i] = temp[i].substring(0, temp[i].length()-11);
-                    }
-
-                    return temp;
-                }
-            }
-            else
-            {
-                // We should probably cache this in some way? This is going
-                // to get very slow calling this often across a network
-                URL search = NetUtil.lengthenURL(dir, "list.txt");
-                InputStream in = search.openStream();
-                String contents = StringUtil.read(new InputStreamReader(in));
-                return StringUtil.tokenize(contents, "\n");
-            }
-        }
-        catch (IOException ex)
-        {
-            log.warn("failed to load jdbc Bibles: "+ex);
-            return new String[0];
-        }
+        return new JDBCBible(bbmd);
     }
 
     /**
-     * Does the named Bible exist?
-     * @param name The name of the version to test for
-     * @return true if the Bible exists
-     */
-    public boolean exists(String name)
-    {
-        try
-        {
-            URL url = NetUtil.lengthenURL(dir, name+".properties");
-            return NetUtil.isFile(url);
-        }
-        catch (Exception ex)
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Featch a currently existing Bible, read-only
+     * We are read-only so do nothing
      * @param name The name of the version to create
      * @exception BookException If the name is not valid
      */
-    public Bible getBible(String name) throws BookException
-    {
-        URL url = null;
-
-        try
-        {
-            url = NetUtil.lengthenURL(dir, name+".properties");
-
-            InputStream prop_in = url.openStream();
-            Properties prop = new Properties();
-            PropertiesUtil.load(prop, prop_in);
-
-            // Generate a version (un-inited) to get the default properties
-            JDBCBible dest = new JDBCBible(name, prop);
-            return dest;
-        }
-        catch (MalformedURLException ex)
-        {
-            throw new BookException("jdbc_driver_conf", ex);
-        }
-        catch (IOException ex)
-        {
-            throw new BookException("jdbc_driver_save", ex, new Object[] { url });
-        }
-    }
-
-    /**
-     * Create a new blank Bible read for writing
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     */
-    public Bible createBible(String name) throws BookException
+    public Bible create(Bible source, ProgressListener li) throws BookException
     {
         throw new BookException("jdbc_driver_readonly");
     }
 
-    /** The directory URL */
-    private URL dir;
+    /**
+     * We are read-only so do nothing
+     */
+    public Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
+    {
+        throw new BookException("jdbc_driver_readonly");
+    }
 
     /** The singleton driver */
     protected static JDBCBibleDriver driver;
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(JDBCBibleDriver.class);
 
     /**
      * Register ourselves with the Driver Manager

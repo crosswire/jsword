@@ -139,7 +139,7 @@ public class ThreadUtil
     {
         try
         {
-            Thread.currentThread().sleep(millis);
+            Thread.sleep(millis);
         }
         catch (InterruptedException ex)
         {

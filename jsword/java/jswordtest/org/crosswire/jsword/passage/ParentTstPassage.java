@@ -13,7 +13,9 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 /**
- * JUnit Test.
+ * This would be called TestPassage however then people might think it was
+ * a separate TestCase, which it is not, needing to be inherited from to
+ * customize the type of test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -34,16 +36,16 @@ import junit.framework.TestCase;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
+ * @version $Id: ParentTstPassage.java,v 1.4 2002/11/07 18:19:35 joe Exp $
  */
-public class TestPassage extends TestCase
+public class ParentTstPassage extends TestCase
 {
-    public TestPassage(String s)
+    public ParentTstPassage(String s)
     {
         super(s);
     }
 
-    public TestPassage(String s, int ptype, boolean optimize)
+    public ParentTstPassage(String s, int ptype, boolean optimize)
     {
         super(s);
 
@@ -145,8 +147,8 @@ public class TestPassage extends TestCase
     {
         for (int i=0; i<300; i++)
         {
-            TestPassageListener li1 = new TestPassageListener();
-            TestPassageListener li2 = new TestPassageListener();
+            FixturePassageListener li1 = new FixturePassageListener();
+            FixturePassageListener li2 = new FixturePassageListener();
             temp = (Passage) gen1_135.clone();
             temp.addPassageListener(li1);
             temp.addPassageListener(li2);
@@ -504,8 +506,8 @@ public class TestPassage extends TestCase
 
     public void testWriteAddPassageListener() throws Exception
     {
-        TestPassageListener li1 = new TestPassageListener();
-        TestPassageListener li2 = new TestPassageListener();
+        FixturePassageListener li1 = new FixturePassageListener();
+        FixturePassageListener li2 = new FixturePassageListener();
         temp = (Passage) gen1_135.clone();
         temp.addPassageListener(li1);
         temp.addPassageListener(li2);

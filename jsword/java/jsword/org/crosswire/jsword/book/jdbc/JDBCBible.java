@@ -10,15 +10,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.basic.BasicBookMetaData;
+import org.crosswire.jsword.book.basic.LocalURLBible;
+import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
@@ -54,24 +51,23 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDBCBible extends AbstractBible
+public class JDBCBible extends LocalURLBible
 {
     /**
      * Connect to the Database
-     * @param name The name of the Bible
-     * @param props The settings for this instance
+     * @param bbmd
+     * @param url
      */
-    public JDBCBible(String name, Properties prop) throws BookException
+    public JDBCBible(LocalURLBibleMetaData lbmd) throws BookException
     {
-        this.name = name;
-        this.prop = prop;
+        super(lbmd);
 
         // Load the specified JDBC driver
         int driver_attempt = 1;
         while (true)
         {
             String property = "JdbcDriver" + driver_attempt;
-            String driver = prop.getProperty(property);
+            String driver = lbmd.getProperty(property);
 
             if (driver == null)
                 throw new BookException("jdbc_bible_load",
@@ -93,63 +89,46 @@ public class JDBCBible extends AbstractBible
 
         try
         {
-            // The version information
-            version = new BasicBookMetaData(prop);
-
             // Actually connect to the database
-            String text_url = prop.getProperty("TextURL");
+            String text_url = lbmd.getProperty("TextURL");
             text = DriverManager.getConnection(text_url);
 
-            String concord_url = prop.getProperty("ConcordURL");
+            String concord_url = lbmd.getProperty("ConcordURL");
             concord = DriverManager.getConnection(concord_url);
 
             // SQL statements
-            String doc_query = prop.getProperty("DocQuery");
+            String doc_query = lbmd.getProperty("DocQuery");
             doc_stmt = text.prepareStatement(doc_query);
 
-            String ref_query = prop.getProperty("RefQuery");
+            String ref_query = lbmd.getProperty("RefQuery");
             ref_stmt = concord.prepareStatement(ref_query);
 
-            String verse_query = prop.getProperty("VerseQuery");
+            String verse_query = lbmd.getProperty("VerseQuery");
             verse_stmt = text.prepareStatement(verse_query);
 
-            String start_query = prop.getProperty("StartQuery");
+            String start_query = lbmd.getProperty("StartQuery");
             start_stmt = concord.prepareStatement(start_query);
 
-            words_query = prop.getProperty("WordsQuery");
+            words_query = lbmd.getProperty("WordsQuery");
         }
-        catch (SQLException ex)
+        catch (Exception ex)
         {
             throw new BookException("jdbc_bible_connect", ex);
         }
     }
 
     /**
-     * What driver is controlling this Bible?
-     * @return A BibleDriver relevant to this Bible
+     * @see org.crosswire.jsword.book.basic.VersewiseBible#setDocument(org.crosswire.jsword.book.data.BibleData)
      */
-    public BibleDriver getDriver()
+    public void setDocument(BibleData data) throws BookException
     {
-        return JDBCBibleDriver.driver;
     }
 
     /**
-     * Meta-Information: What name can I use to get this Bible in a call
-     * to Bibles.getBible(name);
-     * @return The name of this Bible
+     * @see org.crosswire.jsword.book.basic.VersewiseBible#foundPassage(java.lang.String, org.crosswire.jsword.passage.Passage)
      */
-    public String getName()
+    public void foundPassage(String word, Passage ref) throws BookException
     {
-        return name;
-    }
-
-    /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
-     */
-    public BookMetaData getMetaData()
-    {
-        return version;
     }
 
     /**
@@ -347,15 +326,6 @@ public class JDBCBible extends AbstractBible
 
     /** The conenction to the concordance */
     protected Connection concord;
-
-    /** The properties file */
-    private Properties prop;
-
-    /** The name of this version */
-    private String name;
-
-    /** The Version of the Bible that this produces */
-    private BookMetaData version;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(JDBCBible.class);

@@ -4,11 +4,7 @@ package org.crosswire.jsword.view.swing.book;
 import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Logger;
-
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.BibleMetaData;
 
 /**
  * The BibleModels class implements a number of swing DataModels
@@ -42,8 +38,8 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
      */
     public BiblesComboBoxModel()
     {
-        if (bibles.length > 0)
-            current = bibles[0];
+        if (bmds.length > 0)
+            current = bmds[0];
     }
 
     /**
@@ -51,7 +47,7 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
      */
     public void setSelectedItem(Object current)
     {
-        this.current = current;
+        this.current = (BibleMetaData) current;
         fireContentsChanged(this, -1, -1);
     }
 
@@ -67,23 +63,13 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
      * Get the selected Bible
      * @return A Bible
      */
-    public Bible getSelectedBible()
+    public BibleMetaData getSelectedBibleMetaData()
     {
-        try
-        {
-            return Bibles.getBible(getBibleName(current));
-        }
-        catch (BookException ex)
-        {
-            log.warn("current="+current);
-            log.warn("bible="+getBibleName(current));
-
-            throw new LogicError(ex);
-        }
+        return current;
     }
 
     /** The currently selected version */
-    protected Object current;
+    protected BibleMetaData current;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(BiblesComboBoxModel.class);

@@ -1,0 +1,172 @@
+
+package org.crosswire.jsword.book.basic;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Properties;
+
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookException;
+
+/**
+ * A default implmentation of BibleMetaData.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
+public class LocalURLBibleMetaData extends AbstractBibleMetaData implements BibleMetaData
+{
+    /**
+     * Constructor LocalURLBibleMetaData.
+     * @param localURLBibleDriver
+     * @param url
+     * @param name
+     */
+    public LocalURLBibleMetaData(LocalURLBibleDriver driver, URL dir, BibleMetaData basis)
+    {
+        super(basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
+        setDriver(driver);
+        this.dir = dir;
+        this.prop = new Properties();
+    }
+
+    /**
+     * Basic constructor
+     */
+    public LocalURLBibleMetaData(LocalURLBibleDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException
+    {
+        super(prop);
+        setDriver(driver);
+        this.dir = dir;
+        this.prop = prop;
+    }
+
+    /**
+     * Delete the set of files that make up this version.
+     * @throws BookException If anything goes wrong with this method
+     * @see org.crosswire.jsword.book.BookMetaData#delete()
+     */
+    public void delete() throws BookException
+    {
+        try
+        {
+            if (!NetUtil.delete(getURL()))
+                throw new BookException("raw_driver_deldir", new Object[] { getName() });
+        }
+        catch (Exception ex)
+        {
+            throw new BookException("raw_driver_dir", ex);
+        }
+    }
+
+    /**
+     * Accessor for keys from our properties file.
+     * @param property
+     * @return String
+     */
+    public String getProperty(String property)
+    {
+        return prop.getProperty(property);
+    }
+
+    /**
+     * Fetch a currently existing Bible, read-only
+     * @param name The name of the version to create
+     * @exception BookException If the name is not valid
+     */
+    public Bible getBible() throws BookException
+    {
+        LocalURLBibleDriver ldriver = (LocalURLBibleDriver) driver;
+        return ldriver.getBible(this);
+    }
+
+    /**
+     * Method getURL.
+     * @return URL
+     */
+    public URL getURL()
+    {
+        return dir;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return driver.getDriverName();
+    }
+
+    /**
+     * Internal setter for the BookDriver
+     */
+    private void setDriver(LocalURLBibleDriver driver)
+    {
+        if (driver == null)
+            throw new NullPointerException("driver");
+
+        this.driver = driver;
+    }
+
+    /**
+     * Do the 2 versions have matching names, editions and drivers.
+     * @param obj The object to compare to
+     * @return true if the names and editions match
+     */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+            return false;
+
+        // Check that that is the same as this
+        // Don't use instanceof since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+
+        // If super does equals ...
+        if (super.equals(obj) == false)
+            return false;
+
+        // The real bit ...
+        LocalURLBibleMetaData that = (LocalURLBibleMetaData) obj;
+
+        return driver.equals(that.driver);
+    }
+
+    /**
+     * The driver
+     */
+    protected LocalURLBibleDriver driver;
+
+    /**
+     * The properties by which we got our data
+     */
+    private Properties prop;
+    
+    /**
+     * The location of our home directory
+     */
+    private URL dir;
+}

@@ -104,6 +104,36 @@ class reference514 {
 @__modelType reference 
 */
 class reference515 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.sword.SwordConstants:oiref><oihard>
+@__modelType reference 
+*/
+class reference5 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.sword.CompressedBibleBackend:oiref><oihard>
+@__modelType reference 
+*/
+class reference6 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.sword.ConfigReader:oiref><oihard>
+@__modelType reference 
+*/
+class reference7 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.sword.SwordConfig:oiref><oihard>
+@__modelType reference 
+*/
+class reference8 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.sword.RawBibleBackend:oiref><oihard>
+@__modelType reference 
+*/
+class reference9 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.sword.SwordBibleBackend:oiref><oihard>
+@__modelType reference 
+*/
+class reference10 {
 }}/**
 @__tags
 @shapeType ClassDiagram 

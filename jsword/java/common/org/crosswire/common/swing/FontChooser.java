@@ -280,7 +280,6 @@ public class FontChooser extends JPanel
                 }
             }
 
-            this.selection = selection;
             fireContentsChanged(this, -1, -1);
         }
 

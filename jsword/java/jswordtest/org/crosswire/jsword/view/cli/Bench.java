@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.cli;
 
 import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.control.test.Speed;
@@ -52,7 +53,7 @@ public class Bench
 
         try
         {
-            version = Bibles.getBible(args[0]);
+            version = Bibles.getDefaultBible();
         }
         catch (Exception ex)
         {
@@ -97,11 +98,11 @@ public class Bench
     {
         try
         {
-            String[] names = Bibles.getBibleNames();
+            BibleMetaData[] bmds = Bibles.getBibles();
             System.out.println("  Available versions:");
-            for (int i = 0; i < names.length; i++)
+            for (int i = 0; i < bmds.length; i++)
             {
-                System.out.println("    " + names[i]);
+                System.out.println("    " + bmds[i].getName());
             }
         }
         catch (BookException ex)

@@ -27,4 +27,13 @@ package org.crosswire.jsword.book;
  */
 public interface BibleMetaData extends BookMetaData
 {
+    /**
+     * Accessor for the real Bible to read data.
+     * Note that constructing a Bible may well consume system resources far more
+     * than the construction of a BibleMetaData so you should only get a Bible
+     * if you intend to use it.
+     * <p>This method is here rather than on the BookDriver because we want to
+     * avoid user contact with the Drivers where possible.
+     */
+    public Bible getBible() throws BookException;
 }

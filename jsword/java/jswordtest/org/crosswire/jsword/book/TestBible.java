@@ -43,7 +43,7 @@ public class TestBible extends TestCase
 
     protected void setUp() throws Exception
     {
-        ver = Bibles.getBible(name);
+        //ver = Bibles.getBible(name);
     }
 
     protected void tearDown()

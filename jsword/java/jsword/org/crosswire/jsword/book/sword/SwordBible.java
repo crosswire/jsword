@@ -1,9 +1,7 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,9 +9,8 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
@@ -53,11 +50,17 @@ import org.crosswire.jsword.passage.VerseRange;
  */
 public class SwordBible extends AbstractBible
 {
-	/**
-	 * Constructor SwordBible.
-	 * @param swordConfig
-	 */
-	public SwordBible(URL swordBase, SwordConfig swordConfig) throws BookException{
+    /**
+     * Constructor SwordBible.
+     * @param swordConfig
+     */
+    public SwordBible(SwordBibleMetaData sbmd) throws BookException
+    {
+        this.sbmd = sbmd;
+
+        URL swordBase = SwordBibleDriver.driver.dir;
+        SwordConfig swordConfig = (SwordConfig) SwordBibleDriver.driver.configCache.get(sbmd);
+
         if (mat11_ord == -1)
         {
             try
@@ -70,52 +73,25 @@ public class SwordBible extends AbstractBible
                 throw new LogicError(ex);
             }
         }
-        
-        if(swordConfig.getModDrv()==SwordConstants.DRIVER_RAW_TEXT) backend = new RawBibleBackend(swordBase, swordConfig);
-        if(swordConfig.getModDrv()==SwordConstants.DRIVER_Z_TEXT) backend = new CompressedBibleBackend(swordBase, swordConfig);
-        
+
+        if (swordConfig.getModDrv() == SwordConstants.DRIVER_RAW_TEXT)
+            backend = new RawBibleBackend(swordBase, swordConfig);
+
+        if (swordConfig.getModDrv() == SwordConstants.DRIVER_Z_TEXT)
+            backend = new CompressedBibleBackend(swordBase, swordConfig);
+
         this.name = swordConfig.getName();
-        if(backend==null) 
-        	// URGENT: Checkout exception hierarchy
-        	throw new BookException("No backend for "+SwordConstants.DRIVER_STRINGS[swordConfig.getModDrv()]);
-	}
-
-
-    /**
-     * What driver is controlling this Bible?
-     * @return A BibleDriver relevant to this Bible
-     */
-    public BibleDriver getDriver()
-    {
-        return SwordBibleDriver.driver;
+        if (backend == null)
+            // URGENT(mark): Checkout exception hierarchy
+            throw new BookException("No backend for " + SwordConstants.DRIVER_STRINGS[swordConfig.getModDrv()]);
     }
 
     /**
-     * Meta-Information: What name can I use to get this Bible in a call
-     * to Bibles.getBible(name);
-     * @return The name of this Bible
+     * @see org.crosswire.jsword.book.basic.AbstractBible#getBibleMetaData()
      */
-    public String getName()
+    public BibleMetaData getBibleMetaData()
     {
-        return name;
-    }
-
-    /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
-     */
-    public BookMetaData getMetaData()
-    {
-        return version;
-    }
-
-    /**
-     * Setup the Version information
-     * @param version The version that this Bible is becoming
-     */
-    public void setVersion(BookMetaData version)
-    {
-        this.version = version;
+        return sbmd;
     }
 
     /**
@@ -130,7 +106,7 @@ public class SwordBible extends AbstractBible
             StringBuffer reply = new StringBuffer();
 
             Iterator it = range.verseIterator();
-            while(it.hasNext())
+            while (it.hasNext())
             {
                 Verse verse = (Verse) it.next();
                 int verse_ord = verse.getOrdinal();
@@ -141,13 +117,12 @@ public class SwordBible extends AbstractBible
                 // If this is an NT verse
                 if (verse_ord >= mat11_ord)
                 {
-                	reply.append(backend.getText(SwordConstants.TESTAMENT_NEW, bookNo - Books.Names.Malachi, chapNo, verseNo));
+                    reply.append(backend.getText(SwordConstants.TESTAMENT_NEW, bookNo - Books.Names.Malachi, chapNo, verseNo));
                 }
                 else
                 {
                     reply.append(backend.getText(SwordConstants.TESTAMENT_OLD, bookNo, chapNo, verseNo));
                 }
-                
 
                 if (it.hasNext())
                     reply.append(' ');
@@ -168,7 +143,7 @@ public class SwordBible extends AbstractBible
      * @param chapter.
      * @param verse
      */
-   //     private 
+    //     private 
 
     /**
      * Create an XML document for the specified Verses
@@ -252,16 +227,16 @@ public class SwordBible extends AbstractBible
         try
         {
             // To start with I'm going to hard code the path
-            URL test = new URL("file:/usr/share/sword/modules/texts/rawtext/kjv/");
+            /*URL test = new URL("file:/usr/share/sword/modules/texts/rawtext/kjv/");
 
-            /*SwordBible data = new SwordBible("kjv", test);
+            SwordBible data = new SwordBible("kjv", test);
             
             String text = data.getText(SwordConstants.TESTAMENT_OLD,1,1,1);
-
+            
             log.debug("text="+text);
             
             text = data.getText(SwordConstants.TESTAMENT_NEW,1,1,1);
-
+            
             log.debug("text="+text);*/
         }
         catch (Exception ex)
@@ -274,13 +249,13 @@ public class SwordBible extends AbstractBible
     private String name;
 
     /** The Version of the Bible that this produces */
-    private BookMetaData version;
+    private SwordBibleMetaData sbmd;
 
     /** The start of the new testament */
     private static int mat11_ord = -1;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(SwordBible.class);
-    
+
     private SwordBibleBackend backend;
 }

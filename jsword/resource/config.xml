@@ -37,7 +37,7 @@
   <option key="Bibles.Default" type="string-options">
   	<introspect class="org.crosswire.jsword.book.Bibles" property="DefaultName"/>
     <help>Which of the available Bibles is the default.</help>
-		<map name="biblenames"/>
+    <map name="biblenames"/>
   </option>
 
   <option key="Bibles.Cache Versions" type="boolean">
@@ -55,6 +55,11 @@
     <help>Where is the SWORD Project base directory.</help>
   </option>
 
+  <option key="Bibles.Remote.Remote Host" type="string">
+  	<introspect class="org.crosswire.jsword.book.remote.HttpRemoteBibleDriver" property="BaseURL"/>
+    <help>The URL of a remote HTTP host.</help>
+  </option>
+
   <option key="Bibles.Display.Persistent Naming" level="advanced" type="boolean">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="PersistentNaming"/>
     <help>True if the passage editor re-writes the references to conform to its notation.</help>
@@ -63,18 +68,18 @@
   <option key="Bibles.Display.Blurring Rules" level="advanced" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="BlurRestriction"/>
     <help>What is the default blurring - Blur across chapter boundaries or not.</help>
-		<alternative number="0" name="None"/>
-		<alternative number="1" name="Book"/>
-		<alternative number="2" name="Chapter"/>
+    <alternative number="0" name="None"/>
+    <alternative number="1" name="Book"/>
+    <alternative number="2" name="Chapter"/>
   </option>
 
   <option key="Bibles.Display.Book Case" level="advanced" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.Books" property="Case"/>
     <help>What case should we use to display the references.</help>
-		<alternative number="0" name="lower"/>
-		<alternative number="1" name="Sentance"/>
-		<alternative number="2" name="UPPER"/>
-		<alternative number="3" name="mIXeD"/>
+    <alternative number="0" name="lower"/>
+    <alternative number="1" name="Sentance"/>
+    <alternative number="2" name="UPPER"/>
+    <alternative number="3" name="mIXeD"/>
   </option>
 
   <option key="Looks.Look and Feel" type="class">

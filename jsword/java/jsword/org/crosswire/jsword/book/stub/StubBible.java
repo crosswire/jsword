@@ -3,16 +3,12 @@ package org.crosswire.jsword.book.stub;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.basic.BasicBookMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
@@ -52,37 +48,17 @@ public class StubBible extends AbstractBible
     /**
      * Basic constructor for a StubBible
      */
-    public StubBible(String name)
+    public StubBible(BibleMetaData version)
     {
-        this.name = name;
+        this.version = version;
     }
 
     /**
-     * What driver is controlling this Bible?
-     * @return A BibleDriver relevant to this Bible
+     * @see org.crosswire.jsword.book.basic.AbstractBible#getMetaData()
      */
-    public BibleDriver getDriver()
+    public BibleMetaData getBibleMetaData()
     {
-        return StubBibleDriver.driver;
-    }
-
-    /**
-     * Meta-Information: What name can I use to get this Bible in a call
-     * to Bibles.getBible(name);
-     * @return The name of this Bible
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
-     */
-    public BookMetaData getMetaData()
-    {
-        return new BasicBookMetaData("Stub Name", "Stub", "SV", new Date(), Openness.COPYABLE, null);
+        return version;
     }
 
     /**
@@ -180,5 +156,5 @@ public class StubBible extends AbstractBible
     /**
      * The name of this version
      */
-    private String name;
+    private BibleMetaData version;
 }

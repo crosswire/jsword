@@ -1,12 +1,10 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.Hashtable;
-
-import org.crosswire.jsword.book.events.BiblesEvent;
-import org.crosswire.jsword.book.events.BiblesListener;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.events.BiblesEvent;
+import org.crosswire.jsword.book.events.BiblesListener;
 
 /**
  * The Bibles class (along with Bible) is the central point of contact
@@ -41,7 +39,7 @@ public class Bibles
      * @return An array of available version IDs
      * @throws BookException If anything goes wrong with this method
      */
-    public static String[] getBibleNames() throws BookException
+    public static BibleMetaData[] getBibles() throws BookException
     {
         int total = 0;
 
@@ -51,7 +49,7 @@ public class Bibles
         {
             try
             {
-                total += drivers[i].countBibles();
+                total += drivers[i].getBibles().length;
             }
             catch (Exception ex)
             {
@@ -60,16 +58,16 @@ public class Bibles
         }
 
         if (total == 0)
-            return new String[0];
+            return new BibleMetaData[0];
 
         // Fetch them all into a big list
-        String[] retcode = new String[total];
+        BibleMetaData[] retcode = new BibleMetaData[total];
         int count = 0;
         for (int i = 0; i < drivers.length; i++)
         {
             try
             {
-                String[] names = drivers[i].getBibleNames();
+                BibleMetaData[] names = drivers[i].getBibles();
                 System.arraycopy(names, 0, retcode, count, names.length);
                 count += names.length;
             }
@@ -83,131 +81,15 @@ public class Bibles
     }
 
     /**
-     * Load up a Bible by name
-     * @param name The version name to create
-     * @return The version requested ready for use
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static Bible getBible(String name) throws BookException
-    {
-        Bible retcode = null;
-
-        // If we are cacheing versions ...
-        if (bibles != null)
-            retcode = (Bible) bibles.get(name);
-
-        // If we don't have a version, create one
-        if (retcode == null)
-        {
-            BibleDriver driver = BibleDriverManager.getDriverForBible(name);
-            retcode = driver.getBible(name);
-
-            bibles.put(name, retcode);
-        }
-
-        return retcode;
-    }
-
-    /**
-     * Get a MutableBook ready to have generate called.
-     * dest_name should not be the name of an existing Bible.
-     * @param dest_name The version name to create
-     * @param dest_driver The driver to use
-     * @return The version requested ready for generate to be called
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static WritableBible createBible(String dest_name, WritableBibleDriver dest_driver) throws BookException
-    {
-        // There might be a better way of doing this
-        try
-        {
-            Bible version = getBible(dest_name);
-            version = version;
-            throw new BookException("book_exists", new Object[] { dest_name });
-        }
-        catch (BookException ex) { }
-
-        WritableBible dest_version = dest_driver.createBible(dest_name);
-        fireBiblesChanged(Bibles.class, dest_name, true);
-
-        return dest_version;
-    }
-
-    /**
-     * Delete a Bible by name
-     * @param name The version name to delete
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static void deleteBible(String name) throws BookException
-    {
-        WritableBibleDriver driver = BibleDriverManager.getWritableDriverForBible(name);
-        driver.deleteBible(name);
-
-        if (bibles.contains(name))
-            bibles.remove(name);
-
-        fireBiblesChanged(Bibles.class, name, false);
-    }
-
-    /**
-     * Rename a Bible by name
-     * @param old_name The version name to delete
-     * @param new_name The version name to create
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static void renameBible(String old_name, String new_name) throws BookException
-    {
-        WritableBibleDriver driver = BibleDriverManager.getWritableDriverForBible(old_name);
-        driver.renameBible(old_name, new_name);
-
-        if (bibles.contains(old_name))
-            bibles.remove(old_name);
-
-        fireBiblesChanged(Bibles.class, old_name, false);
-        fireBiblesChanged(Bibles.class, new_name, true);
-    }
-
-    /**
      * Set the default Bible. The new name must be equal() to a string
      * returned from getBibleNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
      * @param name The version to use as default.
      * @exception BookException If the name is not valid
      */
-    public static void setDefaultName(String name) throws BookException
+    public static void setDefault(BibleMetaData bmd) throws BookException
     {
-        // Check that this is valid
-        //BookConfig config = new BookConfig(name);
-        //Class driver = config.getDriver();
-
-        // We need to do this (only if the driver has changed) so that
-        // the next time getBible() is called the new version will be
-        // re-created
-        if (!default_name.equals(name))
-        {
-            BibleDriver driver = BibleDriverManager.getDriverForBible(name);
-            default_bible = driver.getBible(name);
-            default_name = name;
-        }
-    }
-
-    /**
-     * Get the current default Bible name. If there are no Bibles that
-     * can be accessed (sounds like an installation problem or something)
-     * then a BookException results. Otherwise this should always get
-     * you something useful.
-     * @return the current default version name
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static String getDefaultName() throws BookException
-    {
-        if (getBibleNames().length == 0)
-            throw new BookException("book_no_bibles");
-
-        if (default_name == null)
-            default_name = getBibleNames()[0];
-
-        return default_name;
+        deft = bmd.getBible();
     }
 
     /**
@@ -220,37 +102,13 @@ public class Bibles
      */
     public static Bible getDefaultBible() throws BookException
     {
-        if (default_bible == null)
+        if (deft == null)
         {
-            BibleDriver driver = BibleDriverManager.getDriverForBible(getDefaultName());
-            default_bible = driver.getBible(getDefaultName());
+            BibleMetaData bmd = getBibles()[0];
+            deft = bmd.getBible();
         }
 
-        return default_bible;
-    }
-
-    /**
-     * @return are we cacheing Bibles?
-     */
-    public static boolean getCacheingBibles()
-    {
-        return bibles != null;
-    }
-
-    /**
-     * Are we cacheing Bibles?
-     * @param cache The new cache setting
-     */
-    public static void setCacheingBibles(boolean cache)
-    {
-        if (cache && bibles == null)
-        {
-            bibles = new Hashtable();
-        }
-        else if (!cache && bibles != null)
-        {
-            bibles = null;
-        }
+        return deft;
     }
 
     /**
@@ -297,14 +155,8 @@ public class Bibles
         }
     }
 
-    /** The cache of versions */
-    private static Hashtable bibles = new Hashtable();
-
     /** The default Bible */
-    private static Bible default_bible = null;
-
-    /** The default version name */
-    private static String default_name;
+    private static Bible deft = null;
 
     /** The list of listeners */
     protected static EventListenerList listeners = new EventListenerList();
