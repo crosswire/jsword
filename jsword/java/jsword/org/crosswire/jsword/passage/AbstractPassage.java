@@ -1057,10 +1057,7 @@ public abstract class AbstractPassage implements Passage
      */
     protected static VerseRange toVerseRange(Object base) throws ClassCastException
     {
-        if (base == null)
-        {
-            throw new NullPointerException();
-        }
+        assert base != null;
 
         if (base instanceof VerseRange)
         {
@@ -1083,10 +1080,7 @@ public abstract class AbstractPassage implements Passage
      */
     protected static Verse[] toVerseArray(Object base) throws ClassCastException
     {
-        if (base == null)
-        {
-            throw new NullPointerException();
-        }
+        assert base != null;
 
         if (base instanceof VerseRange)
         {

@@ -87,9 +87,10 @@ public class LookAndFeelUtil
         {
             UIDefaults defaults = UIManager.getDefaults();
 
-            //Color panebg = defaults.getColor("Panel.background"); //$NON-NLS-1$
-            defaults.put("SplitPane.darkShadow", Color.RED); //$NON-NLS-1$
-            defaults.put("SplitPane.highlight", Color.WHITE); //$NON-NLS-1$
+            Color panebg = defaults.getColor("Panel.background"); //$NON-NLS-1$
+            defaults.put("SplitPane.darkShadow", panebg); //$NON-NLS-1$
+            defaults.put("SplitPane.highlight", panebg); //$NON-NLS-1$
+            defaults.put("SplitPane.shadow", panebg); //$NON-NLS-1$
 
             /*
             Font menufont = defaults.getFont("Menu.font"); //$NON-NLS-1$
