@@ -142,26 +142,38 @@ public class Converter
             BookMetaData bmd = bmds[i];
 
             Element bmdele = new Element(ELEMENT_METADATA);
+            Element temp = null;
 
             bmdele.setAttribute(ATTRIBUTE_ID, ids[i]);
-            bmdele.addContent(new Element(ELEMENT_NAME).addContent(bmd.getName()));
-            bmdele.addContent(new Element(ELEMENT_EDITION).addContent(bmd.getEdition()));
+            temp = new Element(ELEMENT_NAME);
+            temp.addContent(bmd.getName());
+            bmdele.addContent(temp);
+
+            temp = new Element(ELEMENT_EDITION);
+            temp.addContent(bmd.getEdition());
+            bmdele.addContent(temp);
 
             String pubstr = DefaultBookMetaData.formatPublishedDate(bmd.getFirstPublished());
             if (pubstr != null)
             {
-                bmdele.addContent(new Element(ELEMENT_PUB).addContent(pubstr));
+                temp = new Element(ELEMENT_PUB);
+                temp.addContent(pubstr);
+                bmdele.addContent(temp);
             }
 
             Openness open = bmd.getOpenness();
             if (open != null)
             {
-                bmdele.addContent(new Element(ELEMENT_OPENNESS).addContent(open.toString()));
+                temp = new Element(ELEMENT_OPENNESS);
+                temp.addContent(open.toString());
+                bmdele.addContent(temp);
             }
 
             if (bmd.getLicence() != null)
             {
-                bmdele.addContent(new Element(ELEMENT_LICENCE).addContent(bmd.getLicence().toExternalForm()));
+                temp = new Element(ELEMENT_LICENCE);
+                temp.addContent(bmd.getLicence().toExternalForm());
+                bmdele.addContent(temp);
             }
 
             root.addContent(bmdele);
@@ -204,7 +216,9 @@ public class Converter
     public static Document convertKeyListToDocument(KeyList key)
     {
         Element root = new Element(ELEMENT_ROOT);
-        root.addContent(new Element(ELEMENT_REF).addContent(key.getName()));
+        Element temp = new Element(ELEMENT_REF);
+        temp.addContent(key.getName());
+        root.addContent(temp);
         return new Document(root);
     }
 
@@ -245,11 +259,15 @@ public class Converter
     public static Document convertStartsWithToDocument(Iterator it)
     {
         Element root = new Element(ELEMENT_ROOT);
+
         while (it.hasNext())
         {
             String word = (String) it.next();
-            root.addContent(new Element(ELEMENT_WORD).addContent(word));
+            Element temp = new Element(ELEMENT_WORD);
+            temp.addContent(word);
+            root.addContent(temp);
         }
+
         return new Document(root);
     }
 
@@ -305,12 +323,18 @@ public class Converter
     public static Document convertExceptionToDocument(Throwable ex)
     {
         Element exce = new Element(ELEMENT_EXCEPTION);
+        Element temp = null;
 
         StringWriter buffer = new StringWriter();
         ex.printStackTrace(new PrintWriter(buffer));
 
-        exce.addContent(new Element(ELEMENT_TYPE).addContent(ex.getClass().getName()));
-        exce.addContent(new Element(ELEMENT_MESSAGE).addContent(ex.getMessage()));
+        temp = new Element(ELEMENT_TYPE);
+        temp.addContent(ex.getClass().getName());
+        exce.addContent(temp);
+
+        temp = new Element(ELEMENT_MESSAGE);
+        temp.addContent(ex.getMessage());
+        exce.addContent(temp);
 
         return new Document(exce);
     }

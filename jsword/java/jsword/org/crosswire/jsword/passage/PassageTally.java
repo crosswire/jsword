@@ -128,9 +128,8 @@ public class PassageTally extends AbstractPassage
     /**
      * Get a copy of ourselves.
      * @return A complete copy of ourselves
-     * @exception java.lang.CloneNotSupportedException We don't do this but our kids might
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         // This gets us a shallow copy
         PassageTally copy = (PassageTally) super.clone();
@@ -561,31 +560,24 @@ public class PassageTally extends AbstractPassage
         int i = 0;
         boolean overflow = false;
 
-        try
-        {
-            remainder = (Passage) this.clone();
+        remainder = (Passage) this.clone();
 
-            Iterator it = verseIterator();
-            while (it.hasNext())
+        Iterator it = verseIterator();
+        while (it.hasNext())
+        {
+            Verse verse = (Verse) it.next();
+
+            if (i > count)
             {
-                Verse verse = (Verse) it.next();
-
-                if (i > count)
-                {
-                    remove(verse);
-                    overflow = true;
-                }
-                else
-                {
-                    remainder.remove(verse);
-                }
-
-                i++;
+                remove(verse);
+                overflow = true;
             }
-        }
-        catch (CloneNotSupportedException ex)
-        {
-            assert false : ex;
+            else
+            {
+                remainder.remove(verse);
+            }
+
+            i++;
         }
 
         if (overflow)
@@ -642,23 +634,16 @@ public class PassageTally extends AbstractPassage
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version
-            try
-            {
-                PassageTally temp = (PassageTally) this.clone();
-                Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
+            PassageTally temp = (PassageTally) this.clone();
+            Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
 
-                while (it.hasNext())
-                {
-                    VerseRange range = (VerseRange) it.next();
-                    for (int i=0; i<=verses; i++)
-                    {
-                        add(new VerseRange(range, i, i, restrict));
-                    }
-                }
-            }
-            catch (CloneNotSupportedException ex)
+            while (it.hasNext())
             {
-                throw new Error(Msg.ERROR_LOGIC.toString());
+                VerseRange range = (VerseRange) it.next();
+                for (int i=0; i<=verses; i++)
+                {
+                    add(new VerseRange(range, i, i, restrict));
+                }
             }
         }
         else

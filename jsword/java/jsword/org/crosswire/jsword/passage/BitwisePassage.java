@@ -87,9 +87,8 @@ public class BitwisePassage extends AbstractPassage
      *   Think about this needing to be synchronized
      *   If this is not cloneable then writing cloneable children is harder
      * @return A complete copy of ourselves
-     * @exception java.lang.CloneNotSupportedException We don't do this but our kids might
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         // This gets us a shallow copy
         BitwisePassage copy = (BitwisePassage) super.clone();
@@ -327,22 +326,13 @@ public class BitwisePassage extends AbstractPassage
 
         if (restrict != PassageConstants.RESTRICT_NONE)
         {
-            // This is a bit of a cheat, but there is no way I'm going
-            // to do the maths to speed up the restricted version
-            try
-            {
-                BitwisePassage temp = (BitwisePassage) this.clone();
-                Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
+            BitwisePassage temp = (BitwisePassage) this.clone();
+            Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
 
-                while (it.hasNext())
-                {
-                    VerseRange range = new VerseRange((VerseRange) it.next(), verses, verses, restrict);
-                    add(range);
-                }
-            }
-            catch (CloneNotSupportedException ex)
+            while (it.hasNext())
             {
-                assert false;
+                VerseRange range = new VerseRange((VerseRange) it.next(), verses, verses, restrict);
+                add(range);
             }
         }
         else

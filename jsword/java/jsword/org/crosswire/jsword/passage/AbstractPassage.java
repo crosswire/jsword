@@ -102,10 +102,19 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         // This gets us a shallow copy
-        AbstractPassage copy = (AbstractPassage) super.clone();
+        AbstractPassage copy = null;
+
+        try
+        {
+            copy = (AbstractPassage) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
 
         copy.listeners = new ArrayList();
         copy.listeners.addAll(listeners);
@@ -429,42 +438,34 @@ public abstract class AbstractPassage implements Passage
         int i = 0;
         boolean overflow = false;
 
-        try
+        remainder = (Passage) this.clone();
+
+        Iterator it = verseIterator();
+        while (it.hasNext())
         {
-            remainder = (Passage) this.clone();
+            i++;
+            Verse verse = (Verse) it.next();
 
-            Iterator it = verseIterator();
-            while (it.hasNext())
+            if (i > count)
             {
-                i++;
-                Verse verse = (Verse) it.next();
-
-                if (i > count)
-                {
-                    remove(verse);
-                    overflow = true;
-                }
-                else
-                {
-                    remainder.remove(verse);
-                }
-            }
-
-            lowerNormalizeProtection();
-            // The event notification is done by the remove above
-
-            if (overflow)
-            {
-                return remainder;
+                remove(verse);
+                overflow = true;
             }
             else
             {
-                return null;
+                remainder.remove(verse);
             }
         }
-        catch (CloneNotSupportedException ex)
+
+        lowerNormalizeProtection();
+        // The event notification is done by the remove above
+
+        if (overflow)
         {
-            assert false : ex;
+            return remainder;
+        }
+        else
+        {
             return null;
         }
     }
@@ -481,42 +482,34 @@ public abstract class AbstractPassage implements Passage
         int i = 0;
         boolean overflow = false;
 
-        try
+        remainder = (Passage) this.clone();
+
+        Iterator it = rangeIterator(restrict);
+        while (it.hasNext())
         {
-            remainder = (Passage) this.clone();
+            i++;
+            VerseRange range = (VerseRange) it.next();
 
-            Iterator it = rangeIterator(restrict);
-            while (it.hasNext())
+            if (i > count)
             {
-                i++;
-                VerseRange range = (VerseRange) it.next();
-
-                if (i > count)
-                {
-                    remove(range);
-                    overflow = true;
-                }
-                else
-                {
-                    remainder.remove(range);
-                }
-            }
-
-            lowerNormalizeProtection();
-            // The event notification is done by the remove above
-
-            if (overflow)
-            {
-                return remainder;
+                remove(range);
+                overflow = true;
             }
             else
             {
-                return null;
+                remainder.remove(range);
             }
         }
-        catch (CloneNotSupportedException ex)
+
+        lowerNormalizeProtection();
+        // The event notification is done by the remove above
+
+        if (overflow)
         {
-            assert false : ex;
+            return remainder;
+        }
+        else
+        {
             return null;
         }
     }
@@ -596,29 +589,22 @@ public abstract class AbstractPassage implements Passage
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        try
+        Passage temp = (Passage) this.clone();
+        Iterator it = temp.verseIterator();
+
+        while (it.hasNext())
         {
-            Passage temp = (Passage) this.clone();
-            Iterator it = temp.verseIterator();
-
-            while (it.hasNext())
+            Verse verse = (Verse) it.next();
+            if (!that.contains(verse))
             {
-                Verse verse = (Verse) it.next();
-                if (!that.contains(verse))
-                {
-                    remove(verse);
-                }
-            }
-
-            lowerNormalizeProtection();
-            if (lowerEventSuppresionAndTest())
-            {
-                fireIntervalRemoved(this, null, null);
+                remove(verse);
             }
         }
-        catch (CloneNotSupportedException ex)
+
+        lowerNormalizeProtection();
+        if (lowerEventSuppresionAndTest())
         {
-            assert false : ex;
+            fireIntervalRemoved(this, null, null);
         }
     }
 
@@ -647,26 +633,19 @@ public abstract class AbstractPassage implements Passage
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        try
+        Passage temp = (Passage) this.clone();
+        Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
+
+        while (it.hasNext())
         {
-            Passage temp = (Passage) this.clone();
-            Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
-
-            while (it.hasNext())
-            {
-                VerseRange range = new VerseRange((VerseRange) it.next(), verses, verses, restrict);
-                add(range);
-            }
-
-            lowerNormalizeProtection();
-            if (lowerEventSuppresionAndTest())
-            {
-                fireIntervalAdded(this, null, null);
-            }
+            VerseRange range = new VerseRange((VerseRange) it.next(), verses, verses, restrict);
+            add(range);
         }
-        catch (CloneNotSupportedException ex)
+
+        lowerNormalizeProtection();
+        if (lowerEventSuppresionAndTest())
         {
-            assert false : ex;
+            fireIntervalAdded(this, null, null);
         }
     }
 

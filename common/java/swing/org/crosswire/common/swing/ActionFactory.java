@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.event.EventListenerList;
 
@@ -71,6 +72,29 @@ public class ActionFactory implements ActionListener
     public CWAction getAction(String acronymn)
     {
         return (CWAction) actions.get(acronymn);
+    }
+
+    /**
+     * Construct a JLabel from the Action.
+     * Only Action.NAME and Action.MNEMONIC_KEY are used.
+     * @param acronymn the internal name of the CWAction
+     * @return JLabel null if it does not exist
+     */
+    public JLabel createJLabel(String acronymn)
+    {
+        JLabel label = null;
+        Action action = getAction(acronymn);
+        if (action != null)
+        {
+            label = new JLabel();
+            label.setText(action.getValue(Action.NAME).toString());
+            Integer mnemonic = (Integer) action.getValue(Action.MNEMONIC_KEY);
+            if (mnemonic != null)
+            {
+                label.setDisplayedMnemonic(mnemonic.intValue());
+            }
+        }
+        return label;
     }
 
     /**

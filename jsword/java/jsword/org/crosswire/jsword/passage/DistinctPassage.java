@@ -79,9 +79,8 @@ public class DistinctPassage extends AbstractPassage
      * <li>If this is not cloneable then writing cloneable children is harder
      * </ul>
      * @return A complete copy of ourselves
-     * @exception CloneNotSupportedException We don't do this but our kids might
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         // This gets us a shallow copy
         DistinctPassage copy = (DistinctPassage) super.clone();

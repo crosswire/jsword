@@ -126,7 +126,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
                     ModuleType type = sbmd.getModuleType();
                     String modpath = type.getInstallDirectory();
-                    String destname = modpath + File.separator + sbmd.getInternalName();
+                    String destname = modpath + '/' + sbmd.getInternalName();
 
                     File dldir = SwordBookDriver.getDownloadDir();
                     File moddir = new File(dldir, SwordConstants.DIR_DATA);
@@ -134,7 +134,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                     fulldir.mkdirs();
                     URL desturl = new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
 
-                    downloadAll(job, host, USERNAME, PASSWORD, directory + File.separator + SwordConstants.DIR_DATA + File.separator + destname, desturl);
+                    downloadAll(job, host, USERNAME, PASSWORD, directory + '/' + SwordConstants.DIR_DATA + '/' + destname, desturl);
 
                     job.setProgress(Msg.JOB_CONFIG.toString());
                     File confdir = new File(dldir, SwordConstants.DIR_CONF);
@@ -216,7 +216,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                             {
                                 internal = internal.substring(0, internal.length() - 5);
                             }
-                            if (internal.startsWith(SwordConstants.DIR_CONF+File.separator))
+                            if (internal.startsWith(SwordConstants.DIR_CONF+'/'))
                             {
                                 internal = internal.substring(7);
                             }

@@ -301,11 +301,11 @@ public interface Passage extends KeyList, Serializable, Cloneable
     public void removePassageListener(PassageListener li);
 
     /**
-     * I'm not sure why we have to keep on redeclaring this. But If I don't
-     * Then I get accused of attempting to reduce access level of clone();
-     * Maybe this is a bug in MS JVM. It has been behaving strangely here.
+     * This needs to be declared here so that it is visible as a method
+     * on a derived Passage.
+     * Specifically, in SynchronizedPassage, ref.clone() where ref is only
+     * known as a Passage has to have clone visible in this interface.
      * @return A complete copy of ourselves
-     * @exception java.lang.CloneNotSupportedException We don't do this but our kids might
      */
-    public Object clone() throws CloneNotSupportedException;
+    public Object clone();
 }

@@ -342,7 +342,7 @@ public final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    public synchronized Object clone() throws CloneNotSupportedException
+    public synchronized Object clone()
     {
         return ref.clone();
     }

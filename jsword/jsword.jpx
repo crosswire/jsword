@@ -78,7 +78,7 @@
   <property category="sys" name="Version" value="$Id$"/>
   <property category="sys" name="VersionLabel" value="@version"/>
   <property category="sys" name="WorkingDirectory" value="."/>
-  <property category="sys" name="uidesign.size.org.crosswire.jsword.view.swing.book.EditSitePane" value="515,333"/>
+  <property category="sys" name="uidesign.size.org.crosswire.bibledesktop.book.EditSitePane" value="515,333"/>
   <node name="Application" type="Archive">
     <property category="archiving" name="archiverClass" value="com.borland.jbuilder.wizard.archive.ApplicationArchiver"/>
     <property category="archiving" name="buildWithProject" value="0"/>

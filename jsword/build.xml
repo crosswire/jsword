@@ -715,12 +715,12 @@
 
   <!--=======================================================================-->
   <target name="exec" depends="compile" description="Run the project using Ant">
-    <java classname="org.crosswire.jsword.view.swing.desktop.Desktop" fork="true">
+    <java classname="org.crosswire.bibledesktop.desktop.Desktop" fork="true">
       <assertions enablesystemassertions="true">
         <enable/>
       </assertions>
       <!--
-      org.crosswire.jsword.view.swing.desktop.Desktop
+      org.crosswire.jsword.bibledesktop.Desktop
       org.crosswire.jsword.book.ReadEverything
       abbot.editor.Costello
       org.acm.seguin.tools.install.PrettyPrinterConfigGUI

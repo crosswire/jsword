@@ -84,7 +84,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         // This gets us a shallow copy
         RangedPassage copy = (RangedPassage) super.clone();
