@@ -1,7 +1,8 @@
 
-package org.crosswire.jsword.book.future;
+package org.crosswire.jsword.book;
 
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.osis.W;
 
 /**
  * Strongs is a convenience way of recording a Strongs number instead of
@@ -37,28 +38,11 @@ import org.crosswire.common.util.LogicError;
  */
 public class Strongs
 {
-    /* From the properties file:
-
-    # Strongs messages
-    strongs_greek=Greek:
-    strongs_hebrew=Hebrew:
-    strongs_parsing=Parsing:
-    
-    # Strongs error messages
-    strongs_error_parse=Strongs number must be of the form <n>, <0n> or (n) where n is a number. Given \'{0}\'
-    strongs_error_number=Could not get a number from \'{0}\'
-    strongs_error_hebrew=Hebrew numbers must be between 0 and {0,number,integer}. Given {1,number,integer}
-    strongs_error_greek=Greek numbers must be between 0 and {0,number,integer}. Given {1,number,integer}
-    strongs_error_parsing=Parsing numbers must be greater than 0. Given {0,number,integer}
-    strongs_error_type=Strongs numbers must have a type in the range, 0-2. Given {0,number,integer}
-
-     */
-
     /**
      * Create a Strongs number from an OLB descriptive string.
      * @param desc The OLB style descriptive string
      */
-    public Strongs(String desc)
+    public Strongs(String desc) throws BookException
     {
         // This is only the local copy.
         desc = desc.trim();
@@ -69,7 +53,9 @@ public class Strongs
             {
                 // It's a Greek or Hebrew number
                 if (desc.charAt(desc.length()-1) != '>')
-                    throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_parse\", new Object[] { desc })");
+                {
+                    throw new BookException(Msg.STRONGS_ERROR_PARSE, new Object[] { desc });
+                }
 
                 if (desc.charAt(1) == '0')
                 {
@@ -84,14 +70,16 @@ public class Strongs
             {
                 // It's a parsing number
                 if (desc.charAt(desc.length()-1) != ')')
-                    throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_parse\", new Object[] { desc })");
+                {
+                    throw new BookException(Msg.STRONGS_ERROR_PARSE, new Object[] { desc });
+                }
 
                 set(PARSING, Integer.parseInt(desc.substring(1, desc.length()-1)));
             }
         }
         catch (NumberFormatException ex)
         {
-            throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_number\", new Object[] { desc })");
+            throw new BookException(Msg.STRONGS_ERROR_NUMBER, new Object[] { desc });
         }
     }
 
@@ -100,9 +88,46 @@ public class Strongs
      * @param type 0=HEBREW, 1=GREEK, 2=PARSING
      * @param number The strongs number
      */
-    public Strongs(int type, int number)
+    public Strongs(int type, int number) throws BookException
     {
         set(type, number);
+    }
+
+    /**
+     * Work out what the Strongs number is from the W element
+     * @param w The element to investigate
+     * @return The new Strongs
+     */
+    public Strongs(W w) throws BookException
+    {
+        String lemma = w.getLemma();
+
+        // NOTE: I think it goes x-study:[H|G]number, but this will need fixing...
+        int colonpos = lemma.indexOf(":");
+        if (colonpos != -1)
+        {
+            lemma = lemma.substring(colonpos+1);
+        }
+        
+        int newtype = -1;
+        if (lemma.charAt(0) == 'H')
+        {
+            newtype = Strongs.HEBREW;
+            lemma = lemma.substring(1);
+        }
+        else if (lemma.charAt(0) == 'G')
+        {
+            newtype = Strongs.GREEK;
+            lemma = lemma.substring(1);
+        }
+        else
+        {
+            newtype = Strongs.PARSING;
+        }
+        
+        int newnum = Integer.parseInt(lemma);
+
+        set(newtype, newnum);
     }
 
     /**
@@ -134,11 +159,11 @@ public class Strongs
         switch (type)
         {
         case GREEK:
-            return "PassageUtil.getResource(\"strongs_greek\")" + number;
+            return Msg.STRONGS_GREEK.toString() + number;
         case HEBREW:
-            return "PassageUtil.getResource(\"strongs_hebrew\")" + number;
+            return Msg.STRONGS_HEBREW.toString() + number;
         case PARSING:
-            return "PassageUtil.getResource(\"strongs_parsing\")" + number;
+            return Msg.STRONGS_PARSING.toString() + number;
         default:
             throw new LogicError();
         }
@@ -203,7 +228,7 @@ public class Strongs
      * @param type 0=HEBREW, 1=GREEK, 2=PARSING
      * @param number The strongs number
      */
-    private void set(int type, int number)
+    private void set(int type, int number) throws BookException
     {
         this.type = type;
         this.number = number;
@@ -214,16 +239,14 @@ public class Strongs
         case HEBREW:
             if (number > HEBREW_MAX || number < 1)
             {
-                // Object[] params = new Object[] { new Integer(HEBREW_MAX), new Integer(number) };
-                throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_hebrew\", params)");
+                throw new BookException(Msg.STRONGS_ERROR_HEBREW, new Object[] { new Integer(HEBREW_MAX), new Integer(number) });
             }
             break;
 
         case GREEK:
             if (number > GREEK_MAX || number < 1)
             {
-                // Object[] params = new Object[] { new Integer(GREEK_MAX), new Integer(number) };
-                throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_greek\", params)");
+                throw new BookException(Msg.STRONGS_ERROR_GREEK, new Object[] { new Integer(GREEK_MAX), new Integer(number) });
             }
             // We have not checked for 1418, 2717, 3203-3302, 4452 which do not appear to
             // but legal numbers for Greek words. Should we do this?
@@ -232,36 +255,49 @@ public class Strongs
         case PARSING:
             if (number < 1)
             {
-                // Object[] params = new Object[] { new Integer(number) };
-                throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_parsing\", params)");
+                throw new BookException(Msg.STRONGS_ERROR_PARSING, new Object[] { new Integer(number) });
             }
             // The correct range seems to be: 0, 5625-5773, 8675-8809, but not 5626, 5653, 5687, 5767, 8679
             // I'm not sure if this is 100% correct so I'll not check it at the mo.
             break;
 
         default:
-            throw new IllegalArgumentException("PassageUtil.getResource(\"strongs_error_type\")"+type);
+            throw new BookException(Msg.STRONGS_ERROR_TYPE, new Object[] { new Integer(number) });
         }
     }
 
-    /** This is a Hebrew word */
+    /**
+     * This is a Hebrew word
+     */
     public static final int HEBREW = 0;
 
-    /** This is a Greek word */
+    /**
+     * This is a Greek word
+     */
     public static final int GREEK = 1;
 
-    /** This is a Parsing note */
+    /**
+     * This is a Parsing note
+     */
     public static final int PARSING = 2;
 
-    /** This largest legal value for a Greek number */
+    /**
+     * This largest legal value for a Greek number
+     */
     public static final int GREEK_MAX = 5624;
 
-    /** This largest legal value for a Hebrew number */
+    /**
+     * This largest legal value for a Hebrew number
+     */
     public static final int HEBREW_MAX = 8674;
 
-    /** The type of this Strongs number */
+    /**
+     * The type of this Strongs number
+     */
     private int type = 0;
 
-    /** The actual number itself */
+    /**
+     * The actual number itself
+     */
     private int number = 0;
 }

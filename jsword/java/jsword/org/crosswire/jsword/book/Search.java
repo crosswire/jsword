@@ -45,6 +45,17 @@ public class Search
     }
 
     /**
+     * Simple constructor for finding Strongs numbers.
+     * @param strong the strongs number we are trying to find
+     * @param match Are we doing a best match search or a boolean style search
+     */
+    public Search(Strongs strong, boolean match)
+    {
+        this.search = strong.getOLBName();
+        this.match = match;
+    }
+
+    /**
      * Accessor for the string to search for.
      * @return String
      */

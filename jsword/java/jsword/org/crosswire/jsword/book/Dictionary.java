@@ -55,4 +55,15 @@ public interface Dictionary extends Book
      * @return String[]
      */
     public SortedSet getIndex(String startswith) throws BookException;
+
+    /**
+     * Someone has typed in a reference to find, but we need a Key to actually
+     * look it up, with dictionaries it is good sometime to have a fuzzy match
+     * where we don't know exactly what we are looking for. This is a best case
+     * version.
+     * @param text The string to create a Key from
+     * @return The Key corresponding to the input text
+     * @throws BookException If there is a problem converting the text
+     */
+    public Key getKeyFuzzy(String text) throws BookException;
 }

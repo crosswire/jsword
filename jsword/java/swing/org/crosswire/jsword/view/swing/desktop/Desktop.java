@@ -20,6 +20,7 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -175,7 +176,10 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
                 }
             }
         });
-        last = recurseDisplayArea();
+
+        // And setup the initial display area, by getting the first
+        // BibleViewPane and asking it for a PassagePane.
+        last = ((BibleViewPane) iterateBibleViewPanes().next()).getPassagePane();
 
         // Preload the PassageInnerPane for faster initial view
         InnerDisplayPane.preload();
@@ -215,7 +219,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         act_view_mdi = new ViewMDIAction(this);
         act_view_tbar = new ViewToolBarAction(this);
         act_view_sbar = new ViewStatusBarAction(this);
-        act_view_html = new ViewSourceHTMLAction(this);
+        act_view_ghtml = new ViewSourceGHTMLAction(this);
+        act_view_vhtml = new ViewSourceHTMLAction(this);
         act_view_osis = new ViewSourceOSISAction(this);
         
         act_list_delete = new ListDeleteAction(this);
@@ -292,7 +297,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_view.add(chk_view_tbar);
         menu_view.add(chk_view_sbar);
         menu_view.addSeparator();
-        menu_view.add(act_view_html).addMouseListener(bar_status);
+        menu_view.add(act_view_ghtml).addMouseListener(bar_status);
+        menu_view.add(act_view_vhtml).addMouseListener(bar_status);
         menu_view.add(act_view_osis).addMouseListener(bar_status);
 
         menu_tools.setText("Tools");
@@ -591,7 +597,26 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             HyperlinkEvent.EventType type = ev.getEventType();
             if (type == HyperlinkEvent.EventType.ACTIVATED)
             {
-                openHyperlink(ev.getDescription());
+                String url = ev.getDescription();
+                if (url.indexOf(':') == -1)
+                {
+                    // So there is no protocol, this must be relative to the current
+                    // in which case we assume that it is an in page reference.
+                    // We ignore the frame case (example code within JEditorPane
+                    // JavaDoc).
+                    if (url.startsWith("#"))
+                    {
+                        url = url.substring(1);
+                    }
+                    log.debug("scrolling to: "+url);
+                    JEditorPane pane = (JEditorPane) ev.getSource();
+                    pane.scrollToReference(url);
+                }
+                else
+                {
+                    // Fully formed, so we open a new window
+                    openHyperlink(ev.getDescription());
+                }
             }
         }
         catch (MalformedURLException ex)
@@ -813,7 +838,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private Action act_view_tbar = null;
     private Action act_view_sbar = null;
 
-    private Action act_view_html = null;
+    private Action act_view_ghtml = null;
+    private Action act_view_vhtml = null;
     private Action act_view_osis = null;
 
     private Action act_list_delete = null;

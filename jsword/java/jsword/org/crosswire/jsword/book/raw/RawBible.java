@@ -376,7 +376,12 @@ public class RawBible extends LocalURLBible implements Index
                     div.getContent().add(everse);
 
                     String txt = getText(new VerseRange(verse));
-                    Filters.PLAIN_TEXT.toOSIS(everse, txt);                
+
+                    // If the verse is empty then we shouldn't add the verse tag
+                    if (txt.length() > 0)
+                    {
+                        Filters.PLAIN_TEXT.toOSIS(everse, txt);                
+                    }
                 }
             }
 

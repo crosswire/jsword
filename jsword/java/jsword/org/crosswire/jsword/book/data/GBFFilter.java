@@ -10,6 +10,8 @@ import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.osis.Note;
+import org.crosswire.jsword.osis.P;
+import org.crosswire.jsword.osis.Seg;
 import org.crosswire.jsword.osis.W;
 
 /**
@@ -90,7 +92,10 @@ public class GBFFilter implements Filter
             if (retval.isEmpty())
             {
                 if (remains == null)
+                {
                     return null;
+                }
+
                 parseNextTag();
             }
             return (Tag) retval.remove(0);
@@ -112,7 +117,7 @@ public class GBFFilter implements Filter
             if (ltpos == -1 && gtpos == -1)
             {
                 // no more tags to decode
-                retval.add(new TextTag(remains));
+                retval.add(createText(remains));
                 remains = null;
                 return;
             }
@@ -121,7 +126,7 @@ public class GBFFilter implements Filter
             if (ltpos == -1 || gtpos == -1)
             {
                 log.warn("ignoring unmatched '<' or '>' in gbf: " + remains);
-                retval.add(new TextTag(remains));
+                retval.add(createText(remains));
                 remains = null;
                 return;
             }
@@ -130,7 +135,7 @@ public class GBFFilter implements Filter
             if (ltpos > gtpos)
             {
                 log.warn("ignoring unmatched '<' or '>' in gbf: " + remains);
-                retval.add(new TextTag(remains));
+                retval.add(createText(remains));
                 remains = null;
                 return;
             }
@@ -150,7 +155,7 @@ public class GBFFilter implements Filter
                     char currentChar = start.charAt(i);
                     if (!isSeperator(currentChar))
                     {
-                        retval.add(new TextTag(start.substring(beginIndex, i)));
+                        retval.add(createText(start.substring(beginIndex, i)));
                         beginIndex = i;
                         inSepStr = false;
                     }
@@ -158,7 +163,7 @@ public class GBFFilter implements Filter
 
                 if (beginIndex < strLen)
                 {
-                    retval.add(new TextTag(start.substring(beginIndex)));
+                    retval.add(createText(start.substring(beginIndex)));
                 }
             }
 
@@ -222,6 +227,14 @@ public class GBFFilter implements Filter
 
         private String remains;
         private List retval = new ArrayList();
+    }
+
+    /**
+     * Create a text tag which might involve some fancy parsing
+     */
+    protected static TextTag createText(String text)
+    {
+        return new TextTag(text);
     }
 
     /**
@@ -305,7 +318,8 @@ public class GBFFilter implements Filter
             // remarked, for the XSL does not present it correctly
             // The XSL should translate it to <I>...</I> but now it translated
             //  to <div>...</div>
-            /*
+
+            // Lets try to fix the XSL ...
             Seg seg = JAXBUtil.factory().createSeg();
             Element current = (Element) stack.peek();
             
@@ -313,7 +327,6 @@ public class GBFFilter implements Filter
             list.add(seg);
             
             stack.push(seg);
-            */
         }
     }
 
@@ -325,7 +338,9 @@ public class GBFFilter implements Filter
         public void updateOsisStack(Stack stack)
         {
             // remarked, for the XSL does not translate it correctly
-            // stack.pop();
+
+            // Lets try to fix the XSL ...
+            stack.pop();
         }
     }
 
@@ -334,9 +349,11 @@ public class GBFFilter implements Filter
      */
     private static class ParagraphTag implements Tag
     {
-        public void updateOsisStack(Stack stack)
+        public void updateOsisStack(Stack stack) throws JAXBException
         {
-            JAXBUtil.getList((Element) stack.peek()).add(Character.toString('¶'));
+            Element ele = (Element) stack.peek();
+            P p = JAXBUtil.factory().createP();
+            JAXBUtil.getList(ele).add(p);
         }
     }
 

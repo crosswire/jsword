@@ -163,6 +163,14 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Dictionary#getKeyFuzzy(java.lang.String)
+     */
+    public Key getKeyFuzzy(String text) throws BookException
+    {
+        return getKey(text);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException

@@ -220,18 +220,18 @@ public class JDBCBible extends LocalURLBible implements Index
                     Verse verse = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
                     rs.getBoolean(4); // ignored, but perhaps we should still be getting things in order?
                     String vtext = rs.getString(5);
-                    if (vtext == null)
+
+                    // If the verse is empty then we shouldn't add the verse tag
+                    if (vtext != null && vtext.length() > 0)
                     {
-                        vtext = "";
+                        org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                        everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+    
+                        div.getContent().add(everse);
+    
+                        String txt = JDBCBibleUtil.processText(vtext);
+                        Filters.PLAIN_TEXT.toOSIS(everse, txt);
                     }
-
-                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
-                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
-
-                    div.getContent().add(everse);
-
-                    String txt = JDBCBibleUtil.processText(vtext);
-                    Filters.PLAIN_TEXT.toOSIS(everse, txt);
                 }
 
                 rs.close();

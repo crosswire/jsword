@@ -165,6 +165,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
         SAXEventProvider provider = data.getSAXEventProvider();
         String text = style.applyStyleToString(provider, "simple.xsl");
 
+        //log.debug(text);
+
         txt_view.setText(text);
         txt_view.select(0, 0);
     }

@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -11,12 +10,14 @@ import javax.xml.bind.JAXBContext;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.Seg;
 import org.crosswire.jsword.osis.Verse;
 import org.crosswire.jsword.osis.W;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -114,19 +115,19 @@ public class JAXBUtil
     }
 
     /**
-     * A simplified plain text version of the data in this verse with all
+     * A simplified plain text version of the data in this Element with all
      * the markup stripped out.
      * @return The Bible text without markup
      */
-    public static String getPlainText(Verse overse)
+    public static String getPlainText(Element ele)
     {
         StringBuffer buffer = new StringBuffer();
     
-        List content = overse.getContent();
+        List content = getList(ele);
         for (Iterator it = content.iterator(); it.hasNext();)
         {
-            Object ele = it.next();
-            JAXBUtil.recurseElement(ele, buffer);
+            Object next = it.next();
+            recurseElement(next, buffer);
         }
     
         return buffer.toString();
@@ -161,8 +162,43 @@ public class JAXBUtil
         }
         
         log.error("unknown element: "+current.getClass().getName());
-        
         throw new LogicError();
+    }
+
+    /**
+     * Walk up the tree from the W to find out what verse we are in.
+     * @param w The start point for our verse hunt.
+     * @return The verse we are in
+     */
+    public static org.crosswire.jsword.passage.Verse getVerse(Element ele) throws BookException
+    {
+        if (ele instanceof Verse)
+        {
+            // If the element is an OSIS Verse then this is fairly easy
+            Verse overse = (Verse) ele;
+            String osisid = overse.getOsisID();
+
+            try
+            {
+                return new org.crosswire.jsword.passage.Verse(osisid);
+            }
+            catch (NoSuchVerseException ex)
+            {
+                throw new BookException(Msg.OSIS_BADID, ex, new Object[] { osisid });
+            }
+        }
+        else
+        {
+            // So we just walk up the tree trying to find a verse
+            // TODO: how?
+            Element parent = null; // ele.getParent();
+            if (parent != null)
+            {
+                return getVerse(parent);
+            }
+
+            throw new BookException(Msg.MISSING_VERSE);
+        }
     }
 
     /**
@@ -175,9 +211,13 @@ public class JAXBUtil
         {
             buffer.append((String) sub);
         }
+        else if (sub instanceof Element)
+        {
+            recurseChildren((Element) sub, buffer);
+        }
         else
         {
-            recurseChildren(sub, buffer);
+            log.error("unknown type: "+sub.getClass().getName());
         }
     }
 
@@ -186,21 +226,16 @@ public class JAXBUtil
      * @param ele The JAXB Element to dig into
      * @param buffer The place we accumulate strings.
      */
-    private static void recurseChildren(Object ele, StringBuffer buffer)
+    private static void recurseChildren(Element ele, StringBuffer buffer)
     {
         // ele is a JAXBElement that might have a getContent() method
-        Class clazz = ele.getClass();
         try
         {
-            Method method = clazz.getMethod("getContent", new Class[0]);
-            if (method.getReturnType() == List.class)
+            List content = getList(ele);
+            for (Iterator it = content.iterator(); it.hasNext();)
             {
-                List content = (List) method.invoke(ele, new Object[0]);
-                for (Iterator it = content.iterator(); it.hasNext();)
-                {
-                    Object sub = it.next();
-                    recurseElement(sub, buffer);
-                }
+                Object sub = it.next();
+                recurseElement(sub, buffer);
             }
         }
         catch (Exception ex)

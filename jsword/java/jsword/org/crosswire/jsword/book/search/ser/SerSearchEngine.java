@@ -173,7 +173,6 @@ public class SerSearchEngine implements SearchEngine, Index
         }
 
         Section section = (Section) datamap.get(word.toLowerCase());
-
         if (section == null)
         {
             return PassageFactory.createPassage();

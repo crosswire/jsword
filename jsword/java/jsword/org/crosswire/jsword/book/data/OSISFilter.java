@@ -56,13 +56,19 @@ public class OSISFilter implements Filter
         try
         {
             // create a root element to house our document fragment
-            StringReader in = new StringReader(plain);
+            StringReader in = new StringReader("<div>"+plain+"</div>");
             InputSource is = new InputSource(in);
 
-            Object data = unm.unmarshal(is);
+            Element data = (Element) unm.unmarshal(is);
 
-            List content = JAXBUtil.getList(ele);
-            content.add(data);
+            // data is the div we added above so the input was a well formed
+            // XML so we need to add the content of the div and not the div
+            // itself
+
+            List host = JAXBUtil.getList(ele);
+            List content = JAXBUtil.getList(data);
+
+            host.addAll(content);
         }
         catch (Exception ex)
         {

@@ -182,7 +182,11 @@ public class BibleDataCache
                     // Read the XML text
                     String txt = xml_dat.readUTF();
 
-                    Filters.PLAIN_TEXT.toOSIS(everse, txt);
+                    // If the verse is empty then we shouldn't add the verse tag
+                    if (txt.length() > 0)
+                    {
+                        Filters.PLAIN_TEXT.toOSIS(everse, txt);
+                    }
                 }
             }
             

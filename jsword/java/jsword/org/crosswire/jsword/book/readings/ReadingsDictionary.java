@@ -167,6 +167,14 @@ public class ReadingsDictionary implements Dictionary
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Dictionary#getKeyFuzzy(java.lang.String)
+     */
+    public Key getKeyFuzzy(String text) throws BookException
+    {
+        return getKey(text);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
      */
     public BookData getData(Key key) throws BookException

@@ -148,6 +148,60 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Dictionary#getKeyFuzzy(java.lang.String)
+     */
+    public Key getKeyFuzzy(String text) throws BookException
+    {
+        if (map == null)
+        {
+            throw new BookException(Msg.READ_FAIL);
+        }
+
+        Key key = (Key) map.get(text);
+        if (key == null)
+        {
+            // So we need to find a matching key.
+
+            // First check for keys that match ignoring case
+            for (Iterator it = map.keySet().iterator(); it.hasNext();)
+            {
+                key = (Key) it.next();
+                String match = key.getText();
+                if (match.equalsIgnoreCase(text));
+                {
+                    return key;
+                }
+            }
+
+            // Next keys that start with the given text
+            for (Iterator it = map.keySet().iterator(); it.hasNext();)
+            {
+                key = (Key) it.next();
+                String match = key.getText();
+                if (match.startsWith(text));
+                {
+                    return key;
+                }
+            }
+
+            // Next try keys that contain the given text
+            for (Iterator it = map.keySet().iterator(); it.hasNext();)
+            {
+                key = (Key) it.next();
+                String match = key.getText();
+                if (match.indexOf(text) != -1);
+                {
+                    return key;
+                }
+            }
+
+            throw new BookException(Msg.NO_KEY, new Object[] { text });
+        }
+
+        return key;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
      */
     public BookData getData(Key key) throws BookException

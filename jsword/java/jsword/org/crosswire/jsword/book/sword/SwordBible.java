@@ -125,11 +125,6 @@ public class SwordBible extends AbstractBible
                 while (vit.hasNext())
                 {
                     Verse verse = (Verse) vit.next();
-    
-                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
-                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
-
-                    div.getContent().add(everse);
 
                     byte[] data = backend.getRawText(verse);
                     String charset = config.getModuleCharset();
@@ -145,7 +140,16 @@ public class SwordBible extends AbstractBible
                         txt = new String(data);
                     }
 
-                    config.getFilter().toOSIS(everse, txt);
+                    // If the verse is empty then we shouldn't add the verse tag
+                    if (txt.length() > 0)
+                    {
+                        org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                        everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+    
+                        div.getContent().add(everse);
+    
+                        config.getFilter().toOSIS(everse, txt);
+                    }
                 }
             }
 

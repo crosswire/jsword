@@ -2,7 +2,6 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
-import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -25,7 +24,6 @@ import org.crosswire.common.xml.SerializingContentHandler;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
@@ -192,13 +190,32 @@ public class DictionaryPane extends JPanel implements DisplayArea
     }
 
     /**
-     * Find the first dictionary that has a mention of the word in question.
+     * See if the current dictionary has a mention of the word in question.
+     * PENDING(joe): add a background task to highlight other dictionaries that
+     * have the word.
      */
     public void setWord(String data)
     {
+        try
+        {
+            Key key = dict.getKeyFuzzy(data);
+            if (key != null)
+            {
+                lstentries.setSelectedValue(key, true);
+            }
+        }
+        catch (BookException ex)
+        {
+            // ignore
+        }
+    }
+
+    /*
+        // Code to search for a word
         for (Iterator it = Books.getBooks(filter).iterator(); it.hasNext();)
         {
-            Dictionary tempdict = (Dictionary) it.next();
+            DictionaryMetaData dmd = (DictionaryMetaData) it.next();
+            Dictionary tempdict = dmd.getDictionary();
             try
             {
                 Key key = tempdict.getKey(data);
@@ -210,8 +227,8 @@ public class DictionaryPane extends JPanel implements DisplayArea
             {
                 // ignore - we only wanted to see if it could be done.
             }
-        }
-    }
+        }     
+     */
 
     /**
      * Called when someone selects a new Dictionary

@@ -29,17 +29,28 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg NO_COMMENTARIES = new Msg("No Commentaries found");
-    public static final Msg NO_DICTIONARIES = new Msg("No Dictionaries found");
-    public static final Msg NO_BIBLES = new Msg("No Bibles found");
+    protected static final Msg STRONGS_GREEK = new Msg("Greek:");
+    protected static final Msg STRONGS_HEBREW = new Msg("Hebrew:");
+    protected static final Msg STRONGS_PARSING = new Msg("Parsing:");
 
-    public static final Msg BOOK_NOREMOVE = new Msg("Could not remove unregistered Book");
-    public static final Msg DUPLICATE_DRIVER = new Msg("Driver already registered");
-    public static final Msg DRIVER_NOREMOVE = new Msg("Could not remove unregistered Driver");
+    protected static final Msg STRONGS_ERROR_PARSE = new Msg("Strongs number must be of the form <n>, <0n> or (n) where n is a number. Given \'{0}\'");
+    protected static final Msg STRONGS_ERROR_NUMBER = new Msg("Could not get a number from \'{0}\'");
+    protected static final Msg STRONGS_ERROR_HEBREW = new Msg("Hebrew numbers must be between 0 and {0,number,integer}. Given {1,number,integer}");
+    protected static final Msg STRONGS_ERROR_GREEK = new Msg("Greek numbers must be between 0 and {0,number,integer}. Given {1,number,integer}");
+    protected static final Msg STRONGS_ERROR_PARSING = new Msg("Parsing numbers must be greater than 0. Given {0,number,integer}");
+    protected static final Msg STRONGS_ERROR_TYPE = new Msg("Strongs numbers must have a type in the range, 0-2. Given {0,number,integer}");
 
-    public static final Msg BIBLE_NOTFOUND = new Msg("Bible called \"{0}\" could not be found.");
-    public static final Msg DICTIONRY_NOTFOUND = new Msg("Dictionary called \"{0}\" could not be found.");
-    public static final Msg COMMENTARY_NOTFOUND = new Msg("Commentary called \"{0}\" could not be found.");
+    protected static final Msg NO_COMMENTARIES = new Msg("No Commentaries found");
+    protected static final Msg NO_DICTIONARIES = new Msg("No Dictionaries found");
+    protected static final Msg NO_BIBLES = new Msg("No Bibles found");
+
+    protected static final Msg BOOK_NOREMOVE = new Msg("Could not remove unregistered Book");
+    protected static final Msg DUPLICATE_DRIVER = new Msg("Driver already registered");
+    protected static final Msg DRIVER_NOREMOVE = new Msg("Could not remove unregistered Driver");
+
+    protected static final Msg BIBLE_NOTFOUND = new Msg("Bible called \"{0}\" could not be found.");
+    protected static final Msg DICTIONRY_NOTFOUND = new Msg("Dictionary called \"{0}\" could not be found.");
+    protected static final Msg COMMENTARY_NOTFOUND = new Msg("Commentary called \"{0}\" could not be found.");
 
     /** Initialise any resource bundles */
     static

@@ -1,14 +1,21 @@
-
 package org.crosswire.common.xml;
 
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.output.SAXOutputter;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import com.sun.xml.bind.StringInputStream;
 
 /**
- * A SAXEventProvider that provides SAX events from a JDOM Document.
+ * A SAXEventProvider that provides SAX events from a String.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,14 +38,19 @@ import org.xml.sax.SAXException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDOMSAXEventProvider implements SAXEventProvider
+public class StringSAXEventProvider implements SAXEventProvider
 {
     /**
-     * Simple constructor
+     * Simple ctor
      */
-    public JDOMSAXEventProvider(Document doc)
+    public StringSAXEventProvider(String xmlstr) throws ParserConfigurationException, SAXException
     {
-        this.doc = doc;
+        this.xmlstr = xmlstr;
+
+        SAXParserFactory fact = SAXParserFactory.newInstance();
+        SAXParser parser = fact.newSAXParser();
+
+        reader = parser.getXMLReader();
     }
 
     /* (non-Javadoc)
@@ -48,17 +60,25 @@ public class JDOMSAXEventProvider implements SAXEventProvider
     {
         try
         {
-            SAXOutputter output = new SAXOutputter(handler);
-            output.output(doc);
+            InputStream in = new StringInputStream(xmlstr);
+            InputSource is = new InputSource(in);
+
+            reader.setContentHandler(handler);
+            reader.parse(is);
         }
-        catch (JDOMException ex)
+        catch (IOException ex)
         {
             throw new SAXException(ex);
         }
     }
 
     /**
-     * The document to work from
+     * The SAX parser
      */
-    private Document doc;
+    XMLReader reader = null;
+
+    /**
+     * The source of XML data
+     */
+    private String xmlstr;
 }

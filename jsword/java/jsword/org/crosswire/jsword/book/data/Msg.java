@@ -30,6 +30,7 @@ import org.crosswire.common.util.MsgBase;
 class Msg extends MsgBase
 {
     static final Msg OSIS_INIT = new Msg("OSIS layer failed to initialise");
+    static final Msg OSIS_BADID = new Msg("OsisID not valid: {0}");
 
     static final Msg GBF_JAXB = new Msg("Parse Error");
     static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
@@ -37,6 +38,8 @@ class Msg extends MsgBase
     static final Msg THML_BADTOKEN = new Msg("THML parse failed.");
 
     static final Msg JAXB_ERROR = new Msg("JAXB Error");
+
+    static final Msg MISSING_VERSE = new Msg("Verse element could not be found");
 
     /** Initialise any resource bundles */
     static
