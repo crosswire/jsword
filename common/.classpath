@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="java/gpl"/>
+	<classpathentry kind="src" path="java/test"/>
+	<classpathentry kind="src" path="java/core"/>
+	<classpathentry kind="src" path="java/swing"/>
+	<classpathentry exported="true" kind="lib" path="resource"/>
 	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jdom-b10.zip" kind="lib" path="jar/jdom-1.0.b10/jdom.jar"/>
 	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jakarta-log4j-1.2.8.zip" kind="lib" path="jar/log4j-1.2.8/log4j-1.2.8.jar"/>
 	<classpathentry exported="true" sourcepath="/jsword-support/othersource/commons-lang-2.0-src.zip" kind="lib" path="jar/lang-2.0.0/commons-lang-2.0.jar"/>
@@ -11,11 +16,5 @@
 	<classpathentry kind="lib" path="/jsword/jar/jaxb10/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="/jsword/jar/jaxb10/jax-qname.jar"/>
 	<classpathentry kind="lib" path="/jsword/jar/jaxb10/namespace.jar"/>
-	<classpathentry kind="src" path="java/gpl"/>
-	<classpathentry kind="src" path="java/core"/>
-	<classpathentry kind="src" path="java/coretest"/>
-	<classpathentry kind="src" path="java/swing"/>
-	<classpathentry kind="src" path="java/swingtest"/>
-	<classpathentry exported="true" kind="lib" path="/jsword-web/resource"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>
