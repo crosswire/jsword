@@ -119,13 +119,6 @@
         <patternset refid="java.non.compile"/>
       </fileset>
     </copy>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
-      <src path="${gener.root}/config"/>
-      <classpath>
-        <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
     <antcall target="compile.section">
       <param name="section" value="jsword"/>
     </antcall>
@@ -141,6 +134,13 @@
     <antcall target="compile.section">
       <param name="section" value="map"/>
     </antcall>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
+      <src path="${gener.root}/config"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
     <antcall target="compile.section">
       <param name="section" value="commontest"/>
     </antcall>
