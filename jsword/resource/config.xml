@@ -40,6 +40,11 @@
     <map name="biblenames"/>
   </option>
 
+  <option key="Bibles.Verses Per Tab" type="number">
+  	<introspect class="org.crosswire.jsword.view.swing.book.PassageTabbedPane" property="PageSize"/>
+    <help>How many verses do you want to display on a page before spilling to tabbed mode.</help>
+  </option>
+
   <option key="Bibles.Raw.Cache Data" type="boolean">
   	<introspect class="org.crosswire.jsword.book.raw.RawBible" property="DefaultCacheData"/>
     <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>

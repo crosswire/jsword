@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.URLFilter;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -44,6 +45,7 @@ import org.jdom.input.SAXBuilder;
  */
 public class Resource
 {
+    public static final String XSLT_EXTENSION = ".xsl";
     public static final String PROPERTIES_EXTENSION = ".properties";
     public static final String PROJECT_DIRECTORY = ".jsword";
 
@@ -72,37 +74,24 @@ public class Resource
 
     /**
      * Get a list of sylesheets for a given subject.
-     * PENDING(*): Is this sensible? I guess it is like this because it has to
-     * work over webstart, but it is all very similar to NetUtil.list() however
-     * this method does not make use of file: URLs.
      * @return The project root as a URL
      * @see NetUtil#list(URL, URLFilter)
      */
     public String[] getStyles(String subject)
     {
-        String search = "xsl/"+subject+"/index"+PROPERTIES_EXTENSION;
-
         try
         {
-            InputStream in = getResourceAsStream(search);
-            Properties prop = new Properties();
-            prop.load(in);
-
-            int i = 0;
-            ArrayList list = new ArrayList();
-            while (true)
+            String search = "xsl/"+subject+"/"+NetUtil.INDEX_FILE;
+            URL index = getResource(search);
+            return NetUtil.listByIndexFile(index, new URLFilter()
             {
-                i++;
-                String line = prop.getProperty("index."+i);
-
-                if (line == null) break;
-
-                list.add(line);
-            }
-
-            return (String[]) list.toArray(new String[0]);
+                public boolean accept(String name)
+                {
+                    return name.endsWith(XSLT_EXTENSION);
+                }
+            });
         }
-        catch (IOException e)
+        catch (IOException ex)
         {
             return new String[0];
         }
@@ -116,7 +105,7 @@ public class Resource
      */
     public InputStream getStyleInputStream(String subject, String name) throws IOException, MalformedURLException
     {
-        String path = "xsl/"+subject+"/"+name+".xsl";
+        String path = "xsl/"+subject+"/"+name;
         return getResourceAsStream(path);
     }
 

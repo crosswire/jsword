@@ -96,13 +96,15 @@ public class RemoteBible extends AbstractBible
      * @param word The text to search for
      * @return The references to the word
      */
-    public Passage findPassage(Search word) throws BookException
+    public Passage findPassage(Search search) throws BookException
     {
         try
         {
             RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_FINDPASSAGE);
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
-            method.addParam(RemoteConstants.PARAM_WORD, word.getMatch());
+            method.addParam(RemoteConstants.PARAM_FINDSTRING, search.getMatch());
+            method.addParam(RemoteConstants.PARAM_FINDMATCH, ""+search.isBestMatch());
+            method.addParam(RemoteConstants.PARAM_FINDRANGE, search.getRange().getName());
             Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToPassage(doc);

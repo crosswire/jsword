@@ -33,5 +33,7 @@ public interface RemoteConstants
     public static final String METHOD_FINDPASSAGE = "findPassage";
     public static final String PARAM_BIBLE = "bible";
     public static final String PARAM_PASSAGE = "passage";
-    public static final String PARAM_WORD = "word";
+    public static final String PARAM_FINDSTRING = "word";
+    public static final String PARAM_FINDMATCH = "match";
+    public static final String PARAM_FINDRANGE = "range";
 }

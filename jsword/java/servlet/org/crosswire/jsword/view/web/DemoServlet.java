@@ -120,7 +120,7 @@ public class DemoServlet extends HttpServlet
     
                 BibleData data = version.getData(ref);
                 SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
-                String text = style.applyStyleToString(provider, "simple");
+                String text = style.applyStyleToString(provider, "simple.xsl");
     
                 request.setAttribute("reply", text);
             }

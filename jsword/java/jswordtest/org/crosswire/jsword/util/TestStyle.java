@@ -51,8 +51,8 @@ public class TestStyle extends TestCase
     {
         String[] names = style.getStyles();
         assertEquals(names.length, 2);
-        assertEquals(names[0], "test");
-        assertEquals(names[1], "test2");
+        assertEquals(names[0], "test.xsl");
+        assertEquals(names[1], "test2.xsl");
     }
 
     public void testGetFilename() throws Exception

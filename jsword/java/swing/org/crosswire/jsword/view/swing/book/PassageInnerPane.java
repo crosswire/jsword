@@ -98,7 +98,7 @@ public class PassageInnerPane extends JPanel
 
         BibleData data = version.getData(ref);
         SAXEventProvider provider = OsisUtil.getSAXEventProvider(data);
-        String text = style.applyStyleToString(provider, "simple");
+        String text = style.applyStyleToString(provider, "simple.xsl");
 
         txt_view.setText(text);
         

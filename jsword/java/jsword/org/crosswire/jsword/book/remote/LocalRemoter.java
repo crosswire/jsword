@@ -90,9 +90,15 @@ public class LocalRemoter implements Remoter
                 String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
                 BibleMetaData bmd = lookupBibleMetaData(uid);
                 Bible bible = bmd.getBible();
-                String word = method.getParameter(RemoteConstants.PARAM_WORD);
-                // PENDING(joe): do a better job of transferring the search string
-                Passage ref = bible.findPassage(new Search(word, false));
+
+                String word = method.getParameter(RemoteConstants.PARAM_FINDSTRING);
+                boolean match = Boolean.getBoolean(method.getParameter(RemoteConstants.PARAM_FINDMATCH));
+                String refstr = method.getParameter(RemoteConstants.PARAM_FINDRANGE);
+                Passage range = PassageFactory.createPassage(refstr);
+                Search search = new Search(word, match);
+                search.setRange(range);
+
+                Passage ref = bible.findPassage(search);
                 return Converter.convertPassageToDocument(ref);
             }
             else

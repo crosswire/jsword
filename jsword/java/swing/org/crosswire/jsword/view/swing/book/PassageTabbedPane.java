@@ -222,15 +222,15 @@ public class PassageTabbedPane extends JPanel
     /**
      * Accessor for the page size
      */
-    public void setPageSize(int page_size)
+    public static void setPageSize(int page_size)
     {
-        this.page_size = page_size;
+        PassageTabbedPane.page_size = page_size;
     }
 
     /**
      * Accessor for the page size
      */
-    public int getPageSize()
+    public static int getPageSize()
     {
         return page_size;
     }
@@ -254,7 +254,7 @@ public class PassageTabbedPane extends JPanel
     }
 
     // Should this be a static?
-    private int page_size = 30;
+    private static int page_size = 50;
 
     /** What is being displayed */
     private Passage whole = null;

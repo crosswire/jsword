@@ -1,8 +1,6 @@
 
 package org.crosswire.common.util;
 
-import java.net.URL;
-
 /**
  * This is the URL equivalent of FilenameFilter in the java.io package.
  * 
@@ -36,5 +34,5 @@ public interface URLFilter
      * @param name the name of the file.
      * @return <code>true</code> if and only if the name should be included in the file list; <code>false</code> otherwise.
      */
-    public boolean accept(URL url, String name);
+    public boolean accept(String name);
 }

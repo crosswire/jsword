@@ -2,6 +2,7 @@
 package org.crosswire.common.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -11,7 +12,10 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * The NetUtil class looks after general utility stuff around the
@@ -48,6 +52,14 @@ public class NetUtil
     {
     }
 
+    /**
+     * For directory listings
+     */
+    public static String INDEX_FILE = "index.txt";
+
+    /**
+     * URL separator
+     */
     public static final String separator = "/";
 
     /**
@@ -382,59 +394,124 @@ public class NetUtil
     }
 
     /**
-     * List the items available assuming that this URL points to a directory 
+     * List the items available assuming that this URL points to a directory.
+     * <p>There are 2 methods of calculating the answer - if the URL is a file:
+     * URL then we can just use File.list(), otherwise we ask for a file inside
+     * the directory called index.txt and assume the directories contents to be
+     * listed one per line.
+     * <p>If the URL is a file: URL then we execute both methods and warn if
+     * there is a difference, but returning the values from the index.txt
+     * method.
      */
     public static String[] list(URL url, URLFilter filter) throws MalformedURLException, IOException
     {
+        // We should probably cache this in some way? This is going
+        // to get very slow calling this often across a network
+        String[] reply = null;
+        try
+        {
+            URL search = NetUtil.lengthenURL(url, INDEX_FILE);
+            reply = listByIndexFile(search, filter); 
+        }
+        catch (FileNotFoundException ex)
+        {
+            // So the index file was not found - this isn't going to work over
+            // JNLP or other systems that can't use file: URLs. But it is silly
+            // to get to picky so if there is a solution using file: then just
+            // print a warning and carry on.
+            log.warn("index file for "+url.toExternalForm()+" was not found.");
+            if (url.getProtocol().equals("file"))
+            {
+                return listByFile(url, filter);
+            }
+        }
+
+        // if we can - check that the index file is up to date.
         if (url.getProtocol().equals("file"))
         {
-            File fdir = new File(url.getFile());
+            String[] files = listByFile(url, filter);
 
-            // Check that the dir exists
-            if (!fdir.isDirectory())
+            // Check that the answers are the same
+            if (files.length != reply.length)
             {
-                return null;
+                log.warn("index file for "+url.toExternalForm()+" has incorrect number of entries.");
             }
-
-            return fdir.list(new URLFilterFilenameFilter(filter, url));
-        }
-        else
-        {
-            // We should probably cache this in some way? This is going
-            // to get very slow calling this often across a network
-            URL search = NetUtil.lengthenURL(url, "list.txt");
-            InputStream in = search.openStream();
-            String contents = StringUtil.read(new InputStreamReader(in));
-
-            // We still need to do the filtering
-            List reply = new ArrayList();
-            String[] names = StringUtil.tokenize(contents, "\n");
-            for (int i=0;i<names.length;i++)
+            else
             {
-                // we need to trim, as we may have \r\n not \n
-                names[i]=names[i].trim();
-                if (filter.accept(url, names[i]))
-                    reply.add(names[i]);
+                List list = Arrays.asList(files);
+                for (int i=0; i<files.length; i++)
+                {
+                    if (!list.contains(files[i]))
+                        log.warn("file: based index found "+files[i]+" but this was not found using index file.");
+                }
             }
-
-            return (String[]) reply.toArray(new String[reply.size()]);
         }
+
+        return reply;
     }
 
+    /**
+     * 
+     * @param url
+     * @param filter
+     * @return String[]
+     * @throws MalformedURLException
+     */
+    public static String[] listByFile(URL url, URLFilter filter) throws MalformedURLException
+    {
+        File fdir = new File(url.getFile());
+        if (!fdir.isDirectory())
+        {
+            throw new MalformedURLException("URL "+url.toExternalForm()+" is not a directory");
+        }
+
+        return fdir.list(new URLFilterFilenameFilter(filter));
+    }
+
+    /**
+     * List all the files specified by the index file passed in.
+     * @return String[] Matching results.
+     */
+    public static String[] listByIndexFile(URL index, URLFilter filter) throws IOException
+    {
+        InputStream in = index.openStream();
+        String contents = StringUtil.read(new InputStreamReader(in));
+        
+        // We still need to do the filtering
+        List list = new ArrayList();
+        String[] names = StringUtil.tokenize(contents, "\n");
+        for (int i=0;i<names.length;i++)
+        {
+            // we need to trim, as we may have \r\n not \n
+            String name = names[i].trim();
+
+            // to be acceptable it must be a non-0 length string, not commented
+            // with #, not the index file itself and acceptable by the filter.
+            if (name.length() > 0
+                && !name.startsWith("#")
+                && !name.equals(INDEX_FILE)
+                && filter.accept(name))
+            {
+                list.add(name);
+            }
+        }
+
+        return (String[]) list.toArray(new String[list.size()]);
+    }
+    
     /**
      * Quick implementation of FilenameFilter that uses a URLFilter
      */
     public static class URLFilterFilenameFilter implements FilenameFilter
     {
-        public URLFilterFilenameFilter(URLFilter filter, URL base)
+        public URLFilterFilenameFilter(URLFilter filter)
         {
             this.filter = filter;
-            this.base = base;
         }
 
         public boolean accept(File arg0, String name)
         {
-            return filter.accept(base, name);
+            return filter.accept(name);
         }
         
         private URLFilter filter;
@@ -459,5 +536,13 @@ public class NetUtil
         NetUtil.cachedir = cachedir;
     }
 
+    /**
+     * Where are temporary files cached.
+     */
     private static File cachedir;
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(NetUtil.class);
 }

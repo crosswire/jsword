@@ -154,7 +154,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
 
         try
         {
-            String[] names = NetUtil.list(dir, new CustomURLFilter());
+            String[] names = NetUtil.list(dir, new CustomURLFilter(dir));
             if (names == null)
                 return new BibleMetaData[0];
 
@@ -176,7 +176,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         }
         catch (Exception ex)
         {
-            log.warn("failed to load ser Bibles: ", ex);
+            log.warn("failed to load "+name+" Bibles because source directory is not present: "+dir.toExternalForm());
             return new BibleMetaData[0];
         }
     }
@@ -297,7 +297,12 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
      */
     static class CustomURLFilter implements URLFilter
     {
-        public boolean accept(URL parent, String name)
+        public CustomURLFilter(URL parent)
+        {
+            this.parent = parent;
+        }
+
+        public boolean accept(String name)
         {
             try
             {
@@ -309,5 +314,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
                 return false;
             }
         }
+
+        private URL parent;
     }
 }

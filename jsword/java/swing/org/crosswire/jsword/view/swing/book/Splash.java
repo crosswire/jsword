@@ -136,7 +136,11 @@ public class Splash extends JWindow
 
         this.addMouseListener(new MouseAdapter()
         {
-            public void mousePressed(MouseEvent ev) { setVisible(false); dispose(); }
+            public void mousePressed(MouseEvent ev)
+            {
+                setVisible(false);
+                dispose();
+            }
         });
         this.setVisible(true);
     }

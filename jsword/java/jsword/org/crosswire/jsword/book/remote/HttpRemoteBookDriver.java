@@ -103,7 +103,7 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
             }
             catch (Exception ex)
             {
-                Reporter.informUser(HttpRemoteBookDriver.class, ex);
+                log.warn("Failed to start driver using: "+urls[i]);
             }
         }
 
