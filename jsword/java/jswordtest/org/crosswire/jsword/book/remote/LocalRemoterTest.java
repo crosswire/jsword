@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.util.Project;
@@ -52,7 +53,8 @@ public class LocalRemoterTest extends TestCase
 
     public void testGetBibles() throws Exception
     {
-        List lbmds = Books.getBooks(BookFilters.getFaster(Books.SPEED_SLOWEST));
+        BookFilter filter = BookFilters.both(BookFilters.getFaster(Books.SPEED_SLOWEST), BookFilters.getBibles());
+        List lbmds = Books.getBooks(filter);
         BibleMetaData[] names1 = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);

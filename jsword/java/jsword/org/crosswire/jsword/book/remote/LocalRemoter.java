@@ -8,6 +8,7 @@ import java.util.Map;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
@@ -65,7 +66,7 @@ public class LocalRemoter implements Remoter
         {
             if (RemoteConstants.METHOD_GETBIBLES.equals(methodname))
             {
-                List lbmds = Books.getBooks(BookFilters.getFaster(Books.SPEED_SLOWEST));
+                List lbmds = Books.getBooks(FILTER);
                 BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
                 
                 String[] uids = getUIDs(bmds);
@@ -174,6 +175,18 @@ public class LocalRemoter implements Remoter
         return "uid"+rand;
     }
 
+    /**
+     * The filter to select the bibles we are exporting
+     */
+    private static BookFilter FILTER = BookFilters.both(BookFilters.getFaster(Books.SPEED_SLOWEST), BookFilters.getBibles());
+
+    /**
+     * To help finding uids from bmds
+     */
     private Map bmd2uid = new HashMap();
+
+    /**
+     * To help finding bmds from uids
+     */
     private Map uid2bmd = new HashMap();
 }
