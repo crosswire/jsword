@@ -1,12 +1,14 @@
 package org.crosswire.jsword.book.search.parse;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
@@ -237,27 +239,67 @@ public class IndexSearcher implements Searcher
     {
         if (wordMap == null)
         {
-            Map classes = ClassUtil.getImplementorsMap(Word.class);
-            wordMap = new HashMap();
-
-            for (Iterator it = classes.keySet().iterator(); it.hasNext(); )
+            try
             {
-                String key = (String) it.next();
-                Class clazz = (Class) classes.get(key);
+                Properties prop = ResourceUtil.getProperties(Word.class);
 
-                try
+                wordMap = new HashMap();
+                preferredMap = new HashMap();
+    
+                for (Iterator it = prop.keySet().iterator(); it.hasNext(); )
                 {
-                    wordMap.put(key, clazz.newInstance());
+                    String key = (String) it.next();
+                    String value = prop.getProperty(key);
+
+                    if (key.startsWith(PACKAGE_NAME))
+                    {
+                        try
+                        {
+                            Class clazz = Class.forName(key);
+                            preferredMap.put(clazz, value);
+                        }
+                        catch (Exception ex)
+                        {
+                            log.error("can't add CommandWord: key=" + key + " Class=" + value, ex); //$NON-NLS-1$ //$NON-NLS-2$
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Class clazz = Class.forName(value);
+                            wordMap.put(key, clazz.newInstance());
+                        }
+                        catch (Exception ex)
+                        {
+                            log.error("can't add CommandWord: key=" + key + " Class=" + value, ex); //$NON-NLS-1$ //$NON-NLS-2$
+                        }
+                    }
                 }
-                catch (Exception ex)
-                {
-                    log.error("can't add CommandWord: key=" + key + " Class=" + clazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
-                }
+            }
+            catch (IOException ex)
+            {
+                log.fatal("Missing search words", ex); //$NON-NLS-1$
             }
         }
 
         return wordMap;
     }
+
+    /**
+     * Accessor for the cached list of known special lookup words
+     */
+    public static Map getPreferredMap()
+    {
+        // Check the maps have been created
+        getWordMap();
+        return preferredMap;
+    }
+
+    /**
+     * To distinguish command mappings from preferred mappings in Word.properties
+     */
+    private static final String PACKAGE_NAME = "org.crosswire.jsword.book.search.parse"; //$NON-NLS-1$
 
     /**
      * The log stream
@@ -268,6 +310,11 @@ public class IndexSearcher implements Searcher
      * The cache of known words
      */
     private static Map wordMap = null;
+
+    /**
+     * The cache of preferred symbols for the words
+     */
+    private static Map preferredMap = null;
 
     /**
      * The parsed version of the current string

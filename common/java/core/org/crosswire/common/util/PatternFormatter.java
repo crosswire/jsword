@@ -2,11 +2,15 @@ package org.crosswire.common.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.security.AccessController;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+import sun.security.action.GetPropertyAction;
 
 /**
  * Formats a log entry by pattern.
@@ -41,12 +45,12 @@ import java.util.logging.LogRecord;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class PatternFormatter extends Formatter
 {
-
     /**
      * Format the given LogRecord.
      * @param record the log record to be formatted.
@@ -72,32 +76,46 @@ public class PatternFormatter extends Formatter
                 assert false;
             }
         }
+
         String format = LogManager.getLogManager().getProperty(PatternFormatter.class.getName() + ".format"); //$NON-NLS-1$
         String loggerName = record.getLoggerName();
-        java.util.logging.Logger logger = LogManager.getLogManager().getLogger(loggerName);
-        for (java.util.logging.Logger aLogger = logger; aLogger != null; aLogger = aLogger.getParent())
+        Logger logger = LogManager.getLogManager().getLogger(loggerName);
+
+        for (Logger aLogger = logger; aLogger != null; aLogger = aLogger.getParent())
         {
             String property = null;
             String aLoggerName = aLogger.getName();
+
             if (aLoggerName != null)
             {
                 property = LogManager.getLogManager().getProperty(aLoggerName + ".format"); //$NON-NLS-1$
             }
+
             if (property != null)
             {
                 format = property;
                 break;
             }
         }
+
         if (format == null)
         {
             format = DEFAULT_FORMAT;
         }
+
         Object[] args =
         {
-                        dat, record.getLoggerName(), record.getLevel().getLocalizedName(), formatMessage(record), throwable, record.getSourceClassName(),
-                        record.getSourceMethodName(), new Long(record.getSequenceNumber()), lineSeparator
+            dat,  // 0
+            record.getLoggerName(), // 1
+            record.getLevel().getLocalizedName(), // 2
+            formatMessage(record), // 3
+            throwable, // 4
+            record.getSourceClassName(), // 5
+            record.getSourceMethodName(), // 6
+            new Long(record.getSequenceNumber()), // 7
+            lineSeparator // 8
         };
+
         StringBuffer text = new StringBuffer();
         formatter = new MessageFormat(format);
         formatter.format(args, text, null);
@@ -105,11 +123,10 @@ public class PatternFormatter extends Formatter
     }
 
     private Date dat = new Date();
-    private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8}"; //$NON-NLS-1$
+    private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8} {4}"; //$NON-NLS-1$
     private MessageFormat formatter;
 
     // Line separator string.  This is the value of the line.separator
     // property at the moment that the PatternFormatter was created.
-    private String lineSeparator = (String) java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator")); //$NON-NLS-1$
-
+    private String lineSeparator = (String) AccessController.doPrivileged(new GetPropertyAction("line.separator")); //$NON-NLS-1$
 }

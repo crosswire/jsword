@@ -66,7 +66,7 @@ public class ResourceUtil
 
         if (resource == null)
         {
-            throw new MissingResourceException(Msg.NO_RESOURCE.toString(clazz.getName()), clazz.getName(), resourceName);
+            throw new MissingResourceException(Msg.NO_RESOURCE.toString(resourceName), clazz.getName(), resourceName);
         }
 
         return resource;

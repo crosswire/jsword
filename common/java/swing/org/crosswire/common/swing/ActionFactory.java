@@ -81,10 +81,9 @@ public class ActionFactory implements ActionListener
 
         // Instead of cascading if/then/else
         // use reflecton to do a direct lookup and call
+        String methodName = METHOD_PREFIX + action;
         try
         {
-            String methodName = METHOD_PREFIX + action;
-
             try
             {
                 Method doMethod = bean.getClass().getDeclaredMethod(methodName, new Class[] { ActionEvent.class });
@@ -98,7 +97,7 @@ public class ActionFactory implements ActionListener
         }
         catch (Exception ex)
         {
-            log.error(UNEXPECTED_ERROR, ex);
+            log.error("Could not execute method " + bean.getClass().getName() + "." + methodName + "()", ex); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
     }
 
@@ -110,8 +109,26 @@ public class ActionFactory implements ActionListener
     public Action getAction(String key)
     {
         Action action = (CWAction) actions.get(key);
-        assert action != null : "Missing key: " + key; //$NON-NLS-1$
-        return action;
+
+        if (action != null)
+        {
+            return action;
+        }
+        else
+        {
+            log.info("Missing key: '" + key + "'. Known keys are: "+StringUtil.join(actions.keySet().toArray(), ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            assert false;
+
+            CWAction getOutOfJailFreeAction = new CWAction();
+
+            getOutOfJailFreeAction.putValue(Action.NAME, key);
+            getOutOfJailFreeAction.putValue(Action.SHORT_DESCRIPTION, MISSING_RESOURCE);
+            getOutOfJailFreeAction.putValue(Action.LONG_DESCRIPTION, MISSING_RESOURCE);
+            getOutOfJailFreeAction.setEnabled(true);
+            getOutOfJailFreeAction.addActionListener(this);
+
+            return getOutOfJailFreeAction;
+        }
     }
 
     /**
@@ -392,7 +409,15 @@ public class ActionFactory implements ActionListener
         return cwAction;
     }
 
-    private static final String UNEXPECTED_ERROR = "Stupid Programmer Error"; //$NON-NLS-1$
+    /**
+     * The tooltip for actions that we generate to paper around missing resources
+     * Normally we would assert, but in live we might want to limp on.
+     */
+    private static final String MISSING_RESOURCE = "Missing Resource"; //$NON-NLS-1$
+
+    /**
+     * The prefix to methods that we call
+     */
     private static final String METHOD_PREFIX = "do"; //$NON-NLS-1$
 
     /**
