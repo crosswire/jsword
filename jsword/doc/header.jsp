@@ -2,10 +2,10 @@
 
 <table width="100%">
   <tr align="center">
-    <td class="navbutton" align="center"><a href="http://www.crossire.org/">Crosswire</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crossire.org/sword/index.jsp">Sword Project</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crossire.org/sword/purpose">Purpose Statement</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crossire.org/sword/contact.jsp">Contact Us</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/">Crosswire</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/index.jsp">Sword Project</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/purpose">Purpose Statement</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/contact.jsp">Contact Us</a></td>
   </tr>
 </table>
 
@@ -23,7 +23,7 @@
     <td class="navbutton" align="center"><a href="devt.jsp">Getting Involved</a></td>
     <td class="navbutton" align="center"><a href="screenshot.jsp">Screenshots</a></td>      
     <td class="navbutton" align="center"><a href="download.jsp">Download</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crossire.org/sword/modules/index.jsp">Module Add-ins</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/modules/index.jsp">Module Add-ins</a></td>
   </tr>
 </table>
 
@@ -40,7 +40,7 @@
     <ul>
       <li><a href="screenshot.jsp">Screenshots</a></li>
       <li><a href="download.jsp">Download</a></li>
-      <li><a href="http://www.crossire.org/sword/modules/index.jsp">Modules</a></li>
+      <li><a href="http://www.crosswire.org/sword/modules/index.jsp">Modules</a></li>
     </ul>
     <p><a href="devt.jsp">Getting&nbsp;Involved</a></p>
     <ul>
@@ -51,11 +51,11 @@
     </ul>
     <p>Other&nbsp;Projects</p>
     <ul>
-      <li><a href="http://www.crossire.org/">Crosswire</a></li>
-      <li><a href="http://www.crossire.org/sword/index.jsp">Sword</a></li>
+      <li><a href="http://www.crosswire.org/">Crosswire</a></li>
+      <li><a href="http://www.crosswire.org/sword/index.jsp">Sword</a></li>
       <li><a href="http://www.sourceforge.net/projects/projectb/">Project-B</a></li>
     </ul>
-    <p><a href="http://www.crossire.org/sword/contact.jsp">Contact</a></p>
+    <p><a href="http://www.crosswire.org/sword/contact.jsp">Contact</a></p>
   </td>
 
     <td valign="top" class="maincell">

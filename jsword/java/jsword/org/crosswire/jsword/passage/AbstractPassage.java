@@ -320,7 +320,7 @@ public abstract class AbstractPassage implements Passage
         {
             if (!it.hasNext())
             {
-                String message = PassageUtil.getResource("passg_error_index", new Object[] { new Integer(offset) });
+                String message = PassageUtil.getResource("abstract_error_index", new Object[] { new Integer(offset), new Integer(countVerses()) });
                 throw new ArrayIndexOutOfBoundsException(message);
             }
 
@@ -345,7 +345,7 @@ public abstract class AbstractPassage implements Passage
         {
             if (!it.hasNext())
             {
-                String message = PassageUtil.getResource("passg_error_index", new Object[] { new Integer(offset) });
+                String message = PassageUtil.getResource("abstract_error_index", new Object[] { new Integer(offset), new Integer(countVerses()) });
                 throw new ArrayIndexOutOfBoundsException(message);
             }
 

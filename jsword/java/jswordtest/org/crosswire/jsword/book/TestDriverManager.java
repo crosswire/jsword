@@ -68,32 +68,21 @@ public class TestDriverManager extends TestCase
         BibleDriver[] drivers = BibleDriverManager.getDrivers();
 
         int before = drivers.length;
-        assertEquals(before, 3);
 
-        BibleDriverManager.unregisterDriver(drivers[0]);
-        BibleDriver[] d2 = BibleDriverManager.getDrivers();
-        int n2 = d2.length;
-        assertEquals(n2, 2);
-        BibleDriverManager.unregisterDriver(drivers[1]);
-        BibleDriver[] d3 = BibleDriverManager.getDrivers();
-        int n3 = d3.length;
-        assertEquals(n3, 1);
-        BibleDriverManager.unregisterDriver(drivers[2]);
-        BibleDriver[] d4 = BibleDriverManager.getDrivers();
-        int n4 = d4.length;
-        assertEquals(n4, 0);
+        for (int i=0; i<before; i++)
+        {
+            BibleDriverManager.unregisterDriver(drivers[i]);
 
-        BibleDriverManager.registerDriver(drivers[0]);
-        BibleDriver[] d5 = BibleDriverManager.getDrivers();
-        int n5 = d5.length;
-        assertEquals(n5, 1);
-        BibleDriverManager.registerDriver(drivers[1]);
-        BibleDriver[] d6 = BibleDriverManager.getDrivers();
-        int n6 = d6.length;
-        assertEquals(n6, 2);
-        BibleDriverManager.registerDriver(drivers[2]);
-        BibleDriver[] d7 = BibleDriverManager.getDrivers();
-        int n7 = d7.length;
-        assertEquals(n7, 3);
+            BibleDriver[] temp = BibleDriverManager.getDrivers();
+            assertEquals(before - i, temp.length + 1);
+        }
+
+        for (int i=0; i<before; i++)
+        {
+            BibleDriverManager.registerDriver(drivers[i]);
+
+            BibleDriver[] temp = BibleDriverManager.getDrivers();
+            assertEquals(i + 1, temp.length);
+        }
     }
 }
