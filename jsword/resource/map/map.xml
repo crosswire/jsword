@@ -1,0 +1,1334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+After 8 hours processing using:
+- LinkAttraction = 4
+- AntiGravity = 256
+- Defragging = 8
+- Rectangular = 32
+- AdjustOrigin = 42
+- Friction = 1
+-->
+<positions dimensions="2">
+  <book num="1" name="Gen">
+    <chapter num="1" dim0="0.30770007" dim1="0.5279647" />
+    <chapter num="2" dim0="0.2934073" dim1="0.5481662" />
+    <chapter num="3" dim0="0.27819717" dim1="0.5767383" />
+    <chapter num="4" dim0="0.31975886" dim1="0.60273784" />
+    <chapter num="5" dim0="0.33098578" dim1="0.629556" />
+    <chapter num="6" dim0="0.3080314" dim1="0.5962175" />
+    <chapter num="7" dim0="0.3091978" dim1="0.5834397" />
+    <chapter num="8" dim0="0.3354378" dim1="0.6118804" />
+    <chapter num="9" dim0="0.3566083" dim1="0.65721256" />
+    <chapter num="10" dim0="0.39243934" dim1="0.7491796" />
+    <chapter num="11" dim0="0.45977595" dim1="0.7400887" />
+    <chapter num="12" dim0="0.46378043" dim1="0.7141825" />
+    <chapter num="13" dim0="0.50538754" dim1="0.7017358" />
+    <chapter num="14" dim0="0.613252" dim1="0.6550012" />
+    <chapter num="15" dim0="0.57826406" dim1="0.65560806" />
+    <chapter num="16" dim0="0.56644565" dim1="0.6688685" />
+    <chapter num="17" dim0="0.5387839" dim1="0.6847787" />
+    <chapter num="18" dim0="0.54330975" dim1="0.6692633" />
+    <chapter num="19" dim0="0.5521113" dim1="0.6612699" />
+    <chapter num="20" dim0="0.5170902" dim1="0.6545265" />
+    <chapter num="21" dim0="0.46180218" dim1="0.6503427" />
+    <chapter num="22" dim0="0.41833124" dim1="0.65095043" />
+    <chapter num="23" dim0="0.40543753" dim1="0.66233706" />
+    <chapter num="24" dim0="0.443243" dim1="0.65824556" />
+    <chapter num="25" dim0="0.41415516" dim1="0.6752153" />
+    <chapter num="26" dim0="0.38883173" dim1="0.66387886" />
+    <chapter num="27" dim0="0.36170864" dim1="0.6406613" />
+    <chapter num="28" dim0="0.3759428" dim1="0.6541398" />
+    <chapter num="29" dim0="0.44783995" dim1="0.67335707" />
+    <chapter num="30" dim0="0.47884598" dim1="0.67475307" />
+    <chapter num="31" dim0="0.49211112" dim1="0.66906846" />
+    <chapter num="32" dim0="0.4941491" dim1="0.6908416" />
+    <chapter num="33" dim0="0.46138975" dim1="0.7540872" />
+    <chapter num="34" dim0="0.48476818" dim1="0.74464065" />
+    <chapter num="35" dim0="0.50383645" dim1="0.7291892" />
+    <chapter num="36" dim0="0.53530055" dim1="0.7573251" />
+    <chapter num="37" dim0="0.5464088" dim1="0.7417199" />
+    <chapter num="38" dim0="0.5994783" dim1="0.72303116" />
+    <chapter num="39" dim0="0.6304043" dim1="0.7038113" />
+    <chapter num="40" dim0="0.5847252" dim1="0.7035987" />
+    <chapter num="41" dim0="0.52785134" dim1="0.70911473" />
+    <chapter num="42" dim0="0.5323448" dim1="0.6977258" />
+    <chapter num="43" dim0="0.55570596" dim1="0.6894162" />
+    <chapter num="44" dim0="0.5559765" dim1="0.7115253" />
+    <chapter num="45" dim0="0.4992585" dim1="0.7494444" />
+    <chapter num="46" dim0="0.4841175" dim1="0.77533746" />
+    <chapter num="47" dim0="0.4613468" dim1="0.7806097" />
+    <chapter num="48" dim0="0.50194544" dim1="0.7849975" />
+    <chapter num="49" dim0="0.5134324" dim1="0.8032489" />
+    <chapter num="50" dim0="0.5129909" dim1="0.8261162" />
+  </book>
+  <book num="2" name="Exo">
+    <chapter num="1" dim0="0.58652395" dim1="0.85677665" />
+    <chapter num="2" dim0="0.51975554" dim1="0.7860652" />
+    <chapter num="3" dim0="0.49314767" dim1="0.7147428" />
+    <chapter num="4" dim0="0.44513875" dim1="0.7029404" />
+    <chapter num="5" dim0="0.43202594" dim1="0.68142575" />
+    <chapter num="6" dim0="0.34887" dim1="0.7206126" />
+    <chapter num="7" dim0="0.32398838" dim1="0.6910865" />
+    <chapter num="8" dim0="0.33395192" dim1="0.6594538" />
+    <chapter num="9" dim0="0.34054327" dim1="0.66841185" />
+    <chapter num="10" dim0="0.3463001" dim1="0.68174696" />
+    <chapter num="11" dim0="0.3598958" dim1="0.69567555" />
+    <chapter num="12" dim0="0.3732254" dim1="0.7272088" />
+    <chapter num="13" dim0="0.39008656" dim1="0.7300819" />
+    <chapter num="14" dim0="0.40998647" dim1="0.7488124" />
+    <chapter num="15" dim0="0.41210544" dim1="0.73012006" />
+    <chapter num="16" dim0="0.3594565" dim1="0.77071846" />
+    <chapter num="17" dim0="0.33034027" dim1="0.76376677" />
+    <chapter num="18" dim0="0.34423682" dim1="0.70509726" />
+    <chapter num="19" dim0="0.320075" dim1="0.64715433" />
+    <chapter num="20" dim0="0.27040133" dim1="0.6140314" />
+    <chapter num="21" dim0="0.25755852" dim1="0.60066175" />
+    <chapter num="22" dim0="0.2393302" dim1="0.5962518" />
+    <chapter num="23" dim0="0.22373345" dim1="0.6118577" />
+    <chapter num="24" dim0="0.22277632" dim1="0.6633301" />
+    <chapter num="25" dim0="0.23911516" dim1="0.6446934" />
+    <chapter num="26" dim0="0.24371263" dim1="0.6577433" />
+    <chapter num="27" dim0="0.240187" dim1="0.6846444" />
+    <chapter num="28" dim0="0.20467766" dim1="0.6684019" />
+    <chapter num="29" dim0="0.15346041" dim1="0.6912653" />
+    <chapter num="30" dim0="0.18400256" dim1="0.6829824" />
+    <chapter num="31" dim0="0.2536324" dim1="0.684971" />
+    <chapter num="32" dim0="0.2951833" dim1="0.6713801" />
+    <chapter num="33" dim0="0.30830637" dim1="0.68052953" />
+    <chapter num="34" dim0="0.30610105" dim1="0.70688075" />
+    <chapter num="35" dim0="0.3302476" dim1="0.7458932" />
+    <chapter num="36" dim0="0.3930155" dim1="0.77076787" />
+    <chapter num="37" dim0="0.4191209" dim1="0.8011269" />
+    <chapter num="38" dim0="0.38823336" dim1="0.82814777" />
+    <chapter num="39" dim0="0.2981898" dim1="0.79651475" />
+    <chapter num="40" dim0="0.14229958" dim1="0.7532128" />
+  </book>
+  <book num="3" name="Lev">
+    <chapter num="1" dim0="0.30800644" dim1="0.8385301" />
+    <chapter num="2" dim0="0.24794948" dim1="0.854601" />
+    <chapter num="3" dim0="0.23508753" dim1="0.83272755" />
+    <chapter num="4" dim0="0.22006086" dim1="0.8229565" />
+    <chapter num="5" dim0="0.19915216" dim1="0.8096972" />
+    <chapter num="6" dim0="0.20932679" dim1="0.7889684" />
+    <chapter num="7" dim0="0.20828877" dim1="0.77051425" />
+    <chapter num="8" dim0="0.17304169" dim1="0.7787754" />
+    <chapter num="9" dim0="0.18222935" dim1="0.7526549" />
+    <chapter num="10" dim0="0.17024067" dim1="0.7132496" />
+    <chapter num="11" dim0="0.1945402" dim1="0.64515984" />
+    <chapter num="12" dim0="0.2509931" dim1="0.631394" />
+    <chapter num="13" dim0="0.26988047" dim1="0.6328451" />
+    <chapter num="14" dim0="0.267342" dim1="0.6535408" />
+    <chapter num="15" dim0="0.2113575" dim1="0.63540757" />
+    <chapter num="16" dim0="0.16909644" dim1="0.65481955" />
+    <chapter num="17" dim0="0.18849872" dim1="0.62858313" />
+    <chapter num="18" dim0="0.1975207" dim1="0.6018281" />
+    <chapter num="19" dim0="0.21550626" dim1="0.5905559" />
+    <chapter num="20" dim0="0.262426" dim1="0.58728814" />
+    <chapter num="21" dim0="0.29343188" dim1="0.60722554" />
+    <chapter num="22" dim0="0.29607663" dim1="0.65499234" />
+    <chapter num="23" dim0="0.29151738" dim1="0.6949604" />
+    <chapter num="24" dim0="0.30864418" dim1="0.73357916" />
+    <chapter num="25" dim0="0.3580176" dim1="0.7346734" />
+    <chapter num="26" dim0="0.4148595" dim1="0.7076709" />
+    <chapter num="27" dim0="0.47600082" dim1="0.7286472" />
+  </book>
+  <book num="4" name="Num">
+    <chapter num="1" dim0="0.52901804" dim1="0.8881981" />
+    <chapter num="2" dim0="0.50028473" dim1="0.8659336" />
+    <chapter num="3" dim0="0.35726532" dim1="0.85784954" />
+    <chapter num="4" dim0="0.28878263" dim1="0.83535564" />
+    <chapter num="5" dim0="0.2697741" dim1="0.78025115" />
+    <chapter num="6" dim0="0.2389517" dim1="0.7812701" />
+    <chapter num="7" dim0="0.24513528" dim1="0.7967195" />
+    <chapter num="8" dim0="0.28621733" dim1="0.7827199" />
+    <chapter num="9" dim0="0.31264842" dim1="0.7731666" />
+    <chapter num="10" dim0="0.3457885" dim1="0.75549465" />
+    <chapter num="11" dim0="0.3194379" dim1="0.7232017" />
+    <chapter num="12" dim0="0.25721487" dim1="0.735784" />
+    <chapter num="13" dim0="0.29188985" dim1="0.71904266" />
+    <chapter num="14" dim0="0.2675522" dim1="0.6999217" />
+    <chapter num="15" dim0="0.20284678" dim1="0.72816366" />
+    <chapter num="16" dim0="0.19107105" dim1="0.7348012" />
+    <chapter num="17" dim0="0.22227795" dim1="0.7310958" />
+    <chapter num="18" dim0="0.22457154" dim1="0.70799685" />
+    <chapter num="19" dim0="0.201757" dim1="0.699227" />
+    <chapter num="20" dim0="0.26993024" dim1="0.7176102" />
+    <chapter num="21" dim0="0.4186387" dim1="0.68610257" />
+    <chapter num="22" dim0="0.50723535" dim1="0.6341421" />
+    <chapter num="23" dim0="0.53442574" dim1="0.6322657" />
+    <chapter num="24" dim0="0.5219721" dim1="0.668096" />
+    <chapter num="25" dim0="0.4353507" dim1="0.7511691" />
+    <chapter num="26" dim0="0.38152546" dim1="0.80254126" />
+    <chapter num="27" dim0="0.32295746" dim1="0.8104057" />
+    <chapter num="28" dim0="0.26419815" dim1="0.8364431" />
+    <chapter num="29" dim0="0.26244545" dim1="0.8206005" />
+    <chapter num="30" dim0="0.33903602" dim1="0.78149635" />
+    <chapter num="31" dim0="0.3582062" dim1="0.8132643" />
+    <chapter num="32" dim0="0.37211463" dim1="0.8282158" />
+    <chapter num="33" dim0="0.41354966" dim1="0.8353779" />
+    <chapter num="34" dim0="0.37955394" dim1="0.8777664" />
+    <chapter num="35" dim0="0.37642512" dim1="0.8470288" />
+    <chapter num="36" dim0="0.33925232" dim1="0.8812987" />
+  </book>
+  <book num="5" name="Deu">
+    <chapter num="1" dim0="0.60972846" dim1="0.63903207" />
+    <chapter num="2" dim0="0.5829917" dim1="0.6722996" />
+    <chapter num="3" dim0="0.5931605" dim1="0.6697944" />
+    <chapter num="4" dim0="0.5655663" dim1="0.6424166" />
+    <chapter num="5" dim0="0.5231328" dim1="0.63508373" />
+    <chapter num="6" dim0="0.4851196" dim1="0.63483256" />
+    <chapter num="7" dim0="0.4510317" dim1="0.6205946" />
+    <chapter num="8" dim0="0.42859605" dim1="0.61322546" />
+    <chapter num="9" dim0="0.4319057" dim1="0.62196934" />
+    <chapter num="10" dim0="0.41570446" dim1="0.6291377" />
+    <chapter num="11" dim0="0.3793204" dim1="0.6145972" />
+    <chapter num="12" dim0="0.34896272" dim1="0.596629" />
+    <chapter num="13" dim0="0.34621194" dim1="0.5652711" />
+    <chapter num="14" dim0="0.30257925" dim1="0.56680804" />
+    <chapter num="15" dim0="0.30877587" dim1="0.55195326" />
+    <chapter num="16" dim0="0.32428554" dim1="0.54619867" />
+    <chapter num="17" dim0="0.37791237" dim1="0.5303633" />
+    <chapter num="18" dim0="0.40419212" dim1="0.52794266" />
+    <chapter num="19" dim0="0.40709138" dim1="0.53898364" />
+    <chapter num="20" dim0="0.42136443" dim1="0.54939336" />
+    <chapter num="21" dim0="0.40374905" dim1="0.5688616" />
+    <chapter num="22" dim0="0.36015847" dim1="0.590349" />
+    <chapter num="23" dim0="0.33688843" dim1="0.58492965" />
+    <chapter num="24" dim0="0.33011052" dim1="0.57779294" />
+    <chapter num="25" dim0="0.35866684" dim1="0.5713012" />
+    <chapter num="26" dim0="0.3779609" dim1="0.57244545" />
+    <chapter num="27" dim0="0.38990277" dim1="0.5733131" />
+    <chapter num="28" dim0="0.37635684" dim1="0.5940419" />
+    <chapter num="29" dim0="0.39128315" dim1="0.6287523" />
+    <chapter num="30" dim0="0.40083748" dim1="0.64562905" />
+    <chapter num="31" dim0="0.38965535" dim1="0.6987668" />
+    <chapter num="32" dim0="0.39946616" dim1="0.6980311" />
+    <chapter num="33" dim0="0.3679668" dim1="0.7103156" />
+    <chapter num="34" dim0="0.25972483" dim1="0.7597765" />
+  </book>
+  <book num="6" name="Jos">
+    <chapter num="1" dim0="0.2848312" dim1="0.7404506" />
+    <chapter num="2" dim0="0.43066943" dim1="0.72766846" />
+    <chapter num="3" dim0="0.46927917" dim1="0.7700795" />
+    <chapter num="4" dim0="0.46942672" dim1="0.79977596" />
+    <chapter num="5" dim0="0.509077" dim1="0.7623648" />
+    <chapter num="6" dim0="0.5870581" dim1="0.6881866" />
+    <chapter num="7" dim0="0.6294586" dim1="0.6506489" />
+    <chapter num="8" dim0="0.67358553" dim1="0.6570112" />
+    <chapter num="9" dim0="0.6815286" dim1="0.6810659" />
+    <chapter num="10" dim0="0.70083874" dim1="0.70322293" />
+    <chapter num="11" dim0="0.6372787" dim1="0.77174133" />
+    <chapter num="12" dim0="0.6135605" dim1="0.8094706" />
+    <chapter num="13" dim0="0.4895736" dim1="0.8560964" />
+    <chapter num="14" dim0="0.45274276" dim1="0.84895796" />
+    <chapter num="15" dim0="0.45855883" dim1="0.864837" />
+    <chapter num="16" dim0="0.43374804" dim1="0.8930463" />
+    <chapter num="17" dim0="0.4128271" dim1="0.89622855" />
+    <chapter num="18" dim0="0.3979515" dim1="0.89095914" />
+    <chapter num="19" dim0="0.41322428" dim1="0.8739917" />
+    <chapter num="20" dim0="0.43992576" dim1="0.82619816" />
+    <chapter num="21" dim0="0.43528035" dim1="0.81291705" />
+    <chapter num="22" dim0="0.42567974" dim1="0.78079337" />
+    <chapter num="23" dim0="0.50653243" dim1="0.68167394" />
+    <chapter num="24" dim0="0.5981053" dim1="0.6259786" />
+  </book>
+  <book num="7" name="Judg">
+    <chapter num="1" dim0="0.7475432" dim1="0.525936" />
+    <chapter num="2" dim0="0.65979123" dim1="0.63034654" />
+    <chapter num="3" dim0="0.57394445" dim1="0.71632046" />
+    <chapter num="4" dim0="0.5695784" dim1="0.7307294" />
+    <chapter num="5" dim0="0.62195104" dim1="0.68586254" />
+    <chapter num="6" dim0="0.63853323" dim1="0.6652298" />
+    <chapter num="7" dim0="0.65976506" dim1="0.66771555" />
+    <chapter num="8" dim0="0.67052454" dim1="0.7020409" />
+    <chapter num="9" dim0="0.63904965" dim1="0.7355303" />
+    <chapter num="10" dim0="0.5519583" dim1="0.7866105" />
+    <chapter num="11" dim0="0.5342385" dim1="0.8010318" />
+    <chapter num="12" dim0="0.55194515" dim1="0.8072363" />
+    <chapter num="13" dim0="0.54905564" dim1="0.76834846" />
+    <chapter num="14" dim0="0.57900375" dim1="0.7612225" />
+    <chapter num="15" dim0="0.6414704" dim1="0.75293374" />
+    <chapter num="16" dim0="0.6592749" dim1="0.7217884" />
+    <chapter num="17" dim0="0.63981616" dim1="0.69227964" />
+    <chapter num="18" dim0="0.60122865" dim1="0.70033884" />
+    <chapter num="19" dim0="0.54029167" dim1="0.72500247" />
+    <chapter num="20" dim0="0.44116363" dim1="0.7739215" />
+    <chapter num="21" dim0="0.37128907" dim1="0.7814053" />
+  </book>
+  <book num="8" name="Rut">
+    <chapter num="1" dim0="0.5877154" dim1="0.64277637" />
+    <chapter num="2" dim0="0.5665872" dim1="0.69346476" />
+    <chapter num="3" dim0="0.5860414" dim1="0.72775084" />
+    <chapter num="4" dim0="0.67460245" dim1="0.76518035" />
+  </book>
+  <book num="9" name="1Sa">
+    <chapter num="1" dim0="0.659213" dim1="0.54371613" />
+    <chapter num="2" dim0="0.6542414" dim1="0.5775579" />
+    <chapter num="3" dim0="0.6527991" dim1="0.5999739" />
+    <chapter num="4" dim0="0.672061" dim1="0.6425366" />
+    <chapter num="5" dim0="0.66728866" dim1="0.6806003" />
+    <chapter num="6" dim0="0.6116636" dim1="0.7406575" />
+    <chapter num="7" dim0="0.6227669" dim1="0.73532563" />
+    <chapter num="8" dim0="0.7002179" dim1="0.6792107" />
+    <chapter num="9" dim0="0.6939504" dim1="0.6454425" />
+    <chapter num="10" dim0="0.6669432" dim1="0.61688197" />
+    <chapter num="11" dim0="0.69121975" dim1="0.63506114" />
+    <chapter num="12" dim0="0.71927196" dim1="0.6325179" />
+    <chapter num="13" dim0="0.7084147" dim1="0.6707547" />
+    <chapter num="14" dim0="0.725298" dim1="0.6571741" />
+    <chapter num="15" dim0="0.756244" dim1="0.63792455" />
+    <chapter num="16" dim0="0.75918543" dim1="0.68753326" />
+    <chapter num="17" dim0="0.7904042" dim1="0.7686405" />
+    <chapter num="18" dim0="0.8267956" dim1="0.7804816" />
+    <chapter num="19" dim0="0.84822494" dim1="0.76882625" />
+    <chapter num="20" dim0="0.86343616" dim1="0.73625857" />
+    <chapter num="21" dim0="0.867899" dim1="0.70952433" />
+    <chapter num="22" dim0="0.8858147" dim1="0.6837463" />
+    <chapter num="23" dim0="0.87123954" dim1="0.6953617" />
+    <chapter num="24" dim0="0.85528064" dim1="0.67800564" />
+    <chapter num="25" dim0="0.83892155" dim1="0.69511765" />
+    <chapter num="26" dim0="0.8329213" dim1="0.7220825" />
+    <chapter num="27" dim0="0.80628264" dim1="0.7391451" />
+    <chapter num="28" dim0="0.7553318" dim1="0.7336798" />
+    <chapter num="29" dim0="0.746613" dim1="0.78492844" />
+    <chapter num="30" dim0="0.7225171" dim1="0.8327433" />
+    <chapter num="31" dim0="0.654587" dim1="0.87161547" />
+  </book>
+  <book num="10" name="2Sa">
+    <chapter num="1" dim0="0.772845" dim1="0.84694713" />
+    <chapter num="2" dim0="0.79366285" dim1="0.8127219" />
+    <chapter num="3" dim0="0.8068252" dim1="0.79418254" />
+    <chapter num="4" dim0="0.8105092" dim1="0.76219416" />
+    <chapter num="5" dim0="0.7966558" dim1="0.7496236" />
+    <chapter num="6" dim0="0.7822185" dim1="0.7119542" />
+    <chapter num="7" dim0="0.77700204" dim1="0.6617991" />
+    <chapter num="8" dim0="0.7995041" dim1="0.69399333" />
+    <chapter num="9" dim0="0.8110342" dim1="0.6906922" />
+    <chapter num="10" dim0="0.77920717" dim1="0.7313485" />
+    <chapter num="11" dim0="0.8173582" dim1="0.7134799" />
+    <chapter num="12" dim0="0.83030236" dim1="0.6686461" />
+    <chapter num="13" dim0="0.8844243" dim1="0.6280359" />
+    <chapter num="14" dim0="0.9000477" dim1="0.57090765" />
+    <chapter num="15" dim0="0.8869197" dim1="0.5746064" />
+    <chapter num="16" dim0="0.867809" dim1="0.5990573" />
+    <chapter num="17" dim0="0.8430597" dim1="0.61013985" />
+    <chapter num="18" dim0="0.86566514" dim1="0.58328336" />
+    <chapter num="19" dim0="0.8856745" dim1="0.5986372" />
+    <chapter num="20" dim0="0.863565" dim1="0.6313615" />
+    <chapter num="21" dim0="0.8361397" dim1="0.6537759" />
+    <chapter num="22" dim0="0.7755425" dim1="0.60749924" />
+    <chapter num="23" dim0="0.7954705" dim1="0.603519" />
+    <chapter num="24" dim0="0.8305498" dim1="0.56497824" />
+  </book>
+  <book num="11" name="1Ki">
+    <chapter num="1" dim0="0.9345735" dim1="0.47249633" />
+    <chapter num="2" dim0="0.899252" dim1="0.535523" />
+    <chapter num="3" dim0="0.8499997" dim1="0.5839087" />
+    <chapter num="4" dim0="0.81877846" dim1="0.62744725" />
+    <chapter num="5" dim0="0.759776" dim1="0.7060408" />
+    <chapter num="6" dim0="0.6987063" dim1="0.76722187" />
+    <chapter num="7" dim0="0.66692346" dim1="0.7858217" />
+    <chapter num="8" dim0="0.71109676" dim1="0.71687615" />
+    <chapter num="9" dim0="0.7606321" dim1="0.6693009" />
+    <chapter num="10" dim0="0.8041592" dim1="0.6380362" />
+    <chapter num="11" dim0="0.8018512" dim1="0.6191126" />
+    <chapter num="12" dim0="0.8014236" dim1="0.5630129" />
+    <chapter num="13" dim0="0.7816164" dim1="0.5129778" />
+    <chapter num="14" dim0="0.8199386" dim1="0.49763846" />
+    <chapter num="15" dim0="0.8498586" dim1="0.4892186" />
+    <chapter num="16" dim0="0.8201056" dim1="0.47758746" />
+    <chapter num="17" dim0="0.74973965" dim1="0.44749022" />
+    <chapter num="18" dim0="0.73871607" dim1="0.43130192" />
+    <chapter num="19" dim0="0.75622624" dim1="0.42174608" />
+    <chapter num="20" dim0="0.8004136" dim1="0.40982625" />
+    <chapter num="21" dim0="0.8434411" dim1="0.39384237" />
+    <chapter num="22" dim0="0.9217765" dim1="0.39639252" />
+  </book>
+  <book num="12" name="2Ki">
+    <chapter num="1" dim0="0.75195295" dim1="0.35347444" />
+    <chapter num="2" dim0="0.74096555" dim1="0.41668323" />
+    <chapter num="3" dim0="0.7607713" dim1="0.4531726" />
+    <chapter num="4" dim0="0.7308919" dim1="0.48997924" />
+    <chapter num="5" dim0="0.7672039" dim1="0.4871055" />
+    <chapter num="6" dim0="0.80800194" dim1="0.4618505" />
+    <chapter num="7" dim0="0.833593" dim1="0.432472" />
+    <chapter num="8" dim0="0.8710062" dim1="0.4310064" />
+    <chapter num="9" dim0="0.85999644" dim1="0.43545568" />
+    <chapter num="10" dim0="0.8449526" dim1="0.5043518" />
+    <chapter num="11" dim0="0.8623537" dim1="0.532732" />
+    <chapter num="12" dim0="0.85284424" dim1="0.5497683" />
+    <chapter num="13" dim0="0.8702006" dim1="0.5487763" />
+    <chapter num="14" dim0="0.8824673" dim1="0.52019787" />
+    <chapter num="15" dim0="0.86715686" dim1="0.515478" />
+    <chapter num="16" dim0="0.8245829" dim1="0.5322905" />
+    <chapter num="17" dim0="0.79182935" dim1="0.49284452" />
+    <chapter num="18" dim0="0.82691944" dim1="0.38882118" />
+    <chapter num="19" dim0="0.82752335" dim1="0.3274998" />
+    <chapter num="20" dim0="0.83987546" dim1="0.33410972" />
+    <chapter num="21" dim0="0.8499558" dim1="0.34658477" />
+    <chapter num="22" dim0="0.86069745" dim1="0.31151277" />
+    <chapter num="23" dim0="0.87720484" dim1="0.3074133" />
+    <chapter num="24" dim0="0.8973936" dim1="0.31581968" />
+    <chapter num="25" dim0="0.91468513" dim1="0.3441416" />
+  </book>
+  <book num="13" name="1Ch">
+    <chapter num="1" dim0="0.5835759" dim1="0.8358073" />
+    <chapter num="2" dim0="0.5693947" dim1="0.8222307" />
+    <chapter num="3" dim0="0.619891" dim1="0.77169687" />
+    <chapter num="4" dim0="0.56719095" dim1="0.7612469" />
+    <chapter num="5" dim0="0.6066734" dim1="0.7837747" />
+    <chapter num="6" dim0="0.54743207" dim1="0.83977216" />
+    <chapter num="7" dim0="0.53984636" dim1="0.8593344" />
+    <chapter num="8" dim0="0.5625866" dim1="0.8571538" />
+    <chapter num="9" dim0="0.6323709" dim1="0.83110327" />
+    <chapter num="10" dim0="0.69262683" dim1="0.8517173" />
+    <chapter num="11" dim0="0.71470225" dim1="0.8193871" />
+    <chapter num="12" dim0="0.68975997" dim1="0.8295038" />
+    <chapter num="13" dim0="0.7035545" dim1="0.79077965" />
+    <chapter num="14" dim0="0.7299639" dim1="0.7815312" />
+    <chapter num="15" dim0="0.7092361" dim1="0.749285" />
+    <chapter num="16" dim0="0.68796325" dim1="0.7132241" />
+    <chapter num="17" dim0="0.73107195" dim1="0.7089959" />
+    <chapter num="18" dim0="0.7629359" dim1="0.76117975" />
+    <chapter num="19" dim0="0.73936987" dim1="0.802974" />
+    <chapter num="20" dim0="0.7580767" dim1="0.7982157" />
+    <chapter num="21" dim0="0.72528714" dim1="0.755751" />
+    <chapter num="22" dim0="0.66143143" dim1="0.75417066" />
+    <chapter num="23" dim0="0.56931573" dim1="0.7958436" />
+    <chapter num="24" dim0="0.53753346" dim1="0.81472796" />
+    <chapter num="25" dim0="0.5920597" dim1="0.7774053" />
+    <chapter num="26" dim0="0.673332" dim1="0.73784435" />
+    <chapter num="27" dim0="0.7299892" dim1="0.692437" />
+    <chapter num="28" dim0="0.7728395" dim1="0.63142246" />
+    <chapter num="29" dim0="0.8052464" dim1="0.5904462" />
+  </book>
+  <book num="14" name="2Ch">
+    <chapter num="1" dim0="0.80967957" dim1="0.65590256" />
+    <chapter num="2" dim0="0.73551244" dim1="0.74353546" />
+    <chapter num="3" dim0="0.65427536" dim1="0.8323769" />
+    <chapter num="4" dim0="0.62319773" dim1="0.845006" />
+    <chapter num="5" dim0="0.65519905" dim1="0.80339056" />
+    <chapter num="6" dim0="0.6962956" dim1="0.73395324" />
+    <chapter num="7" dim0="0.74414635" dim1="0.6866281" />
+    <chapter num="8" dim0="0.790465" dim1="0.6719943" />
+    <chapter num="9" dim0="0.8378509" dim1="0.63406247" />
+    <chapter num="10" dim0="0.8265632" dim1="0.5847848" />
+    <chapter num="11" dim0="0.8117383" dim1="0.5187404" />
+    <chapter num="12" dim0="0.80548155" dim1="0.49516195" />
+    <chapter num="13" dim0="0.76494354" dim1="0.5074402" />
+    <chapter num="14" dim0="0.7435917" dim1="0.49792778" />
+    <chapter num="15" dim0="0.7548344" dim1="0.47518444" />
+    <chapter num="16" dim0="0.8192039" dim1="0.4474762" />
+    <chapter num="17" dim0="0.8139242" dim1="0.426418" />
+    <chapter num="18" dim0="0.82061374" dim1="0.40197983" />
+    <chapter num="19" dim0="0.80071306" dim1="0.3830974" />
+    <chapter num="20" dim0="0.8203796" dim1="0.37284037" />
+    <chapter num="21" dim0="0.87592965" dim1="0.39618912" />
+    <chapter num="22" dim0="0.9136045" dim1="0.43006864" />
+    <chapter num="23" dim0="0.9067649" dim1="0.45161492" />
+    <chapter num="24" dim0="0.87812227" dim1="0.45333531" />
+    <chapter num="25" dim0="0.8701513" dim1="0.48171446" />
+    <chapter num="26" dim0="0.833758" dim1="0.5200066" />
+    <chapter num="27" dim0="0.8133616" dim1="0.555029" />
+    <chapter num="28" dim0="0.7725471" dim1="0.5638241" />
+    <chapter num="29" dim0="0.6868807" dim1="0.61482185" />
+    <chapter num="30" dim0="0.7223478" dim1="0.5719843" />
+    <chapter num="31" dim0="0.7329724" dim1="0.54305387" />
+    <chapter num="32" dim0="0.7673446" dim1="0.46805573" />
+    <chapter num="33" dim0="0.7785253" dim1="0.42226842" />
+    <chapter num="34" dim0="0.8032107" dim1="0.36504766" />
+    <chapter num="35" dim0="0.81712514" dim1="0.3563999" />
+    <chapter num="36" dim0="0.8605927" dim1="0.27816296" />
+  </book>
+  <book num="15" name="Ezr">
+    <chapter num="1" dim0="0.87163866" dim1="0.34303966" />
+    <chapter num="2" dim0="0.75039583" dim1="0.54531264" />
+    <chapter num="3" dim0="0.7447915" dim1="0.5723392" />
+    <chapter num="4" dim0="0.7954822" dim1="0.54271805" />
+    <chapter num="5" dim0="0.7902142" dim1="0.5322316" />
+    <chapter num="6" dim0="0.77117914" dim1="0.5501652" />
+    <chapter num="7" dim0="0.76014906" dim1="0.5835374" />
+    <chapter num="8" dim0="0.71276176" dim1="0.6555714" />
+    <chapter num="9" dim0="0.64749956" dim1="0.71378535" />
+    <chapter num="10" dim0="0.596124" dim1="0.79903483" />
+  </book>
+  <book num="16" name="Neh">
+    <chapter num="1" dim0="0.64170873" dim1="0.7945229" />
+    <chapter num="2" dim0="0.7435175" dim1="0.6686685" />
+    <chapter num="3" dim0="0.7417858" dim1="0.63584983" />
+    <chapter num="4" dim0="0.7225326" dim1="0.6157347" />
+    <chapter num="5" dim0="0.7060246" dim1="0.6063722" />
+    <chapter num="6" dim0="0.71409845" dim1="0.59662926" />
+    <chapter num="7" dim0="0.64950705" dim1="0.6800078" />
+    <chapter num="8" dim0="0.64527583" dim1="0.64877856" />
+    <chapter num="9" dim0="0.6477066" dim1="0.63537943" />
+    <chapter num="10" dim0="0.69880897" dim1="0.62145746" />
+    <chapter num="11" dim0="0.73909354" dim1="0.61587757" />
+    <chapter num="12" dim0="0.7575483" dim1="0.6054793" />
+    <chapter num="13" dim0="0.7739465" dim1="0.58228034" />
+  </book>
+  <book num="17" name="Est">
+    <chapter num="1" dim0="0.9161668" dim1="0.6029253" />
+    <chapter num="2" dim0="0.9298755" dim1="0.58591706" />
+    <chapter num="3" dim0="0.9306942" dim1="0.5622756" />
+    <chapter num="4" dim0="0.9340403" dim1="0.542508" />
+    <chapter num="5" dim0="0.9329783" dim1="0.52094525" />
+    <chapter num="6" dim0="0.91985136" dim1="0.49489713" />
+    <chapter num="7" dim0="0.9002218" dim1="0.4858481" />
+    <chapter num="8" dim0="0.8469433" dim1="0.4679479" />
+    <chapter num="9" dim0="0.78354144" dim1="0.4432159" />
+    <chapter num="10" dim0="0.78277314" dim1="0.38556272" />
+  </book>
+  <book num="18" name="Job">
+    <chapter num="1" dim0="0.71157044" dim1="0.5511931" />
+    <chapter num="2" dim0="0.6016422" dim1="0.5414109" />
+    <chapter num="3" dim0="0.48002517" dim1="0.53926605" />
+    <chapter num="4" dim0="0.42010996" dim1="0.5116097" />
+    <chapter num="5" dim0="0.35658202" dim1="0.49715427" />
+    <chapter num="6" dim0="0.36549553" dim1="0.45158374" />
+    <chapter num="7" dim0="0.36243904" dim1="0.4076976" />
+    <chapter num="8" dim0="0.3742628" dim1="0.39486337" />
+    <chapter num="9" dim0="0.3754209" dim1="0.40732527" />
+    <chapter num="10" dim0="0.36358866" dim1="0.43145594" />
+    <chapter num="11" dim0="0.32633454" dim1="0.4397297" />
+    <chapter num="12" dim0="0.33902648" dim1="0.43133122" />
+    <chapter num="13" dim0="0.33175978" dim1="0.41728067" />
+    <chapter num="14" dim0="0.34961295" dim1="0.4187403" />
+    <chapter num="15" dim0="0.3807532" dim1="0.43834275" />
+    <chapter num="16" dim0="0.41710183" dim1="0.4590884" />
+    <chapter num="17" dim0="0.42756346" dim1="0.48764792" />
+    <chapter num="18" dim0="0.41890332" dim1="0.49105287" />
+    <chapter num="19" dim0="0.43695325" dim1="0.47722718" />
+    <chapter num="20" dim0="0.4097531" dim1="0.47215563" />
+    <chapter num="21" dim0="0.3734615" dim1="0.4875212" />
+    <chapter num="22" dim0="0.32609105" dim1="0.49286392" />
+    <chapter num="23" dim0="0.3198531" dim1="0.4765985" />
+    <chapter num="24" dim0="0.3015374" dim1="0.4541486" />
+    <chapter num="25" dim0="0.2871624" dim1="0.4631225" />
+    <chapter num="26" dim0="0.3319971" dim1="0.45778608" />
+    <chapter num="27" dim0="0.39342445" dim1="0.46044168" />
+    <chapter num="28" dim0="0.43684524" dim1="0.44844273" />
+    <chapter num="29" dim0="0.4565034" dim1="0.46342838" />
+    <chapter num="30" dim0="0.4654299" dim1="0.44400728" />
+    <chapter num="31" dim0="0.4669423" dim1="0.4063279" />
+    <chapter num="32" dim0="0.46646017" dim1="0.3427816" />
+    <chapter num="33" dim0="0.45311934" dim1="0.31335533" />
+    <chapter num="34" dim0="0.4283688" dim1="0.3049186" />
+    <chapter num="35" dim0="0.417187" dim1="0.30079868" />
+    <chapter num="36" dim0="0.40605617" dim1="0.31695658" />
+    <chapter num="37" dim0="0.3881045" dim1="0.3343785" />
+    <chapter num="38" dim0="0.424722" dim1="0.34306592" />
+    <chapter num="39" dim0="0.4512796" dim1="0.3770774" />
+    <chapter num="40" dim0="0.4689922" dim1="0.42560717" />
+    <chapter num="41" dim0="0.4467281" dim1="0.545487" />
+    <chapter num="42" dim0="0.45109874" dim1="0.7228389" />
+  </book>
+  <book num="19" name="Psa">
+    <chapter num="1" dim0="0.42800358" dim1="0.32252008" />
+    <chapter num="2" dim0="0.50294733" dim1="0.37357277" />
+    <chapter num="3" dim0="0.5276889" dim1="0.4260257" />
+    <chapter num="4" dim0="0.5218886" dim1="0.47373006" />
+    <chapter num="5" dim0="0.5205838" dim1="0.52236074" />
+    <chapter num="6" dim0="0.555307" dim1="0.54443103" />
+    <chapter num="7" dim0="0.5688533" dim1="0.53628296" />
+    <chapter num="8" dim0="0.5747556" dim1="0.5192751" />
+    <chapter num="9" dim0="0.55021167" dim1="0.5147096" />
+    <chapter num="10" dim0="0.48939806" dim1="0.5323851" />
+    <chapter num="11" dim0="0.43788993" dim1="0.5366378" />
+    <chapter num="12" dim0="0.40316355" dim1="0.5538568" />
+    <chapter num="13" dim0="0.42102137" dim1="0.58536154" />
+    <chapter num="14" dim0="0.47852638" dim1="0.62072116" />
+    <chapter num="15" dim0="0.5010664" dim1="0.62278426" />
+    <chapter num="16" dim0="0.53973585" dim1="0.6151192" />
+    <chapter num="17" dim0="0.5712934" dim1="0.59529847" />
+    <chapter num="18" dim0="0.59049773" dim1="0.6042674" />
+    <chapter num="19" dim0="0.5817212" dim1="0.6260901" />
+    <chapter num="20" dim0="0.60532206" dim1="0.6088714" />
+    <chapter num="21" dim0="0.6420697" dim1="0.5874165" />
+    <chapter num="22" dim0="0.6702099" dim1="0.5794079" />
+    <chapter num="23" dim0="0.6982304" dim1="0.5774199" />
+    <chapter num="24" dim0="0.72793186" dim1="0.5582575" />
+    <chapter num="25" dim0="0.6870759" dim1="0.57017314" />
+    <chapter num="26" dim0="0.6888294" dim1="0.5605341" />
+    <chapter num="27" dim0="0.6728892" dim1="0.5535071" />
+    <chapter num="28" dim0="0.6460239" dim1="0.55564713" />
+    <chapter num="29" dim0="0.6310713" dim1="0.5188395" />
+    <chapter num="30" dim0="0.63775665" dim1="0.4984814" />
+    <chapter num="31" dim0="0.59862256" dim1="0.49514166" />
+    <chapter num="32" dim0="0.5212776" dim1="0.5079734" />
+    <chapter num="33" dim0="0.50988895" dim1="0.48639834" />
+    <chapter num="34" dim0="0.5062458" dim1="0.46547097" />
+    <chapter num="35" dim0="0.5095911" dim1="0.45429313" />
+    <chapter num="36" dim0="0.5217866" dim1="0.447417" />
+    <chapter num="37" dim0="0.51146245" dim1="0.43878537" />
+    <chapter num="38" dim0="0.5322198" dim1="0.4693823" />
+    <chapter num="39" dim0="0.5508116" dim1="0.4818222" />
+    <chapter num="40" dim0="0.57205856" dim1="0.47494626" />
+    <chapter num="41" dim0="0.58700097" dim1="0.46117613" />
+    <chapter num="42" dim0="0.5575685" dim1="0.44687057" />
+    <chapter num="43" dim0="0.57138497" dim1="0.44181797" />
+    <chapter num="44" dim0="0.62471867" dim1="0.47026387" />
+    <chapter num="45" dim0="0.67920774" dim1="0.4890758" />
+    <chapter num="46" dim0="0.6572759" dim1="0.45797342" />
+    <chapter num="47" dim0="0.65576667" dim1="0.48038715" />
+    <chapter num="48" dim0="0.6061222" dim1="0.47378808" />
+    <chapter num="49" dim0="0.53738016" dim1="0.50023013" />
+    <chapter num="50" dim0="0.5098488" dim1="0.53260463" />
+    <chapter num="51" dim0="0.45009875" dim1="0.5731126" />
+    <chapter num="52" dim0="0.481824" dim1="0.58377343" />
+    <chapter num="53" dim0="0.5065742" dim1="0.57008636" />
+    <chapter num="54" dim0="0.5259331" dim1="0.5436844" />
+    <chapter num="55" dim0="0.50538796" dim1="0.50626296" />
+    <chapter num="56" dim0="0.49555638" dim1="0.47357395" />
+    <chapter num="57" dim0="0.48103094" dim1="0.43946138" />
+    <chapter num="58" dim0="0.487815" dim1="0.40443707" />
+    <chapter num="59" dim0="0.5224841" dim1="0.4032642" />
+    <chapter num="60" dim0="0.53941447" dim1="0.44657537" />
+    <chapter num="61" dim0="0.52135617" dim1="0.49216986" />
+    <chapter num="62" dim0="0.46909457" dim1="0.50252116" />
+    <chapter num="63" dim0="0.46797144" dim1="0.5183607" />
+    <chapter num="64" dim0="0.46082366" dim1="0.53493667" />
+    <chapter num="65" dim0="0.48259392" dim1="0.5602031" />
+    <chapter num="66" dim0="0.5186963" dim1="0.57385665" />
+    <chapter num="67" dim0="0.560891" dim1="0.57354844" />
+    <chapter num="68" dim0="0.61678463" dim1="0.54770416" />
+    <chapter num="69" dim0="0.6282544" dim1="0.531914" />
+    <chapter num="70" dim0="0.61235607" dim1="0.51191074" />
+    <chapter num="71" dim0="0.6225103" dim1="0.5046188" />
+    <chapter num="72" dim0="0.62233" dim1="0.49059275" />
+    <chapter num="73" dim0="0.61142147" dim1="0.48420963" />
+    <chapter num="74" dim0="0.59641016" dim1="0.5164554" />
+    <chapter num="75" dim0="0.54020375" dim1="0.5351154" />
+    <chapter num="76" dim0="0.56530905" dim1="0.5545077" />
+    <chapter num="77" dim0="0.5827146" dim1="0.56600344" />
+    <chapter num="78" dim0="0.61964786" dim1="0.5641274" />
+    <chapter num="79" dim0="0.6450743" dim1="0.5164665" />
+    <chapter num="80" dim0="0.661683" dim1="0.508886" />
+    <chapter num="81" dim0="0.6325481" dim1="0.55573374" />
+    <chapter num="82" dim0="0.5985704" dim1="0.5531206" />
+    <chapter num="83" dim0="0.5872809" dim1="0.5267595" />
+    <chapter num="84" dim0="0.58793396" dim1="0.5031848" />
+    <chapter num="85" dim0="0.55765706" dim1="0.5307713" />
+    <chapter num="86" dim0="0.52249813" dim1="0.5578337" />
+    <chapter num="87" dim0="0.49446568" dim1="0.5686848" />
+    <chapter num="88" dim0="0.5148293" dim1="0.59324825" />
+    <chapter num="89" dim0="0.52666175" dim1="0.6119243" />
+    <chapter num="90" dim0="0.4721884" dim1="0.6408074" />
+    <chapter num="91" dim0="0.43835607" dim1="0.63870853" />
+    <chapter num="92" dim0="0.46262074" dim1="0.6242428" />
+    <chapter num="93" dim0="0.49270752" dim1="0.594258" />
+    <chapter num="94" dim0="0.46413943" dim1="0.56344" />
+    <chapter num="95" dim0="0.46609974" dim1="0.5461096" />
+    <chapter num="96" dim0="0.45736617" dim1="0.490267" />
+    <chapter num="97" dim0="0.47201264" dim1="0.4552579" />
+    <chapter num="98" dim0="0.48458222" dim1="0.46833703" />
+    <chapter num="99" dim0="0.4567763" dim1="0.5120605" />
+    <chapter num="100" dim0="0.43550587" dim1="0.5581769" />
+    <chapter num="101" dim0="0.43587226" dim1="0.5774188" />
+    <chapter num="102" dim0="0.4020794" dim1="0.59186834" />
+    <chapter num="103" dim0="0.3753626" dim1="0.630341" />
+    <chapter num="104" dim0="0.39259297" dim1="0.598063" />
+    <chapter num="105" dim0="0.401567" dim1="0.6178076" />
+    <chapter num="106" dim0="0.41723305" dim1="0.6005738" />
+    <chapter num="107" dim0="0.43522784" dim1="0.5954413" />
+    <chapter num="108" dim0="0.45356944" dim1="0.58791864" />
+    <chapter num="109" dim0="0.4703706" dim1="0.59815824" />
+    <chapter num="110" dim0="0.47296983" dim1="0.60772747" />
+    <chapter num="111" dim0="0.45352167" dim1="0.606432" />
+    <chapter num="112" dim0="0.47072" dim1="0.5784307" />
+    <chapter num="113" dim0="0.51109505" dim1="0.548441" />
+    <chapter num="114" dim0="0.541947" dim1="0.55201215" />
+    <chapter num="115" dim0="0.53418964" dim1="0.5708509" />
+    <chapter num="116" dim0="0.54340714" dim1="0.57774585" />
+    <chapter num="117" dim0="0.5442411" dim1="0.5964088" />
+    <chapter num="118" dim0="0.55807066" dim1="0.6077234" />
+    <chapter num="119" dim0="0.5607753" dim1="0.625077" />
+    <chapter num="120" dim0="0.5480069" dim1="0.63671696" />
+    <chapter num="121" dim0="0.59663165" dim1="0.5933053" />
+    <chapter num="122" dim0="0.62117076" dim1="0.60497916" />
+    <chapter num="123" dim0="0.5749832" dim1="0.61249137" />
+    <chapter num="124" dim0="0.5312654" dim1="0.65155715" />
+    <chapter num="125" dim0="0.5021712" dim1="0.65986854" />
+    <chapter num="126" dim0="0.48244694" dim1="0.65448475" />
+    <chapter num="127" dim0="0.42756197" dim1="0.70404136" />
+    <chapter num="128" dim0="0.38104528" dim1="0.6826113" />
+    <chapter num="129" dim0="0.4261602" dim1="0.66229403" />
+    <chapter num="130" dim0="0.4629634" dim1="0.6931266" />
+    <chapter num="131" dim0="0.5197908" dim1="0.74185234" />
+    <chapter num="132" dim0="0.59292734" dim1="0.74837273" />
+    <chapter num="133" dim0="0.612806" dim1="0.7092376" />
+    <chapter num="134" dim0="0.61368567" dim1="0.6748061" />
+    <chapter num="135" dim0="0.633412" dim1="0.62278533" />
+    <chapter num="136" dim0="0.6113008" dim1="0.5873767" />
+    <chapter num="137" dim0="0.66851056" dim1="0.52171934" />
+    <chapter num="138" dim0="0.6740821" dim1="0.5340256" />
+    <chapter num="139" dim0="0.6432091" dim1="0.5356761" />
+    <chapter num="140" dim0="0.59918517" dim1="0.5698518" />
+    <chapter num="141" dim0="0.55769855" dim1="0.5855347" />
+    <chapter num="142" dim0="0.51090693" dim1="0.6159001" />
+    <chapter num="143" dim0="0.5008593" dim1="0.6045942" />
+    <chapter num="144" dim0="0.5299164" dim1="0.5912142" />
+    <chapter num="145" dim0="0.49908856" dim1="0.5538174" />
+    <chapter num="146" dim0="0.4984502" dim1="0.5195362" />
+    <chapter num="147" dim0="0.4852508" dim1="0.51573575" />
+    <chapter num="148" dim0="0.4329329" dim1="0.50763494" />
+    <chapter num="149" dim0="0.38275242" dim1="0.54429245" />
+    <chapter num="150" dim0="0.2648885" dim1="0.5438406" />
+  </book>
+  <book num="20" name="Pro">
+    <chapter num="1" dim0="0.5796933" dim1="0.36681214" />
+    <chapter num="2" dim0="0.5106846" dim1="0.41972524" />
+    <chapter num="3" dim0="0.473699" dim1="0.47602412" />
+    <chapter num="4" dim0="0.44187066" dim1="0.52285224" />
+    <chapter num="5" dim0="0.42286825" dim1="0.5301943" />
+    <chapter num="6" dim0="0.40674934" dim1="0.5124258" />
+    <chapter num="7" dim0="0.39281988" dim1="0.5167656" />
+    <chapter num="8" dim0="0.3732976" dim1="0.46433446" />
+    <chapter num="9" dim0="0.35017827" dim1="0.44972765" />
+    <chapter num="10" dim0="0.330474" dim1="0.3955441" />
+    <chapter num="11" dim0="0.32387534" dim1="0.36335766" />
+    <chapter num="12" dim0="0.316254" dim1="0.3486387" />
+    <chapter num="13" dim0="0.31352583" dim1="0.33453453" />
+    <chapter num="14" dim0="0.36750698" dim1="0.35147753" />
+    <chapter num="15" dim0="0.40829048" dim1="0.36151648" />
+    <chapter num="16" dim0="0.411807" dim1="0.3730589" />
+    <chapter num="17" dim0="0.36695543" dim1="0.36873725" />
+    <chapter num="18" dim0="0.35131612" dim1="0.36633393" />
+    <chapter num="19" dim0="0.39243114" dim1="0.389051" />
+    <chapter num="20" dim0="0.41088304" dim1="0.39854878" />
+    <chapter num="21" dim0="0.3999952" dim1="0.4090581" />
+    <chapter num="22" dim0="0.407408" dim1="0.42855766" />
+    <chapter num="23" dim0="0.38116944" dim1="0.4267977" />
+    <chapter num="24" dim0="0.39440173" dim1="0.42275694" />
+    <chapter num="25" dim0="0.41470295" dim1="0.41253728" />
+    <chapter num="26" dim0="0.34972334" dim1="0.39918628" />
+    <chapter num="27" dim0="0.30976623" dim1="0.43906975" />
+    <chapter num="28" dim0="0.31677702" dim1="0.46307218" />
+    <chapter num="29" dim0="0.36382413" dim1="0.5137682" />
+    <chapter num="30" dim0="0.41729298" dim1="0.57239634" />
+    <chapter num="31" dim0="0.4823335" dim1="0.7020799" />
+  </book>
+  <book num="21" name="Ecc">
+    <chapter num="1" dim0="0.29583007" dim1="0.5150132" />
+    <chapter num="2" dim0="0.2860095" dim1="0.4790716" />
+    <chapter num="3" dim0="0.2897582" dim1="0.43239868" />
+    <chapter num="4" dim0="0.3015901" dim1="0.41564772" />
+    <chapter num="5" dim0="0.31207076" dim1="0.41177532" />
+    <chapter num="6" dim0="0.2940918" dim1="0.3851031" />
+    <chapter num="7" dim0="0.3196753" dim1="0.38225606" />
+    <chapter num="8" dim0="0.34365833" dim1="0.3774437" />
+    <chapter num="9" dim0="0.39182007" dim1="0.36486307" />
+    <chapter num="10" dim0="0.46576452" dim1="0.35727993" />
+    <chapter num="11" dim0="0.4421959" dim1="0.3529855" />
+    <chapter num="12" dim0="0.4511676" dim1="0.337757" />
+  </book>
+  <book num="22" name="Son">
+    <chapter num="1" dim0="0.6995495" dim1="0.45617512" />
+    <chapter num="2" dim0="0.60286033" dim1="0.4312404" />
+    <chapter num="3" dim0="0.5533053" dim1="0.43306747" />
+    <chapter num="4" dim0="0.45570496" dim1="0.43027586" />
+    <chapter num="5" dim0="0.3476567" dim1="0.46373314" />
+    <chapter num="6" dim0="0.37506196" dim1="0.5011139" />
+    <chapter num="7" dim0="0.35623693" dim1="0.5431127" />
+    <chapter num="8" dim0="0.36340317" dim1="0.6159048" />
+  </book>
+  <book num="23" name="Isa">
+    <chapter num="1" dim0="0.578614" dim1="0.14172149" />
+    <chapter num="2" dim0="0.5953257" dim1="0.24984534" />
+    <chapter num="3" dim0="0.6281194" dim1="0.30904537" />
+    <chapter num="4" dim0="0.6492537" dim1="0.3535944" />
+    <chapter num="5" dim0="0.69438857" dim1="0.35112697" />
+    <chapter num="6" dim0="0.72951025" dim1="0.36905888" />
+    <chapter num="7" dim0="0.7626834" dim1="0.3865396" />
+    <chapter num="8" dim0="0.7416967" dim1="0.39691278" />
+    <chapter num="9" dim0="0.7151993" dim1="0.40828148" />
+    <chapter num="10" dim0="0.69337994" dim1="0.4055708" />
+    <chapter num="11" dim0="0.6408274" dim1="0.44042638" />
+    <chapter num="12" dim0="0.6182757" dim1="0.44045433" />
+    <chapter num="13" dim0="0.6145163" dim1="0.40609553" />
+    <chapter num="14" dim0="0.6256956" dim1="0.38453177" />
+    <chapter num="15" dim0="0.59903955" dim1="0.41608843" />
+    <chapter num="16" dim0="0.5887832" dim1="0.43809515" />
+    <chapter num="17" dim0="0.5814216" dim1="0.42917985" />
+    <chapter num="18" dim0="0.575033" dim1="0.45661718" />
+    <chapter num="19" dim0="0.5764097" dim1="0.49262723" />
+    <chapter num="20" dim0="0.68407446" dim1="0.4606822" />
+    <chapter num="21" dim0="0.6973496" dim1="0.4264329" />
+    <chapter num="22" dim0="0.70218086" dim1="0.39081573" />
+    <chapter num="23" dim0="0.6423528" dim1="0.40825394" />
+    <chapter num="24" dim0="0.5971428" dim1="0.40428242" />
+    <chapter num="25" dim0="0.5755576" dim1="0.39821926" />
+    <chapter num="26" dim0="0.55626214" dim1="0.39788082" />
+    <chapter num="27" dim0="0.5479058" dim1="0.40504187" />
+    <chapter num="28" dim0="0.5779392" dim1="0.33261493" />
+    <chapter num="29" dim0="0.589406" dim1="0.27366143" />
+    <chapter num="30" dim0="0.5777394" dim1="0.26651767" />
+    <chapter num="31" dim0="0.5734616" dim1="0.29227597" />
+    <chapter num="32" dim0="0.55532646" dim1="0.33900943" />
+    <chapter num="33" dim0="0.5501182" dim1="0.35440582" />
+    <chapter num="34" dim0="0.5554832" dim1="0.37076622" />
+    <chapter num="35" dim0="0.61358476" dim1="0.36406457" />
+    <chapter num="36" dim0="0.75293154" dim1="0.32738715" />
+    <chapter num="37" dim0="0.7896157" dim1="0.29312378" />
+    <chapter num="38" dim0="0.80232006" dim1="0.29650152" />
+    <chapter num="39" dim0="0.8069716" dim1="0.3118523" />
+    <chapter num="40" dim0="0.7469266" dim1="0.30485886" />
+    <chapter num="41" dim0="0.7142683" dim1="0.28363848" />
+    <chapter num="42" dim0="0.6963999" dim1="0.26453155" />
+    <chapter num="43" dim0="0.69790214" dim1="0.24510784" />
+    <chapter num="44" dim0="0.68259436" dim1="0.22838323" />
+    <chapter num="45" dim0="0.6550141" dim1="0.26069823" />
+    <chapter num="46" dim0="0.62411356" dim1="0.3361843" />
+    <chapter num="47" dim0="0.60253406" dim1="0.34105077" />
+    <chapter num="48" dim0="0.6183129" dim1="0.28246424" />
+    <chapter num="49" dim0="0.6130663" dim1="0.22669706" />
+    <chapter num="50" dim0="0.5705178" dim1="0.23667626" />
+    <chapter num="51" dim0="0.5532241" dim1="0.24920161" />
+    <chapter num="52" dim0="0.54690146" dim1="0.22737326" />
+    <chapter num="53" dim0="0.5142277" dim1="0.27845633" />
+    <chapter num="54" dim0="0.50600284" dim1="0.2688338" />
+    <chapter num="55" dim0="0.5298084" dim1="0.26528382" />
+    <chapter num="56" dim0="0.54868096" dim1="0.27093184" />
+    <chapter num="57" dim0="0.5315809" dim1="0.31351426" />
+    <chapter num="58" dim0="0.48138234" dim1="0.34630206" />
+    <chapter num="59" dim0="0.4968787" dim1="0.3289037" />
+    <chapter num="60" dim0="0.4670815" dim1="0.37089035" />
+    <chapter num="61" dim0="0.43186706" dim1="0.40762314" />
+    <chapter num="62" dim0="0.43765953" dim1="0.41806906" />
+    <chapter num="63" dim0="0.48338434" dim1="0.4198711" />
+    <chapter num="64" dim0="0.52329785" dim1="0.34044716" />
+    <chapter num="65" dim0="0.5715217" dim1="0.20784412" />
+    <chapter num="66" dim0="0.60039574" dim1="0.11385093" />
+  </book>
+  <book num="24" name="Jer">
+    <chapter num="1" dim0="0.75347406" dim1="0.37163073" />
+    <chapter num="2" dim0="0.703691" dim1="0.35588992" />
+    <chapter num="3" dim0="0.6570836" dim1="0.31678775" />
+    <chapter num="4" dim0="0.62974495" dim1="0.25352544" />
+    <chapter num="5" dim0="0.60439247" dim1="0.20537679" />
+    <chapter num="6" dim0="0.5914639" dim1="0.17338341" />
+    <chapter num="7" dim0="0.57275116" dim1="0.17874004" />
+    <chapter num="8" dim0="0.5576997" dim1="0.16101314" />
+    <chapter num="9" dim0="0.5563138" dim1="0.14815347" />
+    <chapter num="10" dim0="0.55874926" dim1="0.19490243" />
+    <chapter num="11" dim0="0.57741433" dim1="0.22486226" />
+    <chapter num="12" dim0="0.56475776" dim1="0.26042378" />
+    <chapter num="13" dim0="0.59251964" dim1="0.2274944" />
+    <chapter num="14" dim0="0.6063464" dim1="0.24267042" />
+    <chapter num="15" dim0="0.6102632" dim1="0.26256567" />
+    <chapter num="16" dim0="0.60701346" dim1="0.31206352" />
+    <chapter num="17" dim0="0.62854916" dim1="0.3517295" />
+    <chapter num="18" dim0="0.67038286" dim1="0.33427405" />
+    <chapter num="19" dim0="0.7071448" dim1="0.29783744" />
+    <chapter num="20" dim0="0.7348053" dim1="0.32300454" />
+    <chapter num="21" dim0="0.76744425" dim1="0.2681518" />
+    <chapter num="22" dim0="0.7718327" dim1="0.23377924" />
+    <chapter num="23" dim0="0.75707024" dim1="0.22950944" />
+    <chapter num="24" dim0="0.7609506" dim1="0.28495115" />
+    <chapter num="25" dim0="0.7906125" dim1="0.26729366" />
+    <chapter num="26" dim0="0.81689894" dim1="0.27637014" />
+    <chapter num="27" dim0="0.82793874" dim1="0.25986016" />
+    <chapter num="28" dim0="0.7951881" dim1="0.22837104" />
+    <chapter num="29" dim0="0.7573495" dim1="0.19719024" />
+    <chapter num="30" dim0="0.7295346" dim1="0.19292037" />
+    <chapter num="31" dim0="0.7257448" dim1="0.21168993" />
+    <chapter num="32" dim0="0.740724" dim1="0.2514823" />
+    <chapter num="33" dim0="0.7566925" dim1="0.2605311" />
+    <chapter num="34" dim0="0.77675724" dim1="0.3144239" />
+    <chapter num="35" dim0="0.78997326" dim1="0.35056198" />
+    <chapter num="36" dim0="0.85974824" dim1="0.3688786" />
+    <chapter num="37" dim0="0.88507783" dim1="0.37390152" />
+    <chapter num="38" dim0="0.8971667" dim1="0.39688116" />
+    <chapter num="39" dim0="0.88787913" dim1="0.41355637" />
+    <chapter num="40" dim0="0.83897793" dim1="0.45585763" />
+    <chapter num="41" dim0="0.79081523" dim1="0.4692272" />
+    <chapter num="42" dim0="0.7177205" dim1="0.42969313" />
+    <chapter num="43" dim0="0.6787206" dim1="0.42008364" />
+    <chapter num="44" dim0="0.65052843" dim1="0.38814235" />
+    <chapter num="45" dim0="0.6461949" dim1="0.32632765" />
+    <chapter num="46" dim0="0.62172884" dim1="0.3232884" />
+    <chapter num="47" dim0="0.61206084" dim1="0.30026844" />
+    <chapter num="48" dim0="0.6393865" dim1="0.24253017" />
+    <chapter num="49" dim0="0.68942136" dim1="0.21344914" />
+    <chapter num="50" dim0="0.7367451" dim1="0.28307432" />
+    <chapter num="51" dim0="0.80337554" dim1="0.32929102" />
+    <chapter num="52" dim0="0.9421346" dim1="0.42734346" />
+  </book>
+  <book num="25" name="Lam">
+    <chapter num="1" dim0="0.4783037" dim1="0.4928338" />
+    <chapter num="2" dim0="0.5535632" dim1="0.49824196" />
+    <chapter num="3" dim0="0.57291913" dim1="0.50660264" />
+    <chapter num="4" dim0="0.5850374" dim1="0.54435325" />
+    <chapter num="5" dim0="0.6409808" dim1="0.60819966" />
+  </book>
+  <book num="26" name="Eze">
+    <chapter num="1" dim0="0.27311096" dim1="0.5639744" />
+    <chapter num="2" dim0="0.36528012" dim1="0.529611" />
+    <chapter num="3" dim0="0.44504848" dim1="0.4978875" />
+    <chapter num="4" dim0="0.45652804" dim1="0.47540212" />
+    <chapter num="5" dim0="0.5629524" dim1="0.38037258" />
+    <chapter num="6" dim0="0.6481896" dim1="0.3664854" />
+    <chapter num="7" dim0="0.672673" dim1="0.39308167" />
+    <chapter num="8" dim0="0.71198744" dim1="0.44722164" />
+    <chapter num="9" dim0="0.7137803" dim1="0.47884643" />
+    <chapter num="10" dim0="0.69884396" dim1="0.48804003" />
+    <chapter num="11" dim0="0.7267027" dim1="0.3926618" />
+    <chapter num="12" dim0="0.7366706" dim1="0.33952278" />
+    <chapter num="13" dim0="0.726951" dim1="0.30189857" />
+    <chapter num="14" dim0="0.68921083" dim1="0.32118812" />
+    <chapter num="15" dim0="0.6360929" dim1="0.36195752" />
+    <chapter num="16" dim0="0.665158" dim1="0.37784097" />
+    <chapter num="17" dim0="0.6916543" dim1="0.37032288" />
+    <chapter num="18" dim0="0.6739946" dim1="0.4077467" />
+    <chapter num="19" dim0="0.6596592" dim1="0.41942206" />
+    <chapter num="20" dim0="0.6833062" dim1="0.3796759" />
+    <chapter num="21" dim0="0.71241546" dim1="0.3196959" />
+    <chapter num="22" dim0="0.6917202" dim1="0.28611147" />
+    <chapter num="23" dim0="0.67599183" dim1="0.2604737" />
+    <chapter num="24" dim0="0.66586226" dim1="0.2252672" />
+    <chapter num="25" dim0="0.66757536" dim1="0.19494735" />
+    <chapter num="26" dim0="0.63559026" dim1="0.2152912" />
+    <chapter num="27" dim0="0.5951493" dim1="0.28745455" />
+    <chapter num="28" dim0="0.5861044" dim1="0.2957814" />
+    <chapter num="29" dim0="0.5629846" dim1="0.3063963" />
+    <chapter num="30" dim0="0.5420196" dim1="0.33404413" />
+    <chapter num="31" dim0="0.5627961" dim1="0.3218199" />
+    <chapter num="32" dim0="0.5818286" dim1="0.31598783" />
+    <chapter num="33" dim0="0.60071474" dim1="0.32483947" />
+    <chapter num="34" dim0="0.6376056" dim1="0.27664748" />
+    <chapter num="35" dim0="0.67000276" dim1="0.2749883" />
+    <chapter num="36" dim0="0.6699647" dim1="0.2957861" />
+    <chapter num="37" dim0="0.66344" dim1="0.3469735" />
+    <chapter num="38" dim0="0.6323392" dim1="0.42233166" />
+    <chapter num="39" dim0="0.60809016" dim1="0.5317159" />
+    <chapter num="40" dim0="0.522643" dim1="0.7229262" />
+    <chapter num="41" dim0="0.48731396" dim1="0.8126515" />
+    <chapter num="42" dim0="0.4597705" dim1="0.82255435" />
+    <chapter num="43" dim0="0.40531334" dim1="0.793704" />
+    <chapter num="44" dim0="0.4157245" dim1="0.76364315" />
+    <chapter num="45" dim0="0.33459008" dim1="0.82058686" />
+    <chapter num="46" dim0="0.31393027" dim1="0.8606234" />
+    <chapter num="47" dim0="0.40393117" dim1="0.85704255" />
+    <chapter num="48" dim0="0.47782636" dim1="0.90941703" />
+  </book>
+  <book num="27" name="Dan">
+    <chapter num="1" dim0="0.9109589" dim1="0.5111764" />
+    <chapter num="2" dim0="0.88634443" dim1="0.46302772" />
+    <chapter num="3" dim0="0.84354615" dim1="0.41516677" />
+    <chapter num="4" dim0="0.7708586" dim1="0.4066376" />
+    <chapter num="5" dim0="0.7983195" dim1="0.43509033" />
+    <chapter num="6" dim0="0.7799072" dim1="0.45911738" />
+    <chapter num="7" dim0="0.7152422" dim1="0.46452448" />
+    <chapter num="8" dim0="0.69139767" dim1="0.5000163" />
+    <chapter num="9" dim0="0.6844629" dim1="0.4770495" />
+    <chapter num="10" dim0="0.636571" dim1="0.4660327" />
+    <chapter num="11" dim0="0.56230587" dim1="0.4673858" />
+    <chapter num="12" dim0="0.3992443" dim1="0.48219326" />
+  </book>
+  <book num="28" name="Hos">
+    <chapter num="1" dim0="0.7325193" dim1="0.5849767" />
+    <chapter num="2" dim0="0.6636016" dim1="0.5965838" />
+    <chapter num="3" dim0="0.6190625" dim1="0.6203539" />
+    <chapter num="4" dim0="0.65951514" dim1="0.5618454" />
+    <chapter num="5" dim0="0.7234626" dim1="0.51142627" />
+    <chapter num="6" dim0="0.7231437" dim1="0.49989483" />
+    <chapter num="7" dim0="0.72667253" dim1="0.5239359" />
+    <chapter num="8" dim0="0.7088929" dim1="0.53538823" />
+    <chapter num="9" dim0="0.68826115" dim1="0.5234701" />
+    <chapter num="10" dim0="0.70733106" dim1="0.5139409" />
+    <chapter num="11" dim0="0.67160875" dim1="0.46538493" />
+    <chapter num="12" dim0="0.63327914" dim1="0.4003339" />
+    <chapter num="13" dim0="0.5909097" dim1="0.34948832" />
+    <chapter num="14" dim0="0.52685744" dim1="0.25320005" />
+  </book>
+  <book num="29" name="Joe">
+    <chapter num="1" dim0="0.28939173" dim1="0.6406455" />
+    <chapter num="2" dim0="0.5356457" dim1="0.4857002" />
+    <chapter num="3" dim0="0.76639205" dim1="0.33790573" />
+  </book>
+  <book num="30" name="Amo">
+    <chapter num="1" dim0="0.7118675" dim1="0.14948356" />
+    <chapter num="2" dim0="0.68756586" dim1="0.14690773" />
+    <chapter num="3" dim0="0.6571195" dim1="0.14883564" />
+    <chapter num="4" dim0="0.6399597" dim1="0.14944206" />
+    <chapter num="5" dim0="0.6432527" dim1="0.17234649" />
+    <chapter num="6" dim0="0.64114577" dim1="0.1907266" />
+    <chapter num="7" dim0="0.62410724" dim1="0.17709991" />
+    <chapter num="8" dim0="0.59982497" dim1="0.18288104" />
+    <chapter num="9" dim0="0.6010689" dim1="0.14898272" />
+  </book>
+  <book num="31" name="Obd">
+    <chapter num="1" dim0="0.547572" dim1="0.290819" />
+  </book>
+  <book num="32" name="Jon">
+    <chapter num="1" dim0="0.53105336" dim1="0.2943596" />
+    <chapter num="2" dim0="0.57981706" dim1="0.40939847" />
+    <chapter num="3" dim0="0.6454578" dim1="0.47861722" />
+    <chapter num="4" dim0="0.69337726" dim1="0.53745973" />
+  </book>
+  <book num="33" name="Mic">
+    <chapter num="1" dim0="0.81259876" dim1="0.24152304" />
+    <chapter num="2" dim0="0.72200876" dim1="0.26817715" />
+    <chapter num="3" dim0="0.6463803" dim1="0.29628268" />
+    <chapter num="4" dim0="0.55143386" dim1="0.31564108" />
+    <chapter num="5" dim0="0.49002805" dim1="0.37248257" />
+    <chapter num="6" dim0="0.45223168" dim1="0.4466264" />
+    <chapter num="7" dim0="0.49183464" dim1="0.49794674" />
+  </book>
+  <book num="34" name="Nah">
+    <chapter num="1" dim0="0.5286631" dim1="0.15881796" />
+    <chapter num="2" dim0="0.5322205" dim1="0.1939531" />
+    <chapter num="3" dim0="0.520524" dim1="0.22119723" />
+  </book>
+  <book num="35" name="Hab">
+    <chapter num="1" dim0="0.56794983" dim1="0.34686854" />
+    <chapter num="2" dim0="0.5989424" dim1="0.3685464" />
+    <chapter num="3" dim0="0.6196922" dim1="0.45244533" />
+  </book>
+  <book num="36" name="Zep">
+    <chapter num="1" dim0="0.62444" dim1="0.58033895" />
+    <chapter num="2" dim0="0.5980962" dim1="0.38408253" />
+    <chapter num="3" dim0="0.5376348" dim1="0.21316333" />
+  </book>
+  <book num="37" name="Hag">
+    <chapter num="1" dim0="0.78313226" dim1="0.18988307" />
+    <chapter num="2" dim0="0.6353796" dim1="0.10719674" />
+  </book>
+  <book num="38" name="Zec">
+    <chapter num="1" dim0="0.7475428" dim1="0.14350414" />
+    <chapter num="2" dim0="0.7320542" dim1="0.16767354" />
+    <chapter num="3" dim0="0.7191534" dim1="0.23739704" />
+    <chapter num="4" dim0="0.69855106" dim1="0.3332553" />
+    <chapter num="5" dim0="0.67699015" dim1="0.3620056" />
+    <chapter num="6" dim0="0.6927565" dim1="0.30454853" />
+    <chapter num="7" dim0="0.70908463" dim1="0.22504294" />
+    <chapter num="8" dim0="0.6982857" dim1="0.1879525" />
+    <chapter num="9" dim0="0.67023224" dim1="0.24525985" />
+    <chapter num="10" dim0="0.65421635" dim1="0.28478262" />
+    <chapter num="11" dim0="0.6727382" dim1="0.31800276" />
+    <chapter num="12" dim0="0.72738516" dim1="0.35033718" />
+    <chapter num="13" dim0="0.71933556" dim1="0.37769642" />
+    <chapter num="14" dim0="0.73199135" dim1="0.45478505" />
+  </book>
+  <book num="39" name="Mal">
+    <chapter num="1" dim0="0.6773062" dim1="0.11605249" />
+    <chapter num="2" dim0="0.67053926" dim1="0.1625248" />
+    <chapter num="3" dim0="0.6498062" dim1="0.22081088" />
+    <chapter num="4" dim0="0.613832" dim1="0.38330173" />
+  </book>
+  <book num="40" name="Mat">
+    <chapter num="1" dim0="0.47812688" dim1="0.8819286" />
+    <chapter num="2" dim0="0.46274996" dim1="0.66607994" />
+    <chapter num="3" dim0="0.40181684" dim1="0.4496016" />
+    <chapter num="4" dim0="0.35298198" dim1="0.3211293" />
+    <chapter num="5" dim0="0.35177693" dim1="0.30493948" />
+    <chapter num="6" dim0="0.37318087" dim1="0.2978373" />
+    <chapter num="7" dim0="0.41246894" dim1="0.270356" />
+    <chapter num="8" dim0="0.43172404" dim1="0.20164886" />
+    <chapter num="9" dim0="0.42162725" dim1="0.19030182" />
+    <chapter num="10" dim0="0.4409986" dim1="0.2582577" />
+    <chapter num="11" dim0="0.41930193" dim1="0.25169408" />
+    <chapter num="12" dim0="0.41137627" dim1="0.24411196" />
+    <chapter num="13" dim0="0.3883136" dim1="0.21633205" />
+    <chapter num="14" dim0="0.35239738" dim1="0.16447447" />
+    <chapter num="15" dim0="0.38927218" dim1="0.17256673" />
+    <chapter num="16" dim0="0.37262332" dim1="0.15726848" />
+    <chapter num="17" dim0="0.35786554" dim1="0.13701905" />
+    <chapter num="18" dim0="0.4367353" dim1="0.18038668" />
+    <chapter num="19" dim0="0.45480677" dim1="0.17668682" />
+    <chapter num="20" dim0="0.49084783" dim1="0.1634505" />
+    <chapter num="21" dim0="0.50598246" dim1="0.1630185" />
+    <chapter num="22" dim0="0.5193003" dim1="0.18786088" />
+    <chapter num="23" dim0="0.49778324" dim1="0.1976714" />
+    <chapter num="24" dim0="0.4926026" dim1="0.21445316" />
+    <chapter num="25" dim0="0.4877918" dim1="0.22838444" />
+    <chapter num="26" dim0="0.4115175" dim1="0.16445792" />
+    <chapter num="27" dim0="0.3727848" dim1="0.2077204" />
+    <chapter num="28" dim0="0.35550186" dim1="0.27544078" />
+  </book>
+  <book num="41" name="Mar">
+    <chapter num="1" dim0="0.2757759" dim1="0.18208362" />
+    <chapter num="2" dim0="0.3394375" dim1="0.20090197" />
+    <chapter num="3" dim0="0.38518092" dim1="0.23892157" />
+    <chapter num="4" dim0="0.36116147" dim1="0.2412966" />
+    <chapter num="5" dim0="0.32525843" dim1="0.22926174" />
+    <chapter num="6" dim0="0.34991008" dim1="0.25407434" />
+    <chapter num="7" dim0="0.33932257" dim1="0.26798236" />
+    <chapter num="8" dim0="0.34354624" dim1="0.23321436" />
+    <chapter num="9" dim0="0.32288715" dim1="0.21249413" />
+    <chapter num="10" dim0="0.3093981" dim1="0.18946536" />
+    <chapter num="11" dim0="0.37317947" dim1="0.18481298" />
+    <chapter num="12" dim0="0.42113563" dim1="0.21950266" />
+    <chapter num="13" dim0="0.40977907" dim1="0.2216761" />
+    <chapter num="14" dim0="0.39567262" dim1="0.19474275" />
+    <chapter num="15" dim0="0.370184" dim1="0.2555362" />
+    <chapter num="16" dim0="0.29459685" dim1="0.3520688" />
+  </book>
+  <book num="42" name="Luk">
+    <chapter num="1" dim0="0.69000334" dim1="0.5922789" />
+    <chapter num="2" dim0="0.6564327" dim1="0.49562156" />
+    <chapter num="3" dim0="0.58325934" dim1="0.38520348" />
+    <chapter num="4" dim0="0.5053079" dim1="0.3137605" />
+    <chapter num="5" dim0="0.46382865" dim1="0.27205467" />
+    <chapter num="6" dim0="0.45541802" dim1="0.260658" />
+    <chapter num="7" dim0="0.46299356" dim1="0.229022" />
+    <chapter num="8" dim0="0.44163167" dim1="0.22704701" />
+    <chapter num="9" dim0="0.45398974" dim1="0.24104199" />
+    <chapter num="10" dim0="0.47391006" dim1="0.2615015" />
+    <chapter num="11" dim0="0.49141344" dim1="0.27357668" />
+    <chapter num="12" dim0="0.5131391" dim1="0.2982831" />
+    <chapter num="13" dim0="0.52148956" dim1="0.32474717" />
+    <chapter num="14" dim0="0.5109632" dim1="0.36170974" />
+    <chapter num="15" dim0="0.4756587" dim1="0.39153025" />
+    <chapter num="16" dim0="0.45546636" dim1="0.39063662" />
+    <chapter num="17" dim0="0.43979123" dim1="0.3688503" />
+    <chapter num="18" dim0="0.44512177" dim1="0.3233484" />
+    <chapter num="19" dim0="0.4899456" dim1="0.30980432" />
+    <chapter num="20" dim0="0.47927007" dim1="0.3113913" />
+    <chapter num="21" dim0="0.44691688" dim1="0.292549" />
+    <chapter num="22" dim0="0.43219233" dim1="0.278044" />
+    <chapter num="23" dim0="0.39734966" dim1="0.26783744" />
+    <chapter num="24" dim0="0.3872319" dim1="0.2885742" />
+  </book>
+  <book num="43" name="Joh">
+    <chapter num="1" dim0="0.45477033" dim1="0.13826604" />
+    <chapter num="2" dim0="0.39506292" dim1="0.12643363" />
+    <chapter num="3" dim0="0.342178" dim1="0.17795894" />
+    <chapter num="4" dim0="0.30796382" dim1="0.17331167" />
+    <chapter num="5" dim0="0.2878799" dim1="0.21535219" />
+    <chapter num="6" dim0="0.25599852" dim1="0.2140546" />
+    <chapter num="7" dim0="0.2886655" dim1="0.25417763" />
+    <chapter num="8" dim0="0.2814112" dim1="0.2652242" />
+    <chapter num="9" dim0="0.30754855" dim1="0.27704343" />
+    <chapter num="10" dim0="0.28601024" dim1="0.28707236" />
+    <chapter num="11" dim0="0.24770106" dim1="0.23323694" />
+    <chapter num="12" dim0="0.26405057" dim1="0.23498522" />
+    <chapter num="13" dim0="0.25158212" dim1="0.2513224" />
+    <chapter num="14" dim0="0.2813013" dim1="0.31133536" />
+    <chapter num="15" dim0="0.3000102" dim1="0.31126815" />
+    <chapter num="16" dim0="0.31164864" dim1="0.2885072" />
+    <chapter num="17" dim0="0.31204227" dim1="0.250369" />
+    <chapter num="18" dim0="0.31304732" dim1="0.14831525" />
+    <chapter num="19" dim0="0.37749815" dim1="0.121672645" />
+    <chapter num="20" dim0="0.43131042" dim1="0.1205925" />
+    <chapter num="21" dim0="0.48898414" dim1="0.10970821" />
+  </book>
+  <book num="44" name="Act">
+    <chapter num="1" dim0="0.47927102" dim1="0.18100284" />
+    <chapter num="2" dim0="0.48843858" dim1="0.25210032" />
+    <chapter num="3" dim0="0.46023387" dim1="0.29925248" />
+    <chapter num="4" dim0="0.49644074" dim1="0.35340005" />
+    <chapter num="5" dim0="0.5425778" dim1="0.38751477" />
+    <chapter num="6" dim0="0.5632141" dim1="0.41526854" />
+    <chapter num="7" dim0="0.5857633" dim1="0.4741631" />
+    <chapter num="8" dim0="0.60331213" dim1="0.45035174" />
+    <chapter num="9" dim0="0.6479947" dim1="0.4519445" />
+    <chapter num="10" dim0="0.66941833" dim1="0.4413387" />
+    <chapter num="11" dim0="0.68024826" dim1="0.43705377" />
+    <chapter num="12" dim0="0.65560037" dim1="0.43215647" />
+    <chapter num="13" dim0="0.6223981" dim1="0.41856623" />
+    <chapter num="14" dim0="0.5379975" dim1="0.41411945" />
+    <chapter num="15" dim0="0.4533164" dim1="0.4064443" />
+    <chapter num="16" dim0="0.42187706" dim1="0.38496718" />
+    <chapter num="17" dim0="0.34737644" dim1="0.34869877" />
+    <chapter num="18" dim0="0.35732815" dim1="0.33644658" />
+    <chapter num="19" dim0="0.39517742" dim1="0.3483003" />
+    <chapter num="20" dim0="0.43823776" dim1="0.39115545" />
+    <chapter num="21" dim0="0.49523282" dim1="0.39452073" />
+    <chapter num="22" dim0="0.524479" dim1="0.39010492" />
+    <chapter num="23" dim0="0.5067168" dim1="0.38759634" />
+    <chapter num="24" dim0="0.5092965" dim1="0.4052687" />
+    <chapter num="25" dim0="0.5417504" dim1="0.42900643" />
+    <chapter num="26" dim0="0.5478779" dim1="0.46261716" />
+    <chapter num="27" dim0="0.5397811" dim1="0.5202651" />
+    <chapter num="28" dim0="0.58144" dim1="0.58192915" />
+  </book>
+  <book num="45" name="Rom">
+    <chapter num="1" dim0="0.11117613" dim1="0.34152582" />
+    <chapter num="2" dim0="0.20243624" dim1="0.37077123" />
+    <chapter num="3" dim0="0.21630573" dim1="0.37054214" />
+    <chapter num="4" dim0="0.18944839" dim1="0.3922554" />
+    <chapter num="5" dim0="0.14566436" dim1="0.39713636" />
+    <chapter num="6" dim0="0.1880142" dim1="0.4309127" />
+    <chapter num="7" dim0="0.25169966" dim1="0.42554897" />
+    <chapter num="8" dim0="0.2685107" dim1="0.37169597" />
+    <chapter num="9" dim0="0.36994496" dim1="0.32878113" />
+    <chapter num="10" dim0="0.40427196" dim1="0.29089633" />
+    <chapter num="11" dim0="0.38141456" dim1="0.31545624" />
+    <chapter num="12" dim0="0.30689174" dim1="0.3705001" />
+    <chapter num="13" dim0="0.2647477" dim1="0.4409033" />
+    <chapter num="14" dim0="0.22249107" dim1="0.4651272" />
+    <chapter num="15" dim0="0.10764716" dim1="0.4368182" />
+    <chapter num="16" dim0="0.043473974" dim1="0.44439456" />
+  </book>
+  <book num="46" name="1Co">
+    <chapter num="1" dim0="0.06878293" dim1="0.3157095" />
+    <chapter num="2" dim0="0.18390056" dim1="0.34200564" />
+    <chapter num="3" dim0="0.24033144" dim1="0.3810097" />
+    <chapter num="4" dim0="0.24507575" dim1="0.41026232" />
+    <chapter num="5" dim0="0.24649607" dim1="0.45153233" />
+    <chapter num="6" dim0="0.26814076" dim1="0.49535084" />
+    <chapter num="7" dim0="0.26341188" dim1="0.524881" />
+    <chapter num="8" dim0="0.23530822" dim1="0.5128992" />
+    <chapter num="9" dim0="0.234703" dim1="0.49005812" />
+    <chapter num="10" dim0="0.24922438" dim1="0.48880136" />
+    <chapter num="11" dim0="0.25697163" dim1="0.47909364" />
+    <chapter num="12" dim0="0.22089803" dim1="0.42486134" />
+    <chapter num="13" dim0="0.205359" dim1="0.43035024" />
+    <chapter num="14" dim0="0.20455799" dim1="0.44761842" />
+    <chapter num="15" dim0="0.13297859" dim1="0.48953804" />
+    <chapter num="16" dim0="0.1618789" dim1="0.5640203" />
+  </book>
+  <book num="47" name="2Co">
+    <chapter num="1" dim0="0.14187533" dim1="0.30795556" />
+    <chapter num="2" dim0="0.1717167" dim1="0.32962042" />
+    <chapter num="3" dim0="0.2136396" dim1="0.3506129" />
+    <chapter num="4" dim0="0.1815783" dim1="0.30517435" />
+    <chapter num="5" dim0="0.25506157" dim1="0.30779758" />
+    <chapter num="6" dim0="0.32661235" dim1="0.30241007" />
+    <chapter num="7" dim0="0.29445082" dim1="0.33279067" />
+    <chapter num="8" dim0="0.26216736" dim1="0.3520927" />
+    <chapter num="9" dim0="0.2480353" dim1="0.363483" />
+    <chapter num="10" dim0="0.23641431" dim1="0.35315058" />
+    <chapter num="11" dim0="0.21469946" dim1="0.33070108" />
+    <chapter num="12" dim0="0.20962664" dim1="0.31722435" />
+    <chapter num="13" dim0="0.17522854" dim1="0.2773903" />
+  </book>
+  <book num="48" name="Gal">
+    <chapter num="1" dim0="0.123489715" dim1="0.28971136" />
+    <chapter num="2" dim0="0.114143305" dim1="0.31456062" />
+    <chapter num="3" dim0="0.14006019" dim1="0.35290647" />
+    <chapter num="4" dim0="0.19103101" dim1="0.41034326" />
+    <chapter num="5" dim0="0.14011502" dim1="0.42462867" />
+    <chapter num="6" dim0="0.084952004" dim1="0.46914956" />
+  </book>
+  <book num="49" name="Eph">
+    <chapter num="1" dim0="0.043269724" dim1="0.32859614" />
+    <chapter num="2" dim0="0.048605323" dim1="0.37068415" />
+    <chapter num="3" dim0="0.057701144" dim1="0.40418625" />
+    <chapter num="4" dim0="0.12857252" dim1="0.4491956" />
+    <chapter num="5" dim0="0.18283394" dim1="0.4942121" />
+    <chapter num="6" dim0="0.22462793" dim1="0.53710353" />
+  </book>
+  <book num="50" name="Phili">
+    <chapter num="1" dim0="0.0406759" dim1="0.34953004" />
+    <chapter num="2" dim0="0.10166358" dim1="0.39971808" />
+    <chapter num="3" dim0="0.087855704" dim1="0.42947447" />
+    <chapter num="4" dim0="0.11102323" dim1="0.47897336" />
+  </book>
+  <book num="51" name="Col">
+    <chapter num="1" dim0="0.0940296" dim1="0.28875008" />
+    <chapter num="2" dim0="0.11336349" dim1="0.3840574" />
+    <chapter num="3" dim0="0.15292194" dim1="0.49316934" />
+    <chapter num="4" dim0="0.18480092" dim1="0.56308687" />
+  </book>
+  <book num="52" name="1Th">
+    <chapter num="1" dim0="0.16628651" dim1="0.51443726" />
+    <chapter num="2" dim0="0.20268062" dim1="0.49584395" />
+    <chapter num="3" dim0="0.19300942" dim1="0.51429546" />
+    <chapter num="4" dim0="0.2028665" dim1="0.5374079" />
+    <chapter num="5" dim0="0.14145507" dim1="0.57617134" />
+  </book>
+  <book num="53" name="2Th">
+    <chapter num="1" dim0="0.07263184" dim1="0.5062691" />
+    <chapter num="2" dim0="0.12702723" dim1="0.54383194" />
+    <chapter num="3" dim0="0.11883718" dim1="0.58062816" />
+  </book>
+  <book num="54" name="1Ti">
+    <chapter num="1" dim0="0.043492943" dim1="0.41878054" />
+    <chapter num="2" dim0="0.14861579" dim1="0.45483074" />
+    <chapter num="3" dim0="0.2026388" dim1="0.46461695" />
+    <chapter num="4" dim0="0.23485152" dim1="0.43394244" />
+    <chapter num="5" dim0="0.27539593" dim1="0.41190434" />
+    <chapter num="6" dim0="0.24308772" dim1="0.32028306" />
+  </book>
+  <book num="55" name="2Ti">
+    <chapter num="1" dim0="0.047719173" dim1="0.46921024" />
+    <chapter num="2" dim0="0.15048009" dim1="0.47622448" />
+    <chapter num="3" dim0="0.22145116" dim1="0.50425994" />
+    <chapter num="4" dim0="0.25067124" dim1="0.5336418" />
+  </book>
+  <book num="56" name="Tit">
+    <chapter num="1" dim0="0.11794534" dim1="0.50729156" />
+    <chapter num="2" dim0="0.15896411" dim1="0.43866777" />
+    <chapter num="3" dim0="0.1623109" dim1="0.3976171" />
+  </book>
+  <book num="57" name="Phile">
+    <chapter num="1" dim0="0.046370983" dim1="0.30283675" />
+  </book>
+  <book num="58" name="Heb">
+    <chapter num="1" dim0="0.5121524" dim1="0.2372356" />
+    <chapter num="2" dim0="0.41132653" dim1="0.3329121" />
+    <chapter num="3" dim0="0.41365632" dim1="0.4415834" />
+    <chapter num="4" dim0="0.35597077" dim1="0.4787605" />
+    <chapter num="5" dim0="0.3062908" dim1="0.4751992" />
+    <chapter num="6" dim0="0.2882516" dim1="0.49501643" />
+    <chapter num="7" dim0="0.32130942" dim1="0.51669735" />
+    <chapter num="8" dim0="0.31478825" dim1="0.5010633" />
+    <chapter num="9" dim0="0.24066477" dim1="0.5600901" />
+    <chapter num="10" dim0="0.21398596" dim1="0.5687226" />
+    <chapter num="11" dim0="0.15611927" dim1="0.53354937" />
+    <chapter num="12" dim0="0.1897564" dim1="0.5419045" />
+    <chapter num="13" dim0="0.109788075" dim1="0.53749746" />
+  </book>
+  <book num="59" name="Jam">
+    <chapter num="1" dim0="0.27032182" dim1="0.39660877" />
+    <chapter num="2" dim0="0.25397074" dim1="0.33729157" />
+    <chapter num="3" dim0="0.3286119" dim1="0.32989556" />
+    <chapter num="4" dim0="0.4242327" dim1="0.36133185" />
+    <chapter num="5" dim0="0.49346468" dim1="0.4485601" />
+  </book>
+  <book num="60" name="1Pe">
+    <chapter num="1" dim0="0.0430375" dim1="0.39271796" />
+    <chapter num="2" dim0="0.22031446" dim1="0.3988056" />
+    <chapter num="3" dim0="0.2373635" dim1="0.39729545" />
+    <chapter num="4" dim0="0.16897155" dim1="0.37828395" />
+    <chapter num="5" dim0="0.098382644" dim1="0.36457688" />
+  </book>
+  <book num="61" name="2Pe">
+    <chapter num="1" dim0="0.06444199" dim1="0.36108708" />
+    <chapter num="2" dim0="0.23229462" dim1="0.46153107" />
+    <chapter num="3" dim0="0.28842688" dim1="0.5312469" />
+  </book>
+  <book num="62" name="1Jo">
+    <chapter num="1" dim0="0.2037967" dim1="0.22153953" />
+    <chapter num="2" dim0="0.21465188" dim1="0.24876863" />
+    <chapter num="3" dim0="0.21744676" dim1="0.2829418" />
+    <chapter num="4" dim0="0.2019111" dim1="0.27933687" />
+    <chapter num="5" dim0="0.23871116" dim1="0.2911242" />
+  </book>
+  <book num="63" name="2Jo">
+    <chapter num="1" dim0="0.1284917" dim1="0.26227784" />
+  </book>
+  <book num="64" name="3Jo">
+    <chapter num="1" dim0="0.25322458" dim1="0.27691156" />
+  </book>
+  <book num="65" name="Jude">
+    <chapter num="1" dim0="0.1674148" dim1="0.35758302" />
+  </book>
+  <book num="66" name="Rev">
+    <chapter num="1" dim0="0.17691553" dim1="0.47003365" />
+    <chapter num="2" dim0="0.3043536" dim1="0.3950638" />
+    <chapter num="3" dim0="0.3827346" dim1="0.3781597" />
+    <chapter num="4" dim0="0.42643914" dim1="0.43382308" />
+    <chapter num="5" dim0="0.39379776" dim1="0.49553782" />
+    <chapter num="6" dim0="0.3707369" dim1="0.5491112" />
+    <chapter num="7" dim0="0.34607312" dim1="0.63211143" />
+    <chapter num="8" dim0="0.31294993" dim1="0.6154192" />
+    <chapter num="9" dim0="0.33520874" dim1="0.55880415" />
+    <chapter num="10" dim0="0.33328125" dim1="0.53197855" />
+    <chapter num="11" dim0="0.34622324" dim1="0.5259782" />
+    <chapter num="12" dim0="0.34157372" dim1="0.5077243" />
+    <chapter num="13" dim0="0.34131843" dim1="0.48950374" />
+    <chapter num="14" dim0="0.38460472" dim1="0.47365314" />
+    <chapter num="15" dim0="0.43306154" dim1="0.4636454" />
+    <chapter num="16" dim0="0.49411464" dim1="0.4235652" />
+    <chapter num="17" dim0="0.53686637" dim1="0.37614015" />
+    <chapter num="18" dim0="0.527998" dim1="0.35559422" />
+    <chapter num="19" dim0="0.5072391" dim1="0.33620316" />
+    <chapter num="20" dim0="0.47106758" dim1="0.32384732" />
+    <chapter num="21" dim0="0.48478687" dim1="0.28860822" />
+    <chapter num="22" dim0="0.4709543" dim1="0.20647866" />
+  </book>
+</positions>
+
