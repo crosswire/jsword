@@ -3,6 +3,7 @@ package org.crosswire.jsword.book.search;
 
 import java.net.URL;
 
+import org.crosswire.common.activate.Activatable;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
@@ -32,7 +33,7 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface SearchEngine
+public interface SearchEngine extends Activatable
 {
     /**
      * An initializer type method so we can configure the Search engine at
@@ -41,19 +42,6 @@ public interface SearchEngine
      * free without consuming significant system resources.
      */
     public void init(Bible bible, URL url) throws BookException;
-
-    /**
-     * Called after init() but before findPassage() to load indexes or otherwise
-     * consume resources that we avoided consuming when init() was called.
-     */
-    public void activate();
-
-    /**
-     * Called after when the system is short of resources. Calling deactivate()
-     * places the SearchEngine in a dormant state where it will not be used
-     * again until activate() is called.
-     */
-    public void deactivate();
 
     /**
      * For a given word find a list of references to it

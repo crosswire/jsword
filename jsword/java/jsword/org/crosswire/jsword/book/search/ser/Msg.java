@@ -33,7 +33,6 @@ public class Msg extends MsgBase
     static final Msg INITIALIZE = new Msg("Error initializing.");
     static final Msg READ_ERROR = new Msg("Read Error.");
     static final Msg WRITE_ERROR = new Msg("Write Error.");
-    static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
 
     /** Initialise any resource bundles */
     static

@@ -4,8 +4,8 @@ package org.crosswire.jsword.book.sword;
 import java.net.URL;
 import java.util.Date;
 
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Openness;
@@ -40,29 +40,11 @@ public abstract class SwordBookMetaData implements BookMetaData
     /**
      * Simple ctor
      */
-    public SwordBookMetaData(SwordBookDriver driver, SwordConfig config)
+    public SwordBookMetaData(SwordBookDriver driver, SwordConfig config) throws BookException
     {
         this.driver = driver;
         this.config = config;
     }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getBook()
-     */
-    public synchronized Book getBook()
-    {
-        if (book == null)
-        {
-            book = createBook();
-        }
-
-        return book;
-    }
-
-    /**
-     * A simple concrete implementation ctor
-     */
-    public abstract Book createBook();
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getDriver()
@@ -215,9 +197,4 @@ public abstract class SwordBookMetaData implements BookMetaData
      * Our store of config data
      */
     protected SwordConfig config;
-
-    /**
-     * The cached bible so we don't have to create too many
-     */
-    private Book book = null;
 }

@@ -61,7 +61,7 @@ public class Verifier
      * words to check.
      * @param bible1 A Bible to check
      */
-    public void setBible1(Bible bible1)
+    public final void setBible1(Bible bible1)
     {
         this.bible1 = bible1;
     }
@@ -70,7 +70,7 @@ public class Verifier
      * The first Bible that we are checking
      * @return A Bible to check
      */
-    public Bible getBible1()
+    public final Bible getBible1()
     {
         return bible1;
     }
@@ -81,7 +81,7 @@ public class Verifier
      * firing ProgressEvents.
      * @param bible2 A Bible to check
      */
-    public void setBible2(Bible bible2)
+    public final void setBible2(Bible bible2)
     {
         this.bible2 = bible2;
     }
@@ -90,7 +90,7 @@ public class Verifier
      * The second Bible that we are checking
      * @return A Bible to check
      */
-    public Bible getBible2()
+    public final Bible getBible2()
     {
         return bible2;
     }

@@ -181,7 +181,7 @@ public class SwordConfig
      */
     private void setRenderingProperties()
     {
-        // PENDING(mark): Change to set flags for each value
+        // URGENT(joe): Change to set flags for each value
         Iterator it = reader.getAllValues("GlobalOptionFilter");
         while (it.hasNext())
         {

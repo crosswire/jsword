@@ -14,7 +14,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
@@ -22,10 +21,10 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
-import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -57,7 +56,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SerSearchEngine implements SearchEngine, Index
+public class SerSearchEngine extends AbstractSearchEngine implements Index
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
@@ -71,8 +70,7 @@ public class SerSearchEngine implements SearchEngine, Index
 
             URL dataurl = NetUtil.lengthenURL(newurl, "ref.data");
 
-            isindexed = isIndexed();
-            if (isindexed)
+            if (isIndexed())
             {
                 URL indexurl = NetUtil.lengthenURL(newurl, "ref.index");
 
@@ -95,43 +93,12 @@ public class SerSearchEngine implements SearchEngine, Index
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
-     */
-    public void activate()
-    {
-        // Load the ascii Passage index
-        if (isindexed)
-        {
-            loadIndexes();
-            // indexin.close();
-        }
-        else
-        {
-            Reporter.informUser(this, Msg.TYPE_INDEXGEN.getName());
-
-            // The index is usable but incomplete, so kick off a generation
-            // thread if there is not one running already.
-            if (job != null)
-            {
-                Thread work = new Thread(new IndexerRunnable());
-                work.start();
-            }
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
-     */
-    public void deactivate()
-    {
-        datamap.clear();
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException
     {
+        checkActive();
+
         try
         {
             Parser parser = ParserFactory.createParser(this);
@@ -148,6 +115,8 @@ public class SerSearchEngine implements SearchEngine, Index
      */
     public void delete() throws BookException
     {
+        checkActive();
+
         // NOTE(joe): write delete()
     }
 
@@ -156,6 +125,8 @@ public class SerSearchEngine implements SearchEngine, Index
      */
     public Iterator getStartsWith(String word) throws BookException
     {
+        checkActive();
+
         word = word.toLowerCase();
         SortedMap sub_map = datamap.subMap(word, word + "\u9999");
         return sub_map.keySet().iterator();
@@ -166,6 +137,8 @@ public class SerSearchEngine implements SearchEngine, Index
      */
     public Passage findWord(String word) throws BookException
     {
+        checkActive();
+
         if (word == null)
         {
             return PassageFactory.createPassage();
@@ -205,19 +178,24 @@ public class SerSearchEngine implements SearchEngine, Index
         }
     }
 
-    /**
-     * Detects if index data has been stored for this Bible already
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#isIndexed()
      */
-    private boolean isIndexed()
+    protected boolean isIndexed()
     {
+        if (isRunning())
+        {
+            return false;
+        }
+
         URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
         return NetUtil.isFile(ref_idy_url);
     }
 
-    /**
-     * Loads the index files from disk ready for searching
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#loadIndexes()
      */
-    private void loadIndexes()
+    protected void loadIndexes()
     {
         while (true)
         {
@@ -257,10 +235,18 @@ public class SerSearchEngine implements SearchEngine, Index
         }
     }
 
-    /**
-     * Read from the given source version to generate ourselves
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#unloadIndexes()
      */
-    protected void generateSearchIndex() throws BookException
+    protected void unloadIndexes()
+    {
+        datamap.clear();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#generateSearchIndex(org.crosswire.common.progress.Job)
+     */
+    protected void generateSearchIndex(Job job) throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
@@ -352,6 +338,28 @@ public class SerSearchEngine implements SearchEngine, Index
                 break;
             }
         }
+
+        // Store the indexes on disk
+        try
+        {
+            job.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
+
+            // Save the ascii Passage index
+            URL indexurl = NetUtil.lengthenURL(url, "ref.index");
+            PrintWriter indexout = new PrintWriter(NetUtil.getOutputStream(indexurl));
+            Iterator it = datamap.keySet().iterator();
+            while (it.hasNext())
+            {
+                String word = (String) it.next();
+                Section section = (Section) datamap.get(word);
+                indexout.println(word + ":" + section.offset + ":" + section.length);
+            }
+            indexout.close();
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.WRITE_ERROR, ex);
+        }
     }
 
     /**
@@ -382,39 +390,6 @@ public class SerSearchEngine implements SearchEngine, Index
     }
 
     /**
-     * Write the indexes to disk
-     */
-    protected void saveIndexes() throws BookException
-    {
-        // Store the indexes on disk
-        try
-        {
-            job.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
-
-            // Save the ascii Passage index
-            URL indexurl = NetUtil.lengthenURL(url, "ref.index");
-            PrintWriter indexout = new PrintWriter(NetUtil.getOutputStream(indexurl));
-            Iterator it = datamap.keySet().iterator();
-            while (it.hasNext())
-            {
-                String word = (String) it.next();
-                Section section = (Section) datamap.get(word);
-                indexout.println(word + ":" + section.offset + ":" + section.length);
-            }
-            indexout.close();
-        }
-        catch (IOException ex)
-        {
-            throw new BookException(Msg.WRITE_ERROR, ex);
-        }
-    }
-
-    /**
-     * Have we generated/read the search index
-     */
-    private boolean isindexed;
-
-    /**
      * The Bible we are indexing
      */
     protected Bible bible;
@@ -440,11 +415,6 @@ public class SerSearchEngine implements SearchEngine, Index
     private SortedMap datamap = new TreeMap();
 
     /**
-     * The job used when generating a search index
-     */
-    protected Job job = null;
-
-    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SerSearchEngine.class);
@@ -465,28 +435,6 @@ public class SerSearchEngine implements SearchEngine, Index
      * The Whole Bible
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
-
-    /**
-     * The index creation thread
-     */
-    private class IndexerRunnable implements Runnable
-    {
-        public void run()
-        {
-            try
-            {
-                job = JobManager.createJob("Indexing "+bible.getBibleMetaData().getName(), Thread.currentThread(), false);
-                generateSearchIndex();
-                saveIndexes();
-                job.done();
-                job = null;
-            }
-            catch (BookException ex)
-            {
-                Reporter.informUser(SerSearchEngine.this, ex);
-            }
-        }
-    }
 
     /**
      * A simple class to hold an offset and length into the passages random

@@ -11,7 +11,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -103,7 +104,7 @@ public class WizardConfigPane extends PanelConfigPane
                 wcards++;
 
                 // The name for the title bar
-                names.addElement(StringUtils.replace(path, ".", " "));
+                names.add(StringUtils.replace(path, ".", " "));
             }
         }
 
@@ -114,7 +115,7 @@ public class WizardConfigPane extends PanelConfigPane
         title.setBackground(Color.gray);
         title.setForeground(Color.white);
         title.setOpaque(true);
-        title.setText(names.elementAt(1) + " Properties (1 out of "+wcards+")");
+        title.setText(names.get(1) + " Properties (1 out of "+wcards+")");
 
         deck.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
@@ -238,7 +239,7 @@ public class WizardConfigPane extends PanelConfigPane
             posn++;
         }
 
-        title.setText(names.elementAt(posn) + " Properties ("+(posn+1)+" out of "+wcards+")");
+        title.setText(names.get(posn) + " Properties ("+(posn+1)+" out of "+wcards+")");
 
         back.setEnabled(posn != 0);
         apply.setEnabled(posn != (wcards-1));
@@ -289,7 +290,7 @@ public class WizardConfigPane extends PanelConfigPane
     private int wcards = 0;
 
     /** The list of path names */
-    private Vector names = new Vector();
+    private List names = new ArrayList();
 
     /** The title for the config panels */
     private JLabel title = new JLabel("Properties", SwingConstants.LEFT);

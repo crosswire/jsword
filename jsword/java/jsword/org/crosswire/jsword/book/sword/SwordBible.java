@@ -56,23 +56,22 @@ public class SwordBible extends AbstractBible
     /**
      * Constructor SwordBible.
      */
-    public SwordBible(SwordBibleMetaData sbmd, SwordConfig config)
+    public SwordBible(SwordBibleMetaData sbmd, SwordConfig config) throws BookException
     {
         this.sbmd = sbmd;
         this.config = config;
 
+        backend = config.getBackend();
+        backend.init(config);
+
         try
         {
-            backend = config.getBackend();
-            backend.init(config);
-
-            URL url = Project.resource().getTempScratchSpace(getBibleMetaData().getFullName());
+            URL url = Project.resource().getTempScratchSpace("sword-"+sbmd.getInitials());
             searcher = SearchEngineFactory.createSearchEngine(this, url);
         }
         catch (Exception ex)
         {
-            backend = null;
-            log.error("Failed to init", ex);
+            throw new BookException(Msg.MISSING_SEARCHER, ex);
         }
     }
 
@@ -101,14 +100,14 @@ public class SwordBible extends AbstractBible
 
             Work work = JAXBUtil.factory().createWork();
             work.setOsisWork(osisid);
-            
+
             Header header = JAXBUtil.factory().createHeader();
             header.getWork().add(work);
-            
+
             OsisText text = JAXBUtil.factory().createOsisText();
             text.setOsisIDWork("Bible."+osisid);
             text.setHeader(header);
-            
+
             osis.setOsisText(text);
 
             // For all the ranges in this Passage
@@ -118,7 +117,7 @@ public class SwordBible extends AbstractBible
                 VerseRange range = (VerseRange) rit.next();
                 Div div = JAXBUtil.factory().createDiv();
                 div.setDivTitle(range.toString());
-                
+
                 text.getDiv().add(div);
 
                 // For all the verses in this range
@@ -146,9 +145,9 @@ public class SwordBible extends AbstractBible
                     {
                         org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
                         everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
-    
+
                         div.getContent().add(everse);
-    
+
                         config.getFilter().toOSIS(everse, txt);
                     }
                 }
@@ -168,29 +167,13 @@ public class SwordBible extends AbstractBible
      */
     public Passage findPassage(Search match) throws BookException
     {
-        if (searcher == null)
-        {
-            throw new BookException(Msg.MISSING_SEARCHER);
-        }
-
-        if (!searchable)
-        {
-            searcher.activate();
-            searchable = true;
-        }
-
         return searcher.findPassage(match);
     }
-    
+
     /**
      * The search implementation
      */
     private SearchEngine searcher;
-
-    /**
-     * Has the search engine been initialized
-     */
-    private boolean searchable = false;
 
     /**
      * To read the data from the disk

@@ -83,14 +83,8 @@ public abstract class AbstractBibleMetaData extends AbstractBookMetaData impleme
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BibleMetaData#getBible()
      */
-    public final Bible getBible()
+    public Bible getBible()
     {
-        if (!active)
-        {
-            bible.activate();
-            active = true;
-        }
-
         return bible;
     }
 
@@ -109,9 +103,4 @@ public abstract class AbstractBibleMetaData extends AbstractBookMetaData impleme
      * The cached bible so we don't have to create too many
      */
     private Bible bible = null;
-
-    /**
-     * Is the Bible activated?
-     */
-    private boolean active = false;
 }

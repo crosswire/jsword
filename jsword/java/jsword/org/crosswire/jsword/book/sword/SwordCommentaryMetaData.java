@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.IOException;
 
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.CommentaryMetaData;
 
@@ -37,9 +38,11 @@ public class SwordCommentaryMetaData extends SwordBookMetaData implements Commen
      * Simple ctor
      * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
      */
-    public SwordCommentaryMetaData(SwordBookDriver driver, SwordConfig config) throws IOException
+    public SwordCommentaryMetaData(SwordBookDriver driver, SwordConfig config) throws IOException, BookException
     {
         super(driver, config);
+
+        comm = new SwordCommentary(this, config);
     }
 
     /* (non-Javadoc)
@@ -47,14 +50,19 @@ public class SwordCommentaryMetaData extends SwordBookMetaData implements Commen
      */
     public Commentary getCommentary()
     {
-        return (Commentary) getBook();
+        return comm;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.SwordBookMetaData#createBook()
+     * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public Book createBook()
+    public Book getBook()
     {
-        return new SwordCommentary(this, config);
+        return comm;
     }
+
+    /**
+     * The cached commentary so we don't have to create too many
+     */
+    private SwordCommentary comm = null;
 }

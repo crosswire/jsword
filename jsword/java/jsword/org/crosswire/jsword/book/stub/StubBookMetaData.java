@@ -49,7 +49,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
         super(driver, prop);
-        setBible(new StubBook(this));
+        setBible(new StubBible(this));
     }
 
     /**
@@ -58,7 +58,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         super(driver, name, edition, initials, pub, open, licence);
-        setBible(new StubBook(this));
+        setBible(new StubBible(this));
     }
 
     /**
@@ -67,7 +67,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(driver, name, edition, initials, pubstr, openstr, licencestr);
-        setBible(new StubBook(this));
+        setBible(new StubBible(this));
     }
 
     /**
@@ -76,7 +76,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, String name)
     {
         super(driver, name);
-        setBible(new StubBook(this));
+        setBible(new StubBible(this));
     }
 
     /* (non-Javadoc)

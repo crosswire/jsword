@@ -304,22 +304,6 @@ public class RawBible extends LocalURLBible implements Index
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.local.LocalURLBible#activate()
-     */
-    public void activate()
-    {
-        searcher.activate();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.local.LocalURLBible#deactivate()
-     */
-    public void deactivate()
-    {
-        searcher.deactivate();
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException

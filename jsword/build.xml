@@ -151,7 +151,6 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <!-- <pathelement path="${ant.home}/lib/clover.jar"/> -->
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -298,9 +297,6 @@
       <formatter type="plain" usefile="false"/>
       <formatter type="xml"/>
       <classpath>
-        <!--
-        <fileset dir="${ant.lib}" includes="**/*.jar"/>
-        -->
         <fileset dir="${source.jar}" includes="**/*.jar"/>
         <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
         <pathelement path="${target.temp}/jcoverage"/>
@@ -374,8 +370,6 @@
       <packageset dir="${source.java}/map" defaultexcludes="yes">
         <include name="**"/>
       </packageset>
-      <tag name="todo" scope="all" description="To do:" />
-      <tag name="label" scope="all" description="Together label:" />
       <footer>Copyright &#168; 2003</footer>
       <classpath>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
@@ -478,11 +472,11 @@
   <target name="web.pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
-        <fileset dir="${support.tools}/pmd104" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/pmd121" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.web}/pmd"/>
-    <pmd rulesetfiles="${basedir}/${support.tools}/pmd104/ruleset.xml" shortFilenames="true">
+    <pmd rulesetfiles="${basedir}/${support.tools}/pmd121/ruleset.xml" shortFilenames="true">
       <formatter type="html" toFile="${target.web}/pmd/index.html"/>
       <fileset dir="${source.java}/common" includes="**/*.java"/>
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
@@ -498,7 +492,7 @@
     <mkdir dir="${target.web}/cpd"/>
     <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
       <classpath>
-        <fileset dir="${support.tools}/pmd104" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/pmd121" includes="**/*.jar"/>
       </classpath>
       <arg value="100"/>
       <arg value="${source.java}"/>
@@ -528,32 +522,37 @@
         style="${support.tools}/javancss2141/javancss2html.xsl"/>
   </target>
 
-  <!--=======================================================================-->
-  <target name="web.findbugs" depends="jar">
-    <mkdir dir="${target.web}/findbugs"/>
-    <java classname="edu.umd.cs.findbugs.FindBugs" output="${target.web}/findbugs/report.txt">
-      <classpath>
-        <fileset dir="${support.tools}/findbugs052" includes="**/*.jar"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-      <arg value="-sortByClass"/>
-      <arg value="${target.jar}/${ant.project.name}.jar"/>
-    </java>
+  <target name="">
+    <delete dir="" >
+      
+    </delete>
+    <copy todir=""></copy>
   </target>
 
   <!--=======================================================================-->
-  <target name="clover">
-    <taskdef resource="clovertasks"/>
-    <mkdir dir="${target.temp}/clover"/>
-    <clover-setup initString="${target.temp}/clover/demo_coverage.db"/>
-  </target>
-  <target name="web.clover" depends="clover">
-    <mkdir dir="${target.web}/clover"/>
-    <clover-report>
-      <current outfile="${target.web}/clover" title="Clover Report">
-        <format type="html"/>
-      </current>
-    </clover-report>
+  <target name="web.findbugs" depends="jar">
+    <mkdir dir="${target.web}/findbugs"/>
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+      <classpath>
+        <fileset dir="${support.tools}/findbugs066" includes="**/*.jar"/>
+      </classpath>
+    </taskdef>
+    <findbugs home="${support.tools}/findbugs066"
+        output="text"
+        outputFile="${target.web}/findbugs/report.txt"
+        reportLevel="low"
+        sort="text"
+        >
+      <class location="${target.jar}/${ant.project.name}.jar" />
+      <sourcePath path="${source.java}/jsword"/>
+      <!--
+      <auxClasspath path="${source.jar}" includes="**/*.jar"/>
+      <sourcePath path="${source.java}/common"/>
+      <sourcePath path="${source.java}/servlet"/>
+      <sourcePath path="${source.java}/swing"/>
+      <sourcePath path="${source.java}/map"/>
+      -->
+    </findbugs>
   </target>
 
   <!--=======================================================================-->

@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.stub.StubBook;
+import org.crosswire.jsword.book.stub.StubBible;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -52,7 +52,7 @@ public class BiblesTest extends TestCase
 
     protected Class[] ignorebibles = 
     {
-        StubBook.class,
+        StubBible.class,
     };
 
     protected void setUp() throws Exception

@@ -1,11 +1,9 @@
-
 package org.crosswire.jsword.book.basic;
 
-import org.crosswire.jsword.book.BookException;
+import org.apache.commons.lang.ClassUtils;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Dictionary;
-import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.Search;
 
 /**
  * An AbstractDictionary implements a few of the more generic methods of Dictionary.
@@ -36,32 +34,32 @@ import org.crosswire.jsword.book.Search;
 public abstract class AbstractDictionary implements Dictionary
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#activate()
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public void activate()
+    public final void activate(Lock lock)
     {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#deactivate()
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
-    public void deactivate()
+    public final void deactivate(Lock lock)
     {
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
-    public BookMetaData getBookMetaData()
+    public final BookMetaData getBookMetaData()
     {
         return getDictionaryMetaData();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
+     * @see java.lang.Object#toString()
      */
-    public Key find(Search search) throws BookException
+    public final String toString()
     {
-        return getKey("");
+        return ClassUtils.getShortClassName(getClass())+":"+getBookMetaData().toString();
     }
 }

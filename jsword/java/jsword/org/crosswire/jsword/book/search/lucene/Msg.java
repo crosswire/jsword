@@ -30,7 +30,6 @@ class Msg extends MsgBase
 {
     static final Msg LUCENE_INIT = new Msg("Failed to initialise Lucene search engine.");
     static final Msg SEARCH_FAILED = new Msg("Search failed.");
-    static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
 
     /**
      * Initialise any resource bundles

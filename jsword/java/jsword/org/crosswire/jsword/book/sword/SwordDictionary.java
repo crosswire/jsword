@@ -12,9 +12,9 @@ import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.JAXBUtil;
@@ -48,7 +48,7 @@ import org.crosswire.jsword.osis.Work;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordDictionary extends AbstractDictionary implements Dictionary
+public class SwordDictionary extends AbstractDictionary
 {
     /**
      * Start and to as much checking as we can without using memory.
@@ -145,6 +145,16 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
         }
 
         return key;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
+     */
+    public Key find(Search search) throws BookException
+    {
+        // URGENT(joe): write
+        return getKey("");
     }
 
     /* (non-Javadoc)

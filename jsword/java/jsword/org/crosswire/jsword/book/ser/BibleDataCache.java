@@ -11,6 +11,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
+import org.crosswire.common.activate.Activatable;
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
@@ -53,7 +56,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BibleDataCache
+public class BibleDataCache implements Activatable
 {
     /**
      * Constructor for BibleDataCache.
@@ -80,10 +83,10 @@ public class BibleDataCache
         xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
     }
 
-    /**
-     * Load the indexes from disk
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public void activate()
+    public final void activate(Lock lock)
     {
         // Load the ascii XML index
         for (int i = 0; i < BibleInfo.versesInBible(); i++)
@@ -117,14 +120,28 @@ public class BibleDataCache
         }
 
         // xml_idy_bin.close();
+
+        active = true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
+        // NOTE(joe): is there anything we can do to conserve memory?
+        active = false;
     }
 
     /**
-     * Conserve memory
+     * Helper method so we can quickly activate ourselves on access
      */
-    public void deactivate()
+    protected final void checkActive()
     {
-        // NOTE(joe): is there anything we can do to conserve memory?
+        if (!active)
+        {
+            Activator.activate(this);
+        }
     }
 
     /**
@@ -133,6 +150,8 @@ public class BibleDataCache
      */
     public BookData getData(Passage ref) throws BookException
     {
+        checkActive();
+
         try
         {
             String osisid = bmd.getInitials();
@@ -205,6 +224,8 @@ public class BibleDataCache
      */
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {
+        checkActive();
+
         try
         {
             // For all of the sections
@@ -246,6 +267,8 @@ public class BibleDataCache
      */
     public void flush() throws BookException
     {
+        checkActive();
+
         try
         {
             // re-open the RAF read-write
@@ -266,6 +289,11 @@ public class BibleDataCache
             throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
 
     /**
      * About the data that we are caching

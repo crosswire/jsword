@@ -104,7 +104,7 @@ public class SwordConstants
     /** Strings for global option filter */
     static final String[] GOF_STRINGS =
     {
-        "GBFStrongs",  "GBFFootnotes",  "GBFScripref",  "GBFMorph",  "GBFHeadings",
+        "GBFStrongs",  "GBFFootnotes",  "GBFScripref",  "GBFMorph",  "GBFHeadings",  "GBFRedLetterWords",
         "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "THMLLemma",
         "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewVowels",
         "OSISStrongs", "OSISFootnotes",                 "OSISMorph", "OSISHeadings", "OSISRedLetterWords",

@@ -15,5 +15,6 @@
 		<nature>com.ibm.etools.java.JavaMOFNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>com.ibm.etools.beaninfo.BeaninfoNature</nature>
+		<nature>SimianUI.simiannature</nature>
 	</natures>
 </projectDescription>

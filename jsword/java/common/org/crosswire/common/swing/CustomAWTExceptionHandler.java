@@ -31,11 +31,10 @@ import java.util.Properties;
 public class CustomAWTExceptionHandler
 {
     /**
-     * Its important that we have a no-arg ctor to make this work
+     * Its important that we have a no-arg ctor to make this work. So if we ever
+     * create an arged ctor then we need to add:
+     * public CustomAWTExceptionHandler() { }
      */
-    public CustomAWTExceptionHandler()
-    {
-    }
 
     /**
      * Handle AWT exceptions

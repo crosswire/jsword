@@ -1,15 +1,18 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.stub;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.basic.AbstractCommentary;
+import org.crosswire.jsword.book.basic.AbstractBible;
+import org.crosswire.jsword.book.basic.DefaultKey;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
@@ -23,7 +26,8 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 
 /**
- * A Sword version of a Commentary.
+ * StubBible is a simple stub implementation of Bible that is pretty much
+ * always going to work because it has no dependancies on external files.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -44,52 +48,34 @@ import org.crosswire.jsword.passage.VerseRange;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author Jacky Cheung
  * @version $Id$
  */
-public class SwordCommentary extends AbstractCommentary
+public class StubBible extends AbstractBible
 {
     /**
-     * Simple ctor
+     * Basic constructor for a StubBible
      */
-    public SwordCommentary(SwordCommentaryMetaData scmd, SwordConfig config)
+    public StubBible(BibleMetaData bmd)
     {
-        this.scmd = scmd;
-        this.config = config;
-
-        try
-        {
-            backend = config.getBackend();
-            backend.init(config);
-        }
-        catch (BookException ex)
-        {
-            backend = null;
-            log.error("Failed to init", ex);
-        }
+        this.bmd = bmd;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Commentary#getCommentaryMetaData()
+     * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
      */
-    public CommentaryMetaData getCommentaryMetaData()
+    public BibleMetaData getBibleMetaData()
     {
-        return scmd;
+        return bmd;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Commentary#getComments(org.crosswire.jsword.passage.Passage)
+     * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
-    public BookData getComments(Passage ref) throws BookException
+    public BookData getData(Passage ref) throws BookException
     {
-        if (backend == null)
-        {
-            failedGetData(ref, Msg.READ_FAIL);
-        }
-
         try
         {
-            String osisid = getCommentaryMetaData().getInitials();
+            String osisid = getBibleMetaData().getInitials();
             Osis osis = JAXBUtil.factory().createOsis();
 
             Work work = JAXBUtil.factory().createWork();
@@ -97,13 +83,13 @@ public class SwordCommentary extends AbstractCommentary
             
             Header header = JAXBUtil.factory().createHeader();
             header.getWork().add(work);
-
+            
             OsisText text = JAXBUtil.factory().createOsisText();
             text.setOsisIDWork("Bible."+osisid);
             text.setHeader(header);
 
             osis.setOsisText(text);
-            
+
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
             while (rit.hasNext())
@@ -111,7 +97,7 @@ public class SwordCommentary extends AbstractCommentary
                 VerseRange range = (VerseRange) rit.next();
                 Div div = JAXBUtil.factory().createDiv();
                 div.setDivTitle(range.toString());
-                
+
                 text.getDiv().add(div);
 
                 // For all the verses in this range
@@ -122,27 +108,13 @@ public class SwordCommentary extends AbstractCommentary
 
                     org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
                     everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
-
+                    
                     div.getContent().add(everse);
 
-                    byte[] data = backend.getRawText(verse);
-                    String charset = config.getModuleCharset();
-                    String txt = null;
-                    try
-                    {
-                        txt = new String(data, charset);
-                    }
-                    catch (UnsupportedEncodingException ex)
-                    {
-                        // It is impossible! In case, use system default...
-                        log.error("Encoding: " + charset + " not supported", ex);
-                        txt = new String(data);
-                    }
-
-                    config.getFilter().toOSIS(everse, txt);
+                    Filters.PLAIN_TEXT.toOSIS(everse, "stub implementation");
                 }
             }
-
+            
             BookData bdata = new BookData(osis);
             return bdata;
         }
@@ -153,30 +125,44 @@ public class SwordCommentary extends AbstractCommentary
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
+     * @see org.crosswire.jsword.book.Commentary#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Passage findPassage(Search word) throws BookException
+    public Passage findPassage(Search search) throws BookException
     {
-        return PassageFactory.createPassage();
+        try
+        {
+            return PassageFactory.createPassage("Gen 1:1-Rev 22:21");
+        }
+        catch (Exception ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
+     */
+    public SortedSet getIndex(String base)
+    {
+        base = base.toLowerCase();
+        
+        SortedSet set = new TreeSet();
+
+        if ("stub".startsWith(base))
+        {
+            set.add(new DefaultKey("stub"));
+        }
+
+        if ("implementation".startsWith(base))
+        {
+            set.add(new DefaultKey("implementation"));
+        }
+
+        return set;
     }
 
     /**
-     * To read the data from the disk
+     * The name of this version
      */
-    private Backend backend;
-
-    /**
-     * Our meta data
-     */
-    private SwordCommentaryMetaData scmd;
-
-    /**
-     * The configuration file
-     */
-    private SwordConfig config;
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(SwordCommentary.class);
+    private BibleMetaData bmd;
 }

@@ -17,16 +17,13 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.search.SearchEngine;
+import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -57,7 +54,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LuceneSearchEngine implements SearchEngine
+public class LuceneSearchEngine extends AbstractSearchEngine
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
@@ -69,8 +66,7 @@ public class LuceneSearchEngine implements SearchEngine
             url = NetUtil.lengthenURL(newurl, "lucene");
             bible = newbible;
 
-            isindexed = isIndexed();
-            if (isindexed)
+            if (isIndexed())
             {
                 // Opening Lucene indexes is quite quick I think, so we can try
                 // it to see if it works to report errors that we want to drop
@@ -85,60 +81,12 @@ public class LuceneSearchEngine implements SearchEngine
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
-     */
-    public void activate()
-    {
-        // Load the ascii Passage index
-        if (isindexed)
-        {
-            try
-            {
-                loadIndexes();
-            }
-            catch (IOException ex)
-            {
-                log.warn("second load failure", ex);
-            }
-        }
-        else
-        {
-            Reporter.informUser(this, Msg.TYPE_INDEXGEN.getName());
-
-            // The index is usable but incomplete, so kick off a generation
-            // thread if there is not one running already.
-            if (job == null)
-            {
-                Thread work = new Thread(new IndexerRunnable());
-                work.start();
-            }
-            else
-            {
-                log.warn("activate() called while job in progress", new Exception());
-            }
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
-     */
-    public void deactivate()
-    {
-        try
-        {
-            unloadIndexes();
-        }
-        catch (IOException ex)
-        {
-            Reporter.informUser(this, ex);
-        }
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException
     {
+        checkActive();
+
         // TODO: think about splitting out the parser.
         /*
         Parser parser = ParserFactory.createParser(this);
@@ -190,6 +138,8 @@ public class LuceneSearchEngine implements SearchEngine
      */
     public void delete() throws BookException
     {
+        checkActive();
+
         // TODO: write this
         /*
         Directory directory = FSDirectory.getDirectory("demo index", false);
@@ -209,19 +159,24 @@ public class LuceneSearchEngine implements SearchEngine
         */
     }
 
-    /**
-     * Detects if index data has been stored for this Bible already
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#isIndexed()
      */
-    private boolean isIndexed()
+    protected boolean isIndexed()
     {
+        if (isRunning())
+        {
+            return false;
+        }
+
         URL index = NetUtil.lengthenURL(url, "segments");
         return NetUtil.isFile(index);
     }
 
-    /**
-     * Create an index
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#generateSearchIndex(org.crosswire.common.progress.Job)
      */
-    protected void generateSearchIndex() throws IOException, BookException
+    protected void generateSearchIndex(Job job) throws IOException, BookException
     {
         // An index is created by opening an IndexWriter with the
         // create argument set to true.
@@ -254,20 +209,22 @@ public class LuceneSearchEngine implements SearchEngine
 
         writer.optimize();
         writer.close();
+
+        loadIndexes();
     }
 
-    /**
-     * Load a previously generated index
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#loadIndexes()
      */
     protected void loadIndexes() throws IOException
     {
         searcher = new IndexSearcher(NetUtil.getAsFile(url).getCanonicalPath());
     } 
 
-    /**
-     * Frees the memory in a previously loaded index
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.AbstractSearchEngine#unloadIndexes()
      */
-    private void unloadIndexes() throws IOException
+    protected void unloadIndexes() throws IOException
     {
         searcher.close();
         searcher = null;
@@ -282,11 +239,6 @@ public class LuceneSearchEngine implements SearchEngine
      * The Lucene field for the verse contents
      */
     private static final String FIELD_BODY = "body";
-
-    /**
-     * Has the index been created
-     */
-    protected boolean isindexed;
 
     /**
      * The Bible that we are indexing
@@ -304,41 +256,7 @@ public class LuceneSearchEngine implements SearchEngine
     private Searcher searcher;
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(LuceneSearchEngine.class);
-
-    /**
-     * The job used when generating a search index
-     */
-    protected Job job = null;
-
-    /**
      * The Whole Bible
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
-
-    /**
-     * The index creation thread
-     */
-    private class IndexerRunnable implements Runnable
-    {
-        public void run()
-        {
-            try
-            {
-                job = JobManager.createJob("Indexing "+bible.getBibleMetaData().getName(), Thread.currentThread(), false);
-                generateSearchIndex();
-                job.done();
-                job = null;
-
-                isindexed = true;
-                loadIndexes();
-            }
-            catch (Exception ex)
-            {
-                Reporter.informUser(LuceneSearchEngine.this, ex);
-            }
-        }
-    }
 }

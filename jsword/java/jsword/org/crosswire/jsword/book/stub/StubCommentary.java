@@ -2,22 +2,12 @@
 package org.crosswire.jsword.book.stub;
 
 import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.CommentaryMetaData;
-import org.crosswire.jsword.book.Dictionary;
-import org.crosswire.jsword.book.DictionaryMetaData;
-import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.basic.DefaultKey;
+import org.crosswire.jsword.book.basic.AbstractCommentary;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.JAXBUtil;
@@ -33,7 +23,7 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 
 /**
- * StubBook is a simple stub implementation of Bible that is pretty much
+ * StubBible is a simple stub implementation of Bible that is pretty much
  * always going to work because it has no dependancies on external files.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -57,30 +47,14 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StubBook extends AbstractBible implements Bible, Dictionary, Commentary
+public class StubCommentary extends AbstractCommentary
 {
     /**
-     * Basic constructor for a StubBook
+     * Basic constructor for a StubBible
      */
-    public StubBook(StubBookMetaData bmd)
+    public StubCommentary(StubBookMetaData bmd)
     {
         this.bmd = bmd;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
-     */
-    public BibleMetaData getBibleMetaData()
-    {
-        return bmd;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
-     */
-    public DictionaryMetaData getDictionaryMetaData()
-    {
-        return bmd;
     }
 
     /* (non-Javadoc)
@@ -98,7 +72,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     {
         try
         {
-            String osisid = getBibleMetaData().getInitials();
+            String osisid = getCommentaryMetaData().getInitials();
             Osis osis = JAXBUtil.factory().createOsis();
 
             Work work = JAXBUtil.factory().createWork();
@@ -164,14 +138,6 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Dictionary#getKeyFuzzy(java.lang.String)
-     */
-    public Key getKeyFuzzy(String text) throws BookException
-    {
-        return getKey(text);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException
@@ -186,54 +152,8 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
-     */
-    public Key find(Search search) throws BookException
-    {
-        try
-        {
-            Passage ref = PassageFactory.createPassage("Gen 1:1-Rev22:21"); 
-            return new PassageKey(ref);
-        }
-        catch (Exception ex)
-        {
-            throw new LogicError(ex);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
-     */
-    public SortedSet getIndex(String base)
-    {
-        base = base.toLowerCase();
-        
-        SortedSet set = new TreeSet();
-
-        if ("stub".startsWith(base))
-        {
-            set.add(new DefaultKey("stub"));
-        }
-
-        if ("implementation".startsWith(base))
-        {
-            set.add(new DefaultKey("implementation"));
-        }
-
-        return set;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return "StubBible:"+bmd.toString();
-    }
-
     /**
      * The name of this version
      */
-    private StubBookMetaData bmd;
+    private CommentaryMetaData bmd;
 }

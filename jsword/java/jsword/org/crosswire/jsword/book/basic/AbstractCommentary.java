@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.lang.ClassUtils;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.BookException;
@@ -58,23 +60,23 @@ import org.crosswire.jsword.passage.VerseRange;
 public abstract class AbstractCommentary implements Commentary
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#activate()
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public void activate()
+    public final void activate(Lock lock)
     {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#deactivate()
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
-    public void deactivate()
+    public final void deactivate(Lock lock)
     {
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
-    public BookMetaData getBookMetaData()
+    public final BookMetaData getBookMetaData()
     {
         return getCommentaryMetaData();
     }
@@ -94,7 +96,7 @@ public abstract class AbstractCommentary implements Commentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getKey(java.lang.String)
      */
-    public Key getKey(String text) throws BookException
+    public final Key getKey(String text) throws BookException
     {
         try
         {
@@ -109,7 +111,7 @@ public abstract class AbstractCommentary implements Commentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
-    public Key find(Search search) throws BookException
+    public final Key find(Search search) throws BookException
     {
         Passage ref = findPassage(search);
         return new PassageKey(ref);
@@ -118,7 +120,7 @@ public abstract class AbstractCommentary implements Commentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
      */
-    public BookData getData(Key key) throws BookException
+    public final BookData getData(Key key) throws BookException
     {
         if (key instanceof PassageKey)
         {
@@ -135,7 +137,7 @@ public abstract class AbstractCommentary implements Commentary
      * For when we need to patch up for a getData() that has failed.
      * @see org.crosswire.jsword.book.Bible#getData(Passage)
      */
-    protected BookData failedGetData(Passage ref, MsgBase message)
+    protected final BookData failedGetData(Passage ref, MsgBase message)
     {
         try
         {
@@ -192,5 +194,13 @@ public abstract class AbstractCommentary implements Commentary
         {
             throw new LogicError();
         }
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public final String toString()
+    {
+        return ClassUtils.getShortClassName(getClass())+":"+getBookMetaData().toString();
     }
 }

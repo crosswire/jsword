@@ -34,12 +34,13 @@ public class SwordDictionaryMetaData extends SwordBookMetaData implements Dictio
 {
     /**
      * Simple ctor
-     * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
      */
     public SwordDictionaryMetaData(SwordBookDriver driver, SwordConfig config) throws BookException
     {
         super(driver, config);
+
         dict = new SwordDictionary(this, config);
+        dict.init();
     }
 
     /* (non-Javadoc)
@@ -51,13 +52,15 @@ public class SwordDictionaryMetaData extends SwordBookMetaData implements Dictio
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.SwordBookMetaData#createBook()
+     * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public Book createBook()
+    public synchronized Book getBook()
     {
-        dict.init();
         return dict;
     }
-    
+
+    /**
+     * The cached dictionary so we don't have to create too many
+     */
     private SwordDictionary dict;
 }

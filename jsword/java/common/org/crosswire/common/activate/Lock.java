@@ -1,13 +1,8 @@
-
-package org.crosswire.jsword.book.sword;
-
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
+package org.crosswire.common.activate;
 
 /**
- * Simple BibleMetaData for the sword implementation.
+ * This class only exists to disuade you from calling activate() directly on
+ * an Activatable object.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,36 +25,15 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordBibleMetaData extends SwordBookMetaData implements BibleMetaData
+public class Lock
 {
     /**
-     * Constructor for SwordBibleMetaData.
+     * You might be wanting to construct a Lock if you want to call
+     * Activatable.activate() directly, in which case you stand a chance of
+     * breaking the Activator, so let the activator call activate(), and just
+     * ask the Activator to do the job for you.
      */
-    public SwordBibleMetaData(SwordBookDriver driver, SwordConfig config) throws BookException
+    Lock()
     {
-        super(driver, config);
-
-        bible = new SwordBible(this, config);
     }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
-     */
-    public Bible getBible()
-    {
-        return bible;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getBook()
-     */
-    public Book getBook()
-    {
-        return bible;
-    }
-
-    /**
-     * The cached bible so we don't have to create too many
-     */
-    private SwordBible bible;
 }

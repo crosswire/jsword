@@ -162,24 +162,6 @@ public class SerBible extends LocalURLBible
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.local.LocalURLBible#activate()
-     */
-    public void activate()
-    {
-        cache.activate();
-        searcher.activate();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.local.LocalURLBible#deactivate()
-     */
-    public void deactivate()
-    {
-        cache.deactivate();
-        searcher.deactivate();
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search match) throws BookException

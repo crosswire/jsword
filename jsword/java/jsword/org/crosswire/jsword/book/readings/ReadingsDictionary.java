@@ -16,11 +16,10 @@ import javax.xml.bind.JAXBException;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.book.basic.AbstractDictionary;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Div;
@@ -59,7 +58,7 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReadingsDictionary implements Dictionary
+public class ReadingsDictionary extends AbstractDictionary
 {
     /**
      * Constructor ReadingsDictionary.
@@ -110,20 +109,6 @@ public class ReadingsDictionary implements Dictionary
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#activate()
-     */
-    public void activate()
-    {
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#deactivate()
-     */
-    public void deactivate()
-    {
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
      */
     public DictionaryMetaData getDictionaryMetaData()
@@ -142,14 +127,6 @@ public class ReadingsDictionary implements Dictionary
         SortedSet keys = new TreeSet();
         keys.addAll(hash.keySet());
         return keys;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getBookMetaData()
-     */
-    public BookMetaData getBookMetaData()
-    {
-        return getDictionaryMetaData();
     }
 
     /* (non-Javadoc)

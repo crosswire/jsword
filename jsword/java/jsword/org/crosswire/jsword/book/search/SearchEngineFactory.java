@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.book.search;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.crosswire.jsword.book.Bible;
@@ -45,12 +43,19 @@ public class SearchEngineFactory
     /**
      * Factory constructor for a SearchEngine
      */
-    public static SearchEngine createSearchEngine(Bible bible, URL indexdir) throws MalformedURLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, BookException
+    public static SearchEngine createSearchEngine(Bible bible, URL indexdir) throws BookException
     {
-        Class impl = Project.resource().getImplementor(SearchEngine.class);
-        SearchEngine searcher = (SearchEngine) impl.newInstance();
-        searcher.init(bible, indexdir);
-        
-        return searcher;
+        try
+        {
+            Class impl = Project.resource().getImplementor(SearchEngine.class);
+            SearchEngine searcher = (SearchEngine) impl.newInstance();
+            searcher.init(bible, indexdir);
+            
+            return searcher;
+        }
+        catch (Exception ex)
+        {
+            throw new BookException(Msg.SEARCH_INIT, ex);
+        }
     }
 }

@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -371,6 +372,10 @@ public class DisplaySelectPane extends JPanel
             Passage ref = getPassage();
 
             fireCommandMade(new DisplaySelectEvent(this, ref, bible));
+        }
+        catch (NoSuchVerseException ex)
+        {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error finding verse", JOptionPane.ERROR_MESSAGE);
         }
         catch (Exception ex)
         {
