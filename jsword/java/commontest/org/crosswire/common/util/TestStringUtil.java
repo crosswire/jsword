@@ -68,7 +68,7 @@ public class TestStringUtil extends TestCase
         assertEquals("\u0000", StringUtil.blankIfNull("\u0000"));
         assertEquals("\u00000", StringUtil.blankIfNull("\u00000"));
     }
-
+    
     public void testTokenize() throws Exception
     {
         assertEquals(StringUtil.cat(StringUtil.tokenize("a b c d e f"), "-"), "a-b-c-d-e-f");
