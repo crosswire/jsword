@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -55,7 +56,7 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordInstaller implements Installer
+public class SwordInstaller implements Installer, Comparable
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getURL()
@@ -100,7 +101,15 @@ public class SwordInstaller implements Installer
         try
         {
             Properties prop = getEntry(entry);
-            String destname = prop.getProperty("????");
+            String destname = prop.getProperty("DataPath");
+            if (destname.startsWith("./"))
+            {
+                destname = destname.substring(2);
+            }
+            if (destname.endsWith("/"))
+            {
+                destname = destname.substring(0, destname.length()-1);
+            }
 
             File dldir = SwordBookDriver.getDownloadDir();
             File moddir = new File(dldir, destname);
@@ -138,8 +147,7 @@ public class SwordInstaller implements Installer
      */
     private void cacheRemoteFile() throws InstallException
     {
-        URL scratchfile = getCachedIndexFile(FILE_LIST_GZ);
-
+        URL scratchfile = getCachedIndexFile();
         download(host, USERNAME, PASSWORD, directory, FILE_LIST_GZ, scratchfile);
     }
 
@@ -152,9 +160,10 @@ public class SwordInstaller implements Installer
         {
             entries.clear();
 
-            URL cache = getCachedIndexFile(host+directory);
+            URL cache = getCachedIndexFile();
             if (!NetUtil.isFile(cache))
             {
+                log.info("Missing cache file: "+cache.toExternalForm());
                 return;
             }
 
@@ -198,11 +207,12 @@ public class SwordInstaller implements Installer
     /**
      * The URL for the cached index file for this installer
      */
-    private static URL getCachedIndexFile(String name) throws InstallException
+    private URL getCachedIndexFile() throws InstallException
     {
         try
         {
-            URL scratchdir = Project.instance().getTempScratchSpace("download-" + name);
+            String encoded = host + directory.replace('/', '_');
+            URL scratchdir = Project.instance().getTempScratchSpace("download-" + encoded);
             return NetUtil.lengthenURL(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)
@@ -237,15 +247,17 @@ public class SwordInstaller implements Installer
             if (!FTPReply.isPositiveCompletion(reply))
             {
                 String text = ftp.getReplyString();
-                disconnect(ftp);
                 throw new InstallException(Msg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
             }
             out.close();
         }
         catch (IOException ex)
         {
-            disconnect(ftp);
             throw new InstallException(Msg.UNKNOWN_ERROR, ex);
+        }
+        finally
+        {
+            disconnect(ftp);
         }
     }
 
@@ -283,17 +295,23 @@ public class SwordInstaller implements Installer
                     if (!FTPReply.isPositiveCompletion(reply))
                     {
                         String text = ftp.getReplyString();
-                        disconnect(ftp);
                         throw new InstallException(Msg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
                     }
                     out.close();
                 }
             }
         }
+        catch (InstallException ex)
+        {
+            throw ex;
+        }
         catch (IOException ex)
         {
-            disconnect(ftp);
             throw new InstallException(Msg.UNKNOWN_ERROR, ex);
+        }
+        finally
+        {
+            disconnect(ftp);
         }
     }
 
@@ -313,7 +331,6 @@ public class SwordInstaller implements Installer
         if (!FTPReply.isPositiveCompletion(reply))
         {
             String text = ftp.getReplyString();
-            disconnect(ftp);
             throw new InstallException(Msg.CONNECT_REFUSED, new Object[] { site, new Integer(reply), text });
         }
 
@@ -325,7 +342,6 @@ public class SwordInstaller implements Installer
         if (!FTPReply.isPositiveCompletion(reply))
         {
             String text = ftp.getReplyString();
-            disconnect(ftp);
             throw new InstallException(Msg.AUTH_REFUSED, new Object[] { user, new Integer(reply), text });
         }
 
@@ -337,7 +353,6 @@ public class SwordInstaller implements Installer
         if (!FTPReply.isPositiveCompletion(reply))
         {
             String text = ftp.getReplyString();
-            disconnect(ftp);
             throw new InstallException(Msg.CWD_REFUSED, new Object[] { dir, new Integer(reply), text });
         }
     }
@@ -424,6 +439,73 @@ public class SwordInstaller implements Installer
         this.username = username;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object object)
+    {
+        if (!(object instanceof SwordInstaller))
+        {
+            return false;
+        }
+        SwordInstaller that = (SwordInstaller) object;
+
+        if (!equals(this.host, that.host))
+        {
+            return false;
+        }
+
+        if (!equals(this.directory, that.directory))
+        {
+            return false;
+        }
+
+        if (!equals(this.password, that.password))
+        {
+            return false;
+        }
+
+        if (!equals(this.username, that.username))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Quick utility to check to see if 2 (potentially null) strings are equal
+     */
+    private boolean equals(String string1, String string2)
+    {
+        if (string1 == null)
+        {
+            return string2 == null;
+        }
+        return string1.equals(string2);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return host.hashCode() + directory.hashCode() + username.hashCode() + password.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object object)
+    {
+        SwordInstaller myClass = (SwordInstaller) object;
+
+        return new CompareToBuilder()
+            .append(this.host, myClass.host)
+            .append(this.directory, myClass.directory)
+            .toComparison();
+    }
+    
     /**
      * The remote hostname.
      */

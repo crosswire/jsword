@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
@@ -69,8 +70,8 @@ public class InstallManager
                     {
                         InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
                         Installer installer = ifactory.createInstaller(url);
-    
-                        addInstaller(name, installer);
+
+                        internalAdd(name, installer);
                     }
                 }
                 catch (Exception ex)
@@ -83,6 +84,14 @@ public class InstallManager
         {
             throw new InstallException(Msg.INIT, ex);
         }
+    }
+
+    /**
+     * 
+     */
+    public void save()
+    {
+        // TODO: write
     }
 
     /**
@@ -99,7 +108,7 @@ public class InstallManager
      * There isn't a nice way to do this right now so we just do a trawl through
      * all the known factories looking!
      */
-    public String getNameForInstaller(Installer installer)
+    public String getFactoryNameForInstaller(Installer installer)
     {
         Class match = installer.getClass();
 
@@ -122,7 +131,54 @@ public class InstallManager
             }
         }
 
+        log.warn("Failed to find factory name for "+installer.toString()+" among the "+factories.size()+" factories.");
         return null;
+    }
+
+    /**
+     * Find the registered name of the Installer.
+     * There isn't a nice way to do this right now so we just do a trawl through
+     * all the known factories looking!
+     */
+    public String getInstallerNameForInstaller(Installer installer)
+    {
+        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
+        {
+            String name = (String) it.next();
+            Installer test = (Installer) installers.get(name);
+            if (installer.equals(test))
+            {
+                return name;
+            }
+        }
+
+        log.warn("Failed to find installer name for "+installer.toString()+" among the "+installers.size()+" installers.");
+        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
+        {
+            String name = (String) it.next();
+            Installer test = (Installer) installers.get(name);
+            log.warn("  it isn't equal to "+test.getURL());
+        }
+        return null;
+    }
+
+    /**
+     * Find the InstallerFactory associated with the given name.
+     * @param name The InstallerFactory name to look-up
+     * @return The found InstallerFactory or null if the name was not found
+     */
+    public InstallerFactory getInstallerFactory(String name)
+    {
+        try
+        {
+            Class clazz = (Class) factories.get(name);
+            InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
+            return ifactory;
+        }
+        catch (Exception ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**
@@ -162,8 +218,34 @@ public class InstallManager
 
         removeInstaller(name);
 
-        installers.put(name, installer);
+        internalAdd(name, installer);
         fireInstallersChanged(this, installer, true);
+    }
+
+    /**
+     * InstallManager is a Map, however we demand that both names and installers
+     * are unique (so we can lookup a name from an installer) 
+     * @param name The name of the new installer
+     * @param installer The installer to associate with the given name
+     */
+    private void internalAdd(String name, Installer installer)
+    {
+        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
+        {
+            String tname = (String) it.next();
+            Installer tinstaller = (Installer) installers.get(tname);
+
+            if (tinstaller.equals(installer))
+            {
+                // We have a dupe - remove the old name
+                log.warn("duplicate installers: "+name+"="+tname+". removing "+tname);
+
+                it.remove();
+                fireInstallersChanged(this, tinstaller, false);
+            }
+        }
+
+        installers.put(name, installer);
     }
 
     /**

@@ -19,10 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.crosswire.common.swing.EirAbstractAction;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.install.InstallerEvent;
+import org.crosswire.jsword.book.install.InstallerListener;
 
 /**
  * A panel for use within a SitesPane to display one set of Books that are
@@ -56,10 +57,50 @@ public class SitesPane extends JPanel
      */
     public SitesPane() throws InstallException
     {
-        jbInit();
+        initialize();
 
-        InstallManager imgr = new InstallManager();
-        installers = imgr.getInstallers();
+        imanager = new InstallManager();
+        installers = imanager.getInstallers();
+
+        addAllInstallers();
+
+        imanager.addInstallerListener(new InstallerListener()
+        {
+            /* (non-Javadoc)
+             * @see org.crosswire.jsword.book.install.InstallerListener#installerAdded(org.crosswire.jsword.book.install.InstallerEvent)
+             */
+            public void installerAdded(InstallerEvent ev)
+            {
+                Installer installer = ev.getInstaller();
+                String name = imanager.getInstallerNameForInstaller(installer);
+
+                SitePane site = new SitePane(installer);
+                tabMain.add(site, name);
+            }
+
+            /* (non-Javadoc)
+             * @see org.crosswire.jsword.book.install.InstallerListener#installerRemoved(org.crosswire.jsword.book.install.InstallerEvent)
+             */
+            public void installerRemoved(InstallerEvent ev)
+            {
+                // This gets tricky because if you add a site with a new name
+                // but the same details as an old one, then the old name goes
+                // so we can't get the old name to remove it's tab (and anyway
+                // we would have to do a search through all the tabs to find it
+                // by name)
+                // So we just nuke all the tabs and re-create them
+                removeAllInstallers();
+                addAllInstallers();
+            }
+        });
+    }
+
+    /**
+     * Re-create the list of installers
+     */
+    protected void addAllInstallers()
+    {
+        tabMain.add(steLocal, "Local");
 
         for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
         {
@@ -72,9 +113,17 @@ public class SitesPane extends JPanel
     }
 
     /**
+     * Remove all the non-local installers
+     */
+    protected void removeAllInstallers()
+    {
+        tabMain.removeAll();
+    }
+
+    /**
      * Build the GUI components
      */
-    private void jbInit()
+    private void initialize()
     {
         btnOK.setMnemonic('O');
         btnOK.setText("OK");
@@ -87,7 +136,7 @@ public class SitesPane extends JPanel
         });
 
         btnAdd.setMnemonic('S');
-        btnAdd.setText("Add Site ...");
+        btnAdd.setText("Edit Site ...");
         btnAdd.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -100,8 +149,6 @@ public class SitesPane extends JPanel
         pnlButtons.add(btnAdd, null);
         pnlButtons.add(btnOK);
 
-        tabMain.add(steLocal, "Local");
-
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.add(tabMain, BorderLayout.CENTER);
@@ -112,15 +159,8 @@ public class SitesPane extends JPanel
      */
     protected void addSite()
     {
-        try
-        {
-            EditSitePane edit = new EditSitePane();
-            edit.showInDialog(this);
-        }
-        catch (InstallException ex)
-        {
-            Reporter.informUser(this, ex);
-        }
+        EditSitePane edit = new EditSitePane(imanager);
+        edit.showInDialog(this);
     }
 
     /**
@@ -162,13 +202,18 @@ public class SitesPane extends JPanel
      */
     private Map installers = null;
 
+    /**
+     * The current installer
+     */
+    protected InstallManager imanager;
+
     /*
      * GUI Components
      */
     private JDialog dlgMain = null;
     private JPanel pnlButtons = new JPanel();
     private JButton btnOK = new JButton();
-    private JTabbedPane tabMain = new JTabbedPane();
+    protected JTabbedPane tabMain = new JTabbedPane();
     private JButton btnAdd = new JButton();
     private SitePane steLocal = new SitePane();
 

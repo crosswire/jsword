@@ -130,6 +130,12 @@ public class NetUtil
      */
     public static boolean isFile(URL url)
     {
+        if (url.getProtocol().equals(PROTOCOL_FILE))
+        {
+            File file = new File(url.getFile());
+            return file.isFile();
+        }
+
         try
         {
             // This will throw if the resource does not exist

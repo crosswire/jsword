@@ -91,12 +91,15 @@ public class InstallManagerListModel extends AbstractListModel
      */
     protected void update(InstallerEvent ev)
     {
+        int oldmax = names.size();
+
+        names.clear();
         names.addAll(imanager.getInstallers().keySet());
         Collections.sort(names);
 
         if (ev != null)
         {
-            fireContentsChanged(ev.getSource(), 0, names.size());
+            fireContentsChanged(ev.getSource(), 0, oldmax);
         }
     }
 

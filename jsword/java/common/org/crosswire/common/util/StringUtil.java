@@ -187,17 +187,32 @@ public final class StringUtil
     /**
      * For example getInitials("Java DataBase Connectivity") = "JDC" and
      * getInitials("Church of England") = "CoE".
-     * @param words The phrase from which to get the initial letters.
+     * @param sentence The phrase from which to get the initial letters.
      * @return The initial letters in the given words.
      */
-    public static String getInitials(String words)
+    public static String getInitials(String sentence)
     {
-        String[] worda = StringUtils.split(words);
+        String[] words = StringUtils.split(sentence);
 
         StringBuffer retcode = new StringBuffer();
-        for (int i=0; i<worda.length; i++)
+        for (int i=0; i<words.length; i++)
         {
-            retcode.append(worda[i].charAt(0));
+            String word = words[i];
+
+            char first = 0;
+            for (int j = 0; first == 0 && j < word.length(); j++)
+            {
+                char c = word.charAt(j);
+                if (Character.isLetter(c))
+                {
+                    first = c;
+                }
+            }
+
+            if (first != 0)
+            {
+                retcode.append(first);
+            }
         }
 
         return retcode.toString();

@@ -9,7 +9,6 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.IntrospectionException;
 
@@ -31,15 +30,17 @@ import javax.swing.KeyStroke;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.install.InstallerFactory;
 
 /**
  * An editor for the list of available update sites.
@@ -70,12 +71,16 @@ public class EditSitePane extends JPanel
     /**
      * This is the default constructor
      */
-    public EditSitePane() throws InstallException
+    public EditSitePane(InstallManager imanager)
     {
-        imanager = new InstallManager();
+        this.imanager = imanager;
+
         mdlSite = new InstallManagerListModel(imanager);
         mdlType = new InstallerFactoryComboBoxModel(imanager);
+
         initialize();
+        setState(STATE_DISPLAY, null);
+        select();
     }
 
     /**
@@ -137,9 +142,19 @@ public class EditSitePane extends JPanel
         lblName.setDisplayedMnemonic('N');
         lblName.setLabelFor(txtName);
         txtName.setColumns(10);
-        txtName.addKeyListener(new KeyAdapter()
+        txtName.getDocument().addDocumentListener(new DocumentListener()
         {
-            public void keyTyped(KeyEvent ev)
+            public void changedUpdate(DocumentEvent ev)
+            {
+                siteUpdate();
+            }
+
+            public void insertUpdate(DocumentEvent ev)
+            {
+                siteUpdate();
+            }
+
+            public void removeUpdate(DocumentEvent ev)
             {
                 siteUpdate();
             }
@@ -150,6 +165,14 @@ public class EditSitePane extends JPanel
         lblType.setLabelFor(cboType);
         cboType.setEditable(false);
         cboType.setModel(mdlType);
+        cboType.setSelectedIndex(0);
+        cboType.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                newType();
+            }
+        });
 
         lblMesg.setText(" ");
 
@@ -187,7 +210,7 @@ public class EditSitePane extends JPanel
         pnlMain.add(pnlBtn2, new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
         sptMain.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        sptMain.setResizeWeight(0.5);
+        sptMain.setResizeWeight(0.0);
         sptMain.add(pnlSite, JSplitPane.LEFT);
         sptMain.add(pnlMain, JSplitPane.RIGHT);
 
@@ -200,7 +223,7 @@ public class EditSitePane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                dlgMain.dispose();
+                close();
             }
         });
 
@@ -221,7 +244,7 @@ public class EditSitePane extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                dlgMain.dispose();
+                close();
             }
         };
 
@@ -245,108 +268,252 @@ public class EditSitePane extends JPanel
     }
 
     /**
-     * 
+     * Close the window, and save the install manager state
      */
-    protected void siteUpdate()
+    protected void close()
     {
-        String name = txtName.getText().trim();
-
-        if (name.length() == 0)
-        {
-            setState(STATE_EDIT_ERROR, "Missing site name");
-            return;
-        }
-
-        if (imanager.getInstaller(name) != null)
-        {
-            setState(STATE_EDIT_ERROR, "Duplicate site name");
-            return;
-        }
-
-        setState(STATE_EDIT_OK, "");
+        imanager.save();
+        dlgMain.dispose();
     }
 
     /**
-     * 
+     * The name field has been updated, so we need to check the entry is valid
+     */
+    protected void siteUpdate()
+    {
+        if (txtName.isEditable())
+        {
+            String name = txtName.getText().trim();
+    
+            if (name.length() == 0)
+            {
+                setState(STATE_EDIT_ERROR, "Missing site name");
+                return;
+            }
+    
+            if (imanager.getInstaller(name) != null)
+            {
+                setState(STATE_EDIT_ERROR, "Duplicate site name");
+                return;
+            }
+    
+            setState(STATE_EDIT_OK, "");
+        }
+    }
+
+    /**
+     * The installer type combo box has been changed
+     */
+    protected void newType()
+    {
+        if (userInitiated)
+        {    
+            String type = (String) cboType.getSelectedItem();
+            InstallerFactory ifactory = imanager.getInstallerFactory(type);
+            Installer installer = ifactory.createInstaller();
+
+            setBean(installer);
+        }
+    }
+
+    /**
+     * Someone has picked a new installer
      */
     protected void select()
     {
         String name = (String) lstSite.getSelectedValue();
         if (name == null)
         {
-            return;
+            btnEdit.setEnabled(false);
+            clear();
         }
-        
-        Installer installer = imanager.getInstaller(name);
-        display(name, installer);
+        else
+        {
+            btnEdit.setEnabled(true);
+
+            Installer installer = imanager.getInstaller(name);
+            display(name, installer);
+        }
+
+        // Since setting the display undoes any work done to set the edit state
+        // of the bean panel we need to redo it here. Since we are always in
+        // display mode at this point, this is fairly easy.
+        pnlBean.setEditable(false);
     }
 
     /**
-     * 
+     * Add a new installer to the list
      */
-    private void display(String name, Installer installer)
+    protected void add()
     {
-        try
-        {
-            txtName.setText(name);
+        newType();
 
-            String type = imanager.getNameForInstaller(installer);
-            cboType.setSelectedItem(type);
-            pnlBean.setBean(installer);
-        }
-        catch (IntrospectionException ex)
-        {
-            Reporter.informUser(this, ex);
-        }
+        editName = null;
+        editInstaller = null;
+
+        // We need to call setState() to enable the text boxes so that
+        // siteUpdate() works properly
+        setState(STATE_EDIT_OK, null);
+        siteUpdate();
 
         Window window = GuiUtil.getWindow(this);
         GuiUtil.restrainedRePack(window);
     }
 
     /**
-     * 
-     */
-    protected void add()
-    {
-        clear();
-        siteUpdate();
-    }
-
-    /**
-     * 
+     * Move the selected installer to the installer edit panel
      */
     protected void edit()
     {
+        String name = (String) lstSite.getSelectedValue();
+        if (name == null)
+        {
+            JOptionPane.showMessageDialog(this, "No selected site to edit", "No Site", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        editName = name;
+        editInstaller = imanager.getInstaller(name);
+
+        imanager.removeInstaller(name);
+
+        setState(STATE_EDIT_OK, null);
+        siteUpdate();
+
+        txtName.grabFocus();
     }
 
     /**
-     * 
+     * Delete the selected installer from the list (on the left hand side)
      */
     protected void delete()
     {
-        JOptionPane.showMessageDialog(this, "Delete not implemented");
+        String name = (String) lstSite.getSelectedValue();
+        if (name == null)
+        {
+            return;
+        }
+
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete "+name, "Delete site?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+        {
+            imanager.removeInstaller(name);
+        }
+
+        clear();
+        setState(STATE_DISPLAY, null);
     }
 
     /**
-     * 
+     * End editing the current installer
      */
     protected void reset()
     {
+        if (editName != null)
+        {
+            imanager.addInstaller(editName, editInstaller);
+        }
+
         clear();
+        editName = null;
+        editInstaller = null;
+
         setState(STATE_DISPLAY, "");
+        select();
     }
 
     /**
-     * 
+     * Save the current installer to the list of installers
      */
     protected void save()
     {
-        JOptionPane.showMessageDialog(this, "Save not implemented");
+        String name = txtName.getText();
+        Installer installer = (Installer) pnlBean.getBean();
+        imanager.addInstaller(name, installer);
+
+        clear();
+        editName = null;
+        editInstaller = null;
+
         setState(STATE_DISPLAY, "");
+        select();
     }
 
     /**
-     * 
+     * Set the various gui elements depending on the current edit mode
+     */
+    private void setState(int state, String message)
+    {
+        switch (state)
+        {
+        case STATE_DISPLAY:
+            btnAdd.setEnabled(true);
+            btnDelete.setEnabled(true);
+            btnEdit.setEnabled(true);
+            lstSite.setEnabled(true);
+
+            btnReset.setEnabled(false);
+            btnSave.setEnabled(false);
+
+            btnClose.setEnabled(true);
+
+            txtName.setEditable(false);
+            cboType.setEnabled(false);
+            pnlBean.setEditable(false);
+
+            lblMesg.setIcon(null);
+            break;
+
+        case STATE_EDIT_OK:
+        case STATE_EDIT_ERROR:
+            btnAdd.setEnabled(false);
+            btnDelete.setEnabled(false);
+            btnEdit.setEnabled(false);
+            lstSite.setEnabled(false);
+
+            btnReset.setEnabled(true);
+            btnSave.setEnabled(state == STATE_EDIT_OK);
+            pnlBean.setEditable(true);
+
+            btnClose.setEnabled(false);
+
+            txtName.setEditable(true);
+            cboType.setEnabled(true);
+            pnlBean.setEditable(true);
+
+            // TODO: lblMesg.setIcon(null);
+            break;
+
+        default:
+            throw new LogicError();
+        }
+
+        if (message == null || message.trim().length() == 0)
+        {
+            lblMesg.setText(" ");
+        }
+        else
+        {
+            lblMesg.setText(message);
+        }
+    }
+
+    /**
+     * Set the display in the RHS to the given installer
+     */
+    private void display(String name, Installer installer)
+    {
+        txtName.setText(name);
+
+        String type = imanager.getFactoryNameForInstaller(installer);
+        userInitiated = false;
+        cboType.setSelectedItem(type);
+        userInitiated = true;
+
+        setBean(installer);
+    }
+
+    /**
+     * Clear the display in the RHS of any installers
      */
     private void clear()
     {
@@ -362,55 +529,23 @@ public class EditSitePane extends JPanel
     }
 
     /**
-     * 
+     * Convenience method to allow us to change the type of the current
+     * installer.
+     * @param installer The new installer to introspect
      */
-    private void setState(int state, String message)
+    private void setBean(Installer installer)
     {
-        switch (state)
+        try
         {
-        case STATE_DISPLAY:
-            btnAdd.setEnabled(true);
-            btnDelete.setEnabled(true);
-            btnReset.setEnabled(false);
-            btnSave.setEnabled(true);
-            btnClose.setEnabled(false);
-            //btnCancel.setEnabled(true);
-            // TODO: lblMesg.setIcon(null);
-            txtName.setEditable(false);
-            break;
-
-        case STATE_EDIT_OK:
-            btnAdd.setEnabled(false);
-            btnDelete.setEnabled(false);
-            btnClose.setEnabled(false);
-            btnReset.setEnabled(false);
-            btnSave.setEnabled(true);
-            // TODO: lblMesg.setIcon(null);
-            txtName.setEditable(true);
-            break;
-
-        case STATE_EDIT_ERROR:
-            btnAdd.setEnabled(false);
-            btnDelete.setEnabled(false);
-            btnClose.setEnabled(false);
-            btnReset.setEnabled(false);
-            btnSave.setEnabled(true);
-            // TODO: lblMesg.setIcon(null);
-            txtName.setEditable(true);
-            break;
-
-        default:
-            throw new LogicError();
+            pnlBean.setBean(installer);
+        }
+        catch (IntrospectionException ex)
+        {
+            Reporter.informUser(this, ex);
         }
 
-        if (message == null || message.trim().length() == 0)
-        {
-            lblMesg.setText(" ");
-        }
-        else
-        {
-            lblMesg.setText(message);
-        }
+        Window window = GuiUtil.getWindow(this);
+        GuiUtil.restrainedRePack(window);
     }
 
     /**
@@ -432,6 +567,24 @@ public class EditSitePane extends JPanel
      * The model that we are providing a view/controller for
      */
     private InstallManager imanager = null;
+
+    /**
+     * If we are editing an installer, we need to know it's original name
+     * in case someone clicks cancel.
+     */
+    private String editName;
+
+    /**
+     * If we are editing an installer, we need to know it's original value
+     * in case someone clicks cancel.
+     */
+    private Installer editInstaller;
+
+    /**
+     * Edits to the type combo box mean different things depending on
+     * whether it was triggered by the user or the application.
+     */
+    private boolean userInitiated = true;
 
     /*
      * GUI Components for the list of sites
