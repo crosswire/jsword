@@ -3,8 +3,11 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.Verse;
+
 /**
- * An interface representing a Sword Bible backend.
+ * A stub for the Compressed sword Bible backend.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,10 +28,31 @@ import java.io.IOException;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
- * @version $Id: $
+ * @author The Sword project (don't know who - no credits in original files (canon.h))
+ * @version $Id$
  */
-public interface SwordBibleBackend
+public class CompressedSwordBible extends SwordBible
 {
-    // gets the Bible text from the backend
-    public String getText(int testament, int book, int chapter, int verse) throws IOException;
+    /**
+     * Simple ctor
+     */
+    public CompressedSwordBible(SwordBibleMetaData sbmd, SwordConfig config) throws BookException
+    {
+        super(sbmd, config);
+    }
+
+    public String getText(Verse verse) throws IOException
+    {
+        if (getConfig().getCompressType() == SwordConstants.COMPRESSION_LZSS)
+        {
+            // plug in LZSS de / compressor
+        }
+
+        if (getConfig().getCompressType() == SwordConstants.COMPRESSION_ZIP)
+        {
+            // plug in ZIP de / compressor
+        }
+
+        return "A stub for compressed bible backend.";
+    }
 }

@@ -39,102 +39,100 @@ public class SwordConstants
     
     // name data info taken from http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
     /** constants for name types (These are mutually exclusive, thus the lack of bit-shifting)*/
-    static final int DRIVER_RAW_TEXT=			0;
-    static final int DRIVER_Z_TEXT=				1;
-    static final int DRIVER_RAW_COM=			2;
-    static final int DRIVER_Z_COM=				3;
-    static final int DRIVER_HREF_COM=			4;
-    static final int DRIVER_RAW_FILES=			5;
-    static final int DRIVER_RAW_LD=				6;
-    static final int DRIVER_RAW_LD4=			7;
-    static final int DRIVER_Z_LD=				8;
-    static final int DRIVER_RAW_GEN_BOOK=9;
+    static final int DRIVER_RAW_TEXT = 0;
+    static final int DRIVER_Z_TEXT = 1;
+    static final int DRIVER_RAW_COM = 2;
+    static final int DRIVER_Z_COM = 3;
+    static final int DRIVER_HREF_COM = 4;
+    static final int DRIVER_RAW_FILES = 5;
+    static final int DRIVER_RAW_LD = 6;
+    static final int DRIVER_RAW_LD4 = 7;
+    static final int DRIVER_Z_LD = 8;
+    static final int DRIVER_RAW_GEN_BOOK = 9;
     
     /** Strings for name type matching */
-    static final String[] DRIVER_STRINGS = 
-    {"RawText","zText","RawCom","zCom","HREFCom","RawFiles","RawLD","RawLD4","zLD","RawGenBook"};
-    
+    static final String[] DRIVER_STRINGS = { "RawText", "zText", "RawCom", "zCom", "HREFCom", "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook" };
+
     /** constants for block types */
-    static final int BLOCK_BOOK = 			0;
-    static final int BLOCK_CHAPTER = 	1;
-    static final int BLOCK_VERSE = 			2;
-    
+    static final int BLOCK_BOOK = 0;
+    static final int BLOCK_CHAPTER = 1;
+    static final int BLOCK_VERSE = 2;
+
     /** Strings for block type matching */
-    static final String[] BLOCK_STRINGS = {"BOOK","CHAPTER","VERSE"};
-    
+    static final String[] BLOCK_STRINGS = { "BOOK", "CHAPTER", "VERSE" };
+
     /** constants for compression types */
-    static final int COMPRESSION_ZIP=0;
-    static final int COMPRESSION_LZSS=1;
-    
+    static final int COMPRESSION_ZIP = 0;
+    static final int COMPRESSION_LZSS = 1;
+
     /** Strings for compression type matching */
-    static final String[] COMPRESSION_STRINGS = {"ZIP","LZSS"};
-    
-	/** Constants for global option filter */
-	static final int GOF_GBF_STRONGS = 					1;
-	static final int GOF_GBF_FOOTNOTES = 				1<<1;
-	static final int GOF_GBF_SCRIPREF = 					1<<2;
-	static final int GOF_GBF_MORPH = 						1<<3;
-	static final int GOF_GBF_HEADINGS = 					1<<4;
-	static final int GOF_THML_STRONGS = 				1<<5;
-	static final int GOF_THML_FOOTNOTES = 			1<<6;
-	static final int GOF_THML_SCRIPREF = 				1<<7;
-	static final int GOF_THML_MORPH = 					1<<8;
-	static final int GOF_THML_HEADINGS = 				1<<9;
-	static final int GOF_THML_VARIANTS = 				1<<10;
-	static final int GOF_THML_LEMMA = 					1<<11;
-	static final int GOF_UTF8_CANTILLATION = 		1<<12;
-	static final int GOF_UTF8_GREEK_ACCENTS = 	1<<13;
-	static final int GOF_UTF8_HEBREW_VOWELS = 	1<<14;
+    static final String[] COMPRESSION_STRINGS = { "ZIP", "LZSS" };
+
+    /** Constants for global option filter */
+    static final int GOF_GBF_STRONGS = 1;
+    static final int GOF_GBF_FOOTNOTES = 1 << 1;
+    static final int GOF_GBF_SCRIPREF = 1 << 2;
+    static final int GOF_GBF_MORPH = 1 << 3;
+    static final int GOF_GBF_HEADINGS = 1 << 4;
+    static final int GOF_THML_STRONGS = 1 << 5;
+    static final int GOF_THML_FOOTNOTES = 1 << 6;
+    static final int GOF_THML_SCRIPREF = 1 << 7;
+    static final int GOF_THML_MORPH = 1 << 8;
+    static final int GOF_THML_HEADINGS = 1 << 9;
+    static final int GOF_THML_VARIANTS = 1 << 10;
+    static final int GOF_THML_LEMMA = 1 << 11;
+    static final int GOF_UTF8_CANTILLATION = 1 << 12;
+    static final int GOF_UTF8_GREEK_ACCENTS = 1 << 13;
+    static final int GOF_UTF8_HEBREW_VOWELS = 1 << 14;
 	
 	/** Strings for global option filter */
 	static final String[] GOF_STRINGS = 
 	{"GBFStrongs","GBFFootnotes","GBFScripref","GBFMorph","GBFHeadings","ThMLStrongs","ThMLFootnotes","ThMLScripref",
 	"ThMLMorph","ThMLHeadings","ThMLVariants","THMLLemma","UTF8Cantillation","UTF8GreekAccents","UTF8HebrewVowels"};
 	
-	/** Constants for direction */
-	static final int DIRECTION_L_TO_R = 0;
-	static final int DIRECTION_R_TO_L = 1;
-	
-	/** Strings for direction */
-	static final String[] DIRECTION_STRINGS = {"LtoR","RtoL"};
-	
-	/** Constants for source type */
-	static final int SOURCE_PLAINTEXT = 	0;
-	static final int SOURCE_GBF = 				1;
-	static final int SOURCE_THML = 				2;
-	static final int SOURCE_OSIS = 				3;
-	
-	/** Strings for source type */
-	static final String[] SOURCE_STRINGS = {"Plaintext","GBF","ThML","OSIS"};
-	
-	/** constants for encoding */
-	static final int ENCODING_UTF8 = 		0;
-	static final int ENCODING_LATIN1 = 	1;
-	
-	/** Strings for encoding */
-	static final String[] ENCODING_STRINGS = {"UTF-8","Latin-1"};
-    
+    /** Constants for direction */
+    static final int DIRECTION_L_TO_R = 0;
+    static final int DIRECTION_R_TO_L = 1;
+
+    /** Strings for direction */
+    static final String[] DIRECTION_STRINGS = { "LtoR", "RtoL" };
+
+    /** Constants for source type */
+    static final int SOURCE_PLAINTEXT = 0;
+    static final int SOURCE_GBF = 1;
+    static final int SOURCE_THML = 2;
+    static final int SOURCE_OSIS = 3;
+
+    /** Strings for source type */
+    static final String[] SOURCE_STRINGS = { "Plaintext", "GBF", "ThML", "OSIS" };
+
+    /** constants for encoding */
+    static final int ENCODING_UTF8 = 0;
+    static final int ENCODING_LATIN1 = 1;
+
+    /** Strings for encoding */
+    static final String[] ENCODING_STRINGS = { "UTF-8", "Latin-1" };
+
     /** Constants for feature */
-    static final int FEATURE_STRONGS_NUMBERS =	1;
-    static final int FEATURE_GREEK_DEF = 				1<<1;
-    static final int FEATURE_HEBREW_DEF = 			1<<2;
-    static final int FEATURE_GREEK_PARSE = 			1<<3;
-    static final int FEATURE_HEBREW_PARSE = 		1<<4;
-    static final int FEATURE_DAILY_DEVOTION = 		1<<5;
-    static final int FEATURE_GLOSSARY = 					1<<6;
+    static final int FEATURE_STRONGS_NUMBERS = 1;
+    static final int FEATURE_GREEK_DEF = 1 << 1;
+    static final int FEATURE_HEBREW_DEF = 1 << 2;
+    static final int FEATURE_GREEK_PARSE = 1 << 3;
+    static final int FEATURE_HEBREW_PARSE = 1 << 4;
+    static final int FEATURE_DAILY_DEVOTION = 1 << 5;
+    static final int FEATURE_GLOSSARY = 1 << 6;
     
     /** Strings for feature */
-    static final String[] FEATURE_STRINGS = 
-    {"StrongsNumbers","GreekDef","HebrewDef","GreekParse","HebrewParse","DailyDevotion","Glossary"};
+    static final String[] FEATURE_STRINGS = { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary" };
     
     /** public domain */
     static final int DISTRIBUTION_LICENSE_PD = 1;
     /** copyrighted but free for distribution */
-    static final int DISTRIBUTION_LICENSE_CBFFD = 1<<1;
+    static final int DISTRIBUTION_LICENSE_CBFFD = 1 << 1;
     /** copyrighted by licensed for distribution by crosswire */
-    static final int DISTRIBUTION_LICENSE_CBLFDBC = 1<<2;
+    static final int DISTRIBUTION_LICENSE_CBLFDBC = 1 << 2;
     /** copyrighted */
-    static final int DISTRIBUTION_LICENSE_C = 1<<3;
+    static final int DISTRIBUTION_LICENSE_C = 1 << 3;
     
     /** Strings for distribution license */
 	static final String[] DISTIBUTION_LICENSE_STRINGS = {"public domain","copyrighted but free for distribution"

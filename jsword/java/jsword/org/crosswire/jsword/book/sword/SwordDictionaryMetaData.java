@@ -2,10 +2,13 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
-import java.net.URL;
+
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DictionaryMetaData;
 
 /**
- * A stub for the Compressed sword Bible backend.
+ * An implementation of DictionaryMetaData for sword drivers.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,32 +28,25 @@ import java.net.URL;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see docs.Licence
- * @author Mark Goodwin [mark at thorubio dot org]
- * @author The Sword project (don't know who - no credits in original files (canon.h))
- * @version $Id: $
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
-public class CompressedBibleBackend implements SwordBibleBackend
+public class SwordDictionaryMetaData extends SwordBookMetaData implements DictionaryMetaData
 {
-    public CompressedBibleBackend(URL swordBase, SwordConfig config)
+    /**
+     * Simple ctor
+     * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
+     */
+    public SwordDictionaryMetaData(SwordConfig config) throws IOException
     {
-        if (config.getCompressType() == SwordConstants.COMPRESSION_LZSS)
-        {
-            // plug in LZSS de / compressor
-        }
-
-        if (config.getCompressType() == SwordConstants.COMPRESSION_ZIP)
-        {
-            // plug in ZIP de / compressor
-        }
-
-        // implementation of different compression types looks to be identical other than the above.
+        super(config);
     }
 
-    /**
-     * @see org.crosswire.jsword.book.sword.SwordBibleBackend#getText(int, int, int, int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public String getText(int testament, int book, int chapter, int verse) throws IOException
+    public Book createBook() throws BookException
     {
-        return "A stub for compressed bible backend. ";
+        return new SwordDictionary(this);
     }
 }

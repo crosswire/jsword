@@ -9,6 +9,8 @@ import java.net.URL;
 
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.Verse;
 
 /**
  * An implementation of a Sword Bible backend for raw bible data.
@@ -33,16 +35,19 @@ import org.crosswire.jsword.book.BookException;
  * @see docs.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author The Sword project (don't know who - no credits in original files (canon.h))
- * @version $Id:$
+ * @version $Id$
  */
-public class RawBibleBackend implements SwordBibleBackend
+public class RawSwordBible extends SwordBible
 {
     /**
-     * Constructs a RawBibleBackend from a SwordConfig.
+     * Constructs a RawSwordBible from a SwordConfig.
      */
-    public RawBibleBackend(URL swordBase, SwordConfig config) throws BookException
+    public RawSwordBible(SwordBibleMetaData sbmd, SwordConfig config) throws BookException
     {
-        this.swordBase = swordBase;
+        super(sbmd, config);
+
+        URL swordBase = SwordBookDriver.dir;
+
         try
         {
             URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
@@ -78,11 +83,29 @@ public class RawBibleBackend implements SwordBibleBackend
         }
     }
 
-    /**
-     * @see org.crosswire.jsword.book.sword.SwordBibleBackend#getText(int, int, int, int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.SwordBible#getText(org.crosswire.jsword.passage.Verse)
      */
-    public String getText(int testament, int book, int chapter, int verse) throws IOException
+    public String getText(Verse v) throws IOException
     {
+        int ord = v.getOrdinal();
+        int book = v.getBook();
+        int chapter = v.getChapter();
+        int verse = v.getVerse();
+        int testament;
+        
+        if (ord >= ORDINAL_MAT11)
+        {
+            // This is an NT verse
+            testament = SwordConstants.TESTAMENT_NEW;
+            book = book - BibleInfo.Names.Malachi;
+        }
+        else
+        {
+            // This is an OT verse
+            testament = SwordConstants.TESTAMENT_OLD;
+        };
+
         long start;
         int size;
 
@@ -124,6 +147,4 @@ public class RawBibleBackend implements SwordBibleBackend
 
     /** The array of data files */
     private RandomAccessFile[] txt_raf = new RandomAccessFile[3];
-
-    private URL swordBase;
 }

@@ -77,15 +77,6 @@ public abstract class AbstractBible implements Bible
     }
 
     /**
-     * Retrieval: For a given word find a list of references to it
-     * @param word The text to search for
-     * @return The references to the word
-     * @throws BookException If anything goes wrong with this method
-     * @see Book#find(String)
-     */
-    public abstract Passage findPassage(Search word) throws BookException;
-
-    /**
      * Retrieval: For a given search spec find a list of references to it.
      * @param base
      * @return Iterator

@@ -1,0 +1,4 @@
+
+This file is our equivalent of bugzilla for the time being.
+
+- chapter ranges are not displayed distinctly from verse ranges

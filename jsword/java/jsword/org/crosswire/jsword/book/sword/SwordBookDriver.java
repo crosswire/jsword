@@ -19,6 +19,7 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * This represents all of the SwordBibles.
+ * URGENT(joe): support other books
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -51,7 +52,7 @@ public class SwordBookDriver extends AbstractBookDriver
         log.debug("Starting Sword drivers");
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
     public BookMetaData[] getBooks()
@@ -71,28 +72,42 @@ public class SwordBookDriver extends AbstractBookDriver
                 return new BibleMetaData[0];
             }
 
-            File modsdir = new File(mods.getFile());
-            String[] bookdirs = modsdir.list(new CustomFilenameFilter());
-            List valid = new ArrayList();
-
-            for (int i=0; i<bookdirs.length; i++)
-            {
-                SwordBibleMetaData bmd = new SwordBibleMetaData(this, modsdir, bookdirs[i]);
-
-                // check to see if it's a bible
-                if (bmd.isBible())
-                {
-                    valid.add(bmd);
-                }
-            }
-
-            return (BibleMetaData[]) valid.toArray(new BibleMetaData[valid.size()]);
+            return createBookMetaDataArray(mods);
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
             return new BibleMetaData[0];
         }
+    }
+
+    /**
+     * Create a list of BookMetaDatas at the given URL
+     * @param mods
+     * @return BookMetaData[]
+     * @throws IOException
+     */
+    public BookMetaData[] createBookMetaDataArray(URL mods)
+    {
+        File modsdir = new File(mods.getFile());
+        String[] bookdirs = modsdir.list(new SwordBookDriver.CustomFilenameFilter());
+        List valid = new ArrayList();
+        
+        for (int i=0; i<bookdirs.length; i++)
+        {
+            try
+            {
+                SwordConfig config = new SwordConfig(modsdir, bookdirs[i]);
+                SwordBookMetaData bmd = config.getMetaData();
+                valid.add(bmd);
+            }
+            catch (Exception ex)
+            {
+                log.warn("Couldn't create SwordBookMetaData", ex);
+            }
+        }
+        
+        return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
     }
 
     /**

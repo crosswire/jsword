@@ -1,12 +1,16 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.basic;
 
-import java.io.IOException;
-
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Dictionary;
+import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.Search;
 
 /**
- * Simple BibleMetaData for the sword implementation.
+ * An AbstractDictionary implements a few of the more generic methods of Dictionary.
+ * This class does a lot of work in helping make search easier, and implementing
+ * some basic write methods. 
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,13 +33,21 @@ import org.crosswire.jsword.book.BibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SwordBibleMetaData extends SwordBookMetaData implements BibleMetaData
+public abstract class AbstractDictionary implements Dictionary
 {
-    /**
-     * Constructor for SwordBibleMetaData.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
-    public SwordBibleMetaData(SwordConfig config) throws IOException
+    public BookMetaData getBookMetaData()
     {
-        super(config);
+        return getDictionaryMetaData();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
+     */
+    public Key find(Search search) throws BookException
+    {
+        return getKey("");
     }
 }

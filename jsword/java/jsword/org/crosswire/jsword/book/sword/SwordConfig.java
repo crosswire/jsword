@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * A utility class for loading and representing Sword module configs.
@@ -227,7 +229,9 @@ public class SwordConfig
         modDrv = matchingIndex(SwordConstants.DRIVER_STRINGS, modDrvString);
     }
 
-    // returns the index of the array element that matches the specified string
+    /**
+     * returns the index of the array element that matches the specified string
+     */
     private int matchingIndex(String[] array, String s)
     {
         int matchNo = -1;
@@ -239,6 +243,51 @@ public class SwordConfig
                 matchNo = i;
         }
         return matchNo;
+    }
+
+    /**
+     * @return SwordBookMetaData
+     */
+    public SwordBookMetaData getMetaData() throws IOException, BookException
+    {
+        int type = getModDrv();
+        switch (type)
+        {
+        case SwordConstants.DRIVER_RAW_TEXT:
+            return new SwordBibleMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    return new RawSwordBible(this, SwordConfig.this);
+                }
+            };
+
+        case SwordConstants.DRIVER_Z_TEXT:
+            return new SwordBibleMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    return new CompressedSwordBible(this, SwordConfig.this);
+                }
+            };
+
+        case SwordConstants.DRIVER_RAW_COM:
+        case SwordConstants.DRIVER_Z_COM:
+        case SwordConstants.DRIVER_HREF_COM:
+        case SwordConstants.DRIVER_RAW_FILES:
+            return new SwordCommentaryMetaData(this);
+
+        case SwordConstants.DRIVER_RAW_LD:
+        case SwordConstants.DRIVER_RAW_LD4:
+        case SwordConstants.DRIVER_Z_LD:
+            return new SwordDictionaryMetaData(this);
+
+        case SwordConstants.DRIVER_RAW_GEN_BOOK:
+            throw new BookException("Unsupported type: "+type);
+
+        default:
+            throw new BookException("Unknown type: "+type);
+        }
     }
 
     /**

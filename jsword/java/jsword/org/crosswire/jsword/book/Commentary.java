@@ -71,5 +71,5 @@ public interface Commentary extends Book
      * @throws BookException If anything goes wrong with this method
      * @see Book#find(String)
      */
-    public Passage findPassage(String word) throws BookException;
+    public Passage findPassage(Search search) throws BookException;
 }

@@ -3,10 +3,12 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.CommentaryMetaData;
 
 /**
- * Simple BibleMetaData for the sword implementation.
+ * An implementation of CommentaryMetaData for sword drivers.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,13 +31,22 @@ import org.crosswire.jsword.book.BibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SwordBibleMetaData extends SwordBookMetaData implements BibleMetaData
+public class SwordCommentaryMetaData extends SwordBookMetaData implements CommentaryMetaData
 {
     /**
-     * Constructor for SwordBibleMetaData.
+     * Simple ctor
+     * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
      */
-    public SwordBibleMetaData(SwordConfig config) throws IOException
+    public SwordCommentaryMetaData(SwordConfig config) throws IOException
     {
         super(config);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.SwordBookMetaData#createBook()
+     */
+    public Book createBook() throws BookException
+    {
+        return new SwordCommentary(this);
     }
 }
