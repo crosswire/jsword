@@ -1,47 +1,10 @@
 package org.crosswire.jsword.book.search.lucene;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
-import org.crosswire.common.activate.Activatable;
-import org.crosswire.common.activate.Activator;
-import org.crosswire.common.activate.Lock;
-import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.IndexStatus;
-import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Thesaurus;
-import org.crosswire.jsword.passage.BibleInfo;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseFactory;
 
 /**
  * Implement the Thesarus using Lucene fuzzy searches.
@@ -75,8 +38,8 @@ public class LuceneThesarus implements Thesaurus
      */
     public Collection getSynonyms(String word) throws BookException
     {
-        // Use fuzzy search
-        Object[] synonymns =  { (word + '~') };
+        // Use fuzzy search and wildcard search
+        Object[] synonymns =  { word + '*', word + '~' };
         return Arrays.asList(synonymns);
     }
 }

@@ -67,7 +67,7 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Passage extends Key, Serializable, Cloneable
+public interface Passage extends Key, Serializable
 {
     /**
      * A summary of the verses in this Passage
@@ -237,13 +237,4 @@ public interface Passage extends Key, Serializable, Cloneable
      * @param li The listener to remove
      */
     public void removePassageListener(PassageListener li);
-
-    /**
-     * This needs to be declared here so that it is visible as a method
-     * on a derived Passage.
-     * Specifically, in SynchronizedPassage, ref.clone() where ref is only
-     * known as a Passage has to have clone visible in this interface.
-     * @return A complete copy of ourselves
-     */
-    public Object clone();
 }

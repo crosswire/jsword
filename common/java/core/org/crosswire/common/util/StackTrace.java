@@ -158,6 +158,10 @@ public final class StackTrace
         return lineNumbers[level];
     }
 
+    public int getClassCount()
+    {
+        return classNames.length;
+    }
     /**
      * Get the Class that owns the function
      * @param level Number of calling function
@@ -185,13 +189,21 @@ public final class StackTrace
          */
         public boolean hasMoreElements()
         {
-            return level < classNames.length;
+            return level < getClassCount();
+        }
+
+        /**
+         * @return Returns the level.
+         */
+        public int getAndIncrementLevel()
+        {
+            return level++;
         }
 
         /**
          * Are there more stack levels
          */
-         /* pkg protected */ int level;
+         private int level;
     }
 
     /**
@@ -203,7 +215,7 @@ public final class StackTrace
         {
             public Object nextElement()
             {
-                return getClassName(level++);
+                return getClassName(getAndIncrementLevel());
             }
         };
     }
@@ -217,7 +229,7 @@ public final class StackTrace
         {
             public Object nextElement()
             {
-                return getFunctionName(level++);
+                return getFunctionName(getAndIncrementLevel());
             }
         };
     }
@@ -231,7 +243,7 @@ public final class StackTrace
         {
             public Object nextElement()
             {
-                return getFullFunctionName(level++);
+                return getFullFunctionName(getAndIncrementLevel());
             }
         };
     }
@@ -239,7 +251,7 @@ public final class StackTrace
     /**
      * Array containing the class names
      */
-    /* pkg protected */ String[] classNames;
+    private String[] classNames;
 
     /**
      * Array containing the method names

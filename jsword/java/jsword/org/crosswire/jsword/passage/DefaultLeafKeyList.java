@@ -199,6 +199,27 @@ public class DefaultLeafKeyList implements Key
         return name.compareTo(that.name);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        DefaultLeafKeyList clone = null;
+        try
+        {
+            clone = (DefaultLeafKeyList) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        if (parent != null)
+        {
+            clone.parent = (Key) this.parent.clone();
+        }
+        return clone;
+    }
+
     /**
      * The parent of this key
      */

@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.activate.Activatable;
+import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 
@@ -8,7 +9,7 @@ import org.crosswire.jsword.passage.KeyFactory;
  * Book is the most basic store of textual data - It can retrieve data
  * either as an XML document or as plain text - It uses Keys to refer
  * to parts of itself, and can search for words (returning Keys).
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -64,8 +65,17 @@ public interface Book extends Activatable, KeyFactory, BookMetaData
      * Retrieval: For a given search spec find a list of references to it.
      * If there are no matches then null should be returned, otherwise a valid
      * Key.
-     * @param search The search spec.
+     * @param request The search spec.
      * @throws BookException If anything goes wrong with this method
      */
-    public Key find(String search) throws BookException;
+    public Key find(SearchRequest request) throws BookException;
+
+    /**
+     * Retrieval: For a given search spec find a list of references to it.
+     * If there are no matches then null should be returned, otherwise a valid
+     * Key.
+     * @param request The search spec.
+     * @throws BookException If anything goes wrong with this method
+     */
+    public Key find(String request) throws BookException;
 }

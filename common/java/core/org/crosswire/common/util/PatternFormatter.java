@@ -2,15 +2,12 @@ package org.crosswire.common.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.security.AccessController;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import sun.security.action.GetPropertyAction;
 
 /**
  * Formats a log entry by pattern.
@@ -128,5 +125,5 @@ public class PatternFormatter extends Formatter
 
     // Line separator string.  This is the value of the line.separator
     // property at the moment that the PatternFormatter was created.
-    private String lineSeparator = (String) AccessController.doPrivileged(new GetPropertyAction("line.separator")); //$NON-NLS-1$
+    private String lineSeparator = System.getProperty("line.separator", "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
 }

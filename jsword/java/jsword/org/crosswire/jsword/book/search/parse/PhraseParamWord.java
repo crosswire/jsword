@@ -10,7 +10,6 @@ import org.crosswire.jsword.book.search.Thesaurus;
 import org.crosswire.jsword.book.search.ThesaurusFactory;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * The Search Word for a Word to search for. The default
@@ -98,14 +97,13 @@ public class PhraseParamWord implements ParamWord
         // log.fine("words="+StringUtil.toString(words));
 
         PassageTally tally = new PassageTally();
-        tally.blur(BLUR_BY, RestrictionType.NONE);
 
         for (int i = 0; i < words.length; i++)
         {
             tally.addAll(engine.getIndex().findWord(words[i]));
         }
 
-        // This uses updatePassageTallyFlat() so that words like God
+        // This uses flatten() so that words like God
         // that have many startsWith() matches, and hence many verse
         // matches, do not end up with wrongly high scores.
         for (int i = 0; i < words.length; i++)
@@ -133,9 +131,4 @@ public class PhraseParamWord implements ParamWord
      * How we get related words
      */
     private Thesaurus thesaurus;
-
-    /**
-     * How many verses do we blur by?
-     */
-    private static final int BLUR_BY = 2;
 }

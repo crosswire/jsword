@@ -413,10 +413,18 @@ public final class VerseRange implements VerseBase
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         // This gets us a shallow copy
-        VerseRange copy = (VerseRange) super.clone();
+        VerseRange copy = null;
+        try
+        {
+            copy = (VerseRange) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
 
         copy.start = (Verse) start.clone();
         copy.end = (Verse) end.clone();
@@ -952,8 +960,8 @@ public final class VerseRange implements VerseBase
          */
         protected VerseIterator(VerseRange range)
         {
-            next = range.start.getOrdinal();
-            last = range.end.getOrdinal();
+            next = range.getStart().getOrdinal();
+            last = range.getEnd().getOrdinal();
         }
 
         /* (non-Javadoc)
@@ -1133,13 +1141,13 @@ public final class VerseRange implements VerseBase
      * The real data - where do we start?.
      * All ctors init this so leave default
      */
-    /* pkg protected */ transient Verse start;
+    private transient Verse start;
 
     /**
      * The real data - where do we end?.
      * All ctors init this so leave default
      */
-    /* pkg protected */ transient Verse end;
+    private transient Verse end;
 
     /**
      * The parent key. See the key interface for more information.

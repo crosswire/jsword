@@ -219,7 +219,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
 
         Element nameEle = factory.createCell();
         Element hiEle = factory.createHI();
-        hiEle.setAttribute("rend", "bold"); //$NON-NLS-1$ //$NON-NLS-2$
+        hiEle.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_BOLD);
         nameEle.addContent(hiEle);
         Element valueElement = factory.createCell();
         rowEle.addContent(nameEle);

@@ -49,10 +49,7 @@ public class StartsParamWord implements ParamWord
         throw new BookException(Msg.STARTS_WORD);
     }
 
-    /**
-     * WARNING the return from this method is a PassageTally which is not a
-     * 100% match for the Passage interface. Maybe this needs to be fixed
-     * somehow.
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getKeyList(org.crosswire.jsword.book.search.parse.IndexSearcher)
      */
     public Key getKeyList(IndexSearcher engine) throws BookException

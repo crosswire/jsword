@@ -312,6 +312,14 @@ public class RawLDBackend extends Backend
             this.size = size;
         }
 
+        /* (non-Javadoc)
+         * @see java.lang.Object#clone()
+         */
+        public Object clone()
+        {
+            return super.clone();
+        }
+
         protected long offset;
         protected int size;
     }

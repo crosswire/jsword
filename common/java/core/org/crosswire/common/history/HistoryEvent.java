@@ -1,11 +1,9 @@
-package org.crosswire.jsword.book.filter.thml;
+package org.crosswire.common.history;
 
-import org.crosswire.jsword.book.OSISUtil;
-import org.jdom.Element;
-import org.xml.sax.Attributes;
+import java.util.EventObject;
 
 /**
- * THML Tag to process the italic element.
+ * An Event in History.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,27 +23,22 @@ import org.xml.sax.Attributes;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at gmail dot com]
  * @version $Id$
  */
-public class ITag implements Tag
+public class HistoryEvent extends EventObject
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+    /**
+     * Constructs an HistoryEvent object.
+     * @param source The event originator (typically <code>this</code>)
      */
-    public String getTagName()
+    public HistoryEvent(Object source)
     {
-        return "i"; //$NON-NLS-1$
+        super(source);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /**
+     * Serialization ID
      */
-    public Element processTag(Element ele, Attributes attrs)
-    {
-        Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_ITALIC);
-        ele.addContent(hi);
-        return hi;
-    }
+    private static final long serialVersionUID = 3258132436104852535L;
 }

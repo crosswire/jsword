@@ -271,11 +271,18 @@ public final class Verse implements VerseBase, Comparable
      *   Think about this needing to be synchronized
      *   If this is not cloneable then writing cloneable children is harder
      * @return A complete copy of ourselves
-     * @exception CloneNotSupportedException We don't do this but our kids might
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
-        Verse copy = (Verse) super.clone();
+        Verse copy = null;
+        try
+        {
+            copy = (Verse) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
 
         copy.book = book;
         copy.chapter = chapter;

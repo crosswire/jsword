@@ -154,7 +154,7 @@ public class ConfigEntryType implements Serializable
         {
             return choices.contains(filter(value));
         }
-        
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
          */

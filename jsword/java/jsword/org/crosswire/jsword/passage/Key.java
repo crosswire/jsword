@@ -30,7 +30,7 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Key extends Comparable
+public interface Key extends Comparable, Cloneable
 {
     /**
      * A Human readable version of the Key.
@@ -135,4 +135,11 @@ public interface Key extends Comparable
      * @see Passage
      */
     public void blur(int by, RestrictionType restrict);
+
+    /**
+     * This needs to be declared here so that it is visible as a method
+     * on a derived Key.
+     * @return A complete copy of ourselves
+     */
+    public Object clone();
 }

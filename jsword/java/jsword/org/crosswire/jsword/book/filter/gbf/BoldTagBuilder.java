@@ -43,7 +43,7 @@ public class BoldTagBuilder implements TagBuilder
                 public void updateOsisStack(LinkedList stack)
                 {
                     Element hi = OSISUtil.factory().createHI();
-                    hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_BOLD);
+                    hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_BOLD);
 
                     Element current = (Element) stack.get(0);
                     current.addContent(hi);

@@ -9,6 +9,7 @@ import org.crosswire.common.progress.JobManager;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -196,8 +197,8 @@ public class Verifier
      */
     private void checkSinglePassage(String word, PrintWriter out) throws BookException
     {
-        Key ref1 = book1.find(word);
-        Key ref2 = book2.find(word);
+        Key ref1 = book1.find(new DefaultSearchRequest(word, null));
+        Key ref2 = book2.find(new DefaultSearchRequest(word, null));
 
         // Check
         if (!ref1.equals(ref2))

@@ -567,11 +567,10 @@ public class PassageTally extends AbstractPassage
     {
         optimizeWrites();
 
-        Passage remainder = null;
         int i = 0;
         boolean overflow = false;
 
-        remainder = (Passage) this.clone();
+        Passage remainder = (Passage) this.clone();
 
         Iterator it = iterator();
         while (it.hasNext())

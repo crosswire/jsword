@@ -11,7 +11,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * For a readings dictionary the keys are dates.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -113,6 +113,14 @@ public class ReadingsKey extends DefaultLeafKeyList
     {
         ReadingsKey that = (ReadingsKey) obj;
         return this.date.compareTo(that.date);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        return super.clone();
     }
 
     /**

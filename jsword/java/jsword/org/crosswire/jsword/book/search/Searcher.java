@@ -36,9 +36,16 @@ public interface Searcher
     public void init(Index index);
 
     /**
-     * Take a search string and decipher it into a Passage.
-     * @param search The string to be searched for
+     * Take a search request and decipher it into a Passage.
+     * @param request The request
      * @return The matching verses
      */
-    public Key search(String search) throws BookException;
+    public Key search(SearchRequest request) throws BookException;
+
+    /**
+     * Take a search request and decipher it into a Passage.
+     * @param request The request
+     * @return The matching verses
+     */
+    public Key search(String request) throws BookException;
 }

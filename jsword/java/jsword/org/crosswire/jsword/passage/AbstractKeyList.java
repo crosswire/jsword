@@ -202,6 +202,23 @@ public abstract class AbstractKeyList implements Key
         return thisfirst.compareTo(thatfirst);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        Object clone = null;
+        try
+        {
+            clone = super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        return clone;
+    }
+
     /**
      * The common user visible name for this work
      */

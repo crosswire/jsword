@@ -44,7 +44,7 @@ public class BTag implements Tag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_BOLD);
+        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_BOLD);
         ele.addContent(hi);
         return hi;
     }

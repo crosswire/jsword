@@ -47,7 +47,7 @@ public class ThTag implements Tag
         ele.addContent(cell);
 
         Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_BOLD);
+        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_BOLD);
         cell.addContent(hi);
         return hi;
     }

@@ -11,7 +11,9 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.book.search.Searcher;
+import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -61,12 +63,23 @@ public class IndexSearcher implements Searcher
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.Searcher#search(java.lang.String, org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.book.search.Searcher#search(java.lang.String)
      */
-    public Key search(String search) throws BookException
+    public Key search(String request) throws BookException
     {
-        List output = CustomTokenizer.tokenize(search, commands);
-        return search(output);
+        return search(new DefaultSearchRequest(request));
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#search(org.crosswire.jsword.book.search.SearchRequest)
+     */
+    public Key search(SearchRequest request) throws BookException
+    {
+        index.setSearchModifier(request.getSearchModifier());
+        List output = CustomTokenizer.tokenize(request.getRequest(), commands);
+        Key results = search(output);
+        index.setSearchModifier(null);
+        return results;
     }
 
     /**

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Element;
@@ -44,7 +45,7 @@ public class StudyTool
      */
     public Collection getTranslations(Book bible, String word) throws BookException
     {
-        Key key = bible.find(word);
+        Key key = bible.find(new DefaultSearchRequest(word, null));
         BookData data = bible.getData(key);
 
         Map reply = new HashMap();
@@ -100,7 +101,7 @@ public class StudyTool
      */
     public Collection getTranslations(Book bible, Strongs number) throws BookException
     {
-        Key key = bible.find(number.getOLBName());
+        Key key = bible.find(new DefaultSearchRequest(number.getOLBName(), null));
         BookData data = bible.getData(key);
 
         Map reply = new HashMap();

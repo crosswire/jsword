@@ -1,11 +1,7 @@
-package org.crosswire.jsword.book.filter.thml;
-
-import org.crosswire.jsword.book.OSISUtil;
-import org.jdom.Element;
-import org.xml.sax.Attributes;
+package org.crosswire.jsword.book.search;
 
 /**
- * THML Tag to process the italic element.
+ * A SearchRequest consists of a string and modifiers for the search.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,27 +21,18 @@ import org.xml.sax.Attributes;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at gmail dot com]
  * @version $Id$
  */
-public class ITag implements Tag
+public interface SearchRequest
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+    /**
+     * @return the modifications to this SearchRequest
      */
-    public String getTagName()
-    {
-        return "i"; //$NON-NLS-1$
-    }
+    public SearchModifier getSearchModifier();
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /**
+     * @return the request that is being operated upon
      */
-    public Element processTag(Element ele, Attributes attrs)
-    {
-        Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_ITALIC);
-        ele.addContent(hi);
-        return hi;
-    }
+    public String getRequest();
 }

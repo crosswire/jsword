@@ -11,8 +11,10 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.IndexStatus;
+import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.SearcherFactory;
+import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Document;
 
@@ -77,7 +79,15 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#find(java.lang.String)
      */
-    public Key find(String search) throws BookException
+    public Key find(String request) throws BookException
+    {
+        return find(new DefaultSearchRequest(request));
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.search.SearchRequest)
+     */
+    public Key find(SearchRequest request) throws BookException
     {
         if (searcher == null)
         {
@@ -91,7 +101,7 @@ public abstract class AbstractBook implements Book
             }
         }
 
-        return searcher.search(search);
+        return searcher.search(request);
     }
 
     /* (non-Javadoc)

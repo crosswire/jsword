@@ -27,8 +27,8 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.Grammar;
-import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Thesaurus;
+import org.crosswire.jsword.book.search.basic.AbstractIndex;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -62,7 +62,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SerIndex implements Index, Activatable, Thesaurus
+public class SerIndex extends AbstractIndex implements Activatable, Thesaurus
 {
     /**
      * Default ctor

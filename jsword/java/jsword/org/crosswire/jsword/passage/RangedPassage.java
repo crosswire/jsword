@@ -471,7 +471,7 @@ public class RangedPassage extends AbstractPassage
 
             // So we know what is broadly next, however the range might need
             // splitting according to restrict
-            if (restrict.isSameScope(next.start, next.end))
+            if (restrict.isSameScope(next.getStart(), next.getEnd()))
             {
                 return replyNext();
             }

@@ -30,7 +30,8 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.IndexStatus;
-import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.SearchModifier;
+import org.crosswire.jsword.book.search.basic.AbstractIndex;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -64,7 +65,7 @@ import org.crosswire.jsword.passage.VerseFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LuceneIndex implements Index, Activatable
+public class LuceneIndex extends AbstractIndex implements Activatable
 {
     /**
      * Read an existing index and use it.
@@ -145,9 +146,9 @@ public class LuceneIndex implements Index, Activatable
                         buf.append(iter.next());
                         buf.append('\n');
                     }
-                    Reporter.informUser(this, Msg.BAD_VERSE, buf);                    
+                    Reporter.informUser(this, Msg.BAD_VERSE, buf);
                 }
-                    
+
             }
         }
         catch (Exception ex)
@@ -163,29 +164,45 @@ public class LuceneIndex implements Index, Activatable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#findKeyList(org.crosswire.jsword.book.Search)
+     * @see org.crosswire.jsword.book.search.Index#findWord(java.lang.String)
      */
     public Key findWord(String search) throws BookException
     {
         checkActive();
 
-//        Key tally = book.createEmptyKeyList();
-         PassageTally tally = new PassageTally();
+        SearchModifier modifier = getSearchModifier();
+        Key results = null;
 
         if (search != null)
         {
             try
             {
+
                 Analyzer analyzer = new SimpleAnalyzer();
                 Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
                 Hits hits = searcher.search(query);
 
-                for (int i = 0; i < hits.length(); i++)
+                // For ranking we use a PassageTally
+                if (modifier != null && modifier.isRanked())
                 {
-                    Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
-                  int score = (int) (hits.score(i) * 100);
-                  tally.add(verse, score);
-//                    tally.addAll(verse);
+                    PassageTally tally = new PassageTally();
+                    results = tally;
+                    for (int i = 0; i < hits.length(); i++)
+                    {
+                        Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        int score = (int) (hits.score(i) * 100);
+                        tally.add(verse, score);
+                    }
+                }
+                else
+                {
+                    results = book.createEmptyKeyList();
+                    for (int i = 0; i < hits.length(); i++)
+                    {
+                        Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        results.addAll(verse);
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -198,7 +215,18 @@ public class LuceneIndex implements Index, Activatable
             }
         }
 
-        return tally;
+        if (results == null)
+        {
+            if (modifier.isRanked())
+            {
+                results = new PassageTally();
+            }
+            else
+            {
+                results = book.createEmptyKeyList();
+            }
+        }
+        return results;
     }
 
     /* (non-Javadoc)
@@ -210,7 +238,7 @@ public class LuceneIndex implements Index, Activatable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#activate()
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
     public final void activate(Lock lock)
     {
@@ -227,7 +255,7 @@ public class LuceneIndex implements Index, Activatable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#deactivate()
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
     public final void deactivate(Lock lock)
     {
@@ -280,8 +308,6 @@ public class LuceneIndex implements Index, Activatable
                 }
                 catch (BookException e)
                 {
-                    // ignore
-                    // TODO(DM): report these to the user as verses that could not be indexed.
                     errors.add(subkey);
                     continue;
                 }

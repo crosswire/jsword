@@ -327,7 +327,17 @@ final class SynchronizedPassage implements Passage
      */
     public synchronized Object clone()
     {
-        return ref.clone();
+        SynchronizedPassage clone = null;
+        try
+        {
+            clone = (SynchronizedPassage) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        clone.ref = (Passage) ref.clone();
+        return clone;
     }
 
     /* (non-Javadoc)

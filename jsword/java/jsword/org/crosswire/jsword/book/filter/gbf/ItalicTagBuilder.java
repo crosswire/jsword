@@ -43,7 +43,7 @@ public class ItalicTagBuilder implements TagBuilder
                 public void updateOsisStack(LinkedList stack)
                 {
                     Element hi = OSISUtil.factory().createHI();
-                    hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_ITALIC);
+                    hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_ITALIC);
 
                     Element current = (Element) stack.get(0);
                     current.addContent(hi);

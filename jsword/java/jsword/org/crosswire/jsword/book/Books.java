@@ -18,7 +18,7 @@ import org.crosswire.common.util.Reporter;
 /**
  * The Bibles class (along with Bible) is the central point of contact
  * between the rest of the world and this set of packages.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -255,13 +255,13 @@ public class Books implements BookList
                 addBook(bookArray[j]);
             }
         }
-        
+
         // Remove the books from the previous version of the driver
         // that are not in this version.
         Iterator iter = current.iterator();
         while (iter.hasNext())
         {
-            removeBook((Book)iter.next());
+            removeBook((Book) iter.next());
         }
 
         log.debug("end registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
@@ -397,8 +397,8 @@ public class Books implements BookList
                 try
                 {
                     Method driverInstance = types[i].getMethod("instance", new Class[0]); //$NON-NLS-1$
-//                    Object retval = driverInstance.invoke(null, new Object[0]);                   
-                    BookDriver driver = (BookDriver) driverInstance.invoke(null, new Object[0]);//types[i].newInstance();
+//                    Object retval = driverInstance.invoke(null, new Object[0]);
+                    BookDriver driver = (BookDriver) driverInstance.invoke(null, new Object[0]); //types[i].newInstance();
                     registerDriver(driver);
                 }
                 catch (Exception ex)

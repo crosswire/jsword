@@ -1,11 +1,11 @@
-package org.crosswire.jsword.book.filter.thml;
+package org.crosswire.jsword.book.search.basic;
 
-import org.crosswire.jsword.book.OSISUtil;
-import org.jdom.Element;
-import org.xml.sax.Attributes;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.SearchModifier;
 
 /**
- * THML Tag to process the italic element.
+ * A simple implementation of an Index that provides the
+ * set/get for SearchModifier.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,27 +25,31 @@ import org.xml.sax.Attributes;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at gmail dot com]
  * @version $Id$
  */
-public class ITag implements Tag
+
+public abstract class AbstractIndex implements Index
 {
+
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+     * @see org.crosswire.jsword.book.search.Index#setSearchModifier(org.crosswire.jsword.book.search.SearchModifier)
      */
-    public String getTagName()
+    public void setSearchModifier(SearchModifier theModifier)
     {
-        return "i"; //$NON-NLS-1$
+        modifier = theModifier;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.search.Index#getSearchModifier()
      */
-    public Element processTag(Element ele, Attributes attrs)
+    public SearchModifier getSearchModifier()
     {
-        Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_ITALIC);
-        ele.addContent(hi);
-        return hi;
+        return modifier;
     }
+
+    /**
+     * How the search is to be modified.
+     */
+    private SearchModifier modifier;
 }

@@ -131,7 +131,7 @@ public class OSISUtil
     public static final String ATTRIBUTE_VERSE_OSISID = "osisID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_OSISID = "osisID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_HI_REND = "rend"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_HI_TYPE = "rend"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SEG_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_REFERENCE_OSISREF = "osisRef"; //$NON-NLS-1$
     public static final String ATTRIBUTE_NOTE_TYPE = "type"; //$NON-NLS-1$

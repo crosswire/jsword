@@ -6,7 +6,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * An index into a body of text that knows what words exist and where they are.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -50,4 +50,18 @@ public interface Index
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(String)
      */
     public Key getKey(String name) throws NoSuchKeyException;
+
+    /**
+     * Set any modifier for the current and subsequent search.
+     * Using null will clear the search modifier.
+     *
+     * @param modifier how to modify the search and its results.
+     */
+    public void setSearchModifier(SearchModifier modifier);
+
+    /**
+     * Get the current SearchModifier. If there is none then return null.
+     * @return the current search modifier, or null if there is not one.
+     */
+    public SearchModifier getSearchModifier();
 }

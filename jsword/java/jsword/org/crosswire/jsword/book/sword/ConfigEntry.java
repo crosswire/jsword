@@ -182,7 +182,7 @@ public class ConfigEntry
 
     /**
      * Determine whether this Config entry matches the value.
-     * 
+     *
      * @param search the value to match against
      * @return true if this ConfigEntry matches the value
      */
@@ -208,7 +208,7 @@ public class ConfigEntry
         // Filter known types of entries
         if (type != null)
         {
-            aValue = type.filter(aValue);            
+            aValue = type.filter(aValue);
         }
         aValue = handleRTF(aValue);
         if (mayRepeat())

@@ -190,6 +190,24 @@ public class ReadOnlyKeyList implements Key
         throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        ReadOnlyKeyList clone = null;
+        try
+        {
+            clone = (ReadOnlyKeyList) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        clone.keys = (Key) keys.clone();
+        return clone;
+    }
+
     /**
      * Do we ignore write requests or throw?
      */
