@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -15,10 +13,11 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.crosswire.common.config.Choice;
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.GuiConvert;
 
 /**
- * A Filename selection.
+ * A color selection.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -41,22 +40,14 @@ import org.crosswire.common.swing.GuiConvert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ColorField extends JPanel implements Field, ActionListener
+public class ColorField extends JPanel implements Field
 {
-    private static final String EDIT = "EditColor"; //$NON-NLS-1$
-
     /**
      * Create a new FileField
      */
     public ColorField()
     {
-        initialize();
-    }
-
-    private void initialize()
-    {
-        actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+        actions = new ActionFactory(ColorField.class, this);
 
         JButton edit = new JButton(actions.getAction(EDIT));
         edit.setIcon(new CustomIcon());
@@ -67,14 +58,6 @@ public class ColorField extends JPanel implements Field, ActionListener
         //add(text, BorderLayout.EAST);
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        actions.actionPerformed(e, this);
-    }
-
     /**
      * Do the edit action
      */
@@ -83,47 +66,43 @@ public class ColorField extends JPanel implements Field, ActionListener
         color = JColorChooser.showDialog(ColorField.this, Msg.EDIT.toString(), color);
     }
 
-    /**
-     * Some fields will need some extra info to display properly
-     * like the options in an options field. FieldMap calls this
-     * method with options provided by the choice.
-     * @param param The options provided by the Choice
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setChoice(org.crosswire.common.config.Choice)
      */
     public void setChoice(Choice param)
     {
     }
 
-    /**
-     * Return a string version of the current value
-     * @return The current value
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getValue()
      */
     public String getValue()
     {
         return GuiConvert.color2String(color);
     }
 
-    /**
-     * Set the current value
-     * @param value The new text
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setValue(java.lang.String)
      */
     public void setValue(String value)
     {
         color = GuiConvert.string2Color(value);
     }
 
-    /**
-     * Get the actual component that we can add to a Panel.
-     * (This can well be this in an implementation).
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getComponent()
      */
     public JComponent getComponent()
     {
         return this;
     }
 
+    private static final String EDIT = "EditColor"; //$NON-NLS-1$
+
     /**
      * The action factory for the buttons
      */
-    private ButtonActionFactory actions;
+    private ActionFactory actions;
 
     /**
      * The current Color
@@ -140,24 +119,24 @@ public class ColorField extends JPanel implements Field, ActionListener
      */
     class CustomIcon implements Icon
     {
-        /**
-         * Returns the icon's height.
+        /* (non-Javadoc)
+         * @see javax.swing.Icon#getIconHeight()
          */
         public int getIconHeight()
         {
             return SIZE;
         }
 
-        /**
-         * Returns the icon's width.
+        /* (non-Javadoc)
+         * @see javax.swing.Icon#getIconWidth()
          */
         public int getIconWidth()
         {
             return SIZE;
         }
 
-        /**
-         * Draw the icon at the specified location.
+        /* (non-Javadoc)
+         * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
          */
         public void paintIcon(Component c, Graphics g, int x, int y)
         {
@@ -165,8 +144,8 @@ public class ColorField extends JPanel implements Field, ActionListener
             {
                 g.setColor(Color.black);
                 g.drawRect(x, y, SIZE, SIZE);
-                g.drawLine(x, y, x+SIZE, y+SIZE);
-                g.drawLine(x+SIZE, y, x, y+SIZE);
+                g.drawLine(x, y, x + SIZE, y + SIZE);
+                g.drawLine(x + SIZE, y, x, y + SIZE);
             }
             else
             {
@@ -178,4 +157,3 @@ public class ColorField extends JPanel implements Field, ActionListener
         }
     }
 }
-

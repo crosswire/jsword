@@ -48,7 +48,7 @@ public class ParserTest extends TestCase
 
     public void testSearch() throws Exception
     {
-        Map commands = SearchDefault.getMap();
+        Map commands = LocalParser.getWordMap();
 
         // We shouldn't need a SearchableBible here because all of these should
         // fail before any searching is done.

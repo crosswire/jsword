@@ -3,8 +3,6 @@ package org.crosswire.common.config.swing;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -20,6 +18,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
 import org.crosswire.common.config.Choice;
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.FieldLayout;
 import org.crosswire.common.util.Convert;
 
@@ -49,19 +48,14 @@ import org.crosswire.common.util.Convert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StringArrayField extends JPanel implements Field, ActionListener
+public class StringArrayField extends JPanel implements Field
 {
-    private static final String ADD = "AddStringEntry"; //$NON-NLS-1$
-    private static final String REMOVE = "RemoveStringEntry"; //$NON-NLS-1$
-    private static final String UPDATE = "UpdateStringEntry"; //$NON-NLS-1$
-
     /**
      * Create a PropertyHashtableField for editing String arrays.
      */
     public StringArrayField()
     {
-        actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+        actions = new ActionFactory(StringArrayField.class, this);
 
         list_model = new DefaultComboBoxModel();
         list = new JList(list_model);
@@ -89,26 +83,14 @@ public class StringArrayField extends JPanel implements Field, ActionListener
     }
 
     /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        actions.actionPerformed(e, this);
-    }
-
-    /**
-     * Some fields will need some extra info to display properly
-     * like the options in an options field. FieldMap calls this
-     * method with options provided by the choice.
-     * @param param The options provided by the Choice
+     * @see org.crosswire.common.config.swing.Field#setChoice(org.crosswire.common.config.Choice)
      */
     public void setChoice(Choice param)
     {
     }
 
-    /**
-     * Return a string version of the current value
-     * @return The current value
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getValue()
      */
     public String getValue()
     {
@@ -122,7 +104,7 @@ public class StringArrayField extends JPanel implements Field, ActionListener
     public String[] getArray()
     {
         String[] retcode = new String[list_model.getSize()];
-        for (int i=0; i<retcode.length; i++)
+        for (int i = 0; i < retcode.length; i++)
         {
             retcode[i] = (String) list_model.getElementAt(i);
         }
@@ -130,9 +112,8 @@ public class StringArrayField extends JPanel implements Field, ActionListener
         return retcode;
     }
 
-    /**
-     * Set the current value using a string
-     * @param value The new text
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setValue(java.lang.String)
      */
     public void setValue(String value)
     {
@@ -149,10 +130,8 @@ public class StringArrayField extends JPanel implements Field, ActionListener
         list.setModel(list_model);
     }
 
-    /**
-     * Get the component for the JConfigure dialog.
-     * In our case that is <code>this</code>
-     * @return The editing Compoenent
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getComponent()
      */
     public JComponent getComponent()
     {
@@ -221,7 +200,7 @@ public class StringArrayField extends JPanel implements Field, ActionListener
         {
             super(new FieldLayout(10, 10));
 
-            add(new JLabel(Msg.NAME.toString()+':')); //$NON-NLS-1$
+            add(new JLabel(Msg.NAME.toString() + ':')); //$NON-NLS-1$
             add(name_field);
 
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -232,14 +211,18 @@ public class StringArrayField extends JPanel implements Field, ActionListener
          */
         protected JTextField name_field = new JTextField();
     }
-    
+
+    private static final String ADD = "AddStringEntry"; //$NON-NLS-1$
+    private static final String REMOVE = "RemoveStringEntry"; //$NON-NLS-1$
+    private static final String UPDATE = "UpdateStringEntry"; //$NON-NLS-1$
+
     /**
      * What character do we use to separate strings?
      */
-    final private static String separator = "#"; //$NON-NLS-1$
+    private static final String separator = "#"; //$NON-NLS-1$
 
-    private ButtonActionFactory actions;
-    
+    private ActionFactory actions;
+
     /**
      * The TableModel that points the JTable at the Hashtable
      */
@@ -249,5 +232,4 @@ public class StringArrayField extends JPanel implements Field, ActionListener
      * The Table - displays the Hashtble
      */
     private JList list;
-
 }

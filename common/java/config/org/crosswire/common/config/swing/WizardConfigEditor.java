@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.util.Logger;
@@ -61,14 +61,8 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class WizardConfigEditor extends AbstractConfigEditor implements ActionListener
+public class WizardConfigEditor extends AbstractConfigEditor
 {
-    private static final String NEXT = "WizardNext"; //$NON-NLS-1$
-    private static final String CANCEL = "WizardCancel"; //$NON-NLS-1$
-    private static final String FINISH = "WizardFinish"; //$NON-NLS-1$
-    private static final String HELP = "WizardHelp"; //$NON-NLS-1$
-    private static final String BACK = "WizardBack"; //$NON-NLS-1$
-
     /**
      * <br />Danger - this method is not called by the TreeConfigEditor
      * constructor, it is called by the AbstractConfigEditor constructor so
@@ -77,8 +71,7 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
      */
     protected void initialize()
     {
-        actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+        actions = new ActionFactory(WizardConfigEditor.class, this);
 
         names = new ArrayList();
         layout = new CardLayout();
@@ -103,7 +96,7 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
                 wcards++;
 
                 // The name for the title bar
-                names.add(StringUtils.replaceChars(path, '.', ' '));  //$NON-NLS-1$//$NON-NLS-2$
+                names.add(StringUtils.replaceChars(path, '.', ' ')); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -137,14 +130,6 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
         add(getButtonPane(), BorderLayout.PAGE_END);
 
         SwingUtilities.updateComponentTreeUI(this);
-    }
-
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        actions.actionPerformed(e, this);
     }
 
     /**
@@ -186,27 +171,26 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
         return retcode;
     }
 
-    protected void doWizardCancel()
+    public void doWizardCancel()
     {
         hideDialog();
     }
 
-    protected void doWizardHelp()
+    public void doWizardHelp()
     {
-        
     }
 
-    protected void doWizardBack()
+    public void doWizardBack()
     {
         move(-1);
     }
 
-    protected void doWizardNext()
+    public void doWizardNext()
     {
         move(1);
     }
 
-    protected void doWizardFinish(ActionEvent ev)
+    public void doWizardFinish(ActionEvent ev)
     {
         try
         {
@@ -231,18 +215,18 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
             posn--;
         }
 
-        if (dirn == 1 && posn < (wcards-1))
+        if (dirn == 1 && posn < (wcards - 1))
         {
             layout.next(deck);
             posn++;
         }
 
-        title.setText(names.get(posn) + Msg.PROPERTIES_POSN.toString(new Object[] { new Integer(posn+1), new Integer(wcards) }));
+        title.setText(names.get(posn) + Msg.PROPERTIES_POSN.toString(new Object[] { new Integer(posn + 1), new Integer(wcards) }));
 
         actions.getAction(BACK).setEnabled(posn != 0);
-        actions.getAction(NEXT).setEnabled(posn != (wcards-1));
+        actions.getAction(NEXT).setEnabled(posn != (wcards - 1));
 
-        if (posn == wcards-1)
+        if (posn == wcards - 1)
         {
             dialog.getRootPane().setDefaultButton(finish);
         }
@@ -274,16 +258,22 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
         // Why is this only available in Frames?
         // dialog.setIconImage(task_small);
 
-        log.debug("Modal fails on SunOS, take care. os.name="+System.getProperty("os.name"));  //$NON-NLS-1$//$NON-NLS-2$
-        if (!"SunOS".equals(System.getProperty("os.name")))  //$NON-NLS-1$//$NON-NLS-2$
+        log.debug("Modal fails on SunOS, take care. os.name=" + System.getProperty("os.name")); //$NON-NLS-1$//$NON-NLS-2$
+        if (!"SunOS".equals(System.getProperty("os.name"))) //$NON-NLS-1$ //$NON-NLS-2$
         {
             dialog.dispose();
             dialog = null;
         }
     }
 
-    private ButtonActionFactory actions;
-    
+    private static final String NEXT = "WizardNext"; //$NON-NLS-1$
+    private static final String CANCEL = "WizardCancel"; //$NON-NLS-1$
+    private static final String FINISH = "WizardFinish"; //$NON-NLS-1$
+    private static final String HELP = "WizardHelp"; //$NON-NLS-1$
+    private static final String BACK = "WizardBack"; //$NON-NLS-1$
+
+    private ActionFactory actions;
+
     /**
      * The current position
      */
@@ -323,7 +313,6 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
      * The next button
      */
     private JButton next;
-
 
     /**
      * The log stream

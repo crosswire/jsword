@@ -1,10 +1,13 @@
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.SentanceUtil;
@@ -59,7 +62,7 @@ public class LocalParser implements Parser
     public void init(Index newindex)
     {
         this.index = newindex;
-        this.commands = SearchDefault.getMap();
+        this.commands = getWordMap();
     }
 
     /**
@@ -194,7 +197,7 @@ public class LocalParser implements Parser
     protected Passage search(Passage ref, List matches) throws BookException
     {
         // Check that there is a CommandWord first
-        if (!(matches.get(0) instanceof CommandWord))
+        if (matches.get(0) instanceof ParamWord)
         {
             // Add a default AddCommandWord if not
             matches.add(0, new AddCommandWord());
@@ -204,6 +207,7 @@ public class LocalParser implements Parser
         while (wit.hasNext())
         {
             Object temp = wit.next();
+
             try
             {
                 CommandWord command = (CommandWord) temp;
@@ -211,6 +215,7 @@ public class LocalParser implements Parser
             }
             catch (ClassCastException ex)
             {
+                ex.printStackTrace();
                 throw new BookException(Msg.ENGINE_SYNTAX, new Object[] { temp });
             }
         }
@@ -256,7 +261,7 @@ public class LocalParser implements Parser
      * Accessor for the available SearchWords. This is probably
      * the same as from Options.getSearchHashtable() but just in
      * case anyone has been playing around with it...
-     * @return The SearchWord Hashtable
+     * @return The Word Hashtable
      */
     protected Map getSearchMap()
     {
@@ -274,16 +279,98 @@ public class LocalParser implements Parser
     }
 
     /**
-     * Most SearchWords (Almost all except the DefaultParamWord) need
-     * to access parameters, this method allows them access to the
-     * Parser's own Enumerator. Use with care, and only if you are a
-     * SearchWord taking part in the current search.
-     * @return The current Enumerator
+     * Most Words need to access parameters, this method allows them access to
+     * the Parser's own Enumerator. Use with care, and only if you are a Word
+     * taking part in the current search.
+     * @return The current Iterator
      */
     protected Iterator iterator()
     {
         return wit;
     }
+
+    /**
+     * @throws BookException
+     */
+    public Passage iteratePassage() throws BookException
+    {
+        if (!iterator().hasNext())
+        {
+            throw new BookException(Msg.RETAIN_BLANK);
+        }
+
+        Object next = iterator().next();
+        if (!(next instanceof ParamWord))
+        {
+            log.error("next="+next); //$NON-NLS-1$
+        }
+
+        ParamWord param = (ParamWord) next;
+        Passage ref = param.getPassage(this);
+
+        return ref;
+    }
+
+    /**
+     * @throws BookException
+     */
+    public String iterateWord() throws BookException
+    {
+        if (!iterator().hasNext())
+        {
+            throw new BookException(Msg.RETAIN_BLANK);
+        }
+
+        Object next = iterator().next();
+        if (!(next instanceof ParamWord))
+        {
+            log.error("next="+next); //$NON-NLS-1$
+        }
+
+        ParamWord param = (ParamWord) next;
+        String word = param.getWord(this);
+
+        return word;
+    }
+
+    /**
+     * Accessor for the cached list of known special lookup words
+     */
+    public static Map getWordMap()
+    {
+        if (wordMap == null)
+        {
+            Map classes = ResourceUtil.getImplementorsMap(Word.class);
+            wordMap = new HashMap();
+
+            for (Iterator it = classes.keySet().iterator(); it.hasNext();)
+            {
+                String key = (String) it.next();
+                Class clazz = (Class) classes.get(key);
+
+                try
+                {
+                    wordMap.put(key, clazz.newInstance());
+                }
+                catch (Exception ex)
+                {
+                    log.error("can't add CommandWord: key=" + key + " Class="+clazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+        }
+
+        return wordMap;
+    }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(LocalParser.class);
+
+    /**
+     * The cache of known words
+     */
+    private static Map wordMap = null;
 
     /**
      * The parsed version of the current string

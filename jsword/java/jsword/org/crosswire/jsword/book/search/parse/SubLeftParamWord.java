@@ -53,12 +53,12 @@ public class SubLeftParamWord implements ParamWord
         int parenLevel = 1;
         while (true)
         {
-            if (!engine.iterator().hasNext())
+            if (!it.hasNext())
             {
                 throw new BookException(Msg.LEFT_BRACKETS);
             }
 
-            SearchWord word = (SearchWord) it.next();
+            Word word = (Word) it.next();
 
             if (word instanceof SubLeftParamWord)
             {

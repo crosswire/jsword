@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -21,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.crosswire.common.config.Choice;
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.FieldLayout;
 import org.crosswire.common.swing.MapTableModel;
@@ -52,12 +51,8 @@ import org.crosswire.common.util.Convert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class MapField extends JPanel implements Field, ActionListener
+public class MapField extends JPanel implements Field
 {
-    private static final String ADD = "AddMapEntry"; //$NON-NLS-1$
-    private static final String REMOVE = "RemoveMapEntry"; //$NON-NLS-1$
-    private static final String UPDATE = "UpdateMapEntry"; //$NON-NLS-1$
-
     /**
      * Create a PropertyHashtableField for editing Hashtables.
      */
@@ -66,8 +61,7 @@ public class MapField extends JPanel implements Field, ActionListener
         tableModel = new NamedMapTableModel();
         table = new JTable(tableModel);
 
-        actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+        actions = new ActionFactory(MapField.class, this);
 
         JPanel buttons = new JPanel(new FlowLayout());
 
@@ -92,36 +86,23 @@ public class MapField extends JPanel implements Field, ActionListener
     }
 
     /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        actions.actionPerformed(e, this);
-    }
-
-    /**
-     * Some fields will need some extra info to display properly
-     * like the options in an options field. FieldMap calls this
-     * method with options provided by the choice.
-     * @param param The options provided by the Choice
+     * @see org.crosswire.common.config.swing.Field#setChoice(org.crosswire.common.config.Choice)
      */
     public void setChoice(Choice param)
     {
         //superclass = ((MapChoice) param).getSuperClass();
     }
 
-    /**
-     * Return a string version of the current value
-     * @return The current value
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getValue()
      */
     public String getValue()
     {
         return tableModel.getValue();
     }
 
-    /**
-     * Set the current value using a string
-     * @param value The new text
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setValue(java.lang.String)
      */
     public void setValue(String value)
     {
@@ -139,10 +120,8 @@ public class MapField extends JPanel implements Field, ActionListener
         table.getColumnModel().getColumn(0).setWidth(15);
     }
 
-    /**
-     * Get the component for the JConfigure dialog.
-     * In our case that is <code>this</code>
-     * @return The editing Compoenent
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getComponent()
      */
     public JComponent getComponent()
     {
@@ -209,8 +188,11 @@ public class MapField extends JPanel implements Field, ActionListener
             Class clazz = Class.forName(name);
 
             if (!superclass.isAssignableFrom(clazz))
-            {    
-                throw new ClassCastException(Msg.BAD_SUPERCLASS.toString(new Object[] { name, superclass }));
+            {
+                throw new ClassCastException(Msg.BAD_SUPERCLASS.toString(new Object[]
+                {
+                                name, superclass
+                }));
             }
 
             return true;
@@ -290,10 +272,10 @@ public class MapField extends JPanel implements Field, ActionListener
 
             name_field = new JTextField();
             class_field = new JTextField(20);
-            
-            add(new JLabel(Msg.NAME+":")); //$NON-NLS-1$
+
+            add(new JLabel(Msg.NAME + ":")); //$NON-NLS-1$
             add(name_field);
-            add(new JLabel(Msg.CLASS+":")); //$NON-NLS-1$
+            add(new JLabel(Msg.CLASS + ":")); //$NON-NLS-1$
             add(class_field);
 
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -310,8 +292,12 @@ public class MapField extends JPanel implements Field, ActionListener
         protected JTextField class_field;
     }
 
-    private ButtonActionFactory actions;
-    
+    private static final String ADD = "AddMapEntry"; //$NON-NLS-1$
+    private static final String REMOVE = "RemoveMapEntry"; //$NON-NLS-1$
+    private static final String UPDATE = "UpdateMapEntry"; //$NON-NLS-1$
+
+    private ActionFactory actions;
+
     /**
      * The TableModel that points the JTable at the Map
      */

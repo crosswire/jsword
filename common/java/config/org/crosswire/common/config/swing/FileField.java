@@ -1,8 +1,6 @@
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -11,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.crosswire.common.config.Choice;
+import org.crosswire.common.swing.ActionFactory;
 
 /**
  * A Filename selection.
@@ -36,38 +35,26 @@ import org.crosswire.common.config.Choice;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FileField extends JPanel implements Field, ActionListener
+public class FileField extends JPanel implements Field
 {
-    private static final String BROWSE = "Browse"; //$NON-NLS-1$
-
     /**
      * Create a new FileField
      */
     public FileField()
     {
-        ButtonActionFactory actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+        ActionFactory actions = new ActionFactory(FileField.class, this);
 
         text = new JTextField();
-        
+
         setLayout(new BorderLayout(10, 0));
         add(text, BorderLayout.CENTER);
         add(new JButton(actions.getAction(BROWSE)), BorderLayout.LINE_END);
-
-    }
-
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        ButtonActionFactory.instance().actionPerformed(e, this);
     }
 
     /**
      * Open a browse dialog
      */
-    protected void doBrowse()
+    public void doBrowse()
     {
         JFileChooser chooser = new JFileChooser(text.getText());
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -107,6 +94,8 @@ public class FileField extends JPanel implements Field, ActionListener
     {
         return this;
     }
+
+    private static final String BROWSE = "Browse"; //$NON-NLS-1$
 
     /**
      * The text field

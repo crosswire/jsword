@@ -35,12 +35,6 @@ public class RemoveCommandWord implements CommandWord
      */
     public void updatePassage(LocalParser engine, Passage ref) throws BookException
     {
-        if (!engine.iterator().hasNext())
-        {
-            throw new BookException(Msg.REMOVE_BLANK);
-        }
-
-        ParamWord param = (ParamWord) engine.iterator().next();
-        ref.removeAll(param.getPassage(engine));
+        ref.removeAll(engine.iteratePassage());
     }
 }

@@ -1,7 +1,15 @@
 package org.crosswire.common.progress.swing;
 
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
@@ -18,6 +29,7 @@ import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.WorkEvent;
 import org.crosswire.common.progress.WorkListener;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * JobsViewPane is a small JProgressBar based viewer for current jobs.
@@ -50,6 +62,8 @@ public class JobsProgressBar extends JPanel implements WorkListener
      */
     public JobsProgressBar(boolean small)
     {
+        jobs = new HashMap();
+        positions = new ArrayList();
         if (small)
         {
             // They start of at 15pt (on Windows at least)
@@ -112,11 +126,13 @@ public class JobsProgressBar extends JPanel implements WorkListener
         // Dimension preferred = progress.getPreferredSize();
         // preferred.width = 50;
         // progress.setPreferredSize(preferred);
-
-        this.add(progress, i);
+        
+        // Decorate the progress bar if necessary
+        Component decorated = decorateProgressBar(job, progress);
+        this.add(decorated, i);
         this.revalidate();
 
-        JobData jobdata = new JobData(job, i, progress);
+        JobData jobdata = new JobData(job, i, decorated, progress);
         jobs.put(job, jobdata);
         if (i >= positions.size())
         {
@@ -126,6 +142,74 @@ public class JobsProgressBar extends JPanel implements WorkListener
         {
             positions.set(i, jobdata);
         }
+    }
+
+    /**
+     * Decorate the progress bar if the job can be interrupted.
+     * We put the cancel button in a 1 row, 2 column grid
+     * where the button is in a minimally sized fixed cell
+     * and the progress meter follows in a horizontally stretchy cell
+     */
+    private Component decorateProgressBar(Job job, JProgressBar progress)
+    {
+        if (!job.canInterrupt())
+        {
+            return progress;
+        }
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        panel.add(createCancelButton(job), gbc);
+        gbc.weightx = 1.0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(progress, gbc);
+        return panel;
+    }
+
+    /**
+     * Create a cancel button that only shows the cancel icon.
+     * When the button is pressed the job is interrupted.
+     * @param job
+     * @return
+     */
+    private JButton createCancelButton(final Job job)
+    {
+        Icon stop = null;
+        try
+        {
+            URL url = ResourceUtil.getResource("toolbarButtonGraphics/general/Stop16.gif"); //$NON-NLS-1$
+            if (url != null)
+            {
+                stop = new ImageIcon(url);
+            }
+        }
+        catch (MalformedURLException ex)
+        {
+            assert false : ex;
+        }
+        
+        // Create a cancel button
+        JButton cancel = new JButton(stop);
+        // Only paint the icon not the button
+        cancel.setContentAreaFilled(false);
+        // Make the button as small as possible
+        cancel.setMargin(new Insets(0,0,0,0));
+        // We don't need no stinkin' border
+        cancel.setBorderPainted(false);
+        // Under WinXP this does nothing
+        cancel.setRolloverEnabled(true);
+        cancel.setToolTipText(Msg.CANCEL.toString());
+        cancel.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                job.interrupt();
+            }
+        });
+        return cancel;
     }
 
     /**
@@ -151,7 +235,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         jobs.remove(job);
         log.debug("removing job from panel: "+jobdata.getJob().getJobDescription()); //$NON-NLS-1$
 
-        this.remove(jobdata.getProgress());
+        this.remove(jobdata.getComponent());
         this.revalidate();
         jobdata.invalidate();
     }
@@ -181,24 +265,24 @@ public class JobsProgressBar extends JPanel implements WorkListener
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(JobsProgressBar.class);
-
-    /**
      * Where we store the currently displayed jobs
      */
-    protected Map jobs = new HashMap();
+    protected Map jobs;
 
     /**
      * Array telling us what y position the jobs have in the window
      */
-    private List positions = new ArrayList();
+    private List positions;
 
     /**
      * The font for the progress-bars
      */
     private Font font;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(JobsProgressBar.class);
 
     /**
      * A simple struct to group information about a Job
@@ -208,9 +292,10 @@ public class JobsProgressBar extends JPanel implements WorkListener
         /**
          * Simple ctor
          */
-        JobData(Job job, int index, JProgressBar progress)
+        JobData(Job job, int index, Component comp, JProgressBar progress)
         {
             this.job = job;
+            this.comp = comp;
             this.progress = progress;
             this.index = index;
         }
@@ -242,6 +327,14 @@ public class JobsProgressBar extends JPanel implements WorkListener
         }
 
         /**
+         * @return
+         */
+        public Component getComponent()
+        {
+            return comp;
+        }
+
+        /**
          * Accessor for the index
          */
         int getIndex()
@@ -249,8 +342,9 @@ public class JobsProgressBar extends JPanel implements WorkListener
             return index;
         }
 
-        private Job job = null;
-        private JProgressBar progress = null;
-        private int index = -1;
+        private Job job;
+        private Component comp;
+        private JProgressBar progress;
+        private int index;
     }
 }

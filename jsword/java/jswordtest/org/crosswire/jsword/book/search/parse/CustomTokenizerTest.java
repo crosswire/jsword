@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.Iterator;
@@ -48,46 +47,46 @@ public class CustomTokenizerTest extends TestCase
 
     public void testGetStringArray() throws Exception
     {
-        Map commands = SearchDefault.getMap();
+        Map commands = LocalParser.getWordMap();
         List output = null;
 
         output = CustomTokenizer.tokenize("/ aaron , moses", commands); //$NON-NLS-1$
         assertEquals(output.get(0).getClass().getName(), "org.crosswire.jsword.book.search.parse.AddCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.size(), 4);
 
         output = CustomTokenizer.tokenize("/aaron+moses", commands); //$NON-NLS-1$
         assertEquals(output.get(0).getClass().getName(), "org.crosswire.jsword.book.search.parse.AddCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.size(), 4);
 
         output = CustomTokenizer.tokenize("&aaron-moses", commands); //$NON-NLS-1$
         assertEquals(output.get(0).getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.RemoveCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.size(), 4);
 
         output = CustomTokenizer.tokenize("/aaron~5+moses", commands); //$NON-NLS-1$
         assertEquals(output.get(0).getClass().getName(), "org.crosswire.jsword.book.search.parse.AddCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.BlurCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(4).getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(5).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(5).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.size(), 6);
 
         output = CustomTokenizer.tokenize("  /  aaron  ~   5    +     moses   ", commands); //$NON-NLS-1$
         assertEquals(output.get(0).getClass().getName(), "org.crosswire.jsword.book.search.parse.AddCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.BlurCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(4).getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(5).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(5).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.size(), 6);
 
         output = CustomTokenizer.tokenize("  /  aaron  ~   5    +     moses   ", commands); //$NON-NLS-1$
@@ -95,22 +94,22 @@ public class CustomTokenizerTest extends TestCase
         assertTrue(it.hasNext());
         assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.AddCommandWord"); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertTrue(it.hasNext());
         assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.BlurCommandWord"); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertTrue(it.hasNext());
         assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(it.next().getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertTrue(!it.hasNext());
 
         // This is not actually a legal search string ... however the parser should get it right
         output = CustomTokenizer.tokenize("&~5-/", commands); //$NON-NLS-1$
         assertEquals(output.get(0).getClass().getName(), "org.crosswire.jsword.book.search.parse.RetainCommandWord"); //$NON-NLS-1$
         assertEquals(output.get(1).getClass().getName(), "org.crosswire.jsword.book.search.parse.BlurCommandWord"); //$NON-NLS-1$
-        assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultParamWord"); //$NON-NLS-1$
+        assertEquals(output.get(2).getClass().getName(), "org.crosswire.jsword.book.search.parse.DefaultWord"); //$NON-NLS-1$
         assertEquals(output.get(3).getClass().getName(), "org.crosswire.jsword.book.search.parse.RemoveCommandWord"); //$NON-NLS-1$
         assertEquals(output.get(4).getClass().getName(), "org.crosswire.jsword.book.search.parse.AddCommandWord"); //$NON-NLS-1$
         assertEquals(output.size(), 5);

@@ -36,13 +36,7 @@ public class BlurCommandWord implements CommandWord
      */
     public void updatePassage(LocalParser engine, Passage ref) throws BookException
     {
-        if (!engine.iterator().hasNext())
-        {
-            throw new BookException(Msg.BLUR_BLANK);
-        }
-
-        ParamWord param = (ParamWord) engine.iterator().next();
-        String word = param.getWord(engine);
+        String word = engine.iterateWord();
 
         try
         {

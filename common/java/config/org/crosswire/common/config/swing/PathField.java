@@ -3,8 +3,6 @@ package org.crosswire.common.config.swing;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
@@ -19,6 +17,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
 import org.crosswire.common.config.Choice;
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.util.Convert;
 
 /**
@@ -47,12 +46,8 @@ import org.crosswire.common.util.Convert;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PathField extends JPanel implements Field, ActionListener
+public class PathField extends JPanel implements Field
 {
-    private static final String ADD = "AddPathEntry"; //$NON-NLS-1$
-    private static final String REMOVE = "RemovePathEntry"; //$NON-NLS-1$
-    private static final String UPDATE = "UpdatePathEntry"; //$NON-NLS-1$
-
     /**
      * Create a PropertyHashtableField for editing String arrays.
      */
@@ -60,9 +55,8 @@ public class PathField extends JPanel implements Field, ActionListener
     {
         model = new DefaultComboBoxModel();
         list = new JList(model);
-        
-        actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+
+        actions = new ActionFactory(PathField.class, this);
 
         JPanel buttons = new JPanel(new FlowLayout());
 
@@ -87,26 +81,14 @@ public class PathField extends JPanel implements Field, ActionListener
     }
 
     /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        actions.actionPerformed(e, this);
-    }
-
-    /**
-     * Some fields will need some extra info to display properly
-     * like the options in an options field. FieldMap calls this
-     * method with options provided by the choice.
-     * @param param The options provided by the Choice
+     * @see org.crosswire.common.config.swing.Field#setChoice(org.crosswire.common.config.Choice)
      */
     public void setChoice(Choice param)
     {
     }
 
-    /**
-     * Return a string version of the current value
-     * @return The current value
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getValue()
      */
     public String getValue()
     {
@@ -120,7 +102,7 @@ public class PathField extends JPanel implements Field, ActionListener
     public String[] getArray()
     {
         String[] retcode = new String[model.getSize()];
-        for (int i=0; i<retcode.length; i++)
+        for (int i = 0; i < retcode.length; i++)
         {
             retcode[i] = (String) model.getElementAt(i);
         }
@@ -128,9 +110,8 @@ public class PathField extends JPanel implements Field, ActionListener
         return retcode;
     }
 
-    /**
-     * Set the current value using a string
-     * @param value The new text
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setValue(java.lang.String)
      */
     public void setValue(String value)
     {
@@ -147,10 +128,8 @@ public class PathField extends JPanel implements Field, ActionListener
         list.setModel(model);
     }
 
-    /**
-     * Get the component for the JConfigure dialog.
-     * In our case that is <code>this</code>
-     * @return The editing Compoenent
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getComponent()
      */
     public JComponent getComponent()
     {
@@ -204,8 +183,12 @@ public class PathField extends JPanel implements Field, ActionListener
         return (String) model.getElementAt(list.getSelectedIndex());
     }
 
-    private ButtonActionFactory actions;
-    
+    private static final String ADD = "AddPathEntry"; //$NON-NLS-1$
+    private static final String REMOVE = "RemovePathEntry"; //$NON-NLS-1$
+    private static final String UPDATE = "UpdatePathEntry"; //$NON-NLS-1$
+
+    private ActionFactory actions;
+
     /**
      * The TableModel that points the JTable at the Hashtable
      */

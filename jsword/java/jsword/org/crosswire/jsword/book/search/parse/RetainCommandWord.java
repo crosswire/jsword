@@ -35,12 +35,6 @@ public class RetainCommandWord implements CommandWord
      */
     public void updatePassage(LocalParser engine, Passage ref) throws BookException
     {
-        if (!engine.iterator().hasNext())
-        {
-            throw new BookException(Msg.RETAIN_BLANK);
-        }
-
-        ParamWord param = (ParamWord) engine.iterator().next();
-        ref.retainAll(param.getPassage(engine));
+        ref.retainAll(engine.iteratePassage());
     }
 }

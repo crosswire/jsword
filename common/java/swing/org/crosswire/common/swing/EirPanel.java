@@ -56,6 +56,7 @@ public class EirPanel extends JPanel
             return;
         }
 
+        // I18N: migrate this to an ActionFactory
         btn_ok = new JButton();
         btn_ok.setText(Msg.CLOSE.toString());
         btn_ok.addActionListener(new ActionListener()

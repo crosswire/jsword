@@ -53,15 +53,27 @@ public class PassageLeftParamWord implements ParamWord
         int paren_level = 1;
         while (true)
         {
-            if (!engine.iterator().hasNext())
+            if (!it.hasNext())
+            {
                 throw new BookException(Msg.LEFT_BRACKETS);
+            }
 
-            SearchWord word = (SearchWord) it.next();
+            Word word = (Word) it.next();
 
-            if (word instanceof PassageLeftParamWord)   paren_level++;
-            if (word instanceof PassageRightParamWord)  paren_level--;
+            if (word instanceof PassageLeftParamWord)
+            {
+                paren_level++;
+            }
 
-            if (paren_level == 0) break;
+            if (word instanceof PassageRightParamWord)
+            {
+                paren_level--;
+            }
+
+            if (paren_level == 0)
+            {
+                break;
+            }
 
             buff.append(word);
             buff.append(" "); //$NON-NLS-1$

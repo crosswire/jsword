@@ -7,7 +7,11 @@ We are here
 --------------------------------------------------------------------------------
 
 Swing
-- simplify view-source
+- poor button images in splitlist
+- Add raw/original text to view-source
+- Drag of toolbar to bottom messes up the display of the status.
+- Interrupting/cancelling a download does not cleanup the download.
+  This is perhaps a bigger problem of the semantic of job cancellation merely interrupting a thread.
 
 BookData Display
 - BHS does not display the text in the right order.
@@ -15,9 +19,8 @@ BookData Display
   Also the verse numbers need to be at the beginning of the verse, which is on the right
 - Vines shows internal markup around verse references.
 - remove swing (not cswing)
-
-Sword
-- unsupported Bibles are displayed in Bible list
+- some nt verses badly displayed in ot refs
+- widen notes pane
 
 Web
 - auto test for web demo
@@ -26,6 +29,10 @@ Install
 - save install sites
 - pop-up install dialog if no modules present
 - warning about web access in install
+
+Search
+- match does not support restrict
+- default separator to and
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.8
@@ -49,6 +56,8 @@ Swing
 - merge dict/comment to form reference pane
 - implement print
 - FOP/PDF export
+- FontChooser should show a sample of text in Greek, Hebrew and user's language.
+  Font name should be in the default font, not in the font's font.
 
 Modules
 - Sword GenBook

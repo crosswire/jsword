@@ -76,21 +76,22 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private void init()
     {
-        lbl_nojobs.setText(Msg.NO_JOBS.toString());
-
-        pnl_ijobs.setBorder(null);
-        pnl_ijobs.setLayout(new GridBagLayout());
+        noJobLabel = new JLabel(Msg.NO_JOBS.toString());
+        jobs = new HashMap();
+        positions = new ArrayList();
+        jobsPanel = new JPanel(new GridBagLayout());
+        jobsPanel.setBorder(null);
         
-        pnl_ojobs.setLayout(new BorderLayout());
-        pnl_ojobs.add(pnl_ijobs, BorderLayout.NORTH);
+        JPanel pnl = new JPanel(new BorderLayout());
+        pnl.add(jobsPanel, BorderLayout.NORTH);
         
-        scr_jobs.setBorder(null);
-        scr_jobs.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scr_jobs.setViewportView(pnl_ojobs);
+        JScrollPane scrollPane = new JScrollPane(pnl);
+        scrollPane.setBorder(null);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         this.setPreferredSize(new Dimension(500, 300));
         this.setLayout(new BorderLayout());
-        this.add(scr_jobs, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
         this.add(new JPanel(), BorderLayout.SOUTH);
         this.add(new JPanel(), BorderLayout.EAST);
         this.add(new JPanel(), BorderLayout.WEST);
@@ -151,6 +152,13 @@ public class JobsViewPane extends JPanel implements WorkListener
 
         JLabel label = new JLabel(job.getJobDescription() + ":"); //$NON-NLS-1$
 
+        // It is clumsy to use an ActionFactory for these buttons,
+        // since there is one cancel button per job.
+        // An ActionFactory creates actions to be shared, and whose behavior is shared.
+        // Each cancel must:
+        // 1) have its own cancel
+        // 2) not have a mnemonic
+        // 3) not have an accelerator
         JButton cancel = new JButton(Msg.CANCEL.toString());
         if (!job.canInterrupt())
         {
@@ -164,9 +172,9 @@ public class JobsViewPane extends JPanel implements WorkListener
             }
         });
 
-        pnl_ijobs.add(label, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-        pnl_ijobs.add(progress, new GridBagConstraints(1, i, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        pnl_ijobs.add(cancel, new GridBagConstraints(2, i, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+        jobsPanel.add(label, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+        jobsPanel.add(progress, new GridBagConstraints(1, i, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        jobsPanel.add(cancel, new GridBagConstraints(2, i, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
         this.revalidate();
 
         JobData jobdata = new JobData(job, i, label, progress, cancel);
@@ -206,9 +214,9 @@ public class JobsViewPane extends JPanel implements WorkListener
         positions.set(jobdata.getIndex(), null);
         jobs.remove(job);
         
-        pnl_ijobs.remove(jobdata.getLabel());
-        pnl_ijobs.remove(jobdata.getProgress());
-        pnl_ijobs.remove(jobdata.getCancel());
+        jobsPanel.remove(jobdata.getLabel());
+        jobsPanel.remove(jobdata.getProgress());
+        jobsPanel.remove(jobdata.getCancel());
         
         this.revalidate();
 
@@ -220,7 +228,7 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     protected void addEmptyLabel()
     {
-        pnl_ijobs.add(lbl_nojobs, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+        jobsPanel.add(noJobLabel, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
         this.revalidate();
     }
 
@@ -229,7 +237,7 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     protected void removeEmptyLabel()
     {
-        pnl_ijobs.remove(lbl_nojobs);
+        jobsPanel.remove(noJobLabel);
         this.revalidate();
     }
 
@@ -258,41 +266,31 @@ public class JobsViewPane extends JPanel implements WorkListener
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(JobsViewPane.class);
-
-    /**
      * Map of Jobs to JobDatas
      */
-    protected Map jobs = new HashMap();
+    protected Map jobs;
 
     /**
      * Array telling us what y position the jobs have in the window
      */
-    private List positions = new ArrayList();
+    private List positions;
 
     /**
-     * 
+     * The panel containing jobs
      */
-    private JPanel pnl_ojobs = new JPanel();
+	private JPanel jobsPanel;
 
     /**
-     * 
+     * A label stating that there are no jobs running
      */
-    private JPanel pnl_ijobs = new JPanel();
+    private JLabel noJobLabel;
 
     /**
-     * 
+     * The log stream
      */
-    private JScrollPane scr_jobs = new JScrollPane();
+    private static final Logger log = Logger.getLogger(JobsViewPane.class);
 
-    /**
-     * 
-     */
-    private JLabel lbl_nojobs = new JLabel();
-
-    /**
+   /**
      * A simple struct to group information about a Job
      */
     private static class JobData

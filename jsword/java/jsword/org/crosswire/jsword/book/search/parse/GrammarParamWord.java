@@ -40,21 +40,12 @@ public class GrammarParamWord implements ParamWord
         throw new BookException(Msg.GRAMMAR_WORD);
     }
 
-    /**
-     * Get a Passage for something else to work on. WARNING the return from
-     * this method is a PassageTally which is not a 100% match for the
-     * Passage interface. Maybe this needs to be fixed somehow.
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
      */
     public Passage getPassage(LocalParser engine) throws BookException
     {
-        if (!engine.iterator().hasNext())
-        {
-            throw new BookException(Msg.GRAMMAR_BLANK);
-        }
-
-        ParamWord param = (ParamWord) engine.iterator().next();
-        String root = Grammar.getRoot(param.getWord(engine));
+        String root = Grammar.getRoot(engine.iterateWord());
 
         Collection col = engine.getIndex().getStartsWith(root);
         String[] words = (String[]) col.toArray(new String[col.size()]);

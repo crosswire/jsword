@@ -261,6 +261,7 @@ public class ExceptionShelf extends JPanel
     private JPanel createExceptionPanel(Throwable ex)
     {
         JPanel retcode = new JPanel();
+        // I18N: migrate this to an ActionFactory
         JButton remove = new JButton(Msg.REMOVE.toString());
         JButton report = new JButton();
 
@@ -272,6 +273,7 @@ public class ExceptionShelf extends JPanel
 
         if (ex == null)
         {
+            // I18N: migrate this to an ActionFactory
             report.setText(Msg.NO_PROBLEMS.toString());
             report.setIcon(UIManager.getIcon("OptionPane.informationIcon")); //$NON-NLS-1$
             remove.setEnabled(false);

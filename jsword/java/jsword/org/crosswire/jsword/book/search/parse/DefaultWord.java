@@ -4,8 +4,8 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
 
 /**
- * The Search Word for a Word to search for. The default
- * if no other SearchWords match.
+ * The Search Word for a Word to search for. This is the default if no other
+ * Words match.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,43 +28,60 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DefaultParamWord implements ParamWord
+public class DefaultWord implements ParamWord, CommandWord
 {
     /**
      * Create a the default rule with the (presumably) Bible
      * word that formed part of the original search string
      * @param text The word to search (or otherwise) for
      */
-    public DefaultParamWord(String text)
+    public DefaultWord(String text)
     {
         this.text = text;
     }
 
-    /**
-     * Get a word for something else to word on.
-     * @return The word to search for
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.LocalParser)
      */
     public String getWord(LocalParser engine)
     {
         return text;
     }
 
-    /**
-     * To help error reporting.
-     * @return The word to search for
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
         return text;
     }
 
-    /**
-     * Get a Passage for something else to word on.
-     * @return An array of alternative words
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
      */
     public Passage getPassage(LocalParser engine) throws BookException
     {
         return engine.wordSearch(text);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Parser, org.crosswire.jsword.passage.Passage)
+     */
+    public void updatePassage(LocalParser engine, Passage ref) throws BookException
+    {
+        // We need to have DefaultWord pretend to be a CommandWord so that
+        // seearches like "moses aaron" work. DefaultWord(moses) has to be a
+        // command for DefaultWord(aaron)
+        // So if the stack is empty we need to pretend that the search had been
+        // done using us as a word.
+        if (engine.iterator().hasNext())
+        {
+            ref.retainAll(engine.iteratePassage());
+        }
+        else
+        {
+            ref.retainAll(engine.wordSearch(text));
+        }
     }
 
     /**

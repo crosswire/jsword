@@ -4,7 +4,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
 
 /**
- * CommandWord extends SearchWord to allow actions that alter a base
+ * CommandWord extends Word to allow actions that alter a base
  * Passage. Implementations of this interface may use the Parser to
  * get at a default Bible (or they may have one hard coded if necessary)
  * or to get at ParamWords that follow this command.
@@ -30,7 +30,7 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
 */
-public interface CommandWord extends SearchWord
+public interface CommandWord extends Word
 {
     /**
      * Alter a Passage in whatever manner is appropriate for

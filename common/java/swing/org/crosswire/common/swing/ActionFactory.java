@@ -4,7 +4,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.util.EventListener;
+import java.lang.reflect.Method;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -15,7 +16,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
-import javax.swing.event.EventListenerList;
 
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.CWClassLoader;
@@ -55,37 +55,78 @@ import org.crosswire.common.util.Logger;
 public class ActionFactory implements ActionListener
 {
     /**
-     * Constructor.
+     * Constructor that distinguishes between the object to call and the type
+     * to look up resources against. This is useful for when you are writing
+     * a class with subclasses but wish to keep the resources registered in
+     * the name of the superclass.
      */
-    public ActionFactory()
+    public ActionFactory(Class type, Object bean)
     {
         actions = new HashMap();
-        listeners = new EventListenerList();
 
-        buildActionMap();
+        buildActionMap(type);
+
+        this.bean = bean;
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent ev)
+    {
+        String action = ev.getActionCommand();
+
+        assert action != null;
+        assert action.length() != 0;
+
+        // Instead of cascading if/then/else
+        // use reflecton to do a direct lookup and call
+        try
+        {
+            String methodName = METHOD_PREFIX + action;
+
+            try
+            {
+                Method doMethod = bean.getClass().getDeclaredMethod(methodName, new Class[] { ActionEvent.class });
+                doMethod.invoke(bean, new Object[] { ev });
+            }
+            catch (NoSuchMethodException ex)
+            {
+                Method doMethod = bean.getClass().getDeclaredMethod(methodName, new Class[0]);
+                doMethod.invoke(bean, new Object[0]);
+            }
+        }
+        catch (Exception ex)
+        {
+            log.error(UNEXPECTED_ERROR, ex);
+        }
     }
 
     /**
      * Get the Action for the given actionName.
-     * @param acronymn the internal name of the CWAction
+     * @param key the internal name of the CWAction
      * @return CWAction null if it does not exist
      */
-    public CWAction getAction(String acronymn)
+    public Action getAction(String key)
     {
-        return (CWAction) actions.get(acronymn);
+        Action action = (CWAction) actions.get(key);
+
+        assert action != null : "Missing key: "+key; //$NON-NLS-1$
+
+        return action;
     }
 
     /**
      * Construct a JLabel from the Action.
      * Only Action.NAME and Action.MNEMONIC_KEY are used.
-     * @param acronymn the internal name of the CWAction
+     * @param key the internal name of the CWAction
      * @return A label, asserting if missing resources or with default values otherwise
      */
-    public JLabel createJLabel(String acronymn)
+    public JLabel createJLabel(String key)
     {
-        Action action = getAction(acronymn);
+        Action action = getAction(key);
 
-        assert action != null : "Missing resource: "+acronymn; //$NON-NLS-1$
+        assert action != null : "Missing resource: "+key; //$NON-NLS-1$
 
         JLabel label = new JLabel();
         if (action != null)
@@ -99,69 +140,47 @@ public class ActionFactory implements ActionListener
         }
         else
         {
-            label.setText(acronymn);
+            label.setText(key);
         }
 
         return label;
     }
 
     /**
-     * Forwards the ActionEvent to the registered listener.
-     */
-    public void actionPerformed(ActionEvent evt)
-    {
-        EventListener[] listenerList = listeners.getListeners(ActionListener.class);
-        for (int i = 0; i < listenerList.length; i++)
-        {
-            ((ActionListener) listenerList[i]).actionPerformed(evt);
-        }
-    }
-
-    /**
-     * Add a <code>ActionListener</code> to be notified of <code>ActionEvent</code>s
-     * @param listener the <code>ActionListener</code> to add
-     */
-    public void addActionListener(ActionListener listener)
-    {
-        listeners.add(ActionListener.class, listener);
-    }
-
-    /**
-     * Remove a ActionListener
-     * @param listener the <code>ActionListener</code> to remove
-     */
-    public void removeActionListener(ActionListener listener)
-    {
-        listeners.remove(ActionListener.class, listener);
-    }
-
-    /**
      * Build the map of actions from resources
      */
-    private void buildActionMap()
+    private void buildActionMap(Class basis)
     {
-        ResourceBundle resources = ResourceBundle.getBundle(getClass().getName(), Locale.getDefault(), new CWClassLoader(getClass()));
-
-        // ActionNames is a comma separated list of actions in the file
-        String names = getString(resources, "ActionNames", "ActionNames"); //$NON-NLS-1$ //$NON-NLS-2$
-        String [] nameArray = StringUtils.split(names, ',');
-        for (int i = 0; i < nameArray.length; i++)
+        try
         {
-            String actionName = nameArray[i];
+            ResourceBundle resources = ResourceBundle.getBundle(basis.getName(), Locale.getDefault(), new CWClassLoader(basis));
+    
+            Enumeration en = resources.getKeys();
+            while (en.hasMoreElements())
+            {
+                String key = (String) en.nextElement();
+                if (key.endsWith(TEST))
+                {
+                    String actionName = key.substring(0, key.length() - TEST.length());
 
-            String name = getActionString(resources, actionName, Action.NAME);
-            String shortDesc = getActionString(resources, actionName, Action.SHORT_DESCRIPTION);
-            String longDesc = getActionString(resources, actionName, Action.LONG_DESCRIPTION);
-            Icon smallIcon = getIcon(resources, actionName, Action.SMALL_ICON);
-            Icon largeIcon = getIcon(resources, actionName, CWAction.LARGE_ICON);
-            Integer mnemonic = getMnemonic(resources, actionName);
-            KeyStroke accelerator = getAccelerator(resources, actionName);
+                    String name = getActionString(resources, actionName, Action.NAME);
+                    String shortDesc = getActionString(resources, actionName, Action.SHORT_DESCRIPTION);
+                    String longDesc = getActionString(resources, actionName, Action.LONG_DESCRIPTION);
+                    Icon smallIcon = getIcon(resources, actionName, Action.SMALL_ICON);
+                    Icon largeIcon = getIcon(resources, actionName, CWAction.LARGE_ICON);
+                    Integer mnemonic = getMnemonic(resources, actionName);
+                    KeyStroke accelerator = getAccelerator(resources, actionName);
 
-            String enabledStr = getActionString(resources, actionName, "Enabled"); //$NON-NLS-1$
-            boolean enabled = Boolean.valueOf(enabledStr).booleanValue();
-
-            createAction(actionName, name, shortDesc, longDesc, mnemonic,
-                            accelerator, smallIcon, largeIcon, enabled);
+                    String enabledStr = getActionString(resources, actionName, "Enabled"); //$NON-NLS-1$
+                    boolean enabled = Boolean.valueOf(enabledStr).booleanValue();
+                    createAction(actionName, name, shortDesc, longDesc, mnemonic, accelerator, smallIcon, largeIcon, enabled);
+                }
+            }
+        }
+        catch (MissingResourceException ex)
+        {
+            log.error("Missing resource for class: "+basis.getName()); //$NON-NLS-1$
+            throw ex;
         }
     }
 
@@ -357,6 +376,24 @@ public class ActionFactory implements ActionListener
         return cwAction;
     }
 
+    private static final String UNEXPECTED_ERROR = "Stupid Programmer Error"; //$NON-NLS-1$
+    private static final String METHOD_PREFIX = "do"; //$NON-NLS-1$
+
+    /**
+     * What we lookup
+     */
+    private static final String SEPARATOR = "."; //$NON-NLS-1$
+
+    /**
+     * The test string to find actions
+     */
+    private static final String TEST = SEPARATOR + Action.NAME;
+
+    /**
+     * The object to which we forward events
+     */
+    private Object bean;
+
     /**
      * The log stream
      */
@@ -366,11 +403,4 @@ public class ActionFactory implements ActionListener
      * The map of known CWActions
      */
     private Map actions;
-
-    /**
-     * The list of listeners for the CWActions provided by
-     * this ActionFactory
-     */
-    private EventListenerList listeners;
-
 }

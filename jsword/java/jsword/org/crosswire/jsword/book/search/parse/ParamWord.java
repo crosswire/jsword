@@ -4,7 +4,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
 
 /**
- * A ParamWord extends SearchWord to provide more information
+ * A ParamWord extends Word to provide more information
  * to a CommandWord. This will either be in the form of a String
  * or in the form of a Passage (from a search)
  * ParamWords are used by CommandWords that alter the final
@@ -31,7 +31,7 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface ParamWord extends SearchWord
+public interface ParamWord extends Word
 {
     /**
      * Get a word for something else to word on.

@@ -47,64 +47,68 @@ public class CustomTokenizer
      * Convenience method to generate a Vector of SearchWords
      * @param sought The text to parse
      * @param commands The Hashtable of SearchWords to select from
-     * @return An Vector of selected SearchWords
+     * @return A List of selected SearchWords
      */
     public static List tokenize(String sought, Map commands) throws BookException
     {
         List output = new ArrayList();
-        String command_chars = getSingleCharWords(commands);
-        int current_type = charType(sought.charAt(0), command_chars);
-        int start_index = 0;
+        String commandChars = getSingleCharWords(commands);
+        int currentType = charType(sought.charAt(0), commandChars);
+        int startIndex = 0;
 
         // If the first character is a [ then we have a problem because
         // the loop starts with the second character because it needs
         // something to compare with - so if we do start with a [ then
-        // we make sure that we perpend with a " "
+        // we make sure that we prepend with a " "
         if (sought.length() > 0 && sought.charAt(0) == '[')
         {
             sought = " " + sought; //$NON-NLS-1$
         }
 
         // Loop, comparing each character with the previous one
-        for (int i=1; i<=sought.length(); i++)
+        for (int i = 1; i <= sought.length(); i++)
         {
             // An escaped section
             if (i != sought.length() && sought.charAt(i) == '[')
             {
-                int end = sought.indexOf("]", i); //$NON-NLS-1$
+                int end = sought.indexOf(']', i);
                 if (end == -1)
                 {
                     throw new BookException(Msg.UNMATCHED_ESCAPE);
                 }
 
                 addWord(output, commands, "["); //$NON-NLS-1$
-                addWord(output, commands, sought.substring(i+1, end));
+                addWord(output, commands, sought.substring(i + 1, end));
                 addWord(output, commands, "]"); //$NON-NLS-1$
 
-                current_type = CHAR_SPACE;
+                currentType = CHAR_SPACE;
                 i = end + 1;
             }
 
-            // If this is the last word then so long as this letter is
-            // not space (in which case it has been added already) then
-            // all the word in
+            // If this is the last word then so long as this letter is not
+            // a space (in which case it has been added already) then add all
+            // the word in
             if (i == sought.length())
             {
-                if (current_type != CHAR_SPACE)
-                    addWord(output, commands, sought.substring(start_index));
+                if (currentType != CHAR_SPACE)
+                {
+                    addWord(output, commands, sought.substring(startIndex));
+                }
             }
             else
             {
                 // If this is the start of a new section of the command
                 // then add the word in
-                int new_type = charType(sought.charAt(i), command_chars);
-                if (current_type != new_type || new_type == CHAR_COMMAND)
+                int new_type = charType(sought.charAt(i), commandChars);
+                if (currentType != new_type || new_type == CHAR_COMMAND)
                 {
-                    if (current_type != CHAR_SPACE)
-                        addWord(output, commands, sought.substring(start_index, i));
+                    if (currentType != CHAR_SPACE)
+                    {
+                        addWord(output, commands, sought.substring(startIndex, i));
+                    }
 
-                    start_index = i;
-                    current_type = charType(sought.charAt(i), command_chars);
+                    startIndex = i;
+                    currentType = charType(sought.charAt(i), commandChars);
                 }
             }
         }
@@ -133,25 +137,25 @@ public class CustomTokenizer
     }
 
     /**
-     * Convenience function to add a SearchWord to the Vector being created.
+     * Convenience function to add a Word to the Vector being created.
      * @param output The Vector to alter
-     * @param commands The SearchWord source
+     * @param commands The Word source
      * @param word The trigger to look for
      */
     private static void addWord(List output, Map commands, String word)
     {
-        Object word_obj = commands.get(word);
-        if (word_obj == null)
+        Object wordObj = commands.get(word);
+        if (wordObj == null)
         {
-            word_obj = new DefaultParamWord(word);
+            wordObj = new DefaultWord(word);
         }
 
-        output.add(word_obj);
+        output.add(wordObj);
     }
 
     /**
-     * Convenience function to add a SearchWord to the Vector being created.
-     * @param commands The SearchWord source
+     * Convenience function to add a Word to the Vector being created.
+     * @param commands The Word source
      */
     private static String getSingleCharWords(Map commands)
     {
@@ -161,7 +165,10 @@ public class CustomTokenizer
         while (it.hasNext())
         {
             String cmd = (String) it.next();
-            if (cmd.length() == 1) buf.append(cmd);
+            if (cmd.length() == 1)
+            {
+                buf.append(cmd);
+            }
         }
 
         return buf.toString();

@@ -9,6 +9,8 @@ import org.jdom.Element;
 /**
  * A helper for when we need to be a choice created dynamically.
  * 
+ * I18N: lookup the [help] element and [key] attr of an option in resources
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

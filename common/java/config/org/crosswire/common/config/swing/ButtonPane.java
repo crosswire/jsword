@@ -3,13 +3,13 @@ package org.crosswire.common.config.swing;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.EdgeBorder;
 
 /**
@@ -36,7 +36,7 @@ import org.crosswire.common.swing.EdgeBorder;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ButtonPane extends JPanel implements ActionListener
+public class ButtonPane extends JPanel
 {
     private static final String OK = "OK"; //$NON-NLS-1$
     private static final String CANCEL = "Cancel"; //$NON-NLS-1$
@@ -56,8 +56,7 @@ public class ButtonPane extends JPanel implements ActionListener
      */
     protected void init()
     {
-        actions = ButtonActionFactory.instance();
-        actions.addActionListener(this);
+        actions = new ActionFactory(ButtonPane.class, this);
 
         // PENDING: find some way to do default buttons
         //dialog.getRootPane().setDefaultButton(ok);
@@ -76,19 +75,11 @@ public class ButtonPane extends JPanel implements ActionListener
         this.add(buttons, BorderLayout.LINE_END);
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        actions.actionPerformed(e, this);
-    }
-
     /**
      * Do the OK action
      * @param ev
      */
-    protected void doOK(ActionEvent ev)
+    public void doOK(ActionEvent ev)
     {
         li.okPressed(ev);
     }
@@ -97,7 +88,7 @@ public class ButtonPane extends JPanel implements ActionListener
      * Do the Cancel action
      * @param ev
      */
-    protected void doCancel(ActionEvent ev)
+    public void doCancel(ActionEvent ev)
     {
         li.cancelPressed(ev);
     }
@@ -106,7 +97,7 @@ public class ButtonPane extends JPanel implements ActionListener
      * Do the Apply action
      * @param ev
      */
-    protected void doApply(ActionEvent ev)
+    public void doApply(ActionEvent ev)
     {
         li.applyPressed(ev);
     }
@@ -114,7 +105,7 @@ public class ButtonPane extends JPanel implements ActionListener
     /**
      * The action factory for the buttons
      */
-    private static ButtonActionFactory actions;
+    private static ActionFactory actions;
 
     /**
      * PENDING: turn this into a [add|remove]ButtonPaneListener thing

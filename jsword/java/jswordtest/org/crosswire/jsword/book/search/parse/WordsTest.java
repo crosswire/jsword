@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.Map;
@@ -31,9 +30,9 @@ import org.crosswire.jsword.book.Search;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SearchWordsTest extends TestCase
+public class WordsTest extends TestCase
 {
-    public SearchWordsTest(String s)
+    public WordsTest(String s)
     {
         super(s);
     }
@@ -42,7 +41,7 @@ public class SearchWordsTest extends TestCase
 
     protected void setUp() throws Exception
     {
-        Map commands = SearchDefault.getMap();
+        Map commands = LocalParser.getWordMap();
 
         commands.put("t1", new FixtureParamWord("Rut 2")); //$NON-NLS-1$ //$NON-NLS-2$
         commands.put("t2", new FixtureParamWord("Deu 28-1Sa 1:1")); //$NON-NLS-1$ //$NON-NLS-2$

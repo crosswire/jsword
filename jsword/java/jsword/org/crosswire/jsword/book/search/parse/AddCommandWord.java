@@ -35,12 +35,6 @@ public class AddCommandWord implements CommandWord
      */
     public void updatePassage(LocalParser engine, Passage ref) throws BookException
     {
-        if (!engine.iterator().hasNext())
-        {
-            throw new BookException(Msg.ADD_BLANK);
-        }
-
-        ParamWord param = (ParamWord) engine.iterator().next();
-        ref.addAll(param.getPassage(engine));
+        ref.addAll(engine.iteratePassage());
     }
 }

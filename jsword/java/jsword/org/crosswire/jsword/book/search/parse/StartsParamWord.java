@@ -48,13 +48,7 @@ public class StartsParamWord implements ParamWord
      */
     public Passage getPassage(LocalParser engine) throws BookException
     {
-        if (!engine.iterator().hasNext())
-        {
-            throw new BookException(Msg.STARTS_BLANK);
-        }
-
-        ParamWord param = (ParamWord) engine.iterator().next();
-        String word = param.getWord(engine);
+        String word = engine.iterateWord();
 
         Collection col = engine.getIndex().getStartsWith(word);
         String[] words = (String[]) col.toArray(new String[col.size()]);
