@@ -91,19 +91,6 @@ public class LucidException extends Exception
     }
 
     /**
-     * Special ctor, not for general use where the string is generated at
-     * runtime, and can't be parameterized.
-     * @param msg The resource id to read
-     * @see org.crosswire.jsword.book.remote.RemoterException#RemoterException(String, Class)
-     * @deprecated Use constructor with a MsgBase instead
-     */
-    public LucidException(String msg)
-    {
-        this(new MsgBase(msg), null, null);
-        this.deprecated = true;
-    }
-
-    /**
      * We only unravel the message when we need to to save time
      * @return The unraveled I18N string
      */

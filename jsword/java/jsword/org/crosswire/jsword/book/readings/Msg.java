@@ -34,6 +34,8 @@ class Msg extends MsgBase
     static final Msg NOT_IMPLEMENTED = new Msg("Not implemented"); //$NON-NLS-1$
     static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
     static final Msg TITLE = new Msg("Readings"); //$NON-NLS-1$
+    static final Msg HEADING = new Msg("Readings for {0}"); //$NON-NLS-1$
+    static final Msg DECODE_ERROR = new Msg("Error decoding: {0}"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -181,7 +181,7 @@ public class BibleViewPane extends JPanel
             saved = chooser.getSelectedFile();
             if (saved.length() == 0)
             {
-                Reporter.informUser(getRootPane(), "File '" + saved.getName() + "' is empty"); //$NON-NLS-1$
+                Reporter.informUser(getRootPane(), Msg.EMPTY_FILE, saved.getName());
                 return;
             }
 
@@ -365,7 +365,7 @@ public class BibleViewPane extends JPanel
          */
         public String getDescription()
         {
-            return "Verse Lists ("+EXTENSION+")";
+            return Msg.VERSE_LIST_DESC.toString(EXTENSION);
         }
     }
 }

@@ -173,7 +173,7 @@ public class EditSitePane extends JPanel
             }
         });
 
-        lblMesg.setText(" ");
+        lblMesg.setText(" "); //$NON-NLS-1$
 
         btnReset.setText("Cancel");
         btnReset.setMnemonic('C');
@@ -296,7 +296,7 @@ public class EditSitePane extends JPanel
                 return;
             }
     
-            setState(STATE_EDIT_OK, "");
+            setState(STATE_EDIT_OK, ""); //$NON-NLS-1$
         }
     }
 

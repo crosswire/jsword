@@ -18,6 +18,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
+import org.crosswire.jsword.util.Project;
 
 /**
  * This represents all of the SwordBibles.
@@ -105,6 +106,36 @@ public class SwordBookDriver extends AbstractBookDriver
 
         return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
     }
+
+    /**
+     * Default windows installation directory
+     */
+    private static final String DIR_WINDOWS_DEFAULT = "C:\\Program Files\\CrossWire\\The SWORD Project"; //$NON-NLS-1$
+
+    /**
+     * Users config directory for Sword in Unix
+     */
+    private static final String DIR_SWORD_CONF = ".sword"; //$NON-NLS-1$
+
+    /**
+     * Sword global config file
+     */
+    private static final String DIR_UNIX_GLOBAL_CONF = "/etc/sword.conf"; //$NON-NLS-1$
+
+    /**
+     * System property for sword home directory
+     */
+    private static final String PROPERTY_SWORD_HOME = "sword.home"; //$NON-NLS-1$
+
+    /**
+     * Java system property for users home directory
+     */
+    private static final String PROPERTY_USER_HOME = "user.home"; //$NON-NLS-1$
+
+    /**
+     * File prefix for config file
+     */
+    private static final String PREFIX_GLOBALS = "globals."; //$NON-NLS-1$
 
     /**
      * A helper class for the SwordInstaller to tell us that it has copied a
@@ -248,16 +279,16 @@ public class SwordBookDriver extends AbstractBookDriver
         List reply = new ArrayList();
         
         // .jsword in the users home directory is the first location
-        reply.add(new File(System.getProperty("user.home")+"/.jsword"));
+        reply.add(new File(System.getProperty(PROPERTY_USER_HOME) + File.separator + Project.DIR_PROJECT));
 
         if (SystemUtils.IS_OS_WINDOWS)
         {
-            testDefaultPath(reply, "C:\\Program Files\\CrossWire\\The SWORD Project");
+            testDefaultPath(reply, DIR_WINDOWS_DEFAULT);
         }
         else
         {
             // If it isn't unix then assume some sort of unix
-            File sysconfig = new File("/etc/sword.conf");
+            File sysconfig = new File(DIR_UNIX_GLOBAL_CONF);
             if (sysconfig.canRead())
             {
                 try
@@ -269,20 +300,20 @@ public class SwordBookDriver extends AbstractBookDriver
                 }
                 catch (IOException ex)
                 {
-                    log.warn("Failed to read system config file", ex);
+                    log.warn("Failed to read system config file", ex); //$NON-NLS-1$
                 }
             }
         }
 
         // if there is a property set for the sword home directory
-        String swordhome = System.getProperty("sword.home");
+        String swordhome = System.getProperty(PROPERTY_SWORD_HOME);
         if (swordhome != null)
         {
             testDefaultPath(reply, swordhome);
         }
 
         // .sword in the users home directory?
-        testDefaultPath(reply, System.getProperty("user.home")+"/.sword");
+        testDefaultPath(reply, System.getProperty(PROPERTY_USER_HOME) + File.separator + DIR_SWORD_CONF);
 
         // mods.d in the current directory?
         testDefaultPath(reply, new File(".").getAbsolutePath()); //$NON-NLS-1$
@@ -320,7 +351,7 @@ public class SwordBookDriver extends AbstractBookDriver
         if (!downloadDir.getPath().equals("")) //$NON-NLS-1$
         {
             dirs[0] = downloadDir;
-            log.debug("Setting sword download directory to: " + downloadDir);
+            log.debug("Setting sword download directory to: " + downloadDir); //$NON-NLS-1$
         }
     }
 
@@ -345,7 +376,7 @@ public class SwordBookDriver extends AbstractBookDriver
          */
         public boolean accept(File parent, String name)
         {
-            return !name.startsWith("globals.") && name.endsWith(SwordConstants.EXTENSION_CONF);
+            return !name.startsWith(PREFIX_GLOBALS) && name.endsWith(SwordConstants.EXTENSION_CONF);
         }
     }
 
@@ -354,6 +385,6 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public String getDriverName()
     {
-        return "Sword";
+        return "Sword"; //$NON-NLS-1$
     }
 }

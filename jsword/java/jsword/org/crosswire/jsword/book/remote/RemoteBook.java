@@ -64,7 +64,7 @@ public class RemoteBook extends AbstractBook
         this.remoter = remoter;
         this.driver = driver;
 
-        log.debug("Started RemoteBook");
+        log.debug("Started RemoteBook"); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

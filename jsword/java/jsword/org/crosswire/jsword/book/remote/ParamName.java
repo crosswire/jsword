@@ -28,11 +28,11 @@ import org.apache.commons.lang.enum.Enum;
  */
 public class ParamName extends Enum
 {
-    static final ParamName PARAM_BIBLE = new ParamName("bible");
-    static final ParamName PARAM_PASSAGE = new ParamName("passage");
-    static final ParamName PARAM_FINDSTRING = new ParamName("word");
-    static final ParamName PARAM_FINDMATCH = new ParamName("match");
-    static final ParamName PARAM_FINDRANGE = new ParamName("range");
+    static final ParamName PARAM_BIBLE = new ParamName("bible"); //$NON-NLS-1$
+    static final ParamName PARAM_PASSAGE = new ParamName("passage"); //$NON-NLS-1$
+    static final ParamName PARAM_FINDSTRING = new ParamName("word"); //$NON-NLS-1$
+    static final ParamName PARAM_FINDMATCH = new ParamName("match"); //$NON-NLS-1$
+    static final ParamName PARAM_FINDRANGE = new ParamName("range"); //$NON-NLS-1$
 
     /**
      * Find a constant given a name.

@@ -66,13 +66,6 @@ import org.crosswire.jsword.util.Project;
 public class JAXBUtil
 {
     /**
-     * Prevent Instansiation
-     */
-    private JAXBUtil()
-    {
-    }
-
-    /**
      * The package into which JAXB generates its stuff
      */
     protected static final String OSIS_PACKAGE = "org.crosswire.jsword.osis"; //$NON-NLS-1$
@@ -138,6 +131,16 @@ public class JAXBUtil
     public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
 
     /**
+     * For links that point to Biblical passages
+     */
+    public static final String PROTOCOL_BIBLE = "bible://"; //$NON-NLS-1$
+
+    /**
+     * Prefix for OSIS IDs that refer to Bibles
+     */
+    private static final String OSISID_PREFIX_BIBLE = "Bible."; //$NON-NLS-1$
+
+    /**
      * The JAXB worker factory
      */
     private static JAXBContext jc = null;
@@ -151,6 +154,13 @@ public class JAXBUtil
      * The log stream
      */
     private static final Logger log = Logger.getLogger(JAXBUtil.class);
+
+    /**
+     * Prevent Instansiation
+     */
+    private JAXBUtil()
+    {
+    }
 
     /**
      * Something went wrong at startup
@@ -186,7 +196,7 @@ public class JAXBUtil
     {
         if (jc == null)
         {
-            throw new NullPointerException("jc is null due to startup issue: "+initex.getMessage());
+            throw new NullPointerException(Msg.JAXB_NO_INIT.toString(initex.getMessage()));
         }
 
         return jc;
@@ -378,7 +388,7 @@ public class JAXBUtil
         header.getWork().add(work);
     
         OsisText text = factory().createOsisText();
-        text.setOsisIDWork("Bible."+osisid);
+        text.setOsisIDWork(OSISID_PREFIX_BIBLE+osisid);
         text.setHeader(header);
     
         osis.setOsisText(text);

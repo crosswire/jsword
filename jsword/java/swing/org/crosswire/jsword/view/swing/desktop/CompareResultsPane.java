@@ -74,35 +74,34 @@ public class CompareResultsPane extends JPanel implements Runnable
     private void jbInit()
     {
         setTitles();
-        box_bibles = Box.createVerticalBox();
-        box_bibles.add(lbl_bible1, null);
-        box_bibles.add(lbl_bible2, null);
+        boxBibles = Box.createVerticalBox();
+        boxBibles.add(lblBible1, null);
+        boxBibles.add(lblBible2, null);
 
-        bar_progress.setString("");
-        bar_progress.setStringPainted(true);
-        txt_results.setRows(5);
-        txt_results.setColumns(40);
-        scr_results.getViewport().add(txt_results, null);
-        pnl_results.setLayout(new BorderLayout(5, 5));
-        pnl_results.setBorder(new TitledBorder("Results"));
-        pnl_results.add(scr_results, BorderLayout.CENTER);
-        pnl_results.add(bar_progress, BorderLayout.NORTH);
+        barProgress.setString(""); //$NON-NLS-1$
+        barProgress.setStringPainted(true);
+        txtResults.setRows(5);
+        txtResults.setColumns(40);
+        scrResults.getViewport().add(txtResults, null);
+        pnlResults.setLayout(new BorderLayout(5, 5));
+        pnlResults.setBorder(new TitledBorder(Msg.RESULTS_TITLE.toString()));
+        pnlResults.add(scrResults, BorderLayout.CENTER);
+        pnlResults.add(barProgress, BorderLayout.NORTH);
 
-        btn_stop.setMnemonic('S');
-        btn_stop.setText("Start");
-        btn_stop.addActionListener(new ActionListener()
+        btnStop.setText(Msg.RESULTS_START.toString());
+        btnStop.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {
                 startStop();
             }
         });
-        pnl_buttons.add(btn_stop, null);
+        pnlButtons.add(btnStop, null);
 
         this.setLayout(new BorderLayout());
-        this.add(box_bibles, BorderLayout.NORTH);
-        this.add(pnl_results, BorderLayout.CENTER);
-        this.add(pnl_buttons, BorderLayout.SOUTH);
+        this.add(boxBibles, BorderLayout.NORTH);
+        this.add(pnlResults, BorderLayout.CENTER);
+        this.add(pnlButtons, BorderLayout.SOUTH);
     }
 
     /**
@@ -111,11 +110,10 @@ public class CompareResultsPane extends JPanel implements Runnable
      */
     public void showInFrame(Frame parent)
     {
-        final JDialog frame = new JDialog(parent, "Verify Results");
+        final JDialog frame = new JDialog(parent, Msg.RESULTS_DIALOG.toString());
 
-        btn_close = new JButton("Close");
-        btn_close.setMnemonic('C');
-        btn_close.addActionListener(new ActionListener()
+        btnClose = new JButton(Msg.RESULTS_CLOSE.toString());
+        btnClose.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {
@@ -125,7 +123,7 @@ public class CompareResultsPane extends JPanel implements Runnable
                 frame.dispose();
             }
         });
-        pnl_buttons.add(btn_close, null);
+        pnlButtons.add(btnClose, null);
 
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
@@ -171,7 +169,7 @@ public class CompareResultsPane extends JPanel implements Runnable
      */
     public void setCheckText(String check_text)
     {
-        this.check_text = check_text;
+        this.checkText = check_text;
         setTitles();
     }
 
@@ -180,7 +178,7 @@ public class CompareResultsPane extends JPanel implements Runnable
      */
     public void setCheckPassages(Passage check_ref)
     {
-        this.check_ref = check_ref;
+        this.checkRef = check_ref;
         setTitles();
     }
 
@@ -189,22 +187,22 @@ public class CompareResultsPane extends JPanel implements Runnable
      */
     private void setTitles()
     {
-        lbl_bible1.setText("<html><b>Books:</b> "
-                           +ver.getBible1().getBookMetaData().getName()+" / "
-                           +ver.getBible2().getBookMetaData().getName());
+        lblBible1.setText("<html><b>" + Msg.RESULTS_BOOKS + "</b> " //$NON-NLS-1$ //$NON-NLS-2$
+                           + ver.getBible1().getBookMetaData().getName() + " / " //$NON-NLS-1$
+                           + ver.getBible2().getBookMetaData().getName());
 
-        String compare = "<html><b>Comparing:</b> ";
-        if (check_ref != null)
+        String compare = "<html><b>" + Msg.RESULTS_COMPARING + "</b> "; //$NON-NLS-1$ //$NON-NLS-2$
+        if (checkRef != null)
         {
-            compare += "Passage=" + check_ref + " ";
+            compare += Msg.RESULTS_PASSAGE + "=" + checkRef + " "; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (check_text != null)
+        if (checkText != null)
         {
-            compare += "Word=" + (check_text.equals("") ? "*" : check_text);
+            compare += Msg.RESULTS_WORDS + "=" + (checkText.equals("") ? "*" : checkText); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
-        lbl_bible2.setText(compare);
+        lblBible2.setText(compare);
     }
 
     /**
@@ -218,11 +216,11 @@ public class CompareResultsPane extends JPanel implements Runnable
         {
             public void run()
             {
-                btn_stop.setText("Stop");
+                btnStop.setText(Msg.RESULTS_STOP.toString());
             }
         });
 
-        Document doc = txt_results.getDocument();
+        Document doc = txtResults.getDocument();
         dout.setDocument(doc);
         PrintWriter out = new PrintWriter(dout);
         alive = true;
@@ -231,14 +229,14 @@ public class CompareResultsPane extends JPanel implements Runnable
         {
             JobManager.addWorkListener(cpl);
 
-            if (check_text != null && check_text.equals("") && alive)
+            if (checkText != null && checkText.equals("") && alive) //$NON-NLS-1$
             {
-                ver.checkPassage(check_text, out);
+                ver.checkPassage(checkText, out);
             }
 
-            if (check_ref != null && check_ref.isEmpty() && alive)
+            if (checkRef != null && checkRef.isEmpty() && alive)
             {
-                ver.checkText(check_ref, out);
+                ver.checkText(checkRef, out);
             }
         }
         catch (final Exception ex)
@@ -261,43 +259,57 @@ public class CompareResultsPane extends JPanel implements Runnable
         {
             public void run()
             {
-                btn_stop.setText("Start");
+                btnStop.setText(Msg.RESULTS_START.toString());
             }
         });
     }
 
-    /** Are we being told to die */
+    /**
+     * Are we being told to die
+     */
     private boolean alive = true;
 
-    /** The text to check */
-    private String check_text = null;
+    /**
+     * The text to check
+     */
+    private String checkText = null;
 
-    /** The passage to check */
-    private Passage check_ref = null;
+    /**
+     * The passage to check
+     */
+    private Passage checkRef = null;
 
-    /** The Bible verifier */
+    /**
+     * The Bible verifier
+     */
     private Verifier ver;
 
-    /** The DocumentWriter that the comparison can write to */
+    /**
+     * The DocumentWriter that the comparison can write to
+     */
     private DocumentWriter dout = new DocumentWriter();
 
-    /** Work in progress */
+    /**
+     * Work in progress
+     */
     protected Thread work;
 
-    /** The progress listener */
+    /**
+     * The progress listener
+     */
     private CustomProgressListener cpl = new CustomProgressListener();
 
     /* GUI components */
-    private JPanel pnl_results = new JPanel();
-    private JScrollPane scr_results = new JScrollPane();
-    private JTextArea txt_results = new JTextArea();
-    protected JProgressBar bar_progress = new JProgressBar();
-    private Box box_bibles;
-    private JLabel lbl_bible1 = new JLabel();
-    private JPanel pnl_buttons = new JPanel();
-    protected JButton btn_stop = new JButton();
-    private JButton btn_close = null;
-    private JLabel lbl_bible2 = new JLabel();
+    private JPanel pnlResults = new JPanel();
+    private JScrollPane scrResults = new JScrollPane();
+    private JTextArea txtResults = new JTextArea();
+    protected JProgressBar barProgress = new JProgressBar();
+    private Box boxBibles;
+    private JLabel lblBible1 = new JLabel();
+    private JPanel pnlButtons = new JPanel();
+    protected JButton btnStop = new JButton();
+    private JButton btnClose = null;
+    private JLabel lblBible2 = new JLabel();
 
     /**
      * Report progress changes to the screen
@@ -315,8 +327,8 @@ public class CompareResultsPane extends JPanel implements Runnable
                 {
                     Job job = ev.getJob();
                     int percent = job.getPercent();
-                    bar_progress.setString(job.getStateDescription() + ": (" + percent + "%)");
-                    bar_progress.setValue(percent);
+                    barProgress.setString(job.getStateDescription() + ": (" + percent + "%)"); //$NON-NLS-1$ //$NON-NLS-2$
+                    barProgress.setValue(percent);
                 }
             });
         }

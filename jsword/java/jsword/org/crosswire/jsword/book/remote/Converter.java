@@ -46,6 +46,20 @@ import org.jdom.Element;
  */
 public class Converter
 {
+    private static final String ELEMENT_MESSAGE = "message"; //$NON-NLS-1$
+    private static final String ELEMENT_EXCEPTION = "exception"; //$NON-NLS-1$
+    private static final String ELEMENT_WORD = "word"; //$NON-NLS-1$
+    private static final String ELEMENT_REF = "ref"; //$NON-NLS-1$
+    private static final String ELEMENT_ROOT = "root"; //$NON-NLS-1$
+    private static final String ELEMENT_TYPE = "type"; //$NON-NLS-1$
+    private static final String ELEMENT_LICENCE = "licence"; //$NON-NLS-1$
+    private static final String ELEMENT_OPENNESS = "openness"; //$NON-NLS-1$
+    private static final String ELEMENT_PUB = "pub"; //$NON-NLS-1$
+    private static final String ELEMENT_EDITION = "edition"; //$NON-NLS-1$
+    private static final String ELEMENT_NAME = "name"; //$NON-NLS-1$
+    private static final String ATTRIBUTE_ID = "id"; //$NON-NLS-1$
+    private static final String ELEMENT_METADATA = "metadata"; //$NON-NLS-1$
+
     /**
      * Prevent Instansiation
      */
@@ -75,7 +89,7 @@ public class Converter
         try
         {
             Element root = doc.getRootElement();
-            List bmds = root.getChildren("metadata");
+            List bmds = root.getChildren(ELEMENT_METADATA);
             BookMetaData[] rbmds = new BookMetaData[bmds.size()];
             int i = 0;
             
@@ -83,14 +97,14 @@ public class Converter
             {
                 Element bmdele = (Element) it.next();
             
-                String id = bmdele.getAttributeValue("id");
+                String id = bmdele.getAttributeValue(ATTRIBUTE_ID);
 
-                String name = bmdele.getChildTextTrim("name");
-                String edition = bmdele.getChildTextTrim("edition");
-                String pubstr = bmdele.getChildTextTrim("pub");
-                String openstr = bmdele.getChildTextTrim("openness");
-                String licencestr = bmdele.getChildTextTrim("licence");
-                String typestr = bmdele.getChildTextTrim("type");
+                String name = bmdele.getChildTextTrim(ELEMENT_NAME);
+                String edition = bmdele.getChildTextTrim(ELEMENT_EDITION);
+                String pubstr = bmdele.getChildTextTrim(ELEMENT_PUB);
+                String openstr = bmdele.getChildTextTrim(ELEMENT_OPENNESS);
+                String licencestr = bmdele.getChildTextTrim(ELEMENT_LICENCE);
+                String typestr = bmdele.getChildTextTrim(ELEMENT_TYPE);
                 
                 BookType type = BookType.get(typestr);
 
@@ -122,32 +136,32 @@ public class Converter
     {
         assert bmds.length != ids.length;
 
-        Element root = new Element("root");
+        Element root = new Element(ELEMENT_ROOT);
         for (int i = 0; i < bmds.length; i++)
         {
             BookMetaData bmd = bmds[i];
 
-            Element bmdele = new Element("metadata");
+            Element bmdele = new Element(ELEMENT_METADATA);
 
-            bmdele.setAttribute("id", ids[i]);
-            bmdele.addContent(new Element("name").addContent(bmd.getName()));
-            bmdele.addContent(new Element("edition").addContent(bmd.getEdition()));
+            bmdele.setAttribute(ATTRIBUTE_ID, ids[i]);
+            bmdele.addContent(new Element(ELEMENT_NAME).addContent(bmd.getName()));
+            bmdele.addContent(new Element(ELEMENT_EDITION).addContent(bmd.getEdition()));
 
             String pubstr = DefaultBookMetaData.formatPublishedDate(bmd.getFirstPublished());
             if (pubstr != null)
             {
-                bmdele.addContent(new Element("pub").addContent(pubstr));
+                bmdele.addContent(new Element(ELEMENT_PUB).addContent(pubstr));
             }
 
             Openness open = bmd.getOpenness();
             if (open != null)
             {
-                bmdele.addContent(new Element("openness").addContent(open.toString()));
+                bmdele.addContent(new Element(ELEMENT_OPENNESS).addContent(open.toString()));
             }
 
             if (bmd.getLicence() != null)
             {
-                bmdele.addContent(new Element("licence").addContent(bmd.getLicence().toExternalForm()));
+                bmdele.addContent(new Element(ELEMENT_LICENCE).addContent(bmd.getLicence().toExternalForm()));
             }
 
             root.addContent(bmdele);
@@ -173,7 +187,7 @@ public class Converter
         try
         {
             Element root = doc.getRootElement();
-            refstr = root.getChild("ref").getTextTrim();
+            refstr = root.getChild(ELEMENT_REF).getTextTrim();
             
             return PassageFactory.createPassage(refstr);
         }
@@ -189,8 +203,8 @@ public class Converter
      */
     public static Document convertKeyListToDocument(KeyList key)
     {
-        Element root = new Element("root");
-        root.addContent(new Element("ref").addContent(key.getName()));
+        Element root = new Element(ELEMENT_ROOT);
+        root.addContent(new Element(ELEMENT_REF).addContent(key.getName()));
         return new Document(root);
     }
 
@@ -212,7 +226,7 @@ public class Converter
         List words = new ArrayList();
 
         Element root = doc.getRootElement();
-        List wordeles = root.getChildren("word");
+        List wordeles = root.getChildren(ELEMENT_WORD);
 
         Iterator it = wordeles.iterator();
         while (it.hasNext())
@@ -230,11 +244,11 @@ public class Converter
      */
     public static Document convertStartsWithToDocument(Iterator it)
     {
-        Element root = new Element("root");
+        Element root = new Element(ELEMENT_ROOT);
         while (it.hasNext())
         {
             String word = (String) it.next();
-            root.addContent(new Element("word").addContent(word));
+            root.addContent(new Element(ELEMENT_WORD).addContent(word));
         }
         return new Document(root);
     }
@@ -245,7 +259,7 @@ public class Converter
      */
     public static void testRethrow(Document doc) throws RemoterException, ConverterException
     {
-        if (doc.getRootElement().getName().equals("exception"))
+        if (doc.getRootElement().getName().equals(ELEMENT_EXCEPTION))
         {
             throw convertDocumentToException(doc);
         }
@@ -271,12 +285,12 @@ public class Converter
         try
         {
             Element exce = doc.getRootElement();
-            String message = exce.getChildTextTrim("message");
-            typename = exce.getChildTextTrim("type");
+            String message = exce.getChildTextTrim(ELEMENT_MESSAGE);
+            typename = exce.getChildTextTrim(ELEMENT_TYPE);
             
             Class type = Class.forName(typename);
             
-            return new RemoterException(message, type);
+            return new RemoterException(Msg.REMOTE_NOSUPPORT, new Object[] { message, type });
         }
         catch (ClassNotFoundException ex)
         {
@@ -290,13 +304,13 @@ public class Converter
      */
     public static Document convertExceptionToDocument(Throwable ex)
     {
-        Element exce = new Element("exception");
+        Element exce = new Element(ELEMENT_EXCEPTION);
 
         StringWriter buffer = new StringWriter();
         ex.printStackTrace(new PrintWriter(buffer));
 
-        exce.addContent(new Element("type").addContent(ex.getClass().getName()));
-        exce.addContent(new Element("message").addContent(ex.getMessage()));
+        exce.addContent(new Element(ELEMENT_TYPE).addContent(ex.getClass().getName()));
+        exce.addContent(new Element(ELEMENT_MESSAGE).addContent(ex.getMessage()));
 
         return new Document(exce);
     }

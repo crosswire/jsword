@@ -88,8 +88,8 @@ public class BookChooser extends JPanel
             }
         });
 
-        btn_ok.setText("OK");
-        btn_ok.setMnemonic('o');
+        btn_ok.setText(Msg.CHOOSER_OK.toString());
+        btn_ok.setMnemonic(Msg.CHOOSER_OK.toString().charAt(0));
         btn_ok.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -100,8 +100,7 @@ public class BookChooser extends JPanel
         btn_ok.setEnabled(selected != null);
         btn_ok.setDefaultCapable(true);
 
-        btn_cancel.setText("Cancel");
-        btn_cancel.setMnemonic('C');
+        btn_cancel.setText(Msg.CHOOSER_CANCEL.toString());
         btn_cancel.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -110,21 +109,9 @@ public class BookChooser extends JPanel
             }
         });
 
-        btn_help.setText("Help");
-        btn_help.setMnemonic('H');
-        btn_help.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                helpPressed();
-            }
-        });
-        btn_help.setEnabled(false);
-
         pnl_buttons.setLayout(new FlowLayout());
         pnl_buttons.add(btn_ok);
         pnl_buttons.add(btn_cancel);
-        pnl_buttons.add(btn_help);
 
         this.setLayout(new BorderLayout());
         this.add(pnl_bibles, BorderLayout.CENTER);
@@ -214,13 +201,6 @@ public class BookChooser extends JPanel
     }
 
     /**
-     * Not implemented
-     */
-    public void helpPressed()
-    {
-    }
-
-    /**
      * Return value if cancel is chosen
      */
     public static final int CANCEL_OPTION = 1;
@@ -248,7 +228,7 @@ public class BookChooser extends JPanel
     /**
      * The title of the dialog
      */
-    private String title = "Select a Bible";
+    private String title = Msg.CHOOSER_TITLE.toString();
 
     /**
      * The Bible list model
@@ -264,5 +244,4 @@ public class BookChooser extends JPanel
     private JPanel pnl_buttons = new JPanel();
     private JButton btn_ok = new JButton();
     private JButton btn_cancel = new JButton();
-    private JButton btn_help = new JButton();
 }

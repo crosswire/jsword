@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.install.sword;
 
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
 
@@ -42,28 +43,28 @@ public class SwordInstallerFactory implements InstallerFactory
      */
     public Installer createInstaller(String url)
     {
-        String[] parts = url.split("/", 4);
+        String[] parts = url.split(NetUtil.SEPARATOR, 4);
         if (parts.length < 4)
         {
-            throw new IllegalArgumentException("Not enough / symbols in url: "+url);
+            throw new IllegalArgumentException(Msg.INVALID_URL.toString(url));
         }
         
         SwordInstaller reply = new SwordInstaller();
         // part[0] is the 'protocol' which we don't care about
         // part[1] is the blank between the first 2 slashes
         String part2 = parts[2];
-        if (part2.indexOf('@') >= 0)
+        if (part2.indexOf(NetUtil.AUTH_SEPERATOR_USERNAME) >= 0)
         {
-            String[] chop2 = part2.split("@");
+            String[] chop2 = part2.split(NetUtil.AUTH_SEPERATOR_USERNAME);
             if (chop2.length != 2)
             {
-                throw new IllegalArgumentException("Too many @ symbols in url: "+url);
+                throw new IllegalArgumentException(Msg.URL_AT_COUNT.toString(url));
             }
 
-            String[] chop3 = chop2[0].split(":");
+            String[] chop3 = chop2[0].split(NetUtil.AUTH_SEPERATOR_PASSWORD);
             if (chop3.length != 2)
             {
-                throw new IllegalArgumentException("Wrong number of : symbols in url: "+url);
+                throw new IllegalArgumentException(Msg.URL_COLON_COUNT.toString(url));
             }
             
             reply.setUsername(chop3[0]);
@@ -74,7 +75,7 @@ public class SwordInstallerFactory implements InstallerFactory
         {
             reply.setHost(part2);
         }
-        reply.setDirectory("/" + parts[3]);
+        reply.setDirectory(NetUtil.SEPARATOR + parts[3]);
 
         return reply;
     }

@@ -105,7 +105,7 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
             }
             catch (Exception ex)
             {
-                log.warn("Failed to start driver using: "+urls[i]);
+                log.warn("Failed to start driver using: "+urls[i]); //$NON-NLS-1$
             }
         }
 

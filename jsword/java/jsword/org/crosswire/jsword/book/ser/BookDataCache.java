@@ -53,7 +53,7 @@ public class BookDataCache implements Activatable
 
         if (!url.getProtocol().equals(NetUtil.PROTOCOL_FILE))
         {
-            throw new MalformedURLException("not a file url");
+            throw new MalformedURLException(Msg.NON_FILE_URL.toString(url));
         }
     }
 
@@ -68,11 +68,11 @@ public class BookDataCache implements Activatable
             indexArr = new long[BibleInfo.versesInBible()];
         
             // Open the XML RAF
-            dataUrl = NetUtil.lengthenURL(url, "xml.data");
-            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "r");
+            dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_READ);
 
             // Open the index file
-            indexUrl = NetUtil.lengthenURL(url, "xml.index");
+            indexUrl = NetUtil.lengthenURL(url, FILE_INDEX);
             indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
 
             // Load the ascii XML index
@@ -217,6 +217,16 @@ public class BookDataCache implements Activatable
             throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
+
+    /**
+     * Index filename
+     */
+    private static final String FILE_INDEX = "xml.index"; //$NON-NLS-1$
+
+    /**
+     * Data filename
+     */
+    private static final String FILE_DATA = "xml.data"; //$NON-NLS-1$
 
     /**
      * Are we active

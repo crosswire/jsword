@@ -596,9 +596,9 @@ public class DisplaySelectPane extends JPanel
         }
     }
 
-    public static final String PASSAGE = "p";
-    public static final String SEARCH = "s";
-    public static final String MATCH = "m";
+    public static final String PASSAGE = "p"; //$NON-NLS-1$
+    public static final String SEARCH = "s"; //$NON-NLS-1$
+    public static final String MATCH = "m"; //$NON-NLS-1$
 
     private static int base = 1;
 

@@ -81,13 +81,12 @@ public class DebugPane extends JPanel
      */
     private void jbInit()
     {
-        lblMethod.setDisplayedMnemonic('M');
         lblMethod.setLabelFor(cboMethod);
-        lblMethod.setText("Method: ");
+        lblMethod.setText(Msg.DEBUG_METHOD.toString());
         cboMethod.setModel(mdlMethods);
         cboMethod.setRenderer(new CustomListCellRenderer());
-        btnMethod.setMnemonic('G');
-        btnMethod.setText("GO");
+        btnMethod.setText(Msg.DEBUG_GO.toString());
+        btnMethod.setMnemonic(Msg.DEBUG_GO.toString().charAt(0));
         btnMethod.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -119,7 +118,7 @@ public class DebugPane extends JPanel
             Object reply = method.invoke(this, new Object[0]);
             if (reply == null)
             {
-                txtResults.setText("");
+                txtResults.setText(""); //$NON-NLS-1$
             }
             else
             {
@@ -142,13 +141,13 @@ public class DebugPane extends JPanel
     {
         StringBuffer reply = new StringBuffer();
 
-        reply.append("\nViews:");
+        reply.append("\n"+Msg.DEBUG_VIEWS.toString()); //$NON-NLS-1$
         int i = 0;
         Iterator it = desktop.iterateBibleViewPanes();
         while (it.hasNext())
         {
             BibleViewPane view = (BibleViewPane) it.next();
-            reply.append(""+(i++)+": "+view.getTitle()+" "+view.toString());
+            reply.append(""+(i++)+": "+view.getTitle()+" "+view.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
         return reply.toString();
@@ -159,9 +158,9 @@ public class DebugPane extends JPanel
      */
     public void createTestJobs()
     {
-        createTestJob(30000, "test1", 20, false);
-        createTestJob(30000, "test2", 3, false);
-        createTestJob(30000, "test3", 3, true);
+        createTestJob(30000, "test1", 20, false); //$NON-NLS-1$
+        createTestJob(30000, "test2", 3, false); //$NON-NLS-1$
+        createTestJob(30000, "test3", 3, true); //$NON-NLS-1$
     }
     
     /**
@@ -179,8 +178,8 @@ public class DebugPane extends JPanel
             {
                 Job job = JobManager.createJob(predictbase, predicturl, Thread.currentThread(), fake);
 
-                job.setProgress(0, "Step 0/"+steps);
-                log.debug("starting test job:");
+                job.setProgress(0, Msg.DEBUG_STEPS.toString(new Object[] { new Integer(0), new Integer(steps) }));
+                log.debug("starting test job:"); //$NON-NLS-1$
 
                 for (int i=1; i<=steps && !Thread.interrupted(); i++)
                 {
@@ -190,14 +189,14 @@ public class DebugPane extends JPanel
                     }
                     catch (InterruptedException ex)
                     {
-                        // ignore
+                        log.warn("Exception while waiting", ex); //$NON-NLS-1$
                     }
 
-                    job.setProgress((i * 100) / steps, "Step "+i+"/"+steps);
+                    job.setProgress((i * 100) / steps, Msg.DEBUG_STEPS.toString(new Object[] { new Integer(i), new Integer(steps) }));
                 }
 
                 job.done();
-                log.debug("finishing test job:");
+                log.debug("finishing test job:"); //$NON-NLS-1$
             }
         };
         test.start();

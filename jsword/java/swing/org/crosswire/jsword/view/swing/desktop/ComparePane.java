@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
@@ -80,7 +79,7 @@ public class ComparePane extends EirPanel
         cbo_bible2.setRenderer(new BookListCellRenderer());
         pnl_bibles.setLayout(new BoxLayout(pnl_bibles, BoxLayout.Y_AXIS));
         pnl_bibles.setAlignmentX((float) 0.5);
-        pnl_bibles.setBorder(new TitledBorder("Books To Compare"));
+        pnl_bibles.setBorder(new TitledBorder(Msg.COMPARE_TITLE.toString()));
         btn_go.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -93,26 +92,23 @@ public class ComparePane extends EirPanel
         pnl_bibles.add(cbo_bible2, null);
 
         txt_verses.setText(PassageFactory.getWholeBiblePassage().toString());
-        lbl_verses.setText("Verses: ");
-        lbl_verses.setDisplayedMnemonic('V');
+        lbl_verses.setText(Msg.COMPARE_VERSES.toString());
         lbl_verses.setLabelFor(txt_verses);
         pnl_verses.setLayout(new BorderLayout());
         pnl_verses.add(lbl_verses, BorderLayout.WEST);
         pnl_verses.add(txt_verses, BorderLayout.CENTER);
-        txt_words.setToolTipText("[empty] - test no words; * - test all words, text - test all words starting with 'text'");
-        lbl_words.setText("Words:  ");
-        lbl_words.setDisplayedMnemonic('W');
+        txt_words.setToolTipText(Msg.COMPARE_WORDS_TIP.toString());
+        lbl_words.setText(Msg.COMPARE_WORDS.toString());
         lbl_words.setLabelFor(txt_words);
         pnl_words.setLayout(new BorderLayout());
         pnl_words.add(lbl_words, BorderLayout.WEST);
         pnl_words.add(txt_words, BorderLayout.CENTER);
-        pnl_using.setBorder(new TitledBorder("Compare Using"));
+        pnl_using.setBorder(new TitledBorder(Msg.COMPARE_USING.toString()));
         pnl_using.setLayout(new BoxLayout(pnl_using, BoxLayout.Y_AXIS));
         pnl_using.add(pnl_verses, null);
         pnl_using.add(pnl_words, null);
 
-        btn_go.setMnemonic('C');
-        btn_go.setText("Compare");
+        btn_go.setText(Msg.COMPARE_GO.toString());
         pnl_buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
         pnl_buttons.add(btn_go, null);
 
@@ -130,7 +126,7 @@ public class ComparePane extends EirPanel
      */
     public void showInDialog(Component parent)
     {
-        showInDialog(parent, "Bible Compare", false);
+        showInDialog(parent, Msg.COMPARE_DIALOG.toString(), false);
     }
 
     /**
@@ -144,8 +140,8 @@ public class ComparePane extends EirPanel
         if (bmd1.equals(bmd2))
         {
             if (JOptionPane.showConfirmDialog(this,
-                "You are attempting to compare 2 Books that are identical.\nDo you want to continue?",
-                "Compare Identical Books?",
+                Msg.COMPARE_IDENT_QUESTION.toString(),
+                Msg.COMPARE_IDENT_TITLE.toString(),
                 JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
             {
                 return;

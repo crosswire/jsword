@@ -60,6 +60,11 @@ class Msg extends MsgBase
     static final Msg OPEN_COPYABLE = new Msg("Copyable"); //$NON-NLS-1$
     static final Msg OPEN_COMMERCIAL = new Msg("Commercial"); //$NON-NLS-1$
 
+    static final Msg JAXB_NO_INIT = new Msg("jc is null due to startup issue: {0}"); //$NON-NLS-1$
+
+    static final Msg JOB_TITLE = new Msg("Registering Drivers"); //$NON-NLS-1$
+    static final Msg JOB_DRIVER = new Msg("Registering Driver: "); //$NON-NLS-1$
+
     /**
      * Passthrough ctor
      */

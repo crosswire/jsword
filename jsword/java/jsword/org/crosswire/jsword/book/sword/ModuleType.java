@@ -37,7 +37,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Uncompressed Bibles
      */
-    public static final ModuleType RAW_TEXT = new ModuleType("RawText", "texts/rawtext", BookType.BIBLE)
+    public static final ModuleType RAW_TEXT = new ModuleType("RawText", "texts/rawtext", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -53,7 +53,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Compressed Bibles
      */
-    public static final ModuleType Z_TEXT = new ModuleType("zText", "texts/ztext", BookType.BIBLE)
+    public static final ModuleType Z_TEXT = new ModuleType("zText", "texts/ztext", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -74,7 +74,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Uncompressed Commentaries
      */
-    public static final ModuleType RAW_COM = new ModuleType("RawCom", "comments/rawcom", BookType.COMMENTARY)
+    public static final ModuleType RAW_COM = new ModuleType("RawCom", "comments/rawcom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -90,7 +90,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Compressed Commentaries
      */
-    public static final ModuleType Z_COM = new ModuleType("zCom", "comments/zcom", BookType.COMMENTARY)
+    public static final ModuleType Z_COM = new ModuleType("zCom", "comments/zcom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -111,7 +111,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Uncompresses HREF Commentaries
      */
-    public static final ModuleType HREF_COM = new ModuleType("HREFCom", "comments/hrefcom", BookType.COMMENTARY)
+    public static final ModuleType HREF_COM = new ModuleType("HREFCom", "comments/hrefcom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -127,7 +127,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Uncompressed Commentaries
      */
-    public static final ModuleType RAW_FILES = new ModuleType("RawFiles", "comments/rawfiles", BookType.COMMENTARY)
+    public static final ModuleType RAW_FILES = new ModuleType("RawFiles", "comments/rawfiles", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -143,7 +143,7 @@ public abstract class ModuleType implements Serializable
     /**
      * 2-Byte Index Uncompressed Dictionaries
      */
-    public static final ModuleType RAW_LD = new ModuleType("RawLD", "lexdict/rawld", BookType.DICTIONARY)
+    public static final ModuleType RAW_LD = new ModuleType("RawLD", "lexdict/rawld", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -159,7 +159,7 @@ public abstract class ModuleType implements Serializable
     /**
      * 4-Byte Index Uncompressed Dictionaries
      */
-    public static final ModuleType RAW_LD4 = new ModuleType("RawLD4", "lexdict/rawld4", BookType.DICTIONARY)
+    public static final ModuleType RAW_LD4 = new ModuleType("RawLD4", "lexdict/rawld4", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -175,7 +175,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Compressed Dictionaries
      */
-    public static final ModuleType Z_LD = new ModuleType("zLD", "lexdict/zld", BookType.DICTIONARY)
+    public static final ModuleType Z_LD = new ModuleType("zLD", "lexdict/zld", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -191,7 +191,7 @@ public abstract class ModuleType implements Serializable
     /**
      * Generic Books
      */
-    public static final ModuleType RAW_GEN_BOOK = new ModuleType("RawGenBook", "genbook/rawgenbook", null)
+    public static final ModuleType RAW_GEN_BOOK = new ModuleType("RawGenBook", "genbook/rawgenbook", null) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, Backend backend)
         {
@@ -230,7 +230,7 @@ public abstract class ModuleType implements Serializable
             }
         }
 
-        throw new IllegalArgumentException("ModuleType " + name + " is not defined!");
+        throw new IllegalArgumentException(Msg.UNDEFINED_MODULE.toString(name));
     }
 
     /**
@@ -367,7 +367,7 @@ public abstract class ModuleType implements Serializable
             }
         }
 
-        throw new ClassCastException("DataType " + name + " is not defined!");
+        throw new ClassCastException(Msg.UNDEFINED_DATATYPE.toString(name));
     }
 
     /**

@@ -341,7 +341,7 @@ public class BooksTreeModel implements TreeModel
     /**
      * The name for the root node (usually invisible)
      */
-    protected static final String ROOT = "Books";
+    protected static final String ROOT = Msg.BOOKS.toString();
 
     /**
      * The list of listeners

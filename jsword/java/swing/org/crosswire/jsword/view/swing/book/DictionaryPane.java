@@ -120,7 +120,7 @@ public class DictionaryPane extends JPanel implements FocusablePart
             Key key = (Key) lstentries.getSelectedValue();
             if (key == null)
             {
-                return "";
+                return ""; //$NON-NLS-1$
             }
 
             BookData bdata = dict.getData(key);
@@ -134,7 +134,7 @@ public class DictionaryPane extends JPanel implements FocusablePart
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

@@ -45,37 +45,37 @@ public class Project
     /**
      * System property to let people re-direct where the project directory is stored
      */
-    private static final String PROP_HOMEDIR = "jsword.bible.dir"; //$NON-NLS-1$
+    public static final String PROP_HOMEDIR = "jsword.bible.dir"; //$NON-NLS-1$
 
     /**
      * A file so we know if we have the right versions directory
      */
-    private static final String FILE_LOCATOR = "locator.properties"; //$NON-NLS-1$
+    public static final String FILE_LOCATOR = "locator.properties"; //$NON-NLS-1$
 
     /**
      * Properties settings file
      */
-    private static final String FILE_PROJECT = "project.properties"; //$NON-NLS-1$
+    public static final String FILE_PROJECT = "project.properties"; //$NON-NLS-1$
 
     /**
      * Resources subdir for readings sets
      */
-    private static final String DIR_READINGS = "readings"; //$NON-NLS-1$
+    public static final String DIR_READINGS = "readings"; //$NON-NLS-1$
 
     /**
      * The cache of downloaded files inside the project directory
      */
-    private static final String DIR_NETCACHE = "netcache"; //$NON-NLS-1$
+    public static final String DIR_NETCACHE = "netcache"; //$NON-NLS-1$
 
     /**
      * Versions subdirectory of the project directory
      */
-    private static final String DIR_VERSIONS = "versions"; //$NON-NLS-1$
+    public static final String DIR_VERSIONS = "versions"; //$NON-NLS-1$
 
     /**
      * The JSword user settings directory
      */
-    private static final String DIR_PROJECT = ".jsword"; //$NON-NLS-1$
+    public static final String DIR_PROJECT = ".jsword"; //$NON-NLS-1$
 
     /**
      * Accessor for the resource singleton.

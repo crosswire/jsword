@@ -44,6 +44,8 @@ class Msg extends MsgBase
     static final Msg MISSING_BACKEND = new Msg("Configuration error: Missing backend engine."); //$NON-NLS-1$
     static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry."); //$NON-NLS-1$
     static final Msg MISSING_NAME = new Msg("Missing name"); //$NON-NLS-1$
+    static final Msg UNDEFINED_MODULE = new Msg("ModuleType {0} is not defined!"); //$NON-NLS-1$
+    static final Msg UNDEFINED_DATATYPE = new Msg("DataType {0} is not defined!"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

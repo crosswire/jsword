@@ -85,7 +85,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
                 }
                 catch (Exception ex)
                 {
-                    log.warn("failed to remote getBibleNames", ex);
+                    log.warn("failed to remote getBibleNames", ex); //$NON-NLS-1$
                     rbmd = new BookMetaData[0];
                 }
             }

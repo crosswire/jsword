@@ -359,7 +359,7 @@ public class Books implements BookList
     protected void autoRegister()
     {
         URL predicturl = Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
-        Job job = JobManager.createJob("Job Title", predicturl, null, true);
+        Job job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl, null, true);
 
         try
         {
@@ -370,7 +370,7 @@ public class Books implements BookList
 
             for (int i=0; i<types.length; i++)
             {
-                job.setProgress("Registering Driver: "+ClassUtils.getShortClassName(types[i]));
+                job.setProgress(Msg.JOB_DRIVER.toString()+ClassUtils.getShortClassName(types[i]));
 
                 try
                 {

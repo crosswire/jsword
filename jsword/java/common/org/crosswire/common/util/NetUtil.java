@@ -66,7 +66,18 @@ public class NetUtil
     public static final String SEPARATOR = "/"; //$NON-NLS-1$
 
     /**
+     * Separating the username from the rest of the URL
+     */
+    public static final String AUTH_SEPERATOR_USERNAME = "@"; //$NON-NLS-1$
+
+    /**
+     * Separating the password from the username
+     */
+    public static final String AUTH_SEPERATOR_PASSWORD = ":"; //$NON-NLS-1$
+
+    /**
      * The temporary directory name
+     * TODO: This is project specific, remove it
      */
     private static final String TEMP_DIR = "jswordtemp"; //$NON-NLS-1$
 

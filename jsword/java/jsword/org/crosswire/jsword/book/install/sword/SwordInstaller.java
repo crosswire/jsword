@@ -102,27 +102,27 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         // Is the book already installed? Then nothing to do.
         if (Books.installed().getBookMetaData(bmd.getName()) != null)
         {
-            Reporter.informUser(this, "Module already installed: "+bmd.getName());
+            Reporter.informUser(this, Msg.INSTALLED, bmd.getName());
             return;
         }
 
         final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
 
-        Reporter.informUser(this, "Installing module: "+sbmd.getName());
+        Reporter.informUser(this, Msg.INSTALLING, sbmd.getName());
 
         // So now we know what we want to install - all we need to do
         // is installer.install(name) however we are doing it in the
         // background so we create a job for it.
-        final Thread worker = new Thread("DisplayPreLoader")
+        final Thread worker = new Thread("DisplayPreLoader") //$NON-NLS-1$
         {
             public void run()
             {
                 URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
-                Job job = JobManager.createJob("Install Module: "+sbmd.getName(), predicturl, this, true);
+                Job job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
 
                 try
                 {
-                    job.setProgress("Init");
+                    job.setProgress(Msg.JOB_INIT.toString());
 
                     ModuleType type = sbmd.getModuleType();
                     String modpath = type.getInstallDirectory();
@@ -136,17 +136,17 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
                     downloadAll(job, host, USERNAME, PASSWORD, directory + File.separator + SwordConstants.DIR_DATA + File.separator + destname, desturl);
 
-                    job.setProgress("Copying config file");
+                    job.setProgress(Msg.JOB_CONFIG.toString());
                     File confdir = new File(dldir, SwordConstants.DIR_CONF);
                     confdir.mkdirs();
-                    File conf = new File(confdir, sbmd.getInternalName()+".conf");
+                    File conf = new File(confdir, sbmd.getInternalName() + SwordConstants.EXTENSION_CONF);
                     URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
                     sbmd.save(configurl);
 
                     SwordBookDriver.registerNewBook(sbmd, dldir);
                     
                     // inform the user that we are done
-                    Reporter.informUser(this, "Finished installing module: "+sbmd.getName());
+                    Reporter.informUser(this, Msg.INSTALL_DONE, sbmd.getName());
                 }
                 catch (Exception ex)
                 {
@@ -212,7 +212,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                             byte[] buffer = new byte[size];
                             tin.read(buffer);
 
-                            if (internal.endsWith(".conf"))
+                            if (internal.endsWith(SwordConstants.EXTENSION_CONF))
                             {
                                 internal = internal.substring(0, internal.length() - 5);
                             }
@@ -329,10 +329,10 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
         try
         {
-            job.setProgress("Logging on to remote site");
+            job.setProgress(Msg.JOB_LOGIN.toString());
             ftpInit(ftp, site, user, password, dir);
 
-            job.setProgress("Downloading files");
+            job.setProgress(Msg.JOB_DOWNLOADING.toString());
             downloadContents(destdir, ftp);
         }
         catch (InstallException ex)

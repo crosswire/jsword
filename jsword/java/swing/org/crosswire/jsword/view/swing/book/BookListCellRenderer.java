@@ -79,7 +79,7 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
 
         if (value == null)
         {
-            setText("None");
+            setText(Msg.NONE.toString());
             setToolTipText(null);
             setIcon(null);
             setEnabled(false);

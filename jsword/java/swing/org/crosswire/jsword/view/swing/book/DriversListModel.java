@@ -95,7 +95,7 @@ public class DriversListModel extends AbstractListModel
     public String getDriverName(Object test)
     {
         String item = test.toString();
-        int end = item.indexOf(" (");
+        int end = item.indexOf(" ("); //$NON-NLS-1$
         return item.substring(0, end);
     }
 
@@ -192,7 +192,7 @@ public class DriversListModel extends AbstractListModel
                 setForeground(list.getForeground());
             }
 
-            setText((value == null) ? "" : value.toString());
+            setText((value == null) ? "" : value.toString()); //$NON-NLS-1$
             setIcon(SMALL_ICON);
 
             setEnabled(list.isEnabled());

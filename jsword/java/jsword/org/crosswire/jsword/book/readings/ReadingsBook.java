@@ -124,7 +124,7 @@ public class ReadingsBook extends AbstractBook
             OsisTextType text = osis.getOsisText();
 
             Div div = JAXBUtil.factory().createDiv();
-            div.setDivTitle("Readings for "+key.getName());
+            div.setDivTitle(Msg.HEADING.toString(key.getName()));
             text.getDiv().add(div);
 
             String readings = (String) hash.get(key);
@@ -141,7 +141,7 @@ public class ReadingsBook extends AbstractBook
                     VerseRange range = (VerseRange) it.next();
 
                     Div reading = JAXBUtil.factory().createDiv();
-                    reading.setOsisID("bible://"+range.getOSISName());
+                    reading.setOsisID(JAXBUtil.PROTOCOL_BIBLE+range.getOSISName());
                     reading.getContent().add(range.getName());
 
                     div.getContent().add(reading);                
@@ -149,7 +149,7 @@ public class ReadingsBook extends AbstractBook
             }
             catch (NoSuchVerseException ex)
             {
-                div.getContent().add("Error decoding: "+readings);
+                div.getContent().add(Msg.DECODE_ERROR.toString(readings));
             }
 
             BookData bdata = new BookData(osis, this, key);

@@ -1,4 +1,4 @@
-package org.crosswire.jsword.book.remote;
+package org.crosswire.jsword.view.swing.book;
 
 import org.crosswire.common.util.MsgBase;
 
@@ -28,16 +28,21 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg CONVERT_BMD = new Msg("Invalid MetaData Definition"); //$NON-NLS-1$
-    static final Msg CONVERT_NOVERSE = new Msg("Invalid Verse '{0}'"); //$NON-NLS-1$
-    static final Msg CONVERT_NOCLASS = new Msg("Invalid Class '{0}'"); //$NON-NLS-1$
-    static final Msg REMOTE_FAIL = new Msg("Error contacting remote server."); //$NON-NLS-1$
-    static final Msg REMOTE_NOSUPPORT = new Msg("method not supported. given: {0}"); //$NON-NLS-1$
-    static final Msg PARSE_FAIL = new Msg("Failure parsing remote response."); //$NON-NLS-1$
-    static final Msg REMOTE_MESSAGE = new Msg("Error talking to remote server: {0}: {1}"); //$NON-NLS-1$
+    static final Msg EMPTY_FILE = new Msg("File {0} is empty"); //$NON-NLS-1$
+    static final Msg VERSE_LIST_DESC = new Msg("Verse Lists ({0})"); //$NON-NLS-1$
+    static final Msg ERROR_READING = new Msg("Error reading value: {0}"); //$NON-NLS-1$
+    static final Msg BOOKS = new Msg("Books"); //$NON-NLS-1$
+    static final Msg SELECT_BOOK = new Msg("Select a book"); //$NON-NLS-1$
+    static final Msg SELECT_CHAPTER = new Msg("Select a chapter"); //$NON-NLS-1$
+    static final Msg SELECT_VERSE = new Msg("Select a verse"); //$NON-NLS-1$
+    static final Msg NONE = new Msg("None"); //$NON-NLS-1$
+
+    static final Msg CHOOSER_CANCEL = new Msg("Cancel"); //$NON-NLS-1$
+    static final Msg CHOOSER_OK = new Msg("OK"); //$NON-NLS-1$
+    static final Msg CHOOSER_TITLE = new Msg("Select a Bible"); //$NON-NLS-1$
 
     /**
-     * Passthrough ctor#
+     * Passthrough ctor
      */
     private Msg(String name)
     {

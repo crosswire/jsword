@@ -78,9 +78,9 @@ public class CommentaryPane extends JPanel implements FocusablePart
         set.setChapterComboBox(cbochaps);
         set.setVerseComboBox(cboverse);
 
-        cbobooks.setToolTipText("Select a book");
-        cbochaps.setToolTipText("Select a chapter");
-        cboverse.setToolTipText("Select a verse");
+        cbobooks.setToolTipText(Msg.SELECT_BOOK.toString());
+        cbochaps.setToolTipText(Msg.SELECT_CHAPTER.toString());
+        cboverse.setToolTipText(Msg.SELECT_VERSE.toString());
 
         pnlselect.setLayout(new FlowLayout());
         pnlselect.add(cbobooks, null);
@@ -153,7 +153,7 @@ public class CommentaryPane extends JPanel implements FocusablePart
 
         if (ref == null || bmd == null)
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         try
@@ -170,7 +170,7 @@ public class CommentaryPane extends JPanel implements FocusablePart
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

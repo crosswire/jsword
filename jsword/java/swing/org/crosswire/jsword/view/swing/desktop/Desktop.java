@@ -105,25 +105,25 @@ import org.jdom.JDOMException;
 public class Desktop implements TitleChangedListener, HyperlinkListener
 {
     // Strings for the names of property files.
-    private static final String SPLASH_PROPS = "splash";
-    private static final String DISPLAY_PROPS = "display";
+    private static final String SPLASH_PROPS = "splash"; //$NON-NLS-1$
+    private static final String DISPLAY_PROPS = "display"; //$NON-NLS-1$
 
     // Strings for hyperlinks
-    private static final String BIBLE_PROTOCOL = "bible";
-    private static final String DICTIONARY_PROTOCOL = "dict";
-    private static final String COMMENTARY_PROTOCOL = "comment";
-    private static final String HYPERLINK_STYLE = "Hyperlink";
-    private static final String DOUBLE_SLASH = "//";
-    private static final String SCROLL_TO_URL = "scrolling to: {0}";
+    private static final String BIBLE_PROTOCOL = "bible"; //$NON-NLS-1$
+    private static final String DICTIONARY_PROTOCOL = "dict"; //$NON-NLS-1$
+    private static final String COMMENTARY_PROTOCOL = "comment"; //$NON-NLS-1$
+    private static final String HYPERLINK_STYLE = "Hyperlink"; //$NON-NLS-1$
+    private static final String DOUBLE_SLASH = "//"; //$NON-NLS-1$
+    private static final String SCROLL_TO_URL = "scrolling to: {0}"; //$NON-NLS-1$
 
     // Strings for debug messages
-    private static final String PRELOAD_THREAD_NAME = "DisplayPreLoader";
-    private static final String PRELOAD_FAILED = "View pre-load failed";
-    private static final String PRELOAD_FINISHED = "View pre-load finished";
-    private static final String EXITING = "desktop main exiting.";
+    private static final String PRELOAD_THREAD_NAME = "DisplayPreLoader"; //$NON-NLS-1$
+    private static final String PRELOAD_FAILED = "View pre-load failed"; //$NON-NLS-1$
+    private static final String PRELOAD_FINISHED = "View pre-load finished"; //$NON-NLS-1$
+    private static final String EXITING = "desktop main exiting."; //$NON-NLS-1$
 
     // Empty String
-    private static final String EMPTY_STRING = "";
+    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
     /**
      * Central start point.

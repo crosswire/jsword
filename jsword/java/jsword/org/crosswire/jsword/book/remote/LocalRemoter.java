@@ -52,7 +52,7 @@ public class LocalRemoter implements Remoter
      */
     public String getRemoterName()
     {
-        return "Local";
+        return "Local"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -169,7 +169,7 @@ public class LocalRemoter implements Remoter
     private static String createUID()
     {
         int rand = (int) (Math.random() * Integer.MAX_VALUE);
-        return "uid"+rand;
+        return "uid"+rand; //$NON-NLS-1$
     }
 
     /**

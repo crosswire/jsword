@@ -44,7 +44,7 @@ public class HttpRemoter implements Remoter
     {
         if (baseurl == null)
         {
-            throw new NullPointerException("baseurl");
+            throw new NullPointerException();
         }
 
         this.baseurl = baseurl;
@@ -55,7 +55,7 @@ public class HttpRemoter implements Remoter
      */
     public String getRemoterName()
     {
-        return "Remote (HTTP)";
+        return "Remote (HTTP)"; //$NON-NLS-1$
     }
 
     /**
@@ -66,14 +66,14 @@ public class HttpRemoter implements Remoter
         try
         {
             String query = baseurl+methodToParam(method);
-            log.debug("Executing query: "+query);
+            log.debug("Executing query: "+query); //$NON-NLS-1$
 
             URL url = new URL(query);
             InputStream in = url.openStream();
             SAXBuilder builder = new SAXBuilder();
 
             Document doc = builder.build(in);
-            log.debug("Counting children of root element: "+doc.getRootElement().getChildren().size());
+            log.debug("Counting children of root element: "+doc.getRootElement().getChildren().size()); //$NON-NLS-1$
 
             return doc;
         }
@@ -99,7 +99,7 @@ public class HttpRemoter implements Remoter
     {
         StringBuffer buffer = new StringBuffer();
 
-        buffer.append("?method=");
+        buffer.append("?method="); //$NON-NLS-1$
         buffer.append(method.getMethodName());
         
         Iterator it = method.getParameterKeys();
@@ -113,11 +113,11 @@ public class HttpRemoter implements Remoter
                 if (param != null)
                 {
                     String val = method.getParameter(param);
-                    String b64 = URLEncoder.encode(val, "UTF-8");
+                    String b64 = URLEncoder.encode(val, "UTF-8"); //$NON-NLS-1$
 
-                    buffer.append("&");
+                    buffer.append("&"); //$NON-NLS-1$
                     buffer.append(key);
-                    buffer.append("=");
+                    buffer.append("="); //$NON-NLS-1$
                     buffer.append(b64);
                 }
             }
