@@ -20,7 +20,7 @@
 <xsl:template match='section'>
   <table border="0" cellpadding="4">
     <tr>
-      <td bgcolor="#cccccc">
+      <td bgcolor="#f5f5dc">
         <font size="+1" face="Verdana,sans-serif">
           <xsl:value-of select='@title'/>
         </font>
@@ -44,9 +44,7 @@
 </xsl:template>
 
 <xsl:template match='it'>
-  <font size="+1" color="#333333" face="Verdana,sans-serif">
-    <xsl:apply-templates/>
-  </font>
+  <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match='*|@*' priority='-1'>

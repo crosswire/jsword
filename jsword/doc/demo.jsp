@@ -26,12 +26,12 @@ if (view == null) view = "";
               to JSword.</p>
             <p>Please enter a reference to view or a search:</p>
             <table width="100%">
-              <tr> 
+              <tr>
                 <td>Search:</td>
                 <td nowrap>
                   <form name="search" method="post" action="demo">
-                    <input type="text" name="search" value="<%= search %>">
-                    <input name="GO" type="submit" id="GO" value="GO">
+                    <input type="text" name="search" value="<%= search %>" />
+                    <input name="GO" type="submit" id="GO" value="GO" />
                   </form>
                 </td>
                 <td><font size="-2">E.g. &quot;joseph &amp; mary&quot;. Enter a search 
@@ -42,19 +42,19 @@ if (view == null) view = "";
                 <td>Best Match: </td>
                 <td nowrap>
                   <form name="match" method="post" action="demo">
-                    <input type="text" name="match" value="<%= match %>">
-                    <input name="GO" type="submit" id="GO" value="GO">
+                    <input type="text" name="match" value="<%= match %>" />
+                    <input name="GO" type="submit" id="GO" value="GO" />
                   </form>
                 </td>
                 <td><font size="-2">E.g. &quot;for god so loved the world&quot;. Enter 
                   a phrase to find verses that contain similar language.</font></td>
               </tr>
-              <tr> 
+              <tr>
                 <td>View:</td>
                 <td nowrap>
                   <form name="view" method="post" action="demo">
-                    <input type="text" name="view" value="<%= view %>">
-                    <input name="GO" type="submit" id="GO" value="GO">
+                    <input type="text" name="view" value="<%= view %>" />
+                    <input name="GO" type="submit" id="GO" value="GO" />
                   </form>
                 </td>
                 <td><font size="-2">E.g. &quot;Gen 1&quot; or &quot;Luke 4:2-6&quot;. 
@@ -62,30 +62,22 @@ if (view == null) view = "";
               </tr>
             </table>
             <br/>
-			      <table width="100%">
-              <tr>
-                <td>
-                  <% String reply = (String) request.getAttribute("reply");
-                  if (reply != null) { %>
-                  <%= reply %>
-                  <% } %>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <% String link = (String) request.getAttribute("next-link");
-                  if (link != null) { %>
-                  <p>The following <%= (String) request.getAttribute("next-overview") %> were trimmed to avoid overloading server.</p>
-                  <p><font size="-1">
-                  <%= (String) request.getAttribute("next-name") %>
-                  </font></p>
-                  <p>To see them <a href="demo?view=<%= link %>">click here</a>.</p>
-                  <% } %>
-                </td>
-              </tr>
-            </table>
-            <p>&nbsp;</p>
-            <%@ include file="footer.jsp" %>
+						<% String reply = (String) request.getAttribute("reply");
+						if (reply != null) { %>
+						<%= reply %>
+						<% } %>
+
+						<% String link = (String) request.getAttribute("next-link");
+						if (link != null) { %>
+						<hr />
+						<p>The following <%= (String) request.getAttribute("next-overview") %> were trimmed to avoid overloading server.</p>
+						<p><font size="-1">
+						<%= (String) request.getAttribute("next-name") %>
+						</font></p>
+						<p>To see them <a href="demo?view=<%= link %>">click here</a>.</p>
+						<% } %>
+
+<%@ include file="footer.jsp" %>
 
 </body>
 </html>
