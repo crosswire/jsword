@@ -1,14 +1,8 @@
 
-package org.crosswire.jsword.book.ser;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
+package org.crosswire.jsword.book;
 
 /**
- * This represents all of the SerBibles.
+ * A method of filtering Books.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,13 +25,12 @@ import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SerBibleDriver extends LocalURLBibleDriver
+public interface BookFilter
 {
     /**
-     * Some basic name initialization
+     * Does this given book pass the tests implemented by this filter
+     * @param book The Book to test
+     * @return boolean true if it passes, false otherwise
      */
-    public SerBibleDriver() throws MalformedURLException, IOException
-    {
-        super("Serialized", "ser", SerBible.class, Books.SPEED_FAST);
-    }
+    public boolean test(BookMetaData bmd);
 }

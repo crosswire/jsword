@@ -3,7 +3,6 @@ package org.crosswire.jsword.control.search;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.control.dictionary.Dictionary;
 import org.crosswire.jsword.control.dictionary.Grammar;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
@@ -101,11 +100,6 @@ public class Matcher
     {
         return bible;
     }
-
-    /**
-     * The Dictionary for looking words up in
-     */
-    private Dictionary dict = new Dictionary();
 
     /**
      * The book to search

@@ -1,10 +1,13 @@
 
-package org.crosswire.jsword.book.remote;
+package org.crosswire.jsword.book.events;
 
+import java.util.EventObject;
+
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
- * A fullfilment of RemoteBibleDriver that uses a Local commection for test
- * purposes.
+ * A BooksEvent is fired whenever a Bible is added or removed from the
+ * system.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,26 +30,41 @@ package org.crosswire.jsword.book.remote;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LocalRemoteBibleDriver extends RemoteBibleDriver
+public class BooksEvent extends EventObject
 {
     /**
-     * Pass on the exception because RemoteBibleDriver.ctor() could fail due to
-     * its ping start-up operation.
+     * Basic constructor
+     * @param name The name of the changed Bible, or null if there is more than one change.
+     * @param added True if the changed Bible is an addition.
      */
-    public LocalRemoteBibleDriver() throws RemoterException
+    public BooksEvent(Object source, BookMetaData bmd, boolean added)
     {
-        ping();
+        super(source);
+
+        this.bmd = bmd;
+        this.added = added;
     }
 
     /**
-     * Accessor for the current remoter.
-     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
-     * @return The remoter or null if none is available.
+     * Get the name of the changed Bible
+     * @return The Bible bmd
      */
-    protected Remoter getRemoter()
+    public BookMetaData getBookMetaData()
     {
-        return remoter;
+        return bmd;
     }
 
-    private static Remoter remoter = new LocalRemoter();
+    /**
+     * Is this an addition event?
+     */
+    public boolean isAddition()
+    {
+        return added;
+    }
+
+    /** Is this an addition event? */
+    private boolean added;
+
+    /** The name of the changed Bible */
+    private BookMetaData bmd;
 }

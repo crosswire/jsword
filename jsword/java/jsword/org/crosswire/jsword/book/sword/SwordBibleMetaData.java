@@ -42,7 +42,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(SwordBibleDriver driver, Properties prop) throws MalformedURLException, ParseException
+    public SwordBibleMetaData(SwordBookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
         super(prop);
     }
@@ -50,7 +50,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(SwordBibleDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public SwordBibleMetaData(SwordBookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         super(name, edition, initials, pub, open, licence);
     }
@@ -58,7 +58,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(SwordBibleDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public SwordBibleMetaData(SwordBookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(name, edition, initials, pubstr, openstr, licencestr);
     }
@@ -66,7 +66,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(SwordBibleDriver driver, String name)
+    public SwordBibleMetaData(SwordBookDriver driver, String name)
     {
         super(name);
     }
@@ -118,7 +118,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Needed for when we create the Bible
      */
-    private SwordBibleDriver driver;
+    private SwordBookDriver driver;
 
     /**
      * The cached bible so we don't have to create too many

@@ -35,7 +35,7 @@
 
 <config>
   <option key="Bibles.Default" type="string-options">
-  	<introspect class="org.crosswire.jsword.book.Books" property="DefaultByName"/>
+  	<introspect class="org.crosswire.jsword.book.Defaults" property="BibleByName"/>
     <help>Which of the available Bibles is the default.</help>
     <map name="biblenames"/>
   </option>
@@ -46,12 +46,12 @@
   </option>
 
   <option key="Bibles.Sword.Base Directory" type="string">
-  	<introspect class="org.crosswire.jsword.book.sword.SwordBibleDriver" property="SwordDir"/>
+  	<introspect class="org.crosswire.jsword.book.sword.SwordBookDriver" property="SwordDir"/>
     <help>Where is the SWORD Project base directory.</help>
   </option>
 
   <option key="Bibles.Remote.Remote Host" type="string-array" separator=" ">
-  	<introspect class="org.crosswire.jsword.book.remote.HttpRemoteBibleDriver" property="URLs"/>
+  	<introspect class="org.crosswire.jsword.book.remote.HttpRemoteBookDriver" property="URLs"/>
     <help>The URL of a remote HTTP host.</help>
   </option>
 

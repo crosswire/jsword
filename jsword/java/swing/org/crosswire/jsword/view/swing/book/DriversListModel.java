@@ -12,7 +12,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
 
 /**
@@ -88,7 +88,7 @@ public class DriversListModel extends AbstractListModel
      * @param The item from the list
      * @return A Driver
      */
-    public BibleDriver getDriver(Object test)
+    public BookDriver getDriver(Object test)
     {
         return drivers[getIndexOf(test)];
     }
@@ -110,7 +110,7 @@ public class DriversListModel extends AbstractListModel
     }
 
     /** The array of drivers */
-    protected BibleDriver[] drivers;
+    protected BookDriver[] drivers;
 
     /** The small version icon */
     private final static ImageIcon small_icon = new ImageIcon("/org/crosswire/resources/task_small.gif");

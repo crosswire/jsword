@@ -8,8 +8,14 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Commentary;
+import org.crosswire.jsword.book.CommentaryMetaData;
+import org.crosswire.jsword.book.Dictionary;
+import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
@@ -35,39 +41,38 @@ import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
+ * @version $Id$
  */
-public class StubBibleMetaData extends AbstractBibleMetaData
+public class StubBookMetaData extends AbstractBibleMetaData implements BibleMetaData, DictionaryMetaData, CommentaryMetaData
 {
-
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for StubBookMetaData.
      */
-    public StubBibleMetaData(Properties prop) throws MalformedURLException, ParseException
+    public StubBookMetaData(Properties prop) throws MalformedURLException, ParseException
     {
         super(prop);
     }
 
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for StubBookMetaData.
      */
-    public StubBibleMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public StubBookMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         super(name, edition, initials, pub, open, licence);
     }
 
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for StubBookMetaData.
      */
-    public StubBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public StubBookMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(name, edition, initials, pubstr, openstr, licencestr);
     }
 
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for StubBookMetaData.
      */
-    public StubBibleMetaData(String name)
+    public StubBookMetaData(String name)
     {
         super(name);
     }
@@ -79,20 +84,41 @@ public class StubBibleMetaData extends AbstractBibleMetaData
      */
     public Bible getBible() throws BookException
     {
+        return (Bible) getBookInternal();
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.DictionaryMetaData#getDictionary()
+     */
+    public Dictionary getDictionary() throws BookException
+    {
+        return (Dictionary) getBookInternal();
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
+     */
+    public Commentary getCommentary() throws BookException
+    {
+        return (Commentary) getBookInternal();
+    }
+
+    private Book getBookInternal()
+    {
         // DCL
         // I know double checked locking is theoretically broken however it isn't
         // practically broken 99% of the time, and even if the 1% comes up here
         // the only effect is some temporary wasted memory
-        if (bible == null)
+        if (book == null)
         {
             synchronized(this)
             {
-                if (bible == null)
-                    bible = new StubBible(this);
+                if (book == null)
+                    book = new StubBook(this);
             }
         }
 
-        return bible;
+        return book;
     }
 
     /**
@@ -115,5 +141,5 @@ public class StubBibleMetaData extends AbstractBibleMetaData
     /**
      * The cached bible so we don't have to create too many
      */
-    private Bible bible = null;
+    private Book book = null;
 }

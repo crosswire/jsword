@@ -40,6 +40,15 @@ public interface Book
     public BookMetaData getBookMetaData();
 
     /**
+     * Someone has typed in a reference to find, but we need a Key to actually
+     * look it up.
+     * @param text The string to create a Key from
+     * @return The Key corresponding to the input text
+     * @throws BookException If there is a problem converting the text
+     */
+    public Key getKey(String text) throws BookException;
+
+    /**
      * Retrieval: Add to the given document some mark-up for the specified
      * Verses.
      * @param ref The verses to search for

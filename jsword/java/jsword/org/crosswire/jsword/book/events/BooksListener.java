@@ -1,9 +1,11 @@
 
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.book.events;
+
+import java.util.EventListener;
 
 /**
- * This class does not currently add anything to the inheritance hierachy,
- * however it seems more sensible to leave it in to simply things.
+ * BiblesListeners are able to be notified about changes to the numbers
+ * of Bibles installed on the system.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,6 +28,17 @@ package org.crosswire.jsword.book.basic;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class SearchableBibleDriver extends AbstractBibleDriver
+public interface BooksListener extends EventListener
 {
+    /**
+     * Called whenever a new Bible is added to the system.
+     * @param ev A description of the change
+     */
+    public void bookAdded(BooksEvent ev);
+
+    /**
+     * Called whenever a new Bible is removed from the system.
+     * @param ev A description of the change
+     */
+    public void bookRemoved(BooksEvent ev);
 }

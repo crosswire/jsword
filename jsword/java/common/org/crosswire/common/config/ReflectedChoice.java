@@ -44,10 +44,15 @@ public abstract class ReflectedChoice implements Choice, Serializable
         // The important 3 things saying what we update and how we describe ourselves
         Element introspector = option.getChild("introspect");
         if (introspector == null)
-            throw new StartupException("Missing introspect element in config.xml");
+            throw new StartupException("config_missingele", new Object[] { "introspect" });
 
         String clazzname = introspector.getAttributeValue("class");
+        if (clazzname == null)
+            throw new StartupException("config_missingele", new Object[] { "class" });
+
         propertyname = introspector.getAttributeValue("property");
+        if (propertyname == null)
+            throw new StartupException("config_missingele", new Object[] { "property" });
 
         log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
 
@@ -57,7 +62,7 @@ public abstract class ReflectedChoice implements Choice, Serializable
         }
         catch (ClassNotFoundException ex)
         {
-            throw new StartupException("Specified class not found "+clazz.getName(), ex);
+            throw new StartupException("config_no_class", ex, new Object[] { clazzname });
         }
 
         try

@@ -1,11 +1,14 @@
 
-package org.crosswire.jsword.book.events;
+package org.crosswire.jsword.book.ser;
 
-import java.util.EventListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.basic.LocalURLBookDriver;
 
 /**
- * BiblesListeners are able to be notified about changes to the numbers
- * of Bibles installed on the system.
+ * This represents all of the SerBibles.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,17 +31,13 @@ import java.util.EventListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BiblesListener extends EventListener
+public class SerBookDriver extends LocalURLBookDriver
 {
     /**
-     * Called whenever a new Bible is added to the system.
-     * @param ev A description of the change
+     * Some basic name initialization
      */
-    public void bibleAdded(BiblesEvent ev);
-
-    /**
-     * Called whenever a new Bible is removed from the system.
-     * @param ev A description of the change
-     */
-    public void bibleRemoved(BiblesEvent ev);
+    public SerBookDriver() throws MalformedURLException, IOException
+    {
+        super("Serialized", "ser", SerBible.class, Books.SPEED_FAST);
+    }
 }

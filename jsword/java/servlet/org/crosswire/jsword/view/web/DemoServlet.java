@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.control.search.Engine;
 import org.crosswire.jsword.control.search.Matcher;
@@ -60,7 +60,7 @@ public class DemoServlet extends HttpServlet
         try
         {
             Project.init();
-            version = Books.getDefaultBible();
+            version = Defaults.getBibleMetaData().getBible();
             engine = new Engine(version);
             matcher = new Matcher(version);
         }

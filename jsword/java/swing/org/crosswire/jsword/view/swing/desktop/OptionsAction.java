@@ -5,14 +5,18 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -89,13 +93,15 @@ public class OptionsAction extends DesktopAbstractAction
     private static void fillChoiceFactory() throws BookException
     {
         // Create the array of options
-        BibleMetaData[] bmds = Books.getBibles();
-        String[] names = new String[bmds.length];
-        for (int i=0; i<names.length; i++)
+        List bmds = Books.getBooks(Filters.getBibles());
+        List names = new ArrayList();
+        for (Iterator it = bmds.iterator(); it.hasNext();)
         {
-            names[i] = bmds[i].getFullName();
+            BibleMetaData bmd = (BibleMetaData) it.next();
+            names.add(bmd.getFullName());
         }
-        ChoiceFactory.getDataMap().put("biblenames", names);
+
+        ChoiceFactory.getDataMap().put("biblenames", names.toArray(new String[names.size()]));
     }
 
     private Config config = null;

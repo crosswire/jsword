@@ -13,11 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.control.test.Speed;
 import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.control.test.Speed;
 
 /**
  * BenchmarkPane allows an application to test the speed of a Bible by
@@ -125,13 +126,15 @@ public class BenchmarkPane extends EirPanel
     {
         try
         {
-            Bible bible = mdl_bible.getSelectedBibleMetaData().getBible();
+            // This cast is safe because Bibles are filtered below
+            // PENDING(joe): uncast
+            Bible book = (Bible) mdl_bible.getSelectedBookMetaData().getBook();
     
-            Speed speed = new Speed(bible);
+            Speed speed = new Speed(book);
             speed.run();
     
             float time = speed.getBenchmark() / 1000;
-            txt_results.append("Benchmark for '" + bible.getBookMetaData().getName() + "': " + time + "s\n");
+            txt_results.append("Benchmark for '" + book.getBookMetaData().getName() + "': " + time + "s\n");
         }
         catch (Exception ex)
         {
@@ -140,11 +143,19 @@ public class BenchmarkPane extends EirPanel
         }
     }
 
-    private BiblesComboBoxModel mdl_bible = new BiblesComboBoxModel();
+    /**
+     * Combo model. The filter is important for the cast above
+     */
+    private BooksComboBoxModel mdl_bible = new BooksComboBoxModel(Filters.getBibles());
+
     private JPanel pnl_north = new JPanel();
+
     private JButton btn_go = new JButton();
+
     private JComboBox cbo_bible = new JComboBox();
+
     private JScrollPane scr_results = new JScrollPane();
+
     private JTextArea txt_results = new JTextArea();
 }
 

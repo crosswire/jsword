@@ -42,22 +42,23 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.map.model.AdjustOriginRule;
 import org.crosswire.jsword.map.model.AntiGravityRule;
-import org.crosswire.jsword.map.model.CircularBoundsRule;
-import org.crosswire.jsword.map.model.RectangularBoundsRule;
 import org.crosswire.jsword.map.model.BrownianRule;
+import org.crosswire.jsword.map.model.CircularBoundsRule;
 import org.crosswire.jsword.map.model.DefraggingRule;
 import org.crosswire.jsword.map.model.FrictionRule;
 import org.crosswire.jsword.map.model.LinkArray;
 import org.crosswire.jsword.map.model.LinkAttractionRule;
 import org.crosswire.jsword.map.model.Map;
+import org.crosswire.jsword.map.model.RectangularBoundsRule;
 import org.crosswire.jsword.map.model.Rule;
 import org.crosswire.jsword.map.model.VBAExport;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.view.swing.book.BibleChooser;
+import org.crosswire.jsword.view.swing.book.BookChooser;
 import org.jdom.Document;
 
 /**
@@ -154,7 +155,7 @@ public class Mapper extends JFrame
                 config.setProperties(prop);
             config.localToApplication(true);
 
-            la = new LinkArray(Books.getDefaultBible());
+            la = new LinkArray(Defaults.getBibleMetaData().getBible());
         }
         catch (Exception ex)
         {
@@ -886,12 +887,12 @@ public class Mapper extends JFrame
     {
         try
         {
-            BibleChooser chooser = new BibleChooser();
+            BookChooser chooser = new BookChooser(Filters.getBibles());
             int reply = chooser.showDialog(this);
 
-            if (reply == BibleChooser.APPROVE_OPTION)
+            if (reply == BookChooser.APPROVE_OPTION)
             {
-                Bible bible = chooser.getSelectedBible();
+                Bible bible = (Bible) chooser.getSelected().getBook();
                 la = new LinkArray(bible);
                 lar.setLinkArray(la);
             }

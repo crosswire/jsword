@@ -15,7 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.control.search.Engine;
 import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -26,7 +28,6 @@ import org.crosswire.jsword.view.swing.event.CommandEvent;
 import org.crosswire.jsword.view.swing.event.CommandListener;
 import org.crosswire.jsword.view.swing.event.VersionEvent;
 import org.crosswire.jsword.view.swing.event.VersionListener;
-import org.crosswire.common.util.Reporter;
 
 /**
  * Passage Selection area.
@@ -59,8 +60,8 @@ public class SelectPane extends JPanel
      */
     public SelectPane()
     {
-        mdl_versn = new BiblesComboBoxModel();
-
+        // Bother search() and version() rely on this returning only Bibles
+        mdl_versn = new BooksComboBoxModel(Filters.getBibles());
         jbInit();
     }
 
@@ -115,7 +116,9 @@ public class SelectPane extends JPanel
         {
             String param = txt_search.getText();
             String type = (String) cbo_search.getSelectedItem();
-            Bible version = mdl_versn.getSelectedBibleMetaData().getBible();
+            // This cast is safe because we asked for Bibles in the ctor
+            // PENDING(joe): uncast
+            Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
 
             if (MATCH.equals(type))
             {
@@ -203,7 +206,8 @@ public class SelectPane extends JPanel
     {
         try
         {
-            Bible bible = mdl_versn.getSelectedBibleMetaData().getBible();
+            // This cast is safe because we asked for Bibles in the ctor
+            Bible bible = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
             fireVersionChanged(new VersionEvent(this, bible));
         }
         catch (Exception ex)
@@ -299,7 +303,7 @@ public class SelectPane extends JPanel
     private static final String SEARCH = "Search";
     private static final String MATCH = "Match";
 
-    private BiblesComboBoxModel mdl_versn = null;
+    private BooksComboBoxModel mdl_versn = null;
     private JPanel pnl_passg = new JPanel();
     private JComboBox cbo_versn = new JComboBox();
     private JLabel lbl_passg = new JLabel();

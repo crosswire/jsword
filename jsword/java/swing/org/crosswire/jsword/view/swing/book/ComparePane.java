@@ -23,8 +23,9 @@ import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -159,8 +160,8 @@ public class ComparePane extends EirPanel
      */
     private void compare()
     {
-        BibleMetaData bmd1 = mdl_bibles1.getSelectedBibleMetaData(); 
-        BibleMetaData bmd2 = mdl_bibles2.getSelectedBibleMetaData(); 
+        BookMetaData bmd1 = mdl_bibles1.getSelectedBookMetaData(); 
+        BookMetaData bmd2 = mdl_bibles2.getSelectedBookMetaData(); 
 
         if (bmd1.equals(bmd2))
         {
@@ -176,8 +177,10 @@ public class ComparePane extends EirPanel
 
         try
         {
-            Bible bible1 = bmd1.getBible();
-            Bible bible2 = bmd2.getBible();
+            // These casts are safe because we have asked for Bibles below
+            // PENDING(joe): uncast
+            Bible bible1 = (Bible) bmd1.getBook();
+            Bible bible2 = (Bible) bmd2.getBook();
     
             String words = txt_words.getText();
             String ref_text = txt_verses.getText();
@@ -206,14 +209,16 @@ public class ComparePane extends EirPanel
     }
 
     /**
-     * The first Bible selection combo
+     * The first Bible selection combo.
+     * We cast to Bible in compare() so we need to filter
      */
-    private BiblesComboBoxModel mdl_bibles1 = new BiblesComboBoxModel();
+    private BooksComboBoxModel mdl_bibles1 = new BooksComboBoxModel(Filters.getBibles());
 
     /**
      * The second Bible selection combo
+     * We cast to Bible in compare() so we need to filter
      */
-    private BiblesComboBoxModel mdl_bibles2 = new BiblesComboBoxModel();
+    private BooksComboBoxModel mdl_bibles2 = new BooksComboBoxModel(Filters.getBibles());
 
     /* GUI Components */
     private Box box_top;

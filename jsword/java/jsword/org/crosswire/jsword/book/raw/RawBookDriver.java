@@ -1,13 +1,14 @@
 
-package org.crosswire.jsword.book.stub;
+package org.crosswire.jsword.book.raw;
 
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.basic.AbstractBibleDriver;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.basic.LocalURLBookDriver;
 
 /**
- * StubBibleDriver is a simple stub implementation of BibleDriver that is
- * pretty much always going to work because it has no dependancies on external
- * files.
+ * This represents all of the RawBibles.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,18 +31,13 @@ import org.crosswire.jsword.book.basic.AbstractBibleDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StubBibleDriver extends AbstractBibleDriver
+public class RawBookDriver extends LocalURLBookDriver
 {
     /**
-     * Get a list of the Books available from the name
-     * @return an array of book names
+     * Some basic name initialization
      */
-    public BibleMetaData[] getBibles()
+    public RawBookDriver() throws MalformedURLException, IOException
     {
-        return new BibleMetaData[]
-        {
-            new StubBibleMetaData("Stub Version"),
-            new StubBibleMetaData("New Stub Version"),
-        };
+        super("Raw", "raw", RawBible.class, Books.SPEED_SLOW);
     }
 }

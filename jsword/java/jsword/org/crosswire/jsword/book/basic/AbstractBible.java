@@ -14,6 +14,7 @@ import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -53,6 +54,25 @@ public abstract class AbstractBible implements Bible
     public BookMetaData getBookMetaData()
     {
         return getBibleMetaData();
+    }
+
+    /**
+     * Someone has typed in a reference to find, but we need a Key to actually
+     * look it up.
+     * @param text The string to create a Key from
+     * @return The Key corresponding to the input text
+     * @throws BookException If there is a problem converting the text
+     */
+    public Key getKey(String text) throws BookException
+    {
+        try
+        {
+            return new PassageKey(text);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new BookException("bible_no_verse");
+        }
     }
 
     /**

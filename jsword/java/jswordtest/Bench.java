@@ -1,11 +1,14 @@
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.control.test.Speed;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.common.util.Reporter;
 
 /**
  * Bench is a command line utility that runs the Speed benchmark program.
@@ -51,7 +54,7 @@ public class Bench
 
         try
         {
-            version = Books.getDefaultBible();
+            version = Defaults.getBibleMetaData().getBible();
         }
         catch (Exception ex)
         {
@@ -94,18 +97,12 @@ public class Bench
      */
     private static void versions()
     {
-        try
+        System.out.println("  Available versions:");
+        List lbmds = Books.getBooks();
+        for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
-            BibleMetaData[] bmds = Books.getBibles();
-            System.out.println("  Available versions:");
-            for (int i = 0; i < bmds.length; i++)
-            {
-                System.out.println("    " + bmds[i].getName());
-            }
-        }
-        catch (BookException ex)
-        {
-            System.out.println("  Can't list versions. System message: " + ex);
+            BibleMetaData bmd = (BibleMetaData) it.next();
+            System.out.println("    " + bmd.getName());
         }
     }
 }

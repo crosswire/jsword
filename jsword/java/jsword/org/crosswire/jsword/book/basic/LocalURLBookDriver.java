@@ -16,11 +16,12 @@ import org.crosswire.common.util.URLFilter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.util.Project;
 
 /**
- * LocalURLBibleDriver is a helper for drivers that want to store files locally.
+ * LocalURLBookDriver is a helper for drivers that want to store files locally.
  * 
  * It takes care of providing you with a directory to work from and managing the
  * files stored in that directory.
@@ -46,12 +47,12 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class LocalURLBibleDriver extends SearchableBibleDriver
+public abstract class LocalURLBookDriver extends SearchableBookDriver
 {
     /**
      * The ctor checks on the filesystem
      */
-    protected LocalURLBibleDriver(String name, String subdir, Class bibleclass, int speed) throws MalformedURLException, IOException
+    protected LocalURLBookDriver(String name, String subdir, Class bibleclass, int speed) throws MalformedURLException, IOException
     {
         log.debug("Starting "+name+" in "+subdir);
 
@@ -143,9 +144,9 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
     }
 
     /**
-     * @see org.crosswire.jsword.book.basic.AbstractBibleDriver#getBibles()
+     * @see org.crosswire.jsword.book.basic.AbstractBookDriver#getBibles()
      */
-    public BibleMetaData[] getBibles()
+    public BookMetaData[] getBooks()
     {
         if (dir == null)
             return new BibleMetaData[0];
@@ -286,7 +287,7 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(LocalURLBibleDriver.class);
+    protected static Logger log = Logger.getLogger(LocalURLBookDriver.class);
 
     /**
      * The Bibles root
@@ -307,7 +308,7 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
             }
             catch (IOException ex)
             {
-                Reporter.informUser(LocalURLBibleDriver.class, ex);
+                Reporter.informUser(LocalURLBookDriver.class, ex);
                 return false;
             }
         }

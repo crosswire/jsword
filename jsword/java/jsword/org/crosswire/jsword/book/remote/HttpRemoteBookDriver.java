@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Books;
 
 
 /**
@@ -35,13 +35,13 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class HttpRemoteBibleDriver extends RemoteBibleDriver
+public class HttpRemoteBookDriver extends RemoteBookDriver
 {
     /**
      * Pass on the exception because RemoteBibleDriver.ctor() could fail due to
      * its ping start-up operation.
      */
-    public HttpRemoteBibleDriver(String baseurl) throws RemoterException
+    public HttpRemoteBookDriver(String baseurl) throws RemoterException
     {
         remoter = new HttpRemoter(baseurl);
         ping();
@@ -86,31 +86,31 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
             }
             catch (BookException ex)
             {
-                Reporter.informUser(HttpRemoteBibleDriver.class, ex);
+                Reporter.informUser(HttpRemoteBookDriver.class, ex);
             }
         }
 
         // Then create and register the new ones
-        HttpRemoteBibleDriver.urls = urls;
+        HttpRemoteBookDriver.urls = urls;
         List dlist = new ArrayList();
         for (int i=0; i<urls.length; i++)
         {
             try
             {
-                BibleDriver driver = new HttpRemoteBibleDriver(urls[i]); 
+                BookDriver driver = new HttpRemoteBookDriver(urls[i]); 
                 dlist.add(driver);
                 Books.registerDriver(driver);
             }
             catch (Exception ex)
             {
-                Reporter.informUser(HttpRemoteBibleDriver.class, ex);
+                Reporter.informUser(HttpRemoteBookDriver.class, ex);
             }
         }
 
         // We do this via a temporary list because any drivers that fail to
         // start get excluded, so we shouldn't remember them in case we later
         // unregister() them
-        drivers = (HttpRemoteBibleDriver[]) dlist.toArray(new HttpRemoteBibleDriver[dlist.size()]);
+        drivers = (HttpRemoteBookDriver[]) dlist.toArray(new HttpRemoteBookDriver[dlist.size()]);
     }
 
     /**
@@ -121,5 +121,5 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
     /**
      * An array of the drivers that we are currently using. 
      */
-    private static HttpRemoteBibleDriver[] drivers = new HttpRemoteBibleDriver[0];
+    private static HttpRemoteBookDriver[] drivers = new HttpRemoteBookDriver[0];
 }

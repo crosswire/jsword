@@ -1,15 +1,13 @@
 
 package org.crosswire.jsword.book.remote;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.remote.Converter;
-import org.crosswire.jsword.book.remote.LocalRemoter;
-import org.crosswire.jsword.book.remote.RemoteConstants;
-import org.crosswire.jsword.book.remote.RemoteMethod;
-import org.crosswire.jsword.book.remote.Remoter;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 
@@ -54,7 +52,8 @@ public class LocalRemoterTest extends TestCase
 
     public void testGetBibles() throws Exception
     {
-        BibleMetaData[] names1 = Books.getFastBibles(Books.SPEED_SLOWEST); 
+        List lbmds = Books.getBooks(Filters.getFaster(Books.SPEED_SLOWEST));
+        BibleMetaData[] names1 = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
         Document doc = remote.execute(method);

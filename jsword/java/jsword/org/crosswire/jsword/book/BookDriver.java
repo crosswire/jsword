@@ -30,6 +30,15 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public interface BookDriver
 {
     /**
+     * This method should only be used by Bibles at startup to register the
+     * Bibles known at start time.
+     * Generally there will be a better way of doing whatever you want to do if
+     * you use this method.
+     * @return A list of the known Bibles
+     */
+    public BookMetaData[] getBooks();
+
+    /**
      * Is this name capable of creating writing data in the correct format
      * as well as reading it?
      * @return true/false to indicate ability to write data

@@ -21,13 +21,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
- * BibleChooser is like JFileChooser except that it allows the user to
+ * BookChooser is like JFileChooser except that it allows the user to
  * select one of the available Bibles.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -51,13 +49,22 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BibleChooser extends JPanel
+public class BookChooser extends JPanel
 {
     /**
      * Basic constructor
      */
-    public BibleChooser()
+    public BookChooser()
     {
+        this(null);
+    }
+
+    /**
+     * Basic constructor
+     */
+    public BookChooser(BookFilter filter)
+    {
+        bmod = new BooksListModel(filter);
         jbInit();
     }
 
@@ -109,7 +116,7 @@ public class BibleChooser extends JPanel
     }
 
     /**
-     * Display the BibleChooser in a modal dialog
+     * Display the BookChooser in a modal dialog
      */
     public int showDialog(Component parent)
     {
@@ -151,20 +158,12 @@ public class BibleChooser extends JPanel
     }
 
     /**
-     * Returns the selected Bible.
-     * @return the selected Bible
+     * Returns the selected Book.
+     * @return the selected Book
      */
-    public Bible getSelectedBible()
+    public BookMetaData getSelected()
     {
-        try
-        {
-            BibleMetaData bmd = (BibleMetaData) lst_bibles.getSelectedValue();
-            return bmd.getBible();
-        }
-        catch (BookException ex)
-        {
-            throw new LogicError(ex);
-        }
+        return (BookMetaData) lst_bibles.getSelectedValue();
     }
 
     /**
@@ -201,26 +200,40 @@ public class BibleChooser extends JPanel
     {
     }
 
-    /** Return value if cancel is chosen */
+    /**
+     * Return value if cancel is chosen
+     */
     public static final int CANCEL_OPTION = 1;
 
-    /** Return value if approve (yes, ok) is chosen */
+    /**
+     * Return value if approve (yes, ok) is chosen
+     */
     public static final int APPROVE_OPTION = 0;
 
-    /** Return value if an error occured */
+    /**
+     * Return value if an error occured
+     */
     public static final int ERROR_OPTION = -1;
 
-    /** The name of the selected Bible */
+    /**
+     * The name of the selected Bible
+     */
     private String selected = null;
 
-    /** The way the dialog was closed */
+    /**
+     * The way the dialog was closed
+     */
     private int reply = CANCEL_OPTION;
 
-    /** The title of the dialog */
+    /**
+     * The title of the dialog
+     */
     private String title = "Select a Bible";
 
-    /** The Bible list model */
-    private BiblesListModel bmod = new BiblesListModel();
+    /**
+     * The Bible list model
+     */
+    private BooksListModel bmod = null;
 
     /* GUI Componenets */
     private JDialog dialog;

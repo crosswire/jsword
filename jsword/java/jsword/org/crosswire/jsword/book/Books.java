@@ -2,14 +2,16 @@
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.events.BiblesEvent;
-import org.crosswire.jsword.book.events.BiblesListener;
+import org.crosswire.jsword.book.events.BooksEvent;
+import org.crosswire.jsword.book.events.BooksListener;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -39,7 +41,7 @@ import org.crosswire.jsword.util.Project;
  */
 public class Books
 {
-    /*
+    /**
      * <p>Important values include 5, were the remoting system will not remote
      * Books where getSpeed() >= 5 (to save re-remoting already remote Books).
      * 10 is also special - values > 10 indicate the data returned is likely to
@@ -47,33 +49,44 @@ public class Books
      * BibleDrivers that return > 10.
      */
     public static final int SPEED_FASTEST = 10;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_FAST = 9;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_MEDIUM = 8;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_SLOW = 7;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_SLOWEST = 6;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_REMOTE_FASTEST = 5;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_REMOTE_FAST = 4;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_REMOTE_MEDIUM = 3;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_REMOTE_SLOW = 2;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_REMOTE_SLOWEST = 1;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_IGNORE = 0;
+
+    /** @see Books#SPEED_FASTEST */
     public static final int SPEED_INACCURATE = -1;
 
     /**
      * The list of Books
      */
-    private static List bibles = new ArrayList();
-
-    /**
-     * The default Bible
-     */
-    private static BibleMetaData deft = null;
-
-    /**
-     * Has the default Bible been manually set or are we picking the fastest
-     * as the default?
-     */
-    private static boolean autodef = true;
+    private static List books = new ArrayList();
 
     /**
      * The list of listeners
@@ -91,153 +104,39 @@ public class Books
     private static Logger log = Logger.getLogger(Books.class);
 
     /**
-     * Get an array of the available Bible names.
-     * This is done by asking all of the available Bibles in turn and collating
-     * the results. Using this method (equivalent to calling getBibles()
-     * followed by calling addBiblesListener()) is preferred because it helps
-     * keep people up to date with the available Bibles.
-     * @return An array of available version IDs
-     * @throws BookException If anything goes wrong with this method
+     * Get an iterator over all the Books of all types.
      */
-    public static BibleMetaData[] getBibles(BiblesListener li) throws BookException
+    public static List getBooks()
     {
-        return (BibleMetaData[]) bibles.toArray(new BibleMetaData[bibles.size()]);
+        return Collections.unmodifiableList(books);
     }
 
     /**
-     * Get an array of the available Bible names.
-     * This is done by asking all of the available Bibles in turn and collating
-     * the results. You are encouraged <b>not</b> use this method, but to use
-     * getBibles(BiblesListener) to keep up to date with available Bibles.
-     * @see #getBibles(BiblesListener)
-     * @return An array of available version IDs
-     * @throws BookException If anything goes wrong with this method
+     * Get a filtered iterator over all the Books.
+     * @see Filters
      */
-    public static BibleMetaData[] getBibles() throws BookException
+    public static List getBooks(BookFilter filter)
     {
-        return (BibleMetaData[]) bibles.toArray(new BibleMetaData[bibles.size()]);
-    }
-
-    /**
-     * Get all the BibleMetaDatas that are at least as fast as minspeed.
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static BibleMetaData[] getFastBibles(int minspeed) throws BookException
-    {
-        List faster = new ArrayList();
-        for (Iterator it = bibles.iterator(); it.hasNext();)
-        {
-            BibleMetaData bmd = (BibleMetaData) it.next();
-            if (bmd.getSpeed() > minspeed)
-            {
-                faster.add(bmd);
-            }
-        }
-
-        return (BibleMetaData[]) faster.toArray(new BibleMetaData[faster.size()]);
-    }
-
-    /**
-     * Set the default Bible. The new name must be equal() to a string
-     * returned from getBibleNames. (if does not need to be == however)
-     * A BookException results if you get it wrong.
-     * @param bmd The version to use as default.
-     * @exception BookException If the name is not valid
-     */
-    public static void setDefault(BibleMetaData bmd) throws BookException
-    {
-        autodef = false;
-        deft = bmd;
-    }
-
-    /**
-     * Get the current default Bible. If there are no Bibles that
-     * can be accessed (sounds like an installation problem or something)
-     * then a BookException results. Otherwise this should always get
-     * you something useful.
-     * @return the current default version
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static BibleMetaData getDefault() throws BookException
-    {
-        return deft;
-    }
-
-    /**
-     * Get the current default Bible. If there are no Bibles that
-     * can be accessed (sounds like an installation problem or something)
-     * then a BookException results. Otherwise this should always get
-     * you something useful.
-     * @return the current default version
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static Bible getDefaultBible() throws BookException
-    {
-        return getDefault().getBible();
-    }
-
-    /**
-     * Trawl through all the known Bibles looking for the one closest to
-     * the given name.
-     * This method is for use with config scripts and other things that
-     * <b>need</b> to work with Strings. The preferred method is to use
-     * BibleMetaData objects.
-     * @param name The version to use as default.
-     * @exception BookException If the name is not valid
-     */
-    public static String getDefaultByName() throws BookException
-    {
-        return getDefault().getFullName();
-    }
-
-    /**
-     * Trawl through all the known Bibles looking for the one closest to
-     * the given name.
-     * <p>This method is for use with config scripts and other things that
-     * <b>need</b> to work with Strings. The preferred method is to use
-     * BibleMetaData objects.
-     * <p>This method is picky in that it only matches when the driver and the
-     * version are the same. The user (probably) only cares about the version
-     * though, and so might be dissapointed when we fail to match AV (FooDriver)
-     * against AV (BarDriver).
-     * @param name The version to use as default.
-     * @exception BookException If the name is not valid
-     */
-    public static void setDefaultByName(String name) throws BookException
-    {
-        autodef = false;
-
-        BibleMetaData[] bmds = getBibles();
-        for (int i=0; i<bmds.length; i++)
-        {
-            BibleMetaData bmd = bmds[i];
-            String tname = bmd.getFullName();
-            if (tname.equals(name))
-            {
-                setDefault(bmd);
-                return;
-            }
-        }
-
-        throw new BookException("bibles_not_found", new Object[] { name });
+        List temp = CollectionUtil.createList(new BookFilterIterator(books.iterator(), filter));
+        return Collections.unmodifiableList(temp);
     }
 
     /**
      * Remove a BibleListener from our list of listeners
      * @param li The old listener
      */
-    public static void addBiblesListener(BiblesListener li)
+    public static void addBooksListener(BooksListener li)
     {
-        listeners.add(BiblesListener.class, li);
+        listeners.add(BooksListener.class, li);
     }
 
     /**
      * Add a BibleListener to our list of listeners
      * @param li The new listener
      */
-    public static void removeBiblesListener(BiblesListener li)
+    public static void removeBooksListener(BooksListener li)
     {
-        listeners.remove(BiblesListener.class, li);
+        listeners.remove(BooksListener.class, li);
     }
 
     /**
@@ -245,31 +144,14 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static void addBible(BibleMetaData bmd) throws BookException
+    public static void addBook(BookMetaData bmd) throws BookException
     {
-        log.debug("registering bible: "+bmd.getName());
+        log.debug("registering book: "+bmd.getName());
 
-        bibles.add(bmd);
-        checkReplaceDefault(bmd);
+        books.add(bmd);
+        Defaults.isPreferable(bmd);
 
-        fireBiblesChanged(Books.class, bmd, true);
-    }
-
-    /**
-     * Should this Bible become the default?
-     */
-    private static void checkReplaceDefault(BibleMetaData bmd)
-    {
-        // Do we even think about replacing the default Bible?
-        if (autodef || deft == null)
-        {
-            // If there is no default or this is faster
-            if (deft == null || bmd.getSpeed() > deft.getSpeed())
-            {
-                deft = bmd;
-                log.debug("setting as default since speed="+deft.getSpeed());
-            }
-        }
+        fireBooksChanged(Books.class, bmd, true);
     }
 
     /**
@@ -277,14 +159,14 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static void removeBible(BibleMetaData bmd) throws BookException
+    public static void removeBook(BookMetaData bmd) throws BookException
     {
-        log.debug("unregistering bible: "+bmd.getName());
+        log.debug("unregistering book: "+bmd.getName());
 
-        boolean removed = bibles.remove(bmd);
+        boolean removed = books.remove(bmd);
         if (removed)
         {
-            fireBiblesChanged(Books.class, bmd, true);
+            fireBooksChanged(Books.class, bmd, true);
         }
         else
         {
@@ -292,12 +174,12 @@ public class Books
         }
 
         // Was this the default?
-        if (bmd.equals(deft))
+        if (bmd.equals(Defaults.getBibleMetaData()))
         {
             // find the next fastest
-            for (Iterator it = bibles.iterator(); it.hasNext();)
+            for (Iterator it = books.iterator(); it.hasNext();)
             {
-                checkReplaceDefault((BibleMetaData) it.next());
+                Defaults.isPreferable((BibleMetaData) it.next());
             }
         }
     }
@@ -308,25 +190,25 @@ public class Books
      * @param name The name of the changed Bible
      * @param added Is it added?
      */
-    protected static void fireBiblesChanged(Object source, BibleMetaData bmd, boolean added)
+    protected static void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        BiblesEvent ev = null;
+        BooksEvent ev = null;
         for (int i = contents.length - 2; i >= 0; i -= 2)
         {
-            if (contents[i] == BiblesListener.class)
+            if (contents[i] == BooksListener.class)
             {
                 if (ev == null)
-                    ev = new BiblesEvent(source, bmd, added);
+                    ev = new BooksEvent(source, bmd, added);
 
                 if (added)
-                    ((BiblesListener) contents[i + 1]).bibleAdded(ev);
+                    ((BooksListener) contents[i + 1]).bookAdded(ev);
                 else
-                    ((BiblesListener) contents[i + 1]).bibleRemoved(ev);
+                    ((BooksListener) contents[i + 1]).bookRemoved(ev);
             }
         }
     }
@@ -335,7 +217,7 @@ public class Books
      * Add to the list of drivers
      * @param driver The BookDriver to add
      */
-    public static void registerDriver(BibleDriver driver) throws BookException
+    public static void registerDriver(BookDriver driver) throws BookException
     {
         log.debug("begin registering driver: "+driver.getClass().getName());
 
@@ -344,10 +226,10 @@ public class Books
 
         drivers.add(driver);
 
-        BibleMetaData[] bmds = driver.getBibles();
+        BookMetaData[] bmds = driver.getBooks();
         for (int j=0; j<bmds.length; j++)
         {
-            addBible(bmds[j]);
+            addBook(bmds[j]);
         }
 
         log.debug("end registering driver: "+driver.getClass().getName());
@@ -357,14 +239,14 @@ public class Books
      * Remove from the list of drivers
      * @param driver The BookDriver to remove
      */
-    public static void unregisterDriver(BibleDriver driver) throws BookException
+    public static void unregisterDriver(BookDriver driver) throws BookException
     {
         log.debug("begin un-registering driver: "+driver.getClass().getName());
 
-        BibleMetaData[] bmds = driver.getBibles();
+        BookMetaData[] bmds = driver.getBooks();
         for (int j=0; j<bmds.length; j++)
         {
-            removeBible(bmds[j]);
+            removeBook(bmds[j]);
         }
 
         if (!drivers.remove(driver))
@@ -377,31 +259,31 @@ public class Books
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public static BibleDriver[] getDrivers()
+    public static BookDriver[] getDrivers()
     {
-        return (BibleDriver[]) drivers.toArray(new BibleDriver[drivers.size()]);
+        return (BookDriver[]) drivers.toArray(new BookDriver[drivers.size()]);
     }
 
     /**
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public static BibleDriver[] getWritableDrivers()
+    public static BookDriver[] getWritableDrivers()
     {
         int i = 0;
         for (Iterator it = drivers.iterator(); it.hasNext();)
         {
-            BibleDriver driver = (BibleDriver) it.next();
+            BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
                 i++;
         }
         
-        BibleDriver[] reply = new BibleDriver[i];
+        BookDriver[] reply = new BookDriver[i];
 
         i = 0;
         for (Iterator it = drivers.iterator(); it.hasNext();)
         {
-            BibleDriver driver = (BibleDriver) it.next();
+            BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
                 reply[i++] = driver;
         }
@@ -415,7 +297,7 @@ public class Books
     static
     {
         // This will classload them all and they will register themselves.
-        Class[] types = Project.resource().getImplementors(BibleDriver.class);
+        Class[] types = Project.resource().getImplementors(BookDriver.class);
 
         log.debug("begin auto-registering "+types.length+" drivers:");
 
@@ -423,7 +305,7 @@ public class Books
         {
             try
             {
-                BibleDriver driver = (BibleDriver) types[i].newInstance();
+                BookDriver driver = (BookDriver) types[i].newInstance();
                 registerDriver(driver);
             }
             catch (Throwable ex)

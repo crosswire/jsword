@@ -1,19 +1,19 @@
 
 package org.crosswire.jsword.view.swing.book;
 
+import java.util.List;
+
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataListener;
 
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.events.BiblesEvent;
-import org.crosswire.jsword.book.events.BiblesListener;
+import org.crosswire.jsword.book.events.BooksEvent;
+import org.crosswire.jsword.book.events.BooksListener;
 
 /**
- * BiblesListModel creates a Swing ListModel from the available Bibles.
- * I would normally implement BiblesListener in an inner class however
+ * BooksListModel creates a Swing ListModel from the available Bibles.
+ * I would normally implement BooksListener in an inner class however
  * doing that would stop me calling fireInterval*() in AbstractListModel
  * because that is a protected method and the inner class is neither
  * in the same package or a sub class.
@@ -39,49 +39,41 @@ import org.crosswire.jsword.book.events.BiblesListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BiblesListModel extends AbstractListModel implements BiblesListener
+public class BooksListModel extends AbstractListModel
 {
     /**
      * Basic constructor
      */
-    public BiblesListModel()
+    public BooksListModel()
     {
+        this(null);
+    }
+
+    /**
+     * Basic constructor
+     */
+    public BooksListModel(BookFilter filter)
+    {
+        this.filter = filter;
         cacheData();
     }
 
     /**
-     * Setup the data-stores of the current Bibles and drivers
-     */
-    private void cacheData()
-    {
-        try
-        {
-            bmds = Books.getBibles();
-        }
-        catch (BookException ex)
-        {
-            Reporter.informUser(this, ex);
-            bmds = new BibleMetaData[0];
-        }
-    }
-
-    /**
      * Returns the length of the list.
+     * @see javax.swing.ListModel#getSize()
      */
     public int getSize()
     {
-        return bmds.length;
+        return bmds.size();
     }
 
     /**
      * Returns the value at the specified index.
+     * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index)
     {
-        if (index >= bmds.length)
-            return null;
-
-        return bmds[index];
+        return bmds.get(index);
     }
 
     /**
@@ -91,13 +83,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
      */
     public int getIndexOf(Object test)
     {
-        for (int i=0; i<bmds.length; i++)
-        {
-            if (test == bmds[i])
-                return i;
-        }
-
-        return -1;
+        return bmds.indexOf(test);
     }
 
     /**
@@ -108,7 +94,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
     public void addListDataListener(ListDataListener li)
     {
         if (listenerList.getListenerCount() == 0)
-            Books.addBiblesListener(this);
+            Books.addBooksListener(listener);
 
         super.addListDataListener(li);
     }
@@ -123,37 +109,59 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
         super.removeListDataListener(li);
 
         if (listenerList.getListenerCount() == 0)
-            Books.removeBiblesListener(this);
+            Books.removeBooksListener(listener);
     }
 
     /**
-     * Called whenever a new Bible is added or a Bible is removed from
-     * the system.
-     * @param ev A description of the change
+     * Setup the data-stores of the current Bibles and drivers
      */
-    public void bibleAdded(BiblesEvent ev)
+    private void cacheData()
     {
-        int old_size = getSize();
-
-        cacheData();
-
-        fireIntervalAdded(ev.getSource(), 0, old_size);
+        bmds = Books.getBooks(filter);
     }
 
     /**
-     * Called whenever a new Bible is added or a Bible is removed from
-     * the system.
-     * @param ev A description of the change
+     * So we can get a handle on what Bibles there are
      */
-    public void bibleRemoved(BiblesEvent ev)
+    class CustomListDataListener implements BooksListener
     {
-        int old_size = getSize();
+        /**
+         * Called whenever a new Bible is added or a Bible is removed from
+         * the system.
+         * @param ev A description of the change
+         */
+        public void bookAdded(BooksEvent ev)
+        {
+            int old_size = getSize();
+            cacheData();
+            fireIntervalAdded(ev.getSource(), 0, old_size);
+        }
 
-        cacheData();
-
-        fireIntervalRemoved(ev.getSource(), 0, old_size);
+        /**
+         * Called whenever a new Bible is added or a Bible is removed from
+         * the system.
+         * @param ev A description of the change
+         */
+        public void bookRemoved(BooksEvent ev)
+        {
+            int old_size = getSize();
+            cacheData();
+            fireIntervalRemoved(ev.getSource(), 0, old_size);
+        }    
     }
 
-    /** The array of versions */
-    protected BibleMetaData[] bmds;
+    /**
+     * The filter used to choose Bibles
+     */
+    private BookFilter filter = null;
+
+    /**
+     * The listener
+     */
+    private CustomListDataListener listener = new CustomListDataListener();
+
+    /**
+     * The array of versions
+     */
+    protected List bmds = null;
 }

@@ -3,8 +3,9 @@ package org.crosswire.jsword.view.swing.book;
 
 import javax.swing.ComboBoxModel;
 
-import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
  * The BibleModels class implements a number of swing DataModels
@@ -31,15 +32,25 @@ import org.crosswire.jsword.book.BibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxModel
+public class BooksComboBoxModel extends BooksListModel implements ComboBoxModel
 {
     /**
      * Basic Constructor
      */
-    public BiblesComboBoxModel()
+    public BooksComboBoxModel()
     {
-        if (bmds.length > 0)
-            current = bmds[0];
+        this(null);
+    }
+
+    /**
+     * Basic Constructor
+     */
+    public BooksComboBoxModel(BookFilter filter)
+    {
+        super(filter);
+
+        if (bmds.size() > 0)
+            current = (BibleMetaData) bmds.get(0);
     }
 
     /**
@@ -47,7 +58,7 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
      */
     public void setSelectedItem(Object current)
     {
-        this.current = (BibleMetaData) current;
+        this.current = (BookMetaData) current;
         fireContentsChanged(this, -1, -1);
     }
 
@@ -63,14 +74,13 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
      * Get the selected Bible
      * @return A Bible
      */
-    public BibleMetaData getSelectedBibleMetaData()
+    public BookMetaData getSelectedBookMetaData()
     {
         return current;
     }
 
-    /** The currently selected version */
-    protected BibleMetaData current;
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(BiblesComboBoxModel.class);
+    /**
+     * The currently selected version
+     */
+    protected BookMetaData current;
 }

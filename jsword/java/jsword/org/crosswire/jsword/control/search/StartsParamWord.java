@@ -2,7 +2,6 @@
 package org.crosswire.jsword.control.search;
 
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.control.dictionary.Dictionary;
 import org.crosswire.jsword.passage.Passage;
 
 /**
@@ -77,7 +76,4 @@ public class StartsParamWord implements ParamWord
             throw new SearchException("search_starts_other", ex);
         }
     }
-
-    /** The Dictionary for looking words up in */
-    private Dictionary dict = new Dictionary();
 }

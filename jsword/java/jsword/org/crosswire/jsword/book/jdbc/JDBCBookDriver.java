@@ -4,12 +4,8 @@ package org.crosswire.jsword.book.jdbc;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
-import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
-import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.book.basic.LocalURLBookDriver;
 
 /**
  * This represents all of the JDBCBibles.
@@ -35,33 +31,15 @@ import org.crosswire.jsword.book.events.ProgressListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDBCBibleDriver extends LocalURLBibleDriver
+public class JDBCBookDriver extends LocalURLBookDriver
 {
     /**
      * Some basic name initialization. If we couldn't get a Bibles root
      * then just give a warning but do no more. Perhaps there are other
      * BibleDrivers that can cope, so this needent be a big error.
      */
-    public JDBCBibleDriver() throws MalformedURLException, IOException
+    public JDBCBookDriver() throws MalformedURLException, IOException
     {
         super("Database", "jdbc", JDBCBible.class, Books.SPEED_SLOW);
-    }
-
-    /**
-     * We are read-only so do nothing
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     */
-    public Bible create(Bible source, ProgressListener li) throws BookException
-    {
-        throw new BookException("jdbc_driver_readonly");
-    }
-
-    /**
-     * We are read-only so do nothing
-     */
-    public Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
-    {
-        throw new BookException("jdbc_driver_readonly");
     }
 }

@@ -13,7 +13,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.basic.AbstractBibleDriver;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * This represents all of the SwordBibles.
@@ -39,19 +40,19 @@ import org.crosswire.jsword.book.basic.AbstractBibleDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordBibleDriver extends AbstractBibleDriver
+public class SwordBookDriver extends AbstractBookDriver
 {
     /**
      * Some basic name initialization
      */
-    public SwordBibleDriver() throws MalformedURLException
+    public SwordBookDriver() throws MalformedURLException
     {
     }
 
     /**
      * @see org.crosswire.jsword.book.BibleDriver#getBibles()
      */
-    public BibleMetaData[] getBibles()
+    public BookMetaData[] getBooks()
     {
         if (dir == null)
         {
@@ -148,7 +149,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
     protected static URL dir;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(SwordBibleDriver.class);
+    protected static Logger log = Logger.getLogger(SwordBookDriver.class);
 
     /**
      * Check that the directories in the version directory really

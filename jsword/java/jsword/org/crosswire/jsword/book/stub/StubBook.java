@@ -4,22 +4,29 @@ package org.crosswire.jsword.book.stub;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Commentary;
+import org.crosswire.jsword.book.CommentaryMetaData;
+import org.crosswire.jsword.book.Dictionary;
+import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 
 /**
- * StubBible is a simple stub implementation of Bible that is pretty much
+ * StubBook is a simple stub implementation of Bible that is pretty much
  * always going to work because it has no dependancies on external files.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -43,14 +50,14 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StubBible extends AbstractBible
+public class StubBook extends AbstractBible implements Bible, Dictionary, Commentary
 {
     /**
-     * Basic constructor for a StubBible
+     * Basic constructor for a StubBook
      */
-    public StubBible(BibleMetaData version)
+    public StubBook(StubBookMetaData bmd)
     {
-        this.version = version;
+        this.bmd = bmd;
     }
 
     /**
@@ -58,7 +65,23 @@ public class StubBible extends AbstractBible
      */
     public BibleMetaData getBibleMetaData()
     {
-        return version;
+        return bmd;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
+     */
+    public DictionaryMetaData getDictionaryMetaData()
+    {
+        return bmd;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.Commentary#getCommentaryMetaData()
+     */
+    public CommentaryMetaData getCommentaryMetaData()
+    {
+        return bmd;
     }
 
     /**
@@ -71,29 +94,61 @@ public class StubBible extends AbstractBible
     {
         BibleData doc = new DefaultBibleData();
 
+        // For all the ranges in this Passage
+        Iterator rit = ref.rangeIterator();
+        while (rit.hasNext())
+        {
+            VerseRange range = (VerseRange) rit.next();
+            SectionData section = doc.createSectionData(range.toString());
+
+            // For all the verses in this range
+            Iterator vit = range.verseIterator();
+            while (vit.hasNext())
+            {
+                Verse verse = (Verse) vit.next();
+
+                RefData vref = section.createRefData(verse, false);
+                vref.setPlainText("stub implementation");
+            }
+        }
+
+        return doc;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.Commentary#getComments(org.crosswire.jsword.passage.Passage)
+     */
+    public BibleData getComments(Passage ref) throws BookException
+    {
+        return getData(ref);
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.Commentary#hasComments(org.crosswire.jsword.passage.Verse)
+     */
+    public boolean hasComments(Verse verse) throws BookException
+    {
+        return true;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.Dictionary#getData(java.lang.String)
+     */
+    public BibleData getData(String word) throws BookException
+    {
         try
         {
-            // For all the ranges in this Passage
-            Iterator rit = ref.rangeIterator();
-            while (rit.hasNext())
-            {
-                VerseRange range = (VerseRange) rit.next();
-                SectionData section = doc.createSectionData(range.toString());
-
-                // For all the verses in this range
-                Iterator vit = range.verseIterator();
-                while (vit.hasNext())
-                {
-                    Verse verse = (Verse) vit.next();
-
-                    RefData vref = section.createRefData(verse, false);
-                    vref.setPlainText("stub implementation");
-                }
-            }
-
+            Verse verse = new Verse("Gen 1:1");
+            VerseRange range = new VerseRange(verse);
+            
+            BibleData doc = new DefaultBibleData();
+            SectionData section = doc.createSectionData(range.toString());
+            
+            RefData vref = section.createRefData(verse, false);
+            vref.setPlainText("stub implementation");
             return doc;
         }
-        catch (Exception ex)
+        catch (NoSuchVerseException ex)
         {
             throw new BookException("ser_read", ex);
         }
@@ -154,7 +209,26 @@ public class StubBible extends AbstractBible
     }
 
     /**
+     * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
+     */
+    public List getIndex(String base)
+    {
+        base = base.toLowerCase();
+
+        if (base.equals(""))
+            return Arrays.asList(new String[] { "stub", "implementation", });
+
+        if ("stub".startsWith(base))
+            return Arrays.asList(new String[] { "stub" });
+
+        if ("implementation".startsWith(base))
+            return Arrays.asList(new String[] { "implementation" });
+
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
      * The name of this version
      */
-    private BibleMetaData version;
+    private StubBookMetaData bmd;
 }

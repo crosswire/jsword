@@ -54,7 +54,7 @@ public interface Commentary extends Book
      * @see Bible#getData(Passage)
      * @see Book#getData(Key)
      */
-    public BibleData getData(Passage ref) throws BookException;
+    public BibleData getComments(Passage ref) throws BookException;
 
     /**
      * Does the specified verse have any data behind it.
@@ -62,7 +62,7 @@ public interface Commentary extends Book
      * @return The found BibleData document
      * @throws BookException If anything goes wrong with this method
      */
-    public boolean hasData(Verse verse) throws BookException;
+    public boolean hasComments(Verse verse) throws BookException;
 
     /**
      * Retrieval: For a given word find a list of references to it

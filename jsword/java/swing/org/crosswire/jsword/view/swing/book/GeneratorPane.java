@@ -24,7 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.crosswire.common.swing.ComponentAbstractAction;
@@ -32,7 +31,8 @@ import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
@@ -104,8 +104,6 @@ public class GeneratorPane extends EirPanel
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
         pnl_dest.add(lbl_driver, GuiUtil.getConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 0), 0, 0));
-        pnl_dest.add(txt_name, GuiUtil.getConstraints(1, 1, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
         pnl_dest.add(cbo_driver, GuiUtil.getConstraints(1, 2, 1, 1, 1.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
 
@@ -226,71 +224,111 @@ public class GeneratorPane extends EirPanel
         work.start();
         work.setPriority(Thread.MIN_PRIORITY);
     }
-
-    /** The list of available drivers */
+    
+    /**
+     * The list of available drivers
+     */
     private String[] drivers = null;
-
-    /** Holder for the source and destination area */
+    
+    /**
+     * Holder for the source and destination area
+     */
     private Box box_main;
-
-    /** The Source area */
+    
+    /**
+     * The Source area
+     */
     private JPanel pnl_source = new JPanel();
-
-    /** The destination area */
+    
+    /**
+     * The destination area
+     */
     private JPanel pnl_dest = new JPanel();
-
-    /** The source book label */
+    
+    /**
+     * The source book label
+     */
     private JLabel lbl_source = new JLabel();
-
-    /** The source picker */
+    
+    /**
+     * The source picker
+     */
     private JComboBox cbo_source = new JComboBox();
 
-    /** The model for the sources */
-    private BiblesComboBoxModel mdl_source = new BiblesComboBoxModel();
+    /**
+     * The model for the sources.
+     * Bibles are required in GeneratorRunnable.run()
+     */
+    private BooksComboBoxModel mdl_source = new BooksComboBoxModel(Filters.getBibles());
 
-    /** Layout for the destination panel */
+    /**
+     * Layout for the destination panel
+     */
     private GridBagLayout lay_dest = new GridBagLayout();
 
-    /** The new version name label */
+    /**
+     * The new version name label
+     */
     private JLabel lbl_name = new JLabel();
 
-    /** Label for the new name class */
+    /**
+     * Label for the new name class
+     */
     private JLabel lbl_driver = new JLabel();
 
-    /** Input field for the new version */
-    private JTextField txt_name = new JTextField();
-
-    /** Input field for the name class */
+    /**
+     * Input field for the name class
+     */
     private JComboBox cbo_driver = new JComboBox();
 
-    /** The model for the drivers */
+    /**
+     * The model for the drivers
+     */
     private DriversComboBoxModel mdl_driver = new DriversComboBoxModel(false);
 
-    /** The progress area */
+    /**
+     * The progress area
+     */
     private JPanel pnl_prog = new JPanel();
 
-    /** The progress bar */
+    /**
+     * The progress bar
+     */
     private JProgressBar bar_prog = new JProgressBar();
 
-    /** The button bar */
+    /**
+     * The button bar
+     */
     private JPanel pnl_buttons = new JPanel();
 
-    /** Layout for the button bar */
+    /**
+     * Layout for the button bar
+     */
     private FlowLayout lay_buttons = new FlowLayout();
 
-    /** The generate button */
+    /**
+     * The generate button
+     */
     private JButton btn_generate = new JButton();
 
-    /** The close button, only used if we are in our own Frame */
+    /**
+     * The close button, only used if we are in our own Frame
+     */
     private JButton btn_close = null;
 
-    /** The verify checkbox */
+    /**
+     * The verify checkbox
+     */
     private JCheckBox chk_verify = new JCheckBox();
 
-    /** Work in progress */
+    /**
+     * Work in progress
+     */
     private Thread work;
 
-    /** The progress listener */
+    /**
+     * The progress listener
+     */
     private CustomProgressListener cpl = new CustomProgressListener();
 
     /**
@@ -302,11 +340,11 @@ public class GeneratorPane extends EirPanel
         public void run()
         {
             // While we are working stop anyone editing the values
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable()
+            {
                 public void run()
                 {
                     cbo_source.setEnabled(false);
-                    txt_name.setEnabled(false);
                     cbo_driver.setEnabled(false);
                     btn_generate.setEnabled(false);
                     chk_verify.setEnabled(false);
@@ -317,17 +355,15 @@ public class GeneratorPane extends EirPanel
             try
             {
                 // Get the values
-                Bible source = mdl_source.getSelectedBibleMetaData().getBible();
-                // PENDING(joe)
-                //String dest_name = txt_name.getText();
-                BibleDriver dest_driver = mdl_driver.getSelectedDriver();
+                // This cast is safe because the ctor filers for Bibles
+                // PENDING(joe): uncast
+                Bible source = (Bible) mdl_source.getSelectedBookMetaData().getBook();
+                BookDriver dest_driver = mdl_driver.getSelectedDriver();
 
                 // The real work
-                Bible dest_version = dest_driver.create(source, cpl);
-
-                // Now it MAY make sense to do something like:
-                //   versions.put(dest_name, dest_version);
-                // However I think we should be cautious and force the system to re-create it
+                // This cast is safe because we passed in a Bible
+                // PENDING(joe): uncast
+                Bible dest_version = (Bible) dest_driver.create(source, cpl);
 
                 // Check
                 if (chk_verify.isEnabled())
@@ -343,7 +379,8 @@ public class GeneratorPane extends EirPanel
             }
             catch (final Exception ex)
             {
-                SwingUtilities.invokeLater(new Runnable() {
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     public void run()
                     {
                         ExceptionPane.showExceptionDialog(GeneratorPane.this, ex);
@@ -352,11 +389,11 @@ public class GeneratorPane extends EirPanel
             }
 
             // Re-enable the values
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable()
+            {
                 public void run()
                 {
                     cbo_source.setEnabled(true);
-                    txt_name.setEnabled(true);
                     cbo_driver.setEnabled(true);
                     btn_generate.setEnabled(true);
                     chk_verify.setEnabled(true);

@@ -2,7 +2,7 @@
 package org.crosswire.jsword.book.sword;
 
 /**
- * A Constants to help the SwordBibleDriver to read Sword format data.
+ * A Constants to help the SwordBookDriver to read Sword format data.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

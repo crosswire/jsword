@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.basic.AbstractBibleDriver;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.jdom.Document;
 
 /**
@@ -33,7 +33,7 @@ import org.jdom.Document;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class RemoteBibleDriver extends AbstractBibleDriver
+public abstract class RemoteBookDriver extends AbstractBookDriver
 {
     /**
      * Test the connection
@@ -59,7 +59,7 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
      * flush the cache because the list of Bibles on the server could change.
      * @return an array of book names
      */
-    public BibleMetaData[] getBibles()
+    public BookMetaData[] getBooks()
     {
         synchronized (this)
         {
@@ -92,7 +92,7 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(RemoteBibleDriver.class);
+    protected static Logger log = Logger.getLogger(RemoteBookDriver.class);
 
     /**
      * The cache of Bible names.

@@ -3,12 +3,14 @@ package org.crosswire.jsword.book.remote;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -60,16 +62,11 @@ public class LocalRemoter implements Remoter
 
         if (RemoteConstants.METHOD_GETBIBLES.equals(methodname))
         {
-            try
-            {
-                BibleMetaData[] bmds = Books.getFastBibles(Books.SPEED_SLOWEST);
-                String[] uids = getUIDs(bmds);
-                return Converter.convertBibleMetaDatasToDocument(bmds, uids);
-            }
-            catch (BookException ex)
-            {
-                throw new RemoterException("remote_getbible_fail", ex);
-            }
+            List lbmds = Books.getBooks(Filters.getFaster(Books.SPEED_SLOWEST));
+            BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
+
+            String[] uids = getUIDs(bmds);
+            return Converter.convertBibleMetaDatasToDocument(bmds, uids);
         }
         else if (RemoteConstants.METHOD_GETDATA.equals(methodname))
         {

@@ -40,7 +40,7 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     /**
      * Constructor LocalURLBibleMetaData.
      */
-    public LocalURLBibleMetaData(LocalURLBibleDriver driver, URL dir, BibleMetaData basis)
+    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, BibleMetaData basis)
     {
         super(basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
         this.dir = dir;
@@ -52,7 +52,7 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     /**
      * Basic constructor
      */
-    public LocalURLBibleMetaData(LocalURLBibleDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException
+    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException
     {
         super(prop);
         this.dir = dir;
@@ -131,7 +131,7 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     /**
      * Internal setter for the BookDriver
      */
-    private void setDriver(LocalURLBibleDriver driver)
+    private void setDriver(LocalURLBookDriver driver)
     {
         if (driver == null)
             throw new NullPointerException("name");
@@ -178,7 +178,7 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
     /**
      * The name
      */
-    private LocalURLBibleDriver driver;
+    private LocalURLBookDriver driver;
 
     /**
      * The properties by which we got our data

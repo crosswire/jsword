@@ -1,13 +1,12 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.common.util;
 
-import javax.swing.ComboBoxModel;
-
-import org.crosswire.jsword.book.BookDriver;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * The DriverModels class implements ComboBoxModel by extending the
- * DriverListModel.
+ * Some utils to help work with Collections.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,46 +29,44 @@ import org.crosswire.jsword.book.BookDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DriversComboBoxModel extends DriversListModel implements ComboBoxModel
+public class CollectionUtil
 {
     /**
-     * Basic Constructor
+     * Dont do this
      */
-    public DriversComboBoxModel(boolean include_ro)
+    private CollectionUtil()
     {
-        super(include_ro);
-
-        if (drivers.length > 0)
-            current = drivers[0];
     }
 
     /**
-     * implements javax.swing.ComboBoxModel
+     * Create a List (actually an ArrayList) from an Iterator.
+     * @param it The source of data for the list
+     * @return List
      */
-    public void setSelectedItem(Object current)
+    public static List createList(Iterator it)
     {
-        this.current = current;
-        fireContentsChanged(this, -1, -1);
+        List reply = new ArrayList();
+        while (it.hasNext())
+        {
+            reply.add(it.next());
+        }
+
+        return reply;
     }
 
     /**
-     * implements javax.swing.ComboBoxModel
+     * Create a List (actually an ArrayList) from an Iterator.
+     * @param it The source of data for the list
+     * @return List
      */
-    public Object getSelectedItem()
+    public static Object[] createArray(Iterator it, Object[] base)
     {
-        return current;
-    }
+        List reply = new ArrayList();
+        while (it.hasNext())
+        {
+            reply.add(it.next());
+        }
 
-    /**
-     * Given an item, work out the name of the Driver that it represents
-     * @param The item from the list
-     * @return A Driver
-     */
-    public BookDriver getSelectedDriver()
-    {
-        return drivers[getIndexOf(current)];
+        return reply.toArray(base);
     }
-
-    /** The currently selected version */
-    protected Object current;
 }

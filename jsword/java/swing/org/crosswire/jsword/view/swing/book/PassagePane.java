@@ -17,10 +17,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.swing.*;
+import org.crosswire.common.swing.EirAbstractAction;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
@@ -63,7 +63,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     {
         try
         {
-            version = Books.getDefaultBible();
+            version = Defaults.getBibleMetaData().getBible();
             txt_view.setVersion(version);
         }
         catch (Throwable ex)

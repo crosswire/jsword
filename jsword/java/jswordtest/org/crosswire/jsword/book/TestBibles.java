@@ -2,13 +2,15 @@
 package org.crosswire.jsword.book;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.stub.StubBible;
+import org.crosswire.jsword.book.stub.StubBook;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -45,25 +47,29 @@ public class TestBibles extends TestCase
     }
 
     protected static Logger log = Logger.getLogger(TestBibles.class);
+    protected Passage gen11 = null;
     protected BibleMetaData[] bmds = null;
     protected Bible[] bibles = null;
-    protected Passage gen11 = null;
 
     protected Class[] ignorebibles = 
     {
-        StubBible.class,
+        StubBook.class,
     };
 
     protected void setUp() throws Exception
     {
         gen11 = PassageFactory.createPassage("Gen 1:1");
 
-        bmds = Books.getBibles();
-        bibles = new Bible[bmds.length];
+        List lbmds = Books.getBooks(Filters.getBibles());
+        bibles = new Bible[lbmds.size()];
+        bmds = new BibleMetaData[lbmds.size()];
 
-        for (int i=0; i<bibles.length; i++)
+        int i = 0;
+        for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
+            bmds[i] = (BibleMetaData) it.next();
             bibles[i] = bmds[i].getBible();
+            i++;
         }
     }
 

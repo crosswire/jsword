@@ -47,7 +47,7 @@ public interface Dictionary extends Book
      * @param word The word to retrieve a document for.
      * @return BibleData The textual description of the word.
      */
-    public BibleData getData(String word);
+    public BibleData getData(String word) throws BookException;
 
     /**
      * Get a list of index entries. If key is null or blank then the entire
@@ -63,5 +63,5 @@ public interface Dictionary extends Book
      * @param startswith The text to base replies on.
      * @return String[]
      */
-    public List getIndex(String startswith);
+    public List getIndex(String startswith) throws BookException;
 }
