@@ -119,6 +119,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         JProgressBar progress = new JProgressBar();
         progress.setStringPainted(true);
         progress.setToolTipText(job.getJobDescription());
+        progress.setBorder(null);
         if (font != null)
         {
             progress.setFont(font);

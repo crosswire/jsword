@@ -1,21 +1,16 @@
 package org.crosswire.jsword.book;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
-import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.util.Project;
 
 /**
  * The Bibles class (along with Bible) is the central point of contact
@@ -358,8 +353,8 @@ public class Books implements BookList
      */
     protected void autoRegister()
     {
-        URL predicturl = Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
-        Job job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl, null, true);
+        // URL predicturl = Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
+        // Job job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl, null, true);
 
         try
         {
@@ -370,7 +365,7 @@ public class Books implements BookList
 
             for (int i = 0; i < types.length; i++)
             {
-                job.setProgress(Msg.JOB_DRIVER.toString() + ClassUtils.getShortClassName(types[i]));
+                //job.setProgress(Msg.JOB_DRIVER.toString() + ClassUtils.getShortClassName(types[i]));
 
                 try
                 {
@@ -386,11 +381,11 @@ public class Books implements BookList
         catch (Exception ex)
         {
             log.debug("Unexpected exception: " + ex); //$NON-NLS-1$
-            job.ignoreTimings();
+            // job.ignoreTimings();
         }
         finally
         {
-            job.done();
+            // job.done();
         }
     }
 
