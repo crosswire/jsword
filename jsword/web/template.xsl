@@ -7,6 +7,14 @@
     exclude-result-prefixes="html"
     >
 
+<xsl:output
+    method="xml"
+    omit-xml-declaration="yes"
+    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+    indent="yes"
+    />
+
 <xsl:template match="/jsp:root">
   <jsp:root version="1.2">
     <xsl:apply-templates/>
@@ -24,9 +32,9 @@
 <table width="100%">
   <tr align="center">
     <td class="navbutton" align="center"><a href="http://www.crosswire.org/">Crosswire</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/index.jsp">Sword Project</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/purpose">Purpose Statement</a></td>
-    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/contact.jsp">Contact Us</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/jsword/">JSword Home</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/">Sword Home</a></td>
+    <td class="navbutton" align="center"><a href="http://www.crosswire.org/sword/about/index.jsp">Purpose Statement</a></td>
   </tr>
 </table>
 
