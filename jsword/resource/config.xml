@@ -92,11 +92,6 @@
     <help>Do we display Exceptions in a the GUI shelf.</help>
   </option>
 
-  <option key="Reports.Exceptions to System Logger" priority="8" type="boolean">
-  	<introspect class="org.crosswire.common.util.event.LogCaptureListener" property="HelpDeskListener"/>
-    <help>Do we log exceptions to the system logger.</help>
-  </option>
-
   <option key="Advanced.Source Path" level="advanced" type="path">
   	<introspect class="org.crosswire.common.swing.DetailedExceptionPane" property="SourcePath"/>
     <help>The directories to search for source code in when investigating an exception.</help>

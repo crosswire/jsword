@@ -69,13 +69,14 @@ public class Reporter
      */
     public static void informUser(Object source, Throwable prob)
     {
+        Class cat = (source != null) ? source.getClass() : Reporter.class;
+        Logger templog = Logger.getLogger(cat);
+
+        templog.debug(prob.getMessage(), prob);
+
         if (prob instanceof ThreadDeath)
             throw (ThreadDeath) prob;
 
-        // There is a danger here because fireCapture calls informUser
-        // if something goes wrong. It feels dangerous, but is probably ok
-        // The only problem that I can think of is that if there are 2
-        // CaptureListeners with problems then the 2nd will be hit twice.
         fireCapture(new ReporterEvent(prob));
     }
 
@@ -92,6 +93,8 @@ public class Reporter
      */
     public static void informUser(String message)
     {
+        log.debug(message);
+
         fireCapture(new ReporterEvent(message));
     }
 
@@ -124,7 +127,12 @@ public class Reporter
         {
             // Guaranteed to return a non-null array
             Object[] listeners = inform_list.getListenerList();
-            
+
+            if (listeners.length == 0)
+            {
+                log.warn("Nothing to listen to report: "+ev.getMessage());
+            }
+
             // Process the listeners last to first, notifying
             // those that are interested in this event
             for (int i=listeners.length-2; i>=0; i-=2)

@@ -123,7 +123,7 @@ public class SerBibleDriver extends AbstractBibleDriver
                 String contents = StringUtil.read(new InputStreamReader(in));
                 
                 String[] names = StringUtil.tokenize(contents, "\n");
-                for(int i=0;i<names.length;i++)
+                for (int i=0;i<names.length;i++)
                 {
                 	// we need to trim, as we may have \r\n not \n
                 	names[i]=names[i].trim();

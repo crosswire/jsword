@@ -146,11 +146,13 @@ public class LookAndFeelUtil
     static
     { 
     	// try to set the default look and feel to the system default
-    	try {
+    	try
+    	{
 			current = Class.forName(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) 
+		}
+		catch (ClassNotFoundException ex) 
 		{
-			log.debug("Failed to initialise system default LAF",e);
+			log.debug("Failed to initialise system default LAF", ex);
 			current = javax.swing.plaf.metal.MetalLookAndFeel.class;
 		}
         /*

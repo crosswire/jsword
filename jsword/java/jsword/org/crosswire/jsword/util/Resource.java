@@ -209,9 +209,6 @@ public class Resource
             reply = getClass().getResource("/"+search);
 
         if (reply == null)
-            reply = getClass().getResource("/"+search);
-
-        if (reply == null)
             reply = getClass().getClassLoader().getResource(search);
 
         if (reply == null)
