@@ -1,9 +1,11 @@
 package org.crosswire.jsword.book;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
+import org.crosswire.common.config.ChoiceFactory;
+import org.crosswire.jsword.book.readings.ReadingsBookDriver;
 
 /**
  * Handles the current default Books.
@@ -41,257 +43,353 @@ public class Defaults
     {
     }
 
-    /**
-     * Set the default Bible. The new name must be equal() to a string
-     * returned from getBibleNames. (if does not need to be == however)
-     * A BookException results if you get it wrong.
-     * @param book The version to use as default.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setBible(Book book)
     {
-        bdeft = book;
+        bibleDeft.setDefault(book);
     }
 
-    /**
-     * UnSet the current default Bible and attempt to appoint another.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
      */
     protected static void unsetBible()
     {
-        bdeft = null;
-
-        checkAllPreferable();
+        bibleDeft.unsetDefault();
     }
 
-    /**
-     * Get the current default Bible or null if there are no Bibles.
-     * @return the current default version
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
      */
     public static Book getBible()
     {
-        return bdeft;
+        return bibleDeft.getDefault();
     }
 
-    /**
-     * This method is identical to <code>getBibleMetaData().getFullName()</code>
-     * and is only used by Config which works best with strings under reflection.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
      */
     public static String getBibleByName()
     {
-        if (bdeft == null)
-        {
-            return null;
-        }
-
-        return bdeft.getBookMetaData().getFullName();
+        return bibleDeft.getDefaultName();
     }
 
-    /**
-     * Trawl through all the known Bibles looking for the one closest to
-     * the given name.
-     * <p>This method is for use with config scripts and other things that
-     * <b>need</b> to work with Strings. The preferred method is to use
-     * Book objects.
-     * <p>This method is picky in that it only matches when the driver and the
-     * version are the same. The user (probably) only cares about the version
-     * though, and so might be dissapointed when we fail to match AV (FooDriver)
-     * against AV (BarDriver).
-     * @param name The version to use as default.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
      */
     public static void setBibleByName(String name)
     {
-        if (name == null || name.length() == 0)
-        {
-            log.warn("Attempt to set empty Bible as default. Ignoring"); //$NON-NLS-1$
-            return;
-        }
-
-        List lbmds = Books.installed().getBooks(BookFilters.getBibles());
-        for (Iterator it = lbmds.iterator(); it.hasNext(); )
-        {
-            Book book = (Book) it.next();
-            String tname = book.getBookMetaData().getFullName();
-            if (tname.equals(name))
-            {
-                setBible(book);
-                return;
-            }
-        }
-
-        // This is thrown while the splash screen is up.
-        // It only occurs if the book has been deleted, but the reference
-        // has not changed.
-        // This happens if the user manually deletes the entry.
-        //throw new BookException(Msg.BIBLE_NOTFOUND, new Object[] { name });
+        bibleDeft.setDefaultByName(name);
     }
 
-    /**
-     * Set the default Commentary. The new name must be equal() to a string
-     * returned from getCommentaryNames. (if does not need to be == however)
-     * A BookException results if you get it wrong.
-     * @param cmd The version to use as default.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
      */
-    public static void setCommentary(Book cmd)
+    public static void setCommentary(Book book)
     {
-        cdeft = cmd;
+        commentaryDeft.setDefault(book);
     }
 
-    /**
-     * UnSet the current default Commentary and attempt to appoint another.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
      */
     protected static void unsetCommentary()
     {
-        cdeft = null;
-
-        checkAllPreferable();
+        commentaryDeft.unsetDefault();
     }
 
-    /**
-     * Get the current default Commentary or null if none exist.
-     * @return the current default version
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
      */
     public static Book getCommentary()
     {
-        return cdeft;
+        return commentaryDeft.getDefault();
     }
 
-    /**
-     * This method is identical to <code>getCommentaryMetaData().getFullName()</code>
-     * and is only used by Config which works best with strings under reflection.
-     * <p>Generally <code>getCommentaryByName().getFullName()</code> is a better
-     * way of getting what you want.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
      */
     public static String getCommentaryByName()
     {
-        if (cdeft == null)
-        {
-            return null;
-        }
-
-        return cdeft.getBookMetaData().getFullName();
+        return commentaryDeft.getDefaultName();
     }
 
-    /**
-     * Trawl through all the known Commentary looking for the one closest to
-     * the given name.
-     * <p>This method is for use with config scripts and other things that
-     * <b>need</b> to work with Strings. The preferred method is to use
-     * Book objects.
-     * <p>This method is picky in that it only matches when the driver and the
-     * version are the same. The user (probably) only cares about the version
-     * though, and so might be dissapointed when we fail to match AV (FooDriver)
-     * against AV (BarDriver).
-     * @param name The version to use as default.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
      */
     public static void setCommentaryByName(String name)
     {
-        if (name == null || name.length() == 0)
-        {
-            log.warn("Attempt to set empty Commentary as default. Ignoring"); //$NON-NLS-1$
-            return;
-        }
-
-        List lbmds = Books.installed().getBooks(BookFilters.getCommentaries());
-        for (Iterator it = lbmds.iterator(); it.hasNext(); )
-        {
-            Book book = (Book) it.next();
-            String tname = book.getBookMetaData().getFullName();
-            if (tname.equals(name))
-            {
-                setCommentary(book);
-                return;
-            }
-        }
-
-        // This is thrown while the splash screen is up.
-        // It only occurs if the book has been deleted, but the reference
-        // has not changed.
-        // This happens if the user manually deletes the entry.
-        //throw new BookException(Msg.COMMENTARY_NOTFOUND, new Object[] { name });
+        commentaryDeft.setDefaultByName(name);
     }
 
-    /**
-     * Set the default Dictionary. The new name must be equal() to a string
-     * returned from getDictionaryNames. (if does not need to be == however)
-     * A BookException results if you get it wrong.
-     * @param dmd The version to use as default.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
      */
-    public static void setDictionary(Book dmd)
+    public static void setDictionary(Book book)
     {
-        ddeft = dmd;
+        dictionaryDeft.setDefault(book);
     }
 
-    /**
-     * UnSet the current default Dictionary and attempt to appoint another.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
      */
     protected static void unsetDictionary()
     {
-        ddeft = null;
-
-        checkAllPreferable();
+        dictionaryDeft.unsetDefault();
     }
 
-    /**
-     * Get the current default Dictionary or null if none exist.
-     * @return the current default version
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
      */
     public static Book getDictionary()
     {
-        return ddeft;
+        return dictionaryDeft.getDefault();
     }
 
-    /**
-     * This method is identical to <code>getDictionaryMetaData().getFullName()</code>
-     * and is only used by Config which works best with strings under reflection.
-     * <p>Generally <code>getDictionaryByName().getFullName()</code> is a better
-     * way of getting what you want.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
      */
     public static String getDictionaryByName()
     {
-        if (ddeft == null)
-        {
-            return null;
-        }
-
-        return ddeft.getBookMetaData().getFullName();
+        return dictionaryDeft.getDefaultName();
     }
 
-    /**
-     * Trawl through all the known Dictionaries looking for the one closest to
-     * the given name.
-     * <p>This method is for use with config scripts and other things that
-     * <b>need</b> to work with Strings. The preferred method is to use
-     * Book objects.
-     * <p>This method is picky in that it only matches when the driver and the
-     * version are the same. The user (probably) only cares about the version
-     * though, and so might be dissapointed when we fail to match AV (FooDriver)
-     * against AV (BarDriver).
-     * @param name The version to use as default.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
      */
     public static void setDictionaryByName(String name)
     {
-        if (name == null || name.length() == 0)
-        {
-            log.warn("Attempt to set empty Dictionary as default. Ignoring"); //$NON-NLS-1$
-            return;
-        }
+        dictionaryDeft.setDefaultByName(name);
+    }
 
-        List lbmds = Books.installed().getBooks(BookFilters.getDictionaries());
-        for (Iterator it = lbmds.iterator(); it.hasNext(); )
-        {
-            Book book = (Book) it.next();
-            String tname = book.getBookMetaData().getFullName();
-            if (tname.equals(name))
-            {
-                setDictionary(book);
-                return;
-            }
-        }
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     */
+    public static void setGreekDefinitions(Book book)
+    {
+        greekDefinitionsDeft.setDefault(book);
+    }
 
-        // This is thrown while the splash screen is up.
-        // It only occurs if the book has been deleted, but the reference
-        // has not changed.
-        // This happens if the user manually deletes the entry.
-        //throw new BookException(Msg.DICTIONARY_NOTFOUND, new Object[] { name });
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     */
+    protected static void unsetGreekDefinitions()
+    {
+        greekDefinitionsDeft.unsetDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     */
+    public static Book getGreekDefinitions()
+    {
+        return greekDefinitionsDeft.getDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     */
+    public static String getGreekDefinitionsByName()
+    {
+        return greekDefinitionsDeft.getDefaultName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     */
+    public static void setGreekDefinitionsByName(String name)
+    {
+        greekDefinitionsDeft.setDefaultByName(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     */
+    public static void setHebrewDefinitions(Book book)
+    {
+        hebrewDefinitionsDeft.setDefault(book);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     */
+    protected static void unsetHebrewDefinitions()
+    {
+        hebrewDefinitionsDeft.unsetDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     */
+    public static Book getHebrewDefinitions()
+    {
+        return hebrewDefinitionsDeft.getDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     */
+    public static String getHebrewDefinitionsByName()
+    {
+        return hebrewDefinitionsDeft.getDefaultName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     */
+    public static void setHebrewDefinitionsByName(String name)
+    {
+        hebrewDefinitionsDeft.setDefaultByName(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     */
+    public static void setGreekParse(Book book)
+    {
+        greekParseDeft.setDefault(book);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     */
+    protected static void unsetGreekParse()
+    {
+        greekParseDeft.unsetDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     */
+    public static Book getGreekParse()
+    {
+        return greekParseDeft.getDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     */
+    public static String getGreekParseByName()
+    {
+        return greekParseDeft.getDefaultName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     */
+    public static void setGreekParseByName(String name)
+    {
+        greekParseDeft.setDefaultByName(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     */
+    public static void setHebrewParse(Book book)
+    {
+        hebrewParseDeft.setDefault(book);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     */
+    protected static void unsetHebrewParse()
+    {
+        hebrewParseDeft.unsetDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     */
+    public static Book getHebrewParse()
+    {
+        return hebrewParseDeft.getDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     */
+    public static String getHebrewParseByName()
+    {
+        return hebrewParseDeft.getDefaultName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     */
+    public static void setHebrewParseByName(String name)
+    {
+        hebrewParseDeft.setDefaultByName(name);
+    }
+
+    protected static DefaultBook getDefaultBible()
+    {
+        return bibleDeft;
+    }
+
+    protected static DefaultBook getDefaultCommentary()
+    {
+        return commentaryDeft;
+    }
+
+    protected static DefaultBook getDefaultDictionary()
+    {
+        return dictionaryDeft;
+    }
+
+    protected static DefaultBook getDefaultGreekDefinitions()
+    {
+        return greekDefinitionsDeft;
+    }
+
+    protected static DefaultBook getDefaultHebrewDefinitions()
+    {
+        return hebrewDefinitionsDeft;
+    }
+
+    protected static DefaultBook getDefaultGreekParse()
+    {
+        return greekParseDeft;
+    }
+
+    protected static DefaultBook getDefaultHebrewParse()
+    {
+        return hebrewParseDeft;
+    }
+
+    public static void refreshBooks()
+    {
+        // Create the array of Bibles
+        String[] bnames = getFullNameArray(BookFilters.getBibles());
+        ChoiceFactory.getDataMap().put(BIBLE_KEY, bnames);
+
+        // Create the array of Commentaries
+        String[] cnames = getFullNameArray(BookFilters.getCommentaries());
+        ChoiceFactory.getDataMap().put(COMMENTARY_KEY, cnames);
+
+        // Create the array of Dictionaries
+        String[] dnames = getFullNameArray(BookFilters.getDictionaries());
+        ChoiceFactory.getDataMap().put(DICTIONARY_KEY, dnames);
+
+        // Create the array of Dictionaries
+        String[] greekDef = getFullNameArray(BookFilters.getGreekDefinitions());
+        ChoiceFactory.getDataMap().put(GREEKDEF_KEY, greekDef);
+
+        // Create the array of Dictionaries
+        String[] hebrewDef = getFullNameArray(BookFilters.getHebrewDefinitions());
+        ChoiceFactory.getDataMap().put(HEBREWDEF_KEY, hebrewDef);
+
+        // Create the array of Dictionaries
+        String[] greekParse = getFullNameArray(BookFilters.getGreekParse());
+        ChoiceFactory.getDataMap().put(GREEKPARSE_KEY, greekParse);
+
+        // Create the array of Dictionaries
+        String[] hebrewParse = getFullNameArray(BookFilters.getHebrewParse());
+        ChoiceFactory.getDataMap().put(HEBREWPARSE_KEY, hebrewParse);
+
+        // Create the array of readings sets
+        ChoiceFactory.getDataMap().put(READINGS_KEY, ReadingsBookDriver.getInstalledReadingsSets());
     }
 
     /**
@@ -316,27 +414,30 @@ public class Defaults
     {
         assert book != null;
 
-        if (book.getType().equals(BookType.BIBLE) && bdeft == null)
-        {
-            bdeft = book;
-        }
-        else if (book.getType().equals(BookType.COMMENTARY) && cdeft == null)
-        {
-            cdeft = book;
-        }
-        else if (book.getType().equals(BookType.DICTIONARY) && ddeft == null)
-        {
-            ddeft = book;
-        }
+        bibleDeft.setDefaultConditionally(book);
+        commentaryDeft.setDefaultConditionally(book);
+        dictionaryDeft.setDefaultConditionally(book);
+        greekDefinitionsDeft.setDefaultConditionally(book);
+        greekParseDeft.setDefaultConditionally(book);
+        hebrewDefinitionsDeft.setDefaultConditionally(book);
+        hebrewParseDeft.setDefaultConditionally(book);
     }
 
     /**
-     * Register with Books so we know how to provide valid defaults
+     * Convert a filter into an array of names of Books that pass the filter.
      */
-    static
+    private static String[] getFullNameArray(BookFilter filter)
     {
-        Books.installed().addBooksListener(new DefaultsBookListener());
-        checkAllPreferable();
+        List books = Books.installed().getBooks(filter);
+        List names = new ArrayList();
+
+        for (Iterator it = books.iterator(); it.hasNext(); )
+        {
+            Book book = (Book) it.next();
+            names.add(book.getBookMetaData().getFullName());
+        }
+
+        return (String[]) names.toArray(new String[names.size()]);
     }
 
     /**
@@ -351,6 +452,7 @@ public class Defaults
         {
             Book book = ev.getBook();
             checkPreferable(book);
+            refreshBooks();
         }
 
         /* (non-Javadoc)
@@ -360,41 +462,67 @@ public class Defaults
         {
             Book book = ev.getBook();
 
-            // Was this a default?
-            if (getBible().equals(book))
-            {
-                unsetBible();
-            }
-
-            if (getCommentary().equals(book))
-            {
-                unsetCommentary();
-            }
-
-            if (getDictionary().equals(book))
-            {
-                unsetDictionary();
-            }
+            getDefaultBible().unsetDefaultConditionally(book);
+            getDefaultCommentary().unsetDefaultConditionally(book);
+            getDefaultDictionary().unsetDefaultConditionally(book);
+            getDefaultGreekDefinitions().unsetDefaultConditionally(book);
+            getDefaultGreekParse().unsetDefaultConditionally(book);
+            getDefaultHebrewDefinitions().unsetDefaultConditionally(book);
+            getDefaultHebrewParse().unsetDefaultConditionally(book);
         }
     }
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(Defaults.class);
+
+    private static final String BIBLE_KEY = "bible-names"; //$NON-NLS-1$
+    private static final String COMMENTARY_KEY = "commentary-names"; //$NON-NLS-1$
+    private static final String DICTIONARY_KEY = "dictionary-names"; //$NON-NLS-1$
+    private static final String READINGS_KEY = "readings"; //$NON-NLS-1$
+    private static final String GREEKDEF_KEY = "greekdef-names"; //$NON-NLS-1$
+    private static final String HEBREWDEF_KEY = "hebrewdef-names"; //$NON-NLS-1$
+    private static final String GREEKPARSE_KEY = "greekparse-names"; //$NON-NLS-1$
+    private static final String HEBREWPARSE_KEY = "hebrewparse-names"; //$NON-NLS-1$
 
     /**
      * The default Bible
      */
-    private static Book bdeft;
+    private static DefaultBook bibleDeft = new DefaultBook(Books.installed(), BookFilters.getBibles());
 
     /**
      * The default Commentary
      */
-    private static Book cdeft;
+    private static DefaultBook commentaryDeft = new DefaultBook(Books.installed(), BookFilters.getCommentaries());
 
     /**
      * The default Dictionary
      */
-    private static Book ddeft;
+    private static DefaultBook dictionaryDeft = new DefaultBook(Books.installed(), BookFilters.getDictionaries());
+
+    /**
+     * The default Greek Parse Dictinary.
+     */
+    private static DefaultBook greekParseDeft = new DefaultBook(Books.installed(), BookFilters.getGreekParse());
+
+    /**
+     * The default Hebrew Parse Dictinary.
+     */
+    private static DefaultBook hebrewParseDeft = new DefaultBook(Books.installed(), BookFilters.getHebrewParse());
+
+    /**
+     * The default Greek Definitions Dictinary.
+     */
+    private static DefaultBook greekDefinitionsDeft = new DefaultBook(Books.installed(), BookFilters.getGreekDefinitions());
+
+    /**
+     * The default Hebrew Definitions Dictionary.
+     */
+    private static DefaultBook hebrewDefinitionsDeft = new DefaultBook(Books.installed(), BookFilters.getHebrewDefinitions());
+
+    /**
+     * Register with Books so we know how to provide valid defaults
+     */
+    static
+    {
+        Books.installed().addBooksListener(new DefaultsBookListener());
+        checkAllPreferable();
+    }
 
 }

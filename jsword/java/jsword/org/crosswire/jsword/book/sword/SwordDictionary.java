@@ -228,18 +228,22 @@ public class SwordDictionary extends AbstractBook
             return null;
         }
 
-        char firstDigit = text.charAt(1);
-
+        // Hack alert!!! NASB has trailing letters!!!!
+        int pos = text.length() - 1;
+        if (Character.isLetter(text.charAt(pos)))
+        {
+            text = text.substring(0, pos);
+        }
         // Get the number after the G or H
         int strongsNumber = Integer.parseInt(text.substring(1));
 
         Key key = null;
         String internalName = sbmd.getInitials();
-        if (internalName.equals("StrongsGreek") && firstDigit != '0') //$NON-NLS-1$
+        if (internalName.equals("StrongsGreek")) //$NON-NLS-1$
         {
             key = (Key) map.get(ZERO_PAD.format(strongsNumber));
         }
-        else if (internalName.equals("StrongsHebrew") && firstDigit == '0') //$NON-NLS-1$
+        else if (internalName.equals("StrongsHebrew")) //$NON-NLS-1$
         {
             key = (Key) map.get(ZERO_PAD.format(strongsNumber));
         }
@@ -266,7 +270,7 @@ public class SwordDictionary extends AbstractBook
     }
 
     // This should move along with getStrongsKey
-    private static final Pattern STRONGS_PATTERN = Pattern.compile("^[GH]\\d+$"); //$NON-NLS-1$
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("^[GH]\\d+[a-z]?$"); //$NON-NLS-1$
     private static final DecimalFormat ZERO_PAD = new DecimalFormat("00000"); //$NON-NLS-1$
 
     /**

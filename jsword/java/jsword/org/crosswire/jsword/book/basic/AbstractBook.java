@@ -9,6 +9,7 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.SearcherFactory;
@@ -195,6 +196,14 @@ public abstract class AbstractBook implements Book
     public boolean isLeftToRight()
     {
         return bmd.isLeftToRight();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
+     */
+    public boolean hasFeature(FeatureType feature)
+    {
+        return bmd.hasFeature(feature);
     }
 
     /* (non-Javadoc)

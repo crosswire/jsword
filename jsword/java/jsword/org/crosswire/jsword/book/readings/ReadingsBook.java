@@ -16,6 +16,7 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
@@ -201,6 +202,11 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     public Key createEmptyKeyList()
     {
         return new DefaultKeyList();
+    }
+
+    public boolean hasFeature(FeatureType feature)
+    {
+        return feature == FeatureType.DAILY_DEVOTIONS;
     }
 
     /**

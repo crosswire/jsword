@@ -1,0 +1,179 @@
+package org.crosswire.jsword.book;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.crosswire.common.util.Logger;
+
+/**
+ * Defines a single default book.
+ * *
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
+public class DefaultBook
+{
+    public DefaultBook(BookList bookList, BookFilter bookFilter)
+    {
+        books  = bookList;
+        filter = bookFilter;
+    }
+
+    /**
+     * Set the default Book. It must satisfy the filter.
+     * @param newBook The version to use as default.
+     */
+    public void setDefault(Book newBook)
+    {
+        if (filter.test(newBook))
+        {
+            book = newBook;
+        }
+    }
+
+    /**
+     * Set the default Book conditionally. It has to satisfy the filter
+     * and the book must not currently be set.
+     * @param newBook The version to use as default.
+     */
+    public void setDefaultConditionally(Book newBook)
+    {
+        if (book == null)
+        {
+            setDefault(newBook);
+        }
+    }
+
+    /**
+     * Unset the current default book and attempt to appoint another.
+     */
+    protected void unsetDefault()
+    {
+        book = null;
+
+        checkReplacement();
+    }
+
+    /**
+     * Unset the current default book, if it matches the argument
+     * and attempt to appoint another.
+     */
+    protected void unsetDefaultConditionally(Book oldBook)
+    {
+        if (book == oldBook)
+        {
+            unsetDefault();
+        }
+    }
+
+    /**
+     * Get the current default book or null if there is none.
+     * @return the current default version
+     */
+    public Book getDefault()
+    {
+        return book;
+    }
+
+    /**
+     * This method is identical to <code>getDefault().getFullName()</code>
+     * and is only used by Config which works best with strings under reflection.
+     */
+    public String getDefaultName()
+    {
+        if (book == null)
+        {
+            return null;
+        }
+
+        return book.getFullName();
+    }
+
+    /**
+     * Trawl through all the known Books satisfying the filter
+     * looking for the one matching the given name.
+     * <p>This method is for use with config scripts and other things that
+     * <b>need</b> to work with Strings. The preferred method is to use
+     * Book objects.
+     * <p>This method is picky in that it only matches when the driver and the
+     * version are the same. The user (probably) only cares about the version
+     * though, and so might be dissapointed when we fail to match AV (FooDriver)
+     * against AV (BarDriver).
+     * @param name The version to use as default.
+     */
+    public void setDefaultByName(String name)
+    {
+        if (name == null || name.length() == 0)
+        {
+            log.warn("Attempt to set empty book as default. Ignoring"); //$NON-NLS-1$
+            return;
+        }
+
+        List bookList = books.getBooks(filter);
+        Iterator it = bookList.iterator();
+        while (it.hasNext())
+        {
+            Book aBook = (Book) it.next();
+            if (name.equals(aBook.getFullName()))
+            {
+                setDefault(aBook);
+                return;
+            }
+        }
+
+        log.warn("Book not found. Ignoring: " + name); //$NON-NLS-1$
+    }
+
+    /**
+     * Go through all of the current books checking to see if we need to replace
+     * the current defaults with one of these.
+     */
+    protected void checkReplacement()
+    {
+        List bookList = books.getBooks(filter);
+
+        Iterator it = bookList.iterator();
+        if (it.hasNext())
+        {
+            book = (Book) it.next();
+        }
+    }
+
+    /**
+     * The default book
+     */
+    private Book book;
+
+    /**
+     * The list of candidate books.
+     */
+    private final BookList books;
+
+    /**
+     * The filter against books that returns candidates.
+     */
+    private final BookFilter filter;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(DefaultBook.class);
+}

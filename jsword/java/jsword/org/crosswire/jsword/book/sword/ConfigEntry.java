@@ -181,6 +181,25 @@ public class ConfigEntry
     }
 
     /**
+     * Determine whether this Config entry matches the value.
+     * 
+     * @param search the value to match against
+     * @return true if this ConfigEntry matches the value
+     */
+    public boolean match(Object search)
+    {
+        if (value != null)
+        {
+            return value.equals(search);
+        }
+        if (values != null)
+        {
+            return values.contains(search);
+        }
+        Object def = type.getDefault();
+        return def != null && def.equals(search);
+    }
+    /**
      * Add a value to the list of values for this ConfigEntry
      */
     public void addValue(String aValue)

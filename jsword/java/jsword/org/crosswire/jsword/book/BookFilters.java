@@ -131,6 +131,106 @@ public class BookFilters
     }
 
     /**
+     * A filter that accepts everything that is a
+     * Greek Definition Dictionary
+     */
+    public static BookFilter getGreekDefinitions()
+    {
+        return greekDefinitionsBookFilter;
+    }
+
+    /**
+     * Filter for all Greek Definition Dictionaries
+     */
+    private static BookFilter greekDefinitionsBookFilter = new GreekDefinitionsBookFilter();
+
+    /**
+     * Filter for all Greek Definition Dictionaries
+     */
+    private static class GreekDefinitionsBookFilter implements BookFilter
+    {
+        public boolean test(Book book)
+        {
+            return book.hasFeature(FeatureType.GREEK_DEFINITIONS);
+        }
+    }
+
+    /**
+     * A filter that accepts everything that is a
+     * Greek Parse/Morphology Dictionary
+     */
+    public static BookFilter getGreekParse()
+    {
+        return greekParseBookFilter;
+    }
+
+    /**
+     * Filter for all Greek Parse/Morphology Dictionaries
+     */
+    private static BookFilter greekParseBookFilter = new GreekParseBookFilter();
+
+    /**
+     * Filter for all Greek Parse/Morphology Dictionaries
+     */
+    private static class GreekParseBookFilter implements BookFilter
+    {
+        public boolean test(Book book)
+        {
+            return book.hasFeature(FeatureType.GREEK_PARSE);
+        }
+    }
+
+    /**
+     * A filter that accepts everything that is a
+     * Hebrew Definition Dictionary
+     */
+    public static BookFilter getHebrewDefinitions()
+    {
+        return hebrewDefinitionsBookFilter;
+    }
+
+    /**
+     * Filter for all Hebrew Definition Dictionaries
+     */
+    private static BookFilter hebrewDefinitionsBookFilter = new HebrewDefinitionsBookFilter();
+
+    /**
+     * Filter for all Hebrew Definition Dictionaries
+     */
+    private static class HebrewDefinitionsBookFilter implements BookFilter
+    {
+        public boolean test(Book book)
+        {
+            return book.hasFeature(FeatureType.HEBREW_DEFINITIONS);
+        }
+    }
+
+    /**
+     * A filter that accepts everything that is a
+     * Hebrew Parse/Morphology Dictionary
+     */
+    public static BookFilter getHebrewParse()
+    {
+        return hebrewParseBookFilter;
+    }
+
+    /**
+     * Filter for all Hebrew Parse/Morphology Dictionaries
+     */
+    private static BookFilter hebrewParseBookFilter = new HebrewParseBookFilter();
+
+    /**
+     * Filter for all Hebrew Parse/Morphology Dictionaries
+     */
+    private static class HebrewParseBookFilter implements BookFilter
+    {
+        public boolean test(Book book)
+        {
+            return book.hasFeature(FeatureType.HEBREW_PARSE);
+        }
+    }
+
+    /**
      * A filter that accepts Books that match two criteria.
      */
     public static BookFilter both(final BookFilter b1, final BookFilter b2)

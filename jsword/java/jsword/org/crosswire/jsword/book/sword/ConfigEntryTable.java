@@ -108,6 +108,20 @@ public class ConfigEntryTable
     }
 
     /**
+     * Determine whether this ConfigEntryTable has the ConfigEntry
+     * and it matches the value.
+     * 
+     * @param type The kind of ConfigEntry to look for
+     * @param search the value to match against
+     * @return true if there is a matching ConfigEntry matching the value
+     */
+    public boolean match(ConfigEntryType type, Object search)
+    {
+        ConfigEntry ce = (ConfigEntry) table.get(type);
+        return ce != null && ce.match(search);
+    }
+
+    /**
      * Sort the keys for a more meaningful presentation order.
      * TODO(DM): Replace this with a conversion of the properties to XML and then by XSLT to HTML.
      */

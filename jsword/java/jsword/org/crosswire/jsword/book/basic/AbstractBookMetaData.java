@@ -15,6 +15,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.IndexStatus;
 import org.jdom.Document;
 
@@ -63,6 +64,14 @@ public abstract class AbstractBookMetaData implements BookMetaData
         }
 
         return getDriver().getDriverName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
+     */
+    public boolean hasFeature(FeatureType feature)
+    {
+        return false;
     }
 
     /* (non-Javadoc)

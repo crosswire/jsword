@@ -109,6 +109,11 @@ public interface BookMetaData extends Comparable
     public boolean isLeftToRight();
 
     /**
+     * Return whether the feature is supported by the book.
+     */
+    public boolean hasFeature(FeatureType feature);
+
+    /**
      * Get a list of all the properties available to do with this Book.
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.

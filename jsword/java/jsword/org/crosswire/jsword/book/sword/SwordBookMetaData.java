@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
@@ -196,6 +197,14 @@ public class SwordBookMetaData extends AbstractBookMetaData
     {
         String dir = getProperty(ConfigEntryType.DIRECTION);
         return dir == null || dir.equals(ConfigEntryType.DIRECTION.getDefault());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
+     */
+    public boolean hasFeature(FeatureType feature)
+    {
+        return cet.match(ConfigEntryType.FEATURE, feature.toString());
     }
 
     private void buildProperties()
