@@ -2,6 +2,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -123,7 +124,12 @@ public class SwordDictionary extends AbstractDictionary
     {
         checkActive();
 
-        return set.subSet(startswith, startswith+"\u9999");
+        if (startswith == null)
+        {
+            return Collections.unmodifiableSortedSet(set);
+        }
+
+        return Collections.unmodifiableSortedSet(set.subSet(startswith, startswith+"\u9999"));
     }
 
     /* (non-Javadoc)

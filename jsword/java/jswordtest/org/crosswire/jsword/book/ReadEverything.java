@@ -59,6 +59,18 @@ public class ReadEverything
         config.setProperties(Project.resource().getProperties("desktop"));
         config.localToApplication(true);
 
+        // Loop through all the Dictionaries
+        List dicts = Books.getBooks(BookFilters.getDictionaries());
+        for (Iterator dit = dicts.iterator(); dit.hasNext();)
+        {
+            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
+            Dictionary dict = dmd.getDictionary();
+            SortedSet set = dict.getIndex(null);
+
+            Iterator it = set.iterator();
+            testReadMultiple(dmd, it);
+        }
+
         // Loop through all the Bibles
         List bibles = Books.getBooks(BookFilters.getBibles());
         for (Iterator bit = bibles.iterator(); bit.hasNext();)
@@ -75,18 +87,6 @@ public class ReadEverything
             BookMetaData bmd = (BookMetaData) cit.next();
             Iterator it = new KeyIterator(WHOLE.verseIterator());
             testReadMultiple(bmd, it);
-        }
-
-        // Loop through all the Dictionaries
-        List dicts = Books.getBooks(BookFilters.getDictionaries());
-        for (Iterator dit = dicts.iterator(); dit.hasNext();)
-        {
-            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
-            Dictionary dict = dmd.getDictionary();
-            SortedSet set = dict.getIndex(null);
-
-            Iterator it = set.iterator();
-            testReadMultiple(dmd, it);
         }
     }
 
