@@ -183,39 +183,32 @@ import org.crosswire.common.util.LogicError;
 public class VBAExport
 {
     /**
-    * Basic constructor
-    */
-    public VBAExport()
-    {
-    }
-
-    /**
-    * How much do we magnify the original coords (0.0 - 1.0) by to get
-    * the desired output range. The default is 500 which will fit on an
-    * A4 sheet of paper
-    * @param x_mag The new x magnification factor
-    */
+     * How much do we magnify the original coords (0.0 - 1.0) by to get
+     * the desired output range. The default is 500 which will fit on an
+     * A4 sheet of paper
+     * @param x_mag The new x magnification factor
+     */
     public void setXMagnification(int x_mag)
     {
         this.x_mag = x_mag;
     }
 
     /**
-    * How much do we magnify the original coords (0.0 - 1.0) by to get
-    * the desired output range. The default is 500 which will fit on an
-    * A4 sheet of paper
-    * @param y_mag The new x magnification factor
-    */
+     * How much do we magnify the original coords (0.0 - 1.0) by to get
+     * the desired output range. The default is 500 which will fit on an
+     * A4 sheet of paper
+     * @param y_mag The new x magnification factor
+     */
     public void setYMagnification(int y_mag)
     {
         this.y_mag = y_mag;
     }
 
     /**
-    * Export the given Map file to the given stream
-    * @param map The data to export
-    * @param out The place to write the VBA file
-    */
+     * Export the given Map file to the given stream
+     * @param map The data to export
+     * @param out The place to write the VBA file
+     */
     public void export(Map map, PrintWriter out)
     {
         exportPreamble(out);
@@ -263,9 +256,9 @@ public class VBAExport
     }
 
     /**
-    * The common bits at the start of every file
-    * @param out The place to write the VBA file
-    */
+     * The common bits at the start of every file
+     * @param out The place to write the VBA file
+     */
     protected static void exportPreamble(PrintWriter out)
     {
         out.println("Attribute VB_Name = \"NumberLine\"");
@@ -277,9 +270,9 @@ public class VBAExport
     }
 
     /**
-    * The common bits at the start of every file
-    * @param out The place to write the VBA file
-    */
+     * The common bits at the start of every file
+     * @param out The place to write the VBA file
+     */
     protected static void exportSubRouteStart(PrintWriter out)
     {
         out.println("");
@@ -290,9 +283,9 @@ public class VBAExport
     }
 
     /**
-    * The common bits at the start of every file
-    * @param out The place to write the VBA file
-    */
+     * The common bits at the start of every file
+     * @param out The place to write the VBA file
+     */
     protected static void exportSubRouteContinue(PrintWriter out)
     {
         out.println("");
@@ -303,9 +296,9 @@ public class VBAExport
     }
 
     /**
-    * The common bits at the start of every file
-    * @param out The place to write the VBA file
-    */
+     * The common bits at the start of every file
+     * @param out The place to write the VBA file
+     */
     protected static void exportSubRouteEnd(PrintWriter out)
     {
         out.println("");
@@ -335,9 +328,9 @@ public class VBAExport
     }
 
     /**
-    * The common bits at the start of every file
-    * @param out The place to write the VBA file
-    */
+     * The common bits at the start of every file
+     * @param out The place to write the VBA file
+     */
     protected static void exportSubRouteAddText(PrintWriter out)
     {
         out.println("");
@@ -355,9 +348,13 @@ public class VBAExport
         out.println("End Sub");
     }
 
-    /** The x magnification factor */
+    /**
+     * The x magnification factor
+     */
     private int x_mag = 500;
 
-    /** The y magnification factor */
+    /**
+     * The y magnification factor
+     */
     private int y_mag = 500;
 }
