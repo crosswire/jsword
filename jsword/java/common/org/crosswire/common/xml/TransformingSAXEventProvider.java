@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
-import javax.xml.transform.OutputKeys;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
@@ -114,7 +117,31 @@ public class TransformingSAXEventProvider implements SAXEventProvider
             SAXResult res_out = new SAXResult(handler);
     
             Transformer transformer = tinfo.getTemplates().newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+
+            for (Iterator it = outputs.keySet().iterator(); it.hasNext(); )
+            {
+                String key = (String) it.next();
+                String val = getOutputProperty(key);
+                transformer.setOutputProperty(key, val);
+            }
+
+            for (Iterator it = params.keySet().iterator(); it.hasNext(); )
+            {
+                String key = (String) it.next();
+                Object val = params.get(key);
+                transformer.setParameter(key, val);
+            }
+
+            if (errors != null)
+            {
+                transformer.setErrorListener(errors);
+            }
+
+            if (resolver != null)
+            {
+                transformer.setURIResolver(resolver);
+            }
+
             transformer.transform(src_in, res_out);
         }
         catch (IOException ex)
@@ -132,26 +159,112 @@ public class TransformingSAXEventProvider implements SAXEventProvider
     }
 
     /**
-     * Returns the transformer cache status.
-     * @return boolean
+     * @see Transformer#getErrorListener()
      */
-    public static boolean isCache()
+    public ErrorListener getErrorListener()
     {
-        return cache;
+        return errors;
     }
 
     /**
-     * Sets the transformer cache status.
-     * @param cache The status to set
+     * @see Transformer#setErrorListener(javax.xml.transform.ErrorListener)
      */
-    public static void setCache(boolean cache)
+    public void setErrorListener(ErrorListener errors) throws IllegalArgumentException
     {
-        TransformingSAXEventProvider.cache = cache;
-        if (!cache)
-        {
-            txers.clear();
-        }
+        this.errors = errors;
     }
+
+    /**
+     * @see Transformer#getURIResolver()
+     */
+    public URIResolver getURIResolver()
+    {
+        return resolver;
+    }
+
+    /**
+     * @see Transformer#setURIResolver(javax.xml.transform.URIResolver)
+     */
+    public void setURIResolver(URIResolver resolver)
+    {
+        this.resolver = resolver;
+    }
+
+    /**
+     * @see Transformer#getOutputProperties()
+     */
+    public Properties getOutputProperties()
+    {
+        return outputs;
+    }
+
+    /**
+     * @see Transformer#setOutputProperties(java.util.Properties)
+     */
+    public void setOutputProperties(Properties outputs) throws IllegalArgumentException
+    {
+        this.outputs = outputs;
+    }
+
+    /**
+     * @see Transformer#getOutputProperty(java.lang.String)
+     */
+    public String getOutputProperty(String name) throws IllegalArgumentException
+    {
+        return outputs.getProperty(name);
+    }
+
+    /**
+     * @see Transformer#setOutputProperty(java.lang.String, java.lang.String)
+     */
+    public void setOutputProperty(String name, String value) throws IllegalArgumentException
+    {
+        outputs.setProperty(name, value);
+    }
+
+    /**
+     * @see Transformer#clearParameters()
+     */
+    public void clearParameters()
+    {
+        params.clear();
+    }
+
+    /**
+     * @see Transformer#getParameter(java.lang.String)
+     */
+    public Object getParameter(String name)
+    {
+        return params.get(name);
+    }
+
+    /**
+     * @see Transformer#setParameter(java.lang.String, java.lang.Object)
+     */
+    public void setParameter(String name, Object value)
+    {
+        params.put(name, value);
+    }
+
+    /**
+     * The remembered ErrorListener because the transformer has not been created
+     */
+    private ErrorListener errors;
+
+    /**
+     * The remembered URIResolver because the transformer has not been created
+     */
+    private URIResolver resolver;
+
+    /**
+     * The remembered OutputProperties because the transformer has not been created
+     */
+    private Properties outputs = new Properties();
+
+    /**
+     * The remembered Parameters because the transformer has not been created
+     */
+    private Map params = new HashMap();
 
     /**
      * The XSL stylesheet
@@ -184,6 +297,28 @@ public class TransformingSAXEventProvider implements SAXEventProvider
     private static final Logger log = Logger.getLogger(TransformingSAXEventProvider.class);
 
     /**
+     * Returns the transformer cache status.
+     * @return boolean
+     */
+    public static boolean isCache()
+    {
+        return cache;
+    }
+
+    /**
+     * Sets the transformer cache status.
+     * @param cache The status to set
+     */
+    public static void setCache(boolean cache)
+    {
+        TransformingSAXEventProvider.cache = cache;
+        if (!cache)
+        {
+            txers.clear();
+        }
+    }
+
+    /**
      * A simple struct to link modification times to Templates objects
      */
     class TemplateInfo
@@ -199,7 +334,7 @@ public class TransformingSAXEventProvider implements SAXEventProvider
         }
 
         /**
-         * 
+         * The transformer
          */
         Templates getTemplates()
         {
@@ -207,7 +342,7 @@ public class TransformingSAXEventProvider implements SAXEventProvider
         }
 
         /**
-         * 
+         * The modtime of the xsl file
          */
         long getModtime()
         {

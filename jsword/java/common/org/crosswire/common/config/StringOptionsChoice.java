@@ -36,7 +36,9 @@ public class StringOptionsChoice extends ReflectedChoice implements MultipleChoi
         super.init(option);
         Element map = option.getChild("map");
         if (map == null)
+        {
             throw new StartupException(Msg.CONFIG_NOMAP);
+        }
 
         String name = map.getAttributeValue("name");
         array = (String[]) ChoiceFactory.getDataMap().get(name);
@@ -74,5 +76,8 @@ public class StringOptionsChoice extends ReflectedChoice implements MultipleChoi
         return orig;
     }
 
+    /**
+     * The options that we are presenting the user with
+     */
     private String[] array = null;
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import org.jdom.Element;

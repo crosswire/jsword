@@ -2,16 +2,18 @@
 
 <xsl:stylesheet xmlns="http://www.w3.org/TR/REC-html40" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html" omit-xml-declaration = "yes" indent="yes"/>
-  
+
   <xsl:param name="strongs.hebrew.url" select="'dict:'"/>
   <xsl:param name="strongs.greek.url" select="'dict:'"/>
-    
+
+  <xsl:param name="font"/>
+
   <!--
   For now, we assume that all the works inside a corpus are of the
   same type.
   -->
   <xsl:variable name="osis-id-type" select="substring-before((//osisText)[1]/@osisIDWork, '.')"/>
-  
+
   <xsl:variable name="page-div-type">
     <xsl:choose>
       <!--
@@ -96,10 +98,10 @@
 
   <!--=======================================================================-->
   <xsl:template match="verse">
-    <font size="-1" color="gray">
+    <font size="-1" color="gray" face="{$font}">
       <a name="{@osisID}"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></a>
     </font>
-    <font size="+1">
+    <font size="+1" face="{$font}">
       <xsl:apply-templates />
     </font>
   </xsl:template>
@@ -117,7 +119,7 @@
     <xsl:text> </xsl:text>
     <xsl:if test="string-length(.) &lt; 4">
       <a href="#{generate-id(.)}">
-        <font size="-1">
+        <font size="-1" face="{$font}">
           <xsl:number level="any" from="/" count="note[string-length(.) &lt; 4]" format="a"/>
         </font>
       </a>
@@ -204,12 +206,12 @@
         </u>
       </xsl:when>
       <xsl:when test="starts-with(@type, 'color:')">
-        <font color="substring-before(substring-after(@type, 'color: '), ';')">
+        <font color="substring-before(substring-after(@type, 'color: '), ';')" face="{$font}">
           <xsl:apply-templates/>
         </font>
       </xsl:when>
       <xsl:when test="starts-with(@type, 'font-size:')">
-        <font size="substring-before(substring-after(@type, 'font-size: '), ';')">
+        <font size="substring-before(substring-after(@type, 'font-size: '), ';')" face="{$font}">
           <xsl:apply-templates/>
         </font>
       </xsl:when>
@@ -237,12 +239,12 @@
   <xsl:template match="speaker">
     <xsl:choose>
       <xsl:when test="@who='Jesus'">
-        <font color="red">
+        <font color="red" face="{$font}">
           <xsl:apply-templates/>
         </font>
       </xsl:when>
       <xsl:otherwise>
-        <font color="blue">
+        <font color="blue" face="{$font}">
           <xsl:apply-templates/>
         </font>
       </xsl:otherwise>

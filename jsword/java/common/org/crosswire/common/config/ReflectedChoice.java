@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import java.lang.reflect.InvocationTargetException;
@@ -113,7 +112,7 @@ public abstract class ReflectedChoice implements Choice
         String priorityname = option.getAttributeValue("priority");
         if (priorityname == null)
         {
-            priority = ReflectedChoice.PRIORITY_NORMAL;
+            priority = Choice.PRIORITY_NORMAL;
         }
         else
         {
@@ -230,34 +229,15 @@ public abstract class ReflectedChoice implements Choice
         {
             Throwable orig = ex.getTargetException();
             if (orig instanceof Exception)
+            {
                 throw (Exception) orig;
+            }
 
             // So we can't re-throw the original exception because it wasn't an
             // Exception so we will have to re-throw the InvocationTargetException
             throw ex;
         }
     }
-
-    /** The highest level priority generally for system level stuff */
-    public static final int PRIORITY_SYSTEM = 10;
-
-    /** The priority level for important but non system level stuff */
-    public static final int PRIORITY_EXTENDER = 9;
-
-    /** The priority level for important but non system level stuff */
-    public static final int PRIORITY_HIGHEST = 8;
-
-    /** The priority level for normal use */
-    public static final int PRIORITY_NORMAL = 6;
-
-    /** The priority level for creating items for later configuring */
-    public static final int PRIORITY_CTOR = 4;
-
-    /** The priority level for configuring previously created items */
-    public static final int PRIORITY_ACCESSOR = 2;
-
-    /** The lowest level priority generally for system level stuff */
-    public static final int PRIORITY_LOWEST = 0;
 
     /**
      * The type that we reflect to

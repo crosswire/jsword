@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import javax.swing.DefaultComboBoxModel;
@@ -50,7 +49,7 @@ public class OptionsField implements Field
             
             if (list == null)
             {
-                throw new IllegalArgumentException("getOptions() returns null for " + param.getClass().getName());
+                throw new IllegalArgumentException("getOptions() returns null for option with help text " + mc.getHelpText());
             }
         }
         else

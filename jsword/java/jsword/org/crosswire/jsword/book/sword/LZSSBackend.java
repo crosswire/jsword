@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.sword;
 
+import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
@@ -36,6 +37,20 @@ public class LZSSBackend implements Backend
     public LZSSBackend(SwordConfig config)
     {
         this.config = config;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    public final void activate(Lock lock)
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
     }
 
     /* (non-Javadoc)

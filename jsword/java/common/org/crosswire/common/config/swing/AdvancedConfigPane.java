@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -6,16 +5,16 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
-import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.crosswire.common.config.Choice;
@@ -80,7 +79,7 @@ public class AdvancedConfigPane extends TreeConfigPane
         tree = new JTree();
         JScrollPane scroll = new JScrollPane();
         CustomTreeCellRenderer render = new CustomTreeCellRenderer();
-        comps = new Hashtable();
+        comps = new HashMap();
 
         // Hack: tree depends on it being a Color not a sub of it.
         Color orig = UIManager.getColor("control");
@@ -94,7 +93,6 @@ public class AdvancedConfigPane extends TreeConfigPane
         scroll.setViewportView(tree);
 
         tree.putClientProperty("JTree.lineStyle", "Angled");
-        tree.setCellEditor(new CustomTreeCellEditor(tree, render));
         tree.setBackground(bg);
         tree.setCellRenderer(render);
         tree.setShowsRootHandles(true);
@@ -216,18 +214,20 @@ public class AdvancedConfigPane extends TreeConfigPane
         deck.repaint();
     }
 
-    /** A hash of components */
-    protected Hashtable comps = null;
+    /**
+     * A hash of components
+     */
+    protected Map comps = null;
 
     /**
      * A custom data model for the TreeConfig Tree
      * @author Claude Duguay
      * @author Joe Walker
      */
-    class AdvancedConfigureTreeModel extends ConfigureTreeModel
+    private class AdvancedConfigureTreeModel extends ConfigureTreeModel
     {
-        /**
-         * Get a Vector of the children rooted at path
+        /* (non-Javadoc)
+         * @see org.crosswire.common.config.swing.TreeConfigPane.ConfigureTreeModel#getChildren(java.lang.String)
          */
         protected List getChildren(String path)
         {
@@ -265,57 +265,50 @@ public class AdvancedConfigPane extends TreeConfigPane
             return retcode;
         }
 
-        /**
-         * Returns the child of <I>parent</I> at index <I>index</I> in the parent's
-         * child array.  <I>parent</I> must be a node previously obtained from
-         * this data source. This should not return null if <i>index</i>
-         * is a valid index for <i>parent</i> (that is <i>index</i> >= 0 &&
-         * <i>index</i> < getChildCount(<i>parent</i>)).
-         * @param   parent  a node in the tree, obtained from this data source
-         * @return  the child of <I>parent</I> at index <I>index</I>
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
          */
         public Object getChild(Object parent, int index)
         {
             if (parent instanceof CompNode)
+            {
                 return null;
+            }
 
             String path = ((Node) parent).getFullName();
             List children = getChildren(path);
 
             if (children.size() == 0)
+            {
                 return new CompNode(path);
+            }
 
             String name = (String) children.get(index);
             return new Node(path, name);
         }
 
-        /**
-         * Returns the number of children of <I>parent</I>.  Returns 0 if the node
-         * is a leaf or if it has no children.  <I>parent</I> must be a node
-         * previously obtained from this data source.
-         * @param   parent  a node in the tree, obtained from this data source
-         * @return  the number of children of the node <I>parent</I>
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
          */
         public int getChildCount(Object parent)
         {
             if (parent instanceof CompNode)
+            {
                 return 0;
+            }
 
             String path = ((Node) parent).getFullName();
             int children = getChildren(path).size();
             if (children == 0)
+            {
                 children = 1;
+            }
 
             return children;
         }
 
-        /**
-         * Returns true if <I>node</I> is a leaf.  It is possible for this method
-         * to return false even if <I>node</I> has no children.  A directory in a
-         * filesystem, for example, may contain no files; the node representing
-         * the directory is not a leaf, but it also has no children.
-         * @param   node    a node in the tree, obtained from this data source
-         * @return  true if <I>node</I> is a leaf
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
          */
         public boolean isLeaf(Object node)
         {
@@ -326,7 +319,7 @@ public class AdvancedConfigPane extends TreeConfigPane
     /**
      * Simple Tree Node
      */
-    static class CompNode
+    private static class CompNode
     {
         /**
          * Create a node with a name and path
@@ -352,17 +345,19 @@ public class AdvancedConfigPane extends TreeConfigPane
             return path;
         }
 
-        /** The path to us */
+        /**
+         * The path to us
+         */
         private String path;
     }
 
     /**
-     *
+     * The renderer for our tree
      */
-    class CustomTreeCellRenderer extends DefaultTreeCellRenderer
+    private class CustomTreeCellRenderer extends DefaultTreeCellRenderer
     {
-        /**
-         *
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, boolean)
          */
         public Component getTreeCellRendererComponent(JTree jtree, Object value, boolean isselected, boolean expanded, boolean leaf, int row, boolean focus)
         {
@@ -389,41 +384,6 @@ public class AdvancedConfigPane extends TreeConfigPane
             else
             {
                 return super.getTreeCellRendererComponent(jtree, value, isselected, expanded, leaf, row, focus);
-            }
-        }
-    }
-
-    /**
-     *
-     */
-    static class CustomTreeCellEditor extends DefaultTreeCellEditor
-    {
-        public CustomTreeCellEditor(JTree tree, DefaultTreeCellRenderer render)
-        {
-            super(tree, render);
-        }
-
-        /*
-        *
-        *
-        public boolean isCellEditable(Event ev)
-        {
-        }
-
-        /**
-        *
-        */
-        public Component getTreeCellEditorComponent(JTree jtree, Object value, boolean selected, boolean expanded, boolean leaf, int row)
-        {
-            /*
-            if (value instanceof FieldTreeNode)
-            {
-                return ((FieldTreeNode) value).getJComponent();
-            }
-            else
-            */
-            {
-                return super.getTreeCellEditorComponent(jtree, value, selected, expanded, leaf, row);
             }
         }
     }

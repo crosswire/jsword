@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.Component;
@@ -102,16 +101,24 @@ public class SwingConfig
         SwingConfig.display = display;
     }
 
-    /** The new tree display style */
+    /**
+     * The new tree display style
+     */
     public static final int DISPLAY_TREE = 0;
 
-    /** The old tabbed display style */
+    /**
+     * The old tabbed display style
+     */
     public static final int DISPLAY_TAB = 1;
 
-    /** The old tabbed display style */
+    /**
+     * The old tabbed display style
+     */
     public static final int DISPLAY_WIZARD = 2;
 
-    /** Which display style to we use */
+    /**
+     * Which display style to we use
+     */
     private static Class display = TreeConfigPane.class;
 
     /**
@@ -144,10 +151,14 @@ public class SwingConfig
             }
         }
 
-        /** The URL to save to if needed */
+        /**
+         * The URL to save to if needed
+         */
         private Config config;
 
-        /** The URL to save to if needed */
+        /**
+         * The URL to save to if needed
+         */
         private URL url;
     }
 }

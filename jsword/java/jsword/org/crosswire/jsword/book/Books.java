@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
@@ -6,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.crosswire.common.activate.Activator;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
@@ -57,37 +57,59 @@ public class Books
      */
     public static final int SPEED_FASTEST = 10;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_FAST = 9;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_MEDIUM = 8;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_SLOW = 7;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_SLOWEST = 6;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_REMOTE_FASTEST = 5;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_REMOTE_FAST = 4;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_REMOTE_MEDIUM = 3;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_REMOTE_SLOW = 2;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_REMOTE_SLOWEST = 1;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_IGNORE = 0;
 
-    /** @see Books#SPEED_FASTEST */
+    /**
+     * @see Books#SPEED_FASTEST
+     */
     public static final int SPEED_INACCURATE = -1;
 
     /**
@@ -153,7 +175,7 @@ public class Books
      */
     public synchronized static void addBook(BookMetaData bmd)
     {
-        log.debug("registering book: "+bmd.getName());
+        //log.debug("registering book: "+bmd.getName());
 
         books.add(bmd);
 
@@ -167,7 +189,9 @@ public class Books
      */
     public synchronized static void removeBook(BookMetaData bmd) throws BookException
     {
-        log.debug("unregistering book: "+bmd.getName());
+        //log.debug("unregistering book: "+bmd.getName());
+
+        Activator.deactivate(bmd.getBook());
 
         boolean removed = books.remove(bmd);
         if (removed)

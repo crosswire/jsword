@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.Properties;
 
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -61,6 +63,27 @@ public class SwordBook extends PassageAbstractBook
 
         this.config = config;
         this.backend = backend;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    public final void activate(Lock lock)
+    {
+        super.activate(lock);
+
+        // We don't need to activate the backend because it should be capable
+        // of doing it for itself.
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
+        super.deactivate(lock);
+
+        Activator.deactivate(backend);
     }
 
     /**

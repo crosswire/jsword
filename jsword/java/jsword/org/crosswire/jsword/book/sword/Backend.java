@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.sword;
 
+import org.crosswire.common.activate.Activatable;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
@@ -28,7 +29,7 @@ import org.crosswire.jsword.passage.KeyList;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public interface Backend extends Activatable
 {
     /**
      * Initialise a Backend before use. This method needs to call addKey() a

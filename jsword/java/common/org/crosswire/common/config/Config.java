@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import java.io.FileOutputStream;

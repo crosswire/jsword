@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
@@ -18,7 +20,9 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.book.readings.ReadingsBookDriver;
+import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
+import org.crosswire.jsword.view.swing.util.ConfigurableSwingConverter;
 import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -116,10 +120,28 @@ public class OptionsAction extends DesktopAbstractAction
         // Create the array of readings sets
         ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
 
-        // The choice of XSL stylesheets
-        SimpleSwingConverter style = new SimpleSwingConverter();
-        String[] names = style.getStyles();
-        ChoiceFactory.getDataMap().put("swing-styles", names);
+        // And the array of allowed osis>html converters
+        Map converters = ConverterFactory.getKnownConverters();
+        Set keys = converters.keySet();
+        String[] names = (String[]) keys.toArray(new String[keys.size()]);
+        ChoiceFactory.getDataMap().put("converters", names);
+
+        // The choice of simple XSL stylesheets
+        SimpleSwingConverter sstyle = new SimpleSwingConverter();
+        String[] sstyles = sstyle.getStyles();
+        ChoiceFactory.getDataMap().put("swing-styles", sstyles);
+
+        // The choice of configurable XSL stylesheets
+        ConfigurableSwingConverter cstyle = new ConfigurableSwingConverter();
+        String[] cstyles = cstyle.getStyles();
+        ChoiceFactory.getDataMap().put("cswing-styles", cstyles);
+
+        /*
+        TODO(joe): delete this
+        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        String[] fonts = genv.getAvailableFontFamilyNames();
+        ChoiceFactory.getDataMap().put("font-names", fonts);
+        */
     }
 
     /**

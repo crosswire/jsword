@@ -27,8 +27,8 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.view.swing.passage.KeyListListModel;
-import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.
@@ -242,12 +242,15 @@ public class DictionaryPane extends JPanel implements DisplayArea
     protected void newDictionary()
     {
         Object selected = lstdicts.getSelectedValue();
-        BookMetaData dmd = (BookMetaData) selected;
-        dict = dmd.getBook();
-        KeyList set = dict.getGlobalKeyList();
+        if (selected != null)
+        {
+            BookMetaData dmd = (BookMetaData) selected;
+            dict = dmd.getBook();
+            KeyList set = dict.getGlobalKeyList();
 
-        KeyListListModel model = new KeyListListModel(set);
-        lstentries.setModel(model);
+            KeyListListModel model = new KeyListListModel(set);
+            lstentries.setModel(model);
+        }
     }
 
     /**
@@ -262,7 +265,8 @@ public class DictionaryPane extends JPanel implements DisplayArea
             {
                 BookData bdata = dict.getData(key);
                 SAXEventProvider osissep = bdata.getSAXEventProvider();
-                SAXEventProvider htmlsep = style.convert(osissep);
+                Converter converter = ConverterFactory.getConverter();
+                SAXEventProvider htmlsep = converter.convert(osissep);
                 String text = XMLUtil.writeToString(htmlsep);
 
                 txtdisplay.setText(text);
@@ -274,11 +278,6 @@ public class DictionaryPane extends JPanel implements DisplayArea
             Reporter.informUser(this, ex);
         }
     }
-
-    /**
-     * The stylizer
-     */
-    protected Converter style = new SimpleSwingConverter();
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdldicts = new BooksComboBoxModel(filter);

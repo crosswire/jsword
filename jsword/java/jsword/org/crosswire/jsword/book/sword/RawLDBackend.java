@@ -1,9 +1,12 @@
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.apache.commons.lang.ClassUtils;
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
@@ -41,8 +44,8 @@ import org.crosswire.jsword.passage.KeyList;
 public class RawLDBackend implements Backend
 {
     /**
-     * We need to know how many bytes in the size portion of the index
-     * @param datasize
+     * Simple ctor
+     * @param datasize We need to know how many bytes in the size portion of the index
      */
     public RawLDBackend(SwordConfig config, String path, int datasize) throws BookException
     {
@@ -54,16 +57,57 @@ public class RawLDBackend implements Backend
             throw new BookException(Msg.TYPE_UNKNOWN);
         }
 
+        idxFile = new File(path + ".idx");
+        datFile = new File(path + ".dat");
+
+        if (!idxFile.canRead())
+        {
+            throw new BookException(Msg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
+        }
+
+        if (!datFile.canRead())
+        {
+            throw new BookException(Msg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    public final void activate(Lock lock)
+    {
         try
         {
             // Open the files
-            idx_raf = new RandomAccessFile(path + ".idx", "r");
-            dat_raf = new RandomAccessFile(path + ".dat", "r");
+            idxRaf = new RandomAccessFile(idxFile, "r");
+            datRaf = new RandomAccessFile(datFile, "r");
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.READ_FAIL, ex);
+            log.error("failed to open files", ex);
+
+            idxRaf = null;
+            datRaf = null;
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
+        try
+        {
+            idxRaf.close();
+            datRaf.close();
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to close files", ex);
+        }
+
+        idxRaf = null;
+        datRaf = null;
     }
 
     /* (non-Javadoc)
@@ -71,13 +115,15 @@ public class RawLDBackend implements Backend
      */
     public KeyList readIndex()
     {
+        checkActive();
+
         KeyList reply = new DefaultKeyList(config.getDescription());
 
         int entrysize = OFFSETSIZE + datasize;
         long entries;
         try
         {
-            entries = idx_raf.length() / entrysize;
+            entries = idxRaf.length() / entrysize;
         }
         catch (IOException ex)
         {
@@ -90,7 +136,7 @@ public class RawLDBackend implements Backend
             try
             {
                 // Read the offset and size for this key from the index
-                byte[] buffer = SwordUtil.readRAF(idx_raf, entry*entrysize, entrysize);
+                byte[] buffer = SwordUtil.readRAF(idxRaf, entry*entrysize, entrysize);
                 long offset = SwordUtil.decodeLittleEndian32(buffer, 0);
                 int size = -1;
                 switch (datasize)
@@ -106,7 +152,7 @@ public class RawLDBackend implements Backend
                 }
                 
                 // Now read the data file for this key using the offset and size
-                byte[] data = SwordUtil.readRAF(dat_raf, offset, size);
+                byte[] data = SwordUtil.readRAF(datRaf, offset, size);
 
                 int keyend = SwordUtil.findByte(data, SEPARATOR);
                 if (keyend == -1)
@@ -144,6 +190,8 @@ public class RawLDBackend implements Backend
      */
     public byte[] getRawText(Key key) throws BookException
     {
+        checkActive();
+
         if (!(key instanceof IndexKey))
         {
             throw new BookException(Msg.BAD_KEY, new Object[] { ClassUtils.getShortClassName(key.getClass()), key.getName() });
@@ -153,7 +201,7 @@ public class RawLDBackend implements Backend
 
         try
         {
-            byte[] data = SwordUtil.readRAF(dat_raf, ikey.offset, ikey.size);
+            byte[] data = SwordUtil.readRAF(datRaf, ikey.offset, ikey.size);
 
             int keyend = SwordUtil.findByte(data, SEPARATOR);
             if (keyend == -1)
@@ -174,6 +222,22 @@ public class RawLDBackend implements Backend
     }
 
     /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    protected final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
+    }
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
+
+    /**
      * Used to separate the key name from the key value
      */
     private static final byte SEPARATOR = 10; // ^M=CR=13=0x0d=\r ^J=LF=10=0x0a=\n
@@ -189,14 +253,24 @@ public class RawLDBackend implements Backend
     private int datasize = -1;
 
     /**
+     * The data random access file
+     */
+    private RandomAccessFile datRaf;
+
+    /**
+     * The index random access file
+     */
+    private RandomAccessFile idxRaf;
+
+    /**
      * The data file
      */
-    private RandomAccessFile dat_raf;
+    private File datFile;
 
     /**
      * The index file
      */
-    private RandomAccessFile idx_raf;
+    private File idxFile;
 
     /**
      * The log stream

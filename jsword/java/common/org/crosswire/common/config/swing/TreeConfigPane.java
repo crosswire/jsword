@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -264,7 +263,7 @@ public class TreeConfigPane extends PanelConfigPane
      * @author Claude Duguay
      * @author Joe Walker
      */
-    class ConfigureTreeModel implements TreeModel
+    protected class ConfigureTreeModel implements TreeModel
     {
         /* (non-Javadoc)
          * @see javax.swing.tree.TreeModel#getRoot()
@@ -430,7 +429,7 @@ public class TreeConfigPane extends PanelConfigPane
     /**
      * Simple Tree Node
      */
-    static class Node
+    protected static class Node
     {
         /**
          * Create a node with a name and path

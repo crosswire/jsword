@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.util.List;
@@ -6,6 +5,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataListener;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
@@ -71,6 +71,13 @@ public class BooksListModel extends AbstractListModel
      */
     public Object getElementAt(int index)
     {
+        // PARANOIA(joe): this check shouldn't be needed
+        if (index > bmds.size())
+        {
+            log.error("trying to get book at "+index+" when there are only "+bmds.size()+" known books.", new Exception());
+            return null;
+        }
+
         return bmds.get(index);
     }
 
@@ -134,10 +141,8 @@ public class BooksListModel extends AbstractListModel
      */
     class CustomListDataListener implements BooksListener
     {
-        /**
-         * Called whenever a new Bible is added or a Bible is removed from
-         * the system.
-         * @param ev A description of the change
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
          */
         public void bookAdded(BooksEvent ev)
         {
@@ -146,10 +151,8 @@ public class BooksListModel extends AbstractListModel
             fireIntervalAdded(ev.getSource(), 0, old_size);
         }
 
-        /**
-         * Called whenever a new Bible is added or a Bible is removed from
-         * the system.
-         * @param ev A description of the change
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
          */
         public void bookRemoved(BooksEvent ev)
         {
@@ -189,4 +192,9 @@ public class BooksListModel extends AbstractListModel
      * The array of versions
      */
     protected List bmds = null;
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(BooksListModel.class);
 }

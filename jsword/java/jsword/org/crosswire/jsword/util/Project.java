@@ -151,7 +151,7 @@ public class Project
         Properties prop = new Properties();
         prop.load(in);
 
-        log.debug("Loaded "+name+" from classpath: [OK]");
+        //log.debug("Loaded "+name+" from classpath: [OK]");
         return prop;
     }
 
@@ -169,14 +169,14 @@ public class Project
         {
             // Try for a writable version
             Properties prop = getWritableProperties(subject);
-            log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from writable area (ignoring resources): [OK]");
+            //log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from writable area (ignoring resources): [OK]");
             return prop;
         }
         catch (IOException ex)
         {
             // If not then rely on the static version
             Properties prop = getResourceProperties(subject);
-            log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from classpath: [OK]");
+            //log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from classpath: [OK]");
             return prop;
         }
     }

@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
+import org.crosswire.jsword.util.ConverterFactory;
 
 /**
  * Builds a set of tabs from the list of Books returned by a filtered list
@@ -135,7 +135,9 @@ public class CommentaryPane extends JPanel implements DisplayArea
 
             BookData bdata = bmd.getBook().getData(ref);
             SAXEventProvider osissep = bdata.getSAXEventProvider();
-            SAXEventProvider htmlsep = style.convert(osissep);
+
+            Converter converter = ConverterFactory.getConverter();
+            SAXEventProvider htmlsep = converter.convert(osissep);
             String text = XMLUtil.writeToString(htmlsep);
 
             txtdisplay.setText(text);
@@ -264,11 +266,6 @@ public class CommentaryPane extends JPanel implements DisplayArea
      * Last displayed
      */
     protected Passage ref = null;
-
-    /**
-     * The stylizer
-     */
-    protected Converter style = new SimpleSwingConverter();
 
     /**
      * To get us just the Commentaries

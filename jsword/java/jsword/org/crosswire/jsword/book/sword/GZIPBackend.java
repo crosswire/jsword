@@ -2,8 +2,11 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
@@ -70,52 +73,79 @@ public class GZIPBackend implements Backend
      */
     public GZIPBackend(String path, int blockType) throws BookException
     {
+        String allbutlast = path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "z";
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + "s");
+        textFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + "z");
+        compFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + "v");
+
+        allbutlast = path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "z";
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "s");
+        textFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "z");
+        compFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "v");
+
+        // It is an error to be neither OT nor NT
+        if (!textFile[SwordConstants.TESTAMENT_OLD].canRead() &&
+            !textFile[SwordConstants.TESTAMENT_NEW].canRead())
+        {
+            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    public final void activate(Lock lock)
+    {
         try
         {
-            String allbutlast = path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "z";
-
-            idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "s", "r");
-            text_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "z", "r");
-            comp_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "v", "r");
+            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], "r");
+            textRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_OLD], "r");
+            compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], "r");
         }
         catch (FileNotFoundException ex)
         {
             // Ignore this might be NT only
-            log.debug("Missing index: "+path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "zs");
         }
 
         try
         {
-            String allbutlast = path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "z";
-
-            idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "s", "r");
-            text_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "z", "r");
-            comp_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "v", "r");
+            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], "r");
+            textRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_NEW], "r");
+            compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], "r");
         }
         catch (FileNotFoundException ex)
         {
             // Ignore this might be OT only
-            log.debug("Missing index: "+path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "zs");
         }
+    }
 
-        // It is an error to be neither OT nor NT
-        if (text_raf[SwordConstants.TESTAMENT_OLD] == null && text_raf[SwordConstants.TESTAMENT_NEW] == null)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
+        try
         {
-            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
+            idxRaf[SwordConstants.TESTAMENT_OLD].close();
+            textRaf[SwordConstants.TESTAMENT_OLD].close();
+            compRaf[SwordConstants.TESTAMENT_OLD].close();
+
+            idxRaf[SwordConstants.TESTAMENT_NEW].close();
+            textRaf[SwordConstants.TESTAMENT_NEW].close();
+            compRaf[SwordConstants.TESTAMENT_NEW].close();
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to close files", ex);
         }
 
-        // The original had a dtor that did the equiv of .close()ing the above
-        // I'm not sure that there is a delete type ability in Book.java and
-        // the finalizer for RandomAccessFile will do it anyway so for the
-        // moment I'm going to ignore this.
+        idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+        textRaf[SwordConstants.TESTAMENT_OLD] = null;
+        compRaf[SwordConstants.TESTAMENT_OLD] = null;
 
-        // The original also stored the path, but I don't think it ever used it
-
-        // The original also kept an instance count, which went unused (and I
-        // noticed in a few other places so it is either c&p or a pattern?
-        // Either way the assumption that there is only one of a static is not
-        // safe in many java environments (servlets, ejbs at least) so I've
-        // deleted it
+        idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+        textRaf[SwordConstants.TESTAMENT_NEW] = null;
+        compRaf[SwordConstants.TESTAMENT_NEW] = null;
     }
 
     /* (non-Javadoc)
@@ -123,6 +153,8 @@ public class GZIPBackend implements Backend
      */
     public byte[] getRawText(Key key) throws BookException
     {
+        checkActive();
+
         Verse verse = PassageUtil.getVerse(key);
 
         try
@@ -131,13 +163,13 @@ public class GZIPBackend implements Backend
             long index = SwordConstants.getIndex(verse);
 
             // If this is a single testament Bible, return nothing.
-            if (comp_raf[testament] == null)
+            if (compRaf[testament] == null)
             {
                 return new byte[0];
             }
 
             // 10 because we the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(comp_raf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+            byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
             // On occasion the index is short so just do nothing.
             if (temp == null || temp.length == 0)
@@ -161,7 +193,7 @@ public class GZIPBackend implements Backend
             else
             {
                 // Then seek using this index into the idx file
-                temp = SwordUtil.readRAF(idx_raf[testament], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                temp = SwordUtil.readRAF(idxRaf[testament], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
                 if (temp == null || temp.length == 0)
                 {
                     return new byte[0];
@@ -172,7 +204,7 @@ public class GZIPBackend implements Backend
                 int endsize = SwordUtil.decodeLittleEndian32AsInt(temp, 8);
 
                 // Read from the data file.
-                byte[] compressed = SwordUtil.readRAF(text_raf[testament], start, size);
+                byte[] compressed = SwordUtil.readRAF(textRaf[testament], start, size);
 
                 // LATER(joe): implement encryption?
                 // byte[] decrypted = decrypt(compressed);
@@ -234,8 +266,31 @@ public class GZIPBackend implements Backend
         return null;
     }
 
+    /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    protected final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
+    }
+
+    /**
+     * 
+     */
     private int lastbuffernum = -1;
+
+    /**
+     * 
+     */
     private byte[] lastuncompr = null;
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
 
     /**
      * The log stream
@@ -243,19 +298,34 @@ public class GZIPBackend implements Backend
     private static final Logger log = Logger.getLogger(GZIPBackend.class);
 
     /**
-     * The array of index files
+     * The array of index random access files
      */
-    private RandomAccessFile[] idx_raf = new RandomAccessFile[3];
+    private RandomAccessFile[] idxRaf = new RandomAccessFile[3];
 
     /**
-     * The array of data files
+     * The array of data random access files
      */
-    private RandomAccessFile[] text_raf = new RandomAccessFile[3];
+    private RandomAccessFile[] textRaf = new RandomAccessFile[3];
 
     /**
-     * The array of compressed files?
+     * The array of compressed random access files?
      */
-    private RandomAccessFile[] comp_raf = new RandomAccessFile[3];
+    private RandomAccessFile[] compRaf = new RandomAccessFile[3];
+
+    /**
+     * The array of index random access files
+     */
+    private File[] idxFile = new File[3];
+
+    /**
+     * The array of data random access files
+     */
+    private File[] textFile = new File[3];
+
+    /**
+     * The array of compressed random access files?
+     */
+    private File[] compFile = new File[3];
 
     /**
      * Yuck - they blocking method defines the initial file character.

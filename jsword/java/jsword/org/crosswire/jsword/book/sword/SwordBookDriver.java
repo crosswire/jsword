@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;

@@ -84,6 +84,7 @@ public class SimpleSwingConverter implements Converter
             String path = "xsl/swing/"+style;
             URL xslurl = ResourceUtil.getResource(path);
     
+            // TODO(joe): do we need to transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             return new TransformingSAXEventProvider(xslurl, xmlsep);
         }
         catch (MalformedURLException ex)
@@ -91,11 +92,6 @@ public class SimpleSwingConverter implements Converter
             throw new TransformerException(ex);
         }
     }
-
-    /**
-     * The current subject
-     */
-    protected String subject;
 
     /**
      * Accessor for the stylesheet we are transforming using
@@ -116,5 +112,5 @@ public class SimpleSwingConverter implements Converter
     /**
      * The stylesheet we are transforming using
      */
-    protected static String style = "simple.xsl";
+    private static String style = "simple.xsl";
 }

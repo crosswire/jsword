@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -238,7 +237,9 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
                 card.removeEntry(name);
 
                 if (card.isEmpty())
+                {
                     decks.remove(card);
+                }
             }
         }
         catch (Exception ex)
@@ -311,7 +312,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
                 
                 if (value == null)
                 {
-                    log.warn("null value from key="+key);
+                    log.error("null value from key="+key);
                 }
 
                 config.setLocal(key, value);
@@ -334,9 +335,18 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
             try
             {
                 String key = (String) it.next();
+
                 Field field = (Field) fields.get(key);
                 String value = config.getLocal(key);
-                field.setValue(value);
+
+                if (field == null)
+                {
+                    log.error("Null field from key="+key+", skipping setting value="+value);
+                }
+                else
+                {
+                    field.setValue(value);
+                }
             }
             catch (Exception ex)
             {

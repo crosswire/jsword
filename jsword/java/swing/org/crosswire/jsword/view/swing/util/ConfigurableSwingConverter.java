@@ -83,8 +83,12 @@ public class ConfigurableSwingConverter implements Converter
         {
             String path = "xsl/cswing/"+style;
             URL xslurl = ResourceUtil.getResource(path);
-    
-            return new TransformingSAXEventProvider(xslurl, xmlsep);
+
+            TransformingSAXEventProvider tsep = new TransformingSAXEventProvider(xslurl, xmlsep);
+            // TODO(joe): do we need to tsep.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            tsep.setParameter("font", font);
+
+            return tsep;
         }
         catch (MalformedURLException ex)
         {
@@ -93,9 +97,36 @@ public class ConfigurableSwingConverter implements Converter
     }
 
     /**
-     * The current subject
+     * Accessor for the stylesheet we are transforming using
      */
-    protected String subject;
+    public static String getFont()
+    {
+        return font;
+    }
+
+    /**
+     * Accessor for the stylesheet we are transforming using
+     */
+    public static void setFont(String font)
+    {
+        ConfigurableSwingConverter.font = font;
+    }
+
+    /**
+     * Accessor for the stylesheet we are transforming using
+     */
+    public static String getRealFont()
+    {
+        return realfont;
+    }
+
+    /**
+     * Accessor for the stylesheet we are transforming using
+     */
+    public static void setRealFont(String realfont)
+    {
+        ConfigurableSwingConverter.realfont = realfont;
+    }
 
     /**
      * Accessor for the stylesheet we are transforming using
@@ -113,8 +144,15 @@ public class ConfigurableSwingConverter implements Converter
         ConfigurableSwingConverter.style = style;
     }
 
+    private static String realfont;
+
+    /**
+     * The font to be used in OSIS->HTML generation
+     */
+    private static String font = "Serif";
+
     /**
      * The stylesheet we are transforming using
      */
-    protected static String style = "simple.xsl";
+    private static String style = "simple.xsl";
 }

@@ -81,6 +81,8 @@ public class SwordDictionary extends AbstractBook
      */
     public final void activate(Lock lock)
     {
+        super.activate(lock);
+
         set = backend.readIndex();
 
         map = new HashMap();
@@ -91,6 +93,9 @@ public class SwordDictionary extends AbstractBook
         }
 
         global = new ReadOnlyKeyList(set, false);
+
+        // We don't need to activate the backend because it should be capable
+        // of doing it for itself.
     }
 
     /* (non-Javadoc)
@@ -98,9 +103,13 @@ public class SwordDictionary extends AbstractBook
      */
     public final void deactivate(Lock lock)
     {
+        super.deactivate(lock);
+
         map = null;
         set = null;
         global = null;
+
+        Activator.deactivate(backend);
     }
 
     /* (non-Javadoc)

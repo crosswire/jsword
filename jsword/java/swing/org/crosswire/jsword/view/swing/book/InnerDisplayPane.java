@@ -27,8 +27,8 @@ import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 import org.xml.sax.SAXException;
 
 /**
@@ -102,8 +102,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     }
 
                     job.setProgress("Compiling stylesheet");
-                    Converter swing = new SimpleSwingConverter();
-                    swing.convert(provider);
+                    Converter converter = ConverterFactory.getConverter();
+                    converter.convert(provider);
                     if (interrupted())
                     {
                         return;
@@ -162,7 +162,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
 
         BookData data = book.getData(ref);
         SAXEventProvider osissep = data.getSAXEventProvider();
-        SAXEventProvider htmlsep = style.convert(osissep);
+        Converter converter = ConverterFactory.getConverter();
+        SAXEventProvider htmlsep = converter.convert(osissep);
         String text = XMLUtil.writeToString(htmlsep);
 
         txt_view.setText(text);
@@ -290,7 +291,6 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     private Passage ref = null;
 
-    private Converter style = new SimpleSwingConverter();
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();
 }

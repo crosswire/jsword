@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
@@ -43,10 +46,28 @@ public class RawBackend implements Backend
      */
     public RawBackend(String path) throws BookException
     {
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + "ot.vss");
+        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + "ot");
+
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + "nt.vss");
+        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + "nt");
+
+        // It is an error to be neither OT nor NT
+        if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead())
+        {
+            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    public final void activate(Lock lock)
+    {
         try
         {
-            idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot.vss", "r");
-            txt_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot", "r");
+            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], "r");
+            txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], "r");
         }
         catch (FileNotFoundException ex)
         {
@@ -55,32 +76,38 @@ public class RawBackend implements Backend
 
         try
         {
-            idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt.vss", "r");
-            txt_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt", "r");
+            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], "r");
+            txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], "r");
         }
         catch (FileNotFoundException ex)
         {
             // Ignore this might be OT only
         }
+    }
 
-        // It is an error to be neither OT nor NT
-        if (txt_raf[SwordConstants.TESTAMENT_OLD] == null && txt_raf[SwordConstants.TESTAMENT_NEW] == null)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
+        try
         {
-            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
+            idxRaf[SwordConstants.TESTAMENT_OLD].close();
+            txtRaf[SwordConstants.TESTAMENT_OLD].close();
+
+            idxRaf[SwordConstants.TESTAMENT_NEW].close();
+            txtRaf[SwordConstants.TESTAMENT_NEW].close();
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to close files", ex);
         }
 
-        // The original had a dtor that did the equiv of .close()ing the above
-        // I'm not sure that there is a delete type ability in Book.java and
-        // the finalizer for RandomAccessFile will do it anyway so for the
-        // moment I'm going to ignore this.
+        idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+        txtRaf[SwordConstants.TESTAMENT_OLD] = null;
 
-        // The original also stored the path, but I don't think it ever used it
-
-        // The original also kept an instance count, which went unused (and I
-        // noticed in a few other places so it is either c&p or a pattern?
-        // Either way the assumption that there is only one of a static is not
-        // safe in many java environments (servlets, ejbs at least) so I've
-        // deleted it
+        idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+        txtRaf[SwordConstants.TESTAMENT_NEW] = null;
     }
 
     /* (non-Javadoc)
@@ -88,6 +115,8 @@ public class RawBackend implements Backend
      */
     public byte[] getRawText(Key key) throws BookException
     {
+        checkActive();
+
         Verse verse = PassageUtil.getVerse(key);
 
         try
@@ -96,13 +125,13 @@ public class RawBackend implements Backend
             long index = SwordConstants.getIndex(verse);
 
             // If this is a single testament Bible, return nothing.
-            if (idx_raf[testament] == null)
+            if (idxRaf[testament] == null)
             {
                 return new byte[0];
             }
 
             // Read the next ENTRY_SIZE byes.
-            byte[] read = SwordUtil.readRAF(idx_raf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
+            byte[] read = SwordUtil.readRAF(idxRaf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
             if (read == null || read.length == 0)
             {
                 return new byte[0];
@@ -115,7 +144,7 @@ public class RawBackend implements Backend
             // Read from the data file.
             // I wonder if it would be safe to do a readLine() from here.
             // Probably be safer not to risk it since we know how long it is.
-            return SwordUtil.readRAF(txt_raf[testament], start, size);
+            return SwordUtil.readRAF(txtRaf[testament], start, size);
         }
         catch (IOException ex)
         {
@@ -133,14 +162,45 @@ public class RawBackend implements Backend
     }
 
     /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    protected final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
+    }
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(RawBackend.class);
+
+    /**
      * The array of index files
      */
-    private RandomAccessFile[] idx_raf = new RandomAccessFile[3];
+    private RandomAccessFile[] idxRaf = new RandomAccessFile[3];
 
     /**
      * The array of data files
      */
-    private RandomAccessFile[] txt_raf = new RandomAccessFile[3];
+    private RandomAccessFile[] txtRaf = new RandomAccessFile[3];
+
+    /**
+     * The array of index random access files
+     */
+    private File[] idxFile = new File[3];
+
+    /**
+     * The array of data random access files
+     */
+    private File[] txtFile = new File[3];
 
     /**
      * How many bytes in an index?

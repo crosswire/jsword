@@ -67,12 +67,12 @@
     <help>The URL of a remote HTTP host.</help>
   </option>
 
-  <option key="Display.Persistent Naming" type="boolean">
+  <option key="Passages.Persistent Naming" type="boolean">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="PersistentNaming"/>
     <help>True if the passage editor re-writes the references to conform to its notation.</help>
   </option>
 
-  <option key="Display.Blurring Rules" type="int-options">
+  <option key="Passages.Blurring Rules" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.PassageUtil" property="BlurRestriction"/>
     <help>What is the default blurring - Blur across chapter boundaries or not.</help>
     <alternative number="0" name="None"/>
@@ -80,7 +80,7 @@
     <alternative number="2" name="Chapter"/>
   </option>
 
-  <option key="Display.Book Case" type="int-options">
+  <option key="Passages.Book Case" type="int-options">
   	<introspect class="org.crosswire.jsword.passage.BibleInfo" property="Case"/>
     <help>What case should we use to display the references.</help>
     <alternative number="0" name="lower"/>
@@ -107,11 +107,36 @@
     <alternative number="1" name="Multiple Document Interface"/>
   </option>
 
-  <option key="Looks.Stylesheet" type="string-options">
-  	<introspect class="org.crosswire.jsword.view.swing.util.Style" property="ResourceName"/>
-    <help>The style applied to displayed Books</help>
+  <option key="Looks.Converter" type="string-options">
+  	<introspect class="org.crosswire.jsword.util.ConverterFactory" property="CurrentConverter"/>
+    <help>The engine used to genterate the book display</help>
+    <map name="converters"/>
+  </option>
+
+  <option key="Looks.Simple.Stylesheet" type="string-options">
+  	<introspect class="org.crosswire.jsword.view.swing.util.SimpleSwingConverter" property="ResourceName"/>
+    <help>The style applied to displayed Books when using the simple styler.</help>
     <map name="swing-styles"/>
   </option>
+
+  <option key="Looks.Configurable.Stylesheet" type="string-options">
+  	<introspect class="org.crosswire.jsword.view.swing.util.ConfigurableSwingConverter" property="ResourceName"/>
+    <help>The style applied to displayed Books when using the configurable styler.</help>
+    <map name="cswing-styles"/>
+  </option>
+
+  <option key="Looks.Configurable.Font" type="font">
+  	<introspect class="org.crosswire.jsword.view.swing.util.ConfigurableSwingConverter" property="Font"/>
+    <help>The font to be used to display books</help>
+  </option>
+
+  <!--
+  <option key="Looks.Configurable.Font" type="string-options">
+  	<introspect class="org.crosswire.jsword.view.swing.util.ConfigurableSwingConverter" property="RealFont"/>
+    <help>The font to be used to display books</help>
+    <map name="font-names"/>
+  </option>
+  -->
 
   <option key="Advanced.Raw.Cache Data" type="boolean">
   	<introspect class="org.crosswire.jsword.book.raw.RawBook" property="DefaultCacheData"/>
