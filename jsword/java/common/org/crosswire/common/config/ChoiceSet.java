@@ -1,7 +1,8 @@
 
 package org.crosswire.common.config;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
 * A ConfigExtender represents a set of Choices that fit together

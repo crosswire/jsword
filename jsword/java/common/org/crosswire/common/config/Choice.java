@@ -122,4 +122,3 @@ public interface Choice extends Serializable
     /** The lowest level priority generally for system level stuff */
     public static final int PRIORITY_LOWEST = 0;
 }
-
