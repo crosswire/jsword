@@ -7,7 +7,7 @@
 	<classpathentry sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip" kind="lib" path="jar/jaxb-1.0/jaxb-ri.jar"/>
 	<classpathentry sourcepath="/jsword-support/othersource/lucene-1.3-final-src.zip" kind="lib" path="jar/lucene-1.3/lucene-1.3-final.jar"/>
 	<classpathentry sourcepath="/jsword-support/othersource/javatar-2.5.zip" kind="lib" path="jar/jtar-2.5/tar.jar"/>
-	<classpathentry exported="true" sourcepath="target/gener/osis" kind="lib" path="target/ant/jsword-osis.jar"/>
+	<classpathentry exported="true" sourcepath="target/osis/src" kind="lib" path="target/osis/jsword-osis.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/dom.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/sax.jar"/>
 	<classpathentry kind="lib" path="jar/jaxbendorsed-1.0/xalan.jar"/>
