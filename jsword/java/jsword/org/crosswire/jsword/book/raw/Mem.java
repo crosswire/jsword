@@ -64,7 +64,7 @@ public abstract class Mem
         }
         catch (Exception ex)
         {
-            messages.append(""+ex);
+            messages.append(ex.toString());
         }
     }
 

@@ -123,14 +123,14 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         speed = BookMetaData.SPEED_FAST;
-        edition = "";
+        edition = ""; //$NON-NLS-1$
         openness = Openness.UNKNOWN;
         licence = null;
         firstPublished = FIRSTPUB_DEFAULT;
 
         if (name == null)
         {
-            log.warn("Missing description for: "+internal);
+            log.warn("Missing description for: "+internal); //$NON-NLS-1$
             name = internal;
         }
 
@@ -163,13 +163,13 @@ public class SwordBookMetaData implements BookMetaData
         if (mtype != null)
         {
             BookType type = mtype.getBookType();
-            prop.put(KEY_TYPE, type != null ? type.getName() : "");
+            prop.put(KEY_TYPE, type != null ? type.getName() : ""); //$NON-NLS-1$
         }
 
         prop.put(KEY_SPEED, Integer.toString(speed));
         prop.put(KEY_EDITION, edition);
         prop.put(KEY_OPENNESS, openness.getName());
-        prop.put(KEY_LICENCE, licence == null ? "" : licence.toString());
+        prop.put(KEY_LICENCE, licence == null ? "" : licence.toString()); //$NON-NLS-1$
         prop.put(KEY_FIRSTPUB, firstPublished.toString());
     }
 
@@ -243,7 +243,7 @@ public class SwordBookMetaData implements BookMetaData
 
         if (value == null)
         {
-            log.error("Null string (title="+title.getName()+") in array: "+StringUtils.join(array, ", "));
+            log.error("Null string (title="+title.getName()+") in array: "+StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return -1;
         }
         
@@ -256,7 +256,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Some debug to say: no match
-        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", "));
+        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return -1;
     }
 
@@ -280,7 +280,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Some debug to say: no match
-        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", "));
+        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return deft;
     }
 
@@ -301,12 +301,12 @@ public class SwordBookMetaData implements BookMetaData
 
         if (!unlocked)
         {
-            log.warn("Book not supported: " + internal + " because it is locked.");
+            log.warn("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (!named)
         {
-            log.warn("Book not supported: " + internal + " because it has no name.");
+            log.warn("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
         }
             
         if (!workable)
@@ -314,16 +314,16 @@ public class SwordBookMetaData implements BookMetaData
             String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
             if (mtype == null)
             {
-                log.warn("Book not supported: " + internal + " because no ModuleType for " + modTypeName);
+                log.warn("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
                 
             }
             else if (mtype.getBookType() == null)
             {
-                log.warn("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")");
+                log.warn("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             else
             {
-                log.warn("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported.");
+                log.warn("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
 
@@ -377,7 +377,7 @@ public class SwordBookMetaData implements BookMetaData
     private void parseLine(String line)
     {
         String key = null;
-        String value = "";
+        String value = ""; //$NON-NLS-1$
         int eqpos = line.indexOf('=');
         if (eqpos == -1)
         {
@@ -418,7 +418,7 @@ public class SwordBookMetaData implements BookMetaData
             {
                 if (continuation_expected)
                 {
-                    log.warn("Continuation followed by key for " + internal + ": " + line);
+                    log.warn("Continuation followed by key for " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 backup(line);
@@ -426,7 +426,7 @@ public class SwordBookMetaData implements BookMetaData
             }
             else if (!continuation_expected)
             {
-                log.warn("data without previous continuation for " + internal + ": " + line);
+                log.warn("data without previous continuation for " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             buf.append('\n');
@@ -480,7 +480,7 @@ public class SwordBookMetaData implements BookMetaData
         else
         {
             // should never happen
-            log.warn("Backup an empty string for " + internal);
+            log.warn("Backup an empty string for " + internal); //$NON-NLS-1$
         }
     }
 
@@ -499,7 +499,7 @@ public class SwordBookMetaData implements BookMetaData
     {
         if (ConfigEntry.getConfigEntry(key) == null)
         {
-            log.warn("Unknown config entry for " + internal + ": " + key);
+            log.warn("Unknown config entry for " + internal + ": " + key); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // check to see if there already values for this key...
@@ -613,13 +613,13 @@ public class SwordBookMetaData implements BookMetaData
     {
         StringBuffer buf = new StringBuffer(getName());
         String ed = getEdition();
-        if (!ed.equals(""))
+        if (!ed.equals("")) //$NON-NLS-1$
         {
-            buf.append(", ").append(ed);
+            buf.append(", ").append(ed); //$NON-NLS-1$
         }
         if (driver != null)
         {
-            buf.append(" (").append(getDriverName()).append(")");
+            buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return buf.toString();
@@ -630,7 +630,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getOsisID()
     {
-        return getType().getName() + "." + getInitials();
+        return getType().getName() + "." + getInitials(); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -758,9 +758,9 @@ public class SwordBookMetaData implements BookMetaData
     private ModuleType mtype;
     private Book book;
     private BookDriver driver = null;
-    private String name = "";
-    private String edition = "";
-    private String initials = "";
+    private String name = ""; //$NON-NLS-1$
+    private String edition = ""; //$NON-NLS-1$
+    private String initials = ""; //$NON-NLS-1$
     private int speed = BookMetaData.SPEED_SLOWEST;
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;

@@ -1,11 +1,10 @@
-
-package org.crosswire.jsword.book.search;
+package org.crosswire.jsword.util;
 
 import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -27,11 +26,9 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public class Msg extends MsgBase
 {
-    static final Msg SEARCH_INIT = new Msg("Failed to initialise search engine."); //$NON-NLS-1$
-    static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete."); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("Indexing Bible Data"); //$NON-NLS-1$
+    static final Msg NO_CONVERTER = new Msg("No converter called: {0}"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -7,6 +7,7 @@ import java.io.RandomAccessFile;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
@@ -68,20 +69,25 @@ import org.crosswire.jsword.passage.Verse;
  */
 public class GZIPBackend implements Backend
 {
+    private static final String SUFFIX_COMP = "v"; //$NON-NLS-1$
+    private static final String SUFFIX_INDEX = "s"; //$NON-NLS-1$
+    private static final String SUFFIX_PART1 = "z"; //$NON-NLS-1$
+    private static final String SUFFIX_TEXT = "z"; //$NON-NLS-1$
+
     /**
      * Simple ctor
      */
     public GZIPBackend(String path, int blockType) throws BookException
     {
-        String allbutlast = path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "z";
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + "s");
-        textFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + "z");
-        compFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + "v");
+        String allbutlast = path + File.separator + SwordConstants.FILE_OT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + SUFFIX_INDEX);
+        textFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + SUFFIX_TEXT);
+        compFile[SwordConstants.TESTAMENT_OLD] = new File(allbutlast + SUFFIX_COMP);
 
-        allbutlast = path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "z";
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "s");
-        textFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "z");
-        compFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + "v");
+        allbutlast = path + File.separator + SwordConstants.FILE_NT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + SUFFIX_INDEX);
+        textFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + SUFFIX_TEXT);
+        compFile[SwordConstants.TESTAMENT_NEW] = new File(allbutlast + SUFFIX_COMP);
 
         // It is an error to be neither OT nor NT
         if (!textFile[SwordConstants.TESTAMENT_OLD].canRead()
@@ -98,9 +104,9 @@ public class GZIPBackend implements Backend
     {
         try
         {
-            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], "r");
-            textRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_OLD], "r");
-            compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], "r");
+            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+            textRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+            compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
         }
         catch (FileNotFoundException ex)
         {
@@ -109,9 +115,9 @@ public class GZIPBackend implements Backend
 
         try
         {
-            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], "r");
-            textRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_NEW], "r");
-            compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], "r");
+            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+            textRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+            compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
         }
         catch (FileNotFoundException ex)
         {
@@ -138,7 +144,7 @@ public class GZIPBackend implements Backend
         }
         catch (IOException ex)
         {
-            log.error("failed to close files", ex);
+            log.error("failed to close files", ex); //$NON-NLS-1$
         }
 
         idxRaf[SwordConstants.TESTAMENT_OLD] = null;

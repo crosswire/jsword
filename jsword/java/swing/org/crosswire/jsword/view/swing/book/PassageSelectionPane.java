@@ -36,7 +36,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -96,7 +95,7 @@ public class PassageSelectionPane extends JPanel
         }
         catch (MalformedURLException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         jbInit();

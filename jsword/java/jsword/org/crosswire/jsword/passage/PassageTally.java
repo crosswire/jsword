@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
@@ -6,7 +5,6 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 
 /**
  * Similar to a Passage, but that stores a ranking for each of the
@@ -223,7 +221,7 @@ public class PassageTally extends AbstractPassage
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         return retcode.toString();
@@ -261,7 +259,7 @@ public class PassageTally extends AbstractPassage
             while (it.hasNext() && count < max_count)
             {
                 Verse verse = (Verse) it.next();
-                retcode.append(verse.getName()+" ("+(100*it.lastRank()/max)+"%)");
+                retcode.append(verse.getName()+" ("+(100*it.lastRank()/max)+"%)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 count++;
 
@@ -273,7 +271,7 @@ public class PassageTally extends AbstractPassage
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         return retcode.toString();
@@ -587,7 +585,7 @@ public class PassageTally extends AbstractPassage
         }
         catch (CloneNotSupportedException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         if (overflow)
@@ -640,7 +638,7 @@ public class PassageTally extends AbstractPassage
 
         if (restrict != PassageConstants.RESTRICT_NONE)
         {
-            log.warn("Restrict="+restrict+" is not properly supported.");
+            log.warn("Restrict="+restrict+" is not properly supported."); //$NON-NLS-1$ //$NON-NLS-2$
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version
@@ -856,7 +854,8 @@ public class PassageTally extends AbstractPassage
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
+                return new Verse();
             }
         }
 
@@ -929,7 +928,8 @@ public class PassageTally extends AbstractPassage
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
+                return new Verse();
             }
         }
 

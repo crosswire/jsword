@@ -1,11 +1,9 @@
-
 package org.crosswire.jsword.view.swing.passage;
 
 import java.util.Enumeration;
 
 import javax.swing.tree.TreeNode;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
@@ -54,11 +52,11 @@ public class WholeBibleTreeNode implements TreeNode
         {
             Verse start = null;
             Verse end = null;
-            int thislevel;
+            int thislevel = 1;
 
             if (b == -1)
             {
-                throw new LogicError();
+                assert false : b;
             } 
             else if (c == -1)
             {
@@ -87,7 +85,8 @@ public class WholeBibleTreeNode implements TreeNode
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -151,7 +150,7 @@ public class WholeBibleTreeNode implements TreeNode
             switch (level)
             {
             case LEVEL_BIBLE:
-                return "The Bible";
+                return Msg.WHOLE.toString();
 
             case LEVEL_BOOK:
                 return BibleInfo.getLongBookName(range.getStart().getBook());
@@ -163,12 +162,13 @@ public class WholeBibleTreeNode implements TreeNode
                 return Integer.toString(range.getStart().getVerse());
 
             default:
-                return "ERROR";
+                return Msg.Error.toString();
             }
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -224,7 +224,8 @@ public class WholeBibleTreeNode implements TreeNode
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return 0;
         }
     }
 

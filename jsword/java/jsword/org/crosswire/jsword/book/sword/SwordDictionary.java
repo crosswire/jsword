@@ -136,7 +136,7 @@ public class SwordDictionary extends AbstractBook
             catch (UnsupportedEncodingException ex)
             {
                 // It is impossible! In case, use system default...
-                log.error("Encoding: " + charset + " not supported", ex);
+                log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
                 txt = new String(data);
             }
 

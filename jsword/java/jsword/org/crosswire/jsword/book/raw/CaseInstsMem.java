@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.DataInputStream;
@@ -51,7 +50,7 @@ public class CaseInstsMem extends InstsMem
      */
     public CaseInstsMem(RawBook raw, boolean create) throws Exception
     {
-        super(raw, "caseinst.idx", create);
+        super(raw, RawConstants.FILE_CASE_INST, create);
     }
 
     /**
@@ -62,7 +61,7 @@ public class CaseInstsMem extends InstsMem
      */
     public CaseInstsMem(RawBook raw, boolean create, StringBuffer messages)
     {
-        super(raw, "caseinst.idx", create, messages);
+        super(raw, RawConstants.FILE_CASE_INST, create, messages);
     }
 
     /* (non-Javadoc)
@@ -75,8 +74,8 @@ public class CaseInstsMem extends InstsMem
         byte[] asig = new byte[6];
         din.readFully(asig);
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:CI"))
-            throw new IOException("This file is not a CaseInst file");
+
+        assert ssig.equals(RawConstants.SIG_CASE_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
@@ -89,7 +88,9 @@ public class CaseInstsMem extends InstsMem
                 for (int k=0; k<4; k++)
                 {
                     if (j+k < array[i].length)
+                    {
                         array[i][j+k] = (b >> (6-(2*k))) & 3;
+                    }
                 }
             }
         }
@@ -104,7 +105,7 @@ public class CaseInstsMem extends InstsMem
     {
         DataOutputStream dout = new DataOutputStream(out);
 
-        dout.writeBytes("RAW:CI");
+        dout.writeBytes(RawConstants.SIG_CASE_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
@@ -122,7 +123,9 @@ public class CaseInstsMem extends InstsMem
                     for (int k=0; k<4; k++)
                     {
                         if (j+k < array[i].length)
+                        {
                             b += array[i][j+k] << (6-(2*k));
+                        }
                     }
 
                     dout.writeByte(b);

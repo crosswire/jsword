@@ -11,7 +11,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
@@ -76,67 +75,67 @@ public class JAXBUtil
     /**
      * The package into which JAXB generates its stuff
      */
-    protected static final String OSIS_PACKAGE = "org.crosswire.jsword.osis";
+    protected static final String OSIS_PACKAGE = "org.crosswire.jsword.osis"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the bold tag
      */
-    public static final String SEG_BOLD = "font-weight: bold;";
+    public static final String SEG_BOLD = "font-weight: bold;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the italic tag
      */
-    public static final String SEG_ITALIC = "font-style: italic;";
+    public static final String SEG_ITALIC = "font-style: italic;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the underline tag
      */
-    public static final String SEG_UNDERLINE = "text-decoration: underline;";
+    public static final String SEG_UNDERLINE = "text-decoration: underline;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the justify right tag
      */
-    public static final String SEG_JUSTIFYRIGHT = "text-align: right;";
+    public static final String SEG_JUSTIFYRIGHT = "text-align: right;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the justify right tag
      */
-    public static final String SEG_CENTER = "text-align: center;";
+    public static final String SEG_CENTER = "text-align: center;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the small tag
      */
-    public static final String SEG_SMALL = "font-size: small;";
+    public static final String SEG_SMALL = "font-size: small;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the sup tag
      */
-    public static final String SEG_SUPERSCRIPT = "vertical-align: super;";
+    public static final String SEG_SUPERSCRIPT = "vertical-align: super;"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the color tag
      */
-    public static final String SEG_COLORPREFIX = "color: ";
+    public static final String SEG_COLORPREFIX = "color: "; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the font-size tag
      */
-    public static final String SEG_SIZEPREFIX = "font-size: ";
+    public static final String SEG_SIZEPREFIX = "font-size: "; //$NON-NLS-1$
 
     /**
      * Constant for the study note type
      */
-    public static final String NOTETYPE_STUDY = "x-StudyNote";
+    public static final String NOTETYPE_STUDY = "x-StudyNote"; //$NON-NLS-1$
 
     /**
      * Constant for a Strongs numbering lemma
      */
-    public static final String LEMMA_STRONGS = "x-Strongs:";
+    public static final String LEMMA_STRONGS = "x-Strongs:"; //$NON-NLS-1$
 
     /**
      * Constant for Strongs numbering morphology
      */
-    public static final String MORPH_STRONGS = "x-StrongsMorph:T";
+    public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
 
     /**
      * The JAXB worker factory
@@ -162,12 +161,12 @@ public class JAXBUtil
     {
         try
         {
-            Properties test = Project.instance().getProperties("org/crosswire/jsword/osis/jaxb");
+            Properties test = Project.instance().getProperties("org/crosswire/jsword/osis/jaxb"); //$NON-NLS-1$
             for (Iterator it = test.keySet().iterator(); it.hasNext();)
             {
                 String key = (String) it.next();
                 String val = (String) test.get(key);
-                log.debug("jaxb: "+key+"="+val);
+                log.debug("jaxb: "+key+"="+val); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             jc = JAXBContext.newInstance(OSIS_PACKAGE);
@@ -175,7 +174,7 @@ public class JAXBUtil
         }
         catch (Exception ex)
         {
-            log.fatal("Failed to test JAXB", ex);
+            log.fatal("Failed to test JAXB", ex); //$NON-NLS-1$
             initex = ex;
         }
     }
@@ -313,8 +312,8 @@ public class JAXBUtil
             return new ArrayList();
         }
         
-        log.error("unknown element: "+ele.getClass().getName());
-        throw new LogicError();
+        assert false : "unknown element: "+ele.getClass().getName(); //$NON-NLS-1$
+        return new ArrayList();
     }
 
     /**
@@ -456,7 +455,7 @@ public class JAXBUtil
         }
         else
         {
-            log.error("unknown type: "+sub.getClass().getName());
+            log.error("unknown type: "+sub.getClass().getName()); //$NON-NLS-1$
         }
     }
 
@@ -480,7 +479,7 @@ public class JAXBUtil
         catch (Exception ex)
         {
             // We can continue, but we should report a problem
-            log.error("Error interrogating: "+ele.getClass().getName(), ex);
+            log.error("Error interrogating: "+ele.getClass().getName(), ex); //$NON-NLS-1$
         }
     }
 }

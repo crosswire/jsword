@@ -50,7 +50,7 @@ public class SerBookDriver extends AbstractBookDriver
 
             if (!NetUtil.isDirectory(dir))
             {
-                log.debug("Missing ser directory: "+dir.toExternalForm());
+                log.debug("Missing ser directory: "+dir.toExternalForm()); //$NON-NLS-1$
                 return new BookMetaData[0];
             }
 
@@ -69,7 +69,7 @@ public class SerBookDriver extends AbstractBookDriver
             for (int i=0; i<names.length; i++)
             {
                 URL url = NetUtil.lengthenURL(dir, names[i]);
-                URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
+                URL prop_url = NetUtil.lengthenURL(url, "bible.properties"); //$NON-NLS-1$
 
                 Properties prop = new Properties();
                 prop.load(prop_url.openStream());
@@ -93,7 +93,7 @@ public class SerBookDriver extends AbstractBookDriver
      */
     public String getDriverName()
     {
-        return "ser";
+        return "ser"; //$NON-NLS-1$
     }
 
     /**

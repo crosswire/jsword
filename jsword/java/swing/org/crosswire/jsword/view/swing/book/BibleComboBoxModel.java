@@ -4,7 +4,6 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
@@ -52,7 +51,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
             break;
 
@@ -65,7 +64,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
             break;
 
         default:
-            throw new LogicError();
+            assert false : level;
         }
     }
 
@@ -97,12 +96,12 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
                 break;
     
             default:
-                throw new LogicError();
+                assert false : level;
             }
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         this.selected = selected;
@@ -135,12 +134,14 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
                 return BibleInfo.versesInChapter(set.getVerse().getBook(), set.getVerse().getChapter());
             
             default:
-                throw new LogicError();
+                assert false : level;
+                return 0;
             }
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return 0;
         }
     }
 
@@ -161,12 +162,14 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
                 return new Integer(index+1);
 
             default:
-                throw new LogicError();
+                assert false : level;
+                return null;
             }
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -198,7 +201,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
     }
 
@@ -225,7 +228,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
     }
 

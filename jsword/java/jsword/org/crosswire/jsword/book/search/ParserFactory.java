@@ -51,7 +51,7 @@ public class ParserFactory
         }
         catch (Exception ex)
         {
-            log.error("createParser failed", ex);
+            log.error("createParser failed", ex); //$NON-NLS-1$
             throw new InstantiationException();
         }
     }

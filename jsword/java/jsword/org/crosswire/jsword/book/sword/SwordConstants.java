@@ -39,6 +39,46 @@ public class SwordConstants
     }
 
     /**
+     * New testament data files
+     */
+    public static final String FILE_NT = "nt"; //$NON-NLS-1$
+
+    /**
+     * Old testament data files
+     */
+    public static final String FILE_OT = "ot"; //$NON-NLS-1$
+
+    /**
+     * Index(?) file extensions
+     */
+    public static final String EXTENSION_VSS = ".vss"; //$NON-NLS-1$
+    
+    /**
+     * Extension for index files
+     */
+    public static final String EXTENSION_INDEX = ".idx"; //$NON-NLS-1$
+
+    /**
+     * Extension for data files
+     */
+    public static final String EXTENSION_DATA = ".dat"; //$NON-NLS-1$
+
+    /**
+     * Extension for config files
+     */
+    public static final String EXTENSION_CONF = ".conf"; //$NON-NLS-1$
+
+    /**
+     * The data directory
+     */
+    public static final String DIR_DATA = "modules"; //$NON-NLS-1$
+
+    /**
+     * The configuration directory
+     */
+    public static final String DIR_CONF = "mods.d"; //$NON-NLS-1$
+
+    /**
      * constant for the introduction
      */
     static final int TESTAMENT_INTRO = 0;
@@ -65,9 +105,9 @@ public class SwordConstants
      */
     static final String[] BLOCK_STRINGS =
     {
-        "BOOK",
-        "CHAPTER",
-        "VERSE",
+        "BOOK", //$NON-NLS-1$
+        "CHAPTER", //$NON-NLS-1$
+        "VERSE", //$NON-NLS-1$
     };
 
     /**
@@ -80,7 +120,11 @@ public class SwordConstants
     /**
      * Strings for compression type matching
      */
-    static final String[] COMPRESSION_STRINGS = { "ZIP", "LZSS" };
+    static final String[] COMPRESSION_STRINGS =
+    {
+        "ZIP", //$NON-NLS-1$
+        "LZSS", //$NON-NLS-1$
+    };
 
     /**
      * Constants for global option filter
@@ -106,10 +150,27 @@ public class SwordConstants
      */
     static final String[] GOF_STRINGS =
     {
-        "GBFStrongs",  "GBFFootnotes",  "GBFScripref",  "GBFMorph",  "GBFHeadings",  "GBFRedLetterWords",
-        "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "THMLLemma",
-        "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewVowels",
-        "OSISStrongs", "OSISFootnotes",                 "OSISMorph", "OSISHeadings", "OSISRedLetterWords",
+        "GBFStrongs", //$NON-NLS-1$
+        "GBFFootnotes", //$NON-NLS-1$
+        "GBFScripref", //$NON-NLS-1$
+        "GBFMorph", //$NON-NLS-1$
+        "GBFHeadings", //$NON-NLS-1$
+        "GBFRedLetterWords", //$NON-NLS-1$
+        "ThMLStrongs", //$NON-NLS-1$
+        "ThMLFootnotes", //$NON-NLS-1$
+        "ThMLScripref", //$NON-NLS-1$
+        "ThMLMorph", //$NON-NLS-1$
+        "ThMLHeadings", //$NON-NLS-1$
+        "ThMLVariants", //$NON-NLS-1$
+        "THMLLemma", //$NON-NLS-1$
+        "UTF8Cantillation", //$NON-NLS-1$
+        "UTF8GreekAccents", //$NON-NLS-1$
+        "UTF8HebrewVowels", //$NON-NLS-1$
+        "OSISStrongs", //$NON-NLS-1$
+        "OSISFootnotes", //$NON-NLS-1$
+        "OSISMorph", //$NON-NLS-1$
+        "OSISHeadings", //$NON-NLS-1$
+        "OSISRedLetterWords", //$NON-NLS-1$
     };
 
     /**
@@ -122,7 +183,12 @@ public class SwordConstants
     /**
      * Strings for direction
      */
-    static final String[] DIRECTION_STRINGS = { "LtoR", "RtoL", "bidi" };
+    static final String[] DIRECTION_STRINGS =
+    {
+        "LtoR", //$NON-NLS-1$
+        "RtoL", //$NON-NLS-1$
+        "bidi" //$NON-NLS-1$
+    };
 
     /**
      * Constants for source type
@@ -135,7 +201,13 @@ public class SwordConstants
     /**
      * Strings for source type
      */
-    static final String[] SOURCE_STRINGS = { "Plaintext", "GBF", "ThML", "OSIS" };
+    static final String[] SOURCE_STRINGS =
+    {
+        "Plaintext", //$NON-NLS-1$
+        "GBF", //$NON-NLS-1$
+        "ThML", //$NON-NLS-1$
+        "OSIS", //$NON-NLS-1$
+    };
 
     /**
      * constants for encoding
@@ -146,8 +218,21 @@ public class SwordConstants
     /**
      * Strings for encoding
      */
-    static final String[] ENCODING_STRINGS = { "Latin-1", "UTF-8", "SCSU", "UTF-16" };
-    static final String[] ENCODING_JAVA = { "ISO-8859-1", "UTF-8", "SCSU", "UTF-16" };
+    static final String[] ENCODING_STRINGS =
+    {
+        "Latin-1", //$NON-NLS-1$
+        "UTF-8", //$NON-NLS-1$
+        "SCSU", //$NON-NLS-1$
+        "UTF-16" //$NON-NLS-1$
+    };
+
+    static final String[] ENCODING_JAVA =
+    {
+        "ISO-8859-1", //$NON-NLS-1$
+        "UTF-8", //$NON-NLS-1$
+        "SCSU", //$NON-NLS-1$
+        "UTF-16", //$NON-NLS-1$
+    };
 
     /**
      * Constants for feature
@@ -165,8 +250,13 @@ public class SwordConstants
      */
     static final String[] FEATURE_STRINGS =
     {
-        "StrongsNumbers", "GreekDef", "HebrewDef",
-        "GreekParse", "HebrewParse", "DailyDevotion", "Glossary"
+        "StrongsNumbers", //$NON-NLS-1$
+        "GreekDef", //$NON-NLS-1$
+        "HebrewDef", //$NON-NLS-1$
+        "GreekParse", //$NON-NLS-1$
+        "HebrewParse", //$NON-NLS-1$
+        "DailyDevotion", //$NON-NLS-1$
+        "Glossary", //$NON-NLS-1$
     };
 
     /**
@@ -194,10 +284,10 @@ public class SwordConstants
      */
     static final String[] DISTIBUTION_LICENSE_STRINGS =
     {
-        "public domain",
-        "copyrighted but free for distribution",
-        "copyrighted by licensed for distribution by crosswire",
-        "copyrighted"
+        "public domain", //$NON-NLS-1$
+        "copyrighted but free for distribution", //$NON-NLS-1$
+        "copyrighted by licensed for distribution by crosswire", //$NON-NLS-1$
+        "copyrighted" //$NON-NLS-1$
     };
 
     /**
@@ -264,7 +354,7 @@ public class SwordConstants
      * The start of the new testament
      */
     static final int ORDINAL_MAT11 = new Verse(BibleInfo.Names.MATTHEW, 1, 1, true).getOrdinal();
-    
+
     /**
      * initialise our LUTs with data shamelessly stolen from our sister project (Sword)
      * taken from canon.h.

@@ -54,13 +54,13 @@ public class SwordUtil
     {
         if (offset + size > raf.length())
         {
-            DataPolice.report("Need to reduce size to avoid EOFException. offset="+offset+" size="+size+" but raf.length="+raf.length());
+            DataPolice.report("Need to reduce size to avoid EOFException. offset="+offset+" size="+size+" but raf.length="+raf.length()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             size = (int) (raf.length() - offset);
         }
 
         if (size < 1)
         {
-            DataPolice.report("Nothing to read returning empty because size="+size);
+            DataPolice.report("Nothing to read returning empty because size="+size); //$NON-NLS-1$
             return new byte[0];
         }
 
@@ -99,7 +99,7 @@ public class SwordUtil
 
         if (result > Integer.MAX_VALUE)
         {
-            log.warn("loss of precision converting to integer from "+result+" to "+((int) result));
+            log.warn("loss of precision converting to integer from "+result+" to "+((int) result)); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return (int) result;
@@ -164,7 +164,7 @@ public class SwordUtil
         
         if (!decompressor.finished() || realendsize != endsize)
         {
-            throw new BookException(Msg.GZIP_FORMAT, new Object[] { "wrong uncompressed size", });
+            throw new BookException(Msg.GZIP_FORMAT);
         }
     
         return uncompressed;

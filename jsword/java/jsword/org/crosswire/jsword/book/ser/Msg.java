@@ -28,9 +28,9 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg READ_ERROR = new Msg("Read Error.");
-    static final Msg WRITE_ERROR = new Msg("Write Error.");
-    static final Msg SER_INIT = new Msg("Initialisation error.");
+    static final Msg READ_ERROR = new Msg("Read Error."); //$NON-NLS-1$
+    static final Msg WRITE_ERROR = new Msg("Write Error."); //$NON-NLS-1$
+    static final Msg SER_INIT = new Msg("Initialisation error."); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

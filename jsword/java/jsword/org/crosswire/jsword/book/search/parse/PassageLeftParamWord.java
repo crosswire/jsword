@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.Iterator;
@@ -65,7 +64,7 @@ public class PassageLeftParamWord implements ParamWord
             if (paren_level == 0) break;
 
             buff.append(word);
-            buff.append(" ");
+            buff.append(" "); //$NON-NLS-1$
         }
 
         try

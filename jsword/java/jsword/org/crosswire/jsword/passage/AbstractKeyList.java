@@ -92,14 +92,14 @@ public abstract class AbstractKeyList implements KeyList
             
             if (keyname.indexOf(',') != -1)
             {
-                log.warn("getName() will break because a key contains the , char");
+                log.warn("getName() will break because a key contains the , char"); //$NON-NLS-1$
             }
 
             buffer.append(keyname);
             
             if (it.hasNext())
             {
-                buffer.append(", ");
+                buffer.append(", "); //$NON-NLS-1$
             }
         }
 

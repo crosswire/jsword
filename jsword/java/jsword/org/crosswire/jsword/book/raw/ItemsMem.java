@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
@@ -10,6 +9,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.crosswire.common.util.Logger;
 
 /**
  * ItemsMem is a Base implementation of the Items interface using the in
@@ -81,12 +82,12 @@ public abstract class ItemsMem extends Mem implements Items
      */
     protected void defaultLoad(InputStream in) throws IOException, ClassNotFoundException
     {
-        ObjectInputStream obj_in = new ObjectInputStream(in);
+        ObjectInputStream objIn = new ObjectInputStream(in);
 
-        hash = (Hashtable) obj_in.readObject();
-        array = (String[]) obj_in.readObject();
-        count = obj_in.readInt();
-        obj_in.close();
+        hash = (Hashtable) objIn.readObject();
+        array = (String[]) objIn.readObject();
+        count = objIn.readInt();
+        objIn.close();
     }
 
     /**
@@ -97,12 +98,12 @@ public abstract class ItemsMem extends Mem implements Items
      */
     protected void defaultSave(OutputStream out) throws IOException
     {
-        ObjectOutputStream obj_out = new ObjectOutputStream(out);
+        ObjectOutputStream objOut = new ObjectOutputStream(out);
 
-        obj_out.writeObject(hash);
-        obj_out.writeObject(array);
-        obj_out.writeInt(count);
-        obj_out.close();
+        objOut.writeObject(hash);
+        objOut.writeObject(array);
+        objOut.writeInt(count);
+        objOut.close();
     }
 
     /* (non-Javadoc)
@@ -124,7 +125,8 @@ public abstract class ItemsMem extends Mem implements Items
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
-            return "#"+index+"#";
+            log.error("illegal index: "+index); //$NON-NLS-1$
+            return "#"+index+"#"; //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -135,7 +137,9 @@ public abstract class ItemsMem extends Mem implements Items
     {
         Object obj = hash.get(data);
         if (obj != null)
+        {
             return ((Integer) obj).intValue();
+        }
 
         if (create)
         {
@@ -189,4 +193,9 @@ public abstract class ItemsMem extends Mem implements Items
      * The number of items so far
      */
     protected int count = 0;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ItemsMem.class);
 }

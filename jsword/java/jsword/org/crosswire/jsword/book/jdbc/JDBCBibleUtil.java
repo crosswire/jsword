@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.jdbc;
 
 import org.apache.commons.lang.StringUtils;
@@ -58,7 +57,7 @@ public class JDBCBibleUtil
             retcode.setCharAt(start, y);
         }
 
-        return ""+retcode;
+        return retcode.toString();
     }
 
     /**
@@ -66,25 +65,25 @@ public class JDBCBibleUtil
      */
     protected static String processText(String text)
     {
-        text = chop1(text, "{", "}");
-        text = chop2(text, "<", ">");
-        text = chop2(text, "(", ")");
-        text = StringUtils.replace(text, "[", "");
-        text = StringUtils.replace(text, "]", "");
+        text = chop1(text, "{", "}"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = chop2(text, "<", ">"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = chop2(text, "(", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, "[", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, "]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-        text = StringUtils.replace(text, "    ", " ");
-        text = StringUtils.replace(text, "   ", " ");
-        text = StringUtils.replace(text, "  ", " ");
+        text = StringUtils.replace(text, "    ", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, "   ", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, "  ", " "); //$NON-NLS-1$ //$NON-NLS-2$
 
-        text = StringUtils.replace(text, " ,", ",");
-        text = StringUtils.replace(text, " .", ".");
-        text = StringUtils.replace(text, " !", "!");
-        text = StringUtils.replace(text, " ?", "?");
-        text = StringUtils.replace(text, " :", ":");
-        text = StringUtils.replace(text, " ;", ";");
-        text = StringUtils.replace(text, " '", "'");
-        text = StringUtils.replace(text, " )", ")");
-        text = StringUtils.replace(text, " -", "-");
+        text = StringUtils.replace(text, " ,", ","); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " .", "."); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " !", "!"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " ?", "?"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " :", ":"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " ;", ";"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " '", "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " )", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        text = StringUtils.replace(text, " -", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 
         text = text.trim();
 
@@ -112,13 +111,13 @@ public class JDBCBibleUtil
                 }
                 else
                 {
-                    throw new IllegalArgumentException("Unmatched or nested delimitters");
+                    throw new IllegalArgumentException(Msg.DELIM_UNMATCHED.toString());
                 }
             }
 
             if (next_end == -1)
             {
-                throw new IllegalArgumentException("Unmatched or nested delimitters");
+                throw new IllegalArgumentException(Msg.DELIM_NESTED.toString());
             }
 
             orig = orig.substring(0, next_start)
@@ -177,12 +176,14 @@ public class JDBCBibleUtil
         }
         catch (StringIndexOutOfBoundsException ex)
         {
-            log.warn("orig="+orig+" end_delim="+end_delim+" end_delim="+end_delim);
+            log.warn("orig="+orig+" end_delim="+end_delim+" end_delim="+end_delim); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             Reporter.informUser(JDBCBibleUtil.class, ex);
-            return "Error";
+            return Msg.ERROR.toString();
         }
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(JDBCBibleUtil.class);
 }

@@ -1,9 +1,7 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Verse;
 
@@ -58,7 +56,7 @@ public abstract class InstsDisk extends Disk implements Insts
         }
         catch (Exception ex)
         {
-            messages.append(""+ex);
+            messages.append(""+ex); //$NON-NLS-1$
         }
     }
 
@@ -99,8 +97,7 @@ public abstract class InstsDisk extends Disk implements Insts
      */
     public void save()
     {
-        // You must use a WordInstsMem to write data
-        throw new LogicError();
+        assert false : "You must use a WordInstsMem to write data"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -116,7 +113,7 @@ public abstract class InstsDisk extends Disk implements Insts
      */
     public void setIndexes(int[] indexes, Verse verse)
     {
-        throw new Error("You must use a PuncInstsMem to write data");
+        assert false : "You must use a PuncInstsMem to write data"; //$NON-NLS-1$
     }
 
     /**

@@ -64,7 +64,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     {
         try
         {
-            url = NetUtil.lengthenURL(newurl, "lucene");
+            url = NetUtil.lengthenURL(newurl, DIR_LUCENE);
             book = newbible;
 
             if (isIndexed())
@@ -170,7 +170,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
             return false;
         }
 
-        URL index = NetUtil.lengthenURL(url, "segments");
+        URL index = NetUtil.lengthenURL(url, DIR_SEGMENTS);
         return NetUtil.isFile(index);
     }
 
@@ -202,11 +202,11 @@ public class LuceneSearchEngine extends AbstractSearchEngine
             if (percent != newpercent)
             {
                 percent = newpercent;
-                job.setProgress(percent, "Indexing verse: "+verse.getName());
+                job.setProgress(percent, Msg.INDEXING.toString(verse.getName()));
             }
         }
 
-        job.setProgress(percent, "Optimizing");
+        job.setProgress(percent, Msg.OPTIMIZING.toString());
 
         writer.optimize();
         writer.close();
@@ -232,14 +232,24 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     }
 
     /**
+     * The lucene search index directory
+     */
+    private static final String DIR_LUCENE = "lucene"; //$NON-NLS-1$
+
+    /**
+     * The segments directory
+     */
+    private static final String DIR_SEGMENTS = "segments"; //$NON-NLS-1$
+
+    /**
      * The Lucene field for the verse name
      */
-    private static final String FIELD_NAME = "name";
+    private static final String FIELD_NAME = "name"; //$NON-NLS-1$
 
     /**
      * The Lucene field for the verse contents
      */
-    private static final String FIELD_BODY = "body";
+    private static final String FIELD_BODY = "body"; //$NON-NLS-1$
 
     /**
      * The Book that we are indexing

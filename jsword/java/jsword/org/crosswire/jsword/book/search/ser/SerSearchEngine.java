@@ -13,6 +13,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.crosswire.common.progress.Job;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
@@ -102,7 +103,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         checkActive();
 
         word = word.toLowerCase();
-        SortedMap submap = datamap.subMap(word, word + "\u9999");
+        SortedMap submap = datamap.subMap(word, word + "\u9999"); //$NON-NLS-1$
         return submap.keySet().iterator();
     }
 
@@ -142,10 +143,10 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         }
         catch (Exception ex)
         {
-            log.warn("Search failed on:");
-            log.warn("  word=" + word);
-            log.warn("  offset=" + section.offset);
-            log.warn("  length=" + section.length);
+            log.warn("Search failed on:"); //$NON-NLS-1$
+            log.warn("  word=" + word); //$NON-NLS-1$
+            log.warn("  offset=" + section.offset); //$NON-NLS-1$
+            log.warn("  length=" + section.length); //$NON-NLS-1$
             Reporter.informUser(this, ex);
 
             return PassageFactory.createPassage();
@@ -162,7 +163,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             return false;
         }
 
-        URL indexIn = NetUtil.lengthenURL(url, "ref.index");
+        URL indexIn = NetUtil.lengthenURL(url, FILE_INDEX);
         return NetUtil.isFile(indexIn);
     }
 
@@ -173,10 +174,10 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     {
         try
         {
-            URL dataUrl = NetUtil.lengthenURL(url, "ref.data");
-            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "r");
+            URL dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_READ);
 
-            URL indexUrl = NetUtil.lengthenURL(url, "ref.index");
+            URL indexUrl = NetUtil.lengthenURL(url, FILE_INDEX);
             BufferedReader indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
 
             while (true)
@@ -189,8 +190,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
 
                 try
                 {
-                    int colon1 = line.indexOf(":");
-                    int colon2 = line.lastIndexOf(":");
+                    int colon1 = line.indexOf(":"); //$NON-NLS-1$
+                    int colon2 = line.lastIndexOf(":"); //$NON-NLS-1$
                     String word = line.substring(0, colon1);
 
                     long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
@@ -201,13 +202,13 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 }
                 catch (NumberFormatException ex)
                 {
-                    log.error("NumberFormatException reading line: "+line, ex);
+                    log.error("NumberFormatException reading line: "+line, ex); //$NON-NLS-1$
                 }
             }
         }
         catch (IOException ex)
         {
-            log.error("Read failed on indexin", ex);
+            log.error("Read failed on indexin", ex); //$NON-NLS-1$
         }
     }
 
@@ -242,7 +243,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 if (percent != newpercent)
                 {
                     percent = newpercent;
-                    job.setProgress(percent, "Finding Words ("+verse.getName()+")");
+                    job.setProgress(percent, Msg.FINDING_WORDS.toString(verse.getName()));
                 }
 
                 // loop through all the words in this verse
@@ -274,7 +275,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             catch (Exception ex)
             {
                 errors++;
-                log.error("Error reading "+verse.getName()+" in "+book.getBookMetaData().getFullName()+": errors="+errors, ex);
+                log.error("Error reading "+verse.getName()+" in "+book.getBookMetaData().getFullName()+": errors="+errors, ex); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 if (errors > MAX_ERRORS)
                 {
                     throw new BookException(Msg.REPEATED_READ_ERROR, ex);
@@ -290,8 +291,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         try
         {
             NetUtil.makeDirectory(url);
-            URL dataUrl = NetUtil.lengthenURL(url, "ref.data");
-            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "rw");
+            URL dataUrl = NetUtil.lengthenURL(url, FILE_DATA);
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_WRITE);
         }
         catch (IOException ex)
         {
@@ -309,7 +310,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             if (percent != newpercent)
             {
                 percent = newpercent;
-                job.setProgress(percent, "Writing Words ("+word+")");
+                job.setProgress(percent, Msg.WRITING_WORDS.toString(word));
             }
 
             // This could take a long time ...
@@ -323,17 +324,17 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         // Store the indexes on disk
         try
         {
-            job.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
+            job.setProgress(PERCENT_READ + PERCENT_WRITE, Msg.SAVING.toString());
 
             // Save the ascii Passage index
-            URL indexurl = NetUtil.lengthenURL(url, "ref.index");
+            URL indexurl = NetUtil.lengthenURL(url, FILE_INDEX);
             PrintWriter indexout = new PrintWriter(NetUtil.getOutputStream(indexurl));
             Iterator it = datamap.keySet().iterator();
             while (it.hasNext())
             {
                 String word = (String) it.next();
                 Section section = (Section) datamap.get(word);
-                indexout.println(word + ":" + section.offset + ":" + section.length);
+                indexout.println(word + ":" + section.offset + ":" + section.length); //$NON-NLS-1$ //$NON-NLS-2$
             }
             indexout.close();
         }
@@ -369,6 +370,16 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             throw new BookException(Msg.WRITE_ERROR, ex);
         }
     }
+
+    /**
+     * The name of the data file
+     */
+    private static final String FILE_DATA = "ref.data"; //$NON-NLS-1$
+
+    /**
+     * The name of the index file
+     */
+    private static final String FILE_INDEX = "ref.index"; //$NON-NLS-1$
 
     /**
      * The Bible we are indexing

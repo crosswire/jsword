@@ -54,8 +54,8 @@ import org.crosswire.jsword.util.Project;
  */
 public class Splash extends JWindow
 {
-    private static final String SPLASH_FONT = "SanSerif";
-    private static final String THUMB_COLOR = "ScrollBar.thumbHighlight";
+    private static final String SPLASH_FONT = "SanSerif"; //$NON-NLS-1$
+    private static final String THUMB_COLOR = "ScrollBar.thumbHighlight"; //$NON-NLS-1$
 
     /**
      * Create a splash window

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.passage;
 
 import java.util.Iterator;
@@ -9,7 +8,6 @@ import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.common.util.LogicError;
 
 /**
  * PassageTableModel.
@@ -79,7 +77,7 @@ public class ChapterTreeNode extends BookTreeNode
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
         }
     }
@@ -91,14 +89,18 @@ public class ChapterTreeNode extends BookTreeNode
     {
         try
         {
-            if (kids[i] != null) return kids[i];
+            if (kids[i] != null)
+            {
+                return kids[i];
+            }
 
             kids[i] = new VerseTreeNode(this, book, chapter, i+1);
             return kids[i];
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -110,7 +112,9 @@ public class ChapterTreeNode extends BookTreeNode
     public int getIndex(TreeNode node)
     {
         if (!(node instanceof VerseTreeNode))
+        {
             return -1;
+        }
 
         VerseTreeNode verse = (VerseTreeNode) node;
         return verse.getVerse();
@@ -124,16 +128,23 @@ public class ChapterTreeNode extends BookTreeNode
         try
         {
             String Passage_num = ""+chapter; //$NON-NLS-1$
-            if (ref == null) return Passage_num;
+            if (ref == null)
+            {
+                return Passage_num;
+            }
 
             int verses = ref.versesInPassage(book, chapter);
-            if (verses == 0) return Passage_num;
+            if (verses == 0)
+            {
+                return Passage_num;
+            }
 
             return Passage_num + " (" + verses + ")";  //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -145,7 +156,9 @@ public class ChapterTreeNode extends BookTreeNode
         return chapter;
     }
 
-    /** The Book that this node referrs to */
+    /**
+     * The Book that this node referrs to
+     */
     protected int chapter = 0;
 }
 

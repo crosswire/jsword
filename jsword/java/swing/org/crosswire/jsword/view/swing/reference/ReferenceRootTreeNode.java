@@ -70,7 +70,7 @@ public class ReferenceRootTreeNode implements TreeNode
      */
     public String toString()
     {
-        return "Reference Works";
+        return "Reference Works"; //$NON-NLS-1$
     }
 
     /**

@@ -36,7 +36,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
@@ -484,12 +483,12 @@ public class EditSitePane extends JPanel
             break;
 
         default:
-            throw new LogicError();
+            assert false : state;
         }
 
         if (message == null || message.trim().length() == 0)
         {
-            lblMesg.setText(" ");
+            lblMesg.setText(" "); //$NON-NLS-1$
         }
         else
         {

@@ -120,7 +120,7 @@ public class Defaults
     {
         if (name == null || name.length() == 0)
         {
-            log.warn("Attempt to set empty Bible as default. Ignoring");
+            log.warn("Attempt to set empty Bible as default. Ignoring"); //$NON-NLS-1$
             return;
         }
 
@@ -173,7 +173,7 @@ public class Defaults
                 {
                     bdeft = bmd;
                     autobdeft = true;
-                    log.debug("setting as default bible since speed="+bdeft.getSpeed());
+                    log.debug("setting as default bible since speed="+bdeft.getSpeed()); //$NON-NLS-1$
                 }
             }
         }

@@ -148,7 +148,7 @@ public class ReadingsKey implements Key
     /**
      * Date formatter
      */
-    private static final DateFormat DF = new SimpleDateFormat("d MMMM");
+    private static final DateFormat DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
     static
     {
         DF.setLenient(true);

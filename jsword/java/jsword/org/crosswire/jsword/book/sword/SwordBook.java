@@ -84,7 +84,7 @@ public class SwordBook extends PassageAbstractBook
         catch (UnsupportedEncodingException ex)
         {
             // It is impossible! In case, use system default...
-            log.error("Encoding: " + charset + " not supported", ex);
+            log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
             return new String(data);
         }
     }

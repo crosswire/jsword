@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;

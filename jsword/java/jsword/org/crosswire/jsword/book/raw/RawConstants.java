@@ -1,9 +1,7 @@
 package org.crosswire.jsword.book.raw;
 
-import org.crosswire.common.util.MsgBase;
-
 /**
- * Compile safe Msg resource settings.
+ * Various constants for RawBooks.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,20 +24,30 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public class RawConstants
 {
-    static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
-    static final Msg INIT_FAIL = new Msg("Failed to initialise Raw driver"); //$NON-NLS-1$
-    static final Msg FLUSH_FAIL = new Msg("Failed to flush data."); //$NON-NLS-1$
-    static final Msg FIND_FAIL = new Msg("Failed to find data."); //$NON-NLS-1$
-    static final Msg SEARCH_FAIL = new Msg("Could not start search engine"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry."); //$NON-NLS-1$
+    static final String SIG_PARA_INST = "RAW:AI"; //$NON-NLS-1$
+    static final String SIG_PUNC_INST = "RAW:PI"; //$NON-NLS-1$
+    static final String SIG_CASE_INST = "RAW:CI"; //$NON-NLS-1$
+    static final String SIG_WORD_INST = "RAW:WI"; //$NON-NLS-1$
 
+    static final String SIG_PUNC_ITEM = "RAW:PR"; //$NON-NLS-1$
+    static final String SIG_WORD_ITEM = "RAW:WR"; //$NON-NLS-1$
+
+    static final String FILE_PARA_INST = "parainst.idx"; //$NON-NLS-1$
+    static final String FILE_PUNC_INST = "puncinst.idx"; //$NON-NLS-1$
+    static final String FILE_CASE_INST = "caseinst.idx"; //$NON-NLS-1$
+    static final String FILE_WORD_INST = "wordinst.idx"; //$NON-NLS-1$
+
+    static final String FILE_PUNC_ITEM = "punc.idx"; //$NON-NLS-1$
+    static final String FILE_WORD_ITEM = "word.idx"; //$NON-NLS-1$
+
+    static final String FILE_BIBLE_PROPERTIES = "bible.properties"; //$NON-NLS-1$
+    
     /**
-     * Passthrough ctor 
+     * Prevent instansiation
      */
-    private Msg(String name)
+    private RawConstants()
     {
-        super(name);
     }
 }

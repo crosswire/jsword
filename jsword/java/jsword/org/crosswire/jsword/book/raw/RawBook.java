@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookDriver;
@@ -226,21 +225,21 @@ public class RawBook extends PassageAbstractBook implements Index
         }
         else
         {
-            memory = defaultmemory;
+            memory = defaultMemory;
         }
 
         try
         {
             // Without these we can't go on
-            word_items = new WordItemsMem(this, create);
+            wordItems = new WordItemsMem(this, create);
             
             if (memory)
             {
-                word_insts = new WordInstsMem(this, create);
+                wordInsts = new WordInstsMem(this, create);
             } 
             else
             {
-                word_insts = new WordInstsDisk(this, create);
+                wordInsts = new WordInstsDisk(this, create);
             }
             
             // We can still produce text without these though so they
@@ -249,16 +248,16 @@ public class RawBook extends PassageAbstractBook implements Index
             
             if (memory)
             {
-                punc_insts = new PuncInstsMem(this, create, messages);
+                puncInsts = new PuncInstsMem(this, create, messages);
             }
             else
             {
-                punc_insts = new PuncInstsDisk(this, create, messages);
+                puncInsts = new PuncInstsDisk(this, create, messages);
             }
             
-            punc_items = new PuncItemsMem(this, create, messages);
-            case_insts = new CaseInstsMem(this, create, messages);
-            para_insts = new ParaInstsMem(this, create, messages);
+            puncItems = new PuncItemsMem(this, create, messages);
+            caseInsts = new CaseInstsMem(this, create, messages);
+            paraInsts = new ParaInstsMem(this, create, messages);
             
             // So if any of them have failed to load we have a record of it.
             // We can carry on work fine, but shouldn't we be telling someone?
@@ -268,7 +267,7 @@ public class RawBook extends PassageAbstractBook implements Index
         }
         catch (IOException ex)
         {
-            log.error("Failed to load indexes.", ex);
+            log.error("Failed to load indexes.", ex); //$NON-NLS-1$
         }
 
         initSearchEngine();
@@ -290,23 +289,23 @@ public class RawBook extends PassageAbstractBook implements Index
     {
         StringBuffer retcode = new StringBuffer();
 
-        int[] word_idxs = word_insts.getIndexes(verse);
-        int[] case_idxs = case_insts.getIndexes(verse);
-        int[] punc_idxs = punc_insts.getIndexes(verse);
+        int[] wordIdxs = wordInsts.getIndexes(verse);
+        int[] caseIdxs = caseInsts.getIndexes(verse);
+        int[] puncIdxs = puncInsts.getIndexes(verse);
 
-        for (int j=0; j<word_idxs.length; j++)
+        for (int j=0; j<wordIdxs.length; j++)
         {
             String punc = null;
             String word = null;
 
             try
             {
-                int punc_idx = punc_idxs[j];
-                int word_idx = word_idxs[j];
-                int case_idx = case_idxs[j];
+                int puncIdx = puncIdxs[j];
+                int wordIdx = wordIdxs[j];
+                int caseIdx = caseIdxs[j];
 
-                punc = punc_items.getItem(punc_idx);
-                word = PassageUtil.setCase(word_items.getItem(word_idx), case_idx);
+                punc = puncItems.getItem(puncIdx);
+                word = PassageUtil.setCase(wordItems.getItem(wordIdx), caseIdx);
             }
             catch (Exception ex)
             {
@@ -319,9 +318,9 @@ public class RawBook extends PassageAbstractBook implements Index
 
         try
         {
-            if (punc_idxs.length != 0)
+            if (puncIdxs.length != 0)
             {
-                retcode.append(punc_items.getItem(punc_idxs[punc_idxs.length-1]));
+                retcode.append(puncItems.getItem(puncIdxs[puncIdxs.length-1]));
             }
         }
         catch (Exception ex)
@@ -350,12 +349,12 @@ public class RawBook extends PassageAbstractBook implements Index
             return PassageFactory.createPassage();
         }
 
-        int word_idx = word_items.getIndex(word);
+        int wordIdx = wordItems.getIndex(word);
 
         // Are we caching searches?
-        if (cache != null && cache[word_idx] != null)
+        if (cache != null && cache[wordIdx] != null)
         {
-            return cache[word_idx];
+            return cache[wordIdx];
         }
 
         // Do the real seacrh
@@ -366,10 +365,10 @@ public class RawBook extends PassageAbstractBook implements Index
 
             for (int ord=1; ord<=total; ord++)
             {
-                int[] word_item_ids = word_insts.getIndexes(ord);
-                for (int i=0; i<word_item_ids.length; i++)
+                int[] wordItemIds = wordInsts.getIndexes(ord);
+                for (int i=0; i<wordItemIds.length; i++)
                 {
-                    if (word_item_ids[i] == word_idx)
+                    if (wordItemIds[i] == wordIdx)
                     {
                         ref.add(new Verse(ord));
                     }
@@ -378,7 +377,7 @@ public class RawBook extends PassageAbstractBook implements Index
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         return ref;
@@ -389,7 +388,7 @@ public class RawBook extends PassageAbstractBook implements Index
      */
     public Iterator getStartsWith(String word)
     {
-        return ((WordItemsMem) word_items).getStartsWith(word);
+        return ((WordItemsMem) wordItems).getStartsWith(word);
     }
 
     /* (non-Javadoc)
@@ -417,28 +416,28 @@ public class RawBook extends PassageAbstractBook implements Index
                     // the concept of new para is not what it was. I don't intend to
                     // fix it properly since Raw does not fit well with marked-up
                     // text.
-                    para_insts.setPara(false, verse);
+                    paraInsts.setPara(false, verse);
     
                     // Chop the sentance into words.
-                    String[] text_array = BookUtil.tokenize(text);
+                    String[] textArray = BookUtil.tokenize(text);
     
                     // The word index
-                    String[] word_array = BookUtil.stripPunctuation(text_array);
-                    int[] word_indexes = word_items.getIndex(word_array);
-                    word_insts.setIndexes(word_indexes, verse);
+                    String[] wordArray = BookUtil.stripPunctuation(textArray);
+                    int[] wordIndexes = wordItems.getIndex(wordArray);
+                    wordInsts.setIndexes(wordIndexes, verse);
     
                     // The punctuation index
-                    String[] punc_array = BookUtil.stripWords(text_array);
-                    int[] punc_indexes = punc_items.getIndex(punc_array);
-                    punc_insts.setIndexes(punc_indexes, verse);
+                    String[] puncArray = BookUtil.stripWords(textArray);
+                    int[] puncIndexes = puncItems.getIndex(puncArray);
+                    puncInsts.setIndexes(puncIndexes, verse);
     
                     // The case index
-                    int[] case_indexes = BookUtil.getCases(word_array);
-                    case_insts.setIndexes(case_indexes, verse);
+                    int[] caseIndexes = BookUtil.getCases(wordArray);
+                    caseInsts.setIndexes(caseIndexes, verse);
                 }
                 else
                 {
-                    log.error("Ignoring non OSIS/Verse content of DIV.");
+                    log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
                 }
             }
         }
@@ -495,7 +494,7 @@ public class RawBook extends PassageAbstractBook implements Index
      */
     protected WordItemsMem getWords()
     {
-        return (WordItemsMem) word_items;
+        return (WordItemsMem) wordItems;
     }
 
     /**
@@ -503,7 +502,7 @@ public class RawBook extends PassageAbstractBook implements Index
      */
     protected WordInstsMem getWordData()
     {
-        return (WordInstsMem) word_insts;
+        return (WordInstsMem) wordInsts;
     }
 
     /**
@@ -553,7 +552,7 @@ public class RawBook extends PassageAbstractBook implements Index
      */
     public static boolean isDefaultCacheData()
     {
-        return defaultmemory;
+        return defaultMemory;
     }
 
     /**
@@ -563,7 +562,7 @@ public class RawBook extends PassageAbstractBook implements Index
      */
     public static void setDefaultCacheData(boolean memory)
     {
-        RawBook.defaultmemory = memory;
+        RawBook.defaultMemory = memory;
     }
 
     /**
@@ -574,7 +573,7 @@ public class RawBook extends PassageAbstractBook implements Index
     /**
      * Do we instruct new RawBibles to cache data in memory?
      */
-    private static boolean defaultmemory = true;
+    private static boolean defaultMemory = true;
 
     /**
      * Constant for read-only, data in memory mode
@@ -594,32 +593,32 @@ public class RawBook extends PassageAbstractBook implements Index
     /**
      * The Source of Words
      */
-    private Items word_items;
+    private Items wordItems;
 
     /**
      * The Source of Word Instances
      */
-    private Insts word_insts;
+    private Insts wordInsts;
 
     /**
      * The source of Punctuation
      */
-    private Items punc_items;
+    private Items puncItems;
 
     /**
      * The source of Punctuation Instances
      */
-    private Insts punc_insts;
+    private Insts puncInsts;
 
     /**
      * The source of Case Instances
      */
-    private Insts case_insts;
+    private Insts caseInsts;
 
     /**
      * The source of Para Instances
      */
-    private ParaInstsMem para_insts;
+    private ParaInstsMem paraInsts;
 
     /**
      * The cache of word searches

@@ -61,8 +61,8 @@ public class BookUtil
         while (alive)
         {
             // Find the next space and double dash
-            int next_space = sentance.indexOf(" ", pos);
-            int next_ddash = sentance.indexOf("--", pos);
+            int next_space = sentance.indexOf(" ", pos); //$NON-NLS-1$
+            int next_ddash = sentance.indexOf("--", pos); //$NON-NLS-1$
 
             // If there is a space just after the ddash then ignore the ddash
             if (next_space == next_ddash + 2)
@@ -86,17 +86,17 @@ public class BookUtil
             else if ((next_space != -1 && next_space < next_ddash) || (next_ddash == -1))
             {
                 // The next separator is a space
-                temp = sentance.substring(pos, next_space) + " ";
+                temp = sentance.substring(pos, next_space) + " "; //$NON-NLS-1$
                 pos = next_space + 1;
             }
             else
             {
                 // The next separator is a ddash
-                temp = sentance.substring(pos, next_ddash) + "--";
+                temp = sentance.substring(pos, next_ddash) + "--"; //$NON-NLS-1$
                 pos = next_ddash + 2;
             }
 
-            if (temp != null && !temp.trim().equals(""))
+            if (temp != null && !temp.trim().equals("")) //$NON-NLS-1$
             {
                 tokens.add(temp);
             }
@@ -124,18 +124,18 @@ public class BookUtil
         // First there are some things we regard as word delimitters even if
         // they are not near space. Note that "-" should not be in this list
         // because words like abel-beth-maiacha comtain them.
-        sentance = StringUtils.replace(sentance, "--", " ");
-        sentance = StringUtils.replace(sentance, ".", " ");
-        sentance = StringUtils.replace(sentance, "!", " ");
-        sentance = StringUtils.replace(sentance, "?", " ");
-        sentance = StringUtils.replace(sentance, ":", " ");
-        sentance = StringUtils.replace(sentance, ";", " ");
-        sentance = StringUtils.replace(sentance, "\"", " ");
-        sentance = StringUtils.replace(sentance, "\'", " ");
-        sentance = StringUtils.replace(sentance, "(", " ");
-        sentance = StringUtils.replace(sentance, ")", " ");
+        sentance = StringUtils.replace(sentance, "--", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, ".", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, "!", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, "?", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, ":", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, ";", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, "\"", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, "\'", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, "(", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentance = StringUtils.replace(sentance, ")", " "); //$NON-NLS-1$ //$NON-NLS-2$
 
-        String words[] = StringUtils.split(sentance, " ");
+        String words[] = StringUtils.split(sentance, " "); //$NON-NLS-1$
         String[] retcode = new String[words.length];
 
         // Remove the punctuation from the ends of the words.
@@ -185,7 +185,7 @@ public class BookUtil
         int first = firstLetter(words[0]);
         if (first == 0)
         {
-            retcode[0] = "";
+            retcode[0] = ""; //$NON-NLS-1$
         }
         else
         {
@@ -202,7 +202,7 @@ public class BookUtil
         int last = lastLetter(words[words.length-1]);
         if (last == words[words.length - 1].length())
         {
-            retcode[words.length] = "";
+            retcode[words.length] = ""; //$NON-NLS-1$
         }
         else
         {

@@ -54,7 +54,7 @@ public class APIExamples
     /**
      * The name of a Bible to find
      */
-    private static final String BIBLE_NAME = "KJV";
+    private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
 
     /**
      * The source to this method is an example of how to read the plain text of
@@ -66,14 +66,14 @@ public class APIExamples
      */
     public void readPlainText() throws BookException, NoSuchVerseException
     {
-        Passage ref = PassageFactory.createPassage("Gen 1 1");
+        Passage ref = PassageFactory.createPassage("Gen 1 1"); //$NON-NLS-1$
         Books books = Books.installed();
         Book bible = books.getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
         String text = data.getPlainText();
 
-        System.out.println("The plain text of Gen 1:1 is "+text);
+        System.out.println("The plain text of Gen 1:1 is "+text); //$NON-NLS-1$
     }
 
     /**
@@ -87,7 +87,7 @@ public class APIExamples
      */
     public void readStyledText() throws NoSuchVerseException, BookException, TransformerException, SAXException
     {
-        Passage ref = PassageFactory.createPassage("Gen 1 1");
+        Passage ref = PassageFactory.createPassage("Gen 1 1"); //$NON-NLS-1$
         Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
@@ -98,7 +98,7 @@ public class APIExamples
         SAXEventProvider htmlsep = styler.convert(osissep);
         String text = XMLUtil.writeToString(htmlsep);
 
-        System.out.println("The html text of Gen 1:1 is "+text);
+        System.out.println("The html text of Gen 1:1 is "+text); //$NON-NLS-1$
 
         // This just shuts eclipse up.
         osissep.hashCode();
@@ -126,10 +126,10 @@ public class APIExamples
         KeyList keys = dict.getGlobalKeyList();
         Key first = (Key) keys.iterator().next();
 
-        System.out.println("The first Key in the default dictionary is "+first);
+        System.out.println("The first Key in the default dictionary is "+first); //$NON-NLS-1$
         
         BookData data = dict.getData(first);
-        System.out.println("And the text against that key is "+data.getPlainText());
+        System.out.println("And the text against that key is "+data.getPlainText()); //$NON-NLS-1$
     }
 
     /**
@@ -142,16 +142,16 @@ public class APIExamples
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
-        Search search = new Search("moses + aaron", false);
+        Search search = new Search("moses + aaron", false); //$NON-NLS-1$
         Key key = bible.find(search);
 
-        System.out.println("The following verses contain both moses and aaron: " + key.getName());
+        System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
 
         // Or you can do a best match search ...
-        search = new Search("for god so loves the world", true);
+        search = new Search("for god so loves the world", true); //$NON-NLS-1$
         key = bible.find(search);
 
-        System.out.println("Trying to find verses like John 3:16: " + key.getName());
+        System.out.println("Trying to find verses like John 3:16: " + key.getName()); //$NON-NLS-1$
     }
 
     /**
@@ -199,7 +199,7 @@ public class APIExamples
         {
             public boolean test(BookMetaData tbmd)
             {
-                return tbmd.getName().equals("My Favorite Version");
+                return tbmd.getName().equals("My Favorite Version"); //$NON-NLS-1$
             }
         });
         bmd = (BookMetaData) test.get(0);

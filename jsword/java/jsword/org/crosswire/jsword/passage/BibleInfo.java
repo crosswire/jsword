@@ -3,7 +3,6 @@ package org.crosswire.jsword.passage;
 import java.util.Locale;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -421,7 +420,8 @@ public class BibleInfo
             }
         }
 
-        throw new LogicError();
+        assert false;
+        return new int[] { 1, 1, 1 };
     }
 
     /**
@@ -567,7 +567,8 @@ public class BibleInfo
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return ref;
         }
     }
 
@@ -862,99 +863,99 @@ public class BibleInfo
     /** The full names of the book of the Bible, in mixed case */
     private static String[] full_books =
     {
-        "Genesis",
-        "Exodus",
-        "Leviticus",
-        "Numbers",
-        "Deuteronomy",
-        "Joshua",
-        "Judges",
-        "Ruth",
-        "1 Samuel",
-        "2 Samuel",
-        "1 Kings",
-        "2 Kings",
-        "1 Chronicles",
-        "2 Chronicles",
-        "Ezra",
-        "Nehemiah",
-        "Esther",
-        "Job",
-        "Psalms",
-        "Proberbs",
-        "Ecclesiastes",
-        "Song of Solomon",
-        "Isaiah",
-        "Jeremiah",
-        "Lamentations",
-        "Ezekiel",
-        "Daniel",
-        "Hosea",
-        "Joel",
-        "Amos",
-        "Obdiah",
-        "Jonah",
-        "Micah",
-        "Nahum",
-        "Habakuk",
-        "Zephaniah",
-        "Haggai",
-        "Zechariah",
-        "Malachi",
-        "Matthew",
-        "Mark",
-        "Luke",
-        "John",
-        "Acts",
-        "Romans",
-        "1 Corinthians",
-        "2 Corinthians",
-        "Galatians",
-        "Ephesians",
-        "Philippians",
-        "Colossians",
-        "1 Thessalonians",
-        "2 Thessalonians",
-        "1 Timothy",
-        "2 Timothy",
-        "Titus",
-        "Philemon",
-        "Hebrews",
-        "James",
-        "1 Peter",
-        "2 Peter",
-        "1 John",
-        "2 John",
-        "3 John",
-        "Jude",
-        "Revelation",
+        "Genesis", //$NON-NLS-1$
+        "Exodus", //$NON-NLS-1$
+        "Leviticus", //$NON-NLS-1$
+        "Numbers", //$NON-NLS-1$
+        "Deuteronomy", //$NON-NLS-1$
+        "Joshua", //$NON-NLS-1$
+        "Judges", //$NON-NLS-1$
+        "Ruth", //$NON-NLS-1$
+        "1 Samuel", //$NON-NLS-1$
+        "2 Samuel", //$NON-NLS-1$
+        "1 Kings", //$NON-NLS-1$
+        "2 Kings", //$NON-NLS-1$
+        "1 Chronicles", //$NON-NLS-1$
+        "2 Chronicles", //$NON-NLS-1$
+        "Ezra", //$NON-NLS-1$
+        "Nehemiah", //$NON-NLS-1$
+        "Esther", //$NON-NLS-1$
+        "Job", //$NON-NLS-1$
+        "Psalms", //$NON-NLS-1$
+        "Proberbs", //$NON-NLS-1$
+        "Ecclesiastes", //$NON-NLS-1$
+        "Song of Solomon", //$NON-NLS-1$
+        "Isaiah", //$NON-NLS-1$
+        "Jeremiah", //$NON-NLS-1$
+        "Lamentations", //$NON-NLS-1$
+        "Ezekiel", //$NON-NLS-1$
+        "Daniel", //$NON-NLS-1$
+        "Hosea", //$NON-NLS-1$
+        "Joel", //$NON-NLS-1$
+        "Amos", //$NON-NLS-1$
+        "Obdiah", //$NON-NLS-1$
+        "Jonah", //$NON-NLS-1$
+        "Micah", //$NON-NLS-1$
+        "Nahum", //$NON-NLS-1$
+        "Habakuk", //$NON-NLS-1$
+        "Zephaniah", //$NON-NLS-1$
+        "Haggai", //$NON-NLS-1$
+        "Zechariah", //$NON-NLS-1$
+        "Malachi", //$NON-NLS-1$
+        "Matthew", //$NON-NLS-1$
+        "Mark", //$NON-NLS-1$
+        "Luke", //$NON-NLS-1$
+        "John", //$NON-NLS-1$
+        "Acts", //$NON-NLS-1$
+        "Romans", //$NON-NLS-1$
+        "1 Corinthians", //$NON-NLS-1$
+        "2 Corinthians", //$NON-NLS-1$
+        "Galatians", //$NON-NLS-1$
+        "Ephesians", //$NON-NLS-1$
+        "Philippians", //$NON-NLS-1$
+        "Colossians", //$NON-NLS-1$
+        "1 Thessalonians", //$NON-NLS-1$
+        "2 Thessalonians", //$NON-NLS-1$
+        "1 Timothy", //$NON-NLS-1$
+        "2 Timothy", //$NON-NLS-1$
+        "Titus", //$NON-NLS-1$
+        "Philemon", //$NON-NLS-1$
+        "Hebrews", //$NON-NLS-1$
+        "James", //$NON-NLS-1$
+        "1 Peter", //$NON-NLS-1$
+        "2 Peter", //$NON-NLS-1$
+        "1 John", //$NON-NLS-1$
+        "2 John", //$NON-NLS-1$
+        "3 John", //$NON-NLS-1$
+        "Jude", //$NON-NLS-1$
+        "Revelation", //$NON-NLS-1$
     };
 
     /** Standard shortened names for the book of the Bible, in mixed case */
     private static String[] short_books =
     {
-        "Gen",  "Exo",  "Lev",  "Num",  "Deu",  "Jos",  "Judg", "Rut",  "1Sa",  "2Sa",
-        "1Ki",  "2Ki",  "1Ch",  "2Ch",  "Ezr",  "Neh",  "Est",  "Job",  "Psa",  "Pro",
-        "Ecc",  "Son",  "Isa",  "Jer",  "Lam",  "Eze",  "Dan",  "Hos",  "Joe",  "Amo",
-        "Obd",  "Jon",  "Mic",  "Nah",  "Hab",  "Zep",  "Hag",  "Zec",  "Mal",  "Mat",
-        "Mar",  "Luk",  "Joh",  "Act",  "Rom",  "1Co",  "2Co",  "Gal",  "Eph",  "Phili",
-        "Col",  "1Th",  "2Th",  "1Ti",  "2Ti",  "Tit",  "Phile", "Heb", "Jam",  "1Pe",
-        "2Pe",  "1Jo",  "2Jo",  "3Jo",  "Jude", "Rev",
+        "Gen",  "Exo",  "Lev",  "Num",  "Deu",  "Jos",  "Judg", "Rut",  "1Sa",  "2Sa", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        "1Ki",  "2Ki",  "1Ch",  "2Ch",  "Ezr",  "Neh",  "Est",  "Job",  "Psa",  "Pro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        "Ecc",  "Son",  "Isa",  "Jer",  "Lam",  "Eze",  "Dan",  "Hos",  "Joe",  "Amo", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        "Obd",  "Jon",  "Mic",  "Nah",  "Hab",  "Zep",  "Hag",  "Zec",  "Mal",  "Mat", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        "Mar",  "Luk",  "Joh",  "Act",  "Rom",  "1Co",  "2Co",  "Gal",  "Eph",  "Phili", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        "Col",  "1Th",  "2Th",  "1Ti",  "2Ti",  "Tit",  "Phile", "Heb", "Jam",  "1Pe", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        "2Pe",  "1Jo",  "2Jo",  "3Jo",  "Jude", "Rev", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
     };
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
     private static String[] osis_books =
     {
-        "Gen",    "Exod",   "Lev",    "Num",    "Deut",   "Josh",   "Judg",
-        "Ruth",   "1Sam",   "2Sam",   "1Kgs",   "2Kgs",   "1Chr",   "2Chr",
-        "Ezra",   "Neh",    "Esth",   "Job",    "Pss",    "Prov",   "Eccl",
-        "Song",   "Isa",    "Jer",    "Lam",    "Ezek",   "Dan",    "Hos",
-        "Joel",   "Amos",   "Obad",   "Jonah",  "Mic",    "Nah",    "Hab",
-        "Zeph",   "Hag",    "Zech",   "Mal",    "Matt",   "Mark",   "Luke",
-        "John",   "Acts",   "Rom",    "1Cor",   "2Cor",   "Gal",    "Eph",
-        "Phil",   "Col",    "1Thess", "2Thess", "1Tim",   "2Tim",   "Titus",
-        "Phlm",   "Heb",    "Jas",    "1Pet",   "2Pet",   "1John",  "2John",
-        "3John",  "Jude",   "Rev",  
+        "Gen",    "Exod",   "Lev",    "Num",    "Deut",   "Josh",   "Judg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Ruth",   "1Sam",   "2Sam",   "1Kgs",   "2Kgs",   "1Chr",   "2Chr", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Ezra",   "Neh",    "Esth",   "Job",    "Pss",    "Prov",   "Eccl", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Song",   "Isa",    "Jer",    "Lam",    "Ezek",   "Dan",    "Hos", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Joel",   "Amos",   "Obad",   "Jonah",  "Mic",    "Nah",    "Hab", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Zeph",   "Hag",    "Zech",   "Mal",    "Matt",   "Mark",   "Luke", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "John",   "Acts",   "Rom",    "1Cor",   "2Cor",   "Gal",    "Eph", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Phil",   "Col",    "1Thess", "2Thess", "1Tim",   "2Tim",   "Titus", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "Phlm",   "Heb",    "Jas",    "1Pet",   "2Pet",   "1John",  "2John", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        "3John",  "Jude",   "Rev",   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     };
 
     /** Alternative shortened names for the book of the Bible, in mixed case */
@@ -964,24 +965,24 @@ public class BibleInfo
         /* Exo */   { },
         /* Lev */   { },
         /* Num */   { },
-        /* Deu */   { "Dt" },
+        /* Deu */   { "Dt" }, //$NON-NLS-1$
         /* Jos */   { },
-        /* Judg */  { "Jdg" },
-        /* Rut */   { "Rth" },
+        /* Judg */  { "Jdg" }, //$NON-NLS-1$
+        /* Rut */   { "Rth" }, //$NON-NLS-1$
         /* 1Sa */   { },
         /* 2Sa */   { },
-        /* 1Ki */   { "1Kgs" },
-        /* 2Ki */   { "2Kgs" },
-        /* 1Ch */   { "1Chr" },
-        /* 2Ch */   { "2Chr" },
+        /* 1Ki */   { "1Kgs" }, //$NON-NLS-1$
+        /* 2Ki */   { "2Kgs" }, //$NON-NLS-1$
+        /* 1Ch */   { "1Chr" }, //$NON-NLS-1$
+        /* 2Ch */   { "2Chr" }, //$NON-NLS-1$
         /* Ezr */   { },
         /* Neh */   { },
         /* Est */   { },
         /* Job */   { },
-        /* Psa */   { "Pss", "Ps" },
+        /* Psa */   { "Pss", "Ps" }, //$NON-NLS-1$ //$NON-NLS-2$
         /* Pro */   { },
-        /* Ecc */   { "Qoh", },
-        /* Son */   { "SS", "Canticle", "Can" },
+        /* Ecc */   { "Qoh", }, //$NON-NLS-1$
+        /* Son */   { "SS", "Canticle", "Can" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         /* Isa */   { },
         /* Jer */   { },
         /* Lam */   { },
@@ -991,7 +992,7 @@ public class BibleInfo
         /* Joe */   { },
         /* Amo */   { },
         /* Obd */   { },
-        /* Jon */   { "Jnh" },
+        /* Jon */   { "Jnh" }, //$NON-NLS-1$
         /* Mic */   { },
         /* Nah */   { },
         /* Hab */   { },
@@ -999,46 +1000,46 @@ public class BibleInfo
         /* Hag */   { },
         /* Zec */   { },
         /* Mal */   { },
-        /* Mat */   { "Mt" },
-        /* Mar */   { "Mk" },
-        /* Luk */   { "Lk" },
-        /* Joh */   { "Jn", "Jhn" },
+        /* Mat */   { "Mt" }, //$NON-NLS-1$
+        /* Mar */   { "Mk" }, //$NON-NLS-1$
+        /* Luk */   { "Lk" }, //$NON-NLS-1$
+        /* Joh */   { "Jn", "Jhn" }, //$NON-NLS-1$ //$NON-NLS-2$
         /* Act */   { },
         /* Rom */   { },
         /* 1Co */   { },
         /* 2Co */   { },
         /* Gal */   { },
         /* Eph */   { },
-        /* Phili */ { "Php" },
+        /* Phili */ { "Php" }, //$NON-NLS-1$
         /* Col */   { },
         /* 1Th */   { },
         /* 2Th */   { },
-        /* 1Ti */   { "1Tm" },
-        /* 2Ti */   { "2Tm" },
+        /* 1Ti */   { "1Tm" }, //$NON-NLS-1$
+        /* 2Ti */   { "2Tm" }, //$NON-NLS-1$
         /* Tit */   { },
-        /* Phile */ { "Phm", "Phlm" },
+        /* Phile */ { "Phm", "Phlm" }, //$NON-NLS-1$ //$NON-NLS-2$
         /* Heb */   { },
-        /* Jam */   { "Jas" },
-        /* 1Pe */   { "1Pt" },
-        /* 2Pe */   { "1Pt" },
-        /* 1Jo */   { "1Jn" },
-        /* 2Jo */   { "2Jn" },
-        /* 3Jo */   { "3Jn" },
+        /* Jam */   { "Jas" }, //$NON-NLS-1$
+        /* 1Pe */   { "1Pt" }, //$NON-NLS-1$
+        /* 2Pe */   { "1Pt" }, //$NON-NLS-1$
+        /* 1Jo */   { "1Jn" }, //$NON-NLS-1$
+        /* 2Jo */   { "2Jn" }, //$NON-NLS-1$
+        /* 3Jo */   { "3Jn" }, //$NON-NLS-1$
         /* Jude */  { },
-        /* Rev */   { "Rv" },
+        /* Rev */   { "Rv" }, //$NON-NLS-1$
     };
 
     /** Standard names for the sections */
     private static String[] sections =
     {
-        "Pentateuch",
-        "History",
-        "Poetry",
-        "MajorProphets",
-        "MinorProphets",
-        "GospelsAndActs",
-        "Letters",
-        "Revelation",
+        "Pentateuch", //$NON-NLS-1$
+        "History", //$NON-NLS-1$
+        "Poetry", //$NON-NLS-1$
+        "MajorProphets", //$NON-NLS-1$
+        "MinorProphets", //$NON-NLS-1$
+        "GospelsAndActs", //$NON-NLS-1$
+        "Letters", //$NON-NLS-1$
+        "Revelation", //$NON-NLS-1$
     };
 
     /** The full names of the book of the Bible, in lower case, generated at run time */
@@ -1289,7 +1290,7 @@ public class BibleInfo
     {
         // LATER(joe): Move these from PassageUtil lookups into this class
         // as a variant on the Msg/Enum theme.
-        String key = "";
+        String key = ""; //$NON-NLS-1$
         boolean success = true;
 
         for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
@@ -1297,7 +1298,7 @@ public class BibleInfo
             // Read any customized versions of the Book names
             try
             {
-                key = "books_long_"+(i+1);
+                key = "books_long_"+(i+1); //$NON-NLS-1$
                 full_books[i] = PassageUtil.getResource(key);
             }
             catch (Exception ex)
@@ -1308,7 +1309,7 @@ public class BibleInfo
 
             try
             {
-                key = "books_short_"+(i+1);
+                key = "books_short_"+(i+1); //$NON-NLS-1$
                 short_books[i] = PassageUtil.getResource(key);
             }
             catch (Exception ex)
@@ -1319,8 +1320,8 @@ public class BibleInfo
 
             try
             {
-                key = "books_alt_"+(i+1);
-                alt_books[i] = PassageUtil.tokenize(PassageUtil.getResource(key), " ");
+                key = "books_alt_"+(i+1); //$NON-NLS-1$
+                alt_books[i] = PassageUtil.tokenize(PassageUtil.getResource(key), " "); //$NON-NLS-1$
             }
             catch (Exception ex)
             {
@@ -1333,7 +1334,7 @@ public class BibleInfo
         {
             try
             {
-                key = "sections_"+(i+1);
+                key = "sections_"+(i+1); //$NON-NLS-1$
                 sections[i] = PassageUtil.getResource(key);
             }
             catch (Exception ex)
@@ -1345,7 +1346,7 @@ public class BibleInfo
 
         if (!success)
         {    
-            Reporter.informUser(BibleInfo.class, "Failed to load all resources correctly, using defaults.");
+            Reporter.informUser(BibleInfo.class, Msg.RESOURCE_LOAD_FAIL);
         }
 
         // Create the book name arrays
@@ -1392,12 +1393,12 @@ public class BibleInfo
     {
         if (reportedMREs < 5)
         {
-            log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
+            log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             reportedMREs++;
             
             if (reportedMREs == 5)
             {
-                log.debug("Skipping further reports of missing resources.");
+                log.debug("Skipping further reports of missing resources."); //$NON-NLS-1$
             }
         }
     }

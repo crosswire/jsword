@@ -2,6 +2,7 @@
 package org.crosswire.jsword.book;
 
 import org.apache.commons.lang.enum.Enum;
+import org.crosswire.common.util.MsgBase;
 
 /**
  * A definition of how open a Bible is. Can is be freely copied or is
@@ -33,27 +34,27 @@ public class Openness extends Enum
     /**
      * If the data of unknown distribution status
      */
-    public static final Openness UNKNOWN = new Openness("Unknown");
+    public static final Openness UNKNOWN = new Openness(Msg.OPEN_UNKNOWN);
 
     /**
      * If the data free of copyright restrictions
      */
-    public static final Openness PD = new Openness("Public Domain");
+    public static final Openness PD = new Openness(Msg.OPEN_PD);
 
     /**
      * Does the data have a licence that permits free use
      */
-    public static final Openness FREE = new Openness("Free");
+    public static final Openness FREE = new Openness(Msg.OPEN_FREE);
 
     /**
      * Is the data freely redistributable
      */
-    public static final Openness COPYABLE = new Openness("Copyable");
+    public static final Openness COPYABLE = new Openness(Msg.OPEN_COPYABLE);
 
     /**
      * Is the data sold for commercial profit
      */
-    public static final Openness COMMERCIAL = new Openness("Commercial");
+    public static final Openness COMMERCIAL = new Openness(Msg.OPEN_COMMERCIAL);
 
     /**
      * Find a constant given a name.
@@ -74,8 +75,8 @@ public class Openness extends Enum
     /**
      * Prevent anyone else from doing this
      */
-    private Openness(String desc)
+    private Openness(MsgBase msg)
     {
-        super(desc);
+        super(msg.toString());
     }
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.IOException;
@@ -9,8 +8,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.crosswire.common.util.LogicError;
 
 /**
  * A Passage that is implemented using a TreeSet of VerseRanges.
@@ -384,7 +381,7 @@ public class RangedPassage extends AbstractPassage
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
         }
 
@@ -491,7 +488,8 @@ public class RangedPassage extends AbstractPassage
                 }
 
             default:
-                throw new LogicError();
+                assert false;
+                return null;
             }
         }
 
@@ -513,10 +511,8 @@ public class RangedPassage extends AbstractPassage
             Iterator chop = next.rangeIterator(restrict);
             VerseRange first = (VerseRange) chop.next();
             VerseRange[] ranges = VerseRange.remainder(next, first);
-            if (ranges.length != 1)
-            {
-                throw new LogicError();
-            }
+
+            assert ranges.length == 1;
             next = ranges[0];
 
             return first;

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.DataInputStream;
@@ -60,7 +59,7 @@ public class WordInstsMem extends InstsMem
      */
     public WordInstsMem(RawBook raw, boolean create) throws IOException
     {
-        super(raw, "wordinst.idx", create);
+        super(raw, RawConstants.FILE_WORD_INST, create);
     }
 
     /* (non-Javadoc)
@@ -72,9 +71,9 @@ public class WordInstsMem extends InstsMem
 
         byte[] asig = new byte[6];
         din.readFully(asig);
+
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:WI"))
-            throw new IOException("This file is not a WordInst file");
+        assert ssig.equals(RawConstants.SIG_WORD_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
@@ -96,7 +95,7 @@ public class WordInstsMem extends InstsMem
     {
         DataOutputStream dout = new DataOutputStream(out);
 
-        dout.writeBytes("RAW:WI");
+        dout.writeBytes(RawConstants.SIG_WORD_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {

@@ -33,22 +33,22 @@ public class BookType extends Enum
     /**
      * Books that are Bibles
      */
-    public static final BookType BIBLE = new BookType("Bible");
+    public static final BookType BIBLE = new BookType("Bible"); //$NON-NLS-1$
 
     /**
      * Books that are Dictionaries
      */
-    public static final BookType DICTIONARY = new BookType("Dictionary");
+    public static final BookType DICTIONARY = new BookType("Dictionary"); //$NON-NLS-1$
 
     /**
      * Books that are Commentaries
      */
-    public static final BookType COMMENTARY = new BookType("Commentary");
+    public static final BookType COMMENTARY = new BookType("Commentary"); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    public static final BookType OTHER = new BookType("Other");
+    public static final BookType OTHER = new BookType("Other"); //$NON-NLS-1$
 
     /**
      * @param name The name of the BookType

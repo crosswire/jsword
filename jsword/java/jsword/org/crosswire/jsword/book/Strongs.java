@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.osis.W;
 
 /**
@@ -104,7 +103,7 @@ public class Strongs
         String lemma = w.getLemma();
 
         // LATER(joe): I think it goes x-study:[H|G]number, but this will need fixing...
-        int colonpos = lemma.indexOf(":");
+        int colonpos = lemma.indexOf(":"); //$NON-NLS-1$
         if (colonpos != -1)
         {
             lemma = lemma.substring(colonpos+1);
@@ -141,13 +140,14 @@ public class Strongs
         switch (type)
         {
         case GREEK:
-            return "<" + number + ">";
+            return "<" + number + ">"; //$NON-NLS-1$ //$NON-NLS-2$
         case HEBREW:
-            return "<0" + number + ">";
+            return "<0" + number + ">"; //$NON-NLS-1$ //$NON-NLS-2$
         case PARSING:
-            return "(" + number + ")";
+            return "(" + number + ")"; //$NON-NLS-1$ //$NON-NLS-2$
         default:
-            throw new LogicError();
+            assert false : type;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -166,7 +166,8 @@ public class Strongs
         case PARSING:
             return Msg.STRONGS_PARSING.toString() + number;
         default:
-            throw new LogicError();
+            assert false : type;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 

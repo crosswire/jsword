@@ -2,7 +2,6 @@ package org.crosswire.jsword.util;
 
 import java.util.Map;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.Converter;
 
@@ -50,7 +49,7 @@ public class ConverterFactory
             Class clazz = (Class) ResourceUtil.getImplementorsMap(Converter.class).get(name);
             if (clazz == null)
             {
-                throw new NullPointerException("No converter called: "+name);
+                throw new NullPointerException(Msg.NO_CONVERTER.toString(name));
             }
 
             Converter converter = (Converter) clazz.newInstance();
@@ -58,7 +57,8 @@ public class ConverterFactory
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -89,5 +89,5 @@ public class ConverterFactory
     /**
      * Current default converter implentation
      */
-    private static String name = "Configurable";
+    private static String name = "Configurable"; //$NON-NLS-1$
 }

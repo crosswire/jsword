@@ -7,11 +7,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 
 /**
  * A VerseRange is one step between a Verse and a Passage - it is a
- * Verse plus a verse_count. Every VerseRange has a start, a verse_count
+ * Verse plus a verseCount. Every VerseRange has a start, a verseCount
  * and an end. A VerseRange is designed to be immutable. This is a
  * necessary from a collections point of view. A VerseRange should always
  * be valid, although some versions may not return any text for verses
@@ -48,10 +47,10 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange()
     {
-        this.original_name = null;
+        this.originalName = null;
         this.start = Verse.DEFAULT;
         this.end = Verse.DEFAULT;
-        this.verse_count = 1;
+        this.verseCount = 1;
 
         verifyData();
     }
@@ -85,7 +84,7 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(String desc, VerseRange basis) throws NoSuchVerseException
     {
-        original_name = desc;
+        originalName = desc;
 
         Verse vbasis = basis.getEnd();
 
@@ -97,8 +96,8 @@ public final class VerseRange implements VerseBase
         case 0:
             // So no parts to this at all, so all we have is the basis
             start = vbasis;
-            verse_count = 1;
-            end = calcEnd(start, verse_count);
+            verseCount = 1;
+            end = calcEnd(start, verseCount);
             break;
 
         case 1:
@@ -108,21 +107,21 @@ public final class VerseRange implements VerseBase
             {
             case PassageConstants.ACCURACY_BOOK_ONLY:
                 start = new Verse(parts[0], vbasis);
-                verse_count = BibleInfo.versesInBook(start.getBook());
-                end = calcEnd(start, verse_count);
+                verseCount = BibleInfo.versesInBook(start.getBook());
+                end = calcEnd(start, verseCount);
                 break;
 
             case PassageConstants.ACCURACY_BOOK_CHAPTER:
                 start = new Verse(parts[0], vbasis);
-                verse_count = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
-                end = calcEnd(start, verse_count);
+                verseCount = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
+                end = calcEnd(start, verseCount);
                 break;
 
             case PassageConstants.ACCURACY_BOOK_VERSE:
             case PassageConstants.ACCURACY_CHAPTER_VERSE:
                 start = new Verse(parts[0], vbasis);
                 end = start;
-                verse_count = 1;
+                verseCount = 1;
                 break;
 
             case PassageConstants.ACCURACY_NUMBER_ONLY:
@@ -142,13 +141,13 @@ public final class VerseRange implements VerseBase
     
                     start = new Verse(book, chapter, 1);
                     end = new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter));
-                    verse_count = calcVerseCount(start, end);
+                    verseCount = calcVerseCount(start, end);
                 }
                 else
                 {
                     start = new Verse(parts[0], basis.getStart());
                     end = start;
-                    verse_count = 1;
+                    verseCount = 1;
                 }
                 break;
     
@@ -158,7 +157,7 @@ public final class VerseRange implements VerseBase
                 break;
 
             default:
-                throw new LogicError();
+                assert false : parts.length;
             }
             break;
 
@@ -214,7 +213,7 @@ public final class VerseRange implements VerseBase
                     break;
 
                 default:
-                    throw new LogicError();
+                    assert false : Verse.getAccuracy(parts[0]);
                 }
 
             case PassageConstants.ACCURACY_BOOK_CHAPTER:
@@ -264,7 +263,7 @@ public final class VerseRange implements VerseBase
                     break;
 
                 default:
-                    throw new LogicError();
+                    assert false : Verse.getAccuracy(parts[1]);
                 }
                 break;
 
@@ -314,7 +313,7 @@ public final class VerseRange implements VerseBase
                     break;
     
                 default:
-                    throw new LogicError();
+                    assert false : Verse.getAccuracy(parts[1]);
                 }
                 break;
 
@@ -365,7 +364,7 @@ public final class VerseRange implements VerseBase
                     break;
     
                 default:
-                    throw new LogicError();
+                    assert false : Verse.getAccuracy(parts[1]);
                 }
                 break;
 
@@ -439,7 +438,7 @@ public final class VerseRange implements VerseBase
                     break;
     
                 default:
-                    throw new LogicError();
+                    assert false : Verse.getAccuracy(parts[1]);
                 }
                 break;
 
@@ -491,15 +490,15 @@ public final class VerseRange implements VerseBase
                     break;
     
                 default:
-                    throw new LogicError();
+                    assert false : Verse.getAccuracy(parts[1]);
                 }
                 break;
 
             default:
-                throw new LogicError();
+                assert false : Verse.getAccuracy(parts[0]);
             }
 
-            verse_count = calcVerseCount(start, end);
+            verseCount = calcVerseCount(start, end);
             break;
 
         default:
@@ -511,7 +510,7 @@ public final class VerseRange implements VerseBase
 
     /**
      * Construct a VerseRange from a Verse. The resultant VerseRange will be
-     * 1 verse in verse_count.
+     * 1 verse in verseCount.
      * @param start The verse to start from
      */
     public VerseRange(Verse start)
@@ -521,10 +520,10 @@ public final class VerseRange implements VerseBase
             throw new NullPointerException();
         }
 
-        this.original_name = null;
+        this.originalName = null;
         this.start = start;
         this.end = start;
-        this.verse_count = 1;
+        this.verseCount = 1;
 
         verifyData();
     }
@@ -532,31 +531,31 @@ public final class VerseRange implements VerseBase
     /**
      * Construct a VerseRange from a Verse and a range.
      * @param start The verse to start from
-     * @param verse_count The number of verses
+     * @param verseCount The number of verses
      * @exception NoSuchVerseException If there arn't that many verses
      */
-    public VerseRange(Verse start, int verse_count) throws NoSuchVerseException
+    public VerseRange(Verse start, int verseCount) throws NoSuchVerseException
     {
-        if (verse_count < 1)
+        if (verseCount < 1)
         {
             throw new NoSuchVerseException(Msg.RANGE_LOCOUNT);
         }
 
-        if (start.getOrdinal()+verse_count-1 > BibleInfo.versesInBible())
+        if (start.getOrdinal()+verseCount-1 > BibleInfo.versesInBible())
         {
             Object[] params =
             {
                 start.getName(),
                 new Integer(BibleInfo.versesInBible()-start.getOrdinal()),
-                new Integer(verse_count)
+                new Integer(verseCount)
             };
             throw new NoSuchVerseException(Msg.RANGE_HICOUNT, params);
         }
 
-        this.original_name = null;
+        this.originalName = null;
         this.start = start;
-        this.verse_count = verse_count;
-        this.end = calcEnd(start, verse_count);
+        this.verseCount = verseCount;
+        this.end = calcEnd(start, verseCount);
 
         verifyData();
     }
@@ -568,12 +567,12 @@ public final class VerseRange implements VerseBase
      * This so that we can declare this constructor to not throw an exception.
      * Is there a better way of doing this?
      * @param start The verse to start from
-     * @param verse_count The number of verse to count
-     * @param patch_up True to trigger reference fixing
+     * @param verseCount The number of verse to count
+     * @param patchUp True to trigger reference fixing
      */
-    public VerseRange(Verse start, int verse_count, boolean patch_up)
+    public VerseRange(Verse start, int verseCount, boolean patchUp)
     {
-        if (!patch_up)
+        if (!patchUp)
         {
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_PATCH));
         }
@@ -585,10 +584,10 @@ public final class VerseRange implements VerseBase
             throw new NullPointerException();
         }
 
-        this.original_name = null;
+        this.originalName = null;
         this.start = start;
-        this.end = start.add(Math.max(verse_count, 1) - 1);
-        this.verse_count = calcVerseCount(start, end);
+        this.end = start.add(Math.max(verseCount, 1) - 1);
+        this.verseCount = calcVerseCount(start, end);
 
         verifyData();
     }
@@ -606,30 +605,30 @@ public final class VerseRange implements VerseBase
             throw new NullPointerException();
         }
 
-        this.original_name = null;
+        this.originalName = null;
 
         switch (start.compareTo(end))
         {
         case -1:
             this.start = start;
             this.end = end;
-            this.verse_count = calcVerseCount(start, end);
+            this.verseCount = calcVerseCount(start, end);
             break;
 
         case 0:
             this.start = start;
             this.end = start;
-            this.verse_count = 1;
+            this.verseCount = 1;
             break;
 
         case 1:
             this.start = end;
             this.end = start;
-            this.verse_count = calcVerseCount(this.start, this.end);
+            this.verseCount = calcVerseCount(this.start, this.end);
             break;
 
         default:
-            throw new LogicError();
+            assert false : start.compareTo(end);
         }
 
         verifyData();
@@ -657,7 +656,7 @@ public final class VerseRange implements VerseBase
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURS));
         }
 
-        this.original_name = null;
+        this.originalName = null;
 
         switch (restrict)
         {
@@ -673,19 +672,19 @@ public final class VerseRange implements VerseBase
                 end_verse = Math.min(end_verse, BibleInfo.versesInChapter(start_book, start_chapter));
 
                 start = new Verse(start_book, start_chapter, start_verse);
-                verse_count = end_verse - start_verse + 1;
-                end = calcEnd(start, verse_count);
+                verseCount = end_verse - start_verse + 1;
+                end = calcEnd(start, verseCount);
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
             break;
 
         case PassageConstants.RESTRICT_NONE:
             start = base_start.subtract(blur_down);
             end = base_start.add(blur_up);
-            verse_count = calcVerseCount(start, end);
+            verseCount = calcVerseCount(start, end);
             break;
 
         case PassageConstants.RESTRICT_BOOK:
@@ -720,7 +719,7 @@ public final class VerseRange implements VerseBase
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURS));
         }
 
-        this.original_name = null;
+        this.originalName = null;
 
         switch (restrict)
         {
@@ -741,18 +740,18 @@ public final class VerseRange implements VerseBase
 
                 start = new Verse(start_book, start_chapter, start_verse);
                 end = new Verse(end_book, end_chapter, end_verse);
-                verse_count = calcVerseCount(start, end);
+                verseCount = calcVerseCount(start, end);
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
             break;
 
         case PassageConstants.RESTRICT_NONE:
             start = base_start.getStart().subtract(blur_down);
             end = base_start.getEnd().add(blur_up);
-            verse_count = calcVerseCount(start, end);
+            verseCount = calcVerseCount(start, end);
             break;
 
         case PassageConstants.RESTRICT_BOOK:
@@ -773,10 +772,10 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(VerseRange a, VerseRange b)
     {
-        original_name = null;
+        originalName = null;
         start = Verse.min(a.getStart(), b.getStart());
         end = Verse.max(a.getEnd(), b.getEnd());
-        verse_count = calcVerseCount(start, end);
+        verseCount = calcVerseCount(start, end);
     }
 
     /**
@@ -795,9 +794,9 @@ public final class VerseRange implements VerseBase
      */
     public String getName(Verse base)
     {
-        if (PassageUtil.isPersistentNaming() && original_name != null)
+        if (PassageUtil.isPersistentNaming() && originalName != null)
         {
-            return original_name;
+            return originalName;
         }
 
         // Cache these we're going to be using them a lot.
@@ -883,7 +882,8 @@ public final class VerseRange implements VerseBase
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -897,17 +897,17 @@ public final class VerseRange implements VerseBase
     public String getOSISName()
     {
         // Cache these we're going to be using them a lot.
-        int start_book = start.getBook();
-        int start_chapter = start.getChapter();
-        int start_verse = start.getVerse();
-        int end_book = end.getBook();
-        int end_chapter = end.getChapter();
-        int end_verse = end.getVerse();
+        int startBook = start.getBook();
+        int startChapter = start.getChapter();
+        int startVerse = start.getVerse();
+        int endBook = end.getBook();
+        int endChapter = end.getChapter();
+        int endVerse = end.getVerse();
 
         try
         {
             // If this is in 2 separate books
-            if (start_book != end_book)
+            if (startBook != endBook)
             {
                 // This range is exactly a whole book
                 if (isWholeBooks())
@@ -915,19 +915,19 @@ public final class VerseRange implements VerseBase
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
-                    return BibleInfo.getOSISName(start_book)
+                    return BibleInfo.getOSISName(startBook)
                          + PassageConstants.RANGE_PREF_DELIM
-                         + BibleInfo.getOSISName(end_book);
+                         + BibleInfo.getOSISName(endBook);
                 }
 
                 // If this range is exactly a whole chapter
                 if (isWholeChapters())
                 {
                     // Just report book and chapter names
-                    return BibleInfo.getOSISName(start_book)
-                         + PassageConstants.VERSE_OSIS_DELIM + start_chapter
-                         + PassageConstants.RANGE_PREF_DELIM + BibleInfo.getOSISName(end_book)
-                         + PassageConstants.VERSE_OSIS_DELIM + end_chapter;
+                    return BibleInfo.getOSISName(startBook)
+                         + PassageConstants.VERSE_OSIS_DELIM + startChapter
+                         + PassageConstants.RANGE_PREF_DELIM + BibleInfo.getOSISName(endBook)
+                         + PassageConstants.VERSE_OSIS_DELIM + endChapter;
                 }
 
                 return start.getOSISName() + PassageConstants.RANGE_PREF_DELIM + end.getOSISName();
@@ -939,39 +939,39 @@ public final class VerseRange implements VerseBase
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
                 // recently normalized()
-                return BibleInfo.getOSISName(start_book);
+                return BibleInfo.getOSISName(startBook);
             }
 
             // If this is 2 separate chapters
-            if (start_chapter != end_chapter)
+            if (startChapter != endChapter)
             {
                 // If this range is a whole number of chapters
                 if (isWholeChapters())
                 {
                     // Just report the name of the book and the chapters
-                    return BibleInfo.getOSISName(start_book)
-                         + PassageConstants.VERSE_OSIS_DELIM + start_chapter
-                         + PassageConstants.RANGE_PREF_DELIM + end_chapter;
+                    return BibleInfo.getOSISName(startBook)
+                         + PassageConstants.VERSE_OSIS_DELIM + startChapter
+                         + PassageConstants.RANGE_PREF_DELIM + endChapter;
                 }
 
                 return start.getOSISName()
-                     + PassageConstants.RANGE_PREF_DELIM + end_chapter
-                     + PassageConstants.VERSE_OSIS_DELIM + end_verse;
+                     + PassageConstants.RANGE_PREF_DELIM + endChapter
+                     + PassageConstants.VERSE_OSIS_DELIM + endVerse;
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
-                return BibleInfo.getOSISName(start_book)
-                     + PassageConstants.VERSE_OSIS_DELIM + start_chapter;
+                return BibleInfo.getOSISName(startBook)
+                     + PassageConstants.VERSE_OSIS_DELIM + startChapter;
             }
 
             // If this is 2 separate verses
-            if (start_verse != end_verse)
+            if (startVerse != endVerse)
             {
                 return start.getOSISName()
-                     + PassageConstants.RANGE_PREF_DELIM + end_verse;
+                     + PassageConstants.RANGE_PREF_DELIM + endVerse;
             }
 
             // The range is a single verse
@@ -979,7 +979,8 @@ public final class VerseRange implements VerseBase
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -1017,7 +1018,7 @@ public final class VerseRange implements VerseBase
      */
     public int getVerseCount()
     {
-        return verse_count;
+        return verseCount;
     }
 
     /**
@@ -1026,31 +1027,32 @@ public final class VerseRange implements VerseBase
      */
     public int getChapterCount()
     {
-        int startbook = start.getBook();
-        int startchap = start.getChapter();
-        int endbook = end.getBook();
-        int endchap = end.getChapter();
+        int startBook = start.getBook();
+        int startChap = start.getChapter();
+        int endBook = end.getBook();
+        int endChap = end.getChapter();
 
-        if (startbook == endbook)
+        if (startBook == endBook)
         {
-            return endchap - startchap + 1;
+            return endChap - startChap + 1;
         }
 
         try
         {
             // So we are going to have to count up chapters from start to end
-            int total = BibleInfo.chaptersInBook(startbook) - startchap;
-            for (int b = startbook+1; b<endbook; b++)
+            int total = BibleInfo.chaptersInBook(startBook) - startChap;
+            for (int b = startBook+1; b<endBook; b++)
             {
                 total += BibleInfo.chaptersInBook(b);
             }
-            total += endchap;
+            total += endChap;
             
             return total;
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return 1;
         }
     }
 
@@ -1060,10 +1062,10 @@ public final class VerseRange implements VerseBase
      */
     public int getBookCount()
     {
-        int startbook = start.getBook();
-        int endbook = end.getBook();
+        int startBook = start.getBook();
+        int endBook = end.getBook();
 
-        return endbook - startbook + 1;
+        return endBook - startBook + 1;
     }
 
     /* (non-Javadoc)
@@ -1076,8 +1078,8 @@ public final class VerseRange implements VerseBase
 
         copy.start = (Verse) start.clone();
         copy.end = (Verse) end.clone();
-        copy.verse_count = verse_count;
-        copy.original_name = original_name;
+        copy.verseCount = verseCount;
+        copy.originalName = originalName;
 
         return copy;
     }
@@ -1124,7 +1126,7 @@ public final class VerseRange implements VerseBase
      */
     public int hashCode()
     {
-        return (start.getOrdinal() << 16) + verse_count;
+        return (start.getOrdinal() << 16) + verseCount;
     }
 
     /* (non-Javadoc)
@@ -1182,19 +1184,19 @@ public final class VerseRange implements VerseBase
      */
     public boolean adjacentTo(VerseRange that)
     {
-        int that_start = that.getStart().getOrdinal();
-        int that_end = that.getEnd().getOrdinal();
-        int this_start = getStart().getOrdinal();
-        int this_end = getEnd().getOrdinal();
+        int thatStart = that.getStart().getOrdinal();
+        int thatEnd = that.getEnd().getOrdinal();
+        int thisStart = getStart().getOrdinal();
+        int thisEnd = getEnd().getOrdinal();
 
         // if that starts inside or is next to this we are adjacent.
-        if (that_start >= this_start - 1 && that_start <= this_end + 1)
+        if (thatStart >= thisStart - 1 && thatStart <= thisEnd + 1)
         {
             return true;
         }
 
         // if this starts inside or is next to that we are adjacent.
-        if (this_start >= that_start - 1 && this_start <= that_end + 1)
+        if (thisStart >= thatStart - 1 && thisStart <= thatEnd + 1)
         {
             return true;
         }
@@ -1215,19 +1217,19 @@ public final class VerseRange implements VerseBase
      */
     public boolean overlaps(VerseRange that)
     {
-        int that_start = that.getStart().getOrdinal();
-        int that_end = that.getEnd().getOrdinal();
-        int this_start = getStart().getOrdinal();
-        int this_end = getEnd().getOrdinal();
+        int thatStart = that.getStart().getOrdinal();
+        int thatEnd = that.getEnd().getOrdinal();
+        int thisStart = getStart().getOrdinal();
+        int thisEnd = getEnd().getOrdinal();
 
         // if that starts inside this we are adjacent.
-        if (that_start >= this_start && that_start <= this_end)
+        if (thatStart >= thisStart && thatStart <= thisEnd)
         {
             return true;
         }
 
         // if this starts inside that we are adjacent.
-        if (this_start >= that_start && this_start <= that_end)
+        if (thisStart >= thatStart && thisStart <= thatEnd)
         {
             return true;
         }
@@ -1404,9 +1406,9 @@ public final class VerseRange implements VerseBase
     {
         try
         {
-            Verse[] retcode = new Verse[verse_count];
+            Verse[] retcode = new Verse[verseCount];
 
-            for (int i=0; i<verse_count; i++)
+            for (int i=0; i<verseCount; i++)
             {
                 retcode[i] = new Verse(start.getOrdinal()+i);
             }
@@ -1415,7 +1417,8 @@ public final class VerseRange implements VerseBase
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse[0];
         }
     }
 
@@ -1539,7 +1542,8 @@ public final class VerseRange implements VerseBase
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new VerseRange();
         }
 
         return whole;
@@ -1548,12 +1552,12 @@ public final class VerseRange implements VerseBase
     /**
      * Calculate the last verse in this range.
      * @param start The first verse in the range
-     * @param verse_count The number of verses
+     * @param verseCount The number of verses
      * @return The last verse in the range
      */
-    private static final Verse calcEnd(Verse start, int verse_count)
+    private static final Verse calcEnd(Verse start, int verseCount)
     {
-        return start.add(verse_count - 1);
+        return start.add(verseCount - 1);
     }
 
     /**
@@ -1572,14 +1576,7 @@ public final class VerseRange implements VerseBase
      */
     private void verifyData()
     {
-        if (verse_count != end.subtract(start) + 1)
-        {
-            log.warn("start="+start);
-            log.warn("end="+end);
-            log.warn("verse_count="+verse_count);
-
-            throw new LogicError();
-        }
+        assert verseCount == end.subtract(start) + 1 : "start="+start+", end="+end+", verseCount="+verseCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -1594,7 +1591,7 @@ public final class VerseRange implements VerseBase
         out.defaultWriteObject();
 
         out.writeInt(start.getOrdinal());
-        out.writeInt(verse_count);
+        out.writeInt(verseCount);
 
         // Ignore the original name. Is this wise?
         // I am expecting that people are not that fussed about it and
@@ -1616,8 +1613,8 @@ public final class VerseRange implements VerseBase
         try
         {
             start = new Verse(in.readInt());
-            verse_count = in.readInt();
-            end = calcEnd(start, verse_count);
+            verseCount = in.readInt();
+            end = calcEnd(start, verseCount);
 
             verifyData();
         }
@@ -1626,7 +1623,7 @@ public final class VerseRange implements VerseBase
             throw new IOException(ex.getMessage());
         }
 
-        // We are ignoring the original_name. It was set to null in the
+        // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
     }
 
@@ -1668,7 +1665,8 @@ public final class VerseRange implements VerseBase
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
+                return new Verse();
             }
         }
 
@@ -1693,7 +1691,7 @@ public final class VerseRange implements VerseBase
      * The real data - how many verses long are we?.
      * All ctors init this so leave default
      */
-    private transient int verse_count;
+    private transient int verseCount;
 
     /**
      * The real data - where do we start?.
@@ -1717,7 +1715,7 @@ public final class VerseRange implements VerseBase
     /**
      * The original string for picky users
      */
-    private transient String original_name;
+    private transient String originalName;
 
     /**
      * The default verse range is a singel verse starting at Gen 1.

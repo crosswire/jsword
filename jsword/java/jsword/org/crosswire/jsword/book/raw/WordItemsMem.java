@@ -107,7 +107,7 @@ public class WordItemsMem extends ItemsMem
      */
     public WordItemsMem(RawBook raw, boolean create) throws IOException
     {
-        super(raw, "word.idx", create);
+        super(raw, RawConstants.FILE_WORD_ITEM, create);
     }
 
     /* (non-Javadoc)
@@ -147,7 +147,7 @@ public class WordItemsMem extends ItemsMem
         {
             if (array[i] == null)
             {
-                log.warn("null word at index "+i);
+                log.warn("null word at index "+i); //$NON-NLS-1$
             }
             else
             {
@@ -170,11 +170,9 @@ public class WordItemsMem extends ItemsMem
 
         byte[] asig = new byte[6];
         din.readFully(asig);
+
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:WR"))
-        {
-            throw new IOException("This file is not a Word file");
-        }
+        assert ssig.equals(RawConstants.SIG_WORD_ITEM);
 
         count = din.readInt();
         hash = new Hashtable(count);
@@ -201,7 +199,7 @@ public class WordItemsMem extends ItemsMem
     {
         DataOutputStream dout = new DataOutputStream(out);
 
-        dout.writeBytes("RAW:WR");
+        dout.writeBytes(RawConstants.SIG_WORD_ITEM);
         dout.writeInt(hash.size());
 
         for (int i=0; i<hash.size(); i++)

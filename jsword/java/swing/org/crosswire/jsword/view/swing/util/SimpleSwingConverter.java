@@ -6,13 +6,13 @@ import java.net.URL;
 
 import javax.xml.transform.TransformerException;
 
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.TransformingSAXEventProvider;
-import org.crosswire.jsword.util.Project;
 
 /**
  * Turn XML from a Bible into HTML according to a Display style.
@@ -64,7 +64,7 @@ public class SimpleSwingConverter implements Converter
             {
                 public boolean accept(String name)
                 {
-                    return name.endsWith(Project.XSLT_EXTENSION);
+                    return name.endsWith(FileUtil.EXTENSION_XSLT);
                 }
             });
         }

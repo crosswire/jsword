@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class ParaInstsMem extends InstsMem
      */
     public ParaInstsMem(RawBook raw, boolean create) throws IOException
     {
-        super(raw, "parainst.idx", create);
+        super(raw, RawConstants.FILE_PARA_INST, create);
     }
 
     /**
@@ -55,7 +54,7 @@ public class ParaInstsMem extends InstsMem
      */
     public ParaInstsMem(RawBook raw, boolean create, StringBuffer messages)
     {
-        super(raw, "parainst.idx", create, messages);
+        super(raw, RawConstants.FILE_PARA_INST, create, messages);
     }
 
     /* (non-Javadoc)
@@ -76,8 +75,8 @@ public class ParaInstsMem extends InstsMem
         byte[] asig = new byte[6];
         oin.readFully(asig);
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:AI"))
-            throw new IOException("This file is not a ParaInst file");
+
+        assert ssig.equals(RawConstants.SIG_PARA_INST);
 
         try
         {
@@ -85,7 +84,7 @@ public class ParaInstsMem extends InstsMem
         }
         catch (ClassNotFoundException ex)
         {
-            throw new IOException("Class not found: "+ex.getMessage());
+            throw new IOException(ex.getMessage());
         }
 
         oin.close();
@@ -98,7 +97,7 @@ public class ParaInstsMem extends InstsMem
     {
         ObjectOutputStream oout = new ObjectOutputStream(out);
 
-        oout.writeBytes("RAW:AI");
+        oout.writeBytes(RawConstants.SIG_PARA_INST);
         oout.writeObject(ref);
 
         oout.close();

@@ -50,7 +50,7 @@ public class JDBCBookDriver extends AbstractBookDriver
 
             if (!NetUtil.isDirectory(dir))
             {
-                log.debug("Missing jdbc directory: "+dir.toExternalForm());
+                log.debug("Missing jdbc directory: "+dir.toExternalForm()); //$NON-NLS-1$
                 return new BookMetaData[0];
             }
 
@@ -69,10 +69,10 @@ public class JDBCBookDriver extends AbstractBookDriver
             for (int i=0; i<names.length; i++)
             {
                 URL url = NetUtil.lengthenURL(dir, names[i]);
-                URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
+                URL propUrl = NetUtil.lengthenURL(url, "bible.properties"); //$NON-NLS-1$
 
                 Properties prop = new Properties();
-                prop.load(prop_url.openStream());
+                prop.load(propUrl.openStream());
 
                 Book book = new JDBCBook(this, prop);
 
@@ -93,7 +93,7 @@ public class JDBCBookDriver extends AbstractBookDriver
      */
     public String getDriverName()
     {
-        return "jdbc";
+        return "jdbc"; //$NON-NLS-1$
     }
 
     /**

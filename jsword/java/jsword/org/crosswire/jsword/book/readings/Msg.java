@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.readings;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,11 +28,12 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg INIT_FAIL = new Msg("Failed to initialise Readings driver");
-    static final Msg PARSE_FAIL = new Msg("Failed to parse {0}");
-    static final Msg NOT_FOUND = new Msg("Key not found {0}");
-    static final Msg NOT_IMPLEMENTED = new Msg("Not implemented");
-    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    static final Msg INIT_FAIL = new Msg("Failed to initialise Readings driver"); //$NON-NLS-1$
+    static final Msg PARSE_FAIL = new Msg("Failed to parse {0}"); //$NON-NLS-1$
+    static final Msg NOT_FOUND = new Msg("Key not found {0}"); //$NON-NLS-1$
+    static final Msg NOT_IMPLEMENTED = new Msg("Not implemented"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
+    static final Msg TITLE = new Msg("Readings"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

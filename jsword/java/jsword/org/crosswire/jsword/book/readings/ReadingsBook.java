@@ -75,21 +75,21 @@ public class ReadingsBook extends AbstractBook
         catch (Exception ex)
         {
             prop = new Properties();
-            log.error("Failed to read readings set", ex);
+            log.error("Failed to read readings set", ex); //$NON-NLS-1$
         }
 
-        /*String title = (String)*/ prop.remove("title");
+        /*String title = (String)*/ prop.remove("title"); //$NON-NLS-1$
 
         // We use 1972 because it is a leap year.
         GregorianCalendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
         while (greg.get(Calendar.YEAR) == 1972)
         {
-            String key = KEYBASE + (1+greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE);
+            String key = KEYBASE + (1+greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE); //$NON-NLS-1$
             String readings = (String) prop.remove(key);
             if (readings == null)
             {
-                log.warn("Missing resource: "+key+" while parsing: "+setname);
-                readings = "";
+                log.warn("Missing resource: "+key+" while parsing: "+setname); //$NON-NLS-1$ //$NON-NLS-2$
+                readings = ""; //$NON-NLS-1$
             }
 
             hash.put(new ReadingsKey(greg.getTime()), readings);
@@ -102,7 +102,7 @@ public class ReadingsBook extends AbstractBook
         {
             String key = (String) it.next();
             String val = prop.getProperty(key);
-            log.warn("Extra resource: "+key+"="+val+" while parsing: "+setname);
+            log.warn("Extra resource: "+key+"="+val+" while parsing: "+setname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
         global = new SetKeyList(hash.keySet(), getBookMetaData().getName());
@@ -185,7 +185,7 @@ public class ReadingsBook extends AbstractBook
     /**
      * The base for the keys in the properties file.
      */
-    private static final String KEYBASE = "readings.";
+    private static final String KEYBASE = "readings."; //$NON-NLS-1$
 
     /**
      * The store of keys and data

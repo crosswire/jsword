@@ -61,7 +61,7 @@ public class DataPolice
     {
         if (bmd != null && key != null)
         {
-            log.debug(bmd.getInitials()+":"+key.getName());
+            log.debug(bmd.getInitials()+":"+key.getName()); //$NON-NLS-1$
         }
 
         log.debug(message);

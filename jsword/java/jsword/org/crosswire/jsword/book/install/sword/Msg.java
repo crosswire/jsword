@@ -28,13 +28,13 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}");
-    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}");
-    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}");
-    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}");
-    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured");
-    static final Msg CACHE_ERROR = new Msg("Error loading from cache");
-    static final Msg URL_FAILED = new Msg("URL manipulation failed");
+    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}"); //$NON-NLS-1$
+    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}"); //$NON-NLS-1$
+    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}"); //$NON-NLS-1$
+    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}"); //$NON-NLS-1$
+    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured"); //$NON-NLS-1$
+    static final Msg CACHE_ERROR = new Msg("Error loading from cache"); //$NON-NLS-1$
+    static final Msg URL_FAILED = new Msg("URL manipulation failed"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

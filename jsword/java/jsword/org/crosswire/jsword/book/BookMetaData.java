@@ -243,52 +243,52 @@ public interface BookMetaData extends Comparable
     /**
      * The key for the type in the properties map
      */
-    public static final String KEY_TYPE = "Key";
+    public static final String KEY_TYPE = "Key"; //$NON-NLS-1$
 
     /**
      * The key for the book in the properties map
      */
-    public static final String KEY_BOOK = "Book";
+    public static final String KEY_BOOK = "Book"; //$NON-NLS-1$
 
     /**
      * The key for the driver in the properties map
      */
-    public static final String KEY_DRIVER = "Driver";
+    public static final String KEY_DRIVER = "Driver"; //$NON-NLS-1$
 
     /**
      * The key for the name in the properties map
      */
-    public static final String KEY_NAME = "Name";
+    public static final String KEY_NAME = "Name"; //$NON-NLS-1$
 
     /**
      * The key for the edition in the properties map
      */
-    public static final String KEY_EDITION = "Edition";
+    public static final String KEY_EDITION = "Edition"; //$NON-NLS-1$
 
     /**
      * The key for the initials in the properties map
      */
-    public static final String KEY_INITIALS = "Initials";
+    public static final String KEY_INITIALS = "Initials"; //$NON-NLS-1$
 
     /**
      * The key for the speed in the properties map
      */
-    public static final String KEY_SPEED = "Speed";
+    public static final String KEY_SPEED = "Speed"; //$NON-NLS-1$
 
     /**
      * The key for the first pub in the properties map
      */
-    public static final String KEY_FIRSTPUB = "FirstPublished";
+    public static final String KEY_FIRSTPUB = "FirstPublished"; //$NON-NLS-1$
 
     /**
      * The key for the openness in the properties map
      */
-    public static final String KEY_OPENNESS = "Openness";
+    public static final String KEY_OPENNESS = "Openness"; //$NON-NLS-1$
 
     /**
      * The key for the licence in the properties map
      */
-    public static final String KEY_LICENCE = "Licence";
+    public static final String KEY_LICENCE = "Licence"; //$NON-NLS-1$
 
     /**
      * The default creation date.
@@ -301,5 +301,5 @@ public interface BookMetaData extends Comparable
      * The default way for format published dates when converting to and from
      * strings
      */
-    public static final DateFormat FIRSTPUB_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat FIRSTPUB_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 }

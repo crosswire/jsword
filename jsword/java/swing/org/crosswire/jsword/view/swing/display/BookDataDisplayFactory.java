@@ -1,6 +1,5 @@
 package org.crosswire.jsword.view.swing.display;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.ResourceUtil;
 
 /**
@@ -47,7 +46,8 @@ public class BookDataDisplayFactory
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 }

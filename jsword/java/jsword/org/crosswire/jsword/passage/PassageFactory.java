@@ -1,7 +1,5 @@
-
 package org.crosswire.jsword.passage;
 
-import org.crosswire.common.util.LogicError;
 
 /**
  * A PassageFactory is in charge of creating Passages. The point of
@@ -143,7 +141,7 @@ public class PassageFactory
             return new PassageTally();
 
         default:
-            throw new IllegalArgumentException(""+type);
+            throw new IllegalArgumentException(Integer.toString(type));
         }
     }
 
@@ -181,7 +179,7 @@ public class PassageFactory
             return new PassageTally(name);
 
         default:
-            throw new IllegalArgumentException(""+type);
+            throw new IllegalArgumentException(Integer.toString(type));
         }
     }
 
@@ -195,14 +193,15 @@ public class PassageFactory
         {
             if (whole == null)
             {
-                whole = new ReadOnlyPassage(PassageFactory.createPassage("Gen 1:1-Rev 22:21"), true);
+                whole = new ReadOnlyPassage(PassageFactory.createPassage("Gen 1:1-Rev 22:21"), true); //$NON-NLS-1$
             }
 
             return whole;
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return PassageFactory.createPassage();
         }
     }
 

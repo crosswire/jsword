@@ -54,7 +54,7 @@ import org.crosswire.jsword.util.Project;
  */
 public class AboutPane
 {
-    private static final String SPLASH_FONT = "SanSerif";
+    private static final String SPLASH_FONT = "SanSerif"; //$NON-NLS-1$
     
     /**
      * Basic constructor

@@ -43,7 +43,6 @@ import java.text.MessageFormat;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  * @see LucidRuntimeException
- * @see LogicError
  */
 public class LucidException extends Exception
 {

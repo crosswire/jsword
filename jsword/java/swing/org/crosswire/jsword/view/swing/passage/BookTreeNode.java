@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.passage;
 
 import java.util.Iterator;
@@ -9,7 +8,6 @@ import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.common.util.LogicError;
 
 /**
  * PassageTableModel.
@@ -82,7 +80,7 @@ public class BookTreeNode extends BibleTreeNode
             }
             catch (NoSuchVerseException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
         }
     }
@@ -104,7 +102,8 @@ public class BookTreeNode extends BibleTreeNode
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -147,7 +146,8 @@ public class BookTreeNode extends BibleTreeNode
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 

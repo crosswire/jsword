@@ -1,5 +1,4 @@
-
-package org.crosswire.jsword.book.search;
+package org.crosswire.jsword.view.swing.reference;
 
 import org.crosswire.common.util.MsgBase;
 
@@ -27,11 +26,9 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public class Msg extends MsgBase
 {
-    static final Msg SEARCH_INIT = new Msg("Failed to initialise search engine."); //$NON-NLS-1$
-    static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete."); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("Indexing Bible Data"); //$NON-NLS-1$
+    static final Msg NO_PARENT = new Msg("Node does not have a parent."); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -29,49 +29,49 @@ import org.crosswire.common.util.MsgBase;
 public class Msg extends MsgBase
 {
     // Strings used by Desktop
-    static final Msg UNKNOWN_PROTOCOL = new Msg("Desktop.UnknownProtocol");
-    static final Msg BAD_PROTOCOL_URL = new Msg("Desktop.BadProtocolUrl");
+    static final Msg UNKNOWN_PROTOCOL = new Msg("Desktop.UnknownProtocol"); //$NON-NLS-1$
+    static final Msg BAD_PROTOCOL_URL = new Msg("Desktop.BadProtocolUrl"); //$NON-NLS-1$
     
     // Strings for the preloading job
-    static final Msg PRELOAD_TITLE = new Msg("Desktop.PreloadTitle");
-    static final Msg PRELOAD_SETUP = new Msg("Desktop.PreloadSetup");
-    static final Msg PRELOAD_DATA = new Msg("Desktop.PreloadData");
-    static final Msg PRELOAD_PROVIDER = new Msg("Desktop.PreloadProvider");
-    static final Msg PRELOAD_STYLE = new Msg("Desktop.PreloadStyle");
+    static final Msg PRELOAD_TITLE = new Msg("Desktop.PreloadTitle"); //$NON-NLS-1$
+    static final Msg PRELOAD_SETUP = new Msg("Desktop.PreloadSetup"); //$NON-NLS-1$
+    static final Msg PRELOAD_DATA = new Msg("Desktop.PreloadData"); //$NON-NLS-1$
+    static final Msg PRELOAD_PROVIDER = new Msg("Desktop.PreloadProvider"); //$NON-NLS-1$
+    static final Msg PRELOAD_STYLE = new Msg("Desktop.PreloadStyle"); //$NON-NLS-1$
 
-   // Strings for the startup job
-    static final Msg STARTUP_TITLE = new Msg("Desktop.StartupTitle");
-    static final Msg STARTUP_CONFIG = new Msg("Desktop.StartupConfig");
-    static final Msg STARTUP_LOAD_CONFIG = new Msg("Desktop.StartupLoadConfig");
-    static final Msg STARTUP_LOAD_SETTINGS = new Msg("Desktop.StartupLoadSettings");
-    static final Msg STARTUP_GENERATE = new Msg("Desktop.StartupGenerate");
-    static final Msg STARTUP_GENERAL_CONFIG = new Msg("Desktop.StartupGeneral");
+    // Strings for the startup job
+    static final Msg STARTUP_TITLE = new Msg("Desktop.StartupTitle"); //$NON-NLS-1$
+    static final Msg STARTUP_CONFIG = new Msg("Desktop.StartupConfig"); //$NON-NLS-1$
+    static final Msg STARTUP_LOAD_CONFIG = new Msg("Desktop.StartupLoadConfig"); //$NON-NLS-1$
+    static final Msg STARTUP_LOAD_SETTINGS = new Msg("Desktop.StartupLoadSettings"); //$NON-NLS-1$
+    static final Msg STARTUP_GENERATE = new Msg("Desktop.StartupGenerate"); //$NON-NLS-1$
+    static final Msg STARTUP_GENERAL_CONFIG = new Msg("Desktop.StartupGeneral"); //$NON-NLS-1$
 
     // Strings for DesktopAction
-    static final Msg NO_HELP = new Msg("DesktopActions.NoHelp");
-    static final Msg NOT_IMPLEMENTED = new Msg("DesktopActions.NotImplemented");
-    static final Msg NO_PASSAGE = new Msg("DesktopActions.NoPassage");
-    static final Msg SOURCE_MISSING = new Msg("DesktopActions.SourceMissing");
-    static final Msg GHTML = new Msg("DesktopActions.GHTML");
-    static final Msg HTML = new Msg("DesktopActions.HTML");
-    static final Msg OSIS = new Msg("DesktopActions.OSIS");
-    static final Msg SOURCE_FOUND = new Msg("DesktopActions.SourceFound");
+    static final Msg NO_HELP = new Msg("DesktopActions.NoHelp"); //$NON-NLS-1$
+    static final Msg NOT_IMPLEMENTED = new Msg("DesktopActions.NotImplemented"); //$NON-NLS-1$
+    static final Msg NO_PASSAGE = new Msg("DesktopActions.NoPassage"); //$NON-NLS-1$
+    static final Msg SOURCE_MISSING = new Msg("DesktopActions.SourceMissing"); //$NON-NLS-1$
+    static final Msg GHTML = new Msg("DesktopActions.GHTML"); //$NON-NLS-1$
+    static final Msg HTML = new Msg("DesktopActions.HTML"); //$NON-NLS-1$
+    static final Msg OSIS = new Msg("DesktopActions.OSIS"); //$NON-NLS-1$
+    static final Msg SOURCE_FOUND = new Msg("DesktopActions.SourceFound"); //$NON-NLS-1$
 
     // Strings for AboutPane and Splash
     // The splash image is of an English version of the application
-    static final Msg SPLASH_IMAGE = new Msg("Splash.SplashImage");
-    static final Msg VERSION_TITLE = new Msg("Splash.VersionTitle");
-    static final Msg ABOUT_TITLE = new Msg("AboutPane.AboutTitle");
-    static final Msg TASK_TAB_TITLE = new Msg("AboutPane.TaskTabTitle");
-    static final Msg ERROR_TAB_TITLE = new Msg("AboutPane.ErrorTabTitle");
-    static final Msg SYSTEM_PROPS_TAB_TITLE = new Msg("AboutPane.SystemPropsTabTitle");
-    static final Msg DEBUG_TAB_TITLE = new Msg("AboutPane.DebugTabTitle");
+    static final Msg SPLASH_IMAGE = new Msg("Splash.SplashImage"); //$NON-NLS-1$
+    static final Msg VERSION_TITLE = new Msg("Splash.VersionTitle"); //$NON-NLS-1$
+    static final Msg ABOUT_TITLE = new Msg("AboutPane.AboutTitle"); //$NON-NLS-1$
+    static final Msg TASK_TAB_TITLE = new Msg("AboutPane.TaskTabTitle"); //$NON-NLS-1$
+    static final Msg ERROR_TAB_TITLE = new Msg("AboutPane.ErrorTabTitle"); //$NON-NLS-1$
+    static final Msg SYSTEM_PROPS_TAB_TITLE = new Msg("AboutPane.SystemPropsTabTitle"); //$NON-NLS-1$
+    static final Msg DEBUG_TAB_TITLE = new Msg("AboutPane.DebugTabTitle"); //$NON-NLS-1$
 
     // Strings for StatusBar
-    static final Msg STATUS_DEFAULT = new Msg("StatusBar.StatusDefault");
+    static final Msg STATUS_DEFAULT = new Msg("StatusBar.StatusDefault"); //$NON-NLS-1$
 
     // Strings for OptionsAction
-    static final Msg CONFIG_TITLE = new Msg("OptionsAction.ConfigTitle");
+    static final Msg CONFIG_TITLE = new Msg("OptionsAction.ConfigTitle"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

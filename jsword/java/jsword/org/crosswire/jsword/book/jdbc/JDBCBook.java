@@ -15,7 +15,6 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -73,7 +72,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
         int driver_attempt = 1;
         while (true)
         {
-            String property = "JdbcDriver" + driver_attempt;
+            String property = "JdbcDriver" + driver_attempt; //$NON-NLS-1$
             String drivername = (String) props.get(property);
 
             try
@@ -83,7 +82,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
             }
             catch (Exception ex)
             {
-                log.debug("Failed to load JDBC name: "+driver+" (System Message: "+ex+")");
+                log.debug("Failed to load JDBC name: "+driver+" (System Message: "+ex+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
 
             driver_attempt++;
@@ -92,26 +91,26 @@ public class JDBCBook extends PassageAbstractBook implements Index
         try
         {
             // Actually connect to the database
-            String text_url = (String) props.get("TextURL");
+            String text_url = (String) props.get("TextURL"); //$NON-NLS-1$
             textcnx = DriverManager.getConnection(text_url);
 
-            String concord_url = (String) props.get("ConcordURL");
+            String concord_url = (String) props.get("ConcordURL"); //$NON-NLS-1$
             conccnx = DriverManager.getConnection(concord_url);
 
             // SQL statements
-            String doc_query = (String) props.get("DocQuery");
+            String doc_query = (String) props.get("DocQuery"); //$NON-NLS-1$
             doc_stmt = textcnx.prepareStatement(doc_query);
 
-            String ref_query = (String) props.get("RefQuery");
+            String ref_query = (String) props.get("RefQuery"); //$NON-NLS-1$
             ref_stmt = conccnx.prepareStatement(ref_query);
 
             //String verse_query = (String) props.get("VerseQuery");
             //verse_stmt = textcnx.prepareStatement(verse_query);
 
-            String start_query = (String) props.get("StartQuery");
+            String start_query = (String) props.get("StartQuery"); //$NON-NLS-1$
             start_stmt = conccnx.prepareStatement(start_query);
 
-            words_query = (String) props.get("WordsQuery");
+            words_query = (String) props.get("WordsQuery"); //$NON-NLS-1$
         }
         catch (SQLException ex)
         {
@@ -142,7 +141,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
      */
     protected String getText(Verse verse)
     {
-        String reply = "";
+        String reply = ""; //$NON-NLS-1$
         ResultSet rs = null;
 
         try
@@ -164,7 +163,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
         }
         catch (SQLException ex)
         {
-            log.fatal("read failed", ex);
+            log.fatal("read failed", ex); //$NON-NLS-1$
         }
         finally
         {
@@ -174,7 +173,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
             }
             catch (SQLException ex)
             {
-                log.fatal("close() failed", ex);
+                log.fatal("close() failed", ex); //$NON-NLS-1$
             }
         }
 
@@ -235,12 +234,13 @@ public class JDBCBook extends PassageAbstractBook implements Index
         }
         catch (NoSuchVerseException ex)
         {
-            log.warn("word="+word);
-            throw new LogicError(ex);
+            log.error("word="+word); //$NON-NLS-1$
+            assert false : ex;
+            return PassageFactory.createPassage();
         }
         catch (SQLException ex)
         {
-            log.warn("word="+word);
+            log.error("word="+word); //$NON-NLS-1$
             throw new BookException(Msg.BIBLE_DB, ex);
         }
     }
@@ -255,7 +255,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
             ArrayList output = new ArrayList();
 
             // word = JDBCBibleUtil.swapChar(word, '\'', '?');
-            start_stmt.setString(1, word+"%");
+            start_stmt.setString(1, word+"%"); //$NON-NLS-1$
             ResultSet rs = start_stmt.executeQuery();
             while (rs.next())
             {
@@ -268,7 +268,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
         }
         catch (SQLException ex)
         {
-            log.warn("word="+word);
+            log.error("word="+word); //$NON-NLS-1$
             throw new BookException(Msg.BIBLE_DB, ex);
         }
     }
@@ -389,7 +389,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
             }
             catch (Exception ex)
             {
-                log.warn("SQL error in iteration", ex);
+                log.warn("SQL error in iteration", ex); //$NON-NLS-1$
                 throw new NoSuchElementException(ex.getMessage());
             }
         }

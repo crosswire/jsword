@@ -51,7 +51,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public SwordBookDriver()
     {
-        log.debug("Starting Sword drivers");
+        log.debug("Starting Sword drivers"); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -64,7 +64,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // Loop through the dirs in the lookup path
         for (int j=0; j<dirs.length; j++)
         {
-            File mods = new File(dirs[j], "mods.d");
+            File mods = new File(dirs[j], SwordConstants.DIR_CONF);
             if (mods.isDirectory())
             {
                 String[] bookdirs = mods.list(new CustomFilenameFilter());
@@ -87,19 +87,19 @@ public class SwordBookDriver extends AbstractBookDriver
                         }
                         else
                         {
-                            String name = bookdir.substring(0, bookdir.indexOf(".conf"));
-                            log.warn("Unsupported Book: "+name);
+                            String name = bookdir.substring(0, bookdir.indexOf(SwordConstants.EXTENSION_CONF));
+                            log.warn("Unsupported Book: "+name); //$NON-NLS-1$
                         }
                     }
                     catch (Exception ex)
                     {
-                        log.warn("Couldn't create SwordBookMetaData", ex);
+                        log.warn("Couldn't create SwordBookMetaData", ex); //$NON-NLS-1$
                     }
                 }            
             }
             else
             {
-                log.debug("mods.d directory at "+mods+" does not exist");
+                log.debug("mods.d directory at "+mods+" does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -136,7 +136,7 @@ public class SwordBookDriver extends AbstractBookDriver
         if (modtype.getBookType() == null)
         {
             // LATER(joe): how do we support books?
-            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK");
+            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK"); //$NON-NLS-1$
             throw new BookException(Msg.TYPE_UNSUPPORTED);
         }
 
@@ -197,7 +197,7 @@ public class SwordBookDriver extends AbstractBookDriver
 
         if (useDefaultPaths)
         {
-            log.warn("No paths set, using defaults");
+            log.warn("No paths set, using defaults"); //$NON-NLS-1$
         }
 
         // Maintain that downloadDir is in the array and that it is first.
@@ -285,7 +285,7 @@ public class SwordBookDriver extends AbstractBookDriver
         testDefaultPath(reply, System.getProperty("user.home")+"/.sword");
 
         // mods.d in the current directory?
-        testDefaultPath(reply, new File(".").getAbsolutePath());
+        testDefaultPath(reply, new File(".").getAbsolutePath()); //$NON-NLS-1$
 
         return (File[]) reply.toArray(new File[reply.size()]);
     }
@@ -297,7 +297,7 @@ public class SwordBookDriver extends AbstractBookDriver
     private static void testDefaultPath(List reply, String path)
     {
         File where = new File(path);
-        File mods = new File(path, "mods.d");
+        File mods = new File(path, SwordConstants.DIR_CONF);
         if (mods.isDirectory())
         {
             reply.add(where);
@@ -317,7 +317,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static void setDownloadDir(File downloadDir)
     {
-        if (!downloadDir.getPath().equals(""))
+        if (!downloadDir.getPath().equals("")) //$NON-NLS-1$
         {
             dirs[0] = downloadDir;
             log.debug("Setting sword download directory to: " + downloadDir);
@@ -345,7 +345,7 @@ public class SwordBookDriver extends AbstractBookDriver
          */
         public boolean accept(File parent, String name)
         {
-            return !name.startsWith("globals.") && name.endsWith(".conf");
+            return !name.startsWith("globals.") && name.endsWith(SwordConstants.EXTENSION_CONF);
         }
     }
 

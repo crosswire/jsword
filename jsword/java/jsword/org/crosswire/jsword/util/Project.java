@@ -9,7 +9,6 @@ import java.util.Properties;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
@@ -44,14 +43,39 @@ import org.jdom.input.SAXBuilder;
 public class Project
 {
     /**
-     * Extension for XSLT files
+     * System property to let people re-direct where the project directory is stored
      */
-    public static final String XSLT_EXTENSION = ".xsl";
+    private static final String PROP_HOMEDIR = "jsword.bible.dir"; //$NON-NLS-1$
+
+    /**
+     * A file so we know if we have the right versions directory
+     */
+    private static final String FILE_LOCATOR = "locator.properties"; //$NON-NLS-1$
+
+    /**
+     * Properties settings file
+     */
+    private static final String FILE_PROJECT = "project.properties"; //$NON-NLS-1$
+
+    /**
+     * Resources subdir for readings sets
+     */
+    private static final String DIR_READINGS = "readings"; //$NON-NLS-1$
+
+    /**
+     * The cache of downloaded files inside the project directory
+     */
+    private static final String DIR_NETCACHE = "netcache"; //$NON-NLS-1$
+
+    /**
+     * Versions subdirectory of the project directory
+     */
+    private static final String DIR_VERSIONS = "versions"; //$NON-NLS-1$
 
     /**
      * The JSword user settings directory
      */
-    public static final String PROJECT_DIRECTORY = ".jsword";
+    private static final String DIR_PROJECT = ".jsword"; //$NON-NLS-1$
 
     /**
      * Accessor for the resource singleton.
@@ -77,20 +101,20 @@ public class Project
     {
         try
         {
-            String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY;
-            home = new URL("file", null, path);
+            String path = System.getProperty("user.home") + File.separator + DIR_PROJECT; //$NON-NLS-1$
+            home = new URL(NetUtil.PROTOCOL_FILE, null, path);
             ResourceUtil.setHome(home);
-            base = NetUtil.lengthenURL(home, "/");
+            base = NetUtil.lengthenURL(home, "/"); //$NON-NLS-1$
         }
         catch (MalformedURLException ex)
         {
-            log.fatal("Failed to create home directory URL", ex);
-            throw new LogicError(ex);
+            log.fatal("Failed to create home directory URL", ex); //$NON-NLS-1$
+            assert false : ex;
         }
 
         try
         {
-            URL urlcache = getTempScratchSpace("netcache", true);
+            URL urlcache = getTempScratchSpace(DIR_NETCACHE, true);
             File filecache = new File(urlcache.getFile());
             NetUtil.setURLCacheDir(filecache);
         }
@@ -98,17 +122,17 @@ public class Project
         {
             // This isn't fatal, it just means that NetUtil will try to use $TMP
             // in place of a more permanent solution.
-            log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex);
+            log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex); //$NON-NLS-1$
         }
 
         try
         {
-            InputStream in = ResourceUtil.getResourceAsStream("project.properties");
+            InputStream in = ResourceUtil.getResourceAsStream(FILE_PROJECT);
             projprop.load(in);
         }
         catch (IOException ex)
         {
-            log.warn("Failed to load project.properties file", ex);
+            log.warn("Failed to load project.properties file", ex); //$NON-NLS-1$
         }
     }
 
@@ -117,7 +141,7 @@ public class Project
      */
     public String getVersion()
     {
-        return projprop.getProperty("version", "development");
+        return projprop.getProperty("version", "development"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -126,7 +150,7 @@ public class Project
      */
     public String getName()
     {
-        return projprop.getProperty("product", "J-Sword");
+        return projprop.getProperty("product", "J-Sword"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -138,7 +162,7 @@ public class Project
     {
         try
         {
-            String search = "readings/"+NetUtil.INDEX_FILE;
+            String search = DIR_READINGS + NetUtil.SEPARATOR + NetUtil.INDEX_FILE;
             URL index = ResourceUtil.getResource(search);
             return NetUtil.listByIndexFile(index, new URLFilter()
             {
@@ -161,7 +185,7 @@ public class Project
      */
     public Properties getReadingsSet(String name) throws IOException
     {
-        String lookup = "readings/"+name;
+        String lookup = DIR_READINGS + NetUtil.SEPARATOR + name;
         InputStream in = ResourceUtil.getResourceAsStream(lookup);
 
         Properties prop = new Properties();
@@ -238,10 +262,10 @@ public class Project
      */
     public Document getDocument(String subject) throws JDOMException, IOException
     {
-        String resource = subject+".xml";
+        String resource = subject + FileUtil.EXTENSION_XML;
         InputStream in = ResourceUtil.getResourceAsStream(resource);
 
-        log.debug("Loading "+subject+".xml from classpath: [OK]");
+        log.debug("Loading "+subject+".xml from classpath: [OK]"); //$NON-NLS-1$ //$NON-NLS-2$
         SAXBuilder builder = new SAXBuilder(true);
         return builder.build(in);
     }
@@ -254,38 +278,38 @@ public class Project
         URL root = null;
 
         // First see if there is a System property that can help us out
-        String sysprop = System.getProperty("jsword.bible.dir");
-        log.debug("Testing system property jsword.bible.dir="+sysprop);
+        String sysprop = System.getProperty(PROP_HOMEDIR);
+        log.debug("Testing system property "+PROP_HOMEDIR+"="+sysprop); //$NON-NLS-1$ //$NON-NLS-2$
 
         if (sysprop != null)
         {
-            URL found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
-            URL test = NetUtil.lengthenURL(found, "locator.properties");
+            URL found = NetUtil.lengthenURL(new URL(NetUtil.PROTOCOL_FILE, null, sysprop), DIR_VERSIONS);
+            URL test = NetUtil.lengthenURL(found, FILE_LOCATOR);
 
             if (NetUtil.isFile(test))
             {
-                log.debug("Found BibleRoot using system property jsword.bible.dir at "+test);
+                log.debug("Found BibleRoot using system property jsword.bible.dir at "+test); //$NON-NLS-1$
                 root = found;
             }
             else
             {
-                log.warn("Missing jsword.bible.dir under: "+test.toExternalForm());
+                log.warn("Missing jsword.bible.dir under: "+test.toExternalForm()); //$NON-NLS-1$
             }
         }
 
         // If not then try a wild guess
         if (root == null)
         {
-            URL found = ResourceUtil.getResource("versions/locator.properties");
-            URL test = NetUtil.shortenURL(found, "locator.properties");
+            URL found = ResourceUtil.getResource(DIR_VERSIONS + File.separator + FILE_LOCATOR);
+            URL test = NetUtil.shortenURL(found, FILE_LOCATOR);
             if (NetUtil.isFile(test))
             {
-                log.debug("Found BibleRoot from current directory: "+test.toExternalForm());
+                log.debug("Found BibleRoot from current directory: "+test.toExternalForm()); //$NON-NLS-1$
                 root = test;
             }
             else
             {
-                log.warn("Missing BibleRoot from current directory: "+test.toExternalForm());
+                log.warn("Missing BibleRoot from current directory: "+test.toExternalForm()); //$NON-NLS-1$
             }
         }
 

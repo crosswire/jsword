@@ -7,8 +7,8 @@ import java.io.RandomAccessFile;
 import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
@@ -57,8 +57,8 @@ public class RawLDBackend implements Backend
             throw new BookException(Msg.TYPE_UNKNOWN);
         }
 
-        idxFile = new File(path + ".idx");
-        datFile = new File(path + ".dat");
+        idxFile = new File(path + SwordConstants.EXTENSION_INDEX);
+        datFile = new File(path + SwordConstants.EXTENSION_DATA);
 
         if (!idxFile.canRead())
         {
@@ -79,12 +79,12 @@ public class RawLDBackend implements Backend
         try
         {
             // Open the files
-            idxRaf = new RandomAccessFile(idxFile, "r");
-            datRaf = new RandomAccessFile(datFile, "r");
+            idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
+            datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
         }
         catch (IOException ex)
         {
-            log.error("failed to open files", ex);
+            log.error("failed to open files", ex); //$NON-NLS-1$
 
             idxRaf = null;
             datRaf = null;
@@ -105,7 +105,7 @@ public class RawLDBackend implements Backend
         }
         catch (IOException ex)
         {
-            log.error("failed to close files", ex);
+            log.error("failed to close files", ex); //$NON-NLS-1$
         }
 
         idxRaf = null;
@@ -152,7 +152,7 @@ public class RawLDBackend implements Backend
                     size = SwordUtil.decodeLittleEndian32AsInt(buffer, 4);
                     break;
                 default:
-                    throw new LogicError();
+                    assert false : datasize;
                 }
                 
                 // Now read the data file for this key using the offset and size
@@ -161,7 +161,7 @@ public class RawLDBackend implements Backend
                 int keyend = SwordUtil.findByte(data, SEPARATOR);
                 if (keyend == -1)
                 {
-                    DataPolice.report("Failed to find keyname. offset="+offset+" data='"+new String(data)+"'");
+                    DataPolice.report("Failed to find keyname. offset="+offset+" data='"+new String(data)+"'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
 
@@ -171,7 +171,7 @@ public class RawLDBackend implements Backend
                 String keytitle = new String(keydata).trim();
                 // for some wierd reason plain text (i.e. SourceType=0) dicts
                 // all get \ added to the ends of the index entries.
-                if (keytitle.endsWith("\\"))
+                if (keytitle.endsWith("\\")) //$NON-NLS-1$
                 {
                     keytitle = keytitle.substring(0, keytitle.length()-1);
                 }
@@ -181,7 +181,7 @@ public class RawLDBackend implements Backend
             }
             catch (IOException ex)
             {
-                log.error("Ignoring entry", ex);
+                log.error("Ignoring entry", ex); //$NON-NLS-1$
             }
         }
 

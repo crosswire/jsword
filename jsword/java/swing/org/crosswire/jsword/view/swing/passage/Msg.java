@@ -28,8 +28,11 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg WHOLE_BIBLE = new Msg("The Whole Bible");
-    static final Msg PART_BIBLE = new Msg("Search ({0})");
+    static final Msg WHOLE_BIBLE = new Msg("The Whole Bible"); //$NON-NLS-1$
+    static final Msg PART_BIBLE = new Msg("Search ({0})"); //$NON-NLS-1$
+    static final Msg ERROR = new Msg("Error"); //$NON-NLS-1$
+    static final Msg Error = new Msg("ERROR"); //$NON-NLS-1$
+    static final Msg WHOLE = new Msg("The Bible"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

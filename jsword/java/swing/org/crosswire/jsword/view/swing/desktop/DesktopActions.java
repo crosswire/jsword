@@ -17,7 +17,6 @@ import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.CWAction;
 import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -69,41 +68,40 @@ import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
 public class DesktopActions implements ActionListener
 {
     // Enumeration of all the keys to known actions
-    public static final String FILE = "File";
-    public static final String EDIT = "Edit";
-    public static final String VIEW = "View";
-    public static final String TOOLS = "Tools";
-    public static final String HELP = "Help";
-    public static final String NEW_WINDOW = "NewWindow";
-    public static final String OPEN = "Open";
-    public static final String CLOSE = "Close";
-    public static final String CLOSE_ALL = "CloseAll";
-    public static final String SAVE = "Save";
-    public static final String SAVE_AS = "SaveAs";
-    public static final String SAVE_ALL = "SaveAll";
-    public static final String EXIT = "Exit";
-    public static final String CUT = "Cut";
-    public static final String COPY = "Copy";
-    public static final String PASTE = "Paste";
-    public static final String TAB_MODE = "TabMode";
-    public static final String WINDOW_MODE = "WindowMode";
-    public static final String VIEW_GHTML = "ViewGHTML";
-    public static final String VIEW_HTML = "ViewHTML";
-    public static final String VIEW_OSIS = "ViewOSIS";
-    public static final String BLUR1 = "Blur1";
-    public static final String BLUR5 = "Blur5";
-    public static final String DELETE_SELECTED = "DeleteSelected";
-    public static final String BOOKS = "Books";
-    public static final String OPTIONS = "Options";
-    public static final String CONTENTS = "Contents";
-    public static final String ABOUT = "About";
-    public static final String ABOUT_OK = "AboutOK";
+    public static final String FILE = "File"; //$NON-NLS-1$
+    public static final String EDIT = "Edit"; //$NON-NLS-1$
+    public static final String VIEW = "View"; //$NON-NLS-1$
+    public static final String TOOLS = "Tools"; //$NON-NLS-1$
+    public static final String HELP = "Help"; //$NON-NLS-1$
+    public static final String NEW_WINDOW = "NewWindow"; //$NON-NLS-1$
+    public static final String OPEN = "Open"; //$NON-NLS-1$
+    public static final String CLOSE = "Close"; //$NON-NLS-1$
+    public static final String CLOSE_ALL = "CloseAll"; //$NON-NLS-1$
+    public static final String SAVE = "Save"; //$NON-NLS-1$
+    public static final String SAVE_AS = "SaveAs"; //$NON-NLS-1$
+    public static final String SAVE_ALL = "SaveAll"; //$NON-NLS-1$
+    public static final String EXIT = "Exit"; //$NON-NLS-1$
+    public static final String CUT = "Cut"; //$NON-NLS-1$
+    public static final String COPY = "Copy"; //$NON-NLS-1$
+    public static final String PASTE = "Paste"; //$NON-NLS-1$
+    public static final String TAB_MODE = "TabMode"; //$NON-NLS-1$
+    public static final String WINDOW_MODE = "WindowMode"; //$NON-NLS-1$
+    public static final String VIEW_GHTML = "ViewGHTML"; //$NON-NLS-1$
+    public static final String VIEW_HTML = "ViewHTML"; //$NON-NLS-1$
+    public static final String VIEW_OSIS = "ViewOSIS"; //$NON-NLS-1$
+    public static final String BLUR1 = "Blur1"; //$NON-NLS-1$
+    public static final String BLUR5 = "Blur5"; //$NON-NLS-1$
+    public static final String DELETE_SELECTED = "DeleteSelected"; //$NON-NLS-1$
+    public static final String BOOKS = "Books"; //$NON-NLS-1$
+    public static final String OPTIONS = "Options"; //$NON-NLS-1$
+    public static final String CONTENTS = "Contents"; //$NON-NLS-1$
+    public static final String ABOUT = "About"; //$NON-NLS-1$
+    public static final String ABOUT_OK = "AboutOK"; //$NON-NLS-1$
 
     // Enumeration of error strings used in this class
-    private static final String EMPTY_ACTION_ERROR = "Empty action: No Action Command Key";
-    private static final String UNKNOWN_ACTION_ERROR = "Unknown action : {0}";
-    private static final String UNEXPECTED_ERROR = "Stupid Programmer Error";
-    private static final String METHOD_PREFIX = "do";
+    private static final String UNKNOWN_ACTION_ERROR = "Unknown action : {0}"; //$NON-NLS-1$
+    private static final String UNEXPECTED_ERROR = "Stupid Programmer Error"; //$NON-NLS-1$
+    private static final String METHOD_PREFIX = "do"; //$NON-NLS-1$
 
     /**
      * Create the actions for the desktop
@@ -133,10 +131,9 @@ public class DesktopActions implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String action = e.getActionCommand();
-        if (action == null || action.length() == 0)
-        {
-            throw new LogicError(EMPTY_ACTION_ERROR);
-        }
+
+        assert action != null;
+        assert action.length() != 0;
 
         // Instead of cascading if/then/else
         // use reflecton to do a direct lookup and call
@@ -531,7 +528,7 @@ public class DesktopActions implements ActionListener
             };
             Books.installed().addBooksListener(cbl);
 
-            URL configUrl = Project.instance().getWritablePropertiesURL("desktop");
+            URL configUrl = Project.instance().getWritablePropertiesURL("desktop"); //$NON-NLS-1$
             ConfigEditorFactory.showDialog(desktop.getConfig(), desktop.getJFrame(), configUrl);
 
             Books.installed().removeBooksListener(cbl);

@@ -227,7 +227,7 @@ public class Books implements BookList
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException
     {
-        log.debug("begin registering driver: "+driver.getClass().getName());
+        log.debug("begin registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
 
         if (drivers.contains(driver))
         {
@@ -242,7 +242,7 @@ public class Books implements BookList
             addBook(bmds[j]);
         }
 
-        log.debug("end registering driver: "+driver.getClass().getName());
+        log.debug("end registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
     }
 
     /**
@@ -251,7 +251,7 @@ public class Books implements BookList
      */
     public synchronized void unregisterDriver(BookDriver driver) throws BookException
     {
-        log.debug("begin un-registering driver: "+driver.getClass().getName());
+        log.debug("begin un-registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
 
         BookMetaData[] bmds = driver.getBookMetaDatas();
         for (int j=0; j<bmds.length; j++)
@@ -264,7 +264,7 @@ public class Books implements BookList
             throw new BookException(Msg.DRIVER_NOREMOVE, new Object[] { driver.getClass().getName() });
         }
 
-        log.debug("end un-registering driver: "+driver.getClass().getName());
+        log.debug("end un-registering driver: "+driver.getClass().getName()); //$NON-NLS-1$
     }
 
     /**
@@ -343,7 +343,7 @@ public class Books implements BookList
                 }
             };
 
-            Thread init = new Thread(runner, "book-driver-registration");
+            Thread init = new Thread(runner, "book-driver-registration"); //$NON-NLS-1$
             init.setPriority(Thread.MIN_PRIORITY);
             init.start();
         }
@@ -358,7 +358,7 @@ public class Books implements BookList
      */
     protected void autoRegister()
     {
-        URL predicturl = Project.instance().getWritablePropertiesURL("books");
+        URL predicturl = Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
         Job job = JobManager.createJob("Job Title", predicturl, null, true);
 
         try
@@ -366,7 +366,7 @@ public class Books implements BookList
             // This will classload them all and they will register themselves.
             Class[] types = ResourceUtil.getImplementors(BookDriver.class);
 
-            log.debug("begin auto-registering "+types.length+" drivers:");
+            log.debug("begin auto-registering "+types.length+" drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
 
             for (int i=0; i<types.length; i++)
             {
@@ -385,7 +385,7 @@ public class Books implements BookList
         }
         catch (Exception ex)
         {
-            log.debug("Unexpected exception: " + ex);
+            log.debug("Unexpected exception: " + ex); //$NON-NLS-1$
             job.ignoreTimings();
         }
         finally

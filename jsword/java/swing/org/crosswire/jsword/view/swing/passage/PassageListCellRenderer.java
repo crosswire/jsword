@@ -98,7 +98,7 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
             catch (Exception ex)
             {
                 Reporter.informUser(this, ex);
-                label.setText("Error");
+                label.setText(Msg.ERROR.toString());
             }
         }
         else

@@ -39,7 +39,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     {
         Book[] books = new Book[]
         {
-            new ReadingsBook(this, "Readings", BookType.DICTIONARY, BookMetaData.SPEED_MEDIUM),
+            new ReadingsBook(this, Msg.TITLE.toString(), BookType.DICTIONARY, BookMetaData.SPEED_MEDIUM),
         };
 
         bmds = new BookMetaData[books.length];
@@ -63,7 +63,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public String getDriverName()
     {
-        return "Readings";
+        return "Readings"; //$NON-NLS-1$
     }
 
     /**

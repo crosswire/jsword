@@ -7,6 +7,7 @@ import java.io.RandomAccessFile;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
@@ -46,11 +47,11 @@ public class RawBackend implements Backend
      */
     public RawBackend(String path) throws BookException
     {
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + "ot.vss");
-        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + "ot");
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
+        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
 
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + "nt.vss");
-        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + "nt");
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
+        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT);
 
         // It is an error to be neither OT nor NT
         if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead())
@@ -66,8 +67,8 @@ public class RawBackend implements Backend
     {
         try
         {
-            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], "r");
-            txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], "r");
+            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+            txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
         }
         catch (FileNotFoundException ex)
         {
@@ -76,8 +77,8 @@ public class RawBackend implements Backend
 
         try
         {
-            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], "r");
-            txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], "r");
+            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+            txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
         }
         catch (FileNotFoundException ex)
         {
@@ -102,7 +103,7 @@ public class RawBackend implements Backend
         }
         catch (IOException ex)
         {
-            log.error("failed to close files", ex);
+            log.error("failed to close files", ex); //$NON-NLS-1$
         }
 
         idxRaf[SwordConstants.TESTAMENT_OLD] = null;

@@ -70,302 +70,302 @@ public class ConfigEntry extends Enum
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry ABOUT = new ConfigEntry("About");
+    public static final ConfigEntry ABOUT = new ConfigEntry("About"); //$NON-NLS-1$
 
     /**
      * single value integer, unknown use, some indications that we ought to be using it
      */
-    public static final ConfigEntry BLOCK_COUNT = new ConfigEntry("BlockCount");
+    public static final ConfigEntry BLOCK_COUNT = new ConfigEntry("BlockCount"); //$NON-NLS-1$
 
     /**
      * The block type in use
      */
-    public static final ConfigEntry BLOCK_TYPE = new ConfigEntry("BlockType");
+    public static final ConfigEntry BLOCK_TYPE = new ConfigEntry("BlockType"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry CATEGORY = new ConfigEntry("Category");
+    public static final ConfigEntry CATEGORY = new ConfigEntry("Category"); //$NON-NLS-1$
 
     /**
      * single value string, for encryption
      */
-    public static final ConfigEntry CIPHER_KEY = new ConfigEntry("CipherKey");
+    public static final ConfigEntry CIPHER_KEY = new ConfigEntry("CipherKey"); //$NON-NLS-1$
 
     /**
      * The type of compression in use
      */
-    public static final ConfigEntry COMPRESS_TYPE = new ConfigEntry("CompressType");
+    public static final ConfigEntry COMPRESS_TYPE = new ConfigEntry("CompressType"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry COPYRIGHT_CONTACT_ADDRESS = new ConfigEntry("CopyrightContactAddress");
+    public static final ConfigEntry COPYRIGHT_CONTACT_ADDRESS = new ConfigEntry("CopyrightContactAddress"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry COPYRIGHT_CONTACT_EMAIL = new ConfigEntry("CopyrightContactEmail");
+    public static final ConfigEntry COPYRIGHT_CONTACT_EMAIL = new ConfigEntry("CopyrightContactEmail"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry COPYRIGHT_CONTACT_NAME = new ConfigEntry("CopyrightContactName");
+    public static final ConfigEntry COPYRIGHT_CONTACT_NAME = new ConfigEntry("CopyrightContactName"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry COPYRIGHT_DATE = new ConfigEntry("CopyrightDate");
+    public static final ConfigEntry COPYRIGHT_DATE = new ConfigEntry("CopyrightDate"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry COPYRIGHT_HOLDER = new ConfigEntry("CopyrightHolder");
+    public static final ConfigEntry COPYRIGHT_HOLDER = new ConfigEntry("CopyrightHolder"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry COPYRIGHT_NOTES = new ConfigEntry("CopyrightNotes");
+    public static final ConfigEntry COPYRIGHT_NOTES = new ConfigEntry("CopyrightNotes"); //$NON-NLS-1$
 
     /**
      * Relative path to the data files, some issues with this
      */
-    public static final ConfigEntry DATA_PATH = new ConfigEntry("DataPath");
+    public static final ConfigEntry DATA_PATH = new ConfigEntry("DataPath"); //$NON-NLS-1$
 
     /**
      * The full name of this module
      */
-    public static final ConfigEntry DESCRIPTION = new ConfigEntry("Description");
+    public static final ConfigEntry DESCRIPTION = new ConfigEntry("Description"); //$NON-NLS-1$
 
     /**
      * single value choice, from SwordConstants.DIRECTION_STRINGS we should probably use it?
      */
-    public static final ConfigEntry DIRECTION = new ConfigEntry("Direction");
+    public static final ConfigEntry DIRECTION = new ConfigEntry("Direction"); //$NON-NLS-1$
 
     /**
      * single value integer, unknown use, some indications that we ought to be using it
      */
-    public static final ConfigEntry DISPLAY_LEVEL = new ConfigEntry("DisplayLevel");
+    public static final ConfigEntry DISPLAY_LEVEL = new ConfigEntry("DisplayLevel"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry DISTRIBUTION = new ConfigEntry("Distribution");
+    public static final ConfigEntry DISTRIBUTION = new ConfigEntry("Distribution"); //$NON-NLS-1$
 
     /**
      * single value coded string, a ';' separated string of license attributes
      */
-    public static final ConfigEntry DISTRIBUTION_LICENSE = new ConfigEntry("DistributionLicense");
+    public static final ConfigEntry DISTRIBUTION_LICENSE = new ConfigEntry("DistributionLicense"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry DISTRIBUTION_NOTES = new ConfigEntry("DistributionNotes");
+    public static final ConfigEntry DISTRIBUTION_NOTES = new ConfigEntry("DistributionNotes"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry DISTRIBUTION_SOURCE = new ConfigEntry("DistributionSource");
+    public static final ConfigEntry DISTRIBUTION_SOURCE = new ConfigEntry("DistributionSource"); //$NON-NLS-1$
 
     /**
      * The character encoding
      */
-    public static final ConfigEntry ENCODING = new ConfigEntry("Encoding");
+    public static final ConfigEntry ENCODING = new ConfigEntry("Encoding"); //$NON-NLS-1$
 
     /**
      * multiple value flagset, from SwordConstants.GOF_STRINGS
      */
-    public static final ConfigEntry GLOBAL_OPTION_FILTER = new ConfigEntry("GlobalOptionFilter");
+    public static final ConfigEntry GLOBAL_OPTION_FILTER = new ConfigEntry("GlobalOptionFilter"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry GLOSSARY_FROM = new ConfigEntry("GlossaryFrom");
+    public static final ConfigEntry GLOSSARY_FROM = new ConfigEntry("GlossaryFrom"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry GLOSSARY_TO = new ConfigEntry("GlossaryTo");
+    public static final ConfigEntry GLOSSARY_TO = new ConfigEntry("GlossaryTo"); //$NON-NLS-1$
 
     /**
      * multiple values starting with History, some sort of change-log?
      */
-    public static final ConfigEntry HISTORY = new ConfigEntry("History");
+    public static final ConfigEntry HISTORY = new ConfigEntry("History"); //$NON-NLS-1$
 
     /**
      * single value integer, the installed size (in bytes?)
      */
-    public static final ConfigEntry INSTALL_SIZE = new ConfigEntry("InstallSize");
+    public static final ConfigEntry INSTALL_SIZE = new ConfigEntry("InstallSize"); //$NON-NLS-1$
 
     /**
      * multiple value flagset, from SwordConstants.FEATURE_STRINGS
      */
-    public static final ConfigEntry FEATURE = new ConfigEntry("Feature");
+    public static final ConfigEntry FEATURE = new ConfigEntry("Feature"); //$NON-NLS-1$
 
     /**
      * single value string
      */
-    public static final ConfigEntry FONT = new ConfigEntry("Font");
+    public static final ConfigEntry FONT = new ConfigEntry("Font"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_0_1 = new ConfigEntry("History_0.1");
+    public static final ConfigEntry HISTORY_0_1 = new ConfigEntry("History_0.1"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_0_2 = new ConfigEntry("History_0.2");
+    public static final ConfigEntry HISTORY_0_2 = new ConfigEntry("History_0.2"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_0_3 = new ConfigEntry("History_0.3");
+    public static final ConfigEntry HISTORY_0_3 = new ConfigEntry("History_0.3"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_0_9 = new ConfigEntry("History_0.9");
+    public static final ConfigEntry HISTORY_0_9 = new ConfigEntry("History_0.9"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_0_91 = new ConfigEntry("History_0.91");
+    public static final ConfigEntry HISTORY_0_91 = new ConfigEntry("History_0.91"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_0_92 = new ConfigEntry("History_0.92");
+    public static final ConfigEntry HISTORY_0_92 = new ConfigEntry("History_0.92"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_0 = new ConfigEntry("History_1.0");
+    public static final ConfigEntry HISTORY_1_0 = new ConfigEntry("History_1.0"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_1 = new ConfigEntry("History_1.1");
+    public static final ConfigEntry HISTORY_1_1 = new ConfigEntry("History_1.1"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_2 = new ConfigEntry("History_1.2");
+    public static final ConfigEntry HISTORY_1_2 = new ConfigEntry("History_1.2"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_3 = new ConfigEntry("History_1.3");
+    public static final ConfigEntry HISTORY_1_3 = new ConfigEntry("History_1.3"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_4 = new ConfigEntry("History_1.4");
+    public static final ConfigEntry HISTORY_1_4 = new ConfigEntry("History_1.4"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_5 = new ConfigEntry("History_1.5");
+    public static final ConfigEntry HISTORY_1_5 = new ConfigEntry("History_1.5"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_6 = new ConfigEntry("History_1.6");
+    public static final ConfigEntry HISTORY_1_6 = new ConfigEntry("History_1.6"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_7 = new ConfigEntry("History_1.7");
+    public static final ConfigEntry HISTORY_1_7 = new ConfigEntry("History_1.7"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_8 = new ConfigEntry("History_1.8");
+    public static final ConfigEntry HISTORY_1_8 = new ConfigEntry("History_1.8"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_1_9 = new ConfigEntry("History_1.9");
+    public static final ConfigEntry HISTORY_1_9 = new ConfigEntry("History_1.9"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_2_0 = new ConfigEntry("History_2.0");
+    public static final ConfigEntry HISTORY_2_0 = new ConfigEntry("History_2.0"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_2_1 = new ConfigEntry("History_2.1");
+    public static final ConfigEntry HISTORY_2_1 = new ConfigEntry("History_2.1"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_2_2 = new ConfigEntry("History_2.2");
+    public static final ConfigEntry HISTORY_2_2 = new ConfigEntry("History_2.2"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry HISTORY_2_5 = new ConfigEntry("History_2.5");
+    public static final ConfigEntry HISTORY_2_5 = new ConfigEntry("History_2.5"); //$NON-NLS-1$
 
     /**
      * single value string, defaults to en, the language of the module
      */
-    public static final ConfigEntry LANG = new ConfigEntry("Lang");
+    public static final ConfigEntry LANG = new ConfigEntry("Lang"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry LCSH = new ConfigEntry("LCSH");
+    public static final ConfigEntry LCSH = new ConfigEntry("LCSH"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry LEXICON_FROM = new ConfigEntry("LexiconFrom");
+    public static final ConfigEntry LEXICON_FROM = new ConfigEntry("LexiconFrom"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry LEXICON_TO = new ConfigEntry("LexiconTo");
+    public static final ConfigEntry LEXICON_TO = new ConfigEntry("LexiconTo"); //$NON-NLS-1$
 
     /**
      * The type of module
      */
-    public static final ConfigEntry MOD_DRV = new ConfigEntry("ModDrv");
+    public static final ConfigEntry MOD_DRV = new ConfigEntry("ModDrv"); //$NON-NLS-1$
 
     /**
      * single value version number, lowest sword c++ version that can read this module
      */
-    public static final ConfigEntry MINIMUM_VERSION = new ConfigEntry("MinimumVersion");
+    public static final ConfigEntry MINIMUM_VERSION = new ConfigEntry("MinimumVersion"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry MINIMUM_SWORD_VERSION = new ConfigEntry("MinimumSwordVersion");
+    public static final ConfigEntry MINIMUM_SWORD_VERSION = new ConfigEntry("MinimumSwordVersion"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry OBSOLETES = new ConfigEntry("Obsoletes");
+    public static final ConfigEntry OBSOLETES = new ConfigEntry("Obsoletes"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry SOURCE_TYPE = new ConfigEntry("SourceType");
+    public static final ConfigEntry SOURCE_TYPE = new ConfigEntry("SourceType"); //$NON-NLS-1$
 
     /**
      * unknown
      */
-    public static final ConfigEntry SWORD_VERSION_DATE = new ConfigEntry("SwordVersionDate");
+    public static final ConfigEntry SWORD_VERSION_DATE = new ConfigEntry("SwordVersionDate"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry TEXT_SOURCE = new ConfigEntry("TextSource");
+    public static final ConfigEntry TEXT_SOURCE = new ConfigEntry("TextSource"); //$NON-NLS-1$
 
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntry VERSION = new ConfigEntry("Version");
+    public static final ConfigEntry VERSION = new ConfigEntry("Version"); //$NON-NLS-1$
     
     /**
      * Find a ConfigEntry for a given name.

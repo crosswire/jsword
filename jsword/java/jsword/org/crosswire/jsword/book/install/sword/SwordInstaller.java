@@ -23,7 +23,6 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
@@ -34,6 +33,7 @@ import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.sword.ModuleType;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.util.Project;
 
 import com.ice.tar.TarEntry;
@@ -83,7 +83,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         }
         catch (InstallException ex)
         {
-            log.error("Failed to reload cached index file", ex);
+            log.error("Failed to reload cached index file", ex); //$NON-NLS-1$
             return new ArrayList();
         }
     }
@@ -95,7 +95,8 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     {
         if (!(bmd instanceof SwordBookMetaData))
         {
-            throw new LogicError();
+            assert false;
+            return;
         }
 
         // Is the book already installed? Then nothing to do.
@@ -116,7 +117,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         {
             public void run()
             {
-                URL predicturl = Project.instance().getWritablePropertiesURL("sword-install");
+                URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
                 Job job = JobManager.createJob("Install Module: "+sbmd.getName(), predicturl, this, true);
 
                 try
@@ -125,21 +126,21 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
                     ModuleType type = sbmd.getModuleType();
                     String modpath = type.getInstallDirectory();
-                    String destname = modpath + "/" + sbmd.getInternalName();
+                    String destname = modpath + File.separator + sbmd.getInternalName();
 
                     File dldir = SwordBookDriver.getDownloadDir();
-                    File moddir = new File(dldir, "modules");
+                    File moddir = new File(dldir, SwordConstants.DIR_DATA);
                     File fulldir = new File(moddir, destname);
                     fulldir.mkdirs();
-                    URL desturl = new URL("file", null, fulldir.getAbsolutePath());
+                    URL desturl = new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
 
-                    downloadAll(job, host, USERNAME, PASSWORD, directory+"/modules/"+destname, desturl);
+                    downloadAll(job, host, USERNAME, PASSWORD, directory + File.separator + SwordConstants.DIR_DATA + File.separator + destname, desturl);
 
                     job.setProgress("Copying config file");
-                    File confdir = new File(dldir, "mods.d");
+                    File confdir = new File(dldir, SwordConstants.DIR_CONF);
                     confdir.mkdirs();
                     File conf = new File(confdir, sbmd.getInternalName()+".conf");
-                    URL configurl = new URL("file", null, conf.getAbsolutePath());
+                    URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
                     sbmd.save(configurl);
 
                     SwordBookDriver.registerNewBook(sbmd, dldir);
@@ -184,7 +185,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         URL cache = getCachedIndexFile();
         if (!NetUtil.isFile(cache))
         {
-            log.info("Missing cache file: "+cache.toExternalForm());
+            log.info("Missing cache file: "+cache.toExternalForm()); //$NON-NLS-1$
         }
         else
         {
@@ -215,7 +216,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                             {
                                 internal = internal.substring(0, internal.length() - 5);
                             }
-                            if (internal.startsWith("mods.d/"))
+                            if (internal.startsWith(SwordConstants.DIR_CONF+File.separator))
                             {
                                 internal = internal.substring(7);
                             }
@@ -230,7 +231,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                         }
                         catch (Exception ex)
                         {
-                            log.warn("Failed to load config for entry: "+internal, ex);
+                            log.warn("Failed to load config for entry: "+internal, ex); //$NON-NLS-1$
                         }
                     }
                 }
@@ -268,7 +269,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     private static String getTempFileExtension(String host, String directory)
     {
-        return "download-" + host + directory.replace('/', '_');
+        return DOWNLOAD_PREFIX + host + directory.replace('/', '_'); //$NON-NLS-1$
     }
 
     /**
@@ -387,7 +388,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     private static void ftpInit(FTPClient ftp, String site, String user, String password, String dir) throws IOException, InstallException
     {
-        log.info("Connecting to site=" + site + " dir=" + dir);
+        log.info("Connecting to site=" + site + " dir=" + dir); //$NON-NLS-1$ //$NON-NLS-2$
 
         // First connect
         ftp.connect(site);
@@ -438,7 +439,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
             }
             catch (IOException ex2)
             {
-                log.error("disconnect error", ex2);
+                log.error("disconnect error", ex2); //$NON-NLS-1$
             }
         }
     }
@@ -514,7 +515,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     public String getURL()
     {
-        return "sword:"+username+":"+password+"@"+host+directory;
+        return PROTOCOL_SWORD+":"+username+":"+password+"@"+host+directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -524,7 +525,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     public String toString()
     {
-        return "sword:"+username+"@"+host+directory;
+        return PROTOCOL_SWORD+":"+username+"@"+host+directory; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /* (non-Javadoc)
@@ -607,17 +608,17 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     /**
      * The remote username for a valid account on the <code>host</code>.
      */
-    private String username = "anonymous";
+    private String username = "anonymous"; //$NON-NLS-1$
 
     /**
      * The password to go with <code>username</code>.
      */
-    private String password = "jsword@crosswire.com";
+    private String password = "jsword@crosswire.com"; //$NON-NLS-1$
 
     /**
      * The directory containing modules on the <code>host</code>.
      */
-    protected String directory = "/";
+    protected String directory = "/"; //$NON-NLS-1$
 
     /**
      * A map of the entries in this download area
@@ -627,17 +628,27 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     /**
      * The default anon username
      */
-    private static final String USERNAME = "anonymous";
+    private static final String USERNAME = "anonymous"; //$NON-NLS-1$
 
     /**
      * The default anon password
      */
-    private static final String PASSWORD = "anon@anon.com";
+    private static final String PASSWORD = "anon@anon.com"; //$NON-NLS-1$
 
     /**
      * The sword index file
      */
-    private static final String FILE_LIST_GZ = "mods.d.tar.gz";
+    private static final String FILE_LIST_GZ = "mods.d.tar.gz"; //$NON-NLS-1$
+
+    /**
+     * We need to be ablee to provide a URL as part of the API
+     */
+    private static final String PROTOCOL_SWORD = "sword"; //$NON-NLS-1$
+
+    /**
+     * When we cache a download index
+     */
+    private static final String DOWNLOAD_PREFIX = "download-"; //$NON-NLS-1$
 
     /**
      * The log stream

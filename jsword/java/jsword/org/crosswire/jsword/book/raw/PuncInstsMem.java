@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.DataInputStream;
@@ -44,7 +43,7 @@ public class PuncInstsMem extends InstsMem
      */
     public PuncInstsMem(RawBook raw, boolean create) throws Exception
     {
-        super(raw, "puncinst.idx", create);
+        super(raw, RawConstants.FILE_PUNC_INST, create);
     }
 
     /**
@@ -55,7 +54,7 @@ public class PuncInstsMem extends InstsMem
      */
     public PuncInstsMem(RawBook raw, boolean create, StringBuffer messages)
     {
-        super(raw, "puncinst.idx", create, messages);
+        super(raw, RawConstants.FILE_PUNC_INST, create, messages);
     }
 
     /* (non-Javadoc)
@@ -67,9 +66,9 @@ public class PuncInstsMem extends InstsMem
 
         byte[] asig = new byte[6];
         din.readFully(asig);
+
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:PI"))
-            throw new IOException("This file is not a PuncInst file");
+        assert ssig.equals(RawConstants.SIG_PUNC_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
@@ -91,7 +90,7 @@ public class PuncInstsMem extends InstsMem
     {
         DataOutputStream dout = new DataOutputStream(out);
 
-        dout.writeBytes("RAW:PI");
+        dout.writeBytes(RawConstants.SIG_PUNC_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {

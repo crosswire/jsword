@@ -8,7 +8,6 @@ import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 import javax.swing.event.EventListenerList;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
@@ -132,7 +131,7 @@ public class BibleComboBoxModelSet
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
     }
 

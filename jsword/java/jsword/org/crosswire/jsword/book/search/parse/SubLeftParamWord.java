@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class SubLeftParamWord implements ParamWord
         Iterator it = engine.iterator();
         List output = new ArrayList();
 
-        int paren_level = 1;
+        int parenLevel = 1;
         while (true)
         {
             if (!engine.iterator().hasNext())
@@ -61,19 +60,29 @@ public class SubLeftParamWord implements ParamWord
 
             SearchWord word = (SearchWord) it.next();
 
-            if (word instanceof SubLeftParamWord)   paren_level++;
-            if (word instanceof SubRightParamWord)  paren_level--;
+            if (word instanceof SubLeftParamWord)
+            {
+                parenLevel++;
+            }
 
-            if (paren_level == 0) break;
+            if (word instanceof SubRightParamWord)
+            {
+                parenLevel--;
+            }
+
+            if (parenLevel == 0)
+            {
+                break;
+            }
 
             output.add(word);
         }
 
-        LocalParser sub_engine = new LocalParser();
-        sub_engine.init(engine.getIndex());
-        sub_engine.setSearchMap(engine.getSearchMap());
-        Passage sub_ref = sub_engine.search(output);
+        LocalParser subEngine = new LocalParser();
+        subEngine.init(engine.getIndex());
+        subEngine.setSearchMap(engine.getSearchMap());
+        Passage subRef = subEngine.search(output);
 
-        return sub_ref;
+        return subRef;
     }
 }

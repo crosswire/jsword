@@ -14,7 +14,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkListener;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
@@ -139,7 +138,7 @@ public class TabbedDisplayPane extends JPanel implements FocusablePart
         }
         catch (CloneNotSupportedException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
 
         this.repaint();

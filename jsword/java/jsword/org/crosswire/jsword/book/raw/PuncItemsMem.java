@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.DataInputStream;
@@ -44,7 +43,7 @@ public class PuncItemsMem extends ItemsMem
      */
     public PuncItemsMem(RawBook raw, boolean create) throws Exception
     {
-        super(raw, "punc.idx", create);
+        super(raw, RawConstants.FILE_PUNC_ITEM, create);
     }
 
     /**
@@ -55,7 +54,7 @@ public class PuncItemsMem extends ItemsMem
      */
     public PuncItemsMem(RawBook raw, boolean create, StringBuffer messages)
     {
-        super(raw, "punc.idx", create, messages);
+        super(raw, RawConstants.FILE_PUNC_ITEM, create, messages);
     }
 
     /* (non-Javadoc)
@@ -75,9 +74,9 @@ public class PuncItemsMem extends ItemsMem
 
         byte[] asig = new byte[6];
         din.readFully(asig);
+
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:PR"))
-            throw new IOException("This file is not a Punc file");
+        assert ssig.equals(RawConstants.SIG_PUNC_ITEM);
 
         count = din.readInt();
         hash = new Hashtable(count);
@@ -104,7 +103,7 @@ public class PuncItemsMem extends ItemsMem
     {
         DataOutputStream dout = new DataOutputStream(out);
 
-        dout.writeBytes("RAW:PR");
+        dout.writeBytes(RawConstants.SIG_PUNC_ITEM);
         dout.writeInt(hash.size());
 
         for (int i=0; i<hash.size(); i++)

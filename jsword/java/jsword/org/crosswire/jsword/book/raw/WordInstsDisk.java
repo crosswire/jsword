@@ -1,10 +1,10 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
 
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -43,7 +43,7 @@ public class WordInstsDisk extends InstsDisk
      */
     public WordInstsDisk(RawBook raw, boolean create) throws IOException
     {
-        super(raw, "wordinst.idx", create);
+        super(raw, RawConstants.FILE_WORD_INST, create);
     }
 
     /**
@@ -54,7 +54,7 @@ public class WordInstsDisk extends InstsDisk
      */
     public WordInstsDisk(RawBook raw, boolean create, StringBuffer messages)
     {
-        super(raw, "wordinst.idx", create, messages);
+        super(raw, RawConstants.FILE_WORD_INST, create, messages);
     }
 
     /* (non-Javadoc)
@@ -63,13 +63,13 @@ public class WordInstsDisk extends InstsDisk
     public void load() throws IOException
     {
         URL url = NetUtil.lengthenURL(raw.getURL(), leafname);
-        raf = new RandomAccessFile(url.getFile(), "r");
+        raf = new RandomAccessFile(url.getFile(), FileUtil.MODE_READ);
 
         byte[] asig = new byte[6];
         raf.readFully(asig);
+
         String ssig = new String(asig);
-        if (!ssig.equals("RAW:WI"))
-            throw new IOException("This file is not a WordInst file");
+        assert ssig.equals(RawConstants.SIG_WORD_INST);
 
         for (int i=0; i<BibleInfo.versesInBible(); i++)
         {

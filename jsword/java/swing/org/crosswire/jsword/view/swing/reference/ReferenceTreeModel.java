@@ -151,7 +151,9 @@ public class ReferenceTreeModel implements TreeModel
         MutableTreeNode parent = (MutableTreeNode) node.getParent();
 
         if (parent == null)
-            throw new IllegalArgumentException("node does not have a parent.");
+        {
+            throw new IllegalArgumentException(Msg.NO_PARENT.toString());
+        }
 
         int[] childIndex = new int[1];
         Object[] removedArray = new Object[1];
@@ -386,7 +388,10 @@ public class ReferenceTreeModel implements TreeModel
             {
                 // Lazily create the event:
                 if (e == null)
+                {
                     e = new TreeModelEvent(source, path, childIndices, children);
+                }
+
                 ((TreeModelListener) listeners[i + 1]).treeNodesChanged(e);
             }
         }
@@ -417,7 +422,10 @@ public class ReferenceTreeModel implements TreeModel
             {
                 // Lazily create the event:
                 if (e == null)
+                {
                     e = new TreeModelEvent(source, path, childIndices, children);
+                }
+
                 ((TreeModelListener) listeners[i + 1]).treeNodesInserted(e);
             }
         }
@@ -448,7 +456,10 @@ public class ReferenceTreeModel implements TreeModel
             {
                 // Lazily create the event:
                 if (e == null)
+                {
                     e = new TreeModelEvent(source, path, childIndices, children);
+                }
+
                 ((TreeModelListener) listeners[i + 1]).treeNodesRemoved(e);
             }
         }
@@ -479,7 +490,10 @@ public class ReferenceTreeModel implements TreeModel
             {
                 // Lazily create the event:
                 if (e == null)
+                {
                     e = new TreeModelEvent(source, path, childIndices, children);
+                }
+
                 ((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
             }
         }

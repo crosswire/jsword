@@ -88,15 +88,6 @@ public class PassageUtil
     }
 
     /**
-     * The allowed Blur settings
-     * @return A string array containing the blur settings
-     */
-    public static String[] getBlurRestrictions()
-    {
-        return PassageConstants.RESTRICTIONS;
-    }
-
-    /**
      * Is the given case a valid one?
      * @param test The case to be tested for validity
      * @return True if the number is OK, False otherwise
@@ -114,15 +105,6 @@ public class PassageUtil
         default:
             return false;
         }
-    }
-
-    /**
-     * The allowed Case settings
-     * @return A string array containing the case settings
-     */
-    public static String[] getCases()
-    {
-        return PassageConstants.CASES;
     }
 
     /**
@@ -197,7 +179,7 @@ public class PassageUtil
         }
 
         // Blank word
-        if (word.equals(""))
+        if (word.equals("")) //$NON-NLS-1$
         {
             return PassageConstants.CASE_LOWER;
         }
@@ -224,7 +206,7 @@ public class PassageUtil
         // Hack the only real caseMixed is LORD's
         // And we don't want to bother sorting out Tubal-Cain
         // as CASE_SENTANCE, so for now ...
-        if (word.equals("LORD's"))
+        if (word.equals("LORD's")) //$NON-NLS-1$
         {
             return PassageConstants.CASE_MIXED;
         }
@@ -262,29 +244,29 @@ public class PassageUtil
             }
 
             // So there is a "-", however first some exceptions
-            if (word.toLowerCase().equals("maher-shalal-hash-baz"))
+            if (word.equalsIgnoreCase("maher-shalal-hash-baz")) //$NON-NLS-1$
             {
-                return "Maher-Shalal-Hash-Baz";
+                return "Maher-Shalal-Hash-Baz"; //$NON-NLS-1$
             }
 
-            if (word.toLowerCase().equals("no-one"))
+            if (word.equalsIgnoreCase("no-one")) //$NON-NLS-1$
             {
-                return "No-one";
+                return "No-one"; //$NON-NLS-1$
             }
 
-            if (word.substring(0, 4).toLowerCase().equals("god-"))
+            if (word.substring(0, 4).equalsIgnoreCase("god-")) //$NON-NLS-1$
             {
                 return toSentenceCase(word);
             }
 
             // So cut by the -
             return toSentenceCase(word.substring(0, index))
-                   + "-" + toSentenceCase(word.substring(index+1));
+                   + "-" + toSentenceCase(word.substring(index+1)); //$NON-NLS-1$
 
         case PassageConstants.CASE_MIXED:
-            if (word.toLowerCase().equals("lord's"))
+            if (word.equalsIgnoreCase("lord's")) //$NON-NLS-1$
             {
-                return "LORD's";
+                return "LORD's"; //$NON-NLS-1$
             }
             // This should not happen
             throw new IllegalArgumentException(getResource(Msg.ERROR_MIXED));
@@ -306,13 +288,12 @@ public class PassageUtil
             throw new NullPointerException();
         }
 
-        if (word.equals(""))
+        if (word.equals("")) //$NON-NLS-1$
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
-        return "" + Character.toUpperCase(word.charAt(0))
-                  + word.substring(1).toLowerCase();
+        return "" + Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(); //$NON-NLS-1$
     }
 
     /**
@@ -527,15 +508,8 @@ public class PassageUtil
      */
     protected static int toBinary(byte[] buffer, int index, int number, int max)
     {
-        if (number < 0)
-        {
-            throw new IllegalArgumentException("No -ve output "+number);
-        }
-
-        if (number > max)
-        {
-            throw new IllegalArgumentException("number "+number+" > max "+max);
-        }
+        assert number >= 0 : "No -ve output "+number; //$NON-NLS-1$
+        assert number <= max : "number "+number+" > max "+max; //$NON-NLS-1$ //$NON-NLS-2$
 
         // 1 byte (2^8)
         if (max < 256)
@@ -658,7 +632,7 @@ public class PassageUtil
         }
         catch (MissingResourceException ex)
         {
-            return "Missing resource for: "+id;
+            return "Missing resource for: "+id; //$NON-NLS-1$
         }
     }
 
@@ -678,12 +652,12 @@ public class PassageUtil
             }
             else
             {
-                return "Missing passage resource bundle";
+                return "Missing passage resource bundle"; //$NON-NLS-1$
             }
         }
         catch (MissingResourceException ex)
         {
-            return "Missing resource for: "+id;
+            return "Missing resource for: "+id; //$NON-NLS-1$
         }
     }
 
@@ -701,12 +675,12 @@ public class PassageUtil
         try
         {
             Passage ref = PassageFactory.createPassage(key.getName());
-            log.warn("Created passage from non Passage: "+key.getName()+" = "+ref.getName());
+            log.warn("Created passage from non Passage: "+key.getName()+" = "+ref.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             return ref;
         }
         catch (NoSuchVerseException ex)
         {
-            log.warn("Key can't be a passage: "+key.getName());
+            log.warn("Key can't be a passage: "+key.getName()); //$NON-NLS-1$
             return PassageFactory.createPassage();
         }
     }
@@ -725,12 +699,12 @@ public class PassageUtil
         try
         {
             Verse verse = new Verse(key.getName());
-            log.warn("Created verse from non Verse: "+key.getName()+" = "+verse.getName());
+            log.warn("Created verse from non Verse: "+key.getName()+" = "+verse.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             return verse;
         }
         catch (NoSuchVerseException ex)
         {
-            log.warn("Key can't be a verse: "+key.getName());
+            log.warn("Key can't be a verse: "+key.getName()); //$NON-NLS-1$
             return new Verse();
         }
     }
@@ -762,11 +736,11 @@ public class PassageUtil
     {
         try
         {
-            res = ResourceBundle.getBundle("org.crosswire.jsword.passage.Passage");
+            res = ResourceBundle.getBundle("org.crosswire.jsword.passage.Passage"); //$NON-NLS-1$
         }
         catch (MissingResourceException ex)
         {
-            log.debug("No custom resource found: "+ex.getMessage());
+            log.debug("No custom resource found: "+ex.getMessage()); //$NON-NLS-1$
         }
     }
 }

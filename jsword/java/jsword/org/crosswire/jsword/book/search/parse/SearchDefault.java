@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.HashMap;
@@ -65,20 +64,20 @@ public class SearchDefault
     static
     {
         // "/ | & + , - ~ ( ) [ ] sw startswith gr grammar"
-        command.put("/", new AddCommandWord());
-        command.put("|", new AddCommandWord());
-        command.put("&", new RetainCommandWord());
-        command.put("+", new RetainCommandWord());
-        command.put(",", new RetainCommandWord());
-        command.put("-", new RemoveCommandWord());
-        command.put("~", new BlurCommandWord());
-        command.put("(", new SubLeftParamWord());
-        command.put(")", new SubRightParamWord());
-        command.put("[", new PassageLeftParamWord());
-        command.put("]", new PassageRightParamWord());
-        command.put("sw", new StartsParamWord());
-        command.put("startswith", new StartsParamWord());
-        command.put("gr", new GrammarParamWord());
-        command.put("grammar", new GrammarParamWord());
+        command.put("/", new AddCommandWord()); //$NON-NLS-1$
+        command.put("|", new AddCommandWord()); //$NON-NLS-1$
+        command.put("&", new RetainCommandWord()); //$NON-NLS-1$
+        command.put("+", new RetainCommandWord()); //$NON-NLS-1$
+        command.put(",", new RetainCommandWord()); //$NON-NLS-1$
+        command.put("-", new RemoveCommandWord()); //$NON-NLS-1$
+        command.put("~", new BlurCommandWord()); //$NON-NLS-1$
+        command.put("(", new SubLeftParamWord()); //$NON-NLS-1$
+        command.put(")", new SubRightParamWord()); //$NON-NLS-1$
+        command.put("[", new PassageLeftParamWord()); //$NON-NLS-1$
+        command.put("]", new PassageRightParamWord()); //$NON-NLS-1$
+        command.put("sw", new StartsParamWord()); //$NON-NLS-1$
+        command.put("startswith", new StartsParamWord()); //$NON-NLS-1$
+        command.put("gr", new GrammarParamWord()); //$NON-NLS-1$
+        command.put("grammar", new GrammarParamWord()); //$NON-NLS-1$
     }
 }

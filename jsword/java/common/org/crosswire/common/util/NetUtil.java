@@ -51,6 +51,11 @@ public class NetUtil
     }
 
     /**
+     * Constant for the file: protocol
+     */
+    public static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
+
+    /**
      * For directory listings
      */
     public static final String INDEX_FILE = "index.txt"; //$NON-NLS-1$
@@ -609,8 +614,6 @@ public class NetUtil
     {
         NetUtil.cachedir = cachedir;
     }
-
-    private static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
 
     /**
      * Where are temporary files cached.

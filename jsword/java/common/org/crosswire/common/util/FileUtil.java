@@ -42,4 +42,24 @@ public class FileUtil
      * Extension for properties files
      */
     public static final String EXTENSION_PROPERTIES = ".properties"; //$NON-NLS-1$
+
+    /**
+     * Extension for XSLT files
+     */
+    public static final String EXTENSION_XSLT = ".xsl"; //$NON-NLS-1$
+
+    /**
+     * Extension for XML files
+     */
+    public static final String EXTENSION_XML = ".xml"; //$NON-NLS-1$
+
+    /**
+     * Modes for opening random access files
+     */
+    public static final String MODE_READ = "r"; //$NON-NLS-1$
+
+    /**
+     * Modes for opening random access files
+     */
+    public static final String MODE_WRITE = "rw"; //$NON-NLS-1$
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 
 /**
  * A Passage is a pointer to a single verse. Externally its unique
@@ -65,7 +63,7 @@ public final class Verse implements VerseBase, Comparable
      */
     public Verse()
     {
-        original_name = null;
+        originalName = null;
 
         book = DEFAULT.book;
         chapter = DEFAULT.chapter;
@@ -95,7 +93,7 @@ public final class Verse implements VerseBase, Comparable
     public Verse(String desc, Verse basis) throws NoSuchVerseException
     {
         String[] parts = tokenize(desc, PassageConstants.VERSE_ALLOWED_DELIMS);
-        original_name = desc;
+        originalName = desc;
 
         switch (getAccuracy(parts))
         {
@@ -131,7 +129,7 @@ public final class Verse implements VerseBase, Comparable
             break;
 
         default:
-            throw new LogicError();
+            assert false : getAccuracy(parts);
         }
     }
 
@@ -145,7 +143,7 @@ public final class Verse implements VerseBase, Comparable
      */
     public Verse(int book, int chapter, int verse) throws NoSuchVerseException
     {
-        original_name = null;
+        originalName = null;
         set(book, chapter, verse);
     }
 
@@ -169,7 +167,7 @@ public final class Verse implements VerseBase, Comparable
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_PATCH));
         }
 
-        original_name = null;
+        originalName = null;
         setAndPatch(book, chapter, verse);
     }
 
@@ -184,7 +182,7 @@ public final class Verse implements VerseBase, Comparable
      */
     public Verse(int ordinal) throws NoSuchVerseException
     {
-        original_name = null;
+        originalName = null;
         set(ordinal);
     }
 
@@ -206,9 +204,9 @@ public final class Verse implements VerseBase, Comparable
     {
         try
         {
-            if (PassageUtil.isPersistentNaming() && original_name != null)
+            if (PassageUtil.isPersistentNaming() && originalName != null)
             {
-                return original_name;
+                return originalName;
             }
 
             // To cope with thing like Jude 2...
@@ -229,7 +227,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -247,9 +246,9 @@ public final class Verse implements VerseBase, Comparable
 
         try
         {
-            if (PassageUtil.isPersistentNaming() && original_name != null)
+            if (PassageUtil.isPersistentNaming() && originalName != null)
             {
-                return original_name;
+                return originalName;
             }
 
             // To cope with thing like Jude 2...
@@ -287,7 +286,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -308,7 +308,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
         }
     }
 
@@ -329,7 +330,7 @@ public final class Verse implements VerseBase, Comparable
         copy.chapter = chapter;
         copy.verse = verse;
         //copy.ord = ord;
-        copy.original_name = original_name;
+        copy.originalName = originalName;
 
         return copy;
     }
@@ -405,15 +406,15 @@ public final class Verse implements VerseBase, Comparable
             that = ((VerseRange) obj).getStart();
         }
 
-        int that_start = that.getOrdinal();
-        int this_start = this.getOrdinal();
+        int thatStart = that.getOrdinal();
+        int thisStart = this.getOrdinal();
 
-        if (that_start > this_start)
+        if (thatStart > thisStart)
         {
             return -1;
         }
 
-        if (that_start < this_start)
+        if (thatStart < thisStart)
         {
             return 1;
         }
@@ -458,7 +459,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse();
         }
     }
 
@@ -477,7 +479,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse();
         }
     }
 
@@ -529,7 +532,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return true;
         }
     }
 
@@ -555,7 +559,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return true;
         }
     }
 
@@ -604,8 +609,9 @@ public final class Verse implements VerseBase, Comparable
             catch (NoSuchVerseException ex)
             {
                 // A verse should never be illegal so
-                log.warn("ref="+book+", "+chapter+", "+verse);
-                throw new LogicError(ex);
+                log.error("ref="+book+", "+chapter+", "+verse); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                assert false : ex;
+                return 1;
             }
         }
 
@@ -806,7 +812,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse();
         }
     }
 
@@ -824,7 +831,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse();
         }
     }
 
@@ -840,7 +848,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse();
         }
     }
 
@@ -856,7 +865,8 @@ public final class Verse implements VerseBase, Comparable
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return new Verse();
         }
     }
 
@@ -892,7 +902,7 @@ public final class Verse implements VerseBase, Comparable
         // chapter/verse separators we should swap them for normal delims
         // I recon it is safe to assume that there is no more than one of
         // each
-        int idx = command.lastIndexOf("v");
+        int idx = command.lastIndexOf("v"); //$NON-NLS-1$
         if (idx != -1)
         {
             // Check that the "v" is surrounded my non letters - i.e.
@@ -1304,7 +1314,7 @@ public final class Verse implements VerseBase, Comparable
             throw new IOException(ex.getMessage());
         }
 
-        // We are ignoring the original_name. It was set to null in the
+        // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
     }
 
@@ -1396,7 +1406,7 @@ public final class Verse implements VerseBase, Comparable
     /**
      * The original string for picky users
      */
-    private transient String original_name;
+    private transient String originalName;
 
     /**
      * The log stream

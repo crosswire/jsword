@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 /**

@@ -11,6 +11,7 @@ import java.net.URL;
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
@@ -50,7 +51,7 @@ public class BookDataCache implements Activatable
     {
         this.url = url;
 
-        if (!url.getProtocol().equals("file"))
+        if (!url.getProtocol().equals(NetUtil.PROTOCOL_FILE))
         {
             throw new MalformedURLException("not a file url");
         }
@@ -85,7 +86,7 @@ public class BookDataCache implements Activatable
                 }
                 catch (IOException ex)
                 {
-                    log.error("Error reading index", ex);
+                    log.error("Error reading index", ex); //$NON-NLS-1$
                     break;
                 }
 
@@ -101,7 +102,7 @@ public class BookDataCache implements Activatable
                 catch (NumberFormatException ex)
                 {
                     indexArr[i] = -1;
-                    log.error("Error parsing line: "+line, ex);
+                    log.error("Error parsing line: "+line, ex); //$NON-NLS-1$
                 }
             }
 
@@ -109,7 +110,7 @@ public class BookDataCache implements Activatable
         }
         catch (IOException ex)
         {
-            log.warn("failed to open stream", ex);
+            log.warn("failed to open stream", ex); //$NON-NLS-1$
         }
     }
 
@@ -124,7 +125,7 @@ public class BookDataCache implements Activatable
         }
         catch (IOException ex)
         {
-            log.warn("failed to close stream", ex);
+            log.warn("failed to close stream", ex); //$NON-NLS-1$
         }
 
         active = false;
@@ -200,7 +201,7 @@ public class BookDataCache implements Activatable
         try
         {
             // re-open the RAF read-write
-            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "rw");
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), FileUtil.MODE_WRITE);
 
             // Save the ascii XML index
             PrintWriter indexOut = new PrintWriter(NetUtil.getOutputStream(indexUrl));

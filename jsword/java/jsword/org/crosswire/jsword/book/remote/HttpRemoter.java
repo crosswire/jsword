@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookMetaData;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
@@ -124,7 +123,7 @@ public class HttpRemoter implements Remoter
             }
             catch (UnsupportedEncodingException ex)
             {
-                throw new LogicError(ex);
+                assert false : ex;
             }
         }
 
@@ -144,5 +143,5 @@ public class HttpRemoter implements Remoter
     /**
      * For use in HttpServletRequests
      */
-    public static final String METHOD_KEY = "method";
+    public static final String METHOD_KEY = "method"; //$NON-NLS-1$
 }

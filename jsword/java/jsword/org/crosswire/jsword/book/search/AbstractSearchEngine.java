@@ -166,7 +166,7 @@ public abstract class AbstractSearchEngine implements SearchEngine
         public void run()
         {
             running = true;
-            Job job = JobManager.createJob("Indexing Bible Data", Thread.currentThread(), false);
+            Job job = JobManager.createJob(Msg.INDEXING.toString(), Thread.currentThread(), false);
 
             try
             {

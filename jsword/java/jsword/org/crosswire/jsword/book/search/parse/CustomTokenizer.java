@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class CustomTokenizer
         // we make sure that we perpend with a " "
         if (sought.length() > 0 && sought.charAt(0) == '[')
         {
-            sought = " " + sought;
+            sought = " " + sought; //$NON-NLS-1$
         }
 
         // Loop, comparing each character with the previous one
@@ -72,15 +71,15 @@ public class CustomTokenizer
             // An escaped section
             if (i != sought.length() && sought.charAt(i) == '[')
             {
-                int end = sought.indexOf("]", i);
+                int end = sought.indexOf("]", i); //$NON-NLS-1$
                 if (end == -1)
                 {
                     throw new BookException(Msg.UNMATCHED_ESCAPE);
                 }
 
-                addWord(output, commands, "[");
+                addWord(output, commands, "["); //$NON-NLS-1$
                 addWord(output, commands, sought.substring(i+1, end));
-                addWord(output, commands, "]");
+                addWord(output, commands, "]"); //$NON-NLS-1$
 
                 current_type = CHAR_SPACE;
                 i = end + 1;
@@ -125,7 +124,7 @@ public class CustomTokenizer
             return CHAR_SPACE;
         }
 
-        if (commands.indexOf("" + sought) != -1)
+        if (commands.indexOf("" + sought) != -1) //$NON-NLS-1$
         {
             return CHAR_COMMAND;
         }

@@ -1,8 +1,7 @@
-
 package org.crosswire.jsword.view.swing.passage;
 
-import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import javax.swing.tree.TreeNode;
 
@@ -10,7 +9,6 @@ import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.common.util.LogicError;
 
 /**
  * BibleTreeNode.
@@ -78,7 +76,7 @@ public class BibleTreeNode implements TreeNode
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
         }
     }
 
@@ -99,7 +97,8 @@ public class BibleTreeNode implements TreeNode
         }
         catch (NoSuchVerseException ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -186,10 +185,13 @@ public class BibleTreeNode implements TreeNode
         private int index = 0;
     }
 
-    /** If we are only displaying some of the verses */
+    /**
+     * If we are only displaying some of the verses
+     */
     protected Passage ref = null;
 
-    /** The ChapterTreeNodes that we have created */
+    /**
+     * The ChapterTreeNodes that we have created
+     */
     protected TreeNode[] kids = null;
 }
-

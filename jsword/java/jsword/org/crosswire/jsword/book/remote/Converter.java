@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
@@ -121,10 +120,7 @@ public class Converter
      */
     public static Document convertBookMetaDatasToDocument(BookMetaData[] bmds, String[] ids)
     {
-        if (bmds.length != ids.length)
-        {
-            throw new LogicError();
-        }
+        assert bmds.length != ids.length;
 
         Element root = new Element("root");
         for (int i = 0; i < bmds.length; i++)
