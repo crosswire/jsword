@@ -53,8 +53,9 @@ public abstract class LocalURLBible extends SearchableBible
 
     /**
      * Where can we write the search indexes.
+     * @return A file: URL of a place to store indexes. 
      */
-    public URL getURL()
+    protected URL getIndexDirectory() throws IOException
     {
         return lbmd.getURL();
     }

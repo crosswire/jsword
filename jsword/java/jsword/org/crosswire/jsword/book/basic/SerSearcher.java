@@ -26,7 +26,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A search engine - This is a stepping stone on the way to allowing use of
@@ -58,21 +57,21 @@ public class SerSearcher implements Searcher
     /**
      * Constructor for SerSearcher.
      */
-    public SerSearcher(Bible bible, ProgressListener li) throws BookException
+    public SerSearcher(Bible bible, URL url, ProgressListener li) throws BookException
     {
         try
         {
             this.bible = bible;
-            this.url = Project.resource().getTempScratchSpace(bible.getBibleMetaData().getFullName());
-    
+            this.url = url;
+
             // Load the ascii Passage index
-            if (isIndexed(url))
+            if (isIndexed())
             {
-                loadIndexes(url);
+                loadIndexes();
             }
             else
             {
-                createEmptyIndex(url);
+                createEmptyIndex();
                 generateSearchIndex(li);
                 saveIndexes();
             }
@@ -114,7 +113,7 @@ public class SerSearcher implements Searcher
     /**
      * Detects if index data has been stored for this Bible already
      */
-    protected boolean isIndexed(URL url) throws IOException
+    protected boolean isIndexed() throws IOException
     {
         URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
         return NetUtil.isFile(ref_idy_url);
@@ -123,7 +122,7 @@ public class SerSearcher implements Searcher
     /**
      * Loads the index files from disk ready for searching
      */
-    protected void loadIndexes(URL url) throws IOException, NumberFormatException
+    protected void loadIndexes() throws IOException, NumberFormatException
     {
         URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
 
@@ -155,7 +154,7 @@ public class SerSearcher implements Searcher
      * @param url
      * @throws IOException
      */
-    protected void createEmptyIndex(URL url) throws IOException
+    protected void createEmptyIndex() throws IOException
     {
         // Create blank indexes
         ref_map = new TreeMap();

@@ -1,11 +1,14 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.util.Project;
 
 /**
  * The idea behind this class is to gradually abstract out the search from the
@@ -41,7 +44,25 @@ public abstract class SearchableBible extends AbstractBible
      */
     public void init(ProgressListener li) throws BookException
     {
-        searcher = new SerSearcher(this, li);
+        try
+        {
+            URL url = getIndexDirectory();
+            searcher = new SerSearcher(this, url, li);
+        }
+        catch (IOException ex)
+        {
+            throw new BookException("ser_init", ex);
+        }
+    }
+
+    /**
+     * This allows our children to decide to store indexes in a different place
+     * so they can ship indexes with distributed Bibles.
+     * @return A file: URL of a place to store indexes. 
+     */
+    protected URL getIndexDirectory() throws IOException
+    {
+        return Project.resource().getTempScratchSpace(getBibleMetaData().getFullName());
     }
 
     /**
