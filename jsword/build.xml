@@ -422,6 +422,7 @@
 
   <!--=======================================================================-->
   <target name="jnlp.prepare" depends="jar" description="moves files to correct location for JNLP deploy">
+  <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
     <mkdir dir="${target.jnlp}"/>
     <copy todir="${target.jnlp}">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
