@@ -1,17 +1,19 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.Properties;
 
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Openness;
-import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
  * Simple BibleMetaData for the sword implementation.
@@ -37,38 +39,15 @@ import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordBibleMetaData extends AbstractBibleMetaData
+public class SwordBibleMetaData implements BibleMetaData
 {
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(SwordBookDriver driver, Properties prop) throws MalformedURLException, ParseException
+    public SwordBibleMetaData(SwordBookDriver driver, File parent, String filename) throws IOException
     {
-        super(prop);
-    }
-
-    /**
-     * Constructor for SwordBibleMetaData.
-     */
-    public SwordBibleMetaData(SwordBookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
-    {
-        super(name, edition, initials, pub, open, licence);
-    }
-
-    /**
-     * Constructor for SwordBibleMetaData.
-     */
-    public SwordBibleMetaData(SwordBookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
-    {
-        super(name, edition, initials, pubstr, openstr, licencestr);
-    }
-
-    /**
-     * Constructor for SwordBibleMetaData.
-     */
-    public SwordBibleMetaData(SwordBookDriver driver, String name)
-    {
-        super(name);
+        this.driver = driver;
+        this.config = new SwordConfig(parent, filename);
     }
 
     /**
@@ -97,6 +76,22 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     }
 
     /**
+     * PENDING(joe): get rid of this:
+     * @param swordConfig
+     * @return boolean
+     */
+    protected boolean isBible()
+    {
+        if (config.getModDrv() == SwordConstants.DRIVER_RAW_TEXT)
+            return true;
+
+        if (config.getModDrv() == SwordConstants.DRIVER_Z_TEXT)
+            return true;
+
+        return false;
+    }
+
+    /**
      * Some basic info about who we are
      * @param A short identifing string
      */
@@ -105,6 +100,14 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
         return "Sword";
     }
 
+    /**
+     * We want to merge with this
+     * @return SwordConfig
+     */
+    protected SwordConfig getSwordConfig()
+    {
+        return config;
+    }
 
     /**
      * The expected speed at which this implementation gets correct answers.
@@ -113,6 +116,139 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     public int getSpeed()
     {
         return Books.SPEED_FAST;
+    }
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getName()
+     */
+    public String getName()
+    {
+        return config.getName();
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getEdition()
+     */
+    public String getEdition()
+    {
+        return "";
+    }
+
+    /**
+     * Do the 2 versions have matching names, editions and drivers.
+     * @param obj The object to compare to
+     * @return true if the names and editions match
+     */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+            return false;
+
+        // Check that that is the same as this
+        // Don't use instanceof since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+
+        // If super does equals ...
+        if (super.equals(obj) == false)
+            return false;
+
+        // The real bit ...
+        SwordBibleMetaData that = (SwordBibleMetaData) obj;
+
+        if (!getName().equals(that.getName()))
+            return false;
+
+        return getEdition().equals(that.getEdition());
+    }
+
+    /**
+     * Get a moderately unique id for this Object.
+     * @return The hashing number
+     */
+    public int hashCode()
+    {
+        return (getName() + getEdition()).hashCode();
+    }
+
+    /**
+     * The full name including edition of the version, for example
+     * "New International Version, Anglicised". The format is "name, edition"
+     * @return The full name of this version
+     */
+    public String getFullName()
+    {
+        return getName() + ", " + getEdition() + " (" + getDriverName() + ")";
+    }
+
+    /**
+     * Get a human readable version of this Version -just bounce to
+     * getFullName()
+     * @return The full name of this version
+     */
+    public String toString()
+    {
+        return getFullName();
+    }
+
+    /**
+     * Do the 2 versions have matching names.
+     * @param version The version to compare to
+     * @return true if the names match
+     */
+    public boolean isSameFamily(BookMetaData version)
+    {
+        return getName().equals(version.getName());
+    }
+
+    /**
+     * Delete a Bible
+     * @throws BookException If anything goes wrong with this method
+     * @see org.crosswire.jsword.book.BookMetaData#delete()
+     */
+    public void delete() throws BookException
+    {
+        throw new BookException("book_nodel", new Object[] { getName() });
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getInitials()
+     */
+    public String getInitials()
+    {
+        return StringUtil.getInitials(getName());
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getFirstPublished()
+     */
+    public Date getFirstPublished()
+    {
+        return null;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getOpenness()
+     */
+    public Openness getOpenness()
+    {
+        return Openness.UNKNOWN;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getLicence()
+     */
+    public URL getLicence()
+    {
+        return null;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#getBook()
+     */
+    public Book getBook() throws BookException
+    {
+        return getBible();
     }
 
     /**
@@ -124,4 +260,9 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
      * The cached bible so we don't have to create too many
      */
     private Bible bible = null;
+
+    /**
+     * We want to merge this with us
+     */
+    private SwordConfig config;
 }

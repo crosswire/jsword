@@ -1,8 +1,8 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -38,12 +38,14 @@ public class SwordConfig
     /**
      * Loads a sword config from a given URL.
      */
-    public SwordConfig(URL configUrl, String name) throws IOException
+    public SwordConfig(File parent, String bookdir) throws IOException
     {
-        this.url = configUrl;
-        this.name = name;
-        InputStream is = configUrl.openStream();
-        this.reader = new ConfigReader(is);
+        URL url = new File(parent, bookdir).toURL();
+
+        this.url = url;
+        this.name = bookdir.substring(0, bookdir.indexOf(".conf"));;
+        this.reader = new ConfigReader(url.openStream());
+
         setAllProperties();
     }
 
@@ -384,9 +386,12 @@ public class SwordConfig
     }
 
     /**
-     * Returns the distributionLicense - this is a 'flag type' field - the value will be the result of several constants ORed. 
-     * See the DISTRIBUTION_LICENSE* constants in  SwordConstants.  It appears some versions do not stick to this
-     * convention, because of this, there is an additional menber distributionLicenseAdditionInfo, to store additional information.
+     * Returns the distributionLicense - this is a 'flag type' field - the value
+     * will be the result of several constants ORed. See the
+     * DISTRIBUTION_LICENSE* constants in SwordConstants. It appears some
+     * versions do not stick to this convention, because of this, there is an
+     * additional menber distributionLicenseAdditionInfo, to store additional
+     * information.
      * @see org.crosswire.jsword.book.sword.SwordConstants
      * @see #getDistributionLicenseAdditionalInfo()
      * @return int
@@ -397,8 +402,10 @@ public class SwordConfig
     }
 
     /**
-     * Returns the distributionLicenseAdditionalInfo.  This is any information that does not conform to the description of the 
-     * possible values as found in this document (http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout);
+     * Returns the distributionLicenseAdditionalInfo.  This is any information
+     * that does not conform to the description of the possible values as found
+     * in this document
+     * (http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout);
      * @return String
      */
     public String getDistributionLicenseAdditionalInfo()
@@ -434,8 +441,9 @@ public class SwordConfig
     }
 
     /**
-     * Returns the feature  - this is a 'flag field' and is the result of one of a number of constants 
-     * ORed; see SwordConstants (in particular FEATURE_* fields).
+     * Returns the feature - this is a 'flag field' and is the result of one of
+     * a number of constants ORed; see SwordConstants (in particular FEATURE_*
+     * fields).
      * @see org.crosswire.jsword.book.sword.SwordConstants 
      * @return int
      */
@@ -454,8 +462,9 @@ public class SwordConfig
     }
 
     /**
-     * Returns the globalOptionFilter - this is a 'flag field' and is the result of one of a number of constants 
-     * ORed; see SwordConstants (in particular GOF_* fields).
+     * Returns the globalOptionFilter - this is a 'flag field' and is the result
+     * of one of a number of constants ORed; see SwordConstants (in particular
+     * GOF_* fields).
      * @see org.crosswire.jsword.book.sword.SwordConstants
      * @return int
      */
@@ -543,11 +552,6 @@ public class SwordConfig
     public String getVersion()
     {
         return version;
-    }
-
-    public static void main(String[] args)
-    {
-        // PENDING(mark): MDG. JUnit tests.
     }
 
     /** The log stream */

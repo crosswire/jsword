@@ -33,59 +33,59 @@ import org.crosswire.jsword.passage.Passage;
 public class VerseTreeNode extends ChapterTreeNode
 {
     /**
-    * This constructor is for when we are really a BookTreeNode
-    */
+     * This constructor is for when we are really a BookTreeNode
+     */
     protected VerseTreeNode(TreeNode parent, int book, int Passage, int verse) throws NoSuchVerseException
     {
         super(parent, book, Passage);
         this.verse = verse;
     }
+
     /**
-    * This constructor is for when we are really a BookTreeNode
-    */
+     * This constructor is for when we are really a BookTreeNode
+     */
     public void setPassage(Passage ref, boolean filter)
     {
         this.ref = ref;
     }
 
     /**
-    * Returns the child <code>TreeNode</code> at index i
-    */
+     * Returns the child <code>TreeNode</code> at index i
+     */
     public TreeNode getChildAt(int i)
     {
         return null; // VerseDisplay thing
     }
 
     /**
-    * Returns the number of children <code>TreeNode</code>s the receiver
-    * contains.
-    */
+     * Returns the number of children <code>TreeNode</code>s the receiver
+     * contains.
+     */
     public int getChildCount()
     {
         return 0;
     }
 
     /**
-    * Returns the index of <code>node</code> in the receivers children.
-    * If the receiver does not contain <code>node</code>, -1 will be
-    * returned.
-    */
+     * Returns the index of <code>node</code> in the receivers children. If the
+     * receiver does not contain <code>node</code>, -1 will be returned.
+     */
     public int getIndex(TreeNode node)
     {
-        return 1;
+        return -1;
     }
 
     /**
-    * How we appear in the Tree
-    */
+     * How we appear in the Tree
+     */
     public String toString()
     {
         return ""+verse;
     }
 
     /**
-    * The current Passage number
-    */
+     * The current Passage number
+     */
     public int getVerse()
     {
         return verse;

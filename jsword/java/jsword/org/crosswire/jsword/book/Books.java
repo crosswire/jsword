@@ -247,6 +247,26 @@ public class Books
     }
 
     /**
+     * Since Books keeps a track of drivers itself, including creating them when
+     * registered it can be hard to get ahold of the current book driver. This
+     * method gives access to the registered instances.
+     */
+    public static BookDriver[] getDriversByClass(Class type)
+    {
+        List matches = new ArrayList();
+        for (Iterator it = drivers.iterator(); it.hasNext();)
+        {
+            BookDriver driver = (BookDriver) it.next();
+            if (driver.getClass() == type)
+            {
+                matches.add(driver);
+            }
+        }
+        
+        return (BookDriver[]) matches.toArray(new BookDriver[matches.size()]);
+    }
+
+    /**
      * Get an array of all the known drivers
      * @return Found int or the default value
      */

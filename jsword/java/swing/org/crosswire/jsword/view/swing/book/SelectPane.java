@@ -2,9 +2,10 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +14,16 @@ import java.awt.event.ItemListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
@@ -63,7 +69,7 @@ public class SelectPane extends JPanel
      */
     public SelectPane()
     {
-        // Bother search() and version() rely on this returning only Bibles
+        // search() and version() rely on this returning only Bibles
         mdl_versn = new BooksComboBoxModel(BookFilters.getBibles());
         jbInit();
     }
@@ -73,57 +79,175 @@ public class SelectPane extends JPanel
      */
     private void jbInit()
     {
-        txt_search.addActionListener(new ActionListener()
+        rdo_passg.setSelected(true);
+        rdo_passg.setText("Passage Lookup");
+        rdo_passg.setMnemonic('P');
+        rdo_passg.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { search(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                lay_cards.show(pnl_cards, PASSAGE);
+            }
         });
-        pnl_search.setLayout(new BorderLayout(5, 0));
-        btn_search.setText("Go");
-        btn_search.addActionListener(new ActionListener()
+        rdo_match.setText("Match");
+        rdo_match.setMnemonic('M');
+        rdo_match.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { search(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                lay_cards.show(pnl_cards, MATCH);
+            }
         });
-        txt_search.setColumns(20);
-        btn_dialg.setText("...");
-        pnl_search.add(txt_search, BorderLayout.CENTER);
-        pnl_search.add(cbo_search, BorderLayout.WEST);
-        pnl_search.add(btn_search, BorderLayout.EAST);
-
-        lbl_passg.setToolTipText("");
-        lbl_passg.setText("View:");
-        //txt_passg.setColumns(20);
-        txt_passg.addActionListener(new ActionListener()
+        rdo_search.setMnemonic('S');
+        rdo_search.setText("Search");
+        rdo_search.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent ev) { view(); }
+            public void actionPerformed(ActionEvent ev)
+            {
+                lay_cards.show(pnl_cards, SEARCH);
+            }
         });
-        btn_dialg.setText("...");
-        btn_dialg.setEnabled(false);
-        btn_dialg.setBorder(BorderFactory.createCompoundBorder(txt_passg.getBorder(), btn_dialg.getBorder()));
-        btn_dialg.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev) { select(); }
-        });
+        pnl_select.setLayout(new FlowLayout(FlowLayout.LEFT));
         cbo_versn.setModel(mdl_versn);
         cbo_versn.addItemListener(new ItemListener()
         {
-            public void itemStateChanged(ItemEvent ev) { version(); }
+            public void itemStateChanged(ItemEvent ev)
+            {
+                version();
+            }
         });
-        /*
-        pnl_passg.setLayout(new BorderLayout(5, 0));
-        pnl_passg.add(txt_passg, BorderLayout.CENTER);
-        pnl_passg.add(lbl_passg, BorderLayout.WEST);
-        pnl_passg.add(cbo_versn, BorderLayout.EAST);
-        */
+        pnl_radios.add(rdo_passg, null);
+        pnl_radios.add(rdo_search, null);
+        pnl_radios.add(rdo_match, null);
+        pnl_versn.setLayout(new BorderLayout());
+        pnl_versn.add(cbo_versn, BorderLayout.SOUTH);
+        pnl_select.setLayout(new BorderLayout());
+        pnl_select.add(pnl_radios, BorderLayout.WEST);
+        pnl_select.add(pnl_versn, BorderLayout.EAST);
+        grp_type.add(rdo_passg);
+        grp_type.add(rdo_search);
+        grp_type.add(rdo_match);
 
+        lbl_passg.setDisplayedMnemonic('V');
+        lbl_passg.setText("View:");
         pnl_passg.setLayout(new GridBagLayout());
-        pnl_passg.add(lbl_passg, new GridBagConstraints(0, 0, 1, 1, 0.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 2), 0, 0));
-        pnl_passg.add(txt_passg, new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,     new Insets(0, 0, 0, -1), 0, 0));
-        pnl_passg.add(btn_dialg, new GridBagConstraints(2, 0, 1, 2, 0.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, -1, 0, 10), 0, 0));
-        pnl_passg.add(cbo_versn, new GridBagConstraints(3, 0, 1, 1, 0.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
+        txt_passg.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                view();
+            }
+        });
+        btn_dialg.setText("...");
+        btn_dialg.setBorder(BorderFactory.createCompoundBorder(txt_passg.getBorder(), btn_dialg.getBorder()));
+        btn_dialg.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                select();
+            }
+        });
+        btn_passg.setText("Go");
+        btn_search.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                passage();
+            }
+        });
 
-        this.setLayout(new GridLayout(2, 0, 5, 5));
-        this.add(pnl_search, null);
-        this.add(pnl_passg, null);
+        pnl_passg.add(lbl_passg, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(5, 5, 0, 2), 0, 0));
+        pnl_passg.add(txt_passg, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 2, 2, -1), 0, 0));
+        pnl_passg.add(btn_dialg, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(5, -1, 0, 2), 0, 0));
+        pnl_passg.add(btn_passg, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 20, 5, 20), 0, 0));
+
+        pnl_search.setLayout(new GridBagLayout());
+        lbl_search.setDisplayedMnemonic('S');
+        lbl_search.setLabelFor(txt_search);
+        lbl_search.setText("Search:");
+        txt_search.setText("");
+        txt_search.setColumns(20);
+        txt_search.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                search();
+            }
+        });
+        chk_srestrict.setSelected(false);
+        chk_srestrict.setMnemonic('R');
+        chk_srestrict.setText("Restrict to:");
+        chk_srestrict.addChangeListener(new ChangeListener()
+        {
+            public void stateChanged(ChangeEvent ev)
+            {
+                boolean selected = chk_srestrict.isSelected();
+                txt_srestrict.setEnabled(selected);
+            }
+        });
+        txt_srestrict.setEnabled(false);
+        txt_srestrict.setText("Gen-Rev");
+        btn_search.setText("Go");
+        btn_search.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                search();
+            }
+        });
+
+        pnl_search.add(lbl_search, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
+        pnl_search.add(txt_search, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 2, 2, 5), 0, 0));
+        pnl_search.add(chk_srestrict, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(2, 5, 5, 2), 0, 0));
+        pnl_search.add(txt_srestrict, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 5, 2), 0, 0));
+        pnl_search.add(btn_search, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 20, 5, 20), 0, 0));
+
+        pnl_match.setLayout(new GridBagLayout());
+        lbl_match.setDisplayedMnemonic('V');
+        lbl_match.setLabelFor(txt_match);
+        lbl_match.setText("Find Verses Like:");
+        txt_match.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                match();
+            }
+        });
+        chk_mrestrict.setText("Restrict to:");
+        chk_mrestrict.setMnemonic('R');
+        chk_mrestrict.addChangeListener(new ChangeListener()
+        {
+            public void stateChanged(ChangeEvent ev)
+            {
+                boolean selected = chk_mrestrict.isSelected();
+                txt_mrestrict.setEnabled(selected);
+            }
+        });
+        txt_mrestrict.setText("Gen-Rev");
+        txt_mrestrict.setEnabled(false);
+        btn_match.setText("Go");
+        btn_match.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                match();
+            }
+        });
+
+        pnl_match.add(lbl_match, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 2, 2), 0, 0));
+        pnl_match.add(txt_match, new GridBagConstraints(1, 0, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 2, 2, 5), 0, 0));
+        pnl_match.add(chk_mrestrict, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(2, 5, 5, 2), 0, 0));
+        pnl_match.add(txt_mrestrict, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 5, 2), 0, 0));
+        pnl_match.add(btn_match, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 20, 5, 20), 0, 0));
+
+        pnl_cards.setLayout(lay_cards);
+        pnl_cards.add(pnl_passg, PASSAGE);
+        pnl_cards.add(pnl_search, SEARCH);
+        pnl_cards.add(pnl_match, MATCH);
+
+        this.setLayout(new BorderLayout());
+        this.add(pnl_select, BorderLayout.NORTH);
+        this.add(pnl_cards, BorderLayout.CENTER);
     }
 
     /**
@@ -134,11 +258,40 @@ public class SelectPane extends JPanel
         try
         {
             String param = txt_search.getText();
-            String type = (String) cbo_search.getSelectedItem();
-            // This cast is safe because we asked for Bibles in the ctor
-            Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
+            Search search = new Search(param, false);
+            if (chk_srestrict.isSelected())
+            {
+                Passage restrict = PassageFactory.createPassage(txt_srestrict.getText());
+                search.setRange(restrict);
+            }
 
-            Search search = new Search(param, MATCH.equals(type));
+            Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
+            Passage ref = version.findPassage(search);
+
+            setPassage(ref);
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
+    }
+
+    /**
+     * Someone pressed return in the search area
+     */
+    protected void match()
+    {
+        try
+        {
+            String param = txt_match.getText();
+            Search search = new Search(param, true);
+            if (chk_mrestrict.isSelected())
+            {
+                Passage restrict = PassageFactory.createPassage(txt_mrestrict.getText());
+                search.setRange(restrict);
+            }
+
+            Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
             Passage ref = version.findPassage(search);
 
             // we get PassageTallys for best match searches
@@ -149,15 +302,20 @@ public class SelectPane extends JPanel
                 tally.trimRanges(20);
             }
 
-            txt_passg.setText(ref.getName());
-            fireCommandMade(new CommandEvent(this, ref));
-
-            txt_passg.grabFocus();
+            setPassage(ref);
         }
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
         }
+    }
+
+    /**
+     * Someone pressed return in the search area
+     * PENDING(joe): write
+     */
+    protected void passage()
+    {
     }
 
     /**
@@ -191,6 +349,11 @@ public class SelectPane extends JPanel
     public void setPassage(Passage ref)
     {
         txt_passg.setText(ref.getName());
+
+        fireCommandMade(new CommandEvent(this, ref));
+
+        rdo_passg.setSelected(true);
+        txt_passg.grabFocus();
     }
 
     /**
@@ -231,7 +394,8 @@ public class SelectPane extends JPanel
      */
     protected void select()
     {
-        pnl_select.showInDialog(this, "Select Passage", true, txt_passg.getText());
+        String passg = dlg_select.showInDialog(this, "Select Passage", true, txt_passg.getText());
+        txt_passg.setText(passg);
     }
 
     /**
@@ -318,20 +482,39 @@ public class SelectPane extends JPanel
         }
     }
 
-    private static final String SEARCH = "Search";
-    private static final String MATCH = "Match";
+    private String PASSAGE = "p";
+    private String SEARCH = "s";
+    private String MATCH = "m";
 
     private BooksComboBoxModel mdl_versn = null;
-    private JPanel pnl_passg = new JPanel();
-    private JComboBox cbo_versn = new JComboBox();
-    private JLabel lbl_passg = new JLabel();
-    private JTextField txt_passg = new JTextField();
-    private JPanel pnl_search = new JPanel();
-    private JTextField txt_search = new JTextField();
     private transient Vector commandListeners;
     private transient Vector versionListeners;
-    private JComboBox cbo_search = new JComboBox(new Object[] { SEARCH, MATCH });
-    private JButton btn_search = new JButton();
+    private PassageSelectionPane dlg_select = new PassageSelectionPane();
+    private JLabel lbl_passg = new JLabel();
+    private JPanel pnl_passg = new JPanel();
+    private JTextField txt_passg = new JTextField();
+    private JComboBox cbo_versn = new JComboBox();
     private JButton btn_dialg = new JButton();
-    private PassageSelectionPane pnl_select = new PassageSelectionPane();
+    private JPanel pnl_search = new JPanel();
+    private JPanel pnl_match = new JPanel();
+    private JLabel lbl_search = new JLabel();
+    private JTextField txt_search = new JTextField();
+    private JCheckBox chk_srestrict = new JCheckBox();
+    private JTextField txt_srestrict = new JTextField();
+    private JButton btn_search = new JButton();
+    private JLabel lbl_match = new JLabel();
+    private JTextField txt_match = new JTextField();
+    private JButton btn_match = new JButton();
+    private JButton btn_passg = new JButton();
+    private JCheckBox chk_mrestrict = new JCheckBox();
+    private JTextField txt_mrestrict = new JTextField();
+    private JPanel pnl_select = new JPanel();
+    private JPanel pnl_radios = new JPanel();
+    private JPanel pnl_versn = new JPanel();
+    private ButtonGroup grp_type = new ButtonGroup();
+    private JRadioButton rdo_match = new JRadioButton();
+    private JRadioButton rdo_search = new JRadioButton();
+    private JRadioButton rdo_passg = new JRadioButton();
+    private JPanel pnl_cards = new JPanel();
+    private CardLayout lay_cards = new CardLayout();
 }

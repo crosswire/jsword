@@ -40,12 +40,12 @@ public class ChapterTreeNode extends BookTreeNode
     /**
      * This constructor is for when we are really a BookTreeNode
      */
-    protected ChapterTreeNode(TreeNode parent, int book, int Passage) throws NoSuchVerseException
+    protected ChapterTreeNode(TreeNode parent, int book, int chapter) throws NoSuchVerseException
     {
         super(parent, book);
-        this.Passage = Passage;
+        this.chapter = chapter;
 
-        kids = new VerseTreeNode[BibleInfo.versesInChapter(book, Passage)];
+        kids = new VerseTreeNode[BibleInfo.versesInChapter(book, chapter)];
     }
 
     /**
@@ -59,7 +59,7 @@ public class ChapterTreeNode extends BookTreeNode
         {
             try
             {
-                kids = new VerseTreeNode[ref.versesInPassage(book, Passage)];
+                kids = new VerseTreeNode[ref.versesInPassage(book, chapter)];
 
                 int verse_count = 0;
 
@@ -69,9 +69,9 @@ public class ChapterTreeNode extends BookTreeNode
                     Verse verse = (Verse) it.next();
 
                     if ((book == 0 || verse.getBook() == book)
-                        && (Passage == 0 || verse.getChapter() == Passage))
+                        && (chapter == 0 || verse.getChapter() == chapter))
                     {
-                        VerseTreeNode node = new VerseTreeNode(this, book, Passage, verse.getVerse());
+                        VerseTreeNode node = new VerseTreeNode(this, book, chapter, verse.getVerse());
                         node.setPassage(ref, true);
                         kids[verse_count++] = node;
                     }
@@ -93,7 +93,7 @@ public class ChapterTreeNode extends BookTreeNode
         {
             if (kids[i] != null) return kids[i];
 
-            kids[i] = new VerseTreeNode(this, book, Passage, i+1);
+            kids[i] = new VerseTreeNode(this, book, chapter, i+1);
             return kids[i];
         }
         catch (NoSuchVerseException ex)
@@ -123,10 +123,10 @@ public class ChapterTreeNode extends BookTreeNode
     {
         try
         {
-            String Passage_num = ""+Passage;
+            String Passage_num = ""+chapter;
             if (ref == null) return Passage_num;
 
-            int verses = ref.versesInPassage(book, Passage);
+            int verses = ref.versesInPassage(book, chapter);
             if (verses == 0) return Passage_num;
 
             return Passage_num + " (" + verses + ")";
@@ -142,10 +142,10 @@ public class ChapterTreeNode extends BookTreeNode
      */
     public int getChapter()
     {
-        return Passage;
+        return chapter;
     }
 
     /** The Book that this node referrs to */
-    protected int Passage = 0;
+    protected int chapter = 0;
 }
 

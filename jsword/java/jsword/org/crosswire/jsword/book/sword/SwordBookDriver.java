@@ -6,14 +6,15 @@ import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
@@ -47,6 +48,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public SwordBookDriver() throws MalformedURLException
     {
+        log.debug("Starting Sword drivers");
     }
 
     /**
@@ -56,6 +58,7 @@ public class SwordBookDriver extends AbstractBookDriver
     {
         if (dir == null)
         {
+            log.debug("getBooks() empty because dir == null");
             return new BibleMetaData[0];
         }
         try
@@ -63,23 +66,23 @@ public class SwordBookDriver extends AbstractBookDriver
             // load each config withing mods.d, discard those which are not bibles, return names of remaining
             URL mods = NetUtil.lengthenURL(dir, "mods.d");
             if (!NetUtil.isDirectory(mods))
-                return new BibleMetaData[0];
-
-            File modsFile = new File(mods.getFile());
-            String[] filenames = modsFile.list(new CustomFilenameFilter());
-            SwordConfig[] configs = new SwordConfig[filenames.length];
-            List valid = new ArrayList();
-            for (int i = 0; i < filenames.length; i++)
             {
-                String biblename = filenames[i].substring(0, filenames[i].indexOf(".conf"));
-                configs[i] = new SwordConfig(new File(modsFile, filenames[i]).toURL(), biblename);
+                log.debug("getBooks() empty mods.d does not exist");
+                return new BibleMetaData[0];
+            }
+
+            File modsdir = new File(mods.getFile());
+            String[] bookdirs = modsdir.list(new CustomFilenameFilter());
+            List valid = new ArrayList();
+
+            for (int i=0; i<bookdirs.length; i++)
+            {
+                SwordBibleMetaData bmd = new SwordBibleMetaData(this, modsdir, bookdirs[i]);
 
                 // check to see if it's a bible
-                if (isBible(configs[i]))
+                if (bmd.isBible())
                 {
-                    BibleMetaData bmd = new SwordBibleMetaData(this, biblename);
                     valid.add(bmd);
-                    configCache.put(bmd, configs[i]);
                 }
             }
 
@@ -93,28 +96,19 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * Method isBible.
-     * @param swordConfig
-     * @return boolean
-     */
-    private boolean isBible(SwordConfig swordConfig)
-    {
-        if (swordConfig.getModDrv() == SwordConstants.DRIVER_RAW_TEXT)
-            return true;
-
-        if (swordConfig.getModDrv() == SwordConstants.DRIVER_Z_TEXT)
-            return true;
-
-        return false;
-    }
-
-    /**
      * Accessor for the Sword directory
      * @param sword_dir The new Sword directory
      */
-    public static void setSwordDir(String sword_dir) throws MalformedURLException
+    public static void setSwordDir(String sword_dir) throws MalformedURLException, BookException
     {
-        // Just accept that we're not supposed to work ...
+        // Fist we need to unregister any registered drivers
+        BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
+        for (int i=0; i<matches.length; i++)
+        {
+            Books.unregisterDriver(matches[i]);
+        }
+
+        // If the new dir is empty then just accept that we're not supposed to work ...
         if (sword_dir == null || sword_dir.trim().length() == 0)
         {
             dir = null;
@@ -122,12 +116,17 @@ public class SwordBookDriver extends AbstractBookDriver
             return;
         }
 
-        URL dir_temp = new URL("file:" + sword_dir);
+        URL dir_temp = new URL("file", null, sword_dir);
 
         if (!NetUtil.isDirectory(dir_temp))
+        {
             throw new MalformedURLException("No sword source found under " + sword_dir);
+        }
 
         dir = dir_temp;
+
+        // Now we need to register ourselves
+        Books.registerDriver(new SwordBookDriver());
     }
 
     /**
@@ -139,11 +138,8 @@ public class SwordBookDriver extends AbstractBookDriver
         if (dir == null)
             return "";
 
-        return dir.toExternalForm().substring(5);
+        return dir.getFile();
     }
-
-    /** config cache */
-    protected Map configCache = new HashMap();
 
     /** The directory URL */
     protected static URL dir;

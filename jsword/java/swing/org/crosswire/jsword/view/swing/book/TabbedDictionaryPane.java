@@ -131,7 +131,6 @@ public class TabbedDictionaryPane extends JPanel
     }
 
     /**
-     * PENDING(joe): Do something here
      * @param ev
      */
     private void link(HyperlinkEvent ev)

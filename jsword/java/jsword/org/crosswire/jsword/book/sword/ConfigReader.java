@@ -100,7 +100,7 @@ public class ConfigReader
     public String getFirstValue(String key)
     {
         ArrayList list = (ArrayList) table.get(key);
-        if (list != null)
+        if (list == null)
         {
             return null;
         }

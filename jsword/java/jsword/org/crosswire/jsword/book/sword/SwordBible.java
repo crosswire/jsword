@@ -54,6 +54,7 @@ public class SwordBible extends AbstractBible
 {
     /**
      * Constructor SwordBible.
+     * PENDING(joe): get rid of the driver param?
      * @param swordConfig
      */
     public SwordBible(SwordBookDriver driver, SwordBibleMetaData sbmd) throws BookException
@@ -61,7 +62,7 @@ public class SwordBible extends AbstractBible
         this.sbmd = sbmd;
 
         URL swordBase = SwordBookDriver.dir;
-        SwordConfig swordConfig = (SwordConfig) driver.configCache.get(sbmd);
+        SwordConfig swordConfig = sbmd.getSwordConfig();
 
         if (mat11_ord == -1)
         {
