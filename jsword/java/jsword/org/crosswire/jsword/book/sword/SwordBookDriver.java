@@ -19,7 +19,6 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * This represents all of the SwordBibles.
- * URGENT(joe): support other books
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

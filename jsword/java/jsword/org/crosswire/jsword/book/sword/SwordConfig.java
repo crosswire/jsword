@@ -33,6 +33,7 @@ import org.crosswire.jsword.book.BookException;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class SwordConfig
@@ -272,23 +273,95 @@ public class SwordConfig
             };
 
         case SwordConstants.DRIVER_RAW_COM:
+            return new SwordCommentaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    return new RawSwordCommentary(this, SwordConfig.this);
+                }
+            };
+
         case SwordConstants.DRIVER_Z_COM:
+            log.warn("No support for commentary type: DRIVER_Z_COM in "+this.getName()+" desire="+(++desire_zcom));
+            return new SwordCommentaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    // PENDING(joe): support DRIVER_Z_COM
+                    return null;
+                }
+            };
+    
         case SwordConstants.DRIVER_HREF_COM:
+            log.warn("No support for commentary type: DRIVER_HREF_COM in "+this.getName()+" desire="+(++desire_hrefcom));
+            return new SwordCommentaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    // PENDING(joe): support DRIVER_HREF_COM
+                    return null;
+                }
+            };
+
         case SwordConstants.DRIVER_RAW_FILES:
-            return new SwordCommentaryMetaData(this);
+            log.warn("No support for commentary type: DRIVER_RAW_FILES in "+this.getName()+" desire="+(++desire_rawfiles));
+            return new SwordCommentaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    // PENDING(joe): support DRIVER_RAW_FILES
+                    return null;
+                }
+            };
 
         case SwordConstants.DRIVER_RAW_LD:
+            log.warn("No support for dictionary type: DRIVER_RAW_LD in "+this.getName()+" desire="+(++desire_rawld));
+            return new SwordDictionaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    // PENDING(joe): support DRIVER_RAW_LD
+                    return null;
+                }
+            };
+
         case SwordConstants.DRIVER_RAW_LD4:
+            log.warn("No support for dictionary type: DRIVER_RAW_LD4 in "+this.getName()+" desire="+(++desire_rawld4));
+            return new SwordDictionaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    // PENDING(joe): support DRIVER_RAW_LD4
+                    return null;
+                }
+            };
+    
         case SwordConstants.DRIVER_Z_LD:
-            return new SwordDictionaryMetaData(this);
+            log.warn("No support for dictionary type: DRIVER_Z_LD in "+this.getName()+" desire="+(++desire_zld));
+            return new SwordDictionaryMetaData(this)
+            {
+                public Book createBook() throws BookException
+                {
+                    // PENDING(joe): support DRIVER_Z_LD
+                    return null;
+                }
+            };
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
+            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName()+" desire="+(++desire_rawgenbook));
             throw new BookException("Unsupported type: "+type);
 
         default:
             throw new BookException("Unknown type: "+type);
         }
     }
+    private static int desire_zcom = 0;
+    private static int desire_hrefcom = 0;
+    private static int desire_rawfiles = 0;
+    private static int desire_rawld = 0;
+    private static int desire_rawld4 = 0;
+    private static int desire_zld = 0;
+    private static int desire_rawgenbook = 0;
 
     /**
      * Returns the about.

@@ -1,11 +1,9 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
@@ -13,8 +11,6 @@ import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.passage.BibleInfo;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -55,19 +51,6 @@ public abstract class SwordBible extends AbstractBible
     {
         this.sbmd = sbmd;
         this.config = config;
-
-        if (ORDINAL_MAT11 == -1)
-        {
-            try
-            {
-                Verse mat11 = new Verse(BibleInfo.Names.Matthew, 1, 1);
-                ORDINAL_MAT11 = mat11.getOrdinal();
-            }
-            catch (NoSuchVerseException ex)
-            {
-                throw new LogicError(ex);
-            }
-        }
     }
 
     /* (non-Javadoc)
@@ -85,39 +68,33 @@ public abstract class SwordBible extends AbstractBible
     {
         BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
 
-        try
+        // For all the ranges in this Passage
+        Iterator rit = ref.rangeIterator();
+        while (rit.hasNext())
         {
-            // For all the ranges in this Passage
-            Iterator rit = ref.rangeIterator();
-            while (rit.hasNext())
+            VerseRange range = (VerseRange) rit.next();
+            SectionData section = OsisUtil.createSectionData(doc, range.toString());
+
+            // For all the verses in this range
+            Iterator vit = range.verseIterator();
+            while (vit.hasNext())
             {
-                VerseRange range = (VerseRange) rit.next();
-                SectionData section = OsisUtil.createSectionData(doc, range.toString());
-
-                // For all the verses in this range
-                Iterator vit = range.verseIterator();
-                while (vit.hasNext())
-                {
-                    Verse verse = (Verse) vit.next();
-                    String text = getText(verse);
-                    OsisUtil.createRefData(section, verse, text);
-                }
+                Verse verse = (Verse) vit.next();
+                String text = getText(verse);
+                OsisUtil.createRefData(section, verse, text);
             }
+        }
 
-            return doc;
-        }
-        catch (Exception ex)
-        {
-            throw new BookException("ser_read", ex);
-        }
+        return doc;
     }
 
     /**
-     * @param verse
-     * @return String
-     * @throws IOException
+     * This is very similar in function to getData(Passage) except that we only
+     * fetch the data for a single verse.
+     * @param verse The verse to get data for
+     * @return String The corresponding text
      */
-    public abstract String getText(Verse verse) throws IOException;
+    public abstract String getText(Verse verse) throws BookException;
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
@@ -141,17 +118,12 @@ public abstract class SwordBible extends AbstractBible
     private SwordBibleMetaData sbmd;
 
     /**
-     * The start of the new testament
+     * The configuration file
      */
-    protected static int ORDINAL_MAT11 = -1;
+    private SwordConfig config;
 
     /**
      * The log stream
      */
     protected static Logger log = Logger.getLogger(SwordBible.class);
-
-    /**
-     * The configuration file
-     */
-    private SwordConfig config;
 }

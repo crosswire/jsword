@@ -9,7 +9,6 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
-import org.crosswire.jsword.book.data.BookData;
 
 /**
  * A Sword version of Dictionary.
@@ -35,7 +34,7 @@ import org.crosswire.jsword.book.data.BookData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordDictionary extends AbstractDictionary implements Dictionary
+public abstract class SwordDictionary extends AbstractDictionary implements Dictionary
 {
     /**
      * @param data
@@ -77,10 +76,9 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
-     */
+     *
     public BookData getData(Key ref) throws BookException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 

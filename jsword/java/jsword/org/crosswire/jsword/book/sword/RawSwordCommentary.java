@@ -5,7 +5,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A stub for the Compressed sword Bible backend.
+ * An implementation of a Sword Commentary backend for raw bible data.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,33 +25,29 @@ import org.crosswire.jsword.passage.Verse;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see docs.Licence
- * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
- * @author The Sword project (don't know who - no credits in original files (canon.h))
  * @version $Id$
  */
-public class CompressedSwordBible extends SwordBible
+public class RawSwordCommentary extends SwordCommentary
 {
     /**
      * Simple ctor
      */
-    public CompressedSwordBible(SwordBibleMetaData sbmd, SwordConfig config) throws BookException
+    public RawSwordCommentary(SwordCommentaryMetaData data, SwordConfig config) throws BookException
     {
-        super(sbmd, config);
+        super(data, config);
+        backend = new RawBackend();
+
+        backend.init(config);
     }
 
-    public String getText(Verse verse) throws BookException
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.SwordCommentary#getText(org.crosswire.jsword.passage.Verse)
+     */
+    public String getText(Verse v) throws BookException
     {
-        if (getConfig().getCompressType() == SwordConstants.COMPRESSION_LZSS)
-        {
-            // plug in LZSS de / compressor
-        }
-
-        if (getConfig().getCompressType() == SwordConstants.COMPRESSION_ZIP)
-        {
-            // plug in ZIP de / compressor
-        }
-
-        return "A stub for compressed bible backend.";
+        return backend.getRawText(v);
     }
+
+    private RawBackend backend;
 }

@@ -3,8 +3,6 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DictionaryMetaData;
 
 /**
@@ -31,7 +29,7 @@ import org.crosswire.jsword.book.DictionaryMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordDictionaryMetaData extends SwordBookMetaData implements DictionaryMetaData
+public abstract class SwordDictionaryMetaData extends SwordBookMetaData implements DictionaryMetaData
 {
     /**
      * Simple ctor
@@ -40,13 +38,5 @@ public class SwordDictionaryMetaData extends SwordBookMetaData implements Dictio
     public SwordDictionaryMetaData(SwordConfig config) throws IOException
     {
         super(config);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getBook()
-     */
-    public Book createBook() throws BookException
-    {
-        return new SwordDictionary(this);
     }
 }

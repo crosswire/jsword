@@ -1,17 +1,23 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
-import org.apache.log4j.Logger;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.IOException;
+//import java.io.RandomAccessFile;
+//
+//import org.apache.log4j.Logger;
 
 /**
- * Code for class 'RawVerse'- a module that reads raw text files.
+ * This class is only here for dicumentation purposes.
+ * 
+ * <p>It was originally the way we read Sword modules, but has long since been
+ * superceeded. I have not deleted it however becuase the code was well
+ * commented with notes on what had been done and was left to do.
+ *  
+ * <p>Code for class 'RawVerse'- a module that reads raw text files.
  * ot and nt using indexs ??.bks ??.cps ??.vss and provides lookup and parsing
- * functions based on class VerseKey
+ * functions based on class VerseKey.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -34,29 +40,17 @@ import org.apache.log4j.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawVerse
+class RawVerse
 {
-    /** constant for the introduction */
-    public static final int TESTAMENT_INTRO = 0;
-
-    /** constant for the old testament */
-    public static final int TESTAMENT_OLD = 1;
-
-    /** constant for the new testament */
-    public static final int TESTAMENT_NEW = 2;
-
     /**
      * RawVerse Constructor - Initializes data for instance of RawVerse
-     * @param path - path of the directory where data and index files are located.
-     *		be sure to include the trailing separator (e.g. '/' or '\')
-     *		(e.g. 'modules/texts/rawtext/webster/')
-     */
+     *
     public RawVerse(String path) throws FileNotFoundException
     {
-        idx_raf[TESTAMENT_OLD] = new RandomAccessFile(path + "ot.vss", "r");
-        idx_raf[TESTAMENT_NEW] = new RandomAccessFile(path + "nt.vss", "r");
-        txt_raf[TESTAMENT_OLD] = new RandomAccessFile(path + "ot", "r");
-        txt_raf[TESTAMENT_NEW] = new RandomAccessFile(path + "nt", "r");
+        idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + "ot.vss", "r");
+        idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + "nt.vss", "r");
+        txt_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + "ot", "r");
+        txt_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + "nt", "r");
 
         // The original had a dtor that did the equiv of .close()ing the above
         // I'm not sure that there is a delete type ability in Book.java and
@@ -78,7 +72,7 @@ public class RawVerse
      * @param idxoff offset into .vss
      * @param start address to store the starting offset
      * @param size address to store the size of the entry
-     */
+     *
     public Location findOffset(int testament, long idxoff) throws IOException
     {
         Location loc = new Location();
@@ -135,7 +129,7 @@ public class RawVerse
      * Gets text at a given offset.
      * @param testament testament file to search in (0 - Old; 1 - New)
      * @param loc Where to read from
-     */
+     *
     public String getText(int testament, Location loc) throws IOException
     {
         // The original had the size param as an unsigned short.
@@ -153,7 +147,7 @@ public class RawVerse
     /**
      * Prepares the text before returning it to external objects
      * @param buf buffer where text is stored and where to store the prep'd text
-     */
+     *
     protected String prepText(String text)
     {
         StringBuffer buf = new StringBuffer(text);
@@ -223,7 +217,7 @@ public class RawVerse
      * @param testament testament to find (0 - Bible/module introduction)
      * @param idxoff offset into .vss
      * @param buf buffer to store
-     */
+     *
     protected void setText(int testament, long idxoff, String buf) throws IOException
     {
         // As in getText() we don't alter the formal parameter
@@ -258,7 +252,7 @@ public class RawVerse
     /**
      * Creates new module files
      * @param path Directory to store module files
-     */
+     *
     public static void createModule(String path) throws IOException
     {
         truncate(path + "ot.vss");
@@ -275,7 +269,7 @@ public class RawVerse
 
     /**
      * Create an empty file, deleting what was there
-     */
+     *
     private static void truncate(String filename) throws IOException
     {
         // The original code did something like this. I recon this basically
@@ -298,18 +292,16 @@ public class RawVerse
      * showing our callers more than we should and I expect that the solution
      * lies in a thorough sorting out if the interface, but I want to keep
      * the methods unchanged as reasonable right now.
-     */
+     *
     public class Location
     {
-        /** Where does the data start */
+        // Where does the data start
         public long start = 0;
 
-        /** The data length. Is short long enough? the original was unsigned short */
+        // The data length. Is short long enough? the original was unsigned short
         public int size = 0;
 
-        /**
-         * Debug only
-         */
+        // Debug only
         public String toString()
         {
             return "start="+start+", size="+size;
@@ -318,7 +310,7 @@ public class RawVerse
 
     /**
      * A test program
-     */
+     *
     public static void main(String[] args)
     {
         try
@@ -327,8 +319,8 @@ public class RawVerse
             String path = "/usr/apps/sword/modules/texts/rawtext/kjv/";
 
             RawVerse verse = new RawVerse(path);
-            Location loc = verse.findOffset(RawVerse.TESTAMENT_NEW, 6);
-            String pre = verse.getText(RawVerse.TESTAMENT_NEW, loc);
+            Location loc = verse.findOffset(SwordConstants.TESTAMENT_NEW, 6);
+            String pre = verse.getText(SwordConstants.TESTAMENT_NEW, loc);
 
             log.debug("loc="+loc);
             log.debug("pre="+pre);
@@ -340,13 +332,14 @@ public class RawVerse
         }
     }
 
-    /** The array of index files */
+    /** The array of index files *
     private RandomAccessFile[] idx_raf = new RandomAccessFile[3];
 
-    /** The array of data files */
+    /** The array of data files *
     private RandomAccessFile[] txt_raf = new RandomAccessFile[3];
 
-    /** The log stream */
+    /** The log stream *
     protected static Logger log = Logger.getLogger(RawVerse.class);
+    */
 }
 
