@@ -7,9 +7,8 @@
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
   <property name="target.root" value="target/ant"/>
-  <property name="target.temp" value="${target.root}/temp"/>
-  <property name="target.classes" value="${target.temp}/classes"/>
-  <property name="target.jar" value="${target.temp}/jar"/>
+  <property name="target.output" value="${target.root}"/>
+  <property name="target.classes" value="${target.root}/classes"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -56,8 +55,7 @@
 
   <!--=======================================================================-->
   <target name="jar" depends="compile, jar.check" unless="jar.uptodate" description="create the jar files">
-    <mkdir dir="${target.jar}"/>
-    <jar jarfile="${target.jar}/${ant.project.name}.jar">
+    <jar jarfile="${target.output}/${ant.project.name}.jar">
       <fileset dir="${target.classes}/core"/>
       <fileset dir="${target.classes}/swing"/>
       <fileset dir="${target.classes}/config"/>
@@ -65,7 +63,7 @@
     </jar>
   </target>
   <target name="jar.check" description="Check to see that the api jar file is up to date">
-    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword.jar">
+    <uptodate property="jar.uptodate" targetfile="${target.root}/jsword.jar">
       <srcfiles dir="${target.classes}/core"/>
       <srcfiles dir="${target.classes}/swing"/>
       <srcfiles dir="${target.classes}/config"/>
@@ -74,7 +72,21 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean, jar" description="Run a full clean/build cycle">
+  <target name="output" depends="jar" description="Get all of the outputs in sync">
+    <copy todir="${target.output}" flatten="true">
+      <fileset dir="${source.jar}">
+        <include name="log4j-1.2.8/log4j-1.2.8.jar"/>
+        <include name="jdom-1.0b10/jdom.jar"/>
+        <include name="lang-2.0.0/commons-lang-2.0.jar"/>
+      </fileset>
+      <fileset dir="${source.etc}">
+        <include name="config-test.xsl"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="all" depends="clean, output" description="Run a full clean/build cycle">
   </target>
 
   <!--=======================================================================-->
