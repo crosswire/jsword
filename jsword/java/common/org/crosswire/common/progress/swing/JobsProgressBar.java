@@ -197,7 +197,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * A simple struct to group information about a Job
      */
-    private class JobData
+    private static class JobData
     {
         /**
          * Simple ctor

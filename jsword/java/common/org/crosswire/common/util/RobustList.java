@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.util.AbstractList;
@@ -376,6 +375,8 @@ public class RobustList extends AbstractList implements List
     protected Entry foot = null;
     protected int size = 0;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     protected static final Logger log = Logger.getLogger(RobustList.class);
 }

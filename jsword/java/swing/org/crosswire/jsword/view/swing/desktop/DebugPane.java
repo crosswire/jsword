@@ -228,7 +228,7 @@ public class DebugPane extends JPanel
     /**
      * Simpler method name display
      */
-    private final class CustomListCellRenderer extends DefaultListCellRenderer
+    private static final class CustomListCellRenderer extends DefaultListCellRenderer
     {
         /* (non-Javadoc)
          * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)

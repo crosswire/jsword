@@ -270,7 +270,13 @@ public class ExceptionPane extends JPanel
      */
     public static String[] getSourcePath()
     {
-        return sources;
+        String[] copy = new String[sources.length];
+        for (int i = 0; i < copy.length; i++)
+        {
+            copy[i] = sources[i];
+        }
+
+        return copy;
     }
 
     /**
@@ -301,7 +307,7 @@ public class ExceptionPane extends JPanel
      */
     public static boolean isHelpDeskListener()
     {
-        return (li != null);
+        return li != null;
     }
 
     /**

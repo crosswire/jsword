@@ -83,7 +83,7 @@
       <ul>
         <li><a href="devt.html">Introduction</a></li>
         <li><a href="writingcode.html">Writing Code</a></li>
-        <li><a href="java2html/docs/APIExamples.java.html">API Primer</a></li>
+        <li><a href="java2html/org/crosswire/jsword/examples/APIExamples.java.html">API Primer</a></li>
         <li><a href="design.html">Design</a></li>
         <li><a href="osisCore.1.1.html">OSIS</a></li>
         <li><a href="api/org/crosswire/common/config/package-summary.html">Config API</a></li>
@@ -93,7 +93,6 @@
         <li><a href="jcoverage/index.html">Test-Coverage</a></li>
         <li><a href="checkstyle/checkstyle_errors.html">CheckStyle</a></li>
         <li><a href="pmd/index.html">PMD Report</a></li>
-        <li><a href="http://cpd/report.txt">CMD Report</a></li>
         <li><a href="findbugs/report.txt">FindBugs Report</a></li>
         <li><a href="jdepend/jdepend-report.html">JDepend Report</a></li>
         <li><a href="javancss/index.html">NCSS Report</a></li>

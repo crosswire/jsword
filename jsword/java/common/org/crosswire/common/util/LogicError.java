@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 /**
@@ -63,6 +62,8 @@ public class LogicError extends RuntimeException
         return ex;
     }
 
-    /** The error that caused this exception */
+    /**
+     * The error that caused this exception
+     */
     private Throwable ex = null;
 }

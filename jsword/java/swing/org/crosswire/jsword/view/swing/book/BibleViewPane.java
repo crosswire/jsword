@@ -329,7 +329,7 @@ public class BibleViewPane extends JPanel
     /**
      * Filter out verse lists
      */
-    private final class CustomFileFilter extends FileFilter
+    private static final class CustomFileFilter extends FileFilter
     {
         /* (non-Javadoc)
          * @see javax.swing.filechooser.FileFilter#accept(java.io.File)

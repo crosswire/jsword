@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import org.crosswire.common.util.MsgBase;
@@ -96,6 +95,7 @@ public class Msg extends MsgBase
     {
         return (Msg) Enum.getEnum(Msg.class, id);
     }
+    */
 
     /**
      * Initialise any resource bundles

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.util.EventObject;
@@ -103,9 +102,13 @@ public class ReporterEvent extends EventObject
         return message;
     }
 
-    /** The thing that went wrong */
+    /**
+     * The thing that went wrong
+     */
     private Throwable ex;
 
-    /** The message that is being passed around */
+    /**
+     * The message that is being passed around
+     */
     private String message;
 }

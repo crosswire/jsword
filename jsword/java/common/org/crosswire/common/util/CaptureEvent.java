@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.util.EventObject;
@@ -114,12 +113,18 @@ public class CaptureEvent extends EventObject
         return level;
     }
 
-    /** The thing that went wrong */
+    /**
+     * The thing that went wrong
+     */
     private Throwable ex;
 
-    /** The message that is being passed around */
+    /**
+     * The message that is being passed around
+     */
     private String message;
 
-    /** The level */
+    /**
+     * The level
+     */
     private int level;
 }

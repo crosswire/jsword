@@ -156,28 +156,6 @@ public class OptionsAction extends DesktopAbstractAction
     }
 
     /**
-     * Allow us to keep up with changes to the known books
-     */
-    private class CustomBooksListener implements BooksListener
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
-         */
-        public void bookAdded(BooksEvent ev)
-        {
-            refreshBooks();
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
-         */
-        public void bookRemoved(BooksEvent ev)
-        {
-            refreshBooks();
-        }
-    }
-
-    /**
      * Convert a filter into an array of names of Books that pass the filter.
      */
     private static String[] getFullNameArray(BookFilter filter)
@@ -198,4 +176,26 @@ public class OptionsAction extends DesktopAbstractAction
      * The configuration engine
      */
     private Config config = null;
+
+    /**
+     * Allow us to keep up with changes to the known books
+     */
+    private static class CustomBooksListener implements BooksListener
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
+         */
+        public void bookAdded(BooksEvent ev)
+        {
+            refreshBooks();
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
+         */
+        public void bookRemoved(BooksEvent ev)
+        {
+            refreshBooks();
+        }
+    }
 }

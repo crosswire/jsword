@@ -525,14 +525,15 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
             return;
         }
 
+        /*
         if (leftcurr != null)
         {
             // Not sure why we have to use a number in place of
             // the JSplitPane.LEFT string constant.
-            
             // And not sure that we need to do this at all.
-            //spt_books.remove(1/*JSplitPane.LEFT*/);
+            //spt_books.remove(1);
         }
+        */
 
         spt_books.add(next, JSplitPane.LEFT);
     }

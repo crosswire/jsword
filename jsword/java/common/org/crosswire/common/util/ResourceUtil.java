@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.io.IOException;

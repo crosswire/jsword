@@ -3,11 +3,11 @@
 <jnlp spec="1.0+" codebase="http://@HOSTNAME@/@WEBAPP@/" href="jsword.jnlp">
 
   <information>
-    <title>JSword Demo Application</title>
-    <vendor>The JSWord project</vendor>
+    <title>J-Sword Demo Application</title>
+    <vendor>The J-Sword project</vendor>
     <homepage href="http://@HOSTNAME@/@WEBAPP@/"/>
-    <description>JSword</description>
-    <description kind="short">A demo of the JSword UI</description>
+    <description>J-Sword</description>
+    <description kind="short">A demo of the J-Sword UI</description>
     <offline-allowed/>
   </information>
 

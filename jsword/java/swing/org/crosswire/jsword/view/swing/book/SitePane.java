@@ -124,7 +124,7 @@ public class SitePane extends JPanel
     /**
      * Display the BookMetaData as something better than toString()
      */
-    private final class CustomTreeCellRenderer extends DefaultTreeCellRenderer
+    private static final class CustomTreeCellRenderer extends DefaultTreeCellRenderer
     {
         /* (non-Javadoc)
          * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, boolean)

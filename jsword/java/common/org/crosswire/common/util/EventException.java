@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.text.MessageFormat;
@@ -126,12 +125,18 @@ public class EventException extends RuntimeException
         return cause;
     }
 
-    /** An embedded exception */
+    /**
+     * An embedded exception
+     */
     protected Throwable cause = null;
 
-    /** The array of parameters */
+    /**
+     * The array of parameters
+     */
     protected Object[] params = null;
 
-    /** The resource hash */
+    /**
+     * The resource hash
+     */
     protected static final ResourceBundle res = ResourceBundle.getBundle("Exception");
 }

@@ -1,6 +1,4 @@
-
 package org.crosswire.common.util;
-
 
 /**
  * This package looks after Exceptions and messages as they happen. It would be
@@ -101,7 +99,7 @@ public class Reporter
      */
     public static void addReporterListener(ReporterListener li)
     {
-        inform_list.add(ReporterListener.class, li);
+        listeners.add(ReporterListener.class, li);
     }
 
     /**
@@ -110,7 +108,7 @@ public class Reporter
      */
     public static void removeReporterListener(ReporterListener li)
     {
-        inform_list.remove(ReporterListener.class, li);
+        listeners.remove(ReporterListener.class, li);
     }
 
     /**
@@ -121,20 +119,20 @@ public class Reporter
         try
         {
             // Guaranteed to return a non-null array
-            Object[] listeners = inform_list.getListenerList();
+            Object[] liArr = listeners.getListenerList();
 
-            if (listeners.length == 0)
+            if (liArr.length == 0)
             {
                 log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException());
             }
 
             // Process the listeners last to first, notifying
             // those that are interested in this event
-            for (int i=listeners.length-2; i>=0; i-=2)
+            for (int i=liArr.length-2; i>=0; i-=2)
             {
-                if (listeners[i] == ReporterListener.class)
+                if (liArr[i] == ReporterListener.class)
                 {
-                    ReporterListener li = (ReporterListener) listeners[i+1];
+                    ReporterListener li = (ReporterListener) liArr[i+1];
                     try
                     {
                         if (ev.getException() != null)
@@ -153,7 +151,7 @@ public class Reporter
                             throw (ThreadDeath) ex;
                         }
             
-                        inform_list.remove(CaptureListener.class, li);
+                        listeners.remove(CaptureListener.class, li);
             
                         log.warn("Dispatch failure", ex);
                     }
@@ -166,9 +164,13 @@ public class Reporter
         }
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(Reporter.class);
 
-    /** The list of listeners */
-    protected static final EventListenerList inform_list = new EventListenerList();
+    /**
+     * The list of listeners
+     */
+    protected static final EventListenerList listeners = new EventListenerList();
 }

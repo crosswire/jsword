@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 /**
@@ -27,15 +26,19 @@ package org.crosswire.common.util;
  */
 class Msg extends MsgBase
 {
-    public static final Msg REASON = new Msg("Reason: ");
+    static final Msg REASON = new Msg("Reason: ");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

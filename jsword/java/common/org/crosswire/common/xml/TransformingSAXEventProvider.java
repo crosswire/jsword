@@ -321,7 +321,7 @@ public class TransformingSAXEventProvider implements SAXEventProvider
     /**
      * A simple struct to link modification times to Templates objects
      */
-    class TemplateInfo
+    private static class TemplateInfo
     {
         /**
          * Simple ctor

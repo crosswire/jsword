@@ -1,4 +1,3 @@
-
 package org.crosswire.common.util;
 
 import java.io.IOException;
@@ -113,10 +112,7 @@ public class EventListenerList implements Serializable
     {
         if (l == null)
         {
-            // In an ideal world, we would do an assertion here
-            // to help developers know they are probably doing
-            // something wrong
-            return;
+            throw new NullPointerException("EventListener");
         }
 
         if (!t.isInstance(l))
@@ -153,10 +149,7 @@ public class EventListenerList implements Serializable
     {
         if (l == null)
         {
-            // In an ideal world, we would do an assertion here
-            // to help developers know they are probably doing
-            // something wrong
-            return;
+            throw new NullPointerException("EventListener");
         }
 
         if (!t.isInstance(l))
@@ -246,17 +239,23 @@ public class EventListenerList implements Serializable
         Object[] lList = listenerList;
         String s = "EventListenerList: ";
         s += lList.length / 2 + " listeners: ";
+
         for (int i = 0; i <= lList.length - 2; i += 2)
         {
             s += " type " + ((Class) lList[i]).getName();
             s += " listener " + lList[i + 1];
         }
+
         return s;
     }
 
-    /** A null array to be shared by all empty listener lists*/
+    /**
+     * A null array to be shared by all empty listener lists
+     */
     private static final Object[] NULL_ARRAY = new Object[0];
 
-    /** The list of ListenerType - Listener pairs */
+    /**
+     * The list of ListenerType - Listener pairs
+     */
     protected transient Object[] listenerList = NULL_ARRAY;
 }

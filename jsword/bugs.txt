@@ -2,7 +2,6 @@
 This file is our equivalent of bugzilla for the time being.
 
 GUI
-- something better with the help dialog?
 
 Modules
 
@@ -12,9 +11,8 @@ Other
 - move map and maptest into jsword-support
 
 Web
-- API primer link broken (java source)
 - auto test for web demo
-- CPD link broken (& link text bust)
+- getBibles() bug
 
 --------------------------------------------------------------------------------
 

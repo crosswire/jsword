@@ -65,7 +65,13 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
      */
     public static String[] getURLs()
     {
-        return urls;
+        String[] copy = new String[urls.length];
+        for (int i = 0; i < copy.length; i++)
+        {
+            copy[i] = urls[i];
+        }
+
+        return copy;
     }
 
     /**

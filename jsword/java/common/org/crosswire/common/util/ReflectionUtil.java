@@ -42,50 +42,50 @@ public class ReflectionUtil
      * @param called_method_name The text of the invocation eg "getName"
      * @param called_params For example new Object[] { ...}
      */
-    public static Object invoke(Object base, String called_method_name, Object[] called_params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // Create a Class array describing the params
-        Class[] called_types = new Class[called_params.length];
-        for (int i=0; i<called_params.length; i++)
+        Class[] calledTypes = new Class[params.length];
+        for (int i=0; i<params.length; i++)
         {
-            called_types[i] = called_params[i].getClass();
+            calledTypes[i] = params[i].getClass();
         }
     
         // Reflection
-        Class called_class = base.getClass();
+        Class clazz = base.getClass();
     
         // The bad news is that we can't use something like:
         // called_class.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
-        Method[] test_methods = called_class.getMethods();
+        Method[] testMethods = clazz.getMethods();
         outer:
-        for (int i=0; i<test_methods.length; i++)
+        for (int i=0; i<testMethods.length; i++)
         {
             // This this the right method name?
-            if (!test_methods[i].getName().equals(called_method_name))
+            if (!testMethods[i].getName().equals(methodName))
             {
                 continue outer;
             }
     
             // The right number of params
-            Class[] test_types = test_methods[i].getParameterTypes();
-            if (test_types.length != called_types.length) continue;
+            Class[] testTypes = testMethods[i].getParameterTypes();
+            if (testTypes.length != calledTypes.length) continue;
     
             // Of the right types?
-            for (int j=0; j<test_types.length; j++)
+            for (int j=0; j<testTypes.length; j++)
             {
-                if (!test_types[j].isAssignableFrom(called_types[j]))
+                if (!testTypes[j].isAssignableFrom(calledTypes[j]))
                 {
                     continue outer;
                 }
             }
     
             // So this is a match
-            return test_methods[i].invoke(base, called_params);
+            return testMethods[i].invoke(base, params);
         }
     
-        throw new NoSuchMethodException(called_method_name);
+        throw new NoSuchMethodException(methodName);
     }
 
     /**
@@ -93,54 +93,54 @@ public class ReflectionUtil
      * @param call The text of the invocation eg "java.lang.String.getName"
      * @param called_params For example new Object[] { ...}
      */
-    public static Object invoke(String call, Object[] called_params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    public static Object invoke(String call, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // Spilt the call into class name and method name
-        int last_dot = call.lastIndexOf('.');
-        String called_class_name = call.substring(0, last_dot);
-        String called_method_name = call.substring(last_dot+1);
-    
+        int lastDot = call.lastIndexOf('.');
+        String className = call.substring(0, lastDot);
+        String methodName = call.substring(lastDot+1);
+
         // Create a Class array describing the params
-        Class[] called_types = new Class[called_params.length];
-        for (int i=0; i<called_params.length; i++)
+        Class[] calledTypes = new Class[params.length];
+        for (int i=0; i<params.length; i++)
         {
-            called_types[i] = called_params[i].getClass();
+            calledTypes[i] = params[i].getClass();
         }
-    
+
         // Reflection
-        Class called_class = Class.forName(called_class_name);
-    
+        Class clazz = Class.forName(className);
+
         // The bad news is that we can't use something like:
-        // called_class.getMethod(called_method_name, called_types);
+        // clazz.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
-        Method[] test_methods = called_class.getMethods();
+        Method[] testMethods = clazz.getMethods();
         outer:
-        for (int i=0; i<test_methods.length; i++)
+        for (int i=0; i<testMethods.length; i++)
         {
             // This this the right method name?
-            if (!test_methods[i].getName().equals(called_method_name))
+            if (!testMethods[i].getName().equals(methodName))
             {
                 continue outer;
             }
     
             // The right number of params
-            Class[] test_types = test_methods[i].getParameterTypes();
-            if (test_types.length != called_types.length) continue;
+            Class[] testTypes = testMethods[i].getParameterTypes();
+            if (testTypes.length != calledTypes.length) continue;
     
             // Of the right types?
-            for (int j=0; j<test_types.length; j++)
+            for (int j=0; j<testTypes.length; j++)
             {
-                if (!test_types[j].isAssignableFrom(called_types[j]))
+                if (!testTypes[j].isAssignableFrom(calledTypes[j]))
                 {
                     continue outer;
                 }
             }
     
             // So this is a match
-            return test_methods[i].invoke(null, called_params);
+            return testMethods[i].invoke(null, params);
         }
     
-        throw new NoSuchMethodException(called_method_name);
+        throw new NoSuchMethodException(methodName);
     }
 }

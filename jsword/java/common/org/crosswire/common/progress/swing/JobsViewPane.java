@@ -289,7 +289,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * A simple struct to group information about a Job
      */
-    private class JobData
+    private static class JobData
     {
         /**
          * Simple ctor
@@ -304,7 +304,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
 
         /**
-         * 
+         * Make sure we can't be used any more
          */
         void invalidate()
         {
@@ -316,7 +316,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
 
         /**
-         * 
+         * Accessor for the job
          */
         Job getJob()
         {
@@ -324,7 +324,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
 
         /**
-         * 
+         * Accessor for the label for this job
          */
         JLabel getLabel()
         {
@@ -332,7 +332,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
 
         /**
-         * 
+         * Accessor for the gui progress component
          */
         JProgressBar getProgress()
         {
@@ -340,7 +340,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
 
         /**
-         * 
+         * Accessor for the cancel button
          */
         JButton getCancel()
         {
@@ -348,7 +348,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
 
         /**
-         * 
+         * Accessor for the index in the list of jobs
          */
         int getIndex()
         {

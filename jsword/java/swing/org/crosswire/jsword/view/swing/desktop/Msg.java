@@ -1,14 +1,9 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import org.crosswire.common.util.MsgBase;
 
 /**
- * For opening a help file.
+ * Compile safe Msg resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,20 +26,23 @@ import javax.swing.KeyStroke;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class HelpContentsAction extends DesktopAbstractAction
+public class Msg extends MsgBase
 {
-    public HelpContentsAction(Desktop tools)
+    static final Msg NO_HELP = new Msg("Currently on-line help is only available via the J-Sword website:\nhttp://www.crosswire.org/jsword");
+
+    /**
+     * Initialise any resource bundles
+     */
+    static
     {
-        super(tools,
-              "Contents ...",
-              "toolbarButtonGraphics/general/Help16.gif",
-              "toolbarButtonGraphics/general/Help24.gif",
-              "Help", "Help file contents.",
-              'C', KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0, false));
+        init(Msg.class.getName());
     }
 
-    public void actionPerformed(ActionEvent ev)
+    /**
+     * Passthrough ctor
+     */
+    private Msg(String name)
     {
-        JOptionPane.showMessageDialog(getDesktop().getJFrame(), Msg.NO_HELP);
+        super(name);
     }
 }
