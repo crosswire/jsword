@@ -99,6 +99,7 @@ public class LuceneIndex implements Index, Activatable
 
         Job job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
+        IndexStatus finalStatus = IndexStatus.UNDONE;
         try
         {
             synchronized (CREATING)
@@ -106,7 +107,7 @@ public class LuceneIndex implements Index, Activatable
                 book.getBookMetaData().setIndexStatus(IndexStatus.CREATING);
                 File finalPath = NetUtil.getAsFile(storage);
                 String finalCanonicalPath = finalPath.getCanonicalPath();
-                File tempPath = new File(finalCanonicalPath + ".building"); //$NON-NLS-1$
+                File tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
                 
                 // An index is created by opening an IndexWriter with the
                 // create argument set to true.
@@ -126,8 +127,11 @@ public class LuceneIndex implements Index, Activatable
                     tempPath.renameTo(finalPath);
 
                     searcher = new IndexSearcher(finalPath.getCanonicalPath());
+                }
 
-                    book.getBookMetaData().setIndexStatus(IndexStatus.DONE);
+                if (finalPath.exists())
+                {
+                    finalStatus = IndexStatus.DONE;
                 }
             }
         }
@@ -138,6 +142,7 @@ public class LuceneIndex implements Index, Activatable
         }
         finally
         {
+            book.getBookMetaData().setIndexStatus(finalStatus);
             job.done();
         }
     }
