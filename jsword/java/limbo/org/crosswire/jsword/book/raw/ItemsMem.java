@@ -149,10 +149,7 @@ public abstract class ItemsMem extends Mem implements Items
 
             return count++;
         }
-        else
-        {
-            return -1;
-        }
+        return -1;
     }
 
     /* (non-Javadoc)

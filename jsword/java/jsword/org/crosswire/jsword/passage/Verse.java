@@ -167,14 +167,11 @@ public final class Verse implements VerseBase, Comparable
                     + Verse.VERSE_PREF_DELIM1
                     + verse;
             }
-            else
-            {
-                return BibleInfo.getShortBookName(book)
-                    + Verse.VERSE_PREF_DELIM1
-                    + chapter
-                    + Verse.VERSE_PREF_DELIM2
-                    + verse;
-            }
+            return BibleInfo.getShortBookName(book)
+                + Verse.VERSE_PREF_DELIM1
+                + chapter
+                + Verse.VERSE_PREF_DELIM2
+                + verse;
         }
         catch (Exception ex)
         {
@@ -214,26 +211,24 @@ public final class Verse implements VerseBase, Comparable
 
                 return String.valueOf(verse);
             }
-            else
+
+            if (base.book != book)
             {
-                if (base.book != book)
-                {
-                    return BibleInfo.getShortBookName(book)
-                        + Verse.VERSE_PREF_DELIM1
-                        + chapter
-                        + Verse.VERSE_PREF_DELIM2
-                        + verse;
-                }
-
-                if (base.chapter != chapter)
-                {
-                    return chapter
-                        + Verse.VERSE_PREF_DELIM2
-                        + verse;
-                }
-
-                return String.valueOf(verse);
+                return BibleInfo.getShortBookName(book)
+                    + Verse.VERSE_PREF_DELIM1
+                    + chapter
+                    + Verse.VERSE_PREF_DELIM2
+                    + verse;
             }
+
+            if (base.chapter != chapter)
+            {
+                return chapter
+                    + Verse.VERSE_PREF_DELIM2
+                    + verse;
+            }
+
+            return String.valueOf(verse);
         }
         catch (Exception ex)
         {
@@ -584,10 +579,7 @@ public final class Verse implements VerseBase, Comparable
         {
             return b;
         }
-        else
-        {
-            return a;
-        }
+        return a;
     }
 
     /**
@@ -603,10 +595,7 @@ public final class Verse implements VerseBase, Comparable
         {
             return b;
         }
-        else
-        {
-            return a;
-        }
+        return a;
     }
 
     /**

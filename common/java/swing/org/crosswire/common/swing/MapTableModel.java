@@ -166,10 +166,7 @@ public class MapTableModel extends AbstractTableModel
         {
             return 0;
         }
-        else
-        {
-            return 2;
-        }
+        return 2;
     }
 
     /**
@@ -182,10 +179,7 @@ public class MapTableModel extends AbstractTableModel
         {
             return 0;
         }
-        else
-        {
-            return list.size();
-        }
+        return list.size();
     }
 
     /**
@@ -206,10 +200,7 @@ public class MapTableModel extends AbstractTableModel
         {
             return entry.getKey();
         }
-        else
-        {
-            return entry.getValue();
-        }
+        return entry.getValue();
     }
 
     /**

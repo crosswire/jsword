@@ -78,10 +78,7 @@ public class ReporterEvent extends EventObject
         {
             return full;
         }
-        else
-        {
-            return full.substring(lastDot + 1);
-        }
+        return full.substring(lastDot + 1);
     }
 
     /**

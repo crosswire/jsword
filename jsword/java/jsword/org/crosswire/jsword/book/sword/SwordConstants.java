@@ -105,11 +105,8 @@ public class SwordConstants
             // This is an NT verse
             return SwordConstants.TESTAMENT_NEW;
         }
-        else
-        {
-            // This is an OT verse
-            return SwordConstants.TESTAMENT_OLD;
-        }
+        // This is an OT verse
+        return SwordConstants.TESTAMENT_OLD;
     }
 
     /**

@@ -452,10 +452,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
             {
                 return path + name;
             }
-            else
-            {
-                return path + "." + name; //$NON-NLS-1$
-            }
+            return path + "." + name; //$NON-NLS-1$
         }
 
         /**

@@ -247,40 +247,37 @@ public class NetUtil
         {
             return new File(url.getFile());
         }
+        String hashString = (url.toExternalForm().hashCode() + "").replace('-', 'm'); //$NON-NLS-1$
+
+        // get the location of the tempWorkingDir
+        File workingDir = getURLCacheDir();
+        File workingFile = null;
+
+        if (workingDir != null && workingDir.isDirectory())
+        {
+            workingFile = new File(workingDir, hashString);
+        }
         else
         {
-            String hashString = (url.toExternalForm().hashCode() + "").replace('-', 'm'); //$NON-NLS-1$
-
-            // get the location of the tempWorkingDir
-            File workingDir = getURLCacheDir();
-            File workingFile = null;
-
-            if (workingDir != null && workingDir.isDirectory())
-            {
-                workingFile = new File(workingDir, hashString);
-            }
-            else
-            {
-                // If there's no working dir, we just use temp...
-                workingFile = File.createTempFile(hashString, TEMP_SUFFIX);
-            }
-            workingFile.deleteOnExit();
-
-            // copy the contents of the URL to the file
-            OutputStream output = new FileOutputStream(workingFile);
-            InputStream input = url.openStream();
-
-            byte[] data = new byte[512];
-            for (int read = 0; read != -1; read = input.read(data))
-            {
-                output.write(data, 0, read);
-            }
-            input.close();
-            output.close();
-
-            // return the new file in URL form
-            return workingFile;
+            // If there's no working dir, we just use temp...
+            workingFile = File.createTempFile(hashString, TEMP_SUFFIX);
         }
+        workingFile.deleteOnExit();
+
+        // copy the contents of the URL to the file
+        OutputStream output = new FileOutputStream(workingFile);
+        InputStream input = url.openStream();
+
+        byte[] data = new byte[512];
+        for (int read = 0; read != -1; read = input.read(data))
+        {
+            output.write(data, 0, read);
+        }
+        input.close();
+        output.close();
+
+        // return the new file in URL form
+        return workingFile;
     }
 
     /**
@@ -340,21 +337,15 @@ public class NetUtil
                                    orig.getPort(),
                                    orig.getFile() + extra);
                 }
-                else
-                {
-                    return new URL(orig.getProtocol(),
-                                   orig.getHost(),
-                                   orig.getPort(),
-                                   orig.getFile() + File.separator + extra);
-                }
-            }
-            else
-            {
                 return new URL(orig.getProtocol(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile() + SEPARATOR + extra);
+                               orig.getFile() + File.separator + extra);
             }
+            return new URL(orig.getProtocol(),
+                           orig.getHost(),
+                           orig.getPort(),
+                           orig.getFile() + SEPARATOR + extra);
         }
         catch (MalformedURLException ex)
         {
@@ -400,12 +391,9 @@ public class NetUtil
         {
             return new FileOutputStream(url.getFile(), append);
         }
-        else
-        {
-            URLConnection cnx = url.openConnection();
-            cnx.setDoOutput(true);
-            return cnx.getOutputStream();
-        }
+        URLConnection cnx = url.openConnection();
+        cnx.setDoOutput(true);
+        return cnx.getOutputStream();
     }
 
     /**

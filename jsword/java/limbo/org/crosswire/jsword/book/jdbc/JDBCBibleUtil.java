@@ -108,10 +108,7 @@ public class JDBCBibleUtil
                 {
                     break;
                 }
-                else
-                {
-                    throw new IllegalArgumentException(Msg.DELIM_UNMATCHED.toString());
-                }
+                throw new IllegalArgumentException(Msg.DELIM_UNMATCHED.toString());
             }
 
             if (next_end == -1)

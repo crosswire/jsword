@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.RobustList;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -553,12 +552,12 @@ public class Config
     /**
      * The array that stores the keys
      */
-    protected RobustList keys = new RobustList();
+    protected List keys = new ArrayList();
 
     /**
      * The array that stores the models
      */
-    protected RobustList models = new RobustList();
+    protected List models = new ArrayList();
 
     /**
      * The set of local values

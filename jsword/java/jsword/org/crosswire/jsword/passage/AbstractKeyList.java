@@ -186,11 +186,8 @@ public abstract class AbstractKeyList implements Key
                 // we are both empty, and rank the same
                 return 0;
             }
-            else
-            {
-                // i am empty, he is not so we are greater
-                return 1;
-            }
+            // i am empty, he is not so we are greater
+            return 1;
         }
 
         if (thatfirst == null)

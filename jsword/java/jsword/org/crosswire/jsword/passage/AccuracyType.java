@@ -385,10 +385,7 @@ public abstract class AccuracyType implements Serializable
         {
             return BibleInfo.chaptersInBook(lbook);
         }
-        else
-        {
-            return parseInt(chapter);
-        }
+        return parseInt(chapter);
     }
 
     /**
@@ -405,10 +402,7 @@ public abstract class AccuracyType implements Serializable
         {
             return BibleInfo.versesInChapter(lbook, lchapter);
         }
-        else
-        {
-            return parseInt(verse);
-        }
+        return parseInt(verse);
     }
 
     /**

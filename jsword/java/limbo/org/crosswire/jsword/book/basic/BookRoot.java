@@ -81,10 +81,7 @@ public class BookRoot
         {
             return null;
         }
-        else
-        {
-            return NetUtil.lengthenURL(root, subdir);
-        }
+        return NetUtil.lengthenURL(root, subdir);
     }
 
     /**

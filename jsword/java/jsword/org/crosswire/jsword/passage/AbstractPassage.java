@@ -81,11 +81,8 @@ public abstract class AbstractPassage implements Passage
             {
                 return 0;
             }
-            else
-            {
-                // that is empty so he should come before me
-                return -1;
-            }
+            // that is empty so he should come before me
+            return -1;
         }
 
         if (countVerses() == 0)
@@ -476,10 +473,7 @@ public abstract class AbstractPassage implements Passage
         {
             return remainder;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     /* (non-Javadoc)
@@ -519,10 +513,7 @@ public abstract class AbstractPassage implements Passage
         {
             return remainder;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     /* (non-Javadoc)

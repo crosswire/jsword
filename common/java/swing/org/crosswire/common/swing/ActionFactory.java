@@ -114,21 +114,18 @@ public class ActionFactory implements ActionListener
         {
             return action;
         }
-        else
-        {
-            log.info("Missing key: '" + key + "'. Known keys are: " + StringUtil.join(actions.keySet().toArray(), ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            assert false;
+        log.info("Missing key: '" + key + "'. Known keys are: " + StringUtil.join(actions.keySet().toArray(), ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assert false;
 
-            CWAction getOutOfJailFreeAction = new CWAction();
+        CWAction getOutOfJailFreeAction = new CWAction();
 
-            getOutOfJailFreeAction.putValue(Action.NAME, key);
-            getOutOfJailFreeAction.putValue(Action.SHORT_DESCRIPTION, MISSING_RESOURCE);
-            getOutOfJailFreeAction.putValue(Action.LONG_DESCRIPTION, MISSING_RESOURCE);
-            getOutOfJailFreeAction.setEnabled(true);
-            getOutOfJailFreeAction.addActionListener(this);
+        getOutOfJailFreeAction.putValue(Action.NAME, key);
+        getOutOfJailFreeAction.putValue(Action.SHORT_DESCRIPTION, MISSING_RESOURCE);
+        getOutOfJailFreeAction.putValue(Action.LONG_DESCRIPTION, MISSING_RESOURCE);
+        getOutOfJailFreeAction.setEnabled(true);
+        getOutOfJailFreeAction.addActionListener(this);
 
-            return getOutOfJailFreeAction;
-        }
+        return getOutOfJailFreeAction;
     }
 
     /**

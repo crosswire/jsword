@@ -428,17 +428,14 @@ public class OSISUtil
                 throw new BookException(Msg.OSIS_BADID, ex, new Object[] { osisid });
             }
         }
-        else
+        // So we just walk up the tree trying to find a verse
+        Parent parent = ele.getParent();
+        if (parent != null && parent instanceof Element)
         {
-            // So we just walk up the tree trying to find a verse
-            Parent parent = ele.getParent();
-            if (parent != null && parent instanceof Element)
-            {
-                return getVerse((Element) parent);
-            }
-
-            throw new BookException(Msg.MISSING_VERSE);
+            return getVerse((Element) parent);
         }
+
+        throw new BookException(Msg.MISSING_VERSE);
     }
 
     /**

@@ -1,7 +1,5 @@
-
 package org.crosswire.common.util;
 
-//import org.crosswire.common.util.event.*;
 import junit.framework.TestCase;
 
 /**

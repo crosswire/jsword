@@ -138,10 +138,7 @@ public class LucidException extends Exception
             LucidException lex = (LucidException) cause;
             return getMessage() + Msg.REASON + lex.getDetailedMessage();
         }
-        else
-        {
-            return getMessage() + Msg.REASON + cause.getMessage();
-        }
+        return getMessage() + Msg.REASON + cause.getMessage();
     }
 
     /**

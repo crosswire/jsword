@@ -289,10 +289,7 @@ public class PassageTally extends AbstractPassage
         {
             return new VerseIterator();
         }
-        else
-        {
-            return new OrderedVerseIterator(board);
-        }
+        return new OrderedVerseIterator(board);
     }
 
     /**
@@ -305,10 +302,7 @@ public class PassageTally extends AbstractPassage
         {
             return new VerseRangeIterator(iterator(), restrict);
         }
-        else
-        {
-            return new OrderedVerseRangeIterator(iterator(), board);
-        }
+        return new OrderedVerseRangeIterator(iterator(), board);
     }
 
     /**
@@ -594,10 +588,7 @@ public class PassageTally extends AbstractPassage
         {
             return remainder;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     /**

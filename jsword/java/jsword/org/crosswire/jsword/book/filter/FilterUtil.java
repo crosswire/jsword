@@ -46,11 +46,8 @@ public class FilterUtil
         {
             return data;
         }
-        else
-        {
-            String chopped = data.substring(0, MAX_OUTPUT_LEN);
-            return chopped + Msg.TRUNCATED;
-        }
+        String chopped = data.substring(0, MAX_OUTPUT_LEN);
+        return chopped + Msg.TRUNCATED;
     }
 
     /**
