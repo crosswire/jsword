@@ -3,12 +3,12 @@ package org.crosswire.jsword.book.basic;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.crosswire.common.util.EventListenerList;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Books;
@@ -17,7 +17,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.common.util.EventListenerList;
 
 /**
  * The Verifier check 2 versions for identical text.
@@ -131,8 +130,8 @@ public class Verifier
             try
             {
                 // Read the document from the first bible
-                BibleData text1 = bible1.getData(ref2);
-                BibleData text2 = bible2.getData(ref2);
+                //BibleData text1 = bible1.getData(ref2);
+                //BibleData text2 = bible2.getData(ref2);
 
                 // @todo: Create some sort of BibleData compare system
                 // Check

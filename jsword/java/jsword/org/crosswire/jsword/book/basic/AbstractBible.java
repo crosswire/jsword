@@ -1,13 +1,12 @@
 
 package org.crosswire.jsword.book.basic;
 
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.passage.Passage;
 
 /**
  * An AbstractBible implements a few of the more generic methods of Bible.

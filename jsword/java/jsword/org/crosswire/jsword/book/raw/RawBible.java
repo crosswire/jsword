@@ -656,29 +656,17 @@ public class RawBible extends VersewiseBible
      */
     protected void append(BibleData doc, VerseRange range) throws BookException
     {
-        try
+        SectionData section = doc.createSectionData(range.getName(), "AV");
+
+        Verse[] array = range.toVerseArray();
+        for (int i=0; i<array.length; i++)
         {
-            Verse start = range.getStart();
-            Verse end = range.getEnd();
-            int start_id = Books.verseOrdinal(start.getRefArray());
-            int end_id = Books.verseOrdinal(end.getRefArray());
+            Verse verse = array[i];
+            String text = getText(new VerseRange(verse));
+            boolean para = para_insts.getPara(verse);
 
-            SectionData section = doc.createSectionData(range.getName(), "AV");
-
-            Verse[] array = range.toVerseArray();
-            for (int i=0; i<array.length; i++)
-            {
-                Verse verse = array[i];
-                String text = getText(new VerseRange(verse));
-                boolean para = para_insts.getPara(verse);
-
-                RefData ref = section.createRefData(verse, para);
-                ref.setPlainText(text);
-            }
-        }
-        catch (NoSuchVerseException ex)
-        {
-            throw new BookException("raw_bible_append", ex);
+            RefData ref = section.createRefData(verse, para);
+            ref.setPlainText(text);
         }
     }
 

@@ -112,7 +112,7 @@ public class JDBCBible extends AbstractBible
             ref_stmt = concord.prepareStatement(ref_query);
 
             String verse_query = prop.getProperty("VerseQuery");
-            verse_stmt = text.prepareStatement(ref_query);
+            verse_stmt = text.prepareStatement(verse_query);
 
             String start_query = prop.getProperty("StartQuery");
             start_stmt = concord.prepareStatement(start_query);
@@ -341,13 +341,13 @@ public class JDBCBible extends AbstractBible
     private PreparedStatement start_stmt;
 
     /** The statment for this is part of the enumeration */
-    private String words_query;
+    protected String words_query;
 
     /** The conenction to the text data source */
     private Connection text;
 
     /** The conenction to the concordance */
-    private Connection concord;
+    protected Connection concord;
 
     /** The properties file */
     private Properties prop;

@@ -70,8 +70,6 @@ public class JDBCBibleDriver extends AbstractBibleDriver
      */
     public String[] getBibleNames()
     {
-        URL url = null;
-
         try
         {
             if (dir.getProtocol().equals("file"))

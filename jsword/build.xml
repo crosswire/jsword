@@ -120,7 +120,6 @@
 
   <!--=======================================================================-->
   <target name="release.final">
-    <buildnumber/>
     <antcall target="release.version">
       <param name="version" value="${product.version}"/>
     </antcall>

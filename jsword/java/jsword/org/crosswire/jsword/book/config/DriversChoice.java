@@ -70,9 +70,6 @@ public class DriversChoice extends HashtableChoice
      */
     public void setHashtable(Hashtable value)
     {
-        Class[] drivers = new Class[value.size()];
-        int i = 0;
-
         for (Enumeration en=value.elements(); en.hasMoreElements(); )
         {
             try
