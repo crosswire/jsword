@@ -28,10 +28,10 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg LUCENE_INIT = new Msg("Failed to initialise Lucene search engine."); //$NON-NLS-1$
-    static final Msg SEARCH_FAILED = new Msg("Search failed."); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("Indexing verse: "); //$NON-NLS-1$
-    static final Msg OPTIMIZING = new Msg("Optimizing"); //$NON-NLS-1$
+    static final Msg LUCENE_INIT = new Msg("LUCENE_INIT"); //$NON-NLS-1$
+    static final Msg SEARCH_FAILED = new Msg("SEARCH_FAILED"); //$NON-NLS-1$
+    static final Msg INDEXING = new Msg("INDEXING"); //$NON-NLS-1$
+    static final Msg OPTIMIZING = new Msg("OPTIMIZING"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

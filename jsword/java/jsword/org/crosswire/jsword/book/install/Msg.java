@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg INIT = new Msg("Failed to load installer classes"); //$NON-NLS-1$
+    static final Msg UNUSED = new Msg("UNUSED"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

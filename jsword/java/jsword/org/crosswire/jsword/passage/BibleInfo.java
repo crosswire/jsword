@@ -38,13 +38,6 @@ import org.crosswire.common.util.CWClassLoader;
  */
 public class BibleInfo
 {
-    private static final String FULL_KEY = "BibleInfo.Full."; //$NON-NLS-1$
-    private static final String SHORT_KEY = "BibleInfo.Short."; //$NON-NLS-1$
-    private static final String ALT_KEY = "BibleInfo.Alt."; //$NON-NLS-1$
-    private static final String SECTION_KEY = "BibleInfo.Sections."; //$NON-NLS-1$
-    private static final String OSIS_KEY = "BibleInfo.OSIS."; //$NON-NLS-1$
-    private static final String OSIS_PROPERTIES = "OSISNames"; //$NON-NLS-1$
-
     /**
      * Ensure that we can not be instantiated
      */
@@ -135,19 +128,19 @@ public class BibleInfo
      * different sections of the app using a different format. I expect this to
      * be a good assumption, and it saves passing a Book class around everywhere.
      * BibleInfo.MIXED is not allowed
-     * @param book_case The new case to use for reporting book names
+     * @param bookCase The new case to use for reporting book names
      * @exception IllegalArgumentException If the case is not between 0 and 2
      * @see Passage
      * @see #getCase()
      */
-    public static final void setCase(int book_case)
+    public static final void setCase(int bookCase)
     {
-        if (book_case < 0 || book_case > 2)
+        if (bookCase < 0 || bookCase > 2)
         {
-            throw new IllegalArgumentException(Msg.ERROR_CASE.toString(new Integer(book_case)));
+            throw new IllegalArgumentException(Msg.ERROR_CASE.toString(new Integer(bookCase)));
         }
 
-        BibleInfo.book_case = book_case;
+        BibleInfo.book_case = bookCase;
     }
 
     /**
@@ -783,13 +776,41 @@ public class BibleInfo
     public static final int getSection(int book)
     {
         // Ordered by section size for speed
-        if (isLetter(book))       return Section.LETTERS;          // 21
-        if (isHistory(book))      return Section.HISTORY;          // 12
-        if (isMinorProphet(book)) return Section.MINOR_PROPHETS;   // 12
-        if (isGospelOrActs(book)) return Section.GOSPELS_AND_ACTS; // 5
-        if (isPentateuch(book))   return Section.PENTATEUCH;       // 5
-        if (isPoetry(book))       return Section.POETRY;           // 5
-        if (isMajorProphet(book)) return Section.MAJOR_PROPHETS;   // 5
+        if (isLetter(book))
+        {
+            return Section.LETTERS;
+        }
+
+        if (isHistory(book))
+        {
+            return Section.HISTORY;
+        }
+
+        if (isMinorProphet(book))
+        {
+            return Section.MINOR_PROPHETS;
+        }
+
+        if (isGospelOrActs(book))
+        {
+            return Section.GOSPELS_AND_ACTS;
+        }
+
+        if (isPentateuch(book))
+        {
+            return Section.PENTATEUCH;
+        }
+
+        if (isPoetry(book))
+        {
+            return Section.POETRY;
+        }
+
+        if (isMajorProphet(book))
+        {
+            return Section.MAJOR_PROPHETS;
+        }
+
         return Section.REVELATION;
     }
 
@@ -853,6 +874,13 @@ public class BibleInfo
 
         return false;
     }
+
+    private static final String FULL_KEY = "BibleInfo.Full."; //$NON-NLS-1$
+    private static final String SHORT_KEY = "BibleInfo.Short."; //$NON-NLS-1$
+    private static final String ALT_KEY = "BibleInfo.Alt."; //$NON-NLS-1$
+    private static final String SECTION_KEY = "BibleInfo.Sections."; //$NON-NLS-1$
+    private static final String OSIS_KEY = "BibleInfo.OSIS."; //$NON-NLS-1$
+    private static final String OSIS_PROPERTIES = "OSISNames"; //$NON-NLS-1$
 
     /**
      * How the book names are reported

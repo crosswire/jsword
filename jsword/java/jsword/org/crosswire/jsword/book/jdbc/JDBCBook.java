@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -248,7 +249,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#getStartsWith(java.lang.String)
      */
-    public Iterator getStartsWith(String word) throws BookException
+    public Collection getStartsWith(String word) throws BookException
     {
         try
         {
@@ -264,7 +265,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
 
             rs.close();
 
-            return output.iterator();
+            return output;
         }
         catch (SQLException ex)
         {

@@ -1,8 +1,6 @@
-
 package org.crosswire.common.progress;
 
 import java.util.EventObject;
-
 
 /**
  * A WorkEvent happens whenever a MutableBook makes some progress

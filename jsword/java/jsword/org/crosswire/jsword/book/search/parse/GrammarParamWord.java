@@ -1,9 +1,8 @@
 package org.crosswire.jsword.book.search.parse;
 
-import java.util.Iterator;
+import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.passage.Passage;
 
 /**
@@ -56,8 +55,9 @@ public class GrammarParamWord implements ParamWord
 
         ParamWord param = (ParamWord) engine.iterator().next();
         String root = Grammar.getRoot(param.getWord(engine));
-        Iterator it = engine.getIndex().getStartsWith(root);
-        String[] words = BookUtil.toStringArray(it);
+
+        Collection col = engine.getIndex().getStartsWith(root);
+        String[] words = (String[]) col.toArray(new String[col.size()]);
 
         return engine.getPassage(words);
     }

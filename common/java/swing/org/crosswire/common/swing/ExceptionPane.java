@@ -81,26 +81,26 @@ public class ExceptionPane extends JPanel
      */
     private void initialise()
     {
-        String exmsg = "<html><font size=\"-1\">"+Msg.ERROR_OCCURED+"</font> "+ExceptionPane.getHTMLDescription(ex); //$NON-NLS-1$ //$NON-NLS-2$
-        
+        String exmsg = "<html><font size=\"-1\">" + Msg.ERROR_OCCURED + "</font> " + ExceptionPane.getHTMLDescription(ex); //$NON-NLS-1$ //$NON-NLS-2$
+
         // The upper pane
         message.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         message.setText(exmsg);
         message.setIcon(GuiUtil.getIcon("toolbarButtonGraphics/general/Stop24.gif")); //$NON-NLS-1$
         message.setIconTextGap(20);
-        
+
         banner.setLayout(new BorderLayout());
         banner.add(message, BorderLayout.CENTER);
         list.setVisibleRowCount(6);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setFont(courier);
-        
+
         setDisplayedException(ex);
-        
+
         // The buttons at the bottom
         ok.setText(Msg.OK.toString());
         ok.setMnemonic(Msg.OK.toString().charAt(0));
-        
+
         detail.addChangeListener(new ChangeListener()
         {
             public void stateChanged(ChangeEvent ev)
@@ -109,18 +109,18 @@ public class ExceptionPane extends JPanel
             }
         });
         detail.setText(Msg.DETAILS.toString());
-        
+
         spacer.setLayout(new FlowLayout());
         spacer.add(ok);
-        
+
         buttons.setLayout(new BorderLayout());
         buttons.add(spacer, BorderLayout.CENTER);
         buttons.add(detail, BorderLayout.WEST);
-        
+
         upper.setLayout(new BorderLayout());
         upper.add(banner, BorderLayout.NORTH);
         upper.add(buttons, BorderLayout.CENTER);
-        
+
         // The lower pane
         label.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         label.setFont(courier);
@@ -128,7 +128,7 @@ public class ExceptionPane extends JPanel
         text.setEditable(false);
         text.setFont(courier);
         text_scroll.setColumnHeaderView(label);
-        
+
         Throwable[] exs = ExceptionUtils.getThrowables(ex);
         traces.setModel(new DefaultComboBoxModel(exs));
         traces.addActionListener(new ActionListener()
@@ -139,14 +139,14 @@ public class ExceptionPane extends JPanel
                 setDisplayedException(th);
             }
         });
-        
+
         heading.setLayout(new BorderLayout());
         heading.add(traces, BorderLayout.CENTER);
-        
+
         lower.setLayout(new BorderLayout());
         lower.add(split, BorderLayout.CENTER);
         lower.add(heading, BorderLayout.NORTH);
-        
+
         split.setOrientation(JSplitPane.VERTICAL_SPLIT);
         split.setContinuousLayout(true);
         split.setTopComponent(list_scroll);
@@ -171,7 +171,7 @@ public class ExceptionPane extends JPanel
         {
             ExceptionPane.this.remove(lower);
         }
-                
+
         GuiUtil.getDialog(ExceptionPane.this).pack();
     }
 
@@ -229,7 +229,7 @@ public class ExceptionPane extends JPanel
         final ExceptionPane pane = new ExceptionPane(ex);
 
         // Setting for the whole dialog
-        final JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(parent));
+        final JDialog dialog = new JDialog(GuiUtil.getFrame(parent));
         dialog.getRootPane().setDefaultButton(pane.ok);
         dialog.getRootPane().setLayout(new BorderLayout());
         dialog.getRootPane().setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, pane.upper.getBackground()));
@@ -249,7 +249,7 @@ public class ExceptionPane extends JPanel
         // is to the front, we can't interract with it until the modal dialog
         // has been closed.
         dialog.setModal(true);
-    
+
         GuiUtil.centerWindow(dialog);
         dialog.pack();
         dialog.setVisible(true);
@@ -315,7 +315,7 @@ public class ExceptionPane extends JPanel
     public static String getHTMLDescription(Throwable ex)
     {
         StringBuffer retcode = new StringBuffer();
-    
+
         // The message in the exception
         String msg = ex.getMessage();
         if (msg == null || msg.equals("")) //$NON-NLS-1$
@@ -324,7 +324,7 @@ public class ExceptionPane extends JPanel
         }
         String orig = msg;
         msg = StringUtils.replace(orig, "\n", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
-    
+
         // The name of the exception
         /*
         String classname = ex.getClass().getName();
@@ -344,18 +344,18 @@ public class ExceptionPane extends JPanel
         */
         retcode.append("<br>"); //$NON-NLS-1$
         retcode.append(msg);
-    
+
         // If this is a LucidException with a nested Exception
         if (ex instanceof LucidException)
         {
             Throwable nex = ((LucidException) ex).getCause();
             if (nex != null)
             {
-                retcode.append("<p><br><font size=\"-1\">"+Msg.CAUSED_BY+"</font>"); //$NON-NLS-1$ //$NON-NLS-2$
+                retcode.append("<p><br><font size=\"-1\">" + Msg.CAUSED_BY + "</font>"); //$NON-NLS-1$ //$NON-NLS-2$
                 retcode.append(getHTMLDescription(nex));
             }
         }
-    
+
         return retcode.toString();
     }
 
@@ -364,7 +364,7 @@ public class ExceptionPane extends JPanel
      */
     static
     {
-        setHelpDeskListener(true);        
+        setHelpDeskListener(true);
     }
 
     /**
@@ -414,8 +414,8 @@ public class ExceptionPane extends JPanel
             String orig = name;
 
             // Find a file
-            name = File.separator + StringUtils.replace(orig, ".", ""+File.separatorChar) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
-            for (int i=0; i<sources.length; i++)
+            name = File.separator + StringUtils.replace(orig, ".", "" + File.separatorChar) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
+            for (int i = 0; i < sources.length; i++)
             {
                 File file = new File(sources[i], name);
                 if (file.isFile() && file.canRead())
@@ -441,8 +441,14 @@ public class ExceptionPane extends JPanel
                             data.append(line).append("\n"); //$NON-NLS-1$
 
                             int current_line = in.getLineNumber();
-                            if (current_line == line_num-1) selection_start = data.length();
-                            if (current_line == line_num) selection_end = data.length()-1;
+                            if (current_line == line_num - 1)
+                            {
+                                selection_start = data.length();
+                            }
+                            if (current_line == line_num)
+                            {
+                                selection_end = data.length() - 1;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -462,7 +468,7 @@ public class ExceptionPane extends JPanel
 
             // If we can't find a matching file
             String error = Msg.SOURCE_NOT_FOUND.toString(new Object[] { st.getClassName(level), new Integer(line_num) });
-            for (int i=0; i<sources.length; i++)
+            for (int i = 0; i < sources.length; i++)
             {
                 error += Msg.SOURCE_ATTEMPT.toString(new Object[] { sources[i].getAbsolutePath() + name });
             }

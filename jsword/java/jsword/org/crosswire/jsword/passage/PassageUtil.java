@@ -84,26 +84,6 @@ public class PassageUtil
     }
 
     /**
-     * Is the given case a valid one?
-     * @param test The case to be tested for validity
-     * @return True if the number is OK, False otherwise
-     */
-    public static final boolean isValidCase(int test)
-    {
-        switch (test)
-        {
-        case PassageConstants.CASE_LOWER:
-        case PassageConstants.CASE_MIXED:
-        case PassageConstants.CASE_SENTANCE:
-        case PassageConstants.CASE_UPPER:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
      * Is the given accuracy a valid one?
      * @param test The accuracy to be tested for validity
      * @return True if the number is OK, False otherwise
@@ -132,7 +112,7 @@ public class PassageUtil
      */
     public static final void setPersistentNaming(boolean persistent_naming)
     {
-        PassageUtil.persistent_naming = persistent_naming;
+        PassageUtil.persistentNaming = persistent_naming;
     }
 
     /**
@@ -142,7 +122,7 @@ public class PassageUtil
      */
     public static final boolean isPersistentNaming()
     {
-        return persistent_naming;
+        return persistentNaming;
     }
 
     /**
@@ -155,141 +135,51 @@ public class PassageUtil
     }
 
     /**
-     * What case is the specified word?. A blank word is CASE_LOWER, a
-     * word with a single upper case letter is CASE_SENTANCE and not
-     * CASE_UPPER - Simply because this is more likely, however TO BE
-     * SURE I WOULD NEED TO THE CONTEXT. I could not tell otherwise.
-     * <p>The issue here is that getCase("FreD") is undefined. Telling
-     * if this is CASE_SENTANCE (Tubal-Cain) or MIXED (really the case)
-     * is complex and would slow things down for a case that I don't
-     * believe happens with Bible text.</p>
-     * @param word The word to be tested
-     * @return CASE_LOWER, CASE_SENTANCE, CASE_UPPER or CASE_MIXED
-     * @exception IllegalArgumentException is the word is null
+     * Not all keys represent passages, but we ought to be able to get something
+     * close to a passage from anything that does passage like work.
      */
-    public static int getCase(String word)
+    public static Passage getPassage(Key key)
     {
-        if (word == null)
+        if (key instanceof Passage)
         {
-            throw new NullPointerException();
+            return (Passage) key;
         }
 
-        // Blank word
-        if (word.equals("")) //$NON-NLS-1$
+        try
         {
-            return PassageConstants.CASE_LOWER;
+            Passage ref = PassageFactory.createPassage(key.getName());
+            log.warn("Created passage from non Passage: "+key.getName()+" = "+ref.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            return ref;
         }
-
-        // Lower case?
-        if (word.equals(word.toLowerCase()))
+        catch (NoSuchVerseException ex)
         {
-            return PassageConstants.CASE_LOWER;
-        }
-
-        // Upper case?
-        // A string length of 1 is no good ('I' or 'A' is sentance case)
-        if (word.equals(word.toUpperCase()) && word.length() != 1)
-        {
-            return PassageConstants.CASE_UPPER;
-        }
-
-        // If initial is lower then it must be mixed
-        if (Character.isLowerCase(word.charAt(0)))
-        {
-            return PassageConstants.CASE_MIXED;
-        }
-
-        // Hack the only real caseMixed is LORD's
-        // And we don't want to bother sorting out Tubal-Cain
-        // as CASE_SENTANCE, so for now ...
-        if (word.equals("LORD's")) //$NON-NLS-1$
-        {
-            return PassageConstants.CASE_MIXED;
-        }
-
-        // So ...
-        return PassageConstants.CASE_SENTANCE;
-    }
-
-    /**
-     * Set the case of the specified word. This section needs to have more
-     * thought from a localization point of view.
-     * @param word The word to be manipulated
-     * @param new_case LOWER, SENTANCE, UPPER or MIXED
-     * @return The altered word
-     * @exception IllegalArgumentException If the case is not between 0 and 3
-     * Or for MIXED if the word is not LORD's
-     */
-    public static String setCase(String word, int new_case)
-    {
-        int index = 0;
-
-        switch (new_case)
-        {
-        case PassageConstants.CASE_LOWER:
-            return word.toLowerCase();
-
-        case PassageConstants.CASE_UPPER:
-            return word.toUpperCase();
-
-        case PassageConstants.CASE_SENTANCE:
-            index = word.indexOf('-');
-            if (index == -1)
-            {
-                return toSentenceCase(word);
-            }
-
-            // So there is a "-", however first some exceptions
-            if (word.equalsIgnoreCase("maher-shalal-hash-baz")) //$NON-NLS-1$
-            {
-                return "Maher-Shalal-Hash-Baz"; //$NON-NLS-1$
-            }
-
-            if (word.equalsIgnoreCase("no-one")) //$NON-NLS-1$
-            {
-                return "No-one"; //$NON-NLS-1$
-            }
-
-            if (word.substring(0, 4).equalsIgnoreCase("god-")) //$NON-NLS-1$
-            {
-                return toSentenceCase(word);
-            }
-
-            // So cut by the -
-            return toSentenceCase(word.substring(0, index))
-                   + "-" + toSentenceCase(word.substring(index+1)); //$NON-NLS-1$
-
-        case PassageConstants.CASE_MIXED:
-            if (word.equalsIgnoreCase("lord's")) //$NON-NLS-1$
-            {
-                return "LORD's"; //$NON-NLS-1$
-            }
-            // This should not happen
-            throw new IllegalArgumentException(Msg.ERROR_MIXED.toString());
-
-        default:
-            throw new IllegalArgumentException(Msg.ERROR_BADCASE.toString());
+            log.warn("Key can't be a passage: "+key.getName()); //$NON-NLS-1$
+            return PassageFactory.createPassage();
         }
     }
 
     /**
-     * Change to sentance case - ie first character in caps, the rest in lower.
-     * @param word The word to be manipulated
-     * @return The altered word
+     * Not all keys represent verses, but we ought to be able to get something
+     * close to a verse from anything that does verse like work.
      */
-    public static String toSentenceCase(String word)
+    public static Verse getVerse(Key key)
     {
-        if (word == null)
+        if (key instanceof Verse)
         {
-            throw new NullPointerException();
+            return (Verse) key;
         }
 
-        if (word.equals("")) //$NON-NLS-1$
+        try
         {
-            return ""; //$NON-NLS-1$
+            Verse verse = new Verse(key.getName());
+            log.warn("Created verse from non Verse: "+key.getName()+" = "+verse.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            return verse;
         }
-
-        return "" + Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(); //$NON-NLS-1$
+        catch (NoSuchVerseException ex)
+        {
+            log.warn("Key can't be a verse: "+key.getName()); //$NON-NLS-1$
+            return new Verse();
+        }
     }
 
     /**
@@ -594,57 +484,9 @@ public class PassageUtil
     }
 
     /**
-     * Not all keys represent passages, but we ought to be able to get something
-     * close to a passage from anything that does passage like work.
-     */
-    public static Passage getPassage(Key key)
-    {
-        if (key instanceof Passage)
-        {
-            return (Passage) key;
-        }
-
-        try
-        {
-            Passage ref = PassageFactory.createPassage(key.getName());
-            log.warn("Created passage from non Passage: "+key.getName()+" = "+ref.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return ref;
-        }
-        catch (NoSuchVerseException ex)
-        {
-            log.warn("Key can't be a passage: "+key.getName()); //$NON-NLS-1$
-            return PassageFactory.createPassage();
-        }
-    }
-
-    /**
-     * Not all keys represent verses, but we ought to be able to get something
-     * close to a verse from anything that does verse like work.
-     */
-    public static Verse getVerse(Key key)
-    {
-        if (key instanceof Verse)
-        {
-            return (Verse) key;
-        }
-
-        try
-        {
-            Verse verse = new Verse(key.getName());
-            log.warn("Created verse from non Verse: "+key.getName()+" = "+verse.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return verse;
-        }
-        catch (NoSuchVerseException ex)
-        {
-            log.warn("Key can't be a verse: "+key.getName()); //$NON-NLS-1$
-            return new Verse();
-        }
-    }
-
-    /**
      * Do we store the original string?
      */
-    private static boolean persistent_naming = getDefaultPersistentNaming();
+    private static boolean persistentNaming = getDefaultPersistentNaming();
 
     /**
      * The blur restriction

@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg THML_BADTOKEN = new Msg("Bad XML string line={1}, column={2}: {0}"); //$NON-NLS-1$
+    static final Msg UNUSED = new Msg("UNUSED"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

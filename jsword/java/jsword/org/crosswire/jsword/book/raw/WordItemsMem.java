@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.io.DataInputStream;
@@ -7,8 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.util.Logger;
 
@@ -131,14 +131,14 @@ public class WordItemsMem extends ItemsMem
      * @param word The word to search for
      * @return An array of matches
      */
-    public Iterator getStartsWith(String word)
+    public Collection getStartsWith(String word)
     {
         if (array == null)
         {
             throw new NullPointerException();
         }
 
-        ArrayList vec = new ArrayList();
+        List list = new ArrayList();
         word = word.toLowerCase();
 
         // This bit is  s_l_o_w. We do a one end to the other search through all
@@ -153,12 +153,12 @@ public class WordItemsMem extends ItemsMem
             {
                 if (array[i].startsWith(word))
                 {    
-                    vec.add(array[i]);
+                    list.add(array[i]);
                 }
             }
         }
 
-        return vec.iterator();
+        return list;
     }
 
     /* (non-Javadoc)

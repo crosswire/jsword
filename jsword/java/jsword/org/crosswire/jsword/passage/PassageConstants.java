@@ -2,7 +2,6 @@ package org.crosswire.jsword.passage;
 
 /**
  * Various constants used by the concrete Verse classes.
- * 
  * This class is intended to be implemented to get easy access to the constants.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>

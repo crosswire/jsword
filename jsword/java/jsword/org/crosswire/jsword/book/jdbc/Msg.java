@@ -28,25 +28,25 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
 
-    static final Msg BIBLE_LOAD = new Msg("Failed to load any of the JDBC Drivers. (Tried {0} drivers)"); //$NON-NLS-1$
-    static final Msg BIBLE_CONNECT = new Msg("Failed to connect to ODBC Database."); //$NON-NLS-1$
-    static final Msg BIBLE_DB = new Msg("Database Error."); //$NON-NLS-1$
-    static final Msg BIBLE_VERSE = new Msg("Must be 3 parts to the reference."); //$NON-NLS-1$
-    static final Msg BIBLE_LOST = new Msg("Can't find that verse in the database."); //$NON-NLS-1$
+    static final Msg BIBLE_LOAD = new Msg("BIBLE_LOAD"); //$NON-NLS-1$
+    static final Msg BIBLE_CONNECT = new Msg("BIBLE_CONNECT"); //$NON-NLS-1$
+    static final Msg BIBLE_DB = new Msg("BIBLE_DB"); //$NON-NLS-1$
+    static final Msg BIBLE_VERSE = new Msg("BIBLE_VERSE"); //$NON-NLS-1$
+    static final Msg BIBLE_LOST = new Msg("BIBLE_LOST"); //$NON-NLS-1$
 
-    static final Msg DRIVER_FIND = new Msg("No Bibles found at \"{0}\"."); //$NON-NLS-1$
-    static final Msg DRIVER_CONF = new Msg("Error finding configuration file."); //$NON-NLS-1$
-    static final Msg DRIVER_SAVE = new Msg("Error saving configuration file \"{0}\"."); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("The JDBC Version is read only. Sorry."); //$NON-NLS-1$
+    static final Msg DRIVER_FIND = new Msg("DRIVER_FIND"); //$NON-NLS-1$
+    static final Msg DRIVER_CONF = new Msg("DRIVER_CONF"); //$NON-NLS-1$
+    static final Msg DRIVER_SAVE = new Msg("DRIVER_SAVE"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
 
-    static final Msg SEARCH_FAIL = new Msg("Could not start search engine"); //$NON-NLS-1$
+    static final Msg SEARCH_FAIL = new Msg("SEARCH_FAIL"); //$NON-NLS-1$
 
-    static final Msg DELIM_UNMATCHED = new Msg("Unmatched or nested delimitters"); //$NON-NLS-1$
-    static final Msg DELIM_NESTED = new Msg("Unmatched or nested delimitters"); //$NON-NLS-1$
+    static final Msg DELIM_UNMATCHED = new Msg("DELIM_UNMATCHED"); //$NON-NLS-1$
+    static final Msg DELIM_NESTED = new Msg("DELIM_NESTED"); //$NON-NLS-1$
 
-    static final Msg ERROR = new Msg("Error"); //$NON-NLS-1$
+    static final Msg ERROR = new Msg("ERROR"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -13,8 +14,8 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
@@ -25,7 +26,6 @@ import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.jdom.Element;
 
@@ -305,7 +305,7 @@ public class RawBook extends PassageAbstractBook implements Index
                 int caseIdx = caseIdxs[j];
 
                 punc = puncItems.getItem(puncIdx);
-                word = PassageUtil.setCase(wordItems.getItem(wordIdx), caseIdx);
+                word = SentanceUtil.setCase(wordItems.getItem(wordIdx), caseIdx);
             }
             catch (Exception ex)
             {
@@ -386,7 +386,7 @@ public class RawBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#getStartsWith(java.lang.String)
      */
-    public Iterator getStartsWith(String word)
+    public Collection getStartsWith(String word)
     {
         return ((WordItemsMem) wordItems).getStartsWith(word);
     }
@@ -419,20 +419,20 @@ public class RawBook extends PassageAbstractBook implements Index
                     paraInsts.setPara(false, verse);
     
                     // Chop the sentance into words.
-                    String[] textArray = BookUtil.tokenize(text);
+                    String[] textArray = SentanceUtil.tokenize(text);
     
                     // The word index
-                    String[] wordArray = BookUtil.stripPunctuation(textArray);
+                    String[] wordArray = SentanceUtil.stripPunctuation(textArray);
                     int[] wordIndexes = wordItems.getIndex(wordArray);
                     wordInsts.setIndexes(wordIndexes, verse);
     
                     // The punctuation index
-                    String[] puncArray = BookUtil.stripWords(textArray);
+                    String[] puncArray = SentanceUtil.stripWords(textArray);
                     int[] puncIndexes = puncItems.getIndex(puncArray);
                     puncInsts.setIndexes(puncIndexes, verse);
     
                     // The case index
-                    int[] caseIndexes = BookUtil.getCases(wordArray);
+                    int[] caseIndexes = SentanceUtil.getCases(wordArray);
                     caseInsts.setIndexes(caseIndexes, verse);
                 }
                 else

@@ -64,8 +64,6 @@ public class Msg extends MsgBase
     static final Msg PASSAGE_UNKNOWN = new Msg("PassageUtil.Unknown"); //$NON-NLS-1$
 
     static final Msg ERROR_BLUR = new Msg("PassageUtil.ErrorBlur"); //$NON-NLS-1$
-    static final Msg ERROR_MIXED = new Msg("PassageUtil.ErrorMixed"); //$NON-NLS-1$
-    static final Msg ERROR_BADCASE = new Msg("PassageUtil.ErrorBadCase"); //$NON-NLS-1$
 
     static final Msg ABSTRACT_CAST = new Msg("AbstractPassage.Cast"); //$NON-NLS-1$
     static final Msg ABSTRACT_INDEX = new Msg("AbstractPassage.Index"); //$NON-NLS-1$

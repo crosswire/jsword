@@ -1,4 +1,3 @@
-
 package org.crosswire.common.progress;
 
 import java.util.EventListener;
@@ -27,7 +26,7 @@ import java.util.EventListener;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
-*/
+ */
 public interface WorkListener extends EventListener
 {
     /**

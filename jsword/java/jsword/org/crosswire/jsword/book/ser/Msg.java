@@ -28,10 +28,10 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg READ_ERROR = new Msg("Read Error."); //$NON-NLS-1$
-    static final Msg WRITE_ERROR = new Msg("Write Error."); //$NON-NLS-1$
-    static final Msg SER_INIT = new Msg("Initialisation error."); //$NON-NLS-1$
-    static final Msg NON_FILE_URL = new Msg("The Ser driver can only work from a local disk: {0}"); //$NON-NLS-1$
+    static final Msg READ_ERROR = new Msg("READ_ERROR"); //$NON-NLS-1$
+    static final Msg WRITE_ERROR = new Msg("WRITE_ERROR"); //$NON-NLS-1$
+    static final Msg SER_INIT = new Msg("SER_INIT"); //$NON-NLS-1$
+    static final Msg NON_FILE_URL = new Msg("NON_FILE_URL"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -38,8 +38,8 @@ import org.crosswire.jsword.passage.BibleInfo;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see org.crosswire.jsword.passage.PassageUtil#getCase(String)
- * @see org.crosswire.jsword.passage.PassageUtil#setCase(String, int)
+ * @see org.crosswire.jsword.book.SentanceUtil#getCase(String)
+ * @see org.crosswire.jsword.book.SentanceUtil#setCase(String, int)
  */
 public class CaseInstsMem extends InstsMem
 {

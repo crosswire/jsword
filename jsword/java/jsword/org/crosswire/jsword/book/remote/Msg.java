@@ -28,13 +28,13 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg CONVERT_BMD = new Msg("Invalid MetaData Definition"); //$NON-NLS-1$
-    static final Msg CONVERT_NOVERSE = new Msg("Invalid Verse '{0}'"); //$NON-NLS-1$
-    static final Msg CONVERT_NOCLASS = new Msg("Invalid Class '{0}'"); //$NON-NLS-1$
-    static final Msg REMOTE_FAIL = new Msg("Error contacting remote server."); //$NON-NLS-1$
-    static final Msg REMOTE_NOSUPPORT = new Msg("method not supported. given: {0}"); //$NON-NLS-1$
-    static final Msg PARSE_FAIL = new Msg("Failure parsing remote response."); //$NON-NLS-1$
-    static final Msg REMOTE_MESSAGE = new Msg("Error talking to remote server: {0}: {1}"); //$NON-NLS-1$
+    static final Msg CONVERT_BMD = new Msg("CONVERT_BMD"); //$NON-NLS-1$
+    static final Msg CONVERT_NOVERSE = new Msg("CONVERT_NOVERSE"); //$NON-NLS-1$
+    static final Msg CONVERT_NOCLASS = new Msg("CONVERT_NOCLASS"); //$NON-NLS-1$
+    static final Msg REMOTE_FAIL = new Msg("REMOTE_FAIL"); //$NON-NLS-1$
+    static final Msg REMOTE_NOSUPPORT = new Msg("REMOTE_NOSUPPORT"); //$NON-NLS-1$
+    static final Msg PARSE_FAIL = new Msg("PARSE_FAIL"); //$NON-NLS-1$
+    static final Msg REMOTE_MESSAGE = new Msg("REMOTE_MESSAGE"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor#

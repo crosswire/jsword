@@ -1,7 +1,6 @@
-
 package org.crosswire.jsword.book.search;
 
-import java.util.Iterator;
+import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
@@ -40,7 +39,7 @@ public interface Index
      * @param word The word to base your word array on
      * @return An array of words starting with the base
      */
-    public Iterator getStartsWith(String word) throws BookException;
+    public Collection getStartsWith(String word) throws BookException;
 
     /**
      * For a given word find a list of references to it

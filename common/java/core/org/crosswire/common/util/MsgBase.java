@@ -12,6 +12,15 @@ import java.util.ResourceBundle;
  * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
  * example of how to inherit from here.
  * 
+ * <p>Some Regex/Vi macros to convert from a half way house i18n scheme where
+ * the strings are in Msg classes but not properties files:
+ * The following makes the lookup string simple
+ *   :%s/Msg \([^ ]*\) = new Msg(".*")/Msg \1 = new Msg("\1")/
+ * These turn a lookup string into a properties file
+ *   :%s/    static final Msg //
+ *   :%s/ = new Msg("/: /
+ *   :%s/");\/\/\$NON-NLS-1\$$/
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -60,7 +69,7 @@ public class MsgBase
         }
         catch (MissingResourceException ex)
         {
-            log.warn("Missing resource in " + Locale.getDefault().getDisplayName() + " for " + name); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + name + " package=" + getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
         return name;

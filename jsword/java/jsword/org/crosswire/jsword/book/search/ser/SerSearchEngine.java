@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,8 +20,8 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
@@ -98,13 +99,13 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)
      */
-    public Iterator getStartsWith(String word)
+    public Collection getStartsWith(String word)
     {
         checkActive();
 
         word = word.toLowerCase();
         SortedMap submap = datamap.subMap(word, word + "\u9999"); //$NON-NLS-1$
-        return submap.keySet().iterator();
+        return submap.keySet();
     }
 
     /* (non-Javadoc)
@@ -250,7 +251,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 Passage current = PassageFactory.createPassage();
                 current.add(verse);
                 String text = book.getData(current).getPlainText();
-                String[] words = BookUtil.getWords(text);
+                String[] words = SentanceUtil.getWords(text);
                 for (int i = 0; i < words.length; i++)
                 {
                     // ensure there is a Passage for this word in the word/passage hashmap

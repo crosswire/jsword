@@ -28,24 +28,24 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg NO_KEY = new Msg("No {0} in index."); //$NON-NLS-1$
-    static final Msg BAD_KEY = new Msg("Invalid Key type={0}, name={1}"); //$NON-NLS-1$
-    static final Msg GZIP_FORMAT = new Msg("Error whilst reading field"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
-    static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs"); //$NON-NLS-1$
-    static final Msg MISSING_FILE = new Msg("Missing data files for old and new testaments in {0}."); //$NON-NLS-1$
-    static final Msg NOT_FOUND = new Msg("Module directory not found."); //$NON-NLS-1$
-    static final Msg READ_FAIL = new Msg("Error reading {0}"); //$NON-NLS-1$
-    static final Msg READ_ONLY = new Msg("Sword modules are read-only"); //$NON-NLS-1$
-    static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type"); //$NON-NLS-1$
-    static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0} when reading {1}"); //$NON-NLS-1$
-    static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0} when reading {1}"); //$NON-NLS-1$
-    static final Msg MISSING_SEARCHER = new Msg("Configuration error: Missing search engine."); //$NON-NLS-1$
-    static final Msg MISSING_BACKEND = new Msg("Configuration error: Missing backend engine."); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry."); //$NON-NLS-1$
-    static final Msg MISSING_NAME = new Msg("Missing name"); //$NON-NLS-1$
-    static final Msg UNDEFINED_MODULE = new Msg("ModuleType {0} is not defined!"); //$NON-NLS-1$
-    static final Msg UNDEFINED_DATATYPE = new Msg("DataType {0} is not defined!"); //$NON-NLS-1$
+    static final Msg NO_KEY = new Msg("NO_KEY"); //$NON-NLS-1$
+    static final Msg BAD_KEY = new Msg("BAD_KEY"); //$NON-NLS-1$
+    static final Msg GZIP_FORMAT = new Msg("GZIP_FORMAT"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
+    static final Msg FILE_ONLY = new Msg("FILE_ONLY"); //$NON-NLS-1$
+    static final Msg MISSING_FILE = new Msg("MISSING_FILE"); //$NON-NLS-1$
+    static final Msg NOT_FOUND = new Msg("NOT_FOUND"); //$NON-NLS-1$
+    static final Msg READ_FAIL = new Msg("READ_FAIL"); //$NON-NLS-1$
+    static final Msg READ_ONLY = new Msg("READ_ONLY"); //$NON-NLS-1$
+    static final Msg COMPRESSION_UNSUPPORTED = new Msg("COMPRESSION_UNSUPPORTED"); //$NON-NLS-1$
+    static final Msg TYPE_UNSUPPORTED = new Msg("TYPE_UNSUPPORTED"); //$NON-NLS-1$
+    static final Msg TYPE_UNKNOWN = new Msg("TYPE_UNKNOWN"); //$NON-NLS-1$
+    static final Msg MISSING_SEARCHER = new Msg("MISSING_SEARCHER"); //$NON-NLS-1$
+    static final Msg MISSING_BACKEND = new Msg("MISSING_BACKEND"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
+    static final Msg MISSING_NAME = new Msg("MISSING_NAME"); //$NON-NLS-1$
+    static final Msg UNDEFINED_MODULE = new Msg("UNDEFINED_MODULE"); //$NON-NLS-1$
+    static final Msg UNDEFINED_DATATYPE = new Msg("UNDEFINED_DATATYPE"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -28,23 +28,23 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}"); //$NON-NLS-1$
-    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}"); //$NON-NLS-1$
-    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}"); //$NON-NLS-1$
-    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}"); //$NON-NLS-1$
-    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured"); //$NON-NLS-1$
-    static final Msg CACHE_ERROR = new Msg("Error loading from cache"); //$NON-NLS-1$
-    static final Msg INVALID_URL = new Msg("Not enough / symbols in url: {0}"); //$NON-NLS-1$
-    static final Msg URL_FAILED = new Msg("URL manipulation failed"); //$NON-NLS-1$
-    static final Msg URL_AT_COUNT = new Msg("Too many @ symbols in url: {0}"); //$NON-NLS-1$
-    static final Msg URL_COLON_COUNT = new Msg("Wrong number of : symbols in url: {0}"); //$NON-NLS-1$
-    static final Msg INSTALLED = new Msg("Module already installed: {0}"); //$NON-NLS-1$
-    static final Msg INSTALLING = new Msg("Installing module: {0}"); //$NON-NLS-1$
-    static final Msg INSTALL_DONE = new Msg("Finished installing module: {0}"); //$NON-NLS-1$
-    static final Msg JOB_INIT = new Msg("Initializing"); //$NON-NLS-1$
-    static final Msg JOB_CONFIG = new Msg("Copying config file"); //$NON-NLS-1$
-    static final Msg JOB_LOGIN = new Msg("Logging on to remote site"); //$NON-NLS-1$
-    static final Msg JOB_DOWNLOADING = new Msg("Downloading files"); //$NON-NLS-1$
+    static final Msg AUTH_REFUSED = new Msg("AUTH_REFUSED"); //$NON-NLS-1$
+    static final Msg CONNECT_REFUSED = new Msg("CONNECT_REFUSED"); //$NON-NLS-1$
+    static final Msg CWD_REFUSED = new Msg("CWD_REFUSED"); //$NON-NLS-1$
+    static final Msg DOWNLOAD_REFUSED = new Msg("DOWNLOAD_REFUSED"); //$NON-NLS-1$
+    static final Msg UNKNOWN_ERROR = new Msg("UNKNOWN_ERROR"); //$NON-NLS-1$
+    static final Msg CACHE_ERROR = new Msg("CACHE_ERROR"); //$NON-NLS-1$
+    static final Msg INVALID_URL = new Msg("INVALID_URL"); //$NON-NLS-1$
+    static final Msg URL_FAILED = new Msg("URL_FAILED"); //$NON-NLS-1$
+    static final Msg URL_AT_COUNT = new Msg("URL_AT_COUNT"); //$NON-NLS-1$
+    static final Msg URL_COLON_COUNT = new Msg("URL_COLON_COUNT"); //$NON-NLS-1$
+    static final Msg INSTALLED = new Msg("INSTALLED"); //$NON-NLS-1$
+    static final Msg INSTALLING = new Msg("INSTALLING"); //$NON-NLS-1$
+    static final Msg INSTALL_DONE = new Msg("INSTALL_DONE"); //$NON-NLS-1$
+    static final Msg JOB_INIT = new Msg("JOB_INIT"); //$NON-NLS-1$
+    static final Msg JOB_CONFIG = new Msg("JOB_CONFIG"); //$NON-NLS-1$
+    static final Msg JOB_LOGIN = new Msg("JOB_LOGIN"); //$NON-NLS-1$
+    static final Msg JOB_DOWNLOADING = new Msg("JOB_DOWNLOADING"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

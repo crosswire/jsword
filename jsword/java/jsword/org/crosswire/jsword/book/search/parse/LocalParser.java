@@ -1,12 +1,13 @@
 package org.crosswire.jsword.book.search.parse;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.passage.Passage;
@@ -94,41 +95,43 @@ public class LocalParser implements Parser
      */
     private Passage bestMatch(String sought) throws BookException
     {
-        String[] words = BookUtil.getWords(sought);
+        String[] words = SentanceUtil.getWords(sought);
         words = Grammar.stripSmallWords(words);
         // log.fine("words="+StringUtil.toString(words));
-        
+
         PassageTally tally = new PassageTally();
         tally.blur(2, PassageConstants.RESTRICT_NONE);
 
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             tally.addAll(wordSearch(words[i]));
         }
-    
+
         // This uses updatePassageTallyFlat() so that words like God
         // that have many startsWith() matches, and hence many verse
         // matches, do not end up with wrongly high scores.
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             // log.fine("considering="+words[i]);
             String root = Grammar.getRoot(words[i]);
-    
+
             // Check that the root is still a word. If not then we
             // use the full version. This catches misses like se is
             // the root of seed, and matches sea and so on ...
             Passage ref = wordSearch(root);
             if (ref.isEmpty())
+            {
                 root = words[i];
-    
+            }
+
             // log.fine("  root="+root);
-            Iterator it = index.getStartsWith(root);
-            String[] gr_words = BookUtil.toStringArray(it);
-    
+            Collection col = index.getStartsWith(root);
+            String[] grWords = (String[]) col.toArray(new String[col.size()]);
+
             // log.fine("  gr_words="+StringUtil.toString(gr_words));
-            updatePassageTallyFlat(tally, gr_words);
+            updatePassageTallyFlat(tally, grWords);
         }
-        
+
         return tally;
     }
 
@@ -175,7 +178,7 @@ public class LocalParser implements Parser
     {
         Passage ref = PassageFactory.createPassage();
 
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             ref.addAll(wordSearch(words[i]));
         }
@@ -231,7 +234,7 @@ public class LocalParser implements Parser
     {
         PassageTally temp = new PassageTally();
 
-        for (int i=0; i<words.length; i++)
+        for (int i = 0; i < words.length; i++)
         {
             temp.addAll(wordSearch(words[i]));
         }

@@ -28,13 +28,13 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg SEARCH_FAIL = new Msg("Could not start search engine"); //$NON-NLS-1$
-    static final Msg INITIALIZE = new Msg("Error initializing."); //$NON-NLS-1$
-    static final Msg REPEATED_READ_ERROR = new Msg("Too many errors while reading data."); //$NON-NLS-1$
-    static final Msg WRITE_ERROR = new Msg("Write Error."); //$NON-NLS-1$
-    static final Msg FINDING_WORDS = new Msg("Finding Words ({0})"); //$NON-NLS-1$
-    static final Msg WRITING_WORDS = new Msg("Writing Words ({0})"); //$NON-NLS-1$
-    static final Msg SAVING = new Msg("Saving Index"); //$NON-NLS-1$
+    static final Msg SEARCH_FAIL = new Msg("SEARCH_FAIL"); //$NON-NLS-1$
+    static final Msg INITIALIZE = new Msg("INITIALIZE"); //$NON-NLS-1$
+    static final Msg REPEATED_READ_ERROR = new Msg("REPEATED_READ_ERROR"); //$NON-NLS-1$
+    static final Msg WRITE_ERROR = new Msg("WRITE_ERROR"); //$NON-NLS-1$
+    static final Msg FINDING_WORDS = new Msg("FINDING_WORDS"); //$NON-NLS-1$
+    static final Msg WRITING_WORDS = new Msg("WRITING_WORDS"); //$NON-NLS-1$
+    static final Msg SAVING = new Msg("SAVING"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor 

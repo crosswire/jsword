@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.Button;
@@ -17,6 +16,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.text.JTextComponent;
@@ -72,7 +72,7 @@ public class GuiUtil
         }
         catch (MalformedURLException ex)
         {
-            log.warn("Failed to find resource name='"+name+"'"); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Failed to find icon name='" + name + "'", ex); //$NON-NLS-1$ //$NON-NLS-2$
             return null;
         }
     }
@@ -89,28 +89,83 @@ public class GuiUtil
         while (!(temp instanceof Window))
         {
             temp = temp.getParent();
-            if (temp == null) return null;
+            if (temp == null)
+            {
+                return null;
+            }
         }
 
         return (Window) temp;
     }
 
     /**
-     * Find the parent Frame
-     * @param com a component to find the frame of.
+     * Find the parent Frame. This method can do more than simply walking up
+     * the tree to find a parent frame by looking for default frames from
+     * JOptionPane and by looking for all visible Frames. We can be sure to
+     * return a Frame from this method even if null is passed in.
+     * @param parent a component to find the frame of.
      * @return The parent Frame
      */
-    public static Frame getFrame(Component com)
+    public static Frame getFrame(Component parent)
     {
-        Component temp = com;
-
-        while (!(temp instanceof Frame))
+        if (parent == null)
         {
-            temp = temp.getParent();
-            if (temp == null) return null;
+            // So we can't get one by walking up the tree so we will have to
+            // get one from somewhere else.
+            // Firstly someone might have called JOptionPane.setRootFrame()
+            // to give us a reasonable default so try there
+            Frame option = JOptionPane.getRootFrame();
+
+            // If a default has not been set, JOptionPane.getRootFrame() calls
+            // SwingUtilities.getSharedOwnerFrame() to get a new invisible frame
+            // and we may be able to do better than that. Unfortunately the
+            // getSharedOwnerFrame() method is not public so we have to trick
+            // our way to finding if we got a duff default
+            if (!option.getClass().getName().startsWith("javax.swing.SwingUtilities$")) //$NON-NLS-1$
+            {
+                // So we think the JOptionPane root frame is our creation
+                return option;
+            }
+
+            // We might be able to get a better default by looking through all
+            // the frames and picking the biggest visible one.
+            Frame best = null;
+            int bestSize = 0;
+
+            Frame[] frames = Frame.getFrames();
+            for (int i = 0; i < frames.length; i++)
+            {
+                Frame frame = frames[i];
+                if (frame.isVisible())
+                {
+                    // So this frame is a candidate
+                    int thisSize = frame.getWidth() * frame.getHeight();
+                    if (best == null || thisSize > bestSize)
+                    {
+                        best = frame;
+                        bestSize = thisSize;
+                    }
+                }
+            }
+
+            // So if we found a frame from searching then use that
+            if (best != null)
+            {
+                return best;
+            }
+
+            // if all else fails we will have to use the invisible frame
+            // provided by JOptionPane
+            return option;
         }
 
-        return (Frame) temp;
+        if (parent instanceof Frame)
+        {
+            return (Frame) parent;
+        }
+
+        // So we walk up the tree looking for a frame
+        return getFrame(parent.getParent());
     }
 
     /**
@@ -125,7 +180,10 @@ public class GuiUtil
         while (!(temp instanceof Dialog))
         {
             temp = temp.getParent();
-            if (temp == null) return null;
+            if (temp == null)
+            {
+                return null;
+            }
         }
 
         return (Dialog) temp;
@@ -302,34 +360,53 @@ public class GuiUtil
     public static String getText(Component comp)
     {
         if (comp instanceof JTextComponent)
+        {
             return ((JTextComponent) comp).getText();
+        }
 
         if (comp instanceof JLabel)
+        {
             return ((JLabel) comp).getText();
+        }
 
         if (comp instanceof AbstractButton)
+        {
             return ((AbstractButton) comp).getText();
+        }
 
         if (comp instanceof JComboBox)
+        {
             return ((JComboBox) comp).getSelectedItem().toString();
+        }
 
         if (comp instanceof JToolTip)
+        {
             return ((JToolTip) comp).getTipText();
+        }
 
         if (comp instanceof TextComponent)
+        {
             return ((TextComponent) comp).getText();
+        }
 
         if (comp instanceof Button)
+        {
             return ((Button) comp).getLabel();
+        }
 
         if (comp instanceof Label)
+        {
             return ((Label) comp).getText();
+        }
 
         if (comp instanceof JScrollPane)
         {
             JScrollPane scr = (JScrollPane) comp;
             Component sub = scr.getViewport().getView();
-            if (sub != null) return getText(sub);
+            if (sub != null)
+            {
+                return getText(sub);
+            }
         }
 
         return comp.toString();

@@ -44,7 +44,8 @@ import org.crosswire.common.util.NetUtil;
 public class Job
 {
     /**
-     * Create a new Job
+     * Create a new Job. This will automatically fire a workProgressed event to
+     * all WorkListeners, with the percent property of this job set to 0. 
      * @param description Short description of this job
      * @param predicturl Optional URL to save/load prediction times from
      * @param work Optional thread to use in request to stop work

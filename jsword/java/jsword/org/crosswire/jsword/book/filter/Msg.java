@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg TRUNCATED = new Msg("... (truncated)"); //$NON-NLS-1$
+    static final Msg TRUNCATED = new Msg("TRUNCATED"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

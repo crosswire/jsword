@@ -252,7 +252,7 @@ public class BooksTest extends TestCase
             
             if (ver instanceof SearchableBible)
             {
-                String[] sa = BookUtil.toStringArray(((SearchableBible) ver).getSearcher().getStartsWith("a"));
+                String[] sa = Sentance2Util.toStringArray(((SearchableBible) ver).getSearcher().getStartsWith("a"));
                 assertTrue(sa != null);
             }
         }
@@ -277,14 +277,14 @@ public class BooksTest extends TestCase
             if (origver instanceof SearchableBible)
             {
                 SearchableBible ver = (SearchableBible) origver;
-                String[] sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("jos"));
+                String[] sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("jos"));
                 assertTrue(sa.length > 5);
-                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("jerusale"));
+                sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("jerusale"));
                 assertEquals(sa[0], "jerusalem");
-                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("maher-shalal"));
+                sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("maher-shalal"));
                 if (sa.length == 0)
                 {
-                    sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("mahershalal"));
+                    sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("mahershalal"));
                     assertEquals(sa[0], "mahershalalhashbaz");
                 }
                 else
@@ -292,10 +292,10 @@ public class BooksTest extends TestCase
                     assertEquals(sa[0], "maher-shalal-hash-baz");
                 }
                 assertEquals(sa.length, 1);
-                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("MAHER-SHALAL"));
+                sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("MAHER-SHALAL"));
                 if (sa.length == 0)
                 {
-                    sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("MAHERSHALAL"));
+                    sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("MAHERSHALAL"));
                     assertEquals(sa[0], "mahershalalhashbaz");
                 }
                 else
@@ -303,7 +303,7 @@ public class BooksTest extends TestCase
                     assertEquals(sa[0], "maher-shalal-hash-baz");
                 }
                 assertEquals(sa.length, 1);
-                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("XXX"));
+                sa = Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("XXX"));
                 assertEquals(sa.length, 0);
             }
         }

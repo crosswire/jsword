@@ -215,7 +215,7 @@ public class Verifier
 
         // For every word in the word list
         Index index1 = (Index) book1;
-        Iterator it = index1.getStartsWith(starts);
+        Iterator it = index1.getStartsWith(starts).iterator();
         while (it.hasNext())
         {
             String s = (String) it.next();

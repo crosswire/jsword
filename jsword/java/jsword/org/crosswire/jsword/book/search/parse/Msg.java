@@ -28,27 +28,27 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg ADD_BLANK = new Msg("Syntax Error: No word to search for."); //$NON-NLS-1$
+    static final Msg ADD_BLANK = new Msg("ADD_BLANK"); //$NON-NLS-1$
 
-    static final Msg MISSED = new Msg("Search Failed."); //$NON-NLS-1$
-    static final Msg RIGHT_PARAM = new Msg("Can't get a word from a sub-expression (processing ')')."); //$NON-NLS-1$
-    static final Msg RIGHT_BRACKETS = new Msg("Syntax Error: Can't use brackets as a command."); //$NON-NLS-1$
-    static final Msg LEFT_PARAM = new Msg("Can't get a word from a sub-expression (processing '(')."); //$NON-NLS-1$
-    static final Msg LEFT_BRACKETS = new Msg("Syntax Error: Unmatching brackets."); //$NON-NLS-1$
-    static final Msg STARTS_WORD = new Msg("Can't get a word from a startswith command."); //$NON-NLS-1$
-    static final Msg STARTS_BLANK = new Msg("Syntax Error: No word to search for. (processing 'blank')"); //$NON-NLS-1$
-    static final Msg STARTS_OTHER = new Msg("Search Error."); //$NON-NLS-1$
-    static final Msg RETAIN_BLANK = new Msg("Syntax Error: No word to search for. (processing 'retains')"); //$NON-NLS-1$
-    static final Msg REMOVE_BLANK = new Msg("Syntax Error: No word to search for. (processing 'remove')"); //$NON-NLS-1$
-    static final Msg GRAMMAR_WORD = new Msg("Can't get a word from a grammar command."); //$NON-NLS-1$
-    static final Msg GRAMMAR_BLANK = new Msg("Syntax Error: No word to search for. (processing 'grammar')"); //$NON-NLS-1$
-    static final Msg GRAMMER_OTHER = new Msg("Search failed."); //$NON-NLS-1$
-    static final Msg DEFAULT_OTHER = new Msg("An error occured whilst searching for \"{0}\"."); //$NON-NLS-1$
-    static final Msg BLUR_BLANK = new Msg("Syntax Error: Missing number, nothing to blur by."); //$NON-NLS-1$
-    static final Msg BLUR_FORMAT = new Msg("Can't understand \"{0}\" as a number."); //$NON-NLS-1$
-    static final Msg ENGINE_SYNTAX = new Msg("Syntax Error: Invalid command \"{0}\"."); //$NON-NLS-1$
-    static final Msg ILLEGAL_PASSAGE = new Msg("Syntax Error: Invalid passage \"{0}\""); //$NON-NLS-1$
-    static final Msg UNMATCHED_ESCAPE = new Msg("Syntax Error: Unmatched brackets - [ and ]"); //$NON-NLS-1$
+    static final Msg MISSED = new Msg("MISSED"); //$NON-NLS-1$
+    static final Msg RIGHT_PARAM = new Msg("RIGHT_PARAM"); //$NON-NLS-1$
+    static final Msg RIGHT_BRACKETS = new Msg("RIGHT_BRACKETS"); //$NON-NLS-1$
+    static final Msg LEFT_PARAM = new Msg("LEFT_PARAM"); //$NON-NLS-1$
+    static final Msg LEFT_BRACKETS = new Msg("LEFT_BRACKETS"); //$NON-NLS-1$
+    static final Msg STARTS_WORD = new Msg("STARTS_WORD"); //$NON-NLS-1$
+    static final Msg STARTS_BLANK = new Msg("STARTS_BLANK"); //$NON-NLS-1$
+    static final Msg STARTS_OTHER = new Msg("STARTS_OTHER"); //$NON-NLS-1$
+    static final Msg RETAIN_BLANK = new Msg("RETAIN_BLANK"); //$NON-NLS-1$
+    static final Msg REMOVE_BLANK = new Msg("REMOVE_BLANK"); //$NON-NLS-1$
+    static final Msg GRAMMAR_WORD = new Msg("GRAMMAR_WORD"); //$NON-NLS-1$
+    static final Msg GRAMMAR_BLANK = new Msg("GRAMMAR_BLANK"); //$NON-NLS-1$
+    static final Msg GRAMMER_OTHER = new Msg("GRAMMER_OTHER"); //$NON-NLS-1$
+    static final Msg DEFAULT_OTHER = new Msg("DEFAULT_OTHER"); //$NON-NLS-1$
+    static final Msg BLUR_BLANK = new Msg("BLUR_BLANK"); //$NON-NLS-1$
+    static final Msg BLUR_FORMAT = new Msg("BLUR_FORMAT"); //$NON-NLS-1$
+    static final Msg ENGINE_SYNTAX = new Msg("ENGINE_SYNTAX"); //$NON-NLS-1$
+    static final Msg ILLEGAL_PASSAGE = new Msg("ILLEGAL_PASSAGE"); //$NON-NLS-1$
+    static final Msg UNMATCHED_ESCAPE = new Msg("UNMATCHED_ESCAPE"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

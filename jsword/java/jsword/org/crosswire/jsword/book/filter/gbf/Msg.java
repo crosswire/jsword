@@ -28,8 +28,8 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}."); //$NON-NLS-1$
-    static final Msg NAME_JESUS = new Msg("Jesus"); //$NON-NLS-1$
+    static final Msg GBF_BADTOKEN = new Msg("GBF_BADTOKEN"); //$NON-NLS-1$
+    static final Msg NAME_JESUS = new Msg("NAME_JESUS"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
