@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,6 +95,9 @@ public class CommentaryPane extends JPanel
         pnl_select.add(cbo_verse, null);
 
         cbo_comments.setModel(mdl_comments);
+        Dimension min = cbo_comments.getMinimumSize();
+        min.width = 100;
+        cbo_comments.setMinimumSize(min);
         cbo_comments.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)

@@ -3,6 +3,7 @@ package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -111,6 +112,9 @@ public class DisplaySelectPane extends JPanel
         });
         pnl_select.setLayout(new FlowLayout(FlowLayout.LEFT));
         cbo_versn.setModel(mdl_versn);
+        Dimension min = cbo_versn.getMinimumSize();
+        min.width = 100;
+        cbo_versn.setMinimumSize(min);
         cbo_versn.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent ev)

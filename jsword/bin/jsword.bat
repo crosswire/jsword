@@ -9,8 +9,8 @@ if "%JSWORD%"=="" set JSWORD=%DEFAULT_JSWORD%
 set DEFAULT_JSWORD=
 if exist "%JSWORD%" goto DoneFindJSword
 REM have a blind guess ...
-if not exist "%SystemDrive%\Program Files\JSword" goto FailedFindJSword
-set JSWORD=%SystemDrive%\Program Files\JSword
+if not exist "C:\Progra~1\JSword" goto FailedFindJSword
+set JSWORD=C:\Progra~1\JSword
 :DoneFindJSword
 echo "Using JSWORD=%JSWORD%"
 
@@ -25,7 +25,7 @@ REM set JSWORD_OPTS=-Xmx256M -classpath "%LOCALCLASSPATH%"
 goto End
 
 :FailedFindJSword
-echo "Can't find install directory. Please use %SystemDrive%\Program Files\JSword or set the JSWORD variable"
+echo "Can't find install directory. Please use C:\Progra~1\JSword or set the JSWORD variable"
 
 :End
 set LOCALCLASSPATH=

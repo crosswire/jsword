@@ -25,18 +25,16 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LogPane;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
-import org.crosswire.jsword.view.swing.book.ComparePane;
-import org.crosswire.jsword.view.swing.book.GeneratorPane;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.Splash;
@@ -107,19 +105,18 @@ public class Desktop extends JFrame implements TitleChangedListener
             act_tools_options = new OptionsAction(this);
             CustomAWTExceptionHandler.setParentComponent(this);
 
-            splash.setProgress("Creating GUI : Initialising configuration system");
+            splash.setProgress("Creating GUI : Loading Configuration System");
             act_tools_options.createConfig();
 
-            splash.setProgress("Creating GUI : Loading stored config");
+            splash.setProgress("Creating GUI : Loading Stored Settings");
             act_tools_options.loadConfig();
 
-            splash.setProgress("Creating GUI : Ctors (Layouts)");
+            splash.setProgress("Creating GUI : Generating Components");
             layouts = new ViewLayout[3];
             layouts[LAYOUT_TYPE_SDI] = new SDIViewLayout(this);
             layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout(this);
             layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout(this);
 
-            splash.setProgress("Creating GUI : Ctors (File Menu)");
             act_file_new = new FileNewAction(this);
             act_file_open = new FileOpenAction(this);
             act_file_save = new FileSaveAction(this);
@@ -130,52 +127,42 @@ public class Desktop extends JFrame implements TitleChangedListener
             act_file_print = new FilePrintAction(this);
             act_file_exit = new ExitAction(this);
 
-            splash.setProgress("Creating GUI : Ctors (Edit Menu)");
             act_edit_cut = new EditCutAction(this);
             act_edit_copy = new EditCopyAction(this);
             act_edit_paste = new EditPasteAction(this);
             act_edit_blur1 = new BlurAction(this, 1, Passage.RESTRICT_CHAPTER);
             act_edit_blur5 = new BlurAction(this, 5, Passage.RESTRICT_CHAPTER);
 
-            splash.setProgress("Creating GUI : Ctors (View Menu)");
             act_view_sdi = new ViewSDIAction(this);
             act_view_tdi = new ViewTDIAction(this);
             act_view_mdi = new ViewMDIAction(this);
             act_view_tbar = new ViewToolBarAction(this);
             act_view_sbar = new ViewStatusBarAction(this);
 
-            splash.setProgress("Creating GUI : Ctors (List Menu)");
             act_list_delete = new ListDeleteAction(this);
 
-            splash.setProgress("Creating GUI : Ctors (Tools Menu)");
-            act_tools_generate = GeneratorPane.createOpenAction(this);
-            act_tools_diff = ComparePane.createOpenAction(this);
-            //act_tools_options = new OptionsAction(this);
+            //act_tools_generate = GeneratorPane.createOpenAction(this);
+            //act_tools_diff = ComparePane.createOpenAction(this);
 
-            splash.setProgress("Creating GUI : Ctors (Help Menu)");
             act_help_contents = new HelpContentsAction(this);
             act_help_system = SystemPropertiesPane.createOpenAction(this);
             act_help_about = Splash.createOpenAction(this);
             act_help_log = LogPane.createOpenAction(this);
             act_help_debug = new DebugAction(this);
 
-            splash.setProgress("Creating GUI : Ctors (View Buttons)");
             rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
             rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
             rdo_view_sdi = new JRadioButtonMenuItem(act_view_sdi);
             chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
             chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
 
-            splash.setProgress("Creating GUI : Ctors (Menu Bar)");
             bar_menu = new JMenuBar();
             menu_file = new JMenu();
             menu_edit = new JMenu();
             menu_view = new JMenu();
-            menu_list = new JMenu();
             menu_tools = new JMenu();
             menu_help = new JMenu();
 
-            splash.setProgress("Creating GUI : Ctors (Other Components)");
             grp_views = new ButtonGroup();
             pnl_tbar = new JToolBar();
             bar_status = new StatusBar();
@@ -183,7 +170,6 @@ public class Desktop extends JFrame implements TitleChangedListener
             spt_books = new JSplitPane();
 
             // GUI setup
-            splash.setProgress("Creating GUI : Init");
             jbInit();
 
             // Sort out the current ViewLayout. We need to reset current to be
@@ -220,7 +206,7 @@ public class Desktop extends JFrame implements TitleChangedListener
      */
     private void jbInit()
     {
-        splash.setProgress("Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Laying out menus");
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);
@@ -237,7 +223,6 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_file.addSeparator();
         menu_file.add(act_file_exit).addMouseListener(bar_status);
 
-        splash.setProgress("Creating GUI : Menus");
         menu_edit.setText("Edit");
         menu_edit.setMnemonic('E');
         menu_edit.add(act_edit_cut).addMouseListener(bar_status);
@@ -256,7 +241,6 @@ public class Desktop extends JFrame implements TitleChangedListener
         grp_views.add(rdo_view_sdi);
         grp_views.add(rdo_view_tdi);
 
-        splash.setProgress("Creating GUI : Menus");
         menu_view.setText("View");
         menu_view.setMnemonic('V');
         menu_view.add(rdo_view_sdi);
@@ -266,23 +250,17 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_view.add(chk_view_tbar);
         menu_view.add(chk_view_sbar);
 
-        splash.setProgress("Creating GUI : Menus");
-        menu_list.setText("List");
-        menu_list.setMnemonic('L');
-        menu_list.add(act_edit_blur1).addMouseListener(bar_status);
-        menu_list.add(act_edit_blur5).addMouseListener(bar_status);
-        menu_list.addSeparator();
-        menu_list.add(act_list_delete).addMouseListener(bar_status);
-
-        splash.setProgress("Creating GUI : Menus");
         menu_tools.setText("Tools");
         menu_tools.setMnemonic('T');
-        menu_tools.add(act_tools_generate).addMouseListener(bar_status);
-        menu_tools.add(act_tools_diff).addMouseListener(bar_status);
+        menu_tools.add(act_edit_blur1).addMouseListener(bar_status);
+        menu_tools.add(act_edit_blur5).addMouseListener(bar_status);
+        menu_tools.add(act_list_delete).addMouseListener(bar_status);
         menu_tools.addSeparator();
+        //menu_tools.add(act_tools_generate).addMouseListener(bar_status);
+        //menu_tools.add(act_tools_diff).addMouseListener(bar_status);
+        //menu_tools.addSeparator();
         menu_tools.add(act_tools_options).addMouseListener(bar_status);
 
-        splash.setProgress("Creating GUI : Menus");
         menu_help.setText("Help");
         menu_help.setMnemonic('H');
         menu_help.add(act_help_contents).addMouseListener(bar_status);
@@ -298,7 +276,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
         bar_menu.add(menu_view);
-        bar_menu.add(menu_list);
+        bar_menu.add(menu_tools);
         bar_menu.add(menu_tools);
         bar_menu.add(menu_help);
 
@@ -328,9 +306,9 @@ public class Desktop extends JFrame implements TitleChangedListener
         pnl_tbar.add(act_edit_copy).addMouseListener(bar_status);
         pnl_tbar.add(act_edit_paste).addMouseListener(bar_status);
         pnl_tbar.addSeparator();
-        pnl_tbar.add(act_tools_generate).addMouseListener(bar_status);
-        pnl_tbar.add(act_tools_diff).addMouseListener(bar_status);
-        pnl_tbar.addSeparator();
+        //pnl_tbar.add(act_tools_generate).addMouseListener(bar_status);
+        //pnl_tbar.add(act_tools_diff).addMouseListener(bar_status);
+        //pnl_tbar.addSeparator();
         pnl_tbar.add(act_help_contents).addMouseListener(bar_status);
         pnl_tbar.add(act_help_system).addMouseListener(bar_status);
         pnl_tbar.add(act_help_log).addMouseListener(bar_status);
@@ -636,8 +614,8 @@ public class Desktop extends JFrame implements TitleChangedListener
 
     private Action act_list_delete = null;
 
-    private Action act_tools_generate = null;
-    private Action act_tools_diff = null;
+    //private Action act_tools_generate = null;
+    //private Action act_tools_diff = null;
     private OptionsAction act_tools_options = null;
 
     private Action act_help_contents = null;
@@ -656,7 +634,6 @@ public class Desktop extends JFrame implements TitleChangedListener
     private JMenu menu_file = null;
     private JMenu menu_edit = null;
     private JMenu menu_view = null;
-    private JMenu menu_list = null;
     private JMenu menu_tools = null;
     private JMenu menu_help = null;
 

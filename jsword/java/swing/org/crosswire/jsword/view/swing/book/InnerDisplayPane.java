@@ -70,8 +70,7 @@ public class InnerDisplayPane extends JPanel
         {
             Passage ref = PassageFactory.createPassage("Gen 1:1");
             Bible version = Defaults.getBibleMetaData().getBible();
-            
-            
+
             BookData data = version.getData(ref);
             SAXEventProvider provider = OSISUtil.getSAXEventProvider(data);
             
