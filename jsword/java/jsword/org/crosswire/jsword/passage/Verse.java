@@ -214,17 +214,17 @@ public final class Verse implements VerseBase, Comparable
             // To cope with thing like Jude 2...
             if (BibleInfo.chaptersInBook(book) == 1)
             {
-                return BibleInfo.getShortBookName(book) +
-                    PassageConstants.VERSE_PREF_DELIM1 +
-                    verse;
+                return BibleInfo.getShortBookName(book)
+                    + PassageConstants.VERSE_PREF_DELIM1
+                    + verse;
             }
             else
             {
-                return BibleInfo.getShortBookName(book) +
-                    PassageConstants.VERSE_PREF_DELIM1 +
-                    chapter +
-                    PassageConstants.VERSE_PREF_DELIM2 +
-                    verse;
+                return BibleInfo.getShortBookName(book)
+                    + PassageConstants.VERSE_PREF_DELIM1
+                    + chapter
+                    + PassageConstants.VERSE_PREF_DELIM2
+                    + verse;
             }
         }
         catch (Exception ex)
@@ -257,9 +257,9 @@ public final class Verse implements VerseBase, Comparable
             {
                 if (base.book != book)
                 {
-                    return BibleInfo.getShortBookName(book) +
-                        PassageConstants.VERSE_PREF_DELIM1 +
-                        verse;
+                    return BibleInfo.getShortBookName(book)
+                        + PassageConstants.VERSE_PREF_DELIM1
+                        + verse;
                 }
 
                 return String.valueOf(verse);
@@ -268,18 +268,18 @@ public final class Verse implements VerseBase, Comparable
             {
                 if (base.book != book)
                 {
-                    return BibleInfo.getShortBookName(book) +
-                        PassageConstants.VERSE_PREF_DELIM1 +
-                        chapter +
-                        PassageConstants.VERSE_PREF_DELIM2 +
-                        verse;
+                    return BibleInfo.getShortBookName(book)
+                        + PassageConstants.VERSE_PREF_DELIM1
+                        + chapter
+                        + PassageConstants.VERSE_PREF_DELIM2
+                        + verse;
                 }
 
                 if (base.chapter != chapter)
                 {
-                    return chapter +
-                        PassageConstants.VERSE_PREF_DELIM2 +
-                        verse;
+                    return chapter
+                        + PassageConstants.VERSE_PREF_DELIM2
+                        + verse;
                 }
 
                 return String.valueOf(verse);
@@ -300,11 +300,11 @@ public final class Verse implements VerseBase, Comparable
     {
         try
         {
-            return BibleInfo.getOSISName(book) +
-                PassageConstants.VERSE_OSIS_DELIM +
-                chapter +
-                PassageConstants.VERSE_OSIS_DELIM +
-                verse;
+            return BibleInfo.getOSISName(book)
+                + PassageConstants.VERSE_OSIS_DELIM
+                + chapter
+                + PassageConstants.VERSE_OSIS_DELIM
+                + verse;
         }
         catch (NoSuchVerseException ex)
         {

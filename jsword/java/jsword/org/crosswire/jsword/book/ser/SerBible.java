@@ -3,9 +3,9 @@ package org.crosswire.jsword.book.ser;
 
 import java.net.URL;
 
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.book.search.SearchEngineFactory;

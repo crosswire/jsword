@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.data.ConversionLogger;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Reference;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;

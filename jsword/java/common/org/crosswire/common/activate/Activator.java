@@ -35,6 +35,13 @@ import java.util.Set;
 public class Activator
 {
     /**
+     * Prevent instansiation
+     */
+    private Activator()
+    {
+    }
+
+    /**
      * Check that a subject is activated and call activate() if not.
      */
     public static void activate(Activatable subject)

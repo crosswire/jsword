@@ -38,9 +38,6 @@ public class UnknownTagBuilder implements TagBuilder
     {
         return new Tag()
         {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.data.gbf.Tag#updateOsisStack(java.util.Stack)
-             */
             public void updateOsisStack(LinkedList stack)
             {
                 // unknown tags

@@ -7,9 +7,7 @@ import java.util.SortedSet;
 
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.ConversionLogger;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseBase;

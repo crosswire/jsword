@@ -14,11 +14,11 @@ import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.Filters;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.search.Index;

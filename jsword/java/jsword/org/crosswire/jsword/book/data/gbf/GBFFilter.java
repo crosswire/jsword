@@ -5,14 +5,14 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.data.DataException;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filter;
 
 /**
  * Filter to convert GBF data to OSIS format.
  * 
  * The best place to go for more information about the GBF spec that I have
- * found is: {@link http://ebible.org/bible/gbf.htm}
+ * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -40,7 +40,7 @@ public class GBFFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws DataException
+    public void toOSIS(Element ele, String plain) throws FilterException
     {
         try
         {
@@ -59,7 +59,7 @@ public class GBFFilter implements Filter
         }
         catch (JAXBException ex)
         {
-            throw new DataException(Msg.GBF_JAXB, ex);
+            throw new FilterException(Msg.GBF_JAXB, ex);
         }
     }
 }

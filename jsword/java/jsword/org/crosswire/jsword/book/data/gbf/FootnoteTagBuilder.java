@@ -7,8 +7,8 @@ import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.ClassUtils;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.data.ConversionLogger;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Note;
 
 /**

@@ -31,9 +31,6 @@ class Msg extends MsgBase
 {
     static final Msg JAXB_ERROR = new Msg("JAXB Error");
 
-    static final Msg MISSING_VERSE = new Msg("Verse element could not be found");
-    static final Msg OSIS_BADID = new Msg("OsisID not valid: {0}");
-
     /**
      * Initialise any resource bundles
      */

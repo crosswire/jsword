@@ -2,7 +2,6 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.book.data.BookData;
 
 /**
  * Book is the most basic store of textual data - It can retrieve data

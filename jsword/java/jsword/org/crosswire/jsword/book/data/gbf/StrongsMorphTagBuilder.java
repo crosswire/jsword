@@ -6,12 +6,12 @@ import java.util.List;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.data.ConversionLogger;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.W;
 
 /**
- * Tag syntax: word<WTxxxx>.
+ * Tag syntax: word&lt;WTxxxx>.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -48,9 +48,6 @@ public class StrongsMorphTagBuilder implements TagBuilder
 
         return new Tag()
         {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.data.gbf.Tag#updateOsisStack(java.util.Stack)
-             */
             public void updateOsisStack(LinkedList stack) throws JAXBException
             {
                 String name = tagname.trim();

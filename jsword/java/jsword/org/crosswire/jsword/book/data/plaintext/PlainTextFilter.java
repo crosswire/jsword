@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.Element;
 
-import org.crosswire.jsword.book.data.DataException;
+import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filter;
-import org.crosswire.jsword.book.data.JAXBUtil;
 
 /**
  * Filter to convert plain text to OSIS format.
@@ -38,7 +38,7 @@ public class PlainTextFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws DataException
+    public void toOSIS(Element ele, String plain) throws FilterException
     {
         List list = JAXBUtil.getList(ele);
         list.add(plain);

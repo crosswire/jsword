@@ -35,6 +35,13 @@ import org.crosswire.jsword.util.Project;
 public class Filters
 {
     /**
+     * Prevent instansiation
+     */
+    private Filters()
+    {
+    }
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(Filters.class);

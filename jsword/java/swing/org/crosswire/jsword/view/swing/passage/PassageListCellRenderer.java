@@ -14,8 +14,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;

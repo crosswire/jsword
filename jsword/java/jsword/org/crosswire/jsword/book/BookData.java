@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book;
 
 import java.util.Iterator;
 

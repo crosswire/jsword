@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book;
 
 import java.io.File;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import javax.xml.bind.Validator;
 
 import junit.framework.TestCase;
 
-import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.osis.Speech;
 
 /**

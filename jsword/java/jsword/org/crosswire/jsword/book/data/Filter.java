@@ -35,5 +35,5 @@ public interface Filter
      * @param plain The encoded text
      * @return Verse OSIS data
      */
-    public void toOSIS(Element ele, String plain) throws DataException;
+    public void toOSIS(Element ele, String plain) throws FilterException;
 }

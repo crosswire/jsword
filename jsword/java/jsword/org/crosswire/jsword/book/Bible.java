@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 
 /**

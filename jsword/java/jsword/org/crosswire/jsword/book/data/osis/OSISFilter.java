@@ -10,10 +10,10 @@ import javax.xml.bind.Unmarshaller;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.data.ConversionLogger;
-import org.crosswire.jsword.book.data.DataException;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filter;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.P;
 import org.xml.sax.InputSource;
 
@@ -46,7 +46,7 @@ public class OSISFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws DataException
+    public void toOSIS(Element ele, String plain) throws FilterException
     {
         if (unm == null)
         {
@@ -56,7 +56,7 @@ public class OSISFilter implements Filter
             }
             catch (JAXBException ex)
             {
-                throw new DataException(Msg.OSIS_INIT, ex);
+                throw new FilterException(Msg.OSIS_INIT, ex);
             }
         }
 

@@ -173,9 +173,9 @@ public class Parser
     private String remains;
     private List retval = new ArrayList();
 
-    private static TagBuilder TEXT = new TextTagBuilder();
-    private static TagBuilder UNKNOWN = new UnknownTagBuilder();
-    private static TagBuilder[] BUILDERS = new TagBuilder[]
+    private static final TagBuilder TEXT = new TextTagBuilder();
+    private static final TagBuilder UNKNOWN = new UnknownTagBuilder();
+    private static final TagBuilder[] BUILDERS = new TagBuilder[]
     {
         new PsalmTitleTagBuilder(),
         new TitleTagBuilder(),

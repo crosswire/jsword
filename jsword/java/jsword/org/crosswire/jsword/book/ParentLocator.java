@@ -1,4 +1,4 @@
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book;
 
 import java.util.HashMap;
 import java.util.Iterator;

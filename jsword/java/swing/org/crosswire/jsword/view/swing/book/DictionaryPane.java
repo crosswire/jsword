@@ -20,13 +20,13 @@ import org.crosswire.common.swing.SortedSetListModel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.util.Style;
 
 /**

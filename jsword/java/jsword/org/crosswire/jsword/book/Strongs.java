@@ -6,10 +6,12 @@ import org.crosswire.jsword.osis.W;
 
 /**
  * Strongs is a convenience way of recording a Strongs number instead of
- * using a String with a number in it. (A Strongs number can not be a number
- * because Hebrew and Greek numbers are distinguished only by the Hebrew
- * having a 0 at the start.) The class is immutable.
- * Numbers that exist:<ul>
+ * using a String with a number in it.
+ * 
+ * <p>A Strongs number can not be a number because Hebrew and Greek numbers are
+ * distinguished only by the Hebrew having a 0 at the start.
+ * <p>The class is immutable.
+ * <p>Numbers that exist:<ul>
  * <li>Hebrew: 1-8674
  * <li>Greek: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
  * <li>Parsing: 0, 5625-5773, 8675-8809 (but not 5626, 5653, 5687, 5767, 8679)
@@ -96,7 +98,6 @@ public class Strongs
     /**
      * Work out what the Strongs number is from the W element
      * @param w The element to investigate
-     * @return The new Strongs
      */
     public Strongs(W w) throws BookException
     {

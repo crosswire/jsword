@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.osis.Note;
 
 /**
@@ -46,9 +46,6 @@ public class TextFootnoteTagBuilder implements TagBuilder
 
         return new Tag()
         {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.data.gbf.Tag#updateOsisStack(java.util.Stack)
-             */
             public void updateOsisStack(LinkedList stack) throws JAXBException
             {
                 Note note = JAXBUtil.factory().createNote();

@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,6 @@ import javax.xml.bind.JAXBContext;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
@@ -288,7 +287,7 @@ public class JAXBUtil
 
     /**
      * Walk up the tree from the W to find out what verse we are in.
-     * @param w The start point for our verse hunt.
+     * @param ele The start point for our verse hunt.
      * @return The verse we are in
      */
     public static org.crosswire.jsword.passage.Verse getVerse(Element ele, ParentLocator loc) throws BookException

@@ -8,7 +8,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.stub.StubBible;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;

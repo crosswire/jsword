@@ -15,13 +15,13 @@ import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DictionaryMetaData;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
-import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;

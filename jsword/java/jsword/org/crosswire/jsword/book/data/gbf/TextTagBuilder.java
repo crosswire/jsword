@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.book.JAXBUtil;
 
 /**
  * Represent a trunc of bible text without any tags.
@@ -40,9 +40,6 @@ public class TextTagBuilder implements TagBuilder
     {
         return new Tag()
         {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.data.gbf.Tag#updateOsisStack(java.util.Stack)
-             */
             public void updateOsisStack(LinkedList stack) throws JAXBException
             {
                 if (stack.size() == 0)

@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.JAXBUtil;
-import org.crosswire.jsword.book.data.ParentLocator;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.passage.Passage;

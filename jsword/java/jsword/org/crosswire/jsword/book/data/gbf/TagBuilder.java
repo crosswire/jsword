@@ -27,8 +27,8 @@ package org.crosswire.jsword.book.data.gbf;
 public interface TagBuilder
 {
     /**
-     * Is the <code>name</code> one that we can create a Tag for? If so then we
-     * return a Tag, but if not we return null.
+     * Is the <code>name</code> one that we can create a Tag for?.
+     * If so then we return a Tag, but if not we return null.
      * @param name The tag name to test
      * @return a new tag or null if the name isn't one we know about
      */

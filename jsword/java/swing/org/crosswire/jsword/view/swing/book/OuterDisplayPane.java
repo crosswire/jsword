@@ -277,9 +277,8 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     private class CustomDisplaySelectListener implements DisplaySelectListener
     {
-        /**
-         * Someone wants us to show in a new version
-         * @see org.crosswire.jsword.view.swing.event.DisplaySelectListener#bookChosen(DisplaySelectEvent)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.view.swing.book.DisplaySelectListener#bookChosen(org.crosswire.jsword.view.swing.book.DisplaySelectEvent)
          */
         public void bookChosen(DisplaySelectEvent ev)
         {
@@ -294,9 +293,8 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
             setPassage(ev.getPassage());
         }
 
-        /**
-         * Someone wants us to display a new passage
-         * @see org.crosswire.jsword.view.swing.event.DisplaySelectListener#passageSelected(DisplaySelectEvent)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.view.swing.book.DisplaySelectListener#passageSelected(org.crosswire.jsword.view.swing.book.DisplaySelectEvent)
          */
         public void passageSelected(DisplaySelectEvent ev)
         {

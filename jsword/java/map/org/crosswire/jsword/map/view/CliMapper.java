@@ -6,9 +6,9 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;

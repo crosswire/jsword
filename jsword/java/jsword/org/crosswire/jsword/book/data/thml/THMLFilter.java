@@ -15,10 +15,10 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.data.ConversionLogger;
-import org.crosswire.jsword.book.data.DataException;
+import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filter;
-import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Item;
@@ -40,7 +40,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Filter to convert THML to OSIS format.
- * <br/>I used the THML ref page: {@link http://www.ccel.org/ThML/ThML1.04.htm}
+ * 
+ * <p>I used the THML ref page:
+ * <a href="http://www.ccel.org/ThML/ThML1.04.htm">http://www.ccel.org/ThML/ThML1.04.htm</a>
  * to work out what the tags meant.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -69,7 +71,7 @@ public class THMLFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws DataException
+    public void toOSIS(Element ele, String plain) throws FilterException
     {
         try
         {
