@@ -4,12 +4,11 @@
     xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
-    exclude-result-prefixes="html"
+    exclude-result-prefixes="html jsp"
     >
 
 <xsl:output
     method="xml"
-    omit-xml-declaration="yes"
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
     indent="yes"
@@ -108,7 +107,7 @@
 
 <table width="100%" cellpadding="3">
   <tr>
-    <td class="navbutton" align="CENTER">
+    <td class="navbutton" align="center">
       The SWORD Project; P. O. Box 2528; Tempe, AZ 85280-2528 USA
     </td>
   </tr>
