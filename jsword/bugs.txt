@@ -10,11 +10,11 @@ Swing
 - Interrupting/cancelling a download does not cleanup the download.
   This is perhaps a bigger problem of the semantic of job cancellation merely
   interrupting a thread.
-- strongs links broken
 
 BookData Display
-- Vines shows internal markup around verse references.
+- Naves shows internal markup around verse references.
 - some nt verses badly displayed in ot refs
+
 
 SplitBookDataDisplay
 - Selection not maintained when blur button is clicked.
@@ -34,15 +34,7 @@ Search
 
 Build
 - get nightly build to work again
-
-Data Problems
-- dict: urls in a book w/ strong's numbering does not distinguish Hebrew from
-  Greek numbers. The result is that in the OT, with the Greek Strongs choosen, a
-  Greek word may be shown.
   
-View Source
-  Copy button throws an exception.
-
 --------------------------------------------------------------------------------
 RELEASE v0.9.8
 --------------------------------------------------------------------------------
@@ -69,6 +61,7 @@ Swing
   Font name should be in the default font, not in the font's font.
 
 Search
+- Create the index in the background after the module is downloaded.
 - Change the indexing of accented data to strip them from the index.
 - Normalize the search request to the way the index is built. (Bug fix)
 - Use IBM's ICU4J to do this.
@@ -91,3 +84,9 @@ BookData Display
 - Interlinear for text having strongs numbers.
 - Parallel texts (Bible || Bible, Bible || Commentary, Bible || Dictionary)
 - Add the ability to turn accents/diacriticals on/off.
+- Allow for more than one link per word
+  (may not be able to use link or maybe link does a dialog w/ results)
+  more than one strongs number [see gen 1.1 created in KJV]
+  other lemma values
+  morph values
+- Switch to the right dictionary/commentary/... when link is activated

@@ -1,9 +1,12 @@
 package org.crosswire.jsword.book.sword;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -167,16 +170,21 @@ public class SwordDictionary extends AbstractBook
     public Key getKey(String text) throws NoSuchKeyException
     {
         checkActive();
-        DefaultKeyList reply = new DefaultKeyList();
 
         Key key = (Key) map.get(text);
         if (key != null)
         {
-            reply.addAll(key);
-            return reply;
+            return key;
         }
 
         // So we need to find a matching key.
+        // TODO(DM): This is a hack.
+        key = getStrongsKey(text);
+
+        if (key != null)
+        {
+            return key;
+        }
 
         // First check for keys that match ignoring case
         for (Iterator it = map.keySet().iterator(); it.hasNext(); )
@@ -184,8 +192,7 @@ public class SwordDictionary extends AbstractBook
             String keyName = (String) it.next();
             if (keyName.equalsIgnoreCase(text))
             {
-                reply.addAll((Key) map.get(keyName));
-                return reply;
+                return (Key) map.get(keyName);
             }
         }
 
@@ -195,8 +202,7 @@ public class SwordDictionary extends AbstractBook
             String keyName = (String) it.next();
             if (keyName.startsWith(text))
             {
-                reply.addAll((Key) map.get(keyName));
-                return reply;
+                return (Key) map.get(keyName);
             }
         }
 
@@ -206,12 +212,39 @@ public class SwordDictionary extends AbstractBook
             String keyName = (String) it.next();
             if (keyName.indexOf(text) != -1)
             {
-                reply.addAll((Key) map.get(keyName));
-                return reply;
+                return (Key) map.get(keyName);
             }
         }
 
         throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text });
+    }
+    
+    // TODO(DM): Hack alert!!! This is not in the right place!!!
+    private Key getStrongsKey(String text)
+    {
+        // Is the string all digits?
+        Matcher m = STRONGS_PATTERN.matcher(text);
+        if (!m.matches())
+        {
+            return null;
+        }
+
+        char firstDigit = text.charAt(1);
+
+        // Get the number after the G or H
+        int strongsNumber = Integer.parseInt(text.substring(1));
+
+        Key key = null;
+        String internalName = sbmd.getInitials();
+        if (internalName.equals("StrongsGreek") && firstDigit != '0') //$NON-NLS-1$
+        {
+            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
+        }
+        else if (internalName.equals("StrongsHebrew") && firstDigit == '0') //$NON-NLS-1$
+        {
+            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
+        }
+        return key;
     }
 
     /* (non-Javadoc)
@@ -232,6 +265,10 @@ public class SwordDictionary extends AbstractBook
             Activator.activate(this);
         }
     }
+
+    // This should move along with getStrongsKey
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("^[GH]\\d+$"); //$NON-NLS-1$
+    private static final DecimalFormat ZERO_PAD = new DecimalFormat("00000"); //$NON-NLS-1$
 
     /**
      * The global key list
