@@ -10,14 +10,17 @@ Swing
 - Interrupting/cancelling a download does not cleanup the download.
   This is perhaps a bigger problem of the semantic of job cancellation merely
   interrupting a thread.
-- Need a check to see that some books are installed and pop-up some sort of
-  install dialog if not.
 - Maybe hide the reference pane if there are no reference works
+- Help (By linking to web?)
+- Make search tooltip easier
+- Make passage list sidebar optional
+- Make Bible selection combo size better
+- Right click tab closer
+- New tab tool-tip is "new window"
 
 BookData Display
 - Naves shows internal markup around verse references.
 - some nt verses badly displayed in ot refs
-
 
 SplitBookDataDisplay
 - Selection not maintained when blur button is clicked.
@@ -33,16 +36,9 @@ Install
   It throws a NPE.
 
 Search
+- debate ser vs. lucene
+- make index creation happen at a better time
 - match does not support restrict
-
-Build
-- get nightly build to work again
-  
---------------------------------------------------------------------------------
-RELEASE v0.9.8
---------------------------------------------------------------------------------
-
-- major bug fixes only
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.9
@@ -55,13 +51,13 @@ POST 1.0
 --------------------------------------------------------------------------------
 
 Swing
-- help screens
 - recreate module creator/tester
 - merge dict/comment to form reference pane
 - implement print
 - FOP/PDF export
 - FontChooser should show a sample of text in Greek, Hebrew and user's language.
   Font name should be in the default font, not in the font's font.
+- Highlighting of searches
 
 Search
 - Create the index in the background after the module is downloaded.
@@ -75,7 +71,7 @@ Modules
 - Sword GenBook
 - re-Add the delete module button
 - add a direct OSIS module
-- Add support for Deutrocanonical books (the "third" testament"
+- Add support for Deutrocanonical books (the "third" testament")
 - Add support for Bible Intro. (i.e. testament 0)
 
 General
