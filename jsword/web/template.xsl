@@ -91,7 +91,6 @@
         <li><a href="http://www.crosswire.org/sword/index.jsp">Sword</a></li>
         <li><a href="http://www.sourceforge.net/projects/projectb/">Project-B</a></li>
       </ul>
-      <p><a href="http://www.crosswire.org/sword/contact.jsp">Contact</a></p>
     </td>
 
     <td valign="top" class="maincell">
