@@ -32,7 +32,7 @@
     == This way we can upgrade without impacting this ant build file.
     =========================================================================-->
   <patternset id="external.runtime.jars">
-    <include name="**/jdom.jar"/>
+    <include name="**/jdom-*.jar"/>
     <!-- include name="**/log4j*.jar"/ -->
     <!-- include name="**/commons-lang-*.jar"/ -->
     <include name="**/commons-net-*.jar"/>

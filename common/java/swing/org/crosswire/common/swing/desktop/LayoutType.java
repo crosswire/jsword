@@ -46,6 +46,11 @@ public abstract class LayoutType implements Serializable
         {
             return new TDIViewLayout();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257572784669800241L;
     };
 
     /**
@@ -60,6 +65,11 @@ public abstract class LayoutType implements Serializable
         {
             return new MDIViewLayout();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3904681587101874488L;
     };
 
     /**
