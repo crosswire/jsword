@@ -15,6 +15,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Date;
 import java.util.jar.JarEntry;
 
 /**
@@ -501,7 +502,7 @@ public class NetUtil
             // to be acceptable it must be a non-0 length string, not commented
             // with #, not the index file itself and acceptable by the filter.
             if (name.length() > 0
-                && !name.startsWith("#") //$NON-NLS-1$
+                && name.charAt(0) != '#'
                 && !name.equals(INDEX_FILE)
                 && filter.accept(name))
             {
@@ -536,37 +537,27 @@ public class NetUtil
      */
     public static long getLastModified(URL url)
     {
-        long time = 0;
-        URLConnection urlConnection = null;
         try
         {
-            urlConnection = url.openConnection();
-            time = urlConnection.getLastModified();
-        }
-        catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            URLConnection urlConnection = url.openConnection();
+            long time = urlConnection.getLastModified();
 
-        // If it were a jar then time contains the last modified date of the jar.
-        if (urlConnection instanceof JarURLConnection)
-        {
-            // form is jar:file:.../xxx.jar!.../filename.ext
-            JarURLConnection jarConnection = (JarURLConnection) urlConnection;
-            JarEntry jarEntry = null;
-            try
+            // If it were a jar then time contains the last modified date of the jar.
+            if (urlConnection instanceof JarURLConnection)
             {
-                jarEntry = jarConnection.getJarEntry();
+                // form is jar:file:.../xxx.jar!.../filename.ext
+                JarURLConnection jarConnection = (JarURLConnection) urlConnection;
+                JarEntry jarEntry = jarConnection.getJarEntry();
+                time = jarEntry.getTime();
             }
-            catch (IOException e2)
-            {
-                assert false;
-            }
-            time = jarEntry.getTime();
-        }
 
-        return time;
+            return time;
+        }
+        catch (IOException ex)
+        {
+            log.warn("Failed to get modified time", ex); //$NON-NLS-1$
+            return new Date().getTime();
+        }
     }
 
     /**
@@ -651,7 +642,7 @@ public class NetUtil
         {
             log.error("Failed to create URL", ex); //$NON-NLS-1$
             assert false;
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ex.toString());
         }
     }
 
@@ -694,7 +685,7 @@ public class NetUtil
     /**
      * Where are temporary files cached.
      */
-    private static File cachedir;
+    private static File cachedir = null;
 
     /**
      * The log stream

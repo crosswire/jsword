@@ -5,7 +5,7 @@ package org.crosswire.common.util;
  * which class called it.
  * <p>
  * It has been tested to work in command line and WebStart environments.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -90,9 +90,9 @@ public class CallContext extends SecurityManager
     /**
      * Offset needed to represent the caller of the method
      * that called this method.
-     * 
+     *
      */
     private static final int CALL_CONTEXT_OFFSET = 3;
 
-    private static CallContext resolver;
+    private static CallContext resolver = null;
 }

@@ -33,9 +33,6 @@ import javax.swing.JPanel;
  */
 public class FormPane extends JPanel
 {
-    private static final String SUFFIX_COMP = "_comp"; //$NON-NLS-1$
-    private static final String SUFFIX_LABEL = "_label"; //$NON-NLS-1$
-
     /**
      * Create a FormPane
      */
@@ -92,10 +89,10 @@ public class FormPane extends JPanel
     {
         int count = getComponentCount() / 2;
         String[] list = new String[count];
-        JLabel label;
+
         for (int i = 0; i < count; i++)
         {
-            label = (JLabel) getComponent(i * 2);
+            JLabel label = (JLabel) getComponent(i * 2);
             list[i] = label.getText();
         }
 
@@ -118,6 +115,14 @@ public class FormPane extends JPanel
 
         return list;
     }
+
+    private static final String SUFFIX_COMP = "_comp"; //$NON-NLS-1$
+    private static final String SUFFIX_LABEL = "_label"; //$NON-NLS-1$
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258135738867790641L;
 
     /**
      * A store of the available components

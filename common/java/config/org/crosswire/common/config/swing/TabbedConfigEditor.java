@@ -44,7 +44,7 @@ public class TabbedConfigEditor extends AbstractConfigEditor
      * any field initializers will be called AFTER THIS METHOD EXECUTES
      * so don't use field initializers.
      */
-    protected void initialize()
+    protected void initializeGUI()
     {
         JComponent bar = new ButtonPane(this);
 
@@ -153,4 +153,9 @@ public class TabbedConfigEditor extends AbstractConfigEditor
      * Set this to task_small to get icons on the tabs. I don't like it
      */
     protected static final ImageIcon TAB_ICON = null;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3256444715753878326L;
 }

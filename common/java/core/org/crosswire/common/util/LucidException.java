@@ -87,7 +87,7 @@ public class LucidException extends Exception
     {
         super(msg.toString(), cause);
         this.deprecated = false;
-        this.params = params;
+        this.params = (Object[]) params.clone();
     }
 
     /**
@@ -109,8 +109,8 @@ public class LucidException extends Exception
         }
         catch (IllegalArgumentException ex)
         {
-            log.warn("Format fail for '" + out + "'", ex); //$NON-NLS-1$ //$NON-NLS-2$
-            return "Error formatting message '" + out + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Format fail for '" + out + '\'', ex); //$NON-NLS-1$
+            return "Error formatting message '" + out + '\''; //$NON-NLS-1$
         }
     }
 

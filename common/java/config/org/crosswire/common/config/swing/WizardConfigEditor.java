@@ -68,7 +68,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
      * any field initializers will be called AFTER THIS METHOD EXECUTES
      * so don't use field initializers.
      */
-    protected void initialize()
+    protected void initializeGUI()
     {
         actions = new ActionFactory(WizardConfigEditor.class, this);
 

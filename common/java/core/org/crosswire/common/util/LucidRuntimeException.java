@@ -12,7 +12,7 @@ import java.text.MessageFormat;
  * checked. In general you would create a subclass of LucidException
  * before you used it, however EventExceptions would be used directly.
  * </p>
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -78,7 +78,7 @@ public class LucidRuntimeException extends RuntimeException
     {
         super(msg.toString(), cause);
 
-        this.params = params;
+        this.params = (Object[]) params.clone();
     }
 
     /**
@@ -100,8 +100,8 @@ public class LucidRuntimeException extends RuntimeException
         }
         catch (IllegalArgumentException ex)
         {
-            log.warn("Format fail for '" + out + "'", ex); //$NON-NLS-1$ //$NON-NLS-2$
-            return "Error formatting message '" + out + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Format fail for '" + out + '\'', ex); //$NON-NLS-1$
+            return "Error formatting message '" + out + '\''; //$NON-NLS-1$
         }
      }
 

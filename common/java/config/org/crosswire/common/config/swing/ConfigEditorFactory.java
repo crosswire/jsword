@@ -57,7 +57,7 @@ public class ConfigEditorFactory
         try
         {
             ConfigEditor base = (ConfigEditor) ClassUtil.getImplementation(ConfigEditor.class);
-            base.init(config);
+            base.construct(config);
             base.showDialog(parent, al);
         }
         catch (Exception ex)

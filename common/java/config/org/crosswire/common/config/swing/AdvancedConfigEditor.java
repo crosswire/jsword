@@ -46,9 +46,8 @@ import org.crosswire.common.util.Reporter;
  */
 public class AdvancedConfigEditor extends TreeConfigEditor
 {
-    /**
-     * Now this wasn't created with JBuilder but maybe, just maybe, by
-     * calling my method this, JBuilder may grok it.
+	/**
+     * WARNING: this code is not called from anywhere and is probably broken
      */
     protected void jbInit()
     {
@@ -160,7 +159,10 @@ public class AdvancedConfigEditor extends TreeConfigEditor
     public void selectCard()
     {
         Object obj = tree.getLastSelectedPathComponent();
-        if (obj == null) return;
+        if (obj == null)
+        {
+            return;
+        }
 
         title.setText(obj + Msg.PROPERTIES.toString());
 
@@ -197,6 +199,11 @@ public class AdvancedConfigEditor extends TreeConfigEditor
     protected Map comps;
 
     /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3616451198199345203L;
+
+    /**
      * A custom data model for the TreeConfig Tree
      * @author Joe Walker
      */
@@ -224,10 +231,10 @@ public class AdvancedConfigEditor extends TreeConfigEditor
                     }
 
                     // Chop off all after the first dot
-                    int dot_pos = temp.indexOf("."); //$NON-NLS-1$
-                    if (dot_pos != -1)
+                    int dotPos = temp.indexOf("."); //$NON-NLS-1$
+                    if (dotPos != -1)
                     {
-                        temp = temp.substring(0, dot_pos);
+                        temp = temp.substring(0, dotPos);
                     }
 
                     // Add it to the list if needed
@@ -360,5 +367,10 @@ public class AdvancedConfigEditor extends TreeConfigEditor
 
             return comp;
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256720688860576049L;
     }
 }

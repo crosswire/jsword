@@ -1,74 +1,47 @@
-/*
- * Distribution Licence:
- * JSword is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * 
- * See the GNU General Public License for more details.
- * The License is available on the internet at:
- *     http://www.gnu.org/copyleft/gpl.html,
- * or by writing to:
- *     Free Software Foundation, Inc.
- *     59 Temple Place - Suite 330
- *     Boston, MA 02111-1307, USA
- * 
- * The copyright to this program is held by it's authors
- * Copyright: 2004
- */
 package org.crosswire.common.swing;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
 /**
- * The RowTableModel defines the "model" behaviour for
- * a RowTable.
+ * The RowTableModel defines the "model" behaviour for a RowTable.
  * 
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class RowTableModel extends AbstractTableModel
 {
     /**
-     * Field list contains the objects that can be worked upon
-     */
-    private List list;
-
-    /**
-     * Field columnModel provides the definition of the structure
-     * of the table
-     */
-    private RowColumns rowColumnModel;
-
-    /**
-     * Field indexes provides a look-aside for the sorted view of the
-     * table to the row list.
-     */
-    private int[] indexes;
-
-    /**
-     * Field keys provides the primary or composite key of the table.
-     * It is a local optimization of columnModel.getSortKeys().
-     */
-    private int[] keys;
-    /**
-     * Field sortColumn indicates the column that was last sorted upon.
-     * It is initialized the first value in keys, if present otherwise -1
-     */
-    private int sortColumn;
-
-    /**
      * Builds a RowTable model for the provided (non-null) row list,
      * using the provided row column definition.
-     * @param aList List
+     * @param newList List
      */
-    public RowTableModel(List aList, RowColumns aRowColumnModel)
+    public RowTableModel(List newList, RowColumns aRowColumnModel)
     {
-        super();
-        list = aList;
+        list = new ArrayList();
+        list.addAll(newList);
+
         rowColumnModel = aRowColumnModel;
         keys = rowColumnModel.getSortKeys();
         sortColumn = keys[0];
@@ -96,7 +69,7 @@ public class RowTableModel extends AbstractTableModel
     }
 
     /**
-     * Method getValueAt returns the contents of a cell. 
+     * Method getValueAt returns the contents of a cell.
      * @param row int
      * @param column int
      * @return Object
@@ -341,4 +314,37 @@ public class RowTableModel extends AbstractTableModel
         }
     }
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3761126033281463602L;
+
+    /**
+     * Field list contains the objects that can be worked upon
+     */
+    private List list;
+
+    /**
+     * Field columnModel provides the definition of the structure
+     * of the table
+     */
+    private RowColumns rowColumnModel;
+
+    /**
+     * Field indexes provides a look-aside for the sorted view of the
+     * table to the row list.
+     */
+    private int[] indexes;
+
+    /**
+     * Field keys provides the primary or composite key of the table.
+     * It is a local optimization of columnModel.getSortKeys().
+     */
+    private int[] keys;
+
+    /**
+     * Field sortColumn indicates the column that was last sorted upon.
+     * It is initialized the first value in keys, if present otherwise -1
+     */
+    private int sortColumn;
 }

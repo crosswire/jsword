@@ -36,7 +36,7 @@ public interface ConfigEditor
      * Fields that it will display.
      * @param config The configurable settings
      */
-    public void init(Config config);
+    public void construct(Config config);
 
     /**
      * Create a dialog to house a TreeConfig component

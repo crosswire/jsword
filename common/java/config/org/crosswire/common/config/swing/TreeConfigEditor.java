@@ -60,7 +60,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
      * any field initializers will be called AFTER THIS METHOD EXECUTES
      * so don't use field initializers.
      */
-    protected void initialize()
+    protected void initializeGUI()
     {
         JPanel panel = new JPanel();
         JPanel blank = new JPanel();
@@ -247,9 +247,9 @@ public class TreeConfigEditor extends AbstractConfigEditor
     protected CardLayout layout;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3256720688860576049L;
 
     /**
      * A custom data model for the TreeConfig Tree

@@ -52,11 +52,11 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     /* (non-Javadoc)
      * @see org.crosswire.common.config.swing.ConfigEditor#init(org.crosswire.common.config.Config)
      */
-    public void init(Config aConfig)
+    public void construct(Config aConfig)
     {
         this.config = aConfig;
 
-        initialize();
+        initializeGUI();
 
         config.addConfigListener(new ConfigListener()
         {
@@ -121,10 +121,9 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     }
 
     /**
-     * Now this wasn't created with JBuilder but maybe, just maybe, by
-     * calling my method this, JBuilder may grok it.
+     * Create the GUI
      */
-    protected abstract void initialize();
+    protected abstract void initializeGUI();
 
     /**
      * Update the tree structure
