@@ -204,8 +204,7 @@ public class SitePane extends JPanel
             if (path != null)
             {
                 Object last = path.getLastPathComponent();
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
-                BookMetaData name = (BookMetaData) node.getUserObject();
+                BookMetaData name = (BookMetaData) last;
 
                 try
                 {
