@@ -324,6 +324,18 @@ public class GuiUtil
     }
 
     /**
+     * Cause a component to refresh its contents when it is changed
+     * by the program and needs to be redrawn.
+     * @param c the component to refresh
+     */
+    public static void refresh(Component c)
+    {
+        c.invalidate();
+        c.validate();
+        c.repaint();
+    }
+
+    /**
      * A more restricted version of pack() for component responding to live
      * component tweaks.
      * Assuming that the window already has a sensible on screen size, do a
@@ -376,8 +388,7 @@ public class GuiUtil
             win.setSize(win.getSize().width, screenDim.height);
         }
 
-        win.invalidate();
-        win.validate();
+        refresh(win);
 
         // log.log(Level.INFO, "Failure", ex);
         // log.fine("Size was "+orig);
@@ -414,8 +425,7 @@ public class GuiUtil
             win.setSize(win.getSize().width, (int) (screen_dim.height * maxy));
         }
 
-        win.invalidate();
-        win.validate();
+        refresh(win);
 
         // log.log(Level.INFO, "Failure", ex);
         // log.fine("Size was "+orig);

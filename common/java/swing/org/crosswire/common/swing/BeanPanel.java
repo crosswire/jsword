@@ -124,8 +124,7 @@ public class BeanPanel extends JPanel
             }
         }
 
-        invalidate();
-        repaint();
+        GuiUtil.refresh(this);
     }
 
     /**

@@ -26,6 +26,7 @@ import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.WorkEvent;
 import org.crosswire.common.progress.WorkListener;
+import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -175,7 +176,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         jobsPanel.add(label, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
         jobsPanel.add(progress, new GridBagConstraints(1, i, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         jobsPanel.add(cancel, new GridBagConstraints(2, i, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-        this.revalidate();
+        GuiUtil.refresh(this);
 
         JobData jobdata = new JobData(job, i, label, progress, cancel);
         jobs.put(job, jobdata);
@@ -218,7 +219,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         jobsPanel.remove(jobdata.getProgress());
         jobsPanel.remove(jobdata.getCancel());
 
-        this.revalidate();
+        GuiUtil.refresh(this);
 
         jobdata.invalidate();
     }
@@ -229,7 +230,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     protected void addEmptyLabel()
     {
         jobsPanel.add(noJobLabel, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-        this.revalidate();
+        GuiUtil.refresh(this);
     }
 
     /**
@@ -238,7 +239,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     protected void removeEmptyLabel()
     {
         jobsPanel.remove(noJobLabel);
-        this.revalidate();
+        GuiUtil.refresh(this);
     }
 
     /**

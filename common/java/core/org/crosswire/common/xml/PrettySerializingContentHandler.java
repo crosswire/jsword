@@ -146,24 +146,24 @@ public class PrettySerializingContentHandler implements ContentHandler
     public void endElement(String uri, String localname, String qname)
     {
         depth--;
-//      Java cannot display empty tags <tag/>
-//        if (pendingEndTag)
-//        {
-//            if (formatting.isAnalytic() && depth > 0)
-//            {
-//                emitWhitespace(depth - 1);
-//            }
+//      Java cannot display empty tags <tag/> so most of the following is commented out
+        if (pendingEndTag)
+        {
+            if (formatting.isAnalytic() && depth > 0)
+            {
+                emitWhitespace(depth - 1);
+            }
 //
 //            // Hack alert JTextPane cannot handle <br/>
 //            if (localname.equalsIgnoreCase("br")) //$NON-NLS-1$
 //            {
-//                write(getTagEnd());
+                write(getTagEnd());
 //            }
 //            else
 //            {
 //                write(getEmptyTagEnd());
 //            }
-//        }
+        }
 //        else
 //        {
             if (formatting.isClassic())

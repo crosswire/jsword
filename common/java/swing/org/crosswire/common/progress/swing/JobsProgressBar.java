@@ -143,7 +143,7 @@ public class JobsProgressBar extends JPanel implements WorkListener, PropertyCha
         }
 
         this.add(jobdata.getComponent(), i);
-        this.revalidate();
+        GuiUtil.refresh(this);
     }
 
     public void propertyChange(PropertyChangeEvent evt)
@@ -179,7 +179,7 @@ public class JobsProgressBar extends JPanel implements WorkListener, PropertyCha
         log.debug("removing job from panel: " + jobdata.getJob().getJobDescription()); //$NON-NLS-1$
 
         this.remove(jobdata.getComponent());
-        this.revalidate();
+        GuiUtil.refresh(this);
         jobdata.invalidate();
     }
 
