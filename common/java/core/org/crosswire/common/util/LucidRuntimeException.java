@@ -39,7 +39,7 @@ public class LucidRuntimeException extends RuntimeException
 {
     /**
      * All LucidRuntimeException are constructed with references to resources in
-     * an I18N properties file.
+     * an i18n properties file.
      * @param msg The resource id to read
      */
     public LucidRuntimeException(MsgBase msg)
@@ -49,7 +49,7 @@ public class LucidRuntimeException extends RuntimeException
 
     /**
      * All LucidRuntimeException are constructed with references to resources in
-     * an I18N properties file.
+     * an i18n properties file.
      * @param msg The resource id to read
      */
     public LucidRuntimeException(MsgBase msg, Throwable cause)
@@ -59,7 +59,7 @@ public class LucidRuntimeException extends RuntimeException
 
     /**
      * All LucidRuntimeException are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
+     * an i18n properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
      */
@@ -70,7 +70,7 @@ public class LucidRuntimeException extends RuntimeException
 
     /**
      * All LucidRuntimeException are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
+     * an i18n properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
      */
@@ -83,7 +83,7 @@ public class LucidRuntimeException extends RuntimeException
 
     /**
      * We only unravel the message when we need to to save time
-     * @return The unraveled I18N string
+     * @return The unraveled i18n string
      */
     public String getMessage()
     {

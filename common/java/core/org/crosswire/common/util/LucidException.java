@@ -19,7 +19,7 @@ import java.text.MessageFormat;
  * created with an almost random string in the message field, LucidExceptions
  * define this string to be a key into a resource bundle, and to help formatting
  * this string there is an optional Object array of format options. There is
- * a constructor that allows us to specify no I18N lookup, which is useful
+ * a constructor that allows us to specify no i18n lookup, which is useful
  * if this lookup may have been done already.</p>
  *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -48,7 +48,7 @@ public class LucidException extends Exception
 {
     /**
      * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
+     * an i18n properties file.
      * @param msg The resource id to read
      */
     public LucidException(MsgBase msg)
@@ -58,7 +58,7 @@ public class LucidException extends Exception
 
     /**
      * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file.
+     * an i18n properties file.
      * @param msg The resource id to read
      */
     public LucidException(MsgBase msg, Throwable cause)
@@ -68,7 +68,7 @@ public class LucidException extends Exception
 
     /**
      * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
+     * an i18n properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
      */
@@ -79,7 +79,7 @@ public class LucidException extends Exception
 
     /**
      * All LucidExceptions are constructed with references to resources in
-     * an I18N properties file. This version allows us to add parameters
+     * an i18n properties file. This version allows us to add parameters
      * @param msg The resource id to read
      * @param params An array of parameters
      */
@@ -92,7 +92,7 @@ public class LucidException extends Exception
 
     /**
      * We only unravel the message when we need to to save time
-     * @return The unraveled I18N string
+     * @return The unraveled i18n string
      */
     public String getMessage()
     {
@@ -116,7 +116,7 @@ public class LucidException extends Exception
 
     /**
      * Accessor of the full detailed version of the string
-     * @return The full unraveled I18N string
+     * @return The full unraveled i18n string
      */
     public String getDetailedMessage()
     {
