@@ -5,10 +5,25 @@
 
 <h1>Download</h1>
 
-<h3>Latest Releases</h3>
+<h3>Official Releases</h3>
 <p>
-Until we have a beta sorted out properly, all access to the source 
-is via CVS. There are CVS access instruction on the
+The first beta release is due out soon, pending completion of the
+Sword drivers.
+</p>
+
+<!--
+<h3>Nightly Releases</h3>
+<p>
+Regular releases on hold pendingare made and stored for a short time:
+<%
+File f = new File("@DOWNLOAD@/nightly");
+%>
+</p>
+-->
+
+<h3>CVS Access</h3>
+<p>
+The most up to date access is via CVS. There are CVS access instruction on the
 <a href="devt.jsp">Getting Involved</a> page.
 </p>
 

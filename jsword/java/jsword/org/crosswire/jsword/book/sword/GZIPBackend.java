@@ -90,9 +90,11 @@ public class GZIPBackend implements Backend
 
             try
             {
-                idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "zs", "r");
-                text_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "zz", "r");
-                comp_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "zv", "r");
+                String allbutlast = path + File.separator + "ot." + UNIQUE_INDEX_ID[blockType] + "z";
+
+                idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "s", "r");
+                text_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "z", "r");
+                comp_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(allbutlast + "v", "r");
             }
             catch (FileNotFoundException ex)
             {
@@ -102,12 +104,11 @@ public class GZIPBackend implements Backend
 
             try
             {
-                idx_raf[1] = new RandomAccessFile(path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "zs", "r");
-                text_raf[1] = new RandomAccessFile(path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "zz", "r");
-                comp_raf[1] = new RandomAccessFile(path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "zv", "r");
+                String allbutlast = path + File.separator + "nt." + UNIQUE_INDEX_ID[blockType] + "z";
 
-                idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt.vss", "r");
-                text_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + File.separator + "nt", "r");
+                idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "s", "r");
+                text_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "z", "r");
+                comp_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(allbutlast + "v", "r");
             }
             catch (FileNotFoundException ex)
             {
@@ -143,36 +144,57 @@ public class GZIPBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
      */
-    public byte[] getRawText(Verse v) throws BookException
+    public byte[] getRawText(Verse verse) throws BookException
     {
         try
         {
-            VerseIndex vi = new VerseIndex(v);
+            VerseIndex vi = new VerseIndex(verse);
 
             // 10 because we the index is 10 bytes long for each verse
             byte[] temp = SwordUtil.readRAF(comp_raf[vi.getTestament()], vi.getIndex() * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
             // The data is little endian - extract the start, size and endsize
-            int buffernum = (int) SwordUtil.decodeLittleEndian32(temp, 0);
+            int buffernum = SwordUtil.decodeLittleEndian32AsInt(temp, 0);
 
             // These 2 bits of data are never read.
-            //  long start = decodeLittleEndian32(temp, 4);
-            //  int size = decodeLittleEndian16(temp, 8);
+            int bstart = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
+            int bsize = SwordUtil.decodeLittleEndian16(temp, 8);
+            log.debug("for "+verse.getName()+" bstart="+bstart+", bsize="+bsize);
 
-            // Then seek using this index into the idx file
-            temp = SwordUtil.readRAF(idx_raf[vi.getTestament()], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+            // Can we get the data from the cache
+            byte[] uncompr = null;
+            if (buffernum == lastbuffernum)
+            {
+                uncompr = lastuncompr;
+                log.debug("cache hit on buffernum="+buffernum);
+            }
+            else
+            {
+                // Then seek using this index into the idx file
+                temp = SwordUtil.readRAF(idx_raf[vi.getTestament()], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
 
-            long start = SwordUtil.decodeLittleEndian32(temp, 0);
-            int size = (int) SwordUtil.decodeLittleEndian32(temp, 4);
-            int endsize = (int) SwordUtil.decodeLittleEndian32(temp, 8);
+                long start = SwordUtil.decodeLittleEndian32(temp, 0);
+                int size = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
+                int endsize = SwordUtil.decodeLittleEndian32AsInt(temp, 8);
 
-            // Read from the data file.
-            byte[] compressed = SwordUtil.readRAF(text_raf[vi.getTestament()], start, size);
+                // Read from the data file.
+                byte[] compressed = SwordUtil.readRAF(text_raf[vi.getTestament()], start, size);
 
-            // PENDING(joe): implement encryption?
-            // rawZFilter(pcCompText, ulCompSize, 0); // 0 = decipher
+                // PENDING(joe): implement encryption?
+                // byte[] decrypted = decrypt(compressed);
 
-            return uncompress(compressed, endsize);
+                uncompr = uncompress(compressed, endsize);
+
+                // cache the uncompressed data for next time
+                lastbuffernum = buffernum;
+                lastuncompr = uncompr;
+            }
+
+            // and cut out the required section.
+            byte[] chopped = new byte[bsize];
+            System.arraycopy(uncompr, bstart, chopped, 0, bsize);
+
+            return chopped;
 
             /* The code converted from Sword looked like this, but we can do better
             // buffer number
@@ -233,10 +255,13 @@ public class GZIPBackend implements Backend
         return uncompressed;
     }
 
+    private int lastbuffernum = -1;
+    private byte[] lastuncompr = null;
+
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(SwordConfig.class);
+    protected static Logger log = Logger.getLogger(GZIPBackend.class);
 
     /**
      * The array of index files

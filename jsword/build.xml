@@ -22,7 +22,9 @@
   <property name="target.jar" value="${target.root}/temp/jar"/>
   <property name="target.jdepend" value="${target.root}/temp/jdepend"/>
   <property name="target.javancss" value="${target.root}/temp/javancss"/>
-  <property name="target.deploy" value="${target.root}/deploy/jsword"/>
+  <property name="target.deploy" value="${target.root}/deploy"/>
+  <property name="target.swingui" value="${target.deploy}/jsword"/>
+  <property name="target.download" value="${target.deploy}/download"/>
   <property name="target.web" value="${target.root}/web"/>
   <property name="target.jnlp" value="${target.web}/jnlp"/>
   <property name="target.junit" value="${target.root}/junit"/>
@@ -30,7 +32,7 @@
 
   <property name="jnlp.alias" value="test builds"/>
   <property name="jnlp.password" value="p455w0rd"/>
-  <property name="product.version" value="0.9.1"/>
+  <property name="product.version" value="0.9.5"/>
   <!-- override this with -Djnlp.hostname=www.crosswire.org to build in live -->
   <property name="jnlp.hostname" value="localhost:8080"/>
 
@@ -90,7 +92,7 @@
       <src path="${gener.root}/osis"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="*.jar"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -141,7 +143,7 @@
       <src path="${source.java}/${section}"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="*.jar"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
     </javac>
     <mkdir dir="${target.classes}/resource"/>
@@ -164,7 +166,7 @@
       <src path="${gener.root}/config"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="*.jar"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
     </javac>
   </target>
@@ -184,92 +186,52 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="deploy" depends="jar" description="Build a ready to ship/test app">
-    <mkdir dir="${target.deploy}/bin"/>
-    <copy todir="${target.deploy}/bin">
+  <target name="swingui" depends="jar" description="Build a ready to ship/test app">
+    <mkdir dir="${target.swingui}/bin"/>
+    <copy todir="${target.swingui}/bin">
       <fileset dir="${source.bin}"/>
     </copy>
     <chmod perm="a+x">
-      <fileset dir="${target.deploy}">
+      <fileset dir="${target.swingui}">
         <include name="*.sh"/>
       </fileset>
     </chmod>
-    <mkdir dir="${target.deploy}/lib"/>
-    <copy todir="${target.deploy}/lib">
-      <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
-      <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-      <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
-      <fileset dir="${source.jar}/lang101" includes="*.jar"/>
-      <fileset dir="${source.jar}/xalan25d1" includes="*.jar"/>
+    <mkdir dir="${target.swingui}/lib"/>
+    <copy todir="${target.swingui}/lib">
+      <fileset dir="${source.jar}/jdom08" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/jlf10" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/xalan25d1" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10b">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-ri.jar"/>
         <include name="jaxb-libs.jar"/>
       </fileset>
-      <fileset dir="${target.jar}" includes="*.jar"/>
+      <fileset dir="${target.jar}" includes="**/*.jar"/>
     </copy>
-    <mkdir dir="${target.deploy}/resource"/>
-    <copy todir="${target.deploy}/resource">
+    <mkdir dir="${target.swingui}/resource"/>
+    <copy todir="${target.swingui}/resource">
       <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </copy>
-    <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.deploy}/resource"/>
+    <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.swingui}/resource"/>
   </target>
 
   <!--=======================================================================-->
-  <target name="release">
-    <buildnumber/>
-    <antcall target="release.version">
-      <param name="version" value="build${build.number}"/>
-    </antcall>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="release.final">
-    <antcall target="release.version">
-      <param name="version" value="${product.version}"/>
-    </antcall>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="release.version" depends="deploy">
-    <echo message="Building release ${version}"/>
-    <!-- source packages -->
-    <zip zipfile="${target.deploy}/jsword-${version}-src.zip">
-      <zipfileset prefix="source" dir="${source.root}">
-        <exclude name="${target.root}/**"/>
-        <exclude name="${notes.root}/**"/>
-      </zipfileset>
-    </zip>
-    <tar tarfile="${target.deploy}/jsword-${version}-src.tar.gz" compression="gzip">
-      <tarfileset prefix="source" dir="${source.root}">
-        <exclude name="${target.root}/**"/>
-        <exclude name="${notes.root}/**"/>
-      </tarfileset>
-    </tar>
-    <!-- binary packages -->
-    <zip zipfile="${target.deploy}/jsword-${version}-bin.zip">
-      <fileset dir="${target.deploy}/jsword"/>
-    </zip>
-    <tar tarfile="${target.deploy}/jsword-${version}-bin.tar.gz" compression="gzip">
-      <tarfileset dir="${target.deploy}/jsword"/>
-    </tar>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="test" depends="compile" description="Run the standard test suite">
+  <target name="test" depends="swingui" description="Run the standard test suite">
     <mkdir dir="${target.junit}"/>
     <echo message="If this fails you might need to:"/>
     <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar {ANT}/lib"/>
     <!-- Why does this not work?
     <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
       <classpath>
-        <fileset dir="${source.jar}/junit381" includes="*.jar"/>
+        <fileset dir="${source.jar}/junit381" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     -->
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
-      <jvmarg value="-Djsword.bible.dir=${basedir}/${target.deploy}/resource"/>
+      <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
       <test name="JSwordAllTests" todir="${target.junit}"/>
       <test name="MapAllTests" todir="${target.junit}"/>
@@ -288,7 +250,7 @@
         <pathelement path="${target.classes}/maptest"/>
         <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/swordtest"/>
-        <pathelement path="${target.deploy}/resource"/>
+        <pathelement path="${target.swingui}/resource"/>
       </classpath>
     </junit>
   </target>
@@ -298,7 +260,7 @@
     <!--
     <taskdef name="junitreport" classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
       <classpath>
-        <fileset dir="${source.jar}/junit381" includes="*.jar"/>
+        <fileset dir="${source.jar}/junit381" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     -->
@@ -313,22 +275,25 @@
   <!--=======================================================================-->
   <target name="web.files" depends="jar, jnlp.deploy" description="Copy the file based documentation">
     <mkdir dir="${target.web}"/>
-    <copy todir="${target.web}">
+    <copy todir="${target.web}" filtering="true">
+      <filterset>
+        <filter token="DOWNLOAD" value="${target.download}"/>
+      </filterset>
       <fileset dir="${source.web}"/>
     </copy>
     <mkdir dir="${target.web}/WEB-INF/lib"/>
     <copy todir="${target.web}/WEB-INF/lib">
-      <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
-      <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-      <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
-      <fileset dir="${source.jar}/lang101" includes="*.jar"/>
-      <fileset dir="${source.jar}/xalan25d1" includes="*.jar"/>
+      <fileset dir="${source.jar}/jdom08" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/jlf10" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/xalan25d1" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10b">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-ri.jar"/>
         <include name="jaxb-libs.jar"/>
       </fileset>
-      <fileset dir="${target.jar}" includes="*.jar"/>
+      <fileset dir="${target.jar}" includes="**/*.jar"/>
     </copy>
     <mkdir dir="${target.web}/WEB-INF/classes"/>
     <copy todir="${target.web}/WEB-INF/classes">
@@ -380,23 +345,18 @@
       <header>JSword</header>
       <footer>Copyright &#168; 2002</footer>
       <classpath>
-        <fileset dir="${source.jar}" includes="*.jar"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
       <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.web}/javadoc"/>
     </javadoc>
   </target>
 
   <!--=======================================================================-->
-  <target name="analysis" depends="jdepend, pmd, javancss, java2html">
-    <!-- I've taken cpd out because it is very slow and not that useful -->
-  </target>
-
-  <!--=======================================================================-->
-  <target name="java2html" depends="init" description="HTML versions of the java code">
+  <target name="web.java2html" depends="init" description="HTML versions of the java code">
     <mkdir dir="${target.web}/java2html"/>
     <java fork="true" classname="j2h" output="${target.web}/java2html/output.txt">
       <classpath>
-        <fileset dir="${source.tools}/java2html12" includes="*.jar"/>
+        <fileset dir="${source.tools}/java2html12" includes="**/*.jar"/>
       </classpath>
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/common"/>
@@ -423,7 +383,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jdepend" depends="jar">
+  <target name="web.jdepend" depends="jar">
     <mkdir dir="${target.jdepend}"/>
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to:"/>
@@ -431,26 +391,23 @@
     <!-- Why does this not work?
     <taskdef name="jdepend" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
       <classpath>
-        <fileset dir="${source.tools}/jdepend26" includes="*.jar"/>
+        <fileset dir="${source.tools}/jdepend26" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     -->
     <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml">
       <sourcespath>
-        <pathelement location="${source.java}/common"/>
-        <pathelement location="${source.java}/jsword"/>
-        <pathelement location="${source.java}/servlet"/>
-        <pathelement location="${source.java}/swing"/>
-        <pathelement location="${source.java}/sword"/>
-        <pathelement location="${source.java}/map"/>
+        <pathelement path="${source.java}/common"/>
+        <pathelement path="${source.java}/jsword"/>
+        <pathelement path="${source.java}/servlet"/>
+        <pathelement path="${source.java}/swing"/>
+        <pathelement path="${source.java}/sword"/>
+        <pathelement path="${source.java}/map"/>
       </sourcespath>
       <classpath>
-        <pathelement path="${target.classes}/common"/>
-        <pathelement path="${target.classes}/jsword"/>
-        <pathelement path="${target.classes}/servlet"/>
-        <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/map"/>
-        <pathelement path="${target.classes}/sword"/>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+        <fileset dir="${source.tools}" includes="**/*.jar"/>
       </classpath>
     </jdepend>
     <style
@@ -461,10 +418,10 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="pmd">
+  <target name="web.pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
-        <fileset dir="${source.tools}/pmd104" includes="*.jar"/>
+        <fileset dir="${source.tools}/pmd104" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.web}/pmd"/>
@@ -484,7 +441,7 @@
     <mkdir dir="${target.web}/cpd"/>
     <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
       <classpath>
-        <fileset dir="${source.tools}/pmd104" includes="*.jar"/>
+        <fileset dir="${source.tools}/pmd104" includes="**/*.jar"/>
       </classpath>
       <arg value="100"/>
       <arg value="${source.java}"/>
@@ -492,10 +449,10 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="javancss">
+  <target name="web.javancss">
     <taskdef name="javancss" classname="javancss.JavancssAntTask">
       <classpath>
-        <fileset dir="${source.tools}/javancss2141" includes="*.jar"/>
+        <fileset dir="${source.tools}/javancss2141" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.javancss}"/>
@@ -595,11 +552,68 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web" depends="web.files, web.javadoc, web.testreport, analysis" description="All the documentation tasks">
+  <target name="web.analysis" depends="web.jdepend, web.pmd, web.javancss, web.java2html">
+    <!-- I've taken cpd out because it is very slow and not that useful -->
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean, web" description="Run a full clean/build/deploy/test cycle">
+  <target name="web" depends="web.files, web.javadoc, web.testreport, web.analysis" description="All the documentation tasks">
+  </target>
+
+  <!--=======================================================================-->
+  <target name="release">
+    <tstamp>
+      <format property="today" pattern="yyyyMMdd"/>
+    </tstamp>
+    <antcall target="release.version">
+      <param name="version" value="${today}"/>
+      <param name="directory" value="${target.download}/nightly"/>
+    </antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="release.final">
+    <antcall target="release.version">
+      <param name="version" value="${product.version}"/>
+      <param name="directory" value="${target.download}/release"/>
+    </antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="release.version" depends="swingui, web">
+    <echo message="Building release ${version} to ${directory}"/>
+    <!-- source packages -->
+    <mkdir dir="${directory}"/>
+    <zip zipfile="${directory}/jsword-${version}-src.zip">
+      <zipfileset prefix="jsword-${version}" dir="${source.root}">
+        <exclude name="target/**"/>
+        <exclude name="notes/**"/>
+      </zipfileset>
+    </zip>
+    <tar tarfile="${directory}/jsword-${version}-src.tar.gz" compression="gzip">
+      <tarfileset prefix="jsword-${version}" dir="${source.root}">
+        <exclude name="target/**"/>
+        <exclude name="notes/**"/>
+      </tarfileset>
+    </tar>
+    <!-- binary packages -->
+    <zip zipfile="${directory}/jsword-${version}-bin.zip">
+      <zipfileset prefix="jsword-${version}" dir="${target.swingui}"/>
+    </zip>
+    <tar tarfile="${directory}/jsword-${version}-bin.tar.gz" compression="gzip">
+      <tarfileset prefix="jsword-${version}" dir="${target.swingui}"/>
+    </tar>
+    <!-- documentation packages -->
+    <zip zipfile="${directory}/jsword-${version}-doc.zip">
+      <zipfileset prefix="jsword-${version}" dir="${target.web}"/>
+    </zip>
+    <tar tarfile="${directory}/jsword-${version}-doc.tar.gz" compression="gzip">
+      <tarfileset prefix="jsword-${version}" dir="${target.web}"/>
+    </tar>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="all" depends="clean, release" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->

@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -87,10 +89,12 @@ public class SwordBible extends AbstractBible
                 while (vit.hasNext())
                 {
                     Verse verse = (Verse) vit.next();
-                    String text = getText(verse);
     
                     li.startVerse(verse);
+
+                    String text = getText(verse);
                     config.getFilter().toOSIS(li, text);
+
                     li.endVerse();
                 }
     
@@ -115,7 +119,19 @@ public class SwordBible extends AbstractBible
     public String getText(Verse verse) throws BookException
     {
         // We should probably think about encodings here?
-        return new String(backend.getRawText(verse));
+        byte[] data = backend.getRawText(verse);
+
+        try
+        {
+            FileOutputStream debug = new FileOutputStream("c:\\debug.txt");
+            debug.write(data);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return new String(data);
     }
 
     /* (non-Javadoc)

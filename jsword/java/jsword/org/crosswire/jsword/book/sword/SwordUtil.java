@@ -4,6 +4,8 @@ package org.crosswire.jsword.book.sword;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import org.apache.log4j.Logger;
+
 /**
  * Various utilities used by different Sword classes.
  * 
@@ -68,6 +70,24 @@ public class SwordUtil
      * @param offset the offset into the array
      * @return long
      */
+    protected static int decodeLittleEndian32AsInt(byte[] data, int offset)
+    {
+        long result = decodeLittleEndian32(data, offset);
+
+        if (result > Integer.MAX_VALUE)
+        {
+            log.warn("loss of precision converting to integer from "+result+" to "+((int) result));
+        }
+
+        return (int) result;
+    }
+
+    /**
+     * Decode little endian data from a byte array
+     * @param data the byte[] from which to read 4 bytes
+     * @param offset the offset into the array
+     * @return long
+     */
     protected static int decodeLittleEndian16(byte[] data, int offset)
     {        
         int byte1 = SwordUtil.un2complement(data[0+offset]);
@@ -83,4 +103,9 @@ public class SwordUtil
     {
         return data >= 0 ? data : 256 + data;
     }
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(SwordUtil.class);
 }
