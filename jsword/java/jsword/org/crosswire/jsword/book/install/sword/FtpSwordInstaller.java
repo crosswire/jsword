@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +88,26 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         }
     }
 
+    public URL toURL(BookMetaData bmd)
+    {
+        if (!(bmd instanceof SwordBookMetaData))
+        {
+            assert false;
+            return null;
+        }
+
+        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
+
+	    try
+        {
+            return new URL("ftp://ftp.crosswire.org/pub/sword/packages/rawzip/" + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
+        }
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
+	}
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(java.lang.String)
      */
@@ -101,13 +122,10 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         // Is the book already installed? Then nothing to do.
         if (Books.installed().getBookMetaData(bmd.getName()) != null)
         {
-            Reporter.informUser(this, Msg.INSTALLED, bmd.getName());
             return;
         }
 
         final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        Reporter.informUser(this, Msg.INSTALLING, sbmd.getName());
 
         // So now we know what we want to install - all we need to do
         // is installer.install(name) however we are doing it in the
@@ -145,9 +163,6 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
                     sbmd.save(configurl);
 
                     SwordBookDriver.registerNewBook(sbmd, dldir);
-
-                    // inform the user that we are done
-                    Reporter.informUser(this, Msg.INSTALL_DONE, sbmd.getName());
                 }
                 catch (Exception ex)
                 {
@@ -662,4 +677,9 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
      * The log stream
      */
     private static final Logger log = Logger.getLogger(FtpSwordInstaller.class);
+
+    /**
+     * The suffix of zip modules on this server
+     */
+    private static final String ZIP_SUFFIX = ".zip"; //$NON-NLS-1$
 }

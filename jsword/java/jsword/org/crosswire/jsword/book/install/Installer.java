@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.install;
 
+import java.net.URL;
 import java.util.List;
 
 import org.crosswire.jsword.book.BookList;
@@ -67,4 +68,10 @@ public interface Installer extends BookList
      * @param bmd The module to install
      */
     public void install(BookMetaData bmd) throws InstallException;
+
+    /**
+     * @param bmd
+     * @return the url for the BookMetaData
+     */
+    public URL toURL(BookMetaData bmd);
 }

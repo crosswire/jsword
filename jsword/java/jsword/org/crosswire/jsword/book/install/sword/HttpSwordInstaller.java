@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -188,7 +189,6 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
             File f = File.createTempFile("swd", "zip"); //$NON-NLS-1$ //$NON-NLS-2$
             out = new FileOutputStream(f);
             URLConnection urlConnection = zipurl.openConnection();
-            log.debug("The file size is " + urlConnection.getContentLength()); //$NON-NLS-1$
             in = urlConnection.getInputStream();
             byte[] buf = new byte[4096];
             for (int count = 0; -1 != (count = in.read(buf)); )
@@ -196,14 +196,12 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                 out.write(buf, 0, count);
             }
             // unpack the zip.
-            log.debug("The file is downlaoded!"); //$NON-NLS-1$
             ZipFile zf = new ZipFile(f);
             Enumeration entries = zf.entries();
             while (entries.hasMoreElements())
             {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
                 String entrypath = entry.getName();
-                log.debug("entry is called " + entrypath); //$NON-NLS-1$
                 String filename = entrypath.substring(entrypath.lastIndexOf('/') + 1);
                 URL child = NetUtil.lengthenURL(destdir, filename);
                 OutputStream dataOut = NetUtil.getOutputStream(child);
@@ -260,13 +258,10 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         // Is the book already installed? Then nothing to do.
         if (Books.installed().getBookMetaData(bmd.getName()) != null)
         {
-            Reporter.informUser(this, Msg.INSTALLED, bmd.getName());
             return;
         }
 
         final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        Reporter.informUser(this, Msg.INSTALLING, sbmd.getName());
 
         // So now we know what we want to install - all we need to do
         // is installer.install(name) however we are doing it in the
@@ -301,9 +296,6 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                     sbmd.save(configurl);
 
                     SwordBookDriver.registerNewBook(sbmd, dldir);
-
-                    // inform the user that we are done
-                    Reporter.informUser(this, Msg.INSTALL_DONE, sbmd.getName());
                 }
                 catch (Exception ex)
                 {
@@ -321,6 +313,26 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         worker.setPriority(Thread.MIN_PRIORITY);
         worker.start();
     }
+
+    public URL toURL(BookMetaData bmd)
+    {
+        if (!(bmd instanceof SwordBookMetaData))
+        {
+            assert false;
+            return null;
+        }
+
+        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
+
+	    try
+        {
+            return new URL("http://" + host + directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
+        }
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
+	}
 
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)

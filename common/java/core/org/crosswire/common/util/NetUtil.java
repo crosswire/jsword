@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -497,6 +498,24 @@ public class NetUtil
         }
 
         return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * @param url the resource whose size is wanted
+     * @return the size of that resource
+     */
+    public static int getSize(URL url)
+    {
+        try
+        {
+            URLConnection urlConnection = url.openConnection();
+            int size = urlConnection.getContentLength();
+            return size;
+        }
+        catch (IOException e)
+        {
+            return 0;
+        }
     }
 
     /**
