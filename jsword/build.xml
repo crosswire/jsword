@@ -800,8 +800,8 @@
   <target name="antlibs" description="Copy required jars to ant/lib">
     <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar to ${ant.home}/lib"/>
     <copy file="${source.jar}/junit381/junit.jar" todir="${ant.home}/lib"/>
-    <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar"/>
-    <copy file="${support.tools}/jdepend24/jdepend.jar" todir="${ant.home}/lib"/>
+    <echo message="copy ${basedir}/${support.tools}/jdepend26/jdepend.jar"/>
+    <copy file="${support.tools}/jdepend26/jdepend.jar" todir="${ant.home}/lib"/>
   </target>
 
   <!--=======================================================================-->
