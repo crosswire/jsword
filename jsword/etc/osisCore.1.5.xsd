@@ -1010,13 +1010,16 @@
 </xs:element>
 
 <xs:element name="milestone">
-    <xs:complexType>
+  <xs:complexType>
     <xs:attributeGroup ref="globalWithoutType"/>
     <xs:attribute name="canonical" type="xs:boolean" use="optional"/>
     <xs:attribute name="type" type="milestonePt"/>
     <xs:attribute name="TEIform" fixed="milestone"/>
-    </xs:complexType>
+  </xs:complexType>
 </xs:element>
+
+
+<resp type="strongsMarkup" name="pdy" date="2003-01-19-19:40"/>
 
 <xs:element name="milestoneEnd">
     <xs:complexType>
