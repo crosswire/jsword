@@ -5,24 +5,17 @@ import java.net.URL;
 import java.util.Date;
 
 /**
- * A Version represents a method of translating the Bible. All Bibles with
- * the same Version should return identical text for any call to
+ * A BookMetaData represents a method of translating the Bible. All Bibles with
+ * the same BookMetaData should return identical text for any call to
  * <code>Bible.getText(VerseRange)</code>. The implication of this is that
  * there may be many instances of the Version "NIV", as there are several
  * different versions of the NIV - Original American-English, Anglicized,
  * and Inclusive Language editions at least.
  *
- * <p>Versions like Strings must be compared using <code>.equals()<code>
+ * <p>BookMetaData like Strings must be compared using <code>.equals()<code>
  * instead of ==. A Bible must have the ability to handle a version
  * unknown to JSword. So Bibles must be able to add versions to the
  * system, and the system must cope with versions that already exist.</p>
- *
- * <p>I recommend that all Versions are created by the Bibles class and
- * not using <code>new Version()</code> or <code>new BasicVersion()</code>
- * because implementations of Bible should not all need to know all the
- * ins and outs of the versions that they provide because that would mean
- * lots of duplication of data - a centralized store of fine details would
- * be better.</p>
  *
  * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
  * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
@@ -102,7 +95,7 @@ public interface BookMetaData
      * open like the NET version.
      * @return A STATUS_* constant
      */
-    public int getOpenness();
+    public Openness getOpenness();
 
     /**
      * Not sure about this one - Do we need a way of getting at the dist.
@@ -111,34 +104,4 @@ public interface BookMetaData
      * @return String detailing the users right to distribute this version
      */
     public URL getLicence();
-
-    /**
-     * We have no way of knowing exactly how many words there are in a Version ...
-     */
-    //public static final int GUESS_WORDS = 18500;
-
-    /**
-     * If the data of unknown distribution status
-     */
-    public static final int STATUS_UNKNOWN = -1;
-
-    /**
-     * If the data free of copyright restrictions
-     */
-    public static final int STATUS_PD = 0;
-
-    /**
-     * Does the data have a licence that permits free use
-     */
-    public static final int STATUS_FREE = 1;
-
-    /**
-     * Is the data freely redistributable
-     */
-    public static final int STATUS_COPYABLE = 2;
-
-    /**
-     * Is the data sold for commercial profit
-     */
-    public static final int STATUS_COMMERCIAL = 3;
 }

@@ -241,7 +241,6 @@ public class PassageTally extends AbstractPassage
         try
         {
             OrderedVerseIterator it = new OrderedVerseIterator();
-            Verse current = null;
             int count = 0;
 
             while (it.hasNext() && count < max_count)
@@ -249,7 +248,6 @@ public class PassageTally extends AbstractPassage
                 Verse verse = (Verse) it.next();
                 retcode.append(verse.getName()+" ("+(100*it.lastRank()/max)+"%)");
 
-                current = verse;
                 count++;
 
                 if (it.hasNext() && count < max_count)

@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book.ser;
 
-import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.config.CacheBiblesChoice;
 import org.crosswire.jsword.book.config.DriversChoice;
 import org.crosswire.jsword.book.raw.config.CacheDataChoice;
@@ -9,7 +8,6 @@ import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.config.FileChoice;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.config.DisplayExceptionChoice;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
 import org.crosswire.common.swing.config.ShelfExceptionChoice;
 import org.crosswire.common.swing.config.SourcePathChoice;
 import org.crosswire.common.util.Reporter;
@@ -53,7 +51,6 @@ public class SerUtil
         {
             Project.init("jbuilder");
 
-            LookAndFeelChoices plaf_class = new LookAndFeelChoices();
             Config config = new Config("Tool Shed Options");
             config.add("Bibles.Cache Versions", new CacheBiblesChoice());
             config.add("Bibles.Raw.Cache Data", new CacheDataChoice());
@@ -71,8 +68,7 @@ public class SerUtil
             config.setProperties(Project.resource().getProperties("Tools"));
             config.localToApplication(true);
 
-            SerBible ser = (SerBible) Bibles.getBible("av-ser");
-
+            // SerBible ser = (SerBible) Bibles.getBible("av-ser");
             // ser.convert();
         }
         catch (Exception ex)

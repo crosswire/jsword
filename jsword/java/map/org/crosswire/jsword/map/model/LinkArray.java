@@ -90,8 +90,7 @@ public class LinkArray implements Serializable
             ref.add(verse);
             BibleData data = bible.getData(ref);
 
-            // @todo: convert the BibleData to plain text
-            String text = "";
+            String text = data.getPlainText();
 
             PassageTally tally = engine.bestMatch(text);
 

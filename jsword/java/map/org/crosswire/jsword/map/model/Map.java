@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.LogicError;
 
@@ -45,18 +44,10 @@ public class Map implements Serializable
         this.dimensions = dimensions;
         this.nodes = new Position[Books.versesInBible()];
 
-        try
+        // Create the array of Nodes
+        for (int i=1; i<=Books.versesInBible(); i++)
         {
-            // Create the array of Nodes
-            for (int i=1; i<=Books.versesInBible(); i++)
-            {
-                Verse verse = new Verse(i);
-                nodes[i-1] = new Position(new float[dimensions]);
-            }
-        }
-        catch (NoSuchVerseException ex)
-        {
-            throw new LogicError(ex);
+            nodes[i-1] = new Position(new float[dimensions]);
         }
     }
 

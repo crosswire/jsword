@@ -26,7 +26,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
-import docs.Licence;
 
 /**
  * A ComparePane allows you to compare 2 differing version of the Bible

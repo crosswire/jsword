@@ -1,22 +1,19 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.FilenameFilter;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.ArrayEnumeration;
-import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.book.basic.AbstractBibleDriver;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 
 /**
  * This represents all of the SwordBibles.

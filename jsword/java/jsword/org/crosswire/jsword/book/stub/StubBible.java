@@ -1,11 +1,11 @@
 
 package org.crosswire.jsword.book.stub;
 
-import java.util.Iterator;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Collections;
+import java.util.Iterator;
 
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -19,8 +19,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.common.util.ArrayEnumeration;
-import org.crosswire.common.util.LogicError;
 
 /**
  * StubBible is a simple stub implementation of Bible that is pretty much

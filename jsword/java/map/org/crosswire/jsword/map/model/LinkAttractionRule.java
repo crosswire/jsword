@@ -56,8 +56,6 @@ public class LinkAttractionRule extends AbstractRule
         Position[] reply = new Position[scale_copy];
         int reply_index = 0;
 
-        int dim = map.getDimensions();
-
         // For all the links for this verse
         Link[] links = la.getLinks(ord);
         float factor = BEST_MATCH / links[0].getStrength();

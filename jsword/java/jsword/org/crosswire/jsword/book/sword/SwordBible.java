@@ -1,35 +1,31 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Collections;
 import java.net.URL;
-import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Level;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.common.util.ArrayEnumeration;
-import org.crosswire.jsword.passage.Books;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.basic.AbstractBibleDriver;
-import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
-import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.basic.AbstractBible;
+import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.jsword.book.data.DefaultBibleData;
+import org.crosswire.jsword.book.data.RefData;
+import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseRange;
 
 /**
  * A BibleDriver to read Sword format data.

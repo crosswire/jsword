@@ -20,7 +20,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.common.util.Level;
 import org.crosswire.common.util.Logger;
-import docs.Licence;
 
 /**
 * An AWT Bible display pane.
@@ -123,9 +122,13 @@ public class Display extends Panel
                 remainder = ref.trimVerses(VERSES_MAX);
                 next_input = remainder == null ? ref.getName() : remainder.getName();
 
+                // clean compile fixes
+                next_input = next_input;
+                next_type = next_type;
+
                 BibleData data = version.getData(ref);
                 // @todo: Invoke stylizer
-                results += "todo";
+                results += "todo:"+data.toString();
                 break;
 
             case QUERY_MATCH:

@@ -12,13 +12,11 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.data.BibleData;
+import org.crosswire.common.swing.GuiUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.util.Reporter;
 
 /**
  * Renders a Passage in a JList.
@@ -86,7 +84,7 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
                 ref.add(range);
                 if (text == null)
                 {
-                    BibleData data = Bibles.getDefaultBible().getData(ref);
+                    //BibleData data = Bibles.getDefaultBible().getData(ref);
                     // @todo: Invoke the stylizer here to get plain text
                     String simple = "";
                     text = "<html><b>"+range.getName()+"</b> "+simple;

@@ -3,8 +3,10 @@ package org.crosswire.jsword.book.basic;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.Properties;
 
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Openness;
 import org.crosswire.common.util.StringUtil;
 
 /**
@@ -37,7 +39,24 @@ public class BasicBookMetaData implements BookMetaData
     /**
      * Basic constructor
      */
-    protected BasicBookMetaData(String name, String edition, String initials, Date pub, int open, URL licence)
+    public BasicBookMetaData(Properties prop)
+    {
+        this.name = prop.getProperty("Version");
+        this.edition = prop.getProperty("Edition");
+        this.pub = prop.getProperty("Date");
+        this.open = open;
+        this.licence = licence;
+
+        if (initials == null || initials.trim().length() == 0)
+            this.initials = StringUtil.getInitials(name);
+        else
+            this.initials = initials;
+    }
+
+    /**
+     * Basic constructor
+     */
+    public BasicBookMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         this.name = name;
         this.edition = edition;
@@ -82,7 +101,7 @@ public class BasicBookMetaData implements BookMetaData
      */
     public String getFullName()
     {
-        return VersionFactory.getFullName(getName(), getEdition());
+        return name + " (" + edition + ")";
     }
 
     /**
@@ -169,7 +188,7 @@ public class BasicBookMetaData implements BookMetaData
      * open like the NET version.
      * @return A STATUS_* constant
      */
-    public int getOpenness()
+    public Openness getOpenness()
     {
         return open;
     }
@@ -208,7 +227,7 @@ public class BasicBookMetaData implements BookMetaData
     /**
      * The openness of the version
      */
-    private int open;
+    private Openness open;
 
     /**
      * The URL of the distribution licence

@@ -21,6 +21,7 @@ import java.util.TreeMap;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.basic.BasicBookMetaData;
 import org.crosswire.jsword.book.basic.VersewiseBible;
 import org.crosswire.jsword.book.basic.VersionFactory;
 import org.crosswire.jsword.book.data.BibleData;
@@ -34,7 +35,6 @@ import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.common.util.ArrayEnumeration;
-import org.crosswire.common.util.IteratorEnumeration;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
@@ -205,8 +205,7 @@ public class SerBible extends VersewiseBible
                 InputStream prop_in = prop_url.openStream();
                 Properties prop = new Properties();
                 PropertiesUtil.load(prop, prop_in);
-                String version_name = prop.getProperty("Version");
-                version = VersionFactory.getVersion(version_name);
+                version = new BasicBookMetaData(prop);
 
                 // Load the ascii Passage index
                 // See above notes on StringComparator()
@@ -479,8 +478,6 @@ public class SerBible extends VersewiseBible
     {
         try
         {
-            ObjectOutputStream oout;
-
             // Save the ascii Passage index
             URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
             PrintWriter ref_idy_out = new PrintWriter(NetUtil.getOutputStream(ref_idy_url));

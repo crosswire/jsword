@@ -19,7 +19,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
@@ -248,7 +247,7 @@ public class MaintenancePane extends EirPanel
                 return;
             }
 
-            Bible version = Bibles.getBible(name);
+            //Bible version = Bibles.getBible(name);
             Config config = null; //version.getProperties();
 
             if (config == null)
