@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.stub;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,15 +28,21 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    static final Msg NOT_IMPLEMENTED = new Msg("Not implemented.");
+    static final Msg SEARCH_INIT = new Msg("Search sub-system initialization failed.");
+    static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

@@ -1,8 +1,7 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
@@ -34,6 +33,9 @@ import javax.swing.KeyStroke;
  */
 public class FileSaveAction extends DesktopAbstractAction
 {
+    /**
+     * Configuration ctor
+     */
     public FileSaveAction(Desktop tools)
     {
         super(tools,
@@ -41,9 +43,12 @@ public class FileSaveAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Save16.gif",
               "toolbarButtonGraphics/general/Save24.gif",
               "Save Passage", "Save the current passage.",
-              'S', KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK, false));
+              'S', KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), false));
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         JOptionPane.showMessageDialog(getDesktop(), "Not implemented");

@@ -1,8 +1,10 @@
-
 package org.crosswire.jsword.book;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
@@ -13,9 +15,9 @@ import java.util.Date;
  * and Inclusive Language editions at least.
  *
  * <p>BookMetaData like Strings must be compared using <code>.equals()<code>
- * instead of ==. A Bible must have the ability to handle a version
- * unknown to JSword. So Books must be able to add versions to the
- * system, and the system must cope with versions that already exist.</p>
+ * instead of ==. A Bible must have the ability to handle a book unknown to
+ * JSword. So Books must be able to add versions to the system, and the system
+ * must cope with books that already exist.</p>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -41,6 +43,23 @@ import java.util.Date;
 public interface BookMetaData
 {
     /**
+     * The name of the book, for example "King James Version" or
+     * "Bible in Basic English" or "Greek".
+     * In general it should be possible to deduce the initials from the name by
+     * removing all the non-capital letters. Although this is only a generalization.
+     * This method should not return null or a blank string.
+     * @return The name of this book
+     */
+    public String getName();
+
+    /**
+     * What type of content is this, a Bible or a reference work like a
+     * Dictionary or Commentary
+     * @return The type of book
+     */
+    public BookType getType();
+
+    /**
      * Accessor for the real Book to read data.
      * <p>Note that constructing a Book may well consume system resources far
      * more than the construction of a BookMetaData so you should only get a
@@ -60,19 +79,9 @@ public interface BookMetaData
     public BookDriver getDriver();
 
     /**
-     * The name of the version, for example "King James Version" or
-     * "Bible in Basic English" or "Greek".
-     * In general it should be possible to deduce the initials from the name by
-     * removing all the non-capital letters. Although this is only a generalization.
-     * This method should not return null or a blank string.
-     * @return The name of this version
-     */
-    public String getName();
-
-    /**
-     * The edition of this version, for example "Anglicised" (NIV),
+     * The edition of this book, for example "Anglicised" (NIV),
      * "Stephanus" (Greek).
-     * For 2 versions to be equal both the name and the edition must be equal.
+     * For 2 books to be equal both the name and the edition must be equal.
      * In general the text returned by this method should not include the word
      * "Edition". It is valid for an edition to be a blank string but not for it
      * to be null.
@@ -81,32 +90,11 @@ public interface BookMetaData
     public String getEdition();
 
     /**
-     * The full name including edition of the version, for example
-     * "New International Version, Anglicised (Ser)". The format is "name, edition (Driver)"
-     * @return The full name of this version
-     */
-    public String getFullName();
-
-    /**
-     * Do the 2 versions have matching names.
-     * @param version The version to compare to
-     * @return true if the names match
-     */
-    public boolean isSameFamily(BookMetaData version);
-
-    /**
      * The initials of this book - how people familiar with this book will know
      * it, for example "NIV", "KJV".
-     * @return The versions initials
+     * @return The book's initials
      */
     public String getInitials();
-
-    /**
-     * The name of the name, which could be helpful to distinguish similar
-     * Books available through 2 BookDrivers.
-     * @return The name name
-     */
-    public String getDriverName();
 
     /**
      * The expected speed at which this implementation gets correct answers.
@@ -120,7 +108,7 @@ public interface BookMetaData
 
     /**
      * The date of first publishing.
-     * This does not need to be accurate and 2 versions can be considered equal
+     * This does not need to be accurate and 2 books can be considered equal
      * even if they have different first publishing dates for that reason.
      * In general "1 Jan 1970" means published in 1970, and so on.
      * <b>A null return from this method is entirely valid</b> if the date of
@@ -132,18 +120,80 @@ public interface BookMetaData
     public Date getFirstPublished();
 
     /**
-     * Is this version sold for commercial profit like the NIV, or kept
-     * open like the NET version.
+     * Is this book sold for commercial profit like the NIV, or kept
+     * open like the NET book.
      * @return A STATUS_* constant
      */
     public Openness getOpenness();
 
     /**
      * Not sure about this one - Do we need a way of getting at the dist.
-     * licence? Are we going to be able to tie it down to a single Version
+     * licence? Are we going to be able to tie it down to a single book
      * policy like this? A null return is valid if the licence URL is not
      * known.
-     * @return String detailing the users right to distribute this version
+     * @return String detailing the users right to distribute this book
      */
     public URL getLicence();
+
+    /**
+     * Calculated field: Get an OSIS identifier for the OsisText.setOsisIDWork()
+     * and the Work.setOsisWork() methods.
+     * The response will generally be of the form [Bible][Dict..].getInitials
+     * @return The osis id of this book
+     */
+    public String getOsisID();
+
+    /**
+     * Calculated field: The full name including edition of the book, for example
+     * "New International Version, Anglicised (Ser)".
+     * The format is "name, edition (Driver)"
+     * @return The full name of this book
+     */
+    public String getFullName();
+
+    /**
+     * Calculated method: Do the 2 books have matching names.
+     * @param book The book to compare to
+     * @return true if the names match
+     */
+    public boolean isSameFamily(BookMetaData book);
+
+    /**
+     * Calculated field: The name of the name, which could be helpful to
+     * distinguish similar Books available through 2 BookDrivers.
+     * @return The name name
+     */
+    public String getDriverName();
+
+    /**
+     * Get a list of all the properties available to do with this Book.
+     * The returned Map will be read-only so any attempts to alter it will
+     * fail. We may support a setProperty() method at a later date that will
+     * allow the user to set run-time properties.
+     */
+    public Map getProperties();
+
+    public static final String KEY_TYPE = "Key";
+    public static final String KEY_BOOK = "Book";
+    public static final String KEY_DRIVER = "Driver";
+    public static final String KEY_NAME = "Name";
+    public static final String KEY_EDITION = "Edition";
+    public static final String KEY_INITIALS = "Initials";
+    public static final String KEY_SPEED = "Speed";
+    public static final String KEY_FIRSTPUB = "FirstPublished";
+    public static final String KEY_OPENNESS = "Openness";
+    public static final String KEY_LICENCE = "Licence";
+
+    /**
+     * The default creation date.
+     * Using new Date(0) is the same as FIRSTPUB_FORMAT.parse("1970-01-01")
+     * but does not throw
+     */
+    public static final Date FIRSTPUB_DEFAULT = new Date(0L);
+
+    /**
+     * The default way for format published dates when converting to and from
+     * strings
+     */
+    public static final DateFormat FIRSTPUB_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 }

@@ -1,11 +1,17 @@
-
 package org.crosswire.jsword.book.jdbc;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
-import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.local.LocalURLBookDriver;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.basic.AbstractBookDriver;
+import org.crosswire.jsword.util.Project;
 
 /**
  * This represents all of the JDBCBibles.
@@ -31,15 +37,67 @@ import org.crosswire.jsword.book.local.LocalURLBookDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDBCBookDriver extends LocalURLBookDriver
+public class JDBCBookDriver extends AbstractBookDriver
 {
-    /**
-     * Some basic name initialization. If we couldn't get a Bibles root
-     * then just give a warning but do no more. Perhaps there are other
-     * BibleDrivers that can cope, so this needent be a big error.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public JDBCBookDriver() throws MalformedURLException, IOException
+    public BookMetaData[] getBooks()
     {
-        super("Database", "jdbc", JDBCBible.class, Books.SPEED_SLOW);
+        try
+        {
+            URL dir = Project.instance().findBibleRoot(getDriverName());
+
+            if (!NetUtil.isDirectory(dir))
+            {
+                log.debug("Missing jdbc directory: "+dir.toExternalForm());
+                return new BookMetaData[0];
+            }
+
+            String[] names = null;
+            if (dir == null)
+            {
+                names = new String[0];
+            }
+            else
+            {
+                names = NetUtil.list(dir, new Project.IsDirectoryURLFilter(dir));
+            }
+
+            List bmds = new ArrayList();
+
+            for (int i=0; i<names.length; i++)
+            {
+                URL url = NetUtil.lengthenURL(dir, names[i]);
+                URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
+
+                Properties prop = new Properties();
+                prop.load(prop_url.openStream());
+
+                Book book = new JDBCBook(this, prop);
+
+                bmds.add(book.getBookMetaData());
+            }
+
+            return (BookMetaData[]) bmds.toArray(new BookMetaData[bmds.size()]);
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+            return new BookMetaData[0];
+        }
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return "jdbc";
+    }
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(JDBCBookDriver.class);
 }

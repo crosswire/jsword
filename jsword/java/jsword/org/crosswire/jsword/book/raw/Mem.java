@@ -40,23 +40,23 @@ public abstract class Mem
 {
     /**
      * Create a WordResource from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param leafname The leaf name to read/write
      * @param create Should we start all over again
      */
-    public Mem(RawBible raw, String leafname, boolean create) throws IOException
+    public Mem(RawBook raw, String leafname, boolean create) throws IOException
     {
         ctor(raw, leafname, create);
     }
 
     /**
      * Create a WordResource from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param leafname The leaf name to read/write
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public Mem(RawBible raw, String leafname, boolean create, StringBuffer messages)
+    public Mem(RawBook raw, String leafname, boolean create, StringBuffer messages)
     {
         try
         {
@@ -73,11 +73,11 @@ public abstract class Mem
      * wants to trap and muffle exceptions.
      * I can't do this:
      * <code>try { this(...) } ...</code>
-     * @param newraw Reference to the RawBible that is using us
+     * @param newraw Reference to the RawBook that is using us
      * @param newleafname The leaf name to read/write
      * @param newcreate Should we start all over again
      */
-    private void ctor(RawBible newraw, String newleafname, boolean newcreate) throws IOException
+    private void ctor(RawBook newraw, String newleafname, boolean newcreate) throws IOException
     {
         this.raw = newraw;
         this.leafname = newleafname;
@@ -110,7 +110,7 @@ public abstract class Mem
      */
     public void load() throws IOException
     {
-        URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
+        URL url = NetUtil.lengthenURL(raw.getURL(), leafname);
 
         // For the pkzip version
         //String filename = raw.getDir()+leafname+".zip";
@@ -145,7 +145,7 @@ public abstract class Mem
      */
     public void save() throws IOException
     {
-        URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
+        URL url = NetUtil.lengthenURL(raw.getURL(), leafname);
 
         // For the pkzip version
         //String filename = raw.getDir()+leafname+".zip";
@@ -184,7 +184,7 @@ public abstract class Mem
     protected String leafname;
 
     /**
-     * The RawBible co-ordinated the various classes that cache the files
+     * The RawBook co-ordinated the various classes that cache the files
      */
-    protected RawBible raw;
+    protected RawBook raw;
 }

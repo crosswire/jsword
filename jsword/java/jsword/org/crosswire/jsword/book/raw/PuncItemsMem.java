@@ -39,21 +39,21 @@ public class PuncItemsMem extends ItemsMem
 {
     /**
      * Create a PuncItemsMem from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public PuncItemsMem(RawBible raw, boolean create) throws Exception
+    public PuncItemsMem(RawBook raw, boolean create) throws Exception
     {
         super(raw, "punc.idx", create);
     }
 
     /**
      * Create a PuncItemsMem from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public PuncItemsMem(RawBible raw, boolean create, StringBuffer messages)
+    public PuncItemsMem(RawBook raw, boolean create, StringBuffer messages)
     {
         super(raw, "punc.idx", create, messages);
     }

@@ -3,10 +3,11 @@ package org.crosswire.jsword.book;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
 
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseBase;
@@ -71,15 +72,10 @@ public class ReadEverything
         List dicts = Books.getBooks(BookFilters.getDictionaries());
         for (Iterator dit = dicts.iterator(); dit.hasNext();)
         {
-            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
+            BookMetaData dmd = (BookMetaData) dit.next();
 
-            if (dmd.getInitials().compareTo("j") < 1)
-            {
-                continue;
-            }
-
-            Dictionary dict = dmd.getDictionary();
-            SortedSet set = dict.getIndex(null);
+            Book dict = dmd.getBook();
+            KeyList set = dict.getGlobalKeyList();
 
             Iterator it = set.iterator();
             testReadMultiple(dmd, it);
@@ -133,8 +129,10 @@ public class ReadEverything
             BookData data = bible.getData(key);
             if (data.getPlainText() == null)
             {
-                log.warn("No output from: "+bmd.getInitials()+", "+key.getText());
+                log.warn("No output from: "+bmd.getInitials()+", "+key.getName());
             }
+
+            // PENDING(joe): put in a test for invalid characters
 
             // This might be a useful extra test, except that a failure gives you no help at all.
             //data.validate();
@@ -147,11 +145,11 @@ public class ReadEverything
         */
         catch (BookException ex)
         {
-            log.warn("Failed to read: "+bmd.getInitials()+", "+key.getText()+", reason: "+ex.getMessage(), ex);
+            log.warn("Failed to read: "+bmd.getInitials()+", "+key.getName()+", reason: "+ex.getMessage(), ex);
         }
         catch (Throwable ex)
         {
-            log.error("Unexpected error reading: "+bmd.getInitials()+", "+key.getText(), ex);
+            log.error("Unexpected error reading: "+bmd.getInitials()+", "+key.getName(), ex);
         }
     }
 
@@ -189,7 +187,7 @@ public class ReadEverything
             VerseBase vb = (VerseBase) orig.next();
             Passage fetch = PassageFactory.createPassage();
             fetch.add(vb);
-            return new PassageKey(fetch);
+            return fetch;
         }
 
         private Iterator orig;

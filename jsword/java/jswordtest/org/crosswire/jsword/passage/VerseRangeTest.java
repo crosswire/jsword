@@ -674,18 +674,4 @@ public class VerseRangeTest extends TestCase
             assertTrue(!it.hasNext());
         }
     }
-
-    public void testIsVerseRange() throws Exception
-    {
-        assertTrue(!VerseRange.isVerseRange("Gen 1:1"));
-        assertTrue(!VerseRange.isVerseRange("Freddy"));
-        assertTrue(!VerseRange.isVerseRange(""));
-        assertTrue(!VerseRange.isVerseRange("Gen 1:1:1"));
-        assertTrue(!VerseRange.isVerseRange("g"));
-        assertTrue(!VerseRange.isVerseRange("VerseRange"));
-        assertTrue(VerseRange.isVerseRange("Gen 1:1-2"));
-        assertTrue(VerseRange.isVerseRange("Gen 1:1-Rev 22:21"));
-        try { VerseRange.isVerseRange(null); fail(); }
-        catch (NullPointerException ex) { }
-    }
 }

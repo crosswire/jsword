@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
@@ -66,16 +67,16 @@ public class LocalRemoter implements Remoter
             if (MethodName.GETBIBLES.equals(methodname))
             {
                 List lbmds = Books.getBooks(FILTER);
-                BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
-                
+                BookMetaData[] bmds = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
+
                 String[] uids = getUIDs(bmds);
-                return Converter.convertBibleMetaDatasToDocument(bmds, uids);
+                return Converter.convertBookMetaDatasToDocument(bmds, uids);
             }
             else if (MethodName.GETDATA.equals(methodname))
             {
                 String uid = method.getParameter(ParamName.PARAM_BIBLE);
-                BibleMetaData bmd = lookupBibleMetaData(uid);
-                Bible bible = bmd.getBible();
+                BookMetaData bmd = lookupBookMetaData(uid);
+                Book bible = bmd.getBook();
                 String refstr = method.getParameter(ParamName.PARAM_PASSAGE);
                 Passage ref = PassageFactory.createPassage(refstr);
                 BookData data = bible.getData(ref);
@@ -88,8 +89,8 @@ public class LocalRemoter implements Remoter
             else if (MethodName.FINDPASSAGE.equals(methodname))
             {
                 String uid = method.getParameter(ParamName.PARAM_BIBLE);
-                BibleMetaData bmd = lookupBibleMetaData(uid);
-                Bible bible = bmd.getBible();
+                BookMetaData bmd = lookupBookMetaData(uid);
+                Book book = bmd.getBook();
 
                 String word = method.getParameter(ParamName.PARAM_FINDSTRING);
                 boolean match = Boolean.getBoolean(method.getParameter(ParamName.PARAM_FINDMATCH));
@@ -98,8 +99,8 @@ public class LocalRemoter implements Remoter
                 Search search = new Search(word, match);
                 search.setRestriction(range);
 
-                Passage ref = bible.findPassage(search);
-                return Converter.convertPassageToDocument(ref);
+                KeyList keylist = book.find(search);
+                return Converter.convertKeyListToDocument(keylist);
             }
             else
             {
@@ -126,12 +127,10 @@ public class LocalRemoter implements Remoter
 
     /**
      * Lookup a BibleMetaData using the UID that we assigned to it earlier
-     * @param bmds
-     * @return String[]
      */
-    private BibleMetaData lookupBibleMetaData(String uid)
+    private BookMetaData lookupBookMetaData(String uid)
     {
-        return (BibleMetaData) uid2bmd.get(uid);
+        return (BookMetaData) uid2bmd.get(uid);
     }
 
     /**
@@ -141,12 +140,12 @@ public class LocalRemoter implements Remoter
      * @param bmds The array to create/retrieve UIDs for
      * @return String[] The new UID array
      */
-    private String[] getUIDs(BibleMetaData[] bmds)
+    private String[] getUIDs(BookMetaData[] bmds)
     {
         String[] uids = new String[bmds.length];
         for (int i=0; i<bmds.length; i++)
         {
-            BibleMetaData bmd = bmds[i];
+            BookMetaData bmd = bmds[i];
             String uid = (String) bmd2uid.get(bmd);
             
             if (uid == null)
@@ -176,7 +175,7 @@ public class LocalRemoter implements Remoter
     /**
      * The filter to select the bibles we are exporting
      */
-    private static final BookFilter FILTER = BookFilters.both(BookFilters.getFaster(Books.SPEED_SLOWEST), BookFilters.getBibles());
+    private static final BookFilter FILTER = BookFilters.getFaster(Books.SPEED_SLOWEST);
 
     /**
      * To help finding uids from bmds

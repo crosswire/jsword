@@ -6,7 +6,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
 /**
- * JDBCBible was getting a bit long winded, so I took all the static
+ * JDBCBook was getting a bit long winded, so I took all the static
  * methods and parcled them off here.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>

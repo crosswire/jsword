@@ -55,10 +55,10 @@ public class WordInstsMem extends InstsMem
 {
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public WordInstsMem(RawBible raw, boolean create) throws IOException
+    public WordInstsMem(RawBook raw, boolean create) throws IOException
     {
         super(raw, "wordinst.idx", create);
     }

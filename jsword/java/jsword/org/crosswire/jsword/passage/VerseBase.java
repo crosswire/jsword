@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.Serializable;
@@ -28,7 +27,7 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface VerseBase extends Cloneable, Comparable, Serializable
+public interface VerseBase extends Cloneable, Comparable, Serializable, Key
 {
     /**
      * Translate the Passage into a human readable string

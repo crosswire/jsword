@@ -9,6 +9,7 @@ import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * An implmentation of some of the basics of a search engine in terms of an
@@ -132,7 +133,7 @@ public abstract class AbstractSearchEngine implements SearchEngine
      * @throws IOException if the load fails to read from disk
      * @throws BookException if there is a problem reading from the Bible
      */
-    protected abstract void generateSearchIndex(Job ajob) throws IOException, BookException;
+    protected abstract void generateSearchIndex(Job ajob) throws IOException, BookException, NoSuchKeyException;
 
     /**
      * Our children may discover that index files are present during index

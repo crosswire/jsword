@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
-
 
 /**
  * A fullfilment of RemoteBibleDriver that uses an HTTP commection to

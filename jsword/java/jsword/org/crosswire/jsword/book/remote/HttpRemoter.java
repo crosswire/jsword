@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import java.io.InputStream;

@@ -5,7 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * For a readings dictionary the keys are dates.
@@ -31,16 +32,25 @@ import org.crosswire.jsword.book.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReadingsKey implements Key, Comparable
+public class ReadingsKey implements Key
 {
     /**
      * Simple Constructor.
      * @param text The textual version of the date for these readings in the
      * format "d mmmm"
      */
-    protected ReadingsKey(String text) throws ParseException
+    protected ReadingsKey(String text, Key parent) throws NoSuchKeyException
     {
-        date = DF.parse(text);
+        this.parent = parent;
+
+        try
+        {
+            date = DF.parse(text);
+        }
+        catch (ParseException ex)
+        {
+            throw new NoSuchKeyException(Msg.PARSE_FAIL, ex, new Object[] { text });
+        }
     }
 
     /**
@@ -55,7 +65,7 @@ public class ReadingsKey implements Key, Comparable
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Key#getText()
      */
-    public String getText()
+    public String getName()
     {
         return DF.format(date);
     }
@@ -65,7 +75,15 @@ public class ReadingsKey implements Key, Comparable
      */
     public String toString()
     {
-        return getText();
+        return getName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
+     */
+    public Key getParent()
+    {
+        return parent;
     }
 
     /* (non-Javadoc)
@@ -116,6 +134,11 @@ public class ReadingsKey implements Key, Comparable
         ReadingsKey that = (ReadingsKey) obj;
         return this.date.compareTo(that.date);
     }
+
+    /**
+     * The parent key
+     */
+    private Key parent;
 
     /**
      * The day of the year for the readings

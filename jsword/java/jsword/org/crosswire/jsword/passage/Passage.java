@@ -42,7 +42,7 @@ import java.util.Iterator;
  * </ul>
  *
  * <p>The upshot of all this is that I am removing the Collections interface from
- * Passage, but writing a PassageCollection as a proxy.
+ * Passage, but writing a PassageSet as a proxy.
  *
  * <p>I considered giving Passages names to allow for a CLI that could
  * use named RangedPassages, however that is perhaps better left to another class.
@@ -68,7 +68,7 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Passage extends Serializable, Cloneable
+public interface Passage extends KeyList, Serializable, Cloneable
 {
     /**
      * A Human readable version of the verse list.

@@ -36,21 +36,21 @@ public abstract class InstsDisk extends Disk implements Insts
 {
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public InstsDisk(RawBible raw, String leafname, boolean create) throws IOException
+    public InstsDisk(RawBook raw, String leafname, boolean create) throws IOException
     {
         ctor(raw, leafname, create);
     }
 
     /**
      * Create a WordResource from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public InstsDisk(RawBible raw, String leafname, boolean create, StringBuffer messages)
+    public InstsDisk(RawBook raw, String leafname, boolean create, StringBuffer messages)
     {
         try
         {
@@ -67,11 +67,11 @@ public abstract class InstsDisk extends Disk implements Insts
      * wants to trap and muffle exceptions.
      * |I can't do this:
      * <code>try { this(...) } ...</code>
-     * @param newraw Reference to the RawBible that is using us
+     * @param newraw Reference to the RawBook that is using us
      * @param newleafname The leaf name to read/write
      * @param newcreate Should we start all over again
      */
-    private void ctor(RawBible newraw, String newleafname, boolean newcreate) throws IOException
+    private void ctor(RawBook newraw, String newleafname, boolean newcreate) throws IOException
     {
         this.raw = newraw;
         this.leafname = newleafname;
@@ -135,7 +135,7 @@ public abstract class InstsDisk extends Disk implements Insts
     protected String leafname;
 
     /**
-     * The RawBible co-ordinated the various classes that cache the files
+     * The RawBook co-ordinated the various classes that cache the files
      */
-    protected RawBible raw;
+    protected RawBook raw;
 }

@@ -41,19 +41,29 @@ public class PassageFactory
     {
     }
 
-    /** Optimize the Passage for speed */
+    /**
+     * Optimize the Passage for speed
+     */
     public static final int SPEED = 0;
 
-    /** Optimize the Passage for speed */
+    /**
+     * Optimize the Passage for speed
+     */
     public static final int WRITE_SPEED = 1;
 
-    /** Optimize the Passage for size */
+    /**
+     * Optimize the Passage for size
+     */
     public static final int SIZE = 2;
 
-    /** Optimize the Passage for a mix */
+    /**
+     * Optimize the Passage for a mix
+     */
     public static final int MIX = 3;
 
-    /** Optimize the Passage for tally operations */
+    /**
+     * Optimize the Passage for tally operations
+     */
     public static final int TALLY = 4;
 
     /**

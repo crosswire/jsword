@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.Properties;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
@@ -16,11 +16,14 @@ import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
 import org.crosswire.jsword.osis.Foreign;
+import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Hi;
 import org.crosswire.jsword.osis.Item;
 import org.crosswire.jsword.osis.Milestone;
 import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.ObjectFactory;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
 import org.crosswire.jsword.osis.P;
 import org.crosswire.jsword.osis.Q;
 import org.crosswire.jsword.osis.Reference;
@@ -33,6 +36,7 @@ import org.crosswire.jsword.osis.Title;
 import org.crosswire.jsword.osis.TransChange;
 import org.crosswire.jsword.osis.Verse;
 import org.crosswire.jsword.osis.W;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.util.Project;
 
@@ -342,6 +346,30 @@ public class JAXBUtil
 
             throw new BookException(Msg.MISSING_VERSE);
         }
+    }
+
+    /**
+     * Helper method to create the boilerplate headers in an OSIS document from
+     * the current metadata object
+     */
+    public static Osis createOsisFramework(BookMetaData bmd) throws JAXBException
+    {
+        Osis osis = factory().createOsis();
+        String osisid = bmd.getInitials();
+    
+        Work work = factory().createWork();
+        work.setOsisWork(osisid);
+    
+        Header header = factory().createHeader();
+        header.getWork().add(work);
+    
+        OsisText text = factory().createOsisText();
+        text.setOsisIDWork("Bible."+osisid);
+        text.setHeader(header);
+    
+        osis.setOsisText(text);
+    
+        return osis;
     }
 
     /**

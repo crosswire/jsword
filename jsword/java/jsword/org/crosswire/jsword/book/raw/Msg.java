@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,11 +28,12 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    protected static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
-    protected static final Msg INIT_FAIL = new Msg("Failed to initialise Raw driver");
-    protected static final Msg FLUSH_FAIL = new Msg("Failed to flush data.");
-    protected static final Msg FIND_FAIL = new Msg("Failed to find data.");
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    static final Msg INIT_FAIL = new Msg("Failed to initialise Raw driver");
+    static final Msg FLUSH_FAIL = new Msg("Failed to flush data.");
+    static final Msg FIND_FAIL = new Msg("Failed to find data.");
+    static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
+    static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry.");
 
     /**
      * Initialise any resource bundles

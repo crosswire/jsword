@@ -44,6 +44,80 @@ public final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     */
+    public void add(Key key)
+    {
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void remove(Key key)
+    {
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key)
+    {
+        return ref.contains(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#size()
+     */
+    public int size()
+    {
+        return ref.size();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     */
+    public Iterator iterator()
+    {
+        return ref.iterator();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     */
+    public Key get(int index)
+    {
+        return ref.get(index);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     */
+    public int indexOf(Key that)
+    {
+        return ref.indexOf(that);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
+     */
+    public Key getParent()
+    {
+        return ref.getParent();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getName()
      */
     public String getName()
@@ -319,6 +393,14 @@ public final class ReadOnlyPassage implements Passage
     public Object clone()
     {
         return new ReadOnlyPassage(ref, ignore);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o)
+    {
+        return ref.compareTo(o);
     }
 
     /**

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.Component;
@@ -15,8 +14,9 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.BookMetaData;
 
 /**
- * A custom list view that paints icons alongside the words. This is a
- * simple modification of DeafultListCellRenderer
+ * A custom list view that paints icons alongside the words.
+ * This was a simple modification of DefaultListCellRenderer however something
+ * has made us implement ListCellRenderer directory and I'm not sure what.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -125,5 +125,8 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
      */
     private static Border no_focus;
 
+    /**
+     * Make sure that book names are not too wide
+     */
     public static final String PROTOTYPE_BOOK_NAME = "012345678901234567890123456789";
 }

@@ -1,8 +1,6 @@
-
 package org.crosswire.jsword.passage;
 
 import org.crosswire.common.util.MsgBase;
-import org.crosswire.common.util.LucidException;
 
 /**
  * When something tries to use a verse that we don't understand.
@@ -28,7 +26,7 @@ import org.crosswire.common.util.LucidException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class NoSuchVerseException extends LucidException
+public class NoSuchVerseException extends NoSuchKeyException
 {
     /**
      * Construct the Exception with a message

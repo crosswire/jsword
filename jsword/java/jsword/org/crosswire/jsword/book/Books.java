@@ -108,7 +108,7 @@ public class Books
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Books.class);
+    protected static final Logger log = Logger.getLogger(Books.class);
 
     /**
      * Get an iterator over all the Books of all types.
@@ -132,7 +132,7 @@ public class Books
      * Remove a BibleListener from our list of listeners
      * @param li The old listener
      */
-    public static void addBooksListener(BooksListener li)
+    public synchronized static void addBooksListener(BooksListener li)
     {
         listeners.add(BooksListener.class, li);
     }
@@ -141,7 +141,7 @@ public class Books
      * Add a BibleListener to our list of listeners
      * @param li The new listener
      */
-    public static void removeBooksListener(BooksListener li)
+    public synchronized static void removeBooksListener(BooksListener li)
     {
         listeners.remove(BooksListener.class, li);
     }
@@ -151,7 +151,7 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static void addBook(BookMetaData bmd)
+    public synchronized static void addBook(BookMetaData bmd)
     {
         log.debug("registering book: "+bmd.getName());
 
@@ -165,7 +165,7 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static void removeBook(BookMetaData bmd) throws BookException
+    public synchronized static void removeBook(BookMetaData bmd) throws BookException
     {
         log.debug("unregistering book: "+bmd.getName());
 
@@ -186,7 +186,7 @@ public class Books
      * @param bmd The meta-data of the changed Bible
      * @param added Is it added?
      */
-    protected static void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
+    protected synchronized static void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -219,7 +219,7 @@ public class Books
      * Add to the list of drivers
      * @param driver The BookDriver to add
      */
-    public static void registerDriver(BookDriver driver) throws BookException
+    public synchronized static void registerDriver(BookDriver driver) throws BookException
     {
         log.debug("begin registering driver: "+driver.getClass().getName());
 
@@ -243,7 +243,7 @@ public class Books
      * Remove from the list of drivers
      * @param driver The BookDriver to remove
      */
-    public static void unregisterDriver(BookDriver driver) throws BookException
+    public synchronized static void unregisterDriver(BookDriver driver) throws BookException
     {
         log.debug("begin un-registering driver: "+driver.getClass().getName());
 
@@ -266,7 +266,7 @@ public class Books
      * registered it can be hard to get ahold of the current book driver. This
      * method gives access to the registered instances.
      */
-    public static BookDriver[] getDriversByClass(Class type)
+    public synchronized static BookDriver[] getDriversByClass(Class type)
     {
         List matches = new ArrayList();
         for (Iterator it = drivers.iterator(); it.hasNext();)
@@ -285,7 +285,7 @@ public class Books
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public static BookDriver[] getDrivers()
+    public synchronized static BookDriver[] getDrivers()
     {
         return (BookDriver[]) drivers.toArray(new BookDriver[drivers.size()]);
     }
@@ -294,7 +294,7 @@ public class Books
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public static BookDriver[] getWritableDrivers()
+    public synchronized static BookDriver[] getWritableDrivers()
     {
         int i = 0;
         for (Iterator it = drivers.iterator(); it.hasNext();)
@@ -326,24 +326,41 @@ public class Books
      */
     static
     {
-        // This will classload them all and they will register themselves.
-        Class[] types = Project.instance().getImplementors(BookDriver.class);
+        Runnable regman = new RegisterRunnable();
+        
+        Thread init = new Thread(regman, "book-driver-registration");
+        init.start();
+    }
 
-        log.debug("begin auto-registering "+types.length+" drivers:");
-
-        for (int i=0; i<types.length; i++)
+    /**
+     * A class to register all the BookDrivers
+     */
+    private static final class RegisterRunnable implements Runnable
+    {
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
         {
-            try
-            {
-                BookDriver driver = (BookDriver) types[i].newInstance();
-                registerDriver(driver);
-            }
-            catch (Throwable ex)
-            {
-                Reporter.informUser(Books.class, ex);
-            }
-        }
+            // This will classload them all and they will register themselves.
+            Class[] types = Project.instance().getImplementors(BookDriver.class);
 
-        log.debug("end auto-registering drivers:");
+            log.debug("begin auto-registering "+types.length+" drivers:");
+
+            for (int i=0; i<types.length; i++)
+            {
+                try
+                {
+                    BookDriver driver = (BookDriver) types[i].newInstance();
+                    registerDriver(driver);
+                }
+                catch (Throwable ex)
+                {
+                    Reporter.informUser(Books.class, ex);
+                }
+            }
+
+            log.debug("end auto-registering drivers:");
+        }
     }
 }

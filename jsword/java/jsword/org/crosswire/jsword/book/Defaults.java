@@ -56,7 +56,7 @@ public class Defaults
     /**
      * The default Bible
      */
-    private static BibleMetaData bdeft = null;
+    private static BookMetaData bdeft = null;
 
     /**
      * Has the default Commentary been manually set or are we picking the fastest
@@ -67,7 +67,7 @@ public class Defaults
     /**
      * The default Commentary
      */
-    private static CommentaryMetaData cdeft = null;
+    private static BookMetaData cdeft = null;
 
     /**
      * Has the default Dictionary been manually set or are we picking the fastest
@@ -78,7 +78,7 @@ public class Defaults
     /**
      * The default Dictionary
      */
-    private static DictionaryMetaData ddeft = null;
+    private static BookMetaData ddeft = null;
 
     /**
      * Set the default Bible. The new name must be equal() to a string
@@ -87,7 +87,7 @@ public class Defaults
      * @param bmd The version to use as default.
      * @exception BookException If the name is not valid
      */
-    public static void setBibleMetaData(BibleMetaData bmd)
+    public static void setBibleMetaData(BookMetaData bmd)
     {
         autobdeft = false;
         bdeft = bmd;
@@ -108,7 +108,7 @@ public class Defaults
      * Get the current default Bible or null if there are no Bibles.
      * @return the current default version
      */
-    public static BibleMetaData getBibleMetaData()
+    public static BookMetaData getBibleMetaData()
     {
         return bdeft;
     }
@@ -132,7 +132,7 @@ public class Defaults
      * the given name.
      * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
-     * BibleMetaData objects.
+     * BookMetaData objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
@@ -151,7 +151,7 @@ public class Defaults
         List lbmds = Books.getBooks(BookFilters.getBibles());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
         {
-            BibleMetaData bmd = (BibleMetaData) it.next();
+            BookMetaData bmd = (BookMetaData) it.next();
             String tname = bmd.getFullName();
             if (tname.equals(name))
             {
@@ -169,7 +169,7 @@ public class Defaults
      * A BookException results if you get it wrong.
      * @param cmd The version to use as default.
      */
-    public static void setCommentaryMetaData(CommentaryMetaData cmd)
+    public static void setCommentaryMetaData(BookMetaData cmd)
     {
         autocdeft = false;
         cdeft = cmd;
@@ -190,7 +190,7 @@ public class Defaults
      * Get the current default Commentary or null if none exist.
      * @return the current default version
      */
-    public static CommentaryMetaData getCommentaryMetaData()
+    public static BookMetaData getCommentaryMetaData()
     {
         return cdeft;
     }
@@ -216,7 +216,7 @@ public class Defaults
      * the given name.
      * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
-     * BibleMetaData objects.
+     * BookMetaData objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
@@ -235,7 +235,7 @@ public class Defaults
         List lbmds = Books.getBooks(BookFilters.getCommentaries());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
         {
-            CommentaryMetaData cmd = (CommentaryMetaData) it.next();
+            BookMetaData cmd = (BookMetaData) it.next();
             String tname = cmd.getFullName();
             if (tname.equals(name))
             {
@@ -254,7 +254,7 @@ public class Defaults
      * @param dmd The version to use as default.
      * @exception BookException If the name is not valid
      */
-    public static void setDictionaryMetaData(DictionaryMetaData dmd)
+    public static void setDictionaryMetaData(BookMetaData dmd)
     {
         autoddeft = false;
         ddeft = dmd;
@@ -275,7 +275,7 @@ public class Defaults
      * Get the current default Dictionary or null if none exist.
      * @return the current default version
      */
-    public static DictionaryMetaData getDictionaryMetaData()
+    public static BookMetaData getDictionaryMetaData()
     {
         return ddeft;
     }
@@ -301,7 +301,7 @@ public class Defaults
      * the given name.
      * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
-     * BibleMetaData objects.
+     * BookMetaData objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
@@ -320,7 +320,7 @@ public class Defaults
         List lbmds = Books.getBooks(BookFilters.getDictionaries());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
         {
-            DictionaryMetaData dmd = (DictionaryMetaData) it.next();
+            BookMetaData dmd = (BookMetaData) it.next();
             String tname = dmd.getFullName();
             if (tname.equals(name))
             {
@@ -356,7 +356,7 @@ public class Defaults
             throw new NullPointerException();
         }
 
-        if (bmd instanceof BibleMetaData)
+        if (bmd.getType().equals(BookType.BIBLE))
         {
             // Do we even think about replacing the default Bible?
             if (autobdeft || bdeft == null)
@@ -364,13 +364,13 @@ public class Defaults
                 // If there is no default or this is faster
                 if (bdeft == null || bmd.getSpeed() > bdeft.getSpeed())
                 {
-                    bdeft = (BibleMetaData) bmd;
+                    bdeft = bmd;
                     autobdeft = true;
                     log.debug("setting as default bible since speed="+bdeft.getSpeed());
                 }
             }
         }
-        else if (bmd instanceof CommentaryMetaData)
+        else if (bmd.getType().equals(BookType.COMMENTARY))
         {
             // Do we even think about replacing the default Bible?
             if (autocdeft || cdeft == null)
@@ -378,13 +378,13 @@ public class Defaults
                 // If there is no default or this is faster
                 if (cdeft == null || bmd.getSpeed() > cdeft.getSpeed())
                 {
-                    cdeft = (CommentaryMetaData) bmd;
+                    cdeft = bmd;
                     autocdeft = true;
                     log.debug("setting as default commentary since speed="+cdeft.getSpeed());
                 }
             }
         }
-        else if (bmd instanceof DictionaryMetaData)
+        else if (bmd.getType().equals(BookType.DICTIONARY))
         {
             // Do we even think about replacing the default Bible?
             if (autoddeft || ddeft == null)
@@ -392,7 +392,7 @@ public class Defaults
                 // If there is no default or this is faster
                 if (ddeft == null || bmd.getSpeed() > ddeft.getSpeed())
                 {
-                    ddeft = (DictionaryMetaData) bmd;
+                    ddeft = bmd;
                     autoddeft = true;
                     log.debug("setting as default dictionary since speed="+ddeft.getSpeed());
                 }

@@ -3,7 +3,7 @@ package org.crosswire.jsword.view.swing.book;
 
 import javax.swing.event.HyperlinkListener;
 
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * A parent to all things that display some Book output.

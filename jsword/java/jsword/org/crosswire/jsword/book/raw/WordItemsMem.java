@@ -64,7 +64,7 @@ import org.crosswire.common.util.Logger;
  *
  * <p>Consider whether and to what extent this class should be static and
  * public. I think that it should be package scope - Use of this class
- * does not make sense outside of the RawBible package. There should
+ * does not make sense outside of the RawBook package. There should
  * only ever be one WordIndex for a given file, but if we can instansiate
  * this class for several sets of files - it does not make sense to make
  * it static.
@@ -102,10 +102,10 @@ public class WordItemsMem extends ItemsMem
 {
     /**
      * Create a WordMemResourceIndex from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public WordItemsMem(RawBible raw, boolean create) throws IOException
+    public WordItemsMem(RawBook raw, boolean create) throws IOException
     {
         super(raw, "word.idx", create);
     }

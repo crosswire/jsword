@@ -37,7 +37,7 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class CacheingBookDriver extends AbstractBookDriver
+public abstract class CacheingBookDriver extends AbstractBookDriver
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()

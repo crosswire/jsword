@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.search;
 
 import java.net.URL;
 
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.util.Project;
 
@@ -43,7 +43,7 @@ public class SearchEngineFactory
     /**
      * Factory constructor for a SearchEngine
      */
-    public static SearchEngine createSearchEngine(Bible bible, URL indexdir) throws BookException
+    public static SearchEngine createSearchEngine(Book bible, URL indexdir) throws BookException
     {
         try
         {

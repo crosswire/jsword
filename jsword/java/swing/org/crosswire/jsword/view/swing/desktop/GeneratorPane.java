@@ -33,7 +33,7 @@ import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.basic.Verifier;
@@ -358,12 +358,12 @@ public class GeneratorPane extends EirPanel
             {
                 // Get the values
                 // This cast is safe because the ctor filers for Bibles
-                Bible source = (Bible) mdl_source.getSelectedBookMetaData().getBook();
+                Book source = mdl_source.getSelectedBookMetaData().getBook();
                 BookDriver dest_driver = mdl_driver.getSelectedDriver();
 
                 // The real work
                 // This cast is safe because we passed in a Bible
-                Bible dest_version = (Bible) dest_driver.create(source);
+                Book dest_version = dest_driver.create(source);
 
                 // Check
                 if (chk_verify.isEnabled())

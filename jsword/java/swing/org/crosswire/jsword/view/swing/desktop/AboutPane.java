@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
@@ -146,8 +145,6 @@ public class AboutPane
     /**
      * A method to be exposed by our children
      * @param parent The component to which to attach the new dialog
-     * @param title The title for the new dialog
-     * @param modal
      */
     public void showInDialog(Component parent)
     {

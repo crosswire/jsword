@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.passage.*;
 
 /**
  * When we can't convert some source data then the user doesn't really care and
@@ -60,7 +61,7 @@ public class DataPolice
     {
         if (bmd != null && key != null)
         {
-            log.debug(bmd.getInitials()+":"+key.getText());
+            log.debug(bmd.getInitials()+":"+key.getName());
         }
 
         log.debug(message);

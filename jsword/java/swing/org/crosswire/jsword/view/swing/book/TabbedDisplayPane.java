@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
@@ -20,9 +19,9 @@ import javax.xml.transform.TransformerException;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 
 /**
@@ -90,15 +89,15 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the version used for lookup
      */
-    public synchronized void setVersion(Bible version)
+    public synchronized void setBook(Book version)
     {
-        this.version = version;
+        this.book = version;
 
         // Now go through all the known views and set the version
         for (Iterator it = idps.iterator(); it.hasNext();)
         {
             InnerDisplayPane idp = (InnerDisplayPane) it.next();
-            idp.setVersion(version);
+            idp.setBook(version);
         }
     }
 
@@ -223,7 +222,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws IOException, BookException, TransformerException
     {
         InnerDisplayPane idp = new InnerDisplayPane();
-        idp.setVersion(version);
+        idp.setBook(book);
         idp.setPassage(cut);
 
         idps.add(idp);
@@ -466,7 +465,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * The version used for display
      */
-    private Bible version = null;
+    private Book book = null;
 
     /**
      * Are we using tabs?
@@ -498,4 +497,3 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      */
     private JPanel pnl_more = new JPanel();
 }
-

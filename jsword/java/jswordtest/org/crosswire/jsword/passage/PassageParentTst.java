@@ -754,7 +754,9 @@ public class PassageParentTst extends TestCase
         temp = (Passage) gen1_135.clone();
         temp.add(new VerseRange("Gen 1:1-5"));
         assertEquals(temp.getName(), "Gen 1:1-5");
-        try { temp.add(null); fail(); }
+        try { temp.add((Key) null); fail(); }
+        catch (NullPointerException ex) { }
+        try { temp.add((Verse) null); fail(); }
         catch (NullPointerException ex) { }
     }
 

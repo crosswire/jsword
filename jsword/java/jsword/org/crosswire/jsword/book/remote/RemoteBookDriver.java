@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import java.util.HashMap;
@@ -49,6 +48,14 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
         remoter.execute(method);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return getRemoter().getRemoterName();
+    }
+
     /**
      * Accessor for the current remoter.
      * @return The remoter or null if none is available.
@@ -74,16 +81,12 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
                     RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
                     Document doc = remoter.execute(method);
 
-                    rbmd = Converter.convertDocumentToBibleMetaDatas(this, doc, remoter, remoter.getSpeed());
-                    for (int i=0; i<rbmd.length; i++)
-                    {
-                        ids.put(rbmd[i].getID(), rbmd[i]);
-                    }
+                    rbmd = Converter.convertDocumentToBookMetaDatas(this, doc, remoter, remoter.getSpeed());
                 }
                 catch (Exception ex)
                 {
                     log.warn("failed to remote getBibleNames", ex);
-                    rbmd = new RemoteBibleMetaData[0];
+                    rbmd = new BookMetaData[0];
                 }
             }
         }
@@ -100,10 +103,28 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
      * The cache of Bible names.
      * At some stage it would be good to work out a way to clear the cache.
      */
-    private RemoteBibleMetaData[] rbmd;
+    private BookMetaData[] rbmd;
 
     /**
      * The id to metadata map
      */
     private Map ids = new HashMap();
+
+    /**
+     * @param id
+     * @param bmd
+     */
+    public void registerID(String id, BookMetaData bmd)
+    {
+        ids.put(bmd, id);
+    }
+
+    /**
+     * @param data
+     * @return
+     */
+    public String getID(BookMetaData bmd)
+    {
+        return (String) ids.get(bmd);
+    }
 }

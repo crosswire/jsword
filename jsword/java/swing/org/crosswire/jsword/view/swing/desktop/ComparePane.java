@@ -22,7 +22,7 @@ import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.Verifier;
@@ -182,16 +182,22 @@ public class ComparePane extends EirPanel
         try
         {
             // These casts are safe because we have asked for Bibles below
-            Bible bible1 = (Bible) bmd1.getBook();
-            Bible bible2 = (Bible) bmd2.getBook();
+            Book bible1 = bmd1.getBook();
+            Book bible2 = bmd2.getBook();
     
             String words = txt_words.getText();
             String ref_text = txt_verses.getText();
             Passage ref = PassageFactory.createPassage(ref_text);
 
             words = words.trim();
-            if (words.equals("*")) words = "";
-            if (words.equals(""))  words = null;
+            if (words.equals("*"))
+            {
+                words = "";
+            }
+            if (words.equals(""))
+            {
+                words = null;
+            }
 
             Verifier ver = new Verifier(bible1, bible2);
 

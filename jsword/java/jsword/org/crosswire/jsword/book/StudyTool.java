@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.Collection;
@@ -8,7 +7,7 @@ import java.util.Map;
 
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.W;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * StudyTool is-an extension to Bible that knows about the original
@@ -42,11 +41,11 @@ public class StudyTool
      * @param word The text to search for
      * @return The source numbers of that word
      */
-    public Collection getTranslations(Bible bible, String word) throws BookException
+    public Collection getTranslations(Book bible, String word) throws BookException
     {
         Search search = new Search(word, false);
-        Passage ref = bible.findPassage(search);
-        BookData data = bible.getData(ref);
+        KeyList key = bible.find(search);
+        BookData data = bible.getData(key);
         ParentLocator loc = new ParentLocator(data.getOsis());
 
         Map reply = new HashMap();
@@ -93,11 +92,11 @@ public class StudyTool
      * @param number The strongs number to search for
      * @return The words that the number is translated to
      */
-    public Collection getTranslations(Bible bible, Strongs number) throws BookException
+    public Collection getTranslations(Book bible, Strongs number) throws BookException
     {
         Search search = new Search(number, false);
-        Passage ref = bible.findPassage(search);
-        BookData data = bible.getData(ref);
+        KeyList key = bible.find(search);
+        BookData data = bible.getData(key);
         ParentLocator loc = new ParentLocator(data.getOsis());
 
         Map reply = new HashMap();

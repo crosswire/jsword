@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.basic;
 
 import org.crosswire.jsword.book.Book;

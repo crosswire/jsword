@@ -1,7 +1,10 @@
 
 package org.crosswire.jsword.book.readings;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.util.Project;
 
@@ -32,13 +35,43 @@ import org.crosswire.jsword.util.Project;
 public class ReadingsBookDriver extends AbstractBookDriver
 {
     /**
-     * A list of all the books available under this driver
+     * Setup the array of BookMetaDatas
+     */
+    public ReadingsBookDriver()
+    {
+        Book[] books = new Book[]
+        {
+            new ReadingsBook(this, "Readings", BookType.DICTIONARY, Books.SPEED_MEDIUM),
+        };
+
+        bmds = new BookMetaData[books.length];
+        
+        for (int i = 0; i < books.length; i++)
+        {
+            bmds[i] = books[i].getBookMetaData();
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
     public BookMetaData[] getBooks()
     {
-        return new BookMetaData[] { new ReadingsDictionaryMetaData(this) };
+        return bmds;
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return "Readings";
+    }
+
+    /**
+     * The meta data array
+     */
+    private BookMetaData[] bmds = null;
 
     /**
      * Get a list of the available readings sets

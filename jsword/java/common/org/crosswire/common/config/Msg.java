@@ -29,20 +29,24 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    public static final Msg CONFIG_NOCLASS = new Msg("Specified class not found '{0}'");
-    public static final Msg CONFIG_MISSINGELE = new Msg("Missing {0} element in config.xml");
-    public static final Msg CONFIG_NOSETTER = new Msg("Specified method not found {0}.set{1}({2} arg0)");
-    public static final Msg CONFIG_NOGETTER = new Msg("Specified method not found {0}.get{1}()");
-    public static final Msg CONFIG_NORETURN = new Msg("Mismatch of return types, found: {0} required: {1}");
-    public static final Msg CONFIG_NOMAP = new Msg("Missing <map> element.");
+    static final Msg CONFIG_NOCLASS = new Msg("Specified class not found: {0}");
+    static final Msg CONFIG_MISSINGELE = new Msg("Missing {0} element in config.xml");
+    static final Msg CONFIG_NOSETTER = new Msg("Specified method not found {0}.set{1}({2} arg0)");
+    static final Msg CONFIG_NOGETTER = new Msg("Specified method not found {0}.get{1}()");
+    static final Msg CONFIG_NORETURN = new Msg("Mismatch of return types, found: {0} required: {1}");
+    static final Msg CONFIG_NOMAP = new Msg("Missing <map> element.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

@@ -1,8 +1,7 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -45,7 +44,7 @@ public class FileNewAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/New16.gif",
               "toolbarButtonGraphics/general/New24.gif",
               "New Window", "Open a new Bible View window",
-              'N', KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK, false));
+              'N', KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), false));
     }
 
     /* (non-Javadoc)

@@ -2,7 +2,6 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
-import java.util.SortedSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JList;
@@ -16,18 +15,19 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.crosswire.common.swing.SortedSetListModel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.Dictionary;
-import org.crosswire.jsword.book.DictionaryMetaData;
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.util.Style;
+import org.crosswire.jsword.view.swing.passage.KeyListListModel;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.
@@ -203,13 +203,13 @@ public class DictionaryPane extends JPanel implements DisplayArea
                 return;
             }
 
-            Key key = dict.getKeyFuzzy(data);
+            Key key = dict.getKey(data);
             if (key != null)
             {
                 lstentries.setSelectedValue(key, true);
             }
         }
-        catch (BookException ex)
+        catch (NoSuchKeyException ex)
         {
             // ignore
         }
@@ -241,11 +241,11 @@ public class DictionaryPane extends JPanel implements DisplayArea
     protected void newDictionary()
     {
         Object selected = lstdicts.getSelectedValue();
-        DictionaryMetaData cmd = (DictionaryMetaData) selected;
-        dict = cmd.getDictionary();
-        SortedSet set = dict.getIndex("");
+        BookMetaData dmd = (BookMetaData) selected;
+        dict = dmd.getBook();
+        KeyList set = dict.getGlobalKeyList();
 
-        SortedSetListModel model = new SortedSetListModel(set);
+        KeyListListModel model = new KeyListListModel(set);
         lstentries.setModel(model);
     }
 
@@ -280,7 +280,7 @@ public class DictionaryPane extends JPanel implements DisplayArea
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdldicts = new BooksComboBoxModel(filter);
-    private Dictionary dict = null;
+    private Book dict = null;
 
     private JScrollPane scrdicts = new JScrollPane();
     private JList lstdicts = new JList();
@@ -290,4 +290,3 @@ public class DictionaryPane extends JPanel implements DisplayArea
     private JTextPane txtdisplay = new JTextPane();
     private JList lstentries = new JList();
 }
-

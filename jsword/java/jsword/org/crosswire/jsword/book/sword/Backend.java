@@ -1,8 +1,8 @@
-
 package org.crosswire.jsword.book.sword;
 
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * A generic way to read data from disk for later formatting.
@@ -31,13 +31,11 @@ import org.crosswire.jsword.book.BookException;
 public interface Backend
 {
     /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
+     * Initialise a Backend before use. This method needs to call addKey() a
+     * number of times on SwordDictionary
      * @throws BookException If we should not be used for some reason
      */
-    public void init(SwordConfig config) throws BookException;
+    public KeyList readIndex();
 
     /**
      * Get the bytes alotted for the given verse
@@ -45,5 +43,5 @@ public interface Backend
      * @return byte[] The data for the verse in question
      * @throws BookException If the data can not be read.
      */
-    public byte[] getRawText(Verse verse) throws BookException;
+    public byte[] getRawText(Key key) throws BookException;
 }

@@ -1,10 +1,9 @@
-
 import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.test.Speed;
@@ -40,7 +39,7 @@ public class Bench
      */
     public static void main(String[] args)
     {
-        Bible version = null;
+        Book version = null;
 
         if (args.length == 0)
         {
@@ -51,7 +50,7 @@ public class Bench
 
         try
         {
-            version = Defaults.getBibleMetaData().getBible();
+            version = Defaults.getBibleMetaData().getBook();
         }
         catch (Exception ex)
         {
@@ -98,7 +97,7 @@ public class Bench
         List lbmds = Books.getBooks();
         for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
-            BibleMetaData bmd = (BibleMetaData) it.next();
+            BookMetaData bmd = (BookMetaData) it.next();
             System.out.println("    " + bmd.getName());
         }
     }

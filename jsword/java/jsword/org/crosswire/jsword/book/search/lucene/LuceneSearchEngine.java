@@ -18,13 +18,14 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
@@ -59,12 +60,12 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
-    public void init(Bible newbible, URL newurl) throws BookException
+    public void init(Book newbible, URL newurl) throws BookException
     {
         try
         {
             url = NetUtil.lengthenURL(newurl, "lucene");
-            bible = newbible;
+            book = newbible;
 
             if (isIndexed())
             {
@@ -176,7 +177,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.AbstractSearchEngine#generateSearchIndex(org.crosswire.common.progress.Job)
      */
-    protected void generateSearchIndex(Job job) throws IOException, BookException
+    protected void generateSearchIndex(Job job) throws IOException, BookException, NoSuchKeyException
     {
         // An index is created by opening an IndexWriter with the
         // create argument set to true.
@@ -186,8 +187,8 @@ public class LuceneSearchEngine extends AbstractSearchEngine
         for (Iterator it = WHOLE.verseIterator(); it.hasNext();)
         {
             Verse verse = (Verse) it.next();
-            Key key = bible.getKey(verse.getName());
-            BookData data = bible.getData(key);
+            Key key = book.getKey(verse.getName());
+            BookData data = book.getData(key);
             Reader reader = new StringReader(data.getPlainText());
 
             Document doc = new Document();
@@ -241,9 +242,9 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     private static final String FIELD_BODY = "body";
 
     /**
-     * The Bible that we are indexing
+     * The Book that we are indexing
      */
-    protected Bible bible;
+    protected Book book;
 
     /**
      * The location of this index
@@ -257,6 +258,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
 
     /**
      * The Whole Bible
+     * PENDING(joe): this should be getIndex();
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 }

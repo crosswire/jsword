@@ -12,10 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -57,7 +58,7 @@ public class DemoServlet extends HttpServlet
 
         try
         {
-            version = Defaults.getBibleMetaData().getBible();
+            book = Defaults.getBibleMetaData().getBook();
         }
         catch (Exception ex)
         {
@@ -72,53 +73,55 @@ public class DemoServlet extends HttpServlet
     {
         try
         {
-            Passage ref = null;
-    
+            Key key = null;
+
             String search = request.getParameter("search");
             if (search != null)
             {
                 request.setAttribute("search", search);
-                ref = version.findPassage(new Search(search, false));
+                key = book.find(new Search(search, false));
             }
 
             String match = request.getParameter("match");
             if (match != null)
             {
                 request.setAttribute("match", match);
-                PassageTally tally = (PassageTally) version.findPassage(new Search(match, true));
+                PassageTally tally = (PassageTally) book.find(new Search(match, true));
                 tally.setOrdering(PassageTally.ORDER_TALLY);
                 tally.trimRanges(tally_trim, PassageConstants.RESTRICT_NONE);
-                ref = tally;
+                key = tally;
             }
 
             String view = request.getParameter("view");
             if (view != null)
             {
                 request.setAttribute("view", view);
-                ref = PassageFactory.createPassage(view);
+                key = PassageFactory.createPassage(view);
             }
-    
-            if (ref != null)
+
+            if (key instanceof Passage)
             {
+                Passage ref = (Passage) key;
+
                 // Do we need multiple pages
                 if (ref.countVerses() > page_size)
                 {
                     Passage waiting = ref.trimVerses(page_size);
-                    
+
                     // Well, do you or not?  A deprecation error if you don't, won't build or run on
                     // java < 1.4 if you do.
                     //String link = URLEncoder.encode(waiting.getName(), "UTF-8");
                     String link = URLEncoder.encode(waiting.getName());
-                    
+
                     request.setAttribute("next-link", link);
                     request.setAttribute("next-name", waiting.getName());
                     request.setAttribute("next-overview", waiting.getOverview());
                 }
-    
-                BookData data = version.getData(ref);
+
+                BookData data = book.getData(ref);
                 SAXEventProvider provider = data.getSAXEventProvider();
                 String text = style.applyStyleToString(provider, "simple.xsl");
-    
+
                 request.setAttribute("reply", text);
             }
         }
@@ -141,7 +144,7 @@ public class DemoServlet extends HttpServlet
 
     private static int tally_trim = 50;
     private static int page_size = 150;
-    private Bible version;
+    private Book book;
     private Style style = new Style("web");
 
     /** The log stream */

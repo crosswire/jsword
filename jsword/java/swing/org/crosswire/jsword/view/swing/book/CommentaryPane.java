@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
@@ -21,10 +20,9 @@ import org.crosswire.common.xml.SerializingContentHandler;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.CommentaryMetaData;
-import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -131,9 +129,9 @@ public class CommentaryPane extends JPanel implements DisplayArea
             ref.add(verse);
 
             int index = cbocomments.getSelectedIndex();
-            CommentaryMetaData cmd = (CommentaryMetaData) cmds.get(index);
+            BookMetaData bmd = (BookMetaData) cmds.get(index);
 
-            BookData bdata = cmd.getCommentary().getComments(ref);
+            BookData bdata = bmd.getBook().getData(ref);
             SAXEventProvider provider = bdata.getSAXEventProvider();
             String text = style.applyStyleToString(provider, "simple.xsl");
                 
@@ -183,9 +181,9 @@ public class CommentaryPane extends JPanel implements DisplayArea
         try
         {
             int index = cbocomments.getSelectedIndex();
-            CommentaryMetaData cmd = (CommentaryMetaData) cmds.get(index);
+            BookMetaData bmd = (BookMetaData) cmds.get(index);
 
-            BookData bdata = cmd.getCommentary().getComments(ref);
+            BookData bdata = bmd.getBook().getData(ref);
             SAXEventProvider provider = bdata.getSAXEventProvider();
 
             SerializingContentHandler handler = new SerializingContentHandler(true);
@@ -213,7 +211,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
      */
     public Key getKey()
     {
-        return new PassageKey(ref);
+        return ref;
     }
 
     /**

@@ -860,6 +860,15 @@ public final class Verse implements VerseBase, Comparable
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
+     */
+    public Key getParent()
+    {
+        // NOTE(joe): should we make it have a parent
+        return null;
+    }
+
     /**
      * Take a string and parse it into an Array of Strings where each
      * part is likely to be a verse part (book, chapter, verse, ...)

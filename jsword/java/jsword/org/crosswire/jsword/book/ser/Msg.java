@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.ser;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,17 +28,21 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg READ_ERROR = new Msg("Read Error.");
-    public static final Msg WRITE_ERROR = new Msg("Write Error.");
-    public static final Msg SER_INIT = new Msg("Initialisation error.");
+    static final Msg READ_ERROR = new Msg("Read Error.");
+    static final Msg WRITE_ERROR = new Msg("Write Error.");
+    static final Msg SER_INIT = new Msg("Initialisation error.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

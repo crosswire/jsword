@@ -2,7 +2,7 @@
 package org.crosswire.jsword.book.test;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -56,9 +56,9 @@ public class Speed implements Runnable
     /**
      * Basic constructor
      */
-    public Speed(Bible version)
+    public Speed(Book book)
     {
-        this.version = version;
+        this.book = book;
     }
 
     /**
@@ -73,19 +73,19 @@ public class Speed implements Runnable
             PassageTally tally;
 
             // Part 1, a best match, and doc generate
-            tally = (PassageTally) version.findPassage(new Search("In the beginning god created the heavens and the earth", true));
+            tally = (PassageTally) book.find(new Search("In the beginning god created the heavens and the earth", true));
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 2, another best match, and doc generate
-            tally = (PassageTally) version.findPassage(new Search("for god so loves the world that he gave his only begotten son", true));
+            tally = (PassageTally) book.find(new Search("for god so loves the world that he gave his only begotten son", true));
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 3, a power match, and doc generate
-            String next_input = version.findPassage(new Search("aaron & manna", false)).getName();
+            String next_input = book.find(new Search("aaron & manna", false)).getName();
             Passage ref = PassageFactory.createPassage(next_input);
             ref.trimVerses(35);
             dummyDisplay(ref);
@@ -106,9 +106,11 @@ public class Speed implements Runnable
     private void dummyDisplay(Passage ref) throws Exception
     {
         if (ref == null)
+        {    
             throw new NullPointerException("Null Passage in dummyDisplay.");
+        }
 
-        version.getData(ref);
+        book.getData(ref);
     }
 
     /**
@@ -117,7 +119,9 @@ public class Speed implements Runnable
     public long getBenchmark()
     {
         if (start_time == 0 || end_time == 0)
+        {    
             throw new IllegalStateException("The benchmark has not finished yet.");
+        }
 
         return end_time - start_time;
     }
@@ -125,25 +129,31 @@ public class Speed implements Runnable
     /**
      * Accessor for the version that we are testing
      */
-    public Bible getBible()
+    public Book getBook()
     {
-        return version;
+        return book;
     }
 
     /**
      * Accessor for the version that we are testing
      */
-    public void setBible(Bible version)
+    public void setBook(Book book)
     {
-        this.version = version;
+        this.book = book;
     }
 
-    /** The start time of the benchmark */
+    /**
+     * The start time of the benchmark
+     */
     private long start_time = 0;
 
-    /** The end time of the benchmark */
+    /**
+     * The end time of the benchmark
+     */
     private long end_time = 0;
 
-    /** The version to test */
-    private Bible version;
+    /**
+     * The version to test
+     */
+    private Book book;
 }

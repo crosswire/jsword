@@ -63,6 +63,14 @@ public class Openness extends Enum
         return (Openness) Enum.getEnum(Openness.class, name);
     }
 
+    /* (non-Javadoc)
+     * @see org.apache.commons.lang.enum.Enum#toString()
+     */
+    public String toString()
+    {
+        return getName();
+    }
+
     /**
      * Prevent anyone else from doing this
      */

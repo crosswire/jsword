@@ -41,6 +41,15 @@ public class MapTableModel extends AbstractTableModel
      * Create an internal store from a 2D array
      * @param hash The table to model
      */
+    public MapTableModel()
+    {
+        this.hash = null;
+    }
+
+    /**
+     * Create an internal store from a 2D array
+     * @param hash The table to model
+     */
     public MapTableModel(Map hash)
     {
         this.hash = hash;
@@ -61,7 +70,11 @@ public class MapTableModel extends AbstractTableModel
      */
     public void setMap(Map hash)
     {
-        this.hash = hash;
+        if (hash != this.hash)
+        {
+            this.hash = hash;
+            fireTableStructureChanged();
+        }
     }
 
     /**
@@ -79,7 +92,14 @@ public class MapTableModel extends AbstractTableModel
      */
     public int getRowCount()
     {
-        return hash.size();
+        if (hash == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return hash.size();
+        }
     }
 
     /**
@@ -90,6 +110,11 @@ public class MapTableModel extends AbstractTableModel
      */
     public Object getValueAt(int row, int col)
     {
+        if (hash == null)
+        {
+            return null;
+        }
+
         Iterator it = (col == 0) ? hash.keySet().iterator() : hash.values().iterator();
 
         try
@@ -108,24 +133,6 @@ public class MapTableModel extends AbstractTableModel
     }
 
     /**
-     * An easy way to add stuff to the table
-     */
-    public void put(Object key, Object value)
-    {
-        hash.put(key, value);
-        fireTableStructureChanged();
-    }
-
-    /**
-     * An easy way to add stuff to the table
-     */
-    public void remove(Object key)
-    {
-        hash.remove(key);
-        fireTableStructureChanged();
-    }
-
-    /**
      * Set the Object at row, coll
      * @param obj The key/value to set
      * @param row The element in the hash
@@ -133,26 +140,29 @@ public class MapTableModel extends AbstractTableModel
      */
     public void setValueAt(Object obj, int row, int col)
     {
-        Iterator it = hash.keySet().iterator();
-
-        for (int i=0; i<row; i++)
+        if (hash != null)
         {
-            it.hasNext();
-        }
-
-        Object old_key = it.next();
-        Object old_val = hash.get(old_key);
-
-        if (col == 0)
-        {
-            // Changing a key
-            hash.remove(old_key);
-            hash.put(obj, old_val);
-        }
-        else
-        {
-            // Changing a value
-            hash.put(old_key, obj);
+            Iterator it = hash.keySet().iterator();
+    
+            for (int i=0; i<row; i++)
+            {
+                it.hasNext();
+            }
+    
+            Object old_key = it.next();
+            Object old_val = hash.get(old_key);
+    
+            if (col == 0)
+            {
+                // Changing a key
+                hash.remove(old_key);
+                hash.put(obj, old_val);
+            }
+            else
+            {
+                // Changing a value
+                hash.put(old_key, obj);
+            }
         }
     }
 
@@ -173,7 +183,7 @@ public class MapTableModel extends AbstractTableModel
      */
     public Class getColumnClass(int col)
     {
-        return String.class;
+        return Object.class;
     }
 
     /**

@@ -256,6 +256,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         pnl_tbar = new JToolBar();
         bar_status = new StatusBar();
         bar_side = new SidebarPane();
+        //bar_book = new ReferencedPane();
         spt_books = new JSplitPane();
     }
 
@@ -344,11 +345,13 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         pnl_tbar.add(act_help_contents).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
+        //bar_book.addHyperlinkListener(this);
         bar_side.addHyperlinkListener(this);
 
         spt_books.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         spt_books.setOneTouchExpandable(true);
         spt_books.setDividerLocation(0.9D);
+        //spt_books.add(bar_book, JSplitPane.RIGHT);
         spt_books.add(bar_side, JSplitPane.RIGHT);
         spt_books.add(new JPanel(), JSplitPane.LEFT);
         spt_books.setResizeWeight(0.9D);
@@ -648,8 +651,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         {
             try
             {
-                Passage ref = PassageFactory.createPassage(data);
-    
+                Passage ref = PassageFactory.createPassage(data);    
                 bar_side.getCommentaryPane().setPassage(ref);
             }
             catch (NoSuchVerseException ex)
@@ -861,5 +863,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private JToolBar pnl_tbar = null;
     private StatusBar bar_status = null;
     private SidebarPane bar_side = null;
+    //private ReferencedPane bar_book = null;
     private JSplitPane spt_books = null;
 }

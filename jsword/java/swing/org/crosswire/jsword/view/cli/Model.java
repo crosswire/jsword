@@ -5,11 +5,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
 
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.Config;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -18,10 +16,10 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.Dictionary;
-import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -84,34 +82,34 @@ public class Model
         return Defaults.getDictionaryMetaData().getFullName();
     }
 
-    public String bible(String sref) throws BookException
+    public String bible(String sref) throws NoSuchKeyException, BookException
     {
-        Book book = Defaults.getBibleMetaData().getBible();
+        Book book = Defaults.getBibleMetaData().getBook();
         return getData(sref, book);
     }
 
-    public String comment(String sref) throws BookException
+    public String comment(String sref) throws NoSuchKeyException, BookException
     {
-        Book book = Defaults.getCommentaryMetaData().getCommentary();
+        Book book = Defaults.getCommentaryMetaData().getBook();
         return getData(sref, book);
     }
 
-    public String dict(String sref) throws BookException
+    public String dict(String sref) throws NoSuchKeyException, BookException
     {
-        Book book = Defaults.getDictionaryMetaData().getDictionary();
+        Book book = Defaults.getDictionaryMetaData().getBook();
         return getData(sref, book);
     }
 
-    public String dictList(String startswith)
+    public String dictList()
     {
-        Dictionary dict = Defaults.getDictionaryMetaData().getDictionary();
-        SortedSet set = dict.getIndex(startswith);
+        Book dict = Defaults.getDictionaryMetaData().getBook();
+        KeyList set = dict.getGlobalKeyList();
 
         StringBuffer buffer = new StringBuffer();
         for (Iterator it = set.iterator(); it.hasNext();)
         {
             Key key = (Key) it.next();
-            buffer.append(key.getText());
+            buffer.append(key.getName());
 
             if (it.hasNext())
             {
@@ -122,7 +120,7 @@ public class Model
         return buffer.toString();
     }
 
-    private String getData(String sref, Book book) throws BookException
+    private String getData(String sref, Book book) throws NoSuchKeyException, BookException
     {
         Key key = book.getKey(sref);
         BookData bdata = book.getData(key);
@@ -149,16 +147,16 @@ public class Model
 
     public String search(String str) throws BookException
     {
-        Bible book = Defaults.getBibleMetaData().getBible();
-        Passage ref = book.findPassage(new Search(str, false));
-        return ref.getName();
+        Book book = Defaults.getBibleMetaData().getBook();
+        Key key = book.find(new Search(str, false));
+        return key.getName();
     }
     
     public String match(String str) throws BookException
     {
-        Bible book = Defaults.getBibleMetaData().getBible();
-        Passage ref = book.findPassage(new Search(str, true));
-        return ref.getName();
+        Book book = Defaults.getBibleMetaData().getBook();
+        Key key = book.find(new Search(str, true));
+        return key.getName();
     }
     
     public String bibles()

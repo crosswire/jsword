@@ -40,21 +40,21 @@ public abstract class ItemsMem extends Mem implements Items
 {
     /**
      * Create a WordResource from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public ItemsMem(RawBible raw, String leafname, boolean create) throws IOException
+    public ItemsMem(RawBook raw, String leafname, boolean create) throws IOException
     {
         super(raw, leafname, create);
     }
 
     /**
      * Create a WordResource from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public ItemsMem(RawBible raw, String leafname, boolean create, StringBuffer messages)
+    public ItemsMem(RawBook raw, String leafname, boolean create, StringBuffer messages)
     {
         super(raw, leafname, create, messages);
     }

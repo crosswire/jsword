@@ -40,20 +40,20 @@ public class ParaInstsMem extends InstsMem
 {
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public ParaInstsMem(RawBible raw, boolean create) throws IOException
+    public ParaInstsMem(RawBook raw, boolean create) throws IOException
     {
         super(raw, "parainst.idx", create);
     }
 
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public ParaInstsMem(RawBible raw, boolean create, StringBuffer messages)
+    public ParaInstsMem(RawBook raw, boolean create, StringBuffer messages)
     {
         super(raw, "parainst.idx", create, messages);
     }

@@ -1,7 +1,9 @@
-
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.activate.Activatable;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * Book is the most basic store of textual data - It can retrieve data
@@ -29,22 +31,13 @@ import org.crosswire.common.activate.Activatable;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Book extends Activatable
+public interface Book extends Activatable, KeyFactory
 {
     /**
      * Meta-Information: What version of the Bible is this?
      * @return A Version for this Bible
      */
     public BookMetaData getBookMetaData();
-
-    /**
-     * Someone has typed in a reference to find, but we need a Key to actually
-     * look it up.
-     * @param text The string to create a Key from
-     * @return The Key corresponding to the input text
-     * @throws BookException If there is a problem converting the text
-     */
-    public Key getKey(String text) throws BookException;
 
     /**
      * Retrieval: Add to the given document some mark-up for the specified
@@ -56,11 +49,19 @@ public interface Book extends Activatable
     public BookData getData(Key ref) throws BookException;
 
     /**
+     * Does the specified verse have any data behind it.
+     * @param verse The verse to query
+     * @return The found BibleData document
+     * @throws BookException If anything goes wrong with this method
+     */
+    public boolean hasData(Key key) throws BookException;
+
+    /**
      * Retrieval: For a given search spec find a list of references to it.
      * If there are no matches then null should be returned, otherwise a valid
      * Key.
      * @param search The search spec.
-     * @throws BookException
+     * @throws BookException If anything goes wrong with this method
      */
-    public Key find(Search search) throws BookException;
+    public KeyList find(Search search) throws BookException;
 }

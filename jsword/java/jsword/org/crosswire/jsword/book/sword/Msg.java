@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,28 +28,34 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    protected static final Msg NO_KEY = new Msg("No '{0}' in index.");
-    protected static final Msg BAD_KEY = new Msg("Invalid Key type '{0}'");
-    protected static final Msg GZIP_FORMAT = new Msg("Error whilst reading field '{0}'");
-    protected static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
-    protected static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");
-    protected static final Msg MISSING_FILE = new Msg("Missing file.");
-    protected static final Msg NOT_FOUND = new Msg("Module directory not found.");
-    protected static final Msg READ_FAIL = new Msg("Error reading {0}");
-    protected static final Msg READ_ONLY = new Msg("Sword modules are read-only");
-    protected static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type: {0}");
-    protected static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0} when reading {1}");
-    protected static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0} when reading {1}");
-    protected static final Msg MISSING_SEARCHER = new Msg("Configuration error: Missing search engine.");
-    protected static final Msg MISSING_BACKEND = new Msg("Configuration error: Missing backend engine.");
+    static final Msg NO_KEY = new Msg("No {0} in index.");
+    static final Msg BAD_KEY = new Msg("Invalid Key type={0}, name={1}");
+    static final Msg GZIP_FORMAT = new Msg("Error whilst reading field {0}");
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");
+    static final Msg MISSING_FILE = new Msg("Missing file.");
+    static final Msg NOT_FOUND = new Msg("Module directory not found.");
+    static final Msg READ_FAIL = new Msg("Error reading {0}");
+    static final Msg READ_ONLY = new Msg("Sword modules are read-only");
+    static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type");
+    static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0} when reading {1}");
+    static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0} when reading {1}");
+    static final Msg MISSING_SEARCHER = new Msg("Configuration error: Missing search engine.");
+    static final Msg MISSING_BACKEND = new Msg("Configuration error: Missing backend engine.");
+    static final Msg DRIVER_READONLY = new Msg("This driver is read only. Sorry.");
+    static final Msg MISSING_NAME = new Msg("Missing name");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

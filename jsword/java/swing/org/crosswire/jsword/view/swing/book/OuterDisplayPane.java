@@ -12,9 +12,9 @@ import javax.swing.event.ListSelectionListener;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -55,12 +55,12 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     {
         try
         {
-            Bible version = Defaults.getBibleMetaData().getBible();
-            txt_passg.setVersion(version);
+            Book book = Defaults.getBibleMetaData().getBook();
+            txt_passg.setBook(book);
         }
         catch (Throwable ex)
         {
-            Reporter.informUser(this, ex);
+            log.error("Failed to set default book", ex);
         }
 
         jbInit();
@@ -284,9 +284,9 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
         {
             log.debug("new bible chosen: "+ev.getBook());
 
-            Bible version = (Bible) ev.getBook();
-            txt_passg.setVersion(version);
-    
+            Book book = ev.getBook();
+            txt_passg.setBook(book);
+
             // The following way to refresh the view is a little harsh because
             // resets any list selections. It would be nice if we could get
             // away with calling selection(), however it doesn't seem to work.

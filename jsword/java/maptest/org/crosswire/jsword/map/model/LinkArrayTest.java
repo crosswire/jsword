@@ -6,9 +6,9 @@ import java.io.ObjectOutputStream;
 
 import junit.framework.TestCase;
 
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.raw.RawBible;
+import org.crosswire.jsword.book.raw.RawBook;
 
 /**
  * JUnit Test.
@@ -51,9 +51,9 @@ public class LinkArrayTest extends TestCase
 
     public void testLinkArray() throws Exception
     {
-        RawBible.setDefaultCacheData(true);
-        Bible bible = Defaults.getBibleMetaData().getBible();
-        LinkArray la = new LinkArray(bible);
+        RawBook.setDefaultCacheData(true);
+        Book book = Defaults.getBibleMetaData().getBook();
+        LinkArray la = new LinkArray(book);
 
         ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream());
         out.writeObject(la);

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 /**
@@ -24,20 +23,8 @@ package org.crosswire.jsword.book;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
+ * @deprecated Use Book
  */
 public interface BibleMetaData extends BookMetaData
 {
-    /**
-     * Accessor for the real Bible to read data.
-     * <p>Note that constructing a Bible may well consume system resources far
-     * more than the construction of a BibleMetaData so you should only get a
-     * Bible if you intend to use it.
-     * <p>This method is here rather than on the BookDriver because we want to
-     * avoid user contact with the Drivers where possible.
-     * <p>For implementors of BibleMetaData - the objects returned by 2
-     * successive calls to getBible() should be the same (i.e. return true to an
-     * == test) unless for some reason the objects are not thread safe. Since
-     * Bibles are read-only once setup thread safety should not be hard.
-     */
-    public Bible getBible();
 }

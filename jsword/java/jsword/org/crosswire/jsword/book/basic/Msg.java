@@ -29,17 +29,33 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    public static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");
-    public static final Msg DELETE_NOTIMPL = new Msg("Sorry delete is not implemented yet.\n Some Bible names are simply the names of the directories in which they live.\n So you can manually delete the directory \"JSWORD/versions/{0}\"");
-    public static final Msg NO_VERSE = new Msg("Invalid reference.");
+    static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");
+    static final Msg DELETE_NOTIMPL = new Msg("Sorry delete is not implemented yet.\n Some Bible names are simply the names of the directories in which they live.\n So you can manually delete the directory \"JSWORD/versions/{0}\"");
+    static final Msg NO_VERSE = new Msg("Invalid reference.");
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
 
-    /** Initialise any resource bundles */
+    static final Msg KEYLIST_READONLY = new Msg("Can't alter a read-only key list");
+
+    /* From LocalURL*
+    static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");
+    static final Msg CREATE_NOBIBLE = new Msg("Can't create a Bible from a non-Bible source");
+    static final Msg DELETE_FAIL = new Msg("Failed to delete Book '{0}'");
+    static final Msg FLUSH_FAIL = new Msg("Failed to write data.");
+    static final Msg CREATE_FAIL = new Msg("Failed to create Book.");
+    static final Msg IO_FAIL = new Msg("IO Failure.");
+    */
+
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

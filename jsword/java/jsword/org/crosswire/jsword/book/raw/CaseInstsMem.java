@@ -46,21 +46,21 @@ public class CaseInstsMem extends InstsMem
 {
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public CaseInstsMem(RawBible raw, boolean create) throws Exception
+    public CaseInstsMem(RawBook raw, boolean create) throws Exception
     {
         super(raw, "caseinst.idx", create);
     }
 
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public CaseInstsMem(RawBible raw, boolean create, StringBuffer messages)
+    public CaseInstsMem(RawBook raw, boolean create, StringBuffer messages)
     {
         super(raw, "caseinst.idx", create, messages);
     }

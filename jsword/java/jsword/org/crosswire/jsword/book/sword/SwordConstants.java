@@ -39,17 +39,25 @@ public class SwordConstants
     {
     }
 
-    /** constant for the introduction */
+    /**
+     * constant for the introduction
+     */
     static final int TESTAMENT_INTRO = 0;
 
-    /** constant for the old testament */
+    /**
+     * constant for the old testament
+     */
     static final int TESTAMENT_OLD = 1;
 
-    /** constant for the new testament */
+    /**
+     * constant for the new testament
+     */
     static final int TESTAMENT_NEW = 2;
 
-    // name data info taken from http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
-    /** constants for name types (These are mutually exclusive, thus the lack of bit-shifting)*/
+    /**
+     * constants for name types (These are mutually exclusive, thus the lack of bit-shifting)
+     * name data info taken from http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
+     */
     static final int DRIVER_RAW_TEXT = 0;
     static final int DRIVER_Z_TEXT = 1;
     static final int DRIVER_RAW_COM = 2;

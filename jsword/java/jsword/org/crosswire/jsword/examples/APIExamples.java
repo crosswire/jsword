@@ -2,13 +2,11 @@ package org.crosswire.jsword.examples;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.SortedSet;
 
 import javax.xml.transform.TransformerException;
 
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
@@ -16,9 +14,9 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.Dictionary;
-import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -61,7 +59,7 @@ public class APIExamples
     public void readPlainText() throws BookException, NoSuchVerseException
     {
         Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Bible bible = Defaults.getBibleMetaData().getBible();
+        Book bible = Defaults.getBibleMetaData().getBook();
 
         BookData data = bible.getData(ref);
         String text = data.getPlainText();
@@ -82,7 +80,7 @@ public class APIExamples
     public void readStyledText() throws NoSuchVerseException, BookException, IOException, TransformerException
     {
         Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Bible bible = Defaults.getBibleMetaData().getBible();
+        Book bible = Defaults.getBibleMetaData().getBook();
 
         BookData data = bible.getData(ref);
         SAXEventProvider sep = data.getSAXEventProvider();
@@ -104,11 +102,11 @@ public class APIExamples
      */
     public void readDictionary() throws BookException
     {
-        Dictionary dict = Defaults.getDictionaryMetaData().getDictionary();
+        Book dict = Defaults.getDictionaryMetaData().getBook();
 
         // If I want every key in the Dictionary then I do this:
-        SortedSet keys = dict.getIndex("");
-        Key first = (Key) keys.first();
+        KeyList keys = dict.getGlobalKeyList();
+        Key first = (Key) keys.iterator().next();
 
         System.out.println("The first Key in the default dictionary is "+first);
         
@@ -122,20 +120,20 @@ public class APIExamples
      */
     public void search() throws BookException
     {
-        Bible bible = Defaults.getBibleMetaData().getBible();
+        Book bible = Defaults.getBibleMetaData().getBook();
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
         Search search = new Search("moses + aaron", false);
-        Passage ref = bible.findPassage(search);
+        Key key = bible.find(search);
 
-        System.out.println("The following verses contain both moses and aaron: " + ref.getName());
+        System.out.println("The following verses contain both moses and aaron: " + key.getName());
 
         // Or you can do a best match search ...
         search = new Search("for god so loves the world", true);
-        ref = bible.findPassage(search);
+        key = bible.find(search);
 
-        System.out.println("Trying to find verses like John 3:16: " + ref.getName());
+        System.out.println("Trying to find verses like John 3:16: " + key.getName());
     }
 
     /**
@@ -147,11 +145,11 @@ public class APIExamples
      */
     public void pickBible()
     {
-        BibleMetaData bmd;
+        BookMetaData bmd;
 
         // The Default Bible - JSword does everything it can to make this work
         bmd = Defaults.getBibleMetaData();
-        Bible bible = bmd.getBible();
+        Book bible = bmd.getBook();
 
         // You can only get a Bible (or any other Book) via a MetaData object
         // to help save resources. It means you can find out all about a Book
@@ -168,12 +166,12 @@ public class APIExamples
 
         // Assuming that we got some Bibles then we can use an Iterator or just
         // go to one direct ... Remember that we always go via a MetaData object.
-        bmd = (BibleMetaData) bibles.get(0);
+        bmd = (BookMetaData) bibles.get(0);
 
         // The code above is safe - we know we are only going to get
         // BibleMetaData objects in the List if we've asked from them with a
         // BookFilter. However this *could* fail.
-        bmd = (BibleMetaData) everything.get(0);
+        bmd = (BookMetaData) everything.get(0);
 
         // If you asked for a mixed list then you should use this: 
         BookMetaData md = (BookMetaData) everything.get(0);
@@ -187,20 +185,13 @@ public class APIExamples
                 return tbmd.getName().equals("My Favorite Version");
             }
         });
-        bmd = (BibleMetaData) test.get(0);
+        bmd = (BookMetaData) test.get(0);
 
         // This is exactly the same as getting an Iterator on the 'everything'
         // List from above except that you can pass the BookFilter around and
         // store it in a local variable.
 
-        // If you want to make that Book the Default you can do:
-        Defaults.setBibleMetaData(bmd);
-
-        // The config system will pick up any changes so there is a good chance
-        // that this setting will persist across sessions. See the config
-        // documentation for more information.
-
-        // This line just shuts eclipse up
+        // Ignore this line: it just shuts eclipse up
         md.hashCode(); bible.hashCode();
     }
 }

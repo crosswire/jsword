@@ -6,14 +6,12 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
-import org.crosswire.jsword.book.Commentary;
-import org.crosswire.jsword.book.Dictionary;
 
 /**
  * A TreeModel that displays the installed Books.
@@ -74,17 +72,17 @@ public class BooksTreeModel implements TreeModel
             return 3;
         }
 
-        if (parent == BIBLES)
+        if (parent == BookType.BIBLE)
         {
             return Books.getBooks(BookFilters.getBibles()).size();
         }
 
-        if (parent == COMMENTARIES)
+        if (parent == BookType.COMMENTARY)
         {
             return Books.getBooks(BookFilters.getCommentaries()).size();
         }
 
-        if (parent == DICTIONARIES)
+        if (parent == BookType.DICTIONARY)
         {
             return Books.getBooks(BookFilters.getDictionaries()).size();
         }
@@ -97,7 +95,7 @@ public class BooksTreeModel implements TreeModel
      */
     public boolean isLeaf(Object node)
     {
-        if (node == ROOT || node == BIBLES || node == COMMENTARIES || node == DICTIONARIES)
+        if (node == ROOT || node == BookType.BIBLE || node == BookType.COMMENTARY || node == BookType.DICTIONARY)
         {
             return false;
         }
@@ -131,27 +129,27 @@ public class BooksTreeModel implements TreeModel
             switch (index)
             {
             case 0:
-                return BIBLES;
+                return BookType.BIBLE;
             case 1:
-                return COMMENTARIES;
+                return BookType.COMMENTARY;
             case 2:
-                return DICTIONARIES;
+                return BookType.DICTIONARY;
             default:
                 return null;
             }
         }
 
-        if (parent == BIBLES)
+        if (parent == BookType.BIBLE)
         {
             return Books.getBooks(BookFilters.getBibles()).get(index);
         }
 
-        if (parent == COMMENTARIES)
+        if (parent == BookType.COMMENTARY)
         {
             return Books.getBooks(BookFilters.getCommentaries()).get(index);
         }
 
-        if (parent == DICTIONARIES)
+        if (parent == BookType.DICTIONARY)
         {
             return Books.getBooks(BookFilters.getDictionaries()).get(index);
         }
@@ -166,17 +164,17 @@ public class BooksTreeModel implements TreeModel
     {
         if (parent == ROOT)
         {
-            if (child == BIBLES)
+            if (child == BookType.BIBLE)
             {
                 return 0;
             }
 
-            if (child == COMMENTARIES)
+            if (child == BookType.COMMENTARY)
             {
                 return 1;
             }
 
-            if (child == DICTIONARIES)
+            if (child == BookType.DICTIONARY)
             {
                 return 2;
             }
@@ -184,17 +182,17 @@ public class BooksTreeModel implements TreeModel
             return -1;
         }
 
-        if (parent == BIBLES)
+        if (parent == BookType.BIBLE)
         {
             return Books.getBooks(BookFilters.getBibles()).indexOf(child);
         }
 
-        if (parent == COMMENTARIES)
+        if (parent == BookType.COMMENTARY)
         {
             return Books.getBooks(BookFilters.getCommentaries()).indexOf(child);
         }
 
-        if (parent == DICTIONARIES)
+        if (parent == BookType.DICTIONARY)
         {
             return Books.getBooks(BookFilters.getDictionaries()).indexOf(child);
         }
@@ -252,28 +250,10 @@ public class BooksTreeModel implements TreeModel
      */
     protected Object getChildOfRoot(BookMetaData bmd)
     {
-        if (bmd instanceof Bible)
-        {
-            return BIBLES;
-        }
-        else if (bmd instanceof Commentary)
-        {
-            return COMMENTARIES;
-        }
-        else if (bmd instanceof Dictionary)
-        {
-            return DICTIONARIES;
-        }
-        else
-        {
-            return null;
-        }
+        return bmd.getType();
     }
 
     protected static final String ROOT = "Books";
-    protected static final String BIBLES = "Bibles";
-    protected static final String DICTIONARIES = "Dictionaries";
-    protected static final String COMMENTARIES = "Commentaries";
 
     /**
      * The list of listeners

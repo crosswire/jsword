@@ -1,7 +1,4 @@
-
 package org.crosswire.jsword.book;
-
-import java.util.SortedSet;
 
 /**
  * Dictionary is an interface for all the Lexicon/Dictionary type works.
@@ -30,40 +27,8 @@ import java.util.SortedSet;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
+ * @deprecated Use Book
  */
 public interface Dictionary extends Book
 {
-    /**
-     * The meta data about this Book.
-     * @return A Version for this Dictionary
-     * @see Book#getBookMetaData()
-     */
-    public DictionaryMetaData getDictionaryMetaData();
-
-    /**
-     * Get a list of index entries. If key is null or blank then the entire
-     * index is retrieved. An empty array is returned if no entries could be
-     * found.
-     * I considered an interface like: <code>String[] getIndex();</code> in
-     * place of this on the assumption that accessing a string array would be
-     * faster (true but probably not significant) that it was more typesafe
-     * (true but is it that relevant?) and that it is easy to wrap a List around
-     * a String (true). However it is not easy to do the startswith thing for a
-     * String[] without lots of work so we would need to stick to getIndex()
-     * which <i>might</i> be a pain (?).
-     * @param startswith The text to base replies on.
-     * @return String[]
-     */
-    public SortedSet getIndex(String startswith);
-
-    /**
-     * Someone has typed in a reference to find, but we need a Key to actually
-     * look it up, with dictionaries it is good sometime to have a fuzzy match
-     * where we don't know exactly what we are looking for. This is a best case
-     * version.
-     * @param text The string to create a Key from
-     * @return The Key corresponding to the input text
-     * @throws BookException If there is a problem converting the text
-     */
-    public Key getKeyFuzzy(String text) throws BookException;
 }

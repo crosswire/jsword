@@ -17,7 +17,7 @@ import org.crosswire.common.progress.Job;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.Search;
@@ -61,11 +61,11 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
-    public void init(Bible newbible, URL newurl) throws BookException
+    public void init(Book newbook, URL newurl) throws BookException
     {
         try
         {
-            this.bible = newbible;
+            this.book = newbook;
             this.url = newurl;
 
             URL dataurl = NetUtil.lengthenURL(newurl, "ref.data");
@@ -271,7 +271,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 // loop through all the words in this verse
                 Passage current = PassageFactory.createPassage();
                 current.add(verse);
-                String text = bible.getData(current).getPlainText();
+                String text = book.getData(current).getPlainText();
                 String[] words = BookUtil.getWords(text);
                 for (int i = 0; i < words.length; i++)
                 {
@@ -297,7 +297,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             catch (Exception ex)
             {
                 errors++;
-                log.error("Error reading "+verse.getName()+" in "+bible.getBibleMetaData().getFullName()+": errors="+errors, ex);
+                log.error("Error reading "+verse.getName()+" in "+book.getBookMetaData().getFullName()+": errors="+errors, ex);
                 if (errors > MAX_ERRORS)
                 {
                     if (ex instanceof BookException)
@@ -392,7 +392,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /**
      * The Bible we are indexing
      */
-    protected Bible bible;
+    protected Book book;
 
     /**
      * The directory to which to write the index
@@ -433,6 +433,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
 
     /**
      * The Whole Bible
+     * PENDING(joe): this should be getIndex();
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 

@@ -40,7 +40,7 @@ import org.crosswire.common.swing.ExtensionFileFilter;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.map.model.AdjustOriginRule;
@@ -155,7 +155,7 @@ public class Mapper extends JFrame
 
             config.localToApplication(true);
 
-            la = new LinkArray(Defaults.getBibleMetaData().getBible());
+            la = new LinkArray(Defaults.getBibleMetaData().getBook());
         }
         catch (Exception ex)
         {
@@ -892,8 +892,8 @@ public class Mapper extends JFrame
 
             if (reply == BookChooser.APPROVE_OPTION)
             {
-                Bible bible = (Bible) chooser.getSelected().getBook();
-                la = new LinkArray(bible);
+                Book book = chooser.getSelected().getBook();
+                la = new LinkArray(book);
                 lar.setLinkArray(la);
             }
         }

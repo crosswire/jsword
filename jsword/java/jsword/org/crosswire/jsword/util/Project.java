@@ -409,6 +409,84 @@ public class Project
     }
 
     /**
+     * Search for versions directories
+     */
+    public URL findBibleRoot(String subdir) throws MalformedURLException
+    {
+        URL root = null;
+
+        // First see if there is a System property that can help us out
+        String sysprop = System.getProperty("jsword.bible.dir");
+        log.debug("Testing system property jsword.bible.dir="+sysprop);
+
+        if (sysprop != null)
+        {
+            URL found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
+            URL test = NetUtil.lengthenURL(found, "locator.properties");
+
+            if (NetUtil.isFile(test))
+            {
+                log.debug("Found BibleRoot using system property jsword.bible.dir at "+test);
+                root = found;
+            }
+            else
+            {
+                log.warn("Missing jsword.bible.dir under: "+test.toExternalForm());
+            }
+        }
+
+        // If not then try a wild guess
+        if (root == null)
+        {
+            URL found = ResourceUtil.getResource("versions/locator.properties");
+            URL test = NetUtil.shortenURL(found, "locator.properties");
+            if (NetUtil.isFile(test))
+            {
+                log.debug("Found BibleRoot from current directory: "+test.toExternalForm());
+                root = test;
+            }
+            else
+            {
+                log.warn("Missing BibleRoot from current directory: "+test.toExternalForm());
+            }
+        }
+
+        if (root == null)
+        {
+            return null;
+        }
+        else
+        {
+            return NetUtil.lengthenURL(root, subdir);
+        }
+    }
+
+    /**
+     * Check that the directories in the version directory really
+     * represent versions.
+     */
+    public static class IsDirectoryURLFilter implements URLFilter
+    {
+        /**
+         * Simple ctor
+         */
+        public IsDirectoryURLFilter(URL parent)
+        {
+            this.parent = parent;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.common.util.URLFilter#accept(java.lang.String)
+         */
+        public boolean accept(String name)
+        {
+            return NetUtil.isDirectory(NetUtil.lengthenURL(parent, name));
+        }
+
+        private URL parent;
+    }
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(Project.class);

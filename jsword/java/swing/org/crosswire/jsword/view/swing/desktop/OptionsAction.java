@@ -80,6 +80,9 @@ public class OptionsAction extends DesktopAbstractAction
         }
     }
 
+    /**
+     * 
+     */
     public void createConfig() throws IOException, JDOMException
     {
         fillChoiceFactory();
@@ -89,12 +92,18 @@ public class OptionsAction extends DesktopAbstractAction
         config.add(xmlconfig);
     }
 
+    /**
+     * 
+     */
     public void loadConfig() throws IOException
     {
         config.setProperties(Project.instance().getProperties("desktop"));
         config.localToApplication(true);
     }
 
+    /**
+     * 
+     */
     private static void fillChoiceFactory()
     {
         // Create the array of Bibles
@@ -113,6 +122,9 @@ public class OptionsAction extends DesktopAbstractAction
         ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
     }
 
+    /**
+     * 
+     */
     private static String[] getFullNameArray(BookFilter filter)
     {
         List bmds = Books.getBooks(filter);
@@ -125,5 +137,8 @@ public class OptionsAction extends DesktopAbstractAction
         return (String[]) names.toArray(new String[names.size()]);
     }
 
+    /**
+     * 
+     */
     private Config config = null;
 }

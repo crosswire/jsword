@@ -1,13 +1,16 @@
-
 package org.crosswire.jsword.book.stub;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * StubBookDriver is a simple stub implementation of BibleDriver that is
  * pretty much always going to work because it has no dependancies on external
  * files.
+ * <p>TODO(joe): StubDict M.I.A because StubBook isa PassageAbstractBook
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -33,15 +36,44 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 public class StubBookDriver extends AbstractBookDriver
 {
     /**
-     * Get a list of the Books available from the name
-     * @return an array of book names
+     * Setup the array of BookMetaDatas
+     */
+    public StubBookDriver()
+    {
+        Book[] books = new Book[]
+        {
+            new StubBook(this, "Stub Version", BookType.BIBLE, Books.SPEED_INACCURATE),
+            new StubBook(this, "New Stub Version", BookType.BIBLE, Books.SPEED_INACCURATE),
+            new StubBook(this, "Stub Comments", BookType.COMMENTARY, Books.SPEED_INACCURATE),
+            //new StubBook(this, "Stub Dict", BookType.DICTIONARY, Books.SPEED_INACCURATE, new StubDictionaryKeyFactory()),
+        };
+
+        bmds = new BookMetaData[books.length];
+        
+        for (int i = 0; i < books.length; i++)
+        {
+            bmds[i] = books[i].getBookMetaData();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
     public BookMetaData[] getBooks()
     {
-        return new BookMetaData[]
-        {
-            new StubBookMetaData(this, "Stub Version"),
-            new StubBookMetaData(this, "New Stub Version"),
-        };
+        return bmds;
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return "Stub";
+    }
+
+    /**
+     * The meta data array
+     */
+    private BookMetaData[] bmds = null;
 }

@@ -20,12 +20,11 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Project;
@@ -81,7 +80,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
 
                     job.setProgress("Setup");
                     Passage gen11 = PassageFactory.createPassage("Gen 1:1");
-                    Bible deftbible = Defaults.getBibleMetaData().getBible();
+                    Book deftbible = Defaults.getBibleMetaData().getBook();
                     if (interrupted())
                     {
                         return;
@@ -115,7 +114,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                 }
                 catch (Exception ex)
                 {
-                    log.warn("View pre-load failed", ex);
+                    log.error("View pre-load failed", ex);
                 }
             }
         };
@@ -142,9 +141,9 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the version used for lookup
      */
-    public void setVersion(Bible version)
+    public void setBook(Book book)
     {
-        this.version = version;
+        this.book = book;
     }
 
     /**
@@ -154,13 +153,13 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     {
         this.ref = ref;
 
-        if (ref == null || version == null)
+        if (ref == null || book == null)
         {
             txt_view.setText("");
             return;
         }
 
-        BookData data = version.getData(ref);
+        BookData data = book.getData(ref);
         SAXEventProvider provider = data.getSAXEventProvider();
         String text = style.applyStyleToString(provider, "simple.xsl");
 
@@ -183,14 +182,14 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public String getOSISSource()
     {
-        if (ref == null || version == null)
+        if (ref == null || book == null)
         {
             return "";
         }
 
         try
         {
-            BookData data = version.getData(ref);
+            BookData data = book.getData(ref);
             SAXEventProvider provider = data.getSAXEventProvider();
             SerializingContentHandler handler = new SerializingContentHandler(true);
             provider.provideSAXEvents(handler);
@@ -217,7 +216,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public Key getKey()
     {
-        return new PassageKey(ref);
+        return ref;
     }
 
     /* (non-Javadoc)
@@ -284,7 +283,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     /**
      * What version is currently being used for display
      */
-    private Bible version = null;
+    private Book book = null;
 
     /**
      * What was the last passage to be viewed

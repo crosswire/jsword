@@ -1,10 +1,10 @@
 package org.crosswire.jsword.view.swing.book;
 
-import javax.swing.table.AbstractTableModel;
-
+import org.crosswire.common.swing.MapTableModel;
 import org.crosswire.jsword.book.BookMetaData;
 
 /**
+ * A TableModel that displays the data in a BookMetaData object.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,14 +27,14 @@ import org.crosswire.jsword.book.BookMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BookMetaDataTableModel extends AbstractTableModel
+public class BookMetaDataTableModel extends MapTableModel
 {
     /**
      * Simple ctor
      */
     public BookMetaDataTableModel()
     {
-        bmd = null;
+        setBookMetaData(null);
     }
 
     /**
@@ -42,95 +42,11 @@ public class BookMetaDataTableModel extends AbstractTableModel
      */
     public BookMetaDataTableModel(BookMetaData bmd)
     {
-        this.bmd = bmd;
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#getColumnCount()
-     */
-    public int getColumnCount()
-    {
-        return COLS.length;
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
-    public int getRowCount()
-    {
-        return ROWS.length;
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
-     */
-    public boolean isCellEditable(int row, int col)
-    {
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#getColumnClass(int)
-     */
-    public Class getColumnClass(int col)
-    {
-        return Object.class;
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
-    public Object getValueAt(int row, int col)
-    {
-        switch (col)
-        {
-        case 0:
-            return ROWS[row];
-
-        case 1:
-            if (bmd == null)
-            {
-                return "";
-            }
-
-            switch (row)
-            {
-            case 0:
-                return bmd.getName();
-            case 1:
-                return bmd.getDriverName();
-            case 2:
-                return bmd.getEdition();
-            case 3:
-                return bmd.getInitials();
-            case 4:
-                return bmd.getFirstPublished();
-            default:
-                return null;
-            }
-
-        default:
-            return null;
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
-     */
-    public void setValueAt(Object aValue, int row, int col)
-    {
-    }
-
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableModel#getColumnName(int)
-     */
-    public String getColumnName(int col)
-    {
-        return COLS[col];
+        setBookMetaData(bmd);
     }
 
     /**
-     * @return Returns the bmd.
+     * @return Returns the BookMetaData.
      */
     public BookMetaData getBookMetaData()
     {
@@ -138,40 +54,19 @@ public class BookMetaDataTableModel extends AbstractTableModel
     }
 
     /**
-     * @param bmd The bmd to set.
+     * @param bmd The BookMetaData to set.
      */
     public void setBookMetaData(BookMetaData bmd)
     {
         if (bmd != this.bmd)
         {
+            setMap(bmd.getProperties());
             this.bmd = bmd;
-            fireTableStructureChanged();
         }
     }
 
     /**
      * The meta data that we are displaying
      */
-    private BookMetaData bmd;
-
-    /**
-     * The column names
-     */
-    private static final String[] COLS = new String[]
-    {
-        "Property",
-        "Value",
-    };
-
-    /**
-     * The column names
-     */
-    private static final String[] ROWS = new String[]
-    {
-        "Name",
-        "Driver",
-        "Edition",
-        "Initials",
-        "First Published",
-    };
+    private BookMetaData bmd = null;
 }

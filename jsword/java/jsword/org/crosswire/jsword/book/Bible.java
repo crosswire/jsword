@@ -1,7 +1,4 @@
-
 package org.crosswire.jsword.book;
-
-import org.crosswire.jsword.passage.Passage;
 
 /**
  * Bible is the core interface to a Bible store.
@@ -31,35 +28,8 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  * @see Book
+ * @deprecated Use Book
  */
 public interface Bible extends Book
 {
-    /**
-     * The meta data about this Book
-     * @return A Version for this Bible
-     * @see Book#getBookMetaData()
-     */
-    public BibleMetaData getBibleMetaData();
-
-    /**
-     * Retrieval: Get BibleData for the given Passage. To get a plain string
-     * you need to use:
-     * <pre>
-     *   String s = book.getData(ref).getPlainText();
-     * </pre>
-     * @param ref The verses to search for
-     * @return The found BibleData document
-     * @throws BookException If anything goes wrong with this method
-     * @see Book#getData(Key)
-     */
-    public BookData getData(Passage ref) throws BookException;
-
-    /**
-     * Retrieval: For a given word find a list of references to it
-     * @param search The text to search for
-     * @return The references to the word
-     * @throws BookException If anything goes wrong with this method
-     * @see Book#find(Search)
-     */
-    public Passage findPassage(Search search) throws BookException;
 }

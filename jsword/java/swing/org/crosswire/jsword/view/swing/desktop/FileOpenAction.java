@@ -1,8 +1,7 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
@@ -34,6 +33,9 @@ import javax.swing.KeyStroke;
  */
 public class FileOpenAction extends DesktopAbstractAction
 {
+    /**
+     * Configuration ctor
+     */
     public FileOpenAction(Desktop tools)
     {
         super(tools,
@@ -41,9 +43,12 @@ public class FileOpenAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Open16.gif",
               "toolbarButtonGraphics/general/Open24.gif",
               "Open Passage", "Open a saved passage.",
-              'O', KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK, false));
+              'O', KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), false));
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         JOptionPane.showMessageDialog(getDesktop(), "Not implemented");

@@ -1,7 +1,8 @@
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * A backend to read LZSS compressed data files.
@@ -29,19 +30,31 @@ import org.crosswire.jsword.passage.Verse;
  */
 public class LZSSBackend implements Backend
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#init(org.crosswire.jsword.book.sword.SwordConfig)
+    /**
+     * Simple ctor
      */
-    public void init(SwordConfig config)
+    public LZSSBackend(SwordConfig config)
     {
+        this.config = config;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
      */
-    public byte[] getRawText(Verse v) throws BookException
+    public byte[] getRawText(Key key) throws BookException
     {
         // LATER(joe): implement this
-        throw new BookException(Msg.COMPRESSION_UNSUPPORTED);
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { config.toString() });
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#readIndex()
+     */
+    public KeyList readIndex()
+    {
+        // TODO: refactor to get rid of this
+        return null;
+    }
+
+    private SwordConfig config;
 }

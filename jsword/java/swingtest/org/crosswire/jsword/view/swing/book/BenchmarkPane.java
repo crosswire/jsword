@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.test.Speed;
 
@@ -128,7 +128,7 @@ public class BenchmarkPane extends EirPanel
         try
         {
             // This cast is safe because Bibles are filtered below
-            Bible book = (Bible) mdl_bible.getSelectedBookMetaData().getBook();
+            Book book = mdl_bible.getSelectedBookMetaData().getBook();
     
             Speed speed = new Speed(book);
             speed.run();

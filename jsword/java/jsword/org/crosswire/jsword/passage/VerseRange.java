@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.IOException;
@@ -1439,6 +1438,15 @@ public final class VerseRange implements VerseBase
         return new AbstractPassage.VerseRangeIterator(verseIterator(), restrict);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
+     */
+    public Key getParent()
+    {
+        // NOTE(joe): should we make it have a parent
+        return null;
+    }
+
     /**
      * Create a DistinctPassage that is the stuff left of VerseRange a
      * when you remove the stuff in VerseRange b.
@@ -1505,24 +1513,6 @@ public final class VerseRange implements VerseBase
         }
 
         return null;
-    }
-
-    /**
-     * Is the string likely to be a VerseRange and not a Verse?
-     * @param desc The string to be tested for Rangeness
-     * @return true/false if this is likely to be a range
-     */
-    public static boolean isVerseRange(String desc)
-    {
-        for (int i=0; i<PassageConstants.RANGE_ALLOWED_DELIMS.length(); i++)
-        {
-            if (desc.indexOf(PassageConstants.RANGE_ALLOWED_DELIMS.charAt(i)) != -1)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

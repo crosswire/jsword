@@ -1,31 +1,32 @@
-
 package org.crosswire.jsword.book.sword;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.Comparator;
+import java.net.MalformedURLException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Properties;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DictionaryMetaData;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.Key;
-import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.basic.AbstractDictionary;
+import org.crosswire.jsword.book.Openness;
+import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.book.basic.DefaultBookMetaData;
+import org.crosswire.jsword.book.basic.ReadOnlyKeyList;
 import org.crosswire.jsword.osis.Div;
-import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisText;
-import org.crosswire.jsword.osis.Work;
+import org.crosswire.jsword.osis.OsisTextType;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * A Sword version of Dictionary.
@@ -51,35 +52,28 @@ import org.crosswire.jsword.osis.Work;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordDictionary extends AbstractDictionary
+public class SwordDictionary extends AbstractBook
 {
     /**
      * Start and to as much checking as we can without using memory.
      * (i.e. actually reading the indexes)
      */
-    protected SwordDictionary(SwordDictionaryMetaData data, SwordConfig config) throws BookException
+    protected SwordDictionary(SwordBookDriver driver, SwordConfig config, Backend backend, BookType type) throws MalformedURLException, ParseException
     {
+        Properties prop = config.getProperties();
+        prop.setProperty(BookMetaData.KEY_EDITION, "");
+        prop.setProperty(BookMetaData.KEY_NAME, config.getDescription());
+        prop.setProperty(BookMetaData.KEY_OPENNESS, Openness.UNKNOWN.getName());
+        prop.setProperty(BookMetaData.KEY_SPEED, Integer.toString(Books.SPEED_FAST));
+        prop.setProperty(BookMetaData.KEY_TYPE, type.getName());
+
+        BookMetaData bmd = new DefaultBookMetaData(driver, this, prop);
+        setBookMetaData(bmd);
+
+        initSearchEngine();
+
         this.config = config;
-        this.sdmd = data;
-
-        int ctype = config.getModDrv(); 
-        switch (ctype)
-        {
-        case SwordConstants.DRIVER_RAW_LD:
-            backend = new RawKeyBackend(config, 2);
-            break;
-
-        case SwordConstants.DRIVER_RAW_LD4:
-            backend = new RawKeyBackend(config, 4);
-            break;
-
-        case SwordConstants.DRIVER_Z_LD:
-            backend = new ZKeyBackend();
-            break;
-
-        default:
-            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { new Integer(ctype) });
-        }
+        this.backend = backend;
     }
 
     /* (non-Javadoc)
@@ -87,17 +81,16 @@ public class SwordDictionary extends AbstractDictionary
      */
     public final void activate(Lock lock)
     {
-        List raw = backend.readIndex();
+        set = backend.readIndex();
 
         map = new HashMap();
-        for (Iterator it = raw.iterator(); it.hasNext();)
+        for (Iterator it = set.iterator(); it.hasNext();)
         {
             Key key = (Key) it.next();
-            map.put(key.getText(), key);
+            map.put(key.getName(), key);
         }
 
-        set = new TreeSet(new KeyComparator());
-        set.addAll(raw);
+        global = new ReadOnlyKeyList(set, false);
     }
 
     /* (non-Javadoc)
@@ -107,112 +100,11 @@ public class SwordDictionary extends AbstractDictionary
     {
         map = null;
         set = null;
+        global = null;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
-     */
-    public DictionaryMetaData getDictionaryMetaData()
-    {
-        return sdmd;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.KeyBackend#getIndex(java.lang.String)
-     */
-    public SortedSet getIndex(String startswith)
-    {
-        checkActive();
-
-        if (startswith == null)
-        {
-            return Collections.unmodifiableSortedSet(set);
-        }
-
-        return Collections.unmodifiableSortedSet(set.subSet(startswith, startswith+"\u9999"));
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.KeyBackend#getKey(java.lang.String)
-     */
-    public Key getKey(String text) throws BookException
-    {
-        checkActive();
-
-        Key key = (Key) map.get(text);
-        if (key == null)
-        {
-            throw new BookException(Msg.NO_KEY, new Object[] { text });
-        }
-
-        return key;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
-     */
-    public Key find(Search search) throws BookException
-    {
-        checkActive();
-
-        // URGENT(joe): write
-        return getKey("");
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Dictionary#getKeyFuzzy(java.lang.String)
-     */
-    public Key getKeyFuzzy(String text) throws BookException
-    {
-        checkActive();
-
-        Key key = (Key) map.get(text);
-        if (key == null)
-        {
-            // So we need to find a matching key.
-
-            // First check for keys that match ignoring case
-            for (Iterator it = map.keySet().iterator(); it.hasNext();)
-            {
-                key = (Key) it.next();
-                String match = key.getText();
-                if (match.equalsIgnoreCase(text))
-                {
-                    return key;
-                }
-            }
-
-            // Next keys that start with the given text
-            for (Iterator it = map.keySet().iterator(); it.hasNext();)
-            {
-                key = (Key) it.next();
-                String match = key.getText();
-                if (match.startsWith(text))
-                {
-                    return key;
-                }
-            }
-
-            // Next try keys that contain the given text
-            for (Iterator it = map.keySet().iterator(); it.hasNext();)
-            {
-                key = (Key) it.next();
-                String match = key.getText();
-                if (match.indexOf(text) != -1)
-                {
-                    return key;
-                }
-            }
-
-            throw new BookException(Msg.NO_KEY, new Object[] { text });
-        }
-
-        return key;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.book.Key)
+     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
      */
     public BookData getData(Key key) throws BookException
     {
@@ -223,25 +115,18 @@ public class SwordDictionary extends AbstractDictionary
             throw new NullPointerException();
         }
 
+        if (backend == null)
+        {
+            throw new BookException(Msg.MISSING_BACKEND);
+        }
+
         try
         {
-            String osisid = getDictionaryMetaData().getInitials();
-            Osis osis = JAXBUtil.factory().createOsis();
-
-            Work work = JAXBUtil.factory().createWork();
-            work.setOsisWork(osisid);
-
-            Header header = JAXBUtil.factory().createHeader();
-            header.getWork().add(work);
-
-            OsisText text = JAXBUtil.factory().createOsisText();
-            text.setOsisIDWork("Bible."+osisid);
-            text.setHeader(header);
-
-            osis.setOsisText(text);
+            Osis osis = JAXBUtil.createOsisFramework(getBookMetaData());
+            OsisTextType text = osis.getOsisText();
 
             Div div = JAXBUtil.factory().createDiv();
-            div.setDivTitle(key.getText());
+            div.setDivTitle(key.getName());
 
             text.getDiv().add(div);
 
@@ -270,6 +155,67 @@ public class SwordDictionary extends AbstractDictionary
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
+     */
+    public KeyList getGlobalKeyList()
+    {
+        checkActive();
+
+        return global;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
+     */
+    public Key getKey(String text) throws NoSuchKeyException
+    {
+        checkActive();
+
+        Key key = (Key) map.get(text);
+        if (key == null)
+        {
+            // So we need to find a matching key.
+
+            // First check for keys that match ignoring case
+            for (Iterator it = map.keySet().iterator(); it.hasNext();)
+            {
+                key = (Key) it.next();
+                String match = key.getName();
+                if (match.equalsIgnoreCase(text))
+                {
+                    return key;
+                }
+            }
+
+            // Next keys that start with the given text
+            for (Iterator it = map.keySet().iterator(); it.hasNext();)
+            {
+                key = (Key) it.next();
+                String match = key.getName();
+                if (match.startsWith(text))
+                {
+                    return key;
+                }
+            }
+
+            // Next try keys that contain the given text
+            for (Iterator it = map.keySet().iterator(); it.hasNext();)
+            {
+                key = (Key) it.next();
+                String match = key.getName();
+                if (match.indexOf(text) != -1)
+                {
+                    return key;
+                }
+            }
+
+            throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text });
+        }
+
+        return key;
+    }
+
     /**
      * Helper method so we can quickly activate ourselves on access
      */
@@ -280,6 +226,11 @@ public class SwordDictionary extends AbstractDictionary
             Activator.activate(this);
         }
     }
+
+    /**
+     * The global key list
+     */
+    private KeyList global;
 
     /**
      * Are we active
@@ -294,15 +245,15 @@ public class SwordDictionary extends AbstractDictionary
     /**
      * So we can implement getIndex() easily
      */
-    private SortedSet set = null;
+    private KeyList set = null;
 
     /**
-     * To read data from disk
+     * To read the data from the disk
      */
-    private KeyBackend backend;
+    private Backend backend;
 
     /**
-     * Sword configuration data
+     * The Sword configuration file
      */
     private SwordConfig config;
 
@@ -310,45 +261,4 @@ public class SwordDictionary extends AbstractDictionary
      * The log stream
      */
     private static Logger log = Logger.getLogger(SwordDictionary.class);
-    
-    /**
-     * our meta data
-     */
-    private SwordDictionaryMetaData sdmd;
-
-    /**
-     * So we can order Keys in the SortedSet and cut them up with subSet using.
-     */
-    private static class KeyComparator implements Comparator
-    {
-        /* (non-Javadoc)
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
-        public int compare(Object o1, Object o2)
-        {
-            // Create strings from the objects
-            String s1 = null;
-            String s2 = null;
-
-            if (o1 instanceof Key)
-            {
-                s1 = ((Key) o1).getText();
-            }
-            else
-            {
-                s1 = o1.toString();
-            }
-            
-            if (o2 instanceof Key)
-            {
-                s2 = ((Key) o2).getText();
-            }
-            else
-            {
-                s2 = o2.toString();
-            }
-            
-            return s1.compareTo(s2);
-        }
-    }
 }

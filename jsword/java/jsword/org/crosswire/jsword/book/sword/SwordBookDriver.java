@@ -7,6 +7,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -14,9 +15,11 @@ import java.util.Properties;
 import org.apache.commons.lang.SystemUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
@@ -81,17 +84,21 @@ public class SwordBookDriver extends AbstractBookDriver
                     // Loop through the entries in this mods.d directory
                     for (int i=0; i<bookdirs.length; i++)
                     {
+                        String bookdir = bookdirs[i];
                         try
                         {
-                            SwordConfig config = new SwordConfig(this, modsdir, bookdirs[i], dirs[0]);
+                            File configfile = new File(modsdir, bookdir);
+                            SwordConfig config = new SwordConfig(configfile);
+
                             if (config.isSupported())
                             {
-                                SwordBookMetaData bmd = config.getMetaData();
-                                valid.add(bmd);
+                                Book book = createBook(config, dirs[j]);
+                                valid.add(book.getBookMetaData());
                             }
                             else
                             {
-                                log.warn("Unsupported Book: "+config.getName());
+                                String name = bookdir.substring(0, bookdir.indexOf(".conf"));
+                                log.warn("Unsupported Book: "+name);
                             }
                         }
                         catch (Exception ex)
@@ -112,6 +119,102 @@ public class SwordBookDriver extends AbstractBookDriver
         }
 
         return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
+    }
+
+    /**
+     * Create a Book to wrap the given backend
+     */
+    private Book createBook(SwordConfig config, URL progdir) throws BookException, MalformedURLException, ParseException
+    {
+        String dataPath = config.getFirstValue("DataPath");
+        URL baseurl = NetUtil.lengthenURL(progdir, dataPath);
+        if (!baseurl.getProtocol().equals("file"))
+        {
+            throw new BookException(Msg.FILE_ONLY, new Object[] { baseurl.getProtocol()});
+        }
+        String path = baseurl.getFile();
+        
+        Backend backend = null;
+        Book book = null;
+
+        int moddrv = config.getModDrv();
+        switch (moddrv)
+        {
+        case SwordConstants.DRIVER_RAW_LD:
+            backend = new RawLDBackend(config, path, 2);
+            book = new SwordDictionary(this, config, backend, BookType.DICTIONARY);
+            break;
+
+        case SwordConstants.DRIVER_RAW_LD4:
+            backend = new RawLDBackend(config, path, 4);
+            book = new SwordDictionary(this, config, backend, BookType.DICTIONARY);
+            break;
+
+        case SwordConstants.DRIVER_Z_LD:
+            backend = new ZLDBackend(config);
+            book = new SwordDictionary(this, config, backend, BookType.DICTIONARY);
+            break;
+
+        case SwordConstants.DRIVER_RAW_TEXT:
+            backend = new RawBackend(path);
+            book = new SwordBook(this, config, backend, BookType.BIBLE);
+            break;
+        
+        case SwordConstants.DRIVER_RAW_COM:
+            backend = new RawBackend(path);
+            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
+            break;
+            
+        case SwordConstants.DRIVER_HREF_COM:
+            backend = new RawBackend(path);
+            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
+            break;
+        
+        case SwordConstants.DRIVER_RAW_FILES:
+            backend = new RawBackend(path);
+            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
+            break;
+
+        case SwordConstants.DRIVER_Z_TEXT:
+            backend = getCompressedBackend(config, path);
+            book = new SwordBook(this, config, backend, BookType.BIBLE);
+            break;
+
+        case SwordConstants.DRIVER_Z_COM:
+            backend = getCompressedBackend(config, path);
+            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
+            break;
+
+        case SwordConstants.DRIVER_RAW_GEN_BOOK:
+            // LATER(joe): how do we support books?
+            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK");
+            throw new BookException(Msg.TYPE_UNSUPPORTED);
+
+        default:
+            throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { ""+moddrv, path });
+        }
+
+        return book;
+    }
+
+    /**
+     * 
+     */
+    private Backend getCompressedBackend(SwordConfig config, String path) throws BookException
+    {
+        switch (config.matchingIndex(SwordConstants.COMPRESSION_STRINGS, "CompressType"))
+        {
+        case SwordConstants.COMPRESSION_ZIP:
+            // PENDING(joe): BlockType - the default (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
+            // but the specified default here is BLOCK_BOOK (0)
+            return new GZIPBackend(path, config.matchingIndex(SwordConstants.BLOCK_STRINGS, "BlockType", 0));
+      
+        case SwordConstants.COMPRESSION_LZSS:
+            return new LZSSBackend(config);
+      
+        default:
+            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { config.getFirstValue("CompressType") });
+        }
     }
 
     /**
@@ -256,19 +359,11 @@ public class SwordBookDriver extends AbstractBookDriver
         }
     }
 
-    /**
-     * Check that the directories in the version directory really
-     * represent versions.
-     *
-    private static class CustomURLFilter implements URLFilter
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getName()
+     */
+    public String getDriverName()
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.common.util.URLFilter#accept(java.lang.String)
-         *
-        public boolean accept(String name)
-        {
-            return !name.startsWith("globals.") && name.endsWith(".conf");
-        }
+        return "Sword";
     }
-    */
 }

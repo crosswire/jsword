@@ -1,6 +1,6 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -44,7 +44,7 @@ public class FileSaveAllAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/SaveAll16.gif",
               "toolbarButtonGraphics/general/SaveAll24.gif",
               "Save All Passages", "Save all the passages.",
-              'A', KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.SHIFT_MASK + InputEvent.CTRL_MASK, false));
+              'A', KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.SHIFT_MASK + Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), false));
     }
 
     /* (non-Javadoc)

@@ -78,7 +78,7 @@ public class BookFilters
     {
         public boolean test(BookMetaData bmd)
         {
-            return bmd instanceof BibleMetaData;
+            return bmd.getType().equals(BookType.BIBLE);
         }
     }
 
@@ -102,10 +102,9 @@ public class BookFilters
     {
         public boolean test(BookMetaData bmd)
         {
-            return bmd instanceof DictionaryMetaData;
+            return bmd.getType().equals(BookType.DICTIONARY);
         }
     }
-
 
     /**
      * A filter that accepts everything that implements Commentary
@@ -127,7 +126,7 @@ public class BookFilters
     {
         public boolean test(BookMetaData bmd)
         {
-            return bmd instanceof CommentaryMetaData;
+            return bmd.getType().equals(BookType.COMMENTARY);
         }
     }
 

@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.search;
 import java.net.URL;
 
 import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Passage;
@@ -40,9 +40,8 @@ public interface SearchEngine extends Activatable
      * runtime. This method is run first of all, before anything else and should
      * do everything it can to ensure that future method calls will be error
      * free without consuming significant system resources.
-     * PENDING(joe): generalize this for Books and not just Bibles
      */
-    public void init(Bible bible, URL url) throws BookException;
+    public void init(Book book, URL url) throws BookException;
 
     /**
      * For a given word find a list of references to it

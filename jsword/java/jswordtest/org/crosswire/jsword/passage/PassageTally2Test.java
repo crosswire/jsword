@@ -245,7 +245,9 @@ public class PassageTally2Test extends TestCase
         temp = (PassageTally) tally.clone();
         temp.add(new VerseRange("Gen 1:2-4"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 2, 4, 7, 2:1, 3:1");
-        try { temp.add(null); fail(); }
+        try { temp.add((Key) null); fail(); }
+        catch (NullPointerException ex) { }
+        try { temp.add((Verse) null); fail(); }
         catch (NullPointerException ex) { }
     }
 

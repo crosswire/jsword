@@ -38,21 +38,21 @@ public class PuncInstsDisk extends InstsDisk
 {
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public PuncInstsDisk(RawBible raw, boolean create) throws Exception
+    public PuncInstsDisk(RawBook raw, boolean create) throws Exception
     {
         super(raw, "puncinst.idx", create);
     }
 
     /**
      * Create a WordResource from a File that contains the dictionary.
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public PuncInstsDisk(RawBible raw, boolean create, StringBuffer messages)
+    public PuncInstsDisk(RawBook raw, boolean create, StringBuffer messages)
     {
         super(raw, "puncinst.idx", create, messages);
     }
@@ -62,7 +62,7 @@ public class PuncInstsDisk extends InstsDisk
      */
     public void load() throws IOException
     {
-        URL url = NetUtil.lengthenURL(raw.getLocalURLBibleMetaData().getURL(), leafname);
+        URL url = NetUtil.lengthenURL(raw.getURL(), leafname);
         raf = new RandomAccessFile(url.getFile(), "r");
 
         byte[] asig = new byte[6];

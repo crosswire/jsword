@@ -1,6 +1,4 @@
-
 package org.crosswire.jsword.book.remote;
-
 
 /**
  * A fullfilment of RemoteBibleDriver that uses a Local commection for test

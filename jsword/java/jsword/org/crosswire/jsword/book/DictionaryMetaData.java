@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 /**
@@ -24,21 +23,8 @@ package org.crosswire.jsword.book;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
+ * @deprecated Use Book
  */
 public interface DictionaryMetaData extends BookMetaData
 {
-    /**
-     * Accessor for the real Dictionary to read data.
-     * <p>Note that constructing a Dictionary may well consume system resources
-     * far more than the construction of a DictionaryMetaData so you should only
-     * get a Dictionary if you intend to use it.
-     * <p>This method is here rather than on the BookDriver because we want to
-     * avoid user contact with the Drivers where possible.
-     * <p>For implementors of DictionaryMetaData - the objects returned by 2
-     * successive calls to getDictionary() should be the same (i.e. return true
-     * to an == test) unless for some reason the objects are not thread safe.
-     * Since Dictionary are read-only once setup thread safety should not be
-     * hard.
-     */
-    public Dictionary getDictionary();
 }

@@ -7,7 +7,7 @@ import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.StringSAXEventProvider;
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.util.Style;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 
@@ -65,7 +65,7 @@ public class ViewSourceGHTMLAction extends DesktopAbstractAction
 
             String html = style.applyStyleToString(provider, "simple.xsl");
 
-            TextViewPanel viewer = new TextViewPanel(html, "Generated source to " + ref.getText());
+            TextViewPanel viewer = new TextViewPanel(html, "Generated source to " + ref.getName());
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop());
         }

@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Iterator;
 
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
@@ -64,7 +64,7 @@ public class CliMapper
             PrintWriter dbout = new PrintWriter(new FileOutputStream("c:\\database.csv"));
             PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
 
-            Bible bible = Defaults.getBibleMetaData().getBible();
+            Book book = Defaults.getBibleMetaData().getBook();
             //Matcher engine = new Matcher(bible);
 
             Element links = new Element("links");
@@ -80,7 +80,7 @@ public class CliMapper
                 int vsff = BibleInfo.versesInChapter(b, chff);
                 Verse start = new Verse(b, 1, 1);
                 Verse end = new Verse(b, chff, vsff);
-                VerseRange book = new VerseRange(start, end);
+                VerseRange range = new VerseRange(start, end);
 
                 for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
@@ -97,9 +97,9 @@ public class CliMapper
                         Passage ref = PassageFactory.createPassage();
                         ref.add(find);
 
-                        BookData bdata = bible.getData(ref);
+                        BookData bdata = book.getData(ref);
                         String text = bdata.getPlainText();
-                        PassageTally temp = (PassageTally) bible.findPassage(new Search(text, true));
+                        PassageTally temp = (PassageTally) book.find(new Search(text, true));
                         temp.setOrdering(PassageTally.ORDER_TALLY);
                         total.addAll(temp);
                     }
@@ -107,7 +107,7 @@ public class CliMapper
                     int ff = BibleInfo.versesInChapter(b, c);
                     VerseRange base = new VerseRange(new Verse(b, c, 1), new Verse(b, c, ff));
 
-                    total.remove(book);
+                    total.remove(range);
                     total.trimVerses(LINKS_PER_CHAPTER);
                     scrunchTally(total);
 

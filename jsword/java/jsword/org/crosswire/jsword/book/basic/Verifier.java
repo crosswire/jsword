@@ -6,12 +6,13 @@ import java.util.Iterator;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -46,10 +47,10 @@ public class Verifier
     /**
      * Constructor that sets up the Bibles as well.
      */
-    public Verifier(Bible bible1, Bible bible2)
+    public Verifier(Book book1, Book book2)
     {
-        setBible1(bible1);
-        setBible2(bible2);
+        setBible1(book1);
+        setBible2(book2);
     }
 
     /**
@@ -58,18 +59,18 @@ public class Verifier
      * words to check.
      * @param bible1 A Bible to check
      */
-    public final void setBible1(Bible bible1)
+    public final void setBible1(Book book1)
     {
-        this.bible1 = bible1;
+        this.book1 = book1;
     }
 
     /**
      * The first Bible that we are checking
      * @return A Bible to check
      */
-    public final Bible getBible1()
+    public final Book getBible1()
     {
-        return bible1;
+        return book1;
     }
 
     /**
@@ -78,18 +79,18 @@ public class Verifier
      * firing ProgressEvents.
      * @param bible2 A Bible to check
      */
-    public final void setBible2(Bible bible2)
+    public final void setBible2(Book book2)
     {
-        this.bible2 = bible2;
+        this.book2 = book2;
     }
 
     /**
      * The second Bible that we are checking
      * @return A Bible to check
      */
-    public final Bible getBible2()
+    public final Book getBible2()
     {
-        return bible2;
+        return book2;
     }
 
     /**
@@ -128,15 +129,15 @@ public class Verifier
             try
             {
                 // Read the document from the first bible
-                BookData text1 = bible1.getData(ref2);
-                BookData text2 = bible2.getData(ref2);
+                BookData text1 = book1.getData(ref2);
+                BookData text2 = book2.getData(ref2);
 
                 // Check - this needs some work
                 if (!text1.equals(text2))
                 {
                     out.println("Verse: "+range);
-                    out.println(bible1.getBookMetaData().getName()+": "+text1);
-                    out.println(bible2.getBookMetaData().getName()+": "+text2);
+                    out.println(book1.getBookMetaData().getName()+": "+text1);
+                    out.println(book2.getBookMetaData().getName()+": "+text2);
                     out.println();
                 }
             }
@@ -201,7 +202,7 @@ public class Verifier
             return;
         }
 
-        if (!(bible1 instanceof Index))
+        if (!(book1 instanceof Index))
         {
             return;
         }
@@ -211,7 +212,7 @@ public class Verifier
         int percent = -1;
 
         // For every word in the word list
-        Index index1 = (Index) bible1;
+        Index index1 = (Index) book1;
         Iterator it = index1.getStartsWith(starts);
         while (it.hasNext())
         {
@@ -240,15 +241,15 @@ public class Verifier
      */
     private void checkSinglePassage(String word, PrintWriter out) throws BookException
     {
-        Passage ref1 = bible1.findPassage(new Search(word, false));
-        Passage ref2 = bible2.findPassage(new Search(word, false));
+        Key ref1 = book1.find(new Search(word, false));
+        Key ref2 = book2.find(new Search(word, false));
 
         // Check
         if (!ref1.equals(ref2))
         {
             out.println("Word:   " + word);
-            out.println(bible1.getBookMetaData().getName() + ": " + ref1);
-            out.println(bible2.getBookMetaData().getName() + ": " + ref2);
+            out.println(book1.getBookMetaData().getName() + ": " + ref1);
+            out.println(book2.getBookMetaData().getName() + ": " + ref2);
             out.println();
         }
     }
@@ -266,10 +267,10 @@ public class Verifier
     /**
      * The first Bible that we are checking
      */
-    private Bible bible1;
+    private Book book1;
 
     /**
      * The second Bible that we are checking
      */
-    private Bible bible2;
+    private Book book2;
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,20 +28,24 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg CONVERT_BMD = new Msg("Invalid MetaData Definition");
-    public static final Msg CONVERT_NOVERSE = new Msg("Invalid Verse '{0}'");
-    public static final Msg CONVERT_NOCLASS = new Msg("Invalid Class '{0}'");
-    public static final Msg REMOTE_FAIL = new Msg("Error contacting remote server.");
-    public static final Msg REMOTE_NOSUPPORT = new Msg("method not supported. given: {0}");
-    public static final Msg PARSE_FAIL = new Msg("Failure parsing remote response.");
+    static final Msg CONVERT_BMD = new Msg("Invalid MetaData Definition");
+    static final Msg CONVERT_NOVERSE = new Msg("Invalid Verse '{0}'");
+    static final Msg CONVERT_NOCLASS = new Msg("Invalid Class '{0}'");
+    static final Msg REMOTE_FAIL = new Msg("Error contacting remote server.");
+    static final Msg REMOTE_NOSUPPORT = new Msg("method not supported. given: {0}");
+    static final Msg PARSE_FAIL = new Msg("Failure parsing remote response.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor#
+     */
     private Msg(String name)
     {
         super(name);

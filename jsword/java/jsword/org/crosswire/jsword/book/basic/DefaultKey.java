@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.basic;
 
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * A simple default implementation of the Key interface.
@@ -32,17 +32,34 @@ public class DefaultKey implements Key
     /**
      * Default ctor
      */
-    public DefaultKey(String text)
+    public DefaultKey(String name)
     {
-        this.text = text;
+        this.name = name;
+    }
+
+    /**
+     * Default ctor
+     */
+    public DefaultKey(String name, Key parent)
+    {
+        this.name = name;
+        this.parent = parent;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Key#getText()
      */
-    public String getText()
+    public String getName()
     {
-        return text;
+        return name;
+    }
+
+    /**
+     * @return Returns the parent of this key
+     */
+    public Key getParent()
+    {
+        return parent;
     }
 
     /* (non-Javadoc)
@@ -50,8 +67,25 @@ public class DefaultKey implements Key
      */
     public String toString()
     {
-        return getText();
+        return getName();
     }
 
-    private String text;
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        DefaultKey that = (DefaultKey) obj;
+        return name.compareTo(that.name);
+    }
+
+    /**
+     * The parent of this key
+     */
+    private Key parent;
+
+    /**
+     * The string that this key represents
+     */
+    private String name;
 }

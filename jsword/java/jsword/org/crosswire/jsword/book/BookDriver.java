@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 /**
@@ -50,7 +49,7 @@ public interface BookDriver
      * @exception BookException If the name is not valid
      */
     public Book create(Book source) throws BookException;
-    
+
     /**
      * Delete this Book from the system.
      * Take care with this method for obvious reasons. For most implemenations
@@ -58,4 +57,9 @@ public interface BookDriver
      * @throws BookException If the Book can't be deleted.
      */
     public void delete(BookMetaData dead) throws BookException;
+
+    /**
+     * A short name for this BookDriver
+     */
+    public String getDriverName();
 }

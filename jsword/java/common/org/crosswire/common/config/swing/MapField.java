@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -131,7 +130,7 @@ public class MapField extends JPanel implements Field
      */
     public Map getMap()
     {
-        return table_model.getMap();
+        return tableModel.getMap();
     }
 
     /**
@@ -149,8 +148,8 @@ public class MapField extends JPanel implements Field
      */
     public void setMap(Map value)
     {
-        table_model.setMap(value);
-        table.setModel(table_model);
+        tableModel.setMap(value);
+        table.setModel(tableModel);
         table.getColumnModel().getColumn(0).setWidth(15);
     }
 
@@ -178,7 +177,7 @@ public class MapField extends JPanel implements Field
 
             if (isValid(new_class))
             {
-                table_model.put(new_name, new_class);
+                tableModel.getMap().put(new_name, new_class);
             }
         }
     }
@@ -199,8 +198,8 @@ public class MapField extends JPanel implements Field
 
             if (isValid(new_class))
             {
-                table_model.remove(currentKey());
-                table_model.put(new_name, new_class);
+                tableModel.getMap().remove(currentKey());
+                tableModel.getMap().put(new_name, new_class);
             }
         }
     }
@@ -210,7 +209,7 @@ public class MapField extends JPanel implements Field
      */
     public void removeEntry()
     {
-        table_model.remove(currentKey());
+        tableModel.getMap().remove(currentKey());
     }
 
     /**
@@ -225,7 +224,9 @@ public class MapField extends JPanel implements Field
             Class clazz = Class.forName(name);
 
             if (!superclass.isAssignableFrom(clazz))
+            {    
                 throw new ClassCastException("The class '"+name+"' does not inherit from '"+superclass+"'. Instansiation failed.");
+            }
 
             return true;
         }
@@ -247,7 +248,7 @@ public class MapField extends JPanel implements Field
      */
     private final String currentKey()
     {
-        return (String) table_model.getValueAt(table.getSelectedRow(), 0);
+        return (String) tableModel.getValueAt(table.getSelectedRow(), 0);
     }
 
     /**
@@ -256,7 +257,7 @@ public class MapField extends JPanel implements Field
      */
     private final String currentValue()
     {
-        return (String) table_model.getValueAt(table.getSelectedRow(), 1);
+        return (String) tableModel.getValueAt(table.getSelectedRow(), 1);
     }
 
     /**
@@ -324,12 +325,12 @@ public class MapField extends JPanel implements Field
     /**
      * The TableModel that points the JTable at the Hashtable
      */
-    private NamedMapTableModel table_model = new NamedMapTableModel();
+    private NamedMapTableModel tableModel = new NamedMapTableModel();
 
     /**
      * The Table - displays the Hashtble
      */
-    private JTable table = new JTable(table_model);
+    private JTable table = new JTable(tableModel);
 
     /**
      * The Scroller for the JTable

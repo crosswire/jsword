@@ -1,14 +1,14 @@
-
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.URL;
 
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -38,21 +38,11 @@ import org.crosswire.jsword.passage.Verse;
  */
 public class RawBackend implements Backend
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#init(org.crosswire.jsword.book.sword.SwordConfig)
+    /**
+     * Simple ctor
      */
-    public void init(SwordConfig config) throws BookException
+    public RawBackend(String path) throws BookException
     {
-        URL swordBase = config.getProgramDirectory();
-
-        URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
-        if (!url.getProtocol().equals("file"))
-        {
-            throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
-        }
-
-        String path = url.getFile();
-
         try
         {
             idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + File.separator + "ot.vss", "r");
@@ -76,7 +66,7 @@ public class RawBackend implements Backend
         // It is an error to be neither OT nor NT
         if (txt_raf[SwordConstants.TESTAMENT_OLD] == null && txt_raf[SwordConstants.TESTAMENT_NEW] == null)
         {
-            throw new BookException(Msg.MISSING_FILE, new Object[] { url.getFile() });
+            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
         }
 
         // The original had a dtor that did the equiv of .close()ing the above
@@ -96,8 +86,10 @@ public class RawBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Verse)
      */
-    public byte[] getRawText(Verse verse) throws BookException
+    public byte[] getRawText(Key key) throws BookException
     {
+        Verse verse = PassageUtil.getVerse(key);
+
         try
         {
             int testament = SwordConstants.getTestament(verse);
@@ -129,6 +121,15 @@ public class RawBackend implements Backend
         {
             throw new BookException(Msg.READ_FAIL, ex, new Object[] { verse.getName() });
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#readIndex()
+     */
+    public KeyList readIndex()
+    {
+        // TODO: refactor to get rid of this
+        return null;
     }
 
     /**

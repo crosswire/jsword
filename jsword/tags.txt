@@ -1,7 +1,8 @@
 
-TODO:
+TODO: Short term note to self
+URGENT: High priority bug to fix
+PENDING: Issue that needs fixing before next release
+NOTE: Something to thing about when we are next editing this code
+LATER: An issue that we don't need to think about until the next release
+BUG: Something isn't quite right but it isn't a serious problem
 JDK14: Things to change when we move to JDK1.4
-LATER
-NOTE
-URGENT
-PENDING

@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 
 import org.crosswire.common.swing.TextViewPanel;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 
 /**
@@ -58,7 +58,7 @@ public class ViewSourceOSISAction extends DesktopAbstractAction
             String html = da.getOSISSource();
             Key key = da.getKey();
 
-            TextViewPanel viewer = new TextViewPanel(html, "OSIS source to "+key.getText());
+            TextViewPanel viewer = new TextViewPanel(html, "OSIS source to "+key.getName());
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop());
         }

@@ -64,6 +64,38 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        Passage thatref = (Passage) obj;
+
+        if (thatref.countVerses() == 0)
+        {
+            if (countVerses() == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                // that is empty so he should come before me
+                return -1;
+            }
+        }
+        
+        if (countVerses() == 0)
+        {
+            // we are empty be he isn't so we are first
+            return 1;
+        }
+
+        Verse thatfirst = thatref.getVerseAt(0);
+        Verse thisfirst = getVerseAt(0);
+
+        return thisfirst.compareTo(thatfirst);
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
     public Object clone() throws CloneNotSupportedException
@@ -708,6 +740,87 @@ public abstract class AbstractPassage implements Passage
         {
             listeners.remove(li);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     */
+    public void add(Key key)
+    {
+        Passage ref = PassageUtil.getPassage(key);
+        addAll(ref);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void remove(Key key)
+    {
+        Passage ref = PassageUtil.getPassage(key);
+        removeAll(ref);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key)
+    {
+        Passage ref = PassageUtil.getPassage(key);
+        return containsAll(ref);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#size()
+     */
+    public int size()
+    {
+        return countVerses();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     */
+    public Iterator iterator()
+    {
+        return verseIterator();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     */
+    public int indexOf(Key that)
+    {
+        int index = 0;
+
+        for (Iterator it = iterator(); it.hasNext(); )
+        {
+            Verse verse = (Verse) it.next();
+            if (verse.equals(that))
+            {
+                return index;
+            }
+
+            index++;
+        }
+
+        return -1;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     */
+    public Key get(int index)
+    {
+        return getVerseAt(index);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
+     */
+    public Key getParent()
+    {
+        // NOTE(joe): should we make passages have parents?
+        return null;
     }
 
     /**

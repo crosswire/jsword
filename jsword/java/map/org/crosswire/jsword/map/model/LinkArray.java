@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -59,9 +59,9 @@ public class LinkArray implements Serializable
      * Basic constructor
      * @param bible The source of Bible data
      */
-    public LinkArray(Bible bible) throws NoSuchVerseException
+    public LinkArray(Book book) throws NoSuchVerseException
     {
-        this.bible = bible;
+        this.book = book;
 
         links = new Link[BibleInfo.booksInBible()+1][][];
 
@@ -232,9 +232,9 @@ public class LinkArray implements Serializable
                 Passage ref = PassageFactory.createPassage();
                 ref.add(find);
 
-                BookData bdata = bible.getData(ref);
+                BookData bdata = book.getData(ref);
                 String text = bdata.getPlainText();   
-                PassageTally temp = (PassageTally) bible.findPassage(new Search(text, false));
+                PassageTally temp = (PassageTally) book.find(new Search(text, false));
                 temp.setOrdering(PassageTally.ORDER_TALLY);
                 total.addAll(temp);
             }
@@ -243,9 +243,9 @@ public class LinkArray implements Serializable
             int vsff = BibleInfo.versesInChapter(b, chff);
             Verse start = new Verse(b, 1, 1);
             Verse end = new Verse(b, chff, vsff);
-            VerseRange book = new VerseRange(start, end);
+            VerseRange range = new VerseRange(start, end);
 
-            total.remove(book);
+            total.remove(range);
             total.trimVerses(LINKS_PER_CHAPTER);
             scrunchTally(total);
 
@@ -353,7 +353,7 @@ public class LinkArray implements Serializable
     /**
      * The Bible that we search in
      */
-    private transient Bible bible;
+    private transient Book book;
 
     /**
      * The link data

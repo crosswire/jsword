@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import java.io.PrintWriter;
@@ -10,12 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Openness;
-import org.crosswire.jsword.book.basic.AbstractBookMetaData;
+import org.crosswire.jsword.book.basic.DefaultBookMetaData;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -55,7 +55,7 @@ public class Converter
     }
 
     /**
-     * Converter for calls to getBibleNames().
+     * Converter for calls to getBookNames().
      * <p>The XML reply is expected to be in the form: (swapping ] and > for readibility)
      * <pre>
      * [root]
@@ -71,13 +71,13 @@ public class Converter
      * @param doc
      * @return BibleMetaData[]
      */
-    public static RemoteBibleMetaData[] convertDocumentToBibleMetaDatas(BookDriver driver, Document doc, Remoter remoter, int speed) throws ConverterException
+    public static BookMetaData[] convertDocumentToBookMetaDatas(RemoteBookDriver driver, Document doc, Remoter remoter, int speed) throws ConverterException
     {
         try
         {
             Element root = doc.getRootElement();
             List bmds = root.getChildren("metadata");
-            RemoteBibleMetaData[] rbmds = new RemoteBibleMetaData[bmds.size()];
+            BookMetaData[] rbmds = new BookMetaData[bmds.size()];
             int i = 0;
             
             for (Iterator it = bmds.iterator(); it.hasNext();)
@@ -85,14 +85,22 @@ public class Converter
                 Element bmdele = (Element) it.next();
             
                 String id = bmdele.getAttributeValue("id");
+
                 String name = bmdele.getChildTextTrim("name");
                 String edition = bmdele.getChildTextTrim("edition");
-                String initials = bmdele.getChildTextTrim("initials");
-                String pub = bmdele.getChildTextTrim("pub");
-                String open = bmdele.getChildTextTrim("openness");
-                String licence = bmdele.getChildTextTrim("licence");
-            
-                rbmds[i++] = new RemoteBibleMetaData(driver, remoter, id, name, edition, initials, pub, open, licence, speed);
+                String pubstr = bmdele.getChildTextTrim("pub");
+                String openstr = bmdele.getChildTextTrim("openness");
+                String licencestr = bmdele.getChildTextTrim("licence");
+                String typestr = bmdele.getChildTextTrim("type");
+                
+                BookType type = BookType.get(typestr);
+
+                Book book = new RemoteBook(remoter, driver, name, type, edition, pubstr, openstr, licencestr, speed);
+
+                BookMetaData bmd = book.getBookMetaData();
+                driver.registerID(id, bmd);
+
+                rbmds[i++] = bmd;
             }
             
             return rbmds;
@@ -111,7 +119,7 @@ public class Converter
      * Reverse of convertDocumentToBibleMetaDatas().
      * @see Converter#convertDocumentToBibleMetaDatas(BookDriver, Document, Remoter, int)
      */
-    public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids)
+    public static Document convertBookMetaDatasToDocument(BookMetaData[] bmds, String[] ids)
     {
         if (bmds.length != ids.length)
         {
@@ -121,16 +129,15 @@ public class Converter
         Element root = new Element("root");
         for (int i = 0; i < bmds.length; i++)
         {
-            BibleMetaData bmd = bmds[i];
+            BookMetaData bmd = bmds[i];
 
             Element bmdele = new Element("metadata");
 
             bmdele.setAttribute("id", ids[i]);
             bmdele.addContent(new Element("name").addContent(bmd.getName()));
             bmdele.addContent(new Element("edition").addContent(bmd.getEdition()));
-            bmdele.addContent(new Element("initials").addContent(bmd.getInitials()));
 
-            String pubstr = AbstractBookMetaData.formatPublishedDate(bmd.getFirstPublished());
+            String pubstr = DefaultBookMetaData.formatPublishedDate(bmd.getFirstPublished());
             if (pubstr != null)
             {
                 bmdele.addContent(new Element("pub").addContent(pubstr));
@@ -155,17 +162,15 @@ public class Converter
 
     /**
      * Converter for calls to findPassage().
-     * <p>The XML reply is expected to be in the form: (swapping ] and > for readibility)
+     * <p>The XML reply is expected to be in the form: (swapping &lt; and > for readibility)
      * <pre>
      * [root]
      *   [ref]Gen 1:1, Mat 1:1[/ref]
      * [/root]
      * </pre>
-     * @param doc
-     * @return Passage
-     * @throws NoSuchVerseException
+     * @param doc The document to convert
      */
-    public static Passage convertDocumentToPassage(Document doc) throws ConverterException
+    public static KeyList convertDocumentToKeyList(Document doc) throws ConverterException
     {
         String refstr = null;
 
@@ -186,16 +191,16 @@ public class Converter
      * Reverse of convertDocumentToPassage().
      * @see Converter#convertDocumentToPassage(Document)
      */
-    public static Document convertPassageToDocument(Passage ref)
+    public static Document convertKeyListToDocument(KeyList key)
     {
         Element root = new Element("root");
-        root.addContent(new Element("ref").addContent(ref.getName()));
+        root.addContent(new Element("ref").addContent(key.getName()));
         return new Document(root);
     }
 
     /**
      * Converter for calls to getStartsWith().
-     * <p>The XML reply is expected to be in the form: (swapping ] and > for readibility)
+     * <p>The XML reply is expected to be in the form: (swapping &lt; and > for readibility)
      * <pre>
      * [root]
      *   [word]love[/word]

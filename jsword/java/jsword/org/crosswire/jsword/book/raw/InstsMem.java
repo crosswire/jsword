@@ -39,21 +39,21 @@ public abstract class InstsMem extends Mem implements Insts
 {
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      */
-    public InstsMem(RawBible raw, String leafname, boolean create) throws IOException
+    public InstsMem(RawBook raw, String leafname, boolean create) throws IOException
     {
         super(raw, leafname, create);
     }
 
     /**
      * Basic constructor
-     * @param raw Reference to the RawBible that is using us
+     * @param raw Reference to the RawBook that is using us
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
-    public InstsMem(RawBible raw, String leafname, boolean create, StringBuffer messages)
+    public InstsMem(RawBook raw, String leafname, boolean create, StringBuffer messages)
     {
         super(raw, leafname, create, messages);
     }

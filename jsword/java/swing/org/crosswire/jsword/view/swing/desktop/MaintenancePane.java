@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
@@ -19,7 +18,7 @@ import javax.swing.event.ListSelectionListener;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
 import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
@@ -141,7 +140,7 @@ public class MaintenancePane extends EirPanel
     {
         try
         {
-            BibleMetaData bmd = getSelected();
+            BookMetaData bmd = getSelected();
             if (bmd == null)
             {
                 JOptionPane.showMessageDialog(this,
@@ -169,29 +168,43 @@ public class MaintenancePane extends EirPanel
      * What is the selected Bible name?
      * @return The version name or null if none is selected
      */
-    private BibleMetaData getSelected()
+    private BookMetaData getSelected()
     {
-        return (BibleMetaData) lst_versions.getSelectedValue();
+        return (BookMetaData) lst_versions.getSelectedValue();
     }
 
-    /** The version list scroller */
+    /**
+     * The version list scroller
+     */
     private JScrollPane scr_versions = new JScrollPane();
 
-    /** The version list */
+    /**
+     * The version list
+     */
     private JList lst_versions = new JList();
 
-    /** The BiblesModel for the list */
+    /**
+     * The BiblesModel for the list
+     */
     private BooksComboBoxModel mdl_versions = new BooksComboBoxModel(BookFilters.getBibles());
 
-    /** The button bar */
+    /**
+     * The button bar
+     */
     private JPanel pnl_buttons = new JPanel();
 
-    /** View Notes button */
+    /**
+     * View Notes button
+     */
     private JButton btn_add = new JButton();
 
-    /** Delete Bible button */
+    /**
+     * Delete Bible button
+     */
     private JButton btn_remove = new JButton();
 
-    /** Layout for the button bar */
+    /**
+     * Layout for the button bar
+     */
     private FlowLayout lay_buttons = new FlowLayout();
 }

@@ -29,17 +29,23 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg INIT_FAIL = new Msg("Failed to initialise Readings driver");
-    public static final Msg PARSE_FAIL = new Msg("Failed to parse {0}");
-    public static final Msg NOT_FOUND = new Msg("Key not found {0}");
+    static final Msg INIT_FAIL = new Msg("Failed to initialise Readings driver");
+    static final Msg PARSE_FAIL = new Msg("Failed to parse {0}");
+    static final Msg NOT_FOUND = new Msg("Key not found {0}");
+    static final Msg NOT_IMPLEMENTED = new Msg("Not implemented");
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);

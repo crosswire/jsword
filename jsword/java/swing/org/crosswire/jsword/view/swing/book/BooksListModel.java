@@ -58,8 +58,7 @@ public class BooksListModel extends AbstractListModel
         cacheData();
     }
 
-    /**
-     * Returns the length of the list.
+    /* (non-Javadoc)
      * @see javax.swing.ListModel#getSize()
      */
     public int getSize()
@@ -67,8 +66,7 @@ public class BooksListModel extends AbstractListModel
         return bmds.size();
     }
 
-    /**
-     * Returns the value at the specified index.
+    /* (non-Javadoc)
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index)
@@ -87,29 +85,40 @@ public class BooksListModel extends AbstractListModel
     }
 
     /**
-     * Add a listener to the list that's notified each time a change
-     * to the data model occurs.
-     * @param li the ListDataListener
+     * @param filter
+     */
+    public void setFilter(BookFilter filter)
+    {
+        this.filter = filter;
+        cacheData();
+
+        fireContentsChanged(this, 0, getSize());
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
      */
     public void addListDataListener(ListDataListener li)
     {
         if (listenerList.getListenerCount() == 0)
+        {
             Books.addBooksListener(listener);
+        }
 
         super.addListDataListener(li);
     }
 
-    /**
-     * Remove a listener from the list that's notified each time a
-     * change to the data model occurs.
-     * @param li the ListDataListener
+    /* (non-Javadoc)
+     * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
      */
     public void removeListDataListener(ListDataListener li)
     {
         super.removeListDataListener(li);
 
         if (listenerList.getListenerCount() == 0)
+        {
             Books.removeBooksListener(listener);
+        }
     }
 
     /**

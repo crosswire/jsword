@@ -4,7 +4,7 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 
 import org.crosswire.common.swing.TextViewPanel;
-import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 
 /**
@@ -55,7 +55,7 @@ public class ViewSourceHTMLAction extends DesktopAbstractAction
         String html = da.getHTMLSource();
         Key ref = da.getKey();
 
-        TextViewPanel viewer = new TextViewPanel(html, "HTML source to "+ref.getText());
+        TextViewPanel viewer = new TextViewPanel(html, "HTML source to "+ref.getName());
         viewer.setEditable(true);
         viewer.showInFrame(getDesktop());
     }

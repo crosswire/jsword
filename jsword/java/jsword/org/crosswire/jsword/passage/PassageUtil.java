@@ -689,6 +689,54 @@ public class PassageUtil
     }
 
     /**
+     * Not all keys represent passages, but we ought to be able to get something
+     * close to a passage from anything that does passage like work.
+     */
+    public static Passage getPassage(Key key)
+    {
+        if (key instanceof Passage)
+        {
+            return (Passage) key;
+        }
+
+        try
+        {
+            Passage ref = PassageFactory.createPassage(key.getName());
+            log.warn("Created passage from non Passage: "+key.getName()+" = "+ref.getName());
+            return ref;
+        }
+        catch (NoSuchVerseException ex)
+        {
+            log.warn("Key can't be a passage: "+key.getName());
+            return PassageFactory.createPassage();
+        }
+    }
+
+    /**
+     * Not all keys represent verses, but we ought to be able to get something
+     * close to a verse from anything that does verse like work.
+     */
+    public static Verse getVerse(Key key)
+    {
+        if (key instanceof Verse)
+        {
+            return (Verse) key;
+        }
+
+        try
+        {
+            Verse verse = new Verse(key.getName());
+            log.warn("Created verse from non Verse: "+key.getName()+" = "+verse.getName());
+            return verse;
+        }
+        catch (NoSuchVerseException ex)
+        {
+            log.warn("Key can't be a verse: "+key.getName());
+            return new Verse();
+        }
+    }
+
+    /**
      * The ResourceBundle containing the name customizations
      */
     private static ResourceBundle res = null;
