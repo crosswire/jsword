@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 /**
@@ -40,6 +39,7 @@ public class FontChoice extends ReflectedChoice
      */
     public String convertToString(Object orig)
     {
+        // PENDING: object=font? is this right? isn't there a converter somewhere
         return (String) orig;
     }
 

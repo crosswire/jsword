@@ -18,24 +18,10 @@ import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.crosswire.common.config.Choice;
-import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Reporter;
 
 /**
  * A mutable view of Fields setting array.
- * <p>A few of the ideas in this code came from an article in the JDJ about
- * configuration. However the Config package has a number of huge
- * differences, the biggest being what it does with its config info. The
- * JDJ article assumed that you'd only ever want to edit a properties file
- * and that the rest of the app didn't care much, and that the tree style
- * view was the only one you would ever need. This package is a re-write
- * that addresses these shortcomings and others.
- * <p>The JDJ article uses a <code>DeckLayout</code> instead of the
- * <code>java.awt.CardLayout</code> because there are supposedly some focus
- * problems in the CardLayout code. I have not noticed these, and so I have
- * used the more standard CardLayout, however a copy of the DeckLayout code
- * is in the <code>org.crosswire.common.swing</code> package. Maybe we should remove it
- * from here - the redistribution status of it is not clear.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -58,17 +44,8 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class AdvancedConfigPane extends TreeConfigPane
+public class AdvancedConfigEditor extends TreeConfigEditor
 {
-    /**
-     * Create a TreeConfig panel Field set
-     * @param config The set of Fields us display
-     */
-    public AdvancedConfigPane(Config config)
-    {
-        super(config);
-    }
-
     /**
      * Now this wasn't created with JBuilder but maybe, just maybe, by
      * calling my method this, JBuilder may grok it.
@@ -221,13 +198,12 @@ public class AdvancedConfigPane extends TreeConfigPane
 
     /**
      * A custom data model for the TreeConfig Tree
-     * @author Claude Duguay
      * @author Joe Walker
      */
     private class AdvancedConfigureTreeModel extends ConfigureTreeModel
     {
         /* (non-Javadoc)
-         * @see org.crosswire.common.config.swing.TreeConfigPane.ConfigureTreeModel#getChildren(java.lang.String)
+         * @see org.crosswire.common.config.swing.TreeConfigEditor.ConfigureTreeModel#getChildren(java.lang.String)
          */
         protected List getChildren(String path)
         {

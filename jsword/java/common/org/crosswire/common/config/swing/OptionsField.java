@@ -92,11 +92,12 @@ public class OptionsField implements Field
             }
         }
 
-        log.warn("Illegal option setting: '"+value+"'. Using default");
         if (list != null && list.length > 0)
         {
             combo.setSelectedItem(list[0]);
         }
+
+        log.warn("Checked for options without finding: '"+value+"'. Defaulting to first option: "+combo.getSelectedItem());
     }
 
     /**

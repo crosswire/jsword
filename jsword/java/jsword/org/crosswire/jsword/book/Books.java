@@ -10,7 +10,7 @@ import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.util.Project;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * The Bibles class (along with Bible) is the central point of contact
@@ -367,7 +367,7 @@ public class Books
         public void run()
         {
             // This will classload them all and they will register themselves.
-            Class[] types = Project.instance().getImplementors(BookDriver.class);
+            Class[] types = ResourceUtil.getImplementors(BookDriver.class);
 
             log.debug("begin auto-registering "+types.length+" drivers:");
 

@@ -1,9 +1,12 @@
-package org.crosswire.common.config;
+package org.crosswire.common.config.swing;
 
-import java.io.File;
+import java.awt.Component;
+import java.awt.event.ActionListener;
+
+import org.crosswire.common.config.Config;
 
 /**
- * A class to convert between files and objects of a type.
+ * Some static methods for using the Config package.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,34 +29,19 @@ import java.io.File;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FileChoice extends ReflectedChoice
+public interface ConfigEditor
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.Choice#getConvertionClass()
+    /**
+     * The equivalent of a constructor, create a Config base with the set of
+     * Fields that it will display.
+     * @param config The configurable settings
      */
-    public Class getConvertionClass()
-    {
-        return File.class;
-    }
+    public void init(Config config);
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+    /**
+     * Create a dialog to house a TreeConfig component
+     * using the default set of Fields
+     * @param parent A component to use to find a frame to use as a dialog parent
      */
-    public String convertToString(Object orig)
-    {
-        if (orig == null)
-        {
-            return "";
-        }
-
-        return ((File) orig).getAbsolutePath();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
-     */
-    public Object convertToObject(String orig)
-    {
-        return new File(orig);
-    }
+    public void showDialog(Component parent, ActionListener al);
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.BorderLayout;
@@ -11,14 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Hashtable;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -27,9 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  * FontChooserBean allows the user to select a font in a similar
@@ -63,13 +59,19 @@ public class FontChooser extends JPanel
      */
     public FontChooser()
     {
-        FontChangeListener changer = new FontChangeListener();
+        ItemListener changer = new ItemListener()
+        {
+            public void itemStateChanged(ItemEvent ev)
+            {
+                fireStateChange();
+            }
+        };
 
         name.setModel(new CustomComboBoxModel());
-        name.setRenderer(new TestCellRenderer());
+        name.setRenderer(new CustomListCellRenderer());
         name.addItemListener(changer);
 
-        for (int i=5; i<20; i++)
+        for (int i = 5; i < 20; i++)
         {
             size.addItem(new Integer(i));
         }
@@ -99,7 +101,7 @@ public class FontChooser extends JPanel
         JButton ok = new JButton("OK");
         JButton cancel = new JButton("Cancel");
         Component root = SwingUtilities.getRoot(parent);
-        FontChooser fontc = new FontChooser();
+        final FontChooser fontc = new FontChooser();
 
         // JDK: For some reason we can't do this in the version of Swing that we are on
         // it is only available in the JDK1.2.2 implementation
@@ -115,8 +117,21 @@ public class FontChooser extends JPanel
         buttons.add(ok);
         buttons.add(cancel);
 
-        ok.addActionListener(fontc.new OKActionListener());
-        cancel.addActionListener(fontc.new CancelActionListener());
+        ok.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ex)
+            {
+                fontc.dialog.setVisible(false);
+            }
+        });
+        cancel.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ex)
+            {
+                fontc.dialog.setVisible(false);
+                fontc.font = null;
+            }
+        });
 
         fontc.setBorder(BorderFactory.createTitledBorder("Select Font"));
 
@@ -143,16 +158,16 @@ public class FontChooser extends JPanel
      */
     public void setStyle(Font font)
     {
-        suppress_events = true;
+        suppressEvents = true;
 
         CustomComboBoxModel model = (CustomComboBoxModel) name.getModel();
-        model.setSelectedFont(font);
+        model.setSelectedItem(font);
 
         bold.setSelected(font.isBold());
         italic.setSelected(font.isItalic());
         size.setSelectedItem(new Integer(font.getSize()));
 
-        suppress_events = false;
+        suppressEvents = false;
         fireStateChange();
     }
 
@@ -161,35 +176,12 @@ public class FontChooser extends JPanel
      */
     public Font getStyle()
     {
-        Hashtable hash = (Hashtable) name.getSelectedItem();
-        Font base_font = (Font) hash.get("font");
+        Font selected = (Font) name.getSelectedItem();
 
         int font_style = 0 | (bold.isSelected() ? Font.BOLD : 0) | (italic.isSelected() ? Font.ITALIC : 0);
         int font_size = ((Integer) size.getSelectedItem()).intValue();
 
-        return new Font(base_font.getName(), font_style, font_size);
-    }
-
-    /**
-     * Helper class to note changes in the Font
-     */
-    class FontChangeListener implements ItemListener
-    {
-        public void itemStateChanged(ItemEvent ev)
-        {
-            fireStateChange();
-        }
-    }
-
-    /**
-     * Helper class to note changes in the Font
-     */
-    class NameListener implements PropertyChangeListener
-    {
-        public void propertyChange(PropertyChangeEvent ev)
-        {
-            fireStateChange();
-        }
+        return new Font(selected.getName(), font_style, font_size);
     }
 
     /**
@@ -220,32 +212,9 @@ public class FontChooser extends JPanel
         Font old = font;
         font = getStyle();
 
-        if (!suppress_events)
+        if (!suppressEvents)
         {
             listeners.firePropertyChange("style", old, font);
-        }
-    }
-
-    /**
-     * When someone clicks on OK
-     */
-    class OKActionListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ex)
-        {
-            dialog.setVisible(false);
-        }
-    }
-
-    /**
-     * When someone clicks on cancel
-     */
-    class CancelActionListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ex)
-        {
-            dialog.setVisible(false);
-            font = null;
         }
     }
 
@@ -259,14 +228,13 @@ public class FontChooser extends JPanel
          */
         protected CustomComboBoxModel()
         {
-            font_names = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+            String[] names = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
             // For older JDKs use: font_names = getToolkit().getFontList();
-            fonts = new Font[font_names.length];
-            cache = new Hashtable[font_names.length];
+            fonts = new Font[names.length];
 
-            for (int i=0; i<fonts.length; i++)
+            for (int i = 0; i < fonts.length; i++)
             {
-                fonts[i] = new Font(font_names[i], 0, 16);
+                fonts[i] = new Font(names[i], 0, 16);
             }
         }
 
@@ -276,23 +244,6 @@ public class FontChooser extends JPanel
         public void setSelectedItem(Object selection)
         {
             this.selection = selection;
-            fireContentsChanged(this, -1, -1);
-        }
-
-        /**
-         * Choose a Font from the available list
-         * @param font The font to make current
-         */
-        public void setSelectedFont(Font font)
-        {
-            for (int i=0; i<fonts.length; i++)
-            {
-                if (font.equals(fonts[i]))
-                {
-                    setSelectedItem(getElementAt(i));
-                }
-            }
-
             fireContentsChanged(this, -1, -1);
         }
 
@@ -317,38 +268,25 @@ public class FontChooser extends JPanel
          */
         public Object getElementAt(int index)
         {
-            if (cache[index] != null)
-            {
-                return cache[index];
-            }
-            else
-            {
-                Hashtable result = new Hashtable();
-                result.put("title", font_names[index]);
-                result.put("font", fonts[index]);
-                cache[index] = result;
-                return result;
-            }
+            return fonts[index];
         }
 
-        /** An array of the names of all the available fonts */
-        private String[] font_names = null;
-
-        /** An array of the fonts them selves */
+        /**
+         * An array of the fonts themselves
+         */
         private Font[] fonts = null;
 
-        /** The currently selected item */
+        /**
+         * The currently selected item
+         */
         private Object selection;
-
-        /** To collect fonts and names together */
-        private Hashtable[] cache;
     }
 
     /**
      * An extension of JLabel that resets it's font so that
      * it can be used to render the items in a JComboBox
      */
-    static class TestCellRenderer extends JLabel implements ListCellRenderer
+    private static class CustomListCellRenderer extends DefaultListCellRenderer
     {
         /**
          * Set ourselves up to render for this particular font
@@ -361,60 +299,64 @@ public class FontChooser extends JPanel
          */
         public Component getListCellRendererComponent(JList listbox, Object value, int index, boolean selected, boolean focus)
         {
-            Hashtable hash = (Hashtable) value;
-
-            if (UIManager.getLookAndFeel().getName().equals("CDE/Motif"))
-            {
-                setOpaque(index != -1);
-            }
-            else
-            {
-                setOpaque(true);
-            }
-
             if (value == null)
             {
-                setText("");
-                setIcon(null);
-            }
-            else if (selected)
-            {
-                setBackground(UIManager.getColor("ComboBox.selectionBackground"));
-                setForeground(UIManager.getColor("ComboBox.selectionForeground"));
+                setText("<null>");
+                setFont(defaultFont.getFont());
             }
             else
             {
-                setBackground(UIManager.getColor("ComboBox.background"));
-                setForeground(UIManager.getColor("ComboBox.foreground"));
+                Font font = (Font) value;
+                setText(font.getFamily());
+                setFont(font);
             }
 
-            setText((String) hash.get("title"));
-            setFont((Font) hash.get("font"));
             return this;
         }
     }
 
-    /** The dialog box */
+    /**
+     * A label that we can use to get defaults
+     */
+    protected static JLabel defaultFont = new JLabel();
+
+    /**
+     * The dialog box
+     */
     protected JDialog dialog = null;
 
-    /** People that want to know about font changes */
+    /**
+     * People that want to know about font changes
+     */
     protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
-    /** The default font */
+    /**
+     * The default font
+     */
     protected Font font = new Font("Serif", Font.PLAIN, 10);
 
-    /** The choice of font name */
+    /**
+     * The choice of font name
+     */
     protected JComboBox name = new JComboBox();
 
-    /** Bold font? */
+    /**
+     * Bold font?
+     */
     protected JCheckBox bold = new JCheckBox("Bold");
 
-    /** Italic font? */
+    /**
+     * Italic font?
+     */
     protected JCheckBox italic = new JCheckBox("Italic");
 
-    /** The font size */
+    /**
+     * The font size
+     */
     protected JComboBox size = new JComboBox();
 
-    /** Are we doing some processing, that makes us not want to send events? */
-    protected boolean suppress_events;
+    /**
+     * Are we doing some processing, that makes us not want to send events?
+     */
+    protected boolean suppressEvents;
 }

@@ -3,7 +3,9 @@ package org.crosswire.jsword.view.swing.book;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
@@ -23,10 +25,10 @@ import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
 import org.xml.sax.SAXException;
@@ -74,21 +76,36 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
         {
             public void run()
             {
+                URL predicturl = null;
                 try
                 {
-                    URL predicturl = Project.instance().getWritablePropertiesURL("display");
-                    Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
+                    predicturl = Project.instance().getWritablePropertiesURL("display");
+                }
+                catch (MalformedURLException ex)
+                {
+                    log.error("Prediction URL failed", ex);
+                    return;
+                }
 
+                Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
+
+                try
+                {
                     job.setProgress("Setup");
-                    Passage gen11 = PassageFactory.createPassage("Gen 1:1");
-                    Book deftbible = Defaults.getBibleMetaData().getBook();
+                    List booklist = Books.getBooks();
+                    if (booklist.size() == 0)
+                    {
+                        return;
+                    }
+
+                    Book test = ((BookMetaData) booklist.get(0)).getBook();
                     if (interrupted())
                     {
                         return;
                     }
 
                     job.setProgress("Getting initial data");
-                    BookData data = deftbible.getData(gen11);
+                    BookData data = test.getData(test.getGlobalKeyList().get(0));
                     if (interrupted())
                     {
                         return;
@@ -108,14 +125,16 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     {
                         return;
                     }
-                    
-                    job.done();
-
-                    log.debug("View pre-load finished");
                 }
                 catch (Exception ex)
                 {
                     log.error("View pre-load failed", ex);
+                }
+                finally
+                {
+                    job.done();
+
+                    log.debug("View pre-load finished");
                 }
             }
         };

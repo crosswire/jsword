@@ -1,12 +1,12 @@
-
 package org.crosswire.common.config.swing;
 
-import java.util.Hashtable;
+import java.util.Map;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.MultipleChoice;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * This class provides mapping between Choice types and Fields.
@@ -72,19 +72,19 @@ public class FieldMap
                 }
                 else
                 {
-                    log.warn("field type ("+type+") unregistered.");
+                    log.warn("field type (" + type + ") unregistered.");
                     field = new TextField();
                 }
             }
         }
         catch (Exception ex)
         {
-            log.warn("field type ("+type+") initialization failed:", ex);
+            log.warn("field type (" + type + ") initialization failed:", ex);
             Reporter.informUser(type, ex);
 
             if (field == null)
             {
-                log.warn("field type ("+type+") unregistered.");
+                log.warn("field type (" + type + ") unregistered.");
                 field = new TextField();
             }
         }
@@ -94,38 +94,20 @@ public class FieldMap
     }
 
     /**
-     * We configure the FieldMap by access to the Hashtable that holds
-     * the string/Field mapping.
-     * @return The configuration Hashtable
+     * The configuration table
      */
-    public static Hashtable getHashtable()
-    {
-        return map;
-    }
-
-    /** The configuration table */
-    private static Hashtable map = new Hashtable();
+    private static Map map;
 
     /**
      * Default hashtable configuration
-     * @see org.crosswire.common.config.ChoiceFactory#map
      */
     static
     {
-        map.put("string", TextField.class);
-        map.put("boolean", BooleanField.class);
-        map.put("int-options", NumberField.class);
-        map.put("string-options", StringArrayField.class);
-        map.put("string-array", StringArrayField.class);
-        map.put("file", FileField.class);
-        map.put("path", FileField.class);
-        map.put("directory", FileField.class);
-        map.put("number", NumberField.class);
-        map.put("font", FontField.class);
-        map.put("class", TextField.class);
+        map = ResourceUtil.getImplementorsMap(Field.class);
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(FieldMap.class);
 }
-

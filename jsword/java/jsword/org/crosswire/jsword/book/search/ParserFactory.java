@@ -1,8 +1,7 @@
-
 package org.crosswire.jsword.book.search;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.util.Project;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * Factory method for creating a new Parser.
@@ -44,7 +43,7 @@ public class ParserFactory
     {
         try
         {
-            Class impl = Project.instance().getImplementor(Parser.class);
+            Class impl = ResourceUtil.getImplementor(Parser.class);
             Parser parser = (Parser) impl.newInstance();
             parser.init(index);
             

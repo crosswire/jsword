@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 
-import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.FormPane;
 
 /**
@@ -38,21 +37,12 @@ import org.crosswire.common.swing.FormPane;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TabbedConfigPane extends PanelConfigPane
+public class TabbedConfigEditor extends AbstractConfigEditor
 {
     /**
-    * Create a Config base with the set of Fields that it will
-    * display.
-    */
-    public TabbedConfigPane(Config config)
-    {
-        super(config);
-    }
-
-    /**
-    * Now this wasn't created with JBuilder but maybe, just maybe, by
-    * calling my method this, JBuilder may grok it.
-    */
+     * Now this wasn't created with JBuilder but maybe, just maybe, by
+     * calling my method this, JBuilder may grok it.
+     */
     protected void jbInit()
     {
         JComponent bar = getButtonPane();
@@ -64,11 +54,14 @@ public class TabbedConfigPane extends PanelConfigPane
     }
 
     /**
-    * Update the tree structure
-    */
+     * Update the tree structure
+     */
     protected void updateTree()
     {
-        if (tab != null) remove(tab);
+        if (tab != null)
+        {
+            remove(tab);
+        }
         tab = new JTabbedPane();
 
         Iterator it = config.getPaths();
@@ -150,9 +143,13 @@ public class TabbedConfigPane extends PanelConfigPane
         add("Center", tab);
     }
 
-    /** The tabbed pane */
+    /**
+     * The tabbed pane
+     */
     private JTabbedPane tab;
 
-    /** Set this to task_small to get icons on the tabs. I don't like it */
+    /**
+     * Set this to task_small to get icons on the tabs. I don't like it
+     */
     protected static final ImageIcon tab_icon = null;
 }

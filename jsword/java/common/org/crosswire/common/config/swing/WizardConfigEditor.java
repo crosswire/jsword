@@ -9,9 +9,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -25,11 +25,10 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.swing.LookAndFeelUtil;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -63,17 +62,8 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class WizardConfigPane extends PanelConfigPane
+public class WizardConfigEditor extends AbstractConfigEditor
 {
-    /**
-     * Create a WizardConfig panel Field set
-     * @param config The set of Fields us display
-     */
-    public WizardConfigPane(Config config)
-    {
-        super(config);
-    }
-
     /**
      * Now this wasn't created with JBuilder but maybe, just maybe, by
      * calling my method this, JBuilder may grok it.
@@ -198,7 +188,8 @@ public class WizardConfigPane extends PanelConfigPane
                 move(1);
             }
         });
-        ok.addActionListener(new ActionListener() {
+        ok.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
                 try
@@ -282,28 +273,43 @@ public class WizardConfigPane extends PanelConfigPane
         }
     }
 
-    /** The current position */
+    /**
+     * The current position
+     */
     private int posn = 0;
 
-    /** The number of cards */
+    /**
+     * The number of cards
+     */
     private int wcards = 0;
 
-    /** The list of path names */
+    /**
+     * The list of path names
+     */
     private List names = new ArrayList();
 
-    /** The title for the config panels */
+    /**
+     * The title for the config panels
+     */
     private JLabel title = new JLabel("Properties", SwingConstants.LEFT);
 
-    /** Contains the configuration panels */
+    /**
+     * Contains the configuration panels
+     */
     private JPanel deck = new JPanel();
 
-    /** Layout for the config panels */
+    /**
+     * Layout for the config panels
+     */
     private CardLayout layout = new CardLayout();
 
-    /** The Back button */
+    /**
+     * The Back button
+     */
     private JButton back = new JButton("Back");
 
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(WizardConfigPane.class);
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(WizardConfigEditor.class);
 }
-

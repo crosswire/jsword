@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Properties;
 
 import org.apache.commons.lang.SystemUtils;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
@@ -71,45 +69,37 @@ public class SwordBookDriver extends AbstractBookDriver
         // Loop through the dirs in the lookup path
         for (int j=0; j<dirs.length; j++)
         {
-            URL mods = NetUtil.lengthenURL(dirs[j], "mods.d");
-            if (NetUtil.isDirectory(mods))
+            File mods = new File(dirs[j], "mods.d");
+            if (mods.isDirectory())
             {
-                try
-                {
-                    File modsdir = NetUtil.getAsFile(mods);
-                    String[] bookdirs = modsdir.list(new CustomFilenameFilter());
-                    //String[] bookdirs = NetUtil.listByFile(mods, new CustomURLFilter());
+                String[] bookdirs = mods.list(new CustomFilenameFilter());
+                //String[] bookdirs = NetUtil.listByFile(mods, new CustomURLFilter());
 
-                    // Loop through the entries in this mods.d directory
-                    for (int i=0; i<bookdirs.length; i++)
+                // Loop through the entries in this mods.d directory
+                for (int i=0; i<bookdirs.length; i++)
+                {
+                    String bookdir = bookdirs[i];
+                    try
                     {
-                        String bookdir = bookdirs[i];
-                        try
-                        {
-                            File configfile = new File(modsdir, bookdir);
-                            SwordConfig config = new SwordConfig(configfile);
+                        File configfile = new File(mods, bookdir);
+                        SwordConfig config = new SwordConfig(configfile);
 
-                            if (config.isSupported())
-                            {
-                                Book book = createBook(config, dirs[j]);
-                                valid.add(book.getBookMetaData());
-                            }
-                            else
-                            {
-                                String name = bookdir.substring(0, bookdir.indexOf(".conf"));
-                                log.warn("Unsupported Book: "+name);
-                            }
-                        }
-                        catch (Exception ex)
+                        if (config.isSupported())
                         {
-                            log.warn("Couldn't create SwordBookMetaData", ex);
+                            Book book = createBook(config, dirs[j]);
+                            valid.add(book.getBookMetaData());
                         }
-                    }            
-                }
-                catch (IOException ex)
-                {
-                    log.warn("Couldn't list mods.d at: "+mods, ex);
-                }
+                        else
+                        {
+                            String name = bookdir.substring(0, bookdir.indexOf(".conf"));
+                            log.warn("Unsupported Book: "+name);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        log.warn("Couldn't create SwordBookMetaData", ex);
+                    }
+                }            
             }
             else
             {
@@ -123,16 +113,12 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Create a Book to wrap the given backend
      */
-    private Book createBook(SwordConfig config, URL progdir) throws BookException, MalformedURLException, ParseException
+    private Book createBook(SwordConfig config, File progdir) throws BookException, MalformedURLException, ParseException
     {
         String dataPath = config.getFirstValue("DataPath");
-        URL baseurl = NetUtil.lengthenURL(progdir, dataPath);
-        if (!baseurl.getProtocol().equals("file"))
-        {
-            throw new BookException(Msg.FILE_ONLY, new Object[] { baseurl.getProtocol()});
-        }
-        String path = baseurl.getFile();
-        
+        File baseurl = new File(progdir, dataPath);
+        String path = baseurl.getAbsolutePath();
+
         Backend backend = null;
         Book book = null;
 
@@ -219,9 +205,9 @@ public class SwordBookDriver extends AbstractBookDriver
 
     /**
      * Accessor for the Sword directory
-     * @param paths The new Sword directory
+     * @param dirs The new Sword directory
      */
-    public static void setSwordDir(String[] paths) throws MalformedURLException, BookException
+    public static void setSwordPath(File[] dirs) throws BookException
     {
         // Fist we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
@@ -231,16 +217,18 @@ public class SwordBookDriver extends AbstractBookDriver
         }
 
         // If the new paths are empty then guess ...
-        if (paths == null || paths.length == 0)
+        if (dirs == null || dirs.length == 0)
         {
-            paths = getDefaultPaths();
+            log.warn("No paths set, using defaults");
+            dirs = getDefaultPaths();
         }
 
-        dirs = new URL[paths.length];
+        SwordBookDriver.dirs = dirs;
+
+        // Warn if any are not directories
         for (int i = 0; i < dirs.length; i++)
         {
-            dirs[i] = new URL("file", null, paths[i]);
-            if (!NetUtil.isDirectory(dirs[i]))
+            if (!dirs[i].isDirectory())
             {
                 log.warn("No sword source found under: "+dirs[i]);
             }
@@ -251,15 +239,29 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
+     * Accessor for the Sword directory
+     * @return The new Sword directory
+     */
+    public static File[] getSwordPath()
+    {
+        if (dirs == null || dirs.length == 0)
+        {
+            return new File[0];
+        }
+
+        return dirs;
+    }
+
+    /**
      * Have an OS dependent guess at where Sword might be installed
      */
-    private static String[] getDefaultPaths()
+    private static File[] getDefaultPaths()
     {
         List reply = new ArrayList();
 
         if (SystemUtils.IS_OS_WINDOWS)
         {
-            reply.add("C:\\Program Files\\CrossWire\\The SWORD Project");
+            reply.add(new File("C:\\Program Files\\CrossWire\\The SWORD Project"));
         }
         else
         {
@@ -297,7 +299,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // mods.d in the current directory?
         testDefaultPath(reply, new File(".").getAbsolutePath()+"/mods.d");
 
-        return (String[]) reply.toArray(new String[reply.size()]);
+        return (File[]) reply.toArray(new File[reply.size()]);
     }
 
     /**
@@ -309,35 +311,35 @@ public class SwordBookDriver extends AbstractBookDriver
         File test = new File(path);
         if (test.isDirectory())
         {
-            reply.add(path);
+            reply.add(test);
         }
     }
 
     /**
-     * Accessor for the Sword directory
-     * @return The new Sword directory
+     * @return Returns the download directory.
      */
-    public static String[] getSwordDir()
+    public static File getDownloadDir()
     {
-        if (dirs == null || dirs.length == 0)
-        {
-            return new String[0];
-        }
-
-        String[] paths = new String[dirs.length];
-
-        for (int i = 0; i < paths.length; i++)
-        {
-            paths[i] = dirs[i].getFile();
-        }
-
-        return paths;
+        return downloadDir;
     }
+
+    /**
+     * @param downloadDir The download directory to set.
+     */
+    public static void setDownloadDir(File downloadDir)
+    {
+        SwordBookDriver.downloadDir = downloadDir;
+    }
+
+    /**
+     * The download directory
+     */
+    private static File downloadDir;
 
     /**
      * The directory URL
      */
-    private static URL[] dirs;
+    private static File[] dirs;
 
     /**
      * The log stream

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.util;
 
 import java.io.File;
@@ -6,11 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
@@ -51,11 +45,6 @@ public class Project
      * Extension for XSLT files
      */
     public static final String XSLT_EXTENSION = ".xsl";
-
-    /**
-     * Extension for properties files
-     */
-    public static final String PROPERTIES_EXTENSION = ".properties";
 
     /**
      * The JSword user settings directory
@@ -139,7 +128,7 @@ public class Project
             {
                 public boolean accept(String name)
                 {
-                    return name.endsWith(PROPERTIES_EXTENSION);
+                    return name.endsWith(ResourceUtil.PROPERTIES_EXTENSION);
                 }
             });
         }
@@ -186,27 +175,10 @@ public class Project
         catch (IOException ex)
         {
             // If not then rely on the static version
-            Properties prop = getResourceProperties(subject);
+            Properties prop = ResourceUtil.getProperties(subject);
             //log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from classpath: [OK]");
             return prop;
         }
-    }
-
-    /**
-     * Search the classpath for the specified properties file.
-     * @param subject The name (minus the .properties extension)
-     * @return The found and loaded properties file
-     * @throws IOException if the resource can not be loaded
-     * @throws MalformedURLException if the resource can not be found
-     */
-    public Properties getResourceProperties(String subject) throws IOException, MalformedURLException
-    {
-        String lookup = subject+PROPERTIES_EXTENSION;
-        InputStream in = ResourceUtil.getResourceAsStream(lookup);
-
-        Properties prop = new Properties();
-        prop.load(in);
-        return prop;
     }
 
     /**
@@ -240,7 +212,7 @@ public class Project
     public URL getWritablePropertiesURL(String subject) throws MalformedURLException
     {
         URL base = getWritableBaseURL();
-        return NetUtil.lengthenURL(base, subject+PROPERTIES_EXTENSION);
+        return NetUtil.lengthenURL(base, subject+ResourceUtil.PROPERTIES_EXTENSION);
     }
 
     /**
@@ -273,130 +245,6 @@ public class Project
         URL temp = NetUtil.lengthenURL(base, subject);
         NetUtil.makeDirectory(temp);
         return temp;
-    }
-
-    /**
-     * Get the known implementors of some interface or abstract class.
-     * This is currently done by looking up a properties file by the name of
-     * the given class, and assuming that values are implementors of said
-     * class. Those that are not are warned, but ignored.
-     * @param clazz The class or interface to find implementors of.
-     * @return The list of implementing classes.
-     */
-    public Class[] getImplementors(Class clazz)
-    {
-        try
-        {
-            List matches = new ArrayList();
-            Properties props = getProperties(clazz.getName());
-            Iterator it = props.values().iterator();
-            while (it.hasNext())
-            {
-                try
-                {
-                    String name = (String) it.next();
-                    Class impl = Class.forName(name);
-                    if (clazz.isAssignableFrom(impl))
-                    {
-                        matches.add(impl);
-                    }
-                    else
-                    {
-                        log.warn("Class "+impl.getName()+" does not implement "+clazz.getName()+". Ignoring.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    log.warn("Failed to add class to list: "+clazz.getName(), ex);
-                }            
-            }
-
-            log.debug("Found "+matches.size()+" implementors of "+clazz.getName());
-            return (Class[]) matches.toArray(new Class[0]);
-        }
-        catch (Exception ex)
-        {
-            log.error("Failed to get any classes.", ex);
-            return new Class[0];
-        }
-    }
-
-    /**
-     * Get a map of known implementors of some interface or abstract class.
-     * This is currently done by looking up a properties file by the name of
-     * the given class, and assuming that values are implementors of said
-     * class. Those that are not are warned, but ignored. The reply is in the
-     * form of a map of keys=strings, and values=classes in case you need to get
-     * at the names given to the classes in the properties file.
-     * @see Project#getImplementors(Class)
-     * @param clazz The class or interface to find implementors of.
-     * @return The map of implementing classes.
-     */
-    public Map getImplementorsMap(Class clazz)
-    {
-        Map matches = new HashMap();
-
-        try
-        {
-            Properties props = getProperties(clazz.getName());
-            Iterator it = props.keySet().iterator();
-            while (it.hasNext())
-            {
-                try
-                {
-                    String key = (String) it.next();
-                    String value = props.getProperty(key);
-                    Class impl = Class.forName(value);
-                    if (clazz.isAssignableFrom(impl))
-                    {
-                        matches.put(key, impl);
-                    }
-                    else
-                    {
-                        log.warn("Class "+impl.getName()+" does not implement "+clazz.getName()+". Ignoring.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    log.warn("Failed to add class to list: "+clazz.getName(), ex);
-                }            
-            }
-
-            log.debug("Found "+matches.size()+" implementors of "+clazz.getName());
-        }
-        catch (Exception ex)
-        {
-            log.error("Failed to get any classes.", ex);
-        }
-
-        return matches;
-    }
-
-    /**
-     * Get the preferred implementor of some interface or abstract class.
-     * This is currently done by looking up a properties file by the name of
-     * the given class, and assuming that the "default" key is an implemention
-     * of said class. Warnings are given otherwise.
-     * @param clazz The class or interface to find an implementation of.
-     * @return The configured implementing class.
-     * @throws MalformedURLException if the properties file can not be found
-     * @throws IOException if there is a problem reading the found file
-     * @throws ClassNotFoundException if the read contents are not found
-     * @throws ClassCastException if the read contents are not valid
-     * @see Project#getImplementors(Class)
-     */
-    public Class getImplementor(Class clazz) throws MalformedURLException, IOException, ClassNotFoundException, ClassCastException
-    {
-        Properties props = getProperties(clazz.getName());
-        String name = props.getProperty("default");
-        
-        Class impl = Class.forName(name);
-        if (!clazz.isAssignableFrom(impl))
-        {
-            throw new ClassCastException("Class "+impl.getName()+" does not implement "+clazz.getName());
-        }
-        
-        return impl;
     }
 
     /**

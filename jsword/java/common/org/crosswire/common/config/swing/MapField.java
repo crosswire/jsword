@@ -121,7 +121,7 @@ public class MapField extends JPanel implements Field
      */
     public String getValue()
     {
-        return Convert.hashtable2String(getMap());
+        return Convert.map2String(getMap());
     }
 
     /**

@@ -52,22 +52,13 @@ import org.crosswire.common.swing.FormPane;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TreeConfigPane extends PanelConfigPane
+public class TreeConfigEditor extends AbstractConfigEditor
 {
-    /**
-     * Create a Config base with the set of Fields that it will
-     * display.
-     */
-    public TreeConfigPane(Config config)
-    {
-        super(config);
-    }
-
     /**
      * Now this wasn't created with JBuilder but maybe, just maybe, by
      * calling my method this, JBuilder may grok it.
-     * <br />Danger - this method is not called by the TreeConfigPane
-     * constructor, it is called by the PanelConfigPane constructor so
+     * <br />Danger - this method is not called by the TreeConfigEditor
+     * constructor, it is called by the AbstractConfigEditor constructor so
      * any field initializers will be called AFTER THIS METHOD EXECUTES
      * so don't use field initializers.
      */

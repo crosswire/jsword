@@ -1,7 +1,5 @@
-
 package org.crosswire.common.config;
 
-import java.io.File;
 
 /**
  * A class to convert between strings and objects of a type.
@@ -27,29 +25,6 @@ import java.io.File;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DirectoryChoice extends ReflectedChoice
+public class DirectoryChoice extends FileChoice
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.Choice#getConvertionClass()
-     */
-    public Class getConvertionClass()
-    {
-        return File.class;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
-     */
-    public String convertToString(Object orig)
-    {
-        return (String) orig;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
-     */
-    public Object convertToObject(String orig)
-    {
-        return orig;
-    }
 }

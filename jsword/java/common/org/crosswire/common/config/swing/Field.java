@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import javax.swing.JComponent;
@@ -57,4 +56,3 @@ public interface Field
      */
     public JComponent getComponent();
 }
-

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.BorderLayout;
@@ -212,7 +211,7 @@ public class ExceptionPane extends JPanel
     /**
      * The directories searched for source
      */
-    private static String[] sources = new String[0];
+    protected static File[] sources = new File[0];
 
     /**
      * The listener that pops up the ExceptionPanes
@@ -259,7 +258,7 @@ public class ExceptionPane extends JPanel
      * Set the directories to search for source files.
      * @param source_path A string array of the source directories
      */
-    public static void setSourcePath(String[] source_path)
+    public static void setSourcePath(File[] source_path)
     {
         ExceptionPane.sources = source_path;
     }
@@ -268,15 +267,9 @@ public class ExceptionPane extends JPanel
      * Get the directories searched for source files.
      * @return A string array of the source directories
      */
-    public static String[] getSourcePath()
+    public static File[] getSourcePath()
     {
-        String[] copy = new String[sources.length];
-        for (int i = 0; i < copy.length; i++)
-        {
-            copy[i] = sources[i];
-        }
-
-        return copy;
+        return sources;
     }
 
     /**
@@ -381,9 +374,8 @@ public class ExceptionPane extends JPanel
             this.mylabel = label;
         }
 
-        /**
-         * Update the contents of the text area and label
-         * @param ev The data about the click
+        /* (non-Javadoc)
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent ev)
         {
@@ -410,10 +402,9 @@ public class ExceptionPane extends JPanel
 
             // Find a file
             name = File.separator + StringUtils.replace(orig, ".", ""+File.separatorChar) + ".java";
-            String[] sourcescopy = getSourcePath();
-            for (int i=0; i<sourcescopy.length; i++)
+            for (int i=0; i<sources.length; i++)
             {
-                File file = new File(sourcescopy[i] + name);
+                File file = new File(sources[i], name);
                 if (file.isFile() && file.canRead())
                 {
                     // Found the file, load it into the window
@@ -455,9 +446,9 @@ public class ExceptionPane extends JPanel
 
             // If we can't find a matching file
             String error = "Can't open source for: '"+st.getClassName(level)+"' line: "+line_num+"\n";
-            for (int i=0; i<sourcescopy.length; i++)
+            for (int i=0; i<sources.length; i++)
             {
-                error += "Tried: "+sourcescopy[i]+name+"\n";
+                error += "Tried: " + sources[i].getAbsolutePath() + name + "\n";
             }
 
             mytext.setText(error);
@@ -498,8 +489,7 @@ public class ExceptionPane extends JPanel
                 {
                     if (ev.getSource() instanceof Component)
                     {
-                        ExceptionPane.showExceptionDialog((Component) ev.getSource(),
-                                                          ev.getException());
+                        ExceptionPane.showExceptionDialog((Component) ev.getSource(), ev.getException());
                     }
                     else
                     {
@@ -522,8 +512,7 @@ public class ExceptionPane extends JPanel
                 {
                     if (ev.getSource() instanceof Component)
                     {
-                        JOptionPane.showMessageDialog((Component) ev.getSource(),
-                                                      ev.getMessage());
+                        JOptionPane.showMessageDialog((Component) ev.getSource(), ev.getMessage());
                     }
                     else
                     {

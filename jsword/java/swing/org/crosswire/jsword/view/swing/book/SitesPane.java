@@ -7,9 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Properties;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -19,12 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.swing.EirAbstractAction;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A panel for use within a SitesPane to display one set of Books that are

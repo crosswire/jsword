@@ -57,9 +57,14 @@
     <help>How many verses do you want to display on a page before spilling to tabbed mode.</help>
   </option>
 
-  <option key="Sword.Base Directory" type="path">
-  	<introspect class="org.crosswire.jsword.book.sword.SwordBookDriver" property="SwordDir"/>
-    <help>Where is the SWORD Project base directory.</help>
+  <option key="Sword.Module Search Path" type="path">
+  	<introspect class="org.crosswire.jsword.book.sword.SwordBookDriver" property="SwordPath"/>
+    <help>Where should we look for SWORD Project modules.</help>
+  </option>
+
+  <option key="Sword.Download Directory" type="directory">
+  	<introspect class="org.crosswire.jsword.book.sword.SwordBookDriver" property="DownloadDir"/>
+    <help>Where should we store newly downloaded modules.</help>
   </option>
 
   <option key="Remote.Remote Host" type="string-array" separator=" ">

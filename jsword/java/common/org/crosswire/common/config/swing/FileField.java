@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -52,55 +51,62 @@ public class FileField extends JPanel implements Field
         {
             public void actionPerformed(ActionEvent ex)
             {
-                JFileChooser chooser = new JFileChooser(text.getText());
-                if (chooser.showOpenDialog(FileField.this) == JFileChooser.APPROVE_OPTION)
-                {
-                    text.setText(chooser.getSelectedFile().getPath());
-                }
+                browse();
             }
         });
     }
 
     /**
-     * Some fields will need some extra info to display properly
-     * like the options in an options field. FieldMap calls this
-     * method with options provided by the choice.
-     * @param param The options provided by the Choice
+     * Open a browse dialog
+     */
+    protected void browse()
+    {
+        JFileChooser chooser = new JFileChooser(text.getText());
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        if (chooser.showOpenDialog(FileField.this) == JFileChooser.APPROVE_OPTION)
+        {
+            text.setText(chooser.getSelectedFile().getPath());
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setChoice(org.crosswire.common.config.Choice)
      */
     public void setChoice(Choice param)
     {
     }
 
-    /**
-     * Return a string version of the current value
-     * @return The current value
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getValue()
      */
     public String getValue()
     {
         return text.getText();
     }
 
-    /**
-     * Set the current value
-     * @param value The new text
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#setValue(java.lang.String)
      */
     public void setValue(String value)
     {
         text.setText(value);
     }
 
-    /**
-     * Get the actual component that we can add to a Panel.
-     * (This can well be this in an implementation).
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.Field#getComponent()
      */
     public JComponent getComponent()
     {
         return this;
     }
 
-    /** The text field */
+    /**
+     * The text field
+     */
     protected JTextField text = new JTextField();
 
-    /** The browse button */
+    /**
+     * The browse button
+     */
     private JButton browse = new JButton("Browse");
 }

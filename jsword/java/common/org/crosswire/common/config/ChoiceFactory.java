@@ -1,9 +1,9 @@
-
 package org.crosswire.common.config;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.crosswire.common.util.ResourceUtil;
 import org.jdom.Element;
 
 /**
@@ -37,7 +37,6 @@ public class ChoiceFactory
      */
     private ChoiceFactory()
     {
-        // singleton - no set-up needed
     }
 
     /**
@@ -81,24 +80,13 @@ public class ChoiceFactory
     /**
      * Store of the known ChoiceTypes
      */
-    private static Map map = new HashMap();
+    private static Map map;
 
     /**
      * Setup the map of Choices
-     * @see org.crosswire.common.config.swing.FieldMap#hash
      */
     static
     {
-        map.put("string", StringChoice.class);
-        map.put("boolean", BooleanChoice.class);
-        map.put("int-options", IntOptionsChoice.class);
-        map.put("string-options", StringOptionsChoice.class);
-        map.put("string-array", StringArrayChoice.class);
-        map.put("file", FileChoice.class);
-        map.put("path", PathChoice.class);
-        map.put("directory", DirectoryChoice.class);
-        map.put("number", NumberChoice.class);
-        map.put("font", FontChoice.class);
-        map.put("class", ClassChoice.class);
+        map = ResourceUtil.getImplementorsMap(Choice.class);
     }
 }

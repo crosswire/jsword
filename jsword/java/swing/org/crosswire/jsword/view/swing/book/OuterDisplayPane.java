@@ -1,6 +1,7 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
+import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -13,7 +14,8 @@ import javax.swing.event.ListSelectionListener;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
@@ -55,7 +57,13 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     {
         try
         {
-            Book book = Defaults.getBibleMetaData().getBook();
+            List booklist = Books.getBooks();
+            if (booklist.size() == 0)
+            {
+                return;
+            }
+
+            Book book = ((BookMetaData) booklist.get(0)).getBook();
             txt_passg.setBook(book);
         }
         catch (Throwable ex)

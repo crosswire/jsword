@@ -18,7 +18,6 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -26,7 +25,6 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.swing.MapTableModel;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.install.InstallException;
@@ -80,7 +78,7 @@ public class SitePane extends JPanel
     /**
      * For remote installations
      */
-    public SitePane(Installer installer) throws InstallException
+    public SitePane(Installer installer)
     {
         this.installer = installer;
 
@@ -322,9 +320,4 @@ public class SitePane extends JPanel
     private JPanel pnlSelected = new JPanel();
     private JPanel pnlAvailable = new JPanel();
     private JTable tblSelected = new JTable();
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(SitePane.class);
 }

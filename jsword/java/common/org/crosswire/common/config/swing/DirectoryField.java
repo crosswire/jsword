@@ -1,11 +1,9 @@
-
 package org.crosswire.common.config.swing;
 
-import java.awt.Component;
-import java.awt.event.ActionListener;
+import javax.swing.JFileChooser;
 
 /**
- * Some static methods for using the Config package.
+ * A Directory selection.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,12 +26,18 @@ import java.awt.event.ActionListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BaseConfig
+public class DirectoryField extends FileField
 {
-    /**
-     * Create a dialog to house a TreeConfig component
-     * using the default set of Fields
-     * @param parent A component to use to find a frame to use as a dialog parent
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.FileField#browse()
      */
-    public void showDialog(Component parent, ActionListener al);
+    protected void browse()
+    {
+        JFileChooser chooser = new JFileChooser(text.getText());
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        if (chooser.showOpenDialog(DirectoryField.this) == JFileChooser.APPROVE_OPTION)
+        {
+            text.setText(chooser.getSelectedFile().getPath());
+        }
+    }
 }

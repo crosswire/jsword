@@ -1,16 +1,14 @@
 package org.crosswire.jsword.book.install;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -47,7 +45,7 @@ public class InstallManager
         try
         {
             Properties sitemap = Project.instance().getProperties(getClass().getName());
-            Map entries = Project.instance().getImplementorsMap(Installer.class);
+            Map entries = ResourceUtil.getImplementorsMap(Installer.class);
 
             for (Iterator it = sitemap.keySet().iterator(); it.hasNext();)
             {
@@ -89,9 +87,4 @@ public class InstallManager
      * The list of discovered installers
      */
     private List installers = new ArrayList();
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(InstallManager.class);
 }

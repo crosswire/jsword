@@ -3,6 +3,7 @@ package org.crosswire.jsword.util;
 import java.util.Map;
 
 import org.crosswire.common.util.LogicError;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.Converter;
 
 /**
@@ -46,7 +47,7 @@ public class ConverterFactory
     {
         try
         {
-            Class clazz = (Class) Project.instance().getImplementorsMap(Converter.class).get(name);
+            Class clazz = (Class) ResourceUtil.getImplementorsMap(Converter.class).get(name);
             if (clazz == null)
             {
                 throw new NullPointerException("No converter called: "+name);
@@ -66,7 +67,7 @@ public class ConverterFactory
      */
     public static final Map getKnownConverters()
     {
-        return Project.instance().getImplementorsMap(Converter.class);
+        return ResourceUtil.getImplementorsMap(Converter.class);
     }
 
     /**

@@ -193,7 +193,7 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Map string2Hashtable(String data)
+    public static Map string2Map(String data)
     {
         return string2Hashtable(data, Object.class);
     }
@@ -203,7 +203,7 @@ public class Convert
      * @param commands the thing to convert
      * @return the converted data
      */
-    public static String hashtable2String(Map commands)
+    public static String map2String(Map commands)
     {
         Iterator it = commands.keySet().iterator();
         StringBuffer retcode = new StringBuffer();

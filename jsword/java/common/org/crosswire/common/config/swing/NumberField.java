@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -86,7 +85,8 @@ public class NumberField extends JPanel implements Field
         return this;
     }
 
-    /** The text field */
+    /**
+     * The text field
+     */
     private JTextField text = new JTextField();
 }
-

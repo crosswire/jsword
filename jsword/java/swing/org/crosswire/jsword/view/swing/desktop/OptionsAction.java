@@ -11,7 +11,7 @@ import java.util.Set;
 
 import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
-import org.crosswire.common.config.swing.SwingConfig;
+import org.crosswire.common.config.swing.ConfigEditorFactory;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
@@ -78,9 +78,8 @@ public class OptionsAction extends DesktopAbstractAction
             fillChoiceFactory();
             Books.addBooksListener(new CustomBooksListener());
 
-            // SwingConfig.setDisplayClass(TreeConfigPane.class);
             URL config_url = Project.instance().getWritablePropertiesURL("desktop");
-            SwingConfig.showDialog(config, getDesktop().getJFrame(), config_url);
+            ConfigEditorFactory.showDialog(config, getDesktop().getJFrame(), config_url);
         }
         catch (Exception ex)
         {

@@ -57,10 +57,10 @@ public class SwordInstaller implements Installer
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#init(java.lang.String)
      */
-    public void init(String name, String url)
+    public void init(String newName, String newUrl)
     {
-        this.name = name;
-        this.url = url;
+        this.name = newName;
+        this.url = newUrl;
     }
 
     /* (non-Javadoc)
@@ -99,7 +99,7 @@ public class SwordInstaller implements Installer
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(java.lang.String)
      */
-    public void install(String name)
+    public void install(String entry)
     {
     }
 
@@ -116,9 +116,9 @@ public class SwordInstaller implements Installer
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getEntry(java.lang.String)
      */
-    public Properties getEntry(String name)
+    public Properties getEntry(String entry)
     {
-        return (Properties) entries.get(name);
+        return (Properties) entries.get(entry);
     }
 
     /**
@@ -167,7 +167,7 @@ public class SwordInstaller implements Installer
             }
 
             // Change directory
-            boolean changed = ftp.changeWorkingDirectory(dir);
+            ftp.changeWorkingDirectory(dir);
 
             log.info(ftp.getReplyString());
             reply = ftp.getReplyCode();
@@ -207,12 +207,18 @@ public class SwordInstaller implements Installer
     {
         try
         {
+            entries.clear();
+
             URL cache = getCachedIndexFile(name);
+            if (!NetUtil.isFile(cache))
+            {
+                return;
+            }
+
             InputStream in = cache.openStream();
-    
             GZIPInputStream gin = new GZIPInputStream(in);
             TarInputStream tin = new TarInputStream(gin);
-            
+
             while (true)
             {
                 TarEntry entry = tin.getNextEntry();
@@ -230,9 +236,9 @@ public class SwordInstaller implements Installer
                     Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
                     SwordConfig config = new SwordConfig(rin);
                     Properties prop = config.getProperties();
-                    String name = config.getDescription();
+                    String desc = config.getDescription();
             
-                    entries.put(name, prop);
+                    entries.put(desc, prop);
                 }
             }
             
@@ -294,11 +300,6 @@ public class SwordInstaller implements Installer
      * The sword index file
      */
     private static final String FILE_LIST_GZ = "mods.d.tar.gz";
-
-    /**
-     * The buffer for uncompressing the index file
-     */
-    private static final int BUFFER_SIZE = 1024;
 
     /**
      * The log stream

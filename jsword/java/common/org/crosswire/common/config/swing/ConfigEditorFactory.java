@@ -4,12 +4,12 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.EventException;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * Allow a swing program to display a Dialog box displaying a set of
@@ -36,12 +36,12 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwingConfig
+public class ConfigEditorFactory
 {
     /**
      * Prevent Instansiation
      */
-    private SwingConfig()
+    private ConfigEditorFactory()
     {
     }
 
@@ -56,8 +56,8 @@ public class SwingConfig
     {
         try
         {
-            Constructor ctor = display.getConstructor(new Class[] { Config.class });
-            BaseConfig base = (BaseConfig) ctor.newInstance(new Object[] { config });
+            ConfigEditor base = (ConfigEditor) ResourceUtil.getImplementation(ConfigEditor.class);
+            base.init(config);
             base.showDialog(parent, al);
         }
         catch (Exception ex)
@@ -77,49 +77,6 @@ public class SwingConfig
     {
         showDialog(config, parent, new URLActionListener(config, url));
     }
-
-    /**
-     * Which display style to we use
-     * @return The display style
-     */
-    public static Class getDisplayClass()
-    {
-        return display;
-    }
-
-    /**
-     * Which display style to we use
-     * @param display The new display style
-     */
-    public static void setDisplayClass(Class display) throws ClassCastException
-    {
-        if (!BaseConfig.class.isAssignableFrom(display))
-        {
-            throw new ClassCastException(display.getName());
-        }
-
-        SwingConfig.display = display;
-    }
-
-    /**
-     * The new tree display style
-     */
-    public static final int DISPLAY_TREE = 0;
-
-    /**
-     * The old tabbed display style
-     */
-    public static final int DISPLAY_TAB = 1;
-
-    /**
-     * The old tabbed display style
-     */
-    public static final int DISPLAY_WIZARD = 2;
-
-    /**
-     * Which display style to we use
-     */
-    private static Class display = TreeConfigPane.class;
 
     /**
      * A quick class to save a config to a url

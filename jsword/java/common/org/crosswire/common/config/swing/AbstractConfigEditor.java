@@ -5,8 +5,9 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -53,15 +54,14 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class PanelConfigPane extends JPanel implements BaseConfig
+public abstract class AbstractConfigEditor extends JPanel implements ConfigEditor
 {
-    /**
-     * Create a Config base with the set of Fields that it will
-     * display.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.ConfigEditor#init(org.crosswire.common.config.Config)
      */
-    public PanelConfigPane(Config config)
+    public void init(Config aConfig)
     {
-        this.config = config;
+        this.config = aConfig;
 
         jbInit();
 
@@ -92,6 +92,39 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
         updateTree();
 
         SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.swing.ConfigEditor#showDialog(java.awt.Component, java.awt.event.ActionListener)
+     */
+    public void showDialog(Component parent, ActionListener newal)
+    {
+        this.al = newal;
+
+        if (dialog == null)
+        {
+            dialog = new JDialog((JFrame) SwingUtilities.getRoot(parent));
+            LookAndFeelUtil.addComponentToUpdate(dialog);
+
+            dialog.getRootPane().setDefaultButton(ok);
+            dialog.getContentPane().add(this);
+
+            // Why is this only available in Frames?
+            // dialog.setIconImage(task_small);
+        }
+
+        // Update from config
+        localToScreen();
+        dialog.setTitle(config.getTitle());
+
+        // size and position
+        dialog.setSize(800, 500);
+        dialog.pack();
+        GuiUtil.centerWindow(dialog);
+        dialog.setModal(true);
+
+        // show
+        dialog.setVisible(true);
     }
 
     /**
@@ -249,44 +282,9 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     }
 
     /**
-     * Create a dialog to house a TreeConfig component
-     * using the default set of Fields
-     * @param parent A component to use to find a frame to use as a dialog parent
-     */
-    public void showDialog(Component parent, ActionListener newal)
-    {
-        this.al = newal;
-
-        if (dialog == null)
-        {
-            dialog = new JDialog((JFrame) SwingUtilities.getRoot(parent));
-            LookAndFeelUtil.addComponentToUpdate(dialog);
-
-            dialog.getRootPane().setDefaultButton(ok);
-            dialog.getContentPane().add(this);
-
-            // Why is this only available in Frames?
-            // dialog.setIconImage(task_small);
-        }
-
-        // Update from config
-        localToScreen();
-        dialog.setTitle(config.getTitle());
-
-        // size and position
-        dialog.setSize(800, 500);
-        dialog.pack();
-        GuiUtil.centerWindow(dialog);
-        dialog.setModal(true);
-
-        // show
-        dialog.setVisible(true);
-    }
-
-    /**
      * Close any open dialogs
      */
-    public void hideDialog()
+    protected void hideDialog()
     {
         if (dialog != null)
         {
@@ -299,7 +297,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
      * Take the data displayed on screen an copy it to the local
      * storage area.
      */
-    public void screenToLocal()
+    protected void screenToLocal()
     {
         Iterator it = config.getNames();
         while (it.hasNext())
@@ -327,7 +325,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     /**
      * Take the data in the local storage area and copy it on screen.
      */
-    public void localToScreen()
+    protected void localToScreen()
     {
         Iterator it = config.getNames();
         while (it.hasNext())
@@ -358,7 +356,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(PanelConfigPane.class);
+    private static Logger log = Logger.getLogger(AbstractConfigEditor.class);
 
     /**
      * How many cards have we created - we only need a tree if there are 2 or more cards
@@ -403,12 +401,12 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     /**
      * A fast way to get at the configuration panels
      */
-    protected Hashtable decks = new Hashtable();
+    protected Map decks = new HashMap();
 
     /**
      * The set of fields that we are displaying
      */
-    protected Hashtable fields = new Hashtable();
+    protected Map fields = new HashMap();
 
     /**
      * The large task icon
