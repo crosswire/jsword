@@ -54,7 +54,7 @@ public class OSISFilter implements Filter
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse original failed: "+ex1.getMessage()); //$NON-NLS-1$
+            DataPolice.report("parse (1) original failed: "+ex1.getMessage()); //$NON-NLS-1$
             DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain)); //$NON-NLS-1$
 
             // Attempt to fix broken characters, that doesn't break xml strings
@@ -67,7 +67,7 @@ public class OSISFilter implements Filter
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse original failed: "+ex1.getMessage()); //$NON-NLS-1$
+                DataPolice.report("parse (2) original failed: "+ex1.getMessage()); //$NON-NLS-1$
                 DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned)); //$NON-NLS-1$
 
                 // Attempt to fix broken entities, that could be a low damage
@@ -80,7 +80,7 @@ public class OSISFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse cropped failed: "+ex3.getMessage()); //$NON-NLS-1$
+                    DataPolice.report("parse (3) cropped failed: "+ex3.getMessage()); //$NON-NLS-1$
                     DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped)); //$NON-NLS-1$
 
                     // So just try to strip out all XML looking things
@@ -92,7 +92,7 @@ public class OSISFilter implements Filter
                     }
                     catch (Exception ex4)
                     {
-                        DataPolice.report("parse shawn failed: "+ex4.getMessage()); //$NON-NLS-1$
+                        DataPolice.report("parse (4) shawn failed: "+ex4.getMessage()); //$NON-NLS-1$
                         DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn)); //$NON-NLS-1$
 
                         try
@@ -122,16 +122,14 @@ public class OSISFilter implements Filter
         InputSource is = new InputSource(in);
 
         Document doc = builder.build(is);
-        Element data = doc.getRootElement();
+        Element div = doc.getRootElement();
 
         // data is the div we added above so the input was a well formed
         // XML so we need to add the content of the div and not the div
         // itself
 
-        List host = OSISUtil.getList(ele);
-        List content = OSISUtil.getList(data);
-
-        host.addAll(content);
+        List data = div.removeContent();
+        ele.addContent(data);
     }
 
     /**

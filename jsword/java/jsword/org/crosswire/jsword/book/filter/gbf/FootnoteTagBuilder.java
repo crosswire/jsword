@@ -65,11 +65,12 @@ public class FootnoteTagBuilder implements TagBuilder
                     if (pop instanceof Element)
                     {
                         Element note = (Element) pop;
-                        List list = OSISUtil.getList(note);
+                        List list = note.getContent();
     
                         if (list.size() < 1)
                         {
-                            OSISUtil.getList((Element) stack.get(0)).remove(note);
+                            Element ele = (Element) stack.get(0);
+                            ele.getContent().remove(note);
                         }
                     }
                     else

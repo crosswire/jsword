@@ -10,6 +10,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.jdom.Element;
 import org.jdom.Parent;
+import org.jdom.Text;
 
 /**
  * Some simple utilities to help working with OSIS classes.
@@ -352,25 +353,15 @@ public class OSISUtil
     public static String getPlainText(Element ele)
     {
         StringBuffer buffer = new StringBuffer();
-    
-        List content = getList(ele);
+
+        List content = ele.getContent();
         for (Iterator it = content.iterator(); it.hasNext();)
         {
             Object next = it.next();
             recurseElement(next, buffer);
         }
-    
-        return buffer.toString();
-    }
 
-    /**
-     * Many of the OSIS elements have lists with content, but the accessors are
-     * not accoring to any interface, (or even with consistent names) so this
-     * method extracts a content List from a JDOM element.
-     */
-    public static List getList(Element ele)
-    {
-        return ele.getContent();
+        return buffer.toString();
     }
 
     /**
@@ -469,7 +460,7 @@ public class OSISUtil
             reply.add(start);
         }
 
-        Iterator it = getList(start).iterator();
+        Iterator it = start.getContent().iterator();
         while (it.hasNext())
         {
             Element ele = (Element) it.next();
@@ -486,6 +477,10 @@ public class OSISUtil
         if (sub instanceof String)
         {
             buffer.append((String) sub);
+        }
+        else if (sub instanceof Text)
+        {
+            buffer.append(((Text) sub).getText());
         }
         else if (sub instanceof Element)
         {
@@ -507,7 +502,7 @@ public class OSISUtil
         // ele is a JDOM Element that might have a getContent() method
         try
         {
-            List content = getList(ele);
+            List content = ele.getContent();
             for (Iterator it = content.iterator(); it.hasNext();)
             {
                 Object sub = it.next();

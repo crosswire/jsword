@@ -50,7 +50,7 @@ public class StrongsWordTagBuilder implements TagBuilder
                 String name = tagname.trim();
 
                 Element ele = (Element) stack.get(0);
-                List list = OSISUtil.getList(ele);
+                List list = ele.getContent();
                 if (list.isEmpty())
                 {
                     DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$

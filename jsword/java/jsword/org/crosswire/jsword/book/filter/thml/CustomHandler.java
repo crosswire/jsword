@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
+import org.jdom.Text;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -88,7 +88,7 @@ public class CustomHandler extends DefaultHandler
     {
         // What we are adding to
         Element current = (Element) stack.getFirst();
-        List list = OSISUtil.getList(current); 
+        List list = current.getContent(); 
 
         // what we are adding
         String text = new String(data, offset, length);
@@ -106,9 +106,14 @@ public class CustomHandler extends DefaultHandler
                 list.remove(list.size()-1);
                 text = ((String) last) + text; 
             }
+            else if (last instanceof Text)
+            {
+                list.remove(list.size()-1);
+                text = ((Text) last).getText() + text; 
+            }
         }
 
-        list.add(text);
+        list.add(new Text(text));
     }
 
     /* (non-Javadoc)
