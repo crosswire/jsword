@@ -4,6 +4,7 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -283,7 +284,22 @@ public class Desktop extends JFrame implements TitleChangedListener
         bar_menu.add(menu_tools);
         bar_menu.add(menu_help);
 
-        pnl_tbar.setRollover(true);
+        // JToolBar.setRollover(boolean) is not supported in jdk1.3, instead we use reflection
+        // to find out whether the method is available, if so call it.
+        try{
+	        Class cl = pnl_tbar.getClass();
+	        Class[] clArr = {Boolean.TYPE};
+	        Method meth = cl.getMethod("setRollover",clArr);
+	        if(meth!=null){
+	        	Object[] argArr = {Boolean.TRUE};
+	        	meth.invoke(pnl_tbar,argArr);
+	        }
+        }catch(NoSuchMethodException nsme){
+        	// we have a java < 1.4 user
+        }catch(Exception e){
+        	// we don't expect this one, print a stack trace
+        	e.printStackTrace();
+        }
         pnl_tbar.add(act_file_new).addMouseListener(bar_status);
         pnl_tbar.add(act_file_open).addMouseListener(bar_status);
         pnl_tbar.add(act_file_save).addMouseListener(bar_status);
