@@ -57,8 +57,8 @@ public class PuncInstsDisk extends InstsDisk
         super(raw, "puncinst.idx", create, messages);
     }
 
-    /**
-     * Load the Resource from a named file
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.InstsDisk#load()
      */
     public void load() throws IOException
     {
@@ -84,10 +84,8 @@ public class PuncInstsDisk extends InstsDisk
         }
     }
 
-    /**
-     * Retrieve an ordered list of the words in a Verse
-     * @param verse The Verse to retrieve words for
-     * @return An array of word indexes
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#getIndexes(int)
      */
     public int[] getIndexes(int ordinal)
     {
@@ -114,6 +112,8 @@ public class PuncInstsDisk extends InstsDisk
         }
     }
 
-    /** The random access file */
+    /**
+     * The random access file
+     */
     protected RandomAccessFile raf;
 }

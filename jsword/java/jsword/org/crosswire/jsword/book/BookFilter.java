@@ -29,7 +29,7 @@ public interface BookFilter
 {
     /**
      * Does this given book pass the tests implemented by this filter
-     * @param book The Book to test
+     * @param bmd The Book to test
      * @return boolean true if it passes, false otherwise
      */
     public boolean test(BookMetaData bmd);

@@ -50,7 +50,7 @@ import org.crosswire.jsword.passage.VerseRange;
 public class SwordCommentary extends AbstractCommentary implements Commentary
 {
     /**
-     * @param data
+     * Simple ctor
      */
     public SwordCommentary(SwordCommentaryMetaData scmd, SwordConfig config)
     {

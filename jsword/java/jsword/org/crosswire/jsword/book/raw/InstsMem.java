@@ -40,7 +40,6 @@ public abstract class InstsMem extends Mem implements Insts
     /**
      * Basic constructor
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public InstsMem(RawBible raw, String leafname, boolean create) throws IOException
@@ -51,7 +50,6 @@ public abstract class InstsMem extends Mem implements Insts
     /**
      * Basic constructor
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
@@ -60,8 +58,8 @@ public abstract class InstsMem extends Mem implements Insts
         super(raw, leafname, create, messages);
     }
 
-    /**
-     * Start all over again and clear the decks for more data.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#init()
      */
     public void init()
     {
@@ -95,37 +93,32 @@ public abstract class InstsMem extends Mem implements Insts
         obj_out.close();
     }
 
-    /**
-     * Retrieve an ordered list of the words in a Verse
-     * @param verse The Verse to retrieve words for
-     * @return An array of word indexes
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#getIndexes(org.crosswire.jsword.passage.Verse)
      */
     public int[] getIndexes(Verse verse)
     {
         return array[verse.getOrdinal()-1];
     }
 
-    /**
-     * Retrieve an ordered list of the words in a Verse
-     * @param verse The Verse to retrieve words for
-     * @return An array of word indexes
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#getIndexes(int)
      */
     public int[] getIndexes(int ordinal)
     {
         return array[ordinal-1];
     }
 
-    /**
-     * Set a list of word indexes as the test to a Verse
-     * @param verse The Verse to set the words for
-     * @param indexes The array of word indexes
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#setIndexes(int[], org.crosswire.jsword.passage.Verse)
      */
     public void setIndexes(int[] indexes, Verse verse)
     {
         array[verse.getOrdinal()-1] = indexes;
     }
 
-    /** The store of data */
+    /**
+     * The store of data
+     */
     protected int[][] array;
 }
-

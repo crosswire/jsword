@@ -41,7 +41,6 @@ public abstract class ItemsMem extends Mem implements Items
     /**
      * Create a WordResource from a File that contains the dictionary.
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public ItemsMem(RawBible raw, String leafname, boolean create) throws IOException
@@ -52,7 +51,6 @@ public abstract class ItemsMem extends Mem implements Items
     /**
      * Create a WordResource from a File that contains the dictionary.
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
@@ -67,8 +65,8 @@ public abstract class ItemsMem extends Mem implements Items
      */
     public abstract int getMaxItems();
 
-    /**
-     * Start all over again and clear the decks for more data.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#init()
      */
     public void init()
     {
@@ -107,19 +105,16 @@ public abstract class ItemsMem extends Mem implements Items
         obj_out.close();
     }
 
-    /**
-     * Get an Enumeration through the words
-     * @return An Enumeration
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Items#iterator()
      */
     public Iterator iterator()
     {
         return hash.keySet().iterator();
     }
 
-    /**
-     * Fetch an item from the dictionary by an id.
-     * @param index The id of the word to fetch
-     * @exception NoSuchWordException
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Items#getItem(int)
      */
     public String getItem(int index) throws NoSuchResourceException
     {
@@ -133,13 +128,8 @@ public abstract class ItemsMem extends Mem implements Items
         }
     }
 
-    /**
-     * This method is called during the creation of the index to add a
-     * word to the index or to get a current id. If the IndexedResource
-     * was created without create=true then we do not create a new id
-     * we just return -1
-     * @param data The word to find/create an id for
-     * @return The (new) id for the item, or -1
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Items#getIndex(java.lang.String)
      */
     public int getIndex(String data)
     {
@@ -161,10 +151,8 @@ public abstract class ItemsMem extends Mem implements Items
         }
     }
 
-    /**
-     * Set a list of word indexes as the test to a Verse
-     * @param verse The Verse to set the words for
-     * @param data The array of wordd to be indexed
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Items#getIndex(java.lang.String[])
      */
     public int[] getIndex(String[] data)
     {
@@ -179,21 +167,26 @@ public abstract class ItemsMem extends Mem implements Items
         return indexes;
     }
 
-    /**
-     * How many items are there in the current dictionary
-     * @return the Item count
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Items#size()
      */
     public int size()
     {
         return hash.size();
     }
 
-    /** Map of word to their indexes */
+    /**
+     * Map of word to their indexes
+     */
     protected Map hash;
 
-    /** Converting indexes to Words - this is about the number of words in the Bible */
+    /**
+     * Converting indexes to Words - this is about the number of words in the Bible
+     */
     protected String[] array;
 
-    /** The number of items so far */
+    /**
+     * The number of items so far
+     */
     protected int count = 0;
 }

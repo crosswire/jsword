@@ -222,7 +222,6 @@ public class PassageSelectionPane extends JPanel
 
     /**
      * Write out an summary message to the message label
-     * @param ex
      */
     private void updateMessageSummary()
     {

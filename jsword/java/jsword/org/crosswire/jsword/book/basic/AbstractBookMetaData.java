@@ -66,6 +66,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
 
         setName(name);
         setEdition(edition);
+        setInitials(initials);
         setFirstPublished(pub);
         setOpenness(open);
         setLicense(licence);
@@ -80,6 +81,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
 
         setName(name);
         setEdition(edition);
+        setInitials(initials);
         setFirstPublished(pubstr);
         setOpenness(openstr);
         setLicense(licencestr);

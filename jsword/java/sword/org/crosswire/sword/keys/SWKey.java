@@ -150,15 +150,15 @@ public class SWKey implements Cloneable, Comparable
      * 
      * ENT:	increment	- Number of entries to jump forward
      * RET: *this
-     */
     public void next(int i)
     {
         error = KEYERR_OUTOFBOUNDS;
     }
+     */
 
     public void next()
     {
-        next(1);
+//        next(1);
     }
 
     /**
@@ -166,14 +166,14 @@ public class SWKey implements Cloneable, Comparable
      * 
      * ENT: decrement - Number of entries to jump backward
      * RET: *this
-     */
     public void previous(int i)
     {
         error = KEYERR_OUTOFBOUNDS;
     }
+     */
 
     public void previous()
     {
-        previous(1);
+//        previous(1);
     }
 }

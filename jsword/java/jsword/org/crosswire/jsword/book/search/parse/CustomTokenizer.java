@@ -145,9 +145,7 @@ public class CustomTokenizer
 
     /**
      * Convenience function to add a SearchWord to the Vector being created.
-     * @param output The Vector to alter
      * @param commands The SearchWord source
-     * @param word The trigger to look for
      */
     private static String getSingleCharWords(Map commands)
     {

@@ -48,9 +48,7 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
         ping();
     }
 
-    /**
-     * Accessor for the current remoter.
-     * @return The remoter or null if none is available.
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.remote.RemoteBookDriver#getRemoter()
      */
     protected Remoter getRemoter()
@@ -74,7 +72,6 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
 
     /**
      * Accessor for the URLs that we talk to.
-     * @param stemp
      */
     public static void setURLs(String[] urls)
     {

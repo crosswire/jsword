@@ -40,7 +40,6 @@ public class PuncInstsMem extends InstsMem
     /**
      * Basic constructor
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public PuncInstsMem(RawBible raw, boolean create) throws Exception
@@ -51,7 +50,6 @@ public class PuncInstsMem extends InstsMem
     /**
      * Basic constructor
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
@@ -60,9 +58,8 @@ public class PuncInstsMem extends InstsMem
         super(raw, "puncinst.idx", create, messages);
     }
 
-    /**
-     * Load the Resource from a stream
-     * @param in The stream to read from
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#load(java.io.InputStream)
      */
     public void load(InputStream in) throws IOException
     {
@@ -87,10 +84,8 @@ public class PuncInstsMem extends InstsMem
         din.close();
     }
 
-    /**
-     * Ensure that all changes to the index of words are written to a
-     * stream
-     * @param out The stream to write to
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#save(java.io.OutputStream)
      */
     public void save(OutputStream out) throws IOException
     {

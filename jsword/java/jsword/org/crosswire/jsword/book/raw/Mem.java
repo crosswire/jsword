@@ -73,9 +73,9 @@ public abstract class Mem
      * wants to trap and muffle exceptions.
      * I can't do this:
      * <code>try { this(...) } ...</code>
-     * @param raw Reference to the RawBible that is using us
-     * @param leafname The leaf name to read/write
-     * @param create Should we start all over again
+     * @param newraw Reference to the RawBible that is using us
+     * @param newleafname The leaf name to read/write
+     * @param newcreate Should we start all over again
      */
     private void ctor(RawBible newraw, String newleafname, boolean newcreate) throws IOException
     {
@@ -173,12 +173,18 @@ public abstract class Mem
         out.close();
     }
 
-    /** Are we allowed to create new indexes */
+    /**
+     * Are we allowed to create new indexes
+     */
     protected boolean create;
 
-    /** The leafname of the file read */
+    /**
+     * The leafname of the file read
+     */
     protected String leafname;
 
-    /** The RawBible co-ordinated the various classes that cache the files */
+    /**
+     * The RawBible co-ordinated the various classes that cache the files
+     */
     protected RawBible raw;
 }

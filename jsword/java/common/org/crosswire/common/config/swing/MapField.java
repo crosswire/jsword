@@ -276,6 +276,7 @@ public class MapField extends JPanel implements Field
 
         public boolean isEditable(int col)
         {
+            if (col == 0) { /* ignore */ }
             return false;
         }
     }

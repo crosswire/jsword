@@ -214,7 +214,6 @@ public class SWModule {
  * ENT:	increment	- Number of entries to jump forward
  *
  * RET: *this
- */
 
 	void next(int increment) {
 		key.next(increment);
@@ -224,6 +223,7 @@ public class SWModule {
 	void next() {
 		next(1);
 	}
+ */
 
 
 /******************************************************************************
@@ -232,12 +232,12 @@ public class SWModule {
  * ENT:	decrement	- Number of entries to jump backward
  *
  * RET: *this
- */
 
 	void previous(int increment) {
 		key.previous(increment);
 		error = key.getError();
 	}
+ */
 
 
 /******************************************************************************
@@ -336,7 +336,7 @@ public class SWModule {
 					}
 				}
 			}
-			next();
+//			next();
 		}
 	//	if (searchType >= 0)
 	//		regfree(&preg);
@@ -360,7 +360,6 @@ public class SWModule {
  * 	len	- max len of buf
  *
  * RET: this module's text at specified key location massaged by Strip filters
- */
 
 	String stripText(String buf, int len) {
 	//	FilterList::iterator it;
@@ -368,19 +367,18 @@ public class SWModule {
 		if (buf == null)
 			buf = getText();
 
-	/*
 		for (it = optionfilters.begin(); it != optionfilters.end(); it++) {
 			(*it)->ProcessText(buf, len);
 		}
 		for (it = stripfilters.begin(); it != stripfilters.end(); it++) {
 			(*it)->ProcessText(buf, len);
 		}
-	*/
 		return buf;
 	}
+    */
 
 	String stripText() {
-		return stripText(null, -1);
+		return ""; //stripText(null, -1);
 	}
 
 /******************************************************************************
@@ -389,7 +387,6 @@ public class SWModule {
  * ENT:	buf	- buffer to Render instead of current module position
  *
  * RET: listkey set to verses that contain istr
- */
 
 	String renderText(String buf, int len) {
 	//	FilterList::iterator it;
@@ -397,20 +394,19 @@ public class SWModule {
 		if (buf == null)
 			buf = getText();
 
-	/*
 		for (it = optionfilters.begin(); it != optionfilters.end(); it++) {
 			(*it)->ProcessText(buf, len);
 		}
 		for (it = renderfilters.begin(); it != renderfilters.end(); it++) {
 			(*it)->ProcessText(buf, len);
 		}
-	*/
 		return buf;
 	}
 
 	String renderText() {
 		return renderText(null, -1);
 	}
+    */
 
 /******************************************************************************
  * SWModule::RenderText 	- calls all renderfilters on current text
@@ -432,7 +428,7 @@ public class SWModule {
 
 		setKey(tmpKey);
 
-		retVal = renderText();
+		retVal = ""; //renderText();
 
 		setKey(savekey);
 

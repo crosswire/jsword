@@ -54,7 +54,7 @@ public class LocalParser implements Parser
 {
     /**
      * Create a new search engine.
-     * @param index The Index to search
+     * @param newindex The Index to search
      */
     public void init(Index newindex)
     {
@@ -64,7 +64,7 @@ public class LocalParser implements Parser
 
     /**
      * Take a search string and decipher it into a Passage.
-     * @param sought The string to be searched for
+     * @param search The string to be searched for
      * @return The matching verses
      */
     public Passage search(Search search) throws BookException
@@ -92,9 +92,6 @@ public class LocalParser implements Parser
 
     /**
      * Generate a bestmatch search
-     * @param sought
-     * @return Passage
-     * @throws SearchException
      */
     private Passage bestMatch(String sought) throws BookException
     {
@@ -138,7 +135,6 @@ public class LocalParser implements Parser
 
     /**
      * Take a search string and decipher it into a Passage.
-     * @param ref The Passage to alter
      * @param sought The string to be searched for
      * @return The matching verses
      */
@@ -161,7 +157,6 @@ public class LocalParser implements Parser
 
     /**
      * Take a search string and decipher it into a Passage.
-     * @param output The string to be searched for as a Vector of SearchWords
      * @return The matching verses
      */
     protected Passage search(List matches) throws BookException
@@ -173,7 +168,6 @@ public class LocalParser implements Parser
     /**
      * A basic version of getPassage(String[]) simply calls getPassage(String)
      * in a loop for each word, adding the Verses to an Passage that is returned
-     * @param version The version to search using
      * @param words The words to search for
      * @return The Passage
      * @throws BookException If anything goes wrong with this method
@@ -193,7 +187,6 @@ public class LocalParser implements Parser
     /**
      * Take a search string and decipher it into a Passage.
      * @param ref The Passage to alter
-     * @param output The string to be searched for as a Vector of SearchWords
      * @return The Passage passed in
      */
     protected Passage search(Passage ref, List matches) throws BookException
@@ -231,7 +224,6 @@ public class LocalParser implements Parser
     /**
      * This is similar to updatePassageTally() however if a verse matches
      * many words it still only adds on for that verse in the given tally
-     * @param version The version to search using
      * @param tally The PassageTally to update
      * @param words The words to search for
      * @throws BookException If anything goes wrong with this method
@@ -292,14 +284,23 @@ public class LocalParser implements Parser
         return wit;
     }
 
-    /** The parsed version of the current string */
+    /**
+     * The parsed version of the current string
+     */
     private List output = null;
 
-    /** The commands that we know about */
+    /**
+     * The commands that we know about
+     */
     private Map commands = null;
 
-    /** While the answer is being worked out ... */
+    /**
+     * While the answer is being worked out ...
+     */
     private Iterator wit = null;
 
+    /**
+     * The index
+     */
     private Index index;
 }

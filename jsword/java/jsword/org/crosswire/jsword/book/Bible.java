@@ -57,7 +57,7 @@ public interface Bible extends Book
 
     /**
      * Retrieval: For a given word find a list of references to it
-     * @param word The text to search for
+     * @param search The text to search for
      * @return The references to the word
      * @throws BookException If anything goes wrong with this method
      * @see Book#find(Search)

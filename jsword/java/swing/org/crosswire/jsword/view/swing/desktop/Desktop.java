@@ -693,12 +693,12 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
     /**
      * Are the close buttons enabled?
-     * @param The enabled state
+     * @param enabled The enabled state
      */
-    public void setCloseEnabled(boolean b)
+    public void setCloseEnabled(boolean enabled)
     {
-        act_file_close.setEnabled(false);
-        act_file_closeall.setEnabled(false);
+        act_file_close.setEnabled(enabled);
+        act_file_closeall.setEnabled(enabled);
     }
 
     /* (non-Javadoc)

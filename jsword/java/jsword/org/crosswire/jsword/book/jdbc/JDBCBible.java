@@ -374,8 +374,8 @@ public class JDBCBible extends LocalURLBible implements Index
         int retcode = 0;
 
         verse_stmt.setInt(1, book);
-        verse_stmt.setInt(2, book);
-        verse_stmt.setInt(3, book);
+        verse_stmt.setInt(2, chapter);
+        verse_stmt.setInt(3, verse);
         ResultSet rs = verse_stmt.executeQuery();
 
         if (!rs.next())

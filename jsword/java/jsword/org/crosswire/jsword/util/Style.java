@@ -63,7 +63,7 @@ public class Style
 
     /**
      * The the given name OK?
-     * @param subject The style subject to be tested
+     * @param name The style subject to be tested
      * @return true If the subject will transform OK
      */
     public boolean isValidName(String name)

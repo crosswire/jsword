@@ -63,9 +63,8 @@ public class WordInstsMem extends InstsMem
         super(raw, "wordinst.idx", create);
     }
 
-    /**
-     * Load the Resource from a stream
-     * @param in The stream to read from
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#load(java.io.InputStream)
      */
     public void load(InputStream in) throws IOException
     {
@@ -90,9 +89,8 @@ public class WordInstsMem extends InstsMem
         din.close();
     }
 
-    /**
-     * Ensure that all changes to the index of words are written to a stream
-     * @param out The stream to write to
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#save(java.io.OutputStream)
      */
     public void save(OutputStream out) throws IOException
     {

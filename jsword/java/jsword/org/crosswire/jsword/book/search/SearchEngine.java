@@ -57,7 +57,7 @@ public interface SearchEngine
 
     /**
      * For a given word find a list of references to it
-     * @param word The text to search for
+     * @param search The text to search for
      * @return The references to the word
      */
     public Passage findPassage(Search search) throws BookException;

@@ -225,7 +225,6 @@ public class Map implements Serializable
 
     /**
      * Apply the rules to the map.
-     * @param map The set of nodes to move around
      * @param rules The rules to apply
      */
     public void applyRules(Rule[] rules)
@@ -351,7 +350,6 @@ public class Map implements Serializable
     /**
      * Called to fire a MapEvent to all the Listeners, when a single node
      * has changed position.
-     * @param percent The percentage of the way through that we are now
      */
     protected void fireMapChanged(int book, int chapter)
     {
@@ -378,7 +376,6 @@ public class Map implements Serializable
     /**
      * Called to fire a MapEvent to all the Listeners, when a single node
      * has changed position.
-     * @param percent The percentage of the way through that we are now
      */
     protected void fireMapRewritten()
     {
@@ -405,7 +402,7 @@ public class Map implements Serializable
     /**
      * Take an array of Position arrays can cat them all together to make
      * a single array containing all of them.
-     * @param The array of Position arrays
+     * @param dar The array of Position arrays
      * @return The single big array
      */
     public static Position[] cat(Position[][] dar)
@@ -461,7 +458,7 @@ public class Map implements Serializable
 
     /**
      * Generate links from an XML representation.
-     * @param root The root 'links' element
+     * @param epos The root 'links' element
      */
     public void fromXML(Element epos) throws JDOMException
     {

@@ -67,9 +67,9 @@ public abstract class InstsDisk extends Disk implements Insts
      * wants to trap and muffle exceptions.
      * |I can't do this:
      * <code>try { this(...) } ...</code>
-     * @param raw Reference to the RawBible that is using us
-     * @param leafname The leaf name to read/write
-     * @param create Should we start all over again
+     * @param newraw Reference to the RawBible that is using us
+     * @param newleafname The leaf name to read/write
+     * @param newcreate Should we start all over again
      */
     private void ctor(RawBible newraw, String newleafname, boolean newcreate) throws IOException
     {
@@ -94,9 +94,8 @@ public abstract class InstsDisk extends Disk implements Insts
      */
     public abstract void load() throws IOException;
 
-    /**
-     * Lzay resources can not be used for creation
-     * @param out The stream to write to
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#save()
      */
     public void save()
     {
@@ -104,35 +103,39 @@ public abstract class InstsDisk extends Disk implements Insts
         throw new LogicError();
     }
 
-    /**
-     * Retrieve an ordered list of the words in a Verse
-     * @param verse The Verse to retrieve words for
-     * @return An array of word indexes
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#getIndexes(org.crosswire.jsword.passage.Verse)
      */
     public int[] getIndexes(Verse verse)
     {
         return getIndexes(verse.getOrdinal());
     }
 
-    /**
-     * Set a list of word indexes as the test to a Verse
-     * @param verse The Verse to set the words for
-     * @param indexes The array of word indexes
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Insts#setIndexes(int[], org.crosswire.jsword.passage.Verse)
      */
     public void setIndexes(int[] indexes, Verse verse)
     {
         throw new Error("You must use a PuncInstsMem to write data");
     }
 
-    /** The file offsets */
+    /**
+     * The file offsets
+     */
     protected long[] index;
 
-    /** Are we allowed to create new indexes */
+    /**
+     * Are we allowed to create new indexes
+     */
     protected boolean create;
 
-    /** The leafname of the file read */
+    /**
+     * The leafname of the file read
+     */
     protected String leafname;
 
-    /** The RawBible co-ordinated the various classes that cache the files */
+    /**
+     * The RawBible co-ordinated the various classes that cache the files
+     */
     protected RawBible raw;
 }

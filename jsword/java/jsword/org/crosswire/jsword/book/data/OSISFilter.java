@@ -36,13 +36,6 @@ import org.xml.sax.InputSource;
  */
 public class OSISFilter implements Filter
 {
-    /**
-     * Ctor
-     */
-    public OSISFilter()
-    {
-    }
-    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */

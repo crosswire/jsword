@@ -197,7 +197,6 @@ public class BibleDataCache
 
     /**
      * Write the XML to disk
-     * @param doc The data to write
      */
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {

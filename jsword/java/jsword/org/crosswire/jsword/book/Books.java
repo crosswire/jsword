@@ -176,7 +176,7 @@ public class Books
     /**
      * Kick of an event sequence
      * @param source The event source
-     * @param name The name of the changed Bible
+     * @param bmd The meta-data of the changed Bible
      * @param added Is it added?
      */
     protected static void fireBooksChanged(Object source, BookMetaData bmd, boolean added)

@@ -104,7 +104,6 @@ public class WordItemsMem extends ItemsMem
     /**
      * Create a WordMemResourceIndex from a File that contains the dictionary.
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public WordItemsMem(RawBible raw, boolean create) throws IOException
@@ -112,20 +111,16 @@ public class WordItemsMem extends ItemsMem
         super(raw, "word.idx", create);
     }
 
-    /**
-     * This is a specialization of IndexedResource.getIndex(String) that
-     * ensures that the word is lower case before we insert it.
-     * @param data The word to find/create an id for
-     * @return The (new) id for the item
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Items#getIndex(java.lang.String)
      */
     public int getIndex(String data)
     {
         return super.getIndex(data.toLowerCase());
     }
 
-    /**
-     * How many items are there in this index?
-     * @return The number of items that we must remember
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.ItemsMem#getMaxItems()
      */
     public int getMaxItems()
     {
@@ -163,9 +158,8 @@ public class WordItemsMem extends ItemsMem
         return vec.iterator();
     }
 
-    /**
-     * Load the Resource from a stream
-     * @param in The stream to read from
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#load(java.io.InputStream)
      */
     public void load(InputStream in) throws IOException
     {
@@ -195,10 +189,8 @@ public class WordItemsMem extends ItemsMem
         din.close();
     }
 
-    /**
-     * Ensure that all changes to the index of words are written to a
-     * stream
-     * @param out The stream to write to
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#save(java.io.OutputStream)
      */
     public void save(OutputStream out) throws IOException
     {
@@ -216,6 +208,8 @@ public class WordItemsMem extends ItemsMem
         dout.close();
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(WordItemsMem.class);
 }

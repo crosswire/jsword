@@ -62,7 +62,6 @@ public class ReadingsDictionary implements Dictionary
 {
     /**
      * Constructor ReadingsDictionary.
-     * @param readingsDictionaryMetaData
      */
     public ReadingsDictionary(ReadingsDictionaryMetaData dmd)
     {

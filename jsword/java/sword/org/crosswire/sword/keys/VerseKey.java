@@ -348,13 +348,12 @@ public class VerseKey extends SWKey
      * RET:	ListKey reference filled with verse entries contained in buf
      *
      * COMMENT: This code works but wreaks.  Rewrite to make more maintainable.
-     */
+     *
     public ListKey ParseVerseList(String buf, String defaultKey, boolean expandRange)
     {
         // SWKey textkey;
         ListKey internalListKey = new ListKey();
 
-        /*
     	char book[255];
     	char number[255];
     	char tobook = 0;
@@ -633,9 +632,9 @@ public class VerseKey extends SWKey
     	internalListKey = tmpListKey;
     	internalListKey = TOP;	// Align internalListKey to first element before passing back;
         
-        */
         return internalListKey;
     }
+    */
 
     /**
      * VerseKey::LowerBound	- sets / gets the lower boundary for this key

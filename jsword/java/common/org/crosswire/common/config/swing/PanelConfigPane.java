@@ -74,7 +74,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
             }
             public void choiceRemoved(ConfigEvent ev)
             {
-                removeChoice(ev.getKey(), ev.getChoice());
+                removeChoice(ev.getKey());
                 updateTree();
             }
         });
@@ -220,7 +220,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     /**
      * Add a Choice to our set of panels
      */
-    protected void removeChoice(String key, Choice model)
+    protected void removeChoice(String key)
     {
         String path = Config.getPath(key);
 

@@ -43,8 +43,8 @@ public class DriversComboBoxModel extends DriversListModel implements ComboBoxMo
             current = drivers[0];
     }
 
-    /**
-     * implements javax.swing.ComboBoxModel
+    /* (non-Javadoc)
+     * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
      */
     public void setSelectedItem(Object current)
     {
@@ -52,8 +52,8 @@ public class DriversComboBoxModel extends DriversListModel implements ComboBoxMo
         fireContentsChanged(this, -1, -1);
     }
 
-    /**
-     * implements javax.swing.ComboBoxModel
+    /* (non-Javadoc)
+     * @see javax.swing.ComboBoxModel#getSelectedItem()
      */
     public Object getSelectedItem()
     {
@@ -62,7 +62,6 @@ public class DriversComboBoxModel extends DriversListModel implements ComboBoxMo
 
     /**
      * Given an item, work out the name of the Driver that it represents
-     * @param The item from the list
      * @return A Driver
      */
     public BookDriver getSelectedDriver()
@@ -70,6 +69,8 @@ public class DriversComboBoxModel extends DriversListModel implements ComboBoxMo
         return drivers[getIndexOf(current)];
     }
 
-    /** The currently selected version */
+    /**
+     * The currently selected version
+     */
     protected Object current;
 }

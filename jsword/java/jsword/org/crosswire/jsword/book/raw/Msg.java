@@ -35,13 +35,17 @@ class Msg extends MsgBase
     protected static final Msg FIND_FAIL = new Msg("Failed to find data.");
     protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor 
+     */
     private Msg(String name)
     {
         super(name);

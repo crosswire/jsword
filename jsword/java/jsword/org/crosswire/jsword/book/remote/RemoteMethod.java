@@ -34,7 +34,6 @@ public class RemoteMethod
 {
     /**
      * Constructor RemoteMethod.
-     * @param string
      */
     public RemoteMethod(MethodName methodname)
     {

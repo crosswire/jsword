@@ -39,7 +39,7 @@ public interface Parser
 
     /**
      * Take a search string and decipher it into a Passage.
-     * @param sought The string to be searched for
+     * @param search The string to be searched for
      * @return The matching verses
      */
     public Passage search(Search search) throws BookException;

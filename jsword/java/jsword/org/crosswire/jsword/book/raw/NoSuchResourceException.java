@@ -66,8 +66,8 @@ public class NoSuchResourceException extends BookException
      * @param ex The nested Exception
      * @param params An array of parameters
      */
-    public NoSuchResourceException(MsgBase id, Throwable ex, Object[] params)
+    public NoSuchResourceException(MsgBase msg, Throwable ex, Object[] params)
     {
-        super(id, ex, params);
+        super(msg, ex, params);
     }
 }

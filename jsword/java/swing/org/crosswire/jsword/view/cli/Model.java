@@ -180,7 +180,7 @@ public class Model
     
     public String books(BookFilter filter)
     {
-        return display(BookFilters.getAll());
+        return display(filter);
     }
     
     private String display(BookFilter filter)

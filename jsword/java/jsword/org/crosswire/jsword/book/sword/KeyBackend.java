@@ -37,7 +37,6 @@ public interface KeyBackend
     /**
      * Initialise a Backend before use. This method needs to call addKey() a
      * number of times on SwordDictionary
-     * @param config The settings object
      * @throws BookException If we should not be used for some reason
      */
     public List readIndex();

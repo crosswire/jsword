@@ -66,7 +66,7 @@ public class FontChooser extends JPanel
         FontChangeListener changer = new FontChangeListener();
 
         name.setModel(new CustomComboBoxModel());
-        name.setRenderer(new TestCellRenderer(name));
+        name.setRenderer(new TestCellRenderer());
         name.addItemListener(changer);
 
         for (int i=5; i<20; i++)
@@ -109,6 +109,9 @@ public class FontChooser extends JPanel
                      : new JDialog((JDialog) root, title, true);
         */
         fontc.dialog = new JDialog((JFrame) root, title, true);
+
+        // Not sure if this is the right thing to do?
+        fontc.name.setSelectedItem(initial);
 
         buttons.setLayout(new FlowLayout());
         buttons.add(ok);
@@ -349,15 +352,6 @@ public class FontChooser extends JPanel
      */
     static class TestCellRenderer extends JLabel implements ListCellRenderer
     {
-        /**
-         * Create a specialized JLabel
-         * @param combobox The thing we are custimizing for
-         */
-        protected TestCellRenderer(JComboBox combobox)
-        {
-            setOpaque(true);
-        }
-
         /**
          * Set ourselves up to render for this particular font
          * @param listbox The list being displyed by the ComboBox

@@ -123,7 +123,7 @@ public class BibleComboBoxModelSet
     /**
      * Add a listener to the list that's notified each time a change
      * to the data model occurs.
-     * @param l the ListDataListener
+     * @param li the ListDataListener
      */
     public void addActionListener(ActionListener li)
     {
@@ -133,7 +133,7 @@ public class BibleComboBoxModelSet
     /**
      * Remove a listener from the list that's notified each time a 
      * change to the data model occurs.
-     * @param l the ListDataListener
+     * @param li the ListDataListener
      */
     public void removeActionListener(ActionListener li)
     {
@@ -142,8 +142,6 @@ public class BibleComboBoxModelSet
 
     /**
      * Called after the verse changes.
-     * @param source The ListModel that changed, typically "this".
-     * @param index1 The other end of the new interval.
      * @see EventListenerList
      * @see javax.swing.DefaultListModel
      */

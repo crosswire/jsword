@@ -116,7 +116,6 @@ public class Defaults
     /**
      * This method is identical to <code>getBibleMetaData().getFullName()</code>
      * and is only used by Config which works best with strings under reflection.
-     * @param name The version to use as default.
      */
     public static String getBibleByName()
     {
@@ -168,7 +167,7 @@ public class Defaults
      * Set the default Commentary. The new name must be equal() to a string
      * returned from getCommentaryNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
-     * @param bmd The version to use as default.
+     * @param cmd The version to use as default.
      */
     public static void setCommentaryMetaData(CommentaryMetaData cmd)
     {
@@ -201,7 +200,6 @@ public class Defaults
      * and is only used by Config which works best with strings under reflection.
      * <p>Generally <code>getCommentaryByName().getFullName()</code> is a better
      * way of getting what you want.
-     * @param name The version to use as default.
      */
     public static String getCommentaryByName()
     {
@@ -253,7 +251,7 @@ public class Defaults
      * Set the default Dictionary. The new name must be equal() to a string
      * returned from getDictionaryNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
-     * @param bmd The version to use as default.
+     * @param dmd The version to use as default.
      * @exception BookException If the name is not valid
      */
     public static void setDictionaryMetaData(DictionaryMetaData dmd)

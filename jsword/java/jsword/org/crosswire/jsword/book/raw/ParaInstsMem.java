@@ -41,7 +41,6 @@ public class ParaInstsMem extends InstsMem
     /**
      * Basic constructor
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public ParaInstsMem(RawBible raw, boolean create) throws IOException
@@ -52,7 +51,6 @@ public class ParaInstsMem extends InstsMem
     /**
      * Basic constructor
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public ParaInstsMem(RawBible raw, boolean create, StringBuffer messages)
@@ -60,17 +58,16 @@ public class ParaInstsMem extends InstsMem
         super(raw, "parainst.idx", create, messages);
     }
 
-    /**
-     * Start all over again and clear the decks for more data.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#init()
      */
     public void init()
     {
         ref = PassageFactory.createPassage();
     }
 
-    /**
-     * Load the Resource from a stream
-     * @param in The stream to read from
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#load(java.io.InputStream)
      */
     public void load(InputStream in) throws IOException
     {
@@ -94,10 +91,8 @@ public class ParaInstsMem extends InstsMem
         oin.close();
     }
 
-    /**
-     * Ensure that all changes to the index of words are written to a
-     * stream
-     * @param out The stream to write to
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#save(java.io.OutputStream)
      */
     public void save(OutputStream out) throws IOException
     {
@@ -136,7 +131,9 @@ public class ParaInstsMem extends InstsMem
         return ref.contains(verse);
     }
 
-    /** The storage of the Para markers */
+    /**
+     * The storage of the Para markers
+     */
     private Passage ref;
 }
 

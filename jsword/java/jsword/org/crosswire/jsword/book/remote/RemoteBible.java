@@ -52,20 +52,16 @@ public class RemoteBible extends AbstractBible
         log.debug("Started RemoteBible");
     }
 
-    /**
-     * Meta-Information: What version of the Bible is this?.
-     * @return A Version for this Bible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
      */
     public BibleMetaData getBibleMetaData()
     {
         return rbmd;
     }
 
-    /**
-     * Create an XML document for the specified Verses
-     * @param doc The XML document
-     * @param ele The elemenet to append to
-     * @param ref The verses to search for
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
     public BookData getData(Passage ref) throws BookException
     {
@@ -90,10 +86,8 @@ public class RemoteBible extends AbstractBible
         }
     }
 
-    /**
-     * For a given word find a list of references to it.
-     * @param word The text to search for
-     * @return The references to the word
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException
     {

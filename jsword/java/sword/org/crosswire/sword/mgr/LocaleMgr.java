@@ -50,20 +50,19 @@ public:
 	static public LocaleMgr systemLocaleMgr = new LocaleMgr();
 
 	public LocaleMgr() {
-		this(null);
+//		this(null);
 	}
 
+    /*
 	public LocaleMgr(String iConfigPath) {
-        /*
 		String prefixPath = null;
 		String configPath = null;
 		int configType = 0;
 		String path = "";
-        */
 
 		defaultLocaleName = "";
-/*
-	char *lang = getenv ("LANG");
+
+    	char *lang = getenv ("LANG");
 	if (lang) {
 		if (strlen(lang) > 0)
 			setDefaultLocaleName(lang);
@@ -102,8 +101,8 @@ public:
 
 	if (configPath)
 		delete [] configPath;
-*/
 }
+*/
 
 public String getDefaultLocaleName() {
 	return defaultLocaleName;

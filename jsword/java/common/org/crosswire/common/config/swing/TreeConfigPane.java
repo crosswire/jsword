@@ -174,9 +174,9 @@ public class TreeConfigPane extends PanelConfigPane
     /**
      * Add a Choice to our set of panels
      */
-    protected void removeChoice(String key, Choice model)
+    protected void removeChoice(String key)
     {
-        super.removeChoice(key, model);
+        super.removeChoice(key);
 
         // Sort the tree out
         String path = Config.getPath(key);

@@ -1012,7 +1012,7 @@ public final class Verse implements VerseBase, Comparable
         this.verse = ref[VERSE];
     }
 
-    /**
+    /*
      * Mutate into this reference and fix the reference if needed.
      * This must only be called from a ctor to maintain immutability
      * @param ref An array of the book, chapter and verse to set
@@ -1021,6 +1021,7 @@ public final class Verse implements VerseBase, Comparable
     {
         setAndPatch(ref[BOOK], ref[CHAPTER], ref[VERSE]);
     }
+    */
 
     /**
      * Verify and set the references.
@@ -1195,7 +1196,7 @@ public final class Verse implements VerseBase, Comparable
         this.verse = verse;
     }
 
-    /**
+    /*
      * Set the references. Not used anyhwhere
      * This must only be called from a ctor to maintain immutability
      * @param ref An array of the book, chapter and verse to set
@@ -1209,6 +1210,7 @@ public final class Verse implements VerseBase, Comparable
         chapter = ref[CHAPTER];
         verse = ref[VERSE];
     }
+    */
 
     /**
      * Set the references.

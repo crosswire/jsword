@@ -61,9 +61,6 @@ public class DefaultParamWord implements ParamWord
 
     /**
      * Get a Passage for something else to word on.
-     * @param word_stack The set of words in the command line
-     * @param current The Passage to alter (if necessary)
-     * @param bible The Bible to use to search against
      * @return An array of alternative words
      */
     public Passage getPassage(LocalParser engine) throws BookException

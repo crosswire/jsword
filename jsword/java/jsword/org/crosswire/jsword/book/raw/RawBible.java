@@ -439,26 +439,8 @@ public class RawBible extends LocalURLBible implements Index
         return ((WordItemsMem) word_items).getStartsWith(word);
     }
 
-    /**
-     * Retrieval: Get a list of the words used by this Version. This is
-     * not vital for normal display, however it is very useful for various
-     * things, not least of which is new Version generation. However if
-     * you are only looking to <i>display</i> from this Bible then you
-     * could skip this one.
-     * @return The references to the word
-     */
-    public Iterator listWords() throws BookException
-    {
-        return word_items.iterator();
-    }
-
-    /**
-     * Write the XML to disk. Now this code limits us to only having para
-     * marks at the start of verses, and in the NIV there are marks in the
-     * middle of verses. However all the data sources that I have (ex-OLB)
-     * have the same limitation so I'm not to bothered just yet.
-     * @param verse The verse to write
-     * @param text The data to write
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.data.BookData)
      */
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {
@@ -509,8 +491,8 @@ public class RawBible extends LocalURLBible implements Index
         }
     }
 
-    /**
-     * Flush the data written to disk
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#flush()
      */
     public void flush() throws BookException
     {
@@ -669,34 +651,54 @@ public class RawBible extends LocalURLBible implements Index
      */
     private static boolean defaultmemory = true;
 
-    /** Constant for read-only, data in memory mode */
+    /**
+     * Constant for read-only, data in memory mode
+     */
     public static final int MODE_READ_MEMORY = 0;
 
-    /** Constant for read-only, data on disk mode */
+    /**
+     * Constant for read-only, data on disk mode
+     */
     public static final int MODE_READ_DISK = 1;
 
-    /** Constant for create mode */
+    /**
+     * Constant for create mode
+     */
     public static final int MODE_WRITE = 2;
 
-    /** The Source of Words */
+    /**
+     * The Source of Words
+     */
     private Items word_items;
 
-    /** The Source of Word Instances */
+    /**
+     * The Source of Word Instances
+     */
     private Insts word_insts;
 
-    /** The source of Punctuation */
+    /**
+     * The source of Punctuation
+     */
     private Items punc_items;
 
-    /** The source of Punctuation Instances */
+    /**
+     * The source of Punctuation Instances
+     */
     private Insts punc_insts;
 
-    /** The source of Case Instances */
+    /**
+     * The source of Case Instances
+     */
     private Insts case_insts;
 
-    /** The source of Para Instances */
+    /**
+     * The source of Para Instances
+     */
     private ParaInstsMem para_insts;
 
-    /** The cache of word searches */
+    /**
+     * The cache of word searches
+     */
     private Passage[] cache;
 
     /**
@@ -711,6 +713,8 @@ public class RawBible extends LocalURLBible implements Index
      */
     private boolean memory = true;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(RawBible.class);
 }

@@ -79,7 +79,7 @@ public class DriversListModel extends AbstractListModel
 
     /**
      * Given an item, work out the name of the Bible that it represents
-     * @param The item from the list
+     * @param test The item from the list
      * @return A Bible name
      */
     public String getDriverName(Object test)
@@ -91,7 +91,7 @@ public class DriversListModel extends AbstractListModel
 
     /**
      * Given an item, work out the name of the Driver that it represents
-     * @param The item from the list
+     * @param test The item from the list
      * @return A Driver
      */
     public BookDriver getDriver(Object test)

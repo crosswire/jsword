@@ -64,8 +64,14 @@ public class GBFFilter implements Filter
         }
     }
 
+    /**
+     * 
+     */
     private static class TagGenerator
     {
+        /**
+         * 
+         */
         public TagGenerator(String plain)
         {
             int lastIndex = plain.length() - 1;
@@ -90,6 +96,9 @@ public class GBFFilter implements Filter
             return (Tag) retval.remove(0);
         }
 
+        /**
+         * 
+         */
         private void parseNextTag()
         {
             if (remains == null)
@@ -162,12 +171,18 @@ public class GBFFilter implements Filter
             remains = remains.substring(gtpos + 1);
         }
 
+        /**
+         * 
+         */
         private boolean isSeperator(char c)
         {
             final String seperators = " ,:;.?!";
             return seperators.indexOf(c) >= 0;
         }
 
+        /**
+         * 
+         */
         private Tag createTag(String tag)
         {
             if (tag.equals("RB"))
@@ -204,6 +219,7 @@ public class GBFFilter implements Filter
             }
             return new UnknownTag(tag);
         }
+
         private String remains;
         private List retval = new ArrayList();
     }

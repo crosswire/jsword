@@ -33,7 +33,7 @@ public class BooksEvent extends EventObject
 {
     /**
      * Basic constructor
-     * @param name The name of the changed Bible, or null if there is more than one change.
+     * @param bmd The meta-data of the changed Bible, or null if there is more than one change.
      * @param added True if the changed Bible is an addition.
      */
     public BooksEvent(Object source, BookMetaData bmd, boolean added)

@@ -37,7 +37,7 @@ public interface Index
      * given string. For example calling:
      * <code>getStartsWith("love")</code> will return something like:
      * { "love", "loves", "lover", "lovely", ... }
-     * @param base The word to base your word array on
+     * @param word The word to base your word array on
      * @return An array of words starting with the base
      */
     public Iterator getStartsWith(String word) throws BookException;

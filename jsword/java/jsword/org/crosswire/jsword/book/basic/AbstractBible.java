@@ -160,7 +160,7 @@ public abstract class AbstractBible implements Bible
      */
     public void setDocument(Verse verse, BookData text) throws BookException
     {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.DRIVER_READONLY, new Object[] { verse.toString(), text.getPlainText() });
     }
 
     /**

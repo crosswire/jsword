@@ -40,7 +40,6 @@ public class PuncItemsMem extends ItemsMem
     /**
      * Create a PuncItemsMem from a File that contains the dictionary.
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      */
     public PuncItemsMem(RawBible raw, boolean create) throws Exception
@@ -51,7 +50,6 @@ public class PuncItemsMem extends ItemsMem
     /**
      * Create a PuncItemsMem from a File that contains the dictionary.
      * @param raw Reference to the RawBible that is using us
-     * @param filename The leaf name to read/write
      * @param create Should we start all over again
      * @param messages We append stuff here if something went wrong
      */
@@ -60,18 +58,16 @@ public class PuncItemsMem extends ItemsMem
         super(raw, "punc.idx", create, messages);
     }
 
-    /**
-     * How many items are there in this index?
-     * @return The number of items that we must remember
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.ItemsMem#getMaxItems()
      */
     public int getMaxItems()
     {
         return 1000;
     }
 
-    /**
-     * Load the Resource from a stream
-     * @param in The stream to read from
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#load(java.io.InputStream)
      */
     public void load(InputStream in) throws IOException
     {
@@ -101,10 +97,8 @@ public class PuncItemsMem extends ItemsMem
         din.close();
     }
 
-    /**
-     * Ensure that all changes to the index of words are written to a
-     * stream
-     * @param out The stream to write to
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.raw.Mem#save(java.io.OutputStream)
      */
     public void save(OutputStream out) throws IOException
     {

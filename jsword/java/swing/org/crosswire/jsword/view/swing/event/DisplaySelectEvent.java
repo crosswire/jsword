@@ -35,7 +35,6 @@ public class DisplaySelectEvent extends EventObject
     /**
      * For when a command has been made
      * @param source The thing that started this off
-     * @param param The parameter to this event
      */
     public DisplaySelectEvent(Object source, Passage ref, Book book)
     {

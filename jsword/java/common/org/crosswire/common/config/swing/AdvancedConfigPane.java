@@ -156,7 +156,7 @@ public class AdvancedConfigPane extends TreeConfigPane
     /**
      * Add a Choice to our set of panels
      */
-    protected void removeChoice(String key, Choice model)
+    protected void removeChoice(String key)
     {
         try
         {

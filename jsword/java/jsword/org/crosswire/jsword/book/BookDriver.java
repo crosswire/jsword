@@ -45,7 +45,7 @@ public interface BookDriver
 
     /**
      * Create a new Book based on a source.
-     * @param name The name of the version to create
+     * @param source The Book from which to copy data
      * @return The new WritableBible
      * @exception BookException If the name is not valid
      */

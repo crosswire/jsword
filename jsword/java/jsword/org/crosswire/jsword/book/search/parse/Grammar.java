@@ -75,7 +75,6 @@ public class Grammar
 
     /**
      * Is this word one of those small words that can slaughter a DB query
-     * @param word The word to test
      */
     public static String[] stripSmallWords(String[] words)
     {
@@ -101,10 +100,10 @@ public class Grammar
 
     /**
      * Like PassageUtil.tokenize that leaves out the small words
-     * @param word The word to split up
+     * @param original The sentance to split up
      * @param delims The word separators
      * @return The long words in the string
-    */
+     */
     public static String[] tokenizeWithoutSmallWords(String original, String delims)
     {
         String[] words = StringUtils.split(original, delims);

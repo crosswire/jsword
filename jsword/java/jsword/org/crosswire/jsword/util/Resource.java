@@ -268,8 +268,7 @@ public class Resource
      * <p>As a result of these limitations it could be OK to use {@link File} in
      * place of {@link URL} (which is the norm for this project), however there
      * doesn't seem to be a good reason to relax this rule here.
-     * @param A moniker for the are to write to. This will be converted into a
-     * directory name.
+     * @param subject A moniker for the are to write to. This will be converted into a directory name.
      * @return A file: URL pointing at a local writable directory.
      */
     public URL getTempScratchSpace(String subject) throws IOException, MalformedURLException
@@ -285,8 +284,8 @@ public class Resource
      * This is currently done by looking up a properties file by the name of
      * the given class, and assuming that values are implementors of said
      * class. Those that are not are warned, but ignored.
-     * @param class The class or interface to find implementors of.
-     * @return Class[] The list of implementing classes.
+     * @param clazz The class or interface to find implementors of.
+     * @return The list of implementing classes.
      */
     public Class[] getImplementors(Class clazz)
     {
@@ -331,8 +330,8 @@ public class Resource
      * This is currently done by looking up a properties file by the name of
      * the given class, and assuming that the "default" key is an implemention
      * of said class. Warnings are given otherwise.
-     * @param class The class or interface to find an implementation of.
-     * @return Class The configured implementing class.
+     * @param clazz The class or interface to find an implementation of.
+     * @return The configured implementing class.
      * @throws MalformedURLException if the properties file can not be found
      * @throws IOException if there is a problem reading the found file
      * @throws ClassNotFoundException if the read contents are not found

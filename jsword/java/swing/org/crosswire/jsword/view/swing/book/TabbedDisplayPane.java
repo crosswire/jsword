@@ -79,7 +79,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
         {
             public void stateChanged(ChangeEvent ev)
             {
-                newTab(ev);
+                newTab();
             }
         });
 
@@ -167,7 +167,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Tabs changed, generate some stuff
      */
-    protected void newTab(ChangeEvent ev)
+    protected void newTab()
     {
         try
         {

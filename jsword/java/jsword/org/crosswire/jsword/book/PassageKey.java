@@ -42,7 +42,6 @@ public class PassageKey implements Key
 
     /**
      * Create a PassageKey from a Passage
-     * @param ref
      */
     public PassageKey(String refstr) throws NoSuchVerseException
     {

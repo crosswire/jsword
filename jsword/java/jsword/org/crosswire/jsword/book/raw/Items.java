@@ -56,7 +56,6 @@ public interface Items
 
     /**
      * Set a list of word indexes as the test to a Verse
-     * @param verse The Verse to set the words for
      * @param data The array of wordd to be indexed
      */
     public int[] getIndex(String[] data);

@@ -109,13 +109,13 @@ public class MainFrame extends JFrame {
         jButton1.setText("Load");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jButton1_actionPerformed(e);
+                jButton1_actionPerformed();
             }
         });
         jButton2.setText("Load");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jButton2_actionPerformed(e);
+                jButton2_actionPerformed();
             }
         });
         jTextArea1.setText("");
@@ -131,45 +131,45 @@ public class MainFrame extends JFrame {
         jSlider1.setMinimum(1);
         jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                jSlider1_stateChanged(e);
+                jSlider1_stateChanged();
             }
         });
         jLabel3.setText("Keyboard");
         imComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                imComboBox_itemStateChanged(e);
+                imComboBox_itemStateChanged();
             }
         });
         jMenu1.setText("File");
         jMenuItem1.setText("Lookup Url");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuItem1_actionPerformed(e);
+                jMenuItem1_actionPerformed();
             }
         });
         jMenuItem2.setText("Exit");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuItem2_actionPerformed(e);
+                jMenuItem2_actionPerformed();
             }
         });
         jMenuItem3.setText("Save");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuItem3_actionPerformed(e);
+                jMenuItem3_actionPerformed();
             }
         });
         jMenu2.setText("Edit");
         jMenuItem4.setText("Copy");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuItem4_actionPerformed(e);
+                jMenuItem4_actionPerformed();
             }
         });
         jMenuItem5.setText("Paste");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuItem5_actionPerformed(e);
+                jMenuItem5_actionPerformed();
             }
         });
         jPanel2.add(jLabel1,  BorderLayout.WEST);
@@ -209,7 +209,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    void jButton2_actionPerformed(ActionEvent e) {
+    void jButton2_actionPerformed() {
         try {
             statusBar.setText("Loading font...");
             statusBar.paintImmediately(statusBar.getVisibleRect());
@@ -226,7 +226,7 @@ public class MainFrame extends JFrame {
 
     }
 
-    void jButton1_actionPerformed(ActionEvent e) {
+    void jButton1_actionPerformed() {
         try {
             statusBar.setText("Loading content...");
             statusBar.paintImmediately(statusBar.getVisibleRect());
@@ -272,17 +272,17 @@ public class MainFrame extends JFrame {
         }
     }
 
-    void jSlider1_stateChanged(ChangeEvent e) {
+    void jSlider1_stateChanged() {
             Font font = jTextArea1.getFont();
             Font newFont = font.deriveFont((float)jSlider1.getValue());
             jTextArea1.setFont(newFont);
     }
 
-    void imComboBox_itemStateChanged(ItemEvent e) {
+    void imComboBox_itemStateChanged() {
         // let's set focus back to text box after IM is changed
     }
 
-    void jMenuItem1_actionPerformed(ActionEvent e) {
+    void jMenuItem1_actionPerformed() {
         String currentEntry = jTextField1.getText();
         javax.swing.JFileChooser fileChooser = new JFileChooser((currentEntry.startsWith("file://") ? currentEntry.substring(7):"."));
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -290,7 +290,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    void jMenuItem3_actionPerformed(ActionEvent e) {
+    void jMenuItem3_actionPerformed() {
         String currentEntry = jTextField1.getText();
         javax.swing.JFileChooser fileChooser = new JFileChooser((currentEntry.startsWith("file://") ? currentEntry.substring(7):"."));
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -303,15 +303,15 @@ public class MainFrame extends JFrame {
 
     }
 
-    void jMenuItem4_actionPerformed(ActionEvent e) {
+    void jMenuItem4_actionPerformed() {
         jTextArea1.copy();
     }
 
-    void jMenuItem5_actionPerformed(ActionEvent e) {
+    void jMenuItem5_actionPerformed() {
         jTextArea1.paste();
     }
 
-    void jMenuItem2_actionPerformed(ActionEvent e) {
+    void jMenuItem2_actionPerformed() {
         System.exit(0);
     }
 }

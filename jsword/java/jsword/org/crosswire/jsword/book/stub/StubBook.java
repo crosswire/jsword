@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.book.stub;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -68,7 +66,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         this.bmd = bmd;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
      */
     public BibleMetaData getBibleMetaData()
@@ -76,7 +74,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         return bmd;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
      */
     public DictionaryMetaData getDictionaryMetaData()
@@ -84,7 +82,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         return bmd;
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#getCommentaryMetaData()
      */
     public CommentaryMetaData getCommentaryMetaData()
@@ -92,11 +90,8 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         return bmd;
     }
 
-    /**
-     * Create an XML document for the specified Verses
-     * @param doc The XML document
-     * @param ele The elemenet to append to
-     * @param ref The verses to search for
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
     public BookData getData(Passage ref) throws BookException
     {
@@ -151,7 +146,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         }
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#getComments(org.crosswire.jsword.passage.Passage)
      */
     public BookData getComments(Passage ref) throws BookException
@@ -159,7 +154,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         return getData(ref);
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#hasComments(org.crosswire.jsword.passage.Verse)
      */
     public boolean hasComments(Verse verse) throws BookException
@@ -167,27 +162,8 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         return true;
     }
 
-    /**
-     * For a given word find a list of references to it
-     * @param word The text to search for
-     * @return The references to the word
-     */
-    public Passage findPassage(String word) throws BookException
-    {
-        try
-        {
-            return PassageFactory.createPassage("Gen 1:1-Rev 22:21");
-        }
-        catch (Exception ex)
-        {
-            throw new LogicError(ex);
-        }
-    }
-
-    /**
-     * For a given search string find a list of references to it
-     * @param word The text to search for
-     * @return The references to the word
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Commentary#findPassage(org.crosswire.jsword.book.Search)
      */
     public Passage findPassage(Search search) throws BookException
     {
@@ -201,7 +177,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         }
     }
 
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
     public Key find(Search search) throws BookException
@@ -217,44 +193,7 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         }
     }
 
-    /**
-     * Retrieval: Get a list of the words used by this Version. This is
-     * not vital for normal display, however it is very useful for various
-     * things, not least of which is new Version generation. However if
-     * you are only looking to <i>display</i> from this Bible then you
-     * could skip this one.
-     * @return The references to the word
-     */
-    public Iterator listWords() throws BookException
-    {
-        return Arrays.asList(new String[] { "stub", "implementation", }).iterator();
-    }
-
-    /**
-     * Retrieval: Return an array of words that are used by this Bible
-     * that start with the given string. For example calling:
-     * <code>getStartsWith("love")</code> will return something like:
-     * { "love", "loves", "lover", "lovely", ... }
-     * @param base The word to base your word array on
-     * @return An array of words starting with the base
-     */
-    public Iterator getStartsWith(String base) throws BookException
-    {
-        base = base.toLowerCase();
-
-        if (base.equals(""))
-            return Arrays.asList(new String[] { "stub", "implementation", }).iterator();
-
-        if ("stub".startsWith(base))
-            return Arrays.asList(new String[] { "stub" }).iterator();
-
-        if ("implementation".startsWith(base))
-            return Arrays.asList(new String[] { "implementation" }).iterator();
-
-        return Collections.EMPTY_LIST.iterator();
-    }
-
-    /**
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
      */
     public SortedSet getIndex(String base)

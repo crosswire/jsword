@@ -110,7 +110,6 @@ public class BookData
     /**
      * Check that a BibleData is valid. Currently (probably as a result of a bug
      * in JAXB) this method will always fail.
-     * @param bdata The BibleData to check
      * @throws JAXBException
      */
     public void validate() throws JAXBException

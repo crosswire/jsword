@@ -97,7 +97,6 @@ public class Verifier
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
      */
     public void checkText(PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
@@ -106,7 +105,6 @@ public class Verifier
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
      */
     public void checkText(Passage ref, PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
@@ -163,7 +161,6 @@ public class Verifier
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
      */
     public void checkPassage(PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
@@ -198,7 +195,6 @@ public class Verifier
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
      */
     public void checkPassage(String starts, PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
@@ -244,7 +240,6 @@ public class Verifier
 
     /**
      * Read from the given source version to generate ourselves
-     * @param version The source
      */
     private void checkSinglePassage(String word, PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
