@@ -152,11 +152,11 @@ public class JobManager
         {
             invoke = SwingUtilities.isEventDispatchThread();
         }
-        catch (NoClassDefFoundError ex)
+        catch (Throwable ex)
         {
             // This can happen in a headerless environment, and we don't care
             // because we never need to invoke there, so just ignore.
-            log.debug("ignoring NoClassDefFoundError because we are headerless?");
+            log.debug("ignoring error (assuming headerless): "+ex);
         }
 
         if (!invoke)

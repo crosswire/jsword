@@ -757,7 +757,8 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="nightly" depends="veryclean, release.nightly" description="To be run nightly at crosswire">
+  <target name="nightly" depends="release.nightly" description="To be run nightly at crosswire">
+    <!-- we used also to depend on: veryclean -->
   </target>
 
   <!--=======================================================================-->
