@@ -146,7 +146,7 @@ public class Mapper extends JFrame
             Document xmlconfig = Project.resource().getDocument("config");
             config.add(xmlconfig);
 
-            Properties prop = Project.resource().getProperties("Mapper");
+            Properties prop = Project.resource().getProperties("mapper");
             if (prop != null)
                 config.setProperties(prop);
             config.localToApplication(true);

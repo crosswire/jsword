@@ -1,7 +1,13 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.util.Project;
 
 /**
 * The AbstractBibleDriver class implements some of the BibleDriver
@@ -38,4 +44,43 @@ public abstract class AbstractBibleDriver implements BibleDriver
     {
         return getBibleNames().length;
     }
+
+    /**
+     * Search for versions directories
+     */
+    protected URL findBibleRoot() throws MalformedURLException
+    {
+        URL found;
+
+        log.debug("Looking for Bibles:");
+
+        // First see if there is a System property that can help us out
+        String sysprop = System.getProperty("jsword.bible.dir");
+        if (sysprop != null)
+        {
+            found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
+            URL test = NetUtil.lengthenURL(found, "locator.properties");
+            if (NetUtil.isFile(test))
+            {
+                log.debug("-- Found from system property jsword.bible.dir at "+sysprop+"");
+                return found;
+            }
+
+            log.debug("-- Not found from system property jsword.bible.dir at "+sysprop+"");
+        }
+        else
+        {
+            log.debug("-- Unset system property jsword.bible.dir");
+        }
+
+        String locator = "/versions/locator.properties";
+        found = Project.resource().getResource(locator);
+        if (found == null)
+            throw new MalformedURLException("Missing locator.properties.");
+
+        return NetUtil.shortenURL(found, "/locator.properties");
+    }
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(AbstractBibleDriver.class);
 }

@@ -1,8 +1,9 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.crosswire.jsword.util.Project;
 
@@ -46,7 +47,7 @@ public class BibleDriverManager
      */
     public static void registerDriver(BibleDriver driver)
     {
-        drivers.addElement(driver);
+        drivers.add(driver);
     }
 
     /**
@@ -55,7 +56,7 @@ public class BibleDriverManager
      */
     public static void unregisterDriver(BibleDriver driver)
     {
-        drivers.removeElement(driver);
+        drivers.remove(driver);
     }
 
     /**
@@ -67,7 +68,7 @@ public class BibleDriverManager
         BibleDriver[] da = new BibleDriver[drivers.size()];
         for (int i=0; i<da.length; i++)
         {
-            da[i] = (BibleDriver) drivers.elementAt(i);
+            da[i] = (BibleDriver) drivers.get(i);
         }
 
         return da;
@@ -80,10 +81,9 @@ public class BibleDriverManager
      */
     public static BibleDriver getDriverForBible(String name) throws BookException
     {
-        for (Enumeration en=drivers.elements(); en.hasMoreElements(); )
+        for (Iterator it = drivers.iterator(); it.hasNext();)
         {
-            BibleDriver driver = (BibleDriver) en.nextElement();
-
+            BibleDriver driver = (BibleDriver) it.next();
             if (driver.exists(name))
                 return driver;
         }
@@ -98,9 +98,9 @@ public class BibleDriverManager
      */
     public static WritableBibleDriver getWritableDriverForBible(String name) throws BookException
     {
-        for (Enumeration en=drivers.elements(); en.hasMoreElements(); )
+        for (Iterator it = drivers.iterator(); it.hasNext();)
         {
-            Object next = en.nextElement();
+            Object next = (BibleDriver) it.next();
             if (next instanceof WritableBibleDriver)
             {
                 WritableBibleDriver driver = (WritableBibleDriver) next;
@@ -116,7 +116,7 @@ public class BibleDriverManager
     /**
      * An array of BookDrivers
      */
-    private static Vector drivers = new Vector();
+    private static List drivers = new ArrayList();
 
     /**
      * Initialize the driver array

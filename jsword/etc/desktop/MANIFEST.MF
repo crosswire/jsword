@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
 Main-Class: org.crosswire.jsword.view.swing.desktop.Desktop
-Class-Path: crimson.jar jaxp.jar jdom.jar xalan.jar jlfgr-1_0.jar ./resource
+Class-Path: crimson.jar jaxp.jar jdom.jar xalan.jar jlfgr-1_0.jar log4j.jar ./resource

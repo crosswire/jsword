@@ -4,13 +4,13 @@ package org.crosswire.jsword.view.style;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -81,7 +81,7 @@ public class Style
             InputStream in = Project.resource().getStyleInputStream(subject, name);
             return (in != null);
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
             return false;
         }
@@ -146,6 +146,7 @@ public class Style
                 throw new IOException("Resource not found subject="+subject+" style="+style);
 
             transformer = transfact.newTransformer(new StreamSource(xsl_in));
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         }
 
         transformer.transform(src_in, res_out);
@@ -161,7 +162,21 @@ public class Style
         StringWriter html_writer = new StringWriter();
         outputter.output(doc, html_writer);
 
-        return html_writer.toString();
+        String output = html_writer.toString();
+
+        // For some reason the new TRaX stuff leaves the
+        // <?xml version="1.0" encoding="UTF-8"?> string in the result.
+        if (output.startsWith("<?xml"))
+        {
+            int close = output.indexOf("?>");
+            if (close != -1)
+            {
+                output = output.substring(close+2);
+                log.debug("no effect from setting "+OutputKeys.OMIT_XML_DECLARATION);
+            }
+        }
+
+        return output;
     }
 
     private DocumentBuilderFactory docfact = DocumentBuilderFactory.newInstance();

@@ -76,30 +76,16 @@ public class Desktop extends JFrame implements TitleChangedListener
      */
     public static void main(String[] args)
     {
-        Desktop shed;
-
-        if (args.length > 0)
-            shed = new Desktop(args[0]);
-        else
-            shed = new Desktop();
-
+        Desktop shed = new Desktop();
         shed.pack();
         GuiUtil.centerWindow(shed);
         shed.setVisible(true);
     }
 
     /**
-     * simple ctor
-     */
-    public Desktop()
-    {
-        this("");
-    }
-
-    /**
      * Construct a Desktop.
      */
-    public Desktop(String prop_base)
+    public Desktop()
     {
         try
         {
@@ -107,7 +93,7 @@ public class Desktop extends JFrame implements TitleChangedListener
 
             // Initial setup
             splash.setProgress(5, "Project initialization");
-            Project.init(prop_base);
+            Project.init();
 
             splash.setProgress(10, "Creating GUI : Ctors (Layouts)");
             VIEW_SDI = new SDIViewLayout(this);

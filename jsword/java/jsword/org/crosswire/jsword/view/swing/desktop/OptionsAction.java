@@ -62,7 +62,7 @@ public class OptionsAction extends DesktopAbstractAction
 
     public void loadConfig() throws MalformedURLException, IOException
     {
-        config.setProperties(Project.resource().getProperties("Desktop"));
+        config.setProperties(Project.resource().getProperties("desktop"));
         config.localToApplication(true);
     }
 
@@ -71,7 +71,7 @@ public class OptionsAction extends DesktopAbstractAction
         try
         {
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
-            URL config_url = Project.resource().getPropertiesURL("Desktop");
+            URL config_url = Project.resource().getPropertiesURL("desktop");
             SwingConfig.showDialog(config, getDesktop(), config_url);
         }
         catch (Exception ex)

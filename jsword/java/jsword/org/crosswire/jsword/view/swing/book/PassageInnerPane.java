@@ -101,17 +101,6 @@ public class PassageInnerPane extends JPanel
         Document output = style.applyStyle(xml, "Simple");
         String text = style.getString(output);
 
-        // For some reason the new TRaX stuff leaves the
-        // <?xml version="1.0" encoding="UTF-8"?> string in the result.
-        if (text.startsWith("<?xml"))
-        {
-            int close = text.indexOf("?>");
-            if (close != -1)
-            {
-                text = text.substring(close+2);
-            }
-        }
-
         txt_view.setText(text);
         
         // The following *ought* to scroll to the top but it doesn't ...

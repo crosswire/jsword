@@ -13,12 +13,13 @@
   <property name="source.web" value="${source.root}/web"/>
   <property name="target.root" value="target/ant"/>
   <property name="target.classes" value="${target.root}/temp/classes"/>
-  <property name="target.deploy" value="${target.root}/deploy"/>
+  <property name="target.jar" value="${target.root}/temp/jar"/>
+  <property name="target.deploy" value="${target.root}/deploy/jsword"/>
   <property name="target.doc" value="${target.root}/doc"/>
   <property name="target.junit" value="${target.root}/junit"/>
   <property name="notes.root" value="notes"/>
 
-  <property file="${source.res}/jsword.properties"/>
+  <property name="product.version" value="0.9.1"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -84,35 +85,43 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="deploy" depends="compile" description="Build a ready to ship/test app">
-    <mkdir dir="${target.deploy}/${ant.project.name}/resource"/>
-    <copy todir="${target.deploy}/${ant.project.name}">
-      <fileset dir="${source.bin}"/>
-    </copy>
-    <chmod perm="a+x">
-      <fileset dir="${target.deploy}/${ant.project.name}">
-        <include name="*.sh"/>
-      </fileset>
-    </chmod>
-    <copy todir="${target.deploy}/${ant.project.name}/resource">
-      <fileset dir="${source.res}"/>
-    </copy>
+  <target name="jar" depends="compile" description="Create a jsword jar file">
+    <mkdir dir="${target.jar}"/>
     <jar
         manifest="${source.etc}/desktop/MANIFEST.MF"
-        jarfile="${target.deploy}/${ant.project.name}/${ant.project.name}.jar">
+        jarfile="${target.jar}/${ant.project.name}.jar">
       <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/jsword"/>
       <fileset dir="${target.classes}/sword"/>
       <fileset dir="${target.classes}/map"/>
     </jar>
-    <copy todir="${target.deploy}/${ant.project.name}">
+  </target>
+
+  <!--=======================================================================-->
+  <target name="deploy" depends="jar" description="Build a ready to ship/test app">
+    <mkdir dir="${target.deploy}/bin"/>
+    <copy todir="${target.deploy}/bin">
+      <fileset dir="${source.bin}"/>
+    </copy>
+    <chmod perm="a+x">
+      <fileset dir="${target.deploy}">
+        <include name="*.sh"/>
+      </fileset>
+    </chmod>
+    <mkdir dir="${target.deploy}/lib"/>
+    <copy todir="${target.deploy}/lib">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
+      <fileset dir="${target.jar}" includes="*.jar"/>
+    </copy>
+    <mkdir dir="${target.deploy}/resource"/>
+    <copy todir="${target.deploy}/resource">
+      <fileset dir="${source.res}"/>
     </copy>
     <unzip
         src="${notes.root}/versions/projectb-ser-av.zip"
-        dest="${target.deploy}/${ant.project.name}"
+        dest="${target.deploy}/resource"
     />
   </target>
 
@@ -191,10 +200,28 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.files" depends="init" description="Copy the file based documentation">
+  <target name="doc.files" depends="jar" description="Copy the file based documentation">
     <mkdir dir="${target.doc}"/>
     <copy todir="${target.doc}">
-      <fileset dir="${source.doc}" />
+      <fileset dir="${source.doc}"/>
+    </copy>
+    <mkdir dir="${target.doc}/WEB-INF/lib"/>
+    <copy todir="${target.doc}/WEB-INF/lib">
+      <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
+      <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
+      <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
+      <fileset dir="${target.jar}" includes="*.jar"/>
+    </copy>
+    <mkdir dir="${target.doc}/WEB-INF/classes"/>
+    <copy todir="${target.doc}/WEB-INF/classes">
+      <fileset dir="${source.res}"/>
+    </copy>
+    <unzip
+        src="${notes.root}/versions/projectb-ser-av.zip"
+        dest="${target.doc}/WEB-INF/classes"
+        />
+    <copy todir="${target.doc}/WEB-INF">
+      <fileset dir="${source.etc}/web"/>
     </copy>
   </target>
 

@@ -18,7 +18,6 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
-import org.crosswire.jsword.util.Project;
 
 /**
  * This represents all of the JDBCBibles.
@@ -55,7 +54,7 @@ public class JDBCBibleDriver extends AbstractBibleDriver
     {
         log.debug("Starting");
 
-        URL root = Project.resource().getBiblesRoot();
+        URL root = findBibleRoot();
         if (root == null)
         {
             log.warn("Cant find Bibles root, restart needed before service can resume.");

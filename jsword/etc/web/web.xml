@@ -6,61 +6,16 @@
 
 <web-app>
 
-    <display-name>JSword</display-name>
-    <description>Servlet interface to the Bible</description>
+  <display-name>JSword</display-name>
+  <description>Servlet interface to the Bible</description>
 
-    <servlet>
-        <servlet-name>SConfig1</servlet-name>
-        <servlet-class>SConfig1</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SConfig1</servlet-name>
-        <url-pattern>/SConfig1</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SConfig2</servlet-name>
-        <servlet-class>SConfig2</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SConfig2</servlet-name>
-        <url-pattern>/SConfig2</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SHello</servlet-name>
-        <servlet-class>SHello</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SHello</servlet-name>
-        <url-pattern>/SHello</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SPage</servlet-name>
-        <servlet-class>SPage</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SPage</servlet-name>
-        <url-pattern>/SPage</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SSource</servlet-name>
-        <servlet-class>SSource</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SSource</servlet-name>
-        <url-pattern>/SSource</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SWeb</servlet-name>
-        <servlet-class>SWeb</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SWeb</servlet-name>
-        <url-pattern>/SWeb</url-pattern>
-    </servlet-mapping>
+  <servlet>
+    <servlet-name>demo</servlet-name>
+    <servlet-class>org.crosswire.jsword.view.web.DemoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>demo</servlet-name>
+    <url-pattern>/demo</url-pattern>
+  </servlet-mapping>
 
 </web-app>
