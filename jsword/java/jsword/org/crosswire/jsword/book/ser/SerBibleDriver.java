@@ -120,7 +120,14 @@ public class SerBibleDriver extends AbstractBibleDriver
                 URL search = NetUtil.lengthenURL(dir, "list.txt");
                 InputStream in = search.openStream();
                 String contents = StringUtil.read(new InputStreamReader(in));
-                return StringUtil.tokenize(contents, "\n");
+                
+                String[] names = StringUtil.tokenize(contents, "\n");
+                for(int i=0;i<names.length;i++)
+                {
+                	// we need to trim, as we may have \r\n not \n
+                	names[i]=names[i].trim();
+                }
+                return names;
             }
         }
         catch (IOException ex)
