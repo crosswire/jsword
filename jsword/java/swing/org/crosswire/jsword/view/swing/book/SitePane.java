@@ -65,7 +65,7 @@ public class SitePane extends JPanel
 
         initialize();
 
-        pnlActions.add(btnDelete);
+        //pnlActions.add(btnDelete);
         lblAvailable.setLabelFor(treAvailable);
         lblAvailable.setText("Installed Books:");
         lblAvailable.setDisplayedMnemonic('B');
@@ -98,6 +98,7 @@ public class SitePane extends JPanel
      */
     private void initialize()
     {
+        /*
         btnDelete.setMnemonic('D');
         btnDelete.setText("Delete");
         btnDelete.setEnabled(false);
@@ -108,6 +109,7 @@ public class SitePane extends JPanel
                 delete();
             }
         });
+        */
         btnInstall.setMnemonic('I');
         btnInstall.setText("Install");
         btnInstall.setEnabled(false);
@@ -226,7 +228,7 @@ public class SitePane extends JPanel
     {
         TreePath path = treAvailable.getSelectionPath();
 
-        btnDelete.setEnabled(path != null);
+        // btnDelete.setEnabled(path != null);
         btnInstall.setEnabled(path != null);
 
         if (path != null)
@@ -309,7 +311,7 @@ public class SitePane extends JPanel
     private JSplitPane sptMain = new JSplitPane();
     private JButton btnInstall = new JButton();
     private JButton btnRefresh = new JButton();
-    private JButton btnDelete = new JButton();
+    //private JButton btnDelete = new JButton();
     private JPanel pnlActions = new JPanel();
     private JLabel lblSelected = new JLabel();
     private JTree treAvailable = new JTree();

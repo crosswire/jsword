@@ -1,38 +1,86 @@
 
-This file is our equivalent of bugzilla for the time being.
+This file is our equivalent of bugzilla for the time being, it is also our
+roadmap for the next few releases:
 
-GUI
-- status bar re-size
-- better display mechanism
-	(consider http://jrex.mozdev.org/releases.html)
-- what ui tweaker to use
+--------------------------------------------------------------------------------
+We are here
+--------------------------------------------------------------------------------
+
+- check recent bug fixes have not spoilt JNLP
+
+--------------------------------------------------------------------------------
+RELEASE v0.9.7
+--------------------------------------------------------------------------------
+
+Swing
+- status bar re-size (is this still bothering people?)
+- check i18n basic works
+- make debugger options only display if advanced user is set in options
+
+BookData Display
+- BHS does not display the text in the right order.
+  Each verse is shown RtoL, which is correct, but the verses are ordered from LtoR.
+  Also the verse numbers need to be at the beginning of the verse, which is on the right
+- Vines shows internal markup around verse references.
+
+Sword
+- unsupported Bibles are displayed in Bible list
 
 Other
-- change name of swing packages
-- change name of servlet packages
-- move map and maptest into jsword-support
-- what version of findbugs
+- split out swing packages, call Bible Desktop
+- split out web stuff, call jsword-web?
+- what version of findbugs do we use
 
 Web
 - auto test for web demo
+- multiple jnlp releases
+- restructured wrt the download and installation. 
 
-Other
-- installer book sorting
-- need to put download dir in sword module list
+Install
+- save install sites
+
+SwingUI
+- make more like jnlp
+  make ResourceUtil do a lookup first in the ~/.jsword for the named file?
+  modify the classpath to have ~/.jsword/? at the beginning of the path / roll our own classloader.
+- check it works
 
 --------------------------------------------------------------------------------
+RELEASE v0.9.8
+--------------------------------------------------------------------------------
 
+- major bug fixes only
+
+--------------------------------------------------------------------------------
+RELEASE v0.9.9
+--------------------------------------------------------------------------------
+
+- emergency bug fixes only
+
+--------------------------------------------------------------------------------
 POST 1.0
+--------------------------------------------------------------------------------
 
-GUI
+Swing
 - full internationalization
+- lighter weight i18n via ant?
 - help screens
 - recreate module creator/tester
 - merge dict/comment to form reference pane
 - implement print
+- FOP/PDF export
 
 Modules
 - Sword GenBook
+- re-Add the delete module button
 
 General
 - Make config use Preferences
+- OSIS 2
+- think about replacements for JAXB (JiBX, JaxME, JDOM, XOM, DOM, etc)
+- other application installation systems (rpm, deb, nullsoft, msi, etc)
+
+BookData Display
+- Mixed language text support (like Kittel's or Vines).
+- Interlinear for text having strongs numbers.
+- Parallel texts (Bible || Bible, Bible || Commentary, Bible || Dictionary)
