@@ -159,48 +159,58 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jar" unless="jar.uptodate" depends="compile, jar.dir, jar.api, jar.swing, jar.servlet, resource.jar" description="create the jar files">
+  <target name="jar" depends="compile, jar.dir, jar.api, jar.swing, jar.servlet, jar.resource" description="create the jar files">
   </target>
+
   <target name="jar.dir" description="Create the directory for jars">
     <mkdir dir="${target.jar}"/>
   </target>
-  <target name="jar.api" unless="jar.uptodate" depends="jar.api.check" description="Create a api jar file">
+
+  <target name="jar.api" unless="jar.api.uptodate" depends="jar.api.check" description="Create a api jar file">
     <jar jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/jsword"/>
     </jar>
   </target>
   <target name="jar.api.check" description="Check to see that the api jar file is up to date">
-    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword.jar">
+    <uptodate property="jar.api.uptodate" targetfile="${target.jar}/jsword.jar">
       <srcfiles dir="${target.classes}/common"/>
       <srcfiles dir="${target.classes}/jsword"/>
     </uptodate>
   </target>
-  <target name="jar.swing" unless="jar.uptodate" depends="jar.swing.check" description="Create a gui jar file">
+
+  <target name="jar.swing" unless="jar.swing.uptodate" depends="jar.swing.check" description="Create a gui jar file">
     <jar jarfile="${target.jar}/jsword-swing.jar">
       <fileset dir="${target.classes}/swing"/>
     </jar>
   </target>
   <target name="jar.swing.check" description="Check to see that the gui jar file is up to date">
-    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword-swing.jar">
+    <uptodate property="jar.swing.uptodate" targetfile="${target.jar}/jsword-swing.jar">
       <srcfiles dir="${target.classes}/swing"/>
     </uptodate>
   </target>
-  <target name="jar.servlet" unless="jar.uptodate" depends="jar.servlet.check" description="Create a servlet jar file">
+
+  <target name="jar.servlet" unless="jar.servlet.uptodate" depends="jar.servlet.check" description="Create a servlet jar file">
     <jar jarfile="${target.jar}/jsword-servlet.jar">
       <fileset dir="${target.classes}/servlet"/>
     </jar>
   </target>
   <target name="jar.servlet.check" description="Check to see that the servlet jar file is up to date">
-    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword-servlet.jar">
+    <uptodate property="jar.servlet.uptodate" targetfile="${target.jar}/jsword-servlet.jar">
       <srcfiles dir="${target.classes}/servlet"/>
     </uptodate>
   </target>
-  <target name="resource.jar" unless="jar.uptodate" description="Create a resource jar file">
+
+  <target name="jar.resource" unless="jar.resource.uptodate" description="Create a resource jar file">
     <jar destfile="${target.jar}/resource.jar">
       <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </jar>
+  </target>
+  <target name="jar.resource.check" description="Check to see that the resource jar file is up to date">
+    <uptodate property="jar.resource.uptodate" targetfile="${target.jar}/jsword-resource.jar">
+      <srcfiles dir="${target.classes}/resource"/>
+    </uptodate>
   </target>
 
   <!--=======================================================================-->
