@@ -80,7 +80,7 @@ public class CliMapper
 
             Element links = new Element("links");
 
-            for (int b=1; b<=2/*Books.booksInBible()*/; b++)
+            for (int b=1; b<=Books.booksInBible(); b++)
             {
                 Element eb = new Element("book");
                 eb.setAttribute("num", ""+b);
@@ -93,7 +93,7 @@ public class CliMapper
                 Verse end = new Verse(b, chff, vsff);
                 VerseRange book = new VerseRange(start, end);
 
-                for (int c=1; c<=2/*Books.chaptersInBook(b)*/; c++)
+                for (int c=1; c<=Books.chaptersInBook(b); c++)
                 {
                     Element ec = new Element("chapter");
                     ec.setAttribute("num", ""+c);

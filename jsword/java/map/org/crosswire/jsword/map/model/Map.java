@@ -3,10 +3,21 @@ package org.crosswire.jsword.map.model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Serializable;
+import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.XMLOutputter;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.LogicError;
 
@@ -42,17 +53,26 @@ public class Map implements Serializable
     public Map(int dimensions)
     {
         this.dimensions = dimensions;
-        this.nodes = new Position[Books.versesInBible()+1][];
 
         // Create the array of Nodes
+        int bie = Books.booksInBible();
+        this.nodes = new Position[bie+1][];
         try
         {
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=bie; b++)
             {
-                nodes[b] = new Position[Books.chaptersInBook(b)+1];
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                int cib = Books.chaptersInBook(b);
+                nodes[b] = new Position[cib+1];
+                for (int c=1; c<=cib; c++)
                 {
-                    nodes[b][c] = new Position(new float[dimensions]);
+                    float[] pos = new float[dimensions];
+
+                    for (int d=0; d<dimensions; d++)
+                    {
+                        pos[d] = 0.0f;
+                    }
+
+                    nodes[b][c] = new Position(pos);
                 }
             }
         }
@@ -78,9 +98,17 @@ public class Map implements Serializable
      * @param ord The verse ordinal number
      * @return The requested node position
      */
-    public float[] getPosition(int book, int chapter)
+    public float[] getPositionArrayCopy(int book, int chapter)
     {
-        return (float[]) nodes[book][chapter].pos.clone();
+        try
+        {
+            return (float[]) nodes[book][chapter].pos.clone();
+        }
+        catch (ArrayIndexOutOfBoundsException ex)
+        {
+            log.error("getPosition() book="+book+" chapter="+chapter, ex);
+            return new float[] { 0.0f, 0.0f };
+        }
     }
 
     /**
@@ -92,7 +120,15 @@ public class Map implements Serializable
      */
     public float getPositionDimension(int book, int chapter, int idx)
     {
-        return nodes[book][chapter].pos[idx];
+        try
+        {
+            return nodes[book][chapter].pos[idx];
+        }
+        catch (ArrayIndexOutOfBoundsException ex)
+        {
+            log.error("getPositionDimension() book="+book+" chapter="+chapter+" dim="+idx, ex);
+            return 0.0f;
+        }
     }
 
     /**
@@ -152,18 +188,31 @@ public class Map implements Serializable
         if (dimensions != 2)
             throw new IllegalArgumentException("Can't set simple layout for maps with "+dimensions+" dimensions.");
 
+        float start = 0.05F;
+        float end = 0.95F;
+        float mid = (end - start) / 2;
+        float scale = end - start;
+
         try
         {
             int bie = Books.booksInBible();
             for (int b=1; b<=bie; b++)
             {
-                int cib = Books.chaptersInBook(b);
-                for (int c=1; c<=cib; c++)
-                {
-                    float x = ((float) (c - 1)) / (cib - 1);
-                    float y = ((float) (b - 1)) / (bie - 1);
+                float y = (((float) (b - 1)) / (bie - 1)) * scale + start;
 
-                    nodes[b][c] = new Position(new float[] { x, y });
+                int cib = Books.chaptersInBook(b);
+                if (cib == 1)
+                {
+                    nodes[b][1] = new Position(new float[] { mid + start, y });
+                }
+                else
+                {
+                    for (int c=1; c<=cib; c++)
+                    {
+                        float x = (((float) (c - 1)) / (cib - 1)) * scale + start;
+
+                        nodes[b][c] = new Position(new float[] { x, y });
+                    }
                 }
             }
 
@@ -185,18 +234,31 @@ public class Map implements Serializable
         try
         {
             // For each verse
-            for (int b=1; b<=Books.versesInBible(); b++)
+            for (int b=1; b<=Books.booksInBible(); b++)
             {
                 for (int c=1; c<=Books.chaptersInBook(b); c++)
                 {
                     Position[][] dar = new Position[rules.length][];
                     for (int j=0; j<rules.length; j++)
                     {
-                        dar[j] = rules[j].getDesiredPosition(this, b, c);
+                        dar[j] = rules[j].getScaledPosition(this, b, c);
+
+                        /*if (log.isDebugEnabled())
+                        {
+                            log.debug("Rule: "+j+" ("+rules[j].getClass().getName()+") scale="+rules[j].getScale());
+                            StringBuffer out = new StringBuffer(" ");
+                            for (int i=0; i<dar[j].length; i++)
+                            {
+                                out.append(" ("+i+"="+dar[j][i].pos[0]+","+dar[j][i].pos[1]+")");
+                            }
+                            log.debug(out);
+                        }*/
                     }
-                
+
                     Position[] total = cat(dar);
-                    nodes[b][c] = average(total);
+                    nodes[b][c] = PositionUtil.average(total, dimensions);
+                    //log.debug("Total:");
+                    //log.debug("  (t="+nodes[b][c].pos[0]+","+nodes[b][c].pos[1]+")");
                 }
             }
         }
@@ -206,6 +268,28 @@ public class Map implements Serializable
         }
 
         fireMapRewritten();
+    }
+
+    /**
+     * Fix the layout to a fairly random one
+     */
+    public void debug(PrintWriter out)
+    {
+        try
+        {
+            for (int b=1; b<=Books.booksInBible(); b++)
+            {
+                log.debug("Book "+b);
+                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                {
+                    log.debug("  Chapter "+c+": Position=("+nodes[b][c].pos[0]+","+nodes[b][c].pos[1]+")");
+                }
+            }
+        }
+        catch (NoSuchVerseException ex)
+        {
+            ex.printStackTrace(out);
+        }
     }
 
     /**
@@ -257,7 +341,7 @@ public class Map implements Serializable
 
         if (cog == null || replies > MAX_REPLIES)
         {
-            cog = average(nodes);
+            cog = PositionUtil.average(nodes, dimensions);
             replies = 0;
         }
 
@@ -342,60 +426,109 @@ public class Map implements Serializable
     }
 
     /**
-     * Find the average position of an array of Positions
+     * Save link data to XML as a stream.
      */
-    public static Position average(Position[][] array)
+    public void load(Reader out) throws IOException
     {
-        int dimensions = array[1][1].pos.length;
-        double[] tot = new double[dimensions];
-
-        for (int b=0; b<array.length; b++)
+        try
         {
-            for (int c=0; c<array[b].length; c++)
-            {
-                for (int j=0; j<dimensions; j++)
-                {
-                    tot[j] += array[b][c].pos[j];
-                }
-            }
+            SAXBuilder builder = new SAXBuilder();
+            Document doc = builder.build(out);
+            Element root = doc.getRootElement();
+            fromXML(root);
         }
-
-        float[] retcode = new float[dimensions];
-
-        for (int j=0; j<dimensions; j++)
+        catch (JDOMException ex)
         {
-            retcode[j] = (float) (tot[j] / array.length);
+            throw new IOException(ex.getMessage());
         }
-
-        return new Position(retcode);
     }
 
     /**
-     * Find the average position of an array of Positions
+     * Save link data to XML as a stream.
      */
-    public static Position average(Position[] array)
+    public void save(Writer out) throws IOException
     {
-        int dimensions = array[1].pos.length;
-        double[] tot = new double[dimensions];
+        Element root = toXML();
+        Document doc = new Document(root);
+        XMLOutputter outputter = new XMLOutputter();
+        outputter.setIndent(2);
+        outputter.setNewlines(true);
+        outputter.output(doc, out);
+    }
 
-        // for all the array members and all the dimensions
-        // add up the positions
-        for (int i=0; i<array.length; i++)
+    /**
+     * Generate links from an XML representation.
+     * @param root The root 'links' element
+     */
+    public void fromXML(Element epos) throws JDOMException
+    {
+        if (!epos.getName().equals("positions"))
+            throw new JDOMException("root element is not called 'links'");
+
+        dimensions = Integer.parseInt(epos.getAttributeValue("dimensions"));
+
+        List ebs = epos.getChildren("book");
+        Iterator bit = ebs.iterator();
+        while (bit.hasNext())
         {
-            for (int j=0; j<dimensions; j++)
+            Element eb = (Element) bit.next();
+            int b = Integer.parseInt(eb.getAttributeValue("num"));
+            
+            List ecs = eb.getChildren("chapter");
+            Iterator cit = ecs.iterator();
+            while (cit.hasNext())
             {
-                tot[j] += array[i].pos[j];
+                Element ec = (Element) cit.next();
+                int c = Integer.parseInt(ec.getAttributeValue("num"));
+
+                float[] fa = new float[dimensions];
+                for (int d=0; d<dimensions; d++)
+                {
+                    fa[d] = Float.parseFloat(ec.getAttributeValue("dim"+d));
+                }
+
+                nodes[b][c] = new Position(fa);
             }
         }
+    }
 
-        // divide by the number of members
-        float[] retcode = new float[dimensions];
-        for (int j=0; j<dimensions; j++)
+    /**
+     * Save link data to XML as a JDOM tree.
+     */
+    public Element toXML()
+    {
+        Element epos = new Element("positions");
+        epos.setAttribute("dimensions", ""+dimensions);
+
+        try
         {
-            retcode[j] = (float) (tot[j] / array.length);
+            for (int b=1; b<=Books.booksInBible(); b++)
+            {
+                Element eb = new Element("book");
+                eb.setAttribute("num", ""+b);
+                eb.setAttribute("name", Books.getShortBookName(b));
+                epos.addContent(eb);
+
+                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                {
+                    Position node = nodes[b][c];
+                    Element ec = new Element("chapter");
+                    ec.setAttribute("num", ""+c);
+
+                    for (int d=0; d<dimensions; d++)
+                    {
+                        ec.setAttribute("dim"+d, ""+node.pos[d]);
+                    }
+                    eb.addContent(ec);
+                }
+            }
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
         }
 
-        return new Position(retcode);
+        return epos;
     }
 
     /**
@@ -408,8 +541,11 @@ public class Map implements Serializable
         listeners = new EventListenerList();
     }
 
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(LinkArray.class);
+
     /** What is the maximum calculations between re-calcing the CoG */
-    private static final int MAX_REPLIES = 1000;
+    private static final int MAX_REPLIES = 1;
 
     /** The current center of gravity */
     private Position cog = null;

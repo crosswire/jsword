@@ -30,28 +30,28 @@ public interface Rule
 {
     /**
      * Specify where it would like a node to be positioned in space.
-     * Rules return an array of positions where the average of them
-     * specifies the real desired position. So to specify a single place
-     * simply return an array of one position. The positions are added
-     * to the results from all Rules so to specify a single position
-     * more strongly, return an array conataining that position many
-     * times.
-     * <br />
-     * I expect that any Rule will not return more than 30 positions.
-     * This expectation may be useful in colouring how many times to
-     * include your Position(s) in the array.
+     * The Position is added to the results from all Rules and averaged
+     * out. A reply of null indicated no preference.
      * @param map The Map to select a node from
      * @param book The book number
      * @param chapter The chapter 
-     * @return An array of desired positions.
+     * @return Desired position.
      */
-    public Position[] getDesiredPosition(Map map, int book, int chapter);
+    public Position getDesiredPosition(Map map, int book, int chapter);
+
+    /**
+     * Specify where it would like a node to be positioned in space weighted
+     * buy the current scale
+     * @param map The Map to select a node from
+     * @param book The book number
+     * @param chapter The chapter 
+     * @return Desired position.
+     */
+    public Position[] getScaledPosition(Map map, int book, int chapter);
 
     /**
      * Each call to getDesiredPosition() returns an array of Positions,
      * this method sets the preferred length of that returned array.
-     * It is only a preferred length, so non-perfect Rules are free to
-     * miss by one or 2.
      * @param scale The preferred length of the desired position array
      * @see #getDesiredPosition(Map, int)
      */

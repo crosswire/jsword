@@ -1,11 +1,11 @@
 
 package org.crosswire.jsword.map.model;
 
-import org.crosswire.jsword.passage.Books;
-import org.crosswire.common.util.Reporter;
+import org.apache.log4j.Logger;
 
 /**
- * DefraggingRule attempts to keep all the nodes in straight lines.
+ * RectangularBoundsRule implements Rule and attempts to move the Node within the
+ * space (0, 0, _) to (1, 1, _). 
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,7 +28,7 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DefraggingRule extends AbstractRule
+public class CircularBoundsRule extends AbstractRule
 {
     /**
      * Specify where it would like a node to be positioned in space.
@@ -38,62 +38,56 @@ public class DefraggingRule extends AbstractRule
      * to the results from all Rules so to specify a single position
      * more strongly, return an array conataining that position many
      * times.
+     * <br />
+     * I expect that any Rule will not return more than 30 positions.
+     * This expectation may be useful in colouring how many times to
+     * include your Position(s) in the array.
      * @param map The Map to select a node from
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
     public Position getDesiredPosition(Map map, int book, int chapter)
     {
-        try
+        if (map.getDimensions() != 2)
         {
-            Position reply;
+            log.warn("CircularBoundsRule only works in 2 dimensions");
+            return new Position(map.getPositionArrayCopy(book, chapter));
+        }
 
-            boolean at_start = (chapter == 1);
-            boolean at_end = (chapter == Books.chaptersInBook(book));
+        float[] arr = map.getPositionArrayCopy(book, chapter);
 
-            if (at_start || at_end)
+        float xcentrecoord = arr[0]-0.5F;
+        float ycentrecoord = arr[1]-0.5F;
+
+        float distance = (float) Math.sqrt(xcentrecoord*xcentrecoord + ycentrecoord*ycentrecoord);
+        if (distance > RADIUS)
+        {
+            double angle = Math.atan(xcentrecoord/ycentrecoord);
+
+            if (xcentrecoord > 0)
             {
-                // Where we are now
-                float[] current = map.getPositionArrayCopy(book, chapter);
-
-                // What are we trying to get away from
-                /*
-                int other_ord;
-                if (at_start)
-                {
-                    int end_chapter = Books.chaptersInBook(b);
-                    int end_verse = Books.versesInChapter(b, end_chapter);
-                    Verse end = new Verse(b, end_chapter, end_verse);
-                    other_ord = end.getOrdinal();
-                }
-                else
-                {
-                    other_ord = new Verse(b, 1, 1).getOrdinal();
-                }
-
-                float[] opposite = map.getPosition(end_ord);
-                float[] pos = new float[];
-
-                // Um this is getting a little hard for me in n-dimensions
-                */
-
-                reply = new Position(current);
+                arr[0] = 1F - (float) (RADIUS * Math.cos(angle));
             }
             else
             {
-                Position prev = new Position(map.getPositionArrayCopy(book, chapter-1));
-                Position next = new Position(map.getPositionArrayCopy(book, chapter+1));
-                Position[] both = new Position[] { prev, next };
-
-                reply = PositionUtil.average(both, map.getDimensions());
+                arr[0] = (float) (RADIUS * Math.cos(angle));
             }
 
-            return reply;
+            if (ycentrecoord > 0)
+            {
+                arr[1] = 1F - (float) (RADIUS * Math.sin(angle));
+            }
+            else
+            {
+                arr[1] = (float) (RADIUS * Math.sin(angle));
+            }
         }
-        catch (Exception ex)
-        {
-            Reporter.informUser(this, ex);
-            return null;
-        }
+
+        return new Position(arr);
     }
+    
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(CircularBoundsRule.class);
+
+    private static final float RADIUS = 0.45F;
 }

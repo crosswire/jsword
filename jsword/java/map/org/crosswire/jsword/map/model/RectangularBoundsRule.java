@@ -1,10 +1,9 @@
 
 package org.crosswire.jsword.map.model;
 
-import java.util.Random;
-
 /**
- * BrownianRule.
+ * RectangularBoundsRule implements Rule and attempts to move the Node within the
+ * space (0, 0, _) to (1, 1, _). 
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,7 +26,7 @@ import java.util.Random;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BrownianRule extends AbstractRule
+public class RectangularBoundsRule extends AbstractRule
 {
     /**
      * Specify where it would like a node to be positioned in space.
@@ -37,34 +36,29 @@ public class BrownianRule extends AbstractRule
      * to the results from all Rules so to specify a single position
      * more strongly, return an array conataining that position many
      * times.
+     * <br />
+     * I expect that any Rule will not return more than 30 positions.
+     * This expectation may be useful in colouring how many times to
+     * include your Position(s) in the array.
      * @param map The Map to select a node from
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
     public Position getDesiredPosition(Map map, int book, int chapter)
     {
-        float[] pos = map.getPositionArrayCopy(book, chapter);
+        float[] arr = map.getPositionArrayCopy(book, chapter);
 
-        for (int i=0; i<pos.length; i++)
+        // force the coords to be inside (0, 0, ...) to (1, 1, ...)
+        for (int i=0; i<arr.length; i++)
         {
-            pos[i] += (float) (rand.nextGaussian() * HEAT);
+            arr[i] = arr[i];
+            if (arr[i] < MIN) arr[i] = MIN;
+            if (arr[i] > MAX) arr[i] = MAX;
         }
 
-        return new Position(pos);
+        return new Position(arr);
     }
-
-    /**
-     * The max random jiggle.
-     * How much is it possible to a node to move randomly each turn.
-     * A heat of 1.0 means that any node could move roughly anywhere across the
-     * board each turn, so a heat of 0.001 is probably more useful.
-     * To be precise the heat is the standard deviation in a gaussian
-     * distribution.
-     */
-    private static final float HEAT = 0.01F;
-
-    /**
-     * The random number generator
-     */
-    private Random rand = new Random();
+    
+    private static final float MAX = 0.95F;
+    private static final float MIN = 0.05F;
 }

@@ -28,23 +28,33 @@ package org.crosswire.jsword.map.model;
 public class FrictionRule extends AbstractRule
 {
     /**
+     * We default to a scale of 1
+     */
+    public FrictionRule()
+    {
+        setScale(1);
+    }
+
+    /**
+     * @see org.crosswire.jsword.map.model.AbstractRule#setScale(int)
+     */
+    public void setScale(int scale)
+    {
+        if (scale == 0)
+            super.setScale(1);
+        else
+            super.setScale(scale);
+    }
+
+    /**
      * Specify where it would like a node to be positioned in space.
-     * Rules return an array of positions where the average of them
-     * specifies the real desired position. So to specify a single place
-     * simply return an array of one position. The positions are added
-     * to the results from all Rules so to specify a single position
-     * more strongly, return an array conataining that position many
-     * times.
      * @param map The Map to select a node from
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
-    public Position[] getDesiredPosition(Map map, int book, int chapter)
+    public Position getDesiredPosition(Map map, int book, int chapter)
     {
-        if (scale == 0)
-            return new Position[] { };
-
-        float[] arr = map.getPosition(book, chapter);
-        return scale(new Position(arr));
+        float[] arr = map.getPositionArrayCopy(book, chapter);
+        return new Position(arr);
     }
 }

@@ -1,6 +1,11 @@
 
 package org.crosswire.jsword.map.model;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+
 /**
  * AntiGravityRule.
  * 
@@ -33,28 +38,97 @@ public class AntiGravityRule extends AbstractRule
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
-    public Position[] getDesiredPosition(Map map, int book, int chapter)
+    public Position getDesiredPosition(Map map, int book, int chapter)
     {
-        if (scale == 0)
-            return new Position[] { };
-
-        // The start point
-        float[] fpos = map.getPosition(book, chapter);
-
-        // Where we move away from
-        float[] cog = map.getCenterOfGravity().getPosition();
-
-        // The desired position
-        float[] reply = new float[fpos.length];
-        for (int i=0; i<fpos.length; i++)
+        if (map.getDimensions() != 2)
         {
-            float distance = fpos[i] - cog[i];
-            reply[i] = (0.3F * (float) Math.atan(distance*GRADIENT)) + 0.5F;
+            log.warn("CircularBoundsRule only works in 2 dimensions");
+            return new Position(map.getPositionArrayCopy(book, chapter));
         }
 
-        return scale(new Position(reply));
+        // The start point
+        float[] us = map.getPositionArrayCopy(book, chapter);
+
+        float[] totals = new float[us.length];
+        int count = 0;
+
+        try
+        {
+            //log.debug(",b,c,x,y,c,tx,ty");
+
+            // For each verse
+            for (int b=1; b<=Books.booksInBible(); b++)
+            {
+                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                {
+                    if (b != book || c != chapter)
+                    {
+                        float[] that = map.getPositionArrayCopy(b, c);
+                        addDistanceToTotals(that, us, totals);
+
+                        count++;
+
+                        /*
+                        if (book == 1 && chapter == 1)
+                        {
+                            log.debug(","+b+","+c+","+that[0]+","+that[1]+","+count+","+totals[0]+","+totals[1]);
+                        }
+                        //*/
+                    }
+                }
+            }
+    
+            // Average the totals out, and add in the original position
+            for (int d=0; d<totals.length; d++)
+            {
+                totals[d] = totals[d] / count;
+                totals[d] += us[d];
+            }
+    
+            return new Position(totals);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
+    /**
+     * Run through the dimensions totting up the new positions
+     */
+    public static void addDistanceToTotals(float[] that, float[] us, float[] totals)
+    {
+        float xdiff = us[0] - that[0];
+        float ydiff = us[1] - that[1];
+        float idist = (float) Math.sqrt(xdiff*xdiff + ydiff*ydiff);
+
+        float newsep = getNewDistance(idist);
+
+        // so we know the old separation (idist) and the desired separation
+        // (newsep) we just need to know the new desired positions to add
+        // into the totals.
+        totals[0] += (newsep/idist) * (that[0]-us[0]);
+        totals[1] += (newsep/idist) * (that[1]-us[1]);
+    }
+
+    /**
+     * Calculate the new ditance given an old distance
+     */
+    public static float getNewDistance(float idist)
+    {
+        if (idist > 0)
+        {
+            return (float) -Math.exp(-idist*STRENGTH) / 2;
+        }
+        else
+        {
+            return (float) Math.exp(idist*STRENGTH) / 2;
+        }
+    }
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(AntiGravityRule.class);
+
     /** How sharply do we fall away with the result curve */
-    private static final float GRADIENT = 10F;
+    private static float STRENGTH = 20F;
 }

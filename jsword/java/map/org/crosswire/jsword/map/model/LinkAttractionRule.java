@@ -30,9 +30,8 @@ public class LinkAttractionRule extends AbstractRule
     /**
      * Basic constructor
      */
-    public LinkAttractionRule(LinkArray la)
+    public LinkAttractionRule()
     {
-        this.la = la;
     }
 
     /**
@@ -47,47 +46,54 @@ public class LinkAttractionRule extends AbstractRule
      * @param ord The ordinal number (1 - 31104) of the verse
      * @return An array of desired positions.
      */
-    public Position[] getDesiredPosition(Map map, int b, int c)
+    public Position getDesiredPosition(Map map, int b, int c)
     {
-        if (scale == 0)
-            return new Position[] { };
-
-        int scale_copy = scale;
-        Position[] reply = new Position[scale_copy];
-        int reply_index = 0;
-
-        // For all the links for this verse
+        // Go through all the links and find their average positions when
+        // weighted by their strength
         Link[] links = la.getLinks(b, c);
-        float factor = BEST_MATCH / links[0].getStrength();
+        int dimensions = map.getDimensions();
+        float[] total_pos = new float[dimensions];
+        int total_strength = 0;
         for (int i=0; i<links.length; i++)
         {
-            // How many times do we include this link position
-            int reps = (int) (factor * links[i].getStrength());
             int dest_book = links[i].getDestinationBook();
             int dest_chap = links[i].getDestinationChapter();
-            Position p = new Position(map.getPosition(dest_book, dest_chap));
+            float[] dest_pos = map.getPositionArrayCopy(dest_book, dest_chap);
 
-            // This can take some time
-            Thread.currentThread().yield();
-
-            // And it however many times;
-            for (int j=0; j<reps; j++)
+            for (int d=0; d<total_pos.length; d++)
             {
-                reply[reply_index++] = p;
-
-                if (reply_index >= scale_copy)
-                    return reply;
+                total_pos[d] = total_pos[d] + ( dest_pos[d] * links[i].getStrength());
             }
-        }
 
-        // Blank out the rest
-        Position me = new Position(map.getPosition(b, c));
-        for (int i=reply_index; i<scale_copy; i++)
+            total_strength += links[i].getStrength();
+        }
+        
+        // Now we know the total position and strength, we can work out the mean
+        float[] pos = new float[dimensions];
+        for (int d=0; d<pos.length; d++)
         {
-            reply[i] = me;
+            pos[d] = total_pos[d] / total_strength;
         }
 
-        return reply;
+        return new Position(pos);
+    }
+
+    /**
+     * Returns the la.
+     * @return LinkArray
+     */
+    public LinkArray getLinkArray()
+    {
+        return la;
+    }
+
+    /**
+     * Sets the la.
+     * @param la The la to set
+     */
+    public void setLinkArray(LinkArray la)
+    {
+        this.la = la;
     }
 
     /** The number of positions given to the best matching link */

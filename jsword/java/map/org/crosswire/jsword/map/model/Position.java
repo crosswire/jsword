@@ -31,26 +31,26 @@ import java.io.Serializable;
 public class Position implements Serializable
 {
     /**
-    * Basic constructor
-    */
+     * Basic constructor
+     */
     public Position(float[] pos)
     {
         this.pos = pos;
     }
 
     /**
-    * Accessor for the array of positions
-    * @return The array of positions
-    */
+     * Accessor for the array of positions
+     * @return The array of positions
+     */
     public float[] getPosition()
     {
         return pos;
     }
 
     /**
-    * Accessor for the array of positions
-    * @return The array of positions
-    */
+     * Accessor for the array of positions
+     * @return The array of positions
+     */
     public void setPosition(float[] pos)
     {
         this.pos = pos;

@@ -1,7 +1,13 @@
 
 package org.crosswire.jsword.map.model;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.io.Serializable;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
@@ -17,6 +23,11 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.XMLOutputter;
 
 /**
  * LinkArray contains a set of link chapters for each chapter in the Bible.
@@ -56,14 +67,135 @@ public class LinkArray implements Serializable
         this.bible = bible;
         engine = new Matcher(bible);
 
-        links = new Link[Books.versesInBible()][][];
+        links = new Link[Books.booksInBible()+1][][];
 
-        for (int b=1; b<=Books.versesInBible(); b++)
+        for (int b=1; b<=Books.booksInBible(); b++)
         {
-            links[b] = new Link[Books.chaptersInBook(b)][];
+            links[b] = new Link[Books.chaptersInBook(b)+1][];
+        }
+    }
+
+    /**
+     * Save link data to XML as a stream.
+     */
+    public void load(Reader out) throws IOException
+    {
+        try
+        {
+            SAXBuilder builder = new SAXBuilder();
+            Document doc = builder.build(out);
+            Element root = doc.getRootElement();
+            fromXML(root);
+        }
+        catch (JDOMException ex)
+        {
+            throw new IOException(ex.getMessage());
+        }
+    }
+
+    /**
+     * Save link data to XML as a stream.
+     */
+    public void save(Writer out) throws IOException
+    {
+        Element root = toXML();
+        Document doc = new Document(root);
+        XMLOutputter outputter = new XMLOutputter();
+        outputter.setIndent(2);
+        outputter.setNewlines(true);
+        outputter.output(doc, out);
+    }
+
+    /**
+     * Generate links from an XML representation.
+     * @param root The root 'links' element
+     */
+    public void fromXML(Element elinks) throws JDOMException
+    {
+        if (!elinks.getName().equals("links"))
+            throw new JDOMException("root element is not called 'links'");
+
+        List ebs = elinks.getChildren("book");
+        Iterator bit = ebs.iterator();
+        while (bit.hasNext())
+        {
+            Element eb = (Element) bit.next();
+            int b = Integer.parseInt(eb.getAttributeValue("num"));
+            
+            List ecs = eb.getChildren("chapter");
+            Iterator cit = ecs.iterator();
+            while (cit.hasNext())
+            {
+                Element ec = (Element) cit.next();
+                int c = Integer.parseInt(ec.getAttributeValue("num"));
+
+                List ls = new ArrayList();
+
+                List els = ec.getChildren("link");
+                Iterator lit = els.iterator();
+                while (lit.hasNext())
+                {
+                    Element el = (Element) lit.next();
+                    int db = Integer.parseInt(el.getAttributeValue("book"));
+                    int dc = Integer.parseInt(el.getAttributeValue("chapter"));
+                    int dr = Integer.parseInt(el.getAttributeValue("rating"));
+                    Link l = new Link(db, dc, dr);
+                    ls.add(l);
+                }
+
+                links[b][c] = (Link[]) ls.toArray(new Link[ls.size()]);
+            }
+        }
+    }
+
+    /**
+     * Save link data to XML as a JDOM tree.
+     */
+    public Element toXML()
+    {
+        Element elinks = new Element("links");
+
+        try
+        {
+            for (int b=1; b<=Books.booksInBible(); b++)
+            {
+                Element eb = new Element("book");
+                eb.setAttribute("num", ""+b);
+                eb.setAttribute("name", Books.getShortBookName(b));
+                elinks.addContent(eb);
+
+                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                {
+                    Element ec = new Element("chapter");
+                    ec.setAttribute("num", ""+c);
+                    eb.addContent(ec);
+                    Link[] export = links[b][c];
+                    for (int i=0; export!=null && i<export.length; i++)
+                    {
+                        Link l = export[i];
+                        int dbook = l.getDestinationBook();
+                        int dchap = l.getDestinationChapter();
+
+                        Verse start = new Verse(dbook, dchap, 1);
+                        Verse end = new Verse(dbook, dchap, Books.versesInChapter(dbook, dchap));
+                        VerseRange chap = new VerseRange(start, end);
+
+                        Element el = new Element("link");
+                        el.setAttribute("book", ""+dbook);
+                        el.setAttribute("chapter", ""+dchap);
+                        el.setAttribute("name", chap.getName());
+                        el.setAttribute("rating", ""+l.getStrength());
+                        ec.addContent(el);
+                    }
+                }
+            }
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
         }
 
-        cacheAll();
+        return elinks;
     }
 
     /**
@@ -72,7 +204,7 @@ public class LinkArray implements Serializable
     public void cacheAll() throws NoSuchVerseException, BookException, SearchException
     {
         // Create the array of Nodes
-        for (int b=1; b<=Books.versesInBible(); b++)
+        for (int b=1; b<=Books.booksInBible(); b++)
         {
             for (int c=1; c<=Books.chaptersInBook(b); c++)
             {
@@ -127,6 +259,8 @@ public class LinkArray implements Serializable
                 int strength = total.getTallyOf(loop);
                 links[b][c][i] = new Link(loop.getBook(), loop.getChapter(), strength);
             }
+            
+            log.debug("Generated links for: book="+b+" chapter="+c+" #links="+links[b][c].length);
 
             return links[b][c];
         }
@@ -212,11 +346,11 @@ public class LinkArray implements Serializable
     /** The thing we use to generate matches */
     private transient Matcher engine;
 
-    /** The number of links we record for each chapter */
-    public static final int LINKS_PER_CHAPTER = 200;
-
     /** The link data */
     private Link[][][] links;
+
+    /** The number of links we record for each chapter */
+    public static final int LINKS_PER_CHAPTER = 200;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(LinkArray.class);

@@ -10,6 +10,7 @@ import org.crosswire.jsword.map.model.MapListener;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 
@@ -96,7 +97,7 @@ public class MapTableModel extends AbstractTableModel
      */
     public int getRowCount()
     {
-        return vib;
+        return cib;
     }
 
     /**
@@ -147,7 +148,7 @@ public class MapTableModel extends AbstractTableModel
         switch (col)
         {
         case 0:
-            return Verse.class;
+            return VerseRange.class;
         case 1:
         case 2:
             return Integer.class;
@@ -181,25 +182,52 @@ public class MapTableModel extends AbstractTableModel
     {
         try
         {
-            Verse v = new Verse(row+1);
-    
+            // convert the row number (=verse ordinal - 1)
+            // to a book and chapter number.
+            int count = row + 1;
+            int b = 1;
+            int c = 1;
+            while (b <= Books.booksInBible())
+            {
+                if (count <= Books.chaptersInBook(b))
+                {
+                    c = count;
+                    break;
+                }
+
+                count -= Books.chaptersInBook(b);
+                b++;
+            }
+
             switch (col)
             {
             case 0:
-                return v;
+                VerseRange vr = new VerseRange(new Verse(b, c, 1), new Verse(b, c, Books.versesInChapter(b, c)));
+                return vr;
             case 1:
-                return new Integer(v.getBook());
+                return new Integer(b);
             case 2:
-                return new Integer(v.getChapter());
+                return new Integer(c);
             default:
-                float f = map.getPositionDimension(v.getBook(), v.getChapter(), col-1);
+                float f = map.getPositionDimension(b, c, col-3);
                 return new Float(f);
             }
         }
         catch (NoSuchVerseException ex)
         {
             Reporter.informUser(this, ex);
-            return "Error";
+
+            switch (col)
+            {
+            case 0:
+                return new VerseRange();
+            case 1:
+                return new Integer(0);
+            case 2:
+                return new Integer(0);
+            default:
+                return new Float(0.0f);
+            }
         }
     }
 
@@ -234,7 +262,7 @@ public class MapTableModel extends AbstractTableModel
     private Map map;
 
     /** The number of rows */
-    private static int vib = Books.versesInBible();
+    private static int cib = Books.chaptersInBible();
 
     /** The number of columns */
     private static int cols;

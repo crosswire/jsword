@@ -30,46 +30,22 @@ public abstract class AbstractRule implements Rule
     /**
      * We sometimes need to take a single reply and multiply it up
      * according to the current scale.
-     * @param single The single result to populate an array with
-     * @return A suitably filled array of scale length
+     * @see org.crosswire.jsword.map.model.Rule#getScaledPosition(Map, int, int)
      */
-    public Position[] scale(Position single)
+    public Position[] getScaledPosition(Map map, int book, int chapter)
     {
-        int scale_copy = scale;
+        int scale = getScale();
+        if (scale == 0)
+        {
+            return new Position[0];
+        }
 
-        Position[] reply = new Position[scale_copy];
-        for (int i=0; i<scale_copy; i++)
+        Position single = getDesiredPosition(map, book, chapter);
+
+        Position[] reply = new Position[scale];
+        for (int i=0; i<scale; i++)
         {
             reply[i] = single;
-        }
-
-        return reply;
-    }
-
-    /**
-     * We sometimes need to take a single reply and multiply it up
-     * according to the current scale.
-     * @param single The single result to populate an array with
-     * @return A suitably filled array of scale length
-     */
-    public Position[] scale(Position[] array)
-    {
-        int scale_copy = scale;
-
-        if (array.length == scale_copy)
-        {
-            return array;
-        }
-
-        Position[] reply = new Position[scale_copy];
-
-        int array_index = 0;
-        for (int i=0; i<scale_copy; i++)
-        {
-            reply[i] = array[array_index];
-            array_index++;
-            if (array_index >= array.length)
-                array_index = 0;
         }
 
         return reply;
@@ -98,5 +74,5 @@ public abstract class AbstractRule implements Rule
     }
 
     /** The length of the desired position array */
-    protected int scale = 50;
+    private int scale = 0;
 }

@@ -189,7 +189,7 @@ public class MapperPane extends JPanel implements Scrollable
      */
     private int[] getPosition(int book, int chapter)
     {
-        float[] fpos = map.getPosition(book, chapter);
+        float[] fpos = map.getPositionArrayCopy(book, chapter);
         return translate(fpos);
     }
 

@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -40,8 +41,8 @@ import org.crosswire.jsword.map.model.Rule;
 public class RuleSlider extends JPanel
 {
     /**
-    * Basic constructor
-    */
+     * Basic constructor
+     */
     public RuleSlider(Rule rule)
     {
         this.rule = rule;
@@ -51,12 +52,16 @@ public class RuleSlider extends JPanel
         String fullname = rule.getClass().getName();
         int last_dot = fullname.lastIndexOf('.');
         if (last_dot == -1) last_dot = 0;
-        bdr_rule.setTitle(fullname.substring(last_dot+1));
+        title = fullname.substring(last_dot+1);
+        bdr_rule.setTitle(title);
+
+        sdr_rule.setValue(rule.getScale());
+        txt_rule.setText(""+rule.getScale());
     }
 
     /**
-    * Create the GUI
-    */
+     * Create the GUI
+     */
     private void jbInit()
     {
         bdr_rule = BorderFactory.createTitledBorder("Rule");
@@ -71,19 +76,31 @@ public class RuleSlider extends JPanel
         sdr_rule.setMajorTickSpacing(32);
         sdr_rule.setMaximum(256);
         sdr_rule.setOrientation(JSlider.HORIZONTAL);
+        sdr_rule.setValue(0);
+
+        txt_rule.setText("256");
+        txt_rule.setEditable(false);
 
         this.setLayout(new BorderLayout());
         this.setBorder(bdr_rule);
         this.add(sdr_rule, BorderLayout.CENTER);
+        this.add(txt_rule, BorderLayout.EAST);
     }
 
     /**
-    * When someone slides the slider
-    */
+     * When someone slides the slider
+     */
     protected void changed()
     {
         rule.setScale(sdr_rule.getValue());
-        log.info(bdr_rule.getTitle()+": "+rule.getScale());
+
+        int check = rule.getScale();
+        if (check != sdr_rule.getValue())
+            sdr_rule.setValue(check);
+
+        txt_rule.setText(""+check);
+
+        log.info(title+": "+check);
     }
 
     /** The rule that we notify of any changes */
@@ -91,6 +108,8 @@ public class RuleSlider extends JPanel
 
     /* GUI Components */
     private JSlider sdr_rule = new JSlider();
+    private JTextField txt_rule = new JTextField(3);
+    private String title = "-";
 
     private TitledBorder bdr_rule;
 

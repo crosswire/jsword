@@ -82,7 +82,7 @@ public class TestMap extends TestCase
 
     public void testAverage() throws Exception
     {
-        Position ave = Map.average(ar);
+        Position ave = PositionUtil.average(ar, 2);
         assertEquals(ave.pos[0], 5F, 0F);
         assertEquals(ave.pos[1], 5F, 0F);
         assertEquals(ave.pos.length, 2);
