@@ -1,8 +1,10 @@
 package org.crosswire.common.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Some utils to help work with Collections.
@@ -38,13 +40,28 @@ public class CollectionUtil
     }
 
     /**
-     * Create a List (actually an ArrayList) from an Iterator.
+     * Create a List from an Iterator.
      * @param it The source of data for the list
      * @return List
      */
     public static List createList(Iterator it)
     {
         List reply = new ArrayList();
+        while (it.hasNext())
+        {
+            reply.add(it.next());
+        }
+
+        return reply;
+    }
+    /**
+     * Create a Set from an Iterator.
+     * @param it The source of data for the list
+     * @return the created set
+     */
+    public static Set createSet(Iterator it)
+    {
+        Set reply = new HashSet();
         while (it.hasNext())
         {
             reply.add(it.next());

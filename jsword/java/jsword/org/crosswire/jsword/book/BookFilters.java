@@ -257,4 +257,18 @@ public class BookFilters
             }
         };
     }
+
+    /**
+     * A filter that accepts Books that match either of two criteria.
+     */
+    public static BookFilter getBooksByDriver(final BookDriver driver)
+    {
+        return new BookFilter()
+        {
+            public boolean test(Book book)
+            {
+                return book.getDriver() == driver;
+            }
+        };
+    }
 }

@@ -53,7 +53,14 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public SwordBookDriver()
     {
-        log.debug("Starting Sword drivers"); //$NON-NLS-1$
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getName()
+     */
+    public String getDriverName()
+    {
+        return "Sword"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -72,7 +79,6 @@ public class SwordBookDriver extends AbstractBookDriver
             if (mods.isDirectory())
             {
                 String[] bookdirs = mods.list(new CustomFilenameFilter());
-                //String[] bookdirs = NetUtil.listByFile(mods, new CustomURLFilter());
 
                 // Loop through the entries in this mods.d directory
                 for (int i = 0; i < bookdirs.length; i++)
@@ -178,34 +184,13 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * Default windows installation directory
+     * Get the singleton instance of this driver.
+     * @return this driver instance
      */
-    private static final String DIR_WINDOWS_DEFAULT = "C:\\Program Files\\CrossWire\\The SWORD Project"; //$NON-NLS-1$
-
-    /**
-     * Users config directory for Sword in Unix
-     */
-    private static final String DIR_SWORD_CONF = ".sword"; //$NON-NLS-1$
-
-    /**
-     * Sword global config file
-     */
-    private static final String DIR_UNIX_GLOBAL_CONF = "/etc/sword.conf"; //$NON-NLS-1$
-
-    /**
-     * System property for sword home directory
-     */
-    private static final String PROPERTY_SWORD_HOME = "sword.home"; //$NON-NLS-1$
-
-    /**
-     * Java system property for users home directory
-     */
-    private static final String PROPERTY_USER_HOME = "user.home"; //$NON-NLS-1$
-
-    /**
-     * File prefix for config file
-     */
-    private static final String PREFIX_GLOBALS = "globals."; //$NON-NLS-1$
+    public static BookDriver instance()
+    {
+        return INSTANCE;
+    }
 
     /**
      * A helper class for the FtpSwordInstaller to tell us that it has copied a
@@ -257,17 +242,10 @@ public class SwordBookDriver extends AbstractBookDriver
             return;
         }
 
-        // First we need to unregister any registered books from ourselves
-        BookDriver[] matches = Books.installed().getDriversByClass(SwordBookDriver.class);
-        for (int i = 0; i < matches.length; i++)
-        {
-            Books.installed().unregisterDriver(matches[i]);
-        }
-
         SwordBookDriver.dirs = newDirs;
 
-        // Now we need to register ourselves
-        Books.installed().registerDriver(new SwordBookDriver());
+        // Now we need to (re)register ourselves
+        Books.installed().registerDriver(INSTANCE);
     }
 
     /**
@@ -434,16 +412,6 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * The directory URL
-     */
-    private static File[] dirs = getDefaultPaths();
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(SwordBookDriver.class);
-
-    /**
      * Check that the directories in the version directory really
      * represent versions.
      */
@@ -458,11 +426,49 @@ public class SwordBookDriver extends AbstractBookDriver
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDriver#getName()
+    /**
+     * Default windows installation directory
      */
-    public String getDriverName()
-    {
-        return "Sword"; //$NON-NLS-1$
-    }
+    private static final String DIR_WINDOWS_DEFAULT = "C:\\Program Files\\CrossWire\\The SWORD Project"; //$NON-NLS-1$
+
+    /**
+     * Users config directory for Sword in Unix
+     */
+    private static final String DIR_SWORD_CONF = ".sword"; //$NON-NLS-1$
+
+    /**
+     * Sword global config file
+     */
+    private static final String DIR_UNIX_GLOBAL_CONF = "/etc/sword.conf"; //$NON-NLS-1$
+
+    /**
+     * System property for sword home directory
+     */
+    private static final String PROPERTY_SWORD_HOME = "sword.home"; //$NON-NLS-1$
+
+    /**
+     * Java system property for users home directory
+     */
+    private static final String PROPERTY_USER_HOME = "user.home"; //$NON-NLS-1$
+
+    /**
+     * File prefix for config file
+     */
+    private static final String PREFIX_GLOBALS = "globals."; //$NON-NLS-1$
+
+    /**
+     * A shared instance of this driver.
+     */
+    private static final BookDriver INSTANCE = new SwordBookDriver();
+
+    /**
+     * The directory URL
+     */
+    private static File[] dirs = getDefaultPaths();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(SwordBookDriver.class);
+
 }

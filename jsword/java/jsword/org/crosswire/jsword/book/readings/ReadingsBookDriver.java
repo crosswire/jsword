@@ -7,6 +7,7 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
@@ -64,9 +65,13 @@ public class ReadingsBookDriver extends AbstractBookDriver
     }
 
     /**
-     * The meta data array
+     * Get the singleton instance of this driver.
+     * @return this driver instance
      */
-    private Book[] books;
+    public static BookDriver instance()
+    {
+        return INSTANCE;
+    }
 
     /**
      * Get a list of the available readings sets
@@ -116,9 +121,19 @@ public class ReadingsBookDriver extends AbstractBookDriver
     }
 
     /**
+     * The meta data array
+     */
+    private Book[] books;
+
+    /**
      * Resources subdir for readings sets
      */
     public static final String DIR_READINGS = "readings"; //$NON-NLS-1$
+
+    /**
+     * A shared instance of this driver.
+     */
+    private static final BookDriver INSTANCE = new ReadingsBookDriver();
 
     /**
      * The current readings set

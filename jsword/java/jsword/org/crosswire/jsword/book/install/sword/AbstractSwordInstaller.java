@@ -245,7 +245,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     {
         // We need a sword book driver so the installer can use the driver
         // name to use in deciding where to put the index.
-        BookDriver fake = new SwordBookDriver();
+        BookDriver fake = SwordBookDriver.instance();
 
         entries.clear();
 

@@ -1,9 +1,12 @@
 package org.crosswire.jsword.book;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.util.ClassUtil;
@@ -48,7 +51,7 @@ public class Books implements BookList
     private Books()
     {
         books = new ArrayList();
-        drivers = new ArrayList();
+        drivers = new HashSet();
         listeners = new EventListenerList();
         threaded = false;
 
@@ -191,9 +194,11 @@ public class Books implements BookList
     {
         //log.debug("registering book: "+bmd.getName());
 
-        books.add(book);
-
-        fireBooksChanged(instance, book, true);
+        if (!books.contains(book))
+        {
+            books.add(book);
+            fireBooksChanged(instance, book, true);
+        }
     }
 
     /**
@@ -219,24 +224,44 @@ public class Books implements BookList
     }
 
     /**
-     * Add to the list of drivers
+     * Register the driver, adding its books to the list. Any books that this driver
+     * used, but not any more are removed. This can be called repeatedly to re-register
+     * the driver.
      * @param driver The BookDriver to add
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException
     {
         log.debug("begin registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
 
-        if (drivers.contains(driver))
-        {
-            throw new BookException(Msg.DUPLICATE_DRIVER);
-        }
-
         drivers.add(driver);
 
+        // Go through all the books and add all the new ones.
+        // Remove those that are not known to the driver, but used to be.
         Book[] bookArray = driver.getBooks();
+        Set current = CollectionUtil.createSet(new BookFilterIterator(getBooks().iterator(), BookFilters.getBooksByDriver(driver)));
+
         for (int j = 0; j < bookArray.length; j++)
         {
-            addBook(bookArray[j]);
+            Book b = bookArray[j];
+            if (current.contains(b))
+            {
+                // Since it was already in there, we don't add it.
+                // By removing it from current we will be left with
+                // what is not now known by the driver.
+                current.remove(b);
+            }
+            else
+            {
+                addBook(bookArray[j]);
+            }
+        }
+        
+        // Remove the books from the previous version of the driver
+        // that are not in this version.
+        Iterator iter = current.iterator();
+        while (iter.hasNext())
+        {
+            removeBook((Book)iter.next());
         }
 
         log.debug("end registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
@@ -371,7 +396,9 @@ public class Books implements BookList
 
                 try
                 {
-                    BookDriver driver = (BookDriver) types[i].newInstance();
+                    Method driverInstance = types[i].getMethod("instance", new Class[0]); //$NON-NLS-1$
+//                    Object retval = driverInstance.invoke(null, new Object[0]);                   
+                    BookDriver driver = (BookDriver) driverInstance.invoke(null, new Object[0]);//types[i].newInstance();
                     registerDriver(driver);
                 }
                 catch (Exception ex)
@@ -395,7 +422,7 @@ public class Books implements BookList
     /**
      * An array of BookDrivers
      */
-    private List drivers;
+    private Set drivers;
 
     /**
      * The list of listeners
