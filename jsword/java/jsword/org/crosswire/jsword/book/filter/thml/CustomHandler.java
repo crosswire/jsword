@@ -175,8 +175,8 @@ public class CustomHandler extends DefaultHandler
     
     static {
         Tag[] tags = new Tag[]
-        	{
-            	new ATag(),
+            {
+                new ATag(),
                 new BlockquoteTag(),
                 new BrTag(),
                 new BTag(),
@@ -217,7 +217,7 @@ public class CustomHandler extends DefaultHandler
                 new IgnoreTag("span"), //$NON-NLS-1$
                 new IgnoreTag("dir"), //$NON-NLS-1$
                 new IgnoreTag("pre"), //$NON-NLS-1$
-        	};
+            };
         for (int i = 0; i < tags.length; i++)
         {
             Tag t = tags[i];

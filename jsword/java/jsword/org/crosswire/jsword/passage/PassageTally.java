@@ -177,7 +177,7 @@ public class PassageTally extends AbstractPassage
         {
             if (order == ORDER_BIBLICAL)
             {
-                Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
+                Iterator it = rangeIterator(RestrictionType.NONE);
                 Verse current = null;
                 while (it.hasNext())
                 {
@@ -186,7 +186,7 @@ public class PassageTally extends AbstractPassage
 
                     if (it.hasNext())
                     {
-                        retcode.append(PassageConstants.REF_PREF_DELIM);
+                        retcode.append(AbstractPassage.REF_PREF_DELIM);
                     }
 
                     current = range.getStart();
@@ -213,7 +213,7 @@ public class PassageTally extends AbstractPassage
 
                     if (it.hasNext() && count < max_count)
                     {
-                        retcode.append(PassageConstants.REF_PREF_DELIM);
+                        retcode.append(AbstractPassage.REF_PREF_DELIM);
                     }
                 }
             }
@@ -264,7 +264,7 @@ public class PassageTally extends AbstractPassage
 
                 if (it.hasNext() && count < max_count)
                 {
-                    retcode.append(PassageConstants.REF_PREF_DELIM);
+                    retcode.append(AbstractPassage.REF_PREF_DELIM);
                 }
             }
         }
@@ -296,7 +296,7 @@ public class PassageTally extends AbstractPassage
      * Iterate through the range elements in the current sort order
      * @return A range Iterator
      */
-    public Iterator rangeIterator(int restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         if (order == ORDER_BIBLICAL)
         {
@@ -619,7 +619,7 @@ public class PassageTally extends AbstractPassage
      * @param restrict How should we restrict the blurring?
      * @see Passage
      */
-    public void blur(int verses, int restrict)
+    public void blur(int verses, RestrictionType restrict)
     {
         optimizeWrites();
 
@@ -630,21 +630,21 @@ public class PassageTally extends AbstractPassage
             throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
         }
 
-        if (restrict != PassageConstants.RESTRICT_NONE)
+        if (!restrict.equals(RestrictionType.NONE))
         {
             log.warn("Restrict=" + restrict + " is not properly supported."); //$NON-NLS-1$ //$NON-NLS-2$
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version
             PassageTally temp = (PassageTally) this.clone();
-            Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
+            Iterator it = temp.rangeIterator(RestrictionType.NONE);
 
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();
                 for (int i = 0; i <= verses; i++)
                 {
-                    add(new VerseRange(range, i, i, restrict));
+                    add(restrict.blur(range, i, i));
                 }
             }
         }
@@ -859,7 +859,7 @@ public class PassageTally extends AbstractPassage
             catch (NoSuchVerseException ex)
             {
                 assert false : ex;
-                return new Verse();
+                return Verse.DEFAULT;
             }
         }
 
@@ -933,7 +933,7 @@ public class PassageTally extends AbstractPassage
             catch (NoSuchVerseException ex)
             {
                 assert false : ex;
-                return new Verse();
+                return Verse.DEFAULT;
             }
         }
 
@@ -1028,7 +1028,7 @@ public class PassageTally extends AbstractPassage
         {
             TreeSet output = new TreeSet();
 
-            Iterator rit = new VerseRangeIterator(vit, PassageConstants.RESTRICT_NONE);
+            Iterator rit = new VerseRangeIterator(vit, RestrictionType.NONE);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();

@@ -34,74 +34,6 @@ public class PassageUtil
     }
 
     /**
-     * The default Blur settings. This is not explicitly used by any of
-     * the blur methods. It simply provides a convienient place to store
-     * a default blur setting if desired.
-     * @param value The new default blur setting
-     */
-    public static void setBlurRestriction(int value)
-    {
-        if (!PassageUtil.isValidBlurRestriction(value))
-        {
-            throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
-        }
-
-        blur = value;
-    }
-
-    /**
-     * The default Blur settings. This is not explicitly used by any of the
-     * blur methods. It simply provides a convienient place to store a default
-     * blur setting if desired.
-     * @return The current default blur setting
-     */
-    public static int getBlurRestriction()
-    {
-        return blur;
-    }
-
-    /**
-     * Is the given restriction a valid one?
-     * @param test The restriction to be tested for validity
-     * @return True if the number is OK, False otherwise
-     */
-    public static final boolean isValidBlurRestriction(int test)
-    {
-        switch (test)
-        {
-        case PassageConstants.RESTRICT_BOOK:
-        case PassageConstants.RESTRICT_CHAPTER:
-        case PassageConstants.RESTRICT_NONE:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
-     * Is the given accuracy a valid one?
-     * @param test The accuracy to be tested for validity
-     * @return True if the number is OK, False otherwise
-     */
-    public static final boolean isValidAccuracy(int test)
-    {
-        switch (test)
-        {
-        case PassageConstants.ACCURACY_BOOK_VERSE:
-        case PassageConstants.ACCURACY_BOOK_CHAPTER:
-        case PassageConstants.ACCURACY_BOOK_ONLY:
-        case PassageConstants.ACCURACY_CHAPTER_VERSE:
-        case PassageConstants.ACCURACY_NUMBER_ONLY:
-        case PassageConstants.ACCURACY_NONE:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
      * Do we remember the original string used to configure us?
      * @param persistentNaming True to keep the old string
      *        False (default) to generate a new better one
@@ -134,8 +66,4 @@ public class PassageUtil
      */
     private static boolean persistentNaming = getDefaultPersistentNaming();
 
-    /**
-     * The blur restriction
-     */
-    private static int blur = PassageConstants.RESTRICT_CHAPTER;
 }

@@ -325,7 +325,7 @@ public class PassageSet implements SortedSet
     /**
      * What restrictions are we using which dividing the passage up
      */
-    private static int restrict = PassageConstants.RESTRICT_CHAPTER;
+    private static RestrictionType restrict = RestrictionType.CHAPTER;
 
     /**
      * The real store of data

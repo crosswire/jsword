@@ -93,3 +93,7 @@ BookData Display
   other lemma values
   morph values
 - Switch to the right dictionary/commentary/... when link is activated
+
+Install
+- Add a language filter
+- Add information on how big a download will be

@@ -13,8 +13,8 @@ import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Element;
@@ -60,7 +60,7 @@ public abstract class PassageAbstractBook extends AbstractBook
 
             // For all the ranges in this Passage
             Passage ref = KeyUtil.getPassage(key);
-            Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
+            Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
             while (rit.hasNext())
             {
@@ -210,7 +210,7 @@ public abstract class PassageAbstractBook extends AbstractBook
     
             // For all the ranges in this Passage
             Passage ref = KeyUtil.getPassage(key);
-            Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
+            Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
     
             while (rit.hasNext())
             {

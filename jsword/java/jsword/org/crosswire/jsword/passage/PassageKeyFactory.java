@@ -259,7 +259,7 @@ public class PassageKeyFactory implements KeyFactory
     {
         // store these locally we use them so often
         int verses = ref.countVerses();
-        int ranges = ref.countRanges(PassageConstants.RESTRICT_NONE);
+        int ranges = ref.countRanges(RestrictionType.NONE);
 
         // the size in bytes of teach storage method
         int bitwise_size = BibleInfo.versesInBible() / 8;
@@ -334,7 +334,7 @@ public class PassageKeyFactory implements KeyFactory
             index += toBinary(buffer, index, ranges, BibleInfo.versesInBible() / 2);
 
             // write the verse ordinals in a loop
-            Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE);
+            Iterator it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();
@@ -401,7 +401,7 @@ public class PassageKeyFactory implements KeyFactory
             {
                 int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
                 int len = fromBinary(buffer, index, BibleInfo.versesInBible());
-                ref.add(new VerseRange(new Verse(ord), len));
+                ref.add(RestrictionType.NONE.toRange(new Verse(ord), len));
             }
             break;
 

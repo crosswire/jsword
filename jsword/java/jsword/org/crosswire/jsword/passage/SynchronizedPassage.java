@@ -165,7 +165,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public synchronized int countRanges(int restrict)
+    public synchronized int countRanges(RestrictionType restrict)
     {
         return ref.countRanges(restrict);
     }
@@ -181,7 +181,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
      */
-    public synchronized Passage trimRanges(int count, int restrict)
+    public synchronized Passage trimRanges(int count, RestrictionType restrict)
     {
         return ref.trimRanges(count, restrict);
     }
@@ -221,7 +221,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public synchronized VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public synchronized VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException
     {
         return ref.getRangeAt(offset, restrict);
     }
@@ -229,7 +229,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public synchronized Iterator rangeIterator(int restrict)
+    public synchronized Iterator rangeIterator(RestrictionType restrict)
     {
         return ref.rangeIterator(restrict);
     }
@@ -277,9 +277,9 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public synchronized void blur(int by, int bounds)
+    public synchronized void blur(int by, RestrictionType restrict)
     {
-        ref.blur(by, bounds);
+        ref.blur(by, restrict);
     }
 
     /* (non-Javadoc)

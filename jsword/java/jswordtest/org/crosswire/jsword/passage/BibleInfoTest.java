@@ -3,6 +3,8 @@ package org.crosswire.jsword.passage;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.book.CaseType;
+
 /**
  * JUnit Test.
  * 
@@ -34,41 +36,32 @@ public class BibleInfoTest extends TestCase
         super(s);
     }
 
-    private int stored_case;
+    private CaseType storedCase;
 
     protected void setUp()
     {
-        stored_case = BibleInfo.getCase();
+        storedCase = BibleInfo.getDefaultCase();
     }
 
     protected void tearDown()
     {
-        BibleInfo.setCase(stored_case);
+        BibleInfo.setCase(storedCase);
     }
 
     public void testCase() throws Exception
     {
-        BibleInfo.setCase(PassageConstants.CASE_LOWER);
-        assertEquals(BibleInfo.getCase(), PassageConstants.CASE_LOWER);
+        BibleInfo.setCase(CaseType.LOWER);
+        assertEquals(BibleInfo.getDefaultCase(), CaseType.LOWER);
 
-        BibleInfo.setCase(PassageConstants.CASE_UPPER);
-        assertEquals(BibleInfo.getCase(), PassageConstants.CASE_UPPER);
+        BibleInfo.setCase(CaseType.UPPER);
+        assertEquals(BibleInfo.getDefaultCase(), CaseType.UPPER);
 
-        BibleInfo.setCase(PassageConstants.CASE_SENTANCE);
-        assertEquals(BibleInfo.getCase(), PassageConstants.CASE_SENTANCE);
-
-        try
-        {
-            BibleInfo.setCase(PassageConstants.CASE_MIXED);
-            fail();
-        }
-        catch (IllegalArgumentException ex)
-        {
-        }
+        BibleInfo.setCase(CaseType.SENTENCE);
+        assertEquals(BibleInfo.getDefaultCase(), CaseType.SENTENCE);
 
         try
         {
-            BibleInfo.setCase(-1);
+            BibleInfo.setCase(CaseType.MIXED);
             fail();
         }
         catch (IllegalArgumentException ex)
@@ -78,15 +71,15 @@ public class BibleInfoTest extends TestCase
 
     public void testGetLongBookName() throws Exception
     {
-        BibleInfo.setCase(PassageConstants.CASE_SENTANCE);
+        BibleInfo.setCase(CaseType.SENTENCE);
         assertEquals(BibleInfo.getLongBookName(1), "Genesis"); //$NON-NLS-1$
         assertEquals(BibleInfo.getLongBookName(66), "Revelation"); //$NON-NLS-1$
 
-        BibleInfo.setCase(PassageConstants.CASE_LOWER);
+        BibleInfo.setCase(CaseType.LOWER);
         assertEquals(BibleInfo.getLongBookName(1), "genesis"); //$NON-NLS-1$
         assertEquals(BibleInfo.getLongBookName(66), "revelation"); //$NON-NLS-1$
 
-        BibleInfo.setCase(PassageConstants.CASE_UPPER);
+        BibleInfo.setCase(CaseType.UPPER);
         assertEquals(BibleInfo.getLongBookName(1), "GENESIS"); //$NON-NLS-1$
         assertEquals(BibleInfo.getLongBookName(66), "REVELATION"); //$NON-NLS-1$
 
@@ -111,7 +104,7 @@ public class BibleInfoTest extends TestCase
 
     public void testGetShortBookName() throws Exception
     {
-        BibleInfo.setCase(PassageConstants.CASE_SENTANCE);
+        BibleInfo.setCase(CaseType.SENTENCE);
         try
         {
             BibleInfo.getShortBookName(0);
@@ -140,7 +133,7 @@ public class BibleInfoTest extends TestCase
         {
         }
 
-        BibleInfo.setCase(PassageConstants.CASE_LOWER);
+        BibleInfo.setCase(CaseType.LOWER);
         try
         {
             BibleInfo.getShortBookName(0);
@@ -169,7 +162,7 @@ public class BibleInfoTest extends TestCase
         {
         }
 
-        BibleInfo.setCase(PassageConstants.CASE_UPPER);
+        BibleInfo.setCase(CaseType.UPPER);
         try
         {
             BibleInfo.getShortBookName(0);
@@ -253,23 +246,12 @@ public class BibleInfoTest extends TestCase
         assertEquals(BibleInfo.getBookNumber("revelations"), 66); //$NON-NLS-1$
         assertEquals(BibleInfo.getBookNumber("rev"), 66); //$NON-NLS-1$
 
-        try
+        if (BibleInfo.getBookNumber("b") != -1) //$NON-NLS-1$
         {
-            BibleInfo.getBookNumber("b"); //$NON-NLS-1$
             fail();
-        }
-        catch (NoSuchVerseException ex)
-        {
         }
 
-        try
-        {
-            BibleInfo.getBookNumber("1"); //$NON-NLS-1$
-            fail();
-        }
-        catch (NoSuchVerseException ex)
-        {
-        }
+        assertEquals(BibleInfo.getBookNumber("1"), -1); //$NON-NLS-1$
     }
 
     public void testIn() throws Exception

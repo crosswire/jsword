@@ -104,7 +104,7 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges(int restrict)
+    public int countRanges(RestrictionType restrict)
     {
         if (ranged != null)
         {
@@ -143,7 +143,7 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator(int restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         if (ranged != null)
         {
@@ -182,7 +182,7 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException
     {
         if (ranged != null)
         {

@@ -177,7 +177,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, int bounds)
+    public void blur(int by, RestrictionType restrict)
     {
         throw new UnsupportedOperationException();
     }

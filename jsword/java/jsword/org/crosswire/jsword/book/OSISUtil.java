@@ -8,6 +8,7 @@ import java.util.List;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseFactory;
 import org.jdom.Element;
 import org.jdom.Parent;
 import org.jdom.Text;
@@ -392,7 +393,7 @@ public class OSISUtil
 
             try
             {
-                return new org.crosswire.jsword.passage.Verse(osisid);
+                return VerseFactory.fromString(osisid);
             }
             catch (NoSuchVerseException ex)
             {

@@ -70,12 +70,12 @@ public class PassageTally2Test extends TestCase
 
     protected void setUp() throws Exception
     {
-        gen11_1 = new VerseRange(new Verse(1, 1, 1), 1);
-        gen11_2 = new VerseRange(new Verse(1, 1, 1), 2);
-        gen12_1 = new VerseRange(new Verse(1, 1, 2), 1);
-        exo21_1 = new VerseRange(new Verse(2, 2, 1), 1);
-        exo21_2 = new VerseRange(new Verse(2, 2, 1), 2);
-        exo22_1 = new VerseRange(new Verse(2, 2, 2), 1);
+        gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 2);
+        gen12_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 2), 1);
+        exo21_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 1);
+        exo21_2 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 2);
+        exo22_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 2), 1);
 
         gen11 = new Verse(1, 1, 1);
         gen12 = new Verse(1, 1, 2);
@@ -146,12 +146,12 @@ public class PassageTally2Test extends TestCase
         temp = (PassageTally) tally.clone();
         temp.addPassageListener(li);
         assertTrue(li.check(0, 0, 0));
-        temp.add(new Verse("Gen 1:7")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:7")); //$NON-NLS-1$
         assertTrue(li.check(1, 0, 0));
-        temp.add(new Verse("Gen 1:9")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:9")); //$NON-NLS-1$
         assertTrue(li.check(2, 0, 0));
         temp.removePassageListener(li);
-        temp.add(new Verse("Gen 1:11")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:11")); //$NON-NLS-1$
         assertTrue(li.check(2, 0, 0));
     }
 
@@ -167,17 +167,17 @@ public class PassageTally2Test extends TestCase
     {
         Iterator it = tally.iterator();
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:5")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:3")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:7")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:7")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 2:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 2:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 3:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 3:1")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
         it = empty.iterator();
         assertTrue(!it.hasNext());
@@ -185,21 +185,21 @@ public class PassageTally2Test extends TestCase
 
     public void testRangeIterator() throws Exception
     {
-        Iterator it = tally.rangeIterator(PassageConstants.RESTRICT_NONE);
+        Iterator it = tally.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:5")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:3")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:7")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:7")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 2:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 2:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 3:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 3:1")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
-        it = empty.rangeIterator(PassageConstants.RESTRICT_NONE);
+        it = empty.rangeIterator(RestrictionType.NONE);
         assertTrue(!it.hasNext());
     }
 
@@ -217,8 +217,8 @@ public class PassageTally2Test extends TestCase
 
     public void testCountRanges() throws Exception
     {
-        assertEquals(tally.countRanges(PassageConstants.RESTRICT_NONE), 6);
-        assertEquals(empty.countRanges(PassageConstants.RESTRICT_NONE), 0);
+        assertEquals(tally.countRanges(RestrictionType.NONE), 6);
+        assertEquals(empty.countRanges(RestrictionType.NONE), 0);
     }
 
     public void testContainsVerse() throws Exception
@@ -242,12 +242,12 @@ public class PassageTally2Test extends TestCase
     public void testAdd() throws Exception
     {
         temp = (PassageTally) tally.clone();
-        temp.add(new Verse("Gen 1:2")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:2")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 7, 2:1, 3:1"); //$NON-NLS-1$
-        temp.add(new Verse("Gen 1:4")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1"); //$NON-NLS-1$
         temp = (PassageTally) tally.clone();
-        temp.add(new VerseRange("Gen 1:2-4")); //$NON-NLS-1$
+        temp.add(VerseRangeFactory.fromString("Gen 1:2-4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 2, 4, 7, 2:1, 3:1"); //$NON-NLS-1$
         try
         {
@@ -262,11 +262,11 @@ public class PassageTally2Test extends TestCase
     public void testUnAdd() throws Exception
     {
         temp = (PassageTally) tally.clone();
-        temp.unAdd(new Verse("Gen 1:5")); //$NON-NLS-1$
+        temp.unAdd(VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1"); //$NON-NLS-1$
-        temp.unAdd(new Verse("Gen 1:5")); //$NON-NLS-1$
+        temp.unAdd(VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 3, 7, 2:1, 3:1"); //$NON-NLS-1$
-        temp.unAdd(new Verse("Gen 1:5")); //$NON-NLS-1$
+        temp.unAdd(VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 3, 7, 2:1, 3:1"); //$NON-NLS-1$
     }
 
@@ -292,7 +292,7 @@ public class PassageTally2Test extends TestCase
     public void testBlur() throws Exception
     {
         temp = (PassageTally) tally.clone();
-        temp.blur(1, PassageConstants.RESTRICT_NONE);
+        temp.blur(1, RestrictionType.NONE);
         assertEquals(temp.getNameAndTally(), "Gen 1:1 (100%), Gen 1:2 (100%), Gen 1:4 (75%), Gen 1:5 (75%), Gen 1:6 (75%), Gen 1:3 (50%), Gen 1:7 (50%), Gen 2:1 (50%), Gen 3:1 (50%), Gen 1:8 (25%), Gen 1:31 (25%), Gen 2:2 (25%), Gen 2:25 (25%), Gen 3:2 (25%)"); //$NON-NLS-1$
         //temp = (PassageTally) tally.clone();
         //temp.blur(1, Verse.RESTRICT_CHAPTER);

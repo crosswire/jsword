@@ -131,8 +131,8 @@ public interface Key extends Comparable
      * Widen the range of the verses/keys in this list. This is primarily for
      * "find x within n verses of y" type applications.
      * @param by The number of verses/keys to widen by
-     * @param bounds How should we restrict the blurring?
+     * @param restrict How should we restrict the blurring?
      * @see Passage
      */
-    public void blur(int by, int bounds);
+    public void blur(int by, RestrictionType restrict);
 }

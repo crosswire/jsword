@@ -104,7 +104,7 @@ import org.crosswire.jsword.passage.Verse;
  *     word. (8k for the whole Bible)
  * <li>Intra-Word Punctuation: Examples "-',". Examples of words that use
  *     these punctuations: Maher-Shalal-Hash-Baz, Aaron's, 144,000. Watch
- *     out for --. The NIV uses it to join sentances together--Something
+ *     out for --. The NIV uses it to join sentences together--Something
  *     like this. However there is no space between these words. This is
  *     closely linked to-
  * <li>Word Semantics: We could make the words "job", "jobs", and "job's"

@@ -14,8 +14,8 @@ import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * The central interface to all searching.
@@ -83,7 +83,7 @@ public class LocalParser implements Parser
         if (search.isRestricted())
         {
             Key restrict = search.getRestriction();
-            if (restrict != Search.UNRESTRICTED)
+            if (!restrict.equals(Search.UNRESTRICTED))
             {
                 ref.retainAll(restrict);
             }
@@ -102,7 +102,7 @@ public class LocalParser implements Parser
         // log.fine("words="+StringUtil.toString(words));
 
         PassageTally tally = new PassageTally();
-        tally.blur(2, PassageConstants.RESTRICT_NONE);
+        tally.blur(2, RestrictionType.NONE);
 
         for (int i = 0; i < words.length; i++)
         {

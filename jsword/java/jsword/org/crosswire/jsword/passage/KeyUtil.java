@@ -78,13 +78,13 @@ public class KeyUtil
 
         try
         {
-            Verse verse = new Verse(key.getName());
+            Verse verse = VerseFactory.fromString(key.getName());
             return verse;
         }
         catch (NoSuchVerseException ex)
         {
             log.warn("Key can't be a verse: " + key.getName()); //$NON-NLS-1$
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 

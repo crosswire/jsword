@@ -181,7 +181,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges(int restrict)
+    public int countRanges(RestrictionType restrict)
     {
         return ref.countRanges(restrict);
     }
@@ -197,7 +197,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
      */
-    public Passage trimRanges(int count, int restrict)
+    public Passage trimRanges(int count, RestrictionType restrict)
     {
         return ref.trimRanges(count, restrict);
     }
@@ -237,7 +237,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException
     {
         return ref.getRangeAt(offset, restrict);
     }
@@ -245,7 +245,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator(int restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         return ref.rangeIterator(restrict);
     }
@@ -308,7 +308,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, int bounds)
+    public void blur(int by, RestrictionType restrict)
     {
         if (ignore)
         {

@@ -125,7 +125,7 @@ public abstract class AbstractKeyList implements Key
             public void visitLeaf(Key key)
             {
                 buffer.append(key.getName());
-                buffer.append(PassageConstants.REF_PREF_DELIM);
+                buffer.append(AbstractPassage.REF_PREF_DELIM);
             }
         });
 
@@ -133,7 +133,7 @@ public abstract class AbstractKeyList implements Key
         if (reply.length() > 0)
         {
             // strip off the final ", "
-            reply = reply.substring(0, reply.length() - PassageConstants.REF_PREF_DELIM.length());
+            reply = reply.substring(0, reply.length() - AbstractPassage.REF_PREF_DELIM.length());
         }
 
         return reply;
@@ -155,7 +155,7 @@ public abstract class AbstractKeyList implements Key
             public void visitLeaf(Key key)
             {
                 buffer.append(key.getOSISName());
-                buffer.append(PassageConstants.REF_OSIS_DELIM);
+                buffer.append(AbstractPassage.REF_OSIS_DELIM);
             }
         });
 
@@ -163,7 +163,7 @@ public abstract class AbstractKeyList implements Key
         if (reply.length() > 0)
         {
             // strip off the final ", "
-            reply = reply.substring(0, reply.length() - PassageConstants.REF_OSIS_DELIM.length());
+            reply = reply.substring(0, reply.length() - AbstractPassage.REF_OSIS_DELIM.length());
         }
 
         return reply;

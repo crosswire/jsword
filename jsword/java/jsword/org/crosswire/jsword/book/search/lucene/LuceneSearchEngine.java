@@ -30,6 +30,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseFactory;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -103,7 +104,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
             PassageTally tally = new PassageTally();
             for (int i = 0; i < hits.length(); i++)
             {
-                Verse verse = new Verse(hits.doc(i).get(FIELD_NAME));
+                Verse verse = VerseFactory.fromString(hits.doc(i).get(FIELD_NAME));
                 int score = (int) (hits.score(i) * 100);
                 tally.add(verse, score);
             }

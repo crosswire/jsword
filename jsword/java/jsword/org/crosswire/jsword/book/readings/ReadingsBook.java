@@ -20,14 +20,14 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
+import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Element;
@@ -141,7 +141,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                 KeyFactory keyf = PassageKeyFactory.instance();
                 Passage ref = (Passage) keyf.getKey(readings);
 
-                for (Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE); it.hasNext(); )
+                for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext(); )
                 {
                     VerseRange range = (VerseRange) it.next();
 

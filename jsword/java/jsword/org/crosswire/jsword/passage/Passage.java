@@ -94,7 +94,7 @@ public interface Passage extends Key, Serializable, Cloneable
      * @return the number of VerseRanges in this collection
      * @see VerseRange
      */
-    public int countRanges(int restrict);
+    public int countRanges(RestrictionType restrict);
 
     /**
      * Ensures that there are a maximum of <code>count</code> Verses in
@@ -121,7 +121,7 @@ public interface Passage extends Key, Serializable, Cloneable
      * @return A new Passage conatining the remaining verses or null
      * @see VerseRange
      */
-    public Passage trimRanges(int count, int restrict);
+    public Passage trimRanges(int count, RestrictionType restrict);
 
     /**
      * How many books are there in this Passage
@@ -162,16 +162,16 @@ public interface Passage extends Key, Serializable, Cloneable
      * @return The Verse Range
      * @throws ArrayIndexOutOfBoundsException If the offset is out of range
      */
-    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException;
+    public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException;
 
     /**
      * Like verseElements() that iterates over VerseRanges instead of Verses.
      * Exactly the same data will be traversed, however using rangeIterator()
      * will usually give less iterations (and never more)
-     * @param bounds Do we break ranges over chapters
+     * @param restrict Do we break ranges over chapters
      * @return A list enumerator
      */
-    public Iterator rangeIterator(int bounds);
+    public Iterator rangeIterator(RestrictionType restrict);
 
     /**
      * Returns true if this collection contains all the specified Verse

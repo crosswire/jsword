@@ -51,7 +51,6 @@ public class IgnoreTag implements Tag
      */
     public Element processTag(Element ele, Attributes attrs)
     {
-        // FIXME: this is not right
         return null;
     }
 

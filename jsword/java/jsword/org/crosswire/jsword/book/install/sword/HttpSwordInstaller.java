@@ -121,7 +121,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         OutputStream out = null;
         try
         {
-            URL url = new URL("http://" + site + dir + '/' + LIST_DIR + '/' + file);
+            URL url = new URL("http://" + site + dir + '/' + LIST_DIR + '/' + file); //$NON-NLS-1$
             byte[] buf = new byte[4096];
 
             // Check the download directory exists
@@ -131,7 +131,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
             // Download the index file
             out = NetUtil.getOutputStream(dest);
             in = url.openStream();
-            for (int read = 0; -1 != (read = in.read(buf));)
+            for (int read = 0; -1 != (read = in.read(buf)); )
             {
                 out.write(buf, 0, read);
             }
@@ -167,13 +167,13 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
             }
         }
     }
-
+    
     /**
      * Utility to download a file by HTTP from a remote site
-     * @param site The place to download from
-     * @param user The user that does the downloading
-     * @param password The password of the above user
-     * @param dir The directory from which to download the file
+     * @param job
+     * @param site
+     * @param dir
+     * @param destdir
      * @throws InstallException
      */
     protected static void downloadZip(Job job, String site, String dir, URL destdir) throws InstallException
@@ -184,29 +184,29 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         try
         {
             job.setProgress(Msg.JOB_DOWNLOADING.toString());
-            URL zipurl = new URL("http://" + site + dir);
-            File f = File.createTempFile("swd", "zip");
+            URL zipurl = new URL("http://" + site + dir); //$NON-NLS-1$
+            File f = File.createTempFile("swd", "zip"); //$NON-NLS-1$ //$NON-NLS-2$
             out = new FileOutputStream(f);
             in = zipurl.openStream();
             byte[] buf = new byte[4096];
-            for (int count = 0; -1 != (count = in.read(buf));)
+            for (int count = 0; -1 != (count = in.read(buf)); )
             {
                 out.write(buf, 0, count);
             }
             // unpack the zip.
-            log.debug("The file is downlaoded!");
+            log.debug("The file is downlaoded!"); //$NON-NLS-1$
             ZipFile zf = new ZipFile(f);
             Enumeration entries = zf.entries();
             while (entries.hasMoreElements())
             {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
                 String entrypath = entry.getName();
-                log.debug("entry is called " + entrypath);
+                log.debug("entry is called " + entrypath); //$NON-NLS-1$
                 String filename = entrypath.substring(entrypath.lastIndexOf('/') + 1);
                 URL child = NetUtil.lengthenURL(destdir, filename);
                 OutputStream dataOut = NetUtil.getOutputStream(child);
                 InputStream dataIn = zf.getInputStream(entry);
-                for (int count = 0; -1 != (count = dataIn.read(buf));)
+                for (int count = 0; -1 != (count = dataIn.read(buf)); )
                 {
                     dataOut.write(buf, 0, count);
                 }
@@ -289,9 +289,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                     File fulldir = new File(moddir, destname);
                     fulldir.mkdirs();
                     URL desturl = new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
-                    String dir = directory;
                     downloadZip(job, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX, desturl);
-                    String name = sbmd.getInitials();
 
                     job.setProgress(Msg.JOB_CONFIG.toString());
                     File confdir = new File(dldir, SwordConstants.DIR_CONF);
@@ -532,17 +530,17 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     /**
      * The relative path of the dir holding the index file
      */
-    private static final String LIST_DIR = "raw";
+    private static final String LIST_DIR = "raw"; //$NON-NLS-1$
 
     /**
      * The relative path of the dir holding the zip files
      */
-    private static final String PACKAGE_DIR = "packages/rawzip";
+    private static final String PACKAGE_DIR = "packages/rawzip"; //$NON-NLS-1$
 
     /**
      * The suffix of zip modules on this server
      */
-    private static final String ZIP_SUFFIX = ".zip";
+    private static final String ZIP_SUFFIX = ".zip"; //$NON-NLS-1$
 
     /**
      * When we cache a download index
@@ -550,10 +548,10 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     private static final String DOWNLOAD_PREFIX = "download-"; //$NON-NLS-1$
 
     private ArrayList listeners = new ArrayList();
-    private String host;
-    private String directory;
+    protected String host;
+    protected String directory;
 
-    private static final String PROTOCOL_WEB = "web";
+    private static final String PROTOCOL_WEB = "web"; //$NON-NLS-1$
 
     /**
      * The log stream

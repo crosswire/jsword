@@ -14,6 +14,7 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
@@ -51,7 +52,7 @@ import org.jdom.Element;
  * of the verses it gets 'wrong' see generate.log.
  * There are 2 reasons for problems. The RawBook does not take note of
  * double spaces. And we incorrectly capitalize hyphenated words at the
- * beginning of sentances.</p>
+ * beginning of sentences.</p>
  *
  * <p>This is in part converted from the VB code that I wrote ages ago
  * that does asimilar job.</p>
@@ -306,7 +307,7 @@ public class RawBook extends PassageAbstractBook implements Index
                 int caseIdx = caseIdxs[j];
 
                 punc = puncItems.getItem(puncIdx);
-                word = SentanceUtil.setCase(wordItems.getItem(wordIdx), caseIdx);
+                word = CaseType.fromInteger(caseIdx).setCase(wordItems.getItem(wordIdx));
             }
             catch (Exception ex)
             {
@@ -419,7 +420,7 @@ public class RawBook extends PassageAbstractBook implements Index
                     // text.
                     paraInsts.setPara(false, verse);
 
-                    // Chop the sentance into words.
+                    // Chop the sentence into words.
                     String[] textArray = SentanceUtil.tokenize(text);
 
                     // The word index
@@ -433,7 +434,7 @@ public class RawBook extends PassageAbstractBook implements Index
                     puncInsts.setIndexes(puncIndexes, verse);
 
                     // The case index
-                    int[] caseIndexes = SentanceUtil.getCases(wordArray);
+                    int[] caseIndexes = getCases(wordArray);
                     caseInsts.setIndexes(caseIndexes, verse);
                 }
                 else
@@ -443,6 +444,26 @@ public class RawBook extends PassageAbstractBook implements Index
             }
         }
     }
+
+    /**
+     * From a sentence get a list of words (in original order) without
+     * any punctuation, and all in lower case.
+     * @param words an array of words to find punctuation from
+     * @return Array of case definitions
+     */
+    private int[] getCases(String[] words)
+    {
+        int[] retcode = new int[words.length];
+    
+        // Remove the punctuation from the ends of the words.
+        for (int i = 0; i < words.length; i++)
+        {
+            retcode[i] = CaseType.getCase(words[i]).toInteger();
+        }
+    
+        return retcode;
+    }
+
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.local.LocalURLBook#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.WorkListener)

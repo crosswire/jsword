@@ -2,7 +2,7 @@ package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.PassageUtil;
+import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * Alter the Passage by calling blur with a
@@ -40,7 +40,7 @@ public class BlurCommandWord implements CommandWord
 
         try
         {
-            key.blur(Integer.parseInt(word), PassageUtil.getBlurRestriction());
+            key.blur(Integer.parseInt(word), RestrictionType.getDefaultBlurRestriction());
         }
         catch (NumberFormatException ex)
         {

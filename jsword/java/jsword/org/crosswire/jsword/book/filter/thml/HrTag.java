@@ -44,7 +44,6 @@ public class HrTag implements Tag
     public Element processTag(Element ele, Attributes attrs)
     {
         // NOTE(joe): are we right to ignore HR tags in THML?
-        // FIXME(DM): this is not right
         return null;
     }
 }

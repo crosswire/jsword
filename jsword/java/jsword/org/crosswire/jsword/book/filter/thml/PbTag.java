@@ -44,7 +44,6 @@ public class PbTag implements Tag
     public Element processTag(Element ele, Attributes attrs)
     {
         // Only for print edition
-        // FIXME(DM)
         return null;
     }
 }

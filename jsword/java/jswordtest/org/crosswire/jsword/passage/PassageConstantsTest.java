@@ -45,15 +45,15 @@ public class PassageConstantsTest extends TestCase
     public void testAllowedDelims() throws Exception
     {
         // Check that we're not re-using delimitters
-        for (int i=0; i<PassageConstants.VERSE_ALLOWED_DELIMS.length(); i++)
+        for (int i=0; i<AccuracyType.VERSE_ALLOWED_DELIMS.length(); i++)
         {
-            assertEquals(PassageConstants.REF_ALLOWED_DELIMS.indexOf(PassageConstants.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
-            assertEquals(PassageConstants.RANGE_ALLOWED_DELIMS.indexOf(PassageConstants.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
+            assertEquals(AbstractPassage.REF_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
+            assertEquals(VerseRange.RANGE_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
         }
 
-        for (int i=0; i<PassageConstants.REF_ALLOWED_DELIMS.length(); i++)
+        for (int i=0; i<AbstractPassage.REF_ALLOWED_DELIMS.length(); i++)
         {
-            assertEquals(PassageConstants.RANGE_ALLOWED_DELIMS.indexOf(PassageConstants.REF_ALLOWED_DELIMS.charAt(i)), -1);
+            assertEquals(VerseRange.RANGE_ALLOWED_DELIMS.indexOf(AbstractPassage.REF_ALLOWED_DELIMS.charAt(i)), -1);
         }
     }
 }

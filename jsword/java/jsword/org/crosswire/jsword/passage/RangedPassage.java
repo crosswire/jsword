@@ -57,6 +57,7 @@ public class RangedPassage extends AbstractPassage
      */
     protected RangedPassage()
     {
+        store = Collections.synchronizedSortedSet(new TreeSet());
     }
 
     /**
@@ -102,9 +103,9 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges(int restrict)
+    public int countRanges(RestrictionType restrict)
     {
-        if (restrict == PassageConstants.RESTRICT_NONE)
+        if (restrict.equals(RestrictionType.NONE))
         {
             return store.size();
         }
@@ -117,7 +118,7 @@ public class RangedPassage extends AbstractPassage
      */
     public int countVerses()
     {
-        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
+        Iterator it = rangeIterator(RestrictionType.NONE);
         int count = 0;
 
         while (it.hasNext())
@@ -134,15 +135,15 @@ public class RangedPassage extends AbstractPassage
      */
     public Iterator iterator()
     {
-        return new VerseIterator(rangeIterator(PassageConstants.RESTRICT_NONE));
+        return new VerseIterator(rangeIterator(RestrictionType.NONE));
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator(int restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
-        if (restrict == PassageConstants.RESTRICT_NONE)
+        if (restrict.equals(RestrictionType.NONE))
         {
             return store.iterator();
         }
@@ -169,7 +170,7 @@ public class RangedPassage extends AbstractPassage
 
         VerseRange that_range = toVerseRange(obj);
 
-        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
+        Iterator it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext())
         {
             VerseRange this_range = (VerseRange) it.next();
@@ -274,7 +275,7 @@ public class RangedPassage extends AbstractPassage
         Iterator that_it = null;
         if (that instanceof RangedPassage)
         {
-            that_it = that.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
+            that_it = that.rangeIterator(RestrictionType.CHAPTER);
         }
         else
         {
@@ -286,7 +287,7 @@ public class RangedPassage extends AbstractPassage
             VerseRange that_range = toVerseRange(that_it.next());
 
             // go through all the VerseRanges
-            Iterator this_it = rangeIterator(PassageConstants.RESTRICT_NONE);
+            Iterator this_it = rangeIterator(RestrictionType.NONE);
             while (this_it.hasNext())
             {
                 // if this range touches the range to be removed ...
@@ -324,7 +325,7 @@ public class RangedPassage extends AbstractPassage
         VerseRange next = null;
         SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
 
-        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
+        Iterator it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext())
         {
             next = (VerseRange) it.next();
@@ -425,7 +426,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * Simple ctor
          */
-        public VerseRangeIterator(Iterator it, int restrict)
+        public VerseRangeIterator(Iterator it, RestrictionType restrict)
         {
             this.restrict = restrict;
             this.real = it;
@@ -464,35 +465,11 @@ public class RangedPassage extends AbstractPassage
             
             // So we know what is broadly next, however the range might need
             // splitting according to restrict
-            switch (restrict)
+            if (restrict.isSameScope(next.start, next.end))
             {
-            case PassageConstants.RESTRICT_NONE:
                 return replyNext();
-
-            case PassageConstants.RESTRICT_CHAPTER:
-                if (next.isMultipleChapters())
-                {
-                    return splitNext();
-                }
-                else
-                {
-                    return replyNext();
-                }
-
-            case PassageConstants.RESTRICT_BOOK:
-                if (next.isMultipleBooks())
-                {
-                    return splitNext();
-                }
-                else
-                {
-                    return replyNext();
-                }
-
-            default:
-                assert false;
-                return null;
             }
+            return splitNext();
         }
 
         /**
@@ -528,7 +505,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * Where do we break ranges
          */
-        private int restrict;
+        private RestrictionType restrict;
 
         /**
          * Where we read our base ranges from
@@ -572,5 +549,5 @@ public class RangedPassage extends AbstractPassage
     /**
      * The place the real data is stored
      */
-    private transient SortedSet store = Collections.synchronizedSortedSet(new TreeSet());
+    private transient SortedSet store;
 }

@@ -121,12 +121,12 @@ public class PassageParentTst extends TestCase
             empty.optimizeReads();
         }
 
-        gen11_1 = new VerseRange(new Verse(1, 1, 1), 1);
-        gen11_2 = new VerseRange(new Verse(1, 1, 1), 2);
-        gen12_1 = new VerseRange(new Verse(1, 1, 2), 1);
-        exo21_1 = new VerseRange(new Verse(2, 2, 1), 1);
-        exo21_2 = new VerseRange(new Verse(2, 2, 1), 2);
-        exo22_1 = new VerseRange(new Verse(2, 2, 2), 1);
+        gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 2);
+        gen12_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 2), 1);
+        exo21_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 1);
+        exo21_2 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 2);
+        exo22_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 2), 1);
 
         gen11 = new Verse(1, 1, 1);
         gen12 = new Verse(1, 1, 2);
@@ -136,7 +136,7 @@ public class PassageParentTst extends TestCase
         exo22 = new Verse(2, 2, 2);
         exo23 = new Verse(2, 2, 3);
         exo3b = new Verse(2, 3, 11);
-        rev99 = new Verse("Rev 22:21"); //$NON-NLS-1$
+        rev99 = VerseFactory.fromString("Rev 22:21"); //$NON-NLS-1$
     }
 
     protected void tearDown()
@@ -158,14 +158,14 @@ public class PassageParentTst extends TestCase
             temp.addPassageListener(li2);
             assertTrue(li1.check(0, 0, 0));
             assertTrue(li2.check(0, 0, 0));
-            temp.add(new Verse("Gen 1:7")); //$NON-NLS-1$
+            temp.add(VerseFactory.fromString("Gen 1:7")); //$NON-NLS-1$
             assertTrue(li1.check(1, 0, 0));
             assertTrue(li2.check(1, 0, 0));
-            temp.add(new Verse("Gen 1:9")); //$NON-NLS-1$
+            temp.add(VerseFactory.fromString("Gen 1:9")); //$NON-NLS-1$
             assertTrue(li1.check(2, 0, 0));
             assertTrue(li2.check(2, 0, 0));
             temp.removePassageListener(li1);
-            temp.add(new Verse("Gen 1:11")); //$NON-NLS-1$
+            temp.add(VerseFactory.fromString("Gen 1:11")); //$NON-NLS-1$
             assertTrue(li1.check(2, 0, 0));
             assertTrue(li2.check(3, 0, 0));
         }
@@ -178,15 +178,15 @@ public class PassageParentTst extends TestCase
         // exception right now. Maybe we ought to be more thorough at some stage.
 //        for (int i=0; i<12; i++)
         {
-            Iterator it = gen1_135.rangeIterator(PassageConstants.RESTRICT_NONE);
+            Iterator it = gen1_135.rangeIterator(RestrictionType.NONE);
             assertTrue(it.hasNext());
-            assertEquals(it.next(), new VerseRange("Gen 1:1")); //$NON-NLS-1$
+            assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1")); //$NON-NLS-1$
             assertTrue(it.hasNext());
-            assertEquals(it.next(), new VerseRange("Gen 1:3")); //$NON-NLS-1$
+            assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
             assertTrue(it.hasNext());
-            assertEquals(it.next(), new VerseRange("Gen 1:5")); //$NON-NLS-1$
+            assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:5")); //$NON-NLS-1$
             assertTrue(!it.hasNext());
-            it = empty.rangeIterator(PassageConstants.RESTRICT_NONE);
+            it = empty.rangeIterator(RestrictionType.NONE);
             assertTrue(!it.hasNext());
         }
     }
@@ -197,11 +197,11 @@ public class PassageParentTst extends TestCase
         {
             Iterator it = gen1_135.iterator();
             assertTrue(it.hasNext());
-            assertEquals(it.next(), new Verse("Gen 1:1")); //$NON-NLS-1$
+            assertEquals(it.next(), VerseFactory.fromString("Gen 1:1")); //$NON-NLS-1$
             assertTrue(it.hasNext());
-            assertEquals(it.next(), new Verse("Gen 1:3")); //$NON-NLS-1$
+            assertEquals(it.next(), VerseFactory.fromString("Gen 1:3")); //$NON-NLS-1$
             assertTrue(it.hasNext());
-            assertEquals(it.next(), new Verse("Gen 1:5")); //$NON-NLS-1$
+            assertEquals(it.next(), VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
             assertTrue(!it.hasNext());
             it = empty.iterator();
             assertTrue(!it.hasNext());
@@ -232,8 +232,8 @@ public class PassageParentTst extends TestCase
     {
 //        for (int i=0; i<10; i++)
         {
-            assertEquals(gen1_135.countRanges(PassageConstants.RESTRICT_NONE), 3);
-            assertEquals(exo2a_3b.countRanges(PassageConstants.RESTRICT_NONE), 2);
+            assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
+            assertEquals(exo2a_3b.countRanges(RestrictionType.NONE), 2);
             assertEquals(empty.countVerses(), 0);
         }
     }
@@ -256,11 +256,11 @@ public class PassageParentTst extends TestCase
     {
 //        for (int i=0; i<5; i++)
         {
-            assertEquals(gen1_135.getRangeAt(0, PassageConstants.RESTRICT_NONE), gen11_1);
-            assertEquals(gen1_135.getRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:3")); //$NON-NLS-1$
-            assertEquals(gen1_135.getRangeAt(2, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:5")); //$NON-NLS-1$
-            assertEquals(exo2a_3b.getRangeAt(0, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 2:1-10")); //$NON-NLS-1$
-            assertEquals(exo2a_3b.getRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 3:1-11")); //$NON-NLS-1$
+            assertEquals(gen1_135.getRangeAt(0, RestrictionType.NONE), gen11_1);
+            assertEquals(gen1_135.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
+            assertEquals(gen1_135.getRangeAt(2, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:5")); //$NON-NLS-1$
+            assertEquals(exo2a_3b.getRangeAt(0, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 2:1-10")); //$NON-NLS-1$
+            assertEquals(exo2a_3b.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 3:1-11")); //$NON-NLS-1$
         }
     }
 
@@ -415,96 +415,92 @@ public class PassageParentTst extends TestCase
     public void testWriteBlur() throws Exception
     {
         temp = (Passage) gen1_135.clone();
-        temp.blur(0, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(0, RestrictionType.CHAPTER);
         assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
-        temp.blur(0, PassageConstants.RESTRICT_NONE);
+        temp.blur(0, RestrictionType.NONE);
         assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
-        temp.blur(1, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-6")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(1, PassageConstants.RESTRICT_NONE);
+        temp.blur(1, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-6")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(2, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(2, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-7")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(2, PassageConstants.RESTRICT_NONE);
+        temp.blur(2, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-7")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(12, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(12, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-17")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(12, PassageConstants.RESTRICT_NONE);
+        temp.blur(12, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-17")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(26, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(26, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-31")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(26, PassageConstants.RESTRICT_NONE);
+        temp.blur(26, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-31")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(27, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(27, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-31")); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.blur(27, PassageConstants.RESTRICT_NONE);
+        temp.blur(27, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-2:1")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(0, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(0, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(0, PassageConstants.RESTRICT_NONE);
+        temp.blur(0, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(1, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-11, Exo 3:1-12")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(1, PassageConstants.RESTRICT_NONE);
+        temp.blur(1, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 1:22-2:11, Exo 2:25-3:12")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(2, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(2, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-12, Exo 3:1-13")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(2, PassageConstants.RESTRICT_NONE);
+        temp.blur(2, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 1:21-2:12, Exo 2:24-3:13")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(3, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(3, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-13, Exo 3:1-14")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(3, PassageConstants.RESTRICT_NONE);
+        temp.blur(3, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 1:20-2:13, Exo 2:23-3:14")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(14, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(14, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-24, Exo 3:1-22")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(14, PassageConstants.RESTRICT_NONE);
+        temp.blur(14, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 1:9-2:24, Exo 2:12-4:3")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(15, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(15, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-25, Exo 3:1-22")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(15, PassageConstants.RESTRICT_NONE);
+        temp.blur(15, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 1:8-2:25, Exo 2:11-4:4")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(16, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(16, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-3:22")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(16, PassageConstants.RESTRICT_NONE);
+        temp.blur(16, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Exo 1:7-4:5")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(99999, PassageConstants.RESTRICT_CHAPTER);
+        temp.blur(99999, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-3:22")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(99999, PassageConstants.RESTRICT_NONE);
+        temp.blur(99999, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-Rev 22:21")); //$NON-NLS-1$
-        try { temp.blur(-1, PassageConstants.RESTRICT_NONE); fail(temp.toString()); }
+        try { temp.blur(-1, RestrictionType.NONE); fail(temp.toString()); }
         catch (IllegalArgumentException ex) { }
-        try { temp.blur(-1, -1); fail(temp.toString()); }
-        catch (IllegalArgumentException ex) { }
-        try { temp.blur(-1, 5); fail(temp.toString()); }
-        catch (IllegalArgumentException ex) { }
-        try { temp.blur(-1, PassageConstants.RESTRICT_BOOK); fail(temp.toString()); }
+        try { temp.blur(-1, RestrictionType.BOOK); fail(temp.toString()); }
         catch (IllegalArgumentException ex) { }
     }
 
@@ -517,14 +513,14 @@ public class PassageParentTst extends TestCase
         temp.addPassageListener(li2);
         assertTrue(li1.check(0, 0, 0));
         assertTrue(li2.check(0, 0, 0));
-        temp.add(new Verse("Gen 1:7")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:7")); //$NON-NLS-1$
         assertTrue(li1.check(1, 0, 0));
         assertTrue(li2.check(1, 0, 0));
-        temp.add(new Verse("Gen 1:9")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:9")); //$NON-NLS-1$
         assertTrue(li1.check(2, 0, 0));
         assertTrue(li2.check(2, 0, 0));
         temp.removePassageListener(li1);
-        temp.add(new Verse("Gen 1:11")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:11")); //$NON-NLS-1$
         assertTrue(li1.check(2, 0, 0));
         assertTrue(li2.check(3, 0, 0));
     }
@@ -539,43 +535,43 @@ public class PassageParentTst extends TestCase
 
     public void testWriteRangeIterator() throws Exception
     {
-        Iterator it = gen1_135.rangeIterator(PassageConstants.RESTRICT_NONE);
+        Iterator it = gen1_135.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:3")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1:5")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
 
-        it = gen_rev.rangeIterator(PassageConstants.RESTRICT_NONE);
+        it = gen_rev.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen-Rev")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen-Rev")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
 
-        it = gen_rev.rangeIterator(PassageConstants.RESTRICT_BOOK);
+        it = gen_rev.rangeIterator(RestrictionType.BOOK);
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Exo")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Exo")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Lev")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Lev")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Num")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Num")); //$NON-NLS-1$
         //assertTrue(!it.hasNext());
 
-        it = gen_rev.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
+        it = gen_rev.rangeIterator(RestrictionType.CHAPTER);
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 2")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 2")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 3")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 3")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new VerseRange("Gen 4")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 4")); //$NON-NLS-1$
         //assertTrue(!it.hasNext());
 
-        it = empty.rangeIterator(PassageConstants.RESTRICT_NONE);
+        it = empty.rangeIterator(RestrictionType.NONE);
         assertTrue(!it.hasNext());
     }
 
@@ -583,11 +579,11 @@ public class PassageParentTst extends TestCase
     {
         Iterator it = gen1_135.iterator();
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:1")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:3")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertTrue(it.hasNext());
-        assertEquals(it.next(), new Verse("Gen 1:5")); //$NON-NLS-1$
+        assertEquals(it.next(), VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
         it = empty.iterator();
         assertTrue(!it.hasNext());
@@ -609,8 +605,8 @@ public class PassageParentTst extends TestCase
 
     public void testWriteCountRanges() throws Exception
     {
-        assertEquals(gen1_135.countRanges(PassageConstants.RESTRICT_NONE), 3);
-        assertEquals(exo2a_3b.countRanges(PassageConstants.RESTRICT_NONE), 2);
+        assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
+        assertEquals(exo2a_3b.countRanges(RestrictionType.NONE), 2);
         assertEquals(empty.countVerses(), 0);
     }
 
@@ -627,11 +623,11 @@ public class PassageParentTst extends TestCase
 
     public void testWriteGetVerseRangeAt() throws Exception
     {
-        assertEquals(gen1_135.getRangeAt(0, PassageConstants.RESTRICT_NONE), gen11_1);
-        assertEquals(gen1_135.getRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:3")); //$NON-NLS-1$
-        assertEquals(gen1_135.getRangeAt(2, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:5")); //$NON-NLS-1$
-        assertEquals(exo2a_3b.getRangeAt(0, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 2:1-10")); //$NON-NLS-1$
-        assertEquals(exo2a_3b.getRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 3:1-11")); //$NON-NLS-1$
+        assertEquals(gen1_135.getRangeAt(0, RestrictionType.NONE), gen11_1);
+        assertEquals(gen1_135.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
+        assertEquals(gen1_135.getRangeAt(2, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:5")); //$NON-NLS-1$
+        assertEquals(exo2a_3b.getRangeAt(0, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 2:1-10")); //$NON-NLS-1$
+        assertEquals(exo2a_3b.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 3:1-11")); //$NON-NLS-1$
     }
 
     public void testWriteBooksInPassage() throws Exception
@@ -743,20 +739,20 @@ public class PassageParentTst extends TestCase
     public void testWriteAdd() throws Exception
     {
         temp = (Passage) gen1_135.clone();
-        temp.add(new Verse("Gen 1:2")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:2")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-3, 5"); //$NON-NLS-1$
-        temp.add(new Verse("Gen 1:4")); //$NON-NLS-1$
+        temp.add(VerseFactory.fromString("Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.add(new VerseRange("Gen 1:2-4")); //$NON-NLS-1$
+        temp.add(VerseRangeFactory.fromString("Gen 1:2-4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.add(new VerseRange("Gen 1:2")); //$NON-NLS-1$
+        temp.add(VerseRangeFactory.fromString("Gen 1:2")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-3, 5"); //$NON-NLS-1$
-        temp.add(new VerseRange("Gen 1:4")); //$NON-NLS-1$
+        temp.add(VerseRangeFactory.fromString("Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
         temp = (Passage) gen1_135.clone();
-        temp.add(new VerseRange("Gen 1:1-5")); //$NON-NLS-1$
+        temp.add(VerseRangeFactory.fromString("Gen 1:1-5")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
     }
 
@@ -779,14 +775,14 @@ public class PassageParentTst extends TestCase
     public void testWriteRemove() throws Exception
     {
         temp = (Passage) gen1_135.clone();
-        temp.remove(new Verse("Gen 1:3")); //$NON-NLS-1$
+        temp.remove(VerseFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 5"); //$NON-NLS-1$
-        temp.remove(new Verse("Gen 1:5")); //$NON-NLS-1$
+        temp.remove(VerseFactory.fromString("Gen 1:5")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1"); //$NON-NLS-1$
-        temp.remove(new Verse("Gen 1:1")); //$NON-NLS-1$
+        temp.remove(VerseFactory.fromString("Gen 1:1")); //$NON-NLS-1$
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
         temp = (Passage) keyf.getKey("Gen 1:1-5"); //$NON-NLS-1$
-        temp.remove(new Verse("Gen 1:3")); //$NON-NLS-1$
+        temp.remove(VerseFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-2, 4-5"); //$NON-NLS-1$
     }
 

@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import org.crosswire.common.util.Logger;
 
@@ -70,72 +69,26 @@ public final class Verse implements VerseBase, Comparable
         verse = DEFAULT.verse;
     }
 
-    /**
-     * Construct a Verse from a String - something like "Gen 1:1".
-     * in case the user does not want to have their typing 'fixed' by a
-     * meddling patronizing computer. The following initial letters can
-     * not be matched at all - 'bfquvwx'.
-     * @param desc The text string to be validated
-     * @exception NoSuchVerseException If the text can not be understood
-     */
-    public Verse(String desc) throws NoSuchVerseException
-    {
-        this(desc, DEFAULT);
-    }
 
     /**
-     * Construct a Ref from a String and a Verse. For example given "2:2"
-     * and a basis of Gen 1:1 the result would be Gen 2:2
-     * @param desc The string describing the verse e.g "2:2"
-     * @param basis The basis by which to understand the desc.
+     * Create a Verse from book, chapter and verse numbers, throwing up
+     * if the specified Verse does not exist. This constructor is
+     * deliberately package protected so that is used only by VerseFactory.
+     * @param original The original verse reference
+     * @param book The book number (Genesis = 1)
+     * @param chapter The chapter number
+     * @param verse The verse number
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public Verse(String desc, Verse basis) throws NoSuchVerseException
+    /*package*/ Verse(String original, int book, int chapter, int verse) throws NoSuchVerseException
     {
-        String[] parts = tokenize(desc, PassageConstants.VERSE_ALLOWED_DELIMS);
-        originalName = desc;
-
-        switch (getAccuracy(parts))
-        {
-        case PassageConstants.ACCURACY_BOOK_VERSE:
-            if (parts.length == 3)
-            {
-                set(parts[0], parts[1], parts[2]);
-            }
-            else
-            {
-                set(parts[0], 1, parts[1]);
-            }
-            break;
-
-        case PassageConstants.ACCURACY_BOOK_CHAPTER:
-            set(parts[0], parts[1], 1);
-            break;
-
-        case PassageConstants.ACCURACY_BOOK_ONLY:
-            set(parts[0], 1, 1);
-            break;
-
-        case PassageConstants.ACCURACY_CHAPTER_VERSE:
-            set(basis.getBook(), parts[0], parts[1]);
-            break;
-
-        case PassageConstants.ACCURACY_NUMBER_ONLY:
-            set(basis.getBook(), basis.getChapter(), parts[0]);
-            break;
-
-        case PassageConstants.ACCURACY_NONE:
-            set(basis.getBook(), basis.getChapter(), basis.getVerse());
-            break;
-
-        default:
-            assert false : getAccuracy(parts);
-        }
+        originalName = original;
+        set(book, chapter, verse);
     }
 
     /**
      * Create a Verse from book, chapter and verse numbers, throwing up
-     * if the specified Verse does not exist
+     * if the specified Verse does not exist.
      * @param book The book number (Genesis = 1)
      * @param chapter The chapter number
      * @param verse The verse number
@@ -143,8 +96,7 @@ public final class Verse implements VerseBase, Comparable
      */
     public Verse(int book, int chapter, int verse) throws NoSuchVerseException
     {
-        originalName = null;
-        set(book, chapter, verse);
+        this(null, book, chapter, verse);
     }
 
     /**
@@ -213,15 +165,15 @@ public final class Verse implements VerseBase, Comparable
             if (BibleInfo.chaptersInBook(book) == 1)
             {
                 return BibleInfo.getShortBookName(book)
-                    + PassageConstants.VERSE_PREF_DELIM1
+                    + Verse.VERSE_PREF_DELIM1
                     + verse;
             }
             else
             {
                 return BibleInfo.getShortBookName(book)
-                    + PassageConstants.VERSE_PREF_DELIM1
+                    + Verse.VERSE_PREF_DELIM1
                     + chapter
-                    + PassageConstants.VERSE_PREF_DELIM2
+                    + Verse.VERSE_PREF_DELIM2
                     + verse;
             }
         }
@@ -257,7 +209,7 @@ public final class Verse implements VerseBase, Comparable
                 if (base.book != book)
                 {
                     return BibleInfo.getShortBookName(book)
-                        + PassageConstants.VERSE_PREF_DELIM1
+                        + Verse.VERSE_PREF_DELIM1
                         + verse;
                 }
 
@@ -268,16 +220,16 @@ public final class Verse implements VerseBase, Comparable
                 if (base.book != book)
                 {
                     return BibleInfo.getShortBookName(book)
-                        + PassageConstants.VERSE_PREF_DELIM1
+                        + Verse.VERSE_PREF_DELIM1
                         + chapter
-                        + PassageConstants.VERSE_PREF_DELIM2
+                        + Verse.VERSE_PREF_DELIM2
                         + verse;
                 }
 
                 if (base.chapter != chapter)
                 {
                     return chapter
-                        + PassageConstants.VERSE_PREF_DELIM2
+                        + Verse.VERSE_PREF_DELIM2
                         + verse;
                 }
 
@@ -301,9 +253,9 @@ public final class Verse implements VerseBase, Comparable
         try
         {
             return BibleInfo.getOSISName(book)
-                + PassageConstants.VERSE_OSIS_DELIM
+                + Verse.VERSE_OSIS_DELIM
                 + chapter
-                + PassageConstants.VERSE_OSIS_DELIM
+                + Verse.VERSE_OSIS_DELIM
                 + verse;
         }
         catch (NoSuchVerseException ex)
@@ -460,7 +412,7 @@ public final class Verse implements VerseBase, Comparable
         catch (NoSuchVerseException ex)
         {
             assert false : ex;
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 
@@ -480,7 +432,7 @@ public final class Verse implements VerseBase, Comparable
         catch (NoSuchVerseException ex)
         {
             assert false : ex;
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 
@@ -614,105 +566,6 @@ public final class Verse implements VerseBase, Comparable
     }
 
     /**
-     * Does this string exactly define a Verse. For example:<ul>
-     * <li>getAccuracy("Gen") == ACCURACY_BOOK_ONLY;
-     * <li>getAccuracy("Gen 1:1") == ACCURACY_BOOK_VERSE;
-     * <li>getAccuracy("Gen 1") == ACCURACY_BOOK_CHAPTER;
-     * <li>getAccuracy("Jude 1") == ACCURACY_BOOK_VERSE;
-     * <li>getAccuracy("Jude 1:1") == ACCURACY_BOOK_VERSE;
-     * <li>getAccuracy("1:1") == ACCURACY_CHAPTER_VERSE;
-     * <li>getAccuracy("1") == ACCURACY_NUMBER_ONLY;
-     * <li>getAccuracy("") == ACCURACY_NONE;
-     * <ul>
-     * @param desc The string to be tested for Rangeness
-     * @return A constant specifing how precise the Verse is.
-     * @exception NoSuchVerseException If the text can not be understood
-     * @see Passage
-     */
-    public static int getAccuracy(String desc) throws NoSuchVerseException
-    {
-        String[] parts = tokenize(desc, PassageConstants.VERSE_ALLOWED_DELIMS);
-
-        return getAccuracy(parts);
-    }
-
-    /**
-     * Does this string exactly define a Verse. For example:<ul>
-     * <li>getAccuracy("Gen") == ACCURACY_BOOK_ONLY;
-     * <li>getAccuracy("Gen 1:1") == ACCURACY_BOOK_VERSE;
-     * <li>getAccuracy("Gen 1") == ACCURACY_BOOK_CHAPTER;
-     * <li>getAccuracy("Jude 1") == ACCURACY_BOOK_VERSE;
-     * <li>getAccuracy("Jude 1:1") == ACCURACY_BOOK_VERSE;
-     * <li>getAccuracy("1:1") == ACCURACY_CHAPTER_VERSE;
-     * <li>getAccuracy("1") == ACCURACY_NUMBER_ONLY;
-     * <li>getAccuracy("") == ACCURACY_NONE;
-     * <ul>
-     * @param parts The string array to be tested for Rangeness
-     * @return A constant specifing how precise the Verse is.
-     * @exception NoSuchVerseException If the text can not be understood
-     * @see Passage
-     */
-    private static int getAccuracy(String[] parts) throws NoSuchVerseException
-    {
-        switch (parts.length)
-        {
-        case 0:
-            return PassageConstants.ACCURACY_NONE;
-
-        case 1:
-            if (BibleInfo.isBookName(parts[0]))
-            {
-                return PassageConstants.ACCURACY_BOOK_ONLY;
-            }
-            checkValidChapterOrVerse(parts[0]);
-            return PassageConstants.ACCURACY_NUMBER_ONLY;
-
-        case 2:
-            try
-            {
-                // Does it start with a book?
-                int pbook = BibleInfo.getBookNumber(parts[0]);
-                if (BibleInfo.chaptersInBook(pbook) == 1)
-                {
-                    return PassageConstants.ACCURACY_BOOK_VERSE;
-                }
-                else
-                {
-                    return PassageConstants.ACCURACY_BOOK_CHAPTER;
-                }
-            }
-            catch (NoSuchVerseException ex)
-            {
-                checkValidChapterOrVerse(parts[0]);
-                checkValidChapterOrVerse(parts[1]);
-                return PassageConstants.ACCURACY_CHAPTER_VERSE;
-            }
-
-        case 3:
-            BibleInfo.getBookNumber(parts[0]);
-            checkValidChapterOrVerse(parts[1]);
-            checkValidChapterOrVerse(parts[2]);
-            return PassageConstants.ACCURACY_BOOK_VERSE;
-
-        default:
-            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { PassageConstants.VERSE_ALLOWED_DELIMS });
-        }
-    }
-
-    /**
-     * Is this text valid in a chapter/verse context
-     * @param text The string to test for validity
-     * @throws NoSuchVerseException If the text is invalid
-     */
-    private static final void checkValidChapterOrVerse(String text) throws NoSuchVerseException
-    {
-        if (!isEndMarker(text))
-        {
-            parseInt(text);
-        }
-    }
-
-    /**
      * Return the bigger of the 2 verses. If the verses are equal()
      * then return Verse a
      * @param a The first verse to compare
@@ -751,27 +604,6 @@ public final class Verse implements VerseBase, Comparable
     }
 
     /**
-     * Is this string a legal marker for 'to the end of the chapter'
-     * @param text The string to be checked
-     * @return true if this is a legal marker
-     */
-    public static boolean isEndMarker(String text)
-    {
-        if (text.equals(PassageConstants.VERSE_END_MARK1))
-        {
-            return true;
-        }
-
-        if (text.equals(PassageConstants.VERSE_END_MARK2))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
      * Create an array of Verses
      * @return The array of verses that this makes up
      */
@@ -808,7 +640,7 @@ public final class Verse implements VerseBase, Comparable
         catch (NoSuchVerseException ex)
         {
             assert false : ex;
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 
@@ -827,7 +659,7 @@ public final class Verse implements VerseBase, Comparable
         catch (NoSuchVerseException ex)
         {
             assert false : ex;
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 
@@ -844,7 +676,7 @@ public final class Verse implements VerseBase, Comparable
         catch (NoSuchVerseException ex)
         {
             assert false : ex;
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 
@@ -861,7 +693,7 @@ public final class Verse implements VerseBase, Comparable
         catch (NoSuchVerseException ex)
         {
             assert false : ex;
-            return new Verse();
+            return Verse.DEFAULT;
         }
     }
 
@@ -882,131 +714,6 @@ public final class Verse implements VerseBase, Comparable
     public void setParent(Key parent)
     {
         this.parent = parent;
-    }
-
-    /**
-     * Take a string and parse it into an Array of Strings where each
-     * part is likely to be a verse part (book, chapter, verse, ...)
-     * @param command The string to parse.
-     * @param delim A string containing the spacing characters.
-     * @return The string array
-     */
-    private static String[] tokenize(String command, String delim)
-    {
-        // The substrings "ch" and "v" are really a book/chapter or
-        // chapter/verse separators we should swap them for normal delims
-        // I recon it is safe to assume that there is no more than one of
-        // each
-        int idx = command.lastIndexOf("v"); //$NON-NLS-1$
-        if (idx != -1)
-        {
-            // Check that the "v" is surrounded my non letters - i.e.
-            // it is not part of "prov"
-            if (!Character.isLetter(command.charAt(idx - 1))
-                && !Character.isLetter(command.charAt(idx + 1)))
-            {
-                command = command.substring(0, idx) + PassageConstants.VERSE_PREF_DELIM2 + command.substring(idx + 1);
-            }
-        }
-        
-        /*
-        // I'm taking this out - it is of dubious use and confuses cases like
-        // 1ch 5:1 which could be book 1 chapter 5 verse 1 or 1Ch 5:1
-        idx = command.lastIndexOf("ch");
-        if (idx != -1)
-        {
-            // Check that the "ch" is surrounded by non letters - i.e.
-            // it is not part of "chronicles"
-            if (!Character.isLetter(command.charAt(idx - 1)) &&
-                !Character.isLetter(command.charAt(idx + 2)))
-            {
-                command = command.substring(0, idx) + VERSE_PREF_DELIM1 + command.substring(idx + 2);
-            }
-        }
-        */
-
-        // Create the original string array
-        StringTokenizer tokenize = new StringTokenizer(command, delim);
-        String[] args = new String[tokenize.countTokens()];
-        int argc = 0;
-        while (tokenize.hasMoreTokens())
-        {
-            args[argc++] = tokenize.nextToken();
-        }
-
-        // If the first word is a number, and the second a word, but not an
-        // EndMarker then this must be something like "2 Ki ...", so join
-        // them together to get "2Ki ..."
-        if (args.length > 1)
-        {
-            if (Character.isDigit(args[0].charAt(0))
-                && Character.isLetter(args[1].charAt(0))
-                && !isEndMarker(args[1]))
-            {
-                String[] oldargs = args;
-                args = new String[oldargs.length - 1];
-
-                args[0] = oldargs[0] + oldargs[1];
-                for (int i = 1; i < args.length; i++)
-                {
-                    args[i] = oldargs[i + 1];
-                }
-            }
-        }
-
-        // If the first word contains letters, but ends with a number
-        // then this must be something like "Gen1" to split them up
-        // to get "Gen 1"
-        if (args.length > 0
-            && Character.isDigit(args[0].charAt(args[0].length() - 1))
-            && containsLetter(args[0]))
-        {
-            // This might make the code quicker (less array subscripting)
-            // It certainly makes for more readable code.
-            String word = args[0];
-
-            // The caveat here is that - We should not split if the bit
-            // before the number is one of the numeric book identifiers,
-            // in that case #2 means Exo and not the book of # chapter 2
-            // so if we start with a book number id mark
-            if (!word.startsWith(PassageConstants.VERSE_NUMERIC_BOOK))
-            {
-                boolean found_letters = false;
-                int i = 0;
-
-                // Find the split
-                for (i = 0; i < word.length(); i++)
-                {
-                    if (!found_letters)
-                    {
-                        if (Character.isLetter(word.charAt(i))) found_letters = true;
-                    }
-                    else
-                    {
-                        if (!Character.isLetter(word.charAt(i))) break;
-                    }
-                }
-
-                String[] oldargs = args;
-                args = new String[oldargs.length + 1];
-
-                args[0] = oldargs[0].substring(0, i);
-                args[1] = oldargs[0].substring(i);
-                for (int j = 2; j < args.length; j++)
-                {
-                    args[j] = oldargs[j - 1];
-                }
-            }
-        }
-
-        // The last 2 sections join and split up parts of the array, should
-        // I combine them to make for less array manipulation?
-        // This would only speed things up in the rare case where someone
-        // enters "2 Tim3:16" or something. The above method will still work
-        // it will just be slower, and it is a heck of a lot easier to
-        // understand and debug. Optimize when you need to not before.
-
-        return args;
     }
 
     /**
@@ -1061,162 +768,6 @@ public final class Verse implements VerseBase, Comparable
     /**
      * Verify and set the references.
      * This must only be called from a ctor to maintain immutability
-     * @param book_str The book to set in String form (Genesis = 1)
-     * @param chapter The chapter to set
-     * @param verse The verse to set
-     * @exception NoSuchVerseException If the verse can not be understood
-     */
-    private final void set(String book_str, int chapter, int verse) throws NoSuchVerseException
-    {
-        int lbook = BibleInfo.getBookNumber(book_str);
-
-        set(lbook, chapter, verse);
-    }
-
-    /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param book_str The book to set in String form (Genesis = 1)
-     * @param chapter_str The chapter to set in String form
-     * @param verse The verse to set
-     * @exception NoSuchVerseException If the verse can not be understood
-     */
-    private final void set(String book_str, String chapter_str, int verse) throws NoSuchVerseException
-    {
-        int lbook = BibleInfo.getBookNumber(book_str);
-
-        int lchapter = 0;
-        if (isEndMarker(chapter_str))
-        {
-            lchapter = BibleInfo.chaptersInBook(lbook);
-        }
-        else
-        {
-            lchapter = parseInt(chapter_str);
-        }
-
-        set(lbook, lchapter, verse);
-    }
-
-    /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param book_str The book to set in String form (Genesis = 1)
-     * @param chapter_str The chapter to set in String form
-     * @param verse_str The verse to set in String form
-     * @exception NoSuchVerseException If the verse can not be understood
-     */
-    private final void set(String book_str, String chapter_str, String verse_str) throws NoSuchVerseException
-    {
-        int lbook = BibleInfo.getBookNumber(book_str);
-
-        int lchapter = 0;
-        if (isEndMarker(chapter_str))
-        {
-            lchapter = BibleInfo.chaptersInBook(lbook);
-        }
-        else
-        {
-            lchapter = parseInt(chapter_str);
-        }
-
-        int lverse = 0;
-        if (isEndMarker(verse_str))
-        {
-            lverse = BibleInfo.versesInChapter(lbook, lchapter);
-        }
-        else
-        {
-            lverse = parseInt(verse_str);
-        }
-
-        set(lbook, lchapter, lverse);
-    }
-
-    /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param book_str The book to set in String form (Genesis = 1)
-     * @param chapter The chapter to set
-     * @param verse_str The verse to set in String form
-     * @exception NoSuchVerseException If the verse can not be understood
-     */
-    private final void set(String book_str, int chapter, String verse_str) throws NoSuchVerseException
-    {
-        int lbook = BibleInfo.getBookNumber(book_str);
-
-        int lverse = 0;
-        if (isEndMarker(verse_str))
-        {
-            lverse = BibleInfo.versesInChapter(lbook, chapter);
-        }
-        else
-        {
-            lverse = parseInt(verse_str);
-        }
-
-        set(lbook, chapter, lverse);
-    }
-
-    /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param book The book to set (Genesis = 1)
-     * @param chapter_str The chapter to set in String form
-     * @param verse_str The verse to set in String form
-     * @exception NoSuchVerseException If the verse can not be understood
-     */
-    private final void set(int book, String chapter_str, String verse_str) throws NoSuchVerseException
-    {
-        int lchapter = 0;
-        if (isEndMarker(chapter_str))
-        {
-            lchapter = BibleInfo.chaptersInBook(book);
-        }
-        else
-        {
-            lchapter = parseInt(chapter_str);
-        }
-
-        int lverse = 0;
-        if (isEndMarker(verse_str))
-        {
-            lverse = BibleInfo.versesInChapter(book, lchapter);
-        }
-        else
-        {
-            lverse = parseInt(verse_str);
-        }
-
-        set(book, lchapter, lverse);
-    }
-
-    /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param book The book to set (Genesis = 1)
-     * @param chapter The chapter to set
-     * @param verse_str The verse to set in String form
-     * @exception NoSuchVerseException If the verse can not be understood
-     */
-    private final void set(int book, int chapter, String verse_str) throws NoSuchVerseException
-    {
-        int lverse = 0;
-        if (isEndMarker(verse_str))
-        {
-            lverse = BibleInfo.versesInChapter(book, chapter);
-        }
-        else
-        {
-            lverse = parseInt(verse_str);
-        }
-
-        set(book, chapter, lverse);
-    }
-
-    /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
      * @param book The book to set (Genesis = 1)
      * @param chapter The chapter to set
      * @param verse The verse to set
@@ -1230,22 +781,6 @@ public final class Verse implements VerseBase, Comparable
         this.chapter = chapter;
         this.verse = verse;
     }
-
-    /*
-     * Set the references. Not used anyhwhere
-     * This must only be called from a ctor to maintain immutability
-     * @param ref An array of the book, chapter and verse to set
-     * @exception NoSuchVerseException If the verse can not be understood
-     *
-    private final void set(int[] ref) throws NoSuchVerseException
-    {
-        BibleInfo.validate(ref[BOOK], ref[CHAPTER], ref[VERSE]);
-
-        book = ref[BOOK];
-        chapter = ref[CHAPTER];
-        verse = ref[VERSE];
-    }
-    */
 
     /**
      * Set the references.
@@ -1304,24 +839,6 @@ public final class Verse implements VerseBase, Comparable
 
         // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
-    }
-
-    /**
-     * This is simply a convenience function to wrap Character.isLetter()
-     * @param text The string to be parsed
-     * @return true if the string contains letters
-     */
-    private static boolean containsLetter(String text)
-    {
-        for (int i = 0; i < text.length(); i++)
-        {
-            if (Character.isLetter(text.charAt(i)))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -1468,7 +985,7 @@ public final class Verse implements VerseBase, Comparable
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, int bounds)
+    public void blur(int by, RestrictionType restrict)
     {
         throw new UnsupportedOperationException();
     }
@@ -1494,9 +1011,24 @@ public final class Verse implements VerseBase, Comparable
     private static final int VERSE = 2;
 
     /**
+     * What characters should we use to separate parts of an OSIS verse reference 
+     */
+    public static final String VERSE_OSIS_DELIM = "."; //$NON-NLS-1$
+
+    /**
+     * What characters should we use to separate the book from the chapter
+     */
+    public static final String VERSE_PREF_DELIM1 = " "; //$NON-NLS-1$
+
+    /**
+     * What characters should we use to separate the chapter from the verse
+     */
+    public static final String VERSE_PREF_DELIM2 = ":"; //$NON-NLS-1$
+
+    /**
      * The default verse
      */
-    protected static final Verse DEFAULT = new Verse(1, 1, 1, true);
+    public static final Verse DEFAULT = new Verse(1, 1, 1, true);
 
     /**
      * The parent key. See the key interface for more information.

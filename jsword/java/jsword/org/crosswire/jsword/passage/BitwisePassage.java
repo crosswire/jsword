@@ -116,7 +116,7 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#rangeIterator()
      */
-    public Iterator rangeIterator(int restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         return new VerseRangeIterator(iterator(), restrict);
     }
@@ -154,7 +154,7 @@ public class BitwisePassage extends AbstractPassage
         }
 
         // we do an extra check here because the cost of calculating the
-        // params is non-zero an may be wasted
+        // params is non-zero and may be wasted
         if (suppressEvents == 0)
         {
             fireIntervalAdded(this, verses[0], verses[verses.length - 1]);
@@ -176,7 +176,7 @@ public class BitwisePassage extends AbstractPassage
         }
 
         // we do an extra check here because the cost of calculating the
-        // params is non-zero an may be wasted
+        // params is non-zero and may be wasted
         if (suppressEvents == 0)
         {
             fireIntervalRemoved(this, verses[0], verses[verses.length - 1]);
@@ -203,7 +203,7 @@ public class BitwisePassage extends AbstractPassage
         }
 
         // we do an extra check here because the cost of calculating the
-        // params is non-zero an may be wasted
+        // params is non-zero and may be wasted
         if (suppressEvents == 0 && !that.isEmpty())
         {
             fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
@@ -231,7 +231,7 @@ public class BitwisePassage extends AbstractPassage
         }
 
         // we do an extra check here because the cost of calculating the
-        // params is non-zero an may be wasted
+        // params is non-zero and may be wasted
         if (suppressEvents == 0 && !that.isEmpty())
         {
             fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
@@ -286,7 +286,7 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#blur(int, int)
      */
-    public void blur(int verses, int restrict)
+    public void blur(int verses, RestrictionType restrict)
     {
         optimizeWrites();
         raiseNormalizeProtection();
@@ -296,14 +296,14 @@ public class BitwisePassage extends AbstractPassage
             throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
         }
 
-        if (restrict != PassageConstants.RESTRICT_NONE)
+        if (!restrict.equals(RestrictionType.NONE))
         {
             BitwisePassage temp = (BitwisePassage) this.clone();
-            Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
+            Iterator it = temp.rangeIterator(RestrictionType.NONE);
 
             while (it.hasNext())
             {
-                VerseRange range = new VerseRange((VerseRange) it.next(), verses, verses, restrict);
+                VerseRange range = restrict.blur((VerseRange) it.next(), verses, verses);
                 add(range);
             }
         }

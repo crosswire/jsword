@@ -73,7 +73,6 @@ public class SyncTag implements Tag
         }
 
         DataPolice.report("sync tag has type=" + type + " when value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
-        // FIXME(DMS)
         return null;
     }
 }

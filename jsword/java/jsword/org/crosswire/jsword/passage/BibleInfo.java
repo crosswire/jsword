@@ -4,8 +4,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.jsword.book.CaseType;
 
 /**
  * BibleInfo is a static class that deals with Book number conversions and similar.
@@ -53,56 +53,56 @@ public class BibleInfo
     private static void initialize()
     {
         // Create the book name arrays
-        full_books = new String[BOOKS_IN_BIBLE];
-        full_books_lower = new String[BOOKS_IN_BIBLE];
-        full_books_upper = new String[BOOKS_IN_BIBLE];
+        fullBooks = new String[BOOKS_IN_BIBLE];
+        fullBooksLower = new String[BOOKS_IN_BIBLE];
+        fullBooksUpper = new String[BOOKS_IN_BIBLE];
 
-        short_books = new String[BOOKS_IN_BIBLE];
-        short_books_lower = new String[BOOKS_IN_BIBLE];
-        short_books_upper = new String[BOOKS_IN_BIBLE];
+        shortBooks = new String[BOOKS_IN_BIBLE];
+        shortBooksLower = new String[BOOKS_IN_BIBLE];
+        shortBooksUpper = new String[BOOKS_IN_BIBLE];
 
         alt_books = new String[BOOKS_IN_BIBLE][];
-        alt_books_lower = new String[BOOKS_IN_BIBLE][];
+        altBooksLower = new String[BOOKS_IN_BIBLE][];
 
         sections = new String[SECTIONS_IN_BIBLE];
-        sections_lower = new String[SECTIONS_IN_BIBLE];
-        sections_upper = new String[SECTIONS_IN_BIBLE];
+        sectionsLower = new String[SECTIONS_IN_BIBLE];
+        sectionsUpper = new String[SECTIONS_IN_BIBLE];
         
-        osis_books = new String[BOOKS_IN_BIBLE];
+        osisBooks = new String[BOOKS_IN_BIBLE];
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleInfo.class.getName(), Locale.getDefault(), new CWClassLoader(BibleInfo.class));
 
         for (int i = 0; i < BibleInfo.BOOKS_IN_BIBLE; i++)
         {
             String fullBook = getString(resources, FULL_KEY + (i + 1));
-            full_books[i] = fullBook;
-            full_books_lower[i] = fullBook.toLowerCase();
-            full_books_upper[i] = fullBook.toUpperCase();
+            fullBooks[i] = fullBook;
+            fullBooksLower[i] = fullBook.toLowerCase();
+            fullBooksUpper[i] = fullBook.toUpperCase();
             
             String shortBook = getString(resources, SHORT_KEY + (i + 1));
-            short_books[i] = shortBook;
-            short_books_lower[i] = shortBook.toLowerCase();
-            short_books_upper[i] = shortBook.toUpperCase();
+            shortBooks[i] = shortBook;
+            shortBooksLower[i] = shortBook.toLowerCase();
+            shortBooksUpper[i] = shortBook.toUpperCase();
             
             String altBook = getString(resources, ALT_KEY + (i + 1));
             alt_books[i] = StringUtils.split(altBook, ',');
-            alt_books_lower[i] = StringUtils.split(altBook.toLowerCase(), ',');
+            altBooksLower[i] = StringUtils.split(altBook.toLowerCase(), ',');
         }
 
         for (int i = 0; i < SECTIONS_IN_BIBLE; i++)
         {
             String section = getString(resources, SECTION_KEY + (i + 1));
             sections[i] = section;
-            sections_lower[i] = section.toLowerCase();
-            sections_upper[i] = section.toUpperCase();
+            sectionsLower[i] = section.toLowerCase();
+            sectionsUpper[i] = section.toUpperCase();
         }
 
         // Get all the OSIS standard book names
         resources = ResourceBundle.getBundle(OSIS_PROPERTIES, Locale.getDefault(), new CWClassLoader(BibleInfo.class));
 
-        for (int i = 0; i < osis_books.length; i++)
+        for (int i = 0; i < osisBooks.length; i++)
         {
-            osis_books[i] = getString(resources, OSIS_KEY + (i + 1));
+            osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
         }
     }
 
@@ -123,11 +123,7 @@ public class BibleInfo
     }
 
     /**
-     * How do we report the names of the books?.
-     * These are static. This is on the assumption that we will not want to have
-     * different sections of the app using a different format. I expect this to
-     * be a good assumption, and it saves passing a Book class around everywhere.
-     * BibleInfo.MIXED is not allowed
+     * This is only used by config.
      * @param bookCase The new case to use for reporting book names
      * @exception IllegalArgumentException If the case is not between 0 and 2
      * @see Passage
@@ -135,12 +131,38 @@ public class BibleInfo
      */
     public static final void setCase(int bookCase)
     {
-        if (bookCase < 0 || bookCase > 2)
-        {
-            throw new IllegalArgumentException(Msg.ERROR_CASE.toString(new Integer(bookCase)));
-        }
+        BibleInfo.bookCase = CaseType.fromInteger(bookCase);
+    }
 
-        BibleInfo.book_case = bookCase;
+    /**
+     * This is only used by config
+     * @return The current case setting
+     * @see Passage
+     * @see BibleInfo#setCase(int)
+     */
+    public static final int getCase()
+    {
+        return BibleInfo.bookCase.toInteger();
+    }
+
+    /**
+     * How do we report the names of the books?.
+     * These are static. This is on the assumption that we will not want to have
+     * different sections of the app using a different format. I expect this to
+     * be a good assumption, and it saves passing a Book class around everywhere.
+     * BibleInfo.MIXED is not allowed
+     * @param newBookCase The new case to use for reporting book names
+     * @exception IllegalArgumentException If the case is not between 0 and 2
+     * @see Passage
+     * @see #getCase()
+     */
+    public static final void setCase(CaseType newBookCase)
+    {
+        if (newBookCase.equals(CaseType.MIXED))
+        {
+            throw new IllegalArgumentException();
+        }
+        BibleInfo.bookCase = newBookCase;
     }
 
     /**
@@ -149,9 +171,9 @@ public class BibleInfo
      * @see Passage
      * @see BibleInfo#setCase(int)
      */
-    public static final int getCase()
+    public static final CaseType getDefaultCase()
     {
-        return BibleInfo.book_case;
+        return BibleInfo.bookCase;
     }
 
     /**
@@ -165,15 +187,17 @@ public class BibleInfo
     {
         try
         {
-            switch (book_case)
+            if (bookCase.equals(CaseType.LOWER))
             {
-            case PassageConstants.CASE_LOWER:
-                return full_books_lower[book - 1];
-            case PassageConstants.CASE_UPPER:
-                return full_books_upper[book - 1];
-            default:
-                return full_books[book - 1];
+                return fullBooksLower[book - 1];
             }
+            
+            if (bookCase.equals(CaseType.UPPER))
+            {
+                return fullBooksUpper[book - 1];
+            }
+
+            return fullBooks[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -195,15 +219,16 @@ public class BibleInfo
     {
         try
         {
-            switch (book_case)
+            if (bookCase.equals(CaseType.LOWER))
             {
-            case PassageConstants.CASE_LOWER:
-                return short_books_lower[book - 1];
-            case PassageConstants.CASE_UPPER:
-                return short_books_upper[book - 1];
-            default:
-                return short_books[book - 1];
+                return shortBooksLower[book - 1];
             }
+            if (bookCase.equals(CaseType.UPPER))
+            {
+                return shortBooksUpper[book - 1];
+            }
+
+                return shortBooks[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -224,7 +249,7 @@ public class BibleInfo
     {
         try
         {
-            return osis_books[book - 1];
+            return osisBooks[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -238,28 +263,25 @@ public class BibleInfo
     /**
      * Get number of a book from its name.
      * @param find The string to identify
-     * @return The book number (1 to 66)
-     * @exception NoSuchVerseException If the text can not be matched
+     * @return The book number (1 to 66) On error -1
      */
-    public static final int getBookNumber(String find) throws NoSuchVerseException
+    public static final int getBookNumber(String find)
     {
-        String match = find.toLowerCase();
-
-        // Check this isn't a number.
-        // And that it does not start with any of the numeric book markers
-        if (!containsLetter(find) && !find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK))
+        if (!containsLetter(find))
         {
-            throw new NoSuchVerseException(Msg.BOOKS_NUMBER, new Object[] { find });
+            return -1;
         }
 
+        String match = find.toLowerCase();
+
         // Does it match a long version of the book or a short version
-        for (int i = 0; i < full_books.length; i++)
+        for (int i = 0; i < fullBooks.length; i++)
         {
-            if (full_books_lower[i].startsWith(match))
+            if (fullBooksLower[i].startsWith(match))
             {
                 return i + 1;
             }
-            if (match.startsWith(short_books_lower[i]))
+            if (match.startsWith(shortBooksLower[i]))
             {
                 return i + 1;
             }
@@ -270,28 +292,14 @@ public class BibleInfo
         {
             for (int j = 0; j < alt_books[i].length; j++)
             {
-                if (match.startsWith(alt_books_lower[i][j]))
+                if (match.startsWith(altBooksLower[i][j]))
                 {
                     return i + 1;
                 }
             }
         }
 
-        // if we start with a book number id mark
-        if (find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK))
-        {
-            int book = Integer.parseInt(find.substring(PassageConstants.VERSE_NUMERIC_BOOK.length()));
-            if (book < 1 || book > 66)
-            {
-                throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[]
-                {
-                    new Integer(book)
-                });
-            }
-            return book;
-        }
-
-        throw new NoSuchVerseException(Msg.BOOKS_FIND, new Object[] { find });
+        return -1;
     }
 
     /**
@@ -310,20 +318,20 @@ public class BibleInfo
         }
 
         // This could be sped up with less of the toLowerCase()
-        for (int i = 0; i < full_books.length; i++)
+        for (int i = 0; i < fullBooks.length; i++)
         {
-            if (full_books_lower[i].startsWith(match))
+            if (fullBooksLower[i].startsWith(match))
             {
                 return true;
             }
-            if (match.startsWith(short_books_lower[i]))
+            if (match.startsWith(shortBooksLower[i]))
             {
                 return true;
             }
 
             for (int j = 0; j < alt_books[i].length; j++)
             {
-                if (match.startsWith(alt_books_lower[i][j]))
+                if (match.startsWith(altBooksLower[i][j]))
                 {
                     return true;
                 }
@@ -521,7 +529,7 @@ public class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(chaptersInBook(book)),
-                full_books[book - 1], new Integer(chapter),
+                fullBooks[book - 1], new Integer(chapter),
             };
             throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
@@ -532,7 +540,7 @@ public class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(versesInChapter(book, chapter)),
-                full_books[book - 1],
+                fullBooks[book - 1],
                 new Integer(chapter),
                 new Integer(verse),
             };
@@ -835,15 +843,16 @@ public class BibleInfo
 
         try
         {
-            switch (book_case)
+            if (bookCase.equals(CaseType.LOWER))
             {
-            case PassageConstants.CASE_LOWER:
-                return sections_lower[section - 1];
-            case PassageConstants.CASE_UPPER:
-                return sections_upper[section - 1];
-            default:
-                return sections[section - 1];
+                return sectionsLower[section - 1];
             }
+            if (bookCase.equals(CaseType.UPPER))
+            {
+                return sectionsUpper[section - 1];
+            }
+
+            return sections[section - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -879,7 +888,7 @@ public class BibleInfo
     /**
      * How the book names are reported
      */
-    private static int book_case = PassageConstants.CASE_SENTANCE;
+    private static CaseType bookCase = CaseType.SENTENCE;
 
     /**
      * Handy section finder. There is a bit of moderately bad programming
@@ -984,44 +993,44 @@ public class BibleInfo
     public static final int VERSE = 2;
 
     /** The full names of the book of the Bible, in mixed case */
-    private static String[] full_books;
+    private static String[] fullBooks;
 
     /** The full names of the book of the Bible, in lower case, generated at run time */
-    private static String[] full_books_lower;
+    private static String[] fullBooksLower;
 
     /** The full names of the book of the Bible, in upper case, generated at run time */
-    private static String[] full_books_upper;
+    private static String[] fullBooksUpper;
 
     /** Standard shortened names for the book of the Bible, in mixed case */
-    private static String[] short_books;
+    private static String[] shortBooks;
 
     /** Standard shortened names for the book of the Bible, in lower case, generated at run time */
-    private static String[] short_books_lower;
+    private static String[] shortBooksLower;
 
     /** Standard shortened names for the book of the Bible, in upper case, generated at run time */
-    private static String[] short_books_upper;
+    private static String[] shortBooksUpper;
 
     /** Alternative shortened names for the book of the Bible, in mixed case */
     private static String[][] alt_books;
 
     /** Alternative shortened names for the book of the Bible, in lower case, generated at run time */
-    private static String[][] alt_books_lower;
+    private static String[][] altBooksLower;
 
     /* Alternative shortened names for the book of the Bible, in upper case, generated at run time */
     // Not needed as the lower version was only there to speed up searching.
-    // private static String[][] alt_books_upper;
+    // private static String[][] altBooksUpper;
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
-    private static String[] osis_books;
+    private static String[] osisBooks;
 
     /** Standard names for the sections */
     private static String[] sections;
 
     /** Standard Bible section names, in lower case, generated at run time */
-    private static String[] sections_lower;
+    private static String[] sectionsLower;
 
     /** Standard Bible section names, in upper case, generated at run time */
-    private static String[] sections_upper;
+    private static String[] sectionsUpper;
 
     /** Constant for the number of sections in the Bible */
     private static final int SECTIONS_IN_BIBLE = 8;
