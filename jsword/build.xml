@@ -38,7 +38,7 @@
   <target name="init" description="Prepare for other tasks">
     <tstamp/>
     <echo message="Building to: ${target.root}"/>
-    <available property="keystore.exists" file="${keystore}"/>
+    <available property="keystore.exists" file="${jnlp.keystore}"/>
   </target>
 
   <!--=======================================================================-->
