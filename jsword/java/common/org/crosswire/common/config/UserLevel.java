@@ -1,15 +1,13 @@
 
-package org.crosswire.common.util;
+package org.crosswire.common.config;
 
-import org.crosswire.common.config.AbstractChoice;
-import org.crosswire.common.config.MultipleChoice;
-import org.crosswire.common.config.StartupException;
 import org.jdom.Element;
 
 /**
+ * URGENT(joe) get rid of this class
  * A UserLevel keeps a track of how advanced the user is.
- * It may not be a graphical component, but many graphical components
- * depend on it, and it doesn't seem to be a 'util'.
+ * It may not be a graphical component, but many graphical components depend on
+ * it, and it doesn't seem to be a 'util'.
  * <p>We should consider having a addUserLevelListener interface for
  * people that want to know about UserLevel changes. Hmmmm.
  * 
@@ -32,7 +30,7 @@ import org.jdom.Element;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
+ * @version $Id: UserLevel.java,v 1.4 2002/10/08 21:36:09 joe Exp $
  */
 public class UserLevel
 {

@@ -1,4 +1,4 @@
-package org.crosswire.jsword.util.remoter;
+package org.crosswire.jsword.book.remote;
 
 import java.util.Arrays;
 import java.util.Iterator;

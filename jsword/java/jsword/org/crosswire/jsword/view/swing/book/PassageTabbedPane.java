@@ -20,7 +20,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.view.style.Style;
+import org.crosswire.jsword.util.Style;
 import org.xml.sax.SAXException;
 
 /**

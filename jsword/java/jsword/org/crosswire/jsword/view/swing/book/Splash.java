@@ -71,7 +71,7 @@ public class Splash extends JWindow
      */
     private void jbInit()
     {
-        URL url = getClass().getResource("/org/crosswire/jsword/view/resource/splash.png");
+        URL url = getClass().getResource("/images/splash.png");
         if (url != null)
         {
             icon = new ImageIcon(url);

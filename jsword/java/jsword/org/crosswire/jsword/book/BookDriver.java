@@ -4,8 +4,7 @@ package org.crosswire.jsword.book;
 import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
- * The BibleDriver class is an gateway to all the instances of the Books
- * controlled by this name.
+ * The BibleDriver class allows creation of new Books.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -38,7 +37,7 @@ public interface BookDriver
     public boolean isWritable();
 
     /**
-     * Create a new Book based on a source
+     * Create a new Book based on a source.
      * @param name The name of the version to create
      * @param li Somewhere to repost progress (can be null)
      * @return The new WritableBible

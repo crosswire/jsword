@@ -1,29 +1,12 @@
 
 package org.crosswire.jsword.book.basic;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.PassageUtil;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * The idea behind this class is to gradually abstract out the search from the
@@ -52,63 +35,16 @@ import org.crosswire.jsword.passage.Verse;
  */
 public abstract class SearchableBible extends AbstractBible
 {
+    private Searcher searcher;
+
     /**
-     * 
+     * Set ourselves up for searching. This will mean one of 2 things - either
+     * loading a known index, or generating one by reading the whole Bible.
+     * @param li Optional progress listener if you think this might take ages.
      */
-    public void loadSearchIndex(ProgressListener li) throws BookException
+    public void initializeSearch(ProgressListener li) throws BookException
     {
-        URL url = getURL();
-
-        if (!url.getProtocol().equals("file"))
-        {
-            throw new BookException("ser_write");
-        }
-
-        try
-        {
-            // Load the ascii Passage index
-            URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
-            
-            if (NetUtil.isFile(ref_idy_url))
-            {
-                // We don't need to create any indexes, they just need loading
-                BufferedReader ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
-                ref_map = new TreeMap();
-                while (true)
-                {
-                    String line = ref_idy_bin.readLine();
-                    if (line == null)
-                        break;
-                    int colon1 = line.indexOf(":");
-                    int colon2 = line.lastIndexOf(":");
-                    String word = line.substring(0, colon1);
-                    long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
-                    int length = Integer.parseInt(line.substring(colon2 + 1));
-                    Section section = new Section(offset, length);
-                    ref_map.put(word, section);
-                }
-                ref_idy_bin.close();
-    
-                // Open the Passage RAF
-                URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
-                ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "r");
-            }
-            else
-            {
-                // Create blank indexes
-                ref_map = new TreeMap();
-
-                // Open the Passage RAF
-                URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
-                ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "rw");
-
-                generateSearchIndex(li);
-            }
-        }
-        catch (IOException ex)
-        {
-            throw new BookException("ser_init", ex);
-        }
+        searcher = new Searcher(this, getURL(), li);
     }
 
     /**
@@ -124,34 +60,7 @@ public abstract class SearchableBible extends AbstractBible
      */
     public Passage findPassage(String word) throws BookException
     {
-        if (word == null)
-            return PassageFactory.createPassage();
-
-        Section section = (Section) ref_map.get(word.toLowerCase());
-
-        if (section == null)
-            return PassageFactory.createPassage();
-
-        try
-        {
-            // Read blob
-            byte[] blob = new byte[section.length];
-            ref_dat.seek(section.offset);
-            ref_dat.read(blob);
-
-            // De-serialize
-            return PassageUtil.fromBinaryRepresentation(blob);
-        }
-        catch (Exception ex)
-        {
-            log.warn("Search failed on:");
-            log.warn("  word=" + word);
-            log.warn("  ref_ptr=" + section.offset);
-            log.warn("  ref_length=" + section.length);
-            Reporter.informUser(this, ex);
-
-            return PassageFactory.createPassage();
-        }
+        return searcher.findPassage(word);
     }
 
     /**
@@ -164,177 +73,6 @@ public abstract class SearchableBible extends AbstractBible
      */
     public Iterator getStartsWith(String word) throws BookException
     {
-        word = word.toLowerCase();
-        SortedMap sub_map = ref_map.subMap(word, word + "\u9999");
-        return sub_map.keySet().iterator();
-    }
-
-    /**
-     * Retrieval: Get a list of the words used by this Version. This is
-     * not vital for normal display, however it is very useful for various
-     * things, not least of which is new Version generation. However if
-     * you are only looking to <i>display</i> from this Bible then you
-     * could skip this one.
-     * @return The references to the word
-     */
-    public Iterator listWords() throws BookException
-    {
-        return ref_map.keySet().iterator();
-    }
-
-    /**
-     * Write the references for a Word
-     * @param word The word to write
-     * @param ref The references to the word
-     */
-    public void foundPassage(String word, Passage ref) throws BookException
-    {
-        if (word == null)
-            return;
-
-        try
-        {
-            log.debug("s " + word + " " + System.currentTimeMillis());
-            byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
-            log.debug("e " + word + " " + System.currentTimeMillis());
-
-            Section section = new Section(ref_dat.getFilePointer(), buffer.length);
-
-            ref_dat.write(buffer);
-            ref_map.put(word.toLowerCase(), section);
-
-            // log.debug(this, "Written:");
-            // log.debug(this, "  word="+word);
-            // log.debug(this, "  ref_ptr="+ref_ptr);
-            // log.debug(this, "  ref_length="+ref_blob.length);
-            // log.debug(this, "  ref_blob="+new String(ref_blob));
-        }
-        catch (Exception ex)
-        {
-            throw new BookException("ser_write", ex);
-        }
-    }
-
-    /**
-     * Read from the given source version to generate ourselves
-     * @param version The source
-     */
-    protected void generateSearchIndex(ProgressListener li) throws BookException
-    {
-        // create a word/passage hashmap
-        Map matchmap = new HashMap();
-
-        // loop through all the verses
-        for (Iterator it = WHOLE.verseIterator(); it.hasNext();)
-        {
-            Verse verse = (Verse) it.next();
-
-            if (li != null)
-                li.progressMade(new ProgressEvent(this, "Finding Words:", 90 * verse.getOrdinal() / Books.versesInBible()));
-
-            // loop through all the words in this verse
-            Passage current = PassageFactory.createPassage();
-            current.add(verse);
-            String text = getData(current).getPlainText();
-            String[] words = BookUtil.getWords(text);
-            for (int i = 0; i < words.length; i++)
-            {
-                // ensure there is a Passage for this word in the word/passage hashmap
-                Passage matches = (Passage) matchmap.get(words[i]);
-                if (matches == null)
-                {
-                    matches = PassageFactory.createPassage();
-                    matchmap.put(words[i], matches);
-                }
-
-                // add this verse to this words passage
-                matches.add(verse);
-
-                // This could take a long time ...
-                Thread.yield();
-                if (Thread.currentThread().isInterrupted())
-                    break;
-            }
-        }
-
-        int count = 0;
-        int words = matchmap.size();
-
-        // Now we need to write the words into our index
-        for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
-        {
-            String word = (String) it.next();
-            Passage match = (Passage) matchmap.get(word);
-            foundPassage(word, match);
-
-            // Fire a progress event?
-            if (li != null)
-                li.progressMade(new ProgressEvent(this, "Writing Words:", 90 + (10 * count++ / words)));
-
-            // This could take a long time ...
-            Thread.yield();
-            if (Thread.currentThread().isInterrupted())
-                break;
-        }
-
-        flushIndex();
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.basic.VersewiseBible#flush()
-     */
-    public void flushIndex() throws BookException
-    {
-        try
-        {
-            URL url = getURL();
-            
-            // Save the ascii Passage index
-            URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
-            PrintWriter ref_idy_out = new PrintWriter(NetUtil.getOutputStream(ref_idy_url));
-            Iterator it = ref_map.keySet().iterator();
-            while (it.hasNext())
-            {
-                String word = (String) it.next();
-                Section section = (Section) ref_map.get(word);
-                ref_idy_out.println(word + ":" + section.offset + ":" + section.length);
-            }
-            ref_idy_out.close();
-        }
-        catch (IOException ex)
-        {
-            throw new BookException("ser_index", ex);
-        }
-    }
-
-    /**
-     * The passages random access file
-     */
-    private RandomAccessFile ref_dat;
-
-    /**
-     * The hash of indexes into the passages file
-     */
-    private SortedMap ref_map;
-
-    /**
-     * The Whole Bible
-     */
-    private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
-
-    /**
-     * A simple class to hold an offset and length into the passages random
-     * access file
-     */
-    public static class Section
-    {
-        public Section(long offset, int length)
-        {
-            this.offset = offset;
-            this.length = length;
-        }
-
-        public long offset;
-        public int length;
+        return searcher.getStartsWith(word);
     }
 }

@@ -1,8 +1,6 @@
 
 package org.crosswire.common.config;
 
-import org.crosswire.common.config.Choice;
-import org.crosswire.common.util.UserLevel;
 
 /**
  * An AbstractChoice is one that registers itself with

@@ -4,19 +4,16 @@ package org.crosswire.jsword.book.ser;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
-import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
-import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * This represents all of the SerBibles.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -24,15 +21,13 @@ import org.crosswire.jsword.book.events.ProgressListener;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
- * @author Mark Goodwin [mark at thorubio dot org]
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class SerBibleDriver extends LocalURLBibleDriver
@@ -42,31 +37,6 @@ public class SerBibleDriver extends LocalURLBibleDriver
      */
     public SerBibleDriver() throws MalformedURLException, IOException
     {
-        super("Serialized", "ser");
-    }
-
-    /**
-     * Do the real creation using the right meta data
-     */
-    public Bible getBible(LocalURLBibleMetaData bbmd) throws BookException
-    {
-        return new SerBible(bbmd);
-    }
-
-    /**
-     * A new Bible with new source data
-     */
-    public Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
-    {
-        return new SerBible(lbmd, source, li);
-    }
-
-    /**
-     * The expected speed at which this implementation gets correct answers.
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return 2;
+        super("Serialized", "ser", SerBible.class, 2);
     }
 }

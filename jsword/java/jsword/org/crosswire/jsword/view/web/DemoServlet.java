@@ -21,7 +21,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.view.style.Style;
+import org.crosswire.jsword.util.Style;
 import org.jdom.Document;
 
 /**

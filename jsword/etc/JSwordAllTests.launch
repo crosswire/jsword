@@ -12,6 +12,6 @@
     <mapAttribute key="org.eclipse.jdt.launchingVM_INSTALL_TYPE_SPECIFIC_ATTRS_MAP">
         <mapEntry key="org.eclipse.jdt.launching.JAVA_COMMAND" value="javaw"/>
     </mapAttribute>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=T:\share\joe\jsword\target\ant\deploy\jsword\resource"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=T:\share\joe\jsword\target\ant\deploy\jsword\resource -Xmx128m"/>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
 </launchConfiguration>

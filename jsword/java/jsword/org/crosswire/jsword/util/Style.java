@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.style;
+package org.crosswire.jsword.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
@@ -46,7 +45,7 @@ import org.xml.sax.SAXException;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
+ * @version $Id: Style.java,v 1.5 2002/10/08 21:36:16 joe Exp $
  */
 public class Style
 {

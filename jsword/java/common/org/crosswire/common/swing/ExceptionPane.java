@@ -6,9 +6,9 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.crosswire.common.config.UserLevel;
 import org.crosswire.common.util.LogUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.UserLevel;
 import org.crosswire.common.util.event.ReporterEvent;
 import org.crosswire.common.util.event.ReporterListener;
 

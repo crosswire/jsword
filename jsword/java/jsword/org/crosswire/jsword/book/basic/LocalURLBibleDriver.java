@@ -46,32 +46,19 @@ import org.crosswire.jsword.util.Project;
 public abstract class LocalURLBibleDriver extends SearchableBibleDriver
 {
     /**
-     * The expected speed at which this implementation gets correct answers.
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public abstract int getSpeed();
-
-    /**
-     * A Bible to read data from
-     */
-    public abstract Bible getBible(LocalURLBibleMetaData version) throws BookException;
-
-    /**
-     * A new place to write Bible data
-     */
-    public abstract Bible createBible(LocalURLBibleMetaData bbmd, Bible source, ProgressListener li) throws BookException;
-
-    /**
      * The ctor checks on the filesystem
      * @param subdir
      * @throws MalformedURLException
      * @throws IOException
      */
-    protected LocalURLBibleDriver(String name, String subdir) throws MalformedURLException, IOException
+    protected LocalURLBibleDriver(String name, String subdir, Class bibleclass, int speed) throws MalformedURLException, IOException
     {
         log.debug("Starting "+name+" in "+subdir);
 
+        this.speed = speed;
         this.name = name;
+        this.bibleclass = bibleclass;
+
         URL root = findBibleRoot();
         if (root == null)
         {
@@ -99,6 +86,51 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
             if (in == null)
                 log.debug("The remote listing file at '"+search+"' does not exist.");
         }       
+    }
+
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public int getSpeed()
+    {
+        return speed;
+    }
+
+    /**
+     * Do the real creation using the right meta data
+     */
+    public Bible getBible(LocalURLBibleMetaData lbmd) throws BookException
+    {
+        try
+        {
+            LocalURLBible bible = (LocalURLBible) bibleclass.newInstance();
+            bible.setLocalURLBibleMetaData(lbmd);
+            bible.init(null);
+            return bible;
+        }
+        catch (Exception ex)
+        {
+            throw new BookException("book_create", ex);
+        }
+    }
+
+    /**
+     * A new Bible with new source data
+     */
+    public Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
+    {
+        try
+        {
+            LocalURLBible bible = (LocalURLBible) bibleclass.newInstance();
+            bible.setLocalURLBibleMetaData(lbmd);
+            bible.init(source, li);
+            return bible;
+        }
+        catch (Exception ex)
+        {
+            throw new BookException("book_create", ex);
+        }
     }
 
     /**
@@ -230,16 +262,34 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
         return dir;
     }
 
-    /** The diriver name */
+    /**
+     * The speed config option
+     */
+    private int speed;
+
+    /**
+     * The type of Bible we are to create
+     */
+    private Class bibleclass;
+
+    /**
+     * The diriver name
+     */
     private String name;
 
-    /** The directory URL */
+    /**
+     * The directory URL
+     */
     private URL dir;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     protected static Logger log = Logger.getLogger(LocalURLBibleDriver.class);
 
-    /** The Bibles root */
+    /**
+     * The Bibles root
+     */
     private static URL root;
 
     /**

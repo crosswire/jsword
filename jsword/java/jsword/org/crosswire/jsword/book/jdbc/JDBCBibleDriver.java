@@ -43,15 +43,7 @@ public class JDBCBibleDriver extends LocalURLBibleDriver
      */
     public JDBCBibleDriver() throws MalformedURLException, IOException
     {
-        super("Database", "jdbc");
-    }
-
-    /**
-     * Do the real creation using the right meta data
-     */
-    public Bible getBible(LocalURLBibleMetaData bbmd) throws BookException
-    {
-        return new JDBCBible(bbmd);
+        super("Database", "jdbc", JDBCBible.class, 4);
     }
 
     /**
@@ -70,14 +62,5 @@ public class JDBCBibleDriver extends LocalURLBibleDriver
     public Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
     {
         throw new BookException("jdbc_driver_readonly");
-    }
-
-    /**
-     * The expected speed at which this implementation gets correct answers.
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return 4;
     }
 }

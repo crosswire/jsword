@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.util.remoter;
+package org.crosswire.jsword.book.remote;
 
 import org.crosswire.jsword.book.remote.RemoteMethod;
 

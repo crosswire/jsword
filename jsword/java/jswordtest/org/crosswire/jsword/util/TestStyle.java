@@ -1,7 +1,9 @@
 
-package org.crosswire.jsword.view.style;
+package org.crosswire.jsword.util;
 
 import junit.framework.TestCase;
+
+import org.crosswire.jsword.util.Style;
 
 /**
  * JUnit Test.
@@ -25,7 +27,7 @@ import junit.framework.TestCase;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
+ * @version $Id: TestStyle.java,v 1.2 2002/10/08 21:36:18 joe Exp $
  */
 public class TestStyle extends TestCase
 {
@@ -34,7 +36,7 @@ public class TestStyle extends TestCase
         super(s);
     }
 
-    Style style = null;
+    private Style style = null;
 
     protected void setUp() throws Exception
     {

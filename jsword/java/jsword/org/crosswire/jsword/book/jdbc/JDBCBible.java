@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBible;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
@@ -20,6 +21,7 @@ import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -54,13 +56,19 @@ import org.crosswire.jsword.passage.VerseRange;
 public class JDBCBible extends LocalURLBible
 {
     /**
-     * Connect to the Database
-     * @param bbmd
-     * @param url
+     * Startup
      */
-    public JDBCBible(LocalURLBibleMetaData lbmd) throws BookException
+    public void init(Bible source, ProgressListener li) throws BookException
     {
-        super(lbmd);
+        throw new BookException("jdbc_no_create");
+    }
+
+    /**
+     * Startup
+     */
+    public void init(ProgressListener li) throws BookException
+    {
+        LocalURLBibleMetaData lbmd = getLocalURLBibleMetaData();
 
         // Load the specified JDBC name
         int driver_attempt = 1;

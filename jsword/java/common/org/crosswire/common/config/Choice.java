@@ -3,7 +3,6 @@ package org.crosswire.common.config;
 
 import java.io.Serializable;
 
-import org.crosswire.common.util.UserLevel;
 import org.jdom.Element;
 
 /**

@@ -6,7 +6,7 @@ import org.crosswire.jsword.book.events.ProgressListener;
 /**
  * The BibleDriver class is an gateway to all the instances of the Books
  * controlled by this name.
- * <p>In an ideal world users would not need to touch an BibleDrivers, however
+ * In an ideal world users would not need to touch an BibleDrivers, however
  * there are times (create() when the user needs to select the Driver to handle
  * the new data) when this is not possible.
  * 

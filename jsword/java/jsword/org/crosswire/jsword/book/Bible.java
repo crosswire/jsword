@@ -6,10 +6,10 @@ import org.crosswire.jsword.passage.Passage;
 
 /**
  * Bible is the core interface to a Bible store.
- * <p>The methods of this interface come into 2 categories:
- * Meta-Information methods return information about the implementation
- * and its environment. Retrieval methods are the core methods that give
- * access to the real Biblical text. These are the core of the interface.
+ * It is a specialization of Book to help people work with specifically Bible
+ * data rather then more generic data. Most of the method here have direct
+ * counterparts in Book, and it Java could do co-variant return types then this
+ * would all be a lot simpler.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,12 +31,14 @@ import org.crosswire.jsword.passage.Passage;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
+ * @see Book
  */
 public interface Bible extends Book
 {
     /**
      * Meta-Information: What version of the Bible is this?
      * @return A Version for this Bible
+     * @see Book#getBookMetaData()
      */
     public BibleMetaData getBibleMetaData();
 
@@ -49,6 +51,7 @@ public interface Bible extends Book
      * @param ref The verses to search for
      * @return The found BibleData document
      * @throws BookException If anything goes wrong with this method
+     * @see Book#getData(Key)
      */
     public BibleData getData(Passage ref) throws BookException;
 
@@ -57,6 +60,7 @@ public interface Bible extends Book
      * @param word The text to search for
      * @return The references to the word
      * @throws BookException If anything goes wrong with this method
+     * @see Book#find(String)
      */
     public Passage findPassage(String word) throws BookException;
 }

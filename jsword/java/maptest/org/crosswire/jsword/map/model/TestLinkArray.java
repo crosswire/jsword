@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.raw.RawBibleDriver;
+import org.crosswire.jsword.book.raw.RawBible;
 
 /**
  * JUnit Test.
@@ -51,7 +51,7 @@ public class TestLinkArray extends TestCase
 
     public void testLinkArray() throws Exception
     {
-        RawBibleDriver.setDefaultCacheData(true);
+        RawBible.setDefaultCacheData(true);
         Bible bible = Bibles.getDefaultBible();
         LinkArray la = new LinkArray(bible);
 

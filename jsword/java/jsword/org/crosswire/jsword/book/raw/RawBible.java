@@ -15,7 +15,6 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.basic.LocalURLBible;
-import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DataUtil;
 import org.crosswire.jsword.book.data.DefaultBibleData;
@@ -210,32 +209,51 @@ import org.crosswire.jsword.passage.VerseRange;
 public class RawBible extends LocalURLBible
 {
     /**
-     * Constructor RawBible.
-     * @param lbmd
-     * @param source
-     * @param li
+     * Do the Bibles we create cache everything in memory or leave it on
+     * disk and then read it at query time.
+     * @return True if we are cacheing data in memory
      */
-    public RawBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
+    public static boolean getDefaultCacheData()
     {
-        super(lbmd);
+        return defaultmemory;
+    }
+
+    /**
+     * Do the Bibles we create cache everything in memory or leave it on
+     * disk and then read it at query time.
+     * @param memory True if we are cacheing data in memory
+     */
+    public static void setDefaultCacheData(boolean memory)
+    {
+        RawBible.defaultmemory = memory;
+    }
+
+    /**
+     * Do we instruct new RawBibles to cache data in memory?
+     */
+    private static boolean defaultmemory = true;
+
+    /**
+     * Startup
+     */
+    public void init(Bible source, ProgressListener li) throws BookException
+    {
         memory = false;
 
         init(true);
         generateText(source, li);
-        loadSearchIndex(li);
+        initializeSearch(li);
     }
 
     /**
-     * Constructor RawBible.
-     * @param bbmd
+     * Startup
      */
-    public RawBible(LocalURLBibleMetaData lbmd) throws BookException
+    public void init(ProgressListener li) throws BookException
     {
-        super(lbmd);
-        memory = RawBibleDriver.getDefaultCacheData();
+        memory = defaultmemory;
 
         init(false);
-        loadSearchIndex(null);
+        initializeSearch(null);
     }
 
     /**

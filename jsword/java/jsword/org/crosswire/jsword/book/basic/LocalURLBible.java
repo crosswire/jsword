@@ -3,9 +3,11 @@ package org.crosswire.jsword.book.basic;
 
 import java.net.URL;
 
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * 
@@ -33,12 +35,14 @@ import org.crosswire.jsword.book.BookMetaData;
 public abstract class LocalURLBible extends SearchableBible
 {
     /**
-     * Constructor SerBible.
+     * Startup
      */
-    public LocalURLBible(LocalURLBibleMetaData lbmd) throws BookException
-    {
-        this.lbmd = lbmd;
-    }
+    public abstract void init(Bible source, ProgressListener li) throws BookException;
+
+    /**
+     * Startup
+     */
+    public abstract void init(ProgressListener li) throws BookException;
 
     /**
      * Where can we write the search indexes.
@@ -73,6 +77,14 @@ public abstract class LocalURLBible extends SearchableBible
     public LocalURLBibleMetaData getLocalURLBibleMetaData()
     {
         return lbmd;
+    }
+
+    /**
+     * Constructor SerBible.
+     */
+    public void setLocalURLBibleMetaData(LocalURLBibleMetaData lbmd)
+    {
+        this.lbmd = lbmd;
     }
 
     /**

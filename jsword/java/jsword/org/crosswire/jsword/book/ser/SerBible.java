@@ -1,14 +1,9 @@
 
 package org.crosswire.jsword.book.ser;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -17,16 +12,9 @@ import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBible;
-import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DefaultBibleData;
-import org.crosswire.jsword.book.data.RefData;
-import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseRange;
 
 /**
  * A Biblical source that comes from files on the local file system.
@@ -130,11 +118,12 @@ import org.crosswire.jsword.passage.VerseRange;
  * I think the last 2 are hard to sus. However I am keen to work on them
  * next. So it looks like I sort out the first 3. Time to reasurect that
  * VB code. Now is it a port or a re-write?
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -142,46 +131,28 @@ import org.crosswire.jsword.passage.VerseRange;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
 public class SerBible extends LocalURLBible
 {
     /**
-     * Constructor SerBible.
-     * @param lbmd
-     * @param source
-     * @param li
+     * Startup a SerBible.
      */
-    public SerBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
+    public void init(Bible source, ProgressListener li) throws BookException
     {
-        super(lbmd);
-        URL url = lbmd.getURL();
-
-        if (!url.getProtocol().equals("file"))
-        {
-            throw new BookException("ser_write");
-        }
-
         try
         {
-            // Create blank indexes
-            xml_arr = new long[Books.versesInBible()];
-
-            // Open the XML RAF
-            URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
-            xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), "rw");
-
+            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL());
             generateText(source, li);
-            loadSearchIndex(li);
+            initializeSearch(li);
         }
         catch (Exception ex)
         {
@@ -190,33 +161,15 @@ public class SerBible extends LocalURLBible
     }
 
     /**
-     * Constructor SerBible.
-     * @param bbmd
+     * Startup a SerBible.
      */
-    public SerBible(LocalURLBibleMetaData lbmd) throws BookException
+    public void init(ProgressListener li) throws BookException
     {
-        super(lbmd);
-
         try
         {
-            URL url = lbmd.getURL();
-
-            // Load the ascii XML index
-            URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
-            BufferedReader xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
-            xml_arr = new long[Books.versesInBible()];
-            for (int i = 0; i < Books.versesInBible(); i++)
-            {
-                String line = xml_idy_bin.readLine();
-                xml_arr[i] = Integer.parseInt(line);
-            }
-            xml_idy_bin.close();
-
-            // Open the XML RAF
-            URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
-            xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), "r");
-
-            loadSearchIndex(null);
+            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL());
+            cache.load();
+            initializeSearch(li);
         }
         catch (Exception ex)
         {
@@ -226,82 +179,20 @@ public class SerBible extends LocalURLBible
 
     /**
      * Create an XML document for the specified Verses
-     * @param doc The XML document
-     * @param ele The elemenet to append to
      * @param ref The verses to search for
      */
     public BibleData getData(Passage ref) throws BookException
     {
-        BibleData doc = new DefaultBibleData();
-
-        try
-        {
-            // For all the ranges in this Passage
-            Iterator rit = ref.rangeIterator();
-            while (rit.hasNext())
-            {
-                VerseRange range = (VerseRange) rit.next();
-                SectionData section = doc.createSectionData(range.toString());
-
-                // For all the verses in this range
-                Iterator vit = range.verseIterator();
-                while (vit.hasNext())
-                {
-                    Verse verse = (Verse) vit.next();
-
-                    // Seek to the correct point
-                    xml_dat.seek(xml_arr[verse.getOrdinal() - 1]);
-
-                    // Read the XML text
-                    String text = xml_dat.readUTF();
-
-                    RefData vref = section.createRefData(verse, false);
-                    vref.setPlainText(text);
-                }
-            }
-
-            return doc;
-        }
-        catch (Exception ex)
-        {
-            throw new BookException("ser_read", ex);
-        }
+        return cache.getData(ref);
     }
 
     /**
      * Write the XML to disk
-     * @param verse The verse to write
      * @param doc The data to write
      */
     public void setDocument(BibleData doc) throws BookException
     {
-        try
-        {
-            // For all of the sections
-            for (Iterator sit = doc.getSectionDatas(); sit.hasNext(); )
-            {
-                SectionData section = (SectionData) sit.next();
-
-                // For all of the Verses in the section
-                for (Iterator vit = section.getRefDatas(); vit.hasNext(); )
-                {
-                    RefData vel = (RefData) vit.next();
-
-                    Verse verse = vel.getVerse();
-                    String text = vel.getPlainText();
-
-                    // Remember where we were so we can read it back later
-                    xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();
-
-                    // And write the entry
-                    xml_dat.writeUTF(text);
-                }
-            }
-        }
-        catch (IOException ex)
-        {
-            throw new BookException("ser_write", ex);
-        }
+        cache.setDocument(doc);
     }
 
     /**
@@ -309,43 +200,27 @@ public class SerBible extends LocalURLBible
      */
     public void flush() throws BookException
     {
+        cache.flush();
+
         try
         {
-            URL url = getLocalURLBibleMetaData().getURL();
-
-            // Save the ascii XML index
-            URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
-            PrintWriter xml_idy_out = new PrintWriter(NetUtil.getOutputStream(xml_idy_url));
-            for (int i = 0; i < xml_arr.length; i++)
-            {
-                xml_idy_out.println(xml_arr[i]);
-            }
-            xml_idy_out.close();
-
             // The Bible config info
             Properties prop = new Properties();
             prop.put("Version", getMetaData().getFullName());
-            URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
+            URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
             OutputStream prop_out = NetUtil.getOutputStream(prop_url);
             PropertiesUtil.save(prop, prop_out, "RawBible Config");
         }
         catch (IOException ex)
         {
-            throw new BookException("ser_index", ex);
+            throw new BookException("ser_flush", ex);
         }
     }
 
     /**
-     * The text random access file
+     * The BibleDataCache to which we delegate all questions
      */
-    private RandomAccessFile xml_dat;
-
-    /**
-     * The hash of indexes into the text file, one per verse. Note that the
-     * index in use is NOT the ordinal number of the verse since ordinal nos are
-     * 1 based. The index into xml_arr is verse.getOrdinal() - 1
-     */
-    private long[] xml_arr;
+    private BibleDataCache cache;
 
     /**
      * The log stream

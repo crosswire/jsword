@@ -41,7 +41,7 @@
   </option>
 
   <option key="Bibles.Raw.Cache Data" type="boolean">
-  	<introspect class="org.crosswire.jsword.book.raw.RawBibleDriver" property="DefaultCacheData"/>
+  	<introspect class="org.crosswire.jsword.book.raw.RawBible" property="DefaultCacheData"/>
     <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>
   </option>
 
