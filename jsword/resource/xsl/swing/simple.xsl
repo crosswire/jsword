@@ -116,45 +116,45 @@
       In other words, it seems to be a list of (Y:Y)s, separated by spaces.
   -->
   <xsl:template match="osisText">
-    <xsl:apply-templates select="div"/>
+    <xsl:apply-templates/>
   </xsl:template>
 
+  <--========================================================================-->
   <xsl:template match="div">
-    <h2>
-    <xsl:choose>
-      <xsl:when test="@divTitle">
-        <xsl:value-of select="@divTitle"/>
-      </xsl:when>
-      <xsl:when test="@type = 'testament'">
+    <xsl:if test="@divTitle">
+      <h2><xsl:value-of select="@divTitle"/></h2>
+    </xsl:if>
+    <xsl:if test="@type = 'testament'">
+      <h2>
         <xsl:choose>
           <xsl:when test="preceding::div[@type = 'testament']">
-            <xsl:text>New Testament</xsl:text>
+           <xsl:text>New Testament</xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>Old Testament</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="@osisID"/>
-      </xsl:otherwise>
-    </xsl:choose>
-    </h2>
-
-    <!--hr class="navigation-separator-top"></hr-->
-    <xsl:apply-templates/>
-    <!--hr class="navigation-separator-bottom"></hr-->
+      </h2>
+    </xsl:if>
+    <xsl:if test="@osisID">
+      <a href="{@osisID}">
+      <xsl:apply-templates/>
+      </a>
+    </xsl:if>
+    <xsl:if test="not(@osisID)">
+      <xsl:apply-templates/>
+    </xsl:if>
     <p>&#0160;</p>
-
   </xsl:template>
 
-
+  <--========================================================================-->
   <xsl:template match="a">
     <a class="a" href="{@href}">
       <xsl:apply-templates/>
     </a>
   </xsl:template>
   
+  <--========================================================================-->
   <xsl:template match="abbr">
     <abbr class="abbr">
       <xsl:if test="@expansion">

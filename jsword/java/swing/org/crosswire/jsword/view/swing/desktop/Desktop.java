@@ -24,6 +24,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
@@ -72,7 +74,7 @@ import org.crosswire.jsword.view.swing.book.TitleChangedListener;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
-public class Desktop extends JFrame implements TitleChangedListener
+public class Desktop extends JFrame implements TitleChangedListener, HyperlinkListener
 {
     /**
      * Central start point.
@@ -165,6 +167,8 @@ public class Desktop extends JFrame implements TitleChangedListener
             bar_status = new StatusBar();
             bar_side = new SidebarPane();
             spt_books = new JSplitPane();
+
+			bar_side.addHyperlinkListener(this);
 
             // GUI setup
             jbInit();
@@ -489,8 +493,17 @@ public class Desktop extends JFrame implements TitleChangedListener
         if (!iterateBibleViewPanes().hasNext())
         {
             BibleViewPane view = new BibleViewPane();
+            view.addHyperlinkListener(this);
             addBibleViewPane(view);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.event.HyperlinkListener#hyperlinkUpdate(javax.swing.event.HyperlinkEvent)
+     */
+    public void hyperlinkUpdate(HyperlinkEvent ev)
+    {
+        log.warn("No listener for "+ev.getURL());
     }
 
     /**
@@ -585,7 +598,6 @@ public class Desktop extends JFrame implements TitleChangedListener
     /** The log stream */
     private static final Logger log = Logger.getLogger(Desktop.class);
 
-    /* GUI components */
     private Splash splash = null;
     private Action act_file_new = null;
     private Action act_file_open = null;

@@ -9,13 +9,11 @@ import java.io.IOException;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
@@ -89,13 +87,7 @@ public class InnerDisplayPane extends JPanel
     {
         txt_view.setEditable(false);
         txt_view.setEditorKit(new HTMLEditorKit());
-        txt_view.addHyperlinkListener(new HyperlinkListener()
-        {
-            public void hyperlinkUpdate(HyperlinkEvent ev)
-            {
-                link(ev);
-            }
-        });
+
         scr_view.getViewport().setPreferredSize(new Dimension(500, 400));
         scr_view.getViewport().add(txt_view, null);
 
@@ -127,9 +119,6 @@ public class InnerDisplayPane extends JPanel
         String text = style.applyStyleToString(provider, "simple.xsl");
 
         txt_view.setText(text);
-        
-        // The following *ought* to scroll to the top but it doesn't ...
-        //txt_view.scrollRectToVisible(new Rectangle());
         txt_view.select(0, 0);
     }
 
@@ -141,13 +130,21 @@ public class InnerDisplayPane extends JPanel
         return txt_view;
     }
 
-    /**
-     * When a hyperlink is clicked
-     */
-    public void link(HyperlinkEvent ev)
-    {
-        log.warn("No listener for "+ev.getURL());
-    }
+	/**
+	 * Add a listener when someone clicks on a browser 'link'
+	 */
+	public void addHyperlinkListener(HyperlinkListener li)
+	{
+		txt_view.addHyperlinkListener(li);
+	}
+
+	/**
+	 * Remove a listener when someone clicks on a browser 'link'
+	 */
+	public void removeHyperlinkListener(HyperlinkListener li)
+	{
+		txt_view.removeHyperlinkListener(li);
+	}
 
     /**
      * Forward the mouse listener to our child components
@@ -165,12 +162,12 @@ public class InnerDisplayPane extends JPanel
         txt_view.addMouseListener(li);
     }
 
-    /** What is being displayed */
+    /**
+     * What is being displayed
+     */
     private Bible version = null;
-    private Style style = new Style("swing");
 
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(InnerDisplayPane.class);
+    private Style style = new Style("swing");
 
     private JScrollPane scr_view = new JScrollPane();
     private JEditorPane txt_view = new JEditorPane();

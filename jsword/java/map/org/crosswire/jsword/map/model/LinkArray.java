@@ -314,7 +314,7 @@ public class LinkArray implements Serializable
     /**
      * Debug for an array of Links
      */
-    private static String debug(Link[] set)
+    public static String debug(Link[] set)
     {
         StringBuffer buff = new StringBuffer();
 

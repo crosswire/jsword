@@ -13,11 +13,9 @@ import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.apache.log4j.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BookFilter;
@@ -109,13 +107,6 @@ public class CommentaryPane extends JPanel
         pnl_top.add(pnl_select, BorderLayout.NORTH);
         pnl_top.add(cbo_comments, BorderLayout.SOUTH);
 
-        txt_display.addHyperlinkListener(new HyperlinkListener()
-        {
-            public void hyperlinkUpdate(HyperlinkEvent ev)
-            {
-                link(ev);
-            }
-        });
         txt_display.setEditable(false);
         txt_display.setEditorKit(new HTMLEditorKit());
 
@@ -153,13 +144,21 @@ public class CommentaryPane extends JPanel
         }
     }
 
-    /**
-     * @param ev
-     */
-    protected void link(HyperlinkEvent ev)
-    {
-        log.warn("No listener for "+ev.getURL());
-    }
+	/**
+	 * Add a listener when someone clicks on a browser 'link'
+	 */
+	public void addHyperlinkListener(HyperlinkListener li)
+	{
+		txt_display.addHyperlinkListener(li);
+	}
+
+	/**
+	 * Remove a listener when someone clicks on a browser 'link'
+	 */
+	public void removeHyperlinkListener(HyperlinkListener li)
+	{
+		txt_display.removeHyperlinkListener(li);
+	}
 
     /**
      * The CommentaryMetaDatas
@@ -170,11 +169,6 @@ public class CommentaryPane extends JPanel
      * The stylizer
      */
     protected Style style = new Style("swing");
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(CommentaryPane.class);
 
     private BookFilter filter = BookFilters.getCommentaries();
     private BooksComboBoxModel mdl_comments = new BooksComboBoxModel(filter);

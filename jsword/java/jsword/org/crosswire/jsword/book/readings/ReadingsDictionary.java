@@ -27,6 +27,10 @@ import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.OsisText;
 import org.crosswire.jsword.osis.Work;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -186,18 +190,34 @@ public class ReadingsDictionary implements Dictionary
             header.getWork().add(work);
             
             OsisText text = JAXBUtil.factory().createOsisText();
-            text.setOsisIDWork("Bible."+osisid);
+            text.setOsisIDWork("Readings."+osisid);
             text.setHeader(header);
-            
+
             osis.setOsisText(text);
-            
+
             Div div = JAXBUtil.factory().createDiv();
             div.setDivTitle("Readings for "+key.getText());
-
             text.getDiv().add(div);
 
-            div.getContent().add(readings);
-        
+            try
+            {
+                Passage ref = PassageFactory.createPassage(readings);
+                for (Iterator it = ref.rangeIterator(); it.hasNext();)
+                {
+                    VerseRange range = (VerseRange) it.next();
+
+                    Div reading = JAXBUtil.factory().createDiv();
+                    reading.setOsisID(range.getOSISName());
+                    reading.getContent().add(range.getName());
+
+                    div.getContent().add(reading);                
+                }
+            }
+            catch (NoSuchVerseException ex)
+            {
+                div.getContent().add("Error decoding: "+readings);
+            }
+
             BookData bdata = new BookData(osis);
             return bdata;
         }

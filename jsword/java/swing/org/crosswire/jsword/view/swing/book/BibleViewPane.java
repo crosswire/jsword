@@ -3,10 +3,12 @@ package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.event.HyperlinkListener;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.Passage;
@@ -57,8 +59,10 @@ public class BibleViewPane extends JPanel
         {
             public void passageSelected(DisplaySelectEvent ev)
             {
-                if (saved == null)
-                    fireTitleChanged(new TitleChangedEvent(BibleViewPane.this, getTitle()));
+				if (saved == null)
+				{
+					fireTitleChanged(new TitleChangedEvent(BibleViewPane.this, getTitle()));
+				}
             }
 
             public void bookChosen(DisplaySelectEvent ev)
@@ -88,8 +92,10 @@ public class BibleViewPane extends JPanel
         if (saved == null)
         {
             String deft = pnl_select.getDefaultName();
-            if (deft.length() > shortlen)
-                deft = StringUtil.shorten(deft, shortlen);
+			if (deft.length() > shortlen)
+			{
+				deft = StringUtil.shorten(deft, shortlen);
+			}
 
             return deft;
         }
@@ -131,29 +137,54 @@ public class BibleViewPane extends JPanel
     }
 
     /**
+     * Add a listener when someone clicks on a browser 'link'
+     */
+    public void addHyperlinkListener(HyperlinkListener li)
+    {
+        pnl_passg.addHyperlinkListener(li);
+    }
+
+    /**
+     * Remove a listener when someone clicks on a browser 'link'
+     */
+    public void removeHyperlinkListener(HyperlinkListener li)
+    {
+        pnl_passg.removeHyperlinkListener(li);
+    }
+
+    /**
      * Add a listener to the list
-     * @param li
      */
     public synchronized void addTitleChangedListener(TitleChangedListener li)
     {
-        Vector v = listeners == null ? new Vector(2) : (Vector) listeners.clone();
-        if (!v.contains(li))
-        {
-            v.addElement(li);
-            listeners = v;
-        }
+		List temp = new ArrayList();
+    	if (listeners == null)
+		{
+			temp.add(li);
+			listeners = temp;
+		}
+		else
+    	{
+			temp.addAll(listeners);
+
+			if (!temp.contains(li))
+			{
+				temp.add(li);
+				listeners = temp;
+			}
+    	}
     }
 
     /**
      * Remote a listener from the list
-     * @param li
      */
     public synchronized void removeTitleChangedListener(TitleChangedListener li)
     {
         if (listeners != null && listeners.contains(li))
         {
-            Vector temp = (Vector) listeners.clone();
-            temp.removeElement(li);
+            List temp = new ArrayList();
+            temp.addAll(listeners);
+            temp.remove(li);
             listeners = temp;
         }
     }
@@ -166,17 +197,17 @@ public class BibleViewPane extends JPanel
     {
         if (listeners != null)
         {
-            Vector temp = listeners;
+            List temp = listeners;
             int count = temp.size();
             for (int i = 0; i < count; i++)
             {
-                ((TitleChangedListener) temp.elementAt(i)).titleChanged(ev);
+                ((TitleChangedListener) temp.get(i)).titleChanged(ev);
             }
         }
     }
 
     protected File saved = null;
-    private transient Vector listeners;
+    private transient List listeners;
 
     private DisplaySelectPane pnl_select = new DisplaySelectPane();
     private OuterDisplayPane pnl_passg = new OuterDisplayPane();

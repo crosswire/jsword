@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -160,6 +161,22 @@ public class OuterDisplayPane extends JPanel
     }
 
     /**
+     * Add a listener when someone clicks on a browser 'link'
+     */
+    public void addHyperlinkListener(HyperlinkListener li)
+    {
+        txt_passg.addHyperlinkListener(li);
+    }
+
+    /**
+     * Remove a listener when someone clicks on a browser 'link'
+     */
+    public void removeHyperlinkListener(HyperlinkListener li)
+    {
+        txt_passg.removeHyperlinkListener(li);
+    }
+
+    /**
      * Someone clicked on a value in the list
      */
     protected void selection()
@@ -201,7 +218,7 @@ public class OuterDisplayPane extends JPanel
     private DisplaySelectListener dsli = new CustomDisplaySelectListener();
 
     /**
-     * Update stuff whenever the selection changes
+     * Update the display whenever the version or passage changes
      */
     private class CustomDisplaySelectListener implements DisplaySelectListener
     {

@@ -48,6 +48,7 @@ public class FileNewAction extends DesktopAbstractAction
     public void actionPerformed(ActionEvent ev)
     {
         BibleViewPane view = new BibleViewPane();
+        view.addHyperlinkListener(getDesktop());
 
         if (!getDesktop().addBibleViewPane(view))
         {

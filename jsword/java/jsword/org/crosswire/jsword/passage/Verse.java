@@ -944,7 +944,7 @@ public final class Verse implements VerseBase, Comparable
      * Mutate into this reference and fix the reference if needed.
      * This must only be called from a ctor to maintain immutability
      * @param ref An array of the book, chapter and verse to set
-     */
+     *
     private final void setAndPatch(int[] ref)
     {
         setAndPatch(ref[BOOK], ref[CHAPTER], ref[VERSE]);
@@ -1124,11 +1124,11 @@ public final class Verse implements VerseBase, Comparable
     }
 
     /**
-     * Set the references.
+     * Set the references. Not used anyhwhere
      * This must only be called from a ctor to maintain immutability
      * @param ref An array of the book, chapter and verse to set
      * @exception NoSuchVerseException If the verse can not be understood
-     */
+     *
     private final void set(int[] ref) throws NoSuchVerseException
     {
         BibleInfo.validate(ref[BOOK], ref[CHAPTER], ref[VERSE]);

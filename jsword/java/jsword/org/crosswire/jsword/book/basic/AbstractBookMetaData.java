@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
@@ -360,11 +359,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         return getName().equals(version.getName());
     }
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(AbstractBookMetaData.class);
 
     /**
      * 

@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.event.HyperlinkListener;
 
 /**
  * SidebarPane builds a panel containing a set of books in tabbed dialogs.
@@ -53,6 +54,24 @@ public class SidebarPane extends JPanel
         this.setLayout(new BorderLayout());
         this.add(spt_books,  BorderLayout.CENTER);
     }
+
+	/**
+	 * Add a listener when someone clicks on a browser 'link'
+	 */
+	public void addHyperlinkListener(HyperlinkListener li)
+	{
+		tab_dict.addHyperlinkListener(li);
+		tab_conc.addHyperlinkListener(li);
+	}
+
+	/**
+	 * Remove a listener when someone clicks on a browser 'link'
+	 */
+	public void removeHyperlinkListener(HyperlinkListener li)
+	{
+		tab_dict.removeHyperlinkListener(li);
+		tab_conc.removeHyperlinkListener(li);
+	}
 
     private CommentaryPane tab_conc = new CommentaryPane();
     private JSplitPane spt_books = new JSplitPane();

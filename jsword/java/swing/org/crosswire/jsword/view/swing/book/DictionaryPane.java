@@ -12,14 +12,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.crosswire.common.swing.SortedSetListModel;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BookException;
@@ -57,7 +55,7 @@ import org.crosswire.jsword.util.Style;
  */
 public class DictionaryPane extends JPanel
 {
-    /**
+	/**
      * Setup the GUI 
      */
     public DictionaryPane()
@@ -93,13 +91,6 @@ public class DictionaryPane extends JPanel
 
         txtdisplay.setEditable(false);
         txtdisplay.setEditorKit(new HTMLEditorKit());
-        txtdisplay.addHyperlinkListener(new HyperlinkListener()
-        {
-            public void hyperlinkUpdate(HyperlinkEvent ev)
-            {
-                link(ev);
-            }
-        });
         scrdisplay.setViewportView(txtdisplay);
 
         sptmain.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -111,6 +102,22 @@ public class DictionaryPane extends JPanel
         this.add(sptmain, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
+
+	/**
+	 * Add a listener when someone clicks on a browser 'link'
+	 */
+	public void addHyperlinkListener(HyperlinkListener li)
+	{
+		txtdisplay.addHyperlinkListener(li);
+	}
+
+	/**
+	 * Remove a listener when someone clicks on a browser 'link'
+	 */
+	public void removeHyperlinkListener(HyperlinkListener li)
+	{
+		txtdisplay.removeHyperlinkListener(li);
+	}
 
     /**
      * Called when someone selects a new Dictionary
@@ -158,22 +165,9 @@ public class DictionaryPane extends JPanel
     }
 
     /**
-     * Called when someone clicks on a hyperlink from the current dictionary
-     */
-    protected void link(HyperlinkEvent ev)
-    {
-        log.warn("No listener for "+ev.getURL());
-    }
-
-    /**
      * The stylizer
      */
     protected Style style = new Style("swing");
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(DictionaryPane.class);
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdl_comments = new BooksComboBoxModel(filter);
