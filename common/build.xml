@@ -1,12 +1,6 @@
 <project name="common" default="all">
 
   <!--=======================================================================-->
-  <!--
-  When you first check files out of CVS you should run ant using the all target
-  to generate all the source files required for tools like eclipse.
-  -->
-
-  <!--=======================================================================-->
   <property name="source.root" value="."/>
   <property name="source.etc" value="${source.root}/etc"/>
   <property name="source.jar" value="${source.root}/jar"/>
@@ -16,11 +10,6 @@
   <property name="target.temp" value="${target.root}/temp"/>
   <property name="target.classes" value="${target.temp}/classes"/>
   <property name="target.jar" value="${target.temp}/jar"/>
-  <property name="support.root" value="../jsword-support"/>
-  <property name="support.notes" value="${support.root}/notes"/>
-  <property name="support.tools" value="${support.root}/tools"/>
-
-  <property name="ant.lib" value="${ant.home}/lib"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -85,7 +74,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean, jar" description="Run a full clean/build/deploy/test cycle">
+  <target name="all" depends="clean, jar" description="Run a full clean/build cycle">
   </target>
 
   <!--=======================================================================-->
