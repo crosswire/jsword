@@ -542,8 +542,10 @@
   <xsl:template match="verse">
     <div class="verse">
       <a name="{@osisID}"><span class="verse-number"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></span></a>
+      <font size="+1">
       <xsl:text> </xsl:text>
       <xsl:apply-templates/>
+      </font>
     </div>
   </xsl:template>
   
