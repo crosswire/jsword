@@ -65,7 +65,7 @@ public class IndexSearcher implements Searcher
      */
     public Key search(String search) throws BookException
     {
-        output = CustomTokenizer.tokenize(search, commands);
+        List output = CustomTokenizer.tokenize(search, commands);
         return search(output);
     }
 
@@ -307,11 +307,6 @@ public class IndexSearcher implements Searcher
      * The cache of preferred symbols for the words
      */
     private static Map preferredMap;
-
-    /**
-     * The parsed version of the current string
-     */
-    private List output;
 
     /**
      * The commands that we know about

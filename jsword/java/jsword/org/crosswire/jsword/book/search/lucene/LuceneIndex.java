@@ -36,6 +36,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 
@@ -168,8 +169,8 @@ public class LuceneIndex implements Index, Activatable
     {
         checkActive();
 
-        Key tally = book.createEmptyKeyList();
-        // Tally tally = new PassageTally();
+//        Key tally = book.createEmptyKeyList();
+         PassageTally tally = new PassageTally();
 
         if (search != null)
         {
@@ -182,9 +183,9 @@ public class LuceneIndex implements Index, Activatable
                 for (int i = 0; i < hits.length(); i++)
                 {
                     Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
-//                  int score = (int) (hits.score(i) * 100);
-//                  tally.add(verse, score);
-                    tally.addAll(verse);
+                  int score = (int) (hits.score(i) * 100);
+                  tally.add(verse, score);
+//                    tally.addAll(verse);
                 }
             }
             catch (Exception ex)
