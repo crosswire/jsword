@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import org.crosswire.common.config.Config;
+import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.LogPane;
 import org.crosswire.common.swing.SystemPropertiesPane;
@@ -106,7 +108,7 @@ public class Tools extends JFrame
     {
         try
         {
-            Splash splash = new Splash(this, 60000);
+            splash = new Splash(this, 60000);
 
             // Initial setup
             splash.setProgress(10, "Project initialization");
@@ -194,6 +196,7 @@ public class Tools extends JFrame
         //pnl_script = new ScriptPane();
         pnl_props = new SystemPropertiesPane();
 
+        splash.setProgress(52, "Creating GUI : Menus");
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);
@@ -211,6 +214,7 @@ public class Tools extends JFrame
         menu_file.add(act_file_restart).addMouseListener(bar_status);
         menu_file.add(act_file_exit).addMouseListener(bar_status);
 
+        splash.setProgress(55, "Creating GUI : Menus");
         menu_edit.setText("Edit");
         menu_edit.setMnemonic('E');
         menu_edit.add(act_edit_cut).addMouseListener(bar_status);
@@ -229,6 +233,7 @@ public class Tools extends JFrame
         grp_views.add(rdo_view_sdi);
         grp_views.add(rdo_view_tdi);
 
+        splash.setProgress(57, "Creating GUI : Menus");
         menu_view.setText("View");
         menu_view.setMnemonic('V');
         menu_view.add(rdo_view_sdi);
@@ -238,6 +243,7 @@ public class Tools extends JFrame
         menu_view.add(chk_view_tbar);
         menu_view.add(chk_view_sbar);
 
+        splash.setProgress(60, "Creating GUI : Menus");
         menu_list.setText("List");
         menu_list.setMnemonic('L');
         menu_list.add(act_list_toggle).addMouseListener(bar_status);
@@ -247,6 +253,7 @@ public class Tools extends JFrame
         menu_list.addSeparator();
         menu_list.add(act_list_delete).addMouseListener(bar_status);
 
+        splash.setProgress(62, "Creating GUI : Menus");
         menu_tools.setText("Tools");
         menu_tools.setMnemonic('T');
         //menu_tools.add(act_tools_bench).addMouseListener(bar_status);
@@ -258,6 +265,7 @@ public class Tools extends JFrame
         menu_tools.addSeparator();
         menu_tools.add(act_tools_options).addMouseListener(bar_status);
 
+        splash.setProgress(65, "Creating GUI : Menus");
         menu_help.setText("Help");
         menu_help.setMnemonic('H');
         menu_help.add(act_help_contents).addMouseListener(bar_status);
@@ -269,6 +277,7 @@ public class Tools extends JFrame
         menu_help.addSeparator();
         menu_help.add(act_help_debug).addMouseListener(bar_status);
 
+        splash.setProgress(67, "Creating GUI : Toolbars");
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
         bar_menu.add(menu_view);
@@ -295,6 +304,7 @@ public class Tools extends JFrame
         pnl_tbar.add(act_help_log).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
+        splash.setProgress(70, "Creating GUI : Actions");
         this.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent ev) { act_file_exit.actionPerformed(null); }
         });
@@ -1004,7 +1014,8 @@ public class Tools extends JFrame
             try
             {
                 // SwingConfig.setDisplayClass(TreeConfigPane.class);
-                //SwingConfig.showDialog(config, Tools.this, config_url);
+                URL config_url = Project.resource().getPropertiesURL("Tools");
+                SwingConfig.showDialog(config, Tools.this, config_url);
             }
             catch (Exception ex)
             {
@@ -1451,4 +1462,5 @@ public class Tools extends JFrame
     // private CardLayout lay_main = new CardLayout();
     protected JToolBar pnl_tbar = new JToolBar();
     protected StatusBar bar_status = new StatusBar();
+    protected Splash splash = null;
 }

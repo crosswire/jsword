@@ -190,6 +190,23 @@ public class Resource
     }
 
     /**
+     * Get the root of the project installation.
+     * @return The project root as a URL
+     */
+    public URL getPropertiesURL(String subject) throws IOException, MalformedURLException
+    {
+        URL reply;
+
+        reply = getClass().getClassLoader().getSystemResource(subject+".properties");
+        if (reply == null)
+        {
+            throw new MalformedURLException("Failed to find Tools.properties");
+        }
+
+        return reply;
+    }
+
+    /**
      * Return a stream to which to write log messages
      */
     public PrintWriter getLogFileWriter() throws IOException, MalformedURLException
