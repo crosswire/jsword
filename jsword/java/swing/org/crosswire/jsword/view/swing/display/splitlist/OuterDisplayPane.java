@@ -69,7 +69,6 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
             {
                 Book book = ((BookMetaData) booklist.get(0)).getBook();
                 txtPassg.setBook(book);
-                log.debug("foo");
             }
 
             initialize();

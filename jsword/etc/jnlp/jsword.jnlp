@@ -10,11 +10,17 @@
     <description>J-Sword Bible Desktop Application</description>
     <description kind="short">J-Sword is a Bible study package available over the internet</description>
     <description kind="tooltip">J-Sword Bible Desktop Application</description>
+    <icon href="../images/icon.gif"/>
+    <icon kind="splash" href="../images/jsword.gif"/>    
     <offline-allowed/>
   </information>
 
   <security>
-    <!-- todo work out what set we really need -->
+    <!--
+    We need disk io to read installed Sword Bibles,
+    network access to install new ones, and the ability to read system vars
+    I'm not sure there is much point in askin for less that everything
+    -->
     <all-permissions/>
   </security>
 

@@ -164,6 +164,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     {
         URL scratchfile = getCachedIndexFile();
         download(host, USERNAME, PASSWORD, directory, FILE_LIST_GZ, scratchfile);
+        loaded = false;
     }
 
     /**
@@ -242,14 +243,13 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                 tin.close();
                 gin.close();
                 in.close();
+                loaded = true;
             }
             catch (IOException ex)
             {
                 throw new InstallException(Msg.CACHE_ERROR, ex);
             }
         }
-
-        loaded = true;
     }
 
     /**

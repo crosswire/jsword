@@ -61,8 +61,6 @@ public class CommentaryPane extends JPanel implements FocusablePart
      */
     public CommentaryPane()
     {
-        cmds = Books.installed().getBookMetaDatas(filter);
-
         init();
     }
 
@@ -120,8 +118,8 @@ public class CommentaryPane extends JPanel implements FocusablePart
      */
     protected void updateDisplay()
     {
-        int index = cbocomments.getSelectedIndex();
-        if (index == -1)
+        BookMetaData bmd = (BookMetaData) cbocomments.getSelectedItem();
+        if (bmd == null)
         {
             return;
         }
@@ -131,14 +129,6 @@ public class CommentaryPane extends JPanel implements FocusablePart
             Verse verse = set.getVerse();
             ref = PassageFactory.createPassage();
             ref.add(verse);
-
-            if (index >= cmds.size())
-            {
-                log.error("Can't update display to index: "+index+" when I only know about: "+cmds.size()+" books.", new Exception());
-                return;
-            }
-
-            BookMetaData bmd = (BookMetaData) cmds.get(index);
 
             BookData bdata = bmd.getBook().getData(ref);
             txtdisplay.setBookData(bdata);
@@ -162,16 +152,15 @@ public class CommentaryPane extends JPanel implements FocusablePart
      */
     public String getOSISSource()
     {
-        int index = cbocomments.getSelectedIndex();
+        BookMetaData bmd = (BookMetaData) cbocomments.getSelectedItem();
 
-        if (ref == null || index == -1)
+        if (ref == null || bmd == null)
         {
             return "";
         }
 
         try
         {
-            BookMetaData bmd = (BookMetaData) cmds.get(index);
 
             BookData bdata = bmd.getBook().getData(ref);
             SAXEventProvider provider = bdata.getSAXEventProvider();
@@ -241,11 +230,6 @@ public class CommentaryPane extends JPanel implements FocusablePart
     {
         txtdisplay.removeHyperlinkListener(li);
     }
-
-    /**
-     * The CommentaryMetaDatas
-     */
-    protected List cmds;
 
     /**
      * Last displayed

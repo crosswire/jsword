@@ -103,19 +103,27 @@
         </style>
       </head>
       <body>
-        <table width="100%">
-          <tr>
-            <td width="3%">&#160;</td>
-            <td valign="top" width="80%">
-              <xsl:apply-templates/>
-            </td>
-            <td width="2%">&#160;</td>
-            <td valign="top" width="15%" style="background:#f4f4e8;">
-              <p>&#160;</p>
-              <xsl:apply-templates select="//note" mode="print-notes"/>
-            </td>
-          </tr>
-        </table>
+        <!-- If there are notes, output a table with notes in the 2nd column. -->
+        <xsl:choose>
+          <xsl:when test="//note">
+            <table width="100%">
+              <tr>
+                <td width="3%">&#160;</td>
+                <td valign="top" width="80%">
+                  <xsl:apply-templates/>
+                </td>
+                <td width="2%">&#160;</td>
+                <td valign="top" width="15%" style="background:#f4f4e8;">
+                  <p>&#160;</p>
+                  <xsl:apply-templates select="//note" mode="print-notes"/>
+                </td>
+              </tr>
+            </table>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
       </body>
     </html>
   </xsl:template>
@@ -174,7 +182,7 @@
   <xsl:template match="verse">
     <!-- DMS: if the verse is not the first verse of a set of siblings, output two spaces. -->
     <xsl:if test="preceding-sibling::*[local-name() = 'verse']">
-      <xsl:text>&#160;&#160;</xsl:text>
+      <xsl:text> &#160;</xsl:text>
     </xsl:if>
     <a name="{@osisID}"><sup class="verse"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></sup></a>
     <font class="verse">
@@ -191,6 +199,10 @@
 
   <!--=======================================================================-->
   <xsl:template match="note">
+    <!-- If the preceeding sibling was a note, emit a separator -->
+    <xsl:if test="preceding-sibling::*[local-name() = 'note']">
+      <sup class="note">,&#160;</sup>
+    </xsl:if>
     <a href="#note-{generate-id(.)}">
       <sup class="note"><xsl:number level="any" from="/" format="a"/></sup>
     </a>
