@@ -294,7 +294,7 @@ public class RawBibleDriver extends AbstractBibleDriver
             driver = new RawBibleDriver();
             BibleDriverManager.registerDriver(driver);
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
             log.log(Level.INFO, "RawBibleDriver init failure", ex);
         }

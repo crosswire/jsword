@@ -267,7 +267,7 @@ public class SerBibleDriver extends AbstractBibleDriver
             driver = new SerBibleDriver();
             BibleDriverManager.registerDriver(driver);
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
             Reporter.informUser(SerBibleDriver.class, ex);
         }

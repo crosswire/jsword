@@ -196,7 +196,7 @@ public class JDBCBibleDriver extends AbstractBibleDriver
             driver = new JDBCBibleDriver();
             BibleDriverManager.registerDriver(driver);
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
             log.log(Level.INFO, "JDBCBibleDriver init failure", ex);
         }
