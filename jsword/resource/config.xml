@@ -82,6 +82,12 @@
     <alternative number="3" name="mIXeD"/>
   </option>
 
+  <option key="Bibles.Readings" type="string-options">
+  	<introspect class="org.crosswire.jsword.book.readings.ReadingsBookDriver" property="ReadingsSet"/>
+    <help>Which of the available readings sets is the default.</help>
+    <map name="readings"/>
+  </option>
+
   <option key="Looks.Look and Feel" type="class">
   	<introspect class="org.crosswire.common.swing.LookAndFeelUtil" property="LookAndFeel"/>
     <help>The look and feel of the application</help>

@@ -3,17 +3,24 @@
   <!--JBuilder Library Definition File-->
   <fullname>jsword</fullname>
   <class>
+    <path>[jar/jaxb10b/jaxb-api.jar]</path>
+    <path>[jar/jaxb10b/jaxb-libs.jar]</path>
+    <path>[jar/jaxb10b/jaxb-ri.jar]</path>
     <path>[jar/jdom08/crimson.jar]</path>
     <path>[jar/jdom08/jaxp.jar]</path>
     <path>[jar/jdom08/jdom.jar]</path>
     <path>[jar/jdom08/xalan.jar]</path>
-    <path>[jar/javamail12/activation.jar]</path>
-    <path>[jar/javamail12/mail.jar]</path>
-    <path>resource</path>
-    <path>[jar/bsf22/bsf.jar]</path>
-    <path>[jar/bsf22/js.jar]</path>
+    <path>[jar/jlf10/jlfgr-1_0.jar]</path>
+    <path>[jar/junit381/junit.jar]</path>
+    <path>[jar/log4j127/log4j-1.2.7.jar]</path>
+    <path>[jar/lucene12/lucene-1.2.jar]</path>
     <path>[jar/servlet23/servlet.jar]</path>
-    <path>[jar/junit37/httpunit.jar]</path>
-    <path>[jar/junit37/junit.jar]</path>
   </class>
+  <source>
+    <path>[jar/servlet23/jakarta-servletapi-4-src-20021215.zip]/jakarta-servletapi-4/src/share</path>
+    <path>[jar/log4j127/jakarta-log4j-1.2.7.zip]/jakarta-log4j-1.2.7/src/java</path>
+    <path>[jar/lucene12/lucene-1.2-src.zip]/lucene-1.2-src/src/java</path>
+    <path>[jar/jdom08/jdom-b8.zip]/jdom-b8/src/java</path>
+    <path>[jar/jaxb10b/jaxb-api-src.zip]</path>
+  </source>
 </library>

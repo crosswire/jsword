@@ -1,14 +1,14 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.common.swing;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.SortedSet;
 
-import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisText;
+import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 
 /**
- * Basic section of BookData.
+ * A simple implementation of ListModel that is backed by a SortedSet
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,28 +31,43 @@ import org.crosswire.jsword.osis.OsisText;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BookData
+public class SortedSetListModel extends AbstractListModel implements ListModel
 {
     /**
-     * We only want to be created by OsisUtil
-     * @see OsisUtil
+     * Constructor for ListListModel.
      */
-    protected BookData()
+    public SortedSetListModel(SortedSet set)
     {
+        this.set = set;
     }
 
     /**
-     * The root where we read data from
+     * @see javax.swing.ListModel#getSize()
      */
-    protected Osis osis;
+    public int getSize()
+    {
+        return set.size();
+    }
 
     /**
-     * The place we add sections to
+     * There must be a faster way of doing this?
+     * @see javax.swing.ListModel#getElementAt(int)
      */
-    protected OsisText text;
+    public Object getElementAt(int index)
+    {
+        Iterator it = set.iterator();
+        int i = 0;
+        while (it.hasNext())
+        {
+            Object element = it.next();
+            if (i == index)
+                return element;
 
-    /**
-     * The list of Sections
-     */
-    protected List sections = new ArrayList();
+            i++;
+        }
+
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+    private SortedSet set;
 }

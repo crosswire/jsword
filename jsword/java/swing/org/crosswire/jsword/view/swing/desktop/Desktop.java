@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Method;
@@ -19,6 +20,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
@@ -34,6 +36,7 @@ import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.ComparePane;
 import org.crosswire.jsword.view.swing.book.GeneratorPane;
+import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.Splash;
 import org.crosswire.jsword.view.swing.book.StatusBar;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
@@ -47,9 +50,7 @@ import org.crosswire.jsword.view.swing.book.TitleChangedListener;
  * <p>2 Things to think about, if you change the LaF when you have run
  * some tests already, then the window can grow quite a lot. Also do we
  * want to disable the Exit button if work is going on?</p>
- * 
- * PENDING(joe): add Dict/LEx/Book support to desktop
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -102,7 +103,11 @@ public class Desktop extends JFrame implements TitleChangedListener
 
             splash.setProgress("Creating GUI : Setting-up config");
             act_tools_options = new OptionsAction(this);
+
+            splash.setProgress("Creating GUI : Initialising configuration system");
             act_tools_options.createConfig();
+
+            splash.setProgress("Creating GUI : Loading stored config");
             act_tools_options.loadConfig();
 
             splash.setProgress("Creating GUI : Ctors (Layouts)");
@@ -136,7 +141,6 @@ public class Desktop extends JFrame implements TitleChangedListener
             act_view_sbar = new ViewStatusBarAction(this);
 
             splash.setProgress("Creating GUI : Ctors (List Menu)");
-            act_list_toggle = new ListToggleAction(this);
             act_list_delete = new ListDeleteAction(this);
 
             splash.setProgress("Creating GUI : Ctors (Tools Menu)");
@@ -171,6 +175,8 @@ public class Desktop extends JFrame implements TitleChangedListener
             grp_views = new ButtonGroup();
             pnl_tbar = new JToolBar();
             bar_status = new StatusBar();
+            bar_side = new SidebarPane();
+            spt_books = new JSplitPane();
 
             // GUI setup
             splash.setProgress("Creating GUI : Init");
@@ -246,8 +252,6 @@ public class Desktop extends JFrame implements TitleChangedListener
         splash.setProgress("Creating GUI : Menus");
         menu_list.setText("List");
         menu_list.setMnemonic('L');
-        menu_list.add(act_list_toggle).addMouseListener(bar_status);
-        menu_list.addSeparator();
         menu_list.add(act_edit_blur1).addMouseListener(bar_status);
         menu_list.add(act_edit_blur5).addMouseListener(bar_status);
         menu_list.addSeparator();
@@ -256,12 +260,8 @@ public class Desktop extends JFrame implements TitleChangedListener
         splash.setProgress("Creating GUI : Menus");
         menu_tools.setText("Tools");
         menu_tools.setMnemonic('T');
-        //menu_tools.add(act_tools_bench).addMouseListener(bar_status);
         menu_tools.add(act_tools_generate).addMouseListener(bar_status);
         menu_tools.add(act_tools_diff).addMouseListener(bar_status);
-        //menu_tools.addSeparator();
-        //menu_tools.add(act_tools_test).addMouseListener(bar_status);
-        //menu_tools.add(act_tools_script).addMouseListener(bar_status);
         menu_tools.addSeparator();
         menu_tools.add(act_tools_options).addMouseListener(bar_status);
 
@@ -289,18 +289,18 @@ public class Desktop extends JFrame implements TitleChangedListener
         // to find out whether the method is available, if so call it.
         try
         {
-	        Class cl = pnl_tbar.getClass();
-	        Method meth = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
+            Class cl = pnl_tbar.getClass();
+            Method meth = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
             meth.invoke(pnl_tbar, new Object[] { Boolean.TRUE });
         }
         catch (NoSuchMethodException ex)
         {
-        	// we have a java < 1.4 user
+            // we have a java < 1.4 user
         }
         catch (Exception ex)
         {
-        	// we don't expect this one, print a stack trace
-        	ex.printStackTrace();
+            // we don't expect this one, print a stack trace
+            ex.printStackTrace();
         }
 
         pnl_tbar.add(act_file_new).addMouseListener(bar_status);
@@ -311,18 +311,21 @@ public class Desktop extends JFrame implements TitleChangedListener
         pnl_tbar.add(act_edit_copy).addMouseListener(bar_status);
         pnl_tbar.add(act_edit_paste).addMouseListener(bar_status);
         pnl_tbar.addSeparator();
-        //pnl_tbar.add(act_tools_bench).addMouseListener(bar_status);
         pnl_tbar.add(act_tools_generate).addMouseListener(bar_status);
         pnl_tbar.add(act_tools_diff).addMouseListener(bar_status);
-        //pnl_tbar.add(act_tools_test).addMouseListener(bar_status);
-        //pnl_tbar.add(act_tools_script).addMouseListener(bar_status);
         pnl_tbar.addSeparator();
         pnl_tbar.add(act_help_contents).addMouseListener(bar_status);
         pnl_tbar.add(act_help_system).addMouseListener(bar_status);
         pnl_tbar.add(act_help_log).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
-        splash.setProgress("Creating GUI : Actions");
+        splash.setProgress("Creating GUI : Main Window");
+        spt_books.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        spt_books.setOneTouchExpandable(true);
+        spt_books.setDividerLocation(1.0D);
+        spt_books.add(bar_side, JSplitPane.RIGHT);
+        spt_books.setResizeWeight(1.0D);
+
         this.addWindowListener(new WindowAdapter()
         {
             public void windowClosed(WindowEvent ev)
@@ -334,6 +337,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(pnl_tbar, BorderLayout.NORTH);
         this.getContentPane().add(bar_status, BorderLayout.SOUTH);
+        this.getContentPane().add(spt_books, BorderLayout.CENTER);
         this.setJMenuBar(bar_menu);
 
         this.setEnabled(true);
@@ -343,42 +347,25 @@ public class Desktop extends JFrame implements TitleChangedListener
     }
 
     /**
-     * Run down the menus adding the accelerators
+     * Method setViewComponent.
+     * @param comp
      */
-    public void accelerateMenu(JMenuBar menubar)
+    public void setViewComponent(Component comp)
     {
-        for (int i = 0; i < menubar.getMenuCount(); i++)
-        {
-            JMenu menu = menubar.getMenu(i);
-            for (int j = 0; j < menu.getItemCount(); j++)
-            {
-                JMenuItem item = menu.getItem(j);
-                if (item instanceof AbstractButton)
-                {
-                    AbstractButton button = (AbstractButton) item;
-                    Action action = button.getAction();
-
-                    if (action != null)
-                    {
-                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-                        if (accel != null)
-                        {
-                            item.setAccelerator(accel);
-                        }
-                    }
-                }
-            }
-        }
+        spt_books.add(comp, JSplitPane.LEFT);
+        spt_books.repaint();
+        // getContentPane().add(comp, BorderLayout.CENTER);
+        // getContentPane().repaint();
     }
 
     /**
-     * A Select pane is telling us that it has changed, and we might want to
-     * update the BibleViewPane and the ViewLayout to reflect any potentially
-     * new titles
+     * Method unsetViewComponent.
+     * @param mdi_main
      */
-    public void titleChanged(TitleChangedEvent ev)
+    public void unsetViewComponent(Component comp)
     {
-        layout.update((BibleViewPane) ev.getSource());
+        spt_books.remove(comp);
+        // getContentPane().remove(comp);
     }
 
     /**
@@ -490,6 +477,55 @@ public class Desktop extends JFrame implements TitleChangedListener
         this.view_tool = view_tool;
     }
 
+    /**
+     * Are the close buttons enabled?
+     * @param The enabled state
+     */
+    public void setCloseEnabled(boolean b)
+    {
+        act_file_close.setEnabled(false);
+        act_file_closeall.setEnabled(false);
+    }
+
+    /**
+     * A Select pane is telling us that it has changed, and we might want to
+     * update the BibleViewPane and the ViewLayout to reflect any potentially
+     * new titles
+     */
+    public void titleChanged(TitleChangedEvent ev)
+    {
+        layout.update((BibleViewPane) ev.getSource());
+    }
+
+    /**
+     * Run down the menus adding the accelerators
+     */
+    private void accelerateMenu(JMenuBar menubar)
+    {
+        for (int i = 0; i < menubar.getMenuCount(); i++)
+        {
+            JMenu menu = menubar.getMenu(i);
+            for (int j = 0; j < menu.getItemCount(); j++)
+            {
+                JMenuItem item = menu.getItem(j);
+                if (item instanceof AbstractButton)
+                {
+                    AbstractButton button = (AbstractButton) item;
+                    Action action = button.getAction();
+
+                    if (action != null)
+                    {
+                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+                        if (accel != null)
+                        {
+                            item.setAccelerator(accel);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     protected ViewLayout VIEW_SDI = null;
     protected ViewLayout VIEW_MDI = null;
     protected ViewLayout VIEW_TDI = null;
@@ -517,8 +553,8 @@ public class Desktop extends JFrame implements TitleChangedListener
     private Action act_file_save = null;
     private Action act_file_saveas = null;
     private Action act_file_saveall = null;
-    protected Action act_file_close = null;
-    protected Action act_file_closeall = null;
+    private Action act_file_close = null;
+    private Action act_file_closeall = null;
     private Action act_file_print = null;
     private Action act_file_exit = null;
 
@@ -534,7 +570,6 @@ public class Desktop extends JFrame implements TitleChangedListener
     private Action act_view_tbar = null;
     private Action act_view_sbar = null;
 
-    private Action act_list_toggle = null;
     private Action act_list_delete = null;
 
     private Action act_tools_generate = null;
@@ -564,4 +599,6 @@ public class Desktop extends JFrame implements TitleChangedListener
     private ButtonGroup grp_views = null;
     private JToolBar pnl_tbar = null;
     private StatusBar bar_status = null;
+    private SidebarPane bar_side = null;
+    private JSplitPane spt_books = null;
 }

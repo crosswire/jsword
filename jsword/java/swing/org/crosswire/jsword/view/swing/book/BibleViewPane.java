@@ -1,20 +1,19 @@
 
 package org.crosswire.jsword.view.swing.book;
 
-import java.awt.BorderLayout;
 import java.io.File;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.view.swing.event.*;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * A quick Swing Bible display pane.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -65,9 +64,22 @@ public class BibleViewPane extends JPanel
         pnl_select.addCommandListener(pnl_passg);
         pnl_select.addVersionListener(pnl_passg);
 
+        spt_books.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        spt_books.add(tab_conc, JSplitPane.TOP);
+        spt_books.add(tab_dict, JSplitPane.BOTTOM);
+        spt_books.setDividerLocation(150);
+
+        pnl_top.setLayout(new BorderLayout());
+        pnl_top.add(pnl_select, BorderLayout.NORTH);
+        pnl_top.add(pnl_passg, BorderLayout.CENTER);
+
+        spt_top.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        spt_top.add(spt_books, JSplitPane.RIGHT);
+        spt_top.add(pnl_top, JSplitPane.LEFT);
+        spt_top.setDividerLocation(200);
+
         this.setLayout(new BorderLayout());
-        this.add(pnl_select, BorderLayout.NORTH);
-        this.add(pnl_passg, BorderLayout.CENTER);
+        this.add(pnl_top, BorderLayout.CENTER);
     }
 
     /**
@@ -202,4 +214,9 @@ public class BibleViewPane extends JPanel
     private PassagePane pnl_passg = new PassagePane();
     private transient Vector listeners;
     private static int base = 1;
+    private JSplitPane spt_top = new JSplitPane();
+    private JSplitPane spt_books = new JSplitPane();
+    private JTabbedPane tab_conc = new JTabbedPane();
+    private JTabbedPane tab_dict = new JTabbedPane();
+    private JPanel pnl_top = new JPanel();
 }

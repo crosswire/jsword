@@ -2,13 +2,17 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -80,26 +84,42 @@ public class SelectPane extends JPanel
             public void actionPerformed(ActionEvent ev) { search(); }
         });
         txt_search.setColumns(20);
+        btn_dialg.setText("...");
         pnl_search.add(txt_search, BorderLayout.CENTER);
         pnl_search.add(cbo_search, BorderLayout.WEST);
         pnl_search.add(btn_search, BorderLayout.EAST);
 
         lbl_passg.setToolTipText("");
         lbl_passg.setText("View:");
-        pnl_passg.setLayout(new BorderLayout(5, 0));
-        txt_passg.setColumns(20);
+        //txt_passg.setColumns(20);
         txt_passg.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev) { view(); }
+        });
+        btn_dialg.setText("...");
+        btn_dialg.setEnabled(false);
+        btn_dialg.setBorder(BorderFactory.createCompoundBorder(txt_passg.getBorder(), btn_dialg.getBorder()));
+        btn_dialg.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev) { select(); }
         });
         cbo_versn.setModel(mdl_versn);
         cbo_versn.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent ev) { version(); }
         });
+        /*
+        pnl_passg.setLayout(new BorderLayout(5, 0));
         pnl_passg.add(txt_passg, BorderLayout.CENTER);
         pnl_passg.add(lbl_passg, BorderLayout.WEST);
         pnl_passg.add(cbo_versn, BorderLayout.EAST);
+        */
+
+        pnl_passg.setLayout(new GridBagLayout());
+        pnl_passg.add(lbl_passg, new GridBagConstraints(0, 0, 1, 1, 0.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 2), 0, 0));
+        pnl_passg.add(txt_passg, new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,     new Insets(0, 0, 0, -1), 0, 0));
+        pnl_passg.add(btn_dialg, new GridBagConstraints(2, 0, 1, 2, 0.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, -1, 0, 10), 0, 0));
+        pnl_passg.add(cbo_versn, new GridBagConstraints(3, 0, 1, 1, 0.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
 
         this.setLayout(new GridLayout(2, 0, 5, 5));
         this.add(pnl_search, null);
@@ -207,6 +227,14 @@ public class SelectPane extends JPanel
     }
 
     /**
+     * Someone clicked the "..." button
+     */
+    protected void select()
+    {
+        pnl_select.showInDialog(this, "Select Passage", true, txt_passg.getText());
+    }
+
+    /**
      * Add a command listener
      */
     public synchronized void removeCommandListener(CommandListener li)
@@ -304,4 +332,6 @@ public class SelectPane extends JPanel
     private transient Vector versionListeners;
     private JComboBox cbo_search = new JComboBox(new Object[] { SEARCH, MATCH });
     private JButton btn_search = new JButton();
+    private JButton btn_dialg = new JButton();
+    private PassageSelectionPane pnl_select = new PassageSelectionPane();
 }

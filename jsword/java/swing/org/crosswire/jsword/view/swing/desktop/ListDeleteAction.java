@@ -11,7 +11,7 @@ import org.crosswire.jsword.view.swing.passage.PassageList;
 
 /**
  * Show hide the list.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -51,16 +51,14 @@ public class ListDeleteAction extends DesktopAbstractAction
         if (view != null)
         {
             PassagePane ppane = view.getPassagePane();
-            if (ppane.isListVisible())
-            {
-                PassageList plist = ppane.getPassageList();
-                plist.deleteSelected();
 
-                // Update the text box
-                Passage ref = plist.getPassage();
-                SelectPane psel = view.getSelectPane();
-                psel.setPassage(ref);
-            }
+            PassageList plist = ppane.getPassageList();
+            plist.deleteSelected();
+
+            // Update the text box
+            Passage ref = plist.getPassage();
+            SelectPane psel = view.getSelectPane();
+            psel.setPassage(ref);
         }
     }
 }

@@ -1,9 +1,7 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.List;
-
-import org.crosswire.jsword.book.data.BibleData;
+import java.util.SortedSet;
 
 /**
  * Dictionary is an interface for all the Lexicon/Dictionary type works.
@@ -43,13 +41,6 @@ public interface Dictionary extends Book
     public DictionaryMetaData getDictionaryMetaData();
 
     /**
-     * Retrieve the data for a given word
-     * @param word The word to retrieve a document for.
-     * @return BibleData The textual description of the word.
-     */
-    public BibleData getData(String word) throws BookException;
-
-    /**
      * Get a list of index entries. If key is null or blank then the entire
      * index is retrieved. An empty array is returned if no entries could be
      * found.
@@ -63,5 +54,5 @@ public interface Dictionary extends Book
      * @param startswith The text to base replies on.
      * @return String[]
      */
-    public List getIndex(String startswith) throws BookException;
+    public SortedSet getIndex(String startswith) throws BookException;
 }

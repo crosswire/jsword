@@ -110,6 +110,48 @@ public class Resource
     }
 
     /**
+     * Get a list of readings sets for a given subject.
+     * @return The project root as a URL
+     * @see NetUtil#list(URL, URLFilter)
+     */
+    public String[] getInstalledReadingsSets()
+    {
+        try
+        {
+            String search = "readings/"+NetUtil.INDEX_FILE;
+            URL index = getResource(search);
+            return NetUtil.listByIndexFile(index, new URLFilter()
+            {
+                public boolean accept(String name)
+                {
+                    return name.endsWith(PROPERTIES_EXTENSION);
+                }
+            });
+        }
+        catch (IOException ex)
+        {
+            return new String[0];
+        }
+    }
+
+    /**
+     * Get a list of readings sets for a given subject.
+     * @return The project root as a URL
+     * @see NetUtil#list(URL, URLFilter)
+     */
+    public Properties getReadingsSet(String name) throws MalformedURLException, IOException
+    {
+        String lookup = "readings/"+name;
+        InputStream in = getResourceAsStream(lookup);
+
+        Properties prop = new Properties();
+        prop.load(in);
+
+        log.debug("Loaded "+name+" from classpath: [OK]");
+        return prop;
+    }
+
+    /**
      * Get and load a properties file from the writable area or if that
      * fails from the classpath (where a default ought to be stored)
      * @param subject The name of the desired resource (without any extension)

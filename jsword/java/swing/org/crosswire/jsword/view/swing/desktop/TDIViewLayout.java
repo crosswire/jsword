@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.view.swing.desktop;
 
-import java.awt.BorderLayout;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -65,8 +64,7 @@ public class TDIViewLayout extends ViewLayout
         }
 
         // ensure we have been registered
-        getDesktop().getContentPane().add(tab_main, BorderLayout.CENTER);
-        getDesktop().getContentPane().repaint();
+        getDesktop().setViewComponent(tab_main);
 
         // I'm not sure if this is a bug in swing or should I really
         // be doing this to make the first tab be painted ...
@@ -80,7 +78,7 @@ public class TDIViewLayout extends ViewLayout
     public void postDisplay()
     {
         tab_main.removeAll();
-        getDesktop().getContentPane().remove(tab_main);
+        getDesktop().unsetViewComponent(tab_main);
     }
 
     /**

@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.view.swing.desktop;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Iterator;
 
@@ -59,8 +58,7 @@ public class MDIViewLayout extends ViewLayout
         }
 
         // ensure we have been registered
-        getDesktop().getContentPane().add(mdi_main, BorderLayout.CENTER);
-        getDesktop().getContentPane().repaint();
+        getDesktop().setViewComponent(mdi_main);
     }
 
     /**
@@ -75,7 +73,7 @@ public class MDIViewLayout extends ViewLayout
             mdi_main.remove(frames[i]);
         }
 
-        getDesktop().getContentPane().remove(mdi_main);
+        getDesktop().unsetViewComponent(mdi_main);
     }
 
     /**

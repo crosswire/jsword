@@ -46,7 +46,7 @@ public class EirPanel extends JPanel
      * @param title The title for the new dialog
      * @param modal
      */
-    protected void showInDialog(Component parent, String title, boolean modal)
+    public void showInDialog(Component parent, String title, boolean modal)
     {
         if (dlg_main != null)
         {

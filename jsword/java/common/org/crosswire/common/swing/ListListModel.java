@@ -1,12 +1,12 @@
+package org.crosswire.common.swing;
 
-package org.crosswire.jsword.view.swing.desktop;
+import java.util.List;
 
-import java.awt.event.ActionEvent;
-
-import org.crosswire.jsword.view.swing.book.BibleViewPane;
+import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 
 /**
- * Show hide the list.
+ * A simple implementation of ListModel that is backed by a List
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,24 +29,31 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ListToggleAction extends DesktopAbstractAction
+public class ListListModel extends AbstractListModel implements ListModel
 {
-    public ListToggleAction(Desktop tools)
+    /**
+     * Constructor for ListListModel.
+     */
+    public ListListModel(List list)
     {
-        super(tools,
-              "Toggle List",
-              "/toolbarButtonGraphics/text/AlignJustify16.gif",
-              "/toolbarButtonGraphics/text/AlignJustify24.gif",
-              "Toggles the passage list", "Toggles display of the passage list.",
-              'T', null);
+        this.list = list;
     }
 
-    public void actionPerformed(ActionEvent ev)
+    /**
+     * @see javax.swing.ListModel#getSize()
+     */
+    public int getSize()
     {
-        BibleViewPane view = getDesktop().getSelectedBibleViewPane();
-        if (view != null)
-        {
-            view.getPassagePane().toggleList();
-        }
+        return list.size();
     }
+
+    /**
+     * @see javax.swing.ListModel#getElementAt(int)
+     */
+    public Object getElementAt(int index)
+    {
+        return list.get(index);
+    }
+
+    private List list;
 }

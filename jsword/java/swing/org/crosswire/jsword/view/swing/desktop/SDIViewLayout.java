@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.view.swing.desktop;
 
-import java.awt.BorderLayout;
-
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -51,11 +49,8 @@ public class SDIViewLayout extends ViewLayout
             getDesktop().addBibleViewPane(view);
         }
 
-        getDesktop().getContentPane().add(getSelected(), BorderLayout.CENTER);
-        getDesktop().getContentPane().repaint();
-
-        getDesktop().act_file_close.setEnabled(false);
-        getDesktop().act_file_closeall.setEnabled(false);
+        getDesktop().setViewComponent(getSelected());
+        getDesktop().setCloseEnabled(false);
     }
 
     /**
@@ -63,10 +58,8 @@ public class SDIViewLayout extends ViewLayout
      */
     public void postDisplay()
     {
-        getDesktop().getContentPane().remove(getSelected());
-
-        getDesktop().act_file_close.setEnabled(true);
-        getDesktop().act_file_closeall.setEnabled(true);
+        getDesktop().unsetViewComponent(getSelected());
+        getDesktop().setCloseEnabled(true);
     }
 
     /**

@@ -4,7 +4,8 @@ package org.crosswire.jsword.book.stub;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
@@ -21,7 +22,6 @@ import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -133,28 +133,6 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     }
 
     /**
-     * @see org.crosswire.jsword.book.Dictionary#getData(java.lang.String)
-     */
-    public BibleData getData(String word) throws BookException
-    {
-        try
-        {
-            Verse verse = new Verse("Gen 1:1");
-            VerseRange range = new VerseRange(verse);
-            
-            BibleData doc = OsisUtil.createBibleData(getBibleMetaData());
-            SectionData section = OsisUtil.createSectionData(doc, range.toString());
-            
-            OsisUtil.createRefData(section, verse, "stub implementation");
-            return doc;
-        }
-        catch (NoSuchVerseException ex)
-        {
-            throw new BookException("ser_read", ex);
-        }
-    }
-
-    /**
      * For a given word find a list of references to it
      * @param word The text to search for
      * @return The references to the word
@@ -244,20 +222,23 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     /**
      * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
      */
-    public List getIndex(String base)
+    public SortedSet getIndex(String base)
     {
         base = base.toLowerCase();
-
-        if (base.equals(""))
-            return Arrays.asList(new String[] { "stub", "implementation", });
+        
+        SortedSet set = new TreeSet();
 
         if ("stub".startsWith(base))
-            return Arrays.asList(new String[] { "stub" });
+        {
+            set.add("stub");
+        }
 
         if ("implementation".startsWith(base))
-            return Arrays.asList(new String[] { "implementation" });
+        {
+            set.add("implementation");
+        }
 
-        return Collections.EMPTY_LIST;
+        return set;
     }
 
     /**

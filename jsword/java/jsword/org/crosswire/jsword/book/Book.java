@@ -57,8 +57,9 @@ public interface Book
 
     /**
      * Retrieval: For a given search spec find a list of references to it.
-     * @param base
-     * @return Iterator
+     * If there are no matches then null should be returned, otherwise a valid
+     * Key.
+     * @param search The search spec.
      * @throws BookException
      */
     public Key find(Search search) throws BookException;

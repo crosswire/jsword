@@ -17,6 +17,7 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.readings.ReadingsBookDriver;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -92,7 +93,7 @@ public class OptionsAction extends DesktopAbstractAction
 
     private static void fillChoiceFactory() throws BookException
     {
-        // Create the array of options
+        // Create the array of Bibles
         List bmds = Books.getBooks(BookFilters.getBibles());
         List names = new ArrayList();
         for (Iterator it = bmds.iterator(); it.hasNext();)
@@ -100,8 +101,10 @@ public class OptionsAction extends DesktopAbstractAction
             BibleMetaData bmd = (BibleMetaData) it.next();
             names.add(bmd.getFullName());
         }
-
         ChoiceFactory.getDataMap().put("biblenames", names.toArray(new String[names.size()]));
+
+        // Create the array of readings sets
+        ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
     }
 
     private Config config = null;

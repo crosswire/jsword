@@ -2,14 +2,7 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ListSelectionEvent;
@@ -17,7 +10,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.swing.EirAbstractAction;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
@@ -32,7 +24,7 @@ import org.crosswire.jsword.view.swing.passage.PassageList;
 
 /**
  * A quick Swing Bible display pane.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -64,7 +56,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
         try
         {
             version = Defaults.getBibleMetaData().getBible();
-            txt_view.setVersion(version);
+            txt_passg.setVersion(version);
         }
         catch (Throwable ex)
         {
@@ -79,48 +71,21 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
      */
     private void jbInit()
     {
-        CustomMouseListener cml = new CustomMouseListener();
-
-        lst_ranges.addMouseListener(cml);
-        lst_ranges.addListSelectionListener(new ListSelectionListener()
+        lst_passg.addListSelectionListener(new ListSelectionListener()
         {
             public void valueChanged(ListSelectionEvent ev) { selection(); }
         });
-        scr_ranges.getViewport().add(lst_ranges, null);
 
-        menu_view.add(act_list);
-        menu_view.addSeparator();
-        menu_view.add(act_options);
+        spt_passg.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        spt_passg.add(scr_passg, JSplitPane.LEFT);
+        spt_passg.add(txt_passg, JSplitPane.RIGHT);
+        spt_passg.setOneTouchExpandable(true);
+        spt_passg.setDividerLocation(0.0D);
 
-        txt_view.addMouseListener(cml);
-
-        spt_top.add(scr_ranges, JSplitPane.LEFT);
-        // spt_top.add(txt_view, JSplitPane.RIGHT);
+        scr_passg.getViewport().add(lst_passg);
 
         this.setLayout(new BorderLayout());
-        this.add(txt_view, BorderLayout.CENTER);
-    }
-
-    /**
-     * For popup menus
-     */
-    class CustomMouseListener extends MouseAdapter
-    {
-        public void mousePressed(MouseEvent ev)
-        {
-            triggerMenu(ev);
-        }
-        public void mouseReleased(MouseEvent ev)
-        {
-            triggerMenu(ev);
-        }
-        private void triggerMenu(MouseEvent ev)
-        {
-            if (ev.isPopupTrigger())
-            {
-                menu_view.show(ev.getComponent(), ev.getX(), ev.getY());
-            }
-        }
+        this.add(spt_passg, BorderLayout.CENTER);
     }
 
     /**
@@ -129,25 +94,10 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     public void versionChanged(VersionEvent ev)
     {
         version = ev.getBible();
-        txt_view.setVersion(version);
+        txt_passg.setVersion(version);
 
         // refresh the view
-        if (view_mode == VIEW_LIST)
-        {
-            selection();
-        }
-        else
-        {
-            try
-            {
-                Passage ref = lst_ranges.getPassage();
-                txt_view.setPassage(ref);
-            }
-            catch (Throwable ex)
-            {
-                Reporter.informUser(this, ex);
-            }
-        }
+        selection();
     }
 
     /**
@@ -165,8 +115,8 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     {
         try
         {
-            lst_ranges.setPassage(ref);
-            txt_view.setPassage(ref);
+            lst_passg.setPassage(ref);
+            txt_passg.setPassage(ref);
         }
         catch (Throwable ex)
         {
@@ -179,7 +129,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
      */
     public Passage getPassage()
     {
-        return lst_ranges.getPassage();
+        return lst_passg.getPassage();
     }
 
     /**
@@ -187,47 +137,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
      */
     public PassageList getPassageList()
     {
-        if (view_mode == VIEW_LIST)
-        {
-            return lst_ranges;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Is the list showing
-     */
-    public boolean isListVisible()
-    {
-        return view_mode == VIEW_LIST;
-    }
-
-    /**
-     * Toggle the list state
-     */
-    public void toggleList()
-    {
-        if (view_mode == VIEW_SIMPLE)
-        {
-            view_mode = VIEW_LIST;
-
-            PassagePane.this.remove(txt_view);
-            spt_top.add(txt_view, JSplitPane.RIGHT);
-            PassagePane.this.add(spt_top, BorderLayout.CENTER);
-        }
-        else
-        {
-            view_mode = VIEW_SIMPLE;
-
-            spt_top.remove(txt_view);
-            PassagePane.this.remove(spt_top);
-            PassagePane.this.add(txt_view, BorderLayout.CENTER);
-        }
-
-        PassagePane.this.validate();
+        return lst_passg;
     }
 
     /**
@@ -235,7 +145,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
      */
     public JTextComponent getJTextComponent()
     {
-        return txt_view.getJTextComponent();
+        return txt_passg.getJTextComponent();
     }
 
     /**
@@ -245,30 +155,27 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     {
         try
         {
-            if (view_mode == VIEW_LIST)
+            Object[] ranges = lst_passg.getSelectedValues();
+
+            // if there was a single selection then show the whole chapter
+            if (ranges.length == 1)
             {
-                Object[] ranges = lst_ranges.getSelectedValues();
-                
-                // if there was a single selection then show the whole chapter
-                if (ranges.length == 1)
-                {
-                    VerseRange range = (VerseRange) ranges[0];
+                VerseRange range = (VerseRange) ranges[0];
 
-                    Passage ref = PassageFactory.createPassage();
-                    ref.add(range);
-                    ref.blur(1000, Passage.RESTRICT_CHAPTER);
+                Passage ref = PassageFactory.createPassage();
+                ref.add(range);
+                ref.blur(1000, Passage.RESTRICT_CHAPTER);
 
-                    txt_view.setPassage(ref);
-                }
-                else
+                txt_passg.setPassage(ref);
+            }
+            else
+            {
+                Passage ref = PassageFactory.createPassage();
+                for (int i=0; i<ranges.length; i++)
                 {
-                    Passage ref = PassageFactory.createPassage();
-                    for (int i=0; i<ranges.length; i++)
-                    {
-                        ref.add((VerseRange) ranges[i]);
-                    }
-                    txt_view.setPassage(ref);
+                    ref.add((VerseRange) ranges[i]);
                 }
+
             }
         }
         catch (Throwable ex)
@@ -277,60 +184,14 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
         }
     }
 
-    /**
-     * Someone clicked on view list
-     */
-    public class ToggleListAction extends EirAbstractAction
-    {
-        public ToggleListAction()
-        {
-            super("Toggle List",
-                  "/toolbarButtonGraphics/text/AlignJustify16.gif",
-                  "/toolbarButtonGraphics/text/AlignJustify24.gif",
-                  "Toggles the passage list", "Toggles display of the passage list.",
-                  'L', null);
-        }
-        public void actionPerformed(ActionEvent ev)
-        {
-            toggleList();
-        }
-    }
-
-    /**
-     * Someone clicked on view list
-     */
-    public class ViewOptionsAction extends EirAbstractAction
-    {
-        public ViewOptionsAction()
-        {
-            super("View Options ...",
-                  "/toolbarButtonGraphics/general/Properties16.gif",
-                  "/toolbarButtonGraphics/general/Properties24.gif",
-                  "Display view options", "Display options for configuring the view.",
-                  'V', null);
-        }
-        public void actionPerformed(ActionEvent ev)
-        {
-            JOptionPane.showMessageDialog(PassagePane.this, "Not implemented");
-        }
-    }
-
-    private String view_mode = VIEW_SIMPLE;
-    private static final String VIEW_LIST = "list";
-    private static final String VIEW_SIMPLE = "simple";
-
     /** The log stream */
     protected static Logger log = Logger.getLogger(PassagePane.class);
 
     /** What is being displayed */
     private Bible version = null;
-    private PassageList lst_ranges = new PassageList();
 
-    private Action act_list = new ToggleListAction();
-    private Action act_options = new ViewOptionsAction();
-
-    private JSplitPane spt_top = new JSplitPane();
-    private JScrollPane scr_ranges = new JScrollPane();
-    private PassageTabbedPane txt_view = new PassageTabbedPane();
-    protected JPopupMenu menu_view = new JPopupMenu();
+    private JSplitPane spt_passg = new JSplitPane();
+    private JScrollPane scr_passg = new JScrollPane();
+    private PassageTabbedPane txt_passg = new PassageTabbedPane();
+    private PassageList lst_passg = new PassageList();
 }

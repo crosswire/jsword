@@ -21,8 +21,8 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.xml.JAXBSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.ObjectFactory;
@@ -154,7 +154,7 @@ public class OsisUtil
     /**
      * Create a default BibleElement.
      */
-    public static BibleData createBibleData(BibleMetaData bmd)
+    public static BibleData createBibleData(BookMetaData bmd)
     {
         try
         {
@@ -230,7 +230,7 @@ public class OsisUtil
      * @param verse The reference marker
      * @param para True if this is the start of a new section
      */
-    public static void createRefData(SectionData sdata, Verse verse, String text) throws BookException
+    public static RefData createRefData(SectionData sdata, Verse verse, String text) throws BookException
     {
         try
         {
@@ -242,6 +242,8 @@ public class OsisUtil
 
             sdata.refs.add(ref);
             sdata.div.getContent().add(ref.everse);
+            
+            return ref;
         }
         catch (JAXBException ex)
         {
@@ -250,10 +252,20 @@ public class OsisUtil
     }
 
     /**
+     * Get a reference to the real W3C Document.
+     * @param verse The reference marker
+     * @param para True if this is the start of a new section
+     */
+    public static void addSectionText(SectionData sdata, String text) throws BookException
+    {
+        sdata.div.getContent().add(text);
+    }
+
+    /**
      * Output the current data as a SAX stream.
      * @param handler The Place to post SAX events
      */
-    public static SAXEventProvider getSAXEventProvider(BibleData bdata)
+    public static SAXEventProvider getSAXEventProvider(BookData bdata)
     {
         checkJAXBContext();
 

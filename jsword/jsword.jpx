@@ -8,6 +8,16 @@
   <property category="generalFormatting" name="blockIndent" value="4"/>
   <property category="generalFormatting" name="tabSize" value="4"/>
   <property category="idl" name="ProcessIDL" value="false"/>
+  <property category="javaFormatting" name="EventStyle" value="0"/>
+  <property category="javaFormatting" name="InstanceVisibility" value="2"/>
+  <property category="javaFormatting" name="alwaysClasses" value="1"/>
+  <property category="javaFormatting" name="arrayInitDataOnNewLine" value="0"/>
+  <property category="javaFormatting" name="classBraceNextLine" value="1"/>
+  <property category="javaFormatting" name="extendsOnNewLine" value="0"/>
+  <property category="javaFormatting" name="implementsOnNewLine" value="0"/>
+  <property category="javaFormatting" name="indentCase" value="0"/>
+  <property category="javaFormatting" name="methodBraceNextLine" value="1"/>
+  <property category="javaFormatting" name="otherBraceNextLine" value="1"/>
   <property category="javaFormatting" name="packagePrefixGroups.1" value="java"/>
   <property category="javaFormatting" name="packagePrefixGroups.2" value="&lt;blank line&gt;"/>
   <property category="javaFormatting" name="packagePrefixGroups.3" value="javax"/>
@@ -16,6 +26,7 @@
   <property category="javaFormatting" name="packagePrefixGroups.6" value="&lt;blank line&gt;"/>
   <property category="javaFormatting" name="packagePrefixGroups.7" value="org.crosswire"/>
   <property category="javaFormatting" name="packageThreshold" value="10"/>
+  <property category="javaFormatting" name="wrapAtColumn" value="256"/>
   <property category="optimize.0" name="OptimizableType" value="com.borland.jbuilder.optimize.IntroOptimizeitProfiler"/>
   <property category="runtime.0" name="BuildTargetOnRun" value="com.borland.jbuilder.build.ProjectBuilder$ProjectBuildAction;make"/>
   <property category="runtime.0" name="ConfigurationName" value="jsword"/>
@@ -55,10 +66,10 @@
   <property category="sys" name="InstanceVisibility" value="2"/>
   <property category="sys" name="JDK" value="java version 1.4.1-b21"/>
   <property category="sys" name="LastTag" value="0"/>
-  <property category="sys" name="Libraries" value="jsword-jars"/>
+  <property category="sys" name="Libraries" value="jsword"/>
   <property category="sys" name="MakeStable" value="0"/>
   <property category="sys" name="OutPath" value="target/jbuilder/classes"/>
-  <property category="sys" name="SourcePath" value="java/common;java/jsword;java/sword;java/map;java/commontest;java/jswordtest;java/swordtest;java/maptest"/>
+  <property category="sys" name="SourcePath" value="java/common;java/jsword;java/sword;java/map;java/commontest;java/jswordtest;java/swordtest;java/maptest;target/gener/osis;target/gener/config;java/swing;java/swingtest;java/servlet;java/servlettest"/>
   <property category="sys" name="TestPath" value="java/jswordtest"/>
   <property category="sys" name="Title" value="JSword"/>
   <property category="sys" name="TitleLabel" value=""/>
@@ -79,5 +90,4 @@
     <property category="nodeJavadoc" name="directory" value="C%|/Documents and Settings/joe/Desktop/jsword/source/target/jbuilder/doc"/>
     <property category="nodeJavadoc" name="displayAllOutput" value="0"/>
   </node>
-  <file path="java/swing/org/crosswire/jsword/view/swing/desktop/Desktop.java"/>
 </project>

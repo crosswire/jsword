@@ -35,6 +35,20 @@ public class BookFilters
     }
 
     /**
+     * A simple default filter that returns everything
+     */
+    public static BookFilter getAll()
+    {
+        return new BookFilter()
+        {
+            public boolean test(BookMetaData bmd)
+            {
+                return true;
+            }
+        };
+    }
+
+    /**
      * A filter that accepts everything that implements Bible
      */
     public static BookFilter getBibles()

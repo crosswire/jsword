@@ -1,14 +1,15 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.view.swing.book;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.BorderLayout;
 
-import org.crosswire.jsword.osis.Osis;
-import org.crosswire.jsword.osis.OsisText;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+
+import org.crosswire.jsword.book.BookFilters;
 
 /**
- * Basic section of BookData.
+ * SidebarPane builds a panel containing a set of books in tabbed dialogs.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,28 +32,31 @@ import org.crosswire.jsword.osis.OsisText;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BookData
+public class SidebarPane extends JPanel
 {
     /**
-     * We only want to be created by OsisUtil
-     * @see OsisUtil
+     * Simple ctor
      */
-    protected BookData()
+    public SidebarPane()
     {
+        jbInit();
     }
 
     /**
-     * The root where we read data from
+     * GUI initializer.
      */
-    protected Osis osis;
+    private void jbInit()
+    {
+        spt_books.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        spt_books.setDividerLocation(150);
+        spt_books.add(tab_conc, JSplitPane.TOP);
+        spt_books.add(tab_dict, JSplitPane.BOTTOM);
 
-    /**
-     * The place we add sections to
-     */
-    protected OsisText text;
+        this.setLayout(new BorderLayout());
+        this.add(spt_books,  BorderLayout.CENTER);
+    }
 
-    /**
-     * The list of Sections
-     */
-    protected List sections = new ArrayList();
+    private TabbedBookPane tab_conc = new TabbedBookPane(BookFilters.getCommentaries());
+    private JSplitPane spt_books = new JSplitPane();
+    private TabbedDictionaryPane tab_dict = new TabbedDictionaryPane();
 }
