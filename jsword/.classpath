@@ -16,8 +16,12 @@
     <classpathentry kind="src" path="java/jswordtest"/>
     <classpathentry kind="src" path="java/map"/>
     <classpathentry kind="src" path="java/maptest"/>
+    <classpathentry kind="src" path="java/swing"/>
+    <classpathentry kind="src" path="java/swingtest"/>
     <classpathentry kind="src" path="java/sword"/>
     <classpathentry kind="src" path="java/swordtest"/>
+    <classpathentry kind="src" path="java/servlet"/>
+    <classpathentry kind="src" path="java/servlettest"/>
     <classpathentry exported="true" kind="lib" path="resource"/>
     <classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

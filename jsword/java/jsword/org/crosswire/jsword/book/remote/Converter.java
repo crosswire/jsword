@@ -89,7 +89,7 @@ public class Converter
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
-     * @see Converter#convertDocumentToBibleMetaDatas(Document, Remoter)
+     * @see Converter#convertDocumentToBibleMetaDatas(Document, Remoter, int)
      */
     public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids)
     {

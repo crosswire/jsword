@@ -1,6 +1,4 @@
 
-package org.crosswire.jsword.view.cli;
-
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Bibles;

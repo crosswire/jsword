@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book.basic;
 
-import java.net.URL;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
@@ -42,14 +41,8 @@ public abstract class SearchableBible extends AbstractBible
      */
     public void init(ProgressListener li) throws BookException
     {
-        searcher = new SerSearcher(this, getURL(), li);
+        searcher = new SerSearcher(this, li);
     }
-
-    /**
-     * Where can we write the search indexes.
-     * @return URL
-     */
-    public abstract URL getURL();
 
     /**
      * For a given word find a list of references to it
@@ -74,5 +67,8 @@ public abstract class SearchableBible extends AbstractBible
         return searcher.getStartsWith(word);
     }
 
-    private Searcher searcher;
+    /**
+     * The search implementation
+     */
+    protected Searcher searcher;
 }

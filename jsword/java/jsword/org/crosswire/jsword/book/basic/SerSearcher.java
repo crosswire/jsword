@@ -26,6 +26,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.util.Project;
 
 /**
  * A search engine - This is a stepping stone on the way to allowing use of
@@ -57,18 +58,13 @@ public class SerSearcher implements Searcher
     /**
      * Constructor for SerSearcher.
      */
-    public SerSearcher(Bible bible, URL url, ProgressListener li) throws BookException
+    public SerSearcher(Bible bible, ProgressListener li) throws BookException
     {
-        this.bible = bible;
-        this.url = url;
-
-        if (!url.getProtocol().equals("file"))
-        {
-            throw new BookException("ser_write");
-        }
-
         try
         {
+            this.bible = bible;
+            this.url = Project.resource().getTempScratchSpace(bible.getBibleMetaData().getFullName());
+    
             // Load the ascii Passage index
             if (isIndexed(url))
             {
@@ -329,6 +325,24 @@ public class SerSearcher implements Searcher
     }
 
     /**
+     * Remove all the files that make up this index.
+     */
+    public void delete() throws BookException
+    {
+        // PENDING(joe)
+    }
+
+    /**
+     * The Bible we are indexing
+     */
+    private Bible bible;
+
+    /**
+     * The directory to which to write the index
+     */
+    private URL url;
+
+    /**
      * The log stream
      */
     protected static Logger log = Logger.getLogger(SerSearcher.class);
@@ -363,7 +377,4 @@ public class SerSearcher implements Searcher
         public long offset;
         public int length;
     }
-
-    private Bible bible;
-    private URL url;
 }

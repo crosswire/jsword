@@ -104,6 +104,14 @@ public class LuceneSearcher implements Searcher
             throw new BookException("search_failed", ex);
         }
     }
-    
+
+    /**
+     * Remove all the files that make up this index.
+     */
+    public void delete() throws BookException
+    {
+        // write this
+    }
+
     private org.apache.lucene.search.Searcher searcher;
 }

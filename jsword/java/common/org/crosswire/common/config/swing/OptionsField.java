@@ -55,6 +55,9 @@ public class OptionsField extends JComboBox implements Field
         {
             MultipleChoice mc = (MultipleChoice) param;
             list = mc.getOptions();
+            
+            if (list == null)
+                throw new IllegalArgumentException("getOptions() returns null for "+param.getClass().getName());
         }
         else
         {

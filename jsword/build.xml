@@ -50,6 +50,12 @@
       <param name="section" value="jsword"/>
     </antcall>
     <antcall target="compile.section">
+      <param name="section" value="servlet"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="swing"/>
+    </antcall>
+    <antcall target="compile.section">
       <param name="section" value="sword"/>
     </antcall>
     <antcall target="compile.section">
@@ -60,6 +66,12 @@
     </antcall>
     <antcall target="compile.section">
       <param name="section" value="jswordtest"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="servlettest"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="swingtest"/>
     </antcall>
     <antcall target="compile.section">
       <param name="section" value="swordtest"/>
@@ -99,6 +111,8 @@
       <fileset dir="${target.classes}/jsword"/>
       <fileset dir="${target.classes}/sword"/>
       <fileset dir="${target.classes}/map"/>
+      <fileset dir="${target.classes}/swing"/>
+      <fileset dir="${target.classes}/servlet"/>
     </jar>
   </target>
 
@@ -185,6 +199,10 @@
         <pathelement path="${target.classes}/commontest"/>
         <pathelement path="${target.classes}/jsword"/>
         <pathelement path="${target.classes}/jswordtest"/>
+        <pathelement path="${target.classes}/servlet"/>
+        <pathelement path="${target.classes}/servlettest"/>
+        <pathelement path="${target.classes}/swing"/>
+        <pathelement path="${target.classes}/swingtest"/>
         <pathelement path="${target.classes}/map"/>
         <pathelement path="${target.classes}/maptest"/>
         <pathelement path="${target.classes}/sword"/>
@@ -249,6 +267,12 @@
       <packageset dir="${source.java}/jsword" defaultexcludes="yes">
         <include name="**" />
       </packageset>
+      <packageset dir="${source.java}/servlet" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
+      <packageset dir="${source.java}/swing" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
       <packageset dir="${source.java}/sword" defaultexcludes="yes">
         <include name="**" />
       </packageset>
@@ -283,6 +307,10 @@
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/jsword"/>
       <arg value="-js"/>
+      <arg value="${basedir}/${source.java}/servlet"/>
+      <arg value="-js"/>
+      <arg value="${basedir}/${source.java}/swing"/>
+      <arg value="-js"/>
       <arg value="${basedir}/${source.java}/sword"/>
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/map"/>
@@ -305,6 +333,8 @@
       <sourcespath>
         <pathelement location="${source.java}/common"/>
         <pathelement location="${source.java}/jsword"/>
+        <pathelement location="${source.java}/servlet"/>
+        <pathelement location="${source.java}/swing"/>
         <pathelement location="${source.java}/sword"/>
         <pathelement location="${source.java}/map"/>
       </sourcespath>

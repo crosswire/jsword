@@ -48,4 +48,9 @@ public interface Searcher
      * @return The references to the word
      */
     public Passage findPassage(String word) throws BookException;
+
+    /**
+     * Remove all the files that make up this index.
+     */
+    public void delete() throws BookException;
 }

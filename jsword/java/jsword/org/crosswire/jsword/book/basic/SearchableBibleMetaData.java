@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Openness;
 
 /**
@@ -67,5 +68,14 @@ public abstract class SearchableBibleMetaData extends AbstractBibleMetaData
     public SearchableBibleMetaData(String name)
     {
         super(name);
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.BookMetaData#delete()
+     */
+    public void delete() throws BookException
+    {
+        SearchableBible bible = (SearchableBible) getBible();
+        bible.searcher.delete();
     }
 }
