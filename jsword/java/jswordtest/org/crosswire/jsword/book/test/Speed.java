@@ -3,9 +3,10 @@ package org.crosswire.jsword.book.test;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.PassageUtil;
 
 /**
  * Speed is a simple benchmark that tests how fast a version is. The
@@ -84,8 +85,9 @@ public class Speed implements Runnable
             tally = null;
 
             // Part 3, a power match, and doc generate
-            String next_input = book.find(new Search("aaron & manna", false)).getName(); //$NON-NLS-1$
-            Passage ref = PassageFactory.createPassage(next_input);
+            String nextInput = book.find(new Search("aaron & manna", false)).getName(); //$NON-NLS-1$
+            Key key = book.getKey(nextInput);
+            Passage ref = PassageUtil.getPassage(key);
             ref.trimVerses(35);
             dummyDisplay(ref);
             ref = null;
@@ -104,11 +106,6 @@ public class Speed implements Runnable
      */
     private void dummyDisplay(Passage ref) throws Exception
     {
-        if (ref == null)
-        {    
-            throw new NullPointerException("Null Passage in dummyDisplay."); //$NON-NLS-1$
-        }
-
         book.getData(ref);
     }
 

@@ -47,4 +47,14 @@ public interface KeyFactory
      * @throws NoSuchKeyException If the name can not be parsed.
      */
     public Key getKey(String name) throws NoSuchKeyException;
+
+    /**
+     * Fetch an empty KeyList to which we can add Keys.
+     * Not all implementations of KeyList are able to hold any type of Key,
+     * It isn't reasonable to expect a KeyList of Bible verses (=Passage) to
+     * hold a dictionary Key. So each KeyFactory must be able to create you an
+     * empty KeyList to which you can safely add other Keys it generates.
+     * @return An empty KeyList that can hold other Keys from this factory.
+     */
+    public KeyList createEmptyKeyList();
 }

@@ -759,12 +759,29 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     */
+    public void retain(Key key)
+    {
+        Passage ref = PassageUtil.getPassage(key);
+        retainAll(ref);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key)
     {
         Passage ref = PassageUtil.getPassage(key);
         return containsAll(ref);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     */
+    public void blur(int by)
+    {
+        blur(by, PassageUtil.getBlurRestriction());
     }
 
     /* (non-Javadoc)

@@ -348,10 +348,7 @@ public class Defaults
      */
     protected static void checkPreferable(BookMetaData bmd)
     {
-        if (bmd == null)
-        {
-            throw new NullPointerException();
-        }
+        assert bmd != null;
 
         if (bmd.getType().equals(BookType.BIBLE))
         {

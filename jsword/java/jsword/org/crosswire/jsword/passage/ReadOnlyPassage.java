@@ -30,14 +30,14 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public final class ReadOnlyPassage implements Passage
+final class ReadOnlyPassage implements Passage
 {
     /**
      * Construct a ReadOnlyPassage from a real Passage to which we proxy.
      * @param ref The real Passage
      * @param ignore Do we throw up if someone tries to change us
      */
-    public ReadOnlyPassage(Passage ref, boolean ignore)
+    protected ReadOnlyPassage(Passage ref, boolean ignore)
     {
         this.ref = ref;
         this.ignore = ignore;
@@ -60,6 +60,19 @@ public final class ReadOnlyPassage implements Passage
      * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
      */
     public void remove(Key key)
+    {
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     */
+    public void retain(Key key)
     {
         if (ignore)
         {
@@ -335,6 +348,19 @@ public final class ReadOnlyPassage implements Passage
      * @see org.crosswire.jsword.passage.Passage#blur(int, int)
      */
     public void blur(int verses, int restrict)
+    {
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     */
+    public void blur(int by)
     {
         if (ignore)
         {

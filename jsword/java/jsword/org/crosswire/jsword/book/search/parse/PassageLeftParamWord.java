@@ -3,9 +3,10 @@ package org.crosswire.jsword.book.search.parse;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * The Search Word for a Word to search for. The default
@@ -43,9 +44,9 @@ public class PassageLeftParamWord implements ParamWord
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#KeyList(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public Passage getPassage(LocalParser engine) throws BookException
+    public KeyList getKeyList(LocalParser engine) throws BookException
     {
         Iterator it = engine.iterator();
         StringBuffer buff = new StringBuffer();
@@ -81,9 +82,14 @@ public class PassageLeftParamWord implements ParamWord
 
         try
         {
-            return PassageFactory.createPassage(buff.toString());
+            Index index = engine.getIndex();
+            KeyList keylist = index.findWord(null);
+            Key key = index.getKey(buff.toString());
+            keylist.add(key);
+
+            return keylist;
         }
-        catch (NoSuchVerseException ex)
+        catch (NoSuchKeyException ex)
         {
             throw new BookException(Msg.ILLEGAL_PASSAGE, ex, new Object[] { buff.toString() });
         }

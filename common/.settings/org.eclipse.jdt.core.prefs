@@ -1,0 +1,19 @@
+#Mon Jul 05 04:43:48 BST 2004
+org.eclipse.jdt.core.compiler.problem.superfluousSemicolon=warning
+org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
+org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=warning
+org.eclipse.jdt.core.compiler.problem.unusedLocal=warning
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment=warning
+org.eclipse.jdt.core.compiler.problem.syntheticAccessEmulation=warning
+org.eclipse.jdt.core.compiler.problem.localVariableHiding=warning
+org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=warning
+org.eclipse.jdt.core.compiler.problem.unusedParameter=warning
+org.eclipse.jdt.core.compiler.problem.fieldHiding=warning
+org.eclipse.jdt.core.compiler.problem.invalidJavadoc=warning
+org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
+org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck=warning
+org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownException=warning
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.4
+org.eclipse.jdt.core.compiler.problem.indirectStaticAccess=warning
+org.eclipse.jdt.core.compiler.source=1.4

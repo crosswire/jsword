@@ -27,6 +27,9 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
@@ -69,9 +72,17 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#findPassage(org.crosswire.jsword.book.Search)
+     * @see org.crosswire.jsword.book.search.Index#getKey(java.lang.String)
      */
-    public Passage findPassage(Search search) throws BookException
+    public Key getKey(String name) throws NoSuchKeyException
+    {
+        return book.getKey(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.SearchEngine#findKeyListe(org.crosswire.jsword.book.Search)
+     */
+    public KeyList findKeyList(Search search) throws BookException
     {
         checkActive();
 
@@ -111,19 +122,19 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
      */
-    public Passage findWord(String word)
+    public KeyList findWord(String word)
     {
         checkActive();
 
         if (word == null)
         {
-            return PassageFactory.createPassage();
+            return book.createEmptyKeyList();
         }
 
         Section section = (Section) datamap.get(word.toLowerCase());
         if (section == null)
         {
-            return PassageFactory.createPassage();
+            return book.createEmptyKeyList();
         }
 
         try
@@ -150,7 +161,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             log.warn("  length=" + section.length); //$NON-NLS-1$
             Reporter.informUser(this, ex);
 
-            return PassageFactory.createPassage();
+            return book.createEmptyKeyList();
         }
     }
 
@@ -248,17 +259,15 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 }
 
                 // loop through all the words in this verse
-                Passage current = PassageFactory.createPassage();
-                current.add(verse);
-                String text = book.getData(current).getPlainText();
+                String text = book.getData(verse).getPlainText();
                 String[] words = SentanceUtil.getWords(text);
                 for (int i = 0; i < words.length; i++)
                 {
                     // ensure there is a Passage for this word in the word/passage hashmap
-                    Passage matches = (Passage) matchmap.get(words[i]);
+                    KeyList matches = (KeyList) matchmap.get(words[i]);
                     if (matches == null)
                     {
-                        matches = PassageFactory.createPassage();
+                        matches = book.createEmptyKeyList();
                         matchmap.put(words[i], matches);
                     }
 
@@ -303,7 +312,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
         {
             String word = (String) it.next();
-            Passage match = (Passage) matchmap.get(word);
+            KeyList match = (KeyList) matchmap.get(word);
             recordFoundPassage(word, match);
 
             // Fire a progress event?
@@ -348,9 +357,9 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /**
      * Add to the main index data the references against this word
      * @param word The word to write
-     * @param ref The references to the word
+     * @param keylist The references to the word
      */
-    private void recordFoundPassage(String word, Passage ref) throws BookException
+    private void recordFoundPassage(String word, KeyList keylist) throws BookException
     {
         if (word == null)
         {
@@ -359,6 +368,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
 
         try
         {
+            Passage ref = PassageUtil.getPassage(keylist);
             byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
 
             Section section = new Section(dataRaf.getFilePointer(), buffer.length);

@@ -1,5 +1,7 @@
 package org.crosswire.jsword.passage;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
@@ -356,6 +358,20 @@ public class PassageUtil
             aref.lowerNormalizeProtection();
         }
 
+        return ref;
+    }
+
+    /**
+     * Read a passage from a given stream
+     * @param in The stream to read from
+     * @return a newly built Passage
+     * @throws IOException If there was troule reading the stream
+     * @throws NoSuchVerseException if the data was not a valid passage
+     */
+    public static Passage readPassage(Reader in) throws IOException, NoSuchVerseException
+    {
+        Passage ref = PassageFactory.createPassage();
+        ref.readDescription(in);
         return ref;
     }
 

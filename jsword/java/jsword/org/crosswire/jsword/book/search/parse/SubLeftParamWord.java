@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * The Search Word for a Word to search for. The default if no other SearchWords
@@ -45,7 +45,7 @@ public class SubLeftParamWord implements ParamWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public Passage getPassage(LocalParser engine) throws BookException
+    public KeyList getKeyList(LocalParser engine) throws BookException
     {
         Iterator it = engine.iterator();
         List output = new ArrayList();
@@ -81,7 +81,7 @@ public class SubLeftParamWord implements ParamWord
         LocalParser subEngine = new LocalParser();
         subEngine.init(engine.getIndex());
         subEngine.setSearchMap(engine.getSearchMap());
-        Passage subRef = subEngine.search(output);
+        KeyList subRef = subEngine.search(output);
 
         return subRef;
     }

@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * Alter the Passage by calling removeAll with a Passage grabbed from the next
@@ -33,8 +33,8 @@ public class RemoveCommandWord implements CommandWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Parser, org.crosswire.jsword.passage.Passage)
      */
-    public void updatePassage(LocalParser engine, Passage ref) throws BookException
+    public void updatePassage(LocalParser engine, KeyList key) throws BookException
     {
-        ref.removeAll(engine.iteratePassage());
+        key.remove(engine.iteratePassage());
     }
 }

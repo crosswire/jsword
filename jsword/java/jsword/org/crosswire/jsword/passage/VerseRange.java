@@ -516,10 +516,7 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(Verse start)
     {
-        if (start == null)
-        {
-            throw new NullPointerException();
-        }
+        assert start != null;
 
         this.originalName = null;
         this.start = start;
@@ -580,10 +577,7 @@ public final class VerseRange implements VerseBase
 
         // Not sure that any of the code below (except verifyData() which may not stay there)
         // Checks for null so we do it explictly here.
-        if (start == null)
-        {
-            throw new NullPointerException();
-        }
+        assert start != null;
 
         this.originalName = null;
         this.start = start;
@@ -601,10 +595,8 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(Verse start, Verse end)
     {
-        if (start == null || end == null)
-        {
-            throw new NullPointerException();
-        }
+        assert start != null;
+        assert end != null;
 
         this.originalName = null;
 
@@ -647,15 +639,9 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(Verse base_start, int blur_down, int blur_up, int restrict)
     {
-        if (base_start == null)
-        {
-            throw new NullPointerException();
-        }
-
-        if (blur_down < 0 || blur_up < 0)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURS.toString());
-        }
+        assert base_start != null;
+        assert blur_down >= 0;
+        assert blur_up >= 0;
 
         this.originalName = null;
 
@@ -710,15 +696,9 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(VerseRange base_start, int blur_down, int blur_up, int restrict)
     {
-        if (base_start == null)
-        {
-            throw new NullPointerException();
-        }
-
-        if (blur_down < 0 || blur_up < 0)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURS.toString());
-        }
+        assert base_start != null;
+        assert blur_down >= 0;
+        assert blur_up >= 0;
 
         this.originalName = null;
 

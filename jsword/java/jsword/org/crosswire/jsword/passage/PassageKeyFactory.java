@@ -27,6 +27,14 @@ package org.crosswire.jsword.passage;
  */
 public class PassageKeyFactory implements KeyFactory
 {
+    /**
+     * An empty Passage masquerading as a KeyList
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return PassageFactory.createPassage();
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#createKey(java.lang.String)
      */

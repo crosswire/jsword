@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * CommandWord extends Word to allow actions that alter a base
@@ -43,5 +43,5 @@ public interface CommandWord extends Word
      *               string or a default Bible.
      * @param ref The Passage to alter (if necessary)
      */
-    public void updatePassage(LocalParser engine, Passage ref) throws BookException;
+    public void updatePassage(LocalParser engine, KeyList ref) throws BookException;
 }

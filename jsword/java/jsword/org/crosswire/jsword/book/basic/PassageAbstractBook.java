@@ -52,10 +52,7 @@ public abstract class PassageAbstractBook extends AbstractBook
      */
     public BookData getData(Key key) throws BookException
     {
-        if (key == null)
-        {
-            throw new NullPointerException();
-        }
+        assert key != null;
 
         try
         {
@@ -157,6 +154,14 @@ public abstract class PassageAbstractBook extends AbstractBook
     protected abstract void setText(Verse verse, String text) throws BookException;
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return keyf.createEmptyKeyList();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
     public final KeyList getGlobalKeyList()
@@ -176,7 +181,7 @@ public abstract class PassageAbstractBook extends AbstractBook
      * Our key manager
      */
     private KeyFactory keyf = new PassageKeyFactory();
-    
+
     /**
      * The log stream
      */
@@ -187,10 +192,7 @@ public abstract class PassageAbstractBook extends AbstractBook
      */
     public String getRawData(Key key) throws BookException
     {
-        if (key == null)
-        {
-            throw new NullPointerException();
-        }
+        assert key != null;
     
         try
         {

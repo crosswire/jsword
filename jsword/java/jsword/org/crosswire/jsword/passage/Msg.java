@@ -50,7 +50,6 @@ public class Msg extends MsgBase
     
     static final Msg RANGE_BLURBOOK = new Msg("VerseRange.BlurBook"); //$NON-NLS-1$
     static final Msg RANGE_BLURNONE = new Msg("VerseRange.BlurNone"); //$NON-NLS-1$
-    static final Msg RANGE_BLURS = new Msg("VerseRange.Blurs"); //$NON-NLS-1$
     static final Msg RANGE_HICOUNT = new Msg("VerseRange.HiCount"); //$NON-NLS-1$
     static final Msg RANGE_LOCOUNT = new Msg("VerseRange.LoCount"); //$NON-NLS-1$
     static final Msg RANGE_PARTS = new Msg("VerseRange.Parts"); //$NON-NLS-1$

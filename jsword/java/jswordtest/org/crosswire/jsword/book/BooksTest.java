@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.Date;
@@ -11,7 +10,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.stub.StubBook;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 
@@ -47,19 +45,17 @@ public class BooksTest extends TestCase
     }
 
     private static final Logger log = Logger.getLogger(BooksTest.class);
-    protected Passage gen11 = null;
+    protected Key[] gen11 = null;
     protected BookMetaData[] bmds = null;
     protected Book[] bibles = null;
 
-    protected Class[] ignorebibles = 
+    protected Class[] ignorebibles =
     {
         StubBook.class,
     };
 
     protected void setUp() throws Exception
     {
-        gen11 = PassageFactory.createPassage("Gen 1:1"); //$NON-NLS-1$
-
         List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
         bibles = new Book[lbmds.size()];
         bmds = new BookMetaData[lbmds.size()];
@@ -69,6 +65,9 @@ public class BooksTest extends TestCase
         {
             bmds[i] = (BookMetaData) it.next();
             bibles[i] = bmds[i].getBook();
+
+            gen11[i] = bibles[i].getKey("Gen 1:1"); //$NON-NLS-1$
+
             i++;
         }
     }
@@ -79,17 +78,17 @@ public class BooksTest extends TestCase
 
     public void testGetBible()
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
-            log.debug("testing bible: "+bible.getBookMetaData().getFullName()); //$NON-NLS-1$
+            log.debug("testing bible: " + bible.getBookMetaData().getFullName()); //$NON-NLS-1$
             assertTrue(bible != null);
         }
     }
 
     public void testGetBibleMetaData() throws Exception
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
@@ -99,7 +98,7 @@ public class BooksTest extends TestCase
 
     public void testMetaData() throws Exception
     {
-        for (int i=0; i<bmds.length; i++)
+        for (int i = 0; i < bmds.length; i++)
         {
             BookMetaData bmd = bmds[i];
 
@@ -127,7 +126,7 @@ public class BooksTest extends TestCase
 
     public void testGetBookMetaData() throws Exception
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
@@ -137,21 +136,21 @@ public class BooksTest extends TestCase
 
     public void testGetDataKey() throws Exception
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
-            Passage ref = PassageFactory.createPassage("Gen 1:1"); //$NON-NLS-1$
-            BookData data = bible.getData(ref);
+            Key key = bible.getKey("Gen 1:1"); //$NON-NLS-1$
+            BookData data = bible.getData(key);
             assertNotNull(data);
         }
     }
 
     public void testGetDataPassage() throws Exception
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
-            BookData data = bible.getData(gen11);
+            BookData data = bible.getData(gen11[i]);
             assertNotNull(data);
         }
     }
@@ -160,17 +159,17 @@ public class BooksTest extends TestCase
     {
         // This only checks that find() does something vaguely sensible
         // I assume that find() just calls findPassage(), where the real tests are
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
             Key key = bible.find(new Search("aaron", false)); //$NON-NLS-1$
-            assertNotNull("bible="+bible.getBookMetaData().getFullName(), key); //$NON-NLS-1$
+            assertNotNull("bible=" + bible.getBookMetaData().getFullName(), key); //$NON-NLS-1$
         }
     }
 
     public void testFindPassage() throws Exception
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             Book ver = bibles[i];
 
@@ -181,19 +180,20 @@ public class BooksTest extends TestCase
 
     public void testFindPassage2() throws Exception
     {
-        for (int i=0; i<bibles.length; i++)
+        for (int i = 0; i < bibles.length; i++)
         {
             // Check that this is a type that we expect to return real Bible data
             Book ver = bibles[i];
-            boolean skip = false; 
-            for (int j=0; j<ignorebibles.length; j++)
+            boolean skip = false;
+            for (int j = 0; j < ignorebibles.length; j++)
             {
                 // if (ver instanceof fullbibles[j])
                 if (ignorebibles[j].isAssignableFrom(ver.getClass()))
                     skip = true;
             }
-            if (skip) continue;
-            log.debug("thorough testing bible: "+ver.getBookMetaData().getFullName()); //$NON-NLS-1$
+            if (skip)
+                continue;
+            log.debug("thorough testing bible: " + ver.getBookMetaData().getFullName()); //$NON-NLS-1$
 
             Key key = ver.find(new Search("aaron", false)); //$NON-NLS-1$
             Passage ref = PassageUtil.getPassage(key);
@@ -222,7 +222,7 @@ public class BooksTest extends TestCase
                 ref = PassageUtil.getPassage(key);
             }
             if (ref.isEmpty())
-            {    
+            {
                 key = ver.find(new Search("maher*", false)); //$NON-NLS-1$
                 ref = PassageUtil.getPassage(key);
             }

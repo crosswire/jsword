@@ -217,15 +217,8 @@ public class Config
      */
     public void setLocal(String name, String value)
     {
-        if (name == null)
-        {
-            throw new NullPointerException("name"); //$NON-NLS-1$
-        }
-
-        if (value == null)
-        {
-            throw new NullPointerException("value"); //$NON-NLS-1$
-        }
+        assert name != null;
+        assert value != null;
 
         local.put(name, value);
     }

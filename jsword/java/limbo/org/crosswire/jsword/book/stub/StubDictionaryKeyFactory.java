@@ -69,6 +69,14 @@ public class StubDictionaryKeyFactory implements KeyFactory
         return set;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return new DefaultKeyList();
+    }
+
     private KeyList set = new DefaultKeyList("Stub Dictionary"); //$NON-NLS-1$
     private static final DefaultKey KEY_IMPL = new DefaultKey("implementation"); //$NON-NLS-1$
     private static final DefaultKey KEY_STUB = new DefaultKey("stub"); //$NON-NLS-1$

@@ -130,10 +130,7 @@ public class SentanceUtil
      */
     protected static String toSentenceCase(String word)
     {
-        if (word == null)
-        {
-            throw new NullPointerException();
-        }
+        assert word != null;
     
         if (word.equals("")) //$NON-NLS-1$
         {
@@ -158,10 +155,7 @@ public class SentanceUtil
      */
     public static int getCase(String word)
     {
-        if (word == null)
-        {
-            throw new NullPointerException();
-        }
+        assert word != null;
     
         // Blank word
         if (word.equals("")) //$NON-NLS-1$

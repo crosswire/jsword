@@ -13,9 +13,9 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.PassageConstants;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 
 /**
@@ -55,9 +55,8 @@ import org.crosswire.jsword.passage.PassageTally;
  */
 public class LocalParser implements Parser
 {
-    /**
-     * Create a new search engine.
-     * @param newindex The Index to search
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Parser#init(org.crosswire.jsword.book.search.Index)
      */
     public void init(Index newindex)
     {
@@ -65,14 +64,12 @@ public class LocalParser implements Parser
         this.commands = getWordMap();
     }
 
-    /**
-     * Take a search string and decipher it into a Passage.
-     * @param search The string to be searched for
-     * @return The matching verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Parser#search(org.crosswire.jsword.book.Search)
      */
-    public Passage search(Search search) throws BookException
+    public KeyList search(Search search) throws BookException
     {
-        Passage ref = null;
+        KeyList ref = null;
 
         if (search.isBestMatch())
         {
@@ -86,8 +83,8 @@ public class LocalParser implements Parser
 
         if (search.isRestricted())
         {
-            Passage restrict = search.getRestriction();
-            ref.retainAll(restrict);
+            Key restrict = search.getRestriction();
+            ref.retain(restrict);
         }
 
         return ref;
@@ -96,7 +93,7 @@ public class LocalParser implements Parser
     /**
      * Generate a bestmatch search
      */
-    private Passage bestMatch(String sought) throws BookException
+    private KeyList bestMatch(String sought) throws BookException
     {
         String[] words = SentanceUtil.getWords(sought);
         words = Grammar.stripSmallWords(words);
@@ -107,7 +104,7 @@ public class LocalParser implements Parser
 
         for (int i = 0; i < words.length; i++)
         {
-            tally.addAll(wordSearch(words[i]));
+            tally.add(wordSearch(words[i]));
         }
 
         // This uses updatePassageTallyFlat() so that words like God
@@ -121,7 +118,7 @@ public class LocalParser implements Parser
             // Check that the root is still a word. If not then we
             // use the full version. This catches misses like se is
             // the root of seed, and matches sea and so on ...
-            Passage ref = wordSearch(root);
+            KeyList ref = wordSearch(root);
             if (ref.isEmpty())
             {
                 root = words[i];
@@ -143,63 +140,24 @@ public class LocalParser implements Parser
      * @param sought The string to be searched for
      * @return The matching verses
      */
-    protected Passage wordSearch(String sought) throws BookException
+    protected KeyList wordSearch(String sought) throws BookException
     {
         return index.findWord(sought);
     }
 
     /**
      * Take a search string and decipher it into a Passage.
-     * @param ref The Passage to alter
-     * @param sought The string to be searched for
      * @return The matching verses
      */
-    protected Passage wordSearch(Passage ref, String sought) throws BookException
+    protected KeyList search(List matches) throws BookException
     {
-        output = CustomTokenizer.tokenize(sought, commands);
-        return search(ref, output);
-    }
+        KeyList key = index.findWord(null);
 
-    /**
-     * Take a search string and decipher it into a Passage.
-     * @return The matching verses
-     */
-    protected Passage search(List matches) throws BookException
-    {
-        Passage ref = PassageFactory.createPassage();
-        return search(ref, matches);
-    }
-
-    /**
-     * A basic version of getPassage(String[]) simply calls getPassage(String)
-     * in a loop for each word, adding the Verses to an Passage that is returned
-     * @param words The words to search for
-     * @return The Passage
-     * @throws BookException If anything goes wrong with this method
-     */
-    protected Passage getPassage(String[] words) throws BookException
-    {
-        Passage ref = PassageFactory.createPassage();
-
-        for (int i = 0; i < words.length; i++)
-        {
-            ref.addAll(wordSearch(words[i]));
-        }
-
-        return ref;
-    }
-
-    /**
-     * Take a search string and decipher it into a Passage.
-     * @param ref The Passage to alter
-     * @return The Passage passed in
-     */
-    protected Passage search(Passage ref, List matches) throws BookException
-    {
-        // Check that there is a CommandWord first
+        // Need a CommandWord, but a ParamWord we can deal with using an
+        // AddCommandWord chucked on the front
         if (matches.get(0) instanceof ParamWord)
         {
-            // Add a default AddCommandWord if not
+            // Add a default AddCommandWord to the front it there is
             matches.add(0, new AddCommandWord());
         }
 
@@ -211,7 +169,7 @@ public class LocalParser implements Parser
             try
             {
                 CommandWord command = (CommandWord) temp;
-                command.updatePassage(this, ref);
+                command.updatePassage(this, key);
             }
             catch (ClassCastException ex)
             {
@@ -224,6 +182,26 @@ public class LocalParser implements Parser
         // with them once they're done with, and to save memory.
         matches = null;
         wit = null;
+
+        return key;
+
+    }
+
+    /**
+     * A basic version of getPassage(String[]) simply calls getPassage(String)
+     * in a loop for each word, adding the Verses to an Passage that is returned
+     * @param words The words to search for
+     * @return The Passage
+     * @throws BookException If anything goes wrong with this method
+     */
+    protected KeyList getPassage(String[] words) throws BookException
+    {
+        KeyList ref = index.findWord(null);
+
+        for (int i = 0; i < words.length; i++)
+        {
+            ref.add(wordSearch(words[i]));
+        }
 
         return ref;
     }
@@ -241,7 +219,7 @@ public class LocalParser implements Parser
 
         for (int i = 0; i < words.length; i++)
         {
-            temp.addAll(wordSearch(words[i]));
+            temp.add(wordSearch(words[i]));
         }
 
         temp.flatten();
@@ -292,7 +270,7 @@ public class LocalParser implements Parser
     /**
      * @throws BookException
      */
-    public Passage iteratePassage() throws BookException
+    public KeyList iteratePassage() throws BookException
     {
         if (!iterator().hasNext())
         {
@@ -306,7 +284,7 @@ public class LocalParser implements Parser
         }
 
         ParamWord param = (ParamWord) next;
-        Passage ref = param.getPassage(this);
+        KeyList ref = param.getKeyList(this);
 
         return ref;
     }

@@ -25,6 +25,7 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -82,9 +83,9 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchEngine#findPassage(org.crosswire.jsword.book.Search)
+     * @see org.crosswire.jsword.book.search.SearchEngine#findKeyList(org.crosswire.jsword.book.Search)
      */
-    public Passage findPassage(Search search) throws BookException
+    public KeyList findKeyList(Search search) throws BookException
     {
         checkActive();
 
@@ -115,6 +116,15 @@ public class LuceneSearchEngine extends AbstractSearchEngine
             throw new BookException(Msg.SEARCH_FAILED, ex);
         }
     }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Index#getKey(java.lang.String)
+     *
+    public Key getKey(String name) throws NoSuchKeyException
+    {
+        return book.getKey(name);
+    }
+    */
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)

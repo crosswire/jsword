@@ -2,7 +2,6 @@ package org.crosswire.jsword.book.sword;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
@@ -75,19 +74,8 @@ public class SwordBook extends PassageAbstractBook
         String result = backend.getRawText(verse, sbmd.getModuleCharset());
 
         assert result != null;
-        // We often get rogue characters in the source so we have to chop them
-        // out. To start with we kill chars less than 32 and 255 and invalid UTF-8
-        char [] buffer = result.toCharArray();
-        for (int i = 0; i < buffer.length; i++)
-        {
-            char c = buffer[i];
-            if ((c >= 0 && c < 32) || c == 255 || (c >= 127 && c <= 159))
-            {
-                buffer[i] = ' ';
-                log.debug("Verse " + verse + " has bad character " + (int)c + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            }
-        }
-        return new String(buffer);
+        
+        return result;
 	}
 
     /* (non-Javadoc)
@@ -115,9 +103,4 @@ public class SwordBook extends PassageAbstractBook
      * The Sword configuration file
      */
     private SwordBookMetaData sbmd;
-    
-    /**
-     * The log stream
-     */
-    private static Logger log = Logger.getLogger(SwordBook.class);
 }

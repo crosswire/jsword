@@ -1,8 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageUtil;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * Alter the Passage by calling blur with a
@@ -34,13 +33,13 @@ public class BlurCommandWord implements CommandWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Parser, org.crosswire.jsword.passage.Passage)
      */
-    public void updatePassage(LocalParser engine, Passage ref) throws BookException
+    public void updatePassage(LocalParser engine, KeyList key) throws BookException
     {
         String word = engine.iterateWord();
 
         try
         {
-            ref.blur(Integer.parseInt(word), PassageUtil.getBlurRestriction());
+            key.blur(Integer.parseInt(word));
         }
         catch (NumberFormatException ex)
         {

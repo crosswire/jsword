@@ -23,9 +23,9 @@ import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.jdom.Element;
 
@@ -342,11 +342,11 @@ public class RawBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#findWord(java.lang.String)
      */
-    public Passage findWord(String word)
+    public KeyList findWord(String word)
     {
         if (word == null)
         {
-            return PassageFactory.createPassage();
+            return createEmptyKeyList();
         }
 
         int wordIdx = wordItems.getIndex(word);
@@ -358,7 +358,7 @@ public class RawBook extends PassageAbstractBook implements Index
         }
 
         // Do the real seacrh
-        Passage ref = PassageFactory.createPassage();
+        KeyList key = createEmptyKeyList();
         try
         {
             int total = BibleInfo.versesInBible();
@@ -370,7 +370,7 @@ public class RawBook extends PassageAbstractBook implements Index
                 {
                     if (wordItemIds[i] == wordIdx)
                     {
-                        ref.add(new Verse(ord));
+                        key.add(new Verse(ord));
                     }
                 }
             }
@@ -380,7 +380,7 @@ public class RawBook extends PassageAbstractBook implements Index
             assert false : ex;
         }
 
-        return ref;
+        return key;
     }
 
     /* (non-Javadoc)

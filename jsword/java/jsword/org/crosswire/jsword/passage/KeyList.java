@@ -72,6 +72,13 @@ public interface KeyList extends Key
     public void remove(Key key);
 
     /**
+     * Removes all but the specified element from this set.
+     * @param key object to be left in this set.
+     * @throws NullPointerException if the specified element is null
+     */
+    public void retain(Key key);
+
+    /**
      * Removes all of the elements from this set (optional operation).
      * This set will be empty after this call returns (unless it throws an
      * exception).
@@ -91,4 +98,12 @@ public interface KeyList extends Key
      * @return The index of the key or -1 if the key is not in the list
      */
     public int indexOf(Key that);
+
+    /**
+     * Widen the range of the keys in this list. This is primarily for
+     * "find x within n verses of y" type applications.
+     * @param by The number of keys to widen by
+     * @see Passage#blur(int, int)
+     */
+    public void blur(int by);
 }

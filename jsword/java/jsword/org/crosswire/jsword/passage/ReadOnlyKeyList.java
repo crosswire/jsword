@@ -96,6 +96,19 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     */
+    public void retain(Key key)
+    {
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyList#clear()
      */
     public void clear()
@@ -146,6 +159,19 @@ public class ReadOnlyKeyList implements KeyList
     public Key getParent()
     {
         return keys.getParent();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     */
+    public void blur(int by)
+    {
+        if (ignore)
+        {
+            return;
+        }
+
+        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
     /**

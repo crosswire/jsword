@@ -13,9 +13,9 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.KeyList;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -192,7 +192,7 @@ public class Converter
      * </pre>
      * @param doc The document to convert
      */
-    public static KeyList convertDocumentToKeyList(Document doc) throws ConverterException
+    public static KeyList convertDocumentToKeyList(Document doc, Book book) throws ConverterException
     {
         String refstr = null;
 
@@ -201,9 +201,11 @@ public class Converter
             Element root = doc.getRootElement();
             refstr = root.getChild(ELEMENT_REF).getTextTrim();
             
-            return PassageFactory.createPassage(refstr);
+            KeyList keylist = new DefaultKeyList();
+            keylist.add(book.getKey(refstr));
+            return keylist;
         }
-        catch (NoSuchVerseException ex)
+        catch (NoSuchKeyException ex)
         {
             throw new ConverterException(Msg.CONVERT_NOVERSE, ex, new Object[] { refstr });
         }
@@ -211,7 +213,7 @@ public class Converter
 
     /**
      * Reverse of convertDocumentToPassage().
-     * @see Converter#convertDocumentToKeyList(Document)
+     * @see Converter#convertDocumentToKeyList(Document, Book)
      */
     public static Document convertKeyListToDocument(KeyList key)
     {

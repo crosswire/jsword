@@ -120,7 +120,7 @@ public class RemoteBook extends AbstractBook
             method.addParam(ParamName.PARAM_FINDRANGE, search.getRestriction().getName());
             Document doc = remoter.execute(method);
 
-            return Converter.convertDocumentToKeyList(doc);
+            return Converter.convertDocumentToKeyList(doc, this);
         }
         catch (ConverterException ex)
         {
@@ -146,6 +146,14 @@ public class RemoteBook extends AbstractBook
     public final Key getKey(String text) throws NoSuchKeyException
     {
         return keyf.getKey(text);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return keyf.createEmptyKeyList();
     }
 
     /**

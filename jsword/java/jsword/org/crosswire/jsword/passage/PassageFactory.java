@@ -71,11 +71,11 @@ public class PassageFactory
      * <li>PassageFactory.MIX
      * <li>PassageFactory.TALLY
      * </ul>
-     * @param default_type The new default type.
+     * @param defaultType The new default type.
      */
-    public static void setDefaultPassage(int default_type)
+    public static void setDefaultPassage(int defaultType)
     {
-        PassageFactory.default_type = default_type;
+        PassageFactory.defaultType = defaultType;
     }
 
     /**
@@ -85,16 +85,16 @@ public class PassageFactory
      */
     public static int getDefaultPassage()
     {
-        return default_type;
+        return defaultType;
     }
 
     /**
      * Create an empty Passage using the default type.
      * @return The new Passage
      */
-    public static Passage createPassage()
+    protected static Passage createPassage()
     {
-        return createPassage(default_type);
+        return createPassage(defaultType);
     }
 
     /**
@@ -108,10 +108,10 @@ public class PassageFactory
     {
         if (name == null)
         {
-            createPassage(default_type);
+            createPassage(defaultType);
         }
 
-        return createPassage(default_type, name);
+        return createPassage(defaultType, name);
     }
 
     /**
@@ -120,7 +120,7 @@ public class PassageFactory
      * @return The new Passage
      * @see #setDefaultPassage(int)
      */
-    public static Passage createPassage(int type)
+    private static Passage createPassage(int type)
     {
         switch (type)
         {
@@ -153,7 +153,7 @@ public class PassageFactory
      * @throws NoSuchVerseException if the name is invalid
      * @see #setDefaultPassage(int)
      */
-    public static Passage createPassage(int type, String name) throws NoSuchVerseException
+    private static Passage createPassage(int type, String name) throws NoSuchVerseException
     {
         if (name == null)
         {
@@ -205,6 +205,29 @@ public class PassageFactory
     }
 
     /**
+     * Get a new Passage based on another Passage that synchronizes all access
+     * to its members.
+     * @param ref The passage to synchronize
+     * @return A new synchronized passage that proxies requests to the original
+     */
+    public static Passage getSynchronizedPassage(Passage ref)
+    {
+        return new SynchronizedPassage(ref);
+    }
+
+    /**
+     * Get a new Passage based on another Passage that synchronizes all access
+     * to its members.
+     * @param ref The passage to synchronize
+     * @param ignore Do we throw up if someone tries to change us
+     * @return A new synchronized passage that proxies requests to the original
+     */
+    public static Passage getReadOnlyPassage(Passage ref, boolean ignore)
+    {
+        return new ReadOnlyPassage(ref, ignore);
+    }
+
+    /**
      * The cached whole Bible passage
      */
     private static Passage whole;
@@ -212,5 +235,5 @@ public class PassageFactory
     /**
      * The default type
      */
-    private static int default_type = SPEED;
+    private static int defaultType = SPEED;
 }

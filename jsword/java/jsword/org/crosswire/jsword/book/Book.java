@@ -42,7 +42,6 @@ public interface Book extends Activatable, KeyFactory
     /**
      * Retrieval: Add to the given document some mark-up for the specified
      * Verses.
-     * TODO: If this given key can not be found null will be returned.
      * @param key The verses to search for
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
@@ -51,20 +50,11 @@ public interface Book extends Activatable, KeyFactory
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
-     * TODO: If this given key can not be found null will be returned.
      * @param key The verses to search for
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
     public String getRawData(Key key) throws BookException;
-
-    /**
-     * Does the specified verse have any data behind it.
-     * @param key The verse to query
-     * @return The found BibleData document
-     * @throws BookException If anything goes wrong with this method
-     */
-    public boolean hasData(Key key) throws BookException;
 
     /**
      * Retrieval: For a given search spec find a list of references to it.

@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book;
 
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 
@@ -77,7 +78,7 @@ public class Search
      * Returns the restriction.
      * @return Passage
      */
-    public Passage getRestriction()
+    public Key getRestriction()
     {
         return restriction;
     }
@@ -86,7 +87,7 @@ public class Search
      * Sets the restriction. To unset a restriction, use a restriction of null. 
      * @param restriction The restriction to set
      */
-    public void setRestriction(Passage restriction)
+    public void setRestriction(Key restriction)
     {
         if (restriction == null)
         {
@@ -114,7 +115,7 @@ public class Search
     /**
      * default to no restrictions
      */
-    private Passage restriction = UNRESTRICTED;
+    private Key restriction = UNRESTRICTED;
 
     /**
      * What are we looking for?

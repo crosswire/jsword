@@ -57,10 +57,7 @@ public class StubDictionary extends AbstractBook
      */
     public BookData getData(Key key) throws BookException
     {
-        if (key == null)
-        {
-            throw new NullPointerException();
-        }
+        assert key != null;
 
         try
         {
@@ -92,7 +89,7 @@ public class StubDictionary extends AbstractBook
         StringBuffer buffer = new StringBuffer();
         return buffer.toString();
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
@@ -108,6 +105,14 @@ public class StubDictionary extends AbstractBook
     {
         return keyf.getKey(name);
     }
-    
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return keyf.createEmptyKeyList();
+    }
+
     private KeyFactory keyf = new StubDictionaryKeyFactory();
 }

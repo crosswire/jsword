@@ -13,10 +13,9 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseRange;
 
 /**
  * The Verifier check 2 versions for identical text.
@@ -104,38 +103,39 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    public void checkText(Passage ref, PrintWriter out)
+    public void checkText(KeyList ref, PrintWriter out)
     {
         Job job = JobManager.createJob(Msg.VERIFY_START.toString(), Thread.currentThread(), false);
         int percent = 0;
 
         // For every verse in the Bible
-        Iterator it = ref.verseIterator();
+        Iterator it = ref.iterator();
         while (it.hasNext())
         {
-            Verse verse = (Verse) it.next();
-            VerseRange range = new VerseRange(verse);
-            Passage ref2 = PassageFactory.createPassage();
-            ref2.add(range);
+            Key key = (Key) it.next();
 
             // Fire a progress event?
-            int newpercent = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
-            if (percent != newpercent)
+            if (key instanceof Verse)
             {
-                percent = newpercent;
-                job.setProgress(percent, Msg.VERIFY_VERSES.toString());
+                Verse verse = (Verse) key;
+                int newpercent = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
+                if (percent != newpercent)
+                {
+                    percent = newpercent;
+                    job.setProgress(percent, Msg.VERIFY_VERSES.toString());
+                }
             }
 
             try
             {
                 // Read the document from the first bible
-                BookData text1 = book1.getData(ref2);
-                BookData text2 = book2.getData(ref2);
+                BookData text1 = book1.getData(key);
+                BookData text2 = book2.getData(key);
 
                 // Check - this needs some work
                 if (!text1.equals(text2))
                 {
-                    out.println(Msg.VERIFY_VERSE.toString()+range);
+                    out.println(Msg.VERIFY_VERSE.toString()+key);
                     out.println(book1.getBookMetaData().getName()+": "+text1); //$NON-NLS-1$
                     out.println(book2.getBookMetaData().getName()+": "+text2); //$NON-NLS-1$
                     out.println();
@@ -143,7 +143,7 @@ public class Verifier
             }
             catch (Exception ex)
             {
-                out.println(Msg.VERIFY_VERSE.toString() + range);
+                out.println(Msg.VERIFY_VERSE.toString() + key);
                 ex.printStackTrace(out);
                 out.println();
             }
@@ -264,7 +264,7 @@ public class Verifier
     /**
      * The Whole Bible
      */
-    public static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
+    public static final KeyList WHOLE = PassageFactory.getWholeBiblePassage();
 
     /**
      * The first Bible that we are checking

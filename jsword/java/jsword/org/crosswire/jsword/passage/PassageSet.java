@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.util.Collection;
@@ -36,6 +35,7 @@ import java.util.SortedSet;
  */
 public class PassageSet implements SortedSet
 {
+    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Construct a Collection proxy with a Passage to proxy to.
      * @param ref The real store od data

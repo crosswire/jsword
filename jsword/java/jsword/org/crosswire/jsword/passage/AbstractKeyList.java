@@ -43,7 +43,7 @@ public abstract class AbstractKeyList implements KeyList
      */
     public boolean contains(Key key)
     {
-        for (Iterator it = iterator(); it.hasNext(); )
+        for (Iterator it = iterator(); it.hasNext();)
         {
             Key temp = (Key) it.next();
             if (key.equals(temp))
@@ -53,6 +53,45 @@ public abstract class AbstractKeyList implements KeyList
         }
 
         return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     */
+    public void retain(Key key)
+    {
+        KeyList shared = new DefaultKeyList();
+        shared.add(key);
+        retain(this, shared);
+    }
+
+    /**
+     * Utility to remove all the keys from alter that are not in base
+     * @param alter The keylist to remove keys from
+     * @param base The check keylist
+     */
+    protected static void retain(KeyList alter, KeyList base)
+    {
+        for (Iterator it = alter.iterator(); it.hasNext();)
+        {
+            Key key = (Key) it.next();
+            if (key instanceof KeyList)
+            {
+                KeyList sublist = (KeyList) key;
+                retain(sublist, base);
+                if (sublist.isEmpty())
+                {
+                    it.remove();
+                }
+            }
+            else
+            {
+                if (!base.contains(key))
+                {
+                    it.remove();
+                }
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -85,18 +124,18 @@ public abstract class AbstractKeyList implements KeyList
 
         StringBuffer buffer = new StringBuffer();
 
-        for (Iterator it = iterator(); it.hasNext(); )
+        for (Iterator it = iterator(); it.hasNext();)
         {
             Key key = (Key) it.next();
             String keyname = key.getName();
-            
+
             if (keyname.indexOf(',') != -1)
             {
                 log.warn("getName() will break because a key contains the , char"); //$NON-NLS-1$
             }
 
             buffer.append(keyname);
-            
+
             if (it.hasNext())
             {
                 buffer.append(", "); //$NON-NLS-1$
@@ -129,7 +168,7 @@ public abstract class AbstractKeyList implements KeyList
                 return 1;
             }
         }
-        
+
         if (thatfirst == null)
         {
             // he is empty, we are not so he is greater

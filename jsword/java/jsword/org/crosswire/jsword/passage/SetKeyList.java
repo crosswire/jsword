@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.crosswire.common.util.Logger;
 
 /**
  * A KeyList that uses a Set of Keys as it's store of data.
@@ -164,6 +165,14 @@ public class SetKeyList extends AbstractKeyList implements KeyList
         return parent;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     */
+    public void blur(int by)
+    {
+        log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
+    }
+
     /**
      * The parent of this key
      */
@@ -173,4 +182,9 @@ public class SetKeyList extends AbstractKeyList implements KeyList
      * The Set that we are proxying to
      */
     private List list = new ArrayList();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(SetKeyList.class);
 }

@@ -19,13 +19,15 @@ import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.passage.VerseRange;
@@ -137,7 +139,9 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
 
             try
             {
-                Passage ref = PassageFactory.createPassage(readings);
+                KeyFactory keyf = new PassageKeyFactory();
+                Passage ref = (Passage) keyf.getKey(readings);
+
                 for (Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE); it.hasNext();)
                 {
                     VerseRange range = (VerseRange) it.next();
@@ -189,6 +193,14 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     public KeyList getGlobalKeyList()
     {
         return global;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return new DefaultKeyList();
     }
 
     /**

@@ -1,7 +1,6 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 
 /**
  * A Translation links a Greek/Hebrew work with a localized translation, and can
@@ -81,5 +80,5 @@ public class Translation
     /**
      * The matching verses
      */
-    private Passage ref = PassageFactory.createPassage();
+    private Passage ref = null;
 }

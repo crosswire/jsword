@@ -1,11 +1,10 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * A test SearchParamWord
@@ -33,16 +32,29 @@ class FixtureParamWord implements ParamWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public Passage getPassage(LocalParser engine)
+    public KeyList getKeyList(LocalParser engine)
     {
         try
         {
-            return PassageFactory.createPassage(ref);
+            Index index = engine.getIndex();
+            KeyList keylist = index.findWord(null);
+            Key key = index.getKey(ref);
+            keylist.add(key);
+
+            return keylist;
         }
-        catch (NoSuchVerseException ex)
+        catch (Exception ex)
         {
             assert false : ex;
-            return PassageFactory.createPassage();
+            try
+            {
+                return engine.getIndex().findWord(null);
+            }
+            catch (BookException ex2)
+            {
+                assert false : ex2;
+                return null;
+            }
         }
     }
 

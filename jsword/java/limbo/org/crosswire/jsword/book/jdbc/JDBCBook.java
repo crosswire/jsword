@@ -29,8 +29,6 @@ import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -93,35 +91,35 @@ public class JDBCBook extends PassageAbstractBook implements Index
         {
             // Actually connect to the database
             String text_url = (String) props.get("TextURL"); //$NON-NLS-1$
-            textcnx = DriverManager.getConnection(text_url);
+            textCon = DriverManager.getConnection(text_url);
 
             String concord_url = (String) props.get("ConcordURL"); //$NON-NLS-1$
-            conccnx = DriverManager.getConnection(concord_url);
+            concCon = DriverManager.getConnection(concord_url);
 
             // SQL statements
             String doc_query = (String) props.get("DocQuery"); //$NON-NLS-1$
-            doc_stmt = textcnx.prepareStatement(doc_query);
+            docStmt = textCon.prepareStatement(doc_query);
 
             String ref_query = (String) props.get("RefQuery"); //$NON-NLS-1$
-            ref_stmt = conccnx.prepareStatement(ref_query);
+            refStmt = concCon.prepareStatement(ref_query);
 
             //String verse_query = (String) props.get("VerseQuery");
             //verse_stmt = textcnx.prepareStatement(verse_query);
 
             String start_query = (String) props.get("StartQuery"); //$NON-NLS-1$
-            start_stmt = conccnx.prepareStatement(start_query);
+            startStmt = concCon.prepareStatement(start_query);
 
-            words_query = (String) props.get("WordsQuery"); //$NON-NLS-1$
+            wordsQuery = (String) props.get("WordsQuery"); //$NON-NLS-1$
         }
         catch (SQLException ex)
         {
-            textcnx = null;
-            conccnx = null;
-            doc_stmt = null;
-            ref_stmt = null;
+            textCon = null;
+            concCon = null;
+            docStmt = null;
+            refStmt = null;
             //verse_stmt = null;
-            start_stmt = null;
-            words_query = null;
+            startStmt = null;
+            wordsQuery = null;
 
             throw new BookException(Msg.BIBLE_CONNECT, ex);
         }
@@ -147,9 +145,9 @@ public class JDBCBook extends PassageAbstractBook implements Index
 
         try
         {
-            doc_stmt.setInt(1, verse.getOrdinal());
-            doc_stmt.setInt(2, verse.getOrdinal());
-            rs = doc_stmt.executeQuery();
+            docStmt.setInt(1, verse.getOrdinal());
+            docStmt.setInt(2, verse.getOrdinal());
+            rs = docStmt.executeQuery();
 
             while (rs.next())
             {
@@ -208,21 +206,21 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#findWord(java.lang.String)
      */
-    public Passage findWord(String word) throws BookException
+    public KeyList findWord(String word) throws BookException
     {
         if (word == null)
         {
-            return PassageFactory.createPassage();
+            return createEmptyKeyList();
         }
 
         word = JDBCBibleUtil.swapChar(word, '-', '?').toLowerCase();
 
         try
         {
-            Passage retcode = PassageFactory.createPassage();
+            KeyList retcode = createEmptyKeyList();
 
-            ref_stmt.setString(1, word);
-            ResultSet rs = ref_stmt.executeQuery();
+            refStmt.setString(1, word);
+            ResultSet rs = refStmt.executeQuery();
             while (rs.next())
             {
                 Verse temp = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
@@ -237,7 +235,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
         {
             log.error("word="+word); //$NON-NLS-1$
             assert false : ex;
-            return PassageFactory.createPassage();
+            return createEmptyKeyList();
         }
         catch (SQLException ex)
         {
@@ -256,8 +254,8 @@ public class JDBCBook extends PassageAbstractBook implements Index
             ArrayList output = new ArrayList();
 
             // word = JDBCBibleUtil.swapChar(word, '\'', '?');
-            start_stmt.setString(1, word+"%"); //$NON-NLS-1$
-            ResultSet rs = start_stmt.executeQuery();
+            startStmt.setString(1, word+"%"); //$NON-NLS-1$
+            ResultSet rs = startStmt.executeQuery();
             while (rs.next())
             {
                 output.add(rs.getString(1));
@@ -308,12 +306,12 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /**
      * Cached statement for getDocument
      */
-    private PreparedStatement doc_stmt;
+    private PreparedStatement docStmt;
 
     /**
      * Cached statement for findWord
      */
-    private PreparedStatement ref_stmt;
+    private PreparedStatement refStmt;
 
     /**
      * Cached statement for verseOrdinal
@@ -323,22 +321,22 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /**
      * Cached statement for startsWith
      */
-    private PreparedStatement start_stmt;
+    private PreparedStatement startStmt;
 
     /**
      * The statment for this is part of the enumeration
      */
-    protected String words_query;
+    protected String wordsQuery;
 
     /**
      * The conenction to the text data source
      */
-    private Connection textcnx;
+    private Connection textCon;
 
     /**
      * The conenction to the concordance
      */
-    protected Connection conccnx;
+    protected Connection concCon;
 
     /**
      * The log stream

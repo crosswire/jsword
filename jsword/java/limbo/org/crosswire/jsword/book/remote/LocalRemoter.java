@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.remote;
 
 import java.util.HashMap;
@@ -13,9 +12,8 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
 import org.jdom.input.SAXHandler;
 
@@ -76,10 +74,10 @@ public class LocalRemoter implements Remoter
             {
                 String uid = method.getParameter(ParamName.PARAM_BIBLE);
                 BookMetaData bmd = lookupBookMetaData(uid);
-                Book bible = bmd.getBook();
+                Book book = bmd.getBook();
                 String refstr = method.getParameter(ParamName.PARAM_PASSAGE);
-                Passage ref = PassageFactory.createPassage(refstr);
-                BookData data = bible.getData(ref);
+                Key ref = book.getKey(refstr);
+                BookData data = book.getData(ref);
 
                 SAXEventProvider provider = data.getSAXEventProvider();
                 SAXHandler handler = new SAXHandler();
@@ -95,7 +93,7 @@ public class LocalRemoter implements Remoter
                 String word = method.getParameter(ParamName.PARAM_FINDSTRING);
                 boolean match = Boolean.getBoolean(method.getParameter(ParamName.PARAM_FINDMATCH));
                 String refstr = method.getParameter(ParamName.PARAM_FINDRANGE);
-                Passage range = PassageFactory.createPassage(refstr);
+                Key range = book.getKey(refstr);
                 Search search = new Search(word, match);
                 search.setRestriction(range);
 

@@ -3,7 +3,9 @@ package org.crosswire.jsword.book.search;
 import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * An index into a body of text that knows what words exist and where they are.
@@ -42,9 +44,15 @@ public interface Index
     public Collection getStartsWith(String word) throws BookException;
 
     /**
-     * For a given word find a list of references to it
+     * For a given word find a list of references to it.
+     * If the <code>word</code> being searched for is null then an empty KeyList
+     * <b>MUST</b> be returned. Users of this index may use this functionality
+     * to get empty KeyLists which they then use to aggregate other searches
+     * done on this index.
      * @param word The text to search for
      * @return The references to the word
      */
-    public Passage findWord(String word) throws BookException;
+    public KeyList findWord(String word) throws BookException;
+
+    public Key getKey(String name) throws NoSuchKeyException;
 }

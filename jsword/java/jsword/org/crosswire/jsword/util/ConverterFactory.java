@@ -47,11 +47,7 @@ public class ConverterFactory
         try
         {
             Class clazz = (Class) ClassUtil.getImplementorsMap(Converter.class).get(name);
-            if (clazz == null)
-            {
-                throw new NullPointerException(Msg.NO_CONVERTER.toString(name));
-            }
-
+            assert clazz != null : Msg.NO_CONVERTER.toString(name);
             Converter converter = (Converter) clazz.newInstance();
             return converter;
         }

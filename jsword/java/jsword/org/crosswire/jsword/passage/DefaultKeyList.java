@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.crosswire.common.util.Logger;
 
 /**
  * A default implementation of KeyList.
@@ -155,12 +156,20 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
         return keys.indexOf(that);
     }
 
-    /**
-     * @return Returns the parent of this key.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent()
     {
         return parent;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     */
+    public void blur(int by)
+    {
+        log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
     }
 
     /**
@@ -172,4 +181,9 @@ public class DefaultKeyList extends AbstractKeyList implements KeyList
      * The store of Keys
      */
     private List keys = new ArrayList();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(DefaultKeyList.class);
 }

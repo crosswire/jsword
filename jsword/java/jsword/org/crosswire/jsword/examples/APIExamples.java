@@ -19,6 +19,7 @@ import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -64,14 +65,23 @@ public class APIExamples
      * @see Passage
      * @see PassageFactory
      */
-    public void readPlainText() throws BookException, NoSuchVerseException
+    public void readPlainText() throws BookException, NoSuchKeyException
     {
-        Passage ref = PassageFactory.createPassage("Gen 1 1"); //$NON-NLS-1$
         Books books = Books.installed();
         Book bible = books.getBookMetaData(BIBLE_NAME).getBook();
 
+        Passage ref = PassageFactory.createPassage("Gen 1 1"); //$NON-NLS-1$
+
         BookData data = bible.getData(ref);
         String text = data.getPlainText();
+
+        // At some stage in the future you may need to use keys rather than
+        // Passages. Passage is-a Key that does a while lot more, but Passage
+        // can be a bit tied to the English way of laying out a Bible so use
+        // of Key is recommended
+        Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
+        data = bible.getData(key);
+        text = data.getPlainText();
 
         System.out.println("The plain text of Gen 1:1 is "+text); //$NON-NLS-1$
     }

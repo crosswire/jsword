@@ -6,14 +6,12 @@ import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.book.search.SearchEngineFactory;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.util.Project;
 
@@ -62,18 +60,6 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#hasData(org.crosswire.jsword.passage.Key)
-     */
-    public final boolean hasData(Key key) throws BookException
-    {
-        BookData bdata = getData(key);
-        
-        // PENDING(joe): this should not be possible - add a bdata.isEmpty() method
-
-        return bdata != null;
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
     public void activate(Lock lock)
@@ -111,7 +97,7 @@ public abstract class AbstractBook implements Book
     {
         if (searcher != null)
         {
-            return searcher.findPassage(match);
+            return searcher.findKeyList(match);
         }
         else
         {

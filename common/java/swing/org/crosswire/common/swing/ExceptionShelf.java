@@ -96,10 +96,7 @@ public class ExceptionShelf extends JPanel
     public void addException(Throwable ex)
     {
         // Error checking
-        if (ex == null)
-        {
-            throw new NullPointerException();
-        }
+        assert ex != null;
 
         // Get rid of the 'no problems' panel if it exists
         if (total == 0)
@@ -124,10 +121,7 @@ public class ExceptionShelf extends JPanel
     public void removeException(Throwable ex)
     {
         // Error checking
-        if (ex == null)
-        {
-            throw new NullPointerException();
-        }
+        assert ex != null;
 
         // Remove the old panel
         int index = exceptions.indexOf(ex);

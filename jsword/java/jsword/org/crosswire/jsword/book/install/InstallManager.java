@@ -206,15 +206,8 @@ public class InstallManager
      */
     public void addInstaller(String name, Installer installer)
     {
-        if (installer == null)
-        {
-            throw new NullPointerException();
-        }
-        
-        if (name == null)
-        {
-            throw new NullPointerException();
-        }
+        assert installer != null;
+        assert name != null;
 
         removeInstaller(name);
 

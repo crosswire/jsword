@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * A ParamWord extends Word to provide more information
@@ -50,5 +50,5 @@ public interface ParamWord extends Word
      * @return A Passage relevant to this command
      * @exception BookException If this action is not appropriate
      */
-    public Passage getPassage(LocalParser engine) throws BookException;
+    public KeyList getKeyList(LocalParser engine) throws BookException;
 }

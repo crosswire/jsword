@@ -133,10 +133,7 @@ public class WordItemsMem extends ItemsMem
      */
     public Collection getStartsWith(String word)
     {
-        if (array == null)
-        {
-            throw new NullPointerException();
-        }
+        assert array != null;
 
         List list = new ArrayList();
         word = word.toLowerCase();

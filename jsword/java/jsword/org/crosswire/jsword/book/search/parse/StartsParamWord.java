@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.search.parse;
 import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.KeyList;
 
 /**
  * The Search Word for a Word to search for. The default if no other SearchWords
@@ -44,9 +44,9 @@ public class StartsParamWord implements ParamWord
      * WARNING the return from this method is a PassageTally which is not a
      * 100% match for the Passage interface. Maybe this needs to be fixed
      * somehow.
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getKeyList(org.crosswire.jsword.book.search.parse.LocalParser)
      */
-    public Passage getPassage(LocalParser engine) throws BookException
+    public KeyList getKeyList(LocalParser engine) throws BookException
     {
         String word = engine.iterateWord();
 

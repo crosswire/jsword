@@ -10,6 +10,7 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -102,15 +103,8 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        if (key == null)
-        {
-            throw new NullPointerException();
-        }
-
-        if (backend == null)
-        {
-            throw new BookException(Msg.MISSING_BACKEND);
-        }
+        assert key != null;
+        assert backend != null;
 
         try
         {
@@ -213,6 +207,14 @@ public class SwordDictionary extends AbstractBook
         }
 
         return key;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+     */
+    public KeyList createEmptyKeyList()
+    {
+        return new DefaultKeyList();
     }
 
     /**

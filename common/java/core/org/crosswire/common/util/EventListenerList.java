@@ -120,10 +120,7 @@ public class EventListenerList implements Serializable
      */
     public synchronized void add(Class t, EventListener l)
     {
-        if (l == null)
-        {
-            throw new NullPointerException("EventListener"); //$NON-NLS-1$
-        }
+        assert l != null;
 
         if (!t.isInstance(l))
         {
@@ -157,10 +154,7 @@ public class EventListenerList implements Serializable
      */
     public synchronized void remove(Class t, EventListener l)
     {
-        if (l == null)
-        {
-            throw new NullPointerException("EventListener"); //$NON-NLS-1$
-        }
+        assert l != null;
 
         if (!t.isInstance(l))
         {
