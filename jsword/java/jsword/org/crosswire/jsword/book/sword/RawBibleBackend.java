@@ -119,8 +119,6 @@ public class RawBibleBackend implements SwordBibleBackend
         return new String(buffer);
     }
 
-    private SwordConfig config;
-
     /** The array of index files */
     private RandomAccessFile[] idx_raf = new RandomAccessFile[3];
 
