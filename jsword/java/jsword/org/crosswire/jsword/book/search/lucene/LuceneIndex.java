@@ -217,7 +217,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
         if (results == null)
         {
-            if (modifier.isRanked())
+            if (modifier != null && modifier.isRanked())
             {
                 results = new PassageTally();
             }
