@@ -18,7 +18,6 @@ BookData Display
   LtoR. Also the verse numbers need to be at the beginning of the verse, which
   is on the right
 - Vines shows internal markup around verse references.
-- remove swing (not cswing)
 - some nt verses badly displayed in ot refs
 - SwordBook.getText(Verse v) gets called 4 times for the same verse when that
   verse is visible and the bible is changed.
