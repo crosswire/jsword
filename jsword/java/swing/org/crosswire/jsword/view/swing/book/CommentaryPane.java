@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -12,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
@@ -20,7 +18,6 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -245,11 +242,6 @@ public class CommentaryPane extends JPanel implements FocusablePart
      * The display of OSIS data
      */
     private BookDataDisplay txtdisplay = BookDataDisplayFactory.createBookDataDisplay();
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(CommentaryPane.class);
 
     /*
      * GUI components
