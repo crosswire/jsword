@@ -35,6 +35,8 @@ class Msg extends MsgBase
     static final Msg JOB_DRIVER = new Msg("Books.JobDriver"); //$NON-NLS-1$
 
     static final Msg BIBLE_NOTFOUND = new Msg("Defaults.BibleNotFound"); //$NON-NLS-1$
+    static final Msg DICTIONARY_NOTFOUND = new Msg("Defaults.DictionaryNotFound"); //$NON-NLS-1$
+    static final Msg COMMENTARY_NOTFOUND = new Msg("Defaults.CommentaryNotFound"); //$NON-NLS-1$
 
     static final Msg MISSING_VERSE = new Msg("OSISUtil.MissingVerse"); //$NON-NLS-1$
     static final Msg OSIS_BADID = new Msg("OSISUtil.OSISBadID"); //$NON-NLS-1$

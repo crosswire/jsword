@@ -137,9 +137,15 @@ public class PassageUtil
     /**
      * Not all keys represent passages, but we ought to be able to get something
      * close to a passage from anything that does passage like work.
+     * If you pass a null key into this method, you get a null Passage out.
      */
     public static Passage getPassage(Key key)
     {
+        if (key == null)
+        {
+            return null;
+        }
+
         if (key instanceof Passage)
         {
             return (Passage) key;

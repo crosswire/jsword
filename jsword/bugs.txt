@@ -7,8 +7,7 @@ We are here
 --------------------------------------------------------------------------------
 
 Swing
-- status bar re-size (is this still bothering people?)
-- make debugger options only display if advanced user is set in options
+- simplify view-source
 
 BookData Display
 - BHS does not display the text in the right order.

@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book.readings;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.util.Project;
@@ -51,7 +53,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReadingsBook extends AbstractBook
+public class ReadingsBook extends AbstractBook implements PreferredKey
 {
     /**
      * Constructor for ReadingsBook.
@@ -104,6 +106,14 @@ public class ReadingsBook extends AbstractBook
         }
 
         global = new SetKeyList(hash.keySet(), getBookMetaData().getName());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
+     */
+    public Key getPreferred()
+    {
+        return new ReadingsKey(new Date());
     }
 
     /* (non-Javadoc)
