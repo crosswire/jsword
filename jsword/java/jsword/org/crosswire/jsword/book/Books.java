@@ -385,10 +385,6 @@ public class Books implements BookList
             log.debug("Unexpected exception: " + ex); //$NON-NLS-1$
             // job.ignoreTimings();
         }
-        finally
-        {
-            // job.done();
-        }
     }
 
     /**

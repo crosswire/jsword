@@ -47,7 +47,10 @@ public class NumericDocument extends PlainDocument
 
         for (int i = 0; i < upper.length; i++)
         {
-            if (Character.isDigit(upper[i])) clear.append(upper[i]);
+            if (Character.isDigit(upper[i]))
+            {
+                clear.append(upper[i]);
+            }
         }
 
         super.insertString(offs, clear.toString(), a);

@@ -194,7 +194,7 @@ public abstract class PassageAbstractBook extends AbstractBook
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(PassageAbstractBook.class);
+    private static final Logger log = Logger.getLogger(PassageAbstractBook.class);
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)

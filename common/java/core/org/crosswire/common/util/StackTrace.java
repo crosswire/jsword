@@ -191,7 +191,7 @@ public final class StackTrace
         /**
          * Are there more stack levels
          */
-        protected int level;
+         /* pkg protected */ int level;
     }
 
     /**
@@ -239,7 +239,7 @@ public final class StackTrace
     /**
      * Array containing the class names
      */
-    protected String[] classNames;
+    /* pkg protected */ String[] classNames;
 
     /**
      * Array containing the method names

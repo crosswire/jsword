@@ -91,9 +91,9 @@ public class ToolBar extends JToolBar
      */
     public void showText(boolean show)
     {
-        Component c;
         int i = 0;
-        while ((c = getComponentAtIndex(i++)) != null)
+        Component c = getComponentAtIndex(0);
+        while (c != null)
         {
             if (c instanceof JButton)
             {
@@ -108,6 +108,8 @@ public class ToolBar extends JToolBar
                     button.setText(null);
                 }
             }
+            i++;
+            c = getComponentAtIndex(i);
         }
     }
 
@@ -117,9 +119,9 @@ public class ToolBar extends JToolBar
      */
     public void showLargeIcons(boolean large)
     {
-        Component c;
         int i = 0;
-        while ((c = getComponentAtIndex(i++)) != null)
+        Component c = getComponentAtIndex(0);
+        while (c != null)
         {
             if (c instanceof JButton)
             {
@@ -140,6 +142,8 @@ public class ToolBar extends JToolBar
                     }
                 }
             }
+            i++;
+            c = getComponentAtIndex(i);
         }
     }
 

@@ -158,7 +158,7 @@ public class ClassUtil
             }
 
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return (Class[]) matches.toArray(new Class[0]);
+            return (Class[]) matches.toArray(new Class[matches.size()]);
         }
         catch (Exception ex)
         {

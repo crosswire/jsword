@@ -51,13 +51,17 @@ public class FontTag implements Tag
         String color = attrs.getValue("color"); //$NON-NLS-1$
         if (color != null)
         {
-            buf.append(OSISUtil.SEG_COLORPREFIX + color + ";"); //$NON-NLS-1$
+            buf.append(OSISUtil.SEG_COLORPREFIX);
+            buf.append(color);
+            buf.append(';');
         }
 
         String size = attrs.getValue("size"); //$NON-NLS-1$
         if (size != null)
         {
-            buf.append(OSISUtil.SEG_SIZEPREFIX + size + ";"); //$NON-NLS-1$
+            buf.append(OSISUtil.SEG_SIZEPREFIX);
+            buf.append(size);
+            buf.append(';');
         }
 
         String type = buf.toString();

@@ -56,7 +56,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
             list.add(number, name);
         }
 
-        options = (String[]) list.toArray(new String[0]);
+        options = (String[]) list.toArray(new String[list.size()]);
     }
 
     /* (non-Javadoc)

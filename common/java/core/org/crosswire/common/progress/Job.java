@@ -540,7 +540,7 @@ public final class Job
     /**
      * People that want to know about "interruptable" changes
      */
-    protected PropertyChangeSupport listeners;
+    /* pkg protected */ PropertyChangeSupport listeners;
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing

@@ -142,6 +142,14 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
+
     /**
      * We need to be ablee to provide a URL as part of the API
      */

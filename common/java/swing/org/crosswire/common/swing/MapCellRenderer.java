@@ -36,19 +36,19 @@ import javax.swing.table.TableCellRenderer;
  */
 public class MapCellRenderer extends JTextArea implements TableCellRenderer
 {
-    /**
-     * Create a MapCellRenderer
-     */
-    public MapCellRenderer()
-    {
-        super();
-        // LATER(DM): wrapping requires the recomputation of row height.
-        // This would require grabbing wrapping events
-        // and for the MapTable to listen for them and to adjust row height.
-        // Not sure this is worth the effort.
-        // setLineWrap(true);
-        // setWrapStyleWord(true);
-    }
+//    /**
+//     * Create a MapCellRenderer
+//     */
+//    public MapCellRenderer()
+//    {
+//        super();
+//        // LATER(DM): wrapping requires the recomputation of row height.
+//        // This would require grabbing wrapping events
+//        // and for the MapTable to listen for them and to adjust row height.
+//        // Not sure this is worth the effort.
+//        // setLineWrap(true);
+//        // setWrapStyleWord(true);
+//    }
 
     /**
      * Overrides <code>JComponent.setForeground</code> to assign

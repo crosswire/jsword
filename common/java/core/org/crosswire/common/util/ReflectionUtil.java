@@ -70,7 +70,10 @@ public class ReflectionUtil
 
             // The right number of params
             Class[] testTypes = testMethods[i].getParameterTypes();
-            if (testTypes.length != calledTypes.length) continue;
+            if (testTypes.length != calledTypes.length)
+            {
+                continue;
+            }
 
             // Of the right types?
             for (int j = 0; j < testTypes.length; j++)
@@ -126,7 +129,10 @@ public class ReflectionUtil
 
             // The right number of params
             Class[] testTypes = testMethods[i].getParameterTypes();
-            if (testTypes.length != calledTypes.length) continue;
+            if (testTypes.length != calledTypes.length)
+            {
+                continue;
+            }
 
             // Of the right types?
             for (int j = 0; j < testTypes.length; j++)

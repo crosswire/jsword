@@ -876,7 +876,10 @@ public class BibleInfo
     {
         for (int i = 0; i < text.length(); i++)
         {
-            if (Character.isLetter(text.charAt(i))) return true;
+            if (Character.isLetter(text.charAt(i)))
+            {
+                return true;
+            }
         }
 
         return false;

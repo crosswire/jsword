@@ -380,7 +380,9 @@ public class PassageKeyFactory implements KeyFactory
                 int bit = (ord % 8) - 1;
 
                 if ((buffer[idx0] & (1 << bit)) != 0)
+                {
                     ref.add(new Verse(ord));
+                }
             }
             // index gets left behind here, but we dont care
             break;

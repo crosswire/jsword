@@ -322,7 +322,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(AbstractConfigEditor.class);
+    private static final Logger log = Logger.getLogger(AbstractConfigEditor.class);
 
     /**
      * How many cards have we created - we only need a tree if there are 2 or more cards

@@ -258,7 +258,10 @@ public class PassageTally extends AbstractPassage
             while (it.hasNext() && count < max_count)
             {
                 Verse verse = (Verse) it.next();
-                retcode.append(verse.getName() + " (" + (100 * it.lastRank() / max) + "%)"); //$NON-NLS-1$ //$NON-NLS-2$
+                retcode.append(verse.getName());
+                retcode.append(" ("); //$NON-NLS-1$
+                retcode.append(100 * it.lastRank() / max);
+                retcode.append("%)"); //$NON-NLS-1$
 
                 count++;
 
@@ -320,7 +323,9 @@ public class PassageTally extends AbstractPassage
         for (int i = 0; i < verses.length; i++)
         {
             if (board[verses[i].getOrdinal() - 1] == 0)
+            {
                 return false;
+            }
         }
 
         return true;
@@ -349,7 +354,9 @@ public class PassageTally extends AbstractPassage
         while (it.hasNext())
         {
             if (verse.equals(it.next()))
+            {
                 return reply;
+            }
 
             reply++;
         }
@@ -506,7 +513,9 @@ public class PassageTally extends AbstractPassage
             for (int i = 0; i < vib; i++)
             {
                 if (that_rt.board[i] != 0)
+                {
                     kill(i + 1);
+                }
             }
         }
         else
@@ -732,7 +741,9 @@ public class PassageTally extends AbstractPassage
         }
 
         if (tally > 0)
+        {
             incrementMax(tally);
+        }
     }
 
     /**
@@ -849,7 +860,9 @@ public class PassageTally extends AbstractPassage
             try
             {
                 if (next > BibleInfo.versesInBible())
+                {
                     throw new NoSuchElementException();
+                }
 
                 Object retcode = new Verse(next);
                 calculateNext();

@@ -142,11 +142,17 @@ public abstract class AbstractPassage implements Passage
         // to equal a DistinctPassage since the point of the Factory
         // is that the user does not need to know the actual type of the
         // Object he is using.
-        if (!(obj instanceof Passage)) return false;
+        if (!(obj instanceof Passage))
+        {
+            return false;
+        }
 
         Passage ref = (Passage) obj;
         // The real test
-        if (!ref.getName().equals(getName())) return false;
+        if (!ref.getName().equals(getName()))
+        {
+            return false;
+        }
 
         return true;
     }
@@ -308,7 +314,10 @@ public abstract class AbstractPassage implements Passage
      */
     public int chaptersInPassage(int book) throws NoSuchVerseException
     {
-        if (book != 0)  BibleInfo.validate(book, 1, 1);
+        if (book != 0)
+        {
+            BibleInfo.validate(book, 1, 1);
+        }
 
         int current_chapter = 0;
         int chapter_count = 0;
@@ -422,7 +431,9 @@ public abstract class AbstractPassage implements Passage
         while (that_it.hasNext())
         {
             if (!contains((VerseBase) that_it.next()))
+            {
                 return false;
+            }
         }
 
         return true;
@@ -946,7 +957,10 @@ public abstract class AbstractPassage implements Passage
         optimizeWrites();
 
         String[] parts = StringUtil.split(refs, AbstractPassage.REF_ALLOWED_DELIMS);
-        if (parts.length == 0) return;
+        if (parts.length == 0)
+        {
+            return;
+        }
 
         // We treat the first as a special case because there is
         // nothing to sensibly base this reference on

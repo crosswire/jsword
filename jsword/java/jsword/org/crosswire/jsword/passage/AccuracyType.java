@@ -705,11 +705,17 @@ public abstract class AccuracyType implements Serializable
             {
                 if (!foundLetters)
                 {
-                    if (Character.isLetter(word.charAt(i))) foundLetters = true;
+                    if (Character.isLetter(word.charAt(i)))
+                    {
+                        foundLetters = true;
+                    }
                 }
                 else
                 {
-                    if (!Character.isLetter(word.charAt(i))) break;
+                    if (!Character.isLetter(word.charAt(i)))
+                    {
+                        break;
+                    }
                 }
             }
 

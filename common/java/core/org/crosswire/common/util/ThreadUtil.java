@@ -158,7 +158,10 @@ public class ThreadUtil
      */
     private static void listThread(List vec, int depth, Thread thread)
     {
-        if (thread == null) return;
+        if (thread == null)
+        {
+            return;
+        }
 
         try
         {

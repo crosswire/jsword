@@ -332,7 +332,9 @@ public class ExceptionPane extends JPanel
         Throwable nex = ex.getCause();
         if (nex != null)
         {
-            retcode.append("<p><br><font size=\"-1\">" + Msg.CAUSED_BY + "</font>"); //$NON-NLS-1$ //$NON-NLS-2$
+            retcode.append("<p><br><font size=\"-1\">"); //$NON-NLS-1$
+            retcode.append(Msg.CAUSED_BY);
+            retcode.append("</font>"); //$NON-NLS-1$
             retcode.append(getHTMLDescription(nex));
         }
 

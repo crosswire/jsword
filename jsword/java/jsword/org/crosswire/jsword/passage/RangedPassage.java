@@ -174,7 +174,10 @@ public class RangedPassage extends AbstractPassage
         while (it.hasNext())
         {
             VerseRange this_range = (VerseRange) it.next();
-            if (this_range.contains(that_range)) return true;
+            if (this_range.contains(that_range))
+            {
+                return true;
+            }
         }
 
         // If it is not a Verse or a VerseRange then it's not here,
@@ -296,7 +299,10 @@ public class RangedPassage extends AbstractPassage
                 {
                     // ... remove it and add the remainder
                     VerseRange interstect = VerseRange.intersection(this_range, that_range);
-                    if (interstect != null) new_store.add(interstect);
+                    if (interstect != null)
+                    {
+                        new_store.add(interstect);
+                    }
                 }
             }
         }

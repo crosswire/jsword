@@ -1133,13 +1133,13 @@ public final class VerseRange implements VerseBase
      * The real data - where do we start?.
      * All ctors init this so leave default
      */
-    protected transient Verse start;
+    /* pkg protected */ transient Verse start;
 
     /**
      * The real data - where do we end?.
      * All ctors init this so leave default
      */
-    protected transient Verse end;
+    /* pkg protected */ transient Verse end;
 
     /**
      * The parent key. See the key interface for more information.
@@ -1161,6 +1161,6 @@ public final class VerseRange implements VerseBase
     /**
      * The log stream
      */
-    protected static final transient Logger log = Logger.getLogger(VerseRange.class);
+    /* pkg protected */ static final transient Logger log = Logger.getLogger(VerseRange.class);
 
 }

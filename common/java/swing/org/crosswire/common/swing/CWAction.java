@@ -43,14 +43,6 @@ public class CWAction extends AbstractAction
     public static final String LARGE_ICON = "LargeIcon"; //$NON-NLS-1$
 
     /**
-     * Create an empty action. This action needs to be populated in order to be useful.
-     */
-    public CWAction()
-    {
-        super();
-    }
-
-    /**
      * Forwards the ActionEvent to the registered listener.
      * @param evt ActionEvent
      */
