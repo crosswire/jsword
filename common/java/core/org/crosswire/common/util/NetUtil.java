@@ -401,7 +401,9 @@ public class NetUtil
         }
         else
         {
-            return url.openConnection().getOutputStream();
+            URLConnection cnx = url.openConnection();
+            cnx.setDoOutput(true);
+            return cnx.getOutputStream();
         }
     }
 

@@ -12,6 +12,7 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.IndexManager;
 import org.crosswire.jsword.util.Project;
@@ -49,7 +50,7 @@ public class SerIndexManager implements IndexManager
     {
         try
         {
-            URL storage = getStorageArea(book);
+            URL storage = getStorageArea(book.getBookMetaData());
             URL longer = NetUtil.lengthenURL(storage, SerIndex.FILE_INDEX);
             return NetUtil.isFile(longer);
         }
@@ -70,7 +71,7 @@ public class SerIndexManager implements IndexManager
             Index reply = (Index) indexes.get(book);
             if (reply == null)
             {
-                URL storage = getStorageArea(book);
+                URL storage = getStorageArea(book.getBookMetaData());
                 reply = new SerIndex(book, storage);
                 indexes.put(book, reply);
             }
@@ -94,7 +95,7 @@ public class SerIndexManager implements IndexManager
             {
                 try
                 {
-                    URL storage = getStorageArea(book);
+                    URL storage = getStorageArea(book.getBookMetaData());
                     Index index = new SerIndex(book, storage, true);
                     indexes.put(book, index);
                 }
@@ -110,12 +111,12 @@ public class SerIndexManager implements IndexManager
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.IndexManager#installDownloadedIndex(org.crosswire.jsword.book.Book, java.net.URL)
      */
-    public void installDownloadedIndex(Book book, URL tempDest) throws BookException
+    public void installDownloadedIndex(BookMetaData bmd, URL tempDest) throws BookException
     {
         try
         {
-            URL storage = getStorageArea(book);
-            File zip = NetUtil.getAsFile(storage);
+            URL storage = getStorageArea(bmd);
+            File zip = NetUtil.getAsFile(tempDest);
             IOUtil.unpackZip(zip, storage);
         }
         catch (IOException ex)
@@ -132,7 +133,7 @@ public class SerIndexManager implements IndexManager
         try
         {
             // TODO(joe): This needs some checks that it isn't being used
-            URL storage = getStorageArea(book);
+            URL storage = getStorageArea(book.getBookMetaData());
             NetUtil.delete(storage);
         }
         catch (IOException ex)
@@ -143,14 +144,14 @@ public class SerIndexManager implements IndexManager
 
     /**
      * Determine where an index should be stored
-     * @param book The book to be indexed
+     * @param bmd The book to be indexed
      * @return A URL to store stuff in
      * @throws IOException If there is a problem in finding where to store stuff
      */
-    protected URL getStorageArea(Book book) throws IOException
+    protected URL getStorageArea(BookMetaData bmd) throws IOException
     {
-        String driverName = book.getBookMetaData().getDriverName();
-        String bookName = book.getBookMetaData().getInitials();
+        String driverName = bmd.getDriverName();
+        String bookName = bmd.getInitials();
 
         assert driverName != null;
         assert bookName != null;

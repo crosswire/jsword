@@ -1,43 +1,19 @@
 package org.crosswire.jsword.book.install.sword;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
-import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.ModuleType;
-import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
-import org.crosswire.jsword.book.sword.SwordConstants;
-import org.crosswire.jsword.util.Project;
-
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarInputStream;
 
 /**
  * An implementation of Installer for reading data from Sword FTP sites.
@@ -63,29 +39,14 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FtpSwordInstaller extends AbstractBookList implements Installer, Comparable
+public class FtpSwordInstaller extends AbstractSwordInstaller implements Comparable
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#getIndex()
+     * @see org.crosswire.jsword.book.install.Installer#getURL()
      */
-    public List getBookMetaDatas()
+    public String getURL()
     {
-        try
-        {
-            if (!loaded)
-            {
-                loadCachedIndex();
-            }
-
-            List mutable = new ArrayList();
-            mutable.addAll(entries.values());
-            return Collections.unmodifiableList(mutable);
-        }
-        catch (InstallException ex)
-        {
-            log.error("Failed to reload cached index file", ex); //$NON-NLS-1$
-            return new ArrayList();
-        }
+        return PROTOCOL_SWORD + ":" + username + ":" + password + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /* (non-Javadoc)
@@ -101,7 +62,7 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
 
         SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
 
-	    try
+        try
         {
             return new URL(NetUtil.PROTOCOL_FTP, host, directory + "/" + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -109,262 +70,57 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         {
             return null;
         }
-	}
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#toLocalURL(org.crosswire.jsword.book.BookMetaData)
-     */
-    public URL toLocalURL(BookMetaData bmd)
-    {
-        if (!(bmd instanceof SwordBookMetaData))
-        {
-            assert false;
-            return null;
-        }
-
-        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        ModuleType type = sbmd.getModuleType();
-        String modpath = type.getInstallDirectory();
-        String destname = modpath + '/' + sbmd.getDiskName();
-
-        File dldir = SwordBookDriver.getDownloadDir();
-        File moddir = new File(dldir, SwordConstants.DIR_DATA);
-        File fulldir = new File(moddir, destname);
-        try
-        {
-            return new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
-        }
-        catch (MalformedURLException e)
-        {
-            assert false;
-            return null;
-        }
-	}
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.BookMetaData)
-     */
-    public boolean isNewer(BookMetaData bmd)
-    {
-        URL local = toLocalURL(bmd);
-        URL remote = toRemoteURL(bmd);
-        return NetUtil.isNewer(remote, local);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#install(java.lang.String)
+     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(java.lang.String, java.lang.String, java.net.URL)
      */
-    public void install(BookMetaData bmd)
-    {
-        if (!(bmd instanceof SwordBookMetaData))
-        {
-            assert false;
-            return;
-        }
-
-        // Is the book already installed? Then nothing to do.
-        if (Books.installed().getBookMetaData(bmd.getName()) != null)
-        {
-            return;
-        }
-
-        final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        // So now we know what we want to install - all we need to do
-        // is installer.install(name) however we are doing it in the
-        // background so we create a job for it.
-        final Thread worker = new Thread("DisplayPreLoader") //$NON-NLS-1$
-        {
-            public void run()
-            {
-                URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
-                Job job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
-
-                yield();
-
-                try
-                {
-                    job.setProgress(Msg.JOB_INIT.toString());
-
-                    URL desturl = toLocalURL(sbmd);
-                    NetUtil.makeDirectory(desturl);
-
-                    ModuleType type = sbmd.getModuleType();
-                    String modpath = type.getInstallDirectory();
-                    String destname = modpath + '/' + sbmd.getDiskName();
-                    downloadAll(job, host, USERNAME, PASSWORD, directory + '/' + SwordConstants.DIR_DATA + '/' + destname, desturl);
-
-                    File dldir = SwordBookDriver.getDownloadDir();
-                    job.setProgress(Msg.JOB_CONFIG.toString());
-                    File confdir = new File(dldir, SwordConstants.DIR_CONF);
-                    confdir.mkdirs();
-                    File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
-                    URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
-                    sbmd.save(configurl);
-
-                    SwordBookDriver.registerNewBook(sbmd, dldir);
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(this, ex);
-                    job.ignoreTimings();
-                }
-                finally
-                {
-                    job.done();
-                }
-            }
-        };
-
-        // this actually starts the thread off
-        worker.setPriority(Thread.MIN_PRIORITY);
-        worker.start();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
-     */
-    public void downloadSearchIndex(BookMetaData bmd, URL localDest) throws InstallException
-    {
-        Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
-
-        try
-        {
-            String dir = directory + '/' + SEARCH_DIR;
-            download(host, USERNAME, PASSWORD, dir, bmd.getInitials() + ZIP_SUFFIX, localDest);
-        }
-        catch (Exception ex)
-        {
-            job.ignoreTimings();
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
-        }
-        finally
-        {
-            job.done();
-        }                
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
-     */
-    public void reloadBookList() throws InstallException
-    {
-        URL scratchfile = getCachedIndexFile();
-        download(host, USERNAME, PASSWORD, directory, FILE_LIST_GZ, scratchfile);
-        loaded = false;
-    }
-
-    /**
-     * Load the cached index file into memory
-     */
-    private void loadCachedIndex() throws InstallException
-    {
-        entries.clear();
-
-        URL cache = getCachedIndexFile();
-        if (!NetUtil.isFile(cache))
-        {
-            reloadBookList();
-        }
-        try
-        {
-            InputStream in = cache.openStream();
-            GZIPInputStream gin = new GZIPInputStream(in);
-            TarInputStream tin = new TarInputStream(gin);
-
-            while (true)
-            {
-                TarEntry entry = tin.getNextEntry();
-                if (entry == null)
-                {
-                    break;
-                }
-
-                String internal = entry.getName();
-                if (!entry.isDirectory())
-                {
-                    try
-                    {
-                        int size = (int) entry.getSize();
-                        byte[] buffer = new byte[size];
-                        tin.read(buffer);
-
-                        if (internal.endsWith(SwordConstants.EXTENSION_CONF))
-                        {
-                            internal = internal.substring(0, internal.length() - 5);
-                        }
-                        if (internal.startsWith(SwordConstants.DIR_CONF + '/'))
-                        {
-                            internal = internal.substring(7);
-                        }
-
-                        Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                        SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
-
-                        if (sbmd.isSupported())
-                        {
-                            entries.put(sbmd.getName(), sbmd);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        log.warn("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
-                    }
-                }
-            }
-
-            tin.close();
-            gin.close();
-            in.close();
-            loaded = true;
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.CACHE_ERROR, ex);
-        }
-    }
-
-    /**
-     * The URL for the cached index file for this installer
-     */
-    private URL getCachedIndexFile() throws InstallException
-    {
-        try
-        {
-            URL scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), false);
-            return NetUtil.lengthenURL(scratchdir, FILE_LIST_GZ);
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.URL_FAILED, ex);
-        }
-    }
-
-    /**
-     * What are we using as a temp filename?
-     */
-    private static String getTempFileExtension(String host, String directory)
-    {
-        return DOWNLOAD_PREFIX + host + directory.replace('/', '_'); //$NON-NLS-1$
-    }
-
-    /**
-     * Utility to download a file by FTP from a remote site
-     * @param site The place to download from
-     * @param user The user that does the downloading
-     * @param password The password of the above user
-     * @param dir The directory from which to download the file
-     * @param file The file to download
-     * @throws InstallException
-     */
-    private static void download(String site, String user, String password, String dir, String file, URL dest) throws InstallException
+    protected void download(Job job, String dir, String file, URL dest) throws InstallException
     {
         FTPClient ftp = new FTPClient();
 
         try
         {
-            ftpInit(ftp, site, user, password, dir);
+            log.info("Connecting to site=" + host + " dir=" + dir); //$NON-NLS-1$ //$NON-NLS-2$
+            
+            // First connect
+            ftp.connect(host);
+            Thread.yield();
+            
+            log.info(ftp.getReplyString());
+            int reply1 = ftp.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply1))
+            {
+                String text1 = ftp.getReplyString();
+                throw new InstallException(Msg.CONNECT_REFUSED, new Object[] { host, new Integer(reply1), text1 });
+            }
+            
+            // Authenticate
+            ftp.login(username, password);
+            Thread.yield();
+            
+            log.info(ftp.getReplyString());
+            reply1 = ftp.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply1))
+            {
+                String text2 = ftp.getReplyString();
+                throw new InstallException(Msg.AUTH_REFUSED, new Object[] { username, new Integer(reply1), text2 });
+            }
+            
+            // Change directory
+            ftp.changeWorkingDirectory(dir);
+            Thread.yield();
+            
+            log.info(ftp.getReplyString());
+            reply1 = ftp.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply1))
+            {
+                String text3 = ftp.getReplyString();
+                throw new InstallException(Msg.CWD_REFUSED, new Object[] { dir, new Integer(reply1), text3 });
+            }
+            
+            ftp.setFileType(FTP.BINARY_FILE_TYPE);
+            Thread.yield();
 
             // Check the download directory exists
             URL parent = NetUtil.shortenURL(dest, FILE_LIST_GZ);
@@ -388,176 +144,18 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         }
         finally
         {
-            disconnect(ftp);
-        }
-    }
-
-    /**
-     * Utility to download a file by FTP from a remote site
-     * @param site The place to download from
-     * @param user The user that does the downloading
-     * @param password The password of the above user
-     * @param dir The directory from which to download the file
-     * @throws InstallException
-     */
-    protected static void downloadAll(Job job, String site, String user, String password, String dir, URL destdir) throws InstallException
-    {
-        FTPClient ftp = new FTPClient();
-
-        try
-        {
-            job.setProgress(Msg.JOB_LOGIN.toString());
-            ftpInit(ftp, site, user, password, dir);
-
-            job.setProgress(Msg.JOB_DOWNLOADING.toString());
-            downloadContents(destdir, ftp);
-        }
-        catch (InstallException ex)
-        {
-            throw ex;
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
-        }
-        finally
-        {
-            disconnect(ftp);
-        }
-    }
-
-    /**
-     * Recursively download the contents of the current ftp directory
-     * to the given url
-     */
-    private static void downloadContents(URL destdir, FTPClient ftp) throws IOException, InstallException
-    {
-        FTPFile[] files = ftp.listFiles();
-        for (int i = 0; i < files.length; i++)
-        {
-            String name = files[i].getName();
-            URL child = NetUtil.lengthenURL(destdir, name);
-
-            if (files[i].isFile())
+            if (ftp.isConnected())
             {
-                OutputStream out = NetUtil.getOutputStream(child);
-
-                ftp.retrieveFile(name, out);
-                Thread.yield();
-
-                int reply = ftp.getReplyCode();
-                if (!FTPReply.isPositiveCompletion(reply))
+                try
                 {
-                    String text = ftp.getReplyString();
-                    throw new InstallException(Msg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
+                    ftp.disconnect();
                 }
-                out.close();
-            }
-            else
-            {
-                downloadContents(child, ftp);
-            }
-        }
-    }
-
-    /**
-     * Simple tway to connect to a remote site in preparation for a file listing
-     * or a download.
-     */
-    private static void ftpInit(FTPClient ftp, String site, String user, String password, String dir) throws IOException, InstallException
-    {
-        log.info("Connecting to site=" + site + " dir=" + dir); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // First connect
-        ftp.connect(site);
-        Thread.yield();
-
-        log.info(ftp.getReplyString());
-        int reply = ftp.getReplyCode();
-        if (!FTPReply.isPositiveCompletion(reply))
-        {
-            String text = ftp.getReplyString();
-            throw new InstallException(Msg.CONNECT_REFUSED, new Object[] { site, new Integer(reply), text });
-        }
-
-        // Authenticate
-        ftp.login(user, password);
-        Thread.yield();
-
-        log.info(ftp.getReplyString());
-        reply = ftp.getReplyCode();
-        if (!FTPReply.isPositiveCompletion(reply))
-        {
-            String text = ftp.getReplyString();
-            throw new InstallException(Msg.AUTH_REFUSED, new Object[] { user, new Integer(reply), text });
-        }
-
-        // Change directory
-        ftp.changeWorkingDirectory(dir);
-        Thread.yield();
-
-        log.info(ftp.getReplyString());
-        reply = ftp.getReplyCode();
-        if (!FTPReply.isPositiveCompletion(reply))
-        {
-            String text = ftp.getReplyString();
-            throw new InstallException(Msg.CWD_REFUSED, new Object[] { dir, new Integer(reply), text });
-        }
-
-        ftp.setFileType(FTP.BINARY_FILE_TYPE);
-        Thread.yield();
-    }
-
-    /**
-     * Silently close an ftp connection, ignoring any exceptions
-     */
-    private static void disconnect(FTPClient ftp)
-    {
-        if (ftp.isConnected())
-        {
-            try
-            {
-                ftp.disconnect();
-            }
-            catch (IOException ex2)
-            {
-                log.error("disconnect error", ex2); //$NON-NLS-1$
+                catch (IOException ex2)
+                {
+                    log.error("disconnect error", ex2); //$NON-NLS-1$
+                }
             }
         }
-    }
-
-    /**
-     * @return Returns the directory.
-     */
-    public String getDirectory()
-    {
-        return directory;
-    }
-
-    /**
-     * @param directory The directory to set.
-     */
-    public void setDirectory(String directory)
-    {
-        this.directory = directory;
-        loaded = false;
-    }
-
-    /**
-     * @return Returns the host.
-     */
-    public String getHost()
-    {
-        return host;
-    }
-
-    /**
-     * @param host The host to set.
-     */
-    public void setHost(String host)
-    {
-        this.host = host;
-        loaded = false;
     }
 
     /**
@@ -592,14 +190,6 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         this.username = username;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#getURL()
-     */
-    public String getURL()
-    {
-        return PROTOCOL_SWORD + ":" + username + ":" + password + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
     /**
      * Like getURL() except that we skip the password for display purposes.
      * @see FtpSwordInstaller#getURL()
@@ -621,12 +211,7 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         }
         FtpSwordInstaller that = (FtpSwordInstaller) object;
 
-        if (!equals(this.host, that.host))
-        {
-            return false;
-        }
-
-        if (!equals(this.directory, that.directory))
+        if (!super.equals(that))
         {
             return false;
         }
@@ -644,50 +229,13 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         return true;
     }
 
-    /**
-     * Quick utility to check to see if 2 (potentially null) strings are equal
-     */
-    private boolean equals(String string1, String string2)
-    {
-        if (string1 == null)
-        {
-            return string2 == null;
-        }
-        return string1.equals(string2);
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
-        return host.hashCode() + directory.hashCode() + username.hashCode() + password.hashCode();
+        return super.hashCode() + username.hashCode() + password.hashCode();
     }
-
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object object)
-    {
-        FtpSwordInstaller myClass = (FtpSwordInstaller) object;
-
-        int ret = host.compareTo(myClass.host);
-        if (ret != 0)
-        {
-            ret = directory.compareTo(myClass.directory);
-        }
-        return ret;
-    }
-
-    /**
-     * Do we need to reload the index file
-     */
-    private boolean loaded;
-
-    /**
-     * The remote hostname.
-     */
-    protected String host;
 
     /**
      * The remote username for a valid account on the <code>host</code>.
@@ -700,52 +248,12 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
     private String password = "jsword@crosswire.com"; //$NON-NLS-1$
 
     /**
-     * The directory containing modules on the <code>host</code>.
-     */
-    protected String directory = "/"; //$NON-NLS-1$
-
-    /**
-     * A map of the entries in this download area
-     */
-    protected Map entries = new HashMap();
-
-    /**
-     * The default anon username
-     */
-    private static final String USERNAME = "anonymous"; //$NON-NLS-1$
-
-    /**
-     * The relative path of the dir holding the search index files
-     */
-    private static final String SEARCH_DIR = "seach/jsword/L1"; //$NON-NLS-1$
-
-    /**
-     * The default anon password
-     */
-    private static final String PASSWORD = "anon@anon.com"; //$NON-NLS-1$
-
-    /**
-     * The sword index file
-     */
-    private static final String FILE_LIST_GZ = "mods.d.tar.gz"; //$NON-NLS-1$
-
-    /**
      * We need to be ablee to provide a URL as part of the API
      */
     private static final String PROTOCOL_SWORD = "sword"; //$NON-NLS-1$
 
     /**
-     * When we cache a download index
-     */
-    private static final String DOWNLOAD_PREFIX = "download-"; //$NON-NLS-1$
-
-    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(FtpSwordInstaller.class);
-
-    /**
-     * The suffix of zip modules on this server
-     */
-    private static final String ZIP_SUFFIX = ".zip"; //$NON-NLS-1$
 }

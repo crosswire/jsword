@@ -45,6 +45,18 @@ public interface Installer extends BookList
     public String getURL();
 
     /**
+     * @param bmd The book meta-data to get a URL from.
+     * @return the remote url for the BookMetaData
+     */
+    public URL toRemoteURL(BookMetaData bmd);
+
+    /**
+     * @param bmd The book meta-data to get a URL from.
+     * @return the url for the directory for BookMetaData
+     */
+    public URL toLocalURL(BookMetaData bmd);
+
+    /**
      * Get a list of BookMetaData objects that represent downloadable modules.
      * If no list has been retrieved from the remote source using reloadIndex()
      * then we should just return an empty list and not attempt to contact the
@@ -52,6 +64,14 @@ public interface Installer extends BookList
      * @see Installer#reloadBookList()
      */
     public List getBookMetaDatas();
+
+    /**
+     * Return true if the module is not installed or there is a newer
+     * version to install.
+     * @param bmd The book meta-data to check on.
+     * @return whether there is a newer version to install
+     */
+    public boolean isNewer(BookMetaData bmd);
 
     /**
      * Refetch a list of names from the remote source.
@@ -78,24 +98,4 @@ public interface Installer extends BookList
      * IndexManager for installation.
      */
     public void downloadSearchIndex(BookMetaData bmd, URL tempDest) throws InstallException;
-
-    /**
-     * @param bmd The book meta-data to get a URL from.
-     * @return the remote url for the BookMetaData
-     */
-    public URL toRemoteURL(BookMetaData bmd);
-
-    /**
-     * @param bmd The book meta-data to get a URL from.
-     * @return the url for the directory for BookMetaData
-     */
-    public URL toLocalURL(BookMetaData bmd);
-
-    /**
-     * Return true if the module is not installed or there is a newer
-     * version to install.
-     * @param bmd The book meta-data to check on.
-     * @return whether there is a newer version to install
-     */
-    public boolean isNewer(BookMetaData bmd);
 }

@@ -1,43 +1,18 @@
 package org.crosswire.jsword.book.install.sword;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 import org.crosswire.common.progress.Job;
-import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BooksListener;
-import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
-import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.ModuleType;
-import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
-import org.crosswire.jsword.book.sword.SwordConstants;
-import org.crosswire.jsword.util.Project;
-
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarInputStream;
 
 /**
  * An implementation of Installer for reading data from Sword Web sites.
@@ -64,216 +39,14 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class HttpSwordInstaller extends AbstractBookList implements Installer, Comparable
+public class HttpSwordInstaller extends AbstractSwordInstaller implements Comparable
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getURL()
      */
     public String getURL()
     {
-        return PROTOCOL_WEB + ":" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas()
-     */
-    public List getBookMetaDatas()
-    {
-        try
-        {
-            if (!loaded)
-            {
-                loadCachedIndex();
-            }
-
-            List mutable = new ArrayList();
-            mutable.addAll(entries.values());
-            return Collections.unmodifiableList(mutable);
-        }
-        catch (InstallException ex)
-        {
-            log.error("Failed to reload cached index file", ex); //$NON-NLS-1$
-            return new ArrayList();
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
-     */
-    public void reloadBookList() throws InstallException
-    {
-        URL scratchfile = getCachedIndexFile();
-        download(host, directory, FILE_LIST_GZ, scratchfile);
-        loaded = false;
-    }
-
-    /**
-     * Utility to download a file by HTTP from a remote site
-     * @param site The place to download from
-     * @param dir The directory from which to download the file
-     * @param file The file to download
-     * @throws InstallException
-     */
-    private static void download(String site, String dir, String file, URL dest) throws InstallException
-    {
-        InputStream in = null;
-        OutputStream out = null;
-        try
-        {
-            URL url = new URL("http://" + site + dir + '/' + LIST_DIR + '/' + file); //$NON-NLS-1$
-            byte[] buf = new byte[4096];
-
-            // Check the download directory exists
-            URL parent = NetUtil.shortenURL(dest, FILE_LIST_GZ);
-            NetUtil.makeDirectory(parent);
-
-            // Download the index file
-            out = NetUtil.getOutputStream(dest);
-            in = url.openStream();
-            for (int read = 0; -1 != (read = in.read(buf)); )
-            {
-                out.write(buf, 0, read);
-            }
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
-        }
-        finally
-        {
-            IOUtil.close(in);
-            IOUtil.close(out);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
-     */
-    public void downloadSearchIndex(BookMetaData bmd, URL localDest) throws InstallException
-    {
-        Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
-
-        try
-        {
-            String dir = directory + '/' + SEARCH_DIR  + '/' + bmd.getInitials() + ZIP_SUFFIX;
-            downloadZip(job, host, dir, localDest);
-        }
-        catch (Exception ex)
-        {
-            job.ignoreTimings();
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
-        }
-        finally
-        {
-            job.done();
-        }                
-    }
-
-    /**
-     * Utility to download a file by HTTP from a remote site
-     * @param job
-     * @param site
-     * @param dir
-     * @param destdir
-     * @throws InstallException
-     */
-    protected static void downloadZip(Job job, String site, String dir, URL destdir) throws InstallException
-    {
-        InputStream in = null;
-        OutputStream out = null;
-
-        try
-        {
-            job.setProgress(Msg.JOB_DOWNLOADING.toString());
-
-            URL zipurl = new URL("http://" + site + dir); //$NON-NLS-1$
-            File f = File.createTempFile("swd", "zip"); //$NON-NLS-1$ //$NON-NLS-2$
-            out = new FileOutputStream(f);
-
-            URLConnection urlConnection = zipurl.openConnection();
-            in = urlConnection.getInputStream();
-
-            byte[] buf = new byte[4096];
-            for (int count = 0; -1 != (count = in.read(buf)); )
-            {
-                out.write(buf, 0, count);
-            }
-
-            IOUtil.unpackZip(f, destdir);
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
-        }
-        finally
-        {
-            IOUtil.close(in);
-            IOUtil.close(out);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.BookMetaData)
-     */
-    public void install(BookMetaData bmd) throws InstallException
-    {
-        if (!(bmd instanceof SwordBookMetaData))
-        {
-            assert false;
-            return;
-        }
-
-        // Is the book already installed? Then nothing to do.
-        if (Books.installed().getBookMetaData(bmd.getName()) != null)
-        {
-            return;
-        }
-
-        final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        // So now we know what we want to install - all we need to do
-        // is installer.install(name) however we are doing it in the
-        // background so we create a job for it.
-        final Thread worker = new Thread("DisplayPreLoader") //$NON-NLS-1$
-        {
-            public void run()
-            {
-                URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
-                Job job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
-
-                try
-                {
-                    job.setProgress(Msg.JOB_INIT.toString());
-
-                    URL desturl = toLocalURL(sbmd);
-                    NetUtil.makeDirectory(desturl);
-                    downloadZip(job, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX, desturl);
-
-                    File dldir = SwordBookDriver.getDownloadDir();
-                    job.setProgress(Msg.JOB_CONFIG.toString());
-                    File confdir = new File(dldir, SwordConstants.DIR_CONF);
-                    confdir.mkdirs();
-                    File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
-                    URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
-                    sbmd.save(configurl);
-
-                    SwordBookDriver.registerNewBook(sbmd, dldir);
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(this, ex);
-                    job.ignoreTimings();
-                }
-                finally
-                {
-                    job.done();
-                }
-            }
-        };
-
-        // this actually starts the thread off
-        worker.setPriority(Thread.MIN_PRIORITY);
-        worker.start();
+        return PROTOCOL_WEB + ":" + host + directory; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -289,7 +62,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
 
         SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
 
-	    try
+        try
         {
             return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
         }
@@ -297,120 +70,59 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         {
             return null;
         }
-	}
+    }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#toLocalURL(org.crosswire.jsword.book.BookMetaData)
+     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(java.lang.String, java.lang.String, java.net.URL)
      */
-    public URL toLocalURL(BookMetaData bmd)
+    protected void download(Job job, String dir, String file, URL dest) throws InstallException
     {
-        File fulldir = toLocalDirectory(bmd);
         try
         {
-            return new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
+            URL url = new URL("http://" + host + dir + '/' + file); //$NON-NLS-1$
+            copy(job, dest, url);
         }
-        catch (MalformedURLException ex)
+        catch (IOException ex)
         {
-            assert false;
-            return null;
+            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
         }
-	}
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.BookMetaData)
-     */
-    public boolean isNewer(BookMetaData bmd)
-    {
-        URL local = toLocalURL(bmd);
-        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-        local = NetUtil.lengthenURL(local, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
-        URL remote = toRemoteURL(bmd);
-        return NetUtil.isNewer(remote, local);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#toLocalURL(org.crosswire.jsword.book.BookMetaData)
+    /**
+     * @param job
+     * @param url
+     * @param dest
+     * @throws IOException
      */
-    public File toLocalDirectory(BookMetaData bmd)
+    private void copy(Job job, URL url, URL dest) throws IOException
     {
-        if (!(bmd instanceof SwordBookMetaData))
+        InputStream in = null;
+        OutputStream out = null;
+
+        try
         {
-            assert false;
-            return null;
+            if (job != null)
+            {
+                job.setProgress(Msg.JOB_DOWNLOADING.toString());
+            }
+
+            // Download the index file
+            out = NetUtil.getOutputStream(dest);
+
+            URLConnection urlConnection = url.openConnection();
+            in = urlConnection.getInputStream();
+
+            byte[] buf = new byte[4096];
+            for (int count = 0; -1 != (count = in.read(buf)); )
+            {
+                out.write(buf, 0, count);
+            }
         }
-
-        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
-        ModuleType type = sbmd.getModuleType();
-        String modpath = type.getInstallDirectory();
-        String destname = modpath + '/' + sbmd.getDiskName();
-
-        File dldir = SwordBookDriver.getDownloadDir();
-        File moddir = new File(dldir, SwordConstants.DIR_DATA);
-        return new File(moddir, destname);
-	}
-
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object arg0)
-    {
-        HttpSwordInstaller myClass = (HttpSwordInstaller) arg0;
-
-        int ret = host.compareTo(myClass.host);
-        if (ret != 0)
+        finally
         {
-            ret = directory.compareTo(myClass.directory);
+            IOUtil.close(in);
+            IOUtil.close(out);
         }
-        return ret;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword.book.BooksListener)
-     */
-    public void addBooksListener(BooksListener li)
-    {
-        listeners.add(li);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.jsword.book.BooksListener)
-     */
-    public void removeBooksListener(BooksListener li)
-    {
-        listeners.remove(li);
-    }
-
-    /**
-     * @return Returns the directory.
-     */
-    public String getDirectory()
-    {
-        return directory;
-    }
-
-    /**
-     * @param directory The directory to set.
-     */
-    public void setDirectory(String directory)
-    {
-        this.directory = directory;
-    }
-
-    /**
-     * @return Returns the host.
-     */
-    public String getHost()
-    {
-        return host;
-    }
-
-    /**
-     * @param host The host to set.
-     */
-    public void setHost(String host)
-    {
-        this.host = host;
     }
 
     /* (non-Javadoc)
@@ -424,12 +136,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         }
         HttpSwordInstaller that = (HttpSwordInstaller) object;
 
-        if (!equals(this.host, that.host))
-        {
-            return false;
-        }
-
-        if (!equals(this.directory, that.directory))
+        if (!super.equals(that))
         {
             return false;
         }
@@ -438,162 +145,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     }
 
     /**
-     * Quick utility to check to see if 2 (potentially null) strings are equal
+     * We need to be ablee to provide a URL as part of the API
      */
-    private boolean equals(String string1, String string2)
-    {
-        if (string1 == null)
-        {
-            return string2 == null;
-        }
-        return string1.equals(string2);
-    }
-
-    /**
-     * Load the cached index file into memory
-     */
-    private void loadCachedIndex() throws InstallException
-    {
-        entries.clear();
-
-        URL cache = getCachedIndexFile();
-        if (!NetUtil.isFile(cache))
-        {
-            reloadBookList();
-        }
-
-        try
-        {
-            InputStream in = cache.openStream();
-            GZIPInputStream gin = new GZIPInputStream(in);
-            TarInputStream tin = new TarInputStream(gin);
-
-            while (true)
-            {
-                TarEntry entry = tin.getNextEntry();
-                if (entry == null)
-                {
-                    break;
-                }
-
-                String internal = entry.getName();
-                if (!entry.isDirectory())
-                {
-                    try
-                    {
-                        int size = (int) entry.getSize();
-                        byte[] buffer = new byte[size];
-                        tin.read(buffer);
-
-                        if (internal.endsWith(SwordConstants.EXTENSION_CONF))
-                        {
-                            internal = internal.substring(0, internal.length() - 5);
-                        }
-
-                        if (internal.startsWith(SwordConstants.DIR_CONF + '/'))
-                        {
-                            internal = internal.substring(7);
-                        }
-
-                        Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                        SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
-
-                        if (sbmd.isSupported())
-                        {
-                            entries.put(sbmd.getName(), sbmd);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        log.warn("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
-                    }
-                }
-            }
-
-            IOUtil.close(tin);
-            IOUtil.close(gin);
-            IOUtil.close(in);
-
-            loaded = true;
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.CACHE_ERROR, ex);
-        }
-    }
-
-    /**
-     * The URL for the cached index file for this installer
-     */
-    private URL getCachedIndexFile() throws InstallException
-    {
-        try
-        {
-            URL scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), false);
-            return NetUtil.lengthenURL(scratchdir, FILE_LIST_GZ);
-        }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.URL_FAILED, ex);
-        }
-    }
-
-    /**
-     * What are we using as a temp filename?
-     */
-    private static String getTempFileExtension(String host, String directory)
-    {
-        return DOWNLOAD_PREFIX + host + directory.replace('/', '_'); //$NON-NLS-1$
-    }
-
-    /**
-     * Do we need to reload the index file
-     */
-    private boolean loaded;
-
-    /**
-     * A map of the entries in this download area
-     */
-    protected Map entries = new HashMap();
-
-    /**
-     * The sword index file
-     */
-    private static final String FILE_LIST_GZ = "mods.d.tar.gz"; //$NON-NLS-1$
-
-    /**
-     * The relative path of the dir holding the index file
-     */
-    private static final String LIST_DIR = "raw"; //$NON-NLS-1$
-
-    /**
-     * The relative path of the dir holding the zip files
-     */
-    private static final String PACKAGE_DIR = "packages/rawzip"; //$NON-NLS-1$
-
-    /**
-     * The relative path of the dir holding the search index files
-     */
-    private static final String SEARCH_DIR = "seach/jsword/L1"; //$NON-NLS-1$
-
-    /**
-     * The suffix of zip modules on this server
-     */
-    private static final String ZIP_SUFFIX = ".zip"; //$NON-NLS-1$
-
-    /**
-     * When we cache a download index
-     */
-    private static final String DOWNLOAD_PREFIX = "download-"; //$NON-NLS-1$
-
-    private ArrayList listeners = new ArrayList();
-    protected String host;
-    protected String directory;
-
     private static final String PROTOCOL_WEB = "web"; //$NON-NLS-1$
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(HttpSwordInstaller.class);
 }
