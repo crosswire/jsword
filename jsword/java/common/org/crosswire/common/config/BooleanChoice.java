@@ -50,6 +50,9 @@ public class BooleanChoice extends ReflectedChoice
      */
     public Object convertToObject(String orig)
     {
-        return Boolean.valueOf(Convert.string2Boolean(orig));
+        return Convert.string2Boolean(orig) ? Boolean.TRUE : Boolean.FALSE;
+
+        // JDK14: This could be simplified
+        // return Boolean.valueOf(Convert.string2Boolean(orig));
     }
 }

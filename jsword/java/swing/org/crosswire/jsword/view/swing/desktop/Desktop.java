@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import javax.swing.event.HyperlinkListener;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.swing.BackportUtil;
 import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
@@ -330,24 +330,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         bar_menu.add(menu_tools);
         bar_menu.add(menu_help);
 
-        // JToolBar.setRollover(boolean) is not supported in JDK1.3, instead we use reflection
-        // to find out whether the method is available, if so call it.
-        try
-        {
-            Class cl = pnl_tbar.getClass();
-            Method method = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
-            method.invoke(pnl_tbar, new Object[] { Boolean.TRUE });
-        }
-        catch (NoSuchMethodException ex)
-        {
-            log.debug("Assume 1.3 JVM since: "+ex);
-            // we have a java < 1.4 user
-        }
-        catch (Exception ex)
-        {
-            // we don't expect this one, print a stack trace
-            ex.printStackTrace();
-        }
+        BackportUtil.setRollover(pnl_tbar, true);
 
         pnl_tbar.add(act_file_new).addMouseListener(bar_status);
         pnl_tbar.add(act_file_open).addMouseListener(bar_status);
@@ -471,7 +454,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     protected DisplayArea recurseDisplayArea()
     {
         Component comp = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-        
+
         // So we've got the current component, we now need to walk up the tree
         // to find something that we recognise.
         while (comp != null)
@@ -610,7 +593,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
                     }
                     log.debug("scrolling to: "+url);
                     JEditorPane pane = (JEditorPane) ev.getSource();
-                    pane.scrollToReference(url);
+                    BackportUtil.scrollToReference(url, pane);
                 }
                 else
                 {

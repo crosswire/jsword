@@ -19,7 +19,7 @@ import java.util.Iterator;
  *     OLB style Passage files.
  * </ul>
  *
- * <p>Passage no longer extends the Collection interface to avoid JDK 1.1/2.0
+ * <p>Passage no longer extends the Collection interface to avoid JDK 1.1/1.2
  * portability problems, and because many of the things that a Passage does
  * rely on consecutive Verses which are an alien concept to Collections.
  * So users would have to use the Passage interface anyway.

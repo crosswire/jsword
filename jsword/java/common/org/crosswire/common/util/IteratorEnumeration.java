@@ -57,6 +57,8 @@ public final class IteratorEnumeration implements Enumeration
         return it.next();
     }
 
-    /** The Iterator that we are proxying to */
+    /**
+     * The Iterator that we are proxying to
+     */
     private Iterator it;
 }

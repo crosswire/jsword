@@ -780,25 +780,39 @@ public class PassageTally extends AbstractPassage
         board[ord-1] = 0;
     }
 
-    /** Sort in Biblical order */
+    /**
+     * Sort in Biblical order
+     */
     public static final int ORDER_BIBLICAL = 0;
 
-    /** Sort in tally rank order */
+    /**
+     * Sort in tally rank order
+     */
     public static final int ORDER_TALLY = 1;
 
-    /** The highest tally possible */
+    /**
+     * The highest tally possible
+     */
     public static final int MAX_TALLY = 20000;
 
-    /** The tallyboard itself */
+    /**
+     * The tallyboard itself
+     */
     protected int[] board = new int[BibleInfo.versesInBible()];
 
-    /** The maximum tally possible */
+    /**
+     * The maximum tally possible
+     */
     private int max = 0;
 
-    /** The maximum tally possible */
+    /**
+     * The maximum tally possible
+     */
     private int order = ORDER_BIBLICAL;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(PassageTally.class);
 
     /**
@@ -815,17 +829,16 @@ public class PassageTally extends AbstractPassage
             calculateNext();
         }
 
-        /**
-         * @return true if the iteration has more Verses
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext()
         {
             return next <= BibleInfo.versesInBible();
         }
 
-        /**
-         * @return the next Verse in the interation
-         * @throws NoSuchElementException if hasNext() == false
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public Object next() throws NoSuchElementException
         {
@@ -845,9 +858,8 @@ public class PassageTally extends AbstractPassage
             }
         }
 
-        /**
-         * We don't do remove
-         * @throws UnsupportedOperationException Every time
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException
         {
@@ -943,10 +955,14 @@ public class PassageTally extends AbstractPassage
             }
         }
 
-        /** So that we can get at the ranking of the given verse */
+        /**
+         * So that we can get at the ranking of the given verse
+         */
         private TalliedVerse last;
 
-        /** The Iterator we are converting */
+        /**
+         * The Iterator we are converting
+         */
         private Iterator it = null;
     }
 
@@ -967,15 +983,8 @@ public class PassageTally extends AbstractPassage
             this.tally = tally;
         }
 
-        /** The verse id */
-        protected int ord = 0;
-
-        /** The rank of the verse */
-        protected int tally = 0;
-
-        /**
-         * @param obj The thing to compare against
-         * @return 1 means he is earlier than me, -1 means he is later ...
+        /* (non-Javadoc)
+         * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         public int compareTo(Object obj)
         {
@@ -988,6 +997,16 @@ public class PassageTally extends AbstractPassage
 
             return that.tally - this.tally;
         }
+
+        /**
+         * The verse id
+         */
+        protected int ord = 0;
+
+        /**
+         * The rank of the verse
+         */
+        protected int tally = 0;
     }
 
     /**
@@ -1068,10 +1087,14 @@ public class PassageTally extends AbstractPassage
             }
         }
 
-        /** So that we can get at the ranking of the given verse */
+        /**
+         * So that we can get at the ranking of the given verse
+         */
         private TalliedVerseRange last;
 
-        /** The Iterator we are converting */
+        /**
+         * The Iterator we are converting
+         */
         private Iterator it = null;
     }
 
@@ -1092,15 +1115,8 @@ public class PassageTally extends AbstractPassage
             this.tally = tally;
         }
 
-        /** The verse range */
-        protected VerseRange range;
-
-        /** The rank of the verse */
-        protected int tally = 0;
-
-        /**
-         * @param obj The thing to compare against
-         * @return 1 means he is earlier than me, -1 means he is later ...
+        /* (non-Javadoc)
+         * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         public int compareTo(Object obj)
         {
@@ -1113,5 +1129,15 @@ public class PassageTally extends AbstractPassage
 
             return that.tally - this.tally;
         }
+
+        /**
+         * The verse range
+         */
+        protected VerseRange range;
+
+        /**
+         * The rank of the verse
+         */
+        protected int tally = 0;
     }
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.util.EventObject;
@@ -32,12 +31,12 @@ import java.util.EventObject;
 public class PassageEvent extends EventObject 
 {
     /**
-    * Constructs a PassageEvent object.
-    * @param source the source Object (typically <code>this</code>)
-    * @param type an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED
-    * @param lower an int specifying the bottom of a range
-    * @param upper an int specifying the top of a range
-    */
+     * Constructs a PassageEvent object.
+     * @param source the source Object (typically <code>this</code>)
+     * @param type an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED
+     * @param lower an int specifying the bottom of a range
+     * @param upper an int specifying the top of a range
+     */
     public PassageEvent(Object source, int type, Verse lower, Verse upper)
     {
         super(source);
@@ -46,39 +45,45 @@ public class PassageEvent extends EventObject
         this.lower = lower;
         this.upper = upper;
 
-        if (this.lower == null) this.lower = VERSE_LOWEST;
-        if (this.upper == null) this.upper = VERSE_HIGHEST;
+        if (this.lower == null)
+        {
+            this.lower = VERSE_LOWEST;
+        }
+        if (this.upper == null)
+        {
+            this.upper = VERSE_HIGHEST;
+        }
     }
 
     /**
-    * Returns the event type. The possible values are:
-    * <ul>
-    * <li>VERSES_CHANGED
-    * <li>VERSES_ADDED
-    * <li>VERSES_REMOVED
-    * </ul>
-    * @return an int representing the type value
-    */
+     * Returns the event type. The possible values are:
+     * <ul>
+     * <li>VERSES_CHANGED
+     * <li>VERSES_ADDED
+     * <li>VERSES_REMOVED
+     * </ul>
+     * @return an int representing the type value
+     */
     public int getType()
     {
         return type;
     }
 
     /**
-    * Returns the lower index of the range. For a single element,
-    * this value is the same as that returned by {@link #getUpperIndex}.
-    * @return an int representing the lower index value
-    */
+     * Returns the lower index of the range. For a single element,
+     * this value is the same as that returned by {@link #getUpperIndex}.
+     * @return an int representing the lower index value
+     */
     public Verse getLowerIndex()
     {
         return lower;
     }
 
     /**
-    * Returns the upper index of the range. For a single element,
-    * this value is the same as that returned by {@link #getLowerIndex}.
-    * @return an int representing the upper index value
-    */
+     * Returns the upper index of the range. For a single element,
+     * this value is the same as that returned by {@link #getLowerIndex}.
+     * @return an int representing the upper index value
+     */
     public Verse getUpperIndex()
     {
         return upper;
@@ -123,23 +128,5 @@ public class PassageEvent extends EventObject
      * The highest numbered element to have changed
      */
     private Verse upper;
-    
-    /**
-     * To get around exceptions that can't happen we used the patch_up version
-     * of the Verse constructor above. Cafe can't compile this otherwise.
-     * JDK and MS SDK seem fine on it though.
-    static
-    {
-        try
-        {
-            VERSE_LOWEST = new Verse(1, 1, 1);
-            VERSE_HIGHEST = new Verse(66, 22, 21);
-        }
-        catch (NoSuchVerseException ex)
-        {
-            throw new Error(PassageUtil.getResource("error_logic"));
-        }
-    }
-    */
 }
 

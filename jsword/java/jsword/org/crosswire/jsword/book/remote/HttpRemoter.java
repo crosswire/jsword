@@ -43,7 +43,9 @@ public class HttpRemoter implements Remoter
     public HttpRemoter(String baseurl)
     {
         if (baseurl == null)
+        {
             throw new NullPointerException("baseurl");
+        }
 
         this.baseurl = baseurl;
     }
@@ -97,7 +99,7 @@ public class HttpRemoter implements Remoter
     {
         StringBuffer buffer = new StringBuffer();
 
-        buffer.append("?"+HttpRemoter.METHOD_KEY+"=");
+        buffer.append("?method=");
         buffer.append(method.getMethodName());
         
         Iterator it = method.getParameterKeys();
@@ -134,5 +136,8 @@ public class HttpRemoter implements Remoter
      */
     private static final Logger log = Logger.getLogger(HttpRemoter.class);
 
+    /**
+     * For use in HttpServletRequests
+     */
     public static final String METHOD_KEY = "method";
 }
