@@ -173,7 +173,7 @@
         <pathelement path="${target.classes}/maptest"/>
         <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/swordtest"/>
-        <pathelement path="${target.deploy}/${ant.project.name}/resource">
+        <pathelement path="${target.deploy}/${ant.project.name}/resource"/>
         <fileset dir="${target.deploy}" includes="**/*.jar"/>
       </classpath>
     </junit>
