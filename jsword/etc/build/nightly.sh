@@ -33,5 +33,5 @@ rm -f $LOGFILE
   echo ""
   echo "## Build log"
   cat $LOGFILE
-} | /bin/mail -s "jsword buildlog (from `dnsdomainname`)" joe@eireneh.com
+} | /bin/mail -s "jsword buildlog (from `dnsdomainname`)" $EMAIL
 

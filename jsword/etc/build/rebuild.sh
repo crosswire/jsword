@@ -27,60 +27,41 @@ echo JSWORD_HOME=$JSWORD_HOME
 
 
 # keep the cvsup separate to allow build.xml to be updated
+# we used to use: "$ANT_HOME/bin/ant cvsup $PROPERTIES"
+# but this spawned a jvm just to do a "cvs -q up -d -P" which
+# seemed like a waste ...
 
 echo ""
 echo "=============================================================================="
-echo "Building common"
+echo "Updating from crosswire"
 cd $JSWORD_HOME/../common
-$ANT_HOME/bin/ant cvsup $PROPERTIES
-$ANT_HOME/bin/ant incremental $PROPERTIES
-
-echo ""
-echo "=============================================================================="
-echo "Building jsword-support"
+cvs -q up -d -P
 cd $JSWORD_HOME/../jsword-support
 cvs -q up -d -P
-#$ANT_HOME/bin/ant incremental $PROPERTIES
-
-echo ""
-echo "=============================================================================="
-echo "Building jsword"
 cd $JSWORD_HOME/../jsword
-$ANT_HOME/bin/ant cvsup $PROPERTIES
-$ANT_HOME/bin/ant incremental $PROPERTIES
-
-echo ""
-echo "=============================================================================="
-echo "Building jsword-sword"
+cvs -q up -d -P
 cd $JSWORD_HOME/../jsword-sword
 cvs -q up -d -P
-#$ANT_HOME/bin/ant incremental $PROPERTIES
+cd $JSWORD_HOME/../jsword-web
+cvs -q up -d -P
+cd $JSWORD_HOME/../bibledesktop
+cvs -q up -d -P
+cd $JSWORD_HOME/../bibledesktop-web
+cvs -q up -d -P
+cd $JSWORD_HOME/../biblemapper
+cvs -q up -d -P
+chmod 755 $JSWORD_HOME/etc/build/*.sh
+
 
 echo ""
 echo "=============================================================================="
 echo "Building jsword-web"
 cd $JSWORD_HOME/../jsword-web
-$ANT_HOME/bin/ant cvsup $PROPERTIES
-$ANT_HOME/bin/ant incremental $PROPERTIES
-
-echo ""
-echo "=============================================================================="
-echo "Building bibledesktop"
-cd $JSWORD_HOME/../bibledesktop
-$ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
 echo ""
 echo "=============================================================================="
 echo "Building bibledesktop-web"
 cd $JSWORD_HOME/../bibledesktop-web
-$ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
-
-echo ""
-echo "=============================================================================="
-echo "Building biblemapper"
-cd $JSWORD_HOME/../biblemapper
-cvs -q up -d -P
-#$ANT_HOME/bin/ant incremental $PROPERTIES
 
