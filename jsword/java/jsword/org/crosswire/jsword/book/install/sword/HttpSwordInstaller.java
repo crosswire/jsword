@@ -13,16 +13,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
@@ -102,7 +100,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
      */
-    public void reloadIndex() throws InstallException
+    public void reloadBookList() throws InstallException
     {
         URL scratchfile = getCachedIndexFile();
         download(host, directory, FILE_LIST_GZ, scratchfile);
@@ -143,30 +141,32 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         }
         finally
         {
-            if (null != in)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            if (null != out)
-            {
-                try
-                {
-                    out.close();
-                }
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
-                }
-            }
+            IOUtil.close(in);
+            IOUtil.close(out);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
+     */
+    public void downloadSearchIndex(BookMetaData bmd, URL localDest) throws InstallException
+    {
+        Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+
+        try
+        {
+            String dir = directory + '/' + SEARCH_DIR  + '/' + bmd.getInitials() + ZIP_SUFFIX;
+            downloadZip(job, host, dir, localDest);
+        }
+        catch (Exception ex)
+        {
+            job.ignoreTimings();
+            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
+        }
+        finally
+        {
+            job.done();
+        }                
     }
 
     /**
@@ -185,33 +185,21 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         try
         {
             job.setProgress(Msg.JOB_DOWNLOADING.toString());
+
             URL zipurl = new URL("http://" + site + dir); //$NON-NLS-1$
             File f = File.createTempFile("swd", "zip"); //$NON-NLS-1$ //$NON-NLS-2$
             out = new FileOutputStream(f);
+
             URLConnection urlConnection = zipurl.openConnection();
             in = urlConnection.getInputStream();
+
             byte[] buf = new byte[4096];
             for (int count = 0; -1 != (count = in.read(buf)); )
             {
                 out.write(buf, 0, count);
             }
-            // unpack the zip.
-            ZipFile zf = new ZipFile(f);
-            Enumeration entries = zf.entries();
-            while (entries.hasMoreElements())
-            {
-                ZipEntry entry = (ZipEntry) entries.nextElement();
-                String entrypath = entry.getName();
-                String filename = entrypath.substring(entrypath.lastIndexOf('/') + 1);
-                URL child = NetUtil.lengthenURL(destdir, filename);
-                OutputStream dataOut = NetUtil.getOutputStream(child);
-                InputStream dataIn = zf.getInputStream(entry);
-                for (int count = 0; -1 != (count = dataIn.read(buf)); )
-                {
-                    dataOut.write(buf, 0, count);
-                }
-                dataOut.close();
-            }
+
+            IOUtil.unpackZip(f, destdir);
         }
         catch (IOException ex)
         {
@@ -219,28 +207,8 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         }
         finally
         {
-            if (null != in)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-            if (null != out)
-            {
-                try
-                {
-                    out.close();
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
+            IOUtil.close(in);
+            IOUtil.close(out);
         }
     }
 
@@ -325,7 +293,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         {
             return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
         }
-        catch (MalformedURLException e)
+        catch (MalformedURLException ex)
         {
             return null;
         }
@@ -341,7 +309,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         {
             return new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
         }
-        catch (MalformedURLException e)
+        catch (MalformedURLException ex)
         {
             assert false;
             return null;
@@ -491,8 +459,9 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         URL cache = getCachedIndexFile();
         if (!NetUtil.isFile(cache))
         {
-            reloadIndex();
+            reloadBookList();
         }
+
         try
         {
             InputStream in = cache.openStream();
@@ -520,6 +489,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                         {
                             internal = internal.substring(0, internal.length() - 5);
                         }
+
                         if (internal.startsWith(SwordConstants.DIR_CONF + '/'))
                         {
                             internal = internal.substring(7);
@@ -540,9 +510,10 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                 }
             }
 
-            tin.close();
-            gin.close();
-            in.close();
+            IOUtil.close(tin);
+            IOUtil.close(gin);
+            IOUtil.close(in);
+
             loaded = true;
         }
         catch (IOException ex)
@@ -599,6 +570,11 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
      * The relative path of the dir holding the zip files
      */
     private static final String PACKAGE_DIR = "packages/rawzip"; //$NON-NLS-1$
+
+    /**
+     * The relative path of the dir holding the search index files
+     */
+    private static final String SEARCH_DIR = "seach/jsword/L1"; //$NON-NLS-1$
 
     /**
      * The suffix of zip modules on this server

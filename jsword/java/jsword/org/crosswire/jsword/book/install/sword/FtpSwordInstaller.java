@@ -223,9 +223,32 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
+     */
+    public void downloadSearchIndex(BookMetaData bmd, URL localDest) throws InstallException
+    {
+        Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+
+        try
+        {
+            String dir = directory + '/' + SEARCH_DIR;
+            download(host, USERNAME, PASSWORD, dir, bmd.getInitials() + ZIP_SUFFIX, localDest);
+        }
+        catch (Exception ex)
+        {
+            job.ignoreTimings();
+            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
+        }
+        finally
+        {
+            job.done();
+        }                
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
      */
-    public void reloadIndex() throws InstallException
+    public void reloadBookList() throws InstallException
     {
         URL scratchfile = getCachedIndexFile();
         download(host, USERNAME, PASSWORD, directory, FILE_LIST_GZ, scratchfile);
@@ -242,7 +265,7 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
         URL cache = getCachedIndexFile();
         if (!NetUtil.isFile(cache))
         {
-            reloadIndex();
+            reloadBookList();
         }
         try
         {
@@ -690,6 +713,11 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
      * The default anon username
      */
     private static final String USERNAME = "anonymous"; //$NON-NLS-1$
+
+    /**
+     * The relative path of the dir holding the search index files
+     */
+    private static final String SEARCH_DIR = "seach/jsword/L1"; //$NON-NLS-1$
 
     /**
      * The default anon password

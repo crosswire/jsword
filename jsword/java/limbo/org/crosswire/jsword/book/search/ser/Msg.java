@@ -35,6 +35,7 @@ class Msg extends MsgBase
     static final Msg FINDING_WORDS = new Msg("SerIndex.FindingWords"); //$NON-NLS-1$
     static final Msg WRITING_WORDS = new Msg("SerIndex.WritingWords"); //$NON-NLS-1$
     static final Msg SAVING = new Msg("SerIndex.Saving"); //$NON-NLS-1$
+    static final Msg INSTALL_FAIL = new Msg("SerIndex.InstallFailed"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor 

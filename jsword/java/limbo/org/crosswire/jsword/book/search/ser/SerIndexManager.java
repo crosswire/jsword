@@ -1,10 +1,12 @@
 package org.crosswire.jsword.book.search.ser;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
@@ -15,7 +17,7 @@ import org.crosswire.jsword.book.search.IndexManager;
 import org.crosswire.jsword.util.Project;
 
 /**
- * .
+ * An implementation of IndexManager that controls Ser indexes.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -103,6 +105,23 @@ public class SerIndexManager implements IndexManager
             }
         });
         work.start();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.IndexManager#installDownloadedIndex(org.crosswire.jsword.book.Book, java.net.URL)
+     */
+    public void installDownloadedIndex(Book book, URL tempDest) throws BookException
+    {
+        try
+        {
+            URL storage = getStorageArea(book);
+            File zip = NetUtil.getAsFile(storage);
+            IOUtil.unpackZip(zip, storage);
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.INSTALL_FAIL, ex);
+        }
     }
 
     /* (non-Javadoc)

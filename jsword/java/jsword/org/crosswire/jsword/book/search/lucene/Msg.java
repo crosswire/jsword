@@ -36,6 +36,7 @@ class Msg extends MsgBase
     static final Msg INDEXING = new Msg("LuceneIndex.Indexing"); //$NON-NLS-1$
     static final Msg OPTIMIZING = new Msg("LuceneIndex.Optimizing"); //$NON-NLS-1$
     static final Msg DELETE_FAILED = new Msg("LuceneIndex.DeleteFailed"); //$NON-NLS-1$
+    static final Msg INSTALL_FAIL = new Msg("LuceneIndex.InstallFailed"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

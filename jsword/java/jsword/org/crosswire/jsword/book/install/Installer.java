@@ -49,7 +49,7 @@ public interface Installer extends BookList
      * If no list has been retrieved from the remote source using reloadIndex()
      * then we should just return an empty list and not attempt to contact the
      * remote source. See notes on reload for more information.
-     * @see Installer#reloadIndex()
+     * @see Installer#reloadBookList()
      */
     public List getBookMetaDatas();
 
@@ -59,7 +59,7 @@ public interface Installer extends BookList
      * of this action. If the user lives in a country that persecutes
      * Christians then this action might give the game away.</b>
      */
-    public void reloadIndex() throws InstallException;
+    public void reloadBookList() throws InstallException;
 
     /**
      * Download and install a module locally.
@@ -70,13 +70,23 @@ public interface Installer extends BookList
     public void install(BookMetaData bmd) throws InstallException;
 
     /**
-     * @param bmd
+     * Download a search index for the given Book.
+     * The installation of the search index is the responsibility of the
+     * IndexManager.
+     * @param bmd The book to download a search index for.
+     * @param tempDest A temporary URL for downloading to. Passed to the
+     * IndexManager for installation.
+     */
+    public void downloadSearchIndex(BookMetaData bmd, URL tempDest) throws InstallException;
+
+    /**
+     * @param bmd The book meta-data to get a URL from.
      * @return the remote url for the BookMetaData
      */
     public URL toRemoteURL(BookMetaData bmd);
 
     /**
-     * @param bmd
+     * @param bmd The book meta-data to get a URL from.
      * @return the url for the directory for BookMetaData
      */
     public URL toLocalURL(BookMetaData bmd);
@@ -84,7 +94,7 @@ public interface Installer extends BookList
     /**
      * Return true if the module is not installed or there is a newer
      * version to install.
-     * @param bmd
+     * @param bmd The book meta-data to check on.
      * @return whether there is a newer version to install
      */
     public boolean isNewer(BookMetaData bmd);

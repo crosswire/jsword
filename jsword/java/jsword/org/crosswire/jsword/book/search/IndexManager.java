@@ -1,5 +1,7 @@
 package org.crosswire.jsword.book.search;
 
+import java.net.URL;
+
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 
@@ -44,6 +46,14 @@ public interface IndexManager
      * of this method the index should be usable.
      */
     public void scheduleIndexCreation(Book book);
+
+    /**
+     * We have downloaded a search index to a zip file. It should be installed
+     * from here.
+     * @param book The book that we downloaded an index for
+     * @param tempDest The URL of a zip file to install
+     */
+    public void installDownloadedIndex(Book book, URL tempDest) throws BookException;
 
     /**
      * Tidy up after yourself and remove all the files that make up any indexes

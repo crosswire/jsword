@@ -635,6 +635,36 @@ public class NetUtil
     }
 
     /**
+     * Get a URL version of the given file.
+     * @param file The File to turn into a URL
+     * @return a URL for the given file
+     */
+    public static URL getURL(File file)
+    {
+        try
+        {
+            return new URL(PROTOCOL_FILE, null, -1, file.getCanonicalPath());
+        }
+        catch (IOException ex)
+        {
+            log.error("Failed to create URL", ex); //$NON-NLS-1$
+            assert false;
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * A URL version of <code>File.createTempFile()</code>
+     * @return A new temporary URL
+     * @throws IOException If something goes wrong creating the temp URL
+     */
+    public static URL getTemporaryURL(String prefix, String suffix) throws IOException
+    {
+        File tempFile = File.createTempFile(prefix, suffix);
+        return getURL(tempFile);
+    }
+
+    /**
      * Check that the directories in the version directory really
      * represent versions.
      */
