@@ -66,7 +66,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
             Book book = ((BookMetaData) booklist.get(0)).getBook();
             txt_passg.setBook(book);
         }
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             log.error("Failed to set default book", ex);
         }
@@ -123,7 +123,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
             mdl_passg.setPassage(ref);
             txt_passg.setPassage(ref);
         }
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             Reporter.informUser(this, ex);
         }
@@ -254,7 +254,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
 
             txt_passg.setPassage(local);
         }
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             Reporter.informUser(this, ex);
         }

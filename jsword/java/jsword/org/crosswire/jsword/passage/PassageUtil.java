@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.util.Iterator;

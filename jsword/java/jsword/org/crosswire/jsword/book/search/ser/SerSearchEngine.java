@@ -300,14 +300,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
                 log.error("Error reading "+verse.getName()+" in "+book.getBookMetaData().getFullName()+": errors="+errors, ex);
                 if (errors > MAX_ERRORS)
                 {
-                    if (ex instanceof BookException)
-                    {
-                        throw (BookException) ex;
-                    }
-                    else
-                    {
-                        throw new BookException(Msg.READ_ERROR, ex);
-                    }
+                    throw new BookException(Msg.REPEATED_READ_ERROR, ex);
                 }
             }
         }

@@ -253,7 +253,7 @@ public class Config
                 String value = model.getString();
                 local.put(key, value);
             }
-            catch (Throwable ex)
+            catch (Exception ex)
             {
                 log.warn("Failure with setting "+key);
                 Reporter.informUser(this, ex);
@@ -321,7 +321,7 @@ public class Config
                             }
                         }
                     }
-                    catch (Throwable ex)
+                    catch (Exception ex)
                     {
                         log.warn("Failure with "+key+"="+new_value, ex);
                         Reporter.informUser(this, ex);

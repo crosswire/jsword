@@ -124,7 +124,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
 
             log.debug("desktop main exiting.");
         }
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             // Something went wrong before we've managed to get on our feet.
             // so we want the best possible shot at working out what failed.
@@ -138,6 +138,8 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public Desktop() throws IOException, JDOMException, InstallException
     {
+        LookAndFeelUtil.tweakLookAndFeel();
+
         URL predicturl = Project.instance().getWritablePropertiesURL("splash");
         Splash splash = new Splash(frame, 60000);
         startjob = JobManager.createJob("Startup", predicturl, true);

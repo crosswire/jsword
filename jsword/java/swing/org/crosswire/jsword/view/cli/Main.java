@@ -115,7 +115,7 @@ public class Main
                     handle(ex);
                 }
             }
-            catch (Throwable ex)
+            catch (Exception ex)
             {
                 reply = handle(ex);
             }

@@ -116,51 +116,39 @@ public class Reporter
      */
     protected static void fireCapture(ReporterEvent ev)
     {
-        try
+        // Guaranteed to return a non-null array
+        Object[] liArr = listeners.getListenerList();
+
+        if (liArr.length == 0)
         {
-            // Guaranteed to return a non-null array
-            Object[] liArr = listeners.getListenerList();
+            log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException());
+        }
 
-            if (liArr.length == 0)
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i=liArr.length-2; i>=0; i-=2)
+        {
+            if (liArr[i] == ReporterListener.class)
             {
-                log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException());
-            }
-
-            // Process the listeners last to first, notifying
-            // those that are interested in this event
-            for (int i=liArr.length-2; i>=0; i-=2)
-            {
-                if (liArr[i] == ReporterListener.class)
+                ReporterListener li = (ReporterListener) liArr[i+1];
+                try
                 {
-                    ReporterListener li = (ReporterListener) liArr[i+1];
-                    try
+                    if (ev.getException() != null)
                     {
-                        if (ev.getException() != null)
-                        {
-                            li.reportException(ev);
-                        }
-                        else
-                        {
-                            li.reportMessage(ev);
-                        }
+                        li.reportException(ev);
                     }
-                    catch (Throwable ex)
+                    else
                     {
-                        if (ex instanceof ThreadDeath)
-                        {
-                            throw (ThreadDeath) ex;
-                        }
-            
-                        listeners.remove(CaptureListener.class, li);
-            
-                        log.warn("Dispatch failure", ex);
+                        li.reportMessage(ev);
                     }
                 }
+                catch (Exception ex)
+                {
+                    listeners.remove(CaptureListener.class, li);
+        
+                    log.warn("Dispatch failure", ex);
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex);
         }
     }
 

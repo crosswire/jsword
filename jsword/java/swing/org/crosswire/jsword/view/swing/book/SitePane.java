@@ -65,7 +65,7 @@ public class SitePane extends JPanel
     {
         this.installer = null;
 
-        jbInit();
+        initialize();
 
         pnlActions.add(btnDelete);
         lblAvailable.setLabelFor(treAvailable);
@@ -83,7 +83,7 @@ public class SitePane extends JPanel
     {
         this.installer = installer;
 
-        jbInit();
+        initialize();
 
         pnlActions.add(btnInstall);
         pnlActions.add(btnRefresh);
@@ -98,7 +98,7 @@ public class SitePane extends JPanel
     /**
      * Build the GUI components
      */
-    private void jbInit()
+    private void initialize()
     {
         btnDelete.setMnemonic('D');
         btnDelete.setText("Delete");

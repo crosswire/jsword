@@ -142,7 +142,7 @@ public class BSFGui extends JPanel
 
             reply = cx.evaluateString(scope, command, "<cmd>", 1, jsout);
         }
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
             reply = ex;

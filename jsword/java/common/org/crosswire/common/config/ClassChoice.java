@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import org.crosswire.common.util.Logger;
@@ -27,7 +26,7 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ClassChoice extends ReflectedChoice
+public class ClassChoice extends AbstractReflectedChoice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getConvertionClass()
@@ -38,15 +37,20 @@ public class ClassChoice extends ReflectedChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
     public String convertToString(Object orig)
     {
+        if (orig == null)
+        {
+            return null;
+        }
+
         return ((Class) orig).getName();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
     public Object convertToObject(String orig)
     {
@@ -61,5 +65,8 @@ public class ClassChoice extends ReflectedChoice
         }
     }
 
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(ClassChoice.class);
 }

@@ -418,7 +418,7 @@ public class Books
                     BookDriver driver = (BookDriver) types[i].newInstance();
                     registerDriver(driver);
                 }
-                catch (Throwable ex)
+                catch (Exception ex)
                 {
                     Reporter.informUser(Books.class, ex);
                 }

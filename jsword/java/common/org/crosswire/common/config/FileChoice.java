@@ -26,7 +26,7 @@ import java.io.File;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FileChoice extends ReflectedChoice
+public class FileChoice extends AbstractReflectedChoice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getConvertionClass()
@@ -37,7 +37,7 @@ public class FileChoice extends ReflectedChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
     public String convertToString(Object orig)
     {
@@ -50,7 +50,7 @@ public class FileChoice extends ReflectedChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
     public Object convertToObject(String orig)
     {

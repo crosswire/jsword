@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.ser;
 
 import org.crosswire.common.util.MsgBase;
@@ -31,16 +30,20 @@ public class Msg extends MsgBase
 {
     static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
     static final Msg INITIALIZE = new Msg("Error initializing.");
-    static final Msg READ_ERROR = new Msg("Read Error.");
+    static final Msg REPEATED_READ_ERROR = new Msg("Too many errors while reading data.");
     static final Msg WRITE_ERROR = new Msg("Write Error.");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor 
+     */
     private Msg(String name)
     {
         super(name);

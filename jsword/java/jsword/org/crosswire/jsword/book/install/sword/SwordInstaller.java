@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.sword.ModuleType;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordConfig;
 import org.crosswire.jsword.util.Project;
@@ -84,6 +84,7 @@ public class SwordInstaller implements Installer, Comparable
         try
         {
             loadCachedIndex();
+
             return new ArrayList(entries.keySet());
         }
         catch (InstallException ex)
@@ -100,25 +101,26 @@ public class SwordInstaller implements Installer, Comparable
     {
         try
         {
-            Properties prop = getEntry(entry);
-            String destname = prop.getProperty("DataPath");
-            if (destname.startsWith("./"))
-            {
-                destname = destname.substring(2);
-            }
-            if (destname.endsWith("/"))
-            {
-                destname = destname.substring(0, destname.length()-1);
-            }
+            SwordConfig config = (SwordConfig) entries.get(entry);
+            ModuleType type = config.getModDrv();
+            String modpath = type.getInstallDirectory();
+            String destname = modpath + "/" + config.getInternalName();
 
             File dldir = SwordBookDriver.getDownloadDir();
-            File moddir = new File(dldir, destname);
-            moddir.mkdirs();
-            URL desturl = new URL("file", null, moddir.getAbsolutePath());
+            File moddir = new File(dldir, "modules");
+            File fulldir = new File(moddir, destname);
+            fulldir.mkdirs();
+            URL desturl = new URL("file", null, fulldir.getAbsolutePath());
 
-            downloadAll(host, USERNAME, PASSWORD, directory+"/"+destname, desturl);
+            downloadAll(host, USERNAME, PASSWORD, directory+"/modules/"+destname, desturl);
+
+            File confdir = new File(dldir, "mods.d");
+            confdir.mkdirs();
+            File conf = new File(confdir, config.getInternalName()+".conf");
+            URL configurl = new URL("file", null, conf.getAbsolutePath());
+            config.save(configurl);
         }
-        catch (MalformedURLException ex)
+        catch (IOException ex)
         {
             throw new InstallException(Msg.URL_FAILED, ex);
         }
@@ -131,6 +133,7 @@ public class SwordInstaller implements Installer, Comparable
     {
         cacheRemoteFile();
         loadCachedIndex();
+
         return new ArrayList(entries.keySet());
     }
 
@@ -139,7 +142,9 @@ public class SwordInstaller implements Installer, Comparable
      */
     public Properties getEntry(String entry)
     {
-        return (Properties) entries.get(entry);
+        SwordConfig config = (SwordConfig) entries.get(entry);
+        Properties prop = config.getProperties();
+        return prop;
     }
 
     /**
@@ -178,19 +183,27 @@ public class SwordInstaller implements Installer, Comparable
                 {
                     break;
                 }
-            
+
                 if (!entry.isDirectory())
                 {
                     int size = (int) entry.getSize();
                     byte[] buffer = new byte[size];
                     tin.read(buffer);
-            
+
+                    String internal = entry.getName();
+                    if (internal.endsWith(".conf"))
+                    {
+                        internal = internal.substring(0, internal.length() - 5);
+                    }
+                    if (internal.startsWith("mods.d/"))
+                    {
+                        internal = internal.substring(7);
+                    }
+
                     Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                    SwordConfig config = new SwordConfig(rin);
-                    Properties prop = config.getProperties();
+                    SwordConfig config = new SwordConfig(rin, internal);
                     String desc = config.getDescription();
-            
-                    entries.put(desc, prop);
+                    entries.put(desc, config);
                 }
             }
             
@@ -241,7 +254,6 @@ public class SwordInstaller implements Installer, Comparable
             // Download the index file
             OutputStream out = NetUtil.getOutputStream(dest);
 
-            ftp.setFileType(FTP.BINARY_FILE_TYPE);
             ftp.retrieveFile(file, out);
             int reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply))
@@ -277,29 +289,7 @@ public class SwordInstaller implements Installer, Comparable
         {
             ftpInit(ftp, site, user, password, dir);
 
-            ftp.setFileType(FTP.BINARY_FILE_TYPE);
-
-            FTPFile[] files = ftp.listFiles();
-            for (int i = 0; i < files.length; i++)
-            {
-                if (files[i].isFile())
-                {
-                    String name = files[i].getName();
-
-                    URL destfile = NetUtil.lengthenURL(destdir, name);
-                    OutputStream out = NetUtil.getOutputStream(destfile);
-
-                    ftp.retrieveFile(name, out);
-
-                    int reply = ftp.getReplyCode();
-                    if (!FTPReply.isPositiveCompletion(reply))
-                    {
-                        String text = ftp.getReplyString();
-                        throw new InstallException(Msg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
-                    }
-                    out.close();
-                }
-            }
+            downloadContents(destdir, ftp);
         }
         catch (InstallException ex)
         {
@@ -312,6 +302,39 @@ public class SwordInstaller implements Installer, Comparable
         finally
         {
             disconnect(ftp);
+        }
+    }
+
+    /**
+     * Recursively download the contents of the current ftp directory
+     * to the given url
+     */
+    private static void downloadContents(URL destdir, FTPClient ftp) throws IOException, InstallException
+    {
+        FTPFile[] files = ftp.listFiles();
+        for (int i = 0; i < files.length; i++)
+        {
+            String name = files[i].getName();
+            URL child = NetUtil.lengthenURL(destdir, name);
+
+            if (files[i].isFile())
+            {
+                OutputStream out = NetUtil.getOutputStream(child);
+
+                ftp.retrieveFile(name, out);
+
+                int reply = ftp.getReplyCode();
+                if (!FTPReply.isPositiveCompletion(reply))
+                {
+                    String text = ftp.getReplyString();
+                    throw new InstallException(Msg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
+                }
+                out.close();
+            }
+            else
+            {
+                downloadContents(child, ftp);
+            }
         }
     }
 
@@ -355,6 +378,8 @@ public class SwordInstaller implements Installer, Comparable
             String text = ftp.getReplyString();
             throw new InstallException(Msg.CWD_REFUSED, new Object[] { dir, new Integer(reply), text });
         }
+
+        ftp.setFileType(FTP.BINARY_FILE_TYPE);
     }
 
     /**

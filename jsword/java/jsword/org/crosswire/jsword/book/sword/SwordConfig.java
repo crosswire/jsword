@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 
@@ -24,70 +27,6 @@ import org.crosswire.jsword.book.filter.FilterFactory;
  * <p>Config file format. See also:
  * <a href="http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
- * 
- * <p>Keys that might be available that we are ignoring for now:
- * <li>About: single value string, unknown use
- * <li>BlockCount: single value integer, unknown use, some indications that we ought to be using it
- * <li>Category: single value string, unknown use
- * <li>CipherKey: single value string, for encryption
- * <li>CopyrightContactAddress: single value string, unknown use
- * <li>CopyrightContactEmail: single value string, unknown use
- * <li>CopyrightContactName: single value string, unknown use
- * <li>CopyrightDate: single value string, unknown use
- * <li>CopyrightHolder: single value string, unknown use
- * <li>CopyrightNotes: single value string, unknown use
- * <li>Direction: single value choice, from SwordConstants.DIRECTION_STRINGS we should probably use it?
- * <li>DisplayLevel: single value integer, unknown use, some indications that we ought to be using it
- * <li>DistributionLicense: single value coded string, a ';' separated string of license attributes
- *     There are mis-spellings, etc. so there is a need for a distributionLicenseAdditionalInfo field. (Ugh!)
- *     See also SwordConstants.DISTIBUTION_LICENSE_STRINGS.
- *     <pre>
- *     // Returns the distributionLicense - this is a 'flag type' field - the value
- *     // will be the result of several constants ORed. See the
- *     // DISTRIBUTION_LICENSE* constants in SwordConstants. It appears some
- *     // versions do not stick to this convention, because of this, there is an
- *     // additional menber distributionLicenseAdditionInfo, to store additional
- *     // information.
- *     private int distributionLicense;
- *     private String distributionLicenseAdditionalInfo = "";
- *     String licensesString = reader.getFirstValue("DistributionLicense");
- *     if (licensesString != null)
- *     {
- *         StringTokenizer tok = new StringTokenizer(licensesString, ";");
- *         while (tok.hasMoreTokens())
- *         {
- *             String distributionLicenseString = tok.nextToken().trim();
- *             int index = matchingIndex(SwordConstants.DISTIBUTION_LICENSE_STRINGS, distributionLicenseString, -1);
- *             if (index != -1)
- *             {
- *                 distributionLicense |= 1 << index;
- *             }
- *             else
- *             {
- *                 if (!distributionLicenseAdditionalInfo.equals(""))
- *                 {
- *                     distributionLicenseAdditionalInfo += "; ";
- *                 }
- *                 distributionLicenseAdditionalInfo += distributionLicenseString;
- *             }
- *         }
- *     }
- *     </pre>
- * <li>DistributionNotes: single value string, unknown use
- * <li>DistributionSource: single value string, unknown use
- * <li>GlobalOptionFilter: multiple value flagset, from SwordConstants.GOF_STRINGS
- * <li>History: multiple values starting with History, some sort of change-log?
- * <li>InstallSize: single value integer, the installed size (in bytes?)
- * <li>Feature: multiple value flagset, from SwordConstants.FEATURE_STRINGS
- * <li>Font: single value string
- * <li>Lang: single value string, defaults to en, the language of the module
- * <li>LCSH: unknown
- * <li>LexiconFrom: unknown
- * <li>LexiconTo: unknown
- * <li>MinimumVersion: single value version number, lowest sword c++ version that can read this module
- * <li>SwordVersionDate: unknown
- * <li>TextSource: single value string, unknown use
- * <li>Version: single value string, unknown use
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -117,16 +56,18 @@ public class SwordConfig
     /**
      * Loads a sword config from a given File.
      */
-    public SwordConfig(File file) throws IOException
+    public SwordConfig(File file, String internal) throws IOException
     {
-        this(new FileReader(file));
+        this(new FileReader(file), internal);
     }
 
     /**
      * Loads a sword config from a given Reader.
      */
-    public SwordConfig(Reader in) throws IOException
+    public SwordConfig(Reader in, String internal) throws IOException
     {
+        this.internal = internal;
+
         BufferedReader bin = new BufferedReader(in);
 
         while (true)
@@ -136,10 +77,10 @@ public class SwordConfig
             {
                 break;
             }
-        
+
             parseLine(line);
         }
-        
+
         for (Iterator kit = getKeys(); kit.hasNext(); )
         {
             String key = (String) kit.next();
@@ -154,6 +95,32 @@ public class SwordConfig
         
             prop.setProperty(key, combined.toString());
         }
+    }
+
+    /**
+     * Save this config file to a URL
+     * @param dest The URL to save the data to
+     */
+    public void save(URL dest) throws IOException
+    {
+        PrintWriter out = new PrintWriter(NetUtil.getOutputStream(dest));
+
+        for (Iterator kit = getKeys(); kit.hasNext(); )
+        {
+            String key = (String) kit.next();
+            List list = (List) table.get(key);
+
+            for (Iterator eit = list.iterator(); eit.hasNext(); )
+            {
+                String value = (String) eit.next();
+
+                out.print(key);
+                out.print("=");
+                out.println(value);
+            }
+        }
+
+        out.close();
     }
 
     /**
@@ -175,9 +142,9 @@ public class SwordConfig
     /**
      * Returns only one value for the key (for cases where only one value is expected).
      */
-    public String getFirstValue(String key)
+    public String getFirstValue(ConfigEntry key)
     {
-        ArrayList list = (ArrayList) table.get(key);
+        ArrayList list = (ArrayList) table.get(key.getName());
         if (list == null)
         {
             return null;
@@ -203,13 +170,13 @@ public class SwordConfig
     /**
      * returns the index of the array element that matches the specified string
      */
-    public int matchingIndex(String[] array, String title)
+    public int matchingIndex(String[] array, ConfigEntry title)
     {
         String value = getFirstValue(title);
 
         if (value == null)
         {
-            log.error("Null string (title="+title+") in array: "+StringUtils.join(array, ", "));
+            log.error("Null string (title="+title.getName()+") in array: "+StringUtils.join(array, ", "));
             return -1;
         }
         
@@ -222,14 +189,14 @@ public class SwordConfig
         }
 
         // Some debug to say: no match
-        log.error("String "+value+" (title="+title+") not found in array: "+StringUtils.join(array, ", "));
+        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", "));
         return -1;
     }
 
     /**
      * returns the index of the array element that matches the specified string
      */
-    public int matchingIndex(String[] array, String title, int deft)
+    public int matchingIndex(String[] array, ConfigEntry title, int deft)
     {
         String value = getFirstValue(title);
         if (value == null)
@@ -246,7 +213,7 @@ public class SwordConfig
         }
 
         // Some debug to say: no match
-        log.error("String "+value+" (title="+title+") not found in array: "+StringUtils.join(array, ", "));
+        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", "));
         return deft;
     }
 
@@ -255,23 +222,7 @@ public class SwordConfig
      */
     public boolean isSupported()
     {
-        switch (getModDrv())
-        {
-        case SwordConstants.DRIVER_RAW_TEXT:
-        case SwordConstants.DRIVER_Z_TEXT:
-        case SwordConstants.DRIVER_RAW_COM:
-        case SwordConstants.DRIVER_Z_COM:
-        case SwordConstants.DRIVER_HREF_COM:
-        case SwordConstants.DRIVER_RAW_FILES:
-        case SwordConstants.DRIVER_RAW_LD:
-        case SwordConstants.DRIVER_RAW_LD4:
-        case SwordConstants.DRIVER_Z_LD:
-            return true;
-
-        case SwordConstants.DRIVER_RAW_GEN_BOOK:
-        default:
-            return false;
-        }
+        return getModDrv().getBookType() != null;
     }
 
     /**
@@ -280,7 +231,7 @@ public class SwordConfig
      */
     public String getDescription()
     {
-        return getFirstValue("Description");
+        return getFirstValue(ConfigEntry.DESCRIPTION);
     }
 
     /**
@@ -289,7 +240,7 @@ public class SwordConfig
      */
     public String getModuleCharset()
     {
-        int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", SwordConstants.ENCODING_LATIN1);
+        int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, ConfigEntry.ENCODING, SwordConstants.ENCODING_LATIN1);
         
         // There was code here that said:
         // if (encoding < 0)
@@ -300,12 +251,25 @@ public class SwordConfig
     }
 
     /**
-     * Returns the modDrv.
-     * @return int
+     * Returns the Module Type.
      */
-    public int getModDrv()
+    public ModuleType getModDrv()
     {
-        return matchingIndex(SwordConstants.DRIVER_STRINGS, "ModDrv");
+        String value = getFirstValue(ConfigEntry.MOD_DRV);
+        
+        if (value == null)
+        {
+            log.error("Null string not a valid ModuleType.");
+            return null;
+        }
+
+        ModuleType type = ModuleType.getModuleType(value);        
+        if (type == null)
+        {
+            log.error("String "+value+" not a valid ModuleType.");
+        }
+
+        return type;
     }
 
     /**
@@ -314,7 +278,7 @@ public class SwordConfig
      */
     public Filter getFilter()
     {
-        String sourcetype = getFirstValue("SourceType");
+        String sourcetype = getFirstValue(ConfigEntry.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
     }
 
@@ -328,6 +292,14 @@ public class SwordConfig
         if (eqpos >= 0 && eqpos < line.length() - 1)
         {
             String key = line.substring(0, eqpos).trim();
+            
+            /*
+            if (ConfigEntry.getConfigEntry(key) == null)
+            {
+                log.warn("unknown config entry: "+key);
+            }
+            */
+
             if (key.length() > 0)
             {
                 String value = line.substring(eqpos + 1);
@@ -348,6 +320,14 @@ public class SwordConfig
     }
 
     /**
+     * @return Returns the internal name of this module.
+     */
+    public String getInternalName()
+    {
+        return internal;
+    }
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SwordConfig.class);
@@ -361,4 +341,9 @@ public class SwordConfig
      * The single key version of the input file
      */
     private Properties prop = new Properties();
+
+    /**
+     * The original name of this config file from mods.d
+     */
+    private String internal = null;
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.jsword.passage.BibleInfo;
@@ -55,44 +54,37 @@ public class SwordConstants
     static final int TESTAMENT_NEW = 2;
 
     /**
-     * constants for name types (These are mutually exclusive, thus the lack of bit-shifting)
-     * name data info taken from http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
+     * constants for block types
      */
-    static final int DRIVER_RAW_TEXT = 0;
-    static final int DRIVER_Z_TEXT = 1;
-    static final int DRIVER_RAW_COM = 2;
-    static final int DRIVER_Z_COM = 3;
-    static final int DRIVER_HREF_COM = 4;
-    static final int DRIVER_RAW_FILES = 5;
-    static final int DRIVER_RAW_LD = 6;
-    static final int DRIVER_RAW_LD4 = 7;
-    static final int DRIVER_Z_LD = 8;
-    static final int DRIVER_RAW_GEN_BOOK = 9;
-
-    /** Strings for name type matching */
-    static final String[] DRIVER_STRINGS =
-    {
-        "RawText", "zText", "RawCom", "zCom", "HREFCom",
-        "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook"
-    };
-
-    /** constants for block types */
     static final int BLOCK_BOOK = 0;
     static final int BLOCK_CHAPTER = 1;
     static final int BLOCK_VERSE = 2;
 
-    /** Strings for block type matching */
-    static final String[] BLOCK_STRINGS = { "BOOK", "CHAPTER", "VERSE" };
+    /**
+     * Strings for block type matching
+     */
+    static final String[] BLOCK_STRINGS =
+    {
+        "BOOK",
+        "CHAPTER",
+        "VERSE",
+    };
 
-    /** constants for compression types */
+    /**
+     * constants for compression types
+     */
     static final int COMPRESSION_NONE = -1;
     static final int COMPRESSION_ZIP = 0;
     static final int COMPRESSION_LZSS = 1;
 
-    /** Strings for compression type matching */
+    /**
+     * Strings for compression type matching
+     */
     static final String[] COMPRESSION_STRINGS = { "ZIP", "LZSS" };
 
-    /** Constants for global option filter */
+    /**
+     * Constants for global option filter
+     */
     static final int GOF_GBF_STRONGS = 1;
     static final int GOF_GBF_FOOTNOTES = 1 << 1;
     static final int GOF_GBF_SCRIPREF = 1 << 2;
@@ -109,7 +101,9 @@ public class SwordConstants
     static final int GOF_UTF8_GREEK_ACCENTS = 1 << 13;
     static final int GOF_UTF8_HEBREW_VOWELS = 1 << 14;
 
-    /** Strings for global option filter */
+    /**
+     * Strings for global option filter
+     */
     static final String[] GOF_STRINGS =
     {
         "GBFStrongs",  "GBFFootnotes",  "GBFScripref",  "GBFMorph",  "GBFHeadings",  "GBFRedLetterWords",
@@ -118,32 +112,46 @@ public class SwordConstants
         "OSISStrongs", "OSISFootnotes",                 "OSISMorph", "OSISHeadings", "OSISRedLetterWords",
     };
 
-    /** Constants for direction */
+    /**
+     * Constants for direction
+     */
     static final int DIRECTION_LTOR = 0;
     static final int DIRECTION_RTOL = 1;
     static final int DIRECTION_BIDI = 2;
 
-    /** Strings for direction */
+    /**
+     * Strings for direction
+     */
     static final String[] DIRECTION_STRINGS = { "LtoR", "RtoL", "bidi" };
 
-    /** Constants for source type */
+    /**
+     * Constants for source type
+     */
     static final int SOURCE_PLAINTEXT = 0;
     static final int SOURCE_GBF = 1;
     static final int SOURCE_THML = 2;
     static final int SOURCE_OSIS = 3;
 
-    /** Strings for source type */
+    /**
+     * Strings for source type
+     */
     static final String[] SOURCE_STRINGS = { "Plaintext", "GBF", "ThML", "OSIS" };
 
-    /** constants for encoding */
+    /**
+     * constants for encoding
+     */
     static final int ENCODING_LATIN1 = 0;
     static final int ENCODING_UTF8 = 1;
 
-    /** Strings for encoding */
+    /**
+     * Strings for encoding
+     */
     static final String[] ENCODING_STRINGS = { "Latin-1", "UTF-8", "SCSU", "UTF-16" };
     static final String[] ENCODING_JAVA = { "ISO-8859-1", "UTF-8", "SCSU", "UTF-16" };
 
-    /** Constants for feature */
+    /**
+     * Constants for feature
+     */
     static final int FEATURE_STRONGS_NUMBERS = 1;
     static final int FEATURE_GREEK_DEF = 1 << 1;
     static final int FEATURE_HEBREW_DEF = 1 << 2;
@@ -152,23 +160,38 @@ public class SwordConstants
     static final int FEATURE_DAILY_DEVOTION = 1 << 5;
     static final int FEATURE_GLOSSARY = 1 << 6;
 
-    /** Strings for feature */
+    /**
+     * Strings for feature
+     */
     static final String[] FEATURE_STRINGS =
     {
         "StrongsNumbers", "GreekDef", "HebrewDef",
         "GreekParse", "HebrewParse", "DailyDevotion", "Glossary"
     };
 
-    /** public domain */
+    /**
+     * public domain
+     */
     static final int DISTRIBUTION_LICENSE_PD = 1;
-    /** copyrighted but free for distribution */
+
+    /**
+     * copyrighted but free for distribution
+     */
     static final int DISTRIBUTION_LICENSE_CBFFD = 1 << 1;
-    /** copyrighted by licensed for distribution by crosswire */
+
+    /**
+     * copyrighted by licensed for distribution by crosswire
+     */
     static final int DISTRIBUTION_LICENSE_CBLFDBC = 1 << 2;
-    /** copyrighted */
+
+    /**
+     * copyrighted
+     */
     static final int DISTRIBUTION_LICENSE_C = 1 << 3;
 
-    /** Strings for distribution license */
+    /**
+     * Strings for distribution license
+     */
     static final String[] DISTIBUTION_LICENSE_STRINGS =
     {
         "public domain",
@@ -237,7 +260,9 @@ public class SwordConstants
      */
     private static int[][] cps;
 
-    /** The start of the new testament */
+    /**
+     * The start of the new testament
+     */
     static final int ORDINAL_MAT11 = new Verse(BibleInfo.Names.MATTHEW, 1, 1, true).getOrdinal();
     
     /**

@@ -30,7 +30,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class ReflectedChoice implements Choice
+public abstract class AbstractReflectedChoice implements Choice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
@@ -277,5 +277,5 @@ public abstract class ReflectedChoice implements Choice
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ReflectedChoice.class);
+    private static final Logger log = Logger.getLogger(AbstractReflectedChoice.class);
 }

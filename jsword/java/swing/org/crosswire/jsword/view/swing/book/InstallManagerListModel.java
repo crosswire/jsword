@@ -11,7 +11,8 @@ import org.crosswire.jsword.book.install.InstallerEvent;
 import org.crosswire.jsword.book.install.InstallerListener;
 
 /**
- * A ListModel for a JList that uses
+ * A ListModel for a JList that uses the list of Installers given by the
+ * InstallManager.
  *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

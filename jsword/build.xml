@@ -504,11 +504,11 @@
   <target name="web.pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
-        <fileset dir="${support.tools}/pmd121" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/pmd15" includes="**/*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.web}/pmd"/>
-    <pmd rulesetfiles="${basedir}/${support.tools}/pmd121/ruleset.xml" shortFilenames="true">
+    <pmd rulesetfiles="${basedir}/${support.tools}/pmd15/ruleset.xml" shortFilenames="true">
       <formatter type="html" toFile="${target.web}/pmd/index.html"/>
       <fileset dir="${source.java}/common" includes="**/*.java"/>
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
@@ -524,7 +524,7 @@
     <mkdir dir="${target.web}/cpd"/>
     <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
       <classpath>
-        <fileset dir="${support.tools}/pmd121" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/pmd15" includes="**/*.jar"/>
       </classpath>
       <arg value="100"/>
       <arg value="${source.java}"/>
@@ -559,10 +559,10 @@
     <mkdir dir="${target.web}/findbugs"/>
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
       <classpath>
-        <fileset dir="${support.tools}/findbugs066" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/findbugs070" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    <findbugs home="${support.tools}/findbugs066"
+    <findbugs home="${support.tools}/findbugs070"
         output="text"
         outputFile="${target.web}/findbugs/report.txt"
         reportLevel="low"
@@ -570,8 +570,18 @@
         >
       <class location="${target.jar}/${ant.project.name}.jar" />
       <sourcePath path="${source.java}/jsword"/>
+      <auxClasspath path="${source.jar}/jdom09/jdom.jar"/>
+      <auxClasspath path="${source.jar}/log4j127/log4j-1.2.7.jar"/>
+      <auxClasspath path="${source.jar}/lang200/commons-lang-2.0.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10endorsed/dom.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10endorsed/sax.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10endorsed/xalan.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10endorsed/xercesImpl.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10/jaxb-api.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10/jaxb-libs.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10/jaxb-ri.jar"/>
+      <auxClasspath path="${source.jar}/jaxb10/"/>
       <!--
-      <auxClasspath path="${source.jar}" includes="**/*.jar"/>
       <sourcePath path="${source.java}/common"/>
       <sourcePath path="${source.java}/servlet"/>
       <sourcePath path="${source.java}/swing"/>
@@ -583,6 +593,7 @@
   <!--=======================================================================-->
   <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html, web.javancss, web.findbugs">
     <!-- I've taken web.cpd out because it is very slow and not that useful -->
+    <!-- I've taken XXX out because it ran out of memory -->
   </target>
 
   <!--=======================================================================-->

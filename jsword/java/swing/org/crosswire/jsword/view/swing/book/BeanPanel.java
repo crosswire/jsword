@@ -161,7 +161,7 @@ public class BeanPanel extends JPanel
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(BeanPanel.class);
+    protected static final Logger log = Logger.getLogger(BeanPanel.class);
 
     /**
      * Document Listener that updates the original bean
@@ -171,7 +171,7 @@ public class BeanPanel extends JPanel
         /**
          * Simple ctor
          */
-        private CustomDocumentListener(JTextField text, Method writer)
+        protected CustomDocumentListener(JTextField text, Method writer)
         {
             this.text = text;
             this.writer = writer;
@@ -185,10 +185,11 @@ public class BeanPanel extends JPanel
             try
             {
                 String data = text.getText();
-                writer.invoke(bean, new Object[] { data } );
+                writer.invoke(bean, new Object[] { data });
             }
             catch (Exception ex)
             {
+                log.error("Introspected set failed", ex);
             }
         }
 

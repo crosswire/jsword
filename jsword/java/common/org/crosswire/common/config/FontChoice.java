@@ -24,7 +24,7 @@ package org.crosswire.common.config;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FontChoice extends ReflectedChoice
+public class FontChoice extends AbstractReflectedChoice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getConvertionClass()
@@ -35,7 +35,7 @@ public class FontChoice extends ReflectedChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
     public String convertToString(Object orig)
     {
@@ -44,7 +44,7 @@ public class FontChoice extends ReflectedChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
     public Object convertToObject(String orig)
     {

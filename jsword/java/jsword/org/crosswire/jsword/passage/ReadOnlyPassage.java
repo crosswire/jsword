@@ -390,9 +390,12 @@ public final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    public Object clone()
+    public Object clone() throws CloneNotSupportedException
     {
-        return new ReadOnlyPassage(ref, ignore);
+        ReadOnlyPassage clone = (ReadOnlyPassage) super.clone();
+        clone.ref = this.ref;
+        clone.ignore = this.ignore;
+        return clone;
     }
 
     /* (non-Javadoc)

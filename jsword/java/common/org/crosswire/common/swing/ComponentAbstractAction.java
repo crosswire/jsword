@@ -1,9 +1,7 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.Component;
 import javax.swing.KeyStroke;
-
 
 /**
  * An EirAbstractAction that knows about a Desktop that it is attached to.

@@ -172,7 +172,7 @@ public class JobManager
                 }
             }
         }
-        catch (Throwable ex)
+        catch (Exception ex)
         {
             // This can happen in a headerless environment, and we don't care
             // because we never need to invoke there, so just ignore.

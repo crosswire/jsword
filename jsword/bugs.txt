@@ -4,12 +4,14 @@ This file is our equivalent of bugzilla for the time being.
 GUI
 - status bar re-size
 - better display mechanism
+- what ui tweaker to use
 
 Other
 - change name of swing packages
 - change name of servlet packages
 - move map and maptest into jsword-support
 - install manager
+- what version of findbugs
 
 Web
 - auto test for web demo

@@ -28,8 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
- * FontChooserBean allows the user to select a font in a similar
- * way to a FileSelectionDialog.
+ * FontChooserBean allows the user to select a font in a similar way to a
+ * FileSelectionDialog.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -288,14 +288,8 @@ public class FontChooser extends JPanel
      */
     private static class CustomListCellRenderer extends DefaultListCellRenderer
     {
-        /**
-         * Set ourselves up to render for this particular font
-         * @param listbox The list being displyed by the ComboBox
-         * @param value The hash created by the CustomComboBoxModel
-         * @param index The item in the list to render
-         * @param selected Is this item selected?
-         * @param focus Are we pointing at the item?
-         * @return <code>this</code> customized for the given item
+        /* (non-Javadoc)
+         * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
          */
         public Component getListCellRendererComponent(JList listbox, Object value, int index, boolean selected, boolean focus)
         {
@@ -306,9 +300,9 @@ public class FontChooser extends JPanel
             }
             else
             {
-                Font font = (Font) value;
-                setText(font.getFamily());
-                setFont(font);
+                Font afont = (Font) value;
+                setText(afont.getFamily());
+                setFont(afont);
             }
 
             return this;
@@ -331,7 +325,7 @@ public class FontChooser extends JPanel
     protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
     /**
-     * The default font
+     * The currnet font
      */
     protected Font font = new Font("Serif", Font.PLAIN, 10);
 

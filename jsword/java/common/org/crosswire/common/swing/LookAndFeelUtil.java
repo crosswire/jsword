@@ -1,15 +1,14 @@
 package org.crosswire.common.swing;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.Window;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.crosswire.common.util.Logger;
@@ -86,7 +85,6 @@ public class LookAndFeelUtil
         }
 
         updateComponents();
-        tweakLookAndFeel();
     }
 
     /**
@@ -142,11 +140,26 @@ public class LookAndFeelUtil
      * Hack the windows look and feel to make the fonts more readable on
      * bigger screens.
      */
-    private static void tweakLookAndFeel()
+    public static void tweakLookAndFeel()
     {
+        try
+        {
+            System.setProperty("winlaf.forceTahoma", "true");
+            Class clazz = Class.forName("net.java.plaf.LookAndFeelPatchManager");
+            Method init = clazz.getMethod("initialize", new Class[0]);
+            init.invoke(null, new Object[0]);
+
+            log.debug("installed LookAndFeelPatchManager");
+        }
+        catch (Exception ex)
+        {
+            log.warn("Failed to install windows laf tweak tool: "+ex);
+        }
+
         LookAndFeel currentlnf = UIManager.getLookAndFeel();
         if (currentlnf.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
         {
+            /*
             UIDefaults defaults = UIManager.getDefaults();
             Font menufont = defaults.getFont("Menu.font");
     
@@ -169,6 +182,7 @@ public class LookAndFeelUtil
             defaults.put("CheckBox.font", menufont);
             defaults.put("Tree.font", menufont);
             defaults.put("Viewport.font", menufont);
+            */
         }
     }
 

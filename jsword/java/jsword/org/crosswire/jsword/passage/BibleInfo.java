@@ -1,8 +1,6 @@
-
 package org.crosswire.jsword.passage;
 
 import java.util.Locale;
-import java.util.MissingResourceException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
@@ -1290,108 +1288,118 @@ public class BibleInfo
      */
     static
     {
-        try
+        // LATER(joe): Move these from PassageUtil lookups into this class
+        // as a variant on the Msg/Enum theme.
+        String key = "";
+        boolean success = true;
+
+        for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
         {
-            // LATER(joe): Move these from PassageUtil lookups into this class
-            // as a variant on the Msg/Enum theme.
-            String key = "";
-            boolean success = true;
-
-            for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
+            // Read any customized versions of the Book names
+            try
             {
-                // Read any customized versions of the Book names
-                try
-                {
-                    key = "books_long_"+(i+1);
-                    full_books[i] = PassageUtil.getResource(key);
-                }
-                catch (MissingResourceException ex)
-                {
-                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
-                    success = false;
-                }
-
-                try
-                {
-                    key = "books_short_"+(i+1);
-                    short_books[i] = PassageUtil.getResource(key);
-                }
-                catch (MissingResourceException ex)
-                {
-                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
-                    success = false;
-                }
-
-                try
-                {
-                    key = "books_alt_"+(i+1);
-                    alt_books[i] = PassageUtil.tokenize(PassageUtil.getResource(key), " ");
-                }
-                catch (MissingResourceException ex)
-                {
-                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
-                    success = false;
-                }
+                key = "books_long_"+(i+1);
+                full_books[i] = PassageUtil.getResource(key);
+            }
+            catch (Exception ex)
+            {
+                reportError(key);
+                success = false;
             }
 
-            for (int i=0; i<sections.length; i++)
+            try
             {
-                try
-                {
-                    key = "sections_"+(i+1);
-                    sections[i] = PassageUtil.getResource(key);
-                }
-                catch (MissingResourceException ex)
-                {
-                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
-                    success = false;
-                }
+                key = "books_short_"+(i+1);
+                short_books[i] = PassageUtil.getResource(key);
+            }
+            catch (Exception ex)
+            {
+                reportError(key);
+                success = false;
             }
 
-            if (!success)
-                Reporter.informUser(BibleInfo.class, "Failed to load all resources correctly, using defaults.");
-        }
-        catch (Throwable ex)
-        {
-            Reporter.informUser(BibleInfo.class, "Can't find resources for Locale '" + Locale.getDefault().toString() + "'");
-        }
-
-        try
-        {
-            // Create the book name arrays
-            full_books_lower = new String[BOOKS_IN_BIBLE];
-            short_books_lower = new String[BOOKS_IN_BIBLE];
-            full_books_upper = new String[BOOKS_IN_BIBLE];
-            short_books_upper = new String[BOOKS_IN_BIBLE];
-            alt_books_lower = new String[BOOKS_IN_BIBLE][];
-
-            sections_lower = new String[sections.length];
-            sections_upper = new String[sections.length];
-
-            for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
+            try
             {
-                // Cache the upper and lower case versions of the book names
-                full_books_lower[i] = full_books[i].toLowerCase();
-                short_books_lower[i] = short_books[i].toLowerCase();
-                full_books_upper[i] = full_books[i].toUpperCase();
-                short_books_upper[i] = short_books[i].toUpperCase();
-
-                alt_books_lower[i] = new String[alt_books[i].length];
-                for (int j=0; j<alt_books[i].length; j++)
-                {
-                    alt_books_lower[i][j] = alt_books[i][j].toLowerCase();
-                }
+                key = "books_alt_"+(i+1);
+                alt_books[i] = PassageUtil.tokenize(PassageUtil.getResource(key), " ");
             }
-
-            for (int i=0; i<sections.length; i++)
+            catch (Exception ex)
             {
-                sections_lower[i] = sections[i].toLowerCase();
-                sections_upper[i] = sections[i].toUpperCase();
+                reportError(key);
+                success = false;
             }
         }
-        catch (Throwable ex)
+
+        for (int i=0; i<sections.length; i++)
         {
-            Reporter.informUser(BibleInfo.class, ex);
+            try
+            {
+                key = "sections_"+(i+1);
+                sections[i] = PassageUtil.getResource(key);
+            }
+            catch (Exception ex)
+            {
+                reportError(key);
+                success = false;
+            }
+        }
+
+        if (!success)
+        {    
+            Reporter.informUser(BibleInfo.class, "Failed to load all resources correctly, using defaults.");
+        }
+
+        // Create the book name arrays
+        full_books_lower = new String[BOOKS_IN_BIBLE];
+        short_books_lower = new String[BOOKS_IN_BIBLE];
+        full_books_upper = new String[BOOKS_IN_BIBLE];
+        short_books_upper = new String[BOOKS_IN_BIBLE];
+        alt_books_lower = new String[BOOKS_IN_BIBLE][];
+
+        sections_lower = new String[sections.length];
+        sections_upper = new String[sections.length];
+
+        for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
+        {
+            // Cache the upper and lower case versions of the book names
+            full_books_lower[i] = full_books[i].toLowerCase();
+            short_books_lower[i] = short_books[i].toLowerCase();
+            full_books_upper[i] = full_books[i].toUpperCase();
+            short_books_upper[i] = short_books[i].toUpperCase();
+
+            alt_books_lower[i] = new String[alt_books[i].length];
+            for (int j=0; j<alt_books[i].length; j++)
+            {
+                alt_books_lower[i][j] = alt_books[i][j].toLowerCase();
+            }
+        }
+
+        for (int i=0; i<sections.length; i++)
+        {
+            sections_lower[i] = sections[i].toLowerCase();
+            sections_upper[i] = sections[i].toUpperCase();
+        }
+    }
+
+    /**
+     * How many MissingResourceException have we reported
+     */
+    private static int reportedMREs = 0;
+
+    /**
+     * @param key The missing key to report on
+     */
+    private static void reportError(String key)
+    {
+        if (reportedMREs < 5)
+        {
+            log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
+            reportedMREs++;
+            
+            if (reportedMREs == 5)
+            {
+                log.debug("Skipping further reports of missing resources.");
+            }
         }
     }
 

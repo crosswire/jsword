@@ -82,7 +82,7 @@ public class SwordBookDriver extends AbstractBookDriver
                     try
                     {
                         File configfile = new File(mods, bookdir);
-                        SwordConfig config = new SwordConfig(configfile);
+                        SwordConfig config = new SwordConfig(configfile, bookdir);
 
                         if (config.isSupported())
                         {
@@ -115,68 +115,55 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private Book createBook(SwordConfig config, File progdir) throws BookException, MalformedURLException, ParseException
     {
-        String dataPath = config.getFirstValue("DataPath");
+        String dataPath = config.getFirstValue(ConfigEntry.DATA_PATH);
         File baseurl = new File(progdir, dataPath);
         String path = baseurl.getAbsolutePath();
 
-        Backend backend = null;
         Book book = null;
 
-        int moddrv = config.getModDrv();
-        switch (moddrv)
+        ModuleType moddrv = config.getModDrv();
+        if (moddrv.getBookType() == null)
         {
-        case SwordConstants.DRIVER_RAW_LD:
-            backend = new RawLDBackend(config, path, 2);
-            book = new SwordDictionary(this, config, backend, BookType.DICTIONARY);
-            break;
-
-        case SwordConstants.DRIVER_RAW_LD4:
-            backend = new RawLDBackend(config, path, 4);
-            book = new SwordDictionary(this, config, backend, BookType.DICTIONARY);
-            break;
-
-        case SwordConstants.DRIVER_Z_LD:
-            backend = new ZLDBackend(config);
-            book = new SwordDictionary(this, config, backend, BookType.DICTIONARY);
-            break;
-
-        case SwordConstants.DRIVER_RAW_TEXT:
-            backend = new RawBackend(path);
-            book = new SwordBook(this, config, backend, BookType.BIBLE);
-            break;
-        
-        case SwordConstants.DRIVER_RAW_COM:
-            backend = new RawBackend(path);
-            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
-            break;
-            
-        case SwordConstants.DRIVER_HREF_COM:
-            backend = new RawBackend(path);
-            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
-            break;
-        
-        case SwordConstants.DRIVER_RAW_FILES:
-            backend = new RawBackend(path);
-            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
-            break;
-
-        case SwordConstants.DRIVER_Z_TEXT:
-            backend = getCompressedBackend(config, path);
-            book = new SwordBook(this, config, backend, BookType.BIBLE);
-            break;
-
-        case SwordConstants.DRIVER_Z_COM:
-            backend = getCompressedBackend(config, path);
-            book = new SwordBook(this, config, backend, BookType.COMMENTARY);
-            break;
-
-        case SwordConstants.DRIVER_RAW_GEN_BOOK:
             // LATER(joe): how do we support books?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK");
             throw new BookException(Msg.TYPE_UNSUPPORTED);
+        }
+        else if (moddrv.getBookType().equals(BookType.DICTIONARY))
+        {
+            Backend backend = null;
 
-        default:
-            throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { ""+moddrv, path });
+            if (moddrv.equals(ModuleType.RAW_LD))
+            {
+                backend = new RawLDBackend(config, path, 2);
+            }
+            else if (moddrv.equals(ModuleType.RAW_LD4))
+            {
+                backend = new RawLDBackend(config, path, 4);
+            }
+            else if (moddrv.equals(ModuleType.Z_LD))
+            {
+                backend = new ZLDBackend(config);
+            }
+            else
+            {
+                throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { moddrv.getName(), path });
+            }
+
+            book = new SwordDictionary(this, config, backend, moddrv.getBookType());
+        }
+        else
+        {
+            Backend backend = null;
+            if (moddrv.isCompressed())
+            {
+                backend = getCompressedBackend(config, path);
+            }
+            else
+            {
+                backend = new RawBackend(path);
+            }
+
+            book = new SwordBook(this, config, backend, moddrv.getBookType());
         }
 
         return book;
@@ -187,19 +174,19 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private Backend getCompressedBackend(SwordConfig config, String path) throws BookException
     {
-        switch (config.matchingIndex(SwordConstants.COMPRESSION_STRINGS, "CompressType"))
+        switch (config.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
         {
         case SwordConstants.COMPRESSION_ZIP:
             // The default blocktype (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
             // but the specified default here is BLOCK_BOOK (0)
-            int blocktype = config.matchingIndex(SwordConstants.BLOCK_STRINGS, "BlockType", SwordConstants.BLOCK_BOOK);
+            int blocktype = config.matchingIndex(SwordConstants.BLOCK_STRINGS, ConfigEntry.BLOCK_TYPE, SwordConstants.BLOCK_BOOK);
             return new GZIPBackend(path, blocktype);
       
         case SwordConstants.COMPRESSION_LZSS:
             return new LZSSBackend(config);
       
         default:
-            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { config.getFirstValue("CompressType") });
+            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { config.getFirstValue(ConfigEntry.COMPRESS_TYPE) });
         }
     }
 
@@ -273,7 +260,7 @@ public class SwordBookDriver extends AbstractBookDriver
                 {
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(sysconfig));
-                    String datapath = prop.getProperty("DataPath");
+                    String datapath = prop.getProperty(ConfigEntry.DATA_PATH.getName());
                     testDefaultPath(reply, datapath+"/mods.d");
                 }
                 catch (IOException ex)

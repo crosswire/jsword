@@ -32,7 +32,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
+public class IntOptionsChoice extends AbstractReflectedChoice implements MultipleChoice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
@@ -72,7 +72,7 @@ public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToString(java.lang.Object)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
     public String convertToString(Object orig)
     {
@@ -80,7 +80,7 @@ public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.ReflectedChoice#convertToObject(java.lang.String)
+     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
     public Object convertToObject(String orig)
     {
