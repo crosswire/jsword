@@ -1,7 +1,16 @@
 
 REM you probably need to change this line
-set JSWORD=%~dp0
+set JSWORD=%~dp0\..
 echo "JSWORD=%JSWORD%"
-REM set JSWORD=.
 
-java -cp %JSWORD%\resource;%JSWORD%\log4j.jar;%JSWORD%\crimson.jar;%JSWORD%\jaxp.jar;%JSWORD%\jdom.jar;%JSWORD%\jlfgr-1_0.jar;%JSWORD%\jsword.jar;%JSWORD%\xalan.jar;%JSWORD%\log4j.jar org.crosswire.jsword.view.swing.desktop.Desktop
+set CP=""
+set CP=%CP%;%JSWORD%\resource
+set CP=%CP%;%JSWORD%\lib\crimson.jar
+set CP=%CP%;%JSWORD%\lib\jaxp.jar
+set CP=%CP%;%JSWORD%\lib\jdom.jar
+set CP=%CP%;%JSWORD%\lib\jlfgr-1_0.jar
+set CP=%CP%;%JSWORD%\lib\jsword.jar
+set CP=%CP%;%JSWORD%\lib\xalan.jar
+set CP=%CP%;%JSWORD%\lib\log4j.jar
+
+java -cp %CP% org.crosswire.jsword.view.swing.desktop.Desktop
