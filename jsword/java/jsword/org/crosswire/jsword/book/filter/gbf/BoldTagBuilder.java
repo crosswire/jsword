@@ -2,11 +2,14 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import org.crosswire.common.util.Logger;
+import javax.xml.bind.Element;
+import javax.xml.bind.JAXBException;
+
+import org.crosswire.jsword.book.JAXBUtil;
+import org.crosswire.jsword.osis.Seg;
 
 /**
- * Unknown Tag. Either not supported tag or tag not defined in GBF
- * specification.
+ * Handle Bold: FB and Fb.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,28 +32,40 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class UnknownTagBuilder implements TagBuilder
+public class BoldTagBuilder implements TagBuilder
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
      */
-    public Tag createTag(final String name)
+    public Tag createTag(String name)
     {
-        return new Tag()
+        if ("FB".equals(name))
         {
-            public void updateOsisStack(LinkedList stack)
+            return new Tag()
             {
-                // I'm confident enough that we handle all the GBF tags
-                // that I will blame the module and not the program
+                public void updateOsisStack(LinkedList stack) throws JAXBException
+                {
+                    Seg seg = JAXBUtil.factory().createSeg();
+                    seg.setType(JAXBUtil.SEG_BOLD);
 
-                log.warn("Ignoring tag of <" + name + ">");
-                //DataPolice.report("Ignoring tag of <" + name + ">");
-            }
-        };
-    }
-
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(UnknownTagBuilder.class);
+                    Element current = (Element) stack.get(0);
+                    JAXBUtil.getList(current).add(seg);
+                    stack.addFirst(seg);
+                }
+            };
+        }
+    
+        if ("Fb".equals(name))
+        {
+            return new Tag()
+            {
+                public void updateOsisStack(LinkedList stack) throws JAXBException
+                {
+                    stack.removeFirst();
+                }
+            };
+        }
+    
+        return null;
+    }        
 }

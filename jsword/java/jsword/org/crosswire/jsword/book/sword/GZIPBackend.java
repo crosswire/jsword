@@ -172,6 +172,10 @@ public class GZIPBackend implements Backend
             {
                 // Then seek using this index into the idx file
                 temp = SwordUtil.readRAF(idx_raf[testament], buffernum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                if (temp == null || temp.length == 0)
+                {
+                    return new byte[0];
+                }
 
                 long start = SwordUtil.decodeLittleEndian32(temp, 0);
                 int size = SwordUtil.decodeLittleEndian32AsInt(temp, 4);

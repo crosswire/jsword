@@ -111,6 +111,10 @@ public class RawBackend implements Backend
 
             // Read the next ENTRY_SIZE byes.
             byte[] read = SwordUtil.readRAF(idx_raf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
+            if (read == null || read.length == 0)
+            {
+                return new byte[0];
+            }
 
             // The data is little endian - extract the start and size
             long start = SwordUtil.decodeLittleEndian32(read, 0);

@@ -54,7 +54,7 @@ public class ItalicTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         if ("Fi".equals(name))
         {
             return new Tag()
@@ -65,7 +65,7 @@ public class ItalicTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         return null;
     }        
 }

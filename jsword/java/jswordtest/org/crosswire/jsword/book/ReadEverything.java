@@ -56,16 +56,18 @@ public class ReadEverything
         config.setProperties(Project.resource().getProperties("desktop"));
         config.localToApplication(true);
 
-        // Loop through all the Bibles
-        List bibles = Books.getBooks(BookFilters.getBibles());
-        for (Iterator bit = bibles.iterator(); bit.hasNext();)
+        // Loop through all the Commentaries
+        log.info("*** Reading all known Commentaries");
+        List comments = Books.getBooks(BookFilters.getCommentaries());
+        for (Iterator cit = comments.iterator(); cit.hasNext();)
         {
-            BookMetaData bmd = (BookMetaData) bit.next();
+            BookMetaData bmd = (BookMetaData) cit.next();
             Iterator it = new KeyIterator(WHOLE.verseIterator());
             testReadMultiple(bmd, it);
         }
 
         // Loop through all the Dictionaries
+        log.info("*** Reading all known Dictionaries");
         List dicts = Books.getBooks(BookFilters.getDictionaries());
         for (Iterator dit = dicts.iterator(); dit.hasNext();)
         {
@@ -83,11 +85,12 @@ public class ReadEverything
             testReadMultiple(dmd, it);
         }
 
-        // Loop through all the Commentaries
-        List comments = Books.getBooks(BookFilters.getCommentaries());
-        for (Iterator cit = comments.iterator(); cit.hasNext();)
+        // Loop through all the Bibles
+        log.info("*** Reading all known Bibles");
+        List bibles = Books.getBooks(BookFilters.getBibles());
+        for (Iterator bit = bibles.iterator(); bit.hasNext();)
         {
-            BookMetaData bmd = (BookMetaData) cit.next();
+            BookMetaData bmd = (BookMetaData) bit.next();
             Iterator it = new KeyIterator(WHOLE.verseIterator());
             testReadMultiple(bmd, it);
         }
