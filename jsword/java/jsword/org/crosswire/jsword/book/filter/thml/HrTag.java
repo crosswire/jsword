@@ -35,7 +35,7 @@ public class HrTag implements Tag
      */
     public String getTagName()
     {
-        return "hr";
+        return "hr"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

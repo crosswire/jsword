@@ -38,7 +38,7 @@ public class BTag implements Tag
      */
     public String getTagName()
     {
-        return "b";
+        return "b"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

@@ -39,7 +39,7 @@ public class ThTag implements Tag
      */
     public String getTagName()
     {
-        return "th";
+        return "th"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

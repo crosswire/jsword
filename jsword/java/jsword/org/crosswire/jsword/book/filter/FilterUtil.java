@@ -4,10 +4,10 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Utilities to help filters.
- * 
+ *
  * <p>Both OSISFilter and THMLFilter need to report on strings that failed
  * parsing but don't want to output too much data. forOutput() helps.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -50,7 +50,7 @@ public class FilterUtil
         else
         {
             String chopped = StringUtils.left(data, MAX_OUTPUT_LEN);
-            return chopped + "... (truncated)";            
+            return chopped + Msg.TRUNCATED;
         }
     }
 

@@ -38,7 +38,7 @@ public class TableTag implements Tag
      */
     public String getTagName()
     {
-        return "table";
+        return "table"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

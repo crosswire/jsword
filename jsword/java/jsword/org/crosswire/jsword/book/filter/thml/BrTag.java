@@ -38,7 +38,7 @@ public class BrTag implements Tag
      */
     public String getTagName()
     {
-        return "br";
+        return "br"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

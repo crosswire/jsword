@@ -67,12 +67,12 @@ public class FilterFactory
         // the default value
         try
         {
-            Class cdeft = (Class) map.remove("default");
+            Class cdeft = (Class) map.remove("default"); //$NON-NLS-1$
             deft = (Filter) cdeft.newInstance();            
         }
         catch (Exception ex)
         {
-            log.fatal("Failed to get default filter, will attempt to use first", ex);
+            log.fatal("Failed to get default filter, will attempt to use first", ex); //$NON-NLS-1$
         }
 
         // the lookup table
@@ -87,7 +87,7 @@ public class FilterFactory
             }
             catch (Exception ex)
             {
-                log.error("Failed to add filter", ex);
+                log.error("Failed to add filter", ex); //$NON-NLS-1$
             }
         }
         

@@ -38,7 +38,7 @@ public class NoteTag implements Tag
      */
     public String getTagName()
     {
-        return "note";
+        return "note"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -47,7 +47,7 @@ public class NoteTag implements Tag
     public void processTag(Element ele, Attributes attrs) throws JAXBException
     {
         Note note = JAXBUtil.factory().createNote();
-        note.setNoteType("x-StudyNote");
+        note.setNoteType(JAXBUtil.NOTETYPE_STUDY);
         JAXBUtil.getList(ele).add(note);
     }
 }

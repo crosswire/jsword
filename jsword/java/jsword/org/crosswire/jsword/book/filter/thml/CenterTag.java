@@ -38,7 +38,7 @@ public class CenterTag implements Tag
      */
     public String getTagName()
     {
-        return "center";
+        return "center"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

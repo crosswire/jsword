@@ -40,7 +40,7 @@ public class FontTag implements Tag
      */
     public String getTagName()
     {
-        return "font";
+        return "font"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -51,16 +51,16 @@ public class FontTag implements Tag
         Seg seg = JAXBUtil.factory().createSeg();
         StringBuffer buf = new StringBuffer();
 
-        String color = attrs.getValue("color");
+        String color = attrs.getValue("color"); //$NON-NLS-1$
         if (color != null)
         {
-            buf.append(JAXBUtil.SEG_COLORPREFIX+color+";");
+            buf.append(JAXBUtil.SEG_COLORPREFIX+color+";"); //$NON-NLS-1$
         }
 
-        String size = attrs.getValue("size");
+        String size = attrs.getValue("size"); //$NON-NLS-1$
         if (size != null)
         {
-            buf.append(JAXBUtil.SEG_SIZEPREFIX+size+";");
+            buf.append(JAXBUtil.SEG_SIZEPREFIX+size+";"); //$NON-NLS-1$
         }
 
         String type = buf.toString();
@@ -70,7 +70,7 @@ public class FontTag implements Tag
         }
         else
         {
-            DataPolice.report("Missing color/size attribute.");
+            DataPolice.report("Missing color/size attribute."); //$NON-NLS-1$
             XMLUtil.debugSAXAttributes(attrs);
         }
         JAXBUtil.getList(ele).add(seg);

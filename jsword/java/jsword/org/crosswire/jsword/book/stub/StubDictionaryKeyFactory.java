@@ -69,7 +69,7 @@ public class StubDictionaryKeyFactory implements KeyFactory
         return set;
     }
 
-    private KeyList set = new DefaultKeyList("Stub Dictionary");
-    private static final DefaultKey KEY_IMPL = new DefaultKey("implementation");
-    private static final DefaultKey KEY_STUB = new DefaultKey("stub");
+    private KeyList set = new DefaultKeyList("Stub Dictionary"); //$NON-NLS-1$
+    private static final DefaultKey KEY_IMPL = new DefaultKey("implementation"); //$NON-NLS-1$
+    private static final DefaultKey KEY_STUB = new DefaultKey("stub"); //$NON-NLS-1$
 }

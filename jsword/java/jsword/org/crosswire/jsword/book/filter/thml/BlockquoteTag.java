@@ -38,7 +38,7 @@ public class BlockquoteTag implements Tag
      */
     public String getTagName()
     {
-        return "blockquote";
+        return "blockquote"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

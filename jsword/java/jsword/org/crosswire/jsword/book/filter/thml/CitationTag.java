@@ -38,7 +38,7 @@ public class CitationTag implements Tag
      */
     public String getTagName()
     {
-        return "citation";
+        return "citation"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

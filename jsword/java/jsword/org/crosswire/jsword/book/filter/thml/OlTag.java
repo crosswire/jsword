@@ -38,7 +38,7 @@ public class OlTag implements Tag
      */
     public String getTagName()
     {
-        return "ol";
+        return "ol"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

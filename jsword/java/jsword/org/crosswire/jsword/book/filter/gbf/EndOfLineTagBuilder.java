@@ -39,7 +39,7 @@ public class EndOfLineTagBuilder implements TagBuilder
      */
     public Tag createTag(final String name)
     {
-        if (!"CL".equals(name))
+        if (!"CL".equals(name)) //$NON-NLS-1$
         {
             return null;
         }

@@ -43,7 +43,7 @@ public class CrossRefTagBuilder implements TagBuilder
      */
     public Tag createTag(final String name)
     {
-        if (name.startsWith("RX"))
+        if (name.startsWith("RX")) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -59,7 +59,7 @@ public class CrossRefTagBuilder implements TagBuilder
                     }
                     catch (NoSuchVerseException ex)
                     {
-                        DataPolice.report("unable to parse reference: "+refstr);
+                        DataPolice.report("unable to parse reference: "+refstr); //$NON-NLS-1$
                     }
 
                     Element current = (Element) stack.get(0);
@@ -69,7 +69,7 @@ public class CrossRefTagBuilder implements TagBuilder
             };
         }
     
-        if (name.startsWith("Rx"))
+        if (name.startsWith("Rx")) //$NON-NLS-1$
         {
             return new Tag()
             {

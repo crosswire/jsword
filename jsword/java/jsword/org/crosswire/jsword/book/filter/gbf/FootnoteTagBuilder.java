@@ -42,7 +42,7 @@ public class FootnoteTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("RF".equals(name))
+        if ("RF".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -52,7 +52,7 @@ public class FootnoteTagBuilder implements TagBuilder
                     if (!(current instanceof Note))
                     {
                         Note note = JAXBUtil.factory().createNote();
-                        note.setNoteType("x-StudyNote");
+                        note.setNoteType(JAXBUtil.NOTETYPE_STUDY);
 
                         JAXBUtil.getList(current).add(note);
                         stack.addFirst(note);
@@ -61,7 +61,7 @@ public class FootnoteTagBuilder implements TagBuilder
             };
         }
     
-        if ("Rf".equals(name))
+        if ("Rf".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -80,7 +80,7 @@ public class FootnoteTagBuilder implements TagBuilder
                     }
                     else
                     {
-                        DataPolice.report("expected to pop a Note, but found "+ClassUtils.getShortClassName(pop.getClass()));
+                        DataPolice.report("expected to pop a Note, but found "+ClassUtils.getShortClassName(pop.getClass())); //$NON-NLS-1$
                     }
                 }
             };

@@ -39,7 +39,7 @@ public class UnderlineTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("FU".equals(name))
+        if ("FU".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -55,7 +55,7 @@ public class UnderlineTagBuilder implements TagBuilder
             };
         }
     
-        if ("Fu".equals(name))
+        if ("Fu".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

@@ -38,7 +38,7 @@ public class DivTag implements Tag
      */
     public String getTagName()
     {
-        return "div";
+        return "div"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

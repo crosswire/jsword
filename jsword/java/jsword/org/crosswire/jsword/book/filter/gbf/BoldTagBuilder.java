@@ -39,7 +39,7 @@ public class BoldTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("FB".equals(name))
+        if ("FB".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -55,7 +55,7 @@ public class BoldTagBuilder implements TagBuilder
             };
         }
     
-        if ("Fb".equals(name))
+        if ("Fb".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

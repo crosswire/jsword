@@ -39,7 +39,7 @@ public class PsalmTitleTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("TB".equals(name))
+        if ("TB".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -54,7 +54,7 @@ public class PsalmTitleTagBuilder implements TagBuilder
             };
         }
 
-        if ("Tb".equals(name))
+        if ("Tb".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

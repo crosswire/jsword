@@ -40,10 +40,10 @@ public class StubBookDriver extends AbstractBookDriver
     {
         Book[] books = new Book[]
         {
-            new StubBook(this, "Stub Version", BookType.BIBLE, BookMetaData.SPEED_INACCURATE),
-            new StubBook(this, "New Stub Version", BookType.BIBLE, BookMetaData.SPEED_INACCURATE),
-            new StubBook(this, "Stub Comments", BookType.COMMENTARY, BookMetaData.SPEED_INACCURATE),
-            new StubDictionary(this, "Stub Dict", BookType.DICTIONARY, BookMetaData.SPEED_INACCURATE),
+            new StubBook(this, "Stub Version", BookType.BIBLE, BookMetaData.SPEED_INACCURATE), //$NON-NLS-1$
+            new StubBook(this, "New Stub Version", BookType.BIBLE, BookMetaData.SPEED_INACCURATE), //$NON-NLS-1$
+            new StubBook(this, "Stub Comments", BookType.COMMENTARY, BookMetaData.SPEED_INACCURATE), //$NON-NLS-1$
+            new StubDictionary(this, "Stub Dict", BookType.DICTIONARY, BookMetaData.SPEED_INACCURATE), //$NON-NLS-1$
         };
 
         bmds = new BookMetaData[books.length];
@@ -67,7 +67,7 @@ public class StubBookDriver extends AbstractBookDriver
      */
     public String getDriverName()
     {
-        return "Stub";
+        return "Stub"; //$NON-NLS-1$
     }
 
     /**

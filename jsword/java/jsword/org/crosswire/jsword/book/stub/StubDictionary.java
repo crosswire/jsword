@@ -74,7 +74,7 @@ public class StubDictionary extends AbstractBook
 
             text.getDiv().add(div);
 
-            FilterFactory.getDefaultFilter().toOSIS(div, "stub implementation");
+            FilterFactory.getDefaultFilter().toOSIS(div, "stub implementation"); //$NON-NLS-1$
 
             BookData bdata = new BookData(osis, this, key);
             return bdata;

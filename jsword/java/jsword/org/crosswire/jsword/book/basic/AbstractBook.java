@@ -94,7 +94,7 @@ public abstract class AbstractBook implements Book
     {
         try
         {
-            URL url = Project.instance().getTempScratchSpace("sword-"+getBookMetaData().getInitials(), false);
+            URL url = Project.instance().getTempScratchSpace("sword-"+getBookMetaData().getInitials(), false); //$NON-NLS-1$
             searcher = SearchEngineFactory.createSearchEngine(this, url);
         }
         catch (Exception ex)
@@ -124,7 +124,7 @@ public abstract class AbstractBook implements Book
      */
     public final String toString()
     {
-        return ClassUtils.getShortClassName(getClass())+":"+getBookMetaData().toString();
+        return ClassUtils.getShortClassName(getClass())+":"+getBookMetaData().toString(); //$NON-NLS-1$
     }
 
     /**

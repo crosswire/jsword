@@ -38,7 +38,7 @@ public class LiTag implements Tag
      */
     public String getTagName()
     {
-        return "li";
+        return "li"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

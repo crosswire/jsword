@@ -42,7 +42,7 @@ public class ScripRefTag implements Tag
      */
     public String getTagName()
     {
-        return "scripRef";
+        return "scripRef"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -52,7 +52,7 @@ public class ScripRefTag implements Tag
     {
         Div div = JAXBUtil.factory().createDiv();
 
-        String refstr = attrs.getValue("passage");
+        String refstr = attrs.getValue("passage"); //$NON-NLS-1$
         if (refstr != null)
         {
             try
@@ -63,7 +63,7 @@ public class ScripRefTag implements Tag
             }
             catch (NoSuchVerseException ex)
             {
-                DataPolice.report("Unparsable passage:"+refstr+" due to "+ex.getMessage());
+                DataPolice.report("Unparsable passage:"+refstr+" due to "+ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         else

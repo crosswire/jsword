@@ -88,7 +88,7 @@ public abstract class PassageAbstractBook extends AbstractBook
                     if (txt.length() > 0)
                     {
                         org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
-                        everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+                        everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse()); //$NON-NLS-1$ //$NON-NLS-2$
 
                         div.getContent().add(everse);
 
@@ -145,7 +145,7 @@ public abstract class PassageAbstractBook extends AbstractBook
                 }
                 else
                 {
-                    log.error("Ignoring non OSIS/Verse content of DIV.");
+                    log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
                 }
             }
         }

@@ -40,7 +40,7 @@ public class ParagraphTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if (!name.equals("CM"))
+        if (!name.equals("CM")) //$NON-NLS-1$
         {
             return null;
         }
@@ -57,7 +57,7 @@ public class ParagraphTagBuilder implements TagBuilder
                 if (stack.size() == 0)
                 {
                     stack.addFirst(p);
-                    DataPolice.report("failing to add to element on empty stack");
+                    DataPolice.report("failing to add to element on empty stack"); //$NON-NLS-1$
                 }
                 else
                 {

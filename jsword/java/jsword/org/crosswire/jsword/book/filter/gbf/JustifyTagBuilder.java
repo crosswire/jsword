@@ -39,7 +39,7 @@ public class JustifyTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("JR".equals(name))
+        if ("JR".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -56,7 +56,7 @@ public class JustifyTagBuilder implements TagBuilder
             };
         }
     
-        if ("JL".equals(name))
+        if ("JL".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

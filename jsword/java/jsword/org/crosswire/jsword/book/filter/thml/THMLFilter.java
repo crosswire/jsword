@@ -63,8 +63,8 @@ public class THMLFilter implements Filter
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse original failed: "+ex1.getMessage());
-            DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain));
+            DataPolice.report("parse original failed: "+ex1.getMessage()); //$NON-NLS-1$
+            DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain)); //$NON-NLS-1$
 
             // Attempt to fix broken characters, that doesn't break xml strings
             // in any way
@@ -76,8 +76,8 @@ public class THMLFilter implements Filter
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse original failed: "+ex1.getMessage());
-                DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned));
+                DataPolice.report("parse original failed: "+ex1.getMessage()); //$NON-NLS-1$
+                DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned)); //$NON-NLS-1$
 
                 // Attempt to fix broken entities, that could be the least damage
                 // way to fix a broken input string
@@ -89,8 +89,8 @@ public class THMLFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse cropped failed: "+ex3.getMessage());
-                    DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped));
+                    DataPolice.report("parse cropped failed: "+ex3.getMessage()); //$NON-NLS-1$
+                    DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped)); //$NON-NLS-1$
 
                     // So just try to strip out all XML looking things
                     String shawn = XMLUtil.cleanAllTags(cropped);
@@ -101,8 +101,8 @@ public class THMLFilter implements Filter
                     }
                     catch (Exception ex4)
                     {
-                        DataPolice.report("parse shawn failed: "+ex4.getMessage());
-                        DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn));
+                        DataPolice.report("parse shawn failed: "+ex4.getMessage()); //$NON-NLS-1$
+                        DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn)); //$NON-NLS-1$
 
                         try
                         {
@@ -113,7 +113,7 @@ public class THMLFilter implements Filter
                         }
                         catch (Exception ex5)
                         {
-                            log.warn("no way. say it ain't so!", ex5);
+                            log.warn("no way. say it ain't so!", ex5); //$NON-NLS-1$
                         }
                     }
                 }
@@ -127,7 +127,7 @@ public class THMLFilter implements Filter
     private void parse(Element ele, String toparse) throws FactoryConfigurationError, ParserConfigurationException, SAXException, IOException
     {
         // We need to create a root element to house our document fragment
-        StringReader in = new StringReader("<"+RootTag.TAG_ROOT+">"+toparse+"</"+RootTag.TAG_ROOT+">");
+        StringReader in = new StringReader("<"+RootTag.TAG_ROOT+">"+toparse+"</"+RootTag.TAG_ROOT+">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         InputSource is = new InputSource(in);
 
         SAXParser parser = spf.newSAXParser();

@@ -38,7 +38,7 @@ public class ScriptureTag implements Tag
      */
     public String getTagName()
     {
-        return "scripture";
+        return "scripture"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

@@ -40,7 +40,7 @@ public class SyncTag implements Tag
      */
     public String getTagName()
     {
-        return "sync";
+        return "sync"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -49,29 +49,29 @@ public class SyncTag implements Tag
     public void processTag(Element ele, Attributes attrs) throws JAXBException
     {
         // Strongs reference
-        String type = attrs.getValue("type");
-        String value = attrs.getValue("value");
-        if ("Strongs".equals(type))
+        String type = attrs.getValue("type"); //$NON-NLS-1$
+        String value = attrs.getValue("value"); //$NON-NLS-1$
+        if ("Strongs".equals(type)) //$NON-NLS-1$
         {
             W w = JAXBUtil.factory().createW();
-            w.setLemma("x-Strongs:"+value);
+            w.setLemma(JAXBUtil.LEMMA_STRONGS+value);
             JAXBUtil.getList(ele).add(w);
         }
-        else if ("Dict".equals(type))
+        else if ("Dict".equals(type)) //$NON-NLS-1$
         {
             Div div = JAXBUtil.factory().createDiv();
-            div.setOsisID("dict://"+value);
+            div.setOsisID("dict://"+value); //$NON-NLS-1$
             JAXBUtil.getList(ele).add(div);
         }
-        else if ("morph".equals(type))
+        else if ("morph".equals(type)) //$NON-NLS-1$
         {
             Div div = JAXBUtil.factory().createDiv();
-            div.setOsisID("morph://"+value);
+            div.setOsisID("morph://"+value); //$NON-NLS-1$
             JAXBUtil.getList(ele).add(div);
         }
         else
         {
-            DataPolice.report("sync tag has type="+type+" when value="+value);
+            DataPolice.report("sync tag has type="+type+" when value="+value); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 }

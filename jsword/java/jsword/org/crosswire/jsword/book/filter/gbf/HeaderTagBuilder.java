@@ -39,7 +39,7 @@ public class HeaderTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("TS".equals(name))
+        if ("TS".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -54,7 +54,7 @@ public class HeaderTagBuilder implements TagBuilder
             };
         }
     
-        if ("Ts".equals(name))
+        if ("Ts".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

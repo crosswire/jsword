@@ -41,7 +41,7 @@ public class StrongsWordTagBuilder implements TagBuilder
      */
     public Tag createTag(final String tagname)
     {
-        if (!tagname.startsWith("WH") && !tagname.startsWith("WG"))
+        if (!tagname.startsWith("WH") && !tagname.startsWith("WG")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             return null;
         }
@@ -56,7 +56,7 @@ public class StrongsWordTagBuilder implements TagBuilder
                 List list = JAXBUtil.getList(ele);
                 if (list.isEmpty())
                 {
-                    DataPolice.report("No content to attach word to: <" + name + ">.");
+                    DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
 
@@ -76,7 +76,7 @@ public class StrongsWordTagBuilder implements TagBuilder
                 }
                 else
                 {
-                    DataPolice.report("No words to attach word to: <" + name + ">.");
+                    DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
 
@@ -88,7 +88,7 @@ public class StrongsWordTagBuilder implements TagBuilder
                     newLemma.append(existingLemma).append('|');
                 }
 
-                newLemma.append("x-Strongs:").append(name.substring(2));
+                newLemma.append(JAXBUtil.LEMMA_STRONGS).append(name.substring(2)); //$NON-NLS-1$
                 word.setLemma(newLemma.toString());
             }
         };

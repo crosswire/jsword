@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.basic;
 
 import org.crosswire.common.util.MsgBase;
@@ -29,10 +28,16 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");
-    static final Msg DELETE_NOTIMPL = new Msg("Sorry delete is not implemented yet.\n Some Bible names are simply the names of the directories in which they live.\n So you can manually delete the directory \"JSWORD/versions/{0}\"");
-    static final Msg NO_VERSE = new Msg("Invalid reference.");
-    static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    static final Msg DRIVER_READONLY = new Msg("This Book is read-only."); //$NON-NLS-1$
+    static final Msg DELETE_NOTIMPL = new Msg("Sorry delete is not implemented yet.\n Some Bible names are simply the names of the directories in which they live.\n So you can manually delete the directory \"JSWORD/versions/{0}\""); //$NON-NLS-1$
+    static final Msg NO_VERSE = new Msg("Invalid reference."); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
+    static final Msg VERIFY_START = new Msg("Copying Bible data to new driver"); //$NON-NLS-1$
+    static final Msg VERIFY_VERSES = new Msg("Checking Verses"); //$NON-NLS-1$
+    static final Msg VERIFY_VERSE = new Msg("Verse: "); //$NON-NLS-1$
+    static final Msg VERIFY_PASSAGES = new Msg("Checking Passages"); //$NON-NLS-1$
+    static final Msg VERIFY_WORDS = new Msg("Checking Words"); //$NON-NLS-1$
+    static final Msg WORD = new Msg("Word: "); //$NON-NLS-1$
 
     /* From LocalURL*
     static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");

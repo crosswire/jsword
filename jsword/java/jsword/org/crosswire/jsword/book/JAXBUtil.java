@@ -124,6 +124,21 @@ public class JAXBUtil
     public static final String SEG_SIZEPREFIX = "font-size: ";
 
     /**
+     * Constant for the study note type
+     */
+    public static final String NOTETYPE_STUDY = "x-StudyNote";
+
+    /**
+     * Constant for a Strongs numbering lemma
+     */
+    public static final String LEMMA_STRONGS = "x-Strongs:";
+
+    /**
+     * Constant for Strongs numbering morphology
+     */
+    public static final String MORPH_STRONGS = "x-StrongsMorph:T";
+
+    /**
      * The JAXB worker factory
      */
     private static JAXBContext jc = null;

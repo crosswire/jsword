@@ -76,13 +76,13 @@ public class CustomHandler extends DefaultHandler
             {
                 if (qname.equalsIgnoreCase(TAGS[i].getTagName()))
                 {
-                    DataPolice.report("Wrong case used in element: "+qname);
+                    DataPolice.report("Wrong case used in element: "+qname); //$NON-NLS-1$
                     TAGS[i].processTag(ele, attrs);
                     return;
                 }
             }
 
-            log.warn("unknown thml element: "+localname+" qname="+qname);
+            log.warn("unknown thml element: "+localname+" qname="+qname); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (JAXBException ex)
         {
@@ -176,17 +176,17 @@ public class CustomHandler extends DefaultHandler
         new TrTag(),
         new UTag(),
         new UlTag(),
-        new AliasTag("h1", new BTag()),
-        new AliasTag("h2", new BTag()),
-        new AliasTag("h3", new BTag()),
-        new AliasTag("h4", new BTag()),
-        new AliasTag("dl", new UlTag()),
-        new AliasTag("dd", new LiTag()),
-        new AliasTag("dt", new LiTag()),
-        new IgnoreTag("img"),
-        new IgnoreTag("span"),
-        new IgnoreTag("dir"),
-        new IgnoreTag("pre"),
+        new AliasTag("h1", new BTag()), //$NON-NLS-1$
+        new AliasTag("h2", new BTag()), //$NON-NLS-1$
+        new AliasTag("h3", new BTag()), //$NON-NLS-1$
+        new AliasTag("h4", new BTag()), //$NON-NLS-1$
+        new AliasTag("dl", new UlTag()), //$NON-NLS-1$
+        new AliasTag("dd", new LiTag()), //$NON-NLS-1$
+        new AliasTag("dt", new LiTag()), //$NON-NLS-1$
+        new IgnoreTag("img"), //$NON-NLS-1$
+        new IgnoreTag("span"), //$NON-NLS-1$
+        new IgnoreTag("dir"), //$NON-NLS-1$
+        new IgnoreTag("pre"), //$NON-NLS-1$
     };
 
     /**

@@ -39,7 +39,7 @@ public class ItalicTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("FI".equals(name))
+        if ("FI".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -55,7 +55,7 @@ public class ItalicTagBuilder implements TagBuilder
             };
         }
 
-        if ("Fi".equals(name))
+        if ("Fi".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

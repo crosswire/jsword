@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg OSIS_INIT = new Msg("OSIS layer failed to initialise");
+    static final Msg OSIS_INIT = new Msg("OSIS layer failed to initialise"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -33,12 +33,12 @@ public class IgnoredTagBuilder implements TagBuilder
      */
     public Tag createTag(final String name)
     {
-        if ("BA".equals(name)
-            || "BC".equals(name)
-            || "BI".equals(name)
-            || "BN".equals(name)
-            || "BO".equals(name)
-            || "BP".equals(name))
+        if ("BA".equals(name) //$NON-NLS-1$
+            || "BC".equals(name) //$NON-NLS-1$
+            || "BI".equals(name) //$NON-NLS-1$
+            || "BN".equals(name) //$NON-NLS-1$
+            || "BO".equals(name) //$NON-NLS-1$
+            || "BP".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

@@ -33,7 +33,7 @@ public class RootTag implements Tag
     /**
      * This is added by the parser to we make the string accessible
      */
-    protected static final String TAG_ROOT = "root";
+    protected static final String TAG_ROOT = "root"; //$NON-NLS-1$
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()

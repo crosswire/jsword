@@ -9,7 +9,7 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the foreign element.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -38,7 +38,7 @@ public class ForeignTag implements Tag
      */
     public String getTagName()
     {
-        return "foreign";
+        return "foreign"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -47,8 +47,8 @@ public class ForeignTag implements Tag
     public void processTag(Element ele, Attributes attrs) throws JAXBException
     {
         Foreign div = JAXBUtil.factory().createForeign();
-        
-        String lang = attrs.getValue("lang");
+
+        String lang = attrs.getValue("lang"); //$NON-NLS-1$
         if (lang != null)
         {
             div.setLang(lang);

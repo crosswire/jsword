@@ -39,14 +39,14 @@ public class RedLetterTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("FR".equals(name))
+        if ("FR".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
                     Speaker speaker = JAXBUtil.factory().createSpeaker();
-                    speaker.setWho("Jesus");
+                    speaker.setWho(Msg.NAME_JESUS.toString());
 
                     Element current = (Element) stack.get(0);
                     JAXBUtil.getList(current).add(speaker);
@@ -55,7 +55,7 @@ public class RedLetterTagBuilder implements TagBuilder
             };
         }
     
-        if ("Fr".equals(name))
+        if ("Fr".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

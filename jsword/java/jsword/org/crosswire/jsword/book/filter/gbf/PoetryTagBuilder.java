@@ -39,7 +39,7 @@ public class PoetryTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("PP".equals(name))
+        if ("PP".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -55,7 +55,7 @@ public class PoetryTagBuilder implements TagBuilder
             };
         }
     
-        if ("Pp".equals(name))
+        if ("Pp".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

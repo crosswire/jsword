@@ -106,7 +106,7 @@ public class Verifier
      */
     public void checkText(Passage ref, PrintWriter out)
     {
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
+        Job job = JobManager.createJob(Msg.VERIFY_START.toString(), Thread.currentThread(), false);
         int percent = 0;
 
         // For every verse in the Bible
@@ -123,7 +123,7 @@ public class Verifier
             if (percent != newpercent)
             {
                 percent = newpercent;
-                job.setProgress(percent, "Checking Verses");
+                job.setProgress(percent, Msg.VERIFY_VERSES.toString());
             }
 
             try
@@ -135,15 +135,15 @@ public class Verifier
                 // Check - this needs some work
                 if (!text1.equals(text2))
                 {
-                    out.println("Verse: "+range);
-                    out.println(book1.getBookMetaData().getName()+": "+text1);
-                    out.println(book2.getBookMetaData().getName()+": "+text2);
+                    out.println(Msg.VERIFY_VERSE.toString()+range);
+                    out.println(book1.getBookMetaData().getName()+": "+text1); //$NON-NLS-1$
+                    out.println(book2.getBookMetaData().getName()+": "+text2); //$NON-NLS-1$
                     out.println();
                 }
             }
             catch (Exception ex)
             {
-                out.println("Verse:  " + range);
+                out.println(Msg.VERIFY_VERSE.toString() + range);
                 ex.printStackTrace(out);
                 out.println();
             }
@@ -162,7 +162,7 @@ public class Verifier
      */
     public void checkPassage(PrintWriter out) throws BookException
     {
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
+        Job job = JobManager.createJob(Msg.VERIFY_PASSAGES.toString(), Thread.currentThread(), false);
         int count = 0;
         int percent = -1;
 
@@ -179,7 +179,7 @@ public class Verifier
             if (percent != newpercent)
             {
                 percent = newpercent;
-                job.setProgress(percent, "Checking Words");
+                job.setProgress(percent, Msg.VERIFY_WORDS.toString());
             }
 
             // This could take a long time ...
@@ -189,6 +189,8 @@ public class Verifier
                 break;
             }
         }
+
+        job.done();
     }
 
     /**
@@ -196,7 +198,7 @@ public class Verifier
      */
     public void checkPassage(String starts, PrintWriter out) throws BookException
     {
-        if (starts == null || starts.equals(""))
+        if (starts == null || starts.equals("")) //$NON-NLS-1$
         {
             checkPassage(out);
             return;
@@ -207,7 +209,7 @@ public class Verifier
             return;
         }
 
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
+        Job job = JobManager.createJob(Msg.VERIFY_PASSAGES.toString(), Thread.currentThread(), false);
         int count = 0;
         int percent = -1;
 
@@ -224,7 +226,7 @@ public class Verifier
             if (percent != newpercent)
             {
                 percent = newpercent;
-                job.setProgress(percent, "Checking Words");
+                job.setProgress(percent, Msg.VERIFY_WORDS.toString());
             }
 
             // This could take a long time ...
@@ -247,9 +249,9 @@ public class Verifier
         // Check
         if (!ref1.equals(ref2))
         {
-            out.println("Word:   " + word);
-            out.println(book1.getBookMetaData().getName() + ": " + ref1);
-            out.println(book2.getBookMetaData().getName() + ": " + ref2);
+            out.println(Msg.WORD.toString() + word);
+            out.println(book1.getBookMetaData().getName() + ": " + ref1); //$NON-NLS-1$
+            out.println(book2.getBookMetaData().getName() + ": " + ref2); //$NON-NLS-1$
             out.println();
         }
     }

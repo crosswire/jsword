@@ -38,7 +38,7 @@ public class SmallTag implements Tag
      */
     public String getTagName()
     {
-        return "small";
+        return "small"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

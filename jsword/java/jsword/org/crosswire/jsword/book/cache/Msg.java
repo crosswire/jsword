@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg CACHE_READONLY = new Msg("Can't build a cache using a read-only driver.");
+    static final Msg CACHE_READONLY = new Msg("Can't build a cache using a read-only driver."); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

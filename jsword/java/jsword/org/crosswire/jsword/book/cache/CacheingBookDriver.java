@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.cache;
 
 import org.crosswire.jsword.book.BookMetaData;

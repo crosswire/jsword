@@ -39,7 +39,7 @@ public class OTQuoteTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if ("FO".equals(name))
+        if ("FO".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {
@@ -54,7 +54,7 @@ public class OTQuoteTagBuilder implements TagBuilder
             };
         }
     
-        if ("Fo".equals(name))
+        if ("Fo".equals(name)) //$NON-NLS-1$
         {
             return new Tag()
             {

@@ -28,7 +28,8 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg JAXB_ERROR = new Msg("JAXB Error");
+    static final Msg JAXB_ERROR = new Msg("JAXB Error"); //$NON-NLS-1$
+    static final Msg TRUNCATED = new Msg("... (truncated)"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

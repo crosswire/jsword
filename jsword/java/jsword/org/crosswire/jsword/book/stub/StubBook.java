@@ -60,7 +60,7 @@ public class StubBook extends PassageAbstractBook
      */
     protected String getText(Verse verse)
     {
-        return "stub implementation";
+        return "stub implementation"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

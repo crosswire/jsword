@@ -70,8 +70,8 @@ public class OSISFilter implements Filter
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse original failed: "+ex1.getMessage());
-            DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain));
+            DataPolice.report("parse original failed: "+ex1.getMessage()); //$NON-NLS-1$
+            DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain)); //$NON-NLS-1$
 
             // Attempt to fix broken characters, that doesn't break xml strings
             // in any way
@@ -83,8 +83,8 @@ public class OSISFilter implements Filter
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse original failed: "+ex1.getMessage());
-                DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned));
+                DataPolice.report("parse original failed: "+ex1.getMessage()); //$NON-NLS-1$
+                DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned)); //$NON-NLS-1$
 
                 // Attempt to fix broken entities, that could be a low damage
                 // way to fix a broken input string
@@ -96,8 +96,8 @@ public class OSISFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse cropped failed: "+ex3.getMessage());
-                    DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped));
+                    DataPolice.report("parse cropped failed: "+ex3.getMessage()); //$NON-NLS-1$
+                    DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped)); //$NON-NLS-1$
 
                     // So just try to strip out all XML looking things
                     String shawn = XMLUtil.cleanAllTags(cropped);
@@ -108,8 +108,8 @@ public class OSISFilter implements Filter
                     }
                     catch (Exception ex4)
                     {
-                        DataPolice.report("parse shawn failed: "+ex4.getMessage());
-                        DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn));
+                        DataPolice.report("parse shawn failed: "+ex4.getMessage()); //$NON-NLS-1$
+                        DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn)); //$NON-NLS-1$
 
                         try
                         {
@@ -120,7 +120,7 @@ public class OSISFilter implements Filter
                         }
                         catch (Exception ex5)
                         {
-                            log.warn("no way. say it ain't so!", ex5);
+                            log.warn("no way. say it ain't so!", ex5); //$NON-NLS-1$
                         }
                     }
                 }
@@ -135,7 +135,7 @@ public class OSISFilter implements Filter
     private void parse(Element ele, String plain) throws JAXBException
     {
         // create a root element to house our document fragment
-        StringReader in = new StringReader("<div>"+plain+"</div>");
+        StringReader in = new StringReader("<div>"+plain+"</div>"); //$NON-NLS-1$ //$NON-NLS-2$
         InputSource is = new InputSource(in);
 
         Element data = (Element) unm.unmarshal(is);
@@ -170,7 +170,7 @@ public class OSISFilter implements Filter
          */
         public boolean handleEvent(ValidationEvent ev)
         {
-            DataPolice.report("OSIS parse error: "+ev.getMessage()+" More information is available.");
+            DataPolice.report("OSIS parse error: "+ev.getMessage()+" More information is available."); //$NON-NLS-1$ //$NON-NLS-2$
             return true;
         }
     }

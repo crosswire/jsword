@@ -38,7 +38,7 @@ public class TrTag implements Tag
      */
     public String getTagName()
     {
-        return "tr";
+        return "tr"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

@@ -35,7 +35,7 @@ public class PbTag implements Tag
      */
     public String getTagName()
     {
-        return "pb";
+        return "pb"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

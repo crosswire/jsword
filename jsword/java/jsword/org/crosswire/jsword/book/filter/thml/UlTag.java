@@ -38,7 +38,7 @@ public class UlTag implements Tag
      */
     public String getTagName()
     {
-        return "ul";
+        return "ul"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

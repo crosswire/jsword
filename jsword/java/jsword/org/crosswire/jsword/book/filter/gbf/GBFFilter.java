@@ -95,7 +95,7 @@ public class GBFFilter implements Filter
             // check that we don't have unmatched tags
             if (ltpos == -1 || gtpos == -1)
             {
-                DataPolice.report("ignoring unmatched '<' or '>' in gbf: " + remains);
+                DataPolice.report("ignoring unmatched '<' or '>' in gbf: " + remains); //$NON-NLS-1$
                 taglist.add(createText(remains));
                 remains = null;
                 break;
@@ -104,7 +104,7 @@ public class GBFFilter implements Filter
             // check that the tags are in a sensible order
             if (ltpos > gtpos)
             {
-                DataPolice.report("ignoring transposed '<' or '>' in gbf: " + remains);
+                DataPolice.report("ignoring transposed '<' or '>' in gbf: " + remains); //$NON-NLS-1$
                 taglist.add(createText(remains));
                 remains = null;
                 break;
@@ -156,7 +156,7 @@ public class GBFFilter implements Filter
                     // I'm not confident enough that we handle all the GBF tags
                     // that I will blame the module instead of the program
 
-                    log.warn("Ignoring tag of <" + tag + ">");
+                    log.warn("Ignoring tag of <" + tag + ">"); //$NON-NLS-1$ //$NON-NLS-2$
                     //DataPolice.report("Ignoring tag of <" + tag + ">");
                 }
 
@@ -182,7 +182,7 @@ public class GBFFilter implements Filter
         return TEXT.createTag(text);
     }
 
-    private static final String SEPARATORS = " ,:;.?!";
+    private static final String SEPARATORS = " ,:;.?!"; //$NON-NLS-1$
 
     private static final TagBuilder TEXT = new TextTagBuilder();
     private static final TagBuilder[] BUILDERS = new TagBuilder[]

@@ -41,7 +41,7 @@ public class StrongsMorphTagBuilder implements TagBuilder
      */
     public Tag createTag(final String tagname)
     {
-        if (!tagname.startsWith("WT"))
+        if (!tagname.startsWith("WT")) //$NON-NLS-1$
         {
             return null;
         }
@@ -56,7 +56,7 @@ public class StrongsMorphTagBuilder implements TagBuilder
                 List list = JAXBUtil.getList(ele);
                 if (list.isEmpty())
                 {
-                    DataPolice.report("No content to attach word to: <" + name + ">.");
+                    DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
 
@@ -76,7 +76,7 @@ public class StrongsMorphTagBuilder implements TagBuilder
                 }
                 else
                 {
-                    DataPolice.report("No words to attach word to: <" + name + ">.");
+                    DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
 
@@ -87,7 +87,7 @@ public class StrongsMorphTagBuilder implements TagBuilder
                 {
                     newMorph.append(existingMorph).append('|');
                 }
-                newMorph.append("x-StrongsMorph:T").append(name.substring(2));
+                newMorph.append(JAXBUtil.MORPH_STRONGS).append(name.substring(2));
                 word.setMorph(newMorph.toString());
             }
         };

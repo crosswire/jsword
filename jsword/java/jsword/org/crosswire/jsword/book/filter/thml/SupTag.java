@@ -38,7 +38,7 @@ public class SupTag implements Tag
      */
     public String getTagName()
     {
-        return "sup";
+        return "sup"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

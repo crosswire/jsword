@@ -39,7 +39,7 @@ public class TextFootnoteTagBuilder implements TagBuilder
      */
     public Tag createTag(String name)
     {
-        if (!name.equals("RB"))
+        if (!name.equals("RB")) //$NON-NLS-1$
         {
             return null;
         }
@@ -49,7 +49,7 @@ public class TextFootnoteTagBuilder implements TagBuilder
             public void updateOsisStack(LinkedList stack) throws JAXBException
             {
                 Note note = JAXBUtil.factory().createNote();
-                note.setNoteType("x-StudyNote");
+                note.setNoteType(JAXBUtil.NOTETYPE_STUDY);
 
                 Element current = (Element) stack.get(0);
                 JAXBUtil.getList(current).add(note);

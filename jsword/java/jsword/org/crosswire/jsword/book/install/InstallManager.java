@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
@@ -58,13 +57,13 @@ public class InstallManager
 
                 try
                 {
-                    String[] parts = url.split(":");
+                    String[] parts = url.split(":"); //$NON-NLS-1$
                     String type = parts[0];
 
                     Class clazz = (Class) factories.get(type);
                     if (clazz == null)
                     {
-                        log.warn("");
+                        log.warn(""); //$NON-NLS-1$
                     }
                     else
                     {
@@ -127,11 +126,11 @@ public class InstallManager
             }
             catch (Exception ex)
             {
-                log.warn("Failed to instansiate installer factory: "+name+"="+factclazz.getName(), ex);
+                log.warn("Failed to instansiate installer factory: "+name+"="+factclazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
-        log.warn("Failed to find factory name for "+installer.toString()+" among the "+factories.size()+" factories.");
+        log.warn("Failed to find factory name for "+installer.toString()+" among the "+factories.size()+" factories."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return null;
     }
 
@@ -152,12 +151,12 @@ public class InstallManager
             }
         }
 
-        log.warn("Failed to find installer name for "+installer.toString()+" among the "+installers.size()+" installers.");
+        log.warn("Failed to find installer name for "+installer.toString()+" among the "+installers.size()+" installers."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
         {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
-            log.warn("  it isn't equal to "+test.getURL());
+            log.warn("  it isn't equal to "+test.getURL()); //$NON-NLS-1$
         }
         return null;
     }
@@ -177,7 +176,8 @@ public class InstallManager
         }
         catch (Exception ex)
         {
-            throw new LogicError(ex);
+            assert false : ex;
+            return null;
         }
     }
 
@@ -238,7 +238,7 @@ public class InstallManager
             if (tinstaller.equals(installer))
             {
                 // We have a dupe - remove the old name
-                log.warn("duplicate installers: "+name+"="+tname+". removing "+tname);
+                log.warn("duplicate installers: "+name+"="+tname+". removing "+tname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                 it.remove();
                 fireInstallersChanged(this, tinstaller, false);

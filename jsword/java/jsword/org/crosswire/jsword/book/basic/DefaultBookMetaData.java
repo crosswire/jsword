@@ -214,14 +214,14 @@ public class DefaultBookMetaData implements BookMetaData
         StringBuffer buf = new StringBuffer(getName());
         String ed = getEdition();
 
-        if (!ed.equals(""))
+        if (!ed.equals("")) //$NON-NLS-1$
         {
-            buf.append(", ").append(ed);
+            buf.append(", ").append(ed); //$NON-NLS-1$
         }
 
         if (driver != null)
         {
-            buf.append(" (").append(getDriverName()).append(")");
+            buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return buf.toString();
@@ -232,7 +232,7 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public String getOsisID()
     {
-        return getType().getName() + "." + getInitials();
+        return getType().getName() + "." + getInitials(); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -274,7 +274,7 @@ public class DefaultBookMetaData implements BookMetaData
     {
         if (edition == null)
         {
-            this.edition = "";
+            this.edition = ""; //$NON-NLS-1$
         }
         else
         {
@@ -323,7 +323,7 @@ public class DefaultBookMetaData implements BookMetaData
         {
             if (name == null)
             {
-                this.initials = "";
+                this.initials = ""; //$NON-NLS-1$
             }
             else
             {
@@ -345,7 +345,7 @@ public class DefaultBookMetaData implements BookMetaData
     {
         this.licence = licence;
 
-        map.put(KEY_LICENCE, licence == null ? "" : this.licence.toString());
+        map.put(KEY_LICENCE, licence == null ? "" : this.licence.toString()); //$NON-NLS-1$
     }
 
     /**
@@ -434,7 +434,7 @@ public class DefaultBookMetaData implements BookMetaData
         }
         this.type = type;
 
-        map.put(KEY_TYPE, type == null ? "" : type.getName());
+        map.put(KEY_TYPE, type == null ? "" : type.getName()); //$NON-NLS-1$
     }
 
     /**
@@ -532,9 +532,9 @@ public class DefaultBookMetaData implements BookMetaData
     private BookType type;
     private Book book;
     private BookDriver driver = null;
-    private String name = "";
-    private String edition = "";
-    private String initials = "";
+    private String name = ""; //$NON-NLS-1$
+    private String edition = ""; //$NON-NLS-1$
+    private String initials = ""; //$NON-NLS-1$
     private int speed = BookMetaData.SPEED_SLOWEST;
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;
