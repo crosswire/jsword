@@ -30,7 +30,9 @@ import java.net.URL;
 * </font></td></tr></table>
 * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
 * @see <{docs.Licence}>
-* @author Joe Walker
+* @author Joe Walke
+* @author Keith Ralston
+*   KR - Modified lengthenURL(URL, String)
 * @version D0.I0.T0
 */
 public class NetUtil
@@ -201,7 +203,8 @@ public class NetUtil
             return new URL(orig.getProtocol(),
                            orig.getHost(),
                            orig.getPort(),
-                           orig.getFile()+File.separator+extra);
+                           orig.getFile()+
+/*KR modification*/        (orig.toString().endsWith(File.separator)?"":File.separator+extra));
         }
         else
         {
