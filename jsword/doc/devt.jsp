@@ -14,12 +14,12 @@ form. Or you can read the archives <a href='http://www.crosswire.org/pipermail/j
 <p> CVS is also hosted at crosswire. The CVS root is:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<code>:pserver:anonymous@cvs.crosswire.org:/cvs/jsword</code> 
 <br />
-If you need to get at the code but are not sure about CVS then join 
-the mailing list and we'll sort something out.</p>
+And the password is "anonymous". If you need to get at the code but are not sure about
+CVS then join the mailing list and we'll sort something out.</p>
 
 <h2>Documentation</h2>
 <table width="100%" cellpadding="5" cellspacing="0">
-  <tr> 
+  <tr>
 	<td><a href="intro.jsp">Introduction</a></td>
 	<td>This is document describes the aims of the project, and has a 
 	  list of the contributors, and some comments on contributing code. 
