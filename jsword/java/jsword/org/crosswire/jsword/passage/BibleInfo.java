@@ -938,7 +938,7 @@ public class BibleInfo
         public static final byte ESTHER = 17;
         public static final byte JOB = 18;
         public static final byte PSALMS = 19;
-        public static final byte PROBERBS = 20;
+        public static final byte PROVERBS = 20;
         public static final byte ECCLESIASTES = 21;
         public static final byte SONGOFSOLOMON = 22;
         public static final byte ISAIAH = 23;
@@ -949,11 +949,11 @@ public class BibleInfo
         public static final byte HOSEA = 28;
         public static final byte JOEL = 29;
         public static final byte AMOS = 30;
-        public static final byte OBDIAH = 31;
+        public static final byte OBADIAH = 31;
         public static final byte JONAH = 32;
         public static final byte MICAH = 33;
         public static final byte NAHUM = 34;
-        public static final byte HABAKUK = 35;
+        public static final byte HABAKKUK = 35;
         public static final byte ZEPHANIAH = 36;
         public static final byte HAGGAI = 37;
         public static final byte ZECHARIAH = 38;
