@@ -49,21 +49,11 @@ public abstract class SwordBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBook()
      */
-    public Book getBook()
+    public synchronized Book getBook()
     {
-        // DCL
-        // I know double checked locking is theoretically broken however it isn't
-        // practically broken 99% of the time, and even if the 1% comes up here
-        // the only effect is some temporary wasted memory
         if (book == null)
         {
-            synchronized(this)
-            {
-                if (book == null)
-                {
-                    book = createBook();
-                }
-            }
+            book = createBook();
         }
 
         return book;

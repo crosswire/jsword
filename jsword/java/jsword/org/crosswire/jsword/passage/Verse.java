@@ -786,7 +786,7 @@ public class Verse implements VerseBase
     {
         // The substrings "ch" and "v" are really a book/chapter or
         // chapter/verse separators we should swap them for normal delims
-        // I recon it is safe to assume that the is no more than one of
+        // I recon it is safe to assume that there is no more than one of
         // each
         int idx = command.lastIndexOf("v");
         if (idx != -1)

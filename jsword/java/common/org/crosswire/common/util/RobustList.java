@@ -259,11 +259,10 @@ public class RobustList extends AbstractList implements List, Serializable
      */
     private class Entry
     {
-        protected Object object;
-        protected Entry next;
-        protected Entry prev;
-
-        private Entry(Object object)
+        /**
+         * @param object
+         */
+        protected Entry(Object object)
         {
             this.object = object;
             this.next = null;
@@ -332,6 +331,10 @@ public class RobustList extends AbstractList implements List, Serializable
             log.debug("  next="+next);
             log.debug("   obje="+object);
         }
+
+        protected Object object;
+        protected Entry next;
+        protected Entry prev;
     }
 
     /**

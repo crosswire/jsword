@@ -69,14 +69,15 @@ public class NetUtil
      */
     public static void makeDirectory(URL orig) throws MalformedURLException
     {
-        if (!orig.getProtocol().equals("file"))
-            throw new MalformedURLException("The given URL '" + orig + "' is not a file: URL.");
+        checkFileURL(orig);
 
         File file = new File(orig.getFile());
 
         // If it is a file, except
         if (file.isFile())
+        {
             throw new MalformedURLException("The given URL '" + orig + "' is a file.");
+        }
 
         // Is it already a directory ?
         if (!file.isDirectory())
@@ -85,7 +86,9 @@ public class NetUtil
 
             // Did that work?
             if (!file.isDirectory())
+            {
                 throw new MalformedURLException("The given URL '" + orig + "' could not be created as a directory.");
+            }
         }
     }
 
@@ -96,14 +99,15 @@ public class NetUtil
      */
     public static void makeFile(URL orig) throws MalformedURLException, IOException
     {
-        if (!orig.getProtocol().equals("file"))
-            throw new MalformedURLException("The given URL '" + orig + "' is not a file: URL.");
+        checkFileURL(orig);
 
         File file = new File(orig.getFile());
 
         // If it is a file, except
         if (file.isDirectory())
+        {
             throw new MalformedURLException("The given URL '" + orig + "' is a directory.");
+        }
 
         // Is it already a directory ?
         if (!file.isFile())
@@ -113,7 +117,9 @@ public class NetUtil
 
             // Did that work?
             if (!file.isFile())
+            {
                 throw new MalformedURLException("The given URL '" + orig + "' could not be created as a file.");
+            }
         }
     }
 
@@ -147,8 +153,7 @@ public class NetUtil
      */
     public static boolean isDirectory(URL orig) throws MalformedURLException
     {
-        if (!orig.getProtocol().equals("file"))
-            throw new MalformedURLException("The given URL '" + orig + "' is not a file: URL.");
+        checkFileURL(orig);
 
         File file = new File(orig.getFile());
         return file.isDirectory();
@@ -163,11 +168,8 @@ public class NetUtil
      */
     public static boolean move(URL old_url, URL new_url) throws IOException
     {
-        if (!old_url.getProtocol().equals("file"))
-            throw new MalformedURLException("The given source URL '" + old_url + "' is not a file: URL.");
-
-        if (!new_url.getProtocol().equals("file"))
-            throw new MalformedURLException("The given destination URL '" + new_url + "' is not a file: URL.");
+        checkFileURL(old_url);
+        checkFileURL(new_url);
 
         File old_file = new File(old_url.getFile());
         File new_file = new File(new_url.getFile());
@@ -181,10 +183,7 @@ public class NetUtil
      */
     public static boolean delete(URL orig) throws IOException
     {
-        if (!orig.getProtocol().equals("file"))
-        {
-            throw new MalformedURLException("The given URL '" + orig + "' is not a file: URL.");
-        }
+        checkFileURL(orig);
 
         File file = new File(orig.getFile());
         return file.delete();
@@ -199,8 +198,10 @@ public class NetUtil
     public static File getAsFile(URL url) throws IOException
     {
         // if the URL is already a file URL, return it
-        if (url.getProtocol().equals("file"))
+        if (url.getProtocol().equals(PROTOCOL_FILE))
+        {
             return new File(url.getFile());
+        }
 
         // PENGING(mark): surely this is a bug - the replace() happens on "" and not the url?
         File workingFile = null;
@@ -248,14 +249,19 @@ public class NetUtil
     {
         String file = orig.getFile();
         if (file.endsWith("/"))
+        {
             file = file.substring(0, file.length() - 1);
+        }
         if (file.endsWith("\\"))
+        {
             file = file.substring(0, file.length() - 1);
+        }
 
         String test = file.substring(file.length() - strip.length());
-
         if (!test.equals(strip))
+        {
             throw new MalformedURLException("The URL '" + orig + "' does not end in '" + strip + "'");
+        }
 
         String new_file = file.substring(0, file.length() - strip.length());
 
@@ -274,7 +280,7 @@ public class NetUtil
      */
     public static URL lengthenURL(URL orig, String extra) throws MalformedURLException
     {
-        if (orig.getProtocol().equals("file"))
+        if (orig.getProtocol().equals(PROTOCOL_FILE))
         {
             if (orig.toExternalForm().endsWith(File.separator))
             {
@@ -310,7 +316,7 @@ public class NetUtil
      */
     public static URL lengthenURL(URL orig, String extra1, String extra2) throws MalformedURLException
     {
-        if (orig.getProtocol().equals("file"))
+        if (orig.getProtocol().equals(PROTOCOL_FILE))
         {
             return new URL(orig.getProtocol(),
                            orig.getHost(),
@@ -337,7 +343,7 @@ public class NetUtil
      */
     public static URL lengthenURL(URL orig, String extra1, String extra2, String extra3) throws MalformedURLException
     {
-        if (orig.getProtocol().equals("file"))
+        if (orig.getProtocol().equals(PROTOCOL_FILE))
         {
             return new URL(orig.getProtocol(),
                            orig.getHost(),
@@ -385,7 +391,7 @@ public class NetUtil
         // We favour the FileOutputStream method here because append
         // is not well defined for the openConnection method
 
-        if (url.getProtocol().equals("file"))
+        if (url.getProtocol().equals(PROTOCOL_FILE))
         {
             return new FileOutputStream(url.getFile(), append);
         }
@@ -422,14 +428,14 @@ public class NetUtil
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
             log.warn("index file for "+url.toExternalForm()+" was not found.");
-            if (url.getProtocol().equals("file"))
+            if (url.getProtocol().equals(PROTOCOL_FILE))
             {
                 return listByFile(url, filter);
             }
         }
 
         // if we can - check that the index file is up to date.
-        if (url.getProtocol().equals("file"))
+        if (url.getProtocol().equals(PROTOCOL_FILE))
         {
             String[] files = listByFile(url, filter);
 
@@ -520,6 +526,19 @@ public class NetUtil
     }
 
     /**
+     * Throw if the given URL does not use the 'file:' protocol
+     * @param url The URL to check
+     * @throws MalformedURLException If the protocol is not file:
+     */
+    private static void checkFileURL(URL url) throws MalformedURLException
+    {
+        if (!url.getProtocol().equals(PROTOCOL_FILE))
+        {
+            throw new MalformedURLException("The given URL '" + url + "' is not a file: URL.");
+        }
+    }
+
+    /**
      * Returns the uRLCacheDir.
      * @return File
      */
@@ -536,6 +555,8 @@ public class NetUtil
     {
         NetUtil.cachedir = cachedir;
     }
+
+    private static final String PROTOCOL_FILE = "file";
 
     /**
      * Where are temporary files cached.

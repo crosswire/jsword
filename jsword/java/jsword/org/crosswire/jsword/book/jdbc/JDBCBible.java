@@ -197,7 +197,9 @@ public class JDBCBible extends LocalURLBible
     public Passage findPassage(String word) throws BookException
     {
         if (word == null)
+        {
             return PassageFactory.createPassage();
+        }
 
         word = JDBCBibleUtil.swapChar(word, '-', '?').toLowerCase();
 

@@ -241,37 +241,6 @@ public class MenuUtil
     }
 
     /**
-     * Yarked from JMenu, ideally this would be public.
-     * @see JMenu
-     */
-    private static class ActionChangedListener implements PropertyChangeListener
-    {
-        private ActionChangedListener(JMenuItem mi)
-        {
-            super();
-            this.menuItem = mi;
-        }
-
-        public void propertyChange(PropertyChangeEvent ev)
-        {
-            String propertyName = ev.getPropertyName();
-
-            if (ev.getPropertyName().equals(Action.NAME))
-            {
-                String text = (String) ev.getNewValue();
-                menuItem.setText(text);
-            }
-            else if (propertyName.equals("enabled"))
-            {
-                Boolean enabled = (Boolean) ev.getNewValue();
-                menuItem.setEnabled(enabled.booleanValue());
-            }
-        }
-
-        private JMenuItem menuItem;
-    }
-
-    /**
      * Get a string from a resource bundle
      */
     protected static String getResourceString(String name)
@@ -295,6 +264,43 @@ public class MenuUtil
         if (name == null) return null;
 
         return resource.getClass().getResource(name);
+    }
+
+    /**
+     * Yarked from JMenu, ideally this would be public.
+     * @see JMenu
+     */
+    private static class ActionChangedListener implements PropertyChangeListener
+    {
+        /**
+         * Ctor
+         */
+        protected ActionChangedListener(JMenuItem mi)
+        {
+            super();
+            this.menuItem = mi;
+        }
+
+        /* (non-Javadoc)
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent ev)
+        {
+            String propertyName = ev.getPropertyName();
+
+            if (ev.getPropertyName().equals(Action.NAME))
+            {
+                String text = (String) ev.getNewValue();
+                menuItem.setText(text);
+            }
+            else if (propertyName.equals("enabled"))
+            {
+                Boolean enabled = (Boolean) ev.getNewValue();
+                menuItem.setEnabled(enabled.booleanValue());
+            }
+        }
+
+        private JMenuItem menuItem;
     }
 
     /**

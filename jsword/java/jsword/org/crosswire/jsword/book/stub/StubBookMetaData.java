@@ -104,19 +104,11 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     /**
      * Decides if we need to create a new book, or re-use on already created.
      */
-    private Book getBookInternal()
+    private synchronized Book getBookInternal()
     {
-        // DCL
-        // I know double checked locking is theoretically broken however it isn't
-        // practically broken 99% of the time, and even if the 1% comes up here
-        // the only effect is some temporary wasted memory
         if (book == null)
         {
-            synchronized(this)
-            {
-                if (book == null)
-                    book = new StubBook(this);
-            }
+            book = new StubBook(this);
         }
 
         return book;
