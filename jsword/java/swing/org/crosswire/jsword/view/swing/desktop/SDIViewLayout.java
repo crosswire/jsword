@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.view.swing.desktop;
 
+import java.awt.Component;
+
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -37,33 +39,16 @@ public class SDIViewLayout extends ViewLayout
         super(tools);
     }
 
-    /**
-     * Prepare any data structures needed before we are made live
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#getRootComponent()
      */
-    public void preDisplay()
+    public Component getRootComponent()
     {
-        // If there are no views in the pool, create one
-        if (!getDesktop().iterateBibleViewPanes().hasNext())
-        {
-            BibleViewPane view = new BibleViewPane();
-            getDesktop().addBibleViewPane(view);
-        }
-
-        getDesktop().setViewComponent(getSelected());
-        getDesktop().setCloseEnabled(false);
+        return getSelected();
     }
 
-    /**
-     * Undo any data structures needed for live
-     */
-    public void postDisplay()
-    {
-        getDesktop().unsetViewComponent(getSelected());
-        getDesktop().setCloseEnabled(true);
-    }
-
-    /**
-     * Add a view to the set while visible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#add(org.crosswire.jsword.view.swing.book.BibleViewPane)
      */
     public boolean add(BibleViewPane view)
     {
@@ -74,26 +59,28 @@ public class SDIViewLayout extends ViewLayout
         return true;
     }
 
-    /**
-     * Remove a view from the set while visible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#remove(org.crosswire.jsword.view.swing.book.BibleViewPane)
      */
     public boolean remove(BibleViewPane view)
     {
         return false;
     }
 
-    /**
-     * Remove a view from the set while visible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#update(org.crosswire.jsword.view.swing.book.BibleViewPane)
      */
-    public void update(BibleViewPane view)
+    public void updateTitle(BibleViewPane view)
     {
     }
 
-    /**
-     * While visible, which is the current pane
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#getSelected()
      */
     public BibleViewPane getSelected()
     {
+        getDesktop().ensureAvailableBibleViewPane();
+
         // Assume that there will always be one, because we don't let them be
         // deleted, and we ensure that there is at least 1 before we start.
         return (BibleViewPane) getDesktop().iterateBibleViewPanes().next();

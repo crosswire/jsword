@@ -79,15 +79,25 @@ public class Parser
      */
     public Passage search(Search search) throws BookException
     {
+        Passage ref = null;
+
         if (search.isBestMatch())
         {
-            return bestMatch(search.getMatch());
+            ref = bestMatch(search.getMatch());
         }
         else
         {
             output = CustomTokenizer.tokenize(search.getMatch(), commands);
-            return search(output);
+            ref = search(output);
         }
+
+        if (search.isRestricted())
+        {
+            Passage restrict = search.getRestriction();
+            ref.retainAll(restrict);
+        }
+
+        return ref;
     }
 
     /**

@@ -73,6 +73,14 @@ public class BibleViewPane extends JPanel
     }
 
     /**
+     * Allow the current
+     */
+    public void adjustFocus()
+    {
+        pnl_select.adjustFocus();
+    }
+
+    /**
      * How has this view been saved
      */
     public String getTitle()

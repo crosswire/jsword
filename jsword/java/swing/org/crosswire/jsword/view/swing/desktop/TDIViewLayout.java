@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.view.swing.desktop;
 
-import java.util.Iterator;
+import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
@@ -41,48 +41,22 @@ public class TDIViewLayout extends ViewLayout
     public TDIViewLayout(Desktop tools)
     {
         super(tools);
+
+        tab_main = new JTabbedPane();
+        tab_main.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+        LookAndFeelUtil.addComponentToUpdate(tab_main);
     }
 
-    /**
-     * Prepare any data structures needed before we are made live
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#getRootComponent()
      */
-    public void preDisplay()
+    public Component getRootComponent()
     {
-        if (tab_main == null)
-        {
-            tab_main = new JTabbedPane();
-            tab_main.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-            LookAndFeelUtil.addComponentToUpdate(tab_main);
-        }
-
-        // Setup
-        Iterator it = getDesktop().iterateBibleViewPanes();
-        while (it.hasNext())
-        {
-            BibleViewPane view = (BibleViewPane) it.next();
-            add(view);
-        }
-
-        // ensure we have been registered
-        getDesktop().setViewComponent(tab_main);
-
-        // I'm not sure if this is a bug in swing or should I really
-        // be doing this to make the first tab be painted ...
-        if (getSelected() != null)
-            getSelected().setVisible(true);
+        return tab_main;
     }
 
-    /**
-     * Undo any data structures needed for live
-     */
-    public void postDisplay()
-    {
-        tab_main.removeAll();
-        getDesktop().unsetViewComponent(tab_main);
-    }
-
-    /**
-     * Add a view to the set while visible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#add(org.crosswire.jsword.view.swing.book.BibleViewPane)
      */
     public boolean add(BibleViewPane view)
     {
@@ -92,8 +66,8 @@ public class TDIViewLayout extends ViewLayout
         return true;
     }
 
-    /**
-     * Remove a view from the set while visible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#remove(org.crosswire.jsword.view.swing.book.BibleViewPane)
      */
     public boolean remove(BibleViewPane view)
     {
@@ -102,17 +76,17 @@ public class TDIViewLayout extends ViewLayout
         return true;
     }
 
-    /**
-     * Remove a view from the set while visible
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#update(org.crosswire.jsword.view.swing.book.BibleViewPane)
      */
-    public void update(BibleViewPane view)
+    public void updateTitle(BibleViewPane view)
     {
         int index = tab_main.indexOfComponent(view);
         tab_main.setTitleAt(index, view.getTitle());
     }
 
-    /**
-     * While visible, which is the current pane
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#getSelected()
      */
     public BibleViewPane getSelected()
     {

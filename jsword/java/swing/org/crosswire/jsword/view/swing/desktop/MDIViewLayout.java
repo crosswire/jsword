@@ -2,12 +2,14 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.Component;
-import java.util.Iterator;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -45,35 +47,11 @@ public class MDIViewLayout extends ViewLayout
     }
 
     /**
-     * Prepare any data structures needed before we are made live
+     * What should the desktop add to the parent?
      */
-    public void preDisplay()
+    public Component getRootComponent()
     {
-        // setup
-        Iterator it = getDesktop().iterateBibleViewPanes();
-        while (it.hasNext())
-        {
-            BibleViewPane view = (BibleViewPane) it.next();
-            add(view);
-        }
-
-        // ensure we have been registered
-        getDesktop().setViewComponent(mdi_main);
-    }
-
-    /**
-     * Undo any data structures needed for live
-     */
-    public void postDisplay()
-    {
-        // remove the old frames
-        JInternalFrame[] frames = mdi_main.getAllFrames();
-        for (int i=0; i<frames.length;i++)
-        {
-            mdi_main.remove(frames[i]);
-        }
-
-        getDesktop().unsetViewComponent(mdi_main);
+        return mdi_main;
     }
 
     /**
@@ -88,16 +66,8 @@ public class MDIViewLayout extends ViewLayout
 
         mdi_main.add(iframe/*, JLayeredPane.PALETTE_LAYER*/);
 
-        //iframe.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
-        /*
-        iframe.addInternalFrameListener(new InternalFrameAdapter() {
-            public void internalFrameClosed(InternalFrameEvent ev)
-            {
-                JInternalFrame iframe = ev.getInternalFrame();
-                BibleViewPane view = (BibleViewPane) iframe.getContentPane().getComponent(0);
-            }
-        });
-        */
+        iframe.addInternalFrameListener(new CustomInternalFrameAdapter());
+
         iframe.setVisible(true);
         iframe.pack();
 
@@ -118,7 +88,7 @@ public class MDIViewLayout extends ViewLayout
     /**
      * Remove a view from the set while visible
      */
-    public void update(BibleViewPane view)
+    public void updateTitle(BibleViewPane view)
     {
         JInternalFrame iframe = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, view);
         iframe.setTitle(view.getTitle());
@@ -132,11 +102,46 @@ public class MDIViewLayout extends ViewLayout
         JInternalFrame frame = mdi_main.getSelectedFrame();
 
         if (frame == null)
-            return null;
+        {
+            // none of the frames are selected, but things like cut/copy/paste
+            // rely on there being a 'current' BibleViewPane so we just use the
+            // first one we find, which might be the top one?
+            Component[] comps = mdi_main.getComponents();
+            for (int i=0; i<comps.length; i++)
+            {
+                if (comps[i] instanceof JInternalFrame)
+                {
+                    frame = (JInternalFrame) comps[i];
+                    break;
+                }
+            }
+        }
 
         Component comp = frame.getContentPane().getComponent(0);
         return (BibleViewPane) comp;
     }
 
+    /** The log stream */
+    private static Logger log = Logger.getLogger(Desktop.class);
+
     private JDesktopPane mdi_main = new JDesktopPane();
+
+    /**
+     * So we can tidy things up when a window is closed
+     */
+    private class CustomInternalFrameAdapter extends InternalFrameAdapter
+    {
+        public void internalFrameClosed(InternalFrameEvent ev)
+        {
+            JInternalFrame iframe = ev.getInternalFrame();
+            BibleViewPane view = (BibleViewPane) iframe.getContentPane().getComponent(0);
+
+            // calling remove() will can result in the window being closed as
+            // a result of it being dispose()ed and we don't want to get into an
+            // infinite loop so we nned to stop listening
+            iframe.removeInternalFrameListener(this);
+
+            remove(view);
+        }
+    }
 }

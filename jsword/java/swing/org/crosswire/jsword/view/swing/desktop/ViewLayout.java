@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.view.swing.desktop;
 
+import java.awt.Component;
+
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -38,14 +40,9 @@ public abstract class ViewLayout
     }
 
     /**
-     * Prepare any data structures needed before we are made live
+     * What should the desktop add to the parent?
      */
-    public abstract void preDisplay();
-
-    /**
-     * Undo any data structures needed for live
-     */
-    public abstract void postDisplay();
+    public abstract Component getRootComponent();
 
     /**
      * Add a view to the set while visible
@@ -58,9 +55,9 @@ public abstract class ViewLayout
     public abstract boolean remove(BibleViewPane view);
 
     /**
-     * Remove a view from the set while visible
+     * Update a view from the set while visible
      */
-    public abstract void update(BibleViewPane view);
+    public abstract void updateTitle(BibleViewPane view);
 
     /**
      * While visible, which is the current pane

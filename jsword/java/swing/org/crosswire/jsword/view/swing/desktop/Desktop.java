@@ -26,6 +26,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LogPane;
@@ -82,10 +83,10 @@ public class Desktop extends JFrame implements TitleChangedListener
      */
     public static void main(String[] args)
     {
-        Desktop shed = new Desktop();
-        shed.pack();
-        GuiUtil.centerWindow(shed);
-        shed.setVisible(true);
+        Desktop desktop = new Desktop();
+        desktop.pack();
+        GuiUtil.centerWindow(desktop);
+        desktop.setVisible(true);
     }
 
     /**
@@ -100,10 +101,9 @@ public class Desktop extends JFrame implements TitleChangedListener
             splash = new Splash(this, 60000);
 
             // Initial setup
-            splash.setProgress("Project initialization");
-
             splash.setProgress("Creating GUI : Setting-up config");
             act_tools_options = new OptionsAction(this);
+            CustomAWTExceptionHandler.setParentComponent(this);
 
             splash.setProgress("Creating GUI : Initialising configuration system");
             act_tools_options.createConfig();
@@ -112,9 +112,10 @@ public class Desktop extends JFrame implements TitleChangedListener
             act_tools_options.loadConfig();
 
             splash.setProgress("Creating GUI : Ctors (Layouts)");
-            VIEW_SDI = new SDIViewLayout(this);
-            VIEW_MDI = new MDIViewLayout(this);
-            VIEW_TDI = new TDIViewLayout(this);
+            layouts = new ViewLayout[3];
+            layouts[LAYOUT_TYPE_SDI] = new SDIViewLayout(this);
+            layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout(this);
+            layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout(this);
 
             splash.setProgress("Creating GUI : Ctors (File Menu)");
             act_file_new = new FileNewAction(this);
@@ -182,7 +183,16 @@ public class Desktop extends JFrame implements TitleChangedListener
             // GUI setup
             splash.setProgress("Creating GUI : Init");
             jbInit();
-            setViewLayout(VIEW_SDI);
+
+            // Sort out the current ViewLayout. We need to reset current to be
+            // initial because the config system may well have changed initial
+            ensureAvailableBibleViewPane();
+            current = initial;
+            BibleViewPane view = (BibleViewPane) iterateBibleViewPanes().next();
+            layouts[current].add(view);
+            Component comp = layouts[current].getRootComponent();
+            spt_books.add(comp, JSplitPane.LEFT);
+            layouts[current].getSelected().adjustFocus(); 
 
             // Preload the PassageInnerPane for faster initial view
             splash.setProgress("Creating GUI : Preloading view system");
@@ -352,35 +362,13 @@ public class Desktop extends JFrame implements TitleChangedListener
     }
 
     /**
-     * Method setViewComponent.
-     * @param comp
-     */
-    public void setViewComponent(Component comp)
-    {
-        spt_books.add(comp, JSplitPane.LEFT);
-        spt_books.repaint();
-        // getContentPane().add(comp, BorderLayout.CENTER);
-        // getContentPane().repaint();
-    }
-
-    /**
-     * Method unsetViewComponent.
-     * @param mdi_main
-     */
-    public void unsetViewComponent(Component comp)
-    {
-        spt_books.remove(comp);
-        // getContentPane().remove(comp);
-    }
-
-    /**
      * Adds BibleViewPane to the list in this Desktop.
      */
     public boolean addBibleViewPane(BibleViewPane view)
     {
         view.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        if (layout.add(view))
+        if (getViewLayout().add(view))
         {
             view.addTitleChangedListener(this);
             views.add(view);
@@ -398,7 +386,7 @@ public class Desktop extends JFrame implements TitleChangedListener
     public boolean removeBibleViewPane(BibleViewPane view)
     {
         // From FileCloseAllAction
-        if (layout.remove(view))
+        if (getViewLayout().remove(view))
         {
             views.remove(view);
             return true;
@@ -423,25 +411,7 @@ public class Desktop extends JFrame implements TitleChangedListener
      */
     public BibleViewPane getSelectedBibleViewPane()
     {
-        return layout.getSelected();
-    }
-
-    /**
-     * Setup the current view
-     */
-    public void setViewLayout(ViewLayout newLayout)
-    {
-        if (newLayout == layout)
-            return;
-
-        if (layout != null)
-            layout.postDisplay();
-
-        layout = newLayout;
-
-        // SDIViewLayout may well add a view, in which case the view needs to
-        // be set already so this must come last.
-        layout.preDisplay();
+        return getViewLayout().getSelected();
     }
 
     /**
@@ -499,7 +469,8 @@ public class Desktop extends JFrame implements TitleChangedListener
      */
     public void titleChanged(TitleChangedEvent ev)
     {
-        layout.update((BibleViewPane) ev.getSource());
+        BibleViewPane bvp = (BibleViewPane) ev.getSource();
+        getViewLayout().updateTitle(bvp);
     }
 
     /**
@@ -531,15 +502,98 @@ public class Desktop extends JFrame implements TitleChangedListener
         }
     }
 
-    protected ViewLayout VIEW_SDI = null;
-    protected ViewLayout VIEW_MDI = null;
-    protected ViewLayout VIEW_TDI = null;
+    /**
+     * If there are no current BibleViewPane then add one in
+     */
+    public void ensureAvailableBibleViewPane()
+    {
+        // If there are no views in the pool, create one
+        if (!iterateBibleViewPanes().hasNext())
+        {
+            BibleViewPane view = new BibleViewPane();
+            addBibleViewPane(view);
+        }
+    }
 
-    /** The splash screen */
-    private Splash splash = null;
+    /**
+     * What is the current layout?
+     */
+    private ViewLayout getViewLayout()
+    {
+        return layouts[current];
+    }
+
+    /**
+     * Setup the current view
+     */
+    public void setLayoutType(int next)
+    {
+        // Check this is a change
+        if (this.current == next)
+            return;
+
+        // Go through the views removing them from the layout
+        Iterator it = iterateBibleViewPanes();
+        while (it.hasNext())
+        {
+            BibleViewPane view = (BibleViewPane) it.next();
+            layouts[current].remove(view);
+        }
+        Component comp = layouts[current].getRootComponent();
+        spt_books.remove(comp);
+
+        // set the new layout to be current
+        this.current = next;
+
+        // Go through the views adding them to the layout
+        // SDIViewLayout may well add a view, in which case the view needs to
+        // be set already so this must come last.
+        it = iterateBibleViewPanes();
+        while (it.hasNext())
+        {
+            BibleViewPane view = (BibleViewPane) it.next();
+            layouts[current].add(view);
+        }
+        comp = layouts[current].getRootComponent();
+        spt_books.add(comp, JSplitPane.LEFT);
+
+        // Allow the current BibleViewPane to set the focus in the right place
+        layouts[current].getSelected().adjustFocus(); 
+    }
+
+    /**
+     * What is the initial layout state?
+     */
+    public static int getInitialLayoutType()
+    {
+        return initial;
+    }
+
+    /**
+     * What should the initial layout state be?
+     */
+    public static void setInitialLayoutType(int initial)
+    {
+        Desktop.initial = initial;
+    }
+
+    /** Single document interface */
+    protected static final int LAYOUT_TYPE_SDI = 0;
+
+    /** Tabbed document interface */
+    protected static final int LAYOUT_TYPE_TDI = 1;
+
+    /** Multiple document interface */
+    protected static final int LAYOUT_TYPE_MDI = 2;
+
+    /** The initial layout state */
+    private static int initial = LAYOUT_TYPE_SDI;
+
+    /** The array of valid layouts */
+    protected ViewLayout[] layouts; 
 
     /** The current way the views are layed out */
-    private ViewLayout layout = null;
+    private int current = initial;
 
     /** The list of BibleViewPanes being viewed in tdi and mdi workspaces */
     private List views = new ArrayList();
@@ -553,6 +607,8 @@ public class Desktop extends JFrame implements TitleChangedListener
     /** The log stream */
     private static Logger log = Logger.getLogger(Desktop.class);
 
+    /* GUI components */
+    private Splash splash = null;
     private Action act_file_new = null;
     private Action act_file_open = null;
     private Action act_file_save = null;

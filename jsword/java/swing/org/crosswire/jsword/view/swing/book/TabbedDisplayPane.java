@@ -155,6 +155,8 @@ public class TabbedDisplayPane extends JPanel
         {
             throw new LogicError(ex);
         }
+
+        this.repaint();
     }
 
     /**

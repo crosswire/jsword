@@ -3,11 +3,8 @@ package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
 
-import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
-import org.crosswire.jsword.view.swing.book.DisplaySelectPane;
-import org.crosswire.jsword.view.swing.passage.PassageList;
 
 /**
  * Show hide the list.
@@ -50,15 +47,8 @@ public class ListDeleteAction extends DesktopAbstractAction
         BibleViewPane view = getDesktop().getSelectedBibleViewPane();
         if (view != null)
         {
-            OuterDisplayPane ppane = view.getPassagePane();
-
-            PassageList plist = ppane.getPassageList();
-            plist.deleteSelected();
-
-            // Update the text box
-            Passage ref = plist.getPassage();
-            DisplaySelectPane psel = view.getSelectPane();
-            psel.setPassage(ref);
+            OuterDisplayPane odp = view.getPassagePane();
+            odp.deleteSelected(view);
         }
     }
 }

@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
-import javax.swing.text.JTextComponent;
 
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
+import org.crosswire.jsword.view.swing.book.OuterDisplayPane;
 
 /**
  * paste action.
@@ -50,7 +50,7 @@ public class EditPasteAction extends DesktopAbstractAction
     public void actionPerformed(ActionEvent ev)
     {
         BibleViewPane view = getDesktop().getSelectedBibleViewPane();
-        JTextComponent text = view.getPassagePane().getJTextComponent();
-        text.paste();
+        OuterDisplayPane odp = view.getPassagePane();
+        odp.paste();
     }
 }

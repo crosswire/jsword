@@ -63,24 +63,52 @@ public class Search
     }
 
     /**
-     * Returns the range.
+     * Returns the restriction.
      * @return Passage
      */
-    public Passage getRange()
+    public Passage getRestriction()
     {
-        return range;
+        return restriction;
     }
 
     /**
-     * Sets the range.
-     * @param range The range to set
+     * Sets the restriction. To unset a restriction, use a restriction of null. 
+     * @param restriction The restriction to set
      */
-    public void setRange(Passage range)
+    public void setRestriction(Passage restriction)
     {
-        this.range = range;
+        if (restriction == null)
+            this.restriction = UNRESTRICTED;
+        else
+            this.restriction = restriction;
     }
 
-    private Passage range = PassageFactory.getWholeBiblePassage();
+    /**
+     * Test to see is the restriction is equal to the constant UNRESTRICTED.
+     * @return boolean
+     */
+    public boolean isRestricted()
+    {
+        return restriction != UNRESTRICTED;
+    }
+
+    /**
+     * the whole Bible - i.e. no restrictions.
+     */
+    private static final Passage UNRESTRICTED = PassageFactory.getWholeBiblePassage(); 
+
+    /**
+     * default to no restrictions
+     */
+    private Passage restriction = UNRESTRICTED;
+
+    /**
+     * What are we looking for?
+     */
     private String search;
+
+    /**
+     * Is this a best match search?
+     */
     private boolean match;
 }

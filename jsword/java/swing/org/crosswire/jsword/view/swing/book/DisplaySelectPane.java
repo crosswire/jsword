@@ -13,7 +13,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -87,6 +88,7 @@ public class DisplaySelectPane extends JPanel
             public void actionPerformed(ActionEvent ev)
             {
                 lay_cards.show(pnl_cards, PASSAGE);
+                adjustFocus();
             }
         });
         rdo_match.setText("Match");
@@ -96,6 +98,7 @@ public class DisplaySelectPane extends JPanel
             public void actionPerformed(ActionEvent ev)
             {
                 lay_cards.show(pnl_cards, MATCH);
+                adjustFocus();
             }
         });
         rdo_search.setMnemonic('S');
@@ -105,6 +108,7 @@ public class DisplaySelectPane extends JPanel
             public void actionPerformed(ActionEvent ev)
             {
                 lay_cards.show(pnl_cards, SEARCH);
+                adjustFocus();
             }
         });
         pnl_select.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -271,7 +275,7 @@ public class DisplaySelectPane extends JPanel
             if (chk_srestrict.isSelected())
             {
                 Passage restrict = PassageFactory.createPassage(txt_srestrict.getText());
-                search.setRange(restrict);
+                search.setRestriction(restrict);
             }
 
             Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
@@ -279,8 +283,9 @@ public class DisplaySelectPane extends JPanel
 
             txt_passg.setText(ref.getName());
 
-            updateDisplay();
             setDefaultName(param);
+            updateDisplay();
+            setCurrentAction(PASSAGE);
         }
         catch (Exception ex)
         {
@@ -300,7 +305,7 @@ public class DisplaySelectPane extends JPanel
             if (chk_mrestrict.isSelected())
             {
                 Passage restrict = PassageFactory.createPassage(txt_mrestrict.getText());
-                search.setRange(restrict);
+                search.setRestriction(restrict);
             }
 
             Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
@@ -316,8 +321,9 @@ public class DisplaySelectPane extends JPanel
 
             txt_passg.setText(ref.getName());
 
-            updateDisplay();
             setDefaultName(param);
+            updateDisplay();
+            setCurrentAction(PASSAGE);
         }
         catch (Exception ex)
         {
@@ -330,8 +336,8 @@ public class DisplaySelectPane extends JPanel
      */
     protected void doPassageAction()
     {
-        updateDisplay();
         setDefaultName(txt_passg.getText());
+        updateDisplay();
     }
 
     /**
@@ -356,7 +362,7 @@ public class DisplaySelectPane extends JPanel
      * What is the currently displayed action?
      * @param action one of the constants PASSAGE, SEARCH or MATCH;
      */
-    public void setCurrentAction(String action)
+    private void setCurrentAction(String action)
     {
         lay_cards.show(pnl_cards, action);
 
@@ -375,6 +381,27 @@ public class DisplaySelectPane extends JPanel
         else
         {
             throw new IllegalArgumentException("action is not PASSAGE, SEARCH or MATCH");
+        }
+        
+        adjustFocus();
+    }
+
+    /**
+     * Set the focus to the right initial component
+     */
+    public void adjustFocus()
+    {
+        if (rdo_passg.isSelected() == true)
+        {
+            txt_passg.grabFocus();
+        }
+        else if (rdo_search.isSelected() == true)
+        {
+            txt_search.grabFocus();
+        }
+        else if (rdo_match.isSelected() == true)
+        {
+            txt_match.grabFocus();
         }
     }
 
@@ -445,26 +472,34 @@ public class DisplaySelectPane extends JPanel
     /**
      * Add a command listener
      */
-    public synchronized void removeCommandListener(DisplaySelectListener li)
+    public synchronized void addCommandListener(DisplaySelectListener li)
     {
-        if (commandListeners != null && commandListeners.contains(li))
+        List temp = new ArrayList(2);
+
+        if (listeners != null)
         {
-            Vector v = (Vector) commandListeners.clone();
-            v.removeElement(li);
-            commandListeners = v;
+            temp.addAll(listeners);
+        }
+
+        if (!temp.contains(li))
+        {
+            temp.add(li);
+            listeners = temp;
         }
     }
 
     /**
      * Remove a command listener
      */
-    public synchronized void addCommandListener(DisplaySelectListener li)
+    public synchronized void removeCommandListener(DisplaySelectListener li)
     {
-        Vector v = commandListeners == null ? new Vector(2) : (Vector) commandListeners.clone();
-        if (!v.contains(li))
+        if (listeners != null && listeners.contains(li))
         {
-            v.addElement(li);
-            commandListeners = v;
+            List temp = new ArrayList();
+            temp.addAll(listeners);
+
+            temp.remove(li);
+            listeners = temp;
         }
     }
 
@@ -473,13 +508,12 @@ public class DisplaySelectPane extends JPanel
      */
     protected void fireCommandMade(DisplaySelectEvent ev)
     {
-        if (commandListeners != null)
+        if (listeners != null)
         {
-            Vector listeners = commandListeners;
-            int count = listeners.size();
-            for (int i = 0; i < count; i++)
+            for (int i=0; i<listeners.size(); i++)
             {
-                ((DisplaySelectListener) listeners.elementAt(i)).passageSelected(ev);
+                DisplaySelectListener li = (DisplaySelectListener) listeners.get(i); 
+                li.passageSelected(ev);
             }
         }
     }
@@ -489,13 +523,12 @@ public class DisplaySelectPane extends JPanel
      */
     protected void fireVersionChanged(DisplaySelectEvent ev)
     {
-        if (versionListeners != null)
+        if (listeners != null)
         {
-            Vector listeners = versionListeners;
             int count = listeners.size();
             for (int i = 0; i < count; i++)
             {
-                ((DisplaySelectListener) listeners.elementAt(i)).bookChosen(ev);
+                ((DisplaySelectListener) listeners.get(i)).bookChosen(ev);
             }
         }
     }
@@ -508,8 +541,8 @@ public class DisplaySelectPane extends JPanel
 
     private String title = "Untitled " + (base++);
 
-    private transient Vector commandListeners;
-    private transient Vector versionListeners;
+    private transient List listeners;
+
     private BooksComboBoxModel mdl_versn = null;
     private PassageSelectionPane dlg_select = new PassageSelectionPane();
     private JLabel lbl_passg = new JLabel();

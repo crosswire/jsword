@@ -787,6 +787,17 @@ public class ParentTstPassage extends TestCase
         assertEquals(temp.getName(), "Gen 1:4");
         temp.retainAll(PassageFactory.createPassage("Gen 1:1"));
         assertEquals(temp.getName(), "");
+
+        temp.addAll(grace);
+        assertEquals(temp.countVerses(), grace.countVerses());
+        temp.retainAll(gen_rev);
+        assertEquals(temp, grace);
+        temp.retainAll(PassageFactory.createPassage("gen"));
+        assertEquals(temp.countVerses(), 10);
+        temp.retainAll(PassageFactory.createPassage("gen 35:1-rev"));
+        assertEquals(temp.countVerses(), 4);
+        temp.retainAll(PassageFactory.createPassage("exo-rev"));
+        assertEquals(temp.getName(), "");
     }
 
     public void testWriteObject() throws Exception

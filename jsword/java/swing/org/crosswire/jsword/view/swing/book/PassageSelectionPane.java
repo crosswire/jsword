@@ -236,11 +236,11 @@ public class PassageSelectionPane extends JPanel
     {
         try
         {
-            txt_display.setText(refstr);
-
             ref = PassageFactory.createPassage(refstr);
+
+            txt_display.setText(refstr);
             lst_sel.setModel(new PassageListModel(ref, PassageListModel.LIST_RANGES));
-        
+
             ref.addPassageListener(new CustomPassageListener());
             updateMessageSummary();
         }

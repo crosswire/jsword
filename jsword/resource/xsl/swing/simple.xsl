@@ -63,11 +63,13 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Structural elements
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
 
   <xsl:template match="/osis">
+    <!--
     <xsl:message>osis-id-type is <xsl:value-of select="$osis-id-type"/></xsl:message>
     <xsl:message>page-div-type is <xsl:value-of select="$page-div-type"/></xsl:message>
+    -->
+
     <html>
       <head>
         <style>
@@ -139,9 +141,10 @@
     </xsl:choose>
     </h2>
 
-    <hr class="navigation-separator-top" />
+    <!--hr class="navigation-separator-top"></hr-->
     <xsl:apply-templates/>
-    <hr class="navigation-separator-bottom" />
+    <!--hr class="navigation-separator-bottom"></hr-->
+    <p>&#0160;</p>
 
   </xsl:template>
 
@@ -292,7 +295,7 @@
           </xsl:for-each>
         </dl>
       </xsl:when>
-      
+
       <xsl:otherwise>
         <!-- If there are no <label>s in the list, it's a plain old <ul>. -->
         <ul class="list">

@@ -104,7 +104,7 @@ public class RemoteBible extends AbstractBible
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
             method.addParam(RemoteConstants.PARAM_FINDSTRING, search.getMatch());
             method.addParam(RemoteConstants.PARAM_FINDMATCH, ""+search.isBestMatch());
-            method.addParam(RemoteConstants.PARAM_FINDRANGE, search.getRange().getName());
+            method.addParam(RemoteConstants.PARAM_FINDRANGE, search.getRestriction().getName());
             Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToPassage(doc);

@@ -96,7 +96,7 @@ public class LocalRemoter implements Remoter
                 String refstr = method.getParameter(RemoteConstants.PARAM_FINDRANGE);
                 Passage range = PassageFactory.createPassage(refstr);
                 Search search = new Search(word, match);
-                search.setRange(range);
+                search.setRestriction(range);
 
                 Passage ref = bible.findPassage(search);
                 return Converter.convertPassageToDocument(ref);

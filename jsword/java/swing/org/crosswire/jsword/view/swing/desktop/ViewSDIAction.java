@@ -41,6 +41,6 @@ public class ViewSDIAction extends DesktopAbstractAction
 
     public void actionPerformed(ActionEvent ev)
     {
-        getDesktop().setViewLayout(getDesktop().VIEW_SDI);
+        getDesktop().setLayoutType(Desktop.LAYOUT_TYPE_SDI);
     }
 }

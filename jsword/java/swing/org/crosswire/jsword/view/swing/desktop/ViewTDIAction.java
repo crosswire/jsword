@@ -41,6 +41,6 @@ public class ViewTDIAction extends DesktopAbstractAction
 
     public void actionPerformed(ActionEvent ev)
     {
-        getDesktop().setViewLayout(getDesktop().VIEW_TDI);
+        getDesktop().setLayoutType(Desktop.LAYOUT_TYPE_TDI);
     }
 }

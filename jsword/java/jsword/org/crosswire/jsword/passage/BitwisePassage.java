@@ -262,7 +262,7 @@ public class BitwisePassage extends AbstractPassage
 
     /**
      * Retains only the Verses in this Passage that are contained in the
-     * specified Passage.  In other words, removes from this Passage
+     * specified Passage. In other words, removes from this Passage
      * all of its Verses that are not contained in the specified Passage
      * @param that Verses to be retained in this Passage.
      */

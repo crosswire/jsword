@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.Reporter;
@@ -54,7 +53,7 @@ public class OuterDisplayPane extends JPanel
     {
         try
         {
-            version = Defaults.getBibleMetaData().getBible();
+            Bible version = Defaults.getBibleMetaData().getBible();
             txt_passg.setVersion(version);
         }
         catch (Throwable ex)
@@ -116,7 +115,6 @@ public class OuterDisplayPane extends JPanel
 
     /**
      * Get the passage being displayed.
-     * For the ListDeleteAction
      */
     public Passage getPassage()
     {
@@ -124,20 +122,41 @@ public class OuterDisplayPane extends JPanel
     }
 
     /**
-     * Accessor for the PassageList.
-     * For cut, copy and paste
+     * 
+     * @param view
      */
-    public PassageList getPassageList()
+    public void deleteSelected(BibleViewPane view)
     {
-        return lst_passg;
+        lst_passg.deleteSelected();
+        
+        // Update the text box
+        Passage ref = lst_passg.getPassage();
+        DisplaySelectPane psel = view.getSelectPane();
+        psel.setPassage(ref);
     }
 
     /**
-     * Accessor for the current TextComponent
+     * Copy the selection to the clipboard
      */
-    public JTextComponent getJTextComponent()
+    public void cut()
     {
-        return txt_passg.getJTextComponent();
+        txt_passg.getJTextComponent().cut();
+    }
+
+    /**
+     * Copy the selection to the clipboard
+     */
+    public void copy()
+    {
+        txt_passg.getJTextComponent().copy();
+    }
+
+    /**
+     * Copy the selection to the clipboard
+     */
+    public void paste()
+    {
+        txt_passg.getJTextComponent().paste();
     }
 
     /**
@@ -149,26 +168,19 @@ public class OuterDisplayPane extends JPanel
         {
             Object[] ranges = lst_passg.getSelectedValues();
 
+            Passage ref = PassageFactory.createPassage();
+            for (int i=0; i<ranges.length; i++)
+            {
+                ref.add((VerseRange) ranges[i]);
+            }
+
             // if there was a single selection then show the whole chapter
             if (ranges.length == 1)
             {
-                VerseRange range = (VerseRange) ranges[0];
-
-                Passage ref = PassageFactory.createPassage();
-                ref.add(range);
                 ref.blur(1000, Passage.RESTRICT_CHAPTER);
-
-                txt_passg.setPassage(ref);
             }
-            else
-            {
-                Passage ref = PassageFactory.createPassage();
-                for (int i=0; i<ranges.length; i++)
-                {
-                    ref.add((VerseRange) ranges[i]);
-                }
 
-            }
+            txt_passg.setPassage(ref);
         }
         catch (Throwable ex)
         {
@@ -180,11 +192,6 @@ public class OuterDisplayPane extends JPanel
      * The log stream
      */
     protected static Logger log = Logger.getLogger(OuterDisplayPane.class);
-
-    /**
-     * What is being displayed
-     */
-    protected Bible version = null;
 
     private JSplitPane spt_passg = new JSplitPane();
     private JScrollPane scr_passg = new JScrollPane();
@@ -204,19 +211,25 @@ public class OuterDisplayPane extends JPanel
          */
         public void bookChosen(DisplaySelectEvent ev)
         {
-            version = (Bible) ev.getBook();
+            log.debug("new bible chosen: "+ev.getBook().getBookMetaData().getFullName());
+
+            Bible version = (Bible) ev.getBook();
             txt_passg.setVersion(version);
     
-            // refresh the view
-            selection();
+            // The following way to refresh the view is a little harsh because
+            // resets any list selections. It would be nice if we could get
+            // away with calling selection(), however it doesn't seem to work.
+            setPassage(ev.getPassage());
         }
-    
+
         /**
          * Someone wants us to display a new passage
          * @see org.crosswire.jsword.view.swing.event.DisplaySelectListener#passageSelected(DisplaySelectEvent)
          */
         public void passageSelected(DisplaySelectEvent ev)
         {
+            log.debug("new passage chosen: "+ev.getPassage().getName());
+
             setPassage(ev.getPassage());
         }
     }

@@ -41,6 +41,6 @@ public class ViewMDIAction extends DesktopAbstractAction
 
     public void actionPerformed(ActionEvent ev)
     {
-        getDesktop().setViewLayout(getDesktop().VIEW_MDI);
+        getDesktop().setLayoutType(Desktop.LAYOUT_TYPE_MDI);
     }
 }

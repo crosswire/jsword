@@ -93,6 +93,14 @@
     <help>The look and feel of the application</help>
   </option>
 
+  <option key="Looks.Initial Layout" type="int-options">
+  	<introspect class="org.crosswire.jsword.view.swing.desktop.Desktop" property="InitialLayoutType"/>
+    <help>Do you want to start in SDI, TDI or MDI view mode</help>
+    <alternative number="0" name="Single Document Interface"/>
+    <alternative number="1" name="Tabbed Document Interface"/>
+    <alternative number="2" name="Multiple Document Interface"/>
+  </option>
+
   <option key="Reports.Exceptions to Dialog Box" type="boolean">
   	<introspect class="org.crosswire.common.swing.ExceptionPane" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a GUI window.</help>
@@ -116,6 +124,15 @@
   <option key="Advanced.XSLT.Cache" type="boolean">
   	<introspect class="org.crosswire.jsword.util.Style" property="Cache"/>
     <help>Do we cache the XSLT pages (faster but a pain for development).</help>
+  </option>
+
+  <option key="Advanced.Passage.Default Type" type="int-options">
+  	<introspect class="org.crosswire.jsword.passage.PassageFactory" property="DefaultPassage"/>
+    <help>What type of passage does the PassageFactory create by default.</help>
+    <alternative number="0" name="Speed (Rocket)"/>
+    <alternative number="1" name="Write Speed (Bitwise)"/>
+    <alternative number="2" name="Size (Distinct)"/>
+    <alternative number="3" name="Mix (Ranged)"/>
   </option>
 
 </config>

@@ -65,6 +65,16 @@ public class PassageFactory
     }
 
     /**
+     * Get the default reference type.
+     * @return default_type The new default type.
+     * @see PassageFactory#setDefaultPassage(int)
+     */
+    public static int getDefaultPassage()
+    {
+        return default_type;
+    }
+
+    /**
      * Create an empty Passage using the default type.
      * @return The new Passage
      */
