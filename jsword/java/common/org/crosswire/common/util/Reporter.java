@@ -74,7 +74,9 @@ public class Reporter
         templog.warn(prob.getMessage(), prob);
 
         if (prob instanceof ThreadDeath)
+        {
             throw (ThreadDeath) prob;
+        }
 
         fireCapture(new ReporterEvent(source, prob));
     }
@@ -129,7 +131,7 @@ public class Reporter
 
             if (listeners.length == 0)
             {
-                log.warn("Nothing to listen to report: "+ev.getMessage());
+                log.warn("Nothing to listen to report: message="+ev.getMessage(), ev.getException());
             }
 
             // Process the listeners last to first, notifying

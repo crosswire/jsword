@@ -84,6 +84,23 @@ public class SerSearcher implements Searcher
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#findPassage(org.crosswire.jsword.book.Search)
+     */
+    public Passage findPassage(Search search) throws BookException
+    {
+        Parser parser = new Parser(this);
+        return parser.search(search);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#delete()
+     */
+    public void delete() throws BookException
+    {
+        // NOTE(joe): write delete()
+    }
+
     /**
      * Retrieval: Return an array of words that are used by this Bible
      * that start with the given string. For example calling:
@@ -147,23 +164,6 @@ public class SerSearcher implements Searcher
 
             return PassageFactory.createPassage();
         }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.Searcher#findPassage(org.crosswire.jsword.book.Search)
-     */
-    public Passage findPassage(Search search) throws BookException
-    {
-        Parser parser = new Parser(this);
-        return parser.search(search);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.Searcher#delete()
-     */
-    public void delete() throws BookException
-    {
-        // NOTE(joe): write delete()
     }
 
     /**

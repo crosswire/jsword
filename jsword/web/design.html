@@ -1,12 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 <title>JSword - Design Overview</title>
 <link rel="stylesheet" type="text/css" href="sword.css"/>
 </head>
+
 <body>
+
 <h1>Design Overview</h1>
+
 <p>This is an overview of JSword that explains how the Book and Bible interfaces
   are arranged and explains some of the design decisions.</p>
+
 <p>The most important thing any Bible program does is to access Bible data, and
   in more general terms, book data. There may be many different sources of data
   - Bibles stored in different formats, or even on remote systems, dictionaries,
@@ -17,29 +24,35 @@
   as possible. The first goal is to read data and to be able to direct where
   to read from with some sort of pointer system. So we start with an interface
   that looks like this:</p>
+
 <pre>interface Book
 {
     BookData getData(Key ptr);
 }</pre>
+
 <p>Before we look at what BookData and Key looks like, a Book will need to be
   able to do 2 other things:<br/>
   Firstly tell us about itself: what it is called, where it comes from and so
   on - MetaData about the Book itself. Secondly help us to find stuff by searching.</p>
+
 <pre>interface Book
 {
     BookData getData(Key ptr);
     BookMetaData getMetaData();
     Key search(Search word);
 }</pre>
+
 <p>JSword has split searching away from implmenting the core Book interface so
   there is a Searcher interface that allows a search engine to index a Book and
   provide search results.</p>
+
 <p>This interface can be implemented several times, once by something that reads
   Sword format data, once by something that reads JSword format data, and so
   on. The users, and indeed the developers of the front ends do not want to know
   about the various different implementors and what implementations need to be
   looked at. So we can use a couple of classes to fix this. If you like GoF patterns,
   an AbstractFactory:</p>
+
 <pre>interface Books
 {
     List getBooks();
@@ -47,6 +60,7 @@
 	void addBooksListener(BooksListener li);
 	void removeBooksListener(BooksListener li);
 }</pre>
+
 <p>Both getBooks() methods allow you to iterate over the Books known to the whole
   system (Books), and to Filter out the uninteresting Books. There is a BookFilters
   class that contains a set of default implentations.<br/>
@@ -58,6 +72,7 @@
 {
     Book getBook();
 }</pre>
+
 <p>Before we move on to what BookData and Key look like, I have intentionally
   ignored 2 issues: Encrypted works - some works will need to be encrypted -
   however the finding of keys or deobfustication will be done within the Driver
@@ -67,9 +82,11 @@
   care of configuring the Books that it creates we don't attempt to do anything
   more fancy even though there are parts of JSword that have implemented a generic
   configuration system.</p>
+
 <p>BookData and Key are related. BookData describes the actual Book text (for
   example "In the beginning God created ...") and Key describes where that text
   comes from (for example "Gen 1:1")</p>
+
 <p>BookData first. We do not want to force users of this code to use it in any
   specific way, so BookData should describe the text in as much detail as possible
   without forcing how that text is used. The final display could be a PDA, a
@@ -83,6 +100,7 @@
   It also turn out to be very easy in Java simply by using the XSL libraries
   produced by Sun and Apache. XSL libraries are freely available in all good
   languages.</p>
+
 <p>Key is used to request BookData from a Book and are also used as a reply from
   a search - so we have Keys that tell us where the word "aaron" exists in a
   particular Book. For the case of a Bible a Key could look like this: "Gen 1:1,
@@ -91,9 +109,11 @@
   There is no requirement on Key for them to apply only to single results, or
   even for the results to be contiguous (it would be of little use in search
   results if this was to be the case).</p>
+
 <p>For the Bible case a Key is a collection of verses, and JSword has a set of
   classes called Verse, VerseRange and Passage which are a fundamental building
   block in this. The Passage package has classes to do all sorts of useful manipulations
   to lists of verses.</p>
+
 </body>
 </html>

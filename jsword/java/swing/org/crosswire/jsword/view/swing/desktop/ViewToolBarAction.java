@@ -34,8 +34,8 @@ public class ViewToolBarAction extends DesktopAbstractAction
     {
         super(tools,
               "Toolbar",
-              "/toolbarButtonGraphics/general/AlignTop16.gif",
-              "/toolbarButtonGraphics/general/AlignTop24.gif",
+              "toolbarButtonGraphics/general/AlignTop16.gif",
+              "toolbarButtonGraphics/general/AlignTop24.gif",
               "Toggle Toolbar", "Toggle the display of the toolbar.",
               'A', null);
     }

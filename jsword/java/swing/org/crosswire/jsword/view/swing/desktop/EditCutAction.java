@@ -39,8 +39,8 @@ public class EditCutAction extends DesktopAbstractAction
     {
         super(tools,
               "Cut",
-              "/toolbarButtonGraphics/general/Cut16.gif",
-              "/toolbarButtonGraphics/general/Cut24.gif",
+              "toolbarButtonGraphics/general/Cut16.gif",
+              "toolbarButtonGraphics/general/Cut24.gif",
               "Cut", "Cut the selection.",
               'U', KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.ALT_MASK, false));
 

@@ -316,8 +316,8 @@ public class Splash extends JWindow
         {
             super(comp,
                   "About ...",
-                  "/toolbarButtonGraphics/general/About16.gif",
-                  "/toolbarButtonGraphics/general/About24.gif",
+                  "toolbarButtonGraphics/general/About16.gif",
+                  "toolbarButtonGraphics/general/About24.gif",
                   "About this program", "Display details about this program.",
                   'A', null);
         }

@@ -143,8 +143,8 @@ public class ComparePane extends EirPanel
         {
             super(comp,
                   "Version Compare ...",
-                  "/toolbarButtonGraphics/media/Pause16.gif",
-                  "/toolbarButtonGraphics/media/Pause24.gif",
+                  "toolbarButtonGraphics/media/Pause16.gif",
+                  "toolbarButtonGraphics/media/Pause24.gif",
                   "Compare Versions", "Compare text produced by different drivers.",
                   'S', null);
         }

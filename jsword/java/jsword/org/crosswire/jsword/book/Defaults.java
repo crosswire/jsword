@@ -45,7 +45,7 @@ public class Defaults
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(Books.class);
+    private static Logger log = Logger.getLogger(Defaults.class);
 
     /**
      * Has the default Bible been manually set or are we picking the fastest
@@ -110,7 +110,9 @@ public class Defaults
     public static String getBibleByName()
     {
         if (bdeft == null)
+        {
             return null;
+        }
 
         return bdeft.getFullName();
     }
@@ -130,7 +132,11 @@ public class Defaults
      */
     public static void setBibleByName(String name) throws BookException
     {
-        autobdeft = false;
+        if (name == null || name.length() == 0)
+        {
+            log.warn("Attempt to set empty Bible as default. Ignoring");
+            return;
+        }
 
         List lbmds = Books.getBooks(BookFilters.getBibles());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
@@ -144,7 +150,7 @@ public class Defaults
             }
         }
     
-        throw new BookException(Msg.BOOK_NOTFOUND, new Object[] { name });
+        throw new BookException(Msg.BIBLE_NOTFOUND, new Object[] { name });
     }
 
     /**
@@ -178,7 +184,9 @@ public class Defaults
     public static String getCommentaryByName()
     {
         if (cdeft == null)
+        {
             return null;
+        }
 
         return cdeft.getFullName();
     }
@@ -198,7 +206,11 @@ public class Defaults
      */
     public static void setCommentaryByName(String name) throws BookException
     {
-        autocdeft = false;
+        if (name == null || name.length() == 0)
+        {
+            log.warn("Attempt to set empty Commentary as default. Ignoring");
+            return;
+        }
 
         List lbmds = Books.getBooks(BookFilters.getCommentaries());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
@@ -212,7 +224,7 @@ public class Defaults
             }
         }
     
-        throw new BookException(Msg.BOOK_NOTFOUND, new Object[] { name });
+        throw new BookException(Msg.COMMENTARY_NOTFOUND, new Object[] { name });
     }
 
     /**
@@ -246,7 +258,9 @@ public class Defaults
     public static String getDictionaryByName()
     {
         if (ddeft == null)
+        {
             return null;
+        }
 
         return ddeft.getFullName();
     }
@@ -266,7 +280,11 @@ public class Defaults
      */
     public static void setDictionaryByName(String name) throws BookException
     {
-        autobdeft = false;
+        if (name == null || name.length() == 0)
+        {
+            log.warn("Attempt to set empty Dictionary as default. Ignoring");
+            return;
+        }
 
         List lbmds = Books.getBooks(BookFilters.getDictionaries());
         for (Iterator it=lbmds.iterator(); it.hasNext();)
@@ -280,7 +298,7 @@ public class Defaults
             }
         }
     
-        throw new BookException(Msg.BOOK_NOTFOUND, new Object[] { name });
+        throw new BookException(Msg.DICTIONRY_NOTFOUND, new Object[] { name });
     }
 
     /**

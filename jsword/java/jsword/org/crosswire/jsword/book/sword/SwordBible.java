@@ -46,7 +46,6 @@ public class SwordBible extends AbstractBible
 {
     /**
      * Constructor SwordBible.
-     * @param swordConfig
      */
     public SwordBible(SwordBibleMetaData sbmd, SwordConfig config)
     {

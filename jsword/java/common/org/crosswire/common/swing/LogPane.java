@@ -72,8 +72,8 @@ public class LogPane extends EirPanel
         {
             super(comp,
                   "Problem History ...",
-                  "/toolbarButtonGraphics/general/History16.gif",
-                  "/toolbarButtonGraphics/general/History24.gif",
+                  "toolbarButtonGraphics/general/History16.gif",
+                  "toolbarButtonGraphics/general/History24.gif",
                   "Problem History", "Display list of captured problems.",
                   'P', null);
         }

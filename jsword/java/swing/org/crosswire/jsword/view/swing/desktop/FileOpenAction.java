@@ -37,8 +37,8 @@ public class FileOpenAction extends DesktopAbstractAction
     {
         super(tools,
               "Open ...",
-              "/toolbarButtonGraphics/general/Open16.gif",
-              "/toolbarButtonGraphics/general/Open24.gif",
+              "toolbarButtonGraphics/general/Open16.gif",
+              "toolbarButtonGraphics/general/Open24.gif",
               "Open Passage", "Open a saved passage.",
               'O', KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK, false));
     }

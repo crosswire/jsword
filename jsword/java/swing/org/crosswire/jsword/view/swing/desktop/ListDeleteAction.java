@@ -36,8 +36,8 @@ public class ListDeleteAction extends DesktopAbstractAction
     {
         super(tools,
               "Delete Selected",
-              "/toolbarButtonGraphics/general/Remove16.gif",
-              "/toolbarButtonGraphics/general/Remove24.gif",
+              "toolbarButtonGraphics/general/Remove16.gif",
+              "toolbarButtonGraphics/general/Remove24.gif",
               "Delete selected verses", "Deleted the selected verses in the current verse list.",
               'D', null);
     }

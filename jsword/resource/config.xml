@@ -113,17 +113,17 @@
     <alternative number="2" name="Multiple Document Interface"/>
   </option>
 
-  <option key="Reports.Exceptions to Dialog Box" type="boolean">
+  <option key="Reports.Exceptions to Dialog Box" type="boolean" priority="8">
   	<introspect class="org.crosswire.common.swing.ExceptionPane" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a GUI window.</help>
   </option>
 
-  <option key="Reports.Exceptions to Log Window" type="boolean">
+  <option key="Reports.Exceptions to Log Window" type="boolean" priority="8">
   	<introspect class="org.crosswire.common.swing.ExceptionShelf" property="HelpDeskListener"/>
     <help>Do we display Exceptions in a the GUI shelf.</help>
   </option>
 
-  <option key="Advanced.Source Path" type="path">
+  <option key="Advanced.Source Path" type="path" priority="9">
   	<introspect class="org.crosswire.common.swing.ExceptionPane" property="SourcePath"/>
     <help>The directories to search for source code in when investigating an exception.</help>
   </option>

@@ -106,8 +106,8 @@ public class BenchmarkPane extends EirPanel
         {
             super(comp,
                   "Benchmark ...",
-                  "/toolbarButtonGraphics/media/Movie16.gif",
-                  "/toolbarButtonGraphics/media/Movie24.gif",
+                  "toolbarButtonGraphics/media/Movie16.gif",
+                  "toolbarButtonGraphics/media/Movie24.gif",
                   "Becnhmark", "Run a benchmark test.",
                   'B', null);
         }

@@ -86,7 +86,7 @@ public class ExceptionPane extends JPanel
         // The upper pane
         message.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         message.setText(exmsg);
-        message.setIcon(GuiUtil.getIcon("/toolbarButtonGraphics/general/Stop24.gif"));
+        message.setIcon(GuiUtil.getIcon("toolbarButtonGraphics/general/Stop24.gif"));
         message.setIconTextGap(20);
         
         banner.setLayout(new BorderLayout());

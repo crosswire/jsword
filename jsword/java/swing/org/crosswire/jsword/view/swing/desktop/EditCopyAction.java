@@ -39,8 +39,8 @@ public class EditCopyAction extends DesktopAbstractAction
     {
         super(tools,
               "Copy",
-              "/toolbarButtonGraphics/general/Copy16.gif",
-              "/toolbarButtonGraphics/general/Copy24.gif",
+              "toolbarButtonGraphics/general/Copy16.gif",
+              "toolbarButtonGraphics/general/Copy24.gif",
               "Copy", "Copy the selection.",
               'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.ALT_MASK, false));
     }

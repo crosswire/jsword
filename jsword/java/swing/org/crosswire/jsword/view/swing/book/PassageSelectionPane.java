@@ -76,13 +76,13 @@ public class PassageSelectionPane extends JPanel
     {
         try
         {
-            URL url_good = Project.resource().getResource("/toolbarButtonGraphics/general/About24.gif");
+            URL url_good = Project.resource().getResource("toolbarButtonGraphics/general/About24.gif");
             if (url_good != null)
             {
                 ico_good = new ImageIcon(url_good);
             }
             
-            URL url_bad = Project.resource().getResource("/toolbarButtonGraphics/general/Stop24.gif");
+            URL url_bad = Project.resource().getResource("toolbarButtonGraphics/general/Stop24.gif");
             if (url_bad != null)
             {
                 ico_bad = new ImageIcon(url_bad);

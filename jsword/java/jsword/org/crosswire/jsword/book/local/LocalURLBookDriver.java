@@ -246,14 +246,18 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
                     log.debug("Found BibleRoot from system property jsword.bible.dir at "+sysprop+"");
                     root = found;
                 }
+                else
+                {
+                    log.warn("Missing jsword.bible.dir under: "+test.toExternalForm());
+                }
             }
 
             // If not then try a wild guess
             if (root == null)
             {
-                URL found = Project.resource().getResource("/versions/locator.properties");
-                root = NetUtil.shortenURL(found, "/locator.properties");
-                log.debug("Found BibleRoot using locator.properties: "+root);
+                URL found = Project.resource().getResource("versions/locator.properties");
+                root = NetUtil.shortenURL(found, "locator.properties");
+                log.debug("Guessing we'll find it at: "+root);
             }
         }
 

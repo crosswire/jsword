@@ -158,8 +158,8 @@ public class GeneratorPane extends EirPanel
         {
             super(comp,
                   "Generate ...",
-                  "/toolbarButtonGraphics/development/BeanAdd16.gif",
-                  "/toolbarButtonGraphics/development/BeanAdd24.gif",
+                  "toolbarButtonGraphics/development/BeanAdd16.gif",
+                  "toolbarButtonGraphics/development/BeanAdd24.gif",
                   "Generate", "Generate a new version file set.",
                   'G', null);
         }

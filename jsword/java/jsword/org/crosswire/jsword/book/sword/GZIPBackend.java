@@ -151,6 +151,12 @@ public class GZIPBackend implements Backend
             int testament = SwordConstants.getTestament(verse);
             long index = SwordConstants.getIndex(verse);
 
+            // If this is a single testament Bible, return nothing.
+            if (comp_raf[testament] == null)
+            {
+                return new byte[0];
+            }
+
             // 10 because we the index is 10 bytes long for each verse
             byte[] temp = SwordUtil.readRAF(comp_raf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 

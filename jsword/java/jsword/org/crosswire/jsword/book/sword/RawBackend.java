@@ -110,7 +110,13 @@ public class RawBackend implements Backend
         {
             int testament = SwordConstants.getTestament(v);
             long index = SwordConstants.getIndex(v);
-            
+
+            // If this is a single testament Bible, return nothing.
+            if (idx_raf[testament] == null)
+            {
+                return new byte[0];
+            }
+
             // Read the next ENTRY_SIZE byes.
             byte[] read = SwordUtil.readRAF(idx_raf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
 

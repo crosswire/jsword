@@ -53,8 +53,8 @@ public class OptionsAction extends DesktopAbstractAction
     {
         super(tools,
               "Options ...",
-              "/toolbarButtonGraphics/general/Properties16.gif",
-              "/toolbarButtonGraphics/general/Properties24.gif",
+              "toolbarButtonGraphics/general/Properties16.gif",
+              "toolbarButtonGraphics/general/Properties24.gif",
               "Options", "Alter system settings.",
               'O', null);
     }

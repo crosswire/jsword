@@ -3,16 +3,14 @@ package org.crosswire.common.swing;
 
 import java.awt.Button;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Label;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.AbstractButton;
@@ -22,6 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.text.JTextComponent;
+
+import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.util.Project;
 
 /**
  * Various Gui Utilities.
@@ -57,52 +58,16 @@ public class GuiUtil
      */
     public static ImageIcon getIcon(String name)
     {
-        URL url = GuiUtil.class.getResource(name);
-        if (url != null)
+        try
         {
+            URL url = Project.resource().getResource(name);
             return new ImageIcon(url);
         }
-    
-        // This should be log.warning() however the log may not be configured
-        System.out.println("Failed to find resource name='"+name+"'");
-    
-        return null;
-    }
-
-    /**
-     * Convenience for adding a set of components with similar
-     * layout constraints to a grid.
-     * @param pan The Panel to add to
-     * @param com The object to add
-     * @param cons The constraints object
-     * @param x The x grid position
-     * @param y The y grid position
-     * @param w The width (in grid squares)
-     * @param h The height (in grid squares)
-     */
-    public static void addConstrained(Container pan, Component com, GridBagConstraints cons, int x, int y, int w, int h)
-    {
-        GridBagLayout grid = (GridBagLayout) pan.getLayout();
-        cons.gridx = x;
-        cons.gridy = y;
-        cons.gridwidth = w;
-        cons.gridheight = h;
-        grid.setConstraints(com, cons);
-        pan.add(com);
-    }
-
-    /**
-     * To add a component at a specific place.
-     * @param cons The constraints object
-     * @param x The x grid position
-     * @param y The y grid position
-     * @param w The width (in grid squares)
-     * @param h The height (in grid squares)
-     */
-    public static void addAt(Container pan, Component com, int x, int y, int w, int h)
-    {
-        pan.add(com);
-        com.setBounds(x, y, w, h);
+        catch (MalformedURLException ex)
+        {
+            log.warn("Failed to find resource name='"+name+"'");
+            return null;
+        }
     }
 
     /**
@@ -262,12 +227,13 @@ public class GuiUtil
      * A more restricted version of pack() when the component is being pack()ed
      * for the first time.
      * Since this is a 'first time only' pack we are only concerned with screen
-     * size, and not any growths/shrinkages like {@see GuiUtil#restrainedRePack(Window)}.
+     * size, and not any growths/shrinkages like restrainedRePack(Window).
      * @param win The window to be packed
      * @param maxx The maximum fraction (0.0 to 1.0) of the screen to be taken
      * up horizontally (-1 means no restrictions to the horizontal alterations)
      * @param maxy The maximum fraction (0.0 to 1.0) of the screen to be taken
      * up vertically (-1 means no restrictions to the vertical alterations)
+     * @see GuiUtil#restrainedRePack(Window)
      */
     public static void restrainedPack(Window win, float maxx, float maxy)
     {
@@ -361,4 +327,9 @@ public class GuiUtil
 
         return comp.toString();
     }
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(GuiUtil.class);
 }

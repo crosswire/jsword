@@ -33,8 +33,8 @@ public class ScriptAction extends DesktopAbstractAction
     {
         super(tools,
               "Scripting ...",
-              "/toolbarButtonGraphics/development/Applet16.gif",
-              "/toolbarButtonGraphics/development/Applet24.gif",
+              "toolbarButtonGraphics/development/Applet16.gif",
+              "toolbarButtonGraphics/development/Applet24.gif",
               "Scripting", "Run some commands in a scripting language.",
               'S', null);
 

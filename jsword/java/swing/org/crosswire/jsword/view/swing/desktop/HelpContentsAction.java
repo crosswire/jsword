@@ -37,8 +37,8 @@ public class HelpContentsAction extends DesktopAbstractAction
     {
         super(tools,
               "Contents ...",
-              "/toolbarButtonGraphics/general/Help16.gif",
-              "/toolbarButtonGraphics/general/Help24.gif",
+              "toolbarButtonGraphics/general/Help16.gif",
+              "toolbarButtonGraphics/general/Help24.gif",
               "Help", "Help file contents.",
               'C', KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0, false));
     }

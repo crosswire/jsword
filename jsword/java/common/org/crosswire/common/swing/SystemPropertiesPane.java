@@ -82,8 +82,8 @@ public class SystemPropertiesPane extends EirPanel
         {
             super(comp,
                   "System Information ...",
-                  "/toolbarButtonGraphics/general/Information16.gif",
-                  "/toolbarButtonGraphics/general/Information24.gif",
+                  "toolbarButtonGraphics/general/Information16.gif",
+                  "toolbarButtonGraphics/general/Information24.gif",
                   "System Information", "Display system configuration information.",
                   'I', null);
         }

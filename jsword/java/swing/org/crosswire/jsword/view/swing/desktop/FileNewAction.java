@@ -39,8 +39,8 @@ public class FileNewAction extends DesktopAbstractAction
     {
         super(tools,
               "New Window",
-              "/toolbarButtonGraphics/general/New16.gif",
-              "/toolbarButtonGraphics/general/New24.gif",
+              "toolbarButtonGraphics/general/New16.gif",
+              "toolbarButtonGraphics/general/New24.gif",
               "New Window", "Open a new Bible View window",
               'N', KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK, false));
     }

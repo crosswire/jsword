@@ -366,7 +366,9 @@ public class Resource
     public URL getResource(String search) throws MalformedURLException
     {
         if (search.startsWith("/"))
-            log.warn("getResource("+search+") starts with a /. More chance of success if it doesn't");
+        {
+            log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't");
+        }
 
         URL reply = getClass().getResource(search);
         if (reply != null)

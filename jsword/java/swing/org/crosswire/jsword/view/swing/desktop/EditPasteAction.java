@@ -39,8 +39,8 @@ public class EditPasteAction extends DesktopAbstractAction
     {
         super(tools,
               "Paste",
-              "/toolbarButtonGraphics/general/Paste16.gif",
-              "/toolbarButtonGraphics/general/Paste24.gif",
+              "toolbarButtonGraphics/general/Paste16.gif",
+              "toolbarButtonGraphics/general/Paste24.gif",
               "Paste", "Paste the selection.",
               'P', KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.ALT_MASK, false));
 

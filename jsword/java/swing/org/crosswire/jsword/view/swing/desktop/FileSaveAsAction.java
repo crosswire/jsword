@@ -37,8 +37,8 @@ public class FileSaveAsAction extends DesktopAbstractAction
     {
         super(tools,
               "Save As ...",
-              "/toolbarButtonGraphics/general/SaveAs16.gif",
-              "/toolbarButtonGraphics/general/SaveAs24.gif",
+              "toolbarButtonGraphics/general/SaveAs16.gif",
+              "toolbarButtonGraphics/general/SaveAs24.gif",
               "Save Passage As", "Save the current passage under a different name.",
               'A', KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK, false));
     }

@@ -120,8 +120,8 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
             throw new BookException(Msg.READ_FAIL);
         }
 
-        // I18N(joe): check that this idiom works with all languages
-        return set.subSet(startswith, startswith+"zzzz");
+        // PENDING(joe): check that this idiom works
+        return set.subSet(startswith, startswith+"\u9999");
     }
 
     /* (non-Javadoc)

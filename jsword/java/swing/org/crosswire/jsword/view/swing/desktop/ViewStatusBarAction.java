@@ -34,8 +34,8 @@ public class ViewStatusBarAction extends DesktopAbstractAction
     {
         super(tools,
               "Status Bar",
-              "/toolbarButtonGraphics/general/AlignBottom16.gif",
-              "/toolbarButtonGraphics/general/AlignBottom24.gif",
+              "toolbarButtonGraphics/general/AlignBottom16.gif",
+              "toolbarButtonGraphics/general/AlignBottom24.gif",
               "Toggle Status Bar", "Toggle the display of the status bar.",
               'A', null);
     }

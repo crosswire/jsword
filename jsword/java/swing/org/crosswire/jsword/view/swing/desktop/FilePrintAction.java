@@ -37,8 +37,8 @@ public class FilePrintAction extends DesktopAbstractAction
     {
         super(tools,
               "Print ...",
-              "/toolbarButtonGraphics/general/Print16.gif",
-              "/toolbarButtonGraphics/general/Print24.gif",
+              "toolbarButtonGraphics/general/Print16.gif",
+              "toolbarButtonGraphics/general/Print24.gif",
               "Print Passage", "Print the current passage.",
               'P', KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK, false));
     }
