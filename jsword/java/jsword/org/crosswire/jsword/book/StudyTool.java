@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Element;
 
 /**
@@ -71,7 +73,15 @@ public class StudyTool
                     Translation trans = (Translation) reply.get(strongs);
                     if (trans == null)
                     {
-                        trans = new Translation(word, strongs, key);
+                        try
+                        {
+							trans = new Translation(word, strongs, bible.getKey(null));
+						}
+                        catch (NoSuchKeyException ex)
+                        {
+                            log.warn("Failed to create key", ex); //$NON-NLS-1$
+						}
+
                         reply.put(strongs, trans);
                     }
 
@@ -120,7 +130,15 @@ public class StudyTool
                     Translation trans = (Translation) reply.get(translated);
                     if (trans == null)
                     {
-                        trans = new Translation(translated, number, key);
+                        try
+                        {
+                            trans = new Translation(translated, number, bible.getKey(null));
+                        }
+                        catch (NoSuchKeyException ex)
+                        {
+                            log.warn("Failed to create key", ex); //$NON-NLS-1$
+                        }
+
                         reply.put(translated, trans);
                     }
 
@@ -131,4 +149,9 @@ public class StudyTool
 
         return reply.values();
     }
+
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(StudyTool.class);
 }

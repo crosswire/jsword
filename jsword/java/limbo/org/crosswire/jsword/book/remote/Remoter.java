@@ -31,7 +31,7 @@ public interface Remoter
 {
     /**
      * Call a remote method
-     * @param method. What to execute
+     * @param method What to execute
      * @return Document The results of the execution.
      */
     public Document execute(RemoteMethod method) throws RemoterException;
@@ -40,5 +40,4 @@ public interface Remoter
      * The name of this remoter to help the metadata
      */
     public String getRemoterName();
-
 }

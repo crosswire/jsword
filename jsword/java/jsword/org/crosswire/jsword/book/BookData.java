@@ -1,6 +1,7 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -49,13 +50,14 @@ public class BookData
     /**
      * Create a BibleData from a SAXEventProvider
      */
-    public BookData(SAXEventProvider provider) throws SAXException
+    public BookData(SAXEventProvider provider, Book book, Key key) throws SAXException
     {
+        SAXHandler handler = new SAXHandler();
         provider.provideSAXEvents(handler);
-        osis = handler.getDocument().getRootElement();
+        this.osis = handler.getDocument().getRootElement();
+        this.book = book;
+        this.key = key;
     }
-
-    private SAXHandler handler = new SAXHandler();
 
     /**
      * Accessor for the root OSIS element
@@ -74,8 +76,10 @@ public class BookData
     {
         StringBuffer buffer = new StringBuffer();
 
-        Iterator oit = getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
-        while (oit.hasNext())
+        Element osisText = getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+        List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
+
+        for (Iterator oit = divs.iterator(); oit.hasNext();)
         {
             Element div = (Element) oit.next();
 
