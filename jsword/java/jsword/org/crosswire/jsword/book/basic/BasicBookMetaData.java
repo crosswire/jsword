@@ -49,10 +49,7 @@ public class BasicBookMetaData implements BookMetaData
     {
         name = prop.getProperty("Version");
         edition = prop.getProperty("Edition");
-        
-        String openstr = prop.getProperty("Openness");
-        Openness.debug();
-        open = Openness.get(openstr);
+        open = Openness.get(prop.getProperty("Openness"));
 
         String licencestr = prop.getProperty("LicenceURL");
         if (licencestr == null)

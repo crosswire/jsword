@@ -66,7 +66,7 @@ public class Openness
     /**
      * debug the opennesses
      */
-    public static void debug()
+    public static void debugX()
     {
         System.out.println("all.length="+all.size());
         Iterator it = all.keySet().iterator();
