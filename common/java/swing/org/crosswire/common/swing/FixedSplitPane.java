@@ -1,0 +1,124 @@
+package org.crosswire.common.swing;
+
+import java.awt.Component;
+
+import javax.swing.JSplitPane;
+
+/**
+ * This is a hack to fix the setDividerLocation problem
+ * See Bug Parade 4101306, 4485465 for a description of the WIDE divider problem.
+ * 
+ * Bug Reports on JSplitpane setDividerLocation
+ * 4101306, 4125713, 4148530
+ *
+ * From the javadoc for setDividerLocation(double):
+ * -------------------------------------------
+ * <p>This method is implemented in terms of setDividerLocation(int).
+ * This method immediately changes the size of the receiver based on
+ * its current size. If the receiver is not correctly realized and on
+ * screen, this method will have no effect (new divider location will
+ * become (current size * proportionalLocation) which is 0).
+ * -------------------------------------------
+ * So, as you can see the JSplitPane MUST be visible invoking this method
+ * otherwise it will not have the desired effect.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
+public class FixedSplitPane extends JSplitPane
+{
+    /**
+     * Constructor for FixedSplitPane
+     */
+    public FixedSplitPane()
+    {
+        super();
+    }
+
+    /**
+     * Constructor for FixedSplitPane
+     */
+    public FixedSplitPane(int arg0)
+    {
+        super(arg0);
+    }
+
+    /**
+     * Constructor for FixedSplitPane
+     */
+    public FixedSplitPane(int arg0, boolean arg1)
+    {
+        super(arg0, arg1);
+    }
+
+    /**
+     * Constructor for FixedSplitPane
+     */
+    public FixedSplitPane(int arg0, Component arg1, Component arg2)
+    {
+        super(arg0, arg1, arg2);
+    }
+
+    /**
+     * Constructor for FixedSplitPane
+     */
+    public FixedSplitPane(int arg0, boolean arg1, Component arg2, Component arg3)
+    {
+        super(arg0, arg1, arg2, arg3);
+    }
+
+    /**
+     * Validates this container and all of its subcomponents. The first time
+     * this method is called, the initial divider position is set.
+     */
+    public void validate()
+    {
+        if (firstValidate)
+        {
+            firstValidate = false;
+            if (hasProportionalLocation)
+            {
+                setDividerLocation(proportionalLocation);
+            }
+        }
+        super.validate();
+    }
+
+    /**
+     * Sets the divider location as a percentage of the JSplitPane's size.
+     */
+    public void setDividerLocation(double newProportionalLocation)
+    {
+        if (!firstValidate)
+        {
+            hasProportionalLocation = true;
+            proportionalLocation = newProportionalLocation;
+        }
+        else
+        {
+            super.setDividerLocation(newProportionalLocation);
+        }
+    }
+
+    private boolean firstValidate = true;
+    private boolean hasProportionalLocation = false;
+    private double proportionalLocation;
+}
