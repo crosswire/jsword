@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * The NetUtil class looks after general utility stuff around the
@@ -534,44 +534,49 @@ public class NetUtil
      */
     public static long getLastModified(URL url)
     {
-        if (url.getProtocol().equals(PROTOCOL_JAR))
+        long time = 0;
+        URLConnection urlConnection = null;
+        try
+        {
+            urlConnection = url.openConnection();
+            time = urlConnection.getLastModified();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // If it were a jar then time contains the last modified date of the jar.
+        if (urlConnection instanceof JarURLConnection)
         {
             // form is jar:file:.../xxx.jar!.../filename.ext
+            JarURLConnection jarConnection = (JarURLConnection) urlConnection;
+            JarEntry jarEntry = null;
             try
             {
-                String spec = url.getFile();
-                int bang = spec.indexOf('!');
-
-                String jar = spec.substring(0, bang);
-                url = new URL(jar); // Note: replacing input argument!!!
-                JarFile jarfile = new JarFile(url.getFile());
-
-                // Skip the ! and the leading /
-                String file = spec.substring(bang + 2);
-                JarEntry jarEntry = jarfile.getJarEntry(file);
-
-                long time = jarEntry.getTime();
-                if (time != -1)
-                {
-                    return time;
-                }
+                jarEntry = jarConnection.getJarEntry();
             }
-            catch (IOException ex)
+            catch (IOException e2)
             {
-                log.debug("Could not get the file " + url + " from the jar." + ex); //$NON-NLS-1$ //$NON-NLS-2$
+                assert false;
             }
-
-            // If we got here we did not get the timestamp of the file in the jar
-            // So now get the timestamp of the jar itself.
+            time = jarEntry.getTime();
         }
 
-        if (url.getProtocol().equals(PROTOCOL_FILE))
-        {
-            File file = new File(url.getFile());
-            return file.lastModified();
-        }
+        return time;
+    }
 
-        return System.currentTimeMillis();
+    /**
+     * Returns whether the left is newer than the right by comparing their last
+     * modified dates.
+     * @param left
+     * @param right
+     * @return true if the left is newer
+     */
+    public static boolean isNewer(URL left, URL right)
+    {
+        return NetUtil.getLastModified(left) > NetUtil.getLastModified(right);
     }
 
     /**

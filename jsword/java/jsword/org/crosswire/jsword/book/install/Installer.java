@@ -71,7 +71,21 @@ public interface Installer extends BookList
 
     /**
      * @param bmd
-     * @return the url for the BookMetaData
+     * @return the remote url for the BookMetaData
      */
-    public URL toURL(BookMetaData bmd);
+    public URL toRemoteURL(BookMetaData bmd);
+
+    /**
+     * @param bmd
+     * @return the url for the directory for BookMetaData
+     */
+    public URL toLocalURL(BookMetaData bmd);
+
+    /**
+     * Return true if the module is not installed or there is a newer
+     * version to install.
+     * @param bmd
+     * @return whether there is a newer version to install
+     */
+    public boolean isNewer(BookMetaData bmd);
 }

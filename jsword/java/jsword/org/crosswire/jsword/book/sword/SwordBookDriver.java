@@ -76,7 +76,12 @@ public class SwordBookDriver extends AbstractBookDriver
                     try
                     {
                         File configfile = new File(mods, bookdir);
-                        SwordBookMetaData sbmd = new SwordBookMetaData(configfile, bookdir);
+                        String internal = bookdir;
+                        if (internal.endsWith(SwordConstants.EXTENSION_CONF))
+                        {
+                            internal = internal.substring(0, internal.length() - 5);
+                        }
+                        SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal);
                         sbmd.setDriver(this);
 
                         if (sbmd.isSupported())

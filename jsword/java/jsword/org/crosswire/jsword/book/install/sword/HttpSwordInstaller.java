@@ -110,7 +110,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     }
 
     /**
-     * Utility to download a file by FTP from a remote site
+     * Utility to download a file by HTTP from a remote site
      * @param site The place to download from
      * @param dir The directory from which to download the file
      * @param file The file to download
@@ -277,17 +277,11 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                 {
                     job.setProgress(Msg.JOB_INIT.toString());
 
-                    ModuleType type = sbmd.getModuleType();
-                    String modpath = type.getInstallDirectory();
-                    String destname = modpath + '/' + sbmd.getInternalName();
-
-                    File dldir = SwordBookDriver.getDownloadDir();
-                    File moddir = new File(dldir, SwordConstants.DIR_DATA);
-                    File fulldir = new File(moddir, destname);
-                    fulldir.mkdirs();
-                    URL desturl = new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
+                    URL desturl = toLocalURL(sbmd);
+                    NetUtil.makeDirectory(desturl);
                     downloadZip(job, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX, desturl);
 
+                    File dldir = SwordBookDriver.getDownloadDir();
                     job.setProgress(Msg.JOB_CONFIG.toString());
                     File confdir = new File(dldir, SwordConstants.DIR_CONF);
                     confdir.mkdirs();
@@ -317,7 +311,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#toURL(org.crosswire.jsword.book.BookMetaData)
      */
-    public URL toURL(BookMetaData bmd)
+    public URL toRemoteURL(BookMetaData bmd)
     {
         if (!(bmd instanceof SwordBookMetaData))
         {
@@ -329,12 +323,63 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
 
 	    try
         {
-            return new URL("http://" + host + directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
+            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
         }
         catch (MalformedURLException e)
         {
             return null;
         }
+	}
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#toLocalURL(org.crosswire.jsword.book.BookMetaData)
+     */
+    public URL toLocalURL(BookMetaData bmd)
+    {
+        File fulldir = toLocalDirectory(bmd);
+        try
+        {
+            return new URL(NetUtil.PROTOCOL_FILE, null, fulldir.getAbsolutePath());
+        }
+        catch (MalformedURLException e)
+        {
+            assert false;
+            return null;
+        }
+	}
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.BookMetaData)
+     */
+    public boolean isNewer(BookMetaData bmd)
+    {
+        URL local = toLocalURL(bmd);
+        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
+        local = NetUtil.lengthenURL(local, sbmd.getInternalName() + SwordConstants.EXTENSION_CONF);
+        URL remote = toRemoteURL(bmd);
+        return NetUtil.isNewer(remote, local);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#toLocalURL(org.crosswire.jsword.book.BookMetaData)
+     */
+    public File toLocalDirectory(BookMetaData bmd)
+    {
+        if (!(bmd instanceof SwordBookMetaData))
+        {
+            assert false;
+            return null;
+        }
+
+        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
+
+        ModuleType type = sbmd.getModuleType();
+        String modpath = type.getInstallDirectory();
+        String destname = modpath + '/' + sbmd.getInternalName();
+
+        File dldir = SwordBookDriver.getDownloadDir();
+        File moddir = new File(dldir, SwordConstants.DIR_DATA);
+        return new File(moddir, destname);
 	}
 
     /* (non-Javadoc)
@@ -446,66 +491,63 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
         URL cache = getCachedIndexFile();
         if (!NetUtil.isFile(cache))
         {
-            log.info("Missing cache file: " + cache.toExternalForm()); //$NON-NLS-1$
+            reloadIndex();
         }
-        else
+        try
         {
-            try
+            InputStream in = cache.openStream();
+            GZIPInputStream gin = new GZIPInputStream(in);
+            TarInputStream tin = new TarInputStream(gin);
+
+            while (true)
             {
-                InputStream in = cache.openStream();
-                GZIPInputStream gin = new GZIPInputStream(in);
-                TarInputStream tin = new TarInputStream(gin);
-
-                while (true)
+                TarEntry entry = tin.getNextEntry();
+                if (entry == null)
                 {
-                    TarEntry entry = tin.getNextEntry();
-                    if (entry == null)
-                    {
-                        break;
-                    }
-
-                    String internal = entry.getName();
-                    if (!entry.isDirectory())
-                    {
-                        try
-                        {
-                            int size = (int) entry.getSize();
-                            byte[] buffer = new byte[size];
-                            tin.read(buffer);
-
-                            if (internal.endsWith(SwordConstants.EXTENSION_CONF))
-                            {
-                                internal = internal.substring(0, internal.length() - 5);
-                            }
-                            if (internal.startsWith(SwordConstants.DIR_CONF + '/'))
-                            {
-                                internal = internal.substring(7);
-                            }
-
-                            Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                            SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
-
-                            if (sbmd.isSupported())
-                            {
-                                entries.put(sbmd.getName(), sbmd);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            log.warn("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
-                        }
-                    }
+                    break;
                 }
 
-                tin.close();
-                gin.close();
-                in.close();
-                loaded = true;
+                String internal = entry.getName();
+                if (!entry.isDirectory())
+                {
+                    try
+                    {
+                        int size = (int) entry.getSize();
+                        byte[] buffer = new byte[size];
+                        tin.read(buffer);
+
+                        if (internal.endsWith(SwordConstants.EXTENSION_CONF))
+                        {
+                            internal = internal.substring(0, internal.length() - 5);
+                        }
+                        if (internal.startsWith(SwordConstants.DIR_CONF + '/'))
+                        {
+                            internal = internal.substring(7);
+                        }
+
+                        Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
+                        SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
+
+                        if (sbmd.isSupported())
+                        {
+                            entries.put(sbmd.getName(), sbmd);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        log.warn("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
+                    }
+                }
             }
-            catch (IOException ex)
-            {
-                throw new InstallException(Msg.CACHE_ERROR, ex);
-            }
+
+            tin.close();
+            gin.close();
+            in.close();
+            loaded = true;
+        }
+        catch (IOException ex)
+        {
+            throw new InstallException(Msg.CACHE_ERROR, ex);
         }
     }
 
