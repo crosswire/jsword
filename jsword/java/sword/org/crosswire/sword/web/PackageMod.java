@@ -9,17 +9,16 @@
  */
 package org.crosswire.sword.web;
 
-import org.crosswire.sword.mgr.SWMgr;
-import org.crosswire.sword.mgr.SWConfig;
-import java.util.zip.*;
-import java.util.Enumeration;
-import java.io.OutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.util.Vector;
+import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import org.crosswire.sword.mgr.SWConfig;
+import org.crosswire.sword.mgr.SWMgr;
 
 public class PackageMod {
 
@@ -45,8 +44,8 @@ public class PackageMod {
 
     public static long getLastModFile(SWMgr mgr, String sourceDir, String modName) {
         String entry = null;
-        Enumeration fileList = null;
-        Vector files = new Vector();
+        //Enumeration fileList = null;
+        //Vector files = new Vector();
         long lastModFile = 0;
 
         if (!sourceDir.endsWith("/"))

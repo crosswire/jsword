@@ -10,12 +10,12 @@
     <classpathentry kind="lib" path="jar/junit37/junit.jar"/>
     <classpathentry kind="src" path="java/common"/>
     <classpathentry kind="src" path="java/commontest"/>
-    <classpathentry kind="src" path="java/sword"/>
-    <classpathentry kind="src" path="java/swordtest"/>
     <classpathentry kind="src" path="java/jsword"/>
     <classpathentry kind="src" path="java/jswordtest"/>
     <classpathentry kind="src" path="java/map"/>
     <classpathentry kind="src" path="java/maptest"/>
+    <classpathentry kind="src" path="java/sword"/>
+    <classpathentry kind="src" path="java/swordtest"/>
     <classpathentry exported="true" kind="lib" path="resource"/>
-    <classpathentry kind="output" path="target/eclipse/classes"/>
+    <classpathentry kind="output" path="target\eclipse\classes"/>
 </classpath>

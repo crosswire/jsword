@@ -1,6 +1,10 @@
 
 package org.crosswire.jsword.book;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * A definition of how open a Bible is. Can is be freely copied or is
  * it proprietary.
@@ -29,35 +33,82 @@ package org.crosswire.jsword.book;
 public class Openness
 {
     /**
+     * A collection of all the Opennesses. This MUST come before all the
+     * definitions below so that they can add themselves to this map.
+     */
+    private static final Map all = new HashMap();
+
+    /**
      * If the data of unknown distribution status
      */
-    public static final Openness STATUS_UNKNOWN = new Openness("Unknown", -1);
+    public static final Openness UNKNOWN = new Openness("Unknown");
 
     /**
      * If the data free of copyright restrictions
      */
-    public static final Openness STATUS_PD = new Openness("Public Domain", 0);
+    public static final Openness PD = new Openness("Public Domain");
 
     /**
      * Does the data have a licence that permits free use
      */
-    public static final Openness STATUS_FREE = new Openness("Free", 1);
+    public static final Openness FREE = new Openness("Free");
 
     /**
      * Is the data freely redistributable
      */
-    public static final Openness STATUS_COPYABLE = new Openness("Copyable", 2);
+    public static final Openness COPYABLE = new Openness("Copyable");
 
     /**
      * Is the data sold for commercial profit
      */
-    public static final Openness STATUS_COMMERCIAL = new Openness("Commercial", 3);
+    public static final Openness COMMERCIAL = new Openness("Commercial");
+
+    /**
+     * debug the opennesses
+     */
+    public static void debug()
+    {
+        System.out.println("all.length="+all.size());
+        Iterator it = all.keySet().iterator();
+        while (it.hasNext())
+        {
+            String desc = (String) it.next();
+            Openness open = (Openness) all.get(desc);
+            System.out.println(desc+".toString="+open.toString());
+        }
+    }
+
+    /**
+     * Get an openness by its name.
+     */
+    public static Openness get(String desc)
+    {
+        if (desc == null)
+            return UNKNOWN;
+
+        Openness reply = (Openness) all.get(desc);
+        if (reply != null)
+            return reply;
+
+        return UNKNOWN;
+    }
 
     /**
      * 
      */
-    private Openness(String desc, int order)
+    private Openness(String desc)
     {
+        this.desc = desc;
+        all.put(desc, this);
     }
 
+    /**
+     * String representation of this Object
+     */
+    public String toString()
+    {
+        return desc;
+    }
+
+    private String desc;
 }

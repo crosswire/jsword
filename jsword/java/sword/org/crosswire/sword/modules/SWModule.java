@@ -259,9 +259,9 @@ public class SWModule {
 	//	regex_t preg;
 		SWKey textkey = new SWKey();
 		List words = null;
-		String wordBuf = null;
+		//String wordBuf = null;
 		int wordCount = 0;
-		String sres;
+		//String sres;
 		ListKey listKey = new ListKey();
 
 		terminateSearch = false;
@@ -287,7 +287,7 @@ public class SWModule {
 	*/
 
 		if (searchType == -2) {
-			wordBuf = istr;
+			//wordBuf = istr;
 			words = new ArrayList();
 	/*
 			words.put(strtok(wordBuf, " ");

@@ -56,7 +56,7 @@ public class TestBibles extends TestCase
             Bible b = Bibles.getBible(names[i]);
             assertTrue(b != null);
         }
-        try { Bible b = Bibles.getBible("NONE"); fail(); }
+        try { Bibles.getBible("NONE"); fail(); }
         catch (BookException ex) { }
     }
 

@@ -3,14 +3,16 @@ package org.crosswire.jsword.book.stub;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.basic.VersionFactory;
+import org.crosswire.jsword.book.basic.BasicBookMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
@@ -80,7 +82,7 @@ public class StubBible extends AbstractBible
      */
     public BookMetaData getMetaData()
     {
-        return VersionFactory.getVersion("King James Version");
+        return new BasicBookMetaData("Stub Name", "Stub", "SV", new Date(), Openness.COPYABLE, null);
     }
 
     /**

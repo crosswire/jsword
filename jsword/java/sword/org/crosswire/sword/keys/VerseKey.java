@@ -159,8 +159,8 @@ public Object clone() {
 
 
 public void setLocale(String name) {
-	char []BMAX;
-	Canon.Book books[][];
+	// char []BMAX;
+	// Canon.Book books[][];
 	boolean useCache = false;
 
 	if (localeCache.name != null)
@@ -309,7 +309,8 @@ void freshtext() {
  */
 
 int getBookAbbrev(String abbr) {
-	int loop, diff, abLen, min, max, target;
+	// int loop
+    int diff, abLen, min, max, target;
 
 	abbr = abbr.trim().toUpperCase();
 	abLen = abbr.length();
@@ -348,7 +349,7 @@ int getBookAbbrev(String abbr) {
  */
 
 public ListKey ParseVerseList(String buf, String defaultKey, boolean expandRange) {
-	SWKey textkey;
+	// SWKey textkey;
 	ListKey internalListKey = new ListKey();
 /*
 	char book[255];

@@ -271,7 +271,6 @@ public class TestBooks extends TestCase
             }
         }
         int[] v111 = { 1, 1, 1 };
-        int[] test = null;
         assertEquals(Books.verseCount(v111, Books.patch(new int[]{1,1,1})),  1);
         assertEquals(Books.verseCount(v111, Books.patch(new int[]{1,1,0})),  1);
         assertEquals(Books.verseCount(v111, Books.patch(new int[]{1,0,1})),  1);

@@ -135,7 +135,7 @@ public class TestPassage extends TestCase
 
     protected void tearDown()
     {
-        float secs = (System.currentTimeMillis() - start) / 1000F;
+        // float secs = (System.currentTimeMillis() - start) / 1000F;
         // log(type+" total = "+secs+"s =======================");
 
         PassageFactory.setDefaultPassage(PassageFactory.SPEED);

@@ -50,6 +50,7 @@ public class TestJDBCBible extends TestCase
             int max_chapter = Books.chaptersInBook(b);
             int max_verse = Books.versesInChapter(b, max_chapter);
 
+            max_verse = max_verse;
             //test(db.verseOrdinal(b, 1, 1), Books.verseOrdinal(b, 1, 1));
             //test(db.verseOrdinal(b, max_chapter, max_verse), Books.verseOrdinal(b, max_chapter, max_verse));
 

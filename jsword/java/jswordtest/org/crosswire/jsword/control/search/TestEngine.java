@@ -47,7 +47,6 @@ public class TestEngine extends TestCase
 
     public void testSearch() throws Exception
     {
-        String[] temp = null;
         Hashtable commands = SearchDefault.getHashtable();
         Engine engine = new Engine(Bibles.getDefaultBible(), commands);
             try { engine.search("moses aaron"); fail(); } catch (SearchException ex) { }

@@ -7,7 +7,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
@@ -18,12 +17,16 @@ import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.crosswire.common.util.ArrayEnumeration;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertiesUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.BasicBookMetaData;
 import org.crosswire.jsword.book.basic.VersewiseBible;
-import org.crosswire.jsword.book.basic.VersionFactory;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
@@ -34,11 +37,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.common.util.ArrayEnumeration;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertiesUtil;
-import org.crosswire.common.util.Reporter;
 
 /**
  * A Biblical source that comes from files on the local file system.

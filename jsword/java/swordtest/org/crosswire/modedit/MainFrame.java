@@ -1,23 +1,44 @@
 package org.crosswire.modedit;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.awt.AWTEvent;
+import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import javax.swing.event.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 
-import org.crosswire.sword.frontend.im.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+
+import org.crosswire.sword.frontend.im.HebrewDurusauIM;
+import org.crosswire.sword.frontend.im.HebrewMCIM;
+import org.crosswire.sword.frontend.im.NullIM;
+import org.crosswire.sword.frontend.im.SWInputMethod;
 
 public class MainFrame extends JFrame {
     JPanel contentPane;

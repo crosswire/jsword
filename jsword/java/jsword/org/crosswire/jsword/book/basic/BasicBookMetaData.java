@@ -1,12 +1,18 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Openness;
+import org.crosswire.common.util.Level;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 
 /**
@@ -41,16 +47,54 @@ public class BasicBookMetaData implements BookMetaData
      */
     public BasicBookMetaData(Properties prop)
     {
-        this.name = prop.getProperty("Version");
-        this.edition = prop.getProperty("Edition");
-        this.pub = prop.getProperty("Date");
-        this.open = open;
-        this.licence = licence;
+        name = prop.getProperty("Version");
+        edition = prop.getProperty("Edition");
+        
+        String openstr = prop.getProperty("Openness");
+        Openness.debug();
+        open = Openness.get(openstr);
 
-        if (initials == null || initials.trim().length() == 0)
-            this.initials = StringUtil.getInitials(name);
+        String licencestr = prop.getProperty("LicenceURL");
+        if (licencestr == null)
+        {
+            licence = null;
+        }
         else
-            this.initials = initials;
+        {
+            try
+            {
+                licence = new URL(licencestr);
+            }
+            catch (MalformedURLException ex)
+            {
+                log.log(Level.WARNING, "Invalid url format: "+licencestr, ex);
+                licence = null;
+            }
+        }
+
+        String pubstr = prop.getProperty("Date");
+        if (pubstr == null)
+        {
+            pub = DEFAULT;
+        }
+        else
+        {
+            try
+            {
+                pub = df.parse(pubstr);
+            }
+            catch (ParseException ex)
+            {
+                log.log(Level.WARNING, "Invalid date format: "+pubstr, ex);
+                pub = DEFAULT;
+            }
+        }
+
+        initials = prop.getProperty("Initials");
+        if (initials == null || initials.trim().length() == 0)
+            initials = StringUtil.getInitials(name);
+        else
+            initials = initials;
     }
 
     /**
@@ -202,6 +246,37 @@ public class BasicBookMetaData implements BookMetaData
     public URL getLicence()
     {
         return licence;
+    }
+
+    /**
+     * 
+     */
+    private static final DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+
+    /**
+     * The default creation date
+     */
+    private static Date DEFAULT;
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger("bible.basic");
+
+    /**
+     * Setup the default publish date
+     */
+    static
+    {
+        try
+        {
+            DEFAULT = df.parse("01 Jan 1970");
+        }
+        catch (ParseException ex)
+        {
+            log.log(Level.WARNING, "Failed to set default fallback date", ex);
+            DEFAULT = new Date();
+        }
     }
 
     /**

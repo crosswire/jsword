@@ -1,14 +1,13 @@
 
 package org.crosswire.jsword.control.test;
 
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.control.search.Engine;
 import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.common.util.Reporter;
 
 /**
  * Speed is a simple benchmark that tests how fast a version is. The
@@ -113,7 +112,7 @@ public class Speed implements Runnable
         if (ref == null)
             throw new NullPointerException("Null Passage in dummyDisplay.");
 
-        BibleData bdoc = version.getData(ref);
+        version.getData(ref);
     }
 
     /**

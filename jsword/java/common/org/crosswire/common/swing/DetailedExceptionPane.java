@@ -117,7 +117,7 @@ public class DetailedExceptionPane
                 nest.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ev)
                     {
-                        ExceptionPane.showExceptionDialog(dialog, nex);
+                        DetailedExceptionPane.showExceptionDialog(dialog, nex);
                     }
                 });
                 heading.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
@@ -343,7 +343,7 @@ public class DetailedExceptionPane
             }
 
             // If we can't find a matching file
-            String error = "Can't open source for: "+st.getClassName(level)+"\n";
+            String error = "Can't open source for: '"+st.getClassName(level)+"' line: "+line_num+"\n";
             for (int i=0; i<source_path.length; i++)
             {
                 error += "Tried: "+source_path[i]+name+"\n";

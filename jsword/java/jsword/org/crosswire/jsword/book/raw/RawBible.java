@@ -5,16 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Properties;
 
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertiesUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookUtil;
+import org.crosswire.jsword.book.basic.BasicBookMetaData;
 import org.crosswire.jsword.book.basic.VersewiseBible;
-import org.crosswire.jsword.book.basic.VersionFactory;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DataUtil;
 import org.crosswire.jsword.book.data.DefaultBibleData;
@@ -27,10 +31,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertiesUtil;
-import org.crosswire.common.util.Reporter;
 
 /**
  * RawBible is a custom Bible. It is designed to be:<ul>
@@ -230,8 +230,7 @@ public class RawBible extends VersewiseBible
                 InputStream prop_in = prop_url.openStream();
                 Properties prop = new Properties();
                 PropertiesUtil.load(prop, prop_in);
-                String version_name = prop.getProperty("Version");
-                version = VersionFactory.getVersion(version_name);
+                version = new BasicBookMetaData(prop);
             }
             catch (Exception ex)
             {

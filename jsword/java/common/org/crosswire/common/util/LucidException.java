@@ -140,9 +140,16 @@ public class LucidException extends Exception
         this.ex = ex;
         this.params = params;
         this.internal = internal;
-        
-        if (res == null)
-            setDefaultResourceBundleName();
+
+        try
+        {
+            if (res == null)
+                setDefaultResourceBundleName();
+        }
+        catch (Throwable ex2)
+        {
+            Reporter.informUser(this, ex2);
+        }
     }
 
     /**

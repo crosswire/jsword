@@ -7,16 +7,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.ArrayList;
 
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBible;
-import org.crosswire.jsword.book.basic.VersionFactory;
+import org.crosswire.jsword.book.basic.BasicBookMetaData;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
@@ -27,8 +29,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 
 /**
  * JDBCBible implements Bible, and gets the text from a JDBC database.
@@ -93,9 +93,8 @@ public class JDBCBible extends AbstractBible
 
         try
         {
-            // The Version
-            String version_name = prop.getProperty("Version");
-            version = VersionFactory.getVersion(version_name);
+            // The version information
+            version = new BasicBookMetaData(prop);
 
             // Actually connect to the database
             String text_url = prop.getProperty("TextURL");

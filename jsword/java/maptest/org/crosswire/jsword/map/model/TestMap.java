@@ -3,14 +3,6 @@ package org.crosswire.jsword.map.model;
 
 import junit.framework.TestCase;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.raw.RawBibleDriver;
-
 /**
  * JUnit Test.
  *

@@ -54,10 +54,12 @@ public:
 	}
 
 	public LocaleMgr(String iConfigPath) {
+        /*
 		String prefixPath = null;
 		String configPath = null;
 		int configType = 0;
 		String path = "";
+        */
 
 		defaultLocaleName = "";
 /*

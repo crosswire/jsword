@@ -79,7 +79,7 @@ public class TestBibleDriver extends TestCase
             Bible b = driver.getBible(names[i]);
             assertTrue(b != null);
         }
-        try { Bible b = driver.getBible("NONE"); fail(); }
+        try { driver.getBible("NONE"); fail(); }
         catch (BookException ex) { }
     }
 }
