@@ -10,6 +10,9 @@ Swing
 - Interrupting/cancelling a download does not cleanup the download.
   This is perhaps a bigger problem of the semantic of job cancellation merely
   interrupting a thread.
+- Need a check to see that some books are installed and pop-up some sort of
+  install dialog if not.
+- Maybe hide the reference pane if there are no reference works
 
 BookData Display
 - Naves shows internal markup around verse references.
