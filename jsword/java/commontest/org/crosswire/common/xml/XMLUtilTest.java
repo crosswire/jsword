@@ -68,8 +68,23 @@ public class XMLUtilTest extends TestCase
         assertEquals("", XMLUtil.cleanAllTags("<a"));
         assertEquals("", XMLUtil.cleanAllTags("<aa"));
         assertEquals("", XMLUtil.cleanAllTags("<aa;"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\a"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\aa"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\aa;"));
+        assertEquals("", XMLUtil.cleanAllTags("< "));
+        assertEquals(" a", XMLUtil.cleanAllTags("< a"));
+        assertEquals(" aa", XMLUtil.cleanAllTags("< aa"));
+        assertEquals(" aa;", XMLUtil.cleanAllTags("< aa;"));
+        assertEquals(" aa>", XMLUtil.cleanAllTags("< aa>"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<a"));
         assertEquals("keep", XMLUtil.cleanAllTags("keep<aa"));
         assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\""));
         assertEquals("keep keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\" keep"));
+        assertEquals("keep keep>", XMLUtil.cleanAllTags("keep<aa dont=\"want\" keep>"));
+
+        // not sure this is what you want, but it will at least parse
+        assertEquals(" aa foo=\"bar\">", XMLUtil.cleanAllTags("< aa foo=\"bar\">"));
     }
 }
