@@ -298,6 +298,29 @@
   </target>
 
   <!--=======================================================================-->
+  <target name="doc.jdepend">
+    <mkdir dir="${target.doc}/jdepend"/>
+    <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml">
+      <sourcespath>
+        <pathelement location="${source.java}/common"/>
+        <pathelement location="${source.java}/jsword"/>
+        <pathelement location="${source.java}/sword"/>
+        <pathelement location="${source.java}/map"/>
+      </sourcespath>
+      <classpath>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </jdepend>
+    <style
+        basedir="${target.jdepend}"
+        destdir="${target.doc}/jdepend"
+        includes="jdepend-report.xml"
+        style="${source.etc}/jdepend.xsl"/>
+  </target>
+
+  <!--=======================================================================-->
   <target name="jnlp.prepare" depends="jar" description="moves files to correct location for JNLP deploy">
     <mkdir dir="${target.jnlp}"/>
     <copy todir="${target.jnlp}">
