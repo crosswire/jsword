@@ -137,18 +137,18 @@ public class ReadEverything
             }
 
             // This might be a useful extra test, except that a failure gives you no help at all.
-            // data.validate();
-        }
-        catch (BookException ex)
-        {
-            log.warn("Failed to read: "+bmd.getInitials()+", "+key.getText()+", reason: "+ex.getMessage(), ex);
+            //data.validate();
         }
         /*
         catch (ValidationException ex)
         {
-            log.warn("Validation error reading: "+bmd.getInitials()+", "+key.getText()+", reason: "+ex.getMessage(), ex);
+            log.warn("Validation error reading: "+bmd.getInitials()+", "+key.getText()+", code:"+ex.getErrorCode()+" reason: "+ex.getMessage());
         }
         */
+        catch (BookException ex)
+        {
+            log.warn("Failed to read: "+bmd.getInitials()+", "+key.getText()+", reason: "+ex.getMessage(), ex);
+        }
         catch (Throwable ex)
         {
             log.error("Unexpected error reading: "+bmd.getInitials()+", "+key.getText(), ex);

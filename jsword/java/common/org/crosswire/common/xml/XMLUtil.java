@@ -2,6 +2,7 @@ package org.crosswire.common.xml;
 
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.DataPolice;
 import org.xml.sax.Attributes;
 
 /**
@@ -54,6 +55,11 @@ public class XMLUtil
      */
     public static String cleanAllEntities(String broken)
     {
+        if (broken == null)
+        {
+            return null;
+        }
+
         String working = broken;
 
         allEntities: while (true)
@@ -70,27 +76,35 @@ public class XMLUtil
             int i = amp + 1;
             singleEntity: while (true)
             {
-                char c = working.charAt(i);
-                if (c == ';')
+                // if we are at the end of the string the disgard from the & on
+                if (i >= working.length())
                 {
-                    //DataPolice.report("disguarding potentially valid entity: "+working.substring(amp, i));
-                    working = working.substring(0, amp)+working.substring(i);
+                    DataPolice.report("disguarding unterminated entity: "+working.substring(amp));
+                    working = working.substring(0, amp);
                     break singleEntity;
                 }
 
+                // if we have come to an ; then we just have an entity that isn't
+                // properly declared, (or maybe it is but something else is
+                // broken) so disgard it
+                char c = working.charAt(i);
+                if (c == ';')
+                {
+                    DataPolice.report("disguarding entity: "+working.substring(amp, i+1));
+                    working = working.substring(0, amp)+working.substring(i+1);
+                    break singleEntity;
+                }
+
+                // XML entities are letters, numbers or -????
+                // If we find something else then dump the entity
                 if (!Character.isLetterOrDigit(c) && c != '-')
                 {
-                    //DataPolice.report("disguarding invalid entity: "+working.substring(amp, i));
+                    DataPolice.report("disguarding invalid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
                 }
 
                 i++;
-
-                if (i >= working.length())
-                {
-                    break singleEntity;
-                }
             }
         }
 
@@ -105,6 +119,11 @@ public class XMLUtil
      */
     public static String cleanAllTags(String broken)
     {
+        if (broken == null)
+        {
+            return null;
+        }
+
         String working = broken;
 
         allTags: while (true)
@@ -121,15 +140,20 @@ public class XMLUtil
             int gt = working.indexOf('>', lt);
 
             // Are there any "words" that can not be attributes first?
-            String lton = working.substring(lt);
-            String[] parts = StringUtils.split(lton, ' ');
             int noeqword = -1;
-            for (int i = 0; i < parts.length; i++)
+            // The first attribute starts at the first space after the lt
+            int nextspc = working.indexOf(' ', lt);
+            if (nextspc != -1)
             {
-                // Check this contains an =
-                if (parts[i].indexOf('=') == -1)
+                String lton = working.substring(nextspc);
+                String[] parts = StringUtils.split(lton, ' ');
+                for (int i = 0; i < parts.length; i++)
                 {
-                    noeqword = working.indexOf(parts[i]);
+                    // Check this contains an =
+                    if (parts[i].indexOf('=') == -1)
+                    {
+                        noeqword = working.indexOf(parts[i], lt)-2;
+                    }
                 }
             }
 
@@ -149,11 +173,12 @@ public class XMLUtil
             }
             if (working.length() < min)
             {
-                min = working.length();
+                min = working.length()-1;
             }
 
             // So chop the string
-            working = working.substring(lt, min);
+            DataPolice.report("disguarding invalid tag: "+working.substring(lt, min+1));
+            working = working.substring(0, lt)+working.substring(min+1);
         }
         
         return working;
