@@ -28,7 +28,10 @@ rm -f $LOGFILE
 } > $LOGFILE 2>&1
 
 {
-  find $FTP_BASE/nightly -type f -mtime +7 -exec echo rm {} \;
+  echo "## Removing old nightly builds"
   find $FTP_BASE/nightly -type f -mtime +7 -exec rm -v {} \;
+  echo ""
+  echo "## Build log"
   cat $LOGFILE
 } | /bin/mail -s "jsword buildlog (from `dnsdomainname`)" joe@eireneh.com
+

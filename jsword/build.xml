@@ -434,6 +434,7 @@
   <target name="web.jdepend" depends="jar">
     <mkdir dir="${target.temp}/jdepend"/>
     <mkdir dir="${target.web}/jdepend"/>
+<!--
     <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
     <jdepend format="xml" outputfile="${target.temp}/jdepend/jdepend-report.xml" fork="yes">
       <classespath>
@@ -452,6 +453,7 @@
         destdir="${target.web}/jdepend"
         includes="jdepend-report.xml"
         style="${support.tools}/jdepend26/jdepend.xsl"/>
+-->
   </target>
 
   <!--=======================================================================-->
@@ -565,7 +567,7 @@
       <auxClasspath path="${target.web}/jnlp/lucene-1.3-final.jar"/>
       <auxClasspath path="${target.web}/jnlp/winlaf-0.4.jar"/>
       <auxClasspath path="${target.web}/jnlp/tar.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jlfgr-1.0.jar"/>
+      <auxClasspath path="${target.web}/jnlp/jlfgr-1_0.jar"/>
       <!--
         ** The following is needed only for the unused org.crosswire.jsword.view.cli
         ** It can be removed when cli is removed.
@@ -658,7 +660,7 @@
       <param name="dir" value="${source.jar}/winlaf04"/>
     </antcall>
     <antcall target="jnlp.section">
-      <param name="jar" value="jlfgr-1.0.jar"/>
+      <param name="jar" value="jlfgr-1_0.jar"/>
       <param name="dir" value="${source.jar}/jlfgr10"/>
     </antcall>
   </target>

@@ -33,3 +33,4 @@ $ANT_HOME/bin/ant cvsup $PROPERTIES
 cd $JSWORD_HOME
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant nightly $PROPERTIES
+

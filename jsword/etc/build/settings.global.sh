@@ -11,3 +11,4 @@ export PROPERTIES="$PROPERTIES -Dtarget.web=$WEB_HOME"
 export PROPERTIES="$PROPERTIES -Djnlp.hostname=$JNLP_HOST"
 export PROPERTIES="$PROPERTIES -Dlocalprefix=$FTP_BASE"
 export PROPERTIES="$PROPERTIES -Dwebprefix=$WEB_PREFIX"
+

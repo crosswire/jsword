@@ -14,3 +14,4 @@ export PATH=$PATH:/usr/bin
 export PATH=$PATH:/usr/X11R6/bin
 export PATH=$PATH:$JAVA_HOME/bin
 export PATH=$PATH:$ANT_HOME/bin
+
