@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
@@ -63,7 +64,7 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
     {
         try
         {
-            List booklist = Books.installed().getBookMetaDatas();
+            List booklist = Books.installed().getBookMetaDatas(BookFilters.getBibles());
             if (booklist.size() == 0)
             {
                 return;

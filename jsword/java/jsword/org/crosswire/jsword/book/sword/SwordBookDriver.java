@@ -5,16 +5,17 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
@@ -40,6 +41,7 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at hotmail dot com]
  * @version $Id$
  */
 public class SwordBookDriver extends AbstractBookDriver
@@ -57,11 +59,6 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public BookMetaData[] getBookMetaDatas()
     {
-        if (dirs == null)
-        {
-            return new BookMetaData[0];
-        }
-
         List valid = new ArrayList();
 
         // Loop through the dirs in the lookup path
@@ -130,16 +127,10 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * Create a Book to wrap the given backend
+     * Create a Book appropriate for the BookMetaData
      */
     private Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
     {
-        String dataPath = sbmd.getFirstValue(ConfigEntry.DATA_PATH);
-        File baseurl = new File(progdir, dataPath);
-        String path = baseurl.getAbsolutePath();
-
-        Book book = null;
-
         ModuleType modtype = sbmd.getModuleType();
         if (modtype.getBookType() == null)
         {
@@ -147,67 +138,8 @@ public class SwordBookDriver extends AbstractBookDriver
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK");
             throw new BookException(Msg.TYPE_UNSUPPORTED);
         }
-        else if (modtype.getBookType().equals(BookType.DICTIONARY))
-        {
-            Backend backend = null;
 
-            if (modtype.equals(ModuleType.RAW_LD))
-            {
-                backend = new RawLDBackend(sbmd, path, 2);
-            }
-            else if (modtype.equals(ModuleType.RAW_LD4))
-            {
-                backend = new RawLDBackend(sbmd, path, 4);
-            }
-            else if (modtype.equals(ModuleType.Z_LD))
-            {
-                backend = new ZLDBackend(sbmd);
-            }
-            else
-            {
-                throw new BookException(Msg.TYPE_UNKNOWN, new Object[] { modtype.getName(), path });
-            }
-
-            book = new SwordDictionary(sbmd, backend);
-        }
-        else
-        {
-            Backend backend = null;
-            if (modtype.isCompressed())
-            {
-                backend = getCompressedBackend(sbmd, path);
-            }
-            else
-            {
-                backend = new RawBackend(path);
-            }
-
-            book = new SwordBook(sbmd, backend);
-        }
-
-        sbmd.setBook(book);
-        return book;
-    }
-
-    /**
-     * 
-     */
-    private Backend getCompressedBackend(SwordBookMetaData sbmd, String path) throws BookException
-    {
-        switch (sbmd.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
-        {
-        case SwordConstants.COMPRESSION_ZIP:
-            // The default blocktype (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
-            // but the specified default here is BLOCK_BOOK (0)
-            int blocktype = sbmd.matchingIndex(SwordConstants.BLOCK_STRINGS, ConfigEntry.BLOCK_TYPE, SwordConstants.BLOCK_BOOK);
-            return new GZIPBackend(path, blocktype);
-      
-        case SwordConstants.COMPRESSION_LZSS:
-            return new LZSSBackend(sbmd);
-      
-        default:
-            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE) });
-        }
+        return modtype.createBook(sbmd, progdir);
     }
 
     /**
@@ -216,33 +148,85 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static void setSwordPath(File[] dirs) throws BookException
     {
+        dirs = validateSwordPath(dirs);
+        if (dirs == null)
+        {
+            return;
+        }
+        
         // First we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
         for (int i=0; i<matches.length; i++)
         {
             Books.unregisterDriver(matches[i]);
         }
-
-        // If the new paths are empty then guess ...
-        if (dirs == null || dirs.length == 0)
-        {
-            log.warn("No paths set, using defaults");
-            dirs = getDefaultPaths();
-        }
-
+        
         SwordBookDriver.dirs = dirs;
-
-        // Warn if any are not directories
-        for (int i = 0; i < dirs.length; i++)
-        {
-            if (!dirs[i].isDirectory())
-            {
-                log.warn("No directory found for sword sources at: "+dirs[i]);
-            }
-        }
 
         // Now we need to register ourselves
         Books.registerDriver(new SwordBookDriver());
+    }
+
+    /**
+     * validateSwordPath maintains the invariant that the download
+     * location is first in the list. If null or an empty array
+     * is passed then the defaultList is used.
+     * @param files
+     * @return null if the list is not to be used, otherwise it returns the list.
+     */
+    private static File[] validateSwordPath(File[] files)
+    {
+        // Get the current download file location
+        File downloadDir = SwordBookDriver.dirs[0];
+        boolean useDefaultPaths = false;
+
+        // If the new paths are empty then guess ...
+        if (files == null || files.length == 0)
+        {
+            files = getDefaultPaths();
+            useDefaultPaths = true;
+        }
+        
+        // If there is no change then there is nothing to do
+        if (Arrays.equals(files, SwordBookDriver.dirs))
+        {
+            return null;
+        }
+
+        if (useDefaultPaths)
+        {
+            log.warn("No paths set, using defaults");
+        }
+
+        // Maintain that downloadDir is in the array and that it is first.
+        else if (!files[0].equals(downloadDir))
+        {
+            // Find it
+            int pos = ArrayUtils.indexOf(files, downloadDir);
+
+            // If it is not in the list then add it
+            if (pos == -1)
+            {
+                File[] temp = new File[dirs.length + 1];
+                temp[0] = downloadDir;
+                for (int i = 0; i < files.length; i++)
+                {
+                    temp[i+1] = files[i];
+                }
+                files = temp;
+            }
+            else
+            {
+                // move downloadDir to the front
+                for (int i = pos; i > 0; i--)
+                {
+                    files[pos] = files[pos - 1];
+                }                    
+                files[0] = downloadDir;
+            }
+        }
+
+        return files;
     }
 
     /**
@@ -251,11 +235,6 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static File[] getSwordPath()
     {
-        if (dirs == null || dirs.length == 0)
-        {
-            return new File[0];
-        }
-
         return dirs;
     }
 
@@ -265,10 +244,13 @@ public class SwordBookDriver extends AbstractBookDriver
     private static File[] getDefaultPaths()
     {
         List reply = new ArrayList();
+        
+        // .jsword in the users home directory is the first location
+        reply.add(new File(System.getProperty("user.home")+"/.jsword"));
 
         if (SystemUtils.IS_OS_WINDOWS)
         {
-            reply.add(new File("C:\\Program Files\\CrossWire\\The SWORD Project"));
+            testDefaultPath(reply, "C:\\Program Files\\CrossWire\\The SWORD Project");
         }
         else
         {
@@ -281,7 +263,7 @@ public class SwordBookDriver extends AbstractBookDriver
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(sysconfig));
                     String datapath = prop.getProperty(ConfigEntry.DATA_PATH.getName());
-                    testDefaultPath(reply, datapath+"/mods.d");
+                    testDefaultPath(reply, datapath);
                 }
                 catch (IOException ex)
                 {
@@ -294,17 +276,14 @@ public class SwordBookDriver extends AbstractBookDriver
         String swordhome = System.getProperty("sword.home");
         if (swordhome != null)
         {
-            testDefaultPath(reply, swordhome+"/mods.d");
+            testDefaultPath(reply, swordhome);
         }
 
         // .sword in the users home directory?
-        testDefaultPath(reply, System.getProperty("user.home")+"/.sword/mods.d");
-
-        // .jsword in the users home directory?
-        testDefaultPath(reply, System.getProperty("user.home")+"/.jsword/mods.d");
+        testDefaultPath(reply, System.getProperty("user.home")+"/.sword");
 
         // mods.d in the current directory?
-        testDefaultPath(reply, new File(".").getAbsolutePath()+"/mods.d");
+        testDefaultPath(reply, new File(".").getAbsolutePath());
 
         return (File[]) reply.toArray(new File[reply.size()]);
     }
@@ -315,10 +294,11 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private static void testDefaultPath(List reply, String path)
     {
-        File test = new File(path);
-        if (test.isDirectory())
+        File where = new File(path);
+        File mods = new File(path, "mods.d");
+        if (mods.isDirectory())
         {
-            reply.add(test);
+            reply.add(where);
         }
     }
 
@@ -327,7 +307,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static File getDownloadDir()
     {
-        return downloadDir;
+        return dirs[0];
     }
 
     /**
@@ -335,18 +315,17 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static void setDownloadDir(File downloadDir)
     {
-        SwordBookDriver.downloadDir = downloadDir;
+        if (!downloadDir.getPath().equals(""))
+        {
+            dirs[0] = downloadDir;
+            log.debug("Setting sword download directory to: " + downloadDir);
+        }
     }
-
-    /**
-     * The download directory
-     */
-    private static File downloadDir;
 
     /**
      * The directory URL
      */
-    private static File[] dirs;
+    private static File[] dirs = getDefaultPaths();
 
     /**
      * The log stream
