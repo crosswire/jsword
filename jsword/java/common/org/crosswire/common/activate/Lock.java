@@ -35,5 +35,6 @@ public class Lock
      */
     Lock()
     {
+        // no instansiation needed
     }
 }

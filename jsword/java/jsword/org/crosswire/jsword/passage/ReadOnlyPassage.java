@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.IOException;
@@ -274,7 +273,7 @@ public final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#readDescription(java.io.Reader)
      */
-    public void readDescription(Reader in) throws IOException, NoSuchVerseException
+    public void readDescription(Reader in)
     {
         if (ignore)
         {
@@ -317,7 +316,7 @@ public final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    public Object clone() throws CloneNotSupportedException
+    public Object clone()
     {
         return new ReadOnlyPassage(ref, ignore);
     }

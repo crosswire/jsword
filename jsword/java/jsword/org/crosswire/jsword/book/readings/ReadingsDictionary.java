@@ -215,7 +215,7 @@ public class ReadingsDictionary extends AbstractDictionary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
-    public Key find(Search search) throws BookException
+    public Key find(Search search)
     {
         return null;
     }

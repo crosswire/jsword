@@ -47,6 +47,7 @@ public class ZKeyBackend implements KeyBackend
      */
     public byte[] getRawText(Key key) throws BookException
     {
-        return null;
+        // LATER(joe): implement this
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED);
     }
 }

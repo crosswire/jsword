@@ -238,7 +238,7 @@ public class BibleInfo
      * @return The book number (1 to 66)
      * @exception NoSuchVerseException If the text can not be matched
      */
-    public static final boolean isBookName(String find) throws NoSuchVerseException
+    public static final boolean isBookName(String find)
     {
         String match = find.toLowerCase();
 

@@ -1,2 +1,7 @@
 
+TODO:
 JDK14: Things to change when we move to JDK1.4
+LATER
+NOTE
+URGENT
+PENDING

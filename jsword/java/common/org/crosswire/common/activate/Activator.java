@@ -39,6 +39,7 @@ public class Activator
      */
     private Activator()
     {
+        // singleton - no set-up needed
     }
 
     /**

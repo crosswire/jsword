@@ -1,11 +1,9 @@
-
 package org.crosswire.jsword.book.sword;
 
 import java.net.URL;
 import java.util.Date;
 
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Openness;
@@ -40,7 +38,7 @@ public abstract class SwordBookMetaData implements BookMetaData
     /**
      * Simple ctor
      */
-    public SwordBookMetaData(SwordBookDriver driver, SwordConfig config) throws BookException
+    public SwordBookMetaData(SwordBookDriver driver, SwordConfig config)
     {
         this.driver = driver;
         this.config = config;

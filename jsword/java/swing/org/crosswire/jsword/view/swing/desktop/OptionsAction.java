@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
@@ -12,7 +11,6 @@ import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
@@ -82,7 +80,7 @@ public class OptionsAction extends DesktopAbstractAction
         }
     }
 
-    public void createConfig() throws IOException, JDOMException, BookException
+    public void createConfig() throws IOException, JDOMException
     {
         fillChoiceFactory();
 
@@ -97,7 +95,7 @@ public class OptionsAction extends DesktopAbstractAction
         config.localToApplication(true);
     }
 
-    private static void fillChoiceFactory() throws BookException
+    private static void fillChoiceFactory()
     {
         // Create the array of Bibles
         String[] bnames = getFullNameArray(BookFilters.getBibles());

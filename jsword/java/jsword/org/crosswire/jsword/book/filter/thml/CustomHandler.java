@@ -13,7 +13,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-
 /**
  * To convert SAX events into OSIS events.
  * 
@@ -50,14 +49,6 @@ public class CustomHandler extends DefaultHandler
     public CustomHandler(Element ele)
     {
         stack.addFirst(ele);
-    }
-
-    /* (non-Javadoc)
-     * @see org.xml.sax.helpers.DefaultHandler#endDocument()
-     */
-    public void endDocument() throws SAXException
-    {
-        stack.removeFirst();
     }
 
     /* (non-Javadoc)
@@ -100,17 +91,9 @@ public class CustomHandler extends DefaultHandler
     }
 
     /* (non-Javadoc)
-     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-     */
-    public void endElement(String uri, String localname, String qname) throws SAXException
-    {
-        // Not sure we need to do anything special
-    }
-
-    /* (non-Javadoc)
      * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
      */
-    public void characters(char[] data, int offset, int length) throws SAXException
+    public void characters(char[] data, int offset, int length)
     {
         // What we are adding to
         Element current = (Element) stack.getFirst();
@@ -135,6 +118,22 @@ public class CustomHandler extends DefaultHandler
         }
 
         list.add(text);
+    }
+
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void endElement(String uri, String localname, String qname)
+    {
+        // Not sure we need to do anything special
+    }
+
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endDocument()
+     */
+    public void endDocument()
+    {
+        stack.removeFirst();
     }
 
     /**

@@ -155,7 +155,7 @@ public class SwordCommentary extends AbstractCommentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Passage findPassage(Search word) throws BookException
+    public Passage findPassage(Search word)
     {
         return PassageFactory.createPassage();
     }

@@ -1,11 +1,12 @@
-package org.crosswire.jsword.book.filter.thml;
+package org.crosswire.jsword.book.filter;
 
-import javax.xml.bind.Element;
-
-import org.xml.sax.Attributes;
+import org.apache.commons.lang.StringUtils;
 
 /**
- * THML Tag to process the root element.
+ * Utilities to help filters.
+ * 
+ * <p>Both OSISFilter and THMLFilter need to report on strings that failed
+ * parsing but don't want to output too much data. forOutput() helps.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,26 +29,26 @@ import org.xml.sax.Attributes;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RootTag implements Tag
+public class FilterUtil
 {
     /**
-     * This is added by the parser to we make the string accessible
+     * Cut up the input data so it is OK to output in an error log
      */
-    protected static final String TAG_ROOT = "root";
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
-     */
-    public String getTagName()
+    public static String forOutput(String data)
     {
-        return TAG_ROOT;
+        if (data.length() < MAX_OUTPUT_LEN)
+        {
+            return data;
+        }
+        else
+        {
+            String chopped = StringUtils.left(data, MAX_OUTPUT_LEN);
+            return chopped + "... (truncated)";            
+        }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
+    /**
+     * Some XML strings are very long and we don't want to debug the lot
      */
-    public void processTag(Element ele, Attributes attrs)
-    {
-        // Only for print edition
-    }
+    private static final int MAX_OUTPUT_LEN = 100;
 }

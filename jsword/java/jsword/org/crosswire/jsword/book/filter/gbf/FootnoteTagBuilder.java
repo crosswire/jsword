@@ -65,7 +65,7 @@ public class FootnoteTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
                     Object pop = stack.removeFirst();
                     if (pop instanceof Note)

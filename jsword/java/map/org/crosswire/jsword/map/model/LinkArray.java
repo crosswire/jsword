@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.map.model;
 
 import java.io.IOException;
@@ -13,7 +12,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -61,7 +59,7 @@ public class LinkArray implements Serializable
      * Basic constructor
      * @param bible The source of Bible data
      */
-    public LinkArray(Bible bible) throws NoSuchVerseException, BookException
+    public LinkArray(Bible bible) throws NoSuchVerseException
     {
         this.bible = bible;
 
@@ -110,7 +108,9 @@ public class LinkArray implements Serializable
     public void fromXML(Element elinks) throws JDOMException
     {
         if (!elinks.getName().equals("links"))
+        {    
             throw new JDOMException("root element is not called 'links'");
+        }
 
         List ebs = elinks.getChildren("book");
         Iterator bit = ebs.iterator();
@@ -198,7 +198,7 @@ public class LinkArray implements Serializable
     /**
      * Fill up the link cache
      */
-    public void cacheAll() throws BookException, NoSuchVerseException
+    public void cacheAll() throws NoSuchVerseException
     {
         // Create the array of Nodes
         for (int b=1; b<=BibleInfo.booksInBible(); b++)
@@ -217,7 +217,9 @@ public class LinkArray implements Serializable
     public Link[] getLinks(int b, int c)
     {
         if (links[b][c] != null)
+        {
             return links[b][c];
+        }
 
         try
         {
@@ -274,7 +276,9 @@ public class LinkArray implements Serializable
     public float getMatchScore()
     {
         if (linked == 0)
+        {
             return -1;
+        }
 
         return ((float) (100 * miss_total)) / linked;
     }
@@ -304,7 +308,9 @@ public class LinkArray implements Serializable
                 tally.add(start, chaptotal);
 
                 if (chaptotal > PassageTally.MAX_TALLY)
+                {
                     System.out.println("truncated chaptotal: "+chaptotal);
+                }
             }
         }        
     }
@@ -319,7 +325,9 @@ public class LinkArray implements Serializable
         for (int i=0; i<set.length; i++)
         {
             if (i != 0)
+            {
                 buff.append(", ");
+            }
 
             buff.append(set[i].toString());
         }
@@ -327,24 +335,38 @@ public class LinkArray implements Serializable
         return buff.toString();
     }
 
-    /** To make serialization work across new versions */
+    /**
+     * To make serialization work across new versions
+     */
     static final long serialVersionUID = -2354670272946948354L;
 
-    /** The total miss mark */
+    /**
+     * The total miss mark
+     */
     private transient int miss_total = 0;
 
-    /** The number of verses checked */
+    /**
+     * The number of verses checked
+     */
     private transient int linked = 0;
 
-    /** The Bible that we search in */
+    /**
+     * The Bible that we search in
+     */
     private transient Bible bible;
 
-    /** The link data */
+    /**
+     * The link data
+     */
     private Link[][][] links;
 
-    /** The number of links we record for each chapter */
+    /**
+     * The number of links we record for each chapter
+     */
     public static final int LINKS_PER_CHAPTER = 200;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(LinkArray.class);
 }

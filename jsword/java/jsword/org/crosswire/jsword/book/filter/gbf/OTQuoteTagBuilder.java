@@ -58,7 +58,7 @@ public class OTQuoteTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
                     stack.removeFirst();
                 }

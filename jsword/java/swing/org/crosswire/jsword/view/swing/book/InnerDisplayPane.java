@@ -30,7 +30,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.Style;
-import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -151,7 +150,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the passage being viewed
      */
-    public void setPassage(Passage ref) throws IOException, SAXException, BookException, TransformerException
+    public void setPassage(Passage ref) throws IOException, BookException, TransformerException
     {
         this.ref = ref;
 

@@ -11,7 +11,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.BookException;
 
 /**
  * The WordItemsMem stores words in a dictionary for a Bible.
@@ -132,10 +131,12 @@ public class WordItemsMem extends ItemsMem
      * @param word The word to search for
      * @return An array of matches
      */
-    public Iterator getStartsWith(String word) throws BookException
+    public Iterator getStartsWith(String word)
     {
         if (array == null)
+        {
             throw new NullPointerException();
+        }
 
         ArrayList vec = new ArrayList();
         word = word.toLowerCase();
@@ -151,7 +152,9 @@ public class WordItemsMem extends ItemsMem
             else
             {
                 if (array[i].startsWith(word))
+                {    
                     vec.add(array[i]);
+                }
             }
         }
 
@@ -169,7 +172,9 @@ public class WordItemsMem extends ItemsMem
         din.readFully(asig);
         String ssig = new String(asig);
         if (!ssig.equals("RAW:WR"))
+        {
             throw new IOException("This file is not a Word file");
+        }
 
         count = din.readInt();
         hash = new Hashtable(count);

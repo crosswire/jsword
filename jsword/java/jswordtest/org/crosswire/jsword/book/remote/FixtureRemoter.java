@@ -33,7 +33,7 @@ public class FixtureRemoter implements Remoter
     /**
      * @see org.crosswire.jsword.book.remote.Remoter#execute(org.crosswire.jsword.book.remote.RemoteMethod)
      */
-    public Document execute(RemoteMethod method) throws RemoterException
+    public Document execute(RemoteMethod method)
     {
         return null;
     }

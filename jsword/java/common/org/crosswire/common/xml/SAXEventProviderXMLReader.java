@@ -1,7 +1,4 @@
-
 package org.crosswire.common.xml;
-
-import java.io.IOException;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -9,8 +6,6 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 
 /**
@@ -50,7 +45,7 @@ public class SAXEventProviderXMLReader implements XMLReader
     /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getFeature(java.lang.String)
      */
-    public boolean getFeature(String arg0) throws SAXNotRecognizedException, SAXNotSupportedException
+    public boolean getFeature(String arg0)
     {
         return false;
     }
@@ -58,14 +53,14 @@ public class SAXEventProviderXMLReader implements XMLReader
     /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setFeature(java.lang.String, boolean)
      */
-    public void setFeature(String arg0, boolean arg1) throws SAXNotRecognizedException, SAXNotSupportedException
+    public void setFeature(String arg0, boolean arg1)
     {
     }
 
     /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getProperty(java.lang.String)
      */
-    public Object getProperty(String arg0) throws SAXNotRecognizedException, SAXNotSupportedException
+    public Object getProperty(String arg0)
     {
         return null;
     }
@@ -73,7 +68,7 @@ public class SAXEventProviderXMLReader implements XMLReader
     /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setProperty(java.lang.String, java.lang.Object)
      */
-    public void setProperty(String arg0, Object arg1) throws SAXNotRecognizedException, SAXNotSupportedException
+    public void setProperty(String arg0, Object arg1)
     {
     }
 
@@ -144,18 +139,20 @@ public class SAXEventProviderXMLReader implements XMLReader
     /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#parse(org.xml.sax.InputSource)
      */
-    public void parse(InputSource is) throws IOException, SAXException
+    public void parse(InputSource is) throws SAXException
     {
         if (!(is instanceof SAXEventProviderInputSource))
+        {
             throw new SAXException("SAXEventProviderInputSource required");
-            
+        }
+
         doc_in.provideSAXEvents(getContentHandler());
     }
 
     /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#parse(java.lang.String)
      */
-    public void parse(String arg0) throws IOException, SAXException
+    public void parse(String arg0) throws SAXException
     {
         throw new SAXException("SAXEventProviderInputSource required");
     }

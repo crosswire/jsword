@@ -50,6 +50,32 @@ public class XMLUtil
     }
 
     /**
+     * The parser failed, and it might be because there are control characters
+     * that are not valid in XML in the string, so this method strips them out
+     */
+    public static String cleanInvalidCharacters(String broken)
+    {
+        StringBuffer buffer = new StringBuffer();
+        
+        for (int i = 0; i < broken.length(); i++)
+        {
+            char c = broken.charAt(i);
+            if (c < 32 && c != 9 && c != 10 && c != 13)
+            {
+                // since it is a control char, we want to see the number and not a character
+                int num = c;
+                DataPolice.report("disguarding illegal XML character: "+num);
+            }
+            else
+            {
+                buffer.append(c);
+            }
+        }
+
+        return buffer.toString();
+    }
+
+    /**
      * A parse has failed so we can try to kill the entities and then have
      * another go.
      */

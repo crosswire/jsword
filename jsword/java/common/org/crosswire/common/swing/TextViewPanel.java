@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import java.awt.BorderLayout;
@@ -286,7 +285,7 @@ public class TextViewPanel extends JPanel
     /**
      * Setter for the main body of text
      */
-    public void setText(final InputStream in) throws IOException
+    public void setText(final InputStream in)
     {
         // Yes this is twisted, however there is some kind of perverse
         // pleasure in writing this kind of code.
@@ -352,30 +351,48 @@ public class TextViewPanel extends JPanel
         listeners.addPropertyChangeListener(li);
     }
 
-    /** Optional header label */
+    /**
+     * Optional header label
+     */
     private JLabel lbl_main = new JLabel();
 
-    /** Scroller for the text area */
+    /**
+     * Scroller for the text area
+     */
     private JScrollPane scr_text = new JScrollPane();
 
-    /** The main text area */
+    /**
+     * The main text area
+     */
     private JTextArea txt_text = new JTextArea();
 
-    /** The button bar */
+    /**
+     * The button bar
+     */
     private JPanel pnl_buttons = new JPanel();
 
-    /** Button bar layout */
+    /**
+     * Button bar layout
+     */
     private FlowLayout lay_buttons = new FlowLayout();
 
-    /** Copy text to clipboard button */
+    /**
+     * Copy text to clipboard button
+     */
     private JButton btn_clipboard = new JButton();
 
-    /** Close button */
+    /**
+     * Close button
+     */
     private JButton btn_close = null;
 
-    /** The frame that we are displayed in */
+    /**
+     * The frame that we are displayed in
+     */
     protected JDialog frame = null;
 
-    /** Property change listener collection */
+    /**
+     * Property change listener collection
+     */
     private transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 }

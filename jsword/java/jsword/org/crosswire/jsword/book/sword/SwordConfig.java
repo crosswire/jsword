@@ -337,7 +337,7 @@ public class SwordConfig
     /**
      * @return SwordBookMetaData
      */
-    public SwordBookMetaData getMetaData() throws IOException, BookException
+    public SwordBookMetaData getMetaData() throws BookException
     {
         switch (modDrv)
         {

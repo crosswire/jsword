@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.web;
 
 import java.io.IOException;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.remote.Converter;
-import org.crosswire.jsword.book.remote.ConverterException;
 import org.crosswire.jsword.book.remote.HttpRemoter;
 import org.crosswire.jsword.book.remote.LocalRemoter;
 import org.crosswire.jsword.book.remote.MethodName;
@@ -63,7 +61,7 @@ public class RemoterServlet extends HttpServlet
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         XMLOutputter output = new XMLOutputter();
 
@@ -78,15 +76,8 @@ public class RemoterServlet extends HttpServlet
         {
             Reporter.informUser(this, ex);
 
-            try
-            {
-                Document doc = Converter.convertExceptionToDocument(ex);
-                output.output(doc, response.getOutputStream());
-            }
-            catch (ConverterException ex2)
-            {
-                throw new ServletException(ex2);
-            }
+            Document doc = Converter.convertExceptionToDocument(ex);
+            output.output(doc, response.getOutputStream());
         }
     }
 

@@ -127,7 +127,7 @@ public class StubBible extends AbstractBible
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Passage findPassage(Search search) throws BookException
+    public Passage findPassage(Search search)
     {
         try
         {

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.jsword.book.BookException;
@@ -33,7 +32,7 @@ public class LZSSBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#init(org.crosswire.jsword.book.sword.SwordConfig)
      */
-    public void init(SwordConfig config) throws BookException
+    public void init(SwordConfig config)
     {
     }
 
@@ -43,6 +42,6 @@ public class LZSSBackend implements Backend
     public byte[] getRawText(Verse v) throws BookException
     {
         // LATER(joe): implement this
-        return "lzss stub".getBytes();
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED);
     }
 }

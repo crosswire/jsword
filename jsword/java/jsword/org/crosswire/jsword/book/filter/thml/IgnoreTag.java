@@ -1,7 +1,6 @@
 package org.crosswire.jsword.book.filter.thml;
 
 import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
 
 import org.xml.sax.Attributes;
 
@@ -50,7 +49,7 @@ public class IgnoreTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(javax.xml.bind.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs) throws JAXBException
+    public void processTag(Element ele, Attributes attrs)
     {
     }
 

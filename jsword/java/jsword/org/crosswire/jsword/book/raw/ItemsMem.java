@@ -116,7 +116,7 @@ public abstract class ItemsMem extends Mem implements Items
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.raw.Items#getItem(int)
      */
-    public String getItem(int index) throws NoSuchResourceException
+    public String getItem(int index)
     {
         try
         {

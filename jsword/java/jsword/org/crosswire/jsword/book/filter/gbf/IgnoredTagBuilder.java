@@ -2,8 +2,6 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import javax.xml.bind.JAXBException;
-
 /**
  * Represent a trunc of bible text without any tags.
  * 
@@ -44,7 +42,7 @@ public class IgnoredTagBuilder implements TagBuilder
         {
             return new Tag()
             {
-                public void updateOsisStack(LinkedList stack) throws JAXBException
+                public void updateOsisStack(LinkedList stack)
                 {
                 }
             };

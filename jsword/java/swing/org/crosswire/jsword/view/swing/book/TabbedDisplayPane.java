@@ -24,7 +24,6 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.passage.Passage;
-import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -106,7 +105,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Set the passage being viewed
      */
-    public synchronized void setPassage(Passage ref) throws IOException, SAXException, BookException, TransformerException
+    public synchronized void setPassage(Passage ref) throws IOException, BookException, TransformerException
     {
         this.whole = ref;
 
@@ -221,7 +220,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
     /**
      * Tab creation helper
      */
-    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws IOException, SAXException, BookException, TransformerException
+    private synchronized InnerDisplayPane createInnerDisplayPane(Passage cut) throws IOException, BookException, TransformerException
     {
         InnerDisplayPane idp = new InnerDisplayPane();
         idp.setVersion(version);

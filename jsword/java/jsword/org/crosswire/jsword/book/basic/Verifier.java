@@ -1,7 +1,5 @@
-
 package org.crosswire.jsword.book.basic;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +12,6 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.BibleInfo;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -98,7 +95,7 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    public void checkText(PrintWriter out) throws IOException, NoSuchVerseException, BookException
+    public void checkText(PrintWriter out)
     {
         checkText(WHOLE, out);
     }
@@ -106,7 +103,7 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    public void checkText(Passage ref, PrintWriter out) throws IOException, NoSuchVerseException, BookException
+    public void checkText(Passage ref, PrintWriter out)
     {
         Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
         int percent = 0;
@@ -162,7 +159,7 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    public void checkPassage(PrintWriter out) throws IOException, NoSuchVerseException, BookException
+    public void checkPassage(PrintWriter out) throws BookException
     {
         Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
         int count = 0;
@@ -196,7 +193,7 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    public void checkPassage(String starts, PrintWriter out) throws IOException, NoSuchVerseException, BookException
+    public void checkPassage(String starts, PrintWriter out) throws BookException
     {
         if (starts == null || starts.equals(""))
         {
@@ -241,7 +238,7 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    private void checkSinglePassage(String word, PrintWriter out) throws IOException, NoSuchVerseException, BookException
+    private void checkSinglePassage(String word, PrintWriter out) throws BookException
     {
         Passage ref1 = bible1.findPassage(new Search(word, false));
         Passage ref2 = bible2.findPassage(new Search(word, false));

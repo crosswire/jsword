@@ -42,7 +42,7 @@ public class ReflectionUtil
      * @param called_method_name The text of the invocation eg "getName"
      * @param called_params For example new Object[] { ...}
      */
-    public static Object invoke(Object base, String called_method_name, Object[] called_params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    public static Object invoke(Object base, String called_method_name, Object[] called_params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // Create a Class array describing the params
         Class[] called_types = new Class[called_params.length];

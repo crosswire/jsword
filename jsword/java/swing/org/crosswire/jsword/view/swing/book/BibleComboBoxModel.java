@@ -174,7 +174,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     /**
      * Accessor for the book
      */
-    public void setBook(int book) throws NoSuchVerseException
+    public void setBook(int book)
     {
         Verse old = set.getVerse();
         Verse update = new Verse(book, old.getChapter(), old.getVerse(), true);
@@ -184,7 +184,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     /**
      * Accessor for the chapter
      */
-    public void setChapter(int chapter) throws NoSuchVerseException
+    public void setChapter(int chapter)
     {
         Verse old = set.getVerse();
         Verse update = new Verse(old.getChapter(), chapter, old.getVerse(), true);

@@ -10,13 +10,13 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
+import org.crosswire.jsword.book.filter.FilterUtil;
 import org.crosswire.jsword.osis.P;
 import org.xml.sax.InputSource;
 
@@ -71,43 +71,57 @@ public class OSISFilter implements Filter
         catch (Exception ex1)
         {
             DataPolice.report("parse original failed: "+ex1.getMessage());
-            DataPolice.report("  while parsing: "+forOutput(plain));
+            DataPolice.report("  while parsing: "+FilterUtil.forOutput(plain));
 
-            // Attempt to fix broken entities, that could be the least damage
-            // way to fix a broken input string
-            String cropped = XMLUtil.cleanAllEntities(plain);
+            // Attempt to fix broken characters, that doesn't break xml strings
+            // in any way
+            String cleaned = XMLUtil.cleanInvalidCharacters(plain);
 
             try
             {
-                parse(ele, cropped);
+                parse(ele, cleaned);
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse cropped failed: "+ex2.getMessage());
-                DataPolice.report("  while parsing: "+forOutput(cropped));
-                
-                // So just try to strip out all XML looking things
-                String shawn = XMLUtil.cleanAllTags(cropped);
+                DataPolice.report("parse original failed: "+ex1.getMessage());
+                DataPolice.report("  while parsing: "+FilterUtil.forOutput(cleaned));
+
+                // Attempt to fix broken entities, that could be a low damage
+                // way to fix a broken input string
+                String cropped = XMLUtil.cleanAllEntities(cleaned);
 
                 try
                 {
-                    parse(ele, shawn);
+                    parse(ele, cropped);
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse shawn failed: "+ex3.getMessage());
-                    DataPolice.report("  while parsing: "+forOutput(shawn));
+                    DataPolice.report("parse cropped failed: "+ex3.getMessage());
+                    DataPolice.report("  while parsing: "+FilterUtil.forOutput(cropped));
+
+                    // So just try to strip out all XML looking things
+                    String shawn = XMLUtil.cleanAllTags(cropped);
 
                     try
                     {
-                        P p = JAXBUtil.factory().createP();
-                        List list = JAXBUtil.getList(ele);
-                        list.add(p);
-                        list.add(plain);
+                        parse(ele, shawn);
                     }
                     catch (Exception ex4)
                     {
-                        log.warn("no way. say it ain't so!", ex4);
+                        DataPolice.report("parse shawn failed: "+ex4.getMessage());
+                        DataPolice.report("  while parsing: "+FilterUtil.forOutput(shawn));
+
+                        try
+                        {
+                            P p = JAXBUtil.factory().createP();
+                            List list = JAXBUtil.getList(ele);
+                            list.add(p);
+                            list.add(plain);
+                        }
+                        catch (Exception ex5)
+                        {
+                            log.warn("no way. say it ain't so!", ex5);
+                        }
                     }
                 }
             }
@@ -134,15 +148,6 @@ public class OSISFilter implements Filter
         List content = JAXBUtil.getList(data);
 
         host.addAll(content);
-    }
-
-    /**
-     * Cut up the input data so it is OK to output in an error log
-     */
-    private String forOutput(String data)
-    {
-        String chopped = StringUtils.left(data, 50);
-        return chopped;
     }
 
     /**

@@ -46,7 +46,7 @@ public class BibleComboBoxModelSet
         this.cbo_book = cbo_book;
 
         cbo_book.setModel(mdl_book);
-        cbo_book.addActionListener(new CustomActionListener());
+        cbo_book.addActionListener(cal);
     }
 
     /**
@@ -57,6 +57,7 @@ public class BibleComboBoxModelSet
         this.cbo_chapter = cbo_chapter;
 
         cbo_chapter.setModel(mdl_chapter);
+        cbo_chapter.addActionListener(cal);
     }
 
     /**
@@ -67,6 +68,7 @@ public class BibleComboBoxModelSet
         this.cbo_verse = cbo_verse;
 
         cbo_verse.setModel(mdl_verse);
+        cbo_verse.addActionListener(cal);
     }
 
     /**
@@ -119,6 +121,7 @@ public class BibleComboBoxModelSet
     protected BibleComboBoxModel mdl_verse = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_VERSE);
 
     protected EventListenerList listeners = new EventListenerList();
+    private ActionListener cal = new CustomActionListener();
 
     /**
      * Add a listener to the list that's notified each time a change

@@ -111,7 +111,7 @@ public class Converter
      * Reverse of convertDocumentToBibleMetaDatas().
      * @see Converter#convertDocumentToBibleMetaDatas(BookDriver, Document, Remoter, int)
      */
-    public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids) throws ConverterException
+    public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids)
     {
         if (bmds.length != ids.length)
         {
@@ -186,7 +186,7 @@ public class Converter
      * Reverse of convertDocumentToPassage().
      * @see Converter#convertDocumentToPassage(Document)
      */
-    public static Document convertPassageToDocument(Passage ref) throws ConverterException
+    public static Document convertPassageToDocument(Passage ref)
     {
         Element root = new Element("root");
         root.addContent(new Element("ref").addContent(ref.getName()));
@@ -206,7 +206,7 @@ public class Converter
      * @param doc
      * @return Iterator
      */
-    public static Iterator convertDocumentToStartsWith(Document doc) throws ConverterException
+    public static Iterator convertDocumentToStartsWith(Document doc)
     {
         List words = new ArrayList();
 
@@ -227,7 +227,7 @@ public class Converter
      * Reverse of convertDocumentToStartsWith().
      * @see Converter#convertDocumentToStartsWith(Document)
      */
-    public static Document convertStartsWithToDocument(Iterator it) throws ConverterException
+    public static Document convertStartsWithToDocument(Iterator it)
     {
         Element root = new Element("root");
         while (it.hasNext())
@@ -287,7 +287,7 @@ public class Converter
      * Reverse of convertDocumentToException().
      * @see Converter#convertDocumentToException(Document)
      */
-    public static Document convertExceptionToDocument(Throwable ex) throws ConverterException
+    public static Document convertExceptionToDocument(Throwable ex)
     {
         Element exce = new Element("exception");
 

@@ -132,7 +132,7 @@ public class StubCommentary extends AbstractCommentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#hasComments(org.crosswire.jsword.passage.Verse)
      */
-    public boolean hasComments(Verse verse) throws BookException
+    public boolean hasComments(Verse verse)
     {
         return true;
     }
@@ -140,7 +140,7 @@ public class StubCommentary extends AbstractCommentary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Commentary#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Passage findPassage(Search search) throws BookException
+    public Passage findPassage(Search search)
     {
         try
         {

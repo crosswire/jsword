@@ -151,7 +151,7 @@ public class Books
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static void addBook(BookMetaData bmd) throws BookException
+    public static void addBook(BookMetaData bmd)
     {
         log.debug("registering book: "+bmd.getName());
 

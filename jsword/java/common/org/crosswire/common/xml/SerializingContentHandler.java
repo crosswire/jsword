@@ -4,7 +4,6 @@ package org.crosswire.common.xml;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 
 /**
  * Class to convert a SAX stream into a simple String.
@@ -66,7 +65,7 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startDocument()
      */
-    public void startDocument() throws SAXException
+    public void startDocument()
     {
         buffer.append("<?xml version=\"1.0\"?>");
 
@@ -79,28 +78,28 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endDocument()
      */
-    public void endDocument() throws SAXException
+    public void endDocument()
     {
     }
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String)
      */
-    public void startPrefixMapping(String prefix, String uri) throws SAXException
+    public void startPrefixMapping(String prefix, String uri)
     {
     }
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endPrefixMapping(java.lang.String)
      */
-    public void endPrefixMapping(String prefix) throws SAXException
+    public void endPrefixMapping(String prefix)
     {
     }
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
-    public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException
+    public void startElement(String uri, String localname, String qname, Attributes attrs)
     {
         buffer.append("<");
         if (qname != null)
@@ -132,7 +131,7 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void endElement(String uri, String localname, String qname) throws SAXException
+    public void endElement(String uri, String localname, String qname)
     {
         buffer.append("</");
         if (qname != null)
@@ -155,7 +154,7 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
-    public void characters(char[] chars, int start, int length) throws SAXException
+    public void characters(char[] chars, int start, int length)
     {
         String s = new String(chars, start, length);
         buffer.append(s);
@@ -164,7 +163,7 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
      */
-    public void ignorableWhitespace(char[] chars, int start, int length) throws SAXException
+    public void ignorableWhitespace(char[] chars, int start, int length)
     {
         String s = new String(chars, start, length);
         buffer.append(s);
@@ -173,7 +172,7 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String, java.lang.String)
      */
-    public void processingInstruction(String target, String data) throws SAXException
+    public void processingInstruction(String target, String data)
     {
         buffer.append("<!");
         buffer.append(target);
@@ -190,7 +189,7 @@ public class SerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#skippedEntity(java.lang.String)
      */
-    public void skippedEntity(String name) throws SAXException
+    public void skippedEntity(String name)
     {
     }
 

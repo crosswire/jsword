@@ -61,7 +61,7 @@ public class BibleDataCache implements Activatable
     /**
      * Constructor for BibleDataCache.
      */
-    public BibleDataCache(URL url, BibleMetaData bmd) throws BookException, FileNotFoundException, IOException
+    public BibleDataCache(URL url, BibleMetaData bmd) throws FileNotFoundException, IOException
     {
         this.url = url;
         this.bmd = bmd;

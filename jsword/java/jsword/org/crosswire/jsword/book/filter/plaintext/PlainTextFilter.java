@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.filter.plaintext;
 
 import java.util.List;
@@ -6,7 +5,6 @@ import java.util.List;
 import javax.xml.bind.Element;
 
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.book.filter.Filter;
 
 /**
@@ -38,7 +36,7 @@ public class PlainTextFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws FilterException
+    public void toOSIS(Element ele, String plain)
     {
         List list = JAXBUtil.getList(ele);
         list.add(plain);

@@ -1,10 +1,7 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.io.IOException;
-
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.CommentaryMetaData;
 
@@ -38,7 +35,7 @@ public class SwordCommentaryMetaData extends SwordBookMetaData implements Commen
      * Simple ctor
      * @see org.crosswire.jsword.book.CommentaryMetaData#getCommentary()
      */
-    public SwordCommentaryMetaData(SwordBookDriver driver, SwordConfig config) throws IOException, BookException
+    public SwordCommentaryMetaData(SwordBookDriver driver, SwordConfig config)
     {
         super(driver, config);
 

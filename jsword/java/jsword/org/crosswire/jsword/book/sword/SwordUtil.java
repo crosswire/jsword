@@ -152,7 +152,7 @@ public class SwordUtil
      * @param endsize The expected resultant data size
      * @return The uncompressed data
      */
-    public static byte[] uncompress(byte[] compressed, int endsize) throws IOException, DataFormatException, BookException
+    public static byte[] uncompress(byte[] compressed, int endsize) throws DataFormatException, BookException
     {
         // Create the decompressor and give it the data to compress
         Inflater decompressor = new Inflater();

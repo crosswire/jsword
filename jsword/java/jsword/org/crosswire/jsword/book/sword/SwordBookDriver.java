@@ -49,7 +49,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Some basic name initialization
      */
-    public SwordBookDriver() throws MalformedURLException
+    public SwordBookDriver()
     {
         log.debug("Starting Sword drivers");
     }

@@ -43,7 +43,6 @@ import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
@@ -121,7 +120,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     /**
      * Construct a Desktop.
      */
-    public Desktop() throws BookException, IOException, JDOMException
+    public Desktop() throws IOException, JDOMException
     {
         URL predicturl = Project.resource().getWritablePropertiesURL("splash");
         Splash splash = new Splash(this, 60000);

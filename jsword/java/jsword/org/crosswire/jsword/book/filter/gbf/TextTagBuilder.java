@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.filter.gbf;
 import java.util.LinkedList;
 
 import javax.xml.bind.Element;
-import javax.xml.bind.JAXBException;
 
 import org.crosswire.jsword.book.JAXBUtil;
 
@@ -40,7 +39,7 @@ public class TextTagBuilder implements TagBuilder
     {
         return new Tag()
         {
-            public void updateOsisStack(LinkedList stack) throws JAXBException
+            public void updateOsisStack(LinkedList stack)
             {
                 if (stack.size() == 0)
                 {

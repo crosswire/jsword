@@ -113,7 +113,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#delete()
      */
-    public void delete() throws BookException
+    public void delete()
     {
         checkActive();
 
@@ -123,7 +123,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)
      */
-    public Iterator getStartsWith(String word) throws BookException
+    public Iterator getStartsWith(String word)
     {
         checkActive();
 
@@ -135,7 +135,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
      */
-    public Passage findWord(String word) throws BookException
+    public Passage findWord(String word)
     {
         checkActive();
 

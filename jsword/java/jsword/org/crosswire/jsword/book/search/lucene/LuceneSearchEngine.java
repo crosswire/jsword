@@ -136,7 +136,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#delete()
      */
-    public void delete() throws BookException
+    public void delete()
     {
         checkActive();
 

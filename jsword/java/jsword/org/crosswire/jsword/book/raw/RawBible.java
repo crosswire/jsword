@@ -382,10 +382,12 @@ public class RawBible extends LocalURLBible implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
      */
-    public Passage findWord(String word) throws BookException
+    public Passage findWord(String word)
     {
         if (word == null)
+        {
             return PassageFactory.createPassage();
+        }
 
         int word_idx = word_items.getIndex(word);
 
@@ -424,7 +426,7 @@ public class RawBible extends LocalURLBible implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)
      */
-    public Iterator getStartsWith(String word) throws BookException
+    public Iterator getStartsWith(String word)
     {
         return ((WordItemsMem) word_items).getStartsWith(word);
     }
@@ -432,7 +434,7 @@ public class RawBible extends LocalURLBible implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.filter.BookData)
      */
-    public void setDocument(Verse verse, BookData bdata) throws BookException
+    public void setDocument(Verse verse, BookData bdata)
     {
         // For all of the sections
         Iterator sit = bdata.getOsis().getOsisText().getDiv().iterator();
@@ -512,7 +514,7 @@ public class RawBible extends LocalURLBible implements Index
      * @param range The verses to search for
      * @return The Bible text
      */
-    private String getText(VerseRange range) throws BookException
+    private String getText(VerseRange range)
     {
         StringBuffer retcode = new StringBuffer();
 

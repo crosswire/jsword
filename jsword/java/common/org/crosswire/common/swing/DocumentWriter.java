@@ -88,14 +88,10 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Write a portion of an array of characters.
-     * @param cbuf Array of characters
-     * @param off Offset from which to start writing characters
-     * @param len Number of characters to write
-     * @exception IOException If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#write(char[], int, int)
      */
-    public void write(char[] cbuf, int off, int len) throws IOException
+    public void write(char[] cbuf, int off, int len)
     {
         synchronized (lock)
         {
@@ -104,15 +100,10 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Write a single character.  The character to be written is contained in
-     * the 16 low-order bits of the given integer value; the 16 high-order bits
-     * are ignored.
-     * <p> Subclasses that intend to support efficient single-character output
-     * should override this method.
-     * @exception  IOException  If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#write(int)
      */
-    public void write(int c) throws IOException
+    public void write(int c)
     {
         synchronized (lock)
         {
@@ -121,12 +112,10 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Write an array of characters.
-     * @param cbuf Array of characters to be written
-     * @exception IOException If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#write(char[])
      */
-    public void write(char[] cbuf) throws IOException
+    public void write(char[] cbuf)
     {
         synchronized (lock)
         {
@@ -135,12 +124,10 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Write a string.
-     * @param str String to be written
-     * @exception IOException If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#write(java.lang.String)
      */
-    public void write(String str) throws IOException
+    public void write(String str)
     {
         synchronized (lock)
         {
@@ -149,14 +136,10 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Write a portion of a string.
-     * @param str A String
-     * @param off Offset from which to start writing characters
-     * @param len Number of characters to write
-     * @exception IOException If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#write(java.lang.String, int, int)
      */
-    public void write(String str, int off, int len) throws IOException
+    public void write(String str, int off, int len)
     {
         synchronized (lock)
         {
@@ -178,13 +161,8 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Flush the stream.  If the stream has saved any characters from the
-     * various write() methods in a buffer, write them immediately to their
-     * intended destination.  Then, if that destination is another character or
-     * byte stream, flush it.  Thus one flush() invocation will flush all the
-     * buffers in a chain of Writers and OutputStreams.
-     * @exception  IOException  If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#flush()
      */
     public void flush() throws IOException
     {
@@ -210,36 +188,43 @@ public class DocumentWriter extends Writer
         }
     }
 
-    /**
-     * Close the stream, flushing it first.  Once a stream has been closed,
-     * further write() or flush() invocations will cause an IOException to be
-     * thrown.  Closing a previously-closed stream, however, has no effect.
-     * @exception IOException If an I/O error occurs
+    /* (non-Javadoc)
+     * @see java.io.Writer#close()
      */
-    public void close() throws IOException
+    public void close()
     {
         closed = true;
     }
 
-    /** The object to lock on to read or write the queue or the updater */
+    /**
+     * The object to lock on to read or write the queue or the updater
+     */
     protected Object lock = new Object();
 
-    /** The queue of strings to be added to the GUI */
+    /**
+     * The queue of strings to be added to the GUI
+     */
     protected String queue = "";
 
-    /** The destination Document */
+    /**
+     * The destination Document
+     */
     protected Document doc = null;
 
-    /** The destination Document */
+    /**
+     * The destination Document
+     */
     protected boolean closed = false;
 
-    /** The updater waiting to be run */
+    /**
+     * The updater waiting to be run
+     */
     protected Updater updater = null;
 
     /**
      * For Thread/Swing correctness we should only update in the GUI thread
      */
-    class Updater implements Runnable
+    private class Updater implements Runnable
     {
         public void run()
         {

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.cli;
 
 import java.io.IOException;
@@ -22,7 +21,6 @@ import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
@@ -86,25 +84,25 @@ public class Model
         return Defaults.getDictionaryMetaData().getFullName();
     }
 
-    public String bible(String sref) throws BookException, NoSuchVerseException
+    public String bible(String sref) throws BookException
     {
         Book book = Defaults.getBibleMetaData().getBible();
         return getData(sref, book);
     }
 
-    public String comment(String sref) throws BookException, NoSuchVerseException
+    public String comment(String sref) throws BookException
     {
         Book book = Defaults.getCommentaryMetaData().getCommentary();
         return getData(sref, book);
     }
 
-    public String dict(String sref) throws BookException, NoSuchVerseException
+    public String dict(String sref) throws BookException
     {
         Book book = Defaults.getDictionaryMetaData().getDictionary();
         return getData(sref, book);
     }
 
-    public String dictList(String startswith) throws BookException, NoSuchVerseException
+    public String dictList(String startswith)
     {
         Dictionary dict = Defaults.getDictionaryMetaData().getDictionary();
         SortedSet set = dict.getIndex(startswith);

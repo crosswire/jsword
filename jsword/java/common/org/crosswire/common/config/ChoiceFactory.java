@@ -37,6 +37,7 @@ public class ChoiceFactory
      */
     private ChoiceFactory()
     {
+        // singleton - no set-up needed
     }
 
     /**
