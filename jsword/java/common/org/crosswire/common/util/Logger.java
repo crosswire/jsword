@@ -62,9 +62,14 @@ public final class Logger
         if (check != null)
         {
             log4j.error("Logger reuse for: "+id.getName());
+            log4j.debug("Javascript creates a new classloader so this might not be a problem");
         }
 
         loggers.put(id, this);
+
+        // This can be useful in tracking down Logger reuse
+        // ex = new Exception();
+        // ex.fillInStackTrace();
     }
 
     /**
@@ -156,6 +161,7 @@ public final class Logger
         return log4j.isDebugEnabled();
     }
 
-    private static Map loggers = new HashMap(); 
+    private static Map loggers = new HashMap();
     private org.apache.log4j.Logger log4j = null;
+    // private Exception ex;
 }

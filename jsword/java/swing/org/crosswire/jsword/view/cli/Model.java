@@ -59,7 +59,7 @@ public class Model
         config = new Config("Tool Shed Options");
         Document xmlconfig = Project.resource().getDocument("config");
         config.add(xmlconfig);
-        
+
         try
         {
             config.setProperties(Project.resource().getProperties("cli"));
@@ -116,7 +116,9 @@ public class Model
             buffer.append(key.getText());
 
             if (it.hasNext())
+            {
                 buffer.append('\n');
+            }
         }
 
         return buffer.toString();
@@ -192,7 +194,9 @@ public class Model
             buffer.append(bmd.getFullName());
             
             if (it.hasNext())
+            {
                 buffer.append('\n');
+            }
         }
 
         return buffer.toString();
@@ -210,7 +214,9 @@ public class Model
             buffer.append(key+" = "+choice.getString());
 
             if (it.hasNext())
+            {
                 buffer.append('\n');
+            }
         }
 
         return buffer.toString();

@@ -88,7 +88,9 @@ public class SwingConfig
     public static void setDisplayClass(Class display) throws ClassCastException
     {
         if (!BaseConfig.class.isAssignableFrom(display))
+        {
             throw new ClassCastException(display.getName());
+        }
 
         SwingConfig.display = display;
     }

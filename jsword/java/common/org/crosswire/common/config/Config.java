@@ -170,7 +170,9 @@ public class Config implements Serializable
             String path = getPath(key);
 
             if (!paths.contains(path))
+            {
                 paths.add(path);
+            }
         }
 
         return paths.iterator();
@@ -193,7 +195,9 @@ public class Config implements Serializable
     {
         int index = keys.indexOf(key);
         if (index == -1)
+        {
             return null;
+        }
 
         return (Choice) models.get(index);
     }
@@ -304,7 +308,9 @@ public class Config implements Serializable
                                 highest_change = priority;
 
                                 if (!force)
-                                    log.info("Change at level "+highest_change+", all changes will propogate regardless");
+                                {
+                                    log.info("Change at level " + highest_change + ", all changes will propogate regardless");
+                                }
                             }
                         }
                     }
@@ -331,7 +337,9 @@ public class Config implements Serializable
             String value = prop.getProperty(key);
 
             if (value != null)
+            {
                 local.put(key, value);
+            }
         }
     }
 
@@ -386,6 +394,7 @@ public class Config implements Serializable
         OutputStream out = new FileOutputStream(file);
 
         getProperties().store(out, title);
+        out.close();
     }
 
     /**
@@ -395,7 +404,9 @@ public class Config implements Serializable
     {
         int last_dot = key.lastIndexOf('.');
         if (last_dot == -1)
-            throw new IllegalArgumentException("key="+key+" does not contain a dot.");
+        {
+            throw new IllegalArgumentException("key=" + key + " does not contain a dot.");
+        }
 
         return key.substring(0, last_dot);
     }
@@ -407,7 +418,9 @@ public class Config implements Serializable
     {
         int last_dot = key.lastIndexOf('.');
         if (last_dot == -1)
-            throw new IllegalArgumentException("key="+key+" does not contain a dot.");
+        {
+            throw new IllegalArgumentException("key=" + key + " does not contain a dot.");
+        }
 
         return key.substring(last_dot+1);
     }
@@ -446,7 +459,9 @@ public class Config implements Serializable
             if (listeners[i] == ConfigListener.class)
             {
                 if (ev == null)
+                {
                     ev = new ConfigEvent(this, key, model);
+                }
 
                 ((ConfigListener) listeners[i+1]).choiceAdded(ev);
             }
@@ -469,7 +484,9 @@ public class Config implements Serializable
             if (listeners[i] == ConfigListener.class)
             {
                 if (ev == null)
+                {
                     ev = new ConfigEvent(this, key, model);
+                }
 
                 ((ConfigListener) listeners[i+1]).choiceRemoved(ev);
             }

@@ -120,7 +120,6 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
             throw new BookException(Msg.READ_FAIL);
         }
 
-        // PENDING(joe): check that this idiom works
         return set.subSet(startswith, startswith+"\u9999");
     }
 
