@@ -94,7 +94,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
      * @param dest
      * @throws IOException
      */
-    private void copy(Job job, URL url, URL dest) throws IOException
+    private void copy(Job job, URL url, URL dest) throws IOException, InstallException
     {
         InputStream in = null;
         OutputStream out = null;
@@ -110,8 +110,15 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
             out = NetUtil.getOutputStream(dest);
 
             URLConnection urlConnection = url.openConnection();
-            in = urlConnection.getInputStream();
-
+            try
+            {
+                in = urlConnection.getInputStream();
+            }
+            catch (Exception exception)
+            {
+                throw new InstallException(Msg.MISSING_FILE, exception);
+            }
+            
             byte[] buf = new byte[4096];
             for (int count = 0; -1 != (count = in.read(buf)); )
             {

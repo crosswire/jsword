@@ -45,6 +45,7 @@ class Msg extends MsgBase
     static final Msg URL_FAILED = new Msg("SwordInstallerFactory.URLFailed"); //$NON-NLS-1$
     static final Msg URL_AT_COUNT = new Msg("SwordInstallerFactory.URLAtCount"); //$NON-NLS-1$
     static final Msg URL_COLON_COUNT = new Msg("SwordInstallerFactory.URLColonCount"); //$NON-NLS-1$
+    static final Msg MISSING_FILE = new Msg("HttpSwordInstaller.MissingFile"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
