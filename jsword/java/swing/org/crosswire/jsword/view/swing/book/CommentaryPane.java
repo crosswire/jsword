@@ -119,13 +119,19 @@ public class CommentaryPane extends JPanel implements FocusablePart
      */
     protected void updateDisplay()
     {
+        int index = cbocomments.getSelectedIndex();
+
+        if (index == -1)
+        {
+            return;
+        }
+
         try
         {
             Verse verse = set.getVerse();
             ref = PassageFactory.createPassage();
             ref.add(verse);
 
-            int index = cbocomments.getSelectedIndex();
             BookMetaData bmd = (BookMetaData) cmds.get(index);
 
             BookData bdata = bmd.getBook().getData(ref);
@@ -150,14 +156,15 @@ public class CommentaryPane extends JPanel implements FocusablePart
      */
     public String getOSISSource()
     {
-        if (ref == null)
+        int index = cbocomments.getSelectedIndex();
+
+        if (ref == null || index == -1)
         {
             return "";
         }
 
         try
         {
-            int index = cbocomments.getSelectedIndex();
             BookMetaData bmd = (BookMetaData) cmds.get(index);
 
             BookData bdata = bmd.getBook().getData(ref);

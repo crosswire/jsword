@@ -57,6 +57,8 @@ public class BibleComboBoxModelSet
         this.cbo_chapter = cbo_chapter;
 
         cbo_chapter.setModel(mdl_chapter);
+        // There are over 100 chapters in some books
+        cbo_chapter.setPrototypeDisplayValue(new Integer(999));
         cbo_chapter.addActionListener(cal);
     }
 
@@ -68,6 +70,8 @@ public class BibleComboBoxModelSet
         this.cbo_verse = cbo_verse;
 
         cbo_verse.setModel(mdl_verse);
+        // There are over 100 verses in some chapters
+        cbo_chapter.setPrototypeDisplayValue(new Integer(999));
         cbo_verse.addActionListener(cal);
     }
 

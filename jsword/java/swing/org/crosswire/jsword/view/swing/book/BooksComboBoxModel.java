@@ -47,9 +47,9 @@ public class BooksComboBoxModel extends BooksListModel implements ComboBoxModel
     {
         super(filter);
 
-        if (bmds.size() > 0)
+        if (getSize() > 0)
         {
-            current = (BookMetaData) bmds.get(0);
+            current = (BookMetaData) getElementAt(0);
         }
     }
 
@@ -77,6 +77,38 @@ public class BooksComboBoxModel extends BooksListModel implements ComboBoxModel
     public BookMetaData getSelectedBookMetaData()
     {
         return current;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.BooksListModel#cacheData()
+     */
+    protected void cacheData()
+    {
+        super.cacheData();
+        
+        // Find the previously selected item
+        boolean found = false;
+        int size = getSize();
+        for (int i = 0; i < size; i++)
+        {
+            if (getElementAt(i) == current)
+            {
+                found = true;
+            }
+        }
+        
+        // If it was not found then either set to first element or null
+        if (!found) {
+            
+            if (getSize() > 0)
+            {
+                current = (BookMetaData) getElementAt(0);
+            }
+            else
+            {
+                current = null;
+            }
+        }
     }
 
     /**

@@ -33,6 +33,7 @@ import javax.swing.event.ChangeListener;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -291,6 +292,12 @@ public class DisplaySelectPane extends JPanel
      */
     protected void doSearchAction()
     {
+        BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
+        if (bmd == null)
+        {
+        	noBookInstalled();
+        	return;
+        }
         try
         {
             String param = txtSearch.getText();
@@ -301,7 +308,7 @@ public class DisplaySelectPane extends JPanel
                 search.setRestriction(restrict);
             }
 
-            Book book = mdlVersn.getSelectedBookMetaData().getBook();
+            Book book = bmd.getBook();
             Key key = book.find(search);
 
             txtPassg.setText(key.getName());
@@ -321,6 +328,12 @@ public class DisplaySelectPane extends JPanel
      */
     protected void doMatchAction()
     {
+        BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
+        if (bmd == null)
+        {
+        	noBookInstalled();
+        	return;
+        }
         try
         {
             String param = txtMatch.getText();
@@ -331,7 +344,7 @@ public class DisplaySelectPane extends JPanel
                 search.setRestriction(restrict);
             }
 
-            Book version = mdlVersn.getSelectedBookMetaData().getBook();
+            Book version = bmd.getBook();
             Key key = version.find(search);
 
             // we get PassageTallys for best match searches
@@ -368,9 +381,15 @@ public class DisplaySelectPane extends JPanel
      */
     private void updateDisplay()
     {
+        BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
+        if (bmd == null)
+        {
+        	noBookInstalled();
+        	return;
+        }
         try
         {
-            Book bible = mdlVersn.getSelectedBookMetaData().getBook();
+        	Book bible = bmd.getBook();
             Passage ref = getPassage();
 
             fireCommandMade(new DisplaySelectEvent(this, ref, bible));
@@ -472,10 +491,15 @@ public class DisplaySelectPane extends JPanel
      */
     protected void changeVersion()
     {
+        BookMetaData bmd = mdlVersn.getSelectedBookMetaData();
+        if (bmd == null)
+        {
+        	noBookInstalled();
+        	return;
+        }
         try
         {
-            // This cast is safe because we asked for Bibles in the ctor
-            Book book = mdlVersn.getSelectedBookMetaData().getBook();
+        	Book book = bmd.getBook();
             Passage ref = getPassage();
 
             fireVersionChanged(new DisplaySelectEvent(this, ref, book));
@@ -484,6 +508,14 @@ public class DisplaySelectPane extends JPanel
         {
             Reporter.informUser(this, ex);
         }
+    }
+
+    /**
+     * Display a dialog indicating that no Bible is installed.
+     */
+    private void noBookInstalled()
+    {
+        JOptionPane.showMessageDialog(this, "No Bible is installed", "No Bible is installed", JOptionPane.WARNING_MESSAGE);
     }
 
     /**

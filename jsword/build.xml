@@ -436,14 +436,13 @@
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
     <jdepend format="xml" outputfile="${target.temp}/jdepend/jdepend-report.xml" fork="yes">
-      <sourcespath>
-        <pathelement path="${source.java}/common"/>
-        <pathelement path="${source.java}/jsword"/>
-        <pathelement path="${source.java}/servlet"/>
-        <pathelement path="${source.java}/swing"/>
-      </sourcespath>
+      <classespath>
+        <pathelement path="${target.classes}/common"/>
+        <pathelement path="${target.classes}/jsword"/>
+        <pathelement path="${target.classes}/swing"/>
+        <pathelement path="${target.classes}/servlet"/>
+      </classespath>
       <classpath>
-        <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
         <fileset dir="${support.tools}/jdepend24" includes="**/*.jar"/>
       </classpath>
@@ -539,7 +538,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.findbugs" depends="jar">
+  <target name="web.findbugs" depends="jnlp">
     <mkdir dir="${target.web}/findbugs"/>
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
       <classpath>
@@ -551,25 +550,33 @@
         outputFile="${target.web}/findbugs/report.txt"
         reportLevel="low"
         sort="text"
+        jvmargs="-Xmx512m"
         >
-      <class location="${target.jar}/jsword.jar" />
-      <sourcePath path="${source.java}/jsword"/>
-      <auxClasspath path="${source.jar}/jdom09/jdom.jar"/>
-      <auxClasspath path="${source.jar}/log4j127/log4j-1.2.7.jar"/>
-      <auxClasspath path="${source.jar}/lang200/commons-lang-2.0.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10endorsed/dom.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10endorsed/sax.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10endorsed/xalan.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10endorsed/xercesImpl.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10/jaxb-api.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10/jaxb-libs.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10/jaxb-ri.jar"/>
-      <auxClasspath path="${source.jar}/jaxb10/"/>
+      <class location="${target.web}/jnlp/jsword-swing.jar" />
+      <class location="${target.web}/jnlp/jsword.jar"/>
+      <auxClasspath path="${target.web}/jnlp/jsword-osis.jar"/>
+      <auxClasspath path="${target.web}/jnlp/commons-lang-2.0.jar"/>
+      <auxClasspath path="${target.web}/jnlp/commons-net-1.1.0.jar"/>
+      <auxClasspath path="${target.web}/jnlp/jaxb-api.jar"/>
+      <auxClasspath path="${target.web}/jnlp/jaxb-libs.jar"/>
+      <auxClasspath path="${target.web}/jnlp/jaxb-ri.jar"/>
+      <auxClasspath path="${target.web}/jnlp/jdom.jar"/>
+      <auxClasspath path="${target.web}/jnlp/log4j-1.2.7.jar"/>
+      <auxClasspath path="${target.web}/jnlp/lucene-1.3-final.jar"/>
+      <auxClasspath path="${target.web}/jnlp/winlaf-0.4.jar"/>
+      <auxClasspath path="${target.web}/jnlp/tar.jar"/>
       <!--
-      <sourcePath path="${source.java}/common"/>
-      <sourcePath path="${source.java}/servlet"/>
-      <sourcePath path="${source.java}/swing"/>
-      -->
+        ** The following is needed only for the unused org.crosswire.jsword.view.cli
+        ** It can be removed when cli is removed.
+        -->
+      <auxClasspath path="${source.jar}/bsf23/js.jar"/>
+      <!-- sourcePath is really only needed by the findbugs gui -->
+      <sourcePath>
+        <pathelement path="${source.java}/common"/>
+        <pathelement path="${source.java}/jsword"/>
+        <pathelement path="${source.java}/swing"/>
+        <pathelement path="${source.java}/servlet"/>
+      </sourcePath>
     </findbugs>
   </target>
 
