@@ -1,10 +1,10 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book.data.jaxb;
 
-import java.util.Iterator;
+import org.crosswire.common.util.MsgBase;
 
 /**
- * A section is a set of Verses grouped together under a single title. 
+ * Compile safe Msg resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,18 +27,19 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface SectionData
+class Msg extends MsgBase
 {
-    /**
-     * This is an accessor for the list of references (verses) that we hold
-     * @return The list of RefDatas
-     */
-    public Iterator getRefDatas();
+    static final Msg GBF_JAXB = new Msg("Parse Error");
 
-    /**
-     * A simplified plain text version of the data in this section with all the
-     * markup stripped out.
-     * @return The Bible text without markup
-     */
-    public String getPlainText();
+    /** Initialise any resource bundles */
+    static
+    {
+        init(Msg.class.getName());
+    }
+
+    /** Passthrough ctor */
+    private Msg(String name)
+    {
+        super(name);
+    }
 }

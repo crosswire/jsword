@@ -9,7 +9,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OSISUtil;
+import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.passage.Passage;
 import org.jdom.Document;
 import org.xml.sax.SAXException;
@@ -72,14 +72,14 @@ public class RemoteBible extends AbstractBible
     {
         try
         {
-            RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETDATA);
-            method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
-            method.addParam(RemoteConstants.PARAM_PASSAGE, ref.getName());
+            RemoteMethod method = new RemoteMethod(MethodName.GETDATA);
+            method.addParam(ParamName.PARAM_BIBLE, rbmd.getID());
+            method.addParam(ParamName.PARAM_PASSAGE, ref.getName());
 
             Document doc = remoter.execute(method);
             SAXEventProvider provider = new JDOMSAXEventProvider(doc);
 
-            return OSISUtil.createBibleData(provider);
+            return DataFactory.getInstance().createBibleData(provider);
         }
         catch (RemoterException ex)
         {
@@ -100,11 +100,11 @@ public class RemoteBible extends AbstractBible
     {
         try
         {
-            RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_FINDPASSAGE);
-            method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
-            method.addParam(RemoteConstants.PARAM_FINDSTRING, search.getMatch());
-            method.addParam(RemoteConstants.PARAM_FINDMATCH, ""+search.isBestMatch());
-            method.addParam(RemoteConstants.PARAM_FINDRANGE, search.getRestriction().getName());
+            RemoteMethod method = new RemoteMethod(MethodName.FINDPASSAGE);
+            method.addParam(ParamName.PARAM_BIBLE, rbmd.getID());
+            method.addParam(ParamName.PARAM_FINDSTRING, search.getMatch());
+            method.addParam(ParamName.PARAM_FINDMATCH, ""+search.isBestMatch());
+            method.addParam(ParamName.PARAM_FINDRANGE, search.getRestriction().getName());
             Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToPassage(doc);

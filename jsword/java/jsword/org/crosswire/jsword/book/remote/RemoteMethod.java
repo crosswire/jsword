@@ -36,7 +36,7 @@ public class RemoteMethod
      * Constructor RemoteMethod.
      * @param string
      */
-    public RemoteMethod(String methodname)
+    public RemoteMethod(MethodName methodname)
     {
         this.methodname = methodname;
     }
@@ -45,7 +45,7 @@ public class RemoteMethod
      * Accessor for the method name
      * @return String
      */
-    public String getMethodName()
+    public MethodName getMethodName()
     {
         return methodname;
     }
@@ -53,7 +53,7 @@ public class RemoteMethod
     /**
      * Accessor for a parameter
      */
-    public String getParameter(String key)
+    public String getParameter(ParamName key)
     {
         return (String) params.get(key);
     }
@@ -74,7 +74,7 @@ public class RemoteMethod
      * @param value The value to assign to this parameter
      * @return this to allow addParam chains
      */
-    public RemoteMethod addParam(String name, String value)
+    public RemoteMethod addParam(ParamName name, String value)
     {
         params.put(name, value);
         return this;
@@ -96,5 +96,5 @@ public class RemoteMethod
     /**
      * The method name
      */
-    private String methodname;
+    private MethodName methodname;
 }

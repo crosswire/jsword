@@ -13,7 +13,6 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
@@ -47,24 +46,24 @@ import org.jdom.input.SAXHandler;
  */
 public class LocalRemoter implements Remoter
 {
-    /**
-     * A simple name
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.remote.Remoter#getRemoterName()
      */
     public String getRemoterName()
     {
         return "Local";
     }
 
-    /**
-     * @see Remoter#execute(RemoteMethod)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.remote.Remoter#execute(org.crosswire.jsword.book.remote.RemoteMethod)
      */
     public Document execute(RemoteMethod method) throws RemoterException
     {
-        String methodname = method.getMethodName();
+        MethodName methodname = method.getMethodName();
 
         try
         {
-            if (RemoteConstants.METHOD_GETBIBLES.equals(methodname))
+            if (MethodName.GETBIBLES.equals(methodname))
             {
                 List lbmds = Books.getBooks(FILTER);
                 BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
@@ -72,29 +71,29 @@ public class LocalRemoter implements Remoter
                 String[] uids = getUIDs(bmds);
                 return Converter.convertBibleMetaDatasToDocument(bmds, uids);
             }
-            else if (RemoteConstants.METHOD_GETDATA.equals(methodname))
+            else if (MethodName.GETDATA.equals(methodname))
             {
-                String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
+                String uid = method.getParameter(ParamName.PARAM_BIBLE);
                 BibleMetaData bmd = lookupBibleMetaData(uid);
                 Bible bible = bmd.getBible();
-                String refstr = method.getParameter(RemoteConstants.PARAM_PASSAGE);
+                String refstr = method.getParameter(ParamName.PARAM_PASSAGE);
                 Passage ref = PassageFactory.createPassage(refstr);
                 BookData data = bible.getData(ref);
 
-                SAXEventProvider provider = OSISUtil.getSAXEventProvider(data);
+                SAXEventProvider provider = data.getSAXEventProvider();
                 SAXHandler handler = new SAXHandler();
                 provider.provideSAXEvents(handler);
                 return handler.getDocument();
             }
-            else if (RemoteConstants.METHOD_FINDPASSAGE.equals(methodname))
+            else if (MethodName.FINDPASSAGE.equals(methodname))
             {
-                String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
+                String uid = method.getParameter(ParamName.PARAM_BIBLE);
                 BibleMetaData bmd = lookupBibleMetaData(uid);
                 Bible bible = bmd.getBible();
 
-                String word = method.getParameter(RemoteConstants.PARAM_FINDSTRING);
-                boolean match = Boolean.getBoolean(method.getParameter(RemoteConstants.PARAM_FINDMATCH));
-                String refstr = method.getParameter(RemoteConstants.PARAM_FINDRANGE);
+                String word = method.getParameter(ParamName.PARAM_FINDSTRING);
+                boolean match = Boolean.getBoolean(method.getParameter(ParamName.PARAM_FINDMATCH));
+                String refstr = method.getParameter(ParamName.PARAM_FINDRANGE);
                 Passage range = PassageFactory.createPassage(refstr);
                 Search search = new Search(word, match);
                 search.setRestriction(range);
@@ -117,8 +116,7 @@ public class LocalRemoter implements Remoter
         }
     }
 
-    /**
-     * How fast are we?
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.remote.Remoter#getSpeed()
      */
     public int getSpeed()

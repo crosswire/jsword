@@ -15,12 +15,11 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.Filters;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
-import org.crosswire.jsword.book.data.OSISUtil;
-import org.crosswire.jsword.book.data.VerseData;
 import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.DataFactory;
+import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.VerseData;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -97,7 +96,7 @@ public class BibleDataCache
     {
         try
         {
-            BookDataListener li = new OSISBookDataListnener();
+            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
             li.startDocument(bmd.getInitials());
 
             // For all the ranges in this Passage
@@ -139,20 +138,20 @@ public class BibleDataCache
      * Write the XML to disk
      * @param doc The data to write
      */
-    public void setDocument(Verse verse, BookData doc) throws BookException
+    public void setDocument(Verse verse, BookData bdata) throws BookException
     {
         try
         {
             // For all of the sections
-            for (Iterator sit = OSISUtil.getSectionDatas(doc); sit.hasNext(); )
+            for (Iterator sit = bdata.getSectionDatas(); sit.hasNext(); )
             {
                 SectionData section = (SectionData) sit.next();
 
                 // For all of the Verses in the section
-                for (Iterator vit = OSISUtil.getRefDatas(section); vit.hasNext(); )
+                for (Iterator vit = section.getRefDatas(); vit.hasNext(); )
                 {
                     VerseData vel = (VerseData) vit.next();
-                    String text = OSISUtil.getPlainText(vel);
+                    String text = vel.getPlainText();
 
                     // Remember where we were so we can read it back later
                     xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();

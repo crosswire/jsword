@@ -1,12 +1,13 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.util.Iterator;
-
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.util.Project;
+import org.xml.sax.SAXException;
 
 /**
- * Basic section of BookData.
+ * A generic way of creating new BookData, SectionData and VerseData classes.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,26 +30,42 @@ import org.crosswire.common.xml.SAXEventProvider;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BookData
+public abstract class DataFactory
 {
     /**
-     * Output the current data as a SAX stream.
-     * @param handler The Place to post SAX events
+     * Create a BibleData from a SAXEventProvider
+     * @param doc
      */
-    public abstract SAXEventProvider getSAXEventProvider();
+    public abstract BookData createBibleData(SAXEventProvider provider) throws SAXException;
 
     /**
-     * This is an enumeration through all the sections in this Document.
-     * Each of the sections will be able to give a list of the Verses
-     * that it contains.
-     * @return The list of sections
+     * A SAX style event reciever.
      */
-    public abstract Iterator getSectionDatas();
+    public abstract BookDataListener createBookDataListnener();
 
     /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
+     * Singleton access method.
      */
-    public abstract String getPlainText();
+    public static synchronized DataFactory getInstance()
+    {
+        if (df == null)
+        {
+            try
+            {
+                Class impl = Project.resource().getImplementor(DataFactory.class);
+                df = (DataFactory) impl.newInstance();
+            }
+            catch (Exception ex)
+            {
+                throw new LogicError(ex);
+            }
+        }
+
+        return df;
+    }
+
+    /**
+     * The current DataFactory
+     */
+    private static DataFactory df = null;
 }

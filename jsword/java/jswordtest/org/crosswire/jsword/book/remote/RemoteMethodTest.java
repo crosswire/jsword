@@ -41,15 +41,15 @@ public class RemoteMethodTest extends TestCase
     }
     public void testRemoteMethod()
     {
-        RemoteMethod rmt1 = new RemoteMethod("rmt1");
-        RemoteMethod rmt2 = new RemoteMethod("rmt2");
-        RemoteMethod rmt3 = new RemoteMethod("rmt3");
-        RemoteMethod rmt4 = new RemoteMethod("rmt4");
+        RemoteMethod rmt1 = new RemoteMethod(MethodName.FINDPASSAGE);
+        RemoteMethod rmt2 = new RemoteMethod(MethodName.GETBIBLES);
+        RemoteMethod rmt3 = new RemoteMethod(MethodName.GETDATA);
+        RemoteMethod rmt4 = new RemoteMethod(MethodName.GETDATA);
 
-        assertEquals(rmt1.getMethodName(), "rmt1");
-        assertEquals(rmt2.getMethodName(), "rmt2");
-        assertEquals(rmt3.getMethodName(), "rmt3");
-        assertEquals(rmt4.getMethodName(), "rmt4");
+        assertEquals(rmt1.getMethodName(), MethodName.FINDPASSAGE);
+        assertEquals(rmt2.getMethodName(), MethodName.GETBIBLES);
+        assertEquals(rmt3.getMethodName(), MethodName.GETDATA);
+        assertEquals(rmt4.getMethodName(), MethodName.GETDATA);
 
         assertTrue(!rmt1.getParameterKeys().hasNext());
         assertTrue(!rmt2.getParameterKeys().hasNext());
@@ -64,12 +64,12 @@ public class RemoteMethodTest extends TestCase
         assertTrue(!rmt3.getParameterKeys().hasNext());
         assertTrue(!rmt4.getParameterKeys().hasNext());
 
-        rmt1.addParam("k1:1", "v1:1");
-        rmt2.addParam("k2:1", "v2:1");
-        rmt2.addParam("k2:2", "v2:2");
-        rmt3.addParam("k3:1", "v3:1");
-        rmt3.addParam("k3:2", "v3:2");
-        rmt3.addParam("k3:3", "v3:3");
+        rmt1.addParam(ParamName.PARAM_BIBLE, "v1:1");
+        rmt2.addParam(ParamName.PARAM_FINDMATCH, "v2:1");
+        rmt2.addParam(ParamName.PARAM_FINDRANGE, "v2:2");
+        rmt3.addParam(ParamName.PARAM_FINDSTRING, "v3:1");
+        rmt3.addParam(ParamName.PARAM_PASSAGE, "v3:2");
+        rmt3.addParam(ParamName.PARAM_PASSAGE, "v3:3");
 
         assertTrue(rmt1.getParameterKeys().hasNext());
         assertTrue(rmt2.getParameterKeys().hasNext());
@@ -83,13 +83,12 @@ public class RemoteMethodTest extends TestCase
         assertTrue(rmt3.getParameterKeys().hasNext());
         assertTrue(!rmt4.getParameterKeys().hasNext());
 
-        assertEquals(null, rmt1.getParameter("k1:1"));
-        assertEquals("v2:1", rmt2.getParameter("k2:1"));
-        assertEquals("v2:2", rmt2.getParameter("k2:2"));
-        assertEquals("v3:1", rmt3.getParameter("k3:1"));
-        assertEquals("v3:2", rmt3.getParameter("k3:2"));
-        assertEquals("v3:3", rmt3.getParameter("k3:3"));
-        assertEquals(null, rmt1.getParameter("k4:1"));
+        assertEquals(null, rmt1.getParameter(ParamName.PARAM_BIBLE));
+        assertEquals("v2:1", rmt2.getParameter(ParamName.PARAM_FINDMATCH));
+        assertEquals("v2:2", rmt2.getParameter(ParamName.PARAM_FINDRANGE));
+        assertEquals("v3:1", rmt3.getParameter(ParamName.PARAM_FINDSTRING));
+        assertEquals("v3:2", rmt3.getParameter(ParamName.PARAM_PASSAGE));
+        assertEquals("v3:3", rmt3.getParameter(ParamName.PARAM_PASSAGE));
 
         assertTrue(((String) rmt2.getParameterKeys().next()).startsWith("k2"));
         assertTrue(((String) rmt3.getParameterKeys().next()).startsWith("k3"));

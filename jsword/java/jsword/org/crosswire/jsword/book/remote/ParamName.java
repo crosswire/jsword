@@ -1,12 +1,10 @@
 
-// package default;
+package org.crosswire.jsword.book.remote;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.commons.lang.enum.Enum;
 
 /**
- * JUnit Test.
+ * Some constants so that everyone can agree on the names for various methods.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,19 +27,27 @@ import junit.framework.TestSuite;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OSISAllTests extends TestCase
+public class ParamName extends Enum
 {
-    public OSISAllTests(String s)
+    public static final ParamName PARAM_BIBLE = new ParamName("bible");
+    public static final ParamName PARAM_PASSAGE = new ParamName("passage");
+    public static final ParamName PARAM_FINDSTRING = new ParamName("word");
+    public static final ParamName PARAM_FINDMATCH = new ParamName("match");
+    public static final ParamName PARAM_FINDRANGE = new ParamName("range");
+
+    /**
+     * Find a constant given a name.
+     */
+    public static ParamName getMethod(String name)
     {
-        super(s);
+        return (ParamName) Enum.getEnum(ParamName.class, name);
     }
 
-    public static Test suite()
+    /**
+     * Only we should be doing this
+     */
+    private ParamName(String name)
     {
-        TestSuite suite = new TestSuite();
-
-        suite.addTestSuite(org.crosswire.jsword.osis.TestOsis.class);
-
-        return suite;
+        super(name);
     }
 }

@@ -19,7 +19,7 @@ import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
+import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -153,7 +153,7 @@ public class ReadingsDictionary implements Dictionary
             throw new BookException(Msg.NOT_FOUND, new Object[] { key.getText() });
         }
 
-        BookDataListener li = new OSISBookDataListnener();
+        BookDataListener li = DataFactory.getInstance().createBookDataListnener();
 
         li.startDocument(dmd.getInitials());
         li.startSection("Readings for "+key.getText());

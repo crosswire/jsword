@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book.data.jaxb;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
 import org.crosswire.jsword.osis.Header;
@@ -48,8 +49,15 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OSISBookDataListnener implements BookDataListener
+public class JAXBBookDataListnener implements BookDataListener
 {
+    /**
+     * We don't want just anyone doing this.
+     */
+    protected JAXBBookDataListnener()
+    {
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.BookDataListener#startDocument(org.crosswire.jsword.book.BookMetaData)
      */
@@ -57,16 +65,16 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            this.bdata = new BookData();
-            bdata.osis = OSISUtil.factory().createOsis();
+            this.bdata = new JAXBBookData();
+            bdata.osis = JAXBUtil.factory().createOsis();
 
-            Work work = OSISUtil.factory().createWork();
+            Work work = JAXBUtil.factory().createWork();
             work.setOsisWork(osisid);
 
-            Header header = OSISUtil.factory().createHeader();
+            Header header = JAXBUtil.factory().createHeader();
             header.getWork().add(work);
 
-            OsisText text = OSISUtil.factory().createOsisText();
+            OsisText text = JAXBUtil.factory().createOsisText();
             text.setOsisIDWork("Bible."+osisid);
             text.setHeader(header);
 
@@ -83,7 +91,7 @@ public class OSISBookDataListnener implements BookDataListener
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.BookDataListener#endDocument()
      */
-    public BookData endDocument()
+    public JAXBBookData endDocument()
     {
         Object top = stack.removeFirst();
 
@@ -108,7 +116,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Div div = OSISUtil.factory().createDiv();
+            Div div = JAXBUtil.factory().createDiv();
             div.setDivTitle(title);
 
             getCurrentList(OsisText.class).add(div);
@@ -143,7 +151,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Verse everse = OSISUtil.factory().createVerse();
+            Verse everse = JAXBUtil.factory().createVerse();
             everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
 
             getCurrentList(Div.class).add(everse);
@@ -183,7 +191,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Note note = OSISUtil.factory().createNote();
+            Note note = JAXBUtil.factory().createNote();
             note.setN(marker);
             note.getContent().add(addition);
 
@@ -202,7 +210,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            DivineName dname = OSISUtil.factory().createDivineName();
+            DivineName dname = JAXBUtil.factory().createDivineName();
             dname.getContent().add(name);
 
             getCurrentList().add(dname);
@@ -220,7 +228,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Q q = OSISUtil.factory().createQ();
+            Q q = JAXBUtil.factory().createQ();
             q.setWho(who);
             q.setLevel(level);
 
@@ -253,7 +261,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Reference rref = OSISUtil.factory().createReference();
+            Reference rref = JAXBUtil.factory().createReference();
             rref.setOsisRef(ref.getOSISName());
 
             getCurrentList().add(rref);
@@ -285,7 +293,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Seg seg = OSISUtil.factory().createSeg();
+            Seg seg = JAXBUtil.factory().createSeg();
 
             getCurrentList().add(seg);
 
@@ -316,7 +324,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Speaker speaker = OSISUtil.factory().createSpeaker();
+            Speaker speaker = JAXBUtil.factory().createSpeaker();
             speaker.setWho(who);
 
             getCurrentList().add(who);
@@ -348,7 +356,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            Title title = OSISUtil.factory().createTitle();
+            Title title = JAXBUtil.factory().createTitle();
 
             getCurrentList().add(title);
 
@@ -379,7 +387,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            TransChange trans = OSISUtil.factory().createTransChange();
+            TransChange trans = JAXBUtil.factory().createTransChange();
             trans.setChangeType(type);
 
             getCurrentList().add(trans);
@@ -411,7 +419,7 @@ public class OSISBookDataListnener implements BookDataListener
     {
         try
         {
-            W word = OSISUtil.factory().createW();
+            W word = JAXBUtil.factory().createW();
 
             getCurrentList().add(word);
 
@@ -453,7 +461,7 @@ public class OSISBookDataListnener implements BookDataListener
     /**
      * Find the current node and get a list from it.
      */
-    private List getCurrentList()
+    protected List getCurrentList()
     {
         Object current = stack.getFirst();
 
@@ -505,12 +513,12 @@ public class OSISBookDataListnener implements BookDataListener
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(OSISBookDataListnener.class);
+    protected static Logger log = Logger.getLogger(JAXBBookDataListnener.class);
 
     /**
      * The proxied OSIS bean that we add to
      */
-    private BookData bdata;
+    private JAXBBookData bdata;
 
     /**
      * The stack of current OSIS beans

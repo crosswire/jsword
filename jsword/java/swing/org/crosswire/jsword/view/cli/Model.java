@@ -22,7 +22,6 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
@@ -126,8 +125,8 @@ public class Model
     private String getData(String sref, Book book) throws BookException
     {
         Key key = book.getKey(sref);
-        BookData data = book.getData(key);
-        return OSISUtil.getPlainText(data);
+        BookData bdata = book.getData(key);
+        return bdata.getPlainText();
     }
     
     public String setBible(String spec) throws BookException

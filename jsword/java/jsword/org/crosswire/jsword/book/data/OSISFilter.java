@@ -1,6 +1,17 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.io.StringReader;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.crosswire.common.util.Logger;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
  * Filter to convert an OSIS XML string to OSIS format.
  * 
@@ -32,7 +43,88 @@ public class OSISFilter implements Filter
      */
     public void toOSIS(BookDataListener li, String plain) throws FilterException
     {
-        // PENDING(joe): do something better
-        li.addText(plain);
+        try
+        {
+            // create a root element to house our document fragment
+            StringReader in = new StringReader("<root>"+plain+"</root>");
+            InputSource is = new InputSource(in);
+            
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser parser = spf.newSAXParser();
+            CustomHandler handler = new CustomHandler(li);
+            parser.parse(is, handler);
+        }
+        catch (Exception ex)
+        {
+            throw new FilterException(Msg.THML_BADTOKEN, ex);
+        }
+    }
+
+    private static final String TAG_FOO = "foo";
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(THMLFilter.class);
+
+    /**
+     * To convert SAX events into OSIS events
+     */
+    private static class CustomHandler extends DefaultHandler
+    {
+        /**
+         * Simple ctor
+         */
+        public CustomHandler(BookDataListener li)
+        {
+            this.li = li;
+        }
+
+        /* (non-Javadoc)
+         * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+         */
+        public void startElement(String uri, String localname, String qname, Attributes attr) throws SAXException
+        {
+            if (localname == null)
+            {
+                log.warn("localname is null");
+                return;
+            }
+
+            if (localname.equals(TAG_FOO))
+            {
+                li.startTitle();
+            }
+        }
+        
+        /* (non-Javadoc)
+         * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+         */
+        public void characters(char[] data, int offset, int length) throws SAXException
+        {
+            String text = new String(data, offset, length);
+
+            log.debug("found text="+text);
+            li.addText(text);
+        }
+
+        /* (non-Javadoc)
+         * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+         */
+        public void endElement(String uri, String localname, String qname) throws SAXException
+        {
+            if (localname == null)
+            {
+                log.warn("localname is null");
+                return;
+            }
+
+            if (localname.equals(TAG_FOO))
+            {
+                li.endTitle();
+            }
+        }
+
+        private BookDataListener li;
     }
 }

@@ -56,7 +56,7 @@ public class LocalRemoterTest extends TestCase
         List lbmds = Books.getBooks(filter);
         BibleMetaData[] names1 = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
 
-        RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
+        RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
         Document doc = remote.execute(method);
         BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(null, doc, new FixtureRemoter(), Books.SPEED_INACCURATE);
 

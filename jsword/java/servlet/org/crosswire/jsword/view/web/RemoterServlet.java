@@ -15,8 +15,10 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.remote.Converter;
 import org.crosswire.jsword.book.remote.ConverterException;
+import org.crosswire.jsword.book.remote.HttpRemoter;
 import org.crosswire.jsword.book.remote.LocalRemoter;
-import org.crosswire.jsword.book.remote.RemoteConstants;
+import org.crosswire.jsword.book.remote.MethodName;
+import org.crosswire.jsword.book.remote.ParamName;
 import org.crosswire.jsword.book.remote.RemoteMethod;
 import org.crosswire.jsword.book.remote.Remoter;
 import org.crosswire.jsword.book.remote.RemoterException;
@@ -50,8 +52,8 @@ import org.jdom.output.XMLOutputter;
  */
 public class RemoterServlet extends HttpServlet
 {
-    /**
-     * @see javax.servlet.Servlet#init(ServletConfig)
+    /* (non-Javadoc)
+     * @see javax.servlet.Servlet#init(javax.servlet.ServletConfig)
      */
     public void init(ServletConfig config) throws ServletException
     {
@@ -61,8 +63,8 @@ public class RemoterServlet extends HttpServlet
         remoter = new LocalRemoter();
     }
 
-    /**
-     * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -99,22 +101,23 @@ public class RemoterServlet extends HttpServlet
     public static RemoteMethod requestToMethod(HttpServletRequest request)
     {
         Map params = request.getParameterMap();
-        String methodname = request.getParameter(RemoteConstants.METHOD_KEY);
-        RemoteMethod method = new RemoteMethod(methodname);
+        String methodname = request.getParameter(HttpRemoter.METHOD_KEY);
+        RemoteMethod method = new RemoteMethod(MethodName.getMethod(methodname));
 
         Iterator it = params.keySet().iterator();
         while (it.hasNext())
         {
             String key = (String) it.next();
             String[] val = (String[]) params.get(key);
+            ParamName param = ParamName.getMethod(key);
             
             // This is slightly dodgy - we basically ignore the fact that HTTP
             // GET and POST allow multiple values for each key, however since we
             // get to define the interface i.e. what the allowed keys are, I
             // don't see this as a big problem.
-            if (val.length > 0)
+            if (val.length > 0 && param != null)
             {
-                method.addParam(key, val[0]);
+                method.addParam(param, val[0]);
             }
         }
 

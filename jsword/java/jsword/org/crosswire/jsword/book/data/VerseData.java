@@ -1,10 +1,9 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.osis.Verse;
-
 /**
- * A VerseData represents a Verse that exists inside a BibleData.
+ * A VerseData holds the elements detailing the text and markup for a single
+ * verse.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,18 +26,12 @@ import org.crosswire.jsword.osis.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class VerseData
+public interface VerseData
 {
     /**
-     * We only want to be created by OSISUtil
-     * @see OSISUtil
+     * A simplified plain text version of the data in this verse with all
+     * the markup stripped out.
+     * @return The Bible text without markup
      */
-    protected VerseData()
-    {
-    }
-
-    /**
-     * JAXB element that we encapsulate. 
-     */
-    protected Verse everse;
+    public abstract String getPlainText();
 }

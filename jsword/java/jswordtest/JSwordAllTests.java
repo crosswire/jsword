@@ -63,6 +63,7 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.TestBibles.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookMetaData.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookUtil.class);
+        suite.addTestSuite(org.crosswire.jsword.book.data.jaxb.TestOsis.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleUtil.class);

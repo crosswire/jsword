@@ -1,8 +1,14 @@
 
-package org.crosswire.jsword.book.remote;
+package org.crosswire.jsword.book.data.jaxb;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.crosswire.jsword.book.data.VerseData;
+import org.crosswire.jsword.osis.Verse;
 
 /**
- * Some constants so that everyone can agree on the names for various methods.
+ * A JAXBVerseData represents a Verse that exists inside a BibleData.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,15 +31,34 @@ package org.crosswire.jsword.book.remote;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface RemoteConstants
+public class JAXBVerseData implements VerseData
 {
-    public static final String METHOD_KEY = "method";
-    public static final String METHOD_GETBIBLES = "getBibles";
-    public static final String METHOD_GETDATA = "getData";
-    public static final String METHOD_FINDPASSAGE = "findPassage";
-    public static final String PARAM_BIBLE = "bible";
-    public static final String PARAM_PASSAGE = "passage";
-    public static final String PARAM_FINDSTRING = "word";
-    public static final String PARAM_FINDMATCH = "match";
-    public static final String PARAM_FINDRANGE = "range";
+    /**
+     * Stop random creations
+     */
+    protected JAXBVerseData()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.data.VerseData#getPlainText()
+     */
+    public String getPlainText()
+    {
+        StringBuffer buffer = new StringBuffer();
+    
+        List content = everse.getContent();
+        for (Iterator it = content.iterator(); it.hasNext();)
+        {
+            Object ele = it.next();
+            JAXBUtil.recurseElement(ele, buffer);
+        }
+    
+        return buffer.toString();
+    }
+
+    /**
+     * JAXB element that we encapsulate. 
+     */
+    protected Verse everse;
 }

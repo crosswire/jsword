@@ -70,7 +70,7 @@ public class THMLFilter implements Filter
     /**
      * To convert SAX events into OSIS events
      */
-    private class CustomHandler extends DefaultHandler
+    private static class CustomHandler extends DefaultHandler
     {
         /**
          * Simple ctor

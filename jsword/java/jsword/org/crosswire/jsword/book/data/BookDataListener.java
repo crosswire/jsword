@@ -1,11 +1,12 @@
 
 package org.crosswire.jsword.book.data;
 
+import org.crosswire.jsword.book.data.jaxb.*;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A listener for events that can affect a VerseData.
+ * A listener for events that can affect a JAXBVerseData.
  * 
  * The OSIS (1.1.1) doumentation had these notes:
  * <p>The &lt;verse&gt; element is used to make the standard verse divisions in
@@ -54,7 +55,7 @@ public interface BookDataListener
      * Start a Book Document
      */
     public void startDocument(String initials);
-    public BookData endDocument();
+    public JAXBBookData endDocument();
 
     /**
      * Start a Section
@@ -74,7 +75,7 @@ public interface BookDataListener
     public void addText(String text);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -96,7 +97,7 @@ public interface BookDataListener
     public void addNote(String marker, String addition);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -119,7 +120,7 @@ public interface BookDataListener
     public void addDivineName(String name);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -143,7 +144,7 @@ public interface BookDataListener
     public void endQuote();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -162,7 +163,7 @@ public interface BookDataListener
     public void endReference();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -181,7 +182,7 @@ public interface BookDataListener
     public void endSegment();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -198,7 +199,7 @@ public interface BookDataListener
     public void endSpeaker();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -217,7 +218,7 @@ public interface BookDataListener
     public void endTitle();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -237,7 +238,7 @@ public interface BookDataListener
     public void endTransChange();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -254,7 +255,7 @@ public interface BookDataListener
 
 /*
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -270,7 +271,7 @@ public interface BookDataListener
     public void addA(String href);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -289,7 +290,7 @@ public interface BookDataListener
     public void addAbbr(String expansion, String shortened);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -312,7 +313,7 @@ public interface BookDataListener
     public void addDate(String calendarType, String date);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -334,7 +335,7 @@ public interface BookDataListener
     public void addForeign(String quoted);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -355,7 +356,7 @@ public interface BookDataListener
     public void addHi(String highlighted);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -396,7 +397,7 @@ public interface BookDataListener
     public void addIndex(String index, String level1, String level2, String level3, String level4, String see);
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -411,7 +412,7 @@ public interface BookDataListener
     public void addList();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -429,7 +430,7 @@ public interface BookDataListener
     public void addMilestone();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -446,7 +447,7 @@ public interface BookDataListener
     public void addMilestoneEnd();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -465,7 +466,7 @@ public interface BookDataListener
     public void addMilestoneStart();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -481,7 +482,7 @@ public interface BookDataListener
     public void addInscription();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 
@@ -498,7 +499,7 @@ public interface BookDataListener
     public void addMentioned();
 
     /**
-     * Add to a VerseData.
+     * Add to a JAXBVerseData.
      * 
      * <p>OSIS v1.1.1 has this to say:
      * 

@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.osis;
+package org.crosswire.jsword.book.data.jaxb;
 
 import java.io.File;
 import java.io.InputStream;
@@ -14,9 +14,15 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.Validator;
 
-import org.crosswire.jsword.book.data.OSISUtil;
-
 import junit.framework.TestCase;
+
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.osis.Verse;
+import org.crosswire.jsword.osis.Work;
 
 /**
  * JUnit Test.
@@ -51,7 +57,7 @@ public class TestOsis extends TestCase
 
     protected void setUp() throws Exception
     {
-        jc = JAXBContext.newInstance(OSISUtil.OSIS_PACKAGE);
+        jc = JAXBContext.newInstance(JAXBUtil.OSIS_PACKAGE);
         val = jc.createValidator();
         umarsh = jc.createUnmarshaller();
         m = jc.createMarshaller();
@@ -70,29 +76,29 @@ public class TestOsis extends TestCase
     {
         try
         {
-            Seg seg = OSISUtil.factory().createSeg();
+            Seg seg = JAXBUtil.factory().createSeg();
             seg.getContent().add("In the beginning God created the heaven and the earth.");
 
-            Verse verse = OSISUtil.factory().createVerse();
+            Verse verse = JAXBUtil.factory().createVerse();
             verse.setOsisID("Gen.1.1");
             verse.getContent().add(seg);
     
-            Div div = OSISUtil.factory().createDiv();
+            Div div = JAXBUtil.factory().createDiv();
             div.setType("chapter");
             div.setOsisID("Gen.1.1");
             div.getContent().add(verse);
     
-            Work work = OSISUtil.factory().createWork();
+            Work work = JAXBUtil.factory().createWork();
     
-            Header header = OSISUtil.factory().createHeader();
+            Header header = JAXBUtil.factory().createHeader();
             header.getWork().add(work);
     
-            OsisText osistext = OSISUtil.factory().createOsisText();
+            OsisText osistext = JAXBUtil.factory().createOsisText();
             osistext.setOsisIDWork("Bible.KJV");
             osistext.getDiv().add(div);
             osistext.setHeader(header);
 
-            Osis blank = OSISUtil.factory().createOsis();
+            Osis blank = JAXBUtil.factory().createOsis();
             blank.setOsisText(osistext);
     
             val.setEventHandler(new ValidationEventHandler()

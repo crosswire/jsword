@@ -1,10 +1,10 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book.remote;
 
-import java.util.Iterator;
+import org.apache.commons.lang.enum.Enum;
 
 /**
- * A section is a set of Verses grouped together under a single title. 
+ * Set of constants for the types of RemoteMethod.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,18 +27,25 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface SectionData
+public class MethodName extends Enum
 {
-    /**
-     * This is an accessor for the list of references (verses) that we hold
-     * @return The list of RefDatas
-     */
-    public Iterator getRefDatas();
+    public static final MethodName GETBIBLES = new MethodName("getBibles");
+    public static final MethodName GETDATA = new MethodName("getData");
+    public static final MethodName FINDPASSAGE = new MethodName("findPassage");
 
     /**
-     * A simplified plain text version of the data in this section with all the
-     * markup stripped out.
-     * @return The Bible text without markup
+     * Find a constant given a name.
      */
-    public String getPlainText();
+    public static MethodName getMethod(String name)
+    {
+        return (MethodName) Enum.getEnum(MethodName.class, name);
+    }
+
+    /**
+     * Only we should be doing this
+     */
+    private MethodName(String name)
+    {
+        super(name);
+    }
 }

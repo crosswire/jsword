@@ -12,13 +12,12 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
-import org.crosswire.jsword.book.data.OSISUtil;
-import org.crosswire.jsword.book.data.VerseData;
-import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.SectionData;
+import org.crosswire.jsword.book.data.VerseData;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -312,7 +311,7 @@ public class RawBible extends LocalURLBible
     {
         try
         {
-            BookDataListener li = new OSISBookDataListnener();
+            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
             li.startDocument(getBibleMetaData().getInitials());
     
             Iterator it = ref.rangeIterator();
@@ -419,19 +418,18 @@ public class RawBible extends LocalURLBible
      * @param verse The verse to write
      * @param text The data to write
      */
-    public void setDocument(Verse verse, BookData doc) throws BookException
+    public void setDocument(Verse verse, BookData bdata) throws BookException
     {
         // For all of the sections
-        for (Iterator sit=OSISUtil.getSectionDatas(doc); sit.hasNext(); )
+        for (Iterator sit = bdata.getSectionDatas(); sit.hasNext(); )
         {
             SectionData section = (SectionData) sit.next();
 
             // For all of the Verses in the section
-            for (Iterator vit=OSISUtil.getRefDatas(section); vit.hasNext(); )
+            for (Iterator vit=section.getRefDatas(); vit.hasNext(); )
             {
                 VerseData vel = (VerseData) vit.next();
-
-                String text = OSISUtil.getPlainText(vel);
+                String text = vel.getPlainText();
 
                 // Is this verse part of a new paragraph? Since the move to OSIS
                 // the concept of new para is not what it was. I don't intend to

@@ -10,8 +10,8 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.book.data.FilterException;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -83,7 +83,7 @@ public class SwordBible extends AbstractBible
 
         try
         {
-            BookDataListener li = new OSISBookDataListnener();
+            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
             li.startDocument(getBibleMetaData().getInitials());
     
             // For all the ranges in this Passage

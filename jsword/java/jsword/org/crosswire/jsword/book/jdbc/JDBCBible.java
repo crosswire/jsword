@@ -17,10 +17,10 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
-import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -141,7 +141,7 @@ public class JDBCBible extends LocalURLBible
     {
         try
         {
-            BookDataListener li = new OSISBookDataListnener();
+            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
             li.startDocument(getBibleMetaData().getInitials());
 
             Iterator it = ref.rangeIterator();

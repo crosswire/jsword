@@ -1,13 +1,13 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>JSword - Config Subsystem</title>
-<link rel="stylesheet" type="text/css" href="sword.css"/>
-</head>
+<html>
 <body>
-<h1>The Config Sub-System</h1>
+
+<p>Config allows an application to separate the responsibilities of setting
+itself up, and providing a user interface from the real work that it needs
+to do.</p>
+
 <h2>Introduction</h2>
 <p>Config is (mostly) all kept in a few packages in the util source tree. The
-  design aims for the following goals:</p>
+ design aims for the following goals:</p>
 <ul>
   <li>Application Transparency - It should be possible to add a configuration
     dialog to an application without adding hundreds of hooks either to your
@@ -20,9 +20,15 @@
     however the code to do this has suffered bit-rot, and should not be considered
     useful. It does however prove the view independance concept.</li>
 </ul>
+
 <h3>How To Use Config</h3>
 <p>There are a number of simple steps. First a config.xml file is needed to tell
-  the config system what to configure and how.</p>
+the config system what to configure and how.</p>
+
+<style>
+.comment { color: #336600; }
+</style>
+
 <pre>
 &lt;config&gt;
 
@@ -42,14 +48,14 @@
   &lt;/option&gt;
 
   <span class="comment">&lt;!-- Another type again this one for the look and feel. --&gt;
-  &lt;!-- The reason for the helper class here is to alter windows that are not currently mapped --&gt;
-</span>  &lt;option key=&quot;Looks.Look and Feel&quot; type=&quot;class&quot;&gt;
+  &lt;!-- The reason for the helper class here is to alter windows that are not currently mapped --&gt;</span>
+    &lt;option key=&quot;Looks.Look and Feel&quot; type=&quot;class&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.common.swing.LookAndFeelUtil&quot; property=&quot;LookAndFeel&quot;/&gt;
     &lt;help&gt;The look and feel of the application&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- When we have have an Enum style config option ... --&gt;
-</span>  &lt;option key=&quot;Bibles.Display.Book Case&quot; level=&quot;advanced&quot; type=&quot;int-options&quot;&gt;
+  <span class="comment">&lt;!-- When we have have an Enum style config option ... --&gt;</span>
+    &lt;option key=&quot;Bibles.Display.Book Case&quot; level=&quot;advanced&quot; type=&quot;int-options&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.jsword.passage.Books&quot; property=&quot;Case&quot;/&gt;
     &lt;help&gt;What case should we use to display the references.&lt;/help&gt;
     &lt;alternative number=&quot;0&quot; name=&quot;lower&quot;/&gt;
@@ -58,30 +64,29 @@
     &lt;alternative number=&quot;3&quot; name=&quot;mIXeD&quot;/&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- The options here are more complex and need to be provided as a string array by Java code (see below) --&gt;
-</span>  &lt;option key=&quot;Bibles.Default&quot; type=&quot;string-options&quot;&gt;
+  <span class="comment">&lt;!-- The options here are more complex and need to be provided as a string array by Java code (see below) --&gt;</span>
+    &lt;option key=&quot;Bibles.Default&quot; type=&quot;string-options&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.jsword.book.Bibles&quot; property=&quot;DefaultName&quot;/&gt;
     &lt;help&gt;Which of the available Bibles is the default.&lt;/help&gt;
     &lt;map name=&quot;biblenames&quot;/&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- This option is 'advanced' which means it is not visible to all users (see below) --&gt;
-</span>  &lt;option key=&quot;Advanced.Source Path&quot; level=&quot;advanced&quot; type=&quot;path&quot;&gt;
+  <span class="comment">&lt;!-- This option is 'advanced' which means it is not visible to all users (see below) --&gt;</span>
+    &lt;option key=&quot;Advanced.Source Path&quot; level=&quot;advanced&quot; type=&quot;path&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.common.swing.DetailedExceptionPane&quot; property=&quot;SourcePath&quot;/&gt;
     &lt;help&gt;The directories to search for source code in when investigating an exception.&lt;/help&gt;
   &lt;/option&gt;
 
   <span class="comment">&lt;!-- When the choice is very custom you can always do your own implementation --&gt;
-  &lt;!-- This allows us to set users levels so not everyone gets asked hard questions --&gt;
-</span>  &lt;option key=&quot;Advanced.User Level&quot; type=&quot;custom&quot; class=&quot;org.crosswire.common.util.UserLevel$UserLevelChoice&quot;&gt;
+  &lt;!-- This allows us to set users levels so not everyone gets asked hard questions --&gt;</span>
+    &lt;option key=&quot;Advanced.User Level&quot; type=&quot;custom&quot; class=&quot;org.crosswire.common.util.UserLevel$UserLevelChoice&quot;&gt;
     &lt;help&gt;How advanced is your knowledge of this program.&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- There are other examples in config.xml --&gt;
-</span>
+  <span class="comment">&lt;!-- There are other examples in config.xml --&gt;</span>
 &lt;/config&gt;
-
 </pre>
+
 <p>Then you need to add the Java code:</p>
 <pre><span class="comment">
 // To load the config.xml file:
@@ -101,5 +106,6 @@ SwingConfig.showDialog(config, parentWind, configurl);
 ChoiceFactory.getDataMap().put(&quot;biblenames&quot;, Bibles.getBibleNames());
 </pre>
 <p>There are more examples in <code>org.crosswire.jsword.view.swing.desktop.OptionsAction.</code></p>
+
 </body>
 </html>

@@ -104,6 +104,7 @@ public class LucidException extends Exception
     public LucidException(String msg, boolean literal)
     {
         this(new MsgBase(msg), null, null);
+        this.literal = literal;
     }
 
     /**

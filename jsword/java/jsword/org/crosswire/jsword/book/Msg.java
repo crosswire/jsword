@@ -37,7 +37,7 @@ class Msg extends MsgBase
     public static final Msg DUPLICATE_DRIVER = new Msg("Driver already registered");
     public static final Msg DRIVER_NOREMOVE = new Msg("Could not remove unregistered Driver");
 
-    public static final Msg BOOK_NOTFOUND = new Msg("Book called '{0}' could not be found.");
+    public static final Msg BOOK_NOTFOUND = new Msg("Book called {0} could not be found.");
 
     /** Initialise any resource bundles */
     static

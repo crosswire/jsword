@@ -74,7 +74,7 @@
         <li><a href="primer.html">API Primer</a></li>
         <li><a href="design.html">Design</a></li>
         <li><a href="osisCore.1.1.html">OSIS</a></li>
-        <li><a href="config.html">Config</a></li>
+        <li><a href="api/org/crosswire/common/config/package-summary.html">Config</a></li>
         <li><a href="change.html">Changes</a></li>
         <li><a href="api/index.html">JavaDoc</a></li>
         <li><a href="java2html/index.html">Java-Source</a></li>

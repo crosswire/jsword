@@ -97,7 +97,7 @@ public class HttpRemoter implements Remoter
     {
         StringBuffer buffer = new StringBuffer();
 
-        buffer.append("?"+RemoteConstants.METHOD_KEY+"=");
+        buffer.append("?"+HttpRemoter.METHOD_KEY+"=");
         buffer.append(method.getMethodName());
         
         Iterator it = method.getParameterKeys();
@@ -108,13 +108,17 @@ public class HttpRemoter implements Remoter
             // catch (UnsupportedEncodingException ex) { throw new LogicError(ex); }
 
             String key = (String) it.next();
-            String val = method.getParameter(key);
-            String b64 = URLEncoder.encode(val);
-            
-            buffer.append("&");
-            buffer.append(key);
-            buffer.append("=");
-            buffer.append(b64);
+            ParamName param = ParamName.getMethod(key);
+            if (param != null)
+            {
+                String val = method.getParameter(param);
+                String b64 = URLEncoder.encode(val);
+                
+                buffer.append("&");
+                buffer.append(key);
+                buffer.append("=");
+                buffer.append(b64);
+            }
         }
 
         return buffer.toString();
@@ -129,4 +133,6 @@ public class HttpRemoter implements Remoter
      * The log stream
      */
     private static Logger log = Logger.getLogger(HttpRemoter.class);
+
+    public static final String METHOD_KEY = "method";
 }

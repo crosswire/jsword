@@ -29,10 +29,10 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg GBF_JAXB = new Msg("Parse Error");
-    public static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
+    static final Msg GBF_JAXB = new Msg("Parse Error");
+    static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
 
-    public static final Msg THML_BADTOKEN = new Msg("THML parse failed.");
+    static final Msg THML_BADTOKEN = new Msg("THML parse failed.");
 
     /** Initialise any resource bundles */
     static

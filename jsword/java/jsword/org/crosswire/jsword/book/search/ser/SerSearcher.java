@@ -22,7 +22,6 @@ import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.ProgressEvent;
 import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
@@ -241,7 +240,7 @@ public class SerSearcher implements Searcher
             // loop through all the words in this verse
             Passage current = PassageFactory.createPassage();
             current.add(verse);
-            String text = OSISUtil.getPlainText(bible.getData(current));
+            String text = bible.getData(current).getPlainText();
             String[] words = BookUtil.getWords(text);
             for (int i = 0; i < words.length; i++)
             {

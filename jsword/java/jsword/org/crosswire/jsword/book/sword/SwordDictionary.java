@@ -17,8 +17,8 @@ import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
+import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.book.data.FilterException;
-import org.crosswire.jsword.book.data.OSISBookDataListnener;
 
 /**
  * A Sword version of Dictionary.
@@ -156,7 +156,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
 
         try
         {
-            BookDataListener li = new OSISBookDataListnener();
+            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
 
             li.startDocument(getDictionaryMetaData().getInitials());
             li.startSection(key.getText());

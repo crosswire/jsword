@@ -36,7 +36,6 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.crosswire.common.util.LucidException;
-import org.crosswire.common.util.MsgBase;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StackTrace;
 import org.crosswire.common.util.event.ReporterEvent;
@@ -68,37 +67,10 @@ import org.crosswire.common.util.event.ReporterListener;
  */
 public class ExceptionPane extends JPanel
 {
-    public static void main(String[] args)
-    {
-        try
-        {
-            die1();
-        }
-        catch (LucidException ex)
-        {
-            //showExceptionDialog(null, ex);
-            showExceptionDialog(null, ex);
-        }
-    }
-
-    private static void die1() throws LucidException
-    {
-        try
-        {
-            die2();
-        }
-        catch (NullPointerException ex)
-        {
-            throw new LucidException(new MsgBase("Bar"){}, ex);
-        }
-    }
-
-    private static void die2()
-    {
-        throw new NullPointerException("Foo");
-    }
-
-    public ExceptionPane(Throwable ex)
+    /**
+     * Use showExceptionDialog for the time being
+     */
+    private ExceptionPane(Throwable ex)
     {
         this.ex = ex;
         jbInit();

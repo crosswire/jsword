@@ -18,8 +18,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.swing.SortedSetListModel;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BookException;
@@ -29,7 +29,6 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.OSISUtil;
 import org.crosswire.jsword.util.Style;
 
 /**
@@ -146,7 +145,7 @@ public class DictionaryPane extends JPanel
         {
             Key key = (Key) lstentries.getSelectedValue();
             BookData bdata = dict.getData(key);
-            SAXEventProvider provider = OSISUtil.getSAXEventProvider(bdata);
+            SAXEventProvider provider = bdata.getSAXEventProvider();
             String text = style.applyStyleToString(provider, "simple.xsl");
 
             txtdisplay.setText(text);
