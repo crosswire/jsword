@@ -294,7 +294,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
             ftpInit(ftp, site, user, password, dir);
 
             // Check the download directory exists
-            URL parent = NetUtil.shortenURL(dest, getTempFileExtension(site, dir));
+            URL parent = NetUtil.shortenURL(dest, FILE_LIST_GZ);
             NetUtil.makeDirectory(parent);
 
             // Download the index file

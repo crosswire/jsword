@@ -3,6 +3,7 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 
 import org.crosswire.common.swing.TextViewPanel;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.view.swing.display.FocusablePart;
 
@@ -50,12 +51,25 @@ public class ViewSourceHTMLAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
-        FocusablePart da = getDesktop().getDisplayArea();
-        String html = da.getHTMLSource();
-        Key ref = da.getKey();
+        try
+        {
+            FocusablePart da = getDesktop().getDisplayArea();
+            String html = da.getHTMLSource();
+            Key ref = da.getKey();
 
-        TextViewPanel viewer = new TextViewPanel(html, "HTML source to "+ref.getName());
-        viewer.setEditable(true);
-        viewer.showInFrame(getDesktop().getJFrame());
+            if (html == null || html.equals("") || ref == null)
+            {
+                Reporter.informUser(this, "No HTML source to view.");
+                return;
+            }
+
+            TextViewPanel viewer = new TextViewPanel(html, "HTML source to "+ref.getName());
+            viewer.setEditable(true);
+            viewer.showInFrame(getDesktop().getJFrame());
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 }

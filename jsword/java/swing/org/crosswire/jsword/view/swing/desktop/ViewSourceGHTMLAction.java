@@ -62,6 +62,12 @@ public class ViewSourceGHTMLAction extends DesktopAbstractAction
             String osis = da.getOSISSource();
             Key ref = da.getKey();
 
+            if (osis == null || osis.equals("") || ref == null)
+            {
+                Reporter.informUser(this, "No Generated HTML source to view.");
+                return;
+            }
+
             SAXEventProvider osissep = new StringSAXEventProvider(osis);
             SAXEventProvider htmlsep = style.convert(osissep);
             String html = XMLUtil.writeToString(htmlsep);

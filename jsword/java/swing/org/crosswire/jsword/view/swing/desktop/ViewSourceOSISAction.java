@@ -57,6 +57,12 @@ public class ViewSourceOSISAction extends DesktopAbstractAction
             String html = da.getOSISSource();
             Key key = da.getKey();
 
+            if (html == null || html.equals("") || key == null)
+            {
+                Reporter.informUser(this, "No OSIS source to view.");
+                return;
+            }
+
             TextViewPanel viewer = new TextViewPanel(html, "OSIS source to "+key.getName());
             viewer.setEditable(true);
             viewer.showInFrame(getDesktop().getJFrame());
