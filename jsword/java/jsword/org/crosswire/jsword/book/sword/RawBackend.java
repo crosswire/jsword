@@ -155,6 +155,8 @@ public class RawBackend extends Backend
             // I wonder if it would be safe to do a readLine() from here.
             // Probably be safer not to risk it since we know how long it is.
             byte[] data = SwordUtil.readRAF(txtRaf[testament], start, size);
+            
+            decipher(data);
 
             return SwordUtil.decode(key, data, charset);
         }
