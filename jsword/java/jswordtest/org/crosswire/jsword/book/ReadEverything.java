@@ -47,7 +47,7 @@ public class ReadEverything
     public static void main(String[] args) throws IOException, JDOMException
     {
         // Load JAXB so we don't mess up any timings later
-        //Logger.outputInfoMinimum();
+        Logger.outputInfoMinimum();
         JAXBUtil.getJAXBContext();
 
         // Load the desktop configuration so we can find the sword drivers
@@ -56,18 +56,6 @@ public class ReadEverything
         config.add(xmlconfig);
         config.setProperties(Project.resource().getProperties("desktop"));
         config.localToApplication(true);
-
-        // Loop through all the Dictionaries
-        List dicts = Books.getBooks(BookFilters.getDictionaries());
-        for (Iterator dit = dicts.iterator(); dit.hasNext();)
-        {
-            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
-            Dictionary dict = dmd.getDictionary();
-            SortedSet set = dict.getIndex(null);
-
-            Iterator it = set.iterator();
-            testReadMultiple(dmd, it);
-        }
 
         // Loop through all the Bibles
         List bibles = Books.getBooks(BookFilters.getBibles());
@@ -86,6 +74,18 @@ public class ReadEverything
             Iterator it = new KeyIterator(WHOLE.verseIterator());
             testReadMultiple(bmd, it);
         }
+
+        // Loop through all the Dictionaries
+        List dicts = Books.getBooks(BookFilters.getDictionaries());
+        for (Iterator dit = dicts.iterator(); dit.hasNext();)
+        {
+            DictionaryMetaData dmd = (DictionaryMetaData) dit.next();
+            Dictionary dict = dmd.getDictionary();
+            SortedSet set = dict.getIndex(null);
+
+            Iterator it = set.iterator();
+            testReadMultiple(dmd, it);
+        }
     }
 
     /**
@@ -95,7 +95,7 @@ public class ReadEverything
     {
         ConversionLogger.setBook(bmd);
 
-        log.info("Testing: "+bmd.getInitials()+"="+bmd.getFullName());
+        //log.info("Testing: "+bmd.getInitials()+"="+bmd.getFullName());
         long start = System.currentTimeMillis();
 
         Book book = bmd.getBook();
@@ -117,7 +117,7 @@ public class ReadEverything
     {
         try
         {
-            log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
+            //log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
 
             BookData data = bible.getData(key);
             if (data.getPlainText() == null)

@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.JAXBUtil;
@@ -80,7 +81,7 @@ public class THMLFilter implements Filter
         catch (Exception ex1)
         {
             ConversionLogger.report("parse original failed: "+ex1.getMessage());
-            ConversionLogger.report("  while parsing: "+plain);
+            ConversionLogger.report("  while parsing: "+forOutput(plain));
 
             // Attempt to fix broken entities, that could be the least damage
             // way to fix a broken input string
@@ -93,7 +94,7 @@ public class THMLFilter implements Filter
             catch (Exception ex2)
             {
                 ConversionLogger.report("parse cropped failed: "+ex2.getMessage());
-                ConversionLogger.report("  while parsing: "+cropped);
+                ConversionLogger.report("  while parsing: "+forOutput(cropped));
 
                 // So just try to strip out all XML looking things
                 String shawn = XMLUtil.cleanAllTags(cropped);
@@ -105,7 +106,7 @@ public class THMLFilter implements Filter
                 catch (Exception ex3)
                 {
                     ConversionLogger.report("parse shawn failed: "+ex3.getMessage());
-                    ConversionLogger.report("  while parsing: "+shawn);
+                    ConversionLogger.report("  while parsing: "+forOutput(shawn));
 
                     try
                     {
@@ -136,6 +137,15 @@ public class THMLFilter implements Filter
         CustomHandler handler = new CustomHandler(ele);
 
         parser.parse(is, handler);
+    }
+
+    /**
+     * Cut up the input data so it is OK to output in an error log
+     */
+    private String forOutput(String data)
+    {
+        String chopped = StringUtils.left(data, 50);
+        return chopped;
     }
 
     private SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -396,7 +406,7 @@ public class THMLFilter implements Filter
                 }
                 else
                 {
-                    ConversionLogger.report("unknown thml element: "+localname+" qname="+qname);
+                    log.warn("unknown thml element: "+localname+" qname="+qname);
                 }
             }
             catch (JAXBException ex)

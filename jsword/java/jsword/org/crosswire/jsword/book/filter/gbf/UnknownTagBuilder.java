@@ -2,7 +2,7 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import org.crosswire.jsword.book.filter.ConversionLogger;
+import org.crosswire.common.util.Logger;
 
 /**
  * Unknown Tag. Either not supported tag or tag not defined in GBF
@@ -41,8 +41,13 @@ public class UnknownTagBuilder implements TagBuilder
             public void updateOsisStack(LinkedList stack)
             {
                 // unknown tags
-                ConversionLogger.report("Ignoring tag of " + name);
+                log.warn("Ignoring tag of " + name);
             }
         };
     }
+
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(UnknownTagBuilder.class);
 }
