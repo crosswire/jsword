@@ -161,12 +161,10 @@ public class SwordBible extends AbstractBible
                 // If this is an NT verse
                 if (verse_ord >= mat11_ord)
                 {
-                    //reply.append(getText(SwordConstants.TESTAMENT_NEW, verse_ord - mat11_ord));
                     reply.append(getText(SwordConstants.TESTAMENT_NEW, bookNo-39, chapNo, verseNo));
                 }
                 else
                 {
-                    //reply.append(getText(SwordConstants.TESTAMENT_OLD, verse_ord));
                     reply.append(getText(SwordConstants.TESTAMENT_OLD, bookNo, chapNo, verseNo));
                 }
                 
@@ -199,7 +197,6 @@ public class SwordBible extends AbstractBible
 		long chapOffset = SwordConstants.cps[testament][bookOffset+chapter];
 		
 		long offset=6*(chapOffset+verse);
-        log.debug("Offset is "+offset);
 		
         // Read the next 6 byes.
         idx_raf[testament].seek(offset);
