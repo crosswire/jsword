@@ -156,8 +156,10 @@ public class GBFFilter implements Filter
                     log.warn("Ignoring tag of <" + tag + ">"); //$NON-NLS-1$ //$NON-NLS-2$
                     //DataPolice.report("Ignoring tag of <" + tag + ">");
                 }
-
-                taglist.add(reply);
+                else
+                {
+                    taglist.add(reply);
+                }
             }
 
             remains = remains.substring(gtpos + 1);

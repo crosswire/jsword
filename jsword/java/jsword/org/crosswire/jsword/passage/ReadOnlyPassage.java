@@ -362,6 +362,30 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        return ref.equals(obj);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return ref.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return ref.toString();
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
     public Object clone()

@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.SimpleAnalyzer;
@@ -115,7 +117,8 @@ public class LuceneIndex implements Index, Activatable
                 // create argument set to true.
                 IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);
 
-                generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
+                List errors = new ArrayList();
+                generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList());
 
                 job.setProgress(95, Msg.OPTIMIZING.toString());
 
@@ -132,6 +135,18 @@ public class LuceneIndex implements Index, Activatable
                 {
                     finalStatus = IndexStatus.DONE;
                 }
+                if (errors.size() > 0)
+                {
+                    StringBuffer buf = new StringBuffer();
+                    Iterator iter = errors.iterator();
+                    while (iter.hasNext())
+                    {
+                        buf.append(iter.next());
+                        buf.append('\n');
+                    }
+                    Reporter.informUser(this, Msg.BAD_VERSE, buf);                    
+                }
+                    
             }
         }
         catch (Exception ex)
@@ -242,17 +257,18 @@ public class LuceneIndex implements Index, Activatable
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Job job, IndexWriter writer, Key key) throws BookException, IOException
+    private void generateSearchIndexImpl(Job job, List errors, IndexWriter writer, Key key) throws BookException, IOException
     {
         int bookNum = 0;
         int oldBookNum = -1;
         int percent = 0;
+        String name = ""; //$NON-NLS-1$
         for (Iterator it = key.iterator(); it.hasNext(); )
         {
             Key subkey = (Key) it.next();
             if (subkey.canHaveChildren())
             {
-                generateSearchIndexImpl(job, writer, subkey);
+                generateSearchIndexImpl(job, errors, writer, subkey);
             }
             else
             {
@@ -265,6 +281,7 @@ public class LuceneIndex implements Index, Activatable
                 {
                     // ignore
                     // TODO(DM): report these to the user as verses that could not be indexed.
+                    errors.add(subkey);
                     continue;
                 }
 
@@ -280,7 +297,6 @@ public class LuceneIndex implements Index, Activatable
                 }
 
                 // report progress
-                String name = ""; //$NON-NLS-1$
                 Verse verse = KeyUtil.getVerse(subkey);
 
                 try
