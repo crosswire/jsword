@@ -119,7 +119,7 @@ public class SwordDictionary extends AbstractBook
             div.addContent(title);
             text.addContent(div);
 
-            String txt = backend.getRawText(key, sbmd.getModuleCharset());
+            String txt = backend.getRawText(key);
 
             List osisContent = sbmd.getFilter().toOSIS(txt);
             div.addContent(osisContent);
@@ -145,7 +145,7 @@ public class SwordDictionary extends AbstractBook
 
         try
         {
-            return backend.getRawText(key, sbmd.getModuleCharset());
+            return backend.getRawText(key);
         }
         catch (Exception ex)
         {

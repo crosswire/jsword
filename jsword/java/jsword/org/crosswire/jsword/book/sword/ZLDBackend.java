@@ -1,5 +1,7 @@
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
+
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.DefaultKeyList;
@@ -30,14 +32,14 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ZLDBackend implements Backend
+public class ZLDBackend extends Backend
 {
     /**
      * Simple ctor
      */
-    public ZLDBackend(SwordBookMetaData sbmd)
+    public ZLDBackend(SwordBookMetaData sbmd, File rootPath)
     {
-        this.sbmd = sbmd;
+        super(sbmd, rootPath);
     }
 
     /* (non-Javadoc)
@@ -59,13 +61,13 @@ public class ZLDBackend implements Backend
      */
     public Key readIndex()
     {
-        return new DefaultKeyList(null, sbmd.getName());
+        return new DefaultKeyList(null, getBookMetaData().getName());
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public String getRawText(Key key, String charset) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         // LATER(joe): implement this
         throw new BookException(Msg.COMPRESSION_UNSUPPORTED);
@@ -78,9 +80,4 @@ public class ZLDBackend implements Backend
     {
         return false;
     }
-
-    /**
-     * The book driver that we are providing data for
-     */
-    private SwordBookMetaData sbmd;
 }

@@ -40,19 +40,19 @@ import org.jdom.Text;
 public class OSISUtil
 {
     /**
-     * Constant to help narrow down what we use seg for. In this case the bold tag
+     * Constant to help narrow down what we use "hi" for. In this case the bold tag
      */
-    public static final String SEG_BOLD = "font-weight: bold;"; //$NON-NLS-1$
+    public static final String HI_BOLD = "bold"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the italic tag
+     * Constant to help narrow down what we use "hi" for. In this case the italic tag
      */
-    public static final String SEG_ITALIC = "font-style: italic;"; //$NON-NLS-1$
+    public static final String HI_ITALIC = "italic"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the underline tag
+     * Constant to help narrow down what we use "hi" for. In this case the underline tag
      */
-    public static final String SEG_UNDERLINE = "text-decoration: underline;"; //$NON-NLS-1$
+    public static final String HI_UNDERLINE = "underline"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the justify right tag
@@ -131,6 +131,7 @@ public class OSISUtil
     public static final String ATTRIBUTE_VERSE_OSISID = "osisID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_OSISID = "osisID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_HI_REND = "rend"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SEG_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_REFERENCE_OSISREF = "osisRef"; //$NON-NLS-1$
     public static final String ATTRIBUTE_NOTE_TYPE = "type"; //$NON-NLS-1$

@@ -687,6 +687,7 @@ public class ConfigEntryType implements Serializable
             "UTF8HebrewPoints", //$NON-NLS-1$
             "OSISStrongs", //$NON-NLS-1$
             "OSISFootnotes", //$NON-NLS-1$
+            "OSISScripref", //$NON-NLS-1$
             "OSISMorph", //$NON-NLS-1$
             "OSISHeadings", //$NON-NLS-1$
             "OSISRedLetterWords", //$NON-NLS-1$
@@ -1197,6 +1198,16 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
+     * A one line promo statement, required by Lockman for NASB
+     */
+    public static final ConfigEntryType SHORT_PROMO = new ConfigEntryType("ShortPromo"); //$NON-NLS-1$
+
+    /**
+     * A one line copyright statement, required by Lockman for NASB
+     */
+    public static final ConfigEntryType SHORT_COPYRIGHT = new ConfigEntryType("ShortCopyright"); //$NON-NLS-1$
+
+    /**
      * Simple ctor
      */
     protected ConfigEntryType(String name)
@@ -1425,5 +1436,7 @@ public class ConfigEntryType implements Serializable
                     LANGUAGE,
                     LANGUAGE_FROM,
                     LANGUAGE_TO,
+                    SHORT_PROMO,
+                    SHORT_COPYRIGHT,
     };
 }

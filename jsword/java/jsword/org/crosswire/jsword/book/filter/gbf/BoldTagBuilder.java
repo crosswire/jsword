@@ -42,12 +42,12 @@ public class BoldTagBuilder implements TagBuilder
             {
                 public void updateOsisStack(LinkedList stack)
                 {
-                    Element seg = OSISUtil.factory().createSeg();
-                    seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_BOLD);
+                    Element hi = OSISUtil.factory().createHI();
+                    hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_BOLD);
 
                     Element current = (Element) stack.get(0);
-                    current.addContent(seg);
-                    stack.addFirst(seg);
+                    current.addContent(hi);
+                    stack.addFirst(hi);
                 }
             };
         }

@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -106,7 +106,7 @@ public class LuceneIndex implements Index, Activatable
 
                 // An index is created by opening an IndexWriter with the
                 // create argument set to true.
-                IndexWriter writer = new IndexWriter(NetUtil.getAsFile(storage).getCanonicalPath(), new StandardAnalyzer(), true);
+                IndexWriter writer = new IndexWriter(NetUtil.getAsFile(storage).getCanonicalPath(), new SimpleAnalyzer(), true);
 
                 generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
         
@@ -147,7 +147,7 @@ public class LuceneIndex implements Index, Activatable
             {
                 try
                 {
-                    Analyzer analyzer = new StandardAnalyzer();
+                    Analyzer analyzer = new SimpleAnalyzer();
                     Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
                     Hits hits = searcher.search(query);
     

@@ -1,5 +1,7 @@
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
+
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
@@ -28,14 +30,14 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LZSSBackend implements Backend
+public class LZSSBackend extends Backend
 {
     /**
      * Simple ctor
      */
-    public LZSSBackend(SwordBookMetaData sbmd)
+    public LZSSBackend(SwordBookMetaData sbmd, File rootPath)
     {
-        this.sbmd = sbmd;
+        super(sbmd, rootPath);
     }
 
     /* (non-Javadoc)
@@ -55,10 +57,10 @@ public class LZSSBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public String getRawText(Key key, String charset) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         // LATER(joe): implement this
-        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { sbmd.toString() });
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { getBookMetaData().getName() });
     }
 
     /* (non-Javadoc)
@@ -77,6 +79,4 @@ public class LZSSBackend implements Backend
     {
         return false;
     }
-
-    private SwordBookMetaData sbmd;
 }

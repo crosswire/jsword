@@ -43,9 +43,9 @@ public class UTag implements Tag
      */
     public Element processTag(Element ele, Attributes attrs)
     {
-        Element seg = OSISUtil.factory().createSeg();
-        seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_UNDERLINE);
-        ele.addContent(seg);
-        return seg;
+        Element hi = OSISUtil.factory().createHI();
+        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_UNDERLINE);
+        ele.addContent(hi);
+        return hi;
     }
 }

@@ -76,7 +76,7 @@ public class SwordBook extends PassageAbstractBook
      */
     protected String getText(Key key) throws BookException
     {
-        String result = backend.getRawText(key, sbmd.getModuleCharset());
+        String result = backend.getRawText(key);
 
         assert result != null;
         return result;

@@ -46,9 +46,9 @@ public class ThTag implements Tag
         Element cell = OSISUtil.factory().createCell();
         ele.addContent(cell);
 
-        Element seg = OSISUtil.factory().createSeg();
-        seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_BOLD);
-        cell.addContent(seg);
-        return seg;
+        Element hi = OSISUtil.factory().createHI();
+        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_REND, OSISUtil.HI_BOLD);
+        cell.addContent(hi);
+        return hi;
     }
 }

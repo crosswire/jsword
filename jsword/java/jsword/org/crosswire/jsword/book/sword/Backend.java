@@ -1,6 +1,9 @@
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
+
 import org.crosswire.common.activate.Activatable;
+import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 
@@ -28,26 +31,73 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend extends Activatable
+abstract public class Backend implements Activatable
 {
+    /**
+     * Construct a minimal backend
+     * @param sbmd
+     * @param location
+     */
+    public Backend(SwordBookMetaData sbmd, File location)
+    {
+        bmd = sbmd;
+        rootPath = location;
+    }
+
+    /**
+     * @return Returns the root path.
+     */
+    public File getRootPath()
+    {
+        return rootPath;
+    }
+
+    /**
+     * @return Returns the Sword BookMetaData.
+     */
+    public SwordBookMetaData getBookMetaData()
+    {
+        return bmd;
+    }
+
+    /**
+     * Decipher the data in place, if it is enciphered and there
+     * is a key to unlock it.
+     * @param data the data to unlock
+     */
+    public void decipher(byte[] data)
+    {
+        String cipherKeyString = getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
+        if (cipherKeyString != null)
+        {
+            Sapphire cipherEngine = new Sapphire(cipherKeyString.getBytes());
+            for (int i = 0; i < data.length; i++)
+            {
+                data[i] = cipherEngine.cipher(data[i]);
+            }
+        }
+    }
+
     /**
      * Initialise a Backend before use. This method needs to call addKey() a
      * number of times on SwordDictionary
      */
-    public Key readIndex();
+    abstract public Key readIndex();
 
     /**
      * Get the bytes alotted for the given verse
      * @param key The key to fetch
-     * @param charset the Java standard charset to convert the text into
      * @return String The data for the verse in question
      * @throws BookException If the data can not be read.
      */
-    public String getRawText(Key key, String charset) throws BookException;
+    abstract public String getRawText(Key key) throws BookException;
 
     /**
      * Returns whether this Backend is implemented.
      * @return true if this Backend is implemented.
      */
-    public boolean isSupported();
+    abstract public boolean isSupported();
+    
+    private SwordBookMetaData bmd;
+    private File rootPath;
 }

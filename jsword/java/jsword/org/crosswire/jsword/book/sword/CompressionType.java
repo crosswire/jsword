@@ -1,5 +1,6 @@
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
 import java.io.Serializable;
 
 import org.crosswire.jsword.book.BookException;
@@ -40,10 +41,10 @@ public abstract class CompressionType implements Serializable
         {
             return true;
         }
-        protected Backend getBackend(SwordBookMetaData sbmd, String path) throws BookException
+        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
-            return new GZIPBackend(path, blockType);
+            return new GZIPBackend(sbmd, rootPath, blockType);
         }
 
         /**
@@ -61,9 +62,9 @@ public abstract class CompressionType implements Serializable
         {
             return false;
         }
-        protected Backend getBackend(SwordBookMetaData sbmd, String path) throws BookException
+        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
-            return new LZSSBackend(sbmd);
+            return new LZSSBackend(sbmd, rootPath);
         }
 
         /**
@@ -87,7 +88,7 @@ public abstract class CompressionType implements Serializable
      */
     abstract boolean isSupported();
 
-    abstract Backend getBackend(SwordBookMetaData sbmd, String path) throws BookException;
+    abstract Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
 
     /**
      * Lookup method to convert from a String

@@ -87,7 +87,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class GZIPBackend implements Backend
+public class GZIPBackend extends Backend
 {
     private static final String SUFFIX_COMP = "v"; //$NON-NLS-1$
     private static final String SUFFIX_INDEX = "s"; //$NON-NLS-1$
@@ -97,8 +97,13 @@ public class GZIPBackend implements Backend
     /**
      * Simple ctor
      */
-    public GZIPBackend(String path, BlockType blockType) throws BookException
+    public GZIPBackend(SwordBookMetaData sbmd, File rootPath, BlockType blockType) throws BookException
     {
+        super(sbmd, rootPath);
+
+        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
+        File baseurl = new File(rootPath, dataPath);
+        String path = baseurl.getAbsolutePath();
         String allButLast = path + File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1;
         idxFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_INDEX);
         textFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_TEXT);
@@ -202,9 +207,11 @@ public class GZIPBackend implements Backend
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public String getRawText(Key key, String charset) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         checkActive();
+
+        String charset = getBookMetaData().getModuleCharset();
 
         Verse verse = KeyUtil.getVerse(key);
 
@@ -257,13 +264,7 @@ public class GZIPBackend implements Backend
                 // Read from the data file.
                 byte[] data = SwordUtil.readRAF(textRaf[testament], blockStart, blockSize);
 
-                // LATER(joe): implement encryption?
-                // If the file is encrypted, then decryption yeilds the gzipped data.
-                // Otherwise the data is gzipped.
-                // if (data is encrypted)
-                // {
-                //     data = decrypt(data);
-                // }
+                decipher(data);
 
                 uncompressed = SwordUtil.uncompress(data, uncompressedSize);
 

@@ -160,7 +160,8 @@ public class ConfigEntryTable
             
             String key = line.substring(0, eqpos).trim();
             String value = line.substring(eqpos + 1).trim();
-            if (value.length() == 0)
+            // Only CIPHER_KEYS that are empty are not ignored
+            if (value.length() == 0 && !ConfigEntryType.CIPHER_KEY.getName().equals(key))
             {
                 log.warn("Ignoring empty entry in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
                 continue;
@@ -501,11 +502,11 @@ public class ConfigEntryTable
      */
     private void validate()
     {
-        // Locked modules are described but don't exist.
-        if (getValue(ConfigEntryType.CIPHER_KEY) != null)
+        // Only locked modules that have a key can be used.
+        String cipher = (String) getValue(ConfigEntryType.CIPHER_KEY);
+        if (cipher != null && cipher.length() == 0)
         {
-            // Don't need to say we don't support locked modules. We already know that!
-            //log.debug("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Book not supported: " + internal + " because it is locked and there is no key."); //$NON-NLS-1$ //$NON-NLS-2$
             supported = false;
             return;
         }
@@ -580,9 +581,11 @@ public class ConfigEntryTable
     public static final ConfigEntryType[] COPYRIGHT_INFO =
     {
         ConfigEntryType.ABOUT,
+        ConfigEntryType.SHORT_PROMO,
         ConfigEntryType.DISTRIBUTION_LICENSE,
         ConfigEntryType.DISTRIBUTION_NOTES,
         ConfigEntryType.DISTRIBUTION_SOURCE,
+        ConfigEntryType.SHORT_COPYRIGHT,
         ConfigEntryType.COPYRIGHT,
         ConfigEntryType.COPYRIGHT_DATE,
         ConfigEntryType.COPYRIGHT_HOLDER,

@@ -39,13 +39,18 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawBackend implements Backend
+public class RawBackend extends Backend
 {
     /**
      * Simple ctor
      */
-    public RawBackend(String path) throws BookException
+    public RawBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
     {
+        super(sbmd, rootPath);
+        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
+        File baseurl = new File(rootPath, dataPath);
+        String path = baseurl.getAbsolutePath();
+       
         idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
         txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
 
@@ -117,9 +122,10 @@ public class RawBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public String getRawText(Key key, String charset) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         checkActive();
+        String charset = getBookMetaData().getModuleCharset();
 
         Verse verse = KeyUtil.getVerse(key);
 

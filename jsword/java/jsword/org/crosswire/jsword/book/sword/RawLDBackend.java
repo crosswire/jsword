@@ -40,21 +40,25 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawLDBackend implements Backend
+public class RawLDBackend extends Backend
 {
     /**
      * Simple ctor
      * @param datasize We need to know how many bytes in the size portion of the index
      */
-    public RawLDBackend(SwordBookMetaData sbmd, String path, int datasize) throws BookException
+    public RawLDBackend(SwordBookMetaData sbmd, File rootPath, int datasize) throws BookException
     {
-        this.sbmd = sbmd;
+        super(sbmd, rootPath);
         this.datasize = datasize;
 
         if (datasize != 2 && datasize != 4)
         {
             throw new BookException(Msg.TYPE_UNKNOWN);
         }
+
+        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
+        File baseurl = new File(rootPath, dataPath);
+        String path = baseurl.getAbsolutePath();
 
         idxFile = new File(path + SwordConstants.EXTENSION_INDEX);
         datFile = new File(path + SwordConstants.EXTENSION_DATA);
@@ -120,7 +124,7 @@ public class RawLDBackend implements Backend
     {
         checkActive();
 
-        Key reply = new DefaultKeyList(null, sbmd.getName());
+        Key reply = new DefaultKeyList(null, getBookMetaData().getName());
 
         int entrysize = OFFSETSIZE + datasize;
         long entries;
@@ -191,9 +195,11 @@ public class RawLDBackend implements Backend
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public String getRawText(Key key, String charset) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         checkActive();
+
+        String charset = getBookMetaData().getModuleCharset();
 
         if (!(key instanceof IndexKey))
         {
@@ -287,11 +293,6 @@ public class RawLDBackend implements Backend
      * The log stream
      */
     private static final Logger log = Logger.getLogger(RawLDBackend.class);
-
-    /**
-     * The book driver that we are providing data for
-     */
-    private SwordBookMetaData sbmd;
 
     /**
      * A Key that knows where the data is in the real file.
