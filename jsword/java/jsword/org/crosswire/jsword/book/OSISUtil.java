@@ -434,22 +434,6 @@ public class OSISUtil
     }
 
     /**
-     * Create a title based on the given <code>BookData</code> not more than
-     * <code>length</code> characters in length
-     * TODO: Implement this.
-     * @param data The BookData to create a title from.
-     * @param length The maximim String length
-     * @return The BookData title
-     */
-    public static String getTitle(BookData data, int length)
-    {
-        int ignore = length;
-        length = ignore;
-
-        return data.toString();
-    }
-
-    /**
      * Find all the instances of elements of type <code>find</code> under
      * the element <code>div</code>. For internal use only.
      */
