@@ -327,7 +327,7 @@ public class AdvancedConfigPane extends TreeConfigPane
     /**
      * Simple Tree Node
      */
-    public class CompNode
+    static class CompNode
     {
         /**
          * Create a node with a name and path
@@ -360,7 +360,7 @@ public class AdvancedConfigPane extends TreeConfigPane
     /**
      *
      */
-    public class CustomTreeCellRenderer extends DefaultTreeCellRenderer
+    class CustomTreeCellRenderer extends DefaultTreeCellRenderer
     {
         /**
          *
@@ -397,7 +397,7 @@ public class AdvancedConfigPane extends TreeConfigPane
     /**
      *
      */
-    public class CustomTreeCellEditor extends DefaultTreeCellEditor
+    static class CustomTreeCellEditor extends DefaultTreeCellEditor
     {
         public CustomTreeCellEditor(JTree tree, DefaultTreeCellRenderer render)
         {

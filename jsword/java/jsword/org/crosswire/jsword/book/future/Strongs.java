@@ -37,6 +37,23 @@ import org.crosswire.common.util.LogicError;
  */
 public class Strongs
 {
+    /* From the properties file:
+
+    # Strongs messages
+    strongs_greek=Greek:
+    strongs_hebrew=Hebrew:
+    strongs_parsing=Parsing:
+    
+    # Strongs error messages
+    strongs_error_parse=Strongs number must be of the form <n>, <0n> or (n) where n is a number. Given \'{0}\'
+    strongs_error_number=Could not get a number from \'{0}\'
+    strongs_error_hebrew=Hebrew numbers must be between 0 and {0,number,integer}. Given {1,number,integer}
+    strongs_error_greek=Greek numbers must be between 0 and {0,number,integer}. Given {1,number,integer}
+    strongs_error_parsing=Parsing numbers must be greater than 0. Given {0,number,integer}
+    strongs_error_type=Strongs numbers must have a type in the range, 0-2. Given {0,number,integer}
+
+     */
+
     /**
      * Create a Strongs number from an OLB descriptive string.
      * @param desc The OLB style descriptive string

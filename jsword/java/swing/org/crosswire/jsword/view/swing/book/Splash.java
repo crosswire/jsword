@@ -115,7 +115,7 @@ public class Splash extends JWindow
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        lbl_info.setText("Version "+Project.getVersion());
+        lbl_info.setText("Version "+Project.resource().getVersion());
 
         prg_info.setString("Loading ...");
         prg_info.setStringPainted(true);
@@ -369,5 +369,5 @@ public class Splash extends JWindow
     private Properties predicted;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(Splash.class);
+    private static final Logger log = Logger.getLogger(Splash.class);
 }

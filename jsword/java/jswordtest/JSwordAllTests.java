@@ -1,8 +1,6 @@
 
 // package default;
 
-import org.crosswire.jsword.util.Project;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -40,8 +38,6 @@ public class JSwordAllTests extends TestCase
 
     public static Test suite()
     {
-        Project.init();
-
         TestSuite suite = new TestSuite();
 
         suite.addTestSuite(org.crosswire.jsword.util.TestStyle.class);
@@ -63,7 +59,8 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.TestBibles.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookMetaData.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookUtil.class);
-        suite.addTestSuite(org.crosswire.jsword.book.data.jaxb.TestOsis.class);
+        // commented out because the tests were very poor.
+        //suite.addTestSuite(org.crosswire.jsword.book.data.jaxb.TestOsis.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleUtil.class);

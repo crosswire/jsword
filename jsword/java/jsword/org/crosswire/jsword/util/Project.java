@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.util;
 
-import org.crosswire.common.util.Logger;
-
 /**
  * The Project class looks after the source of project files.
  * 
@@ -30,13 +28,9 @@ import org.crosswire.common.util.Logger;
 public class Project
 {
     /**
-     * This is a simple method that all code should call as it begins. We
-     * can put various bits of necessary setup in here. It should not
-     * matter if this method is called twice, although in case this
-     * requirement becomes to hard we also should not write code that
-     * calls it more than once.
+     * Accessor for the resource singleton.
      */
-    public static void init()
+    public static Resource resource()
     {
         // DCL
         // I know double checked locking is theoretically broken however it isn't
@@ -52,41 +46,9 @@ public class Project
                 }
             }
         }
-    }
 
-    /**
-     * I want this to become a proper singleton. This is the accessor.
-     */
-    public static Resource resource()
-    {
-        if (resource == null)
-        {
-            log.error("attempt to use Resource before project is init()ed");
-        }
-            
         return resource;
     }
-
-    /**
-     * The name of this project.
-     */
-    public static String getName()
-    {
-        return "JSword";
-    }
-
-    /**
-     * The name of this project.
-     */
-    public static String getVersion()
-    {
-        return "0.9.2";
-    }
-
-    /**
-     * The log stream
-     */
-    private static Logger log = Logger.getLogger(Project.class);
 
     /**
      * The filesystem resources

@@ -302,7 +302,7 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(LocalURLBookDriver.class);
+    private static final Logger log = Logger.getLogger(LocalURLBookDriver.class);
 
     /**
      * The Bibles root

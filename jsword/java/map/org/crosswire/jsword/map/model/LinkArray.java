@@ -99,7 +99,7 @@ public class LinkArray implements Serializable
         Element root = toXML();
         Document doc = new Document(root);
         XMLOutputter outputter = new XMLOutputter();
-        outputter.setIndent(2);
+        outputter.setIndent("  ");
         outputter.setNewlines(true);
         outputter.output(doc, out);
     }
@@ -348,5 +348,5 @@ public class LinkArray implements Serializable
     public static final int LINKS_PER_CHAPTER = 200;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(LinkArray.class);
+    private static final Logger log = Logger.getLogger(LinkArray.class);
 }

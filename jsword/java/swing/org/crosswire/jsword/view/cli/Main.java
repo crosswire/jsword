@@ -47,7 +47,6 @@ public class Main
      */
     public static void main(String[] args) throws MalformedURLException, JDOMException, IOException
     {
-        Project.init();
         Logger.stopLogging();
 
         Reader in = new InputStreamReader(System.in);
@@ -58,6 +57,9 @@ public class Main
         main.parse(in, out);
     }
 
+    /**
+     * 
+     */
     public Main(String title) throws MalformedURLException, JDOMException, IOException
     {
         this.title = title;
@@ -82,7 +84,7 @@ public class Main
         BufferedReader cin = new BufferedReader(in);
         PrintWriter pout = new PrintWriter(out);
 
-        pout.println("JSword CLI. Version "+Project.getVersion());
+        pout.println("JSword CLI. Version "+Project.resource().getVersion());
 
         int linenum = 1;
         while (true)

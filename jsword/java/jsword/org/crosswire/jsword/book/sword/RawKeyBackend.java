@@ -57,7 +57,7 @@ public class RawKeyBackend implements KeyBackend
         try
         {
             // Open the files
-            URL url = NetUtil.lengthenURL(SwordBookDriver.dir, config.getDataPath());
+            URL url = NetUtil.lengthenURL(SwordBookDriver.getSwordURL(), config.getDataPath());
             if (!url.getProtocol().equals("file"))
             {
                 throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
@@ -202,17 +202,17 @@ public class RawKeyBackend implements KeyBackend
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(RawKeyBackend.class);
+    private static final Logger log = Logger.getLogger(RawKeyBackend.class);
 
     /**
      * A Key that knows where the data is in the real file.
      */
-    class IndexKey extends DefaultKey
+    static class IndexKey extends DefaultKey
     {
         /**
          * Setup with the key name and positions of data in the file
          */
-        public IndexKey(String text, long offset, int size)
+        protected IndexKey(String text, long offset, int size)
         {
             super(text);
 

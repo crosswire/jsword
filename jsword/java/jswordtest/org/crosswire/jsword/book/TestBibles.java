@@ -45,7 +45,7 @@ public class TestBibles extends TestCase
         super(s);
     }
 
-    private static Logger log = Logger.getLogger(TestBibles.class);
+    private static final Logger log = Logger.getLogger(TestBibles.class);
     protected Passage gen11 = null;
     protected BibleMetaData[] bmds = null;
     protected Bible[] bibles = null;

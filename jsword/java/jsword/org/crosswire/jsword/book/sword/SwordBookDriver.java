@@ -150,16 +150,30 @@ public class SwordBookDriver extends AbstractBookDriver
     public static String getSwordDir()
     {
         if (dir == null)
+        {
             return "";
+        }
 
         return dir.getFile();
     }
 
-    /** The directory URL */
-    protected static URL dir;
+    /**
+     * Accessor for the SWORD project installation directory
+     */
+    public static URL getSwordURL()
+    {
+        return dir;
+    }
 
-    /** The log stream */
-    private static Logger log = Logger.getLogger(SwordBookDriver.class);
+    /**
+     * The directory URL
+     */
+    private static URL dir;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(SwordBookDriver.class);
 
     /**
      * Check that the directories in the version directory really

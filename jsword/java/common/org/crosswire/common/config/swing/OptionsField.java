@@ -33,16 +33,8 @@ import org.crosswire.common.config.MultipleChoice;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class OptionsField extends JComboBox implements Field
+public class OptionsField implements Field
 {
-    /**
-     * Give the values list (true/false) to the ComboBox
-     */
-    public OptionsField()
-    {
-        super(new String[] { "No Options Set" });
-    }
-
     /**
      * Some fields will need some extra info to display properly
      * like the options in an options field. FieldMap calls this
@@ -57,7 +49,9 @@ public class OptionsField extends JComboBox implements Field
             list = mc.getOptions();
             
             if (list == null)
-                throw new IllegalArgumentException("getOptions() returns null for "+param.getClass().getName());
+            {
+                throw new IllegalArgumentException("getOptions() returns null for " + param.getClass().getName());
+            }
         }
         else
         {
@@ -65,7 +59,7 @@ public class OptionsField extends JComboBox implements Field
             list = new String[] { "ERROR" };
         }
 
-        setModel(new DefaultComboBoxModel(list));
+        combo.setModel(new DefaultComboBoxModel(list));
     }
 
     /**
@@ -74,7 +68,7 @@ public class OptionsField extends JComboBox implements Field
      */
     public String getValue()
     {
-        return (String) getSelectedItem();
+        return (String) combo.getSelectedItem();
     }
 
     /**
@@ -87,13 +81,13 @@ public class OptionsField extends JComboBox implements Field
         {
             if (value.equals(list[i]))
             {
-                setSelectedItem(list[i]);
+                combo.setSelectedItem(list[i]);
                 return;
             }
         }
 
         log.warn("Illegal option setting: '"+value+"'. Using default");
-        setSelectedItem(list[0]);
+        combo.setSelectedItem(list[0]);
     }
 
     /**
@@ -102,7 +96,7 @@ public class OptionsField extends JComboBox implements Field
      */
     public JComponent getComponent()
     {
-        return this;
+        return combo;
     }
 
     /**
@@ -114,6 +108,9 @@ public class OptionsField extends JComboBox implements Field
         return Field;
     }
 
+    /** The component that we are wrapping in a field */
+    private JComboBox combo = new JComboBox(new String[] { "No Options Set" });
+
     /** Our source Field */
     private Choice Field = null;
 
@@ -121,5 +118,5 @@ public class OptionsField extends JComboBox implements Field
     private String[] list = null;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(OptionsField.class);
+    private static final Logger log = Logger.getLogger(OptionsField.class);
 }

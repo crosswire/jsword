@@ -368,8 +368,8 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     protected Hashtable fields = new Hashtable();
 
     /** The large task icon */
-    protected static ImageIcon task = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences24.gif");
+    protected static final ImageIcon task = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences24.gif");
 
     /** The small task icon */
-    protected static ImageIcon tasksm = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences16.gif");
+    protected static final ImageIcon tasksm = GuiUtil.getIcon("toolbarButtonGraphics/general/Preferences16.gif");
 }

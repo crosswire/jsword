@@ -1,19 +1,28 @@
 
 This file is our equivalent of bugzilla for the time being.
 
-- chapter ranges are not displayed distinctly from verse ranges
-- scan gui layout and add to docs (in fellows folder)
+Tests
 - write tests to check support for all modules
-- markup (PENDING etc) to add to docs
+
+Filters
+- GBF add tags: RB, WG****, WHO****, WTH****, WTP, WT*******
+- THML enable debug tags
 - OSIS->text filter does not work for dictionaries
-- slow startup
+
+GUI
 - escape and enter in sel.pasg.dia not 100%
 - CRTL+anything does not open sel.psg.dialog
 - Heb and Greek Fonts not used
-- GBF add tags: RB, WG****, WHO****, WTH****, WTP, WT*******
-- THML enable debug tags
+- slow startup
+
+Sword Modules
 - ISV (NT only?) refs in with text????
 - RSV for Rev 22:21 contains [bizarre]
 - KJV1769+Strong and Young's - stange <small><br>
 - ACV/AKJV dies on Jer 7:1-7:34, Mal 1:1-14
+
+Passage
+- chapter ranges are not displayed distinctly from verse ranges
+
+Search
 - add incomplete index warning to sersearchengine

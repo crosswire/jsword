@@ -70,7 +70,9 @@ public class DriversListModel extends AbstractListModel
     public Object getElementAt(int index)
     {
         if (index >= drivers.length)
+        {
             return null;
+        }
 
         return drivers[index].getClass().getName();
     }
@@ -107,19 +109,27 @@ public class DriversListModel extends AbstractListModel
         for (int i=0; i<drivers.length; i++)
         {
             if (test.equals(getElementAt(i)))
+            {
                 return i;
+            }
         }
 
         return -1;
     }
 
-    /** The array of drivers */
+    /**
+     * The array of drivers
+     */
     protected BookDriver[] drivers;
 
-    /** The small version icon */
+    /**
+     * The small version icon
+     */
     protected static final ImageIcon SMALL_ICON = new ImageIcon("/org/crosswire/resources/task_small.gif");
 
-    /** border if we do not have focus */
+    /**
+     * border if we do not have focus
+     */
     protected static Border no_focus;
 
     /**
@@ -140,7 +150,9 @@ public class DriversListModel extends AbstractListModel
         public BibleListCellRenderer()
         {
             if (no_focus == null)
+            {
                 no_focus = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+            }
 
             setOpaque(true);
             setBorder(no_focus);

@@ -7,9 +7,8 @@ import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookFilter;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.util.Project;
+import org.crosswire.jsword.book.Books;
 import org.jdom.Document;
 
 /**
@@ -45,7 +44,6 @@ public class LocalRemoterTest extends TestCase
     public LocalRemoterTest(String arg0)
     {
         super(arg0);
-        Project.init();
     }
 
     private Remoter remote = new LocalRemoter();

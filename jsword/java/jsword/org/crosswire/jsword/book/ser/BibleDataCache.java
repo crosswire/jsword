@@ -265,5 +265,5 @@ public class BibleDataCache
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(BibleDataCache.class);
+    private static final Logger log = Logger.getLogger(BibleDataCache.class);
 }

@@ -132,5 +132,5 @@ public class RemoteBible extends AbstractBible
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(RemoteBible.class);
+    private static final Logger log = Logger.getLogger(RemoteBible.class);
 }

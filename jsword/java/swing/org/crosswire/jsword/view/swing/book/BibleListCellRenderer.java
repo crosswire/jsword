@@ -88,9 +88,13 @@ public class BibleListCellRenderer extends JLabel implements ListCellRenderer
         return this;
     }
 
-    /** The small version icon */
+    /**
+     * The small version icon
+     */
     private static final ImageIcon ICON_SMALL = GuiUtil.getIcon("images/Passage16.gif");
 
-    /** border if we do not have focus */
-    protected static Border no_focus;
+    /**
+     * border if we do not have focus
+     */
+    private static Border no_focus;
 }

@@ -109,5 +109,5 @@ public class ClassUtil
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(StringUtil.class);
+    private static final Logger log = Logger.getLogger(StringUtil.class);
 }

@@ -127,7 +127,7 @@ public class AntiGravityRule extends AbstractRule
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(AntiGravityRule.class);
+    private static final Logger log = Logger.getLogger(AntiGravityRule.class);
 
     /** How sharply do we fall away with the result curve */
     private static final float STRENGTH = 20F;

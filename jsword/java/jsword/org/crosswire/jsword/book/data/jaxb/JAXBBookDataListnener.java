@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
@@ -91,7 +92,7 @@ public class JAXBBookDataListnener implements BookDataListener
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.BookDataListener#endDocument()
      */
-    public JAXBBookData endDocument()
+    public BookData endDocument()
     {
         Object top = stack.removeFirst();
 
@@ -513,7 +514,7 @@ public class JAXBBookDataListnener implements BookDataListener
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(JAXBBookDataListnener.class);
+    private static final Logger log = Logger.getLogger(JAXBBookDataListnener.class);
 
     /**
      * The proxied OSIS bean that we add to

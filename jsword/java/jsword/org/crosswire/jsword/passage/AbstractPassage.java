@@ -171,12 +171,12 @@ public abstract class AbstractPassage implements Passage
         int book_count = booksInPassage();
 
         String verses = (verse_count == 1)
-                      ? PassageUtil.getResource("abstract_verse_singular")
-                      : PassageUtil.getResource("abstract_verse_plural");
+                      ? Msg.ABSTRACT_VERSE_SINGULAR.getName()
+                      : Msg.ABSTRACT_VERSE_PLURAL.getName();
 
         String books = (book_count == 1)
-                     ? PassageUtil.getResource("abstract_book_singular")
-                     : PassageUtil.getResource("abstract_book_plural");
+                     ? Msg.ABSTRACT_BOOK_SINGULAR.getName()
+                     : Msg.ABSTRACT_BOOK_PLURAL.getName();
 
         return verse_count+" "+verses+" "+book_count+" "+books;
     }
@@ -342,7 +342,7 @@ public abstract class AbstractPassage implements Passage
      */
     public Iterator rangeIterator()
     {
-        return new VerseRangeIterator();
+        return new VerseRangeIterator(verseIterator());
     }
 
     /* (non-Javadoc)
@@ -951,15 +951,20 @@ public abstract class AbstractPassage implements Passage
     /**
      * Skip over verses that are part of a range
      */
-    protected final class VerseRangeIterator implements Iterator
+    protected static final class VerseRangeIterator implements Iterator
     {
         /**
          * iterate, amalgumating Verses into VerseRanges
          */
-        public VerseRangeIterator()
+        protected VerseRangeIterator(Iterator it)
         {
-            it = verseIterator();
-            if (it.hasNext()) next_verse = (Verse) it.next();
+            this.it = it;
+
+            if (it.hasNext())
+            {
+                next_verse = (Verse) it.next();
+            }
+
             calculateNext();
         }
 
@@ -977,6 +982,12 @@ public abstract class AbstractPassage implements Passage
         public final Object next() throws NoSuchElementException
         {
             Object retcode = next_range;
+            
+            if (retcode == null)
+            {
+                throw new NoSuchElementException();
+            }
+            
             calculateNext();
             return retcode;
         }
@@ -1183,7 +1194,7 @@ public abstract class AbstractPassage implements Passage
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(AbstractPassage.class);
+    private static final Logger log = Logger.getLogger(AbstractPassage.class);
 
     /** Serialization type constant for a BitWise layout */
     protected static final int BITWISE = 0;

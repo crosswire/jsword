@@ -5,15 +5,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.EventListenerList;
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.RobustList;
 import org.jdom.Document;
@@ -71,7 +70,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Config implements Serializable
+public class Config
 {
     /**
      * Ensure that we can not be instansiated
@@ -494,7 +493,7 @@ public class Config implements Serializable
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(Config.class);
+    private static final Logger log = Logger.getLogger(Config.class);
 
     /** The name for dialog boxes and properties files */
     protected String title;

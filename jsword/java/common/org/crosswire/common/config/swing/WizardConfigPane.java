@@ -303,6 +303,6 @@ public class WizardConfigPane extends PanelConfigPane
     private JButton back = new JButton("Back");
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(WizardConfigPane.class);
+    private static final Logger log = Logger.getLogger(WizardConfigPane.class);
 }
 

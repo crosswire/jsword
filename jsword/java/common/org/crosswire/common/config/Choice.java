@@ -1,8 +1,6 @@
 
 package org.crosswire.common.config;
 
-import java.io.Serializable;
-
 import org.jdom.Element;
 
 /**
@@ -36,7 +34,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Choice extends Serializable
+public interface Choice
 {
     /**
      * String value to associate with the name (key)

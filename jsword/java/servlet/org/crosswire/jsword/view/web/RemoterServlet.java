@@ -21,7 +21,6 @@ import org.crosswire.jsword.book.remote.ParamName;
 import org.crosswire.jsword.book.remote.RemoteMethod;
 import org.crosswire.jsword.book.remote.Remoter;
 import org.crosswire.jsword.book.remote.RemoterException;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
@@ -58,7 +57,6 @@ public class RemoterServlet extends HttpServlet
     {
         super.init(config);
 
-        Project.init();
         remoter = new LocalRemoter();
     }
 

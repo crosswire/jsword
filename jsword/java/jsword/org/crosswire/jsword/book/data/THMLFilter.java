@@ -65,7 +65,7 @@ public class THMLFilter implements Filter
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(THMLFilter.class);
+    protected static final Logger log = Logger.getLogger(THMLFilter.class);
 
     /**
      * To convert SAX events into OSIS events

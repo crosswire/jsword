@@ -1,3 +1,4 @@
+
 package org.crosswire.common.util;
 
 import java.io.IOException;
@@ -104,32 +105,6 @@ public class EventListenerList implements Serializable
     }
 
     /**
-     * Return the total number of listeners for this listenerlist
-     */
-    public int getListenerCount()
-    {
-        return listenerList.length / 2;
-    }
-
-    /**
-     * Return the total number of listeners of the supplied type
-     * for this listenerlist.
-     */
-    public int getListenerCount(Class t)
-    {
-        int count = 0;
-        Object[] lList = listenerList;
-        for (int i = 0; i < lList.length; i += 2)
-        {
-            if (t == (Class) lList[i])
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
      * Add the listener as a listener of the specified type.
      * @param t the type of the listener to be added
      * @param l the listener to be added
@@ -221,7 +196,9 @@ public class EventListenerList implements Serializable
         }
     }
 
-    // Serialization support.
+    /**
+     * Serialization support
+     */
     private void writeObject(ObjectOutputStream s) throws IOException
     {
         Object[] lList = listenerList;
@@ -242,6 +219,9 @@ public class EventListenerList implements Serializable
         s.writeObject(null);
     }
 
+    /**
+     * Serialization support
+     */
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
     {
         listenerList = NULL_ARRAY;
@@ -274,9 +254,9 @@ public class EventListenerList implements Serializable
         return s;
     }
 
-    /* A null array to be shared by all empty listener lists*/
+    /** A null array to be shared by all empty listener lists*/
     private static final Object[] NULL_ARRAY = new Object[0];
 
-    /* The list of ListenerType - Listener pairs */
+    /** The list of ListenerType - Listener pairs */
     protected transient Object[] listenerList = NULL_ARRAY;
 }

@@ -87,7 +87,7 @@ public class CircularBoundsRule extends AbstractRule
     }
     
     /** The log stream */
-    private static Logger log = Logger.getLogger(CircularBoundsRule.class);
+    private static final Logger log = Logger.getLogger(CircularBoundsRule.class);
 
     private static final float RADIUS = 0.45F;
 }

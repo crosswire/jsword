@@ -109,7 +109,9 @@ public class PassageTally extends AbstractPassage
     public void setOrdering(int order)
     {
         if (order != ORDER_BIBLICAL && order != ORDER_TALLY)
-            throw new IllegalArgumentException(PassageUtil.getResource("tally_error_order"));
+        {
+            throw new IllegalArgumentException(Msg.TALLY_ERROR_ORDER.getName());
+        }
 
         this.order = order;
     }
@@ -184,7 +186,9 @@ public class PassageTally extends AbstractPassage
                     retcode.append(range.getName(current));
 
                     if (it.hasNext())
+                    {
                         retcode.append(REF_PREF_DELIM);
+                    }
 
                     current = range.getStart();
                 }
@@ -192,9 +196,11 @@ public class PassageTally extends AbstractPassage
             else
             {
                 if (max_count == 0)
+                {
                     max_count = Integer.MAX_VALUE;
+                }
 
-                Iterator it = new OrderedVerseIterator();
+                Iterator it = new OrderedVerseIterator(board);
                 Verse current = null;
                 int count = 0;
 
@@ -207,7 +213,9 @@ public class PassageTally extends AbstractPassage
                     count++;
 
                     if (it.hasNext() && count < max_count)
+                    {
                         retcode.append(Passage.REF_PREF_DELIM);
+                    }
                 }
             }
         }
@@ -238,11 +246,14 @@ public class PassageTally extends AbstractPassage
     public String getNameAndTally(int max_count)
     {
         StringBuffer retcode = new StringBuffer();
-        if (max_count == 0) max_count = Integer.MAX_VALUE;
+        if (max_count == 0)
+        {
+            max_count = Integer.MAX_VALUE;
+        }
 
         try
         {
-            OrderedVerseIterator it = new OrderedVerseIterator();
+            OrderedVerseIterator it = new OrderedVerseIterator(board);
             int count = 0;
 
             while (it.hasNext() && count < max_count)
@@ -253,7 +264,9 @@ public class PassageTally extends AbstractPassage
                 count++;
 
                 if (it.hasNext() && count < max_count)
+                {
                     retcode.append(Passage.REF_PREF_DELIM);
+                }
             }
         }
         catch (Exception ex)
@@ -276,7 +289,7 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            return new OrderedVerseIterator();
+            return new OrderedVerseIterator(board);
         }
     }
 
@@ -288,11 +301,11 @@ public class PassageTally extends AbstractPassage
     {
         if (order == ORDER_BIBLICAL)
         {
-            return new VerseRangeIterator();
+            return new VerseRangeIterator(verseIterator());
         }
         else
         {
-            return new OrderedVerseRangeIterator();
+            return new OrderedVerseRangeIterator(verseIterator(), board);
         }
     }
 
@@ -619,7 +632,9 @@ public class PassageTally extends AbstractPassage
         raiseNormalizeProtection();
 
         if (verses < 0)
-            throw new IllegalArgumentException(PassageUtil.getResource("tally_error_blur"));
+        {
+            throw new IllegalArgumentException(Msg.ERROR_BLUR.getName());
+        }
 
         if (restrict != RESTRICT_NONE)
         {
@@ -643,7 +658,7 @@ public class PassageTally extends AbstractPassage
             }
             catch (CloneNotSupportedException ex)
             {
-                throw new Error(PassageUtil.getResource("error_logic"));
+                throw new Error(Msg.ERROR_LOGIC.getName());
             }
         }
         else
@@ -667,18 +682,22 @@ public class PassageTally extends AbstractPassage
 
                     for (int j=-verses; j<0; j++)
                     {
-                        int k = i+j;
+                        int k = i + j;
                         if (k >= 0)
-                            new_board[k] += board[i]+verses+j;
+                        {
+                            new_board[k] += board[i] + verses + j;
+                        }
                     }
 
                     new_board[i] += board[i]+verses;
 
                     for (int j=1; j<=verses; j++)
                     {
-                        int k = i+j;
+                        int k = i + j;
                         if (k < vib)
-                            new_board[k] += board[i]+verses-j;
+                        {
+                            new_board[k] += board[i] + verses - j;
+                        }
                     }
                 }
             }
@@ -705,7 +724,9 @@ public class PassageTally extends AbstractPassage
         for (int i=0; i<vib; i++)
         {
             if (board[i] > max)
+            {
                 max = board[i];
+            }
         }
     }
 
@@ -778,7 +799,7 @@ public class PassageTally extends AbstractPassage
     private int order = ORDER_BIBLICAL;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(PassageTally.class);
+    private static final Logger log = Logger.getLogger(PassageTally.class);
 
     /**
      * Iterate over the Verses in normal verse order
@@ -853,12 +874,12 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Verses in order of their rank in the tally
      * @author Joe Walker
      */
-    private final class OrderedVerseIterator implements Iterator
+    private static final class OrderedVerseIterator implements Iterator
     {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseIterator()
+        protected OrderedVerseIterator(int[] board)
         {
             TreeSet output = new TreeSet();
 
@@ -866,23 +887,24 @@ public class PassageTally extends AbstractPassage
             for (int i=0; i<vib; i++)
             {
                 if (board[i] != 0)
-                    output.add(new TalliedVerse(i+1, board[i]));
+                {
+                    output.add(new TalliedVerse(i + 1, board[i]));
+                }
             }
 
             it = output.iterator();
         }
 
-        /**
-         * @return true if the iteration has more Verses
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext()
         {
             return it.hasNext();
         }
 
-        /**
-         * @return the next Verse in the interation
-         * @throws NoSuchElementException if hasNext() == false
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public Object next() throws NoSuchElementException
         {
@@ -897,9 +919,8 @@ public class PassageTally extends AbstractPassage
             }
         }
 
-        /**
-         * We don't do remove
-         * @throws UnsupportedOperationException Every time
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException
         {
@@ -918,7 +939,7 @@ public class PassageTally extends AbstractPassage
             }
             catch (NullPointerException ex)
             {
-                throw new NoSuchElementException(PassageUtil.getResource("tally_error_enum"));
+                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.getName());
             }
         }
 
@@ -927,43 +948,45 @@ public class PassageTally extends AbstractPassage
 
         /** The Iterator we are converting */
         private Iterator it = null;
+    }
+
+    /**
+     * Hack to make this work with JDK1.1 as well as JDK1.2
+     * This compared 2 Integers
+     */
+    private static class TalliedVerse implements Comparable
+    {
+        /**
+         * Convenience ctor to set the public variables
+         * @param ord the verse id
+         * @param tally the rank of the verse
+         */
+        public TalliedVerse(int ord, int tally)
+        {
+            this.ord = ord;
+            this.tally = tally;
+        }
+
+        /** The verse id */
+        protected int ord = 0;
+
+        /** The rank of the verse */
+        protected int tally = 0;
 
         /**
-         * Hack to make this work with JDK1.1 as well as JDK1.2
-         * This compared 2 Integers
+         * @param obj The thing to compare against
+         * @return 1 means he is earlier than me, -1 means he is later ...
          */
-        private class TalliedVerse implements Comparable
+        public int compareTo(Object obj)
         {
-            /**
-             * Convenience ctor to set the public variables
-             * @param ord the verse id
-             * @param tally the rank of the verse
-             */
-            public TalliedVerse(int ord, int tally)
+            TalliedVerse that = (TalliedVerse) obj;
+
+            if (that.tally == this.tally)
             {
-                this.ord = ord;
-                this.tally = tally;
+                return this.ord - that.ord;
             }
 
-            /** The verse id */
-            protected int ord = 0;
-
-            /** The rank of the verse */
-            protected int tally = 0;
-
-            /**
-             * @param obj The thing to compare against
-             * @return 1 means he is earlier than me, -1 means he is later ...
-             */
-            public int compareTo(Object obj)
-            {
-                TalliedVerse that = (TalliedVerse) obj;
-
-                if (that.tally == this.tally)
-                    return this.ord - that.ord;
-
-                return that.tally - this.tally;
-            }
+            return that.tally - this.tally;
         }
     }
 
@@ -971,48 +994,49 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Ranges in order of their rank in the tally
      * @author Joe Walker
      */
-    private final class OrderedVerseRangeIterator implements Iterator
+    private static final class OrderedVerseRangeIterator implements Iterator
     {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseRangeIterator()
+        public OrderedVerseRangeIterator(Iterator vit, int[] board)
         {
             TreeSet output = new TreeSet();
 
-            Iterator rit = new VerseRangeIterator();
+            Iterator rit = new VerseRangeIterator(vit);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
 
                 // Calculate the maximum rank for a verse
                 int rank = 0;
-                Iterator vit = range.verseIterator();
-                while (vit.hasNext())
+                Iterator vit2 = range.verseIterator();
+                while (vit2.hasNext())
                 {
-                    Verse verse =(Verse) vit.next();
+                    Verse verse =(Verse) vit2.next();
                     int temp = board[verse.getOrdinal()-1];
                     if (temp > rank)
+                    {
                         rank = temp;
+                    }
                 }
 
                 output.add(new TalliedVerseRange(range, rank));
             }
 
-            it = output.iterator();
+            this.it = output.iterator();
         }
 
-        /**
-         * @return true if the iteration has more Verses
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext()
         {
             return it.hasNext();
         }
 
-        /**
-         * @return the next Verse in the interation
-         * @throws NoSuchElementException if hasNext() == false
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public Object next() throws NoSuchElementException
         {
@@ -1020,9 +1044,8 @@ public class PassageTally extends AbstractPassage
             return last.range;
         }
 
-        /**
-         * We don't do remove
-         * @throws UnsupportedOperationException Every time
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException
         {
@@ -1041,7 +1064,7 @@ public class PassageTally extends AbstractPassage
             }
             catch (NullPointerException ex)
             {
-                throw new NoSuchElementException(PassageUtil.getResource("tally_error_enum"));
+                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.getName());
             }
         }
 
@@ -1050,43 +1073,45 @@ public class PassageTally extends AbstractPassage
 
         /** The Iterator we are converting */
         private Iterator it = null;
+    }
+
+    /**
+     * Hack to make this work with JDK1.1 as well as JDK1.2
+     * This compared 2 Integers
+     */
+    private static class TalliedVerseRange implements Comparable
+    {
+        /**
+         * Convenience ctor to set the public variables
+         * @param range The verserange
+         * @param tally The rank of the verse
+         */
+        public TalliedVerseRange(VerseRange range, int tally)
+        {
+            this.range = range;
+            this.tally = tally;
+        }
+
+        /** The verse range */
+        protected VerseRange range;
+
+        /** The rank of the verse */
+        protected int tally = 0;
 
         /**
-         * Hack to make this work with JDK1.1 as well as JDK1.2
-         * This compared 2 Integers
+         * @param obj The thing to compare against
+         * @return 1 means he is earlier than me, -1 means he is later ...
          */
-        private class TalliedVerseRange implements Comparable
+        public int compareTo(Object obj)
         {
-            /**
-             * Convenience ctor to set the public variables
-             * @param range The verserange
-             * @param tally The rank of the verse
-             */
-            public TalliedVerseRange(VerseRange range, int tally)
+            TalliedVerseRange that = (TalliedVerseRange) obj;
+
+            if (that.tally == this.tally)
             {
-                this.range = range;
-                this.tally = tally;
+                return this.range.compareTo(that.range);
             }
 
-            /** The verse range */
-            protected VerseRange range;
-
-            /** The rank of the verse */
-            protected int tally = 0;
-
-            /**
-             * @param obj The thing to compare against
-             * @return 1 means he is earlier than me, -1 means he is later ...
-             */
-            public int compareTo(Object obj)
-            {
-                TalliedVerseRange that = (TalliedVerseRange) obj;
-
-                if (that.tally == this.tally)
-                    return this.range.compareTo(that.range);
-
-                return that.tally - this.tally;
-            }
+            return that.tally - this.tally;
         }
     }
 }

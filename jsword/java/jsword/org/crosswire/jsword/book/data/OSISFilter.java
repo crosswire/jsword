@@ -65,7 +65,7 @@ public class OSISFilter implements Filter
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(OSISFilter.class);
+    protected static final Logger log = Logger.getLogger(OSISFilter.class);
 
     /**
      * To convert SAX events into OSIS events

@@ -44,7 +44,7 @@ public class RawBackend implements Backend
      */
     public void init(SwordConfig config) throws BookException
     {
-        URL swordBase = SwordBookDriver.dir;
+        URL swordBase = SwordBookDriver.getSwordURL();
         
         try
         {

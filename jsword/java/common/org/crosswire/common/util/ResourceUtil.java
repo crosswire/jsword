@@ -110,5 +110,5 @@ public class ResourceUtil
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(ResourceUtil.class);
+    private static final Logger log = Logger.getLogger(ResourceUtil.class);
 }

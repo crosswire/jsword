@@ -1,10 +1,10 @@
 
-package org.crosswire.common.util.event;
+package org.crosswire.common.util;
 
 import java.util.EventListener;
 
 /**
- * ReporterListener informs users of problems and messages.
+ * ExceptionListener informs users of problems and messages.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,17 +27,17 @@ import java.util.EventListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface ReporterListener extends EventListener
+public interface CaptureListener extends EventListener
 {
     /**
      * Called whenever Reporter.informUser() is passed an Exception
      * @param ev The event describing the Exception
      */
-    public void reportException(ReporterEvent ev);
+    public void captureException(CaptureEvent ev);
 
     /**
      * Called whenever Reporter.informUser() is passed a message
      * @param ev The event describing the message
      */
-    public void reportMessage(ReporterEvent ev);
+    public void captureMessage(CaptureEvent ev);
 }

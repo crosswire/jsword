@@ -33,7 +33,6 @@ import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
@@ -96,8 +95,6 @@ public class Desktop extends JFrame implements TitleChangedListener
     {
         try
         {
-            Project.init();
-
             splash = new Splash(this, 60000);
 
             // Initial setup
@@ -586,7 +583,7 @@ public class Desktop extends JFrame implements TitleChangedListener
     private boolean view_tool = true;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(Desktop.class);
+    private static final Logger log = Logger.getLogger(Desktop.class);
 
     /* GUI components */
     private Splash splash = null;

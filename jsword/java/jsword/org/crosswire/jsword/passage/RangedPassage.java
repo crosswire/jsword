@@ -139,7 +139,7 @@ public class RangedPassage extends AbstractPassage
      */
     public Iterator verseIterator()
     {
-        return new VerseIterator();
+        return new VerseIterator(rangeIterator());
     }
 
     /**
@@ -353,18 +353,17 @@ public class RangedPassage extends AbstractPassage
      * Everything is final so to save the proxying performace hit.
      * @author Joe Walker
      */
-    private final class VerseIterator implements Iterator
+    private static final class VerseIterator implements Iterator
     {
         /**
          * Create a basic iterator that is a proxy for the RangedPassage Passages
          * iterator, with remove() overridden.
          */
-        public VerseIterator()
+        public VerseIterator(Iterator it)
         {
             try
             {
                 SortedSet temp = Collections.synchronizedSortedSet(new TreeSet());
-                Iterator it = rangeIterator();
 
                 while (it.hasNext())
                 {
@@ -384,28 +383,24 @@ public class RangedPassage extends AbstractPassage
             }
         }
 
-        /**
-         * Pass the request on to the real iterator.
-         * @return true if the iteration has more Verses.
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public final boolean hasNext()
         {
             return real.hasNext();
         }
 
-        /**
-         * Pass the request on to the real iterator.
-         * @return the next Verse in the interation.
-         * @throws NoSuchElementException if hasNext() == false
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public final Object next() throws NoSuchElementException
         {
             return real.next();
         }
 
-        /**
-         * Not supported
-         * @throws UnsupportedOperationException Every time ...
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException
         {

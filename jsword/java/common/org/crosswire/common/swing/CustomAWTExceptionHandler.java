@@ -85,5 +85,5 @@ public class CustomAWTExceptionHandler
     private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
     private static final String OUR_NAME = CustomAWTExceptionHandler.class.getName();
 
-    protected static Component comp = null;
+    private static Component comp = null;
 }

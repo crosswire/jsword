@@ -101,27 +101,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
         setInitials(null);
     }
 
-    /**
-     * Convert a published date in the standard (String) format into a Date object 
-     */
-    public static Date parsePublishedDate(String pubstr)
-    {
-        if (pubstr == null)
-        {
-            return DEFAULT;
-        }
-
-        try
-        {
-            return PUBLISHED_FORMAT.parse(pubstr);
-        }
-        catch (ParseException ex)
-        {
-            log.warn("Invalid date format: "+pubstr, ex);
-            return DEFAULT;
-        }
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getDriver()
      */
@@ -233,11 +212,11 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         if (pubstr == null)
         {
-            this.pub = DEFAULT;
+            pub = DEFAULT;
         }
         else
         {
-            this.pub = PUBLISHED_FORMAT.parse(pubstr);
+            pub = PUBLISHED_FORMAT.parse(pubstr);
         }
     }
 
@@ -271,11 +250,16 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         if (openstr == null)
         {
-            this.open = Openness.UNKNOWN;
+            open = Openness.UNKNOWN;
         }
         else
         {
-            this.open = Openness.get(openstr);
+            open = Openness.get(openstr);
+            
+            if (open == null)
+            {
+                open = Openness.UNKNOWN;
+            }
         }
     }
 
@@ -380,7 +364,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(AbstractBookMetaData.class);
+    private static final Logger log = Logger.getLogger(AbstractBookMetaData.class);
 
     /**
      * 

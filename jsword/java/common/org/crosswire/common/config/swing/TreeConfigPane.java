@@ -55,22 +55,22 @@ import org.crosswire.common.swing.FormPane;
 public class TreeConfigPane extends PanelConfigPane
 {
     /**
-    * Create a Config base with the set of Fields that it will
-    * display.
-    */
+     * Create a Config base with the set of Fields that it will
+     * display.
+     */
     public TreeConfigPane(Config config)
     {
         super(config);
     }
 
     /**
-    * Now this wasn't created with JBuilder but maybe, just maybe, by
-    * calling my method this, JBuilder may grok it.
-    * <br />Danger - this method is not called by the TreeConfigPane
-    * constructor, it is called by the PanelConfigPane constructor so
-    * any field initializers will be called AFTER THIS METHOD EXECUTES
-    * so don't use field initializers.
-    */
+     * Now this wasn't created with JBuilder but maybe, just maybe, by
+     * calling my method this, JBuilder may grok it.
+     * <br />Danger - this method is not called by the TreeConfigPane
+     * constructor, it is called by the PanelConfigPane constructor so
+     * any field initializers will be called AFTER THIS METHOD EXECUTES
+     * so don't use field initializers.
+     */
     protected void jbInit()
     {
         JPanel panel = new JPanel();
@@ -138,8 +138,8 @@ public class TreeConfigPane extends PanelConfigPane
 
 
     /**
-    * Updates to the tree that we need to do on any change
-    */
+     * Updates to the tree that we need to do on any change
+     */
     protected void updateTree()
     {
         // expand the tree
@@ -153,8 +153,8 @@ public class TreeConfigPane extends PanelConfigPane
     }
 
     /**
-    * Add a Choice to our set of panels
-    */
+     * Add a Choice to our set of panels
+     */
     protected void addChoice(String key, Choice model)
     {
         super.addChoice(key, model);
@@ -171,8 +171,8 @@ public class TreeConfigPane extends PanelConfigPane
     }
 
     /**
-    * Add a Choice to our set of panels
-    */
+     * Add a Choice to our set of panels
+     */
     protected void removeChoice(String key, Choice model)
     {
         super.removeChoice(key, model);
@@ -187,10 +187,10 @@ public class TreeConfigPane extends PanelConfigPane
     }
 
     /**
-    * Used to update the configuration panel whenever someone
-    * selects a different item form the tree on the LHS of the
-    * configuation dialog.
-    */
+     * Used to update the configuration panel whenever someone
+     * selects a different item form the tree on the LHS of the
+     * configuation dialog.
+     */
     public void selectCard()
     {
         Object obj = tree.getLastSelectedPathComponent();
@@ -244,25 +244,23 @@ public class TreeConfigPane extends PanelConfigPane
     protected CardLayout layout;
 
     /**
-    * A custom data model for the TreeConfig Tree
-    * @author Claude Duguay
-    * @author Joe Walker
-    */
+     * A custom data model for the TreeConfig Tree
+     * @author Claude Duguay
+     * @author Joe Walker
+     */
     class ConfigureTreeModel implements TreeModel
     {
-        /**
-        * Returns the root of the tree.  Returns null only if the tree has
-        * no nodes.
-        * @return  the root of the tree
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#getRoot()
+         */
         public Object getRoot()
         {
             return root;
         }
 
         /**
-        * Get a Vector of the children rooted at path
-        */
+         * Get a Vector of the children rooted at path
+         */
         protected List getChildren(String path)
         {
             List retcode = new ArrayList();
@@ -299,15 +297,9 @@ public class TreeConfigPane extends PanelConfigPane
             return retcode;
         }
 
-        /**
-        * Returns the child of <I>parent</I> at index <I>index</I> in the parent's
-        * child array.  <I>parent</I> must be a node previously obtained from
-        * this data source. This should not return null if <i>index</i>
-        * is a valid index for <i>parent</i> (that is <i>index</i> >= 0 &&
-        * <i>index</i> < getChildCount(<i>parent</i>)).
-        * @param   parent  a node in the tree, obtained from this data source
-        * @return  the child of <I>parent</I> at index <I>index</I>
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+         */
         public Object getChild(Object parent, int index)
         {
             String path = ((Node) parent).getFullName();
@@ -315,48 +307,34 @@ public class TreeConfigPane extends PanelConfigPane
             return new Node(path, name);
         }
 
-        /**
-        * Returns the number of children of <I>parent</I>.  Returns 0 if the node
-        * is a leaf or if it has no children.  <I>parent</I> must be a node
-        * previously obtained from this data source.
-        * @param   parent  a node in the tree, obtained from this data source
-        * @return  the number of children of the node <I>parent</I>
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+         */
         public int getChildCount(Object parent)
         {
             String path = ((Node) parent).getFullName();
             return getChildren(path).size();
         }
 
-        /**
-        * Returns true if <I>node</I> is a leaf.  It is possible for this method
-        * to return false even if <I>node</I> has no children.  A directory in a
-        * filesystem, for example, may contain no files; the node representing
-        * the directory is not a leaf, but it also has no children.
-        * @param   node    a node in the tree, obtained from this data source
-        * @return  true if <I>node</I> is a leaf
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+         */
         public boolean isLeaf(Object node)
         {
             String path = ((Node) node).getFullName();
             return getChildren(path).size() == 0;
         }
 
-        /**
-        * Messaged when the user has altered the value for the item identified
-        * by <I>path</I> to <I>value</I>.  If <I>newValue</I> signifies
-        * a truly new value the model should post a treeNodesChanged
-        * event.
-        * @param path path to the node that the user has altered.
-        * @param value the new value from the TreeCellEditor.
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
+         */
         public void valueForPathChanged(TreePath path, Object value)
         {
         }
 
-        /**
-        * Returns the index of child in parent.
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
+         */
         public int getIndexOfChild(Object parent, Object child)
         {
             String path = ((Node) parent).getFullName();
@@ -364,45 +342,41 @@ public class TreeConfigPane extends PanelConfigPane
             return children.indexOf(child);
         }
 
-        /**
-        * Adds a listener for the TreeModelEvent posted after the tree changes.
-        * @see #removeTreeModelListener
-        * @param li the listener to add
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+         */
         public void addTreeModelListener(TreeModelListener li)
         {
             listeners.add(TreeModelListener.class, li);
         }
 
-        /**
-        * Removes a listener previously added with <B>addTreeModelListener()</B>.
-        * @see #addTreeModelListener
-        * @param li the listener to remove
-        */
+        /* (non-Javadoc)
+         * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+         */
         public void removeTreeModelListener(TreeModelListener li)
         {
             listeners.remove(TreeModelListener.class, li);
         }
 
         /**
-        * Notify all listeners that have registered interest for
-        * notification on this event type.  The event instance
-        * is lazily created using the parameters passed into
-        * the fire method.
-        * @see EventListenerList
-        */
+         * Notify all listeners that have registered interest for
+         * notification on this event type.  The event instance
+         * is lazily created using the parameters passed into
+         * the fire method.
+         * @see EventListenerList
+         */
         protected void fireTreeStructureChanged(Object source)
         {
             fireTreeStructureChanged(source, new Object[] { root });
         }
 
         /**
-        * Notify all listeners that have registered interest for
-        * notification on this event type.  The event instance
-        * is lazily created using the parameters passed into
-        * the fire method.
-        * @see EventListenerList
-        */
+         * Notify all listeners that have registered interest for
+         * notification on this event type.  The event instance
+         * is lazily created using the parameters passed into
+         * the fire method.
+         * @see EventListenerList
+         */
         protected void fireTreeStructureChanged(Object source, Object[] path)
         {
             // Guaranteed to return a non-null array
@@ -434,30 +408,30 @@ public class TreeConfigPane extends PanelConfigPane
     }
 
     /**
-    * Simple Tree Node
-    */
-    public class Node
+     * Simple Tree Node
+     */
+    static class Node
     {
         /**
-        * Create a node with a name and path
-        */
-        public Node(String path, String name)
+         * Create a node with a name and path
+         */
+        protected Node(String path, String name)
         {
             this.path = path;
             this.name = name;
         }
 
         /**
-        * How we are displayed
-        */
+         * How we are displayed
+         */
         public String toString()
         {
             return name;
         }
 
         /**
-        * The path to us
-        */
+         * The path to us
+         */
         public String getFullName()
         {
             if (path.length() == 0 || name.length() == 0)

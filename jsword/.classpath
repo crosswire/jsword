@@ -6,7 +6,7 @@
     <classpathentry kind="lib" path="jar/servlet23/servlet.jar" sourcepath="/jsword-support/jar/servlet23/jakarta-servletapi-4-src-20021215.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10endorsed/dom.jar"/>
     <classpathentry kind="lib" path="jar/jaxb10endorsed/sax.jar"/>
-    <classpathentry kind="lib" path="jar/jdom08/jdom.jar" sourcepath="/jsword-support/jar/jdom08/jdom-b8.zip"/>
+    <classpathentry kind="lib" path="jar/jdom09/jdom.jar" sourcepath="/jsword-support/othersource/jdom-b9-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10/jaxb-api.jar" sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10/jaxb-ri.jar" sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10/jaxb-libs.jar" sourcepath="/jsword-support/jar/jaxb10/jaxb-api-src.zip"/>

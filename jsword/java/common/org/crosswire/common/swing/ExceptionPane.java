@@ -37,9 +37,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.ReporterEvent;
+import org.crosswire.common.util.ReporterListener;
 import org.crosswire.common.util.StackTrace;
-import org.crosswire.common.util.event.ReporterEvent;
-import org.crosswire.common.util.event.ReporterListener;
 
 /**
  * A simple way of reporting problems to the user.
@@ -212,7 +212,7 @@ public class ExceptionPane extends JPanel
     /**
      * The directories searched for source
      */
-    protected static String[] source_path = new String[0];
+    private static String[] sources = new String[0];
 
     /**
      * The listener that pops up the ExceptionPanes
@@ -261,7 +261,7 @@ public class ExceptionPane extends JPanel
      */
     public static void setSourcePath(String[] source_path)
     {
-        ExceptionPane.source_path = source_path;
+        ExceptionPane.sources = source_path;
     }
 
     /**
@@ -270,7 +270,7 @@ public class ExceptionPane extends JPanel
      */
     public static String[] getSourcePath()
     {
-        return source_path;
+        return sources;
     }
 
     /**
@@ -396,15 +396,19 @@ public class ExceptionPane extends JPanel
             String name = st.getClassName(level);
 
             if (name.indexOf('$') != -1)
+            {
                 name = name.substring(0, name.indexOf('$'));
+            }
+
             int line_num = st.getLineNumber(level);
             String orig = name;
 
             // Find a file
             name = File.separator + StringUtils.replace(orig, ".", ""+File.separatorChar) + ".java";
-            for (int i=0; i<source_path.length; i++)
+            String[] sourcescopy = getSourcePath();
+            for (int i=0; i<sourcescopy.length; i++)
             {
-                File file = new File(source_path[i] + name);
+                File file = new File(sourcescopy[i] + name);
                 if (file.isFile() && file.canRead())
                 {
                     // Found the file, load it into the window
@@ -446,9 +450,9 @@ public class ExceptionPane extends JPanel
 
             // If we can't find a matching file
             String error = "Can't open source for: '"+st.getClassName(level)+"' line: "+line_num+"\n";
-            for (int i=0; i<source_path.length; i++)
+            for (int i=0; i<sourcescopy.length; i++)
             {
-                error += "Tried: "+source_path[i]+name+"\n";
+                error += "Tried: "+sourcescopy[i]+name+"\n";
             }
 
             text.setText(error);

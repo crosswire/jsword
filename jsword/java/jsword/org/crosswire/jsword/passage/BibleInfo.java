@@ -1245,7 +1245,7 @@ public class BibleInfo implements PassageConstants
     };
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(BibleInfo.class);
+    private static final Logger log = Logger.getLogger(BibleInfo.class);
 
     /**
      * Set up the Internationalization (Msg), and cache the upper and
@@ -1258,6 +1258,8 @@ public class BibleInfo implements PassageConstants
     {
         try
         {
+            // LATER(joe): Move these from PassageUtil lookups into this class
+            // as a variant on the Msg/Enum theme.
             String key = "";
             boolean success = true;
 

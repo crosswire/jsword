@@ -1,9 +1,6 @@
 
 package org.crosswire.common.util;
 
-import org.crosswire.common.util.event.CaptureListener;
-import org.crosswire.common.util.event.ReporterEvent;
-import org.crosswire.common.util.event.ReporterListener;
 
 /**
  * This package looks after Exceptions and messages as they happen. It would be
@@ -173,8 +170,8 @@ public class Reporter
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(Reporter.class);
+    private static final Logger log = Logger.getLogger(Reporter.class);
 
     /** The list of listeners */
-    protected static EventListenerList inform_list = new EventListenerList();
+    protected static final EventListenerList inform_list = new EventListenerList();
 }

@@ -173,7 +173,7 @@ public class DictionaryPane extends JPanel
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(DictionaryPane.class);
+    private static final Logger log = Logger.getLogger(DictionaryPane.class);
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdl_comments = new BooksComboBoxModel(filter);

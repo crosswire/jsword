@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.crosswire.common.util.Logger;
@@ -233,7 +234,10 @@ public class Verse implements VerseBase
      */
     public String getName(Verse base)
     {
-        if (base == null) return getName();
+        if (base == null)
+        {
+            return getName();
+        }
 
         try
         {
@@ -246,19 +250,25 @@ public class Verse implements VerseBase
             if (BibleInfo.chaptersInBook(book) == 1)
             {
                 if (base.book != book)
+                {
                     return BibleInfo.getShortBookName(book) + VERSE_PREF_DELIM1 + verse;
+                }
 
-                return ""+verse;
+                return String.valueOf(verse);
             }
             else
             {
                 if (base.book != book)
+                {
                     return BibleInfo.getShortBookName(book) + VERSE_PREF_DELIM1 + chapter + VERSE_PREF_DELIM2 + verse;
+                }
 
                 if (base.chapter != chapter)
+                {
                     return chapter + VERSE_PREF_DELIM2 + verse;
+                }
 
-                return ""+verse;
+                return String.valueOf(verse);
             }
         }
         catch (Exception ex)
@@ -316,18 +326,35 @@ public class Verse implements VerseBase
     public boolean equals(Object obj)
     {
         // Since this can not be null
-        if (obj == null) return false;
+        if (obj == null)
+        {
+            return false;
+        }
 
         // Check that that is the same as this
         // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass())) return false;
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
 
         Verse v = (Verse) obj;
 
         // The real tests
-        if (v.getBook() != getBook()) return false;
-        if (v.getChapter() != getChapter()) return false;
-        if (v.getVerse() != getVerse()) return false;
+        if (v.getBook() != getBook())
+        {
+            return false;
+        }
+
+        if (v.getChapter() != getChapter())
+        {
+            return false;
+        }
+
+        if (v.getVerse() != getVerse())
+        {
+            return false;
+        }
 
         return true;
     }
@@ -363,8 +390,16 @@ public class Verse implements VerseBase
         int that_start = that.getOrdinal();
         int this_start = this.getOrdinal();
 
-        if (that_start > this_start) return -1;
-        if (that_start < this_start) return 1;
+        if (that_start > this_start)
+        {
+            return -1;
+        }
+
+        if (that_start < this_start)
+        {
+            return 1;
+        }
+
         return 0;
     }
 
@@ -728,29 +763,11 @@ public class Verse implements VerseBase
      * This may seem silly, however is is very useful to be able to treat
      * Verses and Ranges the same (VerseBase) and this is a common accessor.
      * @return A verse iterator
+     * @see org.crosswire.jsword.passage.VerseBase#verseIterator()
      */
     public Iterator verseIterator()
     {
-        return new Iterator()
-        {
-            private boolean done = false;
-
-            public boolean hasNext()
-            {
-                return !done;
-            }
-
-            public Object next()
-            {
-                done = true;
-                return this;
-            }
-
-            public void remove() throws UnsupportedOperationException
-            {
-                throw new UnsupportedOperationException();
-            }
-        };
+        return new VerseIterator();
     }
 
     /**
@@ -1181,6 +1198,44 @@ public class Verse implements VerseBase
     }
 
     /**
+     * Iterator over 1 verse - For being a VerseBase.
+     */
+    private class VerseIterator implements Iterator
+    {
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext()
+        {
+            return !done;
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
+         */
+        public Object next()
+        {
+            if (done)
+            {
+                throw new NoSuchElementException();
+            }
+        
+            done = true;
+            return Verse.this;
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        private boolean done = false;
+    }
+
+    /**
      * To make serialization work across new versions
      */
     static final long serialVersionUID = -4033921076023185171L;
@@ -1228,5 +1283,5 @@ public class Verse implements VerseBase
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(Verse.class);
+    private static final Logger log = Logger.getLogger(Verse.class);
 }

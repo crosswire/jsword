@@ -1,7 +1,6 @@
 
 package org.crosswire.common.config;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -32,7 +31,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class ReflectedChoice implements Choice, Serializable
+public abstract class ReflectedChoice implements Choice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
@@ -299,5 +298,5 @@ public abstract class ReflectedChoice implements Choice, Serializable
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(ReflectedChoice.class);
+    private static final Logger log = Logger.getLogger(ReflectedChoice.class);
 }

@@ -16,7 +16,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
@@ -62,8 +61,6 @@ public class CliMapper
     {
         try
         {
-            Project.init();
-
             PrintWriter dbout = new PrintWriter(new FileOutputStream("c:\\database.csv"));
             PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
 
@@ -149,7 +146,7 @@ public class CliMapper
             Document doc = new Document(links);
             XMLOutputter output = new XMLOutputter();
             output.setNewlines(true);
-            output.setIndent(2);
+            output.setIndent("  ");
             output.output(doc, xmlout);
             xmlout.close();
         }

@@ -216,7 +216,7 @@
     </chmod>
     <mkdir dir="${target.swingui}/lib"/>
     <copy todir="${target.swingui}/lib">
-      <fileset dir="${source.jar}/jdom08" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
       <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
@@ -270,7 +270,7 @@
     <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.web}/WEB-INF/classes"/>
     <mkdir dir="${target.web}/WEB-INF/lib"/>
     <copy todir="${target.web}/WEB-INF/lib">
-      <fileset dir="${source.jar}/jdom08" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
       <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
@@ -287,11 +287,11 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="test" depends="compile" description="Run the standard test suite">
+  <target name="test" depends="swingui" description="Run the standard test suite">
     <mkdir dir="${target.junit}"/>
     <echo message="If this fails you might need to:"/>
     <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar ${ant.home}/lib"/>
-    <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
+    <junit haltonfailure="no" printsummary="on" showoutput="yes"> <!-- fork="yes" -->
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
       <test name="JSwordAllTests" todir="${target.junit}"/>
@@ -411,14 +411,7 @@
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to:"/>
     <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
-    <!-- Why does this not work?
-    <taskdef name="jdepend" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
-      <classpath>
-        <fileset dir="${source.tools}/jdepend24" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    -->
-    <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml">
+    <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml" fork="yes">
       <sourcespath>
         <pathelement path="${source.java}/common"/>
         <pathelement path="${source.java}/jsword"/>
@@ -430,7 +423,7 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <fileset dir="${source.tools}" includes="**/*.jar"/>
+        <fileset dir="${source.tools}/jdepend24" includes="**/*.jar"/>
       </classpath>
     </jdepend>
     <style
@@ -521,6 +514,19 @@
   </target>
 
   <!--=======================================================================-->
+  <target name="web.findbugs" depends="jar">
+    <mkdir dir="${target.web}/findbugs"/>
+    <java classname="edu.umd.cs.findbugs.FindBugs" output="${target.web}/findbugs/report.txt">
+      <classpath>
+        <fileset dir="${source.tools}/findbugs052" includes="**/*.jar"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+      <arg value="-sortByClass"/>
+      <arg value="${target.jar}/jsword.jar"/>
+    </java>
+  </target>
+
+  <!--=======================================================================-->
   <target name="clover">
     <echo message="If this fails you might need to install clover:"/>
     <taskdef resource="clovertasks"/>
@@ -552,7 +558,7 @@
     </jar>
     <antcall target="jnlp.section">
       <param name="jar" value="jdom.jar"/>
-      <param name="dir" value="${source.jar}/jdom08"/>
+      <param name="dir" value="${source.jar}/jdom09"/>
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="xalan.jar"/>

@@ -651,20 +651,6 @@ public class PassageUtil implements PassageConstants
      * @param id The resource id to fetch
      * @param params The params to format
      * @return The String from the resource file
-     * @deprecated
-     */
-    protected static String getResource(String id, Object[] params)
-    {
-        MessageFormat formatter = new MessageFormat(getResource(id));
-        return formatter.format(params);
-    }
-
-    /**
-     * Utility that enables us to have a single resource file for all the
-     * passage classes
-     * @param id The resource id to fetch
-     * @param params The params to format
-     * @return The String from the resource file
      */
     protected static String getResource(MsgBase id, Object[] params)
     {
@@ -682,7 +668,7 @@ public class PassageUtil implements PassageConstants
     private static int blur = Passage.RESTRICT_CHAPTER;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(PassageUtil.class);
+    private static final Logger log = Logger.getLogger(PassageUtil.class);
 
     /**
     * Setup the resources
@@ -695,7 +681,7 @@ public class PassageUtil implements PassageConstants
         }
         catch (MissingResourceException ex)
         {
-            log.info("PassageUtil init failure", ex);
+            log.error("PassageUtil init failure", ex);
         }
     }
 }

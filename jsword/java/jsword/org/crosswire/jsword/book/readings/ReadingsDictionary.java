@@ -203,5 +203,5 @@ public class ReadingsDictionary implements Dictionary
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(ReadingsDictionary.class);
+    private static final Logger log = Logger.getLogger(ReadingsDictionary.class);
 }

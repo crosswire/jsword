@@ -119,6 +119,6 @@ public class FieldMap
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(FieldMap.class);
+    private static final Logger log = Logger.getLogger(FieldMap.class);
 }
 

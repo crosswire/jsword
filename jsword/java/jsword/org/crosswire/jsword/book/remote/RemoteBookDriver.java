@@ -94,7 +94,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(RemoteBookDriver.class);
+    private static final Logger log = Logger.getLogger(RemoteBookDriver.class);
 
     /**
      * The cache of Bible names.

@@ -119,7 +119,7 @@ public class AppletFrame extends JFrame
     /**
      * So that we can be an AppletStub
      */
-    public class AppletFrameStub implements AppletStub
+    static class AppletFrameStub implements AppletStub
     {
         /* (non-Javadoc)
          * @see java.applet.AppletStub#isActive()

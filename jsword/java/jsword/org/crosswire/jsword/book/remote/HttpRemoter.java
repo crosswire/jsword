@@ -132,7 +132,7 @@ public class HttpRemoter implements Remoter
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(HttpRemoter.class);
+    private static final Logger log = Logger.getLogger(HttpRemoter.class);
 
     public static final String METHOD_KEY = "method";
 }

@@ -13,8 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.crosswire.jsword.util.Project;
-
 /**
  * The status bar provides usefull info to the user as to the current
  * state of the program.
@@ -65,7 +63,7 @@ public class StatusBar extends JComponent implements MouseListener
         lbl_message.setText(DEFAULT);
 
         lbl_name.setBorder(BorderFactory.createEtchedBorder());
-        lbl_name.setText(" "+Project.getName()+" ");
+        lbl_name.setText(" JSword ");
 
         this.setLayout(new GridBagLayout());
         this.setBorder(BorderFactory.createLoweredBevelBorder());

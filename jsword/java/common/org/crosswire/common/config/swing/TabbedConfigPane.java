@@ -154,5 +154,5 @@ public class TabbedConfigPane extends PanelConfigPane
     private JTabbedPane tab;
 
     /** Set this to task_small to get icons on the tabs. I don't like it */
-    protected static ImageIcon tab_icon;
+    protected static final ImageIcon tab_icon = null;
 }

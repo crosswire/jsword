@@ -1,10 +1,10 @@
 
 package org.crosswire.common.util;
 
-import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * This is a version of LinkedList that is not fail-fast.
@@ -30,7 +30,7 @@ import java.util.List;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RobustList extends AbstractList implements List, Serializable
+public class RobustList extends AbstractList implements List
 {
     /**
      * Does this list contains the specified element?
@@ -225,33 +225,48 @@ public class RobustList extends AbstractList implements List, Serializable
     public Enumeration elements()
     {
         // debug("pre-enumerate");
-        return new RobustListEnumeration();
+        return new RobustListEnumeration(head);
     }
 
     /**
      * 
      */
-    private class RobustListEnumeration implements Enumeration
+    private static class RobustListEnumeration implements Enumeration
     {
-        private Entry next;
-
-        RobustListEnumeration()
+        /**
+         * Simple ctor
+         */
+        RobustListEnumeration(Entry head)
         {
             next = head;
         }
 
+        /* (non-Javadoc)
+         * @see java.util.Enumeration#hasMoreElements()
+         */
         public boolean hasMoreElements()
         {
             return next != null;
         }
 
-        public Object nextElement()
+        /* (non-Javadoc)
+         * @see java.util.Enumeration#nextElement()
+         */
+        public Object nextElement() throws NoSuchElementException
         {
+            if (next == null)
+            {
+                throw new NoSuchElementException();
+            }
+
             // next.debug();
             Object retcode = next.object;
             next = next.next;
+
             return retcode;
         }
+
+        private Entry next;
     }
 
     /**
@@ -362,5 +377,5 @@ public class RobustList extends AbstractList implements List, Serializable
     protected int size = 0;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(RobustList.class);
+    protected static final Logger log = Logger.getLogger(RobustList.class);
 }

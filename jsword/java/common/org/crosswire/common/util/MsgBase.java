@@ -83,6 +83,13 @@ public class MsgBase extends Enum
         super(name);
     }
 
-    protected static ResourceBundle resources;
-    private static Logger log = Logger.getLogger(MsgBase.class);
+    /**
+     * If there is any internationalization to be done, it is thru this
+     */
+    private static ResourceBundle resources;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(MsgBase.class);
 }

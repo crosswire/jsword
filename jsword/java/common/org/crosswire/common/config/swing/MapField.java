@@ -264,9 +264,9 @@ public class MapField extends JPanel implements Field
     /**
      * A HashtableModel with named columns that is not ediatble
      */
-    public class NamedMapTableModel extends MapTableModel
+    static class NamedMapTableModel extends MapTableModel
     {
-        public NamedMapTableModel()
+        protected NamedMapTableModel()
         {
             super(new Hashtable());
         }
@@ -286,9 +286,9 @@ public class MapField extends JPanel implements Field
      * The panel for a JOptionPane that allows editing a name/class
      * combination.
      */
-    public static class InputPane extends JPanel
+    static class InputPane extends JPanel
     {
-        public InputPane()
+        protected InputPane()
         {
             super(new FieldLayout(10, 10));
 

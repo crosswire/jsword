@@ -147,7 +147,7 @@ public class BitwisePassage extends AbstractPassage
      */
     public Iterator rangeIterator()
     {
-        return new VerseRangeIterator();
+        return new VerseRangeIterator(verseIterator());
     }
 
     /**
@@ -331,7 +331,9 @@ public class BitwisePassage extends AbstractPassage
         raiseNormalizeProtection();
 
         if (verses < 0)
-            throw new IllegalArgumentException(PassageUtil.getResource("bitwise_error_blur"));
+        {
+            throw new IllegalArgumentException(Msg.ERROR_BLUR.getName());
+        }
 
         if (restrict != RESTRICT_NONE)
         {

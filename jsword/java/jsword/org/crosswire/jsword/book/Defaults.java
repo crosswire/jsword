@@ -45,7 +45,7 @@ public class Defaults
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(Defaults.class);
+    private static final Logger log = Logger.getLogger(Defaults.class);
 
     /**
      * Has the default Bible been manually set or are we picking the fastest
@@ -56,7 +56,7 @@ public class Defaults
     /**
      * The default Bible
      */
-    protected static BibleMetaData bdeft = null;
+    private static BibleMetaData bdeft = null;
 
     /**
      * Has the default Commentary been manually set or are we picking the fastest
@@ -67,7 +67,7 @@ public class Defaults
     /**
      * The default Commentary
      */
-    protected static CommentaryMetaData cdeft = null;
+    private static CommentaryMetaData cdeft = null;
 
     /**
      * Has the default Dictionary been manually set or are we picking the fastest
@@ -78,7 +78,7 @@ public class Defaults
     /**
      * The default Dictionary
      */
-    protected static DictionaryMetaData ddeft = null;
+    private static DictionaryMetaData ddeft = null;
 
     /**
      * Set the default Bible. The new name must be equal() to a string
@@ -91,6 +91,17 @@ public class Defaults
     {
         autobdeft = false;
         bdeft = bmd;
+    }
+
+    /**
+     * UnSet the current default Bible and attempt to appoint another.
+     */
+    protected static void unsetBibleMetaData()
+    {
+        autobdeft = true;
+        bdeft = null;
+
+        checkAllPreferable();
     }
 
     /**
@@ -166,6 +177,17 @@ public class Defaults
     }
 
     /**
+     * UnSet the current default Commentary and attempt to appoint another.
+     */
+    protected static void unsetCommentaryMetaData()
+    {
+        autocdeft = true;
+        cdeft = null;
+
+        checkAllPreferable();
+    }
+
+    /**
      * Get the current default Commentary or null if none exist.
      * @return the current default version
      */
@@ -238,6 +260,17 @@ public class Defaults
     {
         autoddeft = false;
         ddeft = dmd;
+    }
+
+    /**
+     * UnSet the current default Dictionary and attempt to appoint another.
+     */
+    protected static void unsetDictionaryMetaData()
+    {
+        autoddeft = true;
+        ddeft = null;
+
+        checkAllPreferable();
     }
 
     /**
@@ -400,22 +433,19 @@ public class Defaults
             BookMetaData bmd = ev.getBookMetaData(); 
 
             // Was this a default?
-            if (bmd.equals(bdeft))
+            if (getBibleMetaData().equals(bmd))
             {
-                bdeft = null;
-                checkAllPreferable();
+                unsetBibleMetaData();
             }
 
-            if (bmd.equals(cdeft))
+            if (getCommentaryMetaData().equals(bmd))
             {
-                cdeft = null;
-                checkAllPreferable();
+                unsetCommentaryMetaData();
             }
 
-            if (bmd.equals(ddeft))
+            if (getDictionaryMetaData().equals(bmd))
             {
-                ddeft = null;
-                checkAllPreferable();
+                unsetDictionaryMetaData();
             }
         }
     }

@@ -71,6 +71,24 @@ public class Resource
             // in place of a more permanent solution.
             log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex);
         }
+
+        try
+        {
+            InputStream in = ResourceUtil.getResourceAsStream("project.properties");
+            projprop.load(in);
+        }
+        catch (IOException ex)
+        {
+            log.warn("Failed to load project.properties file", ex);
+        }
+    }
+
+    /**
+     * The name of this project.
+     */
+    public String getVersion()
+    {
+        return projprop.getProperty("version", "development");
     }
 
     /**
@@ -358,5 +376,10 @@ public class Resource
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(Resource.class);
+    private static final Logger log = Logger.getLogger(Resource.class);
+
+    /**
+     * The project properties file containing things like the release version number.
+     */
+    private Properties projprop = new Properties();
 }

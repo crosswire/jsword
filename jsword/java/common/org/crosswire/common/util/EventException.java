@@ -133,5 +133,5 @@ public class EventException extends RuntimeException
     protected Object[] params = null;
 
     /** The resource hash */
-    protected static ResourceBundle res = ResourceBundle.getBundle("Exception");
+    protected static final ResourceBundle res = ResourceBundle.getBundle("Exception");
 }

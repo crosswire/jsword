@@ -451,7 +451,7 @@ public class Map implements Serializable
         Element root = toXML();
         Document doc = new Document(root);
         XMLOutputter outputter = new XMLOutputter();
-        outputter.setIndent(2);
+        outputter.setIndent("  ");
         outputter.setNewlines(true);
         outputter.output(doc, out);
     }
@@ -542,7 +542,7 @@ public class Map implements Serializable
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(LinkArray.class);
+    private static final Logger log = Logger.getLogger(LinkArray.class);
 
     /** What is the maximum calculations between re-calcing the CoG */
     private static final int MAX_REPLIES = 1;

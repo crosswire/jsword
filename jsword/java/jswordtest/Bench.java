@@ -8,7 +8,6 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.test.Speed;
-import org.crosswire.jsword.util.Project;
 
 /**
  * Bench is a command line utility that runs the Speed benchmark program.
@@ -41,8 +40,6 @@ public class Bench
      */
     public static void main(String[] args)
     {
-        Project.init();
-
         Bible version = null;
 
         if (args.length == 0)

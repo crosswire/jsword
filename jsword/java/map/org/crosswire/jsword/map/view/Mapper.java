@@ -104,8 +104,6 @@ public class Mapper extends JFrame
      */
     public Mapper(String[] args)
     {
-        Project.init();
-
         // The Verse colourizers
         vcols = new VerseColor[76];
         vcols[0] = new RainbowVerseColor();

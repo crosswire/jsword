@@ -18,8 +18,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.event.ReporterEvent;
-import org.crosswire.common.util.event.ReporterListener;
+import org.crosswire.common.util.ReporterEvent;
+import org.crosswire.common.util.ReporterListener;
 
 /**
  * This is broken.
@@ -369,7 +369,7 @@ public class ExceptionShelf extends JPanel
     private static ShelfCaptureListener li = new ShelfCaptureListener();
 
     /** All the ExceptionShelves that we know about */
-    protected static List shelves = new ArrayList();
+    protected static final List shelves = new ArrayList();
 
     /** The font for the remove button */
     private static Font small;

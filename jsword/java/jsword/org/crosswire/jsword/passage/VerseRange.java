@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
@@ -1042,32 +1043,7 @@ public class VerseRange implements VerseBase
      */
     public Iterator verseIterator()
     {
-        return new Iterator()
-        {
-            private int next_ordinal = start.getOrdinal();
-
-            public boolean hasNext()
-            {
-                return next_ordinal <= end.getOrdinal();
-            }
-
-            public Object next()
-            {
-                try
-                {
-                    return new Verse(next_ordinal++);
-                }
-                catch (NoSuchVerseException ex)
-                {
-                    throw new LogicError(ex);
-                }
-            }
-
-            public void remove() throws UnsupportedOperationException
-            {
-                throw new UnsupportedOperationException();
-            }
-        };
+        return new VerseIterator(this);
     }
 
     /**
@@ -1263,6 +1239,60 @@ public class VerseRange implements VerseBase
     }
 
     /**
+     * Iterate over the Verses in the VerseRange
+     */
+    private static final class VerseIterator implements Iterator
+    {
+        /**
+         * Ctor
+         */
+        protected VerseIterator(VerseRange range)
+        {
+            next = range.start.getOrdinal();
+            last = range.end.getOrdinal();
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext()
+        {
+            return next <= last;
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
+         */
+        public Object next() throws NoSuchElementException
+        {
+            if (next > last)
+            {
+                throw new NoSuchElementException();
+            }
+            
+            try
+            {
+                return new Verse(next++);
+            }
+            catch (NoSuchVerseException ex)
+            {
+                throw new LogicError(ex);
+            }
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        private int next;
+        private int last;
+    }
+
+    /**
      * To make serialization work across new versions
      */
     static final long serialVersionUID = 8307795549869653580L;
@@ -1298,5 +1328,5 @@ public class VerseRange implements VerseBase
     /**
      * The log stream
      */
-    protected static transient Logger log = Logger.getLogger(VerseRange.class);
+    protected static final transient Logger log = Logger.getLogger(VerseRange.class);
 }

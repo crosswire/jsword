@@ -19,7 +19,6 @@ import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.Style;
 
 /**
@@ -57,7 +56,6 @@ public class DemoServlet extends HttpServlet
 
         try
         {
-            Project.init();
             version = Defaults.getBibleMetaData().getBible();
         }
         catch (Exception ex)
@@ -146,5 +144,5 @@ public class DemoServlet extends HttpServlet
     private Style style = new Style("web");
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(DemoServlet.class);
+    private static final Logger log = Logger.getLogger(DemoServlet.class);
 }

@@ -178,9 +178,11 @@ public final class ReadOnlyPassage implements Passage
     public void add(VerseBase that)
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -189,9 +191,11 @@ public final class ReadOnlyPassage implements Passage
     public void remove(VerseBase that)
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -208,9 +212,11 @@ public final class ReadOnlyPassage implements Passage
     public void addAll(Passage that)
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -219,9 +225,11 @@ public final class ReadOnlyPassage implements Passage
     public void removeAll(Passage that)
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -230,9 +238,11 @@ public final class ReadOnlyPassage implements Passage
     public void retainAll(Passage that)
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -241,9 +251,11 @@ public final class ReadOnlyPassage implements Passage
     public void clear()
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -252,9 +264,11 @@ public final class ReadOnlyPassage implements Passage
     public void blur(int verses, int restrict)
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)
@@ -263,9 +277,11 @@ public final class ReadOnlyPassage implements Passage
     public void readDescription(Reader in) throws IOException, NoSuchVerseException
     {
         if (ignore)
+        {
             return;
+        }
 
-        throw new IllegalStateException(PassageUtil.getResource("passg_read_only"));
+        throw new IllegalStateException(Msg.PASSAGE_READONLY.getName());
     }
 
     /* (non-Javadoc)

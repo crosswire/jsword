@@ -138,7 +138,7 @@ public class LookAndFeelUtil
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(LookAndFeelUtil.class);
+    private static final Logger log = Logger.getLogger(LookAndFeelUtil.class);
 
     /**
      * Setup the defaults Hashtable

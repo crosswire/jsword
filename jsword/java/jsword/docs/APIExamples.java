@@ -23,7 +23,6 @@ import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.Style;
 
 /**
@@ -33,17 +32,6 @@ import org.crosswire.jsword.util.Style;
  */
 public class APIExamples
 {
-    /**
-     * How to set things up.
-     * You must do this before you do any reading of data.
-     * @see Project 
-     */
-    public void init()
-    {
-        // Do this first
-        Project.init();
-    }
-
     /**
      * The source to this method is an example of how to read the plain text of
      * a verse, and print it to stdout. Reading from a Commentary is just the

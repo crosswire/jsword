@@ -56,7 +56,7 @@ public class JAXBUtil
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(JAXBUtil.class);
+    private static final Logger log = Logger.getLogger(JAXBUtil.class);
 
     /**
      * Something went wrong at startup

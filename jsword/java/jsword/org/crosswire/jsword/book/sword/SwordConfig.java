@@ -46,7 +46,7 @@ public class SwordConfig
     {
         this.driver = driver;
         this.url = new File(parent, bookdir).toURL();
-        this.name = bookdir.substring(0, bookdir.indexOf(".conf"));;
+        this.name = bookdir.substring(0, bookdir.indexOf(".conf"));
         this.reader = new ConfigReader(url.openStream());
 
         setAllProperties();
@@ -647,7 +647,7 @@ public class SwordConfig
      * Returns the url.
      * @return URL
      */
-    public URL getUrl()
+    public URL getConfigFileURL()
     {
         return url;
     }
@@ -662,7 +662,7 @@ public class SwordConfig
     }
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(SwordConfig.class);
+    private static final Logger log = Logger.getLogger(SwordConfig.class);
 
     // we use java.util.Properties to save us from having to parse.
     private ConfigReader reader;

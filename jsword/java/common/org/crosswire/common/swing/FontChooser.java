@@ -136,23 +136,6 @@ public class FontChooser extends JPanel
         return fontc.font;
     }
 
-    class OKActionListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ex)
-        {
-            dialog.setVisible(false);
-        }
-    }
-
-    class CancelActionListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent ex)
-        {
-            dialog.setVisible(false);
-            font = null;
-        }
-    }
-
     /**
      * Set the Font displayed
      * @param font The current Font
@@ -243,14 +226,37 @@ public class FontChooser extends JPanel
     }
 
     /**
+     * When someone clicks on OK
+     */
+    class OKActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ex)
+        {
+            dialog.setVisible(false);
+        }
+    }
+
+    /**
+     * When someone clicks on cancel
+     */
+    class CancelActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ex)
+        {
+            dialog.setVisible(false);
+            font = null;
+        }
+    }
+
+    /**
      * Model for the font style drop down
      */
-    class CustomComboBoxModel extends AbstractListModel implements ComboBoxModel
+    static class CustomComboBoxModel extends AbstractListModel implements ComboBoxModel
     {
         /**
          * Create a custom data model for a JComboBox
          */
-        public CustomComboBoxModel()
+        protected CustomComboBoxModel()
         {
             font_names = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
             // For older JDKs use: font_names = getToolkit().getFontList();
@@ -263,9 +269,8 @@ public class FontChooser extends JPanel
             }
         }
 
-        /**
-         * Make this object the current one
-         * @param selection The list item
+        /* (non-Javadoc)
+         * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
          */
         public void setSelectedItem(Object selection)
         {
@@ -290,27 +295,24 @@ public class FontChooser extends JPanel
             fireContentsChanged(this, -1, -1);
         }
 
-        /**
-         * @return The currently selected Font
+        /* (non-Javadoc)
+         * @see javax.swing.ComboBoxModel#getSelectedItem()
          */
         public Object getSelectedItem()
         {
             return selection;
         }
 
-        /**
-         * The number of fonts in the list
-         * @return The font count
+        /* (non-Javadoc)
+         * @see javax.swing.ListModel#getSize()
          */
         public int getSize()
         {
             return fonts.length;
         }
 
-        /**
-         * Get the font at a given offset
-         * @param index The offset of the Font to retrieve
-         * @return The selected font
+        /* (non-Javadoc)
+         * @see javax.swing.ListModel#getElementAt(int)
          */
         public Object getElementAt(int index)
         {
@@ -345,13 +347,13 @@ public class FontChooser extends JPanel
      * An extension of JLabel that resets it's font so that
      * it can be used to render the items in a JComboBox
      */
-    class TestCellRenderer extends JLabel implements ListCellRenderer
+    static class TestCellRenderer extends JLabel implements ListCellRenderer
     {
         /**
          * Create a specialized JLabel
          * @param combobox The thing we are custimizing for
          */
-        public TestCellRenderer(JComboBox combobox)
+        protected TestCellRenderer(JComboBox combobox)
         {
             setOpaque(true);
         }

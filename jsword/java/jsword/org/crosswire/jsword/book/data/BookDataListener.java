@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.book.data.jaxb.*;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
@@ -55,7 +54,7 @@ public interface BookDataListener
      * Start a Book Document
      */
     public void startDocument(String initials);
-    public JAXBBookData endDocument();
+    public BookData endDocument();
 
     /**
      * Start a Section

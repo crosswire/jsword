@@ -61,5 +61,5 @@ public class ClassChoice extends ReflectedChoice
         }
     }
 
-    private static Logger log = Logger.getLogger(ClassChoice.class);
+    private static final Logger log = Logger.getLogger(ClassChoice.class);
 }

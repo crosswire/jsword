@@ -5,14 +5,14 @@
 
 <module name="Checker">
 
-  <property name="basedir" value="T:\share\joe\jsword\java\"/>
+  <!-- property name="basedir" value="T:\share\joe\jsword\java\"/ -->
 
   <!-- enforce package documentation -->
   <module name="PackageHtml"/>
 
   <module name="TreeWalker">
 
-    <property name="cacheFile" value="T:\share\joe\jsword\target\ant\temp\checkstyle\cachefile.dat"/>
+    <!-- property name="cacheFile" value="T:\share\joe\jsword\target\ant\temp\checkstyle\cachefile.dat"/ -->
 
     <!-- JavaDoc checks -->
     <module name="IllegalImport"/>
@@ -44,7 +44,9 @@
       <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,9})*$"/>
     </module>
     <module name="TypeName"/>
+    <!--
     <module name="ConstantName"/>
+    -->
     <module name="LocalFinalVariableName">
       <property name="format" value="[a-z][a-zA-Z0-9_]*$"/>
     </module>

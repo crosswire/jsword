@@ -53,5 +53,5 @@ public class ParserFactory
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(ParserFactory.class);
+    private static final Logger log = Logger.getLogger(ParserFactory.class);
 }

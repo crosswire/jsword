@@ -173,7 +173,7 @@ public class Style
     private static boolean debug = false;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(Style.class);
+    private static final Logger log = Logger.getLogger(Style.class);
 
     /**
      * Do we log all the intermediate XML?

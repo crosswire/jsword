@@ -164,7 +164,7 @@ public class LucidException extends Exception
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(LucidException.class);
+    private static final Logger log = Logger.getLogger(LucidException.class);
 
     /**
      * Is the message to be included literally, or should we look it up as a

@@ -101,7 +101,7 @@ public class Books
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(Books.class);
+    private static final Logger log = Logger.getLogger(Books.class);
 
     /**
      * Get an iterator over all the Books of all types.

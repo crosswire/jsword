@@ -71,7 +71,7 @@ public class GZIPBackend implements Backend
      */
     public void init(SwordConfig config) throws BookException
     {
-        URL swordBase = SwordBookDriver.dir;
+        URL swordBase = SwordBookDriver.getSwordURL();
 
         try
         {
@@ -239,7 +239,7 @@ public class GZIPBackend implements Backend
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(GZIPBackend.class);
+    private static final Logger log = Logger.getLogger(GZIPBackend.class);
 
     /**
      * The array of index files

@@ -12,6 +12,7 @@ import java.util.List;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -123,9 +124,16 @@ public class Converter
             bmdele.addContent(new Element("initials").addContent(bmd.getInitials()));
 
             String pubstr = AbstractBibleMetaData.formatPublishedDate(bmd.getFirstPublished());
-            bmdele.addContent(new Element("pub").addContent(pubstr));
+            if (pubstr != null)
+            {
+                bmdele.addContent(new Element("pub").addContent(pubstr));
+            }
 
-            bmdele.addContent(new Element("openness").addContent(bmd.getOpenness().toString()));
+            Openness open = bmd.getOpenness();
+            if (open != null)
+            {
+                bmdele.addContent(new Element("openness").addContent(open.toString()));
+            }
 
             if (bmd.getLicence() != null)
             {

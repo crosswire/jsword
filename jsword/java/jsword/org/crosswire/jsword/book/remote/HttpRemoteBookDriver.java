@@ -117,7 +117,7 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(HttpRemoteBookDriver.class);
+    private static final Logger log = Logger.getLogger(HttpRemoteBookDriver.class);
 
     /**
      * An array of the urls that we are currently using.

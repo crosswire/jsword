@@ -191,7 +191,7 @@ public class OuterDisplayPane extends JPanel
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(OuterDisplayPane.class);
+    protected static final Logger log = Logger.getLogger(OuterDisplayPane.class);
 
     private JSplitPane spt_passg = new JSplitPane();
     private JScrollPane scr_passg = new JScrollPane();

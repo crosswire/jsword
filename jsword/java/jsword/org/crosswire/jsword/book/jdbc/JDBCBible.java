@@ -307,7 +307,15 @@ public class JDBCBible extends LocalURLBible implements Index
      */
     public Iterator listWords() throws BookException
     {
-        return new WordIterator();
+        try
+        {
+            Statement stmt = concord.createStatement();
+            return new WordIterator(stmt, stmt.executeQuery(words_query));
+        }
+        catch (SQLException ex)
+        {
+            throw new BookException(Msg.BIBLE_DB, ex);
+        }
     }
 
     /**
@@ -382,41 +390,34 @@ public class JDBCBible extends LocalURLBible implements Index
     protected Connection concord;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(JDBCBible.class);
+    protected static final Logger log = Logger.getLogger(JDBCBible.class);
 
     /**
      * Helper class to enumerate through the words in a version
      */
-    class WordIterator implements Iterator
+    static class WordIterator implements Iterator
     {
         /**
          * Create the necessary SQL query
          */
-        protected WordIterator() throws BookException
+        protected WordIterator(Statement stmt, ResultSet rs) throws BookException
         {
-            try
-            {
-                stmt = concord.createStatement();
-                rs = stmt.executeQuery(words_query);
+            this.stmt = stmt;
+            this.rs = rs;
 
-                moveToNext();
-            }
-            catch (SQLException ex)
-            {
-                throw new BookException(Msg.BIBLE_DB, ex);
-            }
+            moveToNext();
         }
 
-        /**
-         * Are there more items in the database?
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext()
         {
             return more;
         }
 
-        /**
-         * Get the next item from the database
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public Object next() throws NoSuchElementException
         {
@@ -434,7 +435,7 @@ public class JDBCBible extends LocalURLBible implements Index
 
                 return retcode;
             }
-            catch (SQLException ex)
+            catch (Exception ex)
             {
                 log.warn("SQL error in iteration", ex);
                 throw new NoSuchElementException(ex.getMessage());
@@ -454,14 +455,21 @@ public class JDBCBible extends LocalURLBible implements Index
          * Check for more. If there are none, shut up shop to be more
          * resource friendly
          */
-        private void moveToNext() throws SQLException
+        private void moveToNext() throws BookException
         {
-            more = rs.next();
-
-            if (!more)
+            try
             {
-                rs.close();
-                stmt.close();
+                more = rs.next();
+
+                if (!more)
+                {
+                    rs.close();
+                    stmt.close();
+                }
+            }
+            catch (SQLException ex)
+            {
+                throw new BookException(Msg.BIBLE_DB, ex);
             }
         }
 

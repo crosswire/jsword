@@ -134,26 +134,31 @@ public class TestBookUtil extends TestCase
         assertEquals(sa[0], "one");
         assertEquals(sa[1], "two");
         assertEquals(sa[2], "three");
+
         sa = BookUtil.getWords("!one  two three ");
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one");
         assertEquals(sa[1], "two");
         assertEquals(sa[2], "three");
+
         sa = BookUtil.getWords("\"one-- two three ");
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one");
         assertEquals(sa[1], "two");
         assertEquals(sa[2], "three");
+
         sa = BookUtil.getWords("-one--two three ");
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one");
         assertEquals(sa[1], "two");
         assertEquals(sa[2], "three");
+
         sa = BookUtil.getWords("one-two--three ");
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one-two");
         assertEquals(sa[1], "three");
-        sa = BookUtil.getWords("one!£ \"*(two-three");
+
+        sa = BookUtil.getWords("one! \"(two-three");
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one");
         assertEquals(sa[1], "two-three");

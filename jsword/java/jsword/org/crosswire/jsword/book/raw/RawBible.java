@@ -685,5 +685,5 @@ public class RawBible extends LocalURLBible implements Index
     private boolean memory = true;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger(RawBible.class);
+    private static final Logger log = Logger.getLogger(RawBible.class);
 }

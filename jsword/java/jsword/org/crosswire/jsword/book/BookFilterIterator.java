@@ -2,6 +2,7 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * An iterator that filters as it goes.
@@ -53,11 +54,15 @@ public class BookFilterIterator implements Iterator
     /**
      * Get the next. Hmmm using finally to avoid creating a temporary local
      * variable. Just how evil is this?
-     * PENDIND(mark) thoughts on this evil?
      * @see java.util.Iterator#next()
      */
     public Object next()
     {
+        if (next == null)
+        {
+            throw new NoSuchElementException();
+        }
+        
         try
         {
             return next;

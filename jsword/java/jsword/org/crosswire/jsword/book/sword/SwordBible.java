@@ -163,5 +163,5 @@ public class SwordBible extends AbstractBible
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(SwordBible.class);
+    private static final Logger log = Logger.getLogger(SwordBible.class);
 }

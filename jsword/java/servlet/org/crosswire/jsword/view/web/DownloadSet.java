@@ -114,7 +114,8 @@ public class DownloadSet implements Comparable
             {
                 Date thisdate = DF_DISK.parse(this.setname);
                 Date thatdate = DF_DISK.parse(that.setname);
-                return thatdate.compareTo(thisdate);
+
+                return thisdate.compareTo(thatdate);
             }
             catch (ParseException ex)
             {
@@ -182,5 +183,5 @@ public class DownloadSet implements Comparable
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger(DownloadSet.class);
+    protected static final Logger log = Logger.getLogger(DownloadSet.class);
 }

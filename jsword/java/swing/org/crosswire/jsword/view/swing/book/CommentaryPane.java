@@ -174,7 +174,7 @@ public class CommentaryPane extends JPanel
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(CommentaryPane.class);
+    private static final Logger log = Logger.getLogger(CommentaryPane.class);
 
     private BookFilter filter = BookFilters.getCommentaries();
     private BooksComboBoxModel mdl_comments = new BooksComboBoxModel(filter);

@@ -1,0 +1,27 @@
+<html>
+<body>
+
+<p>
+  The data package manages the book data returned by the various books.
+</p>
+
+<p>
+  The core interfaces are BookData which is returned by many of the methods on
+  Book (and it's subclasses). BookData works with nested SectionData and
+  VerseData objects to give a very high level overview of the text within an
+  instance of BookData.
+</p>
+
+<p>
+  Construction of a BookData is does via an implementation of BookDataListener.
+  (These implementations are created using DataFactory)
+</p>
+
+<p>
+  There are a number of Filters that are designed to marshal text from THML,
+  GBF, OSIS or plain text into a BookData object. The Filters class gives
+  access to these,
+</p>
+
+</body>
+</html>

@@ -190,7 +190,13 @@ public class SerSearchEngine implements SearchEngine, Index
             // Read blob
             byte[] blob = new byte[section.length];
             ref_dat.seek(section.offset);
-            ref_dat.read(blob);
+            int read = ref_dat.read(blob);
+
+            // Probably a bit harsh, but it would be wrong to just drop it.
+            if (read != blob.length)
+            {
+                throw new IOException();
+            }
 
             // De-serialize
             return PassageUtil.fromBinaryRepresentation(blob);
@@ -430,7 +436,7 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(SerSearchEngine.class);
+    private static final Logger log = Logger.getLogger(SerSearchEngine.class);
 
     /**
      * The passages random access file

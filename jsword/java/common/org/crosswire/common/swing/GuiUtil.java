@@ -331,5 +331,5 @@ public class GuiUtil
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(GuiUtil.class);
+    private static final Logger log = Logger.getLogger(GuiUtil.class);
 }
