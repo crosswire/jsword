@@ -94,18 +94,17 @@ public class GZIPBackend implements Backend
     private static final String SUFFIX_PART1 = "z"; //$NON-NLS-1$
     private static final String SUFFIX_TEXT = "z"; //$NON-NLS-1$
 
-    // TODO(DM): Change blocktype to an enum.
     /**
      * Simple ctor
      */
-    public GZIPBackend(String path, int blockType) throws BookException
+    public GZIPBackend(String path, BlockType blockType) throws BookException
     {
-        String allButLast = path + File.separator + SwordConstants.FILE_OT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
+        String allButLast = path + File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1;
         idxFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_INDEX);
         textFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_TEXT);
         compFile[SwordConstants.TESTAMENT_OLD] = new File(allButLast + SUFFIX_COMP);
 
-        allButLast = path + File.separator + SwordConstants.FILE_NT + "." + UNIQUE_INDEX_ID[blockType] + SUFFIX_PART1; //$NON-NLS-1$
+        allButLast = path + File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1;
         idxFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_INDEX);
         textFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_TEXT);
         compFile[SwordConstants.TESTAMENT_NEW] = new File(allButLast + SUFFIX_COMP);
@@ -397,15 +396,6 @@ public class GZIPBackend implements Backend
      * The array of compressed random access files?
      */
     private File[] compFile = new File[3];
-
-    /**
-     * Yuck - they blocking method defines the initial file character.
-     * The Sword original used: { 'X', 'r', 'v', 'c', 'b' }, however the values
-     * we read from SwordBookMetaData never matched up. Perhaps we need to work out
-     * why.
-     * TODO(DM): migrate this into an Enum of BlockType
-     */
-    private static final char[] UNIQUE_INDEX_ID = { 'b', 'c', 'v', };
 
     /**
      * How many bytes in the comp index?

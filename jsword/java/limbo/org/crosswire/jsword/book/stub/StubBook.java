@@ -7,6 +7,7 @@ import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -58,7 +59,7 @@ public class StubBook extends PassageAbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getText(org.crosswire.jsword.passage.Verse)
      */
-    protected String getText(Verse verse)
+    protected String getText(Key key)
     {
         return "stub implementation"; //$NON-NLS-1$
     }

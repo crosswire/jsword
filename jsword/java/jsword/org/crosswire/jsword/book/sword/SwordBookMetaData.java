@@ -131,6 +131,16 @@ public class SwordBookMetaData implements BookMetaData
             mtype = ModuleType.getModuleType(modTypeName);
         }
 
+        // The default compression type is BOOK.
+        // This probably a data problem as it only occurs with webstersdict
+        String cStr = getFirstValue(ConfigEntry.COMPRESS_TYPE);
+        String blocking = getFirstValue(ConfigEntry.BLOCK_TYPE);
+        if (cStr != null && blocking == null)
+        {
+            log.warn("Fixing data for " + internal + ". Adding BlockType of BOOK"); //$NON-NLS-1$ //$NON-NLS-2$
+            addEntry(ConfigEntry.BLOCK_TYPE.toString(), BlockType.BLOCK_BOOK.toString());
+        }
+
         speed = BookMetaData.SPEED_FAST;
         edition = ""; //$NON-NLS-1$
         openness = Openness.UNKNOWN;

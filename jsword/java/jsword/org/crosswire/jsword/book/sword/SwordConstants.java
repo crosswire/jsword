@@ -94,39 +94,6 @@ public class SwordConstants
     static final int TESTAMENT_NEW = 2;
 
     /**
-     * constants for block types
-     */
-    static final int BLOCK_BOOK = 0;
-    static final int BLOCK_CHAPTER = 1;
-    static final int BLOCK_VERSE = 2;
-
-    /**
-     * Strings for block type matching
-     */
-    static final String[] BLOCK_STRINGS =
-    {
-        "BOOK", //$NON-NLS-1$
-        "CHAPTER", //$NON-NLS-1$
-        "VERSE", //$NON-NLS-1$
-    };
-
-    /**
-     * constants for compression types
-     */
-    static final int COMPRESSION_NONE = -1;
-    static final int COMPRESSION_ZIP = 0;
-    static final int COMPRESSION_LZSS = 1;
-
-    /**
-     * Strings for compression type matching
-     */
-    static final String[] COMPRESSION_STRINGS =
-    {
-        "ZIP", //$NON-NLS-1$
-        "LZSS", //$NON-NLS-1$
-    };
-
-    /**
      * Constants for global option filter
      */
     static final int GOF_GBF_STRONGS = 1;

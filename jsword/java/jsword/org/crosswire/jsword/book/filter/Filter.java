@@ -1,6 +1,6 @@
 package org.crosswire.jsword.book.filter;
 
-import org.jdom.Element;
+import java.util.List;
 
 /**
  * A generic interface for things that can convert a String into OSIS data.
@@ -30,8 +30,8 @@ public interface Filter
 {
     /**
      * Converter from plain (encoded) text to OSIS data
-     * @param ele The element to which to add the data encoded in <code>plain</code>
      * @param plain The encoded text
+     * @return a List of OSIS Elements
      */
-    public void toOSIS(Element ele, String plain) throws FilterException;
+    public List toOSIS(String plain) throws FilterException;
 }

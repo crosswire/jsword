@@ -300,23 +300,12 @@ public abstract class ModuleType implements Serializable
      */
     protected static Backend getCompressedBackend(SwordBookMetaData sbmd, String path) throws BookException
     {
-        switch (sbmd.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
+        String cStr = sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE);
+        if (cStr != null)
         {
-        case SwordConstants.COMPRESSION_ZIP:
-            // The default blocktype (when we used fields) was SwordConstants.BLOCK_CHAPTER (2);
-            // but the specified default here is BLOCK_BOOK (0)
-            int blocktype = sbmd.matchingIndex(SwordConstants.BLOCK_STRINGS, ConfigEntry.BLOCK_TYPE, SwordConstants.BLOCK_BOOK);
-            return new GZIPBackend(path, blocktype);
-
-        case SwordConstants.COMPRESSION_LZSS:
-            return new LZSSBackend(sbmd);
-
-        default:
-            throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[]
-            {
-                sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE)
-            });
+            return CompressionType.fromString(cStr).getBackend(sbmd, path);
         }
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { cStr });
     }
 
     /**
@@ -324,17 +313,12 @@ public abstract class ModuleType implements Serializable
      */
     protected static boolean isCompressedBackendSupported(SwordBookMetaData sbmd)
     {
-        switch (sbmd.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
+        String cStr = sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE);
+        if (cStr != null)
         {
-        case SwordConstants.COMPRESSION_ZIP:
-            return true;
-
-        case SwordConstants.COMPRESSION_LZSS:
-            return false;
-
-        default:
-            return false;
+            return CompressionType.fromString(cStr).isSupported();
         }
+        return false;
     }
 
     /**

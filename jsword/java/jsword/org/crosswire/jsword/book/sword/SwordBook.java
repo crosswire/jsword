@@ -1,11 +1,17 @@
 package org.crosswire.jsword.book.sword;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Verse;
+import org.jdom.Element;
 
 /**
  * SwordBook is a base class for all sword type modules.
@@ -67,14 +73,44 @@ public class SwordBook extends PassageAbstractBook
     }
 
     /**
-     * Read the unfiltered data for a given verse
+     * Read the unfiltered data for a given key
      */
-    protected String getText(Verse verse) throws BookException
+    protected String getText(Key key) throws BookException
     {
-        String result = backend.getRawText(verse, sbmd.getModuleCharset());
+        String result = backend.getRawText(key, sbmd.getModuleCharset());
 
         assert result != null;
         return result;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#addOSIS(org.crosswire.jsword.passage.Key, org.jdom.Element, java.util.List)
+     */
+    public void addOSIS(Key key, Element div, List osisContent)
+    {
+        // See if the text is marked up with verses
+        // If it is then just add it.
+        Iterator iter = osisContent.iterator();
+        while (iter.hasNext())
+        {
+            Object obj = iter.next();
+            if (obj instanceof Element)
+            {
+                Element ele = (Element) obj;
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                {
+                    super.addOSIS(key, div, osisContent);
+                    return;
+                }
+            }
+        }
+
+        // If we get here then the text is not marked up with verse
+        // In this case we add the verse markup.
+        Element everse = OSISUtil.factory().createVerse();
+        everse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, key.getOSISName());
+        div.addContent(everse);
+        super.addOSIS(key, everse, osisContent);
     }
 
     /* (non-Javadoc)

@@ -12,6 +12,8 @@ import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -172,8 +174,10 @@ public class SerBook extends PassageAbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getText(org.crosswire.jsword.passage.Verse)
      */
-    protected String getText(Verse verse) throws BookException
+    protected String getText(Key key) throws BookException
     {
+        Verse verse = KeyUtil.getVerse(key);
+
         return cache.getText(verse);
     }
 

@@ -28,6 +28,7 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
@@ -138,10 +139,12 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getText(org.crosswire.jsword.passage.Verse)
      */
-    protected String getText(Verse verse)
+    protected String getText(Key key)
     {
         String reply = ""; //$NON-NLS-1$
         ResultSet rs = null;
+
+        Verse verse = KeyUtil.getVerse(key);
 
         try
         {

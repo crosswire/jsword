@@ -24,6 +24,7 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -284,9 +285,10 @@ public class RawBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getText(org.crosswire.jsword.passage.Verse)
      */
-    protected String getText(Verse verse)
+    protected String getText(Key key)
     {
         StringBuffer retcode = new StringBuffer();
+        Verse verse = KeyUtil.getVerse(key);
 
         int[] wordIdxs = wordInsts.getIndexes(verse);
         int[] caseIdxs = caseInsts.getIndexes(verse);

@@ -1,5 +1,8 @@
 package org.crosswire.jsword.book.filter.plaintext;
 
+import java.util.List;
+
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.jdom.Element;
 
@@ -32,8 +35,10 @@ public class PlainTextFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain)
+    public List toOSIS(String plain)
     {
+        Element ele = OSISUtil.factory().createDiv();
         ele.addContent(plain);
+        return ele.removeContent();
     }
 }

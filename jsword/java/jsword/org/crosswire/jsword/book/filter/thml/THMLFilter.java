@@ -2,6 +2,7 @@ package org.crosswire.jsword.book.filter.thml;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
@@ -53,8 +54,9 @@ public class THMLFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain)
+    public List toOSIS(String plain)
     {
+        Element ele = OSISUtil.factory().createDiv();
         try
         {
             parse(ele, plain);
@@ -102,6 +104,7 @@ public class THMLFilter implements Filter
                 }
             }
         }
+        return ele.removeContent();
     }
 
     /**

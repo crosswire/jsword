@@ -2,6 +2,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
@@ -118,7 +119,8 @@ public class SwordDictionary extends AbstractBook
 
             String txt = backend.getRawText(key, sbmd.getModuleCharset());
 
-            sbmd.getFilter().toOSIS(div, txt);
+            List osisContent = sbmd.getFilter().toOSIS(txt);
+            div.addContent(osisContent);
 
             BookData bdata = new BookData(osis, this, key);
             return bdata;

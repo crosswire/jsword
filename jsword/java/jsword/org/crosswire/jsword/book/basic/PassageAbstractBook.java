@@ -1,14 +1,15 @@
 package org.crosswire.jsword.book.basic;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
@@ -66,27 +67,26 @@ public abstract class PassageAbstractBook extends AbstractBook
                 VerseRange range = (VerseRange) rit.next();
 
                 Element div = OSISUtil.factory().createDiv();
+                text.addContent(div);
+
                 Element title = OSISUtil.factory().createTitle();
                 title.addContent(range.getName());
                 div.addContent(title);
-                text.addContent(div);
+
 
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
                 while (vit.hasNext())
                 {
-                    Verse verse = (Verse) vit.next();
+                    Key verse = (Key) vit.next();
                     String txt = getText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        Element everse = OSISUtil.factory().createVerse();
-                        everse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, verse.getOSISName());
+                        List osisContent = getFilter().toOSIS(txt);
+                        addOSIS(verse, div, osisContent);
 
-                        div.getContent().add(everse);
-
-                        getFilter().toOSIS(everse, txt);
                     }
                 }
             }
@@ -101,6 +101,19 @@ public abstract class PassageAbstractBook extends AbstractBook
     }
 
     /**
+     * Add the OSIS elements to the div element. Note, this assumes that
+     * the data is fully marked up.
+     * @param key The key being added
+     * @param div The div element to which the key is being added
+     * @param osisContent The OSIS representation of the key being added.
+     */
+    public void addOSIS(Key key, Element div, List osisContent)
+    {
+        assert key != null;
+        div.addContent(osisContent);
+    }
+
+    /**
      * What filter should be used to filter data in the format produced by this
      * Book?.
      * In some ways this method is more suited to BookMetaData however we do not
@@ -111,9 +124,9 @@ public abstract class PassageAbstractBook extends AbstractBook
     protected abstract Filter getFilter();
 
     /**
-     * Read the unfiltered data for a given verse
+     * Read the unfiltered data for a given key
      */
-    protected abstract String getText(Verse verse) throws BookException;
+    protected abstract String getText(Key key) throws BookException;
 
     /**
      * For when we want to add writing functionality

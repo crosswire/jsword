@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.jdom.Element;
@@ -42,8 +43,9 @@ public class GBFFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws FilterException
+    public List toOSIS(String plain) throws FilterException
     {
+        Element ele = OSISUtil.factory().createDiv();
         LinkedList stack = new LinkedList();
         stack.addFirst(ele);
 
@@ -60,6 +62,7 @@ public class GBFFilter implements Filter
         }
     
         stack.removeFirst();
+        return ele.removeContent();
     }
 
     /**

@@ -1,5 +1,7 @@
 package org.crosswire.jsword.book.stub;
 
+import java.util.List;
+
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -8,8 +10,8 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.filter.FilterFactory;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Element;
 
@@ -69,7 +71,8 @@ public class StubDictionary extends AbstractBook
             div.addContent(title);
             text.addContent(div);
 
-            FilterFactory.getDefaultFilter().toOSIS(div, "stub implementation"); //$NON-NLS-1$
+            List osisContent = FilterFactory.getDefaultFilter().toOSIS("stub implementation"); //$NON-NLS-1$
+            div.addContent(osisContent);
 
             BookData bdata = new BookData(osis, this, key);
             return bdata;

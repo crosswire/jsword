@@ -46,8 +46,10 @@ public class OSISFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws FilterException
+    public List toOSIS(String plain) throws FilterException
     {
+        Element ele = OSISUtil.factory().createDiv();
+
         try
         {
             parse(ele, plain);
@@ -95,6 +97,7 @@ public class OSISFilter implements Filter
                 }
             }
         }
+        return ele.removeContent();
     }
 
     /**
