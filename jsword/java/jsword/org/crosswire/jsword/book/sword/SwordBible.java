@@ -48,6 +48,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
 public class SwordBible extends AbstractBible
@@ -80,8 +81,8 @@ public class SwordBible extends AbstractBible
 
         try
         {
-            idx_raf[TESTAMENT_OLD] = new RandomAccessFile(path + "/ot.vss", "r");
-            txt_raf[TESTAMENT_OLD] = new RandomAccessFile(path + "/ot", "r");
+            idx_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + "/ot.vss", "r");
+            txt_raf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(path + "/ot", "r");
         }
         catch (FileNotFoundException ex)
         {
@@ -89,14 +90,14 @@ public class SwordBible extends AbstractBible
 
         try
         {
-            idx_raf[TESTAMENT_NEW] = new RandomAccessFile(path + "/nt.vss", "r");
-            txt_raf[TESTAMENT_NEW] = new RandomAccessFile(path + "/nt", "r");
+            idx_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + "/nt.vss", "r");
+            txt_raf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(path + "/nt", "r");
         }
         catch (FileNotFoundException ex)
         {
         }
 
-        if (txt_raf[TESTAMENT_OLD] == null && txt_raf[TESTAMENT_NEW] == null)
+        if (txt_raf[SwordConstants.TESTAMENT_OLD] == null && txt_raf[SwordConstants.TESTAMENT_NEW] == null)
             throw new BookException("sword_missing_file", new Object[] { url.getFile() });
     }
 
@@ -153,16 +154,22 @@ public class SwordBible extends AbstractBible
             {
                 Verse verse = (Verse) it.next();
                 int verse_ord = verse.getOrdinal();
+                int bookNo = verse.getBook();
+                int chapNo = verse.getChapter();
+                int verseNo = verse.getVerse();
 
                 // If this is an NT verse
                 if (verse_ord >= mat11_ord)
                 {
-                    reply.append(getText(TESTAMENT_NEW, verse_ord - mat11_ord));
+                    //reply.append(getText(SwordConstants.TESTAMENT_NEW, verse_ord - mat11_ord));
+                    reply.append(getText(SwordConstants.TESTAMENT_NEW, bookNo-39, chapNo, verseNo));
                 }
                 else
                 {
-                    reply.append(getText(TESTAMENT_OLD, verse_ord));
+                    //reply.append(getText(SwordConstants.TESTAMENT_OLD, verse_ord));
+                    reply.append(getText(SwordConstants.TESTAMENT_OLD, bookNo, chapNo, verseNo));
                 }
+                
 
                 if (it.hasNext())
                     reply.append(' ');
@@ -179,17 +186,23 @@ public class SwordBible extends AbstractBible
     /**
      * Finds the offset of the key verse from the indexes
      * @param testament testament to find (0 - Bible/module introduction)
-     * @param idxoff offset into .vss
-     * @param start address to store the starting offset
-     * @param size address to store the size of the entry
+     * @param book number (within testament) of book
+     * @param chapter.
+     * @param verse
      */
-    private String getText(int testament, long idxoff) throws IOException
-    {
+        private String getText(int testament, int book, int chapter, int verse) throws IOException{
         long start;
         int size;
 
+		// work out the offset
+		int bookOffset = SwordConstants.bks[testament][book];
+		long chapOffset = SwordConstants.cps[testament][bookOffset+chapter];
+		
+		long offset=6*(chapOffset+verse);
+        log.debug("Offset is "+offset);
+		
         // Read the next 6 byes.
-        idx_raf[testament].seek(idxoff*6);
+        idx_raf[testament].seek(offset);
         byte[] read = new byte[6];
         idx_raf[testament].readFully(read);
 
@@ -297,10 +310,15 @@ public class SwordBible extends AbstractBible
         try
         {
             // To start with I'm going to hard code the path
-            URL test = new URL("file:/opt/sword/modules/texts/rawtext/kjv/");
+            URL test = new URL("file:/usr/share/sword/modules/texts/rawtext/kjv/");
 
             SwordBible data = new SwordBible("kjv", test);
-            String text = data.getText(SwordBible.TESTAMENT_NEW, 6);
+            
+            String text = data.getText(SwordConstants.TESTAMENT_OLD,1,1,1);
+
+            log.debug("text="+text);
+            
+            text = data.getText(SwordConstants.TESTAMENT_NEW,1,1,1);
 
             log.debug("text="+text);
         }
@@ -309,15 +327,6 @@ public class SwordBible extends AbstractBible
             log.info("Failure", ex);
         }
     }
-
-    /** constant for the introduction */
-    public static final int TESTAMENT_INTRO = 0;
-
-    /** constant for the old testament */
-    public static final int TESTAMENT_OLD = 1;
-
-    /** constant for the new testament */
-    public static final int TESTAMENT_NEW = 2;
 
     /** The array of index files */
     private RandomAccessFile[] idx_raf = new RandomAccessFile[3];
