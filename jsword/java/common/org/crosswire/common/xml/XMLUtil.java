@@ -51,12 +51,11 @@ public class XMLUtil
      * A parse has failed so we can try to kill the entities and then have
      * another go.
      */
-    public static String guessKillEntities(String broken)
+    public static String cleanAllEntities(String broken)
     {
         String working = broken;
 
-        allEntities:
-        while (true)
+        allEntities: while (true)
         {
             int amp = working.indexOf('&');
 
@@ -68,8 +67,7 @@ public class XMLUtil
 
             // Check for chars that should not be in an entity name
             int i = amp;
-            singleEntity:
-            while (true)
+            singleEntity: while (true)
             {
                 if (i >= working.length())
                 {
@@ -80,16 +78,59 @@ public class XMLUtil
 
                 if (c == ';')
                 {
-                    log.warn("disguarding potentially valid entity: "+working.substring(amp, i));
+                    // log.warn("disguarding potentially valid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
                 }
 
                 if (!Character.isLetterOrDigit(c) && c != '-')
                 {
-                    log.debug("disguarding invalid entity: "+working.substring(amp, i));
+                    // log.debug("disguarding invalid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
+                }
+
+                i++;
+            }
+        }
+        
+        return working;
+    }
+
+    /**
+     * XML parse failed, so we can try getting rid of all the tags and having
+     * another go.
+     */
+    public static String cleanAllTags(String broken)
+    {
+        String working = broken;
+
+        allTags: while (true)
+        {
+            int lt = working.indexOf('<');
+
+            // If there are no more amps then we are done
+            if (lt == -1)
+            {
+                break allTags;
+            }
+
+            // Check for chars that should not be in an entity name
+            int i = lt;
+
+            singleTag: while (true)
+            {
+                if (i >= working.length())
+                {
+                    break singleTag;
+                }
+
+                char c = working.charAt(i);
+                if (c == '>')
+                {
+                    // log.warn("disguarding potentially valid tag: "+working.substring(lt, i+1));
+                    working = working.substring(0, lt)+working.substring(i+1);
+                    break singleTag;
                 }
 
                 i++;

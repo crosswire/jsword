@@ -196,7 +196,7 @@
     <copy todir="${target.swingui}/lib">
       <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/lang200" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10">
         <include name="jaxb-api.jar"/>
@@ -250,7 +250,7 @@
     <copy todir="${target.web}/WEB-INF/lib">
       <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
+      <fileset dir="${source.jar}/lang200" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
       <fileset dir="${source.jar}/jaxb10">
         <include name="jaxb-api.jar"/>
@@ -599,8 +599,8 @@
       <param name="dir" value="${source.jar}/jaxb10endorsed"/>
     </antcall>
     <antcall target="jnlp.section">
-      <param name="jar" value="commons-lang-1.0.1.jar"/>
-      <param name="dir" value="${source.jar}/lang101"/>
+      <param name="jar" value="commons-lang-2.0.jar"/>
+      <param name="dir" value="${source.jar}/lang200"/>
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="log4j-1.2.7.jar"/>
@@ -700,17 +700,19 @@
 
   <!--=======================================================================-->
   <target name="exec" depends="compile" description="Run the project using Ant">
-    <java classname="abbot.editor.Costello" fork="true">
+    <java classname="org.crosswire.jsword.book.ReadEverything" fork="true">
       <!--
       org.crosswire.jsword.view.swing.desktop.Desktop
+      org.crosswire.jsword.book.ReadEverything
       abbot.editor.Costello
       -->
       <sysproperty key="jsword.bible.dir" value="${source.res}"/>
+      <jvmarg value="-Xmx512m"/>
       <!-- ${basedir}/${target.swingui}/resource -->
       <classpath>
         <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
         <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
-        <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
+        <fileset dir="${source.jar}/lang200" includes="**/*.jar"/>
         <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
         <fileset dir="${source.jar}/jaxb10">
           <include name="jaxb-api.jar"/>
@@ -725,6 +727,7 @@
         <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/osis"/>
         <pathelement path="${target.classes}/resource"/>
+        <pathelement path="${target.classes}/jswordtest"/>
         <pathelement path="${source.res}"/>
         <fileset dir="${support.tools}/abbot090" includes="**/*.jar"/>
       </classpath>

@@ -45,8 +45,16 @@ public class TextTagBuilder implements TagBuilder
              */
             public void updateOsisStack(LinkedList stack) throws JAXBException
             {
-                Element ele = (Element) stack.get(0);
-                JAXBUtil.getList(ele).add(name);
+                if (stack.size() == 0)
+                {
+                    stack.addFirst(name);
+                    // log.warn("failing to add to element on empty stack");
+                }
+                else
+                {
+                    Element ele = (Element) stack.get(0);
+                    JAXBUtil.getList(ele).add(name);
+                }
             }
         };
     }

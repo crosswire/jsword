@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.lang.ClassUtils;
+import org.crosswire.jsword.book.data.ConversionLogger;
 import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Note;
 
@@ -65,12 +67,20 @@ public class FootnoteTagBuilder implements TagBuilder
             {
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
-                    Note note = (Note) stack.removeFirst();
-                    List list = JAXBUtil.getList(note);
-
-                    if (list.size() < 1)
+                    Object pop = stack.removeFirst();
+                    if (pop instanceof Note)
                     {
-                        JAXBUtil.getList((Element) stack.get(0)).remove(note);
+                        Note note = (Note) pop;
+                        List list = JAXBUtil.getList(note);
+    
+                        if (list.size() < 1)
+                        {
+                            JAXBUtil.getList((Element) stack.get(0)).remove(note);
+                        }
+                    }
+                    else
+                    {
+                        ConversionLogger.report("expected to pop a Note, but found "+ClassUtils.getShortClassName(pop.getClass()));
                     }
                 }
             };

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
+import org.crosswire.jsword.book.data.ConversionLogger;
 import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.P;
 
@@ -51,9 +52,18 @@ public class ParagraphTagBuilder implements TagBuilder
              */
             public void updateOsisStack(LinkedList stack) throws JAXBException
             {
-                Element ele = (Element) stack.get(0);
                 P p = JAXBUtil.factory().createP();
-                JAXBUtil.getList(ele).add(p);
+
+                if (stack.size() == 0)
+                {
+                    stack.addFirst(p);
+                    ConversionLogger.report("failing to add to element on empty stack");
+                }
+                else
+                {
+                    Element ele = (Element) stack.get(0);
+                    JAXBUtil.getList(ele).add(p);
+                }
             }
         };
     }

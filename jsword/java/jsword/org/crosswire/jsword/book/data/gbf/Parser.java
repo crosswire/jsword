@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.data.gbf;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.data.ConversionLogger;
 
 /**
  * A factory for Tags generated from a string.
@@ -85,7 +85,7 @@ public class Parser
         // check that we don't have unmatched tags
         if (ltpos == -1 || gtpos == -1)
         {
-            log.warn("ignoring unmatched '<' or '>' in gbf: " + remains);
+            ConversionLogger.report("ignoring unmatched '<' or '>' in gbf: " + remains);
             retval.add(createText(remains));
             remains = null;
             return;
@@ -94,7 +94,7 @@ public class Parser
         // check that the tags are in a sensible order
         if (ltpos > gtpos)
         {
-            log.warn("ignoring unmatched '<' or '>' in gbf: " + remains);
+            ConversionLogger.report("ignoring transposed '<' or '>' in gbf: " + remains);
             retval.add(createText(remains));
             remains = null;
             return;
@@ -177,6 +177,7 @@ public class Parser
     private static TagBuilder UNKNOWN = new UnknownTagBuilder();
     private static TagBuilder[] BUILDERS = new TagBuilder[]
     {
+        new PsalmTitleTagBuilder(),
         new TitleTagBuilder(),
         new JustifyTagBuilder(),
         new HeaderTagBuilder(),
@@ -193,9 +194,4 @@ public class Parser
         new StrongsMorphTagBuilder(),
         new StrongsWordTagBuilder(),
     };
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(Parser.class);
 }

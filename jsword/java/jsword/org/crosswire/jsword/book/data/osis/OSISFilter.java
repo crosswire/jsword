@@ -10,9 +10,11 @@ import javax.xml.bind.Unmarshaller;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.data.ConversionLogger;
 import org.crosswire.jsword.book.data.DataException;
 import org.crosswire.jsword.book.data.Filter;
 import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.P;
 import org.xml.sax.InputSource;
 
 /**
@@ -62,33 +64,48 @@ public class OSISFilter implements Filter
         {
             parse(ele, plain);
         }
-        catch (JAXBException ex)
+        catch (Exception ex1)
         {
-            log.warn("failed to parse. try=1, ex="+ex.getMessage()+", source: "+plain);
+            ConversionLogger.report("parse original failed: "+ex1.getMessage());
+            ConversionLogger.report("  while parsing: "+plain);
 
-            String cropped = XMLUtil.guessKillEntities(plain);
+            // Attempt to fix broken entities, that could be the least damage
+            // way to fix a broken input string
+            String cropped = XMLUtil.cleanAllEntities(plain);
+
             try
             {
                 parse(ele, cropped);
             }
-            catch (JAXBException ex2)
+            catch (Exception ex2)
             {
-                log.warn("failed to parse. try=1, ex="+ex.getMessage()+", source: "+cropped);
-                log.warn("location", ex2);
-
-                List list = JAXBUtil.getList(ele);
-                list.add("Errors exist in the source module: " + ex.getMessage());
+                ConversionLogger.report("parse cropped failed: "+ex2.getMessage());
+                ConversionLogger.report("  while parsing: "+cropped);
+                
+                // So just try to strip out all XML looking things
+                String shawn = XMLUtil.cleanAllTags(cropped);
 
                 try
                 {
-                    list.add(JAXBUtil.factory().createP());
+                    parse(ele, shawn);
                 }
                 catch (Exception ex3)
                 {
-                    log.warn("createP() failed", ex3);
-                }
+                    ConversionLogger.report("parse shawn failed: "+ex3.getMessage());
+                    ConversionLogger.report("  while parsing: "+shawn);
 
-                list.add(plain);
+                    try
+                    {
+                        P p = JAXBUtil.factory().createP();
+                        List list = JAXBUtil.getList(ele);
+                        list.add(p);
+                        list.add(plain);
+                    }
+                    catch (Exception ex4)
+                    {
+                        log.warn("no way. say it ain't so!", ex4);
+                    }
+                }
             }
         }
     }

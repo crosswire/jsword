@@ -937,7 +937,7 @@
 </xs:element>
 
 <xs:element name="lg">
-    <xs:complexType>
+    <xs:complexType mixed="true">
     <xs:complexContent>
     <xs:extension base="milestoneable">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -1018,27 +1018,32 @@
   </xs:complexType>
 </xs:element>
 
-
-<resp type="strongsMarkup" name="pdy" date="2003-01-19-19:40"/>
+<xs:element name="resp">
+  <xs:complexType>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="type" type="xs:string" use="optional"/>
+    <xs:attribute name="date" type="xs:string" use="optional"/>
+  </xs:complexType>
+</xs:element>
 
 <xs:element name="milestoneEnd">
-    <xs:complexType>
+  <xs:complexType>
     <xs:attributeGroup ref="globalWithoutType"/>
     <xs:attribute name="canonical" type="xs:boolean" use="optional"/>
     <xs:attribute name="type" type="milestoneSe"/>
     <xs:attribute name="start" type="xs:string" use="required"/>
     <xs:attribute name="TEIform" fixed="milestone"/>
-    </xs:complexType>
+  </xs:complexType>
 </xs:element>
 
 <xs:element name="milestoneStart">
-    <xs:complexType>
+  <xs:complexType>
     <xs:attributeGroup ref="globalWithoutType"/>
     <xs:attribute name="canonical" type="xs:boolean" use="optional"/>
     <xs:attribute name="type" type="milestoneSe"/>
     <xs:attribute name="end" type="xs:string" use="required"/>
     <xs:attribute name="TEIform" fixed="milestone"/>
-    </xs:complexType>
+  </xs:complexType>
 </xs:element>
 
 <xs:element name="name">

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.data.ConversionLogger;
 import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.W;
 
@@ -59,7 +59,7 @@ public class StrongsMorphTagBuilder implements TagBuilder
                 List list = JAXBUtil.getList(ele);
                 if (list.isEmpty())
                 {
-                    log.error("Source has problem for tag <" + name + ">.");
+                    ConversionLogger.report("No content to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -79,7 +79,7 @@ public class StrongsMorphTagBuilder implements TagBuilder
                 }
                 else
                 {
-                    log.error("Source has problem for tag <" + name + ">.");
+                    ConversionLogger.report("No words to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -95,9 +95,4 @@ public class StrongsMorphTagBuilder implements TagBuilder
             }
         };
     }
-
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(StrongsMorphTagBuilder.class);
 }

@@ -53,8 +53,16 @@ public class EndOfLineTagBuilder implements TagBuilder
             {
                 P p = JAXBUtil.factory().createP();
 
-                Element ele = (Element) stack.get(0);
-                JAXBUtil.getList(ele).add(p);
+                if (stack.size() == 0)
+                {
+                    stack.addFirst(p);
+                    // log.warn("failing to add to element on empty stack");
+                }
+                else
+                {
+                    Element ele = (Element) stack.get(0);
+                    JAXBUtil.getList(ele).add(p);
+                }
             }
         };
     }

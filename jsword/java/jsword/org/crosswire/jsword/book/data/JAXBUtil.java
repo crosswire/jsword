@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBContext;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
 import org.crosswire.jsword.osis.Milestone;
@@ -21,9 +22,11 @@ import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.P;
 import org.crosswire.jsword.osis.Q;
 import org.crosswire.jsword.osis.Reference;
+import org.crosswire.jsword.osis.Row;
 import org.crosswire.jsword.osis.Seg;
 import org.crosswire.jsword.osis.Speaker;
 import org.crosswire.jsword.osis.Speech;
+import org.crosswire.jsword.osis.Table;
 import org.crosswire.jsword.osis.Title;
 import org.crosswire.jsword.osis.TransChange;
 import org.crosswire.jsword.osis.Verse;
@@ -68,6 +71,46 @@ public class JAXBUtil
      * The package into which JAXB generates its stuff
      */
     protected static final String OSIS_PACKAGE = "org.crosswire.jsword.osis";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the bold tag
+     */
+    public static final String SEG_BOLD = "font-weight: bold;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the italic tag
+     */
+    public static final String SEG_ITALIC = "font-style: italic;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the underline tag
+     */
+    public static final String SEG_UNDERLINE = "text-decoration: underline;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the justify right tag
+     */
+    public static final String SEG_JUSTIFYRIGHT = "text-align: right;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the small tag
+     */
+    public static final String SEG_SMALL = "font-size: small;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the sup tag
+     */
+    public static final String SEG_SUPERSCRIPT = "vertical-align: super;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the color tag
+     */
+    public static final String SEG_COLORPREFIX = "color: ";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the font-size tag
+     */
+    public static final String SEG_SIZEPREFIX = "font-size: ";
 
     /**
      * The JAXB worker factory
@@ -209,6 +252,18 @@ public class JAXBUtil
         else if (ele instanceof Title)
         {
             return ((Title) ele).getContent();
+        }
+        else if (ele instanceof Table)
+        {
+            return ((Table) ele).getRow();
+        }
+        else if (ele instanceof Row)
+        {
+            return ((Row) ele).getCell();
+        }
+        else if (ele instanceof Cell)
+        {
+            return ((Cell) ele).getContent();
         }
         else if (ele instanceof Milestone)
         {

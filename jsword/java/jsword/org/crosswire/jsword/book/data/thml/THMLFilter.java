@@ -1,27 +1,34 @@
 
 package org.crosswire.jsword.book.data.thml;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.data.ConversionLogger;
 import org.crosswire.jsword.book.data.DataException;
 import org.crosswire.jsword.book.data.Filter;
 import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Item;
 import org.crosswire.jsword.osis.Name;
 import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.P;
 import org.crosswire.jsword.osis.Reference;
+import org.crosswire.jsword.osis.Row;
 import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.osis.Table;
 import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -66,34 +73,70 @@ public class THMLFilter implements Filter
     {
         try
         {
-            // create a root element to house our document fragment
-            StringReader in = new StringReader("<"+TAG_ROOT+">"+plain+"</"+TAG_ROOT+">");
-            InputSource is = new InputSource(in);
-
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser parser = spf.newSAXParser();
-            CustomHandler handler = new CustomHandler(ele);
-            parser.parse(is, handler);
+            parse(ele, plain);
         }
-        catch (Exception ex)
+        catch (Exception ex1)
         {
-            log.warn("parse failed: "+plain, ex);
+            ConversionLogger.report("parse original failed: "+ex1.getMessage());
+            ConversionLogger.report("  while parsing: "+plain);
 
-            List list = JAXBUtil.getList(ele);
-            list.add("Errors exist in the source module: " + ex.getMessage());
+            // Attempt to fix broken entities, that could be the least damage
+            // way to fix a broken input string
+            String cropped = XMLUtil.cleanAllEntities(plain);
 
             try
             {
-                list.add(JAXBUtil.factory().createP());
+                parse(ele, cropped);
             }
             catch (Exception ex2)
             {
-                log.warn("createP() failed", ex2);
-            }
+                ConversionLogger.report("parse cropped failed: "+ex2.getMessage());
+                ConversionLogger.report("  while parsing: "+cropped);
 
-            list.add(plain);
+                // So just try to strip out all XML looking things
+                String shawn = XMLUtil.cleanAllTags(cropped);
+
+                try
+                {
+                    parse(ele, shawn);
+                }
+                catch (Exception ex3)
+                {
+                    ConversionLogger.report("parse shawn failed: "+ex3.getMessage());
+                    ConversionLogger.report("  while parsing: "+shawn);
+
+                    try
+                    {
+                        P p = JAXBUtil.factory().createP();
+                        List list = JAXBUtil.getList(ele);
+                        list.add(p);
+                        list.add(plain);
+                    }
+                    catch (Exception ex4)
+                    {
+                        log.warn("no way. say it ain't so!", ex4);
+                    }
+                }
+            }
         }
     }
+
+    /**
+     * Parse a string by creating a StringReader and all the other gubbins.
+     */
+    private void parse(Element ele, String toparse) throws FactoryConfigurationError, ParserConfigurationException, SAXException, IOException
+    {
+        // We need to create a root element to house our document fragment
+        StringReader in = new StringReader("<"+TAG_ROOT+">"+toparse+"</"+TAG_ROOT+">");
+        InputSource is = new InputSource(in);
+
+        SAXParser parser = spf.newSAXParser();
+        CustomHandler handler = new CustomHandler(ele);
+
+        parser.parse(is, handler);
+    }
+
+    private SAXParserFactory spf = SAXParserFactory.newInstance();
 
     private static final String TAG_ROOT = "root";
     private static final String TAG_BR = "br";
@@ -110,14 +153,13 @@ public class THMLFilter implements Filter
     private static final String TAG_DIV = "div";
     private static final String TAG_NOTE = "note";
     private static final String TAG_A = "a";
-
-    /*
+    private static final String TAG_SUP = "sup";
+    private static final String TAG_SMALL = "small";
+    private static final String TAG_PB = "pb";
     private static final String TAG_TABLE = "table";
     private static final String TAG_TR = "tr";
     private static final String TAG_TD = "td";
     private static final String TAG_HR = "hr";
-    private static final String TAG_PB = "pb";
-    */
 
     /**
      * The log stream
@@ -168,21 +210,35 @@ public class THMLFilter implements Filter
                 {
                     // Italic
                     Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(SEG_ITALIC);
+                    seg.setType(JAXBUtil.SEG_ITALIC);
                     JAXBUtil.getList(ele).add(seg);
                 }
                 else if (qname.equals(TAG_B))
                 {
                     // Bold
                     Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(SEG_BOLD);
+                    seg.setType(JAXBUtil.SEG_BOLD);
                     JAXBUtil.getList(ele).add(seg);
                 }
                 else if (qname.equals(TAG_U))
                 {
                     // Underline
                     Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(SEG_UNDERLINE);
+                    seg.setType(JAXBUtil.SEG_UNDERLINE);
+                    JAXBUtil.getList(ele).add(seg);
+                }
+                else if (qname.equals(TAG_SMALL))
+                {
+                    // Underline
+                    Seg seg = JAXBUtil.factory().createSeg();
+                    seg.setType(JAXBUtil.SEG_SMALL);
+                    JAXBUtil.getList(ele).add(seg);
+                }
+                else if (qname.equals(TAG_SUP))
+                {
+                    // Underline
+                    Seg seg = JAXBUtil.factory().createSeg();
+                    seg.setType(JAXBUtil.SEG_SUPERSCRIPT);
                     JAXBUtil.getList(ele).add(seg);
                 }
                 else if (qname.equals(TAG_A))
@@ -215,13 +271,13 @@ public class THMLFilter implements Filter
                     String color = attrs.getValue("color");
                     if (color != null)
                     {
-                        buf.append(SEG_COLORPREFIX+color+";");
+                        buf.append(JAXBUtil.SEG_COLORPREFIX+color+";");
                     }
 
                     String size = attrs.getValue("size");
                     if (size != null)
                     {
-                        buf.append(SEG_SIZEPREFIX+size+";");
+                        buf.append(JAXBUtil.SEG_SIZEPREFIX+size+";");
                     }
 
                     String type = buf.toString();
@@ -231,7 +287,7 @@ public class THMLFilter implements Filter
                     }
                     else
                     {
-                        log.debug("Missing color/size attribute.");
+                        ConversionLogger.report("Missing color/size attribute.");
                         XMLUtil.debugSAXAttributes(attrs);
                     }
                     JAXBUtil.getList(ele).add(seg);
@@ -247,6 +303,14 @@ public class THMLFilter implements Filter
                     // New line
                     P p = JAXBUtil.factory().createP();
                     JAXBUtil.getList(ele).add(p);
+                }
+                else if (qname.equals(TAG_PB))
+                {
+                    // Only for print edition
+                }
+                else if (qname.equals(TAG_HR))
+                {
+                    // NOTE(joe): are we right to ignore HR tags in THML
                 }
                 else if (qname.equals(TAG_LI))
                 {
@@ -283,7 +347,7 @@ public class THMLFilter implements Filter
                     }
                     else
                     {
-                        log.warn("sync tag has type="+type+" when value="+value);
+                        ConversionLogger.report("sync tag has type="+type+" when value="+value);
                     }
                 }
                 else if (qname.equals(TAG_SCRIPREF))
@@ -301,20 +365,36 @@ public class THMLFilter implements Filter
                         }
                         catch (NoSuchVerseException ex)
                         {
-                            log.warn("Unparsable passage:"+refstr+" due to "+ex.getMessage());
+                            ConversionLogger.report("Unparsable passage:"+refstr+" due to "+ex.getMessage());
                         }
                     }
                     else
                     {
-                        log.warn("Missing passage.");
-                        XMLUtil.debugSAXAttributes(attrs);
+                        // NOTE(joe): is it right to ignore a missing passage
+                        //ConversionLogger.report("Missing passage.");
+                        //XMLUtil.debugSAXAttributes(attrs);
                     }
 
                     JAXBUtil.getList(ele).add(div);
                 }
+                else if (qname.equals(TAG_TABLE))
+                {
+                    Table table = JAXBUtil.factory().createTable();
+                    JAXBUtil.getList(ele).add(table);
+                }
+                else if (qname.equals(TAG_TR))
+                {
+                    Row row = JAXBUtil.factory().createRow();
+                    JAXBUtil.getList(ele).add(row);
+                }
+                else if (qname.equals(TAG_TD))
+                {
+                    Cell cell = JAXBUtil.factory().createCell();
+                    JAXBUtil.getList(ele).add(cell);
+                }
                 else
                 {
-                    log.warn("unknown thml element: "+localname+" qname="+qname);
+                    ConversionLogger.report("unknown thml element: "+localname+" qname="+qname);
                 }
             }
             catch (JAXBException ex)
@@ -328,77 +408,7 @@ public class THMLFilter implements Filter
          */
         public void endElement(String uri, String localname, String qname) throws SAXException
         {
-            try
-            {
-                if (qname.equals(TAG_ROOT))
-                {
-                    // We added this in the first place so ignore
-                }
-                else if (qname.equals(TAG_BR))
-                {
-                    // Processed on the way in so ignore
-                }
-                else if (qname.equals(TAG_I))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_B))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_U))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_A))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_NOTE))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_DIV))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_FONT))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_TERM))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_P))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_LI))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_OL))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_SYNC))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else if (qname.equals(TAG_SCRIPREF))
-                {
-                    // No need for special treatment on the way out?
-                }
-                else
-                {
-                    // Warned on the way in so ignore
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new SAXException(ex);
-            }
+            // Not sure we need to do anything special
         }
 
         /* (non-Javadoc)

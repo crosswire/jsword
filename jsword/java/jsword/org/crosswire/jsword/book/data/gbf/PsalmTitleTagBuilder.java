@@ -6,10 +6,10 @@ import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
 import org.crosswire.jsword.book.data.JAXBUtil;
-import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.osis.Title;
 
 /**
- * Handle Footnotes: FU and Fu.
+ * Handle Footnotes: FR and Fr.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,30 +32,29 @@ import org.crosswire.jsword.osis.Seg;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class UnderlineTagBuilder implements TagBuilder
+public class PsalmTitleTagBuilder implements TagBuilder
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.gbf.TagBuilder#createTag(java.lang.String)
      */
     public Tag createTag(String name)
     {
-        if ("FU".equals(name))
+        if ("TB".equals(name))
         {
             return new Tag()
             {
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
-                    Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(JAXBUtil.SEG_UNDERLINE);
+                    Title title = JAXBUtil.factory().createTitle();
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(seg);
-                    stack.addFirst(seg);
+                    JAXBUtil.getList(current).add(title);
+                    stack.addFirst(title);
                 }
             };
         }
-    
-        if ("Fu".equals(name))
+
+        if ("Tb".equals(name))
         {
             return new Tag()
             {
@@ -65,7 +64,7 @@ public class UnderlineTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         return null;
     }        
 }

@@ -6,7 +6,7 @@ import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
 import org.crosswire.jsword.book.data.JAXBUtil;
-import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Title;
 
 /**
  * Handle Footnotes: FR and Fr.
@@ -45,11 +45,11 @@ public class HeaderTagBuilder implements TagBuilder
             {
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
-                    Header header = JAXBUtil.factory().createHeader();
+                    Title title = JAXBUtil.factory().createTitle();
 
                     Element current = (Element) stack.get(0);
-                    JAXBUtil.getList(current).add(header);
-                    stack.addFirst(header);
+                    JAXBUtil.getList(current).add(title);
+                    stack.addFirst(title);
                 }
             };
         }

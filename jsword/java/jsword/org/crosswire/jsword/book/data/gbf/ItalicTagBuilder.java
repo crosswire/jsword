@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
-import org.crosswire.jsword.book.data.Filter;
 import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Seg;
 
@@ -47,7 +46,7 @@ public class ItalicTagBuilder implements TagBuilder
                 public void updateOsisStack(LinkedList stack) throws JAXBException
                 {
                     Seg seg = JAXBUtil.factory().createSeg();
-                    seg.setType(Filter.SEG_ITALIC);
+                    seg.setType(JAXBUtil.SEG_ITALIC);
 
                     Element current = (Element) stack.get(0);
                     JAXBUtil.getList(current).add(seg);
