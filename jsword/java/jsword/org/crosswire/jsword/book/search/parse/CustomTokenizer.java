@@ -52,7 +52,13 @@ public class CustomTokenizer
     public static List tokenize(String sought, Map commands) throws BookException
     {
         List output = new ArrayList();
+        if (sought == null || sought.length()  == 0)
+        {
+            return output;
+        }
+
         String commandChars = getSingleCharWords(commands);
+
         char firstChar = sought.charAt(0);
         int currentType = charType(firstChar, commandChars);
         int startIndex = 0;
