@@ -27,10 +27,10 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.ConfigEntry;
 import org.crosswire.jsword.book.sword.ModuleType;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
@@ -96,6 +96,13 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         if (!(bmd instanceof SwordBookMetaData))
         {
             throw new LogicError();
+        }
+
+        // Is the book already installed? Then nothing to do.
+        if (Books.installed().getBookMetaData(bmd.getName()) != null)
+        {
+            Reporter.informUser(this, "Module already installed: "+bmd.getName());
+            return;
         }
 
         final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
@@ -216,21 +223,9 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
                             Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
                             SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
 
-                            String desc = sbmd.getName();
-                            if (desc == null)
+                            if (sbmd.isSupported())
                             {
-                                log.warn("Ignoring descriptionless module: "+internal);
-                            }
-                            else if (sbmd.isSupported())
-                            {
-                                if (sbmd.getFirstValue(ConfigEntry.CIPHER_KEY) == null)
-                                {
-                                    entries.put(desc, sbmd);
-                                }
-                                else
-                                {
-                                    log.info("Ignoring module: "+desc+" because it is locked.");
-                                }
+                                entries.put(sbmd.getName(), sbmd);
                             }
                         }
                         catch (Exception ex)

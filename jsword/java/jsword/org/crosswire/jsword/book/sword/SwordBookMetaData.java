@@ -84,32 +84,34 @@ public class SwordBookMetaData implements BookMetaData
 
         // read the config file
         BufferedReader bin = new BufferedReader(in);
+        StringBuffer buf = new StringBuffer();
         while (true)
         {
-            String line = bin.readLine();
+            // Empty out the buffer
+            buf.setLength(0);
+            
+            String line = advance(bin);
             if (line == null)
             {
                 break;
             }
-
+            
             int length = line.length();
             if (length > 0)
             {
-                if (line.charAt(length - 1) == '\\')
-                {
-                    StringBuffer buf = new StringBuffer(line.substring(0, length - 1).trim());
-                    buf.append('\n');
-                    getContinuation(bin, buf);
-                    line = buf.toString();
-                }
+                buf.append(line);
 
-                parseLine(line);
+                getContinuation(bin, buf);
+
+                parseLine(buf.toString());
             }
         }
 
         // From the config map, extract the important bean properties
         name = getFirstValue(ConfigEntry.DESCRIPTION);
-        if (name != null)
+        
+        // Set initials, if not already set
+        if (name != null && initials.length() == 0)
         {
             initials = StringUtil.getInitials(name);
         }
@@ -130,17 +132,6 @@ public class SwordBookMetaData implements BookMetaData
         {
             log.warn("Missing description for: "+internal);
             name = internal;
-        }
-        if (mtype == null)
-        {
-            log.warn("Missing module type for: "+internal+" checked: "+modTypeName);
-        }
-        else
-        {
-            if (mtype.getBookType() == null)
-            {
-                log.warn("Missing book type for: "+internal+" checked: "+modTypeName);
-            }
         }
 
         // merge entries into properties file
@@ -186,26 +177,25 @@ public class SwordBookMetaData implements BookMetaData
      * Save this config file to a URL
      * @param dest The URL to save the data to
      */
-    public void save(URL dest) throws IOException
+    public void save(URL dest)
     {
-        PrintWriter out = new PrintWriter(NetUtil.getOutputStream(dest));
-
-        for (Iterator kit = getKeys(); kit.hasNext(); )
+        PrintWriter out = null;
+        try
         {
-            String key = (String) kit.next();
-            List list = (List) table.get(key);
-
-            for (Iterator eit = list.iterator(); eit.hasNext(); )
+            out = new PrintWriter(NetUtil.getOutputStream(dest));
+            out.print(data);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (out != null)
             {
-                String value = (String) eit.next();
-
-                out.print(key);
-                out.print("=");
-                out.println(value);
+                out.close();
             }
         }
-
-        out.close();
     }
 
     /**
@@ -299,8 +289,45 @@ public class SwordBookMetaData implements BookMetaData
      */
     public boolean isSupported()
     {
+        // It has to have a usable name
+        boolean named = (name != null && name.length() > 0);
+
+        // If this has a CIPHER_KEY then it is locked
+        boolean unlocked = (getFirstValue(ConfigEntry.CIPHER_KEY) == null);
+
+        // See if the ModuleType can handle this BookMetaData
         ModuleType type = getModuleType();
-        return type != null && type.getBookType() != null;
+        boolean workable = (type != null && type.isSupported(this));
+
+        if (!unlocked)
+        {
+            log.warn("Book not supported: " + internal + " because it is locked.");
+        }
+
+        if (!named)
+        {
+            log.warn("Book not supported: " + internal + " because it has no name.");
+        }
+            
+        if (!workable)
+        {
+            String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
+            if (mtype == null)
+            {
+                log.warn("Book not supported: " + internal + " because no ModuleType for " + modTypeName);
+                
+            }
+            else if (mtype.getBookType() == null)
+            {
+                log.warn("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")");
+            }
+            else
+            {
+                log.warn("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported.");
+            }
+        }
+
+        return named && unlocked && workable;
     }
 
     /* (non-Javadoc)
@@ -337,7 +364,6 @@ public class SwordBookMetaData implements BookMetaData
 
     /**
      * Returns the sourceType.
-     * @return int
      */
     public Filter getFilter()
     {
@@ -347,47 +373,124 @@ public class SwordBookMetaData implements BookMetaData
 
     /**
      * Parse a single line.
-     * @param line
      */
     private void parseLine(String line)
     {
+        String key = null;
+        String value = "";
         int eqpos = line.indexOf('=');
         if (eqpos == -1)
         {
-            addEntry(line, "");
+            key = line;
         }
         else
         {
-            String key = line.substring(0, eqpos).trim();
-            String value = line.substring(eqpos + 1).trim();
+            key = line.substring(0, eqpos).trim();
+            value = line.substring(eqpos + 1).trim();
+        }
 
+        if (key.charAt(0) == '[' && key.charAt(key.length() - 1) == ']')
+        {
+            // The conf file contains a leading line of the form [KJV]
+            // This is the acronymn by which Sword refers to it.
+            initials = key.substring(1, key.length() - 1);
+        }
+        else
+        {
             addEntry(key, value);
         }
+
     }
 
     /**
      * Since the current line ended with \, append the next line.
      * Use \n to separate lines.
-     * @param bin
-     * @param buf
      */
     private void getContinuation(BufferedReader bin, StringBuffer buf) throws IOException
     {
-        String line = bin.readLine();
-        if (line == null)
+        for (String line = advance(bin); line != null; line = advance(bin))
         {
-            return;
-        }
-        int length = line.length();
-        if (length > 0)
-        {
-            if (line.charAt(length - 1) == '\\')
+            int length = buf.length();
+
+            // Look for bad data as this condition did exist
+            boolean continuation_expected = (buf.charAt(length - 1) == '\\');
+            if (isKeyLine(line))
             {
-                buf.append(line.substring(0, length - 1).trim());
-                buf.append('\n');
-                getContinuation(bin, buf);
+                if (continuation_expected)
+                {
+                    log.warn("Continuation followed by key for " + internal + ": " + line);
+                }
+
+                backup(line);
+                break;
             }
-        }        
+            else if (!continuation_expected)
+            {
+                log.warn("data without previous continuation for " + internal + ": " + line);
+            }
+
+            buf.append('\n');
+            buf.append(line);
+        }
+    }
+    
+    /**
+     * Get the next line from the input
+     * @param bin
+     * @return the next line
+     * @throws IOException
+     */
+    private String advance(BufferedReader bin) throws IOException
+    {
+        // Was something put back? If so, return it.
+        if (readahead != null)
+        {
+            String line = readahead;
+            readahead = null;
+            return line;
+        }
+
+        // Get the next non-blank, non-comment line
+        for (String line = bin.readLine(); line != null; line=bin.readLine())
+        {
+            // Save the original for diagnostics and for save
+            data.append(line).append('\n');
+
+            // Remove trailing whitespace
+            line = line.trim();
+
+            int length = line.length();
+            
+            // skip blank and comment lines
+            if (length != 0 && line.charAt(0) != '#') {
+                return line;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Read too far ahead and need to return a line.
+     */
+    private void backup(String oops)
+    {
+        if (oops.length() > 0) {
+            readahead = oops;
+        }
+        else
+        {
+            // should never happen
+            log.warn("Backup an empty string for " + internal);
+        }
+    }
+
+    /**
+     * @param line
+     * @return
+     */
+    private boolean isKeyLine(String line)
+    {
+        return line.indexOf('=') != -1;
     }
 
     /**
@@ -395,12 +498,10 @@ public class SwordBookMetaData implements BookMetaData
      */
     private void addEntry(String key, String value)
     {
-        /*
         if (ConfigEntry.getConfigEntry(key) == null)
         {
-            log.warn("unknown config entry: "+key);
+            log.warn("Unknown config entry for " + internal + ": " + key);
         }
-        */
 
         // check to see if there already values for this key...
         List list = (ArrayList) table.get(key);
@@ -665,4 +766,6 @@ public class SwordBookMetaData implements BookMetaData
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;
     private URL licence = null;
+    private StringBuffer data = new StringBuffer();
+    private String readahead = null;
 }

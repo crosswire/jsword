@@ -111,17 +111,18 @@ public class SwordBookDriver extends AbstractBookDriver
      * new Book into our install dorectory
      * @param sbmd The SwordBookMetaData object for the new Book
      * @param bookpath The path that we have installed to
+     * @throws BookException
      */
     public static void registerNewBook(SwordBookMetaData sbmd, File bookpath) throws BookException
     {
         if (sbmd.isSupported())
         {
-            BookDriver[] drivers = Books.getDriversByClass(SwordBookDriver.class);
+            BookDriver[] drivers = Books.installed().getDriversByClass(SwordBookDriver.class);
             for (int i = 0; i < drivers.length; i++)
             {
                 SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
                 Book book = sdriver.createBook(sbmd, bookpath);
-                Books.addBook(book.getBookMetaData());
+                Books.installed().addBook(book.getBookMetaData());
             }
         }
     }
@@ -145,6 +146,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Accessor for the Sword directory
      * @param dirs The new Sword directory
+     * @throws BookException
      */
     public static void setSwordPath(File[] dirs) throws BookException
     {
@@ -155,16 +157,16 @@ public class SwordBookDriver extends AbstractBookDriver
         }
         
         // First we need to unregister any registered books from ourselves
-        BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
+        BookDriver[] matches = Books.installed().getDriversByClass(SwordBookDriver.class);
         for (int i=0; i<matches.length; i++)
         {
-            Books.unregisterDriver(matches[i]);
+            Books.installed().unregisterDriver(matches[i]);
         }
         
         SwordBookDriver.dirs = dirs;
 
         // Now we need to register ourselves
-        Books.registerDriver(new SwordBookDriver());
+        Books.installed().registerDriver(new SwordBookDriver());
     }
 
     /**

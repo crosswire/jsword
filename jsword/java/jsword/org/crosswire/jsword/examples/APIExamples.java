@@ -54,7 +54,7 @@ public class APIExamples
     /**
      * The name of a Bible to find
      */
-    private static final String BIBLE_NAME = "av";
+    private static final String BIBLE_NAME = "KJV";
 
     /**
      * The source to this method is an example of how to read the plain text of
@@ -66,13 +66,14 @@ public class APIExamples
      */
     public void readPlainText() throws BookException, NoSuchVerseException
     {
-        Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
+        Passage ref = PassageFactory.createPassage("Gen 1 1");
+        Books books = Books.installed();
+        Book bible = books.getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
         String text = data.getPlainText();
 
-        System.out.println("The plain text of Mat 1:1 is "+text);
+        System.out.println("The plain text of Gen 1:1 is "+text);
     }
 
     /**
@@ -86,7 +87,7 @@ public class APIExamples
      */
     public void readStyledText() throws NoSuchVerseException, BookException, TransformerException, SAXException
     {
-        Passage ref = PassageFactory.createPassage("Mat 1 1");
+        Passage ref = PassageFactory.createPassage("Gen 1 1");
         Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
@@ -97,7 +98,7 @@ public class APIExamples
         SAXEventProvider htmlsep = styler.convert(osissep);
         String text = XMLUtil.writeToString(htmlsep);
 
-        System.out.println("The html text of Mat 1:1 is "+text);
+        System.out.println("The html text of Gen 1:1 is "+text);
 
         // This just shuts eclipse up.
         osissep.hashCode();
@@ -226,5 +227,18 @@ public class APIExamples
 
         // NOWARN: Ignore this line: it just shuts eclipse up
         md.hashCode(); bible.hashCode();
+    }
+
+    /**
+     * Quick Demo
+     */
+    public static void main(String[] args) throws Exception
+    {
+        APIExamples examples = new APIExamples();
+
+        examples.readPlainText();
+        examples.readStyledText();
+        examples.readDictionary();
+        examples.search();
     }
 }

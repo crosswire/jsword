@@ -220,6 +220,26 @@ public class ConfigEntry extends Enum
     /**
      * unknown
      */
+    public static final ConfigEntry HISTORY_0_3 = new ConfigEntry("History_0.3");
+
+    /**
+     * unknown
+     */
+    public static final ConfigEntry HISTORY_0_9 = new ConfigEntry("History_0.9");
+
+    /**
+     * unknown
+     */
+    public static final ConfigEntry HISTORY_0_91 = new ConfigEntry("History_0.91");
+
+    /**
+     * unknown
+     */
+    public static final ConfigEntry HISTORY_0_92 = new ConfigEntry("History_0.92");
+
+    /**
+     * unknown
+     */
     public static final ConfigEntry HISTORY_1_0 = new ConfigEntry("History_1.0");
 
     /**

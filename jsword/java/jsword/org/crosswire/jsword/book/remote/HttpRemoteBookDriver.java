@@ -84,7 +84,7 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
         {
             try
             {
-                Books.unregisterDriver(drivers[i]);
+                Books.installed().unregisterDriver(drivers[i]);
             }
             catch (BookException ex)
             {
@@ -101,7 +101,7 @@ public class HttpRemoteBookDriver extends RemoteBookDriver
             {
                 BookDriver driver = new HttpRemoteBookDriver(urls[i]); 
                 dlist.add(driver);
-                Books.registerDriver(driver);
+                Books.installed().registerDriver(driver);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.Component;
@@ -51,11 +50,11 @@ public class DriversListModel extends AbstractListModel
     {
         if (include_ro)
         {
-            drivers = Books.getDrivers();
+            drivers = Books.installed().getDrivers();
         }
         else
         {
-            drivers = Books.getWritableDrivers();
+            drivers = Books.installed().getWritableDrivers();
         }
     }
 

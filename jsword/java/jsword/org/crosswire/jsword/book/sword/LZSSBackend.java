@@ -71,5 +71,13 @@ public class LZSSBackend implements Backend
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#isSupported()
+     */
+    public boolean isSupported()
+    {
+        return false;
+    }
+
     private SwordBookMetaData sbmd;
 }

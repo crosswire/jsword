@@ -38,6 +38,8 @@ Web
 
 Install
 - save install sites
+- pop-up install dialog if no modules present
+- warning about web access in install
 
 SwingUI
 - make more like jnlp
@@ -73,6 +75,7 @@ Swing
 Modules
 - Sword GenBook
 - re-Add the delete module button
+- add a direct OSIS module
 
 General
 - Make config use Preferences

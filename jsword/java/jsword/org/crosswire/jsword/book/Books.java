@@ -40,19 +40,28 @@ import org.crosswire.jsword.util.Project;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at hotmail dot com]
  * @version $Id$
  */
 public class Books implements BookList
 {
     /**
-     * Prevent Instansiation
+     * Create a singleton instance of the class.
+     * This is private to ensure that only one can be created.
+     * This also makes the class final!
      */
     private Books()
     {
+        books = new ArrayList();
+        drivers = new ArrayList();
+        listeners = new EventListenerList();
+
+        initialize(threaded);
     }
 
     /**
      * Accessor for the singleton instance
+     * @return The singleton instance
      */
     public static Books installed()
     {
@@ -62,7 +71,7 @@ public class Books implements BookList
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBookMetaDatas()
      */
-    public List getBookMetaDatas()
+    public synchronized List getBookMetaDatas()
     {
         return Collections.unmodifiableList(books);
     }
@@ -70,13 +79,14 @@ public class Books implements BookList
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBookMetaData(java.lang.String)
      */
-    public BookMetaData getBookMetaData(String name)
+    public synchronized BookMetaData getBookMetaData(String name)
     {
+        // Check name first
         // First check for exact matches
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
             BookMetaData bmd = (BookMetaData) it.next();
-            if (bmd.getName().equals(name))
+            if (name.equals(bmd.getName()))
             {
                 return bmd;
             }
@@ -86,19 +96,39 @@ public class Books implements BookList
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
             BookMetaData bmd = (BookMetaData) it.next();
-            if (bmd.getName().equalsIgnoreCase(name))
+            if (name.equalsIgnoreCase(bmd.getName()))
             {
                 return bmd;
             }
         }
 
+        // Then check initials
+        // First check for exact matches
+        for (Iterator it = books.iterator(); it.hasNext(); )
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            if (name.equals(bmd.getInitials()))
+            {
+                return bmd;
+            }
+        }
+
+        // Next check for case-insensitive matches
+        for (Iterator it = books.iterator(); it.hasNext(); )
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            if (name.equalsIgnoreCase(bmd.getInitials()))
+            {
+                return bmd;
+            }
+        }
         return null;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBookMetaDatas(org.crosswire.jsword.book.BookFilter)
      */
-    public List getBookMetaDatas(BookFilter filter)
+    public synchronized List getBookMetaDatas(BookFilter filter)
     {
         List temp = CollectionUtil.createList(new BookFilterIterator(getBookMetaDatas().iterator(), filter));
         return Collections.unmodifiableList(temp);
@@ -126,7 +156,7 @@ public class Books implements BookList
      * @param bmd The meta-data of the changed Bible
      * @param added Is it added?
      */
-    protected static synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
+    protected synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -156,41 +186,11 @@ public class Books implements BookList
     }
 
     /**
-     * The list of listeners
-     */
-    private static EventListenerList listeners = new EventListenerList();
-
-    /**
-     * The list of Books
-     */
-    private static List books = new ArrayList();
-
-    /**
-     * An array of BookDrivers
-     */
-    private static List drivers = new ArrayList();
-
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(Books.class);
-
-    /**
-     * The singleton instance
-     */
-    private static final Books instance = new Books();
-
-    /**
-     * Do we try to get clever in registering books
-     */
-    private static boolean threaded = false;
-    
-    /**
      * Add a Bible to the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static synchronized void addBook(BookMetaData bmd)
+    public synchronized void addBook(BookMetaData bmd)
     {
         //log.debug("registering book: "+bmd.getName());
 
@@ -200,11 +200,11 @@ public class Books implements BookList
     }
 
     /**
-     * Add a Bible to the current list of Books.
+     * Remove a Bible from the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public static synchronized void removeBook(BookMetaData bmd) throws BookException
+    public synchronized void removeBook(BookMetaData bmd) throws BookException
     {
         //log.debug("unregistering book: "+bmd.getName());
 
@@ -225,7 +225,7 @@ public class Books implements BookList
      * Add to the list of drivers
      * @param driver The BookDriver to add
      */
-    public static synchronized void registerDriver(BookDriver driver) throws BookException
+    public synchronized void registerDriver(BookDriver driver) throws BookException
     {
         log.debug("begin registering driver: "+driver.getClass().getName());
 
@@ -249,7 +249,7 @@ public class Books implements BookList
      * Remove from the list of drivers
      * @param driver The BookDriver to remove
      */
-    public static synchronized void unregisterDriver(BookDriver driver) throws BookException
+    public synchronized void unregisterDriver(BookDriver driver) throws BookException
     {
         log.debug("begin un-registering driver: "+driver.getClass().getName());
 
@@ -272,7 +272,7 @@ public class Books implements BookList
      * registered it can be hard to get ahold of the current book driver. This
      * method gives access to the registered instances.
      */
-    public static synchronized BookDriver[] getDriversByClass(Class type)
+    public synchronized BookDriver[] getDriversByClass(Class type)
     {
         List matches = new ArrayList();
         for (Iterator it = drivers.iterator(); it.hasNext();)
@@ -291,7 +291,7 @@ public class Books implements BookList
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public static synchronized BookDriver[] getDrivers()
+    public synchronized BookDriver[] getDrivers()
     {
         return (BookDriver[]) drivers.toArray(new BookDriver[drivers.size()]);
     }
@@ -300,7 +300,7 @@ public class Books implements BookList
      * Get an array of all the known drivers
      * @return Found int or the default value
      */
-    public static synchronized BookDriver[] getWritableDrivers()
+    public synchronized BookDriver[] getWritableDrivers()
     {
         int i = 0;
         for (Iterator it = drivers.iterator(); it.hasNext();)
@@ -328,67 +328,103 @@ public class Books implements BookList
     }
 
     /**
-     * Initialize the name array
+     * Registers all the drivers known to the program.
+     * Either in a thread or in the main thread
      */
-    static
+    private void initialize(boolean doThreading)
     {
-        Runnable regman = new RegisterRunnable();
-        
-        if (threaded)
+        if (doThreading)
         {
-            Thread init = new Thread(regman, "book-driver-registration");
+            Runnable runner = new Runnable()
+            {
+                public void run()
+                {
+                    autoRegister();
+                }
+            };
+
+            Thread init = new Thread(runner, "book-driver-registration");
             init.setPriority(Thread.MIN_PRIORITY);
             init.start();
         }
         else
         {
-            regman.run();
+            autoRegister();
         }
     }
 
     /**
-     * A class to register all the BookDrivers
+     * Registers all the drivers known to the program.
      */
-    private static final class RegisterRunnable implements Runnable
+    protected void autoRegister()
     {
-        /* (non-Javadoc)
-         * @see java.lang.Runnable#run()
-         */
-        public void run()
+        URL predicturl = Project.instance().getWritablePropertiesURL("books");
+        Job job = JobManager.createJob("Job Title", predicturl, null, true);
+
+        try
         {
-            URL predicturl = Project.instance().getWritablePropertiesURL("books");
-            Job job = JobManager.createJob("Job Title", predicturl, null, true);
+            // This will classload them all and they will register themselves.
+            Class[] types = ResourceUtil.getImplementors(BookDriver.class);
 
-            try
+            log.debug("begin auto-registering "+types.length+" drivers:");
+
+            for (int i=0; i<types.length; i++)
             {
-                // This will classload them all and they will register themselves.
-                Class[] types = ResourceUtil.getImplementors(BookDriver.class);
+                job.setProgress("Registering Driver: "+ClassUtils.getShortClassName(types[i]));
 
-                log.debug("begin auto-registering "+types.length+" drivers:");
-
-                for (int i=0; i<types.length; i++)
+                try
                 {
-                    job.setProgress("Registering Driver: "+ClassUtils.getShortClassName(types[i]));
-
-                    try
-                    {
-                        BookDriver driver = (BookDriver) types[i].newInstance();
-                        registerDriver(driver);
-                    }
-                    catch (Exception ex)
-                    {
-                        Reporter.informUser(Books.class, ex);
-                    }
+                    BookDriver driver = (BookDriver) types[i].newInstance();
+                    registerDriver(driver);
+                }
+                catch (Exception ex)
+                {
+                    Reporter.informUser(Books.class, ex);
                 }
             }
-            catch (Exception ex)
-            {
-                job.ignoreTimings();
-            }
-            finally
-            {
-                job.done();
-            }
+        }
+        catch (Exception ex)
+        {
+            log.debug("Unexpected exception: " + ex);
+            job.ignoreTimings();
+        }
+        finally
+        {
+            job.done();
         }
     }
+
+    /**
+     * The list of Books
+     */
+    private List books;
+
+    /**
+     * An array of BookDrivers
+     */
+    private List drivers;
+
+    /**
+     * The list of listeners
+     */
+    private EventListenerList listeners;
+
+    /**
+     * Do we try to get clever in registering books?
+     * Not until we can get it to work!
+     * At this time there is no way to set this or influence it
+     * So it just acts as a means of commenting out code.
+     */
+    private boolean threaded = false;
+
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(Books.class);
+
+    /**
+     * The singleton instance.
+     * This needs to be declared after all other statics it uses.
+     */
+    private static final Books instance = new Books();
 }

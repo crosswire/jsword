@@ -72,6 +72,14 @@ public class ZLDBackend implements Backend
         throw new BookException(Msg.COMPRESSION_UNSUPPORTED);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#isSupported()
+     */
+    public boolean isSupported()
+    {
+        return false;
+    }
+
     /**
      * The book driver that we are providing data for
      */

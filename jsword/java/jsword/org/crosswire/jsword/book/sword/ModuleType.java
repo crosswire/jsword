@@ -64,6 +64,11 @@ public abstract class ModuleType implements Serializable
         {
             return getCompressedBackend(sbmd, path);
         }
+        
+        protected boolean isBackendSupported(SwordBookMetaData sbmd)
+        {
+            return isCompressedBackendSupported(sbmd);
+        }
     };
 
     /**
@@ -95,6 +100,11 @@ public abstract class ModuleType implements Serializable
         protected Backend getBackend(SwordBookMetaData sbmd, String path) throws BookException
         {
             return getCompressedBackend(sbmd, path);
+        }
+
+        protected boolean isBackendSupported(SwordBookMetaData sbmd)
+        {
+            return isCompressedBackendSupported(sbmd);
         }
     };
 
@@ -241,7 +251,31 @@ public abstract class ModuleType implements Serializable
     }
 
     /**
+     * Given a SwordBookMetaData determine whether this ModuleType
+     * will work for it.
+     * @param sbmd the BookMetaData that this ModuleType works upon
+     * @return true if this is a useable ModuleType
+     */
+    public boolean isSupported(SwordBookMetaData sbmd)
+    {
+        return type != null && isBackendSupported(sbmd);
+    }
+
+    /**
+     * By default the backend is supported if the BookMetaData is not null.
+     * @return true if this is a useable BackEnd
+     */
+    protected boolean isBackendSupported(SwordBookMetaData sbmd)
+    {
+        return sbmd != null;
+    }
+
+    /**
      * Create a Book appropriate for the BookMetaData
+     * @param sbmd
+     * @param progdir
+     * @return
+     * @throws BookException
      */
     public Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
     {
@@ -285,6 +319,24 @@ public abstract class ModuleType implements Serializable
             {
                 sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE)
             });
+        }
+    }
+
+    /**
+     * 
+     */
+    protected static boolean isCompressedBackendSupported(SwordBookMetaData sbmd)
+    {
+        switch (sbmd.matchingIndex(SwordConstants.COMPRESSION_STRINGS, ConfigEntry.COMPRESS_TYPE))
+        {
+        case SwordConstants.COMPRESSION_ZIP:
+            return true;
+
+        case SwordConstants.COMPRESSION_LZSS:
+            return false;
+
+        default:
+            return false;
         }
     }
 
