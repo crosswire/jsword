@@ -32,6 +32,7 @@
   <!--=======================================================================-->
   <target name="init" description="Prepare for other tasks">
     <tstamp/>
+    <echo message="Building to: ${target.root}"/>
   </target>
 
   <!--=======================================================================-->
@@ -200,7 +201,6 @@
   <!--=======================================================================-->
   <target name="javadoc" depends="init" description="Create JavaDoc">
     <mkdir dir="${target.doc}/api"/>
-    <echo message="Building to: ${build.root}"/>
     <javadoc
         destdir="${target.doc}/api"
         overview="${source.java}/jsword/overview.html"
@@ -273,7 +273,14 @@
 
   <!--=======================================================================-->
   <target name="cvsup" description="cvs update">
-    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" package="jsword" dest=".."/>
+    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" package="jsword" dest="..">
+      <commandline>
+        <argument value="-q"/>
+        <argument value="update"/>
+        <argument value="-d"/>
+        <argument value="-p"/>
+      </commandline>
+    </cvs>
   </target>
 
 </project>
