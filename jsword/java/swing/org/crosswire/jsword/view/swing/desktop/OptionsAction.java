@@ -10,6 +10,7 @@ import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.util.Project;
@@ -54,9 +55,9 @@ public class OptionsAction extends DesktopAbstractAction
 
     public void createConfig() throws IOException, JDOMException, BookException
     {
-        config = new Config("Tool Shed Options");
-        ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibles());
+        fillChoiceFactory();
 
+        config = new Config("Tool Shed Options");
         Document xmlconfig = Project.resource().getDocument("config");
         config.add(xmlconfig);
     }
@@ -73,7 +74,7 @@ public class OptionsAction extends DesktopAbstractAction
         {
             // I'm not 100% sure that this will update the dialog with the
             // current list of Bibles, but it should.
-            ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibles());
+            fillChoiceFactory();
 
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
             URL config_url = Project.resource().getWritablePropertiesURL("desktop");
@@ -83,6 +84,18 @@ public class OptionsAction extends DesktopAbstractAction
         {
             Reporter.informUser(getDesktop(), ex);
         }
+    }
+
+    private static void fillChoiceFactory() throws BookException
+    {
+        // Create the array of options
+        BibleMetaData[] bmds = Bibles.getBibles();
+        String[] names = new String[bmds.length];
+        for (int i=0; i<names.length; i++)
+        {
+            names[i] = bmds[i].getFullName();
+        }
+        ChoiceFactory.getDataMap().put("biblenames", names);
     }
 
     private Config config = null;
