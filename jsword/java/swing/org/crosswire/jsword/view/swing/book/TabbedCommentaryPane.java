@@ -118,14 +118,6 @@ public class TabbedCommentaryPane extends JPanel
 
         scr_display.getViewport().add(txt_display, null);
 
-        pnl_display2.setLayout(new BorderLayout());
-        pnl_display2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        pnl_display2.add(scr_display, BorderLayout.CENTER);
-
-        pnl_display1.setLayout(new BorderLayout());
-        pnl_display1.setBorder(BorderFactory.createRaisedBevelBorder());
-        pnl_display1.add(pnl_display2, BorderLayout.CENTER);
-
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.add(pnl_top, BorderLayout.NORTH);
@@ -194,8 +186,6 @@ public class TabbedCommentaryPane extends JPanel
     private JComboBox cbo_verse = new JComboBox();
     private JPanel pnl_select = new JPanel();
     private JPanel pnl_top = new JPanel();
-    private JPanel pnl_display2 = new JPanel();
-    private JPanel pnl_display1 = new JPanel();
     protected JEditorPane txt_display = new JEditorPane();
     private JScrollPane scr_display = new JScrollPane();
 }
