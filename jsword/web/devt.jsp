@@ -17,6 +17,9 @@ form. Or you can read the archives <a href='http://www.crosswire.org/pipermail/j
 And the password is "anonymous". If you need to get at the code but are not sure about
 CVS then join the mailing list and we'll sort something out.</p>
 
+<p>When you first check files out of CVS you should run ant using the all target
+to generate all the source files required for tools like eclipse.</p>
+
 <h2>Documentation</h2>
 <table width="100%" cellpadding="5" cellspacing="0">
   <tr>
@@ -57,7 +60,7 @@ CVS then join the mailing list and we'll sort something out.</p>
 	<td>
 	  <p><a href="api/docs/Licence.html">Licence</a></p>
 	  </td>
-	<td> JSword is distributed under the General Public Licence. A copy 
+	<td>JSword is distributed under the General Public Licence. A copy 
 	  of this licence is stored within the JavaDoc here. </td>
   </tr>
 </table>
