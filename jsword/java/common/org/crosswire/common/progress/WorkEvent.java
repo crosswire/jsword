@@ -34,30 +34,10 @@ public class WorkEvent extends EventObject
     /**
      * Initialize a WorkEvent
      */
-    public WorkEvent(Job source, String desc, int percent)
+    public WorkEvent(Job source, boolean predicted)
     {
         super(source);
-
-        this.desc = desc;
-        this.percent = percent;
-        this.finished = false;
-    }
-
-    /**
-     * Initialize a WorkEvent that is just finishing
-     */
-    public WorkEvent(Job source, String desc, boolean finished)
-    {
-        super(source);
-
-        if (!finished)
-        {
-            throw new IllegalArgumentException("finished must be true");
-        }
-
-        this.desc = desc;
-        this.percent = 100;
-        this.finished = true;
+        this.predicted = predicted;
     }
 
     /**
@@ -69,43 +49,15 @@ public class WorkEvent extends EventObject
     }
 
     /**
-     * Shortcut to check if percent == 100
+     * Is this a predicted or actual progress report?
      */
-    public boolean isFinished()
+    public boolean isPredicted()
     {
-        return finished;
+        return predicted;
     }
 
     /**
-     * Get the total percent progress
-     * @return The progress
+     * Is this a predicted or actual progress report?
      */
-    public int getPercent()
-    {
-        return percent;
-    }
-
-    /**
-     * Get a short descriptive phrase
-     * @return The description
-     */
-    public String getDescription()
-    {
-        return desc;
-    }
-
-    /**
-     * Have we just finished?
-     */
-    private boolean finished;
-
-    /**
-     * The total progress
-     */
-    private int percent;
-
-    /**
-     * A short descriptive phrase
-     */
-    private String desc;
+    private boolean predicted;
 }

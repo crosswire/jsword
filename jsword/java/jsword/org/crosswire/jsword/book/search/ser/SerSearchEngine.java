@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
@@ -24,6 +26,7 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.book.search.SearchEngine;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
@@ -68,22 +71,22 @@ public class SerSearchEngine implements SearchEngine, Index
 
             isindexed = isIndexed();
             
-            URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
+            URL dataurl = NetUtil.lengthenURL(url, "ref.data");
 
             if (isindexed)
             {
-                URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
+                URL indexurl = NetUtil.lengthenURL(url, "ref.index");
 
                 // We don't need to create any indexes, they just need loading
-                ref_idy_bin = new BufferedReader(new InputStreamReader(ref_idy_url.openStream()));
+                indexin = new BufferedReader(new InputStreamReader(indexurl.openStream()));
 
                 // Open the Passage RAF
-                ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "r");
+                dataraf = new RandomAccessFile(NetUtil.getAsFile(dataurl), "r");
             }
             else
             {
                 // Open the Passage RAF
-                ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), "rw");
+                dataraf = new RandomAccessFile(NetUtil.getAsFile(dataurl), "rw");
             }
         }
         catch (IOException ex)
@@ -101,28 +104,31 @@ public class SerSearchEngine implements SearchEngine, Index
         if (isindexed)
         {
             loadIndexes();
-            // ref_idy_bin.close();
+            // indexin.close();
         }
         else
         {
             // At this point the index is usable, even if it doesn't always
             // return full results so we can do the rest in a thread.
             // NOTE(joe): at some stage have a better monitor for this.
-            new Thread(new Runnable()
+            Thread work = new Thread(new Runnable()
             {
                 public void run()
                 {
                     try
                     {
-                        generateSearchIndex();
-                        saveIndexes();
+                        Job job = JobManager.createJob("Indexing "+bible.getBibleMetaData().getName(), Thread.currentThread(), false);
+                        generateSearchIndex(job);
+                        saveIndexes(job);
+                        job.done();
                     }
                     catch (BookException ex)
                     {
                         Reporter.informUser(SerSearchEngine.this, ex);
                     }
                 }
-            }).start();
+            });
+            work.start();
         }
     }
 
@@ -131,7 +137,7 @@ public class SerSearchEngine implements SearchEngine, Index
      */
     public void deactivate()
     {
-        ref_map.clear();
+        datamap.clear();
     }
 
     /* (non-Javadoc)
@@ -164,7 +170,7 @@ public class SerSearchEngine implements SearchEngine, Index
     public Iterator getStartsWith(String word) throws BookException
     {
         word = word.toLowerCase();
-        SortedMap sub_map = ref_map.subMap(word, word + "\u9999");
+        SortedMap sub_map = datamap.subMap(word, word + "\u9999");
         return sub_map.keySet().iterator();
     }
 
@@ -178,7 +184,7 @@ public class SerSearchEngine implements SearchEngine, Index
             return PassageFactory.createPassage();
         }
 
-        Section section = (Section) ref_map.get(word.toLowerCase());
+        Section section = (Section) datamap.get(word.toLowerCase());
 
         if (section == null)
         {
@@ -189,8 +195,8 @@ public class SerSearchEngine implements SearchEngine, Index
         {
             // Read blob
             byte[] blob = new byte[section.length];
-            ref_dat.seek(section.offset);
-            int read = ref_dat.read(blob);
+            dataraf.seek(section.offset);
+            int read = dataraf.read(blob);
 
             // Probably a bit harsh, but it would be wrong to just drop it.
             if (read != blob.length)
@@ -233,11 +239,11 @@ public class SerSearchEngine implements SearchEngine, Index
 
             try
             {
-                line = ref_idy_bin.readLine();
+                line = indexin.readLine();
             }
             catch (IOException ex)
             {
-                log.error("Read failed on ref_idy_bin", ex);
+                log.error("Read failed on indexin", ex);
                 break;
             }
 
@@ -256,7 +262,7 @@ public class SerSearchEngine implements SearchEngine, Index
                 int length = Integer.parseInt(line.substring(colon2 + 1));
 
                 Section section = new Section(offset, length);
-                ref_map.put(word, section);
+                datamap.put(word, section);
             }
             catch (NumberFormatException ex)
             {
@@ -269,7 +275,7 @@ public class SerSearchEngine implements SearchEngine, Index
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    protected void generateSearchIndex() throws BookException
+    protected void generateSearchIndex(Job job) throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
@@ -278,17 +284,18 @@ public class SerSearchEngine implements SearchEngine, Index
         int errors = 0;
 
         // loop through all the verses
+        int percent = -1;
         for (Iterator it = WHOLE.verseIterator(); it.hasNext();)
         {
             Verse verse = (Verse) it.next();
             try
             {
-                /*
-                if (li != null)
+                int newpercent = PERCENT_READ * verse.getOrdinal() / BibleInfo.versesInBible();
+                if (percent != newpercent)
                 {
-                    li.progressMade(new WorkEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
+                    percent = newpercent;
+                    job.setProgress(percent, "Finding Words ("+verse.getName()+")");
                 }
-                */
 
                 // loop through all the words in this verse
                 Passage current = PassageFactory.createPassage();
@@ -307,13 +314,13 @@ public class SerSearchEngine implements SearchEngine, Index
 
                     // add this verse to this words passage
                     matches.add(verse);
+                }
 
-                    // This could take a long time ...
-                    Thread.yield();
-                    if (Thread.currentThread().isInterrupted())
-                    {
-                        break;
-                    }
+                // This could take a long time ...
+                Thread.yield();
+                if (Thread.currentThread().isInterrupted())
+                {
+                    break;
                 }
             }
             catch (Exception ex)
@@ -334,10 +341,9 @@ public class SerSearchEngine implements SearchEngine, Index
             }
         }
 
-        /* For the progress listener
+        // For the progress listener
         int count = 0;
         int words = matchmap.size();
-        */
 
         // Now we need to write the words into our index
         for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
@@ -347,12 +353,12 @@ public class SerSearchEngine implements SearchEngine, Index
             recordFoundPassage(word, match);
 
             // Fire a progress event?
-            /*
-            if (li != null)
+            int newpercent = PERCENT_READ + (PERCENT_WRITE * count++ / words) / BibleInfo.versesInBible();
+            if (percent != newpercent)
             {
-                li.progressMade(new WorkEvent(bible, "Writing Words:", 90 + (10 * count++ / words)));
+                percent = newpercent;
+                job.setProgress(percent, "Writing Words ("+word+")");
             }
-            */
 
             // This could take a long time ...
             Thread.yield();
@@ -364,7 +370,7 @@ public class SerSearchEngine implements SearchEngine, Index
     }
 
     /**
-     * Write the references for a Word
+     * Add to the main index data the references against this word
      * @param word The word to write
      * @param ref The references to the word
      */
@@ -379,10 +385,10 @@ public class SerSearchEngine implements SearchEngine, Index
         {
             byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
 
-            Section section = new Section(ref_dat.getFilePointer(), buffer.length);
+            Section section = new Section(dataraf.getFilePointer(), buffer.length);
 
-            ref_dat.write(buffer);
-            ref_map.put(word.toLowerCase(), section);
+            dataraf.write(buffer);
+            datamap.put(word.toLowerCase(), section);
         }
         catch (Exception ex)
         {
@@ -393,22 +399,24 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Write the indexes to disk
      */
-    protected void saveIndexes() throws BookException
+    protected void saveIndexes(Job job) throws BookException
     {
         // Store the indexes on disk
         try
         {
+            job.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
+
             // Save the ascii Passage index
-            URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
-            PrintWriter ref_idy_out = new PrintWriter(NetUtil.getOutputStream(ref_idy_url));
-            Iterator it = ref_map.keySet().iterator();
+            URL indexurl = NetUtil.lengthenURL(url, "ref.index");
+            PrintWriter indexout = new PrintWriter(NetUtil.getOutputStream(indexurl));
+            Iterator it = datamap.keySet().iterator();
             while (it.hasNext())
             {
                 String word = (String) it.next();
-                Section section = (Section) ref_map.get(word);
-                ref_idy_out.println(word + ":" + section.offset + ":" + section.length);
+                Section section = (Section) datamap.get(word);
+                indexout.println(word + ":" + section.offset + ":" + section.length);
             }
-            ref_idy_out.close();
+            indexout.close();
         }
         catch (IOException ex)
         {
@@ -416,17 +424,15 @@ public class SerSearchEngine implements SearchEngine, Index
         }
     }
 
-    private boolean isindexed;
-
     /**
-     * When generating the index, how many tries before we give up?
+     * Have we generated/read the search index
      */
-    private static final int MAX_ERRORS = 256;
+    private boolean isindexed;
 
     /**
      * The Bible we are indexing
      */
-    private Bible bible;
+    protected Bible bible;
 
     /**
      * The directory to which to write the index
@@ -434,21 +440,36 @@ public class SerSearchEngine implements SearchEngine, Index
     private URL url;
 
     /**
+     * The passages random access file
+     */
+    private RandomAccessFile dataraf;
+
+    /**
+     * The index to the random access file
+     */
+    private BufferedReader indexin;
+
+    /**
+     * The hash of indexes into the passages file
+     */
+    private SortedMap datamap = new TreeMap();
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SerSearchEngine.class);
 
     /**
-     * The passages random access file
+     * The percentages taken but by different parts
      */
-    private RandomAccessFile ref_dat;
-
-    private BufferedReader ref_idy_bin;
+    private static final int PERCENT_READ = 60;
+    private static final int PERCENT_WRITE = 39;
+    // private static final int PERCENT_INDEX = 1;
 
     /**
-     * The hash of indexes into the passages file
+     * When generating the index, how many tries before we give up?
      */
-    private SortedMap ref_map = new TreeMap();
+    private static final int MAX_ERRORS = 256;
 
     /**
      * The Whole Bible

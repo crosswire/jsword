@@ -62,8 +62,6 @@ public class Splash extends JWindow
         super(JOptionPane.getFrameForComponent(comp));
         this.wait = wait;
 
-        //LookAndFeelUtil.addComponentToUpdate(this);
-
         jbInit();
 
         new Thread(new CloseRunnable()).start();
@@ -96,8 +94,8 @@ public class Splash extends JWindow
         pnl_info.setLayout(new BorderLayout(5, 0));
         pnl_info.setBackground(Color.black);
         pnl_info.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-        pnl_info.add(lbl_info, BorderLayout.NORTH);
-        pnl_info.add(pnl_jobs, BorderLayout.CENTER);
+        pnl_info.add(lbl_info, BorderLayout.CENTER);
+        pnl_info.add(pnl_jobs, BorderLayout.SOUTH);
 
         this.getContentPane().add(pnl_info, BorderLayout.SOUTH);
         this.getContentPane().add(lbl_picture, BorderLayout.CENTER);

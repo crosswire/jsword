@@ -15,6 +15,7 @@ import javax.swing.text.Document;
 
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.WorkEvent;
 import org.crosswire.common.progress.WorkListener;
@@ -303,8 +304,9 @@ public class CompareResultsPane extends JPanel implements Runnable
             {
                 public void run()
                 {
-                    int percent = ev.getPercent();
-                    bar_progress.setString(ev.getDescription() + " " + percent + "%");
+                    Job job = ev.getJob();
+                    int percent = job.getPercent();
+                    bar_progress.setString(job.getStateDescription() + ": (" + percent + "%)");
                     bar_progress.setValue(percent);
                 }
             });

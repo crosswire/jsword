@@ -41,71 +41,38 @@ public class JobManager
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, URL predicturl, Thread work)
+    public static Job createJob(String description, URL predicturl, Thread work, boolean fakeupdates)
     {
-        return new Job(description, predicturl, work);
+        Job job = new Job(description, predicturl, work, fakeupdates);
+        jobs.add(job);
+
+        log.debug("job starting: "+job.getJobDescription());
+
+        return job;
     }
 
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, Thread work)
+    public static Job createJob(String description, Thread work, boolean fakeupdates)
     {
-        return new Job(description, null, work);
+        return createJob(description, null, work, fakeupdates);
     }
 
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, URL predicturl)
+    public static Job createJob(String description, URL predicturl, boolean fakeupdates)
     {
-        return new Job(description, predicturl, null);
+        return createJob(description, predicturl, null, fakeupdates);
     }
 
     /**
      * Create a new Job
      */
-    public static Job createJob(String description)
+    public static Job createJob(String description, boolean fakeupdates)
     {
-        return new Job(description, null, null);
-    }
-
-    /**
-     * Create a test job
-     */
-    public static void createTestJob(final long millis)
-    {
-        final Thread test = new Thread()
-        {
-            /* (non-Javadoc)
-             * @see java.lang.Thread#run()
-             */
-            public synchronized void run()
-            {
-                Job job = JobManager.createJob("Test Job", Thread.currentThread());
-
-                job.setProgress(0, "Step 0/"+STEPS);
-                log.debug("starting test job:");
-
-                for (int i=1; i<=STEPS && !Thread.interrupted(); i++)
-                {
-                    try
-                    {
-                        wait(millis/STEPS);
-                    }
-                    catch (InterruptedException ex)
-                    {
-                    }
-
-                    job.setProgress((i * 100) / STEPS, "Step "+i+"/"+STEPS);
-                }
-
-                job.done();
-                log.debug("finishing test job:");
-            }
-            private final static int STEPS = 50;
-        };
-        test.start();
+        return createJob(description, null, null, fakeupdates);
     }
 
     /**
@@ -148,7 +115,7 @@ public class JobManager
     /**
      * Accessor for the currently known jobs
      */
-    public static Set getJobs()
+    public static synchronized Set getJobs()
     {
         Set reply = new HashSet();
         reply.addAll(jobs);
@@ -156,43 +123,66 @@ public class JobManager
     }
 
     /**
-     * Allow Jobs to relay to us how they are doing
+     * Inform the listeners that a title has changed.
      */
-    protected static void setProgress(WorkEvent ev)
+    protected static void fireWorkProgressed(Job job, boolean predicted)
     {
-        Job job = ev.getJob();
-        if (ev.isFinished())
+        final WorkEvent ev = new WorkEvent(job, predicted);
+
+        // we need to keep the synchronized section very small to avoid deadlock
+        // certainly keep the event dispatch clear of the synchronized block or
+        // there will be a deadlock
+        final List temp = new ArrayList();
+        synchronized (JobManager.class)
         {
-            jobs.remove(job);
+            temp.addAll(listeners);
+        }
+
+        Runnable firer = new Runnable()
+        {
+            public void run()
+            {
+                // We ought only to tell listeners about jobs that are in our
+                // list of jobs so we need to fire before delete.
+                if (listeners != null)
+                {
+                    int count = temp.size();
+                    for (int i = 0; i < count; i++)
+                    {
+                        ((WorkListener) temp.get(i)).workProgressed(ev);
+                    }
+                }
+            }
+        };
+
+        if (SwingUtilities.isEventDispatchThread())
+        {
+            firer.run();
         }
         else
         {
-            // the job is not done so check it is in the list
-            jobs.add(job);
+            try
+            {
+                SwingUtilities.invokeAndWait(firer);
+            }
+            catch (Exception ex)
+            {
+                log.warn("failed to propogate work progressed message", ex);
+            }
         }
 
-        try
+        // Do we need to remove the job? Note that the section above will
+        // proably execute after this so we will be firing events for jobs
+        // that are no longer in our list of jobs. ho hum.
+        synchronized (JobManager.class)
         {
-            Runnable setter = new SplashUpdater(ev);
-            if (SwingUtilities.isEventDispatchThread())
+            if (job.isFinished())
             {
-                setter.run();
+                log.debug("job finished: "+job.getJobDescription());
+                jobs.remove(job);
             }
-            else
-            {
-                SwingUtilities.invokeAndWait(setter);
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
         }
     }
-
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(JobManager.class);
 
     /**
      * List of listeners
@@ -202,44 +192,10 @@ public class JobManager
     /**
      * List of current jobs
      */
-    private static Set jobs = new HashSet();
+    protected static Set jobs = new HashSet();
 
     /**
-     * A class to update the dialog with progress.
+     * The log stream
      */
-    private static final class SplashUpdater implements Runnable
-    {
-        SplashUpdater(WorkEvent ev)
-        {
-            this.ev = ev;
-        }
-
-        /* (non-Javadoc)
-         * @see java.lang.Runnable#run()
-         */
-        public void run()
-        {
-            fireWorkProgressed();
-        }
-
-        /**
-         * Inform the listeners that a title has changed. This was static within
-         * JobManager itself, but it feels less open to abuse here.
-         */
-        protected void fireWorkProgressed()
-        {
-            if (listeners != null)
-            {
-                List temp = listeners;
-
-                int count = temp.size();
-                for (int i = 0; i < count; i++)
-                {
-                    ((WorkListener) temp.get(i)).workProgressed(ev);
-                }
-            }
-        }
-
-        private WorkEvent ev;
-    }
+    protected static final Logger log = Logger.getLogger(JobManager.class);
 }

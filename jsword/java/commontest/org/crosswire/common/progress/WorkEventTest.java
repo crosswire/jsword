@@ -1,9 +1,7 @@
 
-// package default;
+package org.crosswire.common.progress;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import junit.framework.TestCase;
 
 /**
  * JUnit Test.
@@ -29,20 +27,24 @@ import junit.textui.TestRunner;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class CommonAllTests
+public class WorkEventTest extends TestCase
 {
-    public static void main(String[] args)
+    /**
+     * Constructor for WorkEventTest.
+     * @param arg0
+     */
+    public WorkEventTest(String arg0)
     {
-        TestRunner.run(suite());
+        super(arg0);
     }
 
-    public static Test suite()
+    public void testGetJob()
     {
-        TestSuite suite = new TestSuite();
+        Job job = JobManager.createJob("wibble", false);
+        WorkEvent ev = new WorkEvent(job, false);
 
-        suite.addTest(org.crosswire.common.util.AllTests.suite());
-        suite.addTest(org.crosswire.common.progress.AllTests.suite());
-
-        return suite;
+        assertEquals(ev.getJob(), job);
+        assertEquals(ev.getSource(), job);
+        assertEquals(ev.isPredicted(), false);
     }
 }

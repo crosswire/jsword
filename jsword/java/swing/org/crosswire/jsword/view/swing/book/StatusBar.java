@@ -64,12 +64,18 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
      */
     private void jbInit()
     {
-        // pnl_progr.setBorder(BorderFactory.createEtchedBorder());
+        lbl_message.setBorder(BorderFactory.createEtchedBorder());
+        lbl_message.setText(DEFAULT);
+
+        pnl_progr.setBorder(BorderFactory.createEtchedBorder());
         Font font = pnl_progr.getFont();
         pnl_progr.setFont(font.deriveFont(6.0F));
 
-        lbl_message.setBorder(BorderFactory.createEtchedBorder());
-        lbl_message.setText(DEFAULT);
+        /*
+        Dimension dim = pnl_progr.getPreferredSize();
+        dim.height = lbl_message.getSize().height;
+        pnl_progr.setPreferredSize(dim);
+        */
 
         lbl_name.setBorder(BorderFactory.createEtchedBorder());
         lbl_name.setText(" JSword ");

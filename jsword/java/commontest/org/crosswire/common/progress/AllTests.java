@@ -1,7 +1,7 @@
+package org.crosswire.common.progress;
 
-package org.crosswire.common.util;
-
-import junit.framework.TestCase;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * JUnit Test.
@@ -27,33 +27,15 @@ import junit.framework.TestCase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestThreadUtil extends TestCase
+public class AllTests
 {
-    public TestThreadUtil(String s)
+    public static Test suite()
     {
-        super(s);
-    }
-
-    String NEWLINE = System.getProperty("line.separator", "\r\n");
-
-    protected void setUp() throws Exception
-    {
-    }
-
-    protected void tearDown() throws Exception
-    {
-    }
-
-    public void testFindRoot() throws Exception
-    {
-        assertTrue(ThreadUtil.findRoot() != null);
-    }
-
-    public void testGetListing() throws Exception
-    {
-        /*
-        String[] result = ThreadUtil.getListing();
-        String result2 = StringUtil.cat(result, NEWLINE);
-        */
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.progress");
+        //$JUnit-BEGIN$
+        suite.addTest(new TestSuite(JobTest.class));
+        suite.addTest(new TestSuite(WorkEventTest.class));
+        //$JUnit-END$
+        return suite;
     }
 }

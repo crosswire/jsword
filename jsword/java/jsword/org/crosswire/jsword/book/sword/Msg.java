@@ -41,6 +41,7 @@ class Msg extends MsgBase
     public static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type: {0}");
     public static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0}");
     public static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0}");
+    public static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
 
     /** Initialise any resource bundles */
     static

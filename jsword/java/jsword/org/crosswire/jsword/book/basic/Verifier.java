@@ -110,7 +110,7 @@ public class Verifier
      */
     public void checkText(Passage ref, PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
         int percent = 0;
 
         // For every verse in the Bible
@@ -167,7 +167,7 @@ public class Verifier
      */
     public void checkPassage(PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
         int count = 0;
         int percent = -1;
 
@@ -213,7 +213,7 @@ public class Verifier
             return;
         }
 
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
         int count = 0;
         int percent = -1;
 

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
@@ -168,13 +169,26 @@ public class SwordBible extends AbstractBible
             throw new BookException(Msg.READ_FAIL);
         }
 
+        if (!searchable)
+        {
+            searcher.activate();
+            searchable = true;
+
+            Reporter.informUser(this, Msg.TYPE_INDEXGEN.getName());
+        }
+
         return searcher.findPassage(match);
     }
     
-    /*=-0
+    /**
      * The search implementation
      */
     private SearchEngine searcher;
+
+    /**
+     * Has the search engine been initialized
+     */
+    private boolean searchable = false;
 
     /**
      * To read the data from the disk

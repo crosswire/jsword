@@ -87,7 +87,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         scr_jobs.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scr_jobs.setViewportView(pnl_ojobs);
 
-        this.setPreferredSize(new Dimension(500, 300));
+        this.setPreferredSize(new Dimension(700, 300));
         this.setLayout(new BorderLayout());
         this.add(scr_jobs, BorderLayout.CENTER);
         this.add(new JPanel(), BorderLayout.SOUTH);
@@ -114,9 +114,9 @@ public class JobsViewPane extends JPanel implements WorkListener
             addJob(job);
         }
 
-        updateJob(job, ev);
+        updateJob(job);
 
-        if (ev.isFinished())
+        if (job.isFinished())
         {
             removeJob(job);
 
@@ -149,10 +149,11 @@ public class JobsViewPane extends JPanel implements WorkListener
         }
         
         jobdata.index = i;
-        jobdata.label = new JLabel(job.getDescription() + ":");
+        jobdata.label = new JLabel(job.getJobDescription() + ":");
         jobdata.progress = new JProgressBar();
         jobdata.progress.setStringPainted(true);
-        jobdata.progress.setString(job.getDescription()+" (0%)");
+        jobdata.progress.setString("0%");
+        jobdata.progress.setToolTipText(job.getJobDescription());
         jobdata.progress.setValue(0);
 
         jobdata.cancel = new JButton("Cancel");
@@ -175,18 +176,19 @@ public class JobsViewPane extends JPanel implements WorkListener
 
         this.revalidate();
 
-        log.debug("added job to panel at "+jobdata.index+": "+jobdata.job.getDescription());
+        log.debug("added job to panel at "+jobdata.index+": "+jobdata.job.getJobDescription());
     }
 
     /**
      * Update the job details because it have just progressed
      */
-    private void updateJob(Job job, WorkEvent ev)
+    private void updateJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        int percent = ev.getPercent();
-        jobdata.progress.setString(ev.getDescription()+": ("+percent+"%)");
+        int percent = job.getPercent();
+        jobdata.progress.setString(""+percent+"%");
+        jobdata.progress.setToolTipText(job.getStateDescription());
         jobdata.progress.setValue(percent);
     }
 
@@ -197,7 +199,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        log.debug("removing job from panel at "+jobdata.index+": "+job.getDescription());
+        log.debug("removing job from panel at "+jobdata.index+": "+job.getJobDescription());
 
         positions.set(jobdata.index, null);
         jobs.remove(job);

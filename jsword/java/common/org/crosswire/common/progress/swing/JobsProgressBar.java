@@ -80,9 +80,9 @@ public class JobsProgressBar extends JPanel implements WorkListener
             addJob(job);
         }
 
-        updateJob(job, ev);
+        updateJob(job);
 
-        if (ev.isFinished())
+        if (job.isFinished())
         {
             removeJob(job);
         }
@@ -91,7 +91,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * Create a new set of components for the new Job
      */
-    private void addJob(Job job)
+    private synchronized void addJob(Job job)
     {
         JobData jobdata = new JobData();
         jobdata.job = job;
@@ -110,6 +110,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         jobdata.index = i;
         jobdata.progress = new JProgressBar();
         jobdata.progress.setStringPainted(true);
+        jobdata.progress.setToolTipText(job.getJobDescription());
         if (font != null)
         {
             jobdata.progress.setFont(font);
@@ -122,31 +123,31 @@ public class JobsProgressBar extends JPanel implements WorkListener
         this.add(jobdata.progress, i);
         this.revalidate();
 
-        log.debug("added job to panel: "+jobdata.job.getDescription());
+        log.debug("added job to panel: "+jobdata.job.getJobDescription());
     }
 
     /**
-     * Update the job details because it have just progressed
+     * Update the job details because it has just progressed
      */
-    private void updateJob(Job job, WorkEvent ev)
+    private synchronized void updateJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        int percent = ev.getPercent();
-        jobdata.progress.setString(ev.getDescription()+": ("+percent+"%)");
+        int percent = job.getPercent();
+        jobdata.progress.setString(job.getStateDescription()+": ("+percent+"%)");
         jobdata.progress.setValue(percent);
     }
 
     /**
      * Remove the set of components from the panel
      */
-    private void removeJob(Job job)
+    private synchronized void removeJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
 
         positions.set(jobdata.index, null);
         jobs.remove(job);
-        log.debug("removing job from panel: "+jobdata.job.getDescription());
+        log.debug("removing job from panel: "+jobdata.job.getJobDescription());
 
         this.remove(jobdata.progress);
         this.revalidate();

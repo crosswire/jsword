@@ -117,7 +117,7 @@ public abstract class AbstractBible implements Bible
     {
         Passage temp = PassageFactory.createPassage(PassageFactory.SPEED);
 
-        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread(), false);
         int percent = -1;
 
         // For every verse in the Bible

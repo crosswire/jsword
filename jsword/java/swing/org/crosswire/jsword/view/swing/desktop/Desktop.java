@@ -122,7 +122,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     {
         URL predicturl = Project.resource().getWritablePropertiesURL("splash");
         Splash splash = new Splash(this, 60000);
-        startjob = JobManager.createJob("Startup", predicturl);
+        startjob = JobManager.createJob("Startup", predicturl, true);
+        splash.pack();
 
         // Initial setup
         startjob.setProgress("Setting-up config");

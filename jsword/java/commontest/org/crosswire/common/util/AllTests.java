@@ -1,9 +1,7 @@
-
-// package default;
+package org.crosswire.common.util;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 /**
  * JUnit Test.
@@ -29,20 +27,16 @@ import junit.textui.TestRunner;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class CommonAllTests
+public class AllTests
 {
-    public static void main(String[] args)
-    {
-        TestRunner.run(suite());
-    }
-
     public static Test suite()
     {
-        TestSuite suite = new TestSuite();
-
-        suite.addTest(org.crosswire.common.util.AllTests.suite());
-        suite.addTest(org.crosswire.common.progress.AllTests.suite());
-
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.util");
+        //$JUnit-BEGIN$
+        suite.addTest(new TestSuite(HelpDeskTest.class));
+        suite.addTest(new TestSuite(StringUtilTest.class));
+        suite.addTest(new TestSuite(ThreadUtilTest.class));
+        //$JUnit-END$
         return suite;
     }
 }

@@ -1,9 +1,7 @@
 
-// package default;
+package org.crosswire.common.util;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import junit.framework.TestCase;
 
 /**
  * JUnit Test.
@@ -29,20 +27,33 @@ import junit.textui.TestRunner;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class CommonAllTests
+public class ThreadUtilTest extends TestCase
 {
-    public static void main(String[] args)
+    public ThreadUtilTest(String s)
     {
-        TestRunner.run(suite());
+        super(s);
     }
 
-    public static Test suite()
+    String NEWLINE = System.getProperty("line.separator", "\r\n");
+
+    protected void setUp() throws Exception
     {
-        TestSuite suite = new TestSuite();
+    }
 
-        suite.addTest(org.crosswire.common.util.AllTests.suite());
-        suite.addTest(org.crosswire.common.progress.AllTests.suite());
+    protected void tearDown() throws Exception
+    {
+    }
 
-        return suite;
+    public void testFindRoot() throws Exception
+    {
+        assertTrue(ThreadUtil.findRoot() != null);
+    }
+
+    public void testGetListing() throws Exception
+    {
+        /*
+        String[] result = ThreadUtil.getListing();
+        String result2 = StringUtil.cat(result, NEWLINE);
+        */
     }
 }

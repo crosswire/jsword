@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
+import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.WorkEvent;
 import org.crosswire.common.progress.WorkListener;
 import org.crosswire.common.swing.ComponentAbstractAction;
@@ -408,11 +409,13 @@ public class GeneratorPane extends EirPanel
          */
         public void workProgressed(final WorkEvent ev)
         {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable()
+            {
                 public void run()
                 {
-                    int percent = ev.getPercent();
-                    bar_prog.setString(ev.getDescription()+" "+percent+"%");
+                    Job job = ev.getJob();
+                    int percent = job.getPercent();
+                    bar_prog.setString(job.getStateDescription() + ": (" + percent + "%)");
                     bar_prog.setValue(percent);
                 }
             });

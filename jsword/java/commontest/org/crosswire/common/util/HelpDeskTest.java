@@ -28,9 +28,9 @@ import junit.framework.TestCase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestHelpDesk extends TestCase
+public class HelpDeskTest extends TestCase
 {
-    public TestHelpDesk(String s)
+    public HelpDeskTest(String s)
     {
         super(s);
     }

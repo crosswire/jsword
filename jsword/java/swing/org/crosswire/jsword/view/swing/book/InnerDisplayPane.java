@@ -78,21 +78,37 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                 try
                 {
                     URL predicturl = Project.resource().getWritablePropertiesURL("display");
-                    Job job = JobManager.createJob("Display Pre-load", predicturl, this);
+                    Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
 
                     job.setProgress("Setup");
                     Passage ref = PassageFactory.createPassage("Gen 1:1");
                     Bible version = Defaults.getBibleMetaData().getBible();
+                    if (interrupted())
+                    {
+                        return;
+                    }
 
                     job.setProgress("Getting initial data");
                     BookData data = version.getData(ref);
+                    if (interrupted())
+                    {
+                        return;
+                    }
 
                     job.setProgress("Getting event provider");
                     SAXEventProvider provider = data.getSAXEventProvider();
+                    if (interrupted())
+                    {
+                        return;
+                    }
 
                     job.setProgress("Compiling stylesheet");
                     Style style = new Style("swing");
                     style.applyStyleToString(provider, "simple.xsl");
+                    if (interrupted())
+                    {
+                        return;
+                    }
                     
                     job.done();
 

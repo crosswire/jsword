@@ -5,7 +5,6 @@ Tests
 - write tests to check support for all modules
 
 Filters
-- GBF add tags: RB, WG****, WHO****, WTH****, WTP, WT******* (Jacky)
 - Check THML debug tags needing work (Joe)
 - OSIS->text filter does not work for dictionaries
 
@@ -23,9 +22,6 @@ Sword Modules
 - zLD
 - GenBook
 - Locale/font support (Joe)
-
-Passage
-- chapter ranges are not displayed distinctly from verse ranges
 
 Search
 - add incomplete index warning to sersearchengine

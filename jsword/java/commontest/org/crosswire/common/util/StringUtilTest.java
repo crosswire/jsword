@@ -31,9 +31,9 @@ import junit.framework.TestCase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestStringUtil extends TestCase
+public class StringUtilTest extends TestCase
 {
-    public TestStringUtil(String s)
+    public StringUtilTest(String s)
     {
         super(s);
     }
