@@ -202,10 +202,10 @@ public class NetUtil
         {
             // If there's no working dir, we just use temp...
             workingFile = File.createTempFile(hashString, "jswordtemp");
-        }
 
-        // make sure we clean up after ourselves..
-        workingFile.deleteOnExit();
+            // make sure we clean up after ourselves..
+            workingFile.deleteOnExit();
+        }
 
         // copy the contents of the URL to the file
         OutputStream output = new FileOutputStream(workingFile);
@@ -219,7 +219,7 @@ public class NetUtil
         input.close();
         output.close();
 
-        //return the new file in URL form
+        // return the new file in URL form
         return workingFile;
     }
 

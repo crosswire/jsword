@@ -9,7 +9,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
@@ -508,9 +507,10 @@ public class RawBible extends LocalURLBible
 
             Properties prop = new Properties();
             prop.put("Version", getLocalURLBibleMetaData().getFullName());
+
             URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
             OutputStream prop_out = NetUtil.getOutputStream(prop_url);
-            PropertiesUtil.save(prop, prop_out, "RawBible Config");
+            prop.store(prop_out, "RawBible Config");
         }
         catch (IOException ex)
         {

@@ -4,7 +4,6 @@ package org.crosswire.common.config;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URL;
@@ -15,7 +14,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.RobustList;
 import org.jdom.Document;
@@ -366,10 +364,8 @@ public class Config implements Serializable
      */
     public void permanentToLocal(URL url) throws IOException
     {
-        InputStream in = url.openStream();
-
         Properties prop = new Properties();
-        PropertiesUtil.load(prop, in);
+        prop.load(url.openStream());
 
         setProperties(prop);
     }
@@ -383,8 +379,7 @@ public class Config implements Serializable
         File file = new File(url.getFile());
         OutputStream out = new FileOutputStream(file);
 
-        // Send our updates
-        PropertiesUtil.save(getProperties(), out, title);
+        getProperties().store(out, title);
     }
 
     /**

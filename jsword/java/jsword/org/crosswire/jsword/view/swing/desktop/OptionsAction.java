@@ -76,7 +76,7 @@ public class OptionsAction extends DesktopAbstractAction
             ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibles());
 
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
-            URL config_url = Project.resource().getPropertiesURL("desktop");
+            URL config_url = Project.resource().getWritablePropertiesURL("desktop");
             SwingConfig.showDialog(config, getDesktop(), config_url);
         }
         catch (Exception ex)

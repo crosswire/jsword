@@ -37,6 +37,7 @@ import java.util.Properties;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
+ * @deprecated
  */
 public class PropertiesUtil
 {

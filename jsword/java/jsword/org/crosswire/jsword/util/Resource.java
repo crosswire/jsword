@@ -2,7 +2,7 @@
 package org.crosswire.jsword.util;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.util.PropertiesUtil;
+import org.crosswire.common.util.NetUtil;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -45,6 +45,9 @@ import org.jdom.input.SAXBuilder;
  */
 public class Resource
 {
+    public static final String PROPERTIES_EXTENSION = ".properties";
+    public static final String PROJECT_DIRECTORY = ".jsword";
+
     /**
      * Singleton controlled by Project.
      * <p>The biggest job is trying to work out which resource bundle to
@@ -54,6 +57,18 @@ public class Resource
      */
     protected Resource()
     {
+        try
+        {
+            URL urlcache = getTempScratchSpace("netcache");
+            File filecache = new File(urlcache.getFile());
+            NetUtil.setURLCacheDir(filecache);
+        }
+        catch (IOException ex)
+        {
+            // This isn't fatal, it just means that NetUtil will try to use $TMP
+            // in place of a more permanent solution.
+            log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex);
+        }
     }
 
     /**
@@ -64,6 +79,38 @@ public class Resource
     {
         String index = "xsl/"+subject;
         return getIndex(index);
+    }
+
+    /**
+     * Generic utility to read a file list from an index.proerties file.
+     * PENDING(*): Is this sensible? I guess it is like this because it has to
+     * work over webstart, but it is all very similar to NetUtil.list() however
+     * this method does not make use of file: URLs.
+     * @see org.crosswire.common.util.NetUtil#list(URL, URLFilter)
+     */
+    private String[] getIndex(String index) throws IOException
+    {
+        String search = index+"/index"+PROPERTIES_EXTENSION;
+        InputStream in = getResourceAsStream(search);
+        if (in == null)
+            return new String[0];
+
+        Properties prop = new Properties();
+        prop.load(in);
+
+        int i = 0;
+        ArrayList list = new ArrayList();
+        while (true)
+        {
+            i++;
+            String line = prop.getProperty("index."+i);
+
+            if (line == null) break;
+
+            list.add(line);
+        }
+
+        return (String[]) list.toArray(new String[0]);
     }
 
     /**
@@ -81,40 +128,120 @@ public class Resource
     }
 
     /**
-     * Get and load a properties file from the classpath and a few other places
-     * into a Properties object.
+     * Get and load a properties file from the writable area or if that
+     * fails from the classpath (where a default ought to be stored).
      * @param subject The name of the desired resource (without any extension)
      * @return The project root as a URL
      */
     public Properties getProperties(String subject) throws IOException, MalformedURLException
     {
-        Properties prop = new Properties();
-        String lookup = "/"+subject+".properties";
+        Properties prop;
+
+        prop = getWritableProperties(subject);
+        if (prop != null)
+        {
+            log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from writable area (ignoring resources): [OK]");
+            return prop;
+        }
+
+        prop = getResourceProperties(subject);
+        if (prop != null)
+        {
+            log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from classpath: [OK]");
+            return prop;
+        }
+
+        log.debug("Loading "+subject+" from classpath: [NOT FOUND]");
+        throw new FileNotFoundException("can't find properties: "+subject);
+    }
+
+    /**
+     * Search the classpath for the specified properties file.
+     * @param subject The name (minus the .properties extension)
+     * @return The found and loaded properties file or null if not found.
+     */
+    public Properties getResourceProperties(String subject) throws IOException
+    {
+        String lookup = subject+PROPERTIES_EXTENSION;
         InputStream in = getResourceAsStream(lookup);
+
         if (in != null)
         {
-            log.debug("Loading "+lookup+" from classpath: [OK]");
-            PropertiesUtil.load(prop, in);
-        }
-        else
-        {
-            log.debug("Loading "+lookup+" from classpath: [NOT FOUND]");
+            Properties prop = new Properties();
+            prop.load(in);
+            return prop;
         }
 
-        String path = System.getProperty("user.home") + File.separator + ".jsword/" + subject;
-        File file = new File(path);
-        if (file.isFile() && file.canRead())
-        {
-            log.debug("Loading "+lookup+" from ~/.jsword/" + lookup + ": [OK]");
-            in = new FileInputStream(file);
-            PropertiesUtil.load(prop, in);
-        }
-        else
-        {
-            log.debug("Loading "+lookup+" from ~/.jsword/" + lookup + ": [NOT FOUND]");
-        }
+        return null;
+    }
 
-        return prop;
+    /**
+     * Get a the URL of a (potentially non-existant) properties file that we can
+     * write to. This method of aquiring properties files is preferred over
+     * getResourceProperties() as this iw writable and can take into account
+     * user preferences.
+     * @param subject The name (minus the .properties extension)
+     * @return The project root as a URL
+     */
+    public Properties getWritableProperties(String subject) throws IOException, MalformedURLException
+    {
+        URL url = getWritablePropertiesURL(subject);
+
+        if (NetUtil.isFile(url))
+        {
+            Properties prop = new Properties();
+            prop.load(url.openStream());
+            return prop;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get a the URL of a (potentially non-existant) properties file that we can
+     * write to. This method of aquiring properties files is preferred over
+     * getResourceProperties() as this iw writable and can take into account
+     * user preferences.
+     * @param subject The name (minus the .properties extension)
+     * @return The project root as a URL
+     */
+    public URL getWritablePropertiesURL(String subject) throws MalformedURLException
+    {
+        URL base = getWritableBaseURL();
+        return NetUtil.lengthenURL(base, subject+PROPERTIES_EXTENSION);
+    }
+
+    /**
+     * Where can we write cache or config files?
+     * @return URL of the users .jsword directory.
+     */
+    private URL getWritableBaseURL() throws MalformedURLException
+    {
+        String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY + "/";
+        return new URL("file", null, path);
+    }
+
+    /**
+     * When we need a directory to write stuff to.
+     * <p>This directory should be used as a cache for something that could also
+     * be got at runtime by some other means.
+     * <p>So it is not for config data, and not for program files. If someone
+     * were to delete all the files in this directory while you weren't looking
+     * then life should not stop, but should carry on albeit with a slower
+     * service.
+     * <p>As a result of these limitations it could be OK to use {@link File} in
+     * place of {@link URL} (which is the norm for this project), however there
+     * doesn't seem to be a good reason to relax this rule here.
+     * @param A moniker for the are to write to. This will be converted into a
+     * directory name.
+     * @return A file: URL pointing at a local writable directory.
+     */
+    public URL getTempScratchSpace(String subject) throws IOException
+    {
+        URL base = getWritableBaseURL();
+        URL temp = NetUtil.lengthenURL(base, subject);
+        NetUtil.makeDirectory(temp);
+        return temp;
     }
 
     /**
@@ -183,20 +310,6 @@ public class Resource
     }
 
     /**
-     * Get the root of the project installation.
-     * @return The project root as a URL
-     */
-    public URL getPropertiesURL(String subject) throws IOException, MalformedURLException
-    {
-        String search = subject+".properties";
-        URL reply = getResource(search);
-        if (reply == null)
-            throw new MalformedURLException("Failed to find "+search);
-
-        return reply;
-    }
-
-    /**
      * Generic resource URL fetcher. One way or the other we'll find it!
      * I'm fairly sure some of these do the same thing, but which and how they
      * change on various JDK's is complex, and it seems simpler to take the
@@ -236,33 +349,7 @@ public class Resource
     }
 
     /**
-     * Generic utility to read a file list from an index.proerties file
+     * The log stream
      */
-    private String[] getIndex(String index) throws IOException
-    {
-        String search = index+"/index.properties";
-        InputStream in = getResourceAsStream(search);
-        if (in == null)
-            return new String[0];
-
-        Properties prop = new Properties();
-        PropertiesUtil.load(prop, in);
-
-        int i = 0;
-        ArrayList list = new ArrayList();
-        while (true)
-        {
-            i++;
-            String line = prop.getProperty("index."+i);
-
-            if (line == null) break;
-
-            list.add(line);
-        }
-
-        return (String[]) list.toArray(new String[0]);
-    }
-
-    /** The log stream */
     protected static Logger log = Logger.getLogger(Resource.class);
 }

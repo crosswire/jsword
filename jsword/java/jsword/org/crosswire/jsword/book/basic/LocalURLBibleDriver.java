@@ -10,7 +10,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.util.URLFilter;
@@ -163,9 +162,10 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
             {
                 URL url = NetUtil.lengthenURL(dir, names[i]);
                 URL prop_url = NetUtil.lengthenURL(url, "bible.properties");
-                InputStream prop_in = prop_url.openStream();
+
                 Properties prop = new Properties();
-                PropertiesUtil.load(prop, prop_in);
+                prop.load(prop_url.openStream());
+
                 versions[i] = new LocalURLBibleMetaData(this, url, prop);
             }
 
