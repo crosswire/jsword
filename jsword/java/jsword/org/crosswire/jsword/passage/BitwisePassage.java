@@ -256,7 +256,7 @@ public class BitwisePassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppress_events == 0)
+        if (suppress_events == 0 && !that.isEmpty())
             fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
     }
 

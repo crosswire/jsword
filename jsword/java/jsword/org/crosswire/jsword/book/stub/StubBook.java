@@ -14,6 +14,9 @@ import org.crosswire.jsword.book.Commentary;
 import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
+import org.crosswire.jsword.book.Key;
+import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
@@ -161,6 +164,39 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
         try
         {
             return PassageFactory.createPassage("Gen 1:1-Rev22:21");
+        }
+        catch (Exception ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /**
+     * For a given search string find a list of references to it
+     * @param word The text to search for
+     * @return The references to the word
+     */
+    public Passage findPassage(Search search) throws BookException
+    {
+        try
+        {
+            return PassageFactory.createPassage("Gen 1:1-Rev22:21");
+        }
+        catch (Exception ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
+     */
+    public Key find(Search search) throws BookException
+    {
+        try
+        {
+            Passage ref = PassageFactory.createPassage("Gen 1:1-Rev22:21"); 
+            return new PassageKey(ref);
         }
         catch (Exception ex)
         {

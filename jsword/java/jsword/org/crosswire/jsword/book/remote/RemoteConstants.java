@@ -31,7 +31,6 @@ public interface RemoteConstants
     public static final String METHOD_GETBIBLES = "getBibles";
     public static final String METHOD_GETDATA = "getData";
     public static final String METHOD_FINDPASSAGE = "findPassage";
-    public static final String METHOD_STARTSWITH = "getStartsWith";
     public static final String PARAM_BIBLE = "bible";
     public static final String PARAM_PASSAGE = "passage";
     public static final String PARAM_WORD = "word";

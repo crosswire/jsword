@@ -7,7 +7,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.control.test.Speed;
+import org.crosswire.jsword.book.test.Speed;
 import org.crosswire.jsword.util.Project;
 
 /**

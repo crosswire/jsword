@@ -1,16 +1,16 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.PassageUtil;
 
 /**
  * The BookUtil class provide utility functions for the various Books.
+ * 
+ * It is not designed to be used outside of the book package, so using it
+ * outside of these bounds is at your own risk.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -40,65 +40,6 @@ public class BookUtil
      */
     private BookUtil()
     {
-    }
-
-    /**
-     * A basic version of getPassageTally(String[]) simply calls
-     * getPassage(String) in a loop for each word, adding the Verses
-     * to an PassageTally that is returned
-     * @param version The version to search using
-     * @param tally The PassageTally to update
-     * @param words The words to search for
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static void updatePassageTally(Bible version, PassageTally tally, String[] words) throws BookException
-    {
-        for (int i=0; i<words.length; i++)
-        {
-            tally.addAll(version.findPassage(words[i]));
-        }
-    }
-
-    /**
-     * This is similar to updatePassageTally() however if a verse matches
-     * many words it still only adds on for that verse in the given tally
-     * @param version The version to search using
-     * @param tally The PassageTally to update
-     * @param words The words to search for
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static void updatePassageTallyFlat(Bible version, PassageTally tally, String[] words) throws BookException
-    {
-        PassageTally temp = new PassageTally();
-
-        for (int i=0; i<words.length; i++)
-        {
-            temp.addAll(version.findPassage(words[i]));
-        }
-
-        temp.flatten();
-        tally.addAll(temp);
-    }
-
-    /**
-     * A basic version of getPassage(String[]) simply calls
-     * getPassage(String) in a loop for each word, adding the Verses
-     * to an Passage that is returned
-     * @param version The version to search using
-     * @param words The words to search for
-     * @return The Passage
-     * @throws BookException If anything goes wrong with this method
-     */
-    public static Passage getPassage(Bible version, String[] words) throws BookException
-    {
-        Passage ref = PassageFactory.createPassage();
-
-        for (int i=0; i<words.length; i++)
-        {
-            ref.addAll(version.findPassage(words[i]));
-        }
-
-        return ref;
     }
 
     /**
@@ -350,13 +291,6 @@ public class BookUtil
             list.add(s);
         }
 
-        int len = list.size();
-        String[] array = new String[len];
-        for (int i=0; i<array.length; i++)
-        {
-            array[i] = (String) list.get(i);
-        }
-
-        return array;
+        return (String[]) list.toArray(new String[list.size()]);
     }
 }

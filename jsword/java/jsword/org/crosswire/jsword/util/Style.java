@@ -140,8 +140,10 @@ public class Style
             // Load the xsl document
             InputStream xsl_in = Project.resource().getStyleInputStream(subject, style);
 
+            template = transfact.newTemplates(new StreamSource(xsl_in));
+
             if (cache)
-                template = transfact.newTemplates(new StreamSource(xsl_in));
+                txers.put(style, template);
         }
 
         Transformer transformer = template.newTransformer();

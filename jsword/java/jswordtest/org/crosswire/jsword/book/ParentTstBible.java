@@ -43,7 +43,7 @@ public class ParentTstBible extends TestCase
 
     protected void setUp() throws Exception
     {
-        List lbmds = Books.getBooks(Filters.getBibles());
+        List lbmds = Books.getBooks(BookFilters.getBibles());
         bibles = new Bible[lbmds.size()];
         bmds = new BibleMetaData[lbmds.size()];
 

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.basic.LocalURLBookDriver;
+import org.crosswire.jsword.book.local.LocalURLBookDriver;
 
 /**
  * This represents all of the SerBibles.

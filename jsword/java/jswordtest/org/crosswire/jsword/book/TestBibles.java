@@ -60,7 +60,7 @@ public class TestBibles extends TestCase
     {
         gen11 = PassageFactory.createPassage("Gen 1:1");
 
-        List lbmds = Books.getBooks(Filters.getBibles());
+        List lbmds = Books.getBooks(BookFilters.getBibles());
         bibles = new Bible[lbmds.size()];
         bmds = new BibleMetaData[lbmds.size()];
 
@@ -162,8 +162,8 @@ public class TestBibles extends TestCase
         for (int i=0; i<bibles.length; i++)
         {
             Bible bible = bibles[i];
-            Key key = bible.find("aaron");
-            assertNotNull(key);
+            Key key = bible.find(new Search("aaron", false));
+            assertNotNull("bible="+bible.getBibleMetaData().getFullName(), key);
         }
     }
 
@@ -173,19 +173,8 @@ public class TestBibles extends TestCase
         {
             Bible ver = bibles[i];
 
-            Passage ref = ver.findPassage("aaron");
+            Passage ref = ver.findPassage(new Search("aaron", false));
             assertTrue(ref != null);
-        }
-    }
-
-    public void testGetStartsWith() throws Exception
-    {
-        for (int i=0; i<bibles.length; i++)
-        {
-            Bible ver = bibles[i];
-
-            String[] sa = BookUtil.toStringArray(ver.getStartsWith("a"));
-            assertTrue(sa != null);
         }
     }
 
@@ -205,31 +194,46 @@ public class TestBibles extends TestCase
             if (skip) continue;
             log.debug("thorough testing bible: "+ver.getBibleMetaData().getFullName());
 
-            Passage ref = ver.findPassage("aaron");
+            Passage ref = ver.findPassage(new Search("aaron", false));
             assertTrue(ref.countVerses() > 10);
-            ref = ver.findPassage("jerusalem");
+            ref = ver.findPassage(new Search("jerusalem", false));
             assertTrue(ref.countVerses() > 10);
-            ref = ver.findPassage("god");
+            ref = ver.findPassage(new Search("god", false));
             assertTrue(ref.countVerses() > 10);
-            ref = ver.findPassage("GOD");
+            ref = ver.findPassage(new Search("GOD", false));
             assertTrue(ref.countVerses() > 10);
-            ref = ver.findPassage("brother's");
+            ref = ver.findPassage(new Search("brother's", false));
             assertTrue(ref.countVerses() > 2);
-            ref = ver.findPassage("BROTHER'S");
+            ref = ver.findPassage(new Search("BROTHER'S", false));
             assertTrue(ref.countVerses() > 2);
 
-            ref = ver.findPassage("maher-shalal-hash-baz");
+            ref = ver.findPassage(new Search("maher-shalal-hash-baz", false));
             if (ref.isEmpty())
-                ref = ver.findPassage("mahershalalhashbaz");
+                ref = ver.findPassage(new Search("mahershalalhashbaz", false));
             assertEquals(ref.countVerses(), 2);
             assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1"));
             assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3"));
-            ref = ver.findPassage("MAHER-SHALAL-HASH-BAZ");
+            ref = ver.findPassage(new Search("MAHER-SHALAL-HASH-BAZ", false));
             if (ref.isEmpty())
-                ref = ver.findPassage("MAHERSHALALHASHBAZ");
+                ref = ver.findPassage(new Search("MAHERSHALALHASHBAZ", false));
             assertEquals(ref.countVerses(), 2);
             assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1"));
             assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3"));
+        }
+    }
+
+    /*
+    public void testGetStartsWith() throws Exception
+    {
+        for (int i=0; i<bibles.length; i++)
+        {
+            Bible ver = bibles[i];
+            
+            if (ver instanceof SearchableBible)
+            {
+                String[] sa = BookUtil.toStringArray(((SearchableBible) ver).getSearcher().getStartsWith("a"));
+                assertTrue(sa != null);
+            }
         }
     }
 
@@ -238,45 +242,50 @@ public class TestBibles extends TestCase
         for (int i=0; i<bibles.length; i++)
         {
             // Check that this is a type that we expect to return real Bible data
-            Bible ver = bibles[i];
+            Bible origver = bibles[i];
             boolean skip = false;
             for (int j=0; j<ignorebibles.length; j++)
             {
                 // if (ver instanceof fullbibles[j])
-                if (ver.getClass().isAssignableFrom(ignorebibles[j]))
+                if (origver.getClass().isAssignableFrom(ignorebibles[j]))
                     skip = true;
             }
             if (skip) continue;
-            log.debug("thorough testing bible: "+ver.getBibleMetaData().getFullName());
+            log.debug("thorough testing bible: "+origver.getBibleMetaData().getFullName());
 
-            String[] sa = BookUtil.toStringArray(ver.getStartsWith("jos"));
-            assertTrue(sa.length > 5);
-            sa = BookUtil.toStringArray(ver.getStartsWith("jerusale"));
-            assertEquals(sa[0], "jerusalem");
-            sa = BookUtil.toStringArray(ver.getStartsWith("maher-shalal"));
-            if (sa.length == 0)
+            if (origver instanceof SearchableBible)
             {
-                sa = BookUtil.toStringArray(ver.getStartsWith("mahershalal"));
-                assertEquals(sa[0], "mahershalalhashbaz");
+                SearchableBible ver = (SearchableBible) origver;
+                String[] sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("jos"));
+                assertTrue(sa.length > 5);
+                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("jerusale"));
+                assertEquals(sa[0], "jerusalem");
+                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("maher-shalal"));
+                if (sa.length == 0)
+                {
+                    sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("mahershalal"));
+                    assertEquals(sa[0], "mahershalalhashbaz");
+                }
+                else
+                {
+                    assertEquals(sa[0], "maher-shalal-hash-baz");
+                }
+                assertEquals(sa.length, 1);
+                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("MAHER-SHALAL"));
+                if (sa.length == 0)
+                {
+                    sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("MAHERSHALAL"));
+                    assertEquals(sa[0], "mahershalalhashbaz");
+                }
+                else
+                {
+                    assertEquals(sa[0], "maher-shalal-hash-baz");
+                }
+                assertEquals(sa.length, 1);
+                sa = BookUtil.toStringArray(ver.getSearcher().getStartsWith("XXX"));
+                assertEquals(sa.length, 0);
             }
-            else
-            {
-                assertEquals(sa[0], "maher-shalal-hash-baz");
-            }
-            assertEquals(sa.length, 1);
-            sa = BookUtil.toStringArray(ver.getStartsWith("MAHER-SHALAL"));
-            if (sa.length == 0)
-            {
-                sa = BookUtil.toStringArray(ver.getStartsWith("MAHERSHALAL"));
-                assertEquals(sa[0], "mahershalalhashbaz");
-            }
-            else
-            {
-                assertEquals(sa[0], "maher-shalal-hash-baz");
-            }
-            assertEquals(sa.length, 1);
-            sa = BookUtil.toStringArray(ver.getStartsWith("XXX"));
-            assertEquals(sa.length, 0);
         }
     }
+    */
 }

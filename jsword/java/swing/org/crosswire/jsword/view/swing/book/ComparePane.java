@@ -25,7 +25,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -211,13 +211,13 @@ public class ComparePane extends EirPanel
      * The first Bible selection combo.
      * We cast to Bible in compare() so we need to filter
      */
-    private BooksComboBoxModel mdl_bibles1 = new BooksComboBoxModel(Filters.getBibles());
+    private BooksComboBoxModel mdl_bibles1 = new BooksComboBoxModel(BookFilters.getBibles());
 
     /**
      * The second Bible selection combo
      * We cast to Bible in compare() so we need to filter
      */
-    private BooksComboBoxModel mdl_bibles2 = new BooksComboBoxModel(Filters.getBibles());
+    private BooksComboBoxModel mdl_bibles2 = new BooksComboBoxModel(BookFilters.getBibles());
 
     /* GUI Components */
     private Box box_top;

@@ -9,6 +9,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.events.ProgressEvent;
@@ -76,14 +77,23 @@ public abstract class AbstractBible implements Bible
     }
 
     /**
-     * To tie in with the Book find method
-     * @param word The word to search for
-     * @return The found key
+     * Retrieval: For a given word find a list of references to it
+     * @param word The text to search for
+     * @return The references to the word
      * @throws BookException If anything goes wrong with this method
+     * @see Book#find(String)
      */
-    public Key find(String word) throws BookException
+    public abstract Passage findPassage(Search word) throws BookException;
+
+    /**
+     * Retrieval: For a given search spec find a list of references to it.
+     * @param base
+     * @return Iterator
+     * @throws BookException
+     */
+    public Key find(Search search) throws BookException
     {
-        Passage ref = findPassage(word);
+        Passage ref = findPassage(search);
         return new PassageKey(ref);
     }
 

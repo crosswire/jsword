@@ -17,8 +17,8 @@ import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Filters;
-import org.crosswire.jsword.control.test.Speed;
+import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.test.Speed;
 
 /**
  * BenchmarkPane allows an application to test the speed of a Bible by
@@ -145,7 +145,7 @@ public class BenchmarkPane extends EirPanel
     /**
      * Combo model. The filter is important for the cast above
      */
-    private BooksComboBoxModel mdl_bible = new BooksComboBoxModel(Filters.getBibles());
+    private BooksComboBoxModel mdl_bible = new BooksComboBoxModel(BookFilters.getBibles());
 
     private JPanel pnl_north = new JPanel();
 

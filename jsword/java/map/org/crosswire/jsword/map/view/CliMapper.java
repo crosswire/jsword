@@ -7,9 +7,9 @@ import java.util.Iterator;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -78,7 +78,7 @@ public class CliMapper
             PrintWriter xlout = new PrintWriter(new FileOutputStream("c:\\sheet.csv"));
 
             Bible bible = Defaults.getBibleMetaData().getBible();
-            Matcher engine = new Matcher(bible);
+            //Matcher engine = new Matcher(bible);
 
             Element links = new Element("links");
 
@@ -112,7 +112,7 @@ public class CliMapper
 
                         BibleData data = bible.getData(ref);
                         String text = OsisUtil.getPlainText(data);
-                        PassageTally temp = engine.bestMatch(text);
+                        PassageTally temp = (PassageTally) bible.findPassage(new Search(text, true));
                         temp.setOrdering(PassageTally.ORDER_TALLY);
                         total.addAll(temp);
                     }
@@ -196,28 +196,28 @@ public class CliMapper
         }        
     }
     
-            /*
+    /*
 
-            // Remove the original wherever it was
-            tally.remove(verse);
+    // Remove the original wherever it was
+    tally.remove(verse);
 
-            // Create the links for the tally
-            links[index] = new Link[LINKS_PER_VERSE];
-            for (int i=0; i<LINKS_PER_VERSE; i++)
-            {
-                try
-                {
-                    Verse loop = tally.getVerseAt(i);
-                    int strength = tally.getTallyOf(loop);
+    // Create the links for the tally
+    links[index] = new Link[LINKS_PER_VERSE];
+    for (int i=0; i<LINKS_PER_VERSE; i++)
+    {
+        try
+        {
+            Verse loop = tally.getVerseAt(i);
+            int strength = tally.getTallyOf(loop);
 
-                    links[index][i] = new Link(loop.getOrdinal(), strength);
-                }
-                catch (ArrayIndexOutOfBoundsException ex)
-                {
-                    links[index][i] = new Link(verse.getOrdinal(), 0);
-                }
-            }
+            links[index][i] = new Link(loop.getOrdinal(), strength);
+        }
+        catch (ArrayIndexOutOfBoundsException ex)
+        {
+            links[index][i] = new Link(verse.getOrdinal(), 0);
+        }
+    }
 
-            return links[index];
-            */
+    return links[index];
+    */
 }

@@ -43,7 +43,7 @@ import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
-import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.map.model.AdjustOriginRule;
 import org.crosswire.jsword.map.model.AntiGravityRule;
 import org.crosswire.jsword.map.model.BrownianRule;
@@ -887,7 +887,7 @@ public class Mapper extends JFrame
     {
         try
         {
-            BookChooser chooser = new BookChooser(Filters.getBibles());
+            BookChooser chooser = new BookChooser(BookFilters.getBibles());
             int reply = chooser.showDialog(this);
 
             if (reply == BookChooser.APPROVE_OPTION)

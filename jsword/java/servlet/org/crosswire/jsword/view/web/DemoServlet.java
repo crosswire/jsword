@@ -15,10 +15,9 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.control.search.Engine;
-import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
@@ -62,8 +61,6 @@ public class DemoServlet extends HttpServlet
         {
             Project.init();
             version = Defaults.getBibleMetaData().getBible();
-            engine = new Engine(version);
-            matcher = new Matcher(version);
         }
         catch (BookException ex)
         {
@@ -84,14 +81,14 @@ public class DemoServlet extends HttpServlet
             if (search != null)
             {
                 request.setAttribute("search", search);
-                ref = engine.search(search);
+                ref = version.findPassage(new Search(search, false));
             }
 
             String match = request.getParameter("match");
             if (match != null)
             {
                 request.setAttribute("match", match);
-                PassageTally tally = matcher.bestMatch(match);
+                PassageTally tally = (PassageTally) version.findPassage(new Search(match, true));
                 tally.setOrdering(PassageTally.ORDER_TALLY);
                 tally.trimRanges(tally_trim);
                 ref = tally;
@@ -148,8 +145,6 @@ public class DemoServlet extends HttpServlet
     private static int tally_trim = 50;
     private static int page_size = 150;
     private Bible version;
-    private Engine engine;
-    private Matcher matcher;
     private Style style = new Style("web");
 
     /** The log stream */

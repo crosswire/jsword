@@ -2,15 +2,15 @@
 package org.crosswire.jsword.book.remote;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
 import org.crosswire.jsword.passage.Passage;
@@ -65,7 +65,7 @@ public class LocalRemoter implements Remoter
         {
             if (RemoteConstants.METHOD_GETBIBLES.equals(methodname))
             {
-                List lbmds = Books.getBooks(Filters.getFaster(Books.SPEED_SLOWEST));
+                List lbmds = Books.getBooks(BookFilters.getFaster(Books.SPEED_SLOWEST));
                 BibleMetaData[] bmds = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
                 
                 String[] uids = getUIDs(bmds);
@@ -91,17 +91,9 @@ public class LocalRemoter implements Remoter
                 BibleMetaData bmd = lookupBibleMetaData(uid);
                 Bible bible = bmd.getBible();
                 String word = method.getParameter(RemoteConstants.PARAM_WORD);
-                Passage ref = bible.findPassage(word);
+                // PENDING(joe): do a better job of transferring the search string
+                Passage ref = bible.findPassage(new Search(word, false));
                 return Converter.convertPassageToDocument(ref);
-            }
-            else if (RemoteConstants.METHOD_STARTSWITH.equals(methodname))
-            {
-                String uid = method.getParameter(RemoteConstants.PARAM_BIBLE);
-                BibleMetaData bmd = lookupBibleMetaData(uid);
-                Bible bible = bmd.getBible();
-                String word = method.getParameter(RemoteConstants.PARAM_WORD);
-                Iterator it = bible.getStartsWith(word);
-                return Converter.convertStartsWithToDocument(it);
             }
             else
             {

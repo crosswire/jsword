@@ -13,10 +13,9 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
-import org.crosswire.jsword.control.search.Matcher;
-import org.crosswire.jsword.control.search.SearchException;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -63,10 +62,9 @@ public class LinkArray implements Serializable
      * Basic constructor
      * @param bible The source of Bible data
      */
-    public LinkArray(Bible bible) throws NoSuchVerseException, BookException, SearchException
+    public LinkArray(Bible bible) throws NoSuchVerseException, BookException
     {
         this.bible = bible;
-        engine = new Matcher(bible);
 
         links = new Link[BibleInfo.booksInBible()+1][][];
 
@@ -202,7 +200,7 @@ public class LinkArray implements Serializable
     /**
      * Fill up the link cache
      */
-    public void cacheAll() throws NoSuchVerseException, BookException, SearchException
+    public void cacheAll() throws NoSuchVerseException, BookException
     {
         // Create the array of Nodes
         for (int b=1; b<=BibleInfo.booksInBible(); b++)
@@ -236,8 +234,8 @@ public class LinkArray implements Serializable
                 ref.add(find);
 
                 BibleData data = bible.getData(ref);
-                String text = OsisUtil.getPlainText(data);;   
-                PassageTally temp = engine.bestMatch(text);
+                String text = OsisUtil.getPlainText(data);   
+                PassageTally temp = (PassageTally) bible.findPassage(new Search(text, false));
                 temp.setOrdering(PassageTally.ORDER_TALLY);
                 total.addAll(temp);
             }
@@ -343,9 +341,6 @@ public class LinkArray implements Serializable
 
     /** The Bible that we search in */
     private transient Bible bible;
-
-    /** The thing we use to generate matches */
-    private transient Matcher engine;
 
     /** The link data */
     private Link[][][] links;

@@ -32,7 +32,7 @@ import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
@@ -259,7 +259,7 @@ public class GeneratorPane extends EirPanel
      * The model for the sources.
      * Bibles are required in GeneratorRunnable.run()
      */
-    private BooksComboBoxModel mdl_source = new BooksComboBoxModel(Filters.getBibles());
+    private BooksComboBoxModel mdl_source = new BooksComboBoxModel(BookFilters.getBibles());
 
     /**
      * Layout for the destination panel

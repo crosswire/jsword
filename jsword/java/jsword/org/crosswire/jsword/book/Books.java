@@ -115,7 +115,7 @@ public class Books
 
     /**
      * Get a filtered iterator over all the Books.
-     * @see Filters
+     * @see BookFilters
      */
     public static List getBooks(BookFilter filter)
     {

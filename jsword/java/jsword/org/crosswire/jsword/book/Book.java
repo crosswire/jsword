@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
-
 import org.crosswire.jsword.book.data.BookData;
 
 /**
@@ -58,32 +56,10 @@ public interface Book
     public BookData getData(Key ref) throws BookException;
 
     /**
-     * Retrieval: For a given word find a list of references to it.
-     * PENDING(joe): alter the search interface to subsume view.search
-     * @param word The text to search for
-     * @return The references to the word
-     * @throws BookException If anything goes wrong with this method
+     * Retrieval: For a given search spec find a list of references to it.
+     * @param base
+     * @return Iterator
+     * @throws BookException
      */
-    public Key find(String word) throws BookException;
-
-    /**
-     * Retrieval: Return an array of words that are used by this Bible
-     * that start with the given string.
-     * For example calling: <code>getStartsWith("love")</code> will return
-     * something like:
-     * { "love", "loves", "lover", "lovely", ... }
-     * <p>This is only needed to make your this name play well
-     * in searches it is not vital for normal display. To save yourself
-     * the bother of implementing this properly you could do:
-     *   <code>return new String[] { base };</code>
-     * <p>The Iterator can be converted into a String[] easily using the
-     * toStringArray() method in BookUtil.
-     * <p>A fully featured implementation will reply to getStartsWith("")
-     * with every word.
-     * @param base The word to base your word array on
-     * @see BookUtil#toStringArray(Iterator)
-     * @return An array of words starting with the base
-     * @throws BookException If anything goes wrong with this method
-     */
-    public Iterator getStartsWith(String base) throws BookException;
+    public Key find(Search search) throws BookException;
 }

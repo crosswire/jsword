@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 
@@ -52,7 +52,7 @@ public class LocalRemoterTest extends TestCase
 
     public void testGetBibles() throws Exception
     {
-        List lbmds = Books.getBooks(Filters.getFaster(Books.SPEED_SLOWEST));
+        List lbmds = Books.getBooks(BookFilters.getFaster(Books.SPEED_SLOWEST));
         BibleMetaData[] names1 = (BibleMetaData[]) lbmds.toArray(new BibleMetaData[lbmds.size()]);
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);

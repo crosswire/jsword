@@ -20,7 +20,7 @@ import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Filters;
+import org.crosswire.jsword.book.BookFilters;
 
 /**
  * Allows various maintenance procedures to be done on Bibles like
@@ -170,7 +170,7 @@ public class MaintenancePane extends EirPanel
     private JList lst_versions = new JList();
 
     /** The BiblesModel for the list */
-    private BooksComboBoxModel mdl_versions = new BooksComboBoxModel(Filters.getBibles());
+    private BooksComboBoxModel mdl_versions = new BooksComboBoxModel(BookFilters.getBibles());
 
     /** The button bar */
     private JPanel pnl_buttons = new JPanel();

@@ -4,9 +4,9 @@ package org.crosswire.jsword.book.ser;
 import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.basic.LocalURLBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 

@@ -1,13 +1,12 @@
 
 package org.crosswire.jsword.book.remote;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
@@ -97,13 +96,13 @@ public class RemoteBible extends AbstractBible
      * @param word The text to search for
      * @return The references to the word
      */
-    public Passage findPassage(String word) throws BookException
+    public Passage findPassage(Search word) throws BookException
     {
         try
         {
             RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_FINDPASSAGE);
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
-            method.addParam(RemoteConstants.PARAM_WORD, word);
+            method.addParam(RemoteConstants.PARAM_WORD, word.getMatch());
             Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToPassage(doc);
@@ -115,31 +114,6 @@ public class RemoteBible extends AbstractBible
         catch (RemoterException ex)
         {
             throw new BookException("remoting failure", ex);
-        }
-    }
-
-    /**
-     * Retrieval: Return an array of words that are used by this Bible
-     * that start with the given string.
-     * For example calling: <code>getStartsWith("love")</code>
-     * will return something like: { "love", "loves", "lover", "lovely", ... }
-     * @param base The word to base your word array on
-     * @return An array of words starting with the base
-     */
-    public Iterator getStartsWith(String word) throws BookException
-    {
-        try
-        {
-            RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_STARTSWITH);
-            method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
-            method.addParam(RemoteConstants.PARAM_WORD, word);
-            Document doc = remoter.execute(method);
-
-            return Converter.convertDocumentToStartsWith(doc);
-        }
-        catch (Exception ex)
-        {
-            throw new BookException("remote_failure", ex);
         }
     }
 

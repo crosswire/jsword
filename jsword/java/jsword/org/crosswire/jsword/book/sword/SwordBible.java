@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.OsisUtil;
@@ -187,7 +188,7 @@ public class SwordBible extends AbstractBible
      * @param word The text to search for
      * @return The references to the word
      */
-    public Passage findPassage(String word) throws BookException
+    public Passage findPassage(Search word) throws BookException
     {
         return PassageFactory.createPassage();
     }

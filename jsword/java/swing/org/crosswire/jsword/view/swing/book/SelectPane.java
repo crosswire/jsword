@@ -17,9 +17,8 @@ import javax.swing.JTextField;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.Filters;
-import org.crosswire.jsword.control.search.Engine;
-import org.crosswire.jsword.control.search.Matcher;
+import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -61,7 +60,7 @@ public class SelectPane extends JPanel
     public SelectPane()
     {
         // Bother search() and version() rely on this returning only Bibles
-        mdl_versn = new BooksComboBoxModel(Filters.getBibles());
+        mdl_versn = new BooksComboBoxModel(BookFilters.getBibles());
         jbInit();
     }
 
@@ -119,27 +118,19 @@ public class SelectPane extends JPanel
             // This cast is safe because we asked for Bibles in the ctor
             Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
 
-            if (MATCH.equals(type))
-            {
-                Matcher match = new Matcher(version);
+            Search search = new Search(param, MATCH.equals(type));
+            Passage ref = version.findPassage(search);
 
-                PassageTally tally = match.bestMatch(param);
+            // we get PassageTallys for best match searches
+            if (ref instanceof PassageTally)
+            {
+                PassageTally tally = (PassageTally) ref;
                 tally.setOrdering(PassageTally.ORDER_TALLY);
                 tally.trimRanges(20);
-
-                txt_passg.setText(tally.getName());
-                fireCommandMade(new CommandEvent(this, tally));
             }
-            else
-            {
-                Engine engine = new Engine(version);
 
-                Passage ref = engine.search(param);
-                // ref.trimRanges(20);
-
-                txt_passg.setText(ref.getName());
-                fireCommandMade(new CommandEvent(this, ref));
-            }
+            txt_passg.setText(ref.getName());
+            fireCommandMade(new CommandEvent(this, ref));
 
             txt_passg.grabFocus();
         }

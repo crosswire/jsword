@@ -9,6 +9,7 @@ import java.util.Iterator;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -204,7 +205,8 @@ public class Verifier
         alive = true;
 
         // For every word in the word list
-        Iterator it = bible1.getStartsWith(starts);
+        // NOTE(joe): think of a new way to do this
+        Iterator it = null;//bible1.getSearcher().getStartsWith(starts);
 
         while (it.hasNext())
         {
@@ -227,8 +229,8 @@ public class Verifier
      */
     private void checkSinglePassage(String word, PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
-        Passage ref1 = bible1.findPassage(word);
-        Passage ref2 = bible2.findPassage(word);
+        Passage ref1 = bible1.findPassage(new Search(word, false));
+        Passage ref2 = bible2.findPassage(new Search(word, false));
 
         // Check
         if (!ref1.equals(ref2))
