@@ -74,88 +74,130 @@ public class ResourceUtil
 
     /**
      * Generic resource URL fetcher. One way or the other we'll find it!
-     * I'm fairly sure some of these do the same thing, but which and how they
-     * change on various VMs is complex, and it seems simpler to take the
-     * shotgun approach.
+     * Either as a relative or an absolute reference.
      * @param search The name of the resource (without a leading /) to find
      * @return The requested resource
      * @throws MalformedURLException if the resource can not be found
      */
     public static URL getResource(String search) throws MalformedURLException
     {
-        if (search == null)
+    	URL resource = null;
+    	
+ 		if (search != null && search.length() > 0)
+ 		{
+            // First look for the resource using an absolute path
+ 		    if (!search.startsWith("/"))
+ 		    {
+                resource = findResource('/' + search);
+ 		    }
+            else
+            {
+                ResourceUtil.log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't");
+            }
+
+            // If that fails just look for it as is.
+            if (resource != null)
+            {
+                resource = findResource(search);                
+            }
+ 		}
+
+        if (resource == null)
         {
             throw new MalformedURLException("Can't find resource: " + search);
         }
 
-        String ssearch = "/" + search;
+        return resource;
+    }
 
-        if (search.startsWith("/"))
+    /**
+     * Generic resource URL fetcher. This uses a variety of strategies
+     * to find the resource.
+     * 
+     * I'm fairly sure some of these do the same thing, but which and how they
+     * change on various VMs is complex, and it seems simpler to take the
+     * shotgun approach.
+     * @param search The name of the resource to find
+     * @return The requested resource, or null if it cannot be found
+    */
+    public static URL findResource(String search)
+    {
+        URL reply = null;
+
+        if (search == null)
         {
-            ResourceUtil.log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't");
+            ResourceUtil.log.warn("findResource called on a null string.");
+            return reply;
         }
 
+        if (search.length() == 0)
+        {
+            ResourceUtil.log.warn("findResource called on an empty string.");
+            return reply;
+        }
+
+        reply = findHomeResource(search);
+
+        if (reply == null)
+        {
+            reply = ResourceUtil.class.getResource(search);
+        }
+
+        if (reply == null)
+        {
+            reply = ResourceUtil.class.getClassLoader().getResource(search);
+        }
+
+        if (reply == null)
+        {
+            reply = ClassLoader.getSystemResource(search);
+        }
+
+        return reply;
+    }
+    
+    /**
+     * Look for the resource in the home directory
+     * @param search must be non-null, non-empty
+     * @return
+     */
+    public static URL findHomeResource(String search)
+    {
+        URL reply = null;
+        
         // Look at the application's home first to allow overrides
         if (home != null)
         {
+            // Since home does not end in a '/'
+            // we need to add one to the front of search
+            // if it does not have it.
+            String ssearch = null;
+            if (search.charAt(0) == '/')
+            {
+                ssearch = search;
+            }
+            else
+            {
+                ssearch = '/' + search;
+            }
+            
             URL override = null;
-
+            
             // Make use of "home" thread safe
             synchronized (ResourceUtil.class)
             {
                 override = NetUtil.lengthenURL(home, ssearch);
             }
 
+            // Make sure the file exists and can be read
             File f = new File(override.getFile());
             if (f.canRead())
             {
-                return override;
+                reply = override;
             }
         }
 
-        URL reply = ResourceUtil.class.getResource(search);
-        if (reply != null)
-        {
-            //log.debug("getResource("+search+") = "+reply+" using getClass().getResource(search);");
-            return reply;
-        }
-    
-        reply = ResourceUtil.class.getResource(ssearch);
-        if (reply != null)
-        {
-            //log.debug("getResource("+search+") = "+reply+" using getClass().getResource(/search);");
-            return reply;
-        }
-    
-        reply = ResourceUtil.class.getClassLoader().getResource(search);
-        if (reply != null)
-        {
-            //log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(search);");
-            return reply;
-        }
-    
-        reply = ResourceUtil.class.getClassLoader().getResource(ssearch);
-        if (reply != null)
-        {
-            //log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(/search);");
-            return reply;
-        }
-
-        reply = ClassLoader.getSystemResource(search);
-        if (reply != null)
-        {
-            //log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(search);");
-            return reply;
-        }
-
-        reply = ClassLoader.getSystemResource(ssearch);
-        if (reply != null)
-        {
-            //log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(/search);");
-            return reply;
-        }
-    
-        throw new MalformedURLException("Can't find resource: "+search);
+        return reply;
     }
 
     /**

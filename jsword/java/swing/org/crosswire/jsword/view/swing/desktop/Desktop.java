@@ -3,6 +3,7 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -15,20 +16,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -53,13 +50,11 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
-import org.crosswire.jsword.view.swing.book.SitesPane;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
 import org.crosswire.jsword.view.swing.book.TitleChangedListener;
 import org.crosswire.jsword.view.swing.display.FocusablePart;
@@ -128,14 +123,23 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public Desktop() throws IOException, JDOMException
     {
+        // Calling Project.instance() will set up the project's home directory
+        //     ~/.jsword
+        // This will set it as a place to look for overrides for
+        // ResourceBundles, properties and other resources
+        Project project = Project.instance();
+        
         LookAndFeelUtil.tweakLookAndFeel();
         Reporter.grabAWTExecptions(true);
 
-        URL predicturl = Project.instance().getWritablePropertiesURL("splash");
+        URL predicturl = project.getWritablePropertiesURL("splash"); //$NON-NLS-1$
         Splash splash = new Splash(frame, 60000);
-        startJob = JobManager.createJob("Startup", predicturl, true);
+        Job startJob = JobManager.createJob("Startup", predicturl, true);
         splash.pack();
 
+        // Create the Desktop Actions
+        actions = new DesktopActions(this);
+        
         // Initial setup
         frame = new JFrame();
 
@@ -154,8 +158,6 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         // GUI setup
         debug();
         init();
-
-        accelerateMenu(barMenu);
 
         if (initial == LAYOUT_TYPE_MDI)
         {
@@ -224,51 +226,10 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         layouts = new ViewLayout[2];
         layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();
         layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout();
-        
-        actFileNew = new FileNewAction(this);
-        actFileOpen = new FileOpenAction(this);
-        actFileSave = new FileSaveAction(this);
-        actFileSaveAs = new FileSaveAsAction(this);
-        actFileSaveAll = new FileSaveAllAction(this);
-        actFileClose = new FileCloseAction(this);
-        actFileCloseAll = new FileCloseAllAction(this);
-        //actFilePrint = new FilePrintAction(this);
-        actFileExit = new ExitAction(this);
-        
-        actEditCut = new EditCutAction(this);
-        actEditCopy = new EditCopyAction(this);
-        actEditPaste = new EditPasteAction(this);
-        actEditBlur1 = new BlurAction(this, 1, PassageConstants.RESTRICT_CHAPTER);
-        actEditBlur5 = new BlurAction(this, 5, PassageConstants.RESTRICT_CHAPTER);
-        
-        actViewTdi = new ViewTDIAction(this);
-        actViewMdi = new ViewMDIAction(this);
-        //actViewTbar = new ViewToolBarAction(this);
-        actViewGhtml = new ViewSourceGHTMLAction(this);
-        actViewVhtml = new ViewSourceHTMLAction(this);
-        actViewOsis = new ViewSourceOSISAction(this);
 
-        actListDelete = new ListDeleteAction(this);
+        rdoViewTdi = new JRadioButtonMenuItem(actions.getAction("TabMode"));
+        rdoViewMdi = new JRadioButtonMenuItem(actions.getAction("WindowMode"));
 
-        //actToolsGenerate = GeneratorPane.createOpenAction(this);
-        //actToolsDiff = ComparePane.createOpenAction(this);
-        actToolsSites = SitesPane.createOpenAction(frame);
-
-        actHelpContents = new HelpContentsAction(this);
-        actHelpAbout = AboutPane.createOpenAction(this);
-
-        rdoViewTdi = new JRadioButtonMenuItem(actViewTdi);
-        rdoViewMdi = new JRadioButtonMenuItem(actViewMdi);
-        //chkViewTbar = new JCheckBoxMenuItem(actViewTbar);
-
-        barMenu = new JMenuBar();
-        menuFile = new JMenu();
-        menuEdit = new JMenu();
-        menuView = new JMenu();
-        menuTools = new JMenu();
-        menuHelp = new JMenu();
-
-        grpViews = new ButtonGroup();
         pnlTbar = new JToolBar();
         barStatus = new StatusBar();
         barSide = new SidebarPane();
@@ -281,63 +242,61 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     private void init()
     {
-        menuFile.setText("File");
-        menuFile.setMnemonic('F');
-        menuFile.add(actFileNew).addMouseListener(barStatus);
-        menuFile.add(actFileOpen).addMouseListener(barStatus);
+        JMenu menuFile = new JMenu(actions.getAction("File"));
+        menuFile.add(actions.getAction("NewWindow")).addMouseListener(barStatus);
+        menuFile.add(actions.getAction("Open")).addMouseListener(barStatus);
         menuFile.addSeparator();
-        menuFile.add(actFileClose).addMouseListener(barStatus);
-        menuFile.add(actFileCloseAll).addMouseListener(barStatus);
+        menuFile.add(actions.getAction("Close")).addMouseListener(barStatus);
+        menuFile.add(actions.getAction("CloseAll")).addMouseListener(barStatus);
         menuFile.addSeparator();
-        //menu_file.add(actFilePrint).addMouseListener(bar_status);
-        //menu_file.addSeparator();
-        menuFile.add(actFileSave).addMouseListener(barStatus);
-        menuFile.add(actFileSaveAs).addMouseListener(barStatus);
-        menuFile.add(actFileSaveAll).addMouseListener(barStatus);
+        //menuFile.add(actFilePrint).addMouseListener(barStatus);
+        //menuFile.addSeparator();
+        menuFile.add(actions.getAction("Save")).addMouseListener(barStatus);
+        menuFile.add(actions.getAction("SaveAs")).addMouseListener(barStatus);
+        menuFile.add(actions.getAction("SaveAll")).addMouseListener(barStatus);
         menuFile.addSeparator();
-        menuFile.add(actFileExit).addMouseListener(barStatus);
+        menuFile.add(actions.getAction("Exit")).addMouseListener(barStatus);
 
-        menuEdit.setText("Edit");
-        menuEdit.setMnemonic('E');
-        menuEdit.add(actEditCut).addMouseListener(barStatus);
-        menuEdit.add(actEditCopy).addMouseListener(barStatus);
-        menuEdit.add(actEditPaste).addMouseListener(barStatus);
+        JMenu menuEdit = new JMenu(actions.getAction("Edit"));
+        menuEdit.add(actions.getAction("Cut")).addMouseListener(barStatus);
+        menuEdit.add(actions.getAction("Copy")).addMouseListener(barStatus);
+        menuEdit.add(actions.getAction("Paste")).addMouseListener(barStatus);
 
         rdoViewTdi.addMouseListener(barStatus);
         rdoViewMdi.addMouseListener(barStatus);
-        //chkViewTbar.addMouseListener(bar_status);
-        //chkViewTbar.setSelected(view_tool);
+        //chkViewTbar.addMouseListener(barStatus);
+        //chkViewTbar.setSelected(viewTool);
+
+        ButtonGroup grpViews = new ButtonGroup();
         grpViews.add(rdoViewMdi);
         grpViews.add(rdoViewTdi);
 
-        menuView.setText("View");
-        menuView.setMnemonic('V');
+        JMenu menuView = new JMenu(actions.getAction("View"));
         menuView.add(rdoViewTdi);
         menuView.add(rdoViewMdi);
-        //menu_view.add(chkViewTbar);
+        //menuView.add(chkViewTbar);
         menuView.addSeparator();
-        menuView.add(actViewGhtml).addMouseListener(barStatus);
-        menuView.add(actViewVhtml).addMouseListener(barStatus);
-        menuView.add(actViewOsis).addMouseListener(barStatus);
+        menuView.add(actions.getAction("ViewGHTML")).addMouseListener(barStatus);
+        menuView.add(actions.getAction("ViewHTML")).addMouseListener(barStatus);
+        menuView.add(actions.getAction("ViewOSIS")).addMouseListener(barStatus);
 
-        menuTools.setText("Tools");
-        menuTools.setMnemonic('T');
-        menuTools.add(actEditBlur1).addMouseListener(barStatus);
-        menuTools.add(actEditBlur5).addMouseListener(barStatus);
-        menuTools.add(actListDelete).addMouseListener(barStatus);
+        JMenu menuTools = new JMenu(actions.getAction("Tools"));
+        menuTools.add(actions.getAction("Blur1")).addMouseListener(barStatus);
+        menuTools.add(actions.getAction("Blur5")).addMouseListener(barStatus);
+        menuTools.add(actions.getAction("DeleteSelected")).addMouseListener(barStatus);
         menuTools.addSeparator();
-        //menu_tools.add(actToolsGenerate).addMouseListener(bar_status);
-        //menu_tools.add(actToolsDiff).addMouseListener(bar_status);
-        //menu_tools.addSeparator();
-        menuTools.add(actToolsSites).addMouseListener(barStatus);
+        //menuTools.add(actions.getAction("Generate")).addMouseListener(barStatus);
+        //menuTools.add(actions.getAction("Diff")).addMouseListener(barStatus);
+        //menuTools.addSeparator();
+        menuTools.add(actions.getAction("Books")).addMouseListener(barStatus);
         menuTools.add(actToolsOptions).addMouseListener(barStatus);
 
-        menuHelp.setText("Help");
-        menuHelp.setMnemonic('H');
-        menuHelp.add(actHelpContents).addMouseListener(barStatus);
+        JMenu menuHelp = new JMenu(actions.getAction("Help"));
+        menuHelp.add(actions.getAction("Contents")).addMouseListener(barStatus);
         menuHelp.addSeparator();
-        menuHelp.add(actHelpAbout).addMouseListener(barStatus);
+        menuHelp.add(actions.getAction("About")).addMouseListener(barStatus);
 
+        JMenuBar barMenu = new JMenuBar();
         barMenu.add(menuFile);
         barMenu.add(menuEdit);
         barMenu.add(menuView);
@@ -345,21 +304,22 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         barMenu.add(menuTools);
         barMenu.add(menuHelp);
 
-        BackportUtil.setRollover(pnlTbar, true);
+        //JToolBar pnlTbar = new JToolBar();
+        pnlTbar.setRollover(true);
 
-        pnlTbar.add(actFileNew).addMouseListener(barStatus);
-        pnlTbar.add(actFileOpen).addMouseListener(barStatus);
-        pnlTbar.add(actFileSave).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("NewWindow")).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("Open")).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("Save")).addMouseListener(barStatus);
         pnlTbar.addSeparator();
-        pnlTbar.add(actEditCut).addMouseListener(barStatus);
-        pnlTbar.add(actEditCopy).addMouseListener(barStatus);
-        pnlTbar.add(actEditPaste).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("Cut")).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("Copy")).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("Paste")).addMouseListener(barStatus);
         pnlTbar.addSeparator();
-        //pnl_tbar.add(actToolsGenerate).addMouseListener(bar_status);
-        //pnl_tbar.add(actToolsDiff).addMouseListener(bar_status);
-        //pnl_tbar.addSeparator();
-        pnlTbar.add(actHelpContents).addMouseListener(barStatus);
-        pnlTbar.add(actHelpAbout).addMouseListener(barStatus);
+        //pnlTbar.add(actions.getAction("Generate")).addMouseListener(barStatus);
+        //pnlTbar.add(actions.getAction("Diff")).addMouseListener(barStatus);
+        //pnlTbar.addSeparator();
+        pnlTbar.add(actions.getAction("Contents")).addMouseListener(barStatus);
+        pnlTbar.add(actions.getAction("About")).addMouseListener(barStatus);
 
         //barBook.addHyperlinkListener(this);
         barSide.addHyperlinkListener(this);
@@ -367,7 +327,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         sptBooks.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         sptBooks.setOneTouchExpandable(true);
         sptBooks.setDividerLocation(0.9D);
-        //spt_books.add(barBook, JSplitPane.RIGHT);
+        //sptBooks.add(barBook, JSplitPane.RIGHT);
         sptBooks.add(barSide, JSplitPane.RIGHT);
         sptBooks.add(new JPanel(), JSplitPane.LEFT);
         sptBooks.setResizeWeight(0.9D);
@@ -376,7 +336,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         {
             public void windowClosed(WindowEvent ev)
             {
-                actFileExit.actionPerformed(null);
+                actions.getAction("Exit").actionPerformed(new ActionEvent(this, 0, ""));
             }
         });
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -749,8 +709,8 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
      */
     public void setCloseEnabled(boolean enabled)
     {
-        actFileClose.setEnabled(enabled);
-        actFileCloseAll.setEnabled(enabled);
+        actions.getAction("Close").setEnabled(enabled);
+        actions.getAction("CloseAll").setEnabled(enabled);
     }
 
     /* (non-Javadoc)
@@ -768,42 +728,6 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     public JFrame getJFrame()
     {
         return frame;
-    }
-
-    /**
-     * Run down the menus adding the accelerators
-     */
-    private void accelerateMenu(JMenuBar menubar)
-    {
-        for (int i = 0; i < menubar.getMenuCount(); i++)
-        {
-            JMenu menu = menubar.getMenu(i);
-            for (int j = 0; j < menu.getMenuComponentCount(); j++)
-            {
-                Component comp = menu.getMenuComponent(j);
-                if (comp instanceof JMenuItem)
-                {
-                    JMenuItem item = (JMenuItem) comp;
-                    Action action = item.getAction();
-                    if (action != null)
-                    {
-                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-                        if (accel != null)
-                        {
-                            item.setAccelerator(accel);
-                        }
-                    }
-                }
-                else
-                {
-                    // Just in case we start getting things we could do something with
-                    if (!(comp instanceof JPopupMenu.Separator))
-                    {
-                        log.warn("Non JMenuItem, class="+comp.getClass().getName());
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -915,68 +839,28 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * The last selected FocusablePart
      */
-    protected FocusablePart last = null;
+    protected FocusablePart last;
 
     /**
      * The log stream
      */
     protected static final Logger log = Logger.getLogger(Desktop.class);
 
+    protected DesktopActions actions;
+
     /*
      * GUI components
      */
-    private Job startJob = null;
-    private Action actFileNew = null;
-    private Action actFileOpen = null;
-    private Action actFileSave = null;
-    private Action actFileSaveAs = null;
-    private Action actFileSaveAll = null;
-    private Action actFileClose = null;
-    private Action actFileCloseAll = null;
-    //private Action actFilePrint = null;
-    protected Action actFileExit = null;
+    private OptionsAction actToolsOptions;
 
-    private Action actEditCut = null;
-    private Action actEditCopy = null;
-    private Action actEditPaste = null;
-    private Action actEditBlur1 = null;
-    private Action actEditBlur5 = null;
+    private JRadioButtonMenuItem rdoViewTdi;
+    private JRadioButtonMenuItem rdoViewMdi;
 
-    private Action actViewTdi = null;
-    private Action actViewMdi = null;
-    //private Action actViewTbar = null;
-
-    private Action actViewGhtml = null;
-    private Action actViewVhtml = null;
-    private Action actViewOsis = null;
-
-    private Action actListDelete = null;
-
-    //private Action actToolsGenerate = null;
-    //private Action actToolsDiff = null;
-    private OptionsAction actToolsOptions = null;
-    private Action actToolsSites = null;
-
-    private Action actHelpContents = null;
-    private Action actHelpAbout = null;
-    //private Action actHelpDebug = null;
-
-    private JRadioButtonMenuItem rdoViewTdi = null;
-    private JRadioButtonMenuItem rdoViewMdi = null;
-    //private JCheckBoxMenuItem chkViewTbar = null;
-
-    private JMenuBar barMenu = null;
-    private JMenu menuFile = null;
-    private JMenu menuEdit = null;
-    private JMenu menuView = null;
-    private JMenu menuTools = null;
-    private JMenu menuHelp = null;
-
-    private JFrame frame = null;
-    private ButtonGroup grpViews = null;
-    private JToolBar pnlTbar = null;
-    private StatusBar barStatus = null;
-    private SidebarPane barSide = null;
+    private JFrame frame;
+//    private ButtonGroup grpViews = null;
+    private JToolBar pnlTbar;
+    private StatusBar barStatus;
+    private SidebarPane barSide;
     //private ReferencedPane barBook = null;
-    private JSplitPane sptBooks = null;
+    private JSplitPane sptBooks;
 }
