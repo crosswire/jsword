@@ -1,6 +1,5 @@
 package org.crosswire.common.xml;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
 import org.xml.sax.Attributes;
@@ -55,6 +54,11 @@ public class XMLUtil
      */
     public static String cleanInvalidCharacters(String broken)
     {
+        if (broken == null)
+        {
+            return null;
+        }
+
         StringBuffer buffer = new StringBuffer();
         
         for (int i = 0; i < broken.length(); i++)
@@ -76,7 +80,7 @@ public class XMLUtil
     }
 
     /**
-     * A parse has failed so we can try to kill the entities and then have
+     * A parse has failed so we can try to kill the broken entities and then have
      * another go.
      */
     public static String cleanAllEntities(String broken)
@@ -87,10 +91,12 @@ public class XMLUtil
         }
 
         String working = broken;
+        int cleanfrom = 0;
 
-        allEntities: while (true)
+        allEntities:
+        while (true)
         {
-            int amp = working.indexOf('&');
+            int amp = working.indexOf('&', cleanfrom);
 
             // If there are no more amps then we are done
             if (amp == -1)
@@ -100,13 +106,17 @@ public class XMLUtil
 
             // Check for chars that should not be in an entity name
             int i = amp + 1;
-            singleEntity: while (true)
+            singleEntity:
+            while (true)
             {
                 // if we are at the end of the string the disgard from the & on
                 if (i >= working.length())
                 {
-                    DataPolice.report("disguarding unterminated entity: "+working.substring(amp));
-                    working = working.substring(0, amp);
+                    String entity = working.substring(amp);
+                    String replace = guessEntity(entity);
+                    DataPolice.report("replacing unterminated entity: '"+entity+"' with: '"+replace+"'");
+
+                    working = working.substring(0, amp)+replace;
                     break singleEntity;
                 }
 
@@ -116,8 +126,11 @@ public class XMLUtil
                 char c = working.charAt(i);
                 if (c == ';')
                 {
-                    DataPolice.report("disguarding entity: "+working.substring(amp, i+1));
-                    working = working.substring(0, amp)+working.substring(i+1);
+                    String entity = working.substring(amp, i+1);
+                    String replace = guessEntity(entity);
+                    DataPolice.report("replacing entity: '"+entity+"' with: '"+replace+"'");
+                    
+                    working = working.substring(0, amp)+replace+working.substring(i+1);
                     break singleEntity;
                 }
 
@@ -125,18 +138,94 @@ public class XMLUtil
                 // If we find something else then dump the entity
                 if (!Character.isLetterOrDigit(c) && c != '-')
                 {
-                    DataPolice.report("disguarding invalid entity: "+working.substring(amp, i));
-                    working = working.substring(0, amp)+working.substring(i);
+                    String entity = working.substring(amp, i);
+                    String replace = guessEntity(entity);
+                    DataPolice.report("replacing invalid entity: '"+entity+"' with: '"+replace+"'");
+
+                    working = working.substring(0, amp)+replace+working.substring(i);
                     break singleEntity;
                 }
 
                 i++;
             }
+
+            cleanfrom = amp + 1;
         }
 
         return working;
     }
 
+    /**
+     * Attempt to guess what the entity should have been and fix it, or remove
+     * it if there are no obvious replacements.
+     */
+    private static String guessEntity(String broken)
+    {
+        // strip any beginning & or ending ;
+        if (broken.endsWith(";"))
+        {
+            broken = broken.substring(0, broken.length()-1);
+        }
+        if (broken.startsWith("&"))
+        {
+            broken = broken.substring(1);
+        }
+
+        // pre-defined XML entities
+        if ("amp".equals(broken))
+        {
+            return "&#38;";
+        }
+        if ("lt".equals(broken))
+        {
+            return "&#60;";
+        }
+        if ("gt".equals(broken))
+        {
+            return "&#62;";
+        }
+        if ("quot".equals(broken))
+        {
+            return "&#34;";
+        }
+
+        // common HTML entities
+        if ("nbsp".equals(broken))
+        {
+            return "&#160;";
+        }
+        if ("pound".equals(broken))
+        {
+            return "&#163;";
+        }
+        if ("yen".equals(broken))
+        {
+            return "&#165;";
+        }
+        if ("euro".equals(broken))
+        {
+            return "&#8364;";
+        }
+        if ("copy".equals(broken))
+        {
+            return "&#169;";
+        }
+        if ("para".equals(broken))
+        {
+            return "&#182;";
+        }
+        if ("lsquo".equals(broken))
+        {
+            return "&#8216;";
+        }
+        if ("rsquo".equals(broken))
+        {
+            return "&#8217;";
+        }
+
+        return "";
+    }
+    
     /**
      * XML parse failed, so we can try getting rid of all the tags and having
      * another go. We define a tag to start at a &lt; and end at the end of the
@@ -152,7 +241,8 @@ public class XMLUtil
 
         String working = broken;
 
-        allTags: while (true)
+        allTags:
+        while (true)
         {
             int lt = working.indexOf('<');
 
@@ -162,49 +252,58 @@ public class XMLUtil
                 break allTags;
             }
 
-            // where is the next > symbol?
-            int gt = working.indexOf('>', lt);
+            // loop to find the end of this tag
+            int i = lt;
+            int startattr = -1;
 
-            // Are there any "words" that can not be attributes first?
-            int noeqword = -1;
-            // The first attribute starts at the first space after the lt
-            int nextspc = working.indexOf(' ', lt);
-            if (nextspc != -1)
+            singletag:
+            while (true)
             {
-                String lton = working.substring(nextspc);
-                String[] parts = StringUtils.split(lton, ' ');
-                for (int i = 0; i < parts.length; i++)
+                i++;
+
+                // the tag can't exist past the end of the string
+                if (i >= working.length())
                 {
-                    // Check this contains an =
-                    if (parts[i].indexOf('=') == -1)
+                    // go back one so we can safely chop
+                    i--;
+                    break singletag;
+                }
+                
+                char c = working.charAt(i);
+
+                // normal end of tag
+                if (c == '>')
+                {
+                    break singletag;
+                }
+
+                // we declare end-of-tag if this 'word' is not an attribute
+                if (c == ' ')
+                {
+                    if (startattr == -1)
                     {
-                        noeqword = working.indexOf(parts[i], lt)-2;
+                        // NOTE(joe): should we skip over consecutive spaces?
+                        startattr = i;
+                    }
+                    else
+                    {
+                        // so we've already had a space indicating start of
+                        // attribute, so this must be the beginning of the next
+                        // NOTE(joe): no - spaces can exist in attr values
+                        String value = working.substring(startattr, i);
+                        if (value.indexOf("=") == -1)
+                        {
+                            // this 'attribute' does not contain an equals so
+                            // we call it a word and end the parse
+                            break singletag;
+                        }
                     }
                 }
             }
 
-            // so which is sooner gt, noeqword, or end-of-string?
-            if (gt == -1)
-            {
-                gt = Integer.MAX_VALUE;
-            }
-            if (noeqword == -1)
-            {
-                noeqword = Integer.MAX_VALUE;
-            }
-            int min = gt;
-            if (noeqword < min)
-            {
-                min = noeqword;
-            }
-            if (working.length() < min)
-            {
-                min = working.length()-1;
-            }
-
-            // So chop the string
-            DataPolice.report("disguarding invalid tag: "+working.substring(lt, min+1));
-            working = working.substring(0, lt)+working.substring(min+1);
+            // So we have the end of the tag, delete it ...
+            DataPolice.report("disguarding tag: "+working.substring(lt, i+1));
+            working = working.substring(0, lt)+working.substring(i+1);
         }
         
         return working;

@@ -295,6 +295,12 @@
         <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
       </classpath>
     </taskdef>
+    <delete>
+      <fileset dir="${target.temp}/jcoverage"/>
+      <fileset dir="${source.root}">
+        <include name="jcoverage.ser"/>
+      </fileset>
+    </delete>
     <instrument todir="${target.temp}/jcoverage">
       <fileset dir="${target.classes}/common" includes="**/*.class"/>
     </instrument>
