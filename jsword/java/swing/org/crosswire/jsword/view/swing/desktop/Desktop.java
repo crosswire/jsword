@@ -18,7 +18,6 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,11 +26,16 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
+import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.text.Element;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
@@ -597,6 +601,8 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
             barStatus.hyperlinkUpdate(ev);
 
             HyperlinkEvent.EventType type = ev.getEventType();
+            JTextPane pane = (JTextPane) ev.getSource();
+
             if (type == HyperlinkEvent.EventType.ACTIVATED)
             {
                 String url = ev.getDescription();
@@ -611,7 +617,6 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
                         url = url.substring(1);
                     }
                     log.debug("scrolling to: "+url);
-                    JEditorPane pane = (JEditorPane) ev.getSource();
                     BackportUtil.scrollToReference(url, pane);
                 }
                 else
@@ -619,6 +624,23 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
                     // Fully formed, so we open a new window
                     openHyperlink(ev.getDescription());
                 }
+            }
+            else
+            {
+                // Must be either an enter or an exit event
+                // simulate a link rollover effect, a CSS style not supported in JDK 1.4
+                Element textElement = ev.getSourceElement();
+
+                // Focus is needed to decorate Enter and Leave events
+                pane.grabFocus();
+
+                int start = textElement.getStartOffset();
+                int length = textElement.getEndOffset() - start;
+
+                Style style = pane.addStyle("HyperLink", null);
+                StyleConstants.setUnderline(style, type == HyperlinkEvent.EventType.ENTERED);
+                StyledDocument doc = pane.getStyledDocument();
+                doc.setCharacterAttributes(start, length, style, false);
             }
         }
         catch (MalformedURLException ex)

@@ -13,21 +13,27 @@
   <!-- The CSS stylesheet to use. The url must be absolute. -->
   <xsl:param name="css"/>
 
-  <!-- The font that is passed in is of the form: font,style,size
+  <!-- The font that is passed in is of the form: font or font,style,size 
        where style is a bit mask with 1 being bold and 2 being italic.
        This needs to be changed into a style="xxx" specification
     -->
-  <xsl:param name="font"/>
-  <xsl:variable name="fontfamily" select='concat("font-family: &apos;", substring-before($font, ","), "&apos;;")' />
-  <xsl:variable name="fontsize" select="concat(' font-size: ', substring-after(substring-after($font, ','), ','), 'pt;')" />
-  <xsl:variable name="styling" select="substring-before(substring-after($font, ','), ',')" />
+  <xsl:param name="font" select="Serif"/>
+  <xsl:variable name="aFont">
+	<xsl:choose>
+	  <xsl:when test="substring-before($font, ',') = ''"><xsl:value-of select="$font"/>,0,16</xsl:when>
+	  <xsl:otherwise><xsl:value-of select="$font"/></xsl:otherwise>
+	</xsl:choose>
+  </xsl:variable>
+  <xsl:variable name="fontfamily" select='concat("font-family: &apos;", substring-before($aFont, ","), "&apos;;")' />
+  <xsl:variable name="fontsize" select="concat(' font-size: ', substring-after(substring-after($aFont, ','), ','), 'pt;')" />
+  <xsl:variable name="styling" select="substring-before(substring-after($aFont, ','), ',')" />
   <xsl:variable name="fontweight">
     <xsl:if test="$styling = '1' or $styling = '3'"><xsl:text> font-weight: bold;</xsl:text></xsl:if>
   </xsl:variable>
   <xsl:variable name="fontstyle">
     <xsl:if test="$styling = '2' or $styling = '3'"> font-style: italic;</xsl:if>
   </xsl:variable>
-  <xsl:variable name="fontspec" select="concat($fontfamily, $fontsize, $fontweight, $fontstyle, 'line-height: 300%;')"/>
+  <xsl:variable name="fontspec" select="concat($fontfamily, $fontsize, $fontweight, $fontstyle)"/>
 
   <!--
   For now, we assume that all the works inside a corpus are of the
@@ -66,11 +72,32 @@
         <xsl:if test="$css != ''">
           <link rel="stylesheet" type="text/css" href="{$css}" title="styling" />
         </xsl:if>
-        <style>
-          a { color: black; text-decoration: none; background: #eef8ff; }
+        <style type="text/css">
+          BODY
+		  {
+		  	<xsl:value-of select="$fontspec" />
+		  }
+          A
+		  {
+		  	text-decoration: none;
+		  }
+          A.strongs
+		  {
+		  	color: black;
+		  	text-decoration: none;
+		  }
+          SUP.verse
+          {
+          	font-size: 75%;
+          	color: gray;
+          }
+          FONT.verse
+          {
+          	font-size: 125%;
+          }
         </style>
       </head>
-      <body style="{$fontspec}">
+      <body>
         <xsl:apply-templates/>
         <xsl:apply-templates select="//note" mode="print-notes"/>
       </body>
@@ -133,15 +160,15 @@
     <xsl:if test="preceding-sibling::*[local-name() = 'verse']">
       <xsl:text>&#160;&#160;</xsl:text>
     </xsl:if>
-    <a name="{@osisID}"><sup><font size="-1" color="gray"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></font></sup></a>
-    <font size="+1">
+    <a name="{@osisID}"><sup class="verse"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></sup></a>
+    <font class="verse">
       <xsl:apply-templates />
     </font>
   </xsl:template>
 
   <!--=======================================================================-->
   <xsl:template match="a">
-    <a class="a" href="{@href}">
+    <a href="{@href}">
       <xsl:apply-templates/>
     </a>
   </xsl:template>
@@ -209,10 +236,10 @@
           </xsl:variable>
           <xsl:choose>
             <xsl:when test="$strongs-type = 'H'">
-              <a href="{$strongs.hebrew.url}{$numeric-portion}"><xsl:apply-templates/></a>
+              <a href="{$strongs.hebrew.url}{$numeric-portion}" class="strongs"><xsl:apply-templates/></a>
             </xsl:when>
             <xsl:otherwise>
-              <a href="${strongs.greek.url}{$numeric-portion}"><xsl:apply-templates/></a>
+              <a href="${strongs.greek.url}{$numeric-portion}" class="strongs"><xsl:apply-templates/></a>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
