@@ -146,7 +146,7 @@ public class MenuUtil
     * Fetch the menu item that was created for the given
     * command.
     * @param cmd  Name of the action.
-    * @returns item created for the given command or null
+    * @return item created for the given command or null
     *  if one wasn't created.
     */
     protected JMenuItem getMenuItem(String cmd)

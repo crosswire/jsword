@@ -72,6 +72,22 @@ public class Project
     }
 
     /**
+     * The name of this project.
+     */
+    public static String getName()
+    {
+        return "JSword";
+    }
+
+    /**
+     * The name of this project.
+     */
+    public static String getVersion()
+    {
+        return "0.9.2";
+    }
+
+    /**
      * The filesystem resources
      */
     private static Resource resource = null;

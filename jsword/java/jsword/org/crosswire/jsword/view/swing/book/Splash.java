@@ -21,6 +21,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.crosswire.jsword.util.Project;
+
 /**
  * A Simple splash screen.
  *
@@ -65,7 +67,7 @@ public class Splash extends JWindow
      */
     private void jbInit()
     {
-        URL url = getClass().getResource("/org/crosswire/bible/view/resource/splash.png");
+        URL url = getClass().getResource("/org/crosswire/jsword/view/resource/splash.png");
         if (url != null)
         {
             icon = new ImageIcon(url);
@@ -82,7 +84,7 @@ public class Splash extends JWindow
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        lbl_info.setText("Version 0.86");
+        lbl_info.setText("Version "+Project.getVersion());
 
         prg_info.setString("Loading ...");
         prg_info.setStringPainted(true);

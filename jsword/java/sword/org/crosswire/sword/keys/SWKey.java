@@ -60,9 +60,9 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * SWKey::Persist - Sets whether this object itself persists within a
-     *			module that it was used to SetKey or just a copy.
-     *			(1 - persists in module; 0 - a copy is attempted
+     * Sets whether this object itself persists within a
+     * module that it was used to SetKey or just a copy.
+     * (1 - persists in module; 0 - a copy is attempted
      * ENT:	ipersist - value which to set persist
      * RET:	value of persist
      */

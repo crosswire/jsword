@@ -3,9 +3,9 @@ package docs;
 
 /**
  * This is overview documentation that explains how the Book and Bible
- * interfaces are arranged and justifies the design decisions. Note that most
- * of what is documented here is current for JSword - there are a few
- * sections that reflect where we will be given a bit more re-factoring.
+ * interfaces are arranged and justifies the design decisions.
+ * Note that most of what is documented here is current for JSword - there are
+ * a few sections that reflect where we will be given a bit more re-factoring.
  *
  * <p>The most important thing any Bible program does is to access Bible data, and
  * in more general terms, book data. There may be many different sources of
@@ -156,7 +156,27 @@ package docs;
  * fundamental building block. Passage is a specialization of Pointers where
  * the Book in question is a Pointer. The Passage package has classes to do all
  * sorts of useful manipulations to lists of verses.
-*/
+ *
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
+ * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA</i>, Or locally at the 'Licence' link below.<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
 public class DesignIntro
 {
 }

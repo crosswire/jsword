@@ -46,7 +46,7 @@ public interface PassageListener extends EventListener
     public void versesRemoved(PassageEvent ev);
 
     /** 
-     * Sent after verses have been symlutaneously added and removed from the Passage.
+     * Sent after verses have been symultaneously added and removed from the Passage.
      * More info about what and where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */

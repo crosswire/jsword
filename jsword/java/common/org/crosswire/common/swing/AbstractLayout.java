@@ -29,7 +29,6 @@ import java.io.Serializable;
 * </font></td></tr></table>
 * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
 * @see <{docs.Licence}>
-* @see DeckLayout
 * @author Joe Walker
 * @author Claude Duguay
 */

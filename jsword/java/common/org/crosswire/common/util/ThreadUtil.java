@@ -1,10 +1,9 @@
 
 package org.crosswire.common.util;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Vector;
-
-import org.crosswire.common.util.*;
 
 /**
  * Various utilities for examining the running Threads and
@@ -150,7 +149,7 @@ public class ThreadUtil
 
     /**
      * Find the root ThreadGroup by ascending the Thread tree
-     * @returns The root ThreadGroup
+     * @return The root ThreadGroup
      */
     public static ThreadGroup findRoot()
     {

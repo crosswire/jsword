@@ -1,13 +1,16 @@
 
 package org.crosswire.common.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.Enumeration;
-import java.util.zip.*;
-
-import java.io.*;
-import java.net.URL;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
 * A generic class of String utils.
@@ -59,7 +62,7 @@ public final class StringUtil
 
     /**
     * Returns an null if an empty string was passed in
-    * @returns a non-blank string.
+    * @return a non-blank string.
     */
     public static String nullIfBlank(String param)
     {
