@@ -161,6 +161,7 @@ public class SwordBible extends AbstractBible
                 // If this is an NT verse
                 if (verse_ord >= mat11_ord)
                 {
+                	// TODO: perhaps should un-hardcode that -39?
                     reply.append(getText(SwordConstants.TESTAMENT_NEW, bookNo-39, chapNo, verseNo));
                 }
                 else
