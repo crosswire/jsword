@@ -5,9 +5,16 @@
 
 <h1>News</h1>
 
+<h3>15 Feb 2003</h3>
+<p>
+Sword drivers are now fixed in CVS once more amd we've made lots of GUI bug fixes.
+The only work that I know of before we release a beta version is to add Dictionary
+and Commentary support to the Sword drivers.
+</p>
+
 <h3>25 Jan 2003</h3>
 <p>
-Bug update to the splash screen not means that the completion percentages
+Bug update to the splash screen which means that the completion percentages
 are computed automagically, and we've fixed a few UI bugs with it too.
 </p>
 
