@@ -3,13 +3,13 @@
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2sdk1.3.1"/>
     <classpathentry kind="lib" path="jar/lang101/commons-lang-1.0.1.jar" sourcepath="/jsword/jar/lang101/commons-lang-1.0.1-src.zip"/>
     <classpathentry kind="lib" path="jar/log4j127/log4j-1.2.7.jar" sourcepath="/jsword/jar/log4j127/jakarta-log4j-1.2.7.zip"/>
-    <classpathentry kind="lib" path="jar/jdom08/crimson.jar" sourcepath="/jsword/jar/jdom08/jdom-b8.zip"/>
-    <classpathentry kind="lib" path="jar/jdom08/jaxp.jar"/>
+    <classpathentry kind="lib" path="jar/xalan25d1/xalan.jar" sourcepath="/jsword/jar/xalan25d1/xalan-j_2_5_D1-src.zip"/>
+    <classpathentry kind="lib" path="jar/xalan25d1/xercesImpl.jar"/>
+    <classpathentry kind="lib" path="jar/xalan25d1/xml-apis.jar" sourcepath="/jsword/jar/xalan25d1/xalan-j_2_5_D1-src.zip"/>
     <classpathentry kind="lib" path="jar/jdom08/jdom.jar" sourcepath="/jsword/jar/jdom08/jdom-b8.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10b/jaxb-api.jar" sourcepath="/jsword/jar/jaxb10b/jaxb-api-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10b/jaxb-ri.jar" sourcepath="/jsword/jar/jaxb10b/jaxb-api-src.zip"/>
     <classpathentry kind="lib" path="jar/jaxb10b/jaxb-libs.jar"/>
-    <classpathentry kind="lib" path="jar/jdom08/xalan.jar"/>
     <classpathentry kind="lib" path="jar/jlf10/jlfgr-1_0.jar"/>
     <classpathentry kind="lib" path="jar/servlet23/servlet.jar" sourcepath="/jsword/jar/servlet23/jakarta-servletapi-4-src-20021215.zip"/>
     <classpathentry kind="lib" path="jar/lucene12/lucene-1.2.jar" sourcepath="/jsword/jar/lucene12/lucene-1.2-src.zip"/>

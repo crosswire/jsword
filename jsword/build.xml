@@ -208,6 +208,7 @@
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
       <fileset dir="${source.jar}/lang101" includes="*.jar"/>
+      <fileset dir="${source.jar}/xalan25d1" includes="*.jar"/>
       <fileset dir="${source.jar}/jaxb10b">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-ri.jar"/>
@@ -331,6 +332,8 @@
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
+      <fileset dir="${source.jar}/lang101" includes="*.jar"/>
+      <fileset dir="${source.jar}/xalan25d1" includes="*.jar"/>
       <fileset dir="${source.jar}/jaxb10b">
         <include name="jaxb-api.jar"/>
         <include name="jaxb-ri.jar"/>
@@ -435,7 +438,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jdepend">
+  <target name="jdepend" depends="jar">
     <mkdir dir="${target.jdepend}"/>
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to:"/>
@@ -459,9 +462,8 @@
         <pathelement location="${source.java}/map"/>
       </sourcespath>
       <classpath>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}" includes="*.jar"/>
+        <fileset dir="${target.jar}" includes="*.jar"/>
       </classpath>
     </jdepend>
     <style
