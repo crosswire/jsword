@@ -10,7 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -90,10 +90,10 @@ public class WizardConfigPane extends PanelConfigPane
 
         // We need to Enumerate thru the Model names not the Path names in the
         // deck because the deck is a Hashtable that re-orders them.
-        Enumeration en = config.getNames();
-        while (en.hasMoreElements())
+        Iterator it = config.getNames();
+        while (it.hasNext())
         {
-            String key = (String) en.nextElement();
+            String key = (String) it.next();
 
             int last_dot = key.lastIndexOf('.');
             String path = key.substring(0, last_dot);

@@ -6,8 +6,9 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -249,14 +250,14 @@ public class TreeConfigPane extends PanelConfigPane
         /**
         * Get a Vector of the children rooted at path
         */
-        protected Vector getChildren(String path)
+        protected List getChildren(String path)
         {
-            Vector retcode = new Vector();
+            List retcode = new ArrayList();
 
-            Enumeration en = config.getPaths();
-            while (en.hasMoreElements())
+            Iterator it = config.getPaths();
+            while (it.hasNext())
             {
-                String temp = (String) en.nextElement();
+                String temp = (String) it.next();
 
                 if (temp.startsWith(path) && !temp.equals(path))
                 {
@@ -272,7 +273,7 @@ public class TreeConfigPane extends PanelConfigPane
 
                     // Add it to the list if needed
                     if (temp.length() > 0 && !retcode.contains(temp))
-                        retcode.addElement(temp);
+                        retcode.add(temp);
                 }
             }
 
@@ -291,7 +292,7 @@ public class TreeConfigPane extends PanelConfigPane
         public Object getChild(Object parent, int index)
         {
             String path = ((Node) parent).getFullName();
-            String name = (String) getChildren(path).elementAt(index);
+            String name = (String) getChildren(path).get(index);
             return new Node(path, name);
         }
 
@@ -340,7 +341,7 @@ public class TreeConfigPane extends PanelConfigPane
         public int getIndexOfChild(Object parent, Object child)
         {
             String path = ((Node) parent).getFullName();
-            Vector children = getChildren(path);
+            List children = getChildren(path);
             return children.indexOf(child);
         }
 

@@ -10,10 +10,12 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.URL;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.config.choices.StaticReflectiveChoice;
@@ -105,8 +107,8 @@ public class Config implements Serializable
     {
         log.info("Adding key="+key);
 
-        keys.addElement(key);
-        models.addElement(model);
+        keys.add(key);
+        models.add(model);
 
         String value = model.getString();
         if (value == null)
@@ -157,8 +159,8 @@ public class Config implements Serializable
     public void remove(String key)
     {
         Choice model = getChoice(key);
-        keys.removeElement(key);
-        models.removeElement(model);
+        keys.remove(key);
+        models.remove(model);
 
         // Leave the pair in local?
         //local.put(key, value);
@@ -170,30 +172,30 @@ public class Config implements Serializable
      * The set of Choice Names that we are controlling
      * @return An enumeration over the keys
      */
-    public Enumeration getPaths()
+    public Iterator getPaths()
     {
-        Vector paths = new Vector();
+        List paths = new ArrayList();
 
-        Enumeration en = keys.elements();
-        while (en.hasMoreElements())
+        Iterator it = keys.iterator();
+        while (it.hasNext())
         {
-            String key = (String) en.nextElement();
+            String key = (String) it.next();
             String path = getPath(key);
 
             if (!paths.contains(path))
-                paths.addElement(path);
+                paths.add(path);
         }
 
-        return paths.elements();
+        return paths.iterator();
     }
 
     /**
      * The set of Choice Names that we are controlling
      * @return An enumeration over the keys
      */
-    public Enumeration getNames()
+    public Iterator getNames()
     {
-        return keys.elements();
+        return keys.iterator();
     }
 
     /**
@@ -206,7 +208,7 @@ public class Config implements Serializable
         if (index == -1)
             return null;
 
-        return (Choice) models.elementAt(index);
+        return (Choice) models.get(index);
     }
 
     /**
@@ -242,10 +244,10 @@ public class Config implements Serializable
      */
     public void applicationToLocal()
     {
-        Enumeration en = keys.elements();
-        while (en.hasMoreElements())
+        Iterator it = keys.iterator();
+        while (it.hasNext())
         {
-            String key = (String) en.nextElement();
+            String key = (String) it.next();
 
             try
             {
@@ -277,10 +279,10 @@ public class Config implements Serializable
         {
             log.info("Settings for priority level="+priority);
 
-            Enumeration en = keys.elements();
-            while (en.hasMoreElements())
+            Iterator it = keys.iterator();
+            while (it.hasNext())
             {
-                String key = (String) en.nextElement();
+                String key = (String) it.next();
                 Choice model = getChoice(key);
 
                 if (model.priority() == priority)
@@ -328,15 +330,23 @@ public class Config implements Serializable
     }
 
     /**
+     * Method getDataMap.
+     */
+    public Map getDataMap()
+    {
+        return datamap;
+    }
+
+    /**
      * Take the data stored permanetly and copy it to the local
      * storage area, using the specified stream
      */
     public void setProperties(Properties prop)
     {
-        Enumeration en = prop.keys();
-        while (en.hasMoreElements())
+        Iterator it = prop.keySet().iterator();
+        while (it.hasNext())
         {
-            String key = (String) en.nextElement();
+            String key = (String) it.next();
             String value = prop.getProperty(key);
 
             if (value != null)
@@ -353,10 +363,10 @@ public class Config implements Serializable
     {
         Properties prop = new Properties();
 
-        Enumeration en = keys.elements();
-        while (en.hasMoreElements())
+        Iterator it = keys.iterator();
+        while (it.hasNext())
         {
-            String key = (String) en.nextElement();
+            String key = (String) it.next();
             String value = local.getProperty(key);
 
             Choice model = getChoice(key);
@@ -561,4 +571,6 @@ public class Config implements Serializable
 
     /** The list of listeners */
     protected EventListenerList listener_list = new EventListenerList();
+    
+    private Map datamap = new HashMap();
 }

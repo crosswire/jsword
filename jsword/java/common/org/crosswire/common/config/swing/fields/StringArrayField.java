@@ -89,7 +89,6 @@ public class StringArrayField extends JPanel implements Field
     */
     public void setOptions(Object param)
     {
-        separator = (String) param;
     }
 
     /**
@@ -98,7 +97,7 @@ public class StringArrayField extends JPanel implements Field
     */
     public String getValue()
     {
-        return Convert.stringArray2String(getArray(), separator);
+        return Convert.stringArray2String(getArray());
     }
 
     /**
@@ -122,7 +121,7 @@ public class StringArrayField extends JPanel implements Field
     */
     public void setValue(String value)
     {
-        setArray(Convert.string2StringArray(value, separator));
+        setArray(Convert.string2StringArray(value));
     }
 
     /**
@@ -241,7 +240,4 @@ public class StringArrayField extends JPanel implements Field
 
     /** Button bar: update */
     private JButton update = new JButton("Update");
-
-    /** The class that everything must inherit from */
-    private String separator;
 }

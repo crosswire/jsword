@@ -6,8 +6,8 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -77,10 +77,10 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
         });
 
         // For each of the Fields put it in a FieldPanel
-        Enumeration en = config.getNames();
-        while (en.hasMoreElements())
+        Iterator it = config.getNames();
+        while (it.hasNext())
         {
-            String key = (String) en.nextElement();
+            String key = (String) it.next();
             Choice model = config.getChoice(key);
 
             addChoice(key, model);
@@ -295,12 +295,12 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
      */
     public void screenToLocal()
     {
-        Enumeration en = config.getNames();
-        while (en.hasMoreElements())
+        Iterator it = config.getNames();
+        while (it.hasNext())
         {
             try
             {
-                String key = (String) en.nextElement();
+                String key = (String) it.next();
                 Field field = (Field) fields.get(key);
                 String value = field.getValue();
                 config.setLocal(key, value);
@@ -317,12 +317,12 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
      */
     public void localToScreen()
     {
-        Enumeration en = config.getNames();
-        while (en.hasMoreElements())
+        Iterator it = config.getNames();
+        while (it.hasNext())
         {
             try
             {
-                String key = (String) en.nextElement();
+                String key = (String) it.next();
                 Field field = (Field) fields.get(key);
                 String value = config.getLocal(key);
                 field.setValue(value);

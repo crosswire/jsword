@@ -33,9 +33,8 @@ public abstract class StringArrayChoice extends AbstractChoice
     /**
      * Construct an Object Choice
      */
-    public StringArrayChoice(String separator)
+    public StringArrayChoice()
     {
-        this.separator = separator;
     }
 
     /**
@@ -56,7 +55,7 @@ public abstract class StringArrayChoice extends AbstractChoice
      */
     public String getString()
     {
-        return Convert.stringArray2String(getArray(), separator);
+        return Convert.stringArray2String(getArray());
     }
 
     /**
@@ -65,7 +64,7 @@ public abstract class StringArrayChoice extends AbstractChoice
      */
     public void setString(String value) throws Exception
     {
-        setArray(Convert.string2StringArray(value, separator));
+        setArray(Convert.string2StringArray(value));
     }
 
     /**
@@ -75,15 +74,4 @@ public abstract class StringArrayChoice extends AbstractChoice
     {
         return "array";
     }
-
-    /**
-     * The type that we are editing
-     */
-    public Object getTypeOptions()
-    {
-        return separator;
-    }
-
-    /** The separator */
-    private String separator;
 }

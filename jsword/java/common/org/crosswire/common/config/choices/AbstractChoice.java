@@ -38,7 +38,7 @@ public abstract class AbstractChoice implements Choice
      */
     public UserLevel getUserLevel()
     {
-        return UserLevel.LEVEL_BEGINNER;
+        return UserLevel.BEGINNER;
     }
 
     /**

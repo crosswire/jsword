@@ -9,6 +9,8 @@ import java.net.URL;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -49,9 +51,10 @@ public class OptionsAction extends DesktopAbstractAction
               'O', null);
     }
 
-    public void createConfig() throws IOException, JDOMException
+    public void createConfig() throws IOException, JDOMException, BookException
     {
         config = new Config("Tool Shed Options");
+        config.getDataMap().put("biblenames", Bibles.getBibleNames());
 
         Document xmlconfig = Project.resource().getDocument("config");
         config.add(xmlconfig);

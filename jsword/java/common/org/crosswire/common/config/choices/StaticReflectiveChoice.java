@@ -2,7 +2,6 @@
 package org.crosswire.common.config.choices;
 
 import java.beans.IntrospectionException;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -57,21 +56,20 @@ public class StaticReflectiveChoice implements Choice
      */
     public StaticReflectiveChoice(Element config) throws ClassNotFoundException, IntrospectionException
     {
-        helptext = getSubElementText(config, "help");
-        data = getSubElementText(config, "data");
+        // The important 3 things saying what we update and how we describe ourselves
         String clazzname = getSubElementText(config, "class");
         String propertyname = getSubElementText(config, "property");
-        String levelname = getSubElementText(config, "level");
-        if (levelname != null)
-            level = UserLevel.forName(levelname);
-        else
-            level = UserLevel.LEVEL_BEGINNER;
+        helptext = getSubElementText(config, "help");
 
-        String priorityname = getSubElementText(config, "priority");
+        // 2 optional config attrubites
+        level = UserLevel.forName(config.getAttributeValue("level"));
+        String priorityname = config.getAttributeValue("priority");
         if (priorityname == null)
             priority = Choice.PRIORITY_NORMAL;
         else
             priority = Integer.parseInt(priorityname);
+
+        data = getSubElementText(config, "data");
 
         // Find an appropriate class        
         clazz = Class.forName(clazzname);
@@ -326,28 +324,12 @@ public class StaticReflectiveChoice implements Choice
 
         public String toString(Object orig)
         {
-            if (data.equals("File.pathSeparator"))
-            {
-                return Convert.stringArray2String(((String[]) orig), File.pathSeparator);
-            }
-            else
-            {
-                log.error("No valid entry for data object. Got data="+data);
-                return "";
-            }
+            return Convert.stringArray2String(((String[]) orig));
         }
 
         public Object fromString(String orig)
         {
-            if (data.equals("File.pathSeparator"))
-            {
-                return Convert.string2StringArray(orig, File.pathSeparator);
-            }
-            else
-            {
-                log.error("No valid entry for data object. Got data="+data);
-                return null;
-            }
+            return Convert.string2StringArray(orig);
         }
     }
 
@@ -399,7 +381,7 @@ public class StaticReflectiveChoice implements Choice
 
         public Object getTypeOptions()
         {
-            return Convert.string2StringArray(data, ",");
+            return UserLevel.getUserLevels();
         }
         
         public String toString(Object orig)

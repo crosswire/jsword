@@ -3,7 +3,7 @@ package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
@@ -70,10 +70,10 @@ public class TabbedConfigPane extends PanelConfigPane
         if (tab != null) remove(tab);
         tab = new JTabbedPane();
 
-        Enumeration en = config.getPaths();
-        while (en.hasMoreElements())
+        Iterator it = config.getPaths();
+        while (it.hasNext())
         {
-            String path = (String) en.nextElement();
+            String path = (String) it.next();
             // log.fine("TAB: path="+path);
 
             JTabbedPane nest = tab;

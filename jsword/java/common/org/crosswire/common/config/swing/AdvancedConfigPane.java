@@ -5,9 +5,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -216,14 +217,14 @@ public class AdvancedConfigPane extends TreeConfigPane
         /**
          * Get a Vector of the children rooted at path
          */
-        protected Vector getChildren(String path)
+        protected List getChildren(String path)
         {
-            Vector retcode = new Vector();
+            List retcode = new ArrayList();
 
-            Enumeration en = config.getNames();
-            while (en.hasMoreElements())
+            Iterator it = config.getNames();
+            while (it.hasNext())
             {
-                String temp = (String) en.nextElement();
+                String temp = (String) it.next();
 
                 if (temp.startsWith(path) && !temp.equals(path))
                 {
@@ -239,7 +240,7 @@ public class AdvancedConfigPane extends TreeConfigPane
 
                     // Add it to the list if needed
                     if (temp.length() > 0 && !retcode.contains(temp))
-                        retcode.addElement(temp);
+                        retcode.add(temp);
                 }
             }
 
@@ -261,12 +262,12 @@ public class AdvancedConfigPane extends TreeConfigPane
                 return null;
 
             String path = ((Node) parent).getFullName();
-            Vector children = getChildren(path);
+            List children = getChildren(path);
 
             if (children.size() == 0)
                 return new CompNode(path);
 
-            String name = (String) children.elementAt(index);
+            String name = (String) children.get(index);
             return new Node(path, name);
         }
 

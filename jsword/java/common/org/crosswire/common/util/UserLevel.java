@@ -1,9 +1,6 @@
 
 package org.crosswire.common.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * A UserLevel keeps a track of how advanced the user is.
  * It may not be a graphical component, but many graphical components
@@ -41,8 +38,6 @@ public class UserLevel
     {
         this.ordinal = ordinal;
         this.name = name;
-
-        map.put(name, this);
     }
 
     /**
@@ -72,13 +67,35 @@ public class UserLevel
     }
 
     /**
-     * Get a Username by string.
-     * @param levelname
-     * @return UserLevel
+     * Get a Username by string. This method comes down to: if the string
+     * starts with [i|I] return UserLevel.INTERMEDIATE, if it starts with
+     * [a|A] return UserLevel.ADVANCED, and otherwise UserLevel.BEGINNER
+     * @param levelname The string to check
+     * @return One of the 3 UserLevels.
      */
     public static UserLevel forName(String levelname)
     {
-        return (UserLevel) map.get(levelname);
+        if (levelname == null)
+            return BEGINNER;
+
+        levelname = levelname.toLowerCase();
+
+        if (levelname.startsWith("i"))
+            return INTERMEDIATE;
+
+        if (levelname.startsWith("a"))
+            return ADVANCED;
+
+        return BEGINNER;
+    }
+
+    /**
+     * Method an array containing all the known UserLevels.
+     * @return Object
+     */
+    public static UserLevel[] getUserLevels()
+    {
+        return null;
     }
 
     /**
@@ -88,18 +105,25 @@ public class UserLevel
     {
         return this.ordinal <= global.ordinal;
     }
-
-    /** The known UserLevels */
-    public static final Map map = new HashMap();
-
+    
     /** User level - Beginner */
-    public static final UserLevel LEVEL_BEGINNER = new UserLevel(0, "Beginner");
+    public static final UserLevel BEGINNER = new UserLevel(0, "Beginner");
 
     /** User level - Intermediate */
-    public static final UserLevel LEVEL_INTERMEDIATE = new UserLevel(1, "Intermediate");
+    public static final UserLevel INTERMEDIATE = new UserLevel(1, "Intermediate");
 
     /** User level - Advanced */
-    public static final UserLevel LEVEL_ADVANCED = new UserLevel(2, "Advanced");
+    public static final UserLevel ADVANCED = new UserLevel(2, "Advanced");
+
+    /**
+     * An array containing all the UserLevels
+     */
+    private static final UserLevel[] levels = new UserLevel[]
+    {
+        BEGINNER,
+        INTERMEDIATE,
+        ADVANCED,
+    };
 
     /** The level name */
     private String name;
@@ -108,5 +132,5 @@ public class UserLevel
     private int ordinal;
 
     /** The current User level */
-    private static UserLevel global = LEVEL_BEGINNER;
+    private static UserLevel global = BEGINNER;
 }

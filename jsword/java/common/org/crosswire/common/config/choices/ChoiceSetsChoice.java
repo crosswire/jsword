@@ -35,7 +35,6 @@ public class ChoiceSetsChoice extends StringArrayChoice
      */
     public ChoiceSetsChoice(Config config)
     {
-        super(" ");
         this.config = config;
     }
 

@@ -217,9 +217,9 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static String[] string2StringArray(String value, String separator)
+    public static String[] string2StringArray(String value)
     {
-        return StringUtil.tokenize(value, separator);
+        return StringUtil.tokenize(value, "#");
     }
 
     /**
@@ -227,9 +227,9 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static String stringArray2String(String[] value, String separator)
+    public static String stringArray2String(String[] value)
     {
-        return StringUtil.cat(value, separator);
+        return StringUtil.cat(value, "#");
     }
 
     /** The log stream */

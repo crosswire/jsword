@@ -1,18 +1,23 @@
 <?xml version="1.0"?>
 <!DOCTYPE config [
 <!ELEMENT config (option)+>
-<!ELEMENT option (class?, property?, help?, data?, level?, options?, priority?)>
+<!ELEMENT option (class, property, help?, data?, alternatives?)>
 <!ATTLIST option
   type CDATA #REQUIRED
   key CDATA #REQUIRED
+  level (beginner|intermediate|advanced) 'beginner'
+  priority NMTOKEN '5'
 >
 <!ELEMENT class (#PCDATA)>
 <!ELEMENT property (#PCDATA)>
 <!ELEMENT help (#PCDATA)>
 <!ELEMENT data (#PCDATA)>
-<!ELEMENT level (#PCDATA)>
-<!ELEMENT options (#PCDATA)>
-<!ELEMENT priority (#PCDATA)>
+<!ELEMENT alternatives (alternative)*>
+<!ELEMENT alternative (#PCDATA)>
+<!ATTLIST alternative
+  number NMTOKEN #REQUIRED
+  name CDATA #REQUIRED
+>
 ]>
 
 <config>
@@ -20,7 +25,7 @@
     <class>org.crosswire.jsword.book.Bibles</class>
     <property>DefaultName</property>
     <help>Which of the available Bibles is the default.</help>
-    <data>Bibles.getBibleNames</data>
+    <data>biblenames</data>
   </option>
 
   <option type="static" key="Bibles.Cache Versions">
@@ -41,27 +46,33 @@
     <help>Where is the SWORD Project base directory.</help>
   </option>
 
-  <option type="static" key="Bibles.Display.Persistent Naming">
+  <option type="static" key="Bibles.Display.Persistent Naming" level="advanced">
     <class>org.crosswire.jsword.passage.PassageUtil</class>
     <property>PersistentNaming</property>
-    <help>True if the passage editor re-write the references to conform to its notation.</help>
-    <level>ADVANCED</level>
+    <help>True if the passage editor re-writes the references to conform to its notation.</help>
   </option>
 
-  <option type="static" key="Bibles.Display.Blurring Rules">
+  <option type="static" key="Bibles.Display.Blurring Rules" level="advanced">
     <class>org.crosswire.jsword.passage.PassageUtil</class>
     <property>BlurRestriction</property>
     <help>What is the default blurring - Blur across chapter boundaries or not.</help>
-    <level>ADVANCED</level>
-    <options>None=0, Book=1, Chapter=2</options>
+    <alternatives>
+      <alternative number="0" name="None"/>
+      <alternative number="1" name="Book"/>
+      <alternative number="2" name="Chapter"/>
+    </alternatives>
   </option>
 
-  <option type="static" key="Bibles.Display.Book Case">
+  <option type="static" key="Bibles.Display.Book Case" level="advanced">
     <class>org.crosswire.jsword.passage.Books</class>
     <property>Case</property>
     <help>What case should we use to display the references.</help>
-    <level>ADVANCED</level>
-    <options>Lower=0, Sentance=1, Upper=2, Mixed=3</options>
+    <alternatives>
+      <alternative number="0" name="lower"/>
+      <alternative number="1" name="Sentance"/>
+      <alternative number="2" name="UPPER"/>
+      <alternative number="3" name="mIXeD"/>
+    </alternatives>
   </option>
 
   <option type="static" key="Looks.Look and Feel">
@@ -82,26 +93,22 @@
     <help>Do we display Exceptions in a the GUI shelf.</help>
   </option>
 
-  <option type="static" key="Reports.Exceptions to System Logger">
+  <option type="static" key="Reports.Exceptions to System Logger" priority="8">
     <class>org.crosswire.common.util.event.LogCaptureListener</class>
     <property>HelpDeskListener</property>
     <help>Do we log exceptions to the system logger.</help>
-    <priority>8</priority>
   </option>
 
-  <option type="static" key="Advanced.Source Path">
+  <option type="static" key="Advanced.Source Path" level="advanced">
     <class>org.crosswire.common.swing.DetailedExceptionPane</class>
     <property>SourcePath</property>
     <help>The directories to search for source code in when investigating an exception.</help>
-    <data>File.pathSeparator</data>
-    <level>ADVANCED</level>
   </option>
 
   <option type="static" key="Advanced.User Level">
     <class>org.crosswire.common.util.UserLevel</class>
     <property>GlobalUserLevel</property>
-    <help>How confident are you with this program, and how much do you want to be botherd with new features.</help>
-    <data>Beginner, Intermediate, Advanced</data>
+    <help>How confident are you with this program, and how much do you want to be bothered with new features.</help>
   </option>
 
   <!--
@@ -109,7 +116,6 @@
     <class></class>
     <property></property>
     <help></help>
-    <level></level>
   </option>
   -->
 </config>
