@@ -74,17 +74,17 @@ public class BooksTreeModel implements TreeModel
 
         if (parent == BookType.BIBLE)
         {
-            return Books.getBooks(BookFilters.getBibles()).size();
+            return Books.getBookMetaDatas(BookFilters.getBibles()).size();
         }
 
         if (parent == BookType.COMMENTARY)
         {
-            return Books.getBooks(BookFilters.getCommentaries()).size();
+            return Books.getBookMetaDatas(BookFilters.getCommentaries()).size();
         }
 
         if (parent == BookType.DICTIONARY)
         {
-            return Books.getBooks(BookFilters.getDictionaries()).size();
+            return Books.getBookMetaDatas(BookFilters.getDictionaries()).size();
         }
 
         return 0;
@@ -141,17 +141,17 @@ public class BooksTreeModel implements TreeModel
 
         if (parent == BookType.BIBLE)
         {
-            return Books.getBooks(BookFilters.getBibles()).get(index);
+            return Books.getBookMetaDatas(BookFilters.getBibles()).get(index);
         }
 
         if (parent == BookType.COMMENTARY)
         {
-            return Books.getBooks(BookFilters.getCommentaries()).get(index);
+            return Books.getBookMetaDatas(BookFilters.getCommentaries()).get(index);
         }
 
         if (parent == BookType.DICTIONARY)
         {
-            return Books.getBooks(BookFilters.getDictionaries()).get(index);
+            return Books.getBookMetaDatas(BookFilters.getDictionaries()).get(index);
         }
 
         return null;
@@ -184,17 +184,17 @@ public class BooksTreeModel implements TreeModel
 
         if (parent == BookType.BIBLE)
         {
-            return Books.getBooks(BookFilters.getBibles()).indexOf(child);
+            return Books.getBookMetaDatas(BookFilters.getBibles()).indexOf(child);
         }
 
         if (parent == BookType.COMMENTARY)
         {
-            return Books.getBooks(BookFilters.getCommentaries()).indexOf(child);
+            return Books.getBookMetaDatas(BookFilters.getCommentaries()).indexOf(child);
         }
 
         if (parent == BookType.DICTIONARY)
         {
-            return Books.getBooks(BookFilters.getDictionaries()).indexOf(child);
+            return Books.getBookMetaDatas(BookFilters.getDictionaries()).indexOf(child);
         }
 
         return -1;

@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.map.view;
 
 import java.awt.BorderLayout;
@@ -17,6 +16,7 @@ import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -42,7 +42,8 @@ import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.map.model.AdjustOriginRule;
 import org.crosswire.jsword.map.model.AntiGravityRule;
 import org.crosswire.jsword.map.model.BrownianRule;
@@ -155,7 +156,11 @@ public class Mapper extends JFrame
 
             config.localToApplication(true);
 
-            la = new LinkArray(Defaults.getBibleMetaData().getBook());
+            List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+            BookMetaData bmd = (BookMetaData) dicts.get(0);
+            Book book = bmd.getBook();
+
+            la = new LinkArray(book);
         }
         catch (Exception ex)
         {
@@ -554,7 +559,9 @@ public class Mapper extends JFrame
     protected void create()
     {
         if (!okToClose())
+        {
             return;
+        }
 
         setMap(new Map(2));
         saved = true;
@@ -570,7 +577,9 @@ public class Mapper extends JFrame
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(xml_filter);
             if (posfile != null)
+            {
                 chooser.setSelectedFile(new File(posfile));
+            }
 
             int reply = chooser.showOpenDialog(this);
             if (reply == JFileChooser.APPROVE_OPTION)
@@ -624,7 +633,9 @@ public class Mapper extends JFrame
         try
         {
             if (posfile == null)
+            {
                 posfile = System.getProperty("user.dir") + File.separator + "Untitled.xml";
+            }
 
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(xml_filter);
@@ -671,7 +682,9 @@ public class Mapper extends JFrame
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(xml_filter);
             if (linkfile != null)
+            {
                 chooser.setSelectedFile(new File(linkfile));
+            }
 
             int reply = chooser.showOpenDialog(this);
             if (reply == JFileChooser.APPROVE_OPTION)
@@ -719,7 +732,9 @@ public class Mapper extends JFrame
         try
         {
             if (linkfile == null)
+            {
                 linkfile = System.getProperty("user.dir") + File.separator + "Untitled.xml";
+            }
 
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(xml_filter);
@@ -763,7 +778,9 @@ public class Mapper extends JFrame
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(lser_filter);
             if (linkfile != null)
+            {
                 chooser.setSelectedFile(new File(linkfile));
+            }
 
             int reply = chooser.showOpenDialog(this);
             if (reply == JFileChooser.APPROVE_OPTION)
@@ -789,7 +806,9 @@ public class Mapper extends JFrame
         try
         {
             if (linkfile == null)
+            {
                 linkfile = System.getProperty("user.dir") + File.separator + "Untitled.lser";
+            }
 
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(lser_filter);

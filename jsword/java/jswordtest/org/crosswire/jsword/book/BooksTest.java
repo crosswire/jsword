@@ -60,7 +60,7 @@ public class BooksTest extends TestCase
     {
         gen11 = PassageFactory.createPassage("Gen 1:1");
 
-        List lbmds = Books.getBooks(BookFilters.getBibles());
+        List lbmds = Books.getBookMetaDatas(BookFilters.getBibles());
         bibles = new Book[lbmds.size()];
         bmds = new BookMetaData[lbmds.size()];
 

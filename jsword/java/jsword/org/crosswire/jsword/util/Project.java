@@ -143,7 +143,7 @@ public class Project
      * @return The project root as a URL
      * @see NetUtil#list(URL, URLFilter)
      */
-    public Properties getReadingsSet(String name) throws MalformedURLException, IOException
+    public Properties getReadingsSet(String name) throws IOException
     {
         String lookup = "readings/"+name;
         InputStream in = ResourceUtil.getResourceAsStream(lookup);
@@ -163,7 +163,7 @@ public class Project
      * @throws IOException if the resource can not be loaded
      * @throws MalformedURLException if the resource can not be found
      */
-    public Properties getProperties(String subject) throws IOException, MalformedURLException
+    public Properties getProperties(String subject) throws IOException
     {
         try
         {
@@ -189,7 +189,7 @@ public class Project
      * @param subject The name (minus the .properties extension)
      * @return The read properties file
      */
-    public Properties getWritableProperties(String subject) throws IOException, MalformedURLException
+    private Properties getWritableProperties(String subject) throws IOException
     {
         URL url = getWritablePropertiesURL(subject);
 
@@ -233,13 +233,16 @@ public class Project
      * were to delete all the files in this directory while you weren't looking
      * then life should not stop, but should carry on albeit with a slower
      * service.
+     * <p>This method may well return null if we are running in a restricted
+     * environment, so callers of this method should be prepared for that
+     * eventuallity too.
      * <p>As a result of these limitations it could be OK to use {@link File} in
      * place of {@link URL} (which is the norm for this project), however there
      * doesn't seem to be a good reason to relax this rule here.
      * @param subject A moniker for the are to write to. This will be converted into a directory name.
      * @return A file: URL pointing at a local writable directory.
      */
-    public URL getTempScratchSpace(String subject) throws IOException, MalformedURLException
+    public URL getTempScratchSpace(String subject) throws IOException
     {
         URL base = getWritableBaseURL();
         URL temp = NetUtil.lengthenURL(base, subject);
@@ -256,7 +259,7 @@ public class Project
      * @throws JDOMException If the resource is not valid XML
      * @throws MalformedURLException if the resource can not be found
      */
-    public Document getDocument(String subject) throws JDOMException, IOException, MalformedURLException
+    public Document getDocument(String subject) throws JDOMException, IOException
     {
         String resource = subject+".xml";
         InputStream in = ResourceUtil.getResourceAsStream(resource);

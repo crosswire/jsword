@@ -38,18 +38,7 @@
   	<introspect class="org.crosswire.jsword.book.Defaults" property="BibleByName"/>
     <help>Which of the available Bibles is the default.</help>
     <map name="biblenames"/>
-  </option>
-
-  <option key="Bibles.Default Dictionary" type="string-options">
-  	<introspect class="org.crosswire.jsword.book.Defaults" property="DictionaryByName"/>
-    <help>Which of the available Bibles is the default.</help>
-    <map name="dictionarynames"/>
-  </option>
-
-  <option key="Bibles.Default Commentary" type="string-options">
-  	<introspect class="org.crosswire.jsword.book.Defaults" property="CommentaryByName"/>
-    <help>Which of the available Bibles is the default.</help>
-    <map name="commentarynames"/>
+    <!-- set up in OptionsAction.refreshBooks() along with dict and commentary versions -->
   </option>
 
   <option key="Bibles.Verses Per Tab" type="number">

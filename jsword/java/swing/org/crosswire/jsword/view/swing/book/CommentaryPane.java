@@ -62,7 +62,7 @@ public class CommentaryPane extends JPanel implements DisplayArea
      */
     public CommentaryPane()
     {
-        cmds = Books.getBooks(filter);
+        cmds = Books.getBookMetaDatas(filter);
 
         jbInit();
     }

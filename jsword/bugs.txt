@@ -3,17 +3,16 @@ This file is our equivalent of bugzilla for the time being.
 
 GUI
 - status bar re-size
-
-Modules
+- better display mechanism
 
 Other
 - change name of swing packages
 - change name of servlet packages
 - move map and maptest into jsword-support
+- install manager
 
 Web
 - auto test for web demo
-- getBibles() bug
 
 --------------------------------------------------------------------------------
 
@@ -23,10 +22,11 @@ GUI
 - full internationalization
 - help screens
 - recreate module creator/tester
-- install manager
 - merge dict/comment to form reference pane
 - implement print
-- Get better HTML renderer (see: http://java.sun.com/products/jfc/tsc/articles/tictactoe/index.html)
 
 Modules
 - Sword GenBook
+
+General
+- Make config use Preferences

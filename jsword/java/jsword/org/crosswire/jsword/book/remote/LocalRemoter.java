@@ -66,7 +66,7 @@ public class LocalRemoter implements Remoter
         {
             if (MethodName.GETBIBLES.equals(methodname))
             {
-                List lbmds = Books.getBooks(FILTER);
+                List lbmds = Books.getBookMetaDatas(FILTER);
                 BookMetaData[] bmds = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
 
                 String[] uids = getUIDs(bmds);

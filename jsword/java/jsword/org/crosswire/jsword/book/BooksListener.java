@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.EventListener;
@@ -37,7 +36,7 @@ public interface BooksListener extends EventListener
     public void bookAdded(BooksEvent ev);
 
     /**
-     * Called whenever a new Bible is removed from the system.
+     * Called whenever a Bible is removed from the system.
      * @param ev A description of the change
      */
     public void bookRemoved(BooksEvent ev);

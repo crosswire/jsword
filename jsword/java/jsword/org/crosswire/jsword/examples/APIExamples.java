@@ -16,7 +16,6 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
-import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
@@ -53,6 +52,11 @@ import org.xml.sax.SAXException;
 public class APIExamples
 {
     /**
+     * The name of a Bible to find
+     */
+    private static final String BIBLE_NAME = "av";
+
+    /**
      * The source to this method is an example of how to read the plain text of
      * a verse, and print it to stdout. Reading from a Commentary is just the
      * same as reading from a Bible.
@@ -63,7 +67,7 @@ public class APIExamples
     public void readPlainText() throws BookException, NoSuchVerseException
     {
         Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Book bible = Defaults.getBibleMetaData().getBook();
+        Book bible = Books.getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
         String text = data.getPlainText();
@@ -83,7 +87,7 @@ public class APIExamples
     public void readStyledText() throws NoSuchVerseException, BookException, TransformerException, SAXException
     {
         Passage ref = PassageFactory.createPassage("Mat 1 1");
-        Book bible = Defaults.getBibleMetaData().getBook();
+        Book bible = Books.getBookMetaData(BIBLE_NAME).getBook();
 
         BookData data = bible.getData(ref);
         SAXEventProvider osissep = data.getSAXEventProvider();
@@ -108,7 +112,12 @@ public class APIExamples
      */
     public void readDictionary() throws BookException
     {
-        Book dict = Defaults.getDictionaryMetaData().getBook();
+        // This just gets a list of all the known dictionaries and picks the
+        // first. In a real world app you will probably have a better way
+        // of doing this.
+        List dicts = Books.getBookMetaDatas(BookFilters.getDictionaries());
+        BookMetaData bmd = (BookMetaData) dicts.get(0);
+        Book dict = bmd.getBook();
 
         // If I want every key in the Dictionary then I do this:
         KeyList keys = dict.getGlobalKeyList();
@@ -126,7 +135,7 @@ public class APIExamples
      */
     public void search() throws BookException
     {
-        Book bible = Defaults.getBibleMetaData().getBook();
+        Book bible = Books.getBookMetaData(BIBLE_NAME).getBook();
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
@@ -146,7 +155,6 @@ public class APIExamples
      * This is an example of the different ways to select a Book from the
      * selection available.
      * @see org.crosswire.common.config.Config
-     * @see Defaults
      * @see Books
      */
     public void pickBible()
@@ -154,7 +162,7 @@ public class APIExamples
         BookMetaData bmd;
 
         // The Default Bible - JSword does everything it can to make this work
-        bmd = Defaults.getBibleMetaData();
+        bmd = Books.getBookMetaData(BIBLE_NAME);
         Book bible = bmd.getBook();
 
         // You can only get a Bible (or any other Book) via a MetaData object
@@ -162,10 +170,10 @@ public class APIExamples
         // without reading indexes off disk or similar.
 
         // If you want a greater selection of Books:
-        List everything = Books.getBooks();
+        List everything = Books.getBookMetaDatas();
 
         // Or you can narrow the range a bit
-        List bibles = Books.getBooks(BookFilters.getBibles());
+        List bibles = Books.getBookMetaDatas(BookFilters.getBibles());
 
         // There are implementations of BookFilter for all sorts of things in
         // the BookFilters class 
@@ -184,7 +192,7 @@ public class APIExamples
 
         // If you are wanting to get really fancy you can implement your own
         // Bookfilter easily
-        List test = Books.getBooks(new BookFilter()
+        List test = Books.getBookMetaDatas(new BookFilter()
         {
             public boolean test(BookMetaData tbmd)
             {

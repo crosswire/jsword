@@ -14,7 +14,7 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
@@ -57,7 +57,8 @@ public class DemoServlet extends HttpServlet
 
         try
         {
-            book = Defaults.getBibleMetaData().getBook();
+            String bookname = config.getInitParameter("book-name");
+            book = Books.getBookMetaData(bookname).getBook();
         }
         catch (Exception ex)
         {

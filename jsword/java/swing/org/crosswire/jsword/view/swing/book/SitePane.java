@@ -2,6 +2,7 @@ package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -120,7 +121,7 @@ public class SitePane extends JPanel
             }
         });
         btnRefresh.setMnemonic('R');
-        btnRefresh.setText("Refresh");
+        btnRefresh.setText("Refresh List");
         btnRefresh.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -144,6 +145,7 @@ public class SitePane extends JPanel
             }
         });
         scrAvailable.getViewport().add(treAvailable);
+        scrAvailable.setPreferredSize(new Dimension(200, 400));
 
         lblSelected.setDisplayedMnemonic('S');
         lblSelected.setLabelFor(tblSelected);
@@ -152,6 +154,7 @@ public class SitePane extends JPanel
         pnlSelected.add(scrSelected, BorderLayout.CENTER);
         pnlSelected.add(lblSelected, BorderLayout.NORTH);
         scrSelected.getViewport().add(tblSelected);
+        scrAvailable.setPreferredSize(new Dimension(300, 400));
 
         sptMain.setResizeWeight(0.5);
         sptMain.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -163,21 +166,6 @@ public class SitePane extends JPanel
 
         this.setLayout(new BorderLayout());
         this.add(sptMain, BorderLayout.CENTER);
-    }
-
-    /**
-     * A name for the tab that this SitePane sits in
-     */
-    public String getTabName()
-    {
-        if (installer == null)
-        {
-            return "Local";
-        }
-        else
-        {
-            return installer.getName();
-        }
     }
 
     /**
@@ -216,11 +204,18 @@ public class SitePane extends JPanel
             TreePath path = treAvailable.getSelectionPath();
             if (path != null)
             {
-                Object last = path.getLastPathComponent();
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
-                String name = (String) node.getUserObject();
+                try
+                {
+                    Object last = path.getLastPathComponent();
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
+                    String name = (String) node.getUserObject();
 
-                installer.install(name);
+                    installer.install(name);
+                }
+                catch (InstallException ex)
+                {
+                    Reporter.informUser(this, ex);
+                }
             }
         }
     }

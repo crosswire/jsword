@@ -50,7 +50,7 @@ public class LocalRemoterTest extends TestCase
     public void testGetBibles() throws Exception
     {
         BookFilter filter = BookFilters.both(BookFilters.getFaster(Books.SPEED_SLOWEST), BookFilters.getBibles());
-        List lbmds = Books.getBooks(filter);
+        List lbmds = Books.getBookMetaDatas(filter);
         BookMetaData[] names1 = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
         RemoteBookDriver rbd = new LocalRemoteBookDriver();
 

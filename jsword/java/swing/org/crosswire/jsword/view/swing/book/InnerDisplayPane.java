@@ -92,7 +92,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                 try
                 {
                     job.setProgress("Setup");
-                    List booklist = Books.getBooks();
+                    List booklist = Books.getBookMetaDatas();
                     if (booklist.size() == 0)
                     {
                         return;

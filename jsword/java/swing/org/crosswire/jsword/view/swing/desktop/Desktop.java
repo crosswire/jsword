@@ -97,6 +97,25 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     {
         try
         {
+            /*
+            Preferences prefs = Preferences.userNodeForPackage(Desktop.class);
+            prefs.put("test-node", "value");
+            prefs.put("TEST_NODE", "VALUE");
+            prefs.put(":-.!@#$%^&*()", "1");
+            prefs.putBoolean("BOOL-FALSE", false);
+            prefs.putBoolean("BOOL-TRUE", true);
+            prefs.putByteArray("ARRAY", new  byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } );
+            prefs.putDouble("DOUBLE", 42.0D);
+            prefs.putFloat("FLOAT", 42.0F);
+            prefs.putInt("INT", 42);
+            prefs.putLong("LONG", 42);
+            prefs = Preferences.systemNodeForPackage(Desktop.class);
+            prefs.put("test-node", "value");
+            prefs.put("TEST_NODE", "VALUE");
+            prefs.put(":-.!@#$%^&*()", "1");
+            System.exit(0);
+            */
+
             Desktop desktop = new Desktop();
             desktop.getJFrame().pack();
             GuiUtil.centerWindow(desktop.getJFrame());

@@ -1,9 +1,10 @@
-package org.crosswire.jsword.book.install.sword;
+package org.crosswire.jsword.book.install;
 
-import org.crosswire.common.util.MsgBase;
+import java.util.EventListener;
 
 /**
- * Compile safe Msg resource settings.
+ * InstallerListener are able to be notified about changes to the numbers
+ * of Installers known to the system.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,29 +27,17 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public interface InstallerListener extends EventListener
 {
-    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}");
-    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}");
-    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}");
-    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}");
-    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured");
-    static final Msg CACHE_ERROR = new Msg("Error loading from cache");
-    static final Msg URL_FAILED = new Msg("URL manipulation failed");
+    /**
+     * Called whenever a new Installer is added to the system.
+     * @param ev A description of the change
+     */
+    public void installerAdded(InstallerEvent ev);
 
     /**
-     * Initialise any resource bundles
+     * Called whenever an Installer is removed from the system.
+     * @param ev A description of the change
      */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
-     * Passthrough ctor
-     */
-    private Msg(String name)
-    {
-        super(name);
-    }
+    public void installerRemoved(InstallerEvent ev);
 }

@@ -135,7 +135,7 @@ public class Books
     /**
      * Get an iterator over all the Books of all types.
      */
-    public static List getBooks()
+    public static List getBookMetaDatas()
     {
         return Collections.unmodifiableList(books);
     }
@@ -144,10 +144,50 @@ public class Books
      * Get a filtered iterator over all the Books.
      * @see BookFilters
      */
-    public static List getBooks(BookFilter filter)
+    public static List getBookMetaDatas(BookFilter filter)
     {
         List temp = CollectionUtil.createList(new BookFilterIterator(books.iterator(), filter));
         return Collections.unmodifiableList(temp);
+    }
+
+    /**
+     * Find a book by name, currently trying a case sensitive match first, and a
+     * case insensitive match second.
+     * <p>We might alter the functionallity of this to use a HashMap rather than
+     * a loop so we probably should not rely on the case insensitive bit,
+     * however this feels like a low use convenience method most useful in a
+     * scripting type environment for the time being, so I'm leaving case
+     * insensitivity in.
+     * <p>This is not expected to be a primary way to get books, most interfaces
+     * will have some way to allow the user to select books from a list in
+     * which case one of the getBooks() methods is more useful.
+     * This method could well be slow(ish) to execute.
+     * @param name The name of the book to find.
+     * @return null if a book by the given name can not be found.
+     */
+    public static BookMetaData getBookMetaData(String name)
+    {
+        // First check for exact matches
+        for (Iterator it = books.iterator(); it.hasNext(); )
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            if (bmd.getName().equals(name))
+            {
+                return bmd;
+            }
+        }
+
+        // Next check for case-insensitive matches
+        for (Iterator it = books.iterator(); it.hasNext(); )
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            if (bmd.getName().equalsIgnoreCase(name))
+            {
+                return bmd;
+            }
+        }
+
+        return null;
     }
 
     /**

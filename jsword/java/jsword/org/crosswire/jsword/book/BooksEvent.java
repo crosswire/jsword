@@ -1,8 +1,6 @@
-
 package org.crosswire.jsword.book;
 
 import java.util.EventObject;
-
 
 /**
  * A BooksEvent is fired whenever a Bible is added or removed from the
@@ -61,9 +59,13 @@ public class BooksEvent extends EventObject
         return added;
     }
 
-    /** Is this an addition event? */
+    /**
+     * Is this an addition event?
+     */
     private boolean added;
 
-    /** The name of the changed Bible */
+    /**
+     * The name of the changed Bible
+     */
     private BookMetaData bmd;
 }

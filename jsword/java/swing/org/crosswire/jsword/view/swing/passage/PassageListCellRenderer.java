@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.passage;
 
 import java.awt.Component;
@@ -14,8 +13,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
@@ -49,8 +48,10 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
     /**
      * Constructs a default renderer object for an item in a list.
      */
-    public PassageListCellRenderer()
+    public PassageListCellRenderer(Book bible)
     {
+        this.bible = bible;
+
         border = new EmptyBorder(1, 1, 1, 1);
 
         label.setBorder(border);
@@ -86,7 +87,7 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
                 ref.add(range);
                 if (text == null)
                 {
-                    BookData bdata = Defaults.getBibleMetaData().getBook().getData(ref);
+                    BookData bdata = bible.getData(ref);
                     String simple = bdata.getPlainText();
                     text = "<html><b>"+range.getName()+"</b> "+simple;
                     hash.put(range, text);
@@ -112,13 +113,23 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
         return label;
     }
 
-    /** The label to display if the item is not selected */
+    /**
+     * The Bible in which to look up verses
+     */
+    private Book bible = null;
+
+    /**
+     * The label to display if the item is not selected
+     */
     private JLabel label = new JLabel();
 
-    /** The border if the label is selected */
+    /**
+     * The border if the label is selected
+     */
     private Border border;
 
-    /** A cache of Bible texts */
+    /**
+     * A cache of Bible texts
+     */
     private Hashtable hash = new Hashtable();
 }
-

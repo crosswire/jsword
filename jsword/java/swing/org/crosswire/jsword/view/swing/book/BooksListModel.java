@@ -133,7 +133,7 @@ public class BooksListModel extends AbstractListModel
      */
     protected void cacheData()
     {
-        bmds = Books.getBooks(filter);
+        bmds = Books.getBookMetaDatas(filter);
     }
 
     /**

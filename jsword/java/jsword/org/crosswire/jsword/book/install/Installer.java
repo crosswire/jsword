@@ -34,17 +34,6 @@ import java.util.Properties;
 public interface Installer
 {
     /**
-     * Initialize this installer with a new url from which to read
-     */
-    public void init(String name, String url) throws InstallException;
-
-    /**
-     * Accessor for the configured name
-     * @return the configured name
-     */
-    public String getName();
-
-    /**
      * Accessor for the URL
      * @return the source url
      */
@@ -78,5 +67,5 @@ public interface Installer
      * reloadIndex()
      * @param name The module to install
      */
-    public void install(String name);
+    public void install(String name) throws InstallException;
 }

@@ -159,7 +159,7 @@ public class OptionsAction extends DesktopAbstractAction
      */
     private static String[] getFullNameArray(BookFilter filter)
     {
-        List bmds = Books.getBooks(filter);
+        List bmds = Books.getBookMetaDatas(filter);
         List names = new ArrayList();
 
         for (Iterator it = bmds.iterator(); it.hasNext();)

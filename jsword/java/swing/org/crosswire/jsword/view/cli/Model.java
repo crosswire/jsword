@@ -15,7 +15,6 @@ import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
@@ -67,42 +66,12 @@ public class Model
         }
     }
 
-    public String bible()
-    {
-        return Defaults.getBibleMetaData().getFullName();
-    }
-
-    public String comment()
-    {
-        return Defaults.getCommentaryMetaData().getFullName();
-    }
-
-    public String dict()
-    {
-        return Defaults.getDictionaryMetaData().getFullName();
-    }
-
-    public String bible(String sref) throws NoSuchKeyException, BookException
-    {
-        Book book = Defaults.getBibleMetaData().getBook();
-        return getData(sref, book);
-    }
-
-    public String comment(String sref) throws NoSuchKeyException, BookException
-    {
-        Book book = Defaults.getCommentaryMetaData().getBook();
-        return getData(sref, book);
-    }
-
-    public String dict(String sref) throws NoSuchKeyException, BookException
-    {
-        Book book = Defaults.getDictionaryMetaData().getBook();
-        return getData(sref, book);
-    }
-
     public String dictList()
     {
-        Book dict = Defaults.getDictionaryMetaData().getBook();
+        List dicts = Books.getBookMetaDatas(BookFilters.getDictionaries());
+        BookMetaData bmd = (BookMetaData) dicts.get(0);
+        Book dict = bmd.getBook();
+
         KeyList set = dict.getGlobalKeyList();
 
         StringBuffer buffer = new StringBuffer();
@@ -120,41 +89,34 @@ public class Model
         return buffer.toString();
     }
 
-    private String getData(String sref, Book book) throws NoSuchKeyException, BookException
+    /**
+     * This was private and called by methods that used Defaults (now
+     * deprecated) we need to replace those methods, and probably still call
+     * this method.
+     */
+    public String getData(String sref, Book book) throws NoSuchKeyException, BookException
     {
         Key key = book.getKey(sref);
         BookData bdata = book.getData(key);
         return bdata.getPlainText();
     }
     
-    public String setBible(String spec) throws BookException
-    {
-        Defaults.setBibleByName(spec);
-        return Defaults.getBibleByName();
-    }
-
-    public String setDict(String spec) throws BookException
-    {
-        Defaults.setDictionaryByName(spec);
-        return Defaults.getDictionaryByName();
-    }
-
-    public String setComment(String spec) throws BookException
-    {
-        Defaults.setCommentaryByName(spec);
-        return Defaults.getCommentaryByName();
-    }
-
     public String search(String str) throws BookException
     {
-        Book book = Defaults.getBibleMetaData().getBook();
+        List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+        BookMetaData bmd = (BookMetaData) dicts.get(0);
+        Book book = bmd.getBook();
+        
         Key key = book.find(new Search(str, false));
         return key.getName();
     }
     
     public String match(String str) throws BookException
     {
-        Book book = Defaults.getBibleMetaData().getBook();
+        List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+        BookMetaData bmd = (BookMetaData) dicts.get(0);
+        Book book = bmd.getBook();
+
         Key key = book.find(new Search(str, true));
         return key.getName();
     }
@@ -183,7 +145,7 @@ public class Model
     {
         StringBuffer buffer = new StringBuffer();
 
-        List list = Books.getBooks(filter);
+        List list = Books.getBookMetaDatas(filter);
         for (Iterator it = list.iterator(); it.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) it.next();

@@ -3,11 +3,14 @@ package org.crosswire.jsword.map.model;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.raw.RawBook;
 
 /**
@@ -52,7 +55,11 @@ public class LinkArrayTest extends TestCase
     public void testLinkArray() throws Exception
     {
         RawBook.setDefaultCacheData(true);
-        Book book = Defaults.getBibleMetaData().getBook();
+
+        List dicts = Books.getBookMetaDatas(BookFilters.getBibles());
+        BookMetaData bmd = (BookMetaData) dicts.get(0);
+        Book book = bmd.getBook();
+
         LinkArray la = new LinkArray(book);
 
         ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream());

@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.crosswire.common.swing.EirAbstractAction;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
@@ -58,10 +61,13 @@ public class SitesPane extends JPanel
         InstallManager imgr = new InstallManager();
         installers = imgr.getInstallers();
 
-        for (int i = 0; i < installers.length; i++)
+        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
         {
-            SitePane site = new SitePane(installers[i]);
-            tabMain.add(site, site.getTabName());
+            String name = (String) it.next();
+            Installer installer = (Installer) installers.get(name); 
+
+            SitePane site = new SitePane(installer);
+            tabMain.add(site, name);
         }
     }
 
@@ -89,13 +95,12 @@ public class SitesPane extends JPanel
                 addSite();
             }
         });
-        btnAdd.setEnabled(false);
 
         pnlButtons.setLayout(new FlowLayout(FlowLayout.RIGHT));
         pnlButtons.add(btnAdd, null);
         pnlButtons.add(btnOK);
 
-        tabMain.add(steLocal, steLocal.getTabName());
+        tabMain.add(steLocal, "Local");
 
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -107,7 +112,15 @@ public class SitesPane extends JPanel
      */
     protected void addSite()
     {
-        System.out.println("add site ...");
+        try
+        {
+            EditSitePane edit = new EditSitePane();
+            edit.showInDialog(this);
+        }
+        catch (InstallException ex)
+        {
+            Reporter.informUser(this, ex);
+        }
     }
 
     /**
@@ -147,7 +160,7 @@ public class SitesPane extends JPanel
     /**
      * The known installers fetched from InstallManager
      */
-    private Installer[] installers = null;
+    private Map installers = null;
 
     /*
      * GUI Components

@@ -253,7 +253,7 @@ public class PassageSelectionPane extends JPanel
     }
 
     /**
-     * A method to be exposed by our children
+     * Open us in a new (optionally modal) dialog window
      * @param parent The component to which to attach the new dialog
      * @param title The title for the new dialog
      * @param modal

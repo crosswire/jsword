@@ -1,9 +1,7 @@
-package org.crosswire.jsword.book.install.sword;
-
-import org.crosswire.common.util.MsgBase;
+package org.crosswire.jsword.book.install;
 
 /**
- * Compile safe Msg resource settings.
+ * An abstract factory to allow generic creation of Installers.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,29 +24,20 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public interface InstallerFactory
 {
-    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}");
-    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}");
-    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}");
-    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}");
-    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured");
-    static final Msg CACHE_ERROR = new Msg("Error loading from cache");
-    static final Msg URL_FAILED = new Msg("URL manipulation failed");
+    /**
+     * Create a new Installer with default values for editing via bean
+     * properties.
+     * @return A new Installer implemented to fit with this Factory
+     */
+    public Installer createInstaller();
 
     /**
-     * Initialise any resource bundles
+     * Create a new Installer with values from the given url to use for
+     * initial values.
+     * @param url The configuration string
+     * @return A new Installer implemented to fit with this Factory
      */
-    static
-    {
-        init(Msg.class.getName());
-    }
-
-    /**
-     * Passthrough ctor
-     */
-    private Msg(String name)
-    {
-        super(name);
-    }
+    public Installer createInstaller(String url);
 }

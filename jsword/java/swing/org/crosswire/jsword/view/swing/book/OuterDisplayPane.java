@@ -57,7 +57,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     {
         try
         {
-            List booklist = Books.getBooks();
+            List booklist = Books.getBookMetaDatas();
             if (booklist.size() == 0)
             {
                 return;

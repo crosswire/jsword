@@ -1,9 +1,10 @@
-package org.crosswire.jsword.book.install.sword;
+package org.crosswire.jsword.book.install;
 
-import org.crosswire.common.util.MsgBase;
+import java.util.EventObject;
 
 /**
- * Compile safe Msg resource settings.
+ * An InstallerEvent is fired whenever an Installer is added or removed from the
+ * system.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,29 +27,45 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-class Msg extends MsgBase
+public class InstallerEvent extends EventObject
 {
-    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}");
-    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}");
-    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}");
-    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}");
-    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured");
-    static final Msg CACHE_ERROR = new Msg("Error loading from cache");
-    static final Msg URL_FAILED = new Msg("URL manipulation failed");
-
     /**
-     * Initialise any resource bundles
+     * Basic constructor
+     * @param installer The installer, or null if there is more than one change.
+     * @param added True if the changed installer is an addition.
      */
-    static
+    public InstallerEvent(Object source, Installer installer, boolean added)
     {
-        init(Msg.class.getName());
+        super(source);
+
+        this.installer = installer;
+        this.added = added;
     }
 
     /**
-     * Passthrough ctor
+     * Get the name of the changed Bible
+     * @return The Bible bmd
      */
-    private Msg(String name)
+    public Installer getInstaller()
     {
-        super(name);
+        return installer;
     }
+
+    /**
+     * Is this an addition event?
+     */
+    public boolean isAddition()
+    {
+        return added;
+    }
+
+    /**
+     * Is this an addition event?
+     */
+    private boolean added;
+
+    /**
+     * The name of the changed Bible
+     */
+    private Installer installer;
 }
