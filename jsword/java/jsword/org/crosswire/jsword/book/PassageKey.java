@@ -1,7 +1,9 @@
 
 package org.crosswire.jsword.book;
 
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
 
 /**
  * PassageKey is a Key tailored for Bibles.
@@ -36,6 +38,15 @@ public class PassageKey implements Key
     public PassageKey(Passage ref)
     {
         this.ref = ref;
+    }
+
+    /**
+     * Create a PassageKey from a Passage
+     * @param ref
+     */
+    public PassageKey(String refstr) throws NoSuchVerseException
+    {
+        this.ref = PassageFactory.createPassage(refstr);
     }
 
     /**

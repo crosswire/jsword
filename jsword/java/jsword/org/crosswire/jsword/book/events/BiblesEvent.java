@@ -3,6 +3,8 @@ package org.crosswire.jsword.book.events;
 
 import java.util.EventObject;
 
+import org.crosswire.jsword.book.BibleMetaData;
+
 /**
  * A BiblesEvent is fired whenever a Bible is added or removed from the
  * system.
@@ -32,25 +34,24 @@ public class BiblesEvent extends EventObject
 {
     /**
      * Basic constructor
-     * @param name The name of the changed Bible, or null if there is more than
-     *              one change.
+     * @param name The name of the changed Bible, or null if there is more than one change.
      * @param added True if the changed Bible is an addition.
      */
-    public BiblesEvent(Object source, String name, boolean added)
+    public BiblesEvent(Object source, BibleMetaData bmd, boolean added)
     {
         super(source);
 
-        this.name = name;
+        this.bmd = bmd;
         this.added = added;
     }
 
     /**
      * Get the name of the changed Bible
-     * @return The Bible name
+     * @return The Bible bmd
      */
-    public String getBibleName()
+    public BibleMetaData getBibleName()
     {
-        return name;
+        return bmd;
     }
 
     /**
@@ -65,5 +66,5 @@ public class BiblesEvent extends EventObject
     private boolean added;
 
     /** The name of the changed Bible */
-    private String name;
+    private BibleMetaData bmd;
 }

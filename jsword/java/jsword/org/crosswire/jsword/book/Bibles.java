@@ -1,6 +1,9 @@
 
 package org.crosswire.jsword.book;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.events.BiblesEvent;
@@ -81,15 +84,21 @@ public class Bibles
     }
 
     /**
-     * Set the default Bible. The new name must be equal() to a string
-     * returned from getBibleNames. (if does not need to be == however)
-     * A BookException results if you get it wrong.
-     * @param name The version to use as default.
-     * @exception BookException If the name is not valid
+     * Get the current default Bible. If there are no Bibles that
+     * can be accessed (sounds like an installation problem or something)
+     * then a BookException results. Otherwise this should always get
+     * you something useful.
+     * @return the current default version
+     * @throws BookException If anything goes wrong with this method
      */
-    public static void setDefault(BibleMetaData bmd) throws BookException
+    public static BibleMetaData getDefault() throws BookException
     {
-        deft = bmd.getBible();
+        if (deft == null)
+        {
+            deft = getBibles()[0];
+        }
+
+        return deft;
     }
 
     /**
@@ -102,13 +111,52 @@ public class Bibles
      */
     public static Bible getDefaultBible() throws BookException
     {
-        if (deft == null)
-        {
-            BibleMetaData bmd = getBibles()[0];
-            deft = bmd.getBible();
-        }
+        return getDefault().getBible();
+    }
 
-        return deft;
+    /**
+     * Trawl through all the known Bibles looking for the one closest to
+     * the given name.
+     * This method is for use with config scripts and other things that
+     * <b>need</b> to work with Strings. The preferred method is to use
+     * BibleMetaData objects.
+     * @param name The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static String getDefaultByName() throws BookException
+    {
+        return getDefault().getFullName();
+    }
+
+    /**
+     * Set the default Bible. The new name must be equal() to a string
+     * returned from getBibleNames. (if does not need to be == however)
+     * A BookException results if you get it wrong.
+     * @param bmd The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static void setDefault(BibleMetaData bmd) throws BookException
+    {
+        deft = bmd;
+    }
+
+    /**
+     * Trawl through all the known Bibles looking for the one closest to
+     * the given name.
+     * This method is for use with config scripts and other things that
+     * <b>need</b> to work with Strings. The preferred method is to use
+     * BibleMetaData objects.
+     * @param name The version to use as default.
+     * @exception BookException If the name is not valid
+     */
+    public static void setDefaultByName(String name) throws BookException
+    {
+        BibleMetaData[] bmds = getBibles();
+        for (int i=0; i<bmds.length; i++)
+        {
+            if (bmds[i].getName().equals(name))
+                setDefault(bmds[i]);
+        }
     }
 
     /**
@@ -130,12 +178,41 @@ public class Bibles
     }
 
     /**
+     * Add a Bible to the current list of Bibles.
+     * This method should only be called by BibleDrivers, it is not a method for
+     * general consumption.
+     */
+    public static void addBible(BibleMetaData bmd) throws BookException
+    {
+        bibles.add(bmd);
+        fireBiblesChanged(Bibles.class, bmd, true);
+    }
+
+    /**
+     * Add a Bible to the current list of Bibles.
+     * This method should only be called by BibleDrivers, it is not a method for
+     * general consumption.
+     */
+    public static void removeBible(BibleMetaData bmd) throws BookException
+    {
+        boolean removed = bibles.remove(bmd);
+        if (removed)
+        {
+            fireBiblesChanged(Bibles.class, bmd, true);
+        }
+        else
+        {
+            throw new BookException("bibles_booknotfound");
+        }
+    }
+
+    /**
      * Kick of an event sequence
      * @param source The event source
      * @param name The name of the changed Bible
      * @param added Is it added?
      */
-    public static void fireBiblesChanged(Object source, String name, boolean added)
+    protected static void fireBiblesChanged(Object source, BibleMetaData bmd, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -148,15 +225,21 @@ public class Bibles
             if (contents[i] == BiblesListener.class)
             {
                 if (ev == null)
-                    ev = new BiblesEvent(source, name, added);
+                    ev = new BiblesEvent(source, bmd, added);
 
-                ((BiblesListener) contents[i + 1]).biblesChanged(ev);
+                if (added)
+                    ((BiblesListener) contents[i + 1]).bibleAdded(ev);
+                else
+                    ((BiblesListener) contents[i + 1]).bibleRemoved(ev);
             }
         }
     }
 
+    /** The list of Bibles */
+    private static List bibles = new ArrayList();
+
     /** The default Bible */
-    private static Bible deft = null;
+    private static BibleMetaData deft = null;
 
     /** The list of listeners */
     protected static EventListenerList listeners = new EventListenerList();

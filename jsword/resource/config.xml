@@ -35,14 +35,9 @@
 
 <config>
   <option key="Bibles.Default" type="string-options">
-  	<introspect class="org.crosswire.jsword.book.Bibles" property="DefaultName"/>
+  	<introspect class="org.crosswire.jsword.book.Bibles" property="DefaultByName"/>
     <help>Which of the available Bibles is the default.</help>
     <map name="biblenames"/>
-  </option>
-
-  <option key="Bibles.Cache Versions" type="boolean">
-  	<introspect class="org.crosswire.jsword.book.Bibles" property="CacheingBibles"/>
-    <help>Does the Bible manager cache bibles for speed, or reinitialize them to save memory.</help>
   </option>
 
   <option key="Bibles.Raw.Cache Data" type="boolean">

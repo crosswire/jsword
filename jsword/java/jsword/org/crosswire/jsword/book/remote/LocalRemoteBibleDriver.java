@@ -60,7 +60,7 @@ public class LocalRemoteBibleDriver extends RemoteBibleDriver
 
     private static Remoter remoter = new LocalRemoter();
 
-    private static LocalRemoteBibleDriver driver;
+    protected static LocalRemoteBibleDriver driver;
 
     /**
      * Register ourselves with the Driver Manager

@@ -3,6 +3,7 @@ package org.crosswire.jsword.book;
 
 import junit.framework.TestCase;
 
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.Books;
 
 /**
@@ -72,29 +73,58 @@ public class TestBookUtil extends TestCase
         assertEquals(sa[0], "one ");
         assertEquals(sa[1], "two ");
         assertEquals(sa[2], "three");
+
         sa = BookUtil.tokenize("!one  two three ");
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "!one ");
         assertEquals(sa[1], "two ");
         assertEquals(sa[2], "three ");
+
         sa = BookUtil.tokenize("\"one-- two three ");
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "\"one-- ");
         assertEquals(sa[1], "two ");
         assertEquals(sa[2], "three ");
+
         sa = BookUtil.tokenize("-one--two three ");
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "-one--");
         assertEquals(sa[1], "two ");
         assertEquals(sa[2], "three ");
+
         sa = BookUtil.tokenize("one-two--three ");
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one-two--");
         assertEquals(sa[1], "three ");
+
         sa = BookUtil.tokenize("one!£ \"*(two-three");
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one!£ ");
         assertEquals(sa[1], "\"*(two-three");
+
+        // moved from TestRawBible
+        sa = BookUtil.tokenize("one two three");
+        assertEquals(sa.length, 3);
+        assertEquals(sa[0], "one ");
+        assertEquals(sa[1], "two ");
+        assertEquals(sa[2], "three");
+
+        sa = BookUtil.tokenize("one");
+        assertEquals(sa.length, 1);
+        assertEquals(sa[0], "one");
+
+        sa = BookUtil.tokenize("One, !Two-er THREE-er?");
+        assertEquals(sa.length, 3);
+        assertEquals(sa[0], "One, ");
+        assertEquals(sa[1], "!Two-er ");
+        assertEquals(sa[2], "THREE-er?");
+
+        sa = BookUtil.tokenize("One, !Two-er THREE--four?");
+        assertEquals(sa.length, 4);
+        assertEquals(sa[0], "One, ");
+        assertEquals(sa[1], "!Two-er ");
+        assertEquals(sa[2], "THREE--");
+        assertEquals(sa[3], "four?");
     }
 
     public void testGetWords() throws Exception
@@ -131,7 +161,75 @@ public class TestBookUtil extends TestCase
 
     public void testStripPunctuation() throws Exception
     {
-        // String[] sa = BookUtil.stripPunctuation(words);
+        assertEquals(BookUtil.stripPunctuationWord("abcde"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("a---e"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("a'''e"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("a'e-e"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("12345"), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("'abcde"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("'a---e"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("'a'''e"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("'a'e-e"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("'12345"), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("'abcde'"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("'a---e'"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("'a'''e'"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("'a'e-e'"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("'12345'"), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("'-abcde--"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("'-a---e--"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("'-a'''e--"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("'-a'e-e--"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("'-12345--"), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("$'-abcde-'*"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("$'-a---e-'*"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("$'-a'''e-'*"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("$'-a'e-e-'*"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("$'-12345-'*"), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("`'-abcde-'["), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("`'-a---e-'["), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("`'-a'''e-'["), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("`'-a'e-e-'["), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("`'-12345-'["), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("#'-abcde-'}"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("#'-a---e-'}"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("#'-a'''e-'}"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("#'-a'e-e-'}"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("#'-12345-'}"), "12345");
+        assertEquals(BookUtil.stripPunctuationWord("£'-abcde-'/"), "abcde");
+        assertEquals(BookUtil.stripPunctuationWord("£'-a---e-'/"), "a---e");
+        assertEquals(BookUtil.stripPunctuationWord("£'-a'''e-'/"), "a'''e");
+        assertEquals(BookUtil.stripPunctuationWord("£'-a'e-e-'/"), "a'e-e");
+        assertEquals(BookUtil.stripPunctuationWord("£'-12345-'/"), "12345");
+
+        sa = BookUtil.stripPunctuation(BookUtil.tokenize("aaaa"));
+        assertEquals(sa.length, 1);
+        assertEquals(sa[0], "aaaa");
+        sa = BookUtil.stripPunctuation(BookUtil.tokenize("aaaa bbbb"));
+        assertEquals(sa.length, 2);
+        assertEquals(sa[0], "aaaa");
+        assertEquals(sa[1], "bbbb");
+        sa = BookUtil.stripPunctuation(BookUtil.tokenize("One Two Three"));
+        assertEquals(sa.length, 3);
+        assertEquals(sa[0], "One");
+        assertEquals(sa[1], "Two");
+        assertEquals(sa[2], "Three");
+        sa = BookUtil.stripPunctuation(BookUtil.tokenize(" One  Two  Three "));
+        assertEquals(sa.length, 3);
+        assertEquals(sa[0], "One");
+        assertEquals(sa[1], "Two");
+        assertEquals(sa[2], "Three");
+        sa = BookUtil.stripPunctuation(BookUtil.tokenize(" 'One's' ,Two? !Three-Four\" "));
+        assertEquals(sa.length, 3);
+        assertEquals(sa[0], "One's");
+        assertEquals(sa[1], "Two");
+        assertEquals(sa[2], "Three-Four");
+        sa = BookUtil.stripPunctuation(BookUtil.tokenize(" 'One's' ,Two? !Three-- Four\" "));
+        assertEquals(sa.length, 4);
+        assertEquals(sa[0], "One's");
+        assertEquals(sa[1], "Two");
+        assertEquals(sa[2], "Three");
+        assertEquals(sa[3], "Four");
     }
 
     public void testStripPunctuationWord() throws Exception
@@ -157,7 +255,28 @@ public class TestBookUtil extends TestCase
 
     public void testStripWordsStringArray() throws Exception
     {
-        // String[] sa = BookUtil.stripWords(words);
+        sa = BookUtil.stripWords(StringUtil.tokenize(" 'One's' ,Two? !Three-Four\" "));
+        assertEquals(sa.length, 4);
+        assertEquals(sa[0], "'");
+        assertEquals(sa[1], "',");
+        assertEquals(sa[2], "?!");
+        assertEquals(sa[3], "\"");
+
+        sa = BookUtil.stripWords(StringUtil.tokenize(" 'One's' ,Two? !Three-- Four\" "));
+        assertEquals(sa.length, 5);
+        assertEquals(sa[0], "'");
+        assertEquals(sa[1], "',");
+        assertEquals(sa[2], "?!");
+        assertEquals(sa[3], "--");
+        assertEquals(sa[4], "\"");
+
+        sa = BookUtil.stripWords(BookUtil.tokenize("'One's' ,Two? !Three--Four\""));
+        assertEquals(sa.length, 5);
+        assertEquals(sa[0], "'");
+        assertEquals(sa[1], "' ,");
+        assertEquals(sa[2], "? !");
+        assertEquals(sa[3], "--");
+        assertEquals(sa[4], "\"");
     }
 
     public void testStripWordsStringString() throws Exception
@@ -191,5 +310,35 @@ public class TestBookUtil extends TestCase
         assertEquals(BookUtil.lastLetter(" abcde\"£$ "), 5);
         assertEquals(BookUtil.lastLetter(" abcde--\"£$ "), 5);
         assertEquals(BookUtil.lastLetter(" abcde\"£$-- "), 5);
+    }
+
+    public void testStripWords()
+    {
+        assertEquals(BookUtil.stripWords("one", "two"), "");
+        assertEquals(BookUtil.stripWords("one,", "two"), ",");
+        assertEquals(BookUtil.stripWords("one'", "two"), "'");
+        assertEquals(BookUtil.stripWords("one-", "two"), "-");
+        assertEquals(BookUtil.stripWords("one#", "two"), "#");
+        assertEquals(BookUtil.stripWords("one", ",two"), ",");
+        assertEquals(BookUtil.stripWords("one", "'two"), "'");
+        assertEquals(BookUtil.stripWords("one", "-two"), "-");
+        assertEquals(BookUtil.stripWords("one", "#two"), "#");
+        assertEquals(BookUtil.stripWords("one-", "-two"), "--");
+        assertEquals(BookUtil.stripWords("-one-", "-two-"), "--");
+        assertEquals(BookUtil.stripWords("one-world", "two"), "");
+        assertEquals(BookUtil.stripWords("one-world'", "two"), "'");
+        assertEquals(BookUtil.stripWords("one ", "two"), " ");
+        assertEquals(BookUtil.stripWords("one, ", "two"), ", ");
+        assertEquals(BookUtil.stripWords("one' ", "two"), "' ");
+        assertEquals(BookUtil.stripWords("one- ", "two"), "- ");
+        assertEquals(BookUtil.stripWords("one# ", "two"), "# ");
+        assertEquals(BookUtil.stripWords("one", " ,two"), " ,");
+        assertEquals(BookUtil.stripWords("one", " 'two"), " '");
+        assertEquals(BookUtil.stripWords("one", " -two"), " -");
+        assertEquals(BookUtil.stripWords("one" , "#two"), "#");
+        assertEquals(BookUtil.stripWords("one- ", "-two"), "- -");
+        assertEquals(BookUtil.stripWords("-one- ", "-two-"), "- -");
+        assertEquals(BookUtil.stripWords("one-world ", "two"), " ");
+        assertEquals(BookUtil.stripWords("one-world'", " two"), "' ");
     }
 }

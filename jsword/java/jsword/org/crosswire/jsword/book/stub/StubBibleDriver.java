@@ -2,8 +2,10 @@
 package org.crosswire.jsword.book.stub;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 
 /**
@@ -77,7 +79,14 @@ public class StubBibleDriver extends AbstractBibleDriver
      */
     static
     {
-        driver = new StubBibleDriver();
-        BibleDriverManager.registerDriver(driver);
+        try
+        {
+            driver = new StubBibleDriver();
+            BibleDriverManager.registerDriver(driver);
+        }
+        catch (BookException ex)
+        {
+            Reporter.informUser(StubBibleDriver.class, ex);
+        }
     }
 }

@@ -131,16 +131,27 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
      * the system.
      * @param ev A description of the change
      */
-    public void biblesChanged(BiblesEvent ev)
+    public void bibleAdded(BiblesEvent ev)
     {
         int old_size = getSize();
 
         cacheData();
 
-        if (ev.isAddition())
-            fireIntervalAdded(ev.getSource(), 0, old_size);
-        else
-            fireIntervalRemoved(ev.getSource(), 0, old_size);
+        fireIntervalAdded(ev.getSource(), 0, old_size);
+    }
+
+    /**
+     * Called whenever a new Bible is added or a Bible is removed from
+     * the system.
+     * @param ev A description of the change
+     */
+    public void bibleRemoved(BiblesEvent ev)
+    {
+        int old_size = getSize();
+
+        cacheData();
+
+        fireIntervalRemoved(ev.getSource(), 0, old_size);
     }
 
     /** The array of versions */

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * A fullfilment of RemoteBibleDriver that uses an HTTP commection to
@@ -47,14 +48,32 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
      * Sets the baseurl.
      * @param baseurl The baseurl to set
      */
-    public static void setBaseURL(String baseurl)
+    public static void setBaseURL(String baseurl) throws BookException
     {
-        HttpRemoteBibleDriver.baseurl = baseurl;
-        
+        if (driver != null)
+            BibleDriverManager.unregisterDriver(driver);
+
         if (baseurl == null)
+        {
             remoter = null;
+            driver = null;
+            HttpRemoteBibleDriver.baseurl = null;
+        }
         else
-            remoter = new HttpRemoter(baseurl);
+        {
+            try
+            {
+                remoter = new HttpRemoter(baseurl);
+                driver = new HttpRemoteBibleDriver();
+                HttpRemoteBibleDriver.baseurl = baseurl;
+                
+                BibleDriverManager.registerDriver(driver);
+            }
+            catch (Exception ex)
+            {
+                Reporter.informUser(RemoteBibleDriver.class, ex);
+            }
+        }
     }
 
     /**
@@ -84,23 +103,7 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
 
     private static String baseurl = null;
 
-    private static Remoter remoter = new HttpRemoter(baseurl);
+    private static Remoter remoter = null;
 
-    private static HttpRemoteBibleDriver driver;
-
-    /**
-     * Register ourselves with the Driver Manager
-     */
-    static
-    {
-        try
-        {
-            driver = new HttpRemoteBibleDriver();
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(RemoteBibleDriver.class, ex);
-        }
-    }
+    private static HttpRemoteBibleDriver driver = null;
 }

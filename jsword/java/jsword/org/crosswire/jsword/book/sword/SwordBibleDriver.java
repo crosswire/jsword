@@ -174,7 +174,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
             driver = new SwordBibleDriver();
             BibleDriverManager.registerDriver(driver);
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
             Reporter.informUser(SwordBibleDriver.class, ex);
         }

@@ -31,9 +31,14 @@ import java.util.EventListener;
 public interface BiblesListener extends EventListener
 {
     /**
-     * Called whenever a new Bible is added or a Bible is removed from
-     * the system.
+     * Called whenever a new Bible is added to the system.
      * @param ev A description of the change
      */
-    public void biblesChanged(BiblesEvent ev);
+    public void bibleAdded(BiblesEvent ev);
+
+    /**
+     * Called whenever a new Bible is removed from the system.
+     * @param ev A description of the change
+     */
+    public void bibleRemoved(BiblesEvent ev);
 }

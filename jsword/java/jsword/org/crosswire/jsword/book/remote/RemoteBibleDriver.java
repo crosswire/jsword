@@ -60,37 +60,37 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
      */
     public BibleMetaData[] getBibles()
     {
-        synchronized (names)
+        synchronized (this)
         {
-            if (names == null)
+            if (rbmd == null)
             {
                 try
                 {
                     Remoter remoter = getRemoter();
                     if (remoter == null)
                     {
-                        names = new RemoteBibleMetaData[0];
+                        rbmd = new RemoteBibleMetaData[0];
                     }
 
                     RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
                     Document doc = remoter.execute(method);
 
-                    names = Converter.convertDocumentToBibleMetaDatas(doc, this);
+                    rbmd = Converter.convertDocumentToBibleMetaDatas(doc, this);
 
-                    for (int i=0; i<names.length; i++)
+                    for (int i=0; i<rbmd.length; i++)
                     {
-                        ids.put(names[i].getID(), names[i]);
+                        ids.put(rbmd[i].getID(), rbmd[i]);
                     }
                 }
                 catch (Exception ex)
                 {
                     log.warn("failed to remote getBibleNames", ex);
-                    names = new RemoteBibleMetaData[0];
+                    rbmd = new RemoteBibleMetaData[0];
                 }
             }
         }
 
-        return names;
+        return rbmd;
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
      * The cache of Bible names.
      * At some stage it would be good to work out a way to clear the cache.
      */
-    private RemoteBibleMetaData[] names;
+    private RemoteBibleMetaData[] rbmd;
 
     /**
      * The id to metadata map

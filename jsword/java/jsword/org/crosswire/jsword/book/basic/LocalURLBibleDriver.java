@@ -125,7 +125,7 @@ public abstract class LocalURLBibleDriver extends AbstractBibleDriver
         }
         catch (Exception ex)
         {
-            log.warn("failed to load ser Bibles: "+ex);
+            log.warn("failed to load ser Bibles: ", ex);
             return new BibleMetaData[0];
         }
     }

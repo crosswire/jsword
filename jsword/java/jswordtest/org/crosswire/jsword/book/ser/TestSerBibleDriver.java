@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.ser;
 
-import org.crosswire.jsword.book.TestBibleDriver;
+import org.crosswire.jsword.book.ParentTstBibleDriver;
 
 /**
  * JUnit Test.
@@ -27,7 +27,7 @@ import org.crosswire.jsword.book.TestBibleDriver;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestSerBibleDriver extends TestBibleDriver
+public class TestSerBibleDriver extends ParentTstBibleDriver
 {
     public TestSerBibleDriver(String s)
     {

@@ -1,7 +1,7 @@
 
-package org.crosswire.jsword.book.ser;
+package org.crosswire.jsword.book.stub;
 
-import org.crosswire.jsword.book.AdvancedParentTstBible;
+import org.crosswire.jsword.book.ParentTstBible;
 
 /**
  * JUnit Test.
@@ -25,12 +25,12 @@ import org.crosswire.jsword.book.AdvancedParentTstBible;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
+ * @version $Id: TestLocalRemoteBible.java,v 1.3 2002/10/08 21:36:09 joe Exp $
  */
-public class TestSerBible extends AdvancedParentTstBible
+public class TestStubBible extends ParentTstBible
 {
-    public TestSerBible(String s)
+    public TestStubBible(String s)
     {
-        super(s, SerBibleDriver.driver);
+        super(s, StubBibleDriver.driver);
     }
 }
