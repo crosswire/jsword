@@ -59,12 +59,23 @@ public class DataPolice
      */
     public static void report(String message)
     {
+        StringBuffer buf = new StringBuffer();
+        if (bmd != null)
+        {
+            buf.append(bmd.getInitials());
+        }
         if (bmd != null && key != null)
         {
+            buf.append(':');
             log.debug(bmd.getInitials() + ':' + key.getName());
         }
-
-        log.debug(message);
+        if (key != null)
+        {
+            buf.append(key.getName());
+        }
+        buf.append(": "); //$NON-NLS-1$
+        buf.append(message);
+        log.debug(buf.toString());
     }
 
     /**

@@ -69,7 +69,7 @@ public class OSISFilter implements Filter
             }
             catch (Exception ex2)
             {
-                log.warn("Could not fix it by cleaning entities", ex2); //$NON-NLS-1$
+                log.warn("Could not fix it by cleaning entities: " + ex2.getMessage()); //$NON-NLS-1$
 
                 // So just try to strip out all XML looking things
                 String shawn = XMLUtil.cleanAllTags(cropped);
@@ -80,7 +80,7 @@ public class OSISFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    log.warn("Could not fix it by cleaning tags", ex3); //$NON-NLS-1$
+                    log.warn("Could not fix it by cleaning tags: " + ex3.getMessage()); //$NON-NLS-1$
 
                     try
                     {
@@ -90,7 +90,7 @@ public class OSISFilter implements Filter
                     }
                     catch (Exception ex4)
                     {
-                        log.warn("no way. say it ain't so!", ex4); //$NON-NLS-1$
+                        log.warn("no way. say it ain't so! " + ex4.getMessage()); //$NON-NLS-1$
                     }
                 }
             }

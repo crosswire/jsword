@@ -14,7 +14,6 @@ import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.book.filter.FilterUtil;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 import org.xml.sax.InputSource;
@@ -65,10 +64,10 @@ public class THMLFilter implements Filter
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse (1) original failed: " + ex1.getMessage()); //$NON-NLS-1$
-            DataPolice.report("  while parsing: " + FilterUtil.forOutput(plain)); //$NON-NLS-1$
+            DataPolice.report("Parse failed: " + ex1.getMessage() + //$NON-NLS-1$
+                              "\non: " + plain); //$NON-NLS-1$
 
-            // Attempt to fix broken entities, that could be the least damage
+            // Attempt to fix broken entities, that could be a low damage
             // way to fix a broken input string
             String cropped = XMLUtil.cleanAllEntities(plain);
 
@@ -78,8 +77,7 @@ public class THMLFilter implements Filter
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse (2) cropped failed: " + ex2.getMessage()); //$NON-NLS-1$
-                DataPolice.report("  while parsing: " + FilterUtil.forOutput(cropped)); //$NON-NLS-1$
+                log.warn("Could not fix it by cleaning entities: " + ex2.getMessage()); //$NON-NLS-1$
 
                 // So just try to strip out all XML looking things
                 String shawn = XMLUtil.cleanAllTags(cropped);
@@ -90,8 +88,7 @@ public class THMLFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse (3) shawn failed: " + ex3.getMessage()); //$NON-NLS-1$
-                    DataPolice.report("  while parsing: " + FilterUtil.forOutput(shawn)); //$NON-NLS-1$
+                    log.warn("Could not fix it by cleaning tags: " + ex3.getMessage()); //$NON-NLS-1$
 
                     try
                     {
@@ -101,13 +98,14 @@ public class THMLFilter implements Filter
                     }
                     catch (Exception ex4)
                     {
-                        log.warn("no way. say it ain't so!", ex4); //$NON-NLS-1$
+                        log.warn("no way. say it ain't so! " + ex4.getMessage()); //$NON-NLS-1$
                     }
                 }
             }
         }
         finally
         {
+            // Make sure that other places don't report this problem
             DataPolice.setKey(null);
         }
         return ele.removeContent();
