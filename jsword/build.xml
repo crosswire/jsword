@@ -61,9 +61,7 @@
       <arg value="org.crosswire.jsword.osis"/>
       <arg value="${source.etc}/osisCore.1.1.xsd"/>
       <classpath>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}" includes="*.jar"/>
       </classpath>
     </java>
   </target>
@@ -92,9 +90,7 @@
       <src path="${gener.root}/osis"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}" includes="*.jar"/>
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -145,9 +141,7 @@
       <src path="${source.java}/${section}"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}" includes="*.jar"/>
       </classpath>
     </javac>
     <mkdir dir="${target.classes}/resource"/>
@@ -170,9 +164,7 @@
       <src path="${gener.root}/config"/>
       <classpath>
         <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}" includes="*.jar"/>
       </classpath>
     </javac>
   </target>
@@ -265,16 +257,14 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="test" depends="deploy" description="Run the standard test suite">
+  <target name="test" depends="compile" description="Run the standard test suite">
     <mkdir dir="${target.junit}"/>
     <echo message="If this fails you might need to:"/>
     <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar {ANT}/lib"/>
     <!-- Why does this not work?
     <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
       <classpath>
-        <fileset dir="${source.jar}/junit381">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}/junit381" includes="*.jar"/>
       </classpath>
     </taskdef>
     -->
@@ -299,20 +289,19 @@
         <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/swordtest"/>
         <pathelement path="${target.deploy}/resource"/>
-        <fileset dir="${target.deploy}" includes="**/*.jar"/>
       </classpath>
     </junit>
   </target>
 
   <!--=======================================================================-->
   <target name="web.testreport" depends="test" description="Compile test report">
+    <!--
     <taskdef name="junitreport" classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
       <classpath>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}/junit381" includes="*.jar"/>
       </classpath>
     </taskdef>
+    -->
     <junitreport todir="${target.junit}">
       <fileset dir="${target.junit}">
         <include name="TEST-*.xml"/>
@@ -391,9 +380,7 @@
       <header>JSword</header>
       <footer>Copyright &#168; 2002</footer>
       <classpath>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.jar}" includes="*.jar"/>
       </classpath>
       <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.web}/javadoc"/>
     </javadoc>
@@ -409,9 +396,7 @@
     <mkdir dir="${target.web}/java2html"/>
     <java fork="true" classname="j2h" output="${target.web}/java2html/output.txt">
       <classpath>
-        <fileset dir="${source.tools}/java2html12">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.tools}/java2html12" includes="*.jar"/>
       </classpath>
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/common"/>
@@ -446,9 +431,7 @@
     <!-- Why does this not work?
     <taskdef name="jdepend" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
       <classpath>
-        <fileset dir="${source.tools}/jdepend26">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.tools}/jdepend26" includes="*.jar"/>
       </classpath>
     </taskdef>
     -->
@@ -462,8 +445,12 @@
         <pathelement location="${source.java}/map"/>
       </sourcespath>
       <classpath>
-        <fileset dir="${source.jar}" includes="*.jar"/>
-        <fileset dir="${target.jar}" includes="*.jar"/>
+        <pathelement path="${target.classes}/common"/>
+        <pathelement path="${target.classes}/jsword"/>
+        <pathelement path="${target.classes}/servlet"/>
+        <pathelement path="${target.classes}/swing"/>
+        <pathelement path="${target.classes}/map"/>
+        <pathelement path="${target.classes}/sword"/>
       </classpath>
     </jdepend>
     <style
@@ -477,9 +464,7 @@
   <target name="pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
-        <fileset dir="${source.tools}/pmd104">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.tools}/pmd104" includes="*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.web}/pmd"/>
@@ -499,12 +484,7 @@
     <mkdir dir="${target.web}/cpd"/>
     <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
       <classpath>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
-        <fileset dir="${source.tools}/pmd104">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.tools}/pmd104" includes="*.jar"/>
       </classpath>
       <arg value="100"/>
       <arg value="${source.java}"/>
@@ -515,12 +495,7 @@
   <target name="javancss">
     <taskdef name="javancss" classname="javancss.JavancssAntTask">
       <classpath>
-        <fileset dir="${source.jar}">
-          <include name="**/*.jar"/>
-        </fileset>
-        <fileset dir="${source.tools}/javancss2141">
-          <include name="**/*.jar"/>
-        </fileset>
+        <fileset dir="${source.tools}/javancss2141" includes="*.jar"/>
       </classpath>
     </taskdef>
     <mkdir dir="${target.javancss}"/>
