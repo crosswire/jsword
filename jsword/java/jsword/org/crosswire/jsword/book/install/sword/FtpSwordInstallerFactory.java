@@ -5,7 +5,7 @@ import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
 
 /**
- * A Factory for instances of SwordInstaller.
+ * A Factory for instances of FtpSwordInstaller.
  *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,14 +28,14 @@ import org.crosswire.jsword.book.install.InstallerFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordInstallerFactory implements InstallerFactory
+public class FtpSwordInstallerFactory implements InstallerFactory
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.InstallerFactory#createInstaller()
      */
     public Installer createInstaller()
     {
-        return new SwordInstaller();
+        return new FtpSwordInstaller();
     }
 
     /* (non-Javadoc)
@@ -49,7 +49,7 @@ public class SwordInstallerFactory implements InstallerFactory
             throw new IllegalArgumentException(Msg.INVALID_URL.toString(url));
         }
         
-        SwordInstaller reply = new SwordInstaller();
+        FtpSwordInstaller reply = new FtpSwordInstaller();
         // part[0] is the 'protocol' which we don't care about
         // part[1] is the blank between the first 2 slashes
         String part2 = parts[2];

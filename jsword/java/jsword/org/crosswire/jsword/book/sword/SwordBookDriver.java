@@ -138,7 +138,7 @@ public class SwordBookDriver extends AbstractBookDriver
     private static final String PREFIX_GLOBALS = "globals."; //$NON-NLS-1$
 
     /**
-     * A helper class for the SwordInstaller to tell us that it has copied a
+     * A helper class for the FtpSwordInstaller to tell us that it has copied a
      * new Book into our install dorectory
      * @param sbmd The SwordBookMetaData object for the new Book
      * @param bookpath The path that we have installed to

@@ -29,7 +29,8 @@ import org.crosswire.jsword.book.install.InstallerFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class HttpSwordInstallerFactory implements InstallerFactory {
+public class HttpSwordInstallerFactory implements InstallerFactory
+{
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.InstallerFactory#createInstaller()
      */
@@ -48,9 +49,9 @@ public class HttpSwordInstallerFactory implements InstallerFactory {
         {
             throw new IllegalArgumentException(Msg.INVALID_URL.toString(url));
         }
-        
+
         HttpSwordInstaller reply = new HttpSwordInstaller();
-        
+
         String part2 = parts[2];
         reply.setHost(part2);
         reply.setDirectory(NetUtil.SEPARATOR + parts[3]);

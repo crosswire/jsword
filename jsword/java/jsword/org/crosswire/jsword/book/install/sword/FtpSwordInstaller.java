@@ -63,7 +63,7 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordInstaller extends AbstractBookList implements Installer, Comparable
+public class FtpSwordInstaller extends AbstractBookList implements Installer, Comparable
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getIndex()
@@ -527,7 +527,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
 
     /**
      * Like getURL() except that we skip the password for display purposes.
-     * @see SwordInstaller#getURL()
+     * @see FtpSwordInstaller#getURL()
      * @see java.lang.Object#toString()
      */
     public String toString()
@@ -540,11 +540,11 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     public boolean equals(Object object)
     {
-        if (!(object instanceof SwordInstaller))
+        if (!(object instanceof FtpSwordInstaller))
         {
             return false;
         }
-        SwordInstaller that = (SwordInstaller) object;
+        FtpSwordInstaller that = (FtpSwordInstaller) object;
 
         if (!equals(this.host, that.host))
         {
@@ -594,7 +594,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     public int compareTo(Object object)
     {
-        SwordInstaller myClass = (SwordInstaller) object;
+        FtpSwordInstaller myClass = (FtpSwordInstaller) object;
 
         return new CompareToBuilder()
             .append(this.host, myClass.host)
@@ -660,5 +660,5 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SwordInstaller.class);
+    private static final Logger log = Logger.getLogger(FtpSwordInstaller.class);
 }
