@@ -862,9 +862,11 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /**
+     * This setter is public because access is needed from *SwordInstallers as
+     * well as the normal sword drivers. Where is C++ friend when you need it!
      * @param driver The driver to set.
      */
-    protected void setDriver(BookDriver driver)
+    public void setDriver(BookDriver driver)
     {
         this.driver = driver;
     }

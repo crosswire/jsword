@@ -21,6 +21,7 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
@@ -115,6 +116,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                 loadCachedIndex();
             }
 
+            // We need to create a List from the Set returned by
+            // entries.values() so we can create an unmodifiable list from it.
             List mutable = new ArrayList();
             mutable.addAll(entries.values());
             return Collections.unmodifiableList(mutable);
@@ -248,6 +251,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     private void loadCachedIndex() throws InstallException
     {
+        // We need a sword book driver so the installer can use the driver
+        // name to use in deciding where to put the index.
+        BookDriver fake = new SwordBookDriver();
+
         entries.clear();
 
         URL cache = getCachedIndexFile();
@@ -291,6 +298,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                         Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
                         SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
+                        sbmd.setDriver(fake);
 
                         if (sbmd.isSupported())
                         {
