@@ -1,10 +1,11 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.common.xml;
 
-import org.crosswire.jsword.passage.Verse;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 /**
- * A VerseData represents a Verse that exists inside a BibleData.
+ * A simple way of giving someone a place from which to get SAX events.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,29 +28,12 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface RefData
+public interface SAXEventProvider
 {
     /**
-     * Get the verse that this element contains
-     * @param The verse
+     * When SAX events are required the user of this interface can call this
+     * method.
+     * @param handler The place to send SAX events.
      */
-    public Verse getVerse();
-
-    /**
-     * Add some plain text to the verse
-     */
-    public void setPlainText(String text);
-
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public String getPlainText();
-
-    /**
-     * Method getJAXBVerse.
-     * @return Object
-     */
-    public Object getJAXBVerse();
+    public void provideSAXEvents(ContentHandler handler) throws SAXException;
 }

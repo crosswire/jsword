@@ -14,6 +14,8 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.Validator;
 
+import org.crosswire.jsword.book.data.OsisUtil;
+
 import junit.framework.TestCase;
 
 /**
@@ -49,7 +51,7 @@ public class TestOsis extends TestCase
 
     protected void setUp() throws Exception
     {
-        jc = JAXBContext.newInstance(OSIS_PACKAGE);
+        jc = JAXBContext.newInstance(OsisUtil.OSIS_PACKAGE);
         val = jc.createValidator();
         umarsh = jc.createUnmarshaller();
         m = jc.createMarshaller();
@@ -58,8 +60,6 @@ public class TestOsis extends TestCase
     protected void tearDown() throws Exception
     {
     }
-
-    private static final String OSIS_PACKAGE = "org.crosswire.jsword.osis";
 
     private JAXBContext jc = null;
     private Validator val = null;

@@ -4,6 +4,8 @@ package org.crosswire.jsword.book.remote;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.xml.JDOMSAXEventProvider;
+import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBible;
@@ -12,6 +14,7 @@ import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.jdom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * A Biblical source that comes from some form of remoting code.
@@ -74,11 +77,17 @@ public class RemoteBible extends AbstractBible
             RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETDATA);
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
             method.addParam(RemoteConstants.PARAM_PASSAGE, ref.getName());
-            Document doc = remoter.execute(method);
 
-            return new DefaultBibleData(doc);
+            Document doc = remoter.execute(method);
+            SAXEventProvider provider = new JDOMSAXEventProvider(doc);
+
+            return new DefaultBibleData(provider);
         }
         catch (RemoterException ex)
+        {
+            throw new BookException("remoting failure", ex);
+        }
+        catch (SAXException ex)
         {
             throw new BookException("remoting failure", ex);
         }

@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.data;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -67,4 +68,10 @@ public interface SectionData
      * @return The Bible text without markup
      */
     public String getPlainText();
+
+    /**
+     * JAXB accessor.
+     * @return Object
+     */
+    public Div getDiv();
 }

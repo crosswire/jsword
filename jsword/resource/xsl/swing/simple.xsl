@@ -1,21 +1,10 @@
 <?xml version="1.0"?>
 
-<xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:redirect="http://xml.apache.org/xalan/redirect"
-    extension-element-prefixes="redirect">
+<xsl:stylesheet xmlns="http://www.w3.org/TR/REC-html40" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:output method="html" omit-xml-declaration = "yes"/>
 
   <xsl:output method="html" indent="yes"/>
   
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      User-alterable parameters
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
-  <!--
-      css.url is the URL of a CSS file to which to link from the generated HTML
-      files.
-  -->
-  <xsl:param name="css.url" select="''"/>
   
   <!--
       strongs.hebrew.url is the base URL corresponding to the directory in
@@ -39,10 +28,6 @@
   -->
   <xsl:param name="strongs.greek.url" select="'file:/home/eric/workspace/osis-xslt/out/Lexicon.Greek.English.Thayer'"/>
   
-  
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      Internal variables
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
   <!--
       FIXME: For now, we assume that all the works inside a corpus are of the
@@ -74,22 +59,45 @@
     </xsl:choose>
   </xsl:variable>
   
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Structural elements
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
 
   <xsl:template match="/osis">
-    <xsl:message>
-      osis-id-type is <xsl:value-of select="$osis-id-type"/>
-    </xsl:message>
-  
-    <xsl:message>
-      page-div-type is <xsl:value-of select="$page-div-type"/>
-    </xsl:message>
-  
-    <xsl:apply-templates/>
+    <xsl:message>osis-id-type is <xsl:value-of select="$osis-id-type"/></xsl:message>
+    <xsl:message>page-div-type is <xsl:value-of select="$page-div-type"/></xsl:message>
+    <html>
+      <head>
+        <style>
+          .w-x-Strongs a { text-decoration: none; color: black; }
+          .note-ref { font-size: smaller; vertical-align: super; }
+          .figure { text-align: center; }
+          .caption { text-align: center; font-size: smaller; }
+          .lg { padding-left: 0.5in; padding-bottom: 1em; }
+        </style>
+      </head>
+      <body>
+        <xsl:apply-templates/>
+      </body>
+    </html>
+  </xsl:template>
+
+  <xsl:template match="osisCorpus">
+        <xsl:for-each select="osisText">
+
+          <!-- If this text has a header, apply templates to the header. -->
+
+          <xsl:if test="preceding-sibling::*[1][self::header]">
+            <div class="corpus-text-header">
+              <xsl:apply-templates select="preceding-sibling::*[1][self::header]"/>
+            </div>
+          </xsl:if>
+
+          <xsl:apply-templates select="."/>
+
+        </xsl:for-each>
   </xsl:template>
 
 
@@ -106,137 +114,38 @@
       In other words, it seems to be a list of (Y:Y)s, separated by spaces.
   -->
   <xsl:template match="osisText">
-    <html>
-      <head>
-        <xsl:if test="$css.url != ''">
-          <link rel="stylesheet" type="text/css" href="{$css.url}"/>
-        </xsl:if>
-        <title><xsl:value-of select="(./header//title)[1]"/></title>
-      </head>
-      <body>
-        <div class="text-header">
-          <xsl:apply-templates select="header"/>
-        </div>
-        <div class="text-toc">
-          <div class="text-toc-header">
-            Table of Contents
-          </div>
-          <div class="text-toc-body">
-            <ul>
-              <xsl:apply-templates select="div" mode="text-toc"/>
-            </ul>
-          </div>
-        </div>
-        <xsl:for-each select=".//div[@type = $page-div-type]">
-          <redirect:write select="concat(@osisID, '.html')">
-            <xsl:apply-templates select="."/>
-          </redirect:write>
-        </xsl:for-each>
-      </body>
-    </html>
+    <xsl:apply-templates select="div"/>
   </xsl:template>
 
-
-  <xsl:template match="div" mode="text-toc">
-    <li>
-      <xsl:variable name="title">
-        <xsl:call-template name="print-div-title"/>
-      </xsl:variable>
-      <xsl:choose>
-        <xsl:when test="@type = $page-div-type">
-          <a href="{@osisID}.html"><xsl:value-of select="$title"/></a>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$title"/>
-        </xsl:otherwise>
-      </xsl:choose>
-      
-      <xsl:if test="div">
-        <ul>
-          <xsl:apply-templates select="div" mode="text-toc"/>
-        </ul>
-      </xsl:if>
-    </li>
-  </xsl:template>
-
-
-  <xsl:template match="osisCorpus">
-    <html>
-      <head>
-        <xsl:if test="$css.url != ''">
-          <link rel="stylesheet" type="text/css" href="{$css.url}"/>
-        </xsl:if>
-        <!--
-            FIXME: This should be replaced with the actual title, but I don't
-                   know how to get it, since <osisCorpus> doesn't have a
-                   <header> all of its own.
-        -->
-        <title>Corpus</title>
-      </head>
-      <body>
-        <!-- Generate a separate directory for each text. -->
-
-        <xsl:for-each select="osisText">
-          <xsl:variable name="filename"
-              select="concat(generate-id(.), '/index.html')"/>
-
-          <!-- If this text has a header, apply templates to the header. -->
-
-          <xsl:if test="preceding-sibling::*[1][self::header]">
-            <div class="corpus-text-header">
-              <xsl:apply-templates select="preceding-sibling::*[1][self::header]"/>
-            </div>
-          </xsl:if>
-          <div class="corpus-text-link">
-            <a href="{$filename}">(./header//title)[1]</a>
-          </div>
-
-          <!-- Write out the text itself. -->
-
-          <redirect:write select="$filename">
-            <xsl:apply-templates select="."/>
-          </redirect:write>
-
-        </xsl:for-each>
-      </body>
-    </html>
-  </xsl:template>
-
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      Content elements
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
-  
   <xsl:template match="div">
-    <html>
-      <head>
-        <xsl:if test="$css.url != ''">
-          <link rel="stylesheet" type="text/css" href="{$css.url}"/>
-        </xsl:if>
-        <title>
-          <xsl:call-template name="print-div-title"/>
-        </title>
-      </head>
-      <body>
-        <h2>
-          <xsl:call-template name="print-div-title"/>
-        </h2>
-        <xsl:call-template name="print-prev-next-links"/>
-        <hr class="navigation-separator-top"/>
-        <xsl:apply-templates/>
-        <hr class="navigation-separator-bottom"/>
-        <xsl:call-template name="print-prev-next-links"/>
-        <xsl:if test=".//note">
-          <hr class="note-separator"/>
-          <xsl:for-each select=".//note">
-            <xsl:apply-templates select="." mode="print-notes"/>
-          </xsl:for-each>
-        </xsl:if>
-      </body>
-    </html>
+    <h2>
+    <xsl:choose>
+      <xsl:when test="@divTitle">
+        <xsl:value-of select="@divTitle"/>
+      </xsl:when>
+      <xsl:when test="@type = 'testament'">
+        <xsl:choose>
+          <xsl:when test="preceding::div[@type = 'testament']">
+            <xsl:text>New Testament</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>Old Testament</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@osisID"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    </h2>
+
+    <hr class="navigation-separator-top" />
+    <xsl:apply-templates/>
+    <hr class="navigation-separator-bottom" />
+
   </xsl:template>
-  
+
+
   <xsl:template match="a">
     <a class="a" href="{@href}">
       <xsl:apply-templates/>
@@ -610,13 +519,6 @@
     </xsl:element>
   </xsl:template>
   
-  <!-- This is the title of a work. -->
-  <xsl:template match="header//title">
-    <div class="work-title">
-      <xsl:apply-templates/>
-    </div>
-  </xsl:template>
-  
   <!-- This is the title of a chapter or other division. -->
   <xsl:template match="div/title">
     <h3 class="div-title">
@@ -679,29 +581,6 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Named templates
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
-  <xsl:template name="print-div-title">
-    <xsl:param name="div" select="."/>
-    
-    <xsl:choose>
-      <xsl:when test="$div/@divTitle">
-        <xsl:value-of select="$div/@divTitle"/>
-      </xsl:when>
-      <xsl:when test="$div/@type = 'testament'">
-        <xsl:choose>
-          <xsl:when test="$div/preceding::div[@type = 'testament']">
-            <xsl:text>New Testament</xsl:text>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:text>Old Testament</xsl:text>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$div/@osisID"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
   
   <xsl:template name="trim-zeros-from-number">
     <xsl:param name="number" select="'0'"/>

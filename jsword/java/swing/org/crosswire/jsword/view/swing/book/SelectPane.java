@@ -117,7 +117,6 @@ public class SelectPane extends JPanel
             String param = txt_search.getText();
             String type = (String) cbo_search.getSelectedItem();
             // This cast is safe because we asked for Bibles in the ctor
-            // PENDING(joe): uncast
             Bible version = (Bible) mdl_versn.getSelectedBookMetaData().getBook();
 
             if (MATCH.equals(type))

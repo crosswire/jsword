@@ -6,16 +6,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Filters;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
+import org.jdom.input.SAXHandler;
 
 /**
  * A Simple/Test implmentation of Remoter that doesn't do any remote access.
@@ -78,15 +79,15 @@ public class LocalRemoter implements Remoter
                 String refstr = method.getParameter(RemoteConstants.PARAM_PASSAGE);
                 Passage ref = PassageFactory.createPassage(refstr);
                 BibleData data = bible.getData(ref);
-                return data.getDocument();
+
+                SAXEventProvider provider = data.getSAXEventProvider();
+                SAXHandler handler = new SAXHandler();
+                provider.provideSAXEvents(handler);
+                return handler.getDocument();
             }
-            catch (BookException ex)
+            catch (Exception ex)
             {
                 throw new RemoterException("remote_getdata_fail", ex);
-            }
-            catch (NoSuchVerseException ex)
-            {
-                throw new RemoterException("remote_getdata_noverse", ex);
             }
         }
         else if (RemoteConstants.METHOD_FINDPASSAGE.equals(methodname))
@@ -129,6 +130,7 @@ public class LocalRemoter implements Remoter
 
     /**
      * How fast are we?
+     * @see org.crosswire.jsword.book.remote.Remoter#getSpeed()
      */
     public int getSpeed()
     {

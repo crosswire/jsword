@@ -148,7 +148,7 @@ public class JDBCBible extends LocalURLBible
                 int start_id = BibleInfo.verseOrdinal(start.getRefArray());
                 int end_id = BibleInfo.verseOrdinal(end.getRefArray());
 
-                SectionData section = doc.createSectionData(range.getName(), "AV");
+                SectionData section = doc.createSectionData(range.getName());
 
                 doc_stmt.setInt(1, start_id);
                 doc_stmt.setInt(2, end_id);

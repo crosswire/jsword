@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import javax.xml.bind.JAXBException;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.passage.Verse;
+import org.jdom.Element;
 
 /**
  * A SectionData contains a list of references, and a note that describes them.
@@ -45,9 +47,18 @@ public class DefaultSectionData implements SectionData
      * @param doc The BibleData that we are a part of
      * @param title The title of this section
      */
-    public DefaultSectionData(BibleData doc, String title)
+    public DefaultSectionData(BibleData doc, String title) throws JAXBException
     {
         this(doc, title, null);
+    }
+
+    /**
+     * JAXB accessor.
+     * @return Object
+     */
+    public Div getDiv()
+    {
+        return div;
     }
 
     /**
@@ -57,13 +68,17 @@ public class DefaultSectionData implements SectionData
      * @param title The title of this section
      * @param version A default version for the refs that we contain
      */
-    public DefaultSectionData(BibleData doc, String title, String version)
+    public DefaultSectionData(BibleData doc, String title, String version) throws JAXBException
     {
         this.doc = doc;
 
         section = new Element("section");
         if (version != null) section.setAttribute("version", version);
         section.setAttribute("title", title);
+
+        div = ObjectFactory.createDiv();
+        div.setDivTitle(title);
+        // what to do with the version?
 
         // doc.getElement().addContent(section);
     }
@@ -75,15 +90,6 @@ public class DefaultSectionData implements SectionData
     public BibleData getParent()
     {
         return doc;
-    }
-
-    /**
-     * Accessor for the Element that we are wrapping
-     * @return The Element that we wrap
-     */
-    public Document getDocument()
-    {
-        return doc.getDocument();
     }
 
     /**
@@ -118,6 +124,8 @@ public class DefaultSectionData implements SectionData
         DefaultRefData dref = (DefaultRefData) ref;
         refs.add(dref);
         section.addContent(dref.getElement());
+
+        div.getContent().add(ref.getJAXBVerse());
     }
 
     /**
@@ -161,6 +169,13 @@ public class DefaultSectionData implements SectionData
      */
     private List refs = new ArrayList();
 
-    /** The actual Element that we wrap */
+    /**
+     * The actual Element that we wrap
+     */
     private Element section;
+
+    /**
+     * JAXB element
+     */
+    private Div div;
 }

@@ -1,10 +1,8 @@
 
 package org.crosswire.jsword.book.data;
 
-import org.crosswire.jsword.passage.Verse;
-
 /**
- * A VerseData represents a Verse that exists inside a BibleData.
+ * Some simple utilities to help working with OSIS classes.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,29 +25,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface RefData
+public class OsisUtil
 {
-    /**
-     * Get the verse that this element contains
-     * @param The verse
-     */
-    public Verse getVerse();
-
-    /**
-     * Add some plain text to the verse
-     */
-    public void setPlainText(String text);
-
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
-     */
-    public String getPlainText();
-
-    /**
-     * Method getJAXBVerse.
-     * @return Object
-     */
-    public Object getJAXBVerse();
+    public static final String OSIS_PACKAGE = "org.crosswire.jsword.osis";
 }

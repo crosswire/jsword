@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Defaults;
@@ -22,7 +23,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.Style;
-import org.jdom.Document;
 
 /**
  * A quick demo of how easy it is to write new front-ends to JSword.
@@ -121,10 +121,8 @@ public class DemoServlet extends HttpServlet
                 }
     
                 BibleData data = version.getData(ref);
-                Document xml = data.getDocument();
-        
-                Document output = style.applyStyle(xml, "Simple");
-                String text = style.getString(output);
+                SAXEventProvider provider = data.getSAXEventProvider();
+                String text = style.applyStyleToString(provider, "simple");
     
                 request.setAttribute("reply", text);
             }

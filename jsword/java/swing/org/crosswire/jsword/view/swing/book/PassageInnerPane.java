@@ -16,12 +16,12 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Style;
-import org.jdom.Document;
 import org.xml.sax.SAXException;
 
 /**
@@ -96,10 +96,8 @@ public class PassageInnerPane extends JPanel
         }
 
         BibleData data = version.getData(ref);
-        Document xml = data.getDocument();
-
-        Document output = style.applyStyle(xml, "Simple");
-        String text = style.getString(output);
+        SAXEventProvider provider = data.getSAXEventProvider();
+        String text = style.applyStyleToString(provider, "simple");
 
         txt_view.setText(text);
         

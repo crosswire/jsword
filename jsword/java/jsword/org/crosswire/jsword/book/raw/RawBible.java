@@ -11,7 +11,6 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.basic.LocalURLBible;
 import org.crosswire.jsword.book.data.BibleData;
-import org.crosswire.jsword.book.data.DataUtil;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
@@ -449,9 +448,11 @@ public class RawBible extends LocalURLBible
 
                 String text = vel.getPlainText();
 
-                // Is this verse part of a new paragraph?
-                boolean para = DataUtil.isNewPara(doc);
-                para_insts.setPara(para, verse);
+                // Is this verse part of a new paragraph? Since the move to OSIS
+                // the concept of new para is not what it was. I don't intend to
+                // fix it properly since Raw does not fit well with marked-up
+                // text.
+                para_insts.setPara(false, verse);
 
                 // Chop the sentance into words.
                 String[] text_array = BookUtil.tokenize(text);
@@ -529,7 +530,7 @@ public class RawBible extends LocalURLBible
      */
     private void append(BibleData doc, VerseRange range) throws BookException
     {
-        SectionData section = doc.createSectionData(range.getName(), "AV");
+        SectionData section = doc.createSectionData(range.getName());
 
         Verse[] array = range.toVerseArray();
         for (int i=0; i<array.length; i++)

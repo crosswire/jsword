@@ -3,9 +3,11 @@ package org.crosswire.jsword.book.data;
 
 import java.util.Iterator;
 
+import javax.xml.bind.JAXBException;
+
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.passage.Verse;
-import org.jdom.Document;
 import org.jdom.Element;
 import org.xml.sax.SAXException;
 
@@ -55,6 +57,16 @@ public class DefaultRefData implements RefData
         ref.setAttribute("c", "" + verse.getChapter());
         ref.setAttribute("v", "" + verse.getVerse());
         if (para) ref.setAttribute("para", "" + para);
+
+        try
+        {
+            everse = ObjectFactory.createVerse();
+            everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+        }
+        catch (JAXBException ex)
+        {
+            throw new BookException("osis_create", ex);
+        }
     }
 
     /**
@@ -64,15 +76,6 @@ public class DefaultRefData implements RefData
     public SectionData getParent()
     {
         return section;
-    }
-
-    /**
-     * Accessor for the Element that we are wrapping
-     * @return The Element that we wrap
-     */
-    public Document getDocument()
-    {
-        return doc.getDocument();
     }
 
     /**
@@ -102,6 +105,8 @@ public class DefaultRefData implements RefData
         it.addContent(text);
 
         ref.addContent(it);
+
+        everse.getContent().add(text);
     }
 
     /**
@@ -177,6 +182,14 @@ public class DefaultRefData implements RefData
     }
 
     /**
+     * @see org.crosswire.jsword.book.data.RefData#getJAXBVerse()
+     */
+    public Object getJAXBVerse()
+    {
+        return everse;
+    }
+
+    /**
      * The document that we are a part of
      */
     private BibleData doc;
@@ -205,4 +218,9 @@ public class DefaultRefData implements RefData
      * The formatted text
      */
     private String xml;
+
+    /**
+     * JAXB element
+     */
+    private org.crosswire.jsword.osis.Verse everse;
 }

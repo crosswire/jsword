@@ -1,12 +1,29 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.UnmarshallerHandler;
+
+import org.crosswire.common.util.LogicError;
+import org.crosswire.common.xml.JAXBSAXEventProvider;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.ObjectFactory;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.input.SAXHandler;
+import org.xml.sax.SAXException;
 
 /**
  * Some helper classes to aid Document creation, and to hide all the
@@ -48,10 +65,30 @@ public class DefaultBibleData implements BibleData
      * Constructor DefaultBibleData.
      * @param doc
      */
-    public DefaultBibleData(Document doc)
+    public DefaultBibleData(SAXEventProvider provider) throws SAXException
     {
-        this.bible = doc.getRootElement();
-        this.doc = doc;
+        try
+        {
+            SAXHandler handler = new SAXHandler();
+            provider.provideSAXEvents(handler);
+            this.doc = handler.getDocument();
+
+            bible = doc.getRootElement();
+
+            jc = JAXBContext.newInstance(OsisUtil.OSIS_PACKAGE);
+            Unmarshaller unm = jc.createUnmarshaller();
+            UnmarshallerHandler unmh = unm.getUnmarshallerHandler();
+            provider.provideSAXEvents(unmh);
+            osis = (Osis) unmh.getResult();
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+        catch (IOException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**
@@ -61,74 +98,48 @@ public class DefaultBibleData implements BibleData
     {
         bible = new Element("bible");
         doc = new Document(bible);
+            
+        try
+        {
+            jc = JAXBContext.newInstance(OsisUtil.OSIS_PACKAGE);
+
+            osis = ObjectFactory.createOsis();            
+            work = ObjectFactory.createWork();
+
+            text = ObjectFactory.createOsisText();
+            text.setOsisIDWork("Bible.KJV");
+            osis.setOsisText(text);
+            
+            header = ObjectFactory.createHeader();
+            header.getWork().add(work);
+            text.setHeader(header);
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
+
+        /*
+        Validator val = jc.createValidator();
+        val.setEventHandler(new ValidationEventHandler()
+        {
+            public boolean handleEvent(ValidationEvent ev)
+            {
+                return false;
+            }
+        });
+        val.validateRoot(osis);
+        //*/
     }
 
     /**
-     * Get a reference to the real W3C Document.
-     * @return The Document
+     * Output the current data as a SAX stream.
+     * @param handler The Place to post SAX events
      */
-    public Document getDocument()
+    public SAXEventProvider getSAXEventProvider()
     {
-        return doc;
-    }
-
-    /**
-     * This is an accessor for the root &lt;bible> Element
-     * @return The &lt;bible> Element
-     */
-    public Element getElement()
-    {
-        return bible;
-    }
-
-    /**
-     * This is an enumeration through all the sections in this Document.
-     * Each of the sections will be able to give a list of the Verses
-     * that it contains.
-     * @return The list of sections
-     */
-    public Iterator getSectionDatas()
-    {
-        return sections.iterator();
-    }
-
-    /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
-     */
-    public void addSectionData(SectionData section)
-    {
-        if (!(section instanceof DefaultSectionData))
-            throw new IllegalArgumentException("Can't mix implementations by adding a " + section.getClass().getName() + " to a " + this.getClass().getName());
-
-        DefaultSectionData dsection = (DefaultSectionData) section;
-        sections.add(dsection);
-        bible.addContent(dsection.getElement());
-    }
-
-    /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
-     */
-    public SectionData createSectionData(String title)
-    {
-        SectionData section = new DefaultSectionData(this, title);
-        addSectionData(section);
-        return section;
-    }
-
-    /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
-     */
-    public SectionData createSectionData(String title, String version)
-    {
-        SectionData section = new DefaultSectionData(this, title, version);
-        addSectionData(section);
-        return section;
+        return new JAXBSAXEventProvider(jc, osis);
+        //return new JDOMSAXEventProvider(doc);
     }
 
     /**
@@ -151,13 +162,60 @@ public class DefaultBibleData implements BibleData
     }
 
     /**
+     * This is an enumeration through all the sections in this Document.
+     * Each of the sections will be able to give a list of the Verses
+     * that it contains.
+     * @return The list of sections
+     */
+    public Iterator getSectionDatas()
+    {
+        return sections.iterator();
+    }
+
+    /**
+     * Start a new section
+     * @param title The heading for this section
+     * @param version The Bible string
+     */
+    public SectionData createSectionData(String title) throws BookException
+    {
+        try
+        {
+            SectionData section = new DefaultSectionData(this, title);
+            if (!(section instanceof DefaultSectionData))
+                throw new IllegalArgumentException("Can't mix implementations by adding a " + section.getClass().getName() + " to a " + this.getClass().getName());
+            
+            DefaultSectionData dsection = (DefaultSectionData) section;
+            sections.add(dsection);
+            bible.addContent(dsection.getElement());
+
+            text.getDiv().add(section.getDiv());
+            return section;
+        }
+        catch (JAXBException ex)
+        {
+            throw new BookException("osis_create", ex);
+        }
+    }
+
+    private Osis osis;
+    private Work work;
+    private OsisText text;
+    private Header header;
+    private JAXBContext jc = null;
+
+    /**
      * The list of Sections
      */
     private List sections = new ArrayList();
 
-    /** The actual data store */
+    /**
+     * The actual data store
+     */
     private Document doc;
 
-    /** The root of the DOM tree */
+    /**
+     * The root of the DOM tree
+     */
     private Element bible;
 }

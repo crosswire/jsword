@@ -1,10 +1,15 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.common.xml;
 
-import org.crosswire.jsword.passage.Verse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 /**
- * A VerseData represents a Verse that exists inside a BibleData.
+ * A SAXEventProvider that provides SAX events from a JDOM Document.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,29 +32,41 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface RefData
+public class JAXBSAXEventProvider implements SAXEventProvider
 {
     /**
-     * Get the verse that this element contains
-     * @param The verse
+     * Simple constructor
      */
-    public Verse getVerse();
+    public JAXBSAXEventProvider(JAXBContext jc, Object jaxbelement)
+    {
+        this.jc = jc;
+        this.jaxbelement = jaxbelement;
+    }
 
     /**
-     * Add some plain text to the verse
+     * Serialize the JAXB element
+     * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(ContentHandler)
      */
-    public void setPlainText(String text);
+    public void provideSAXEvents(ContentHandler handler) throws SAXException
+    {
+        try
+        {
+            Marshaller m = jc.createMarshaller();
+            m.marshal(jaxbelement, handler);
+        }
+        catch (JAXBException ex)
+        {
+            throw new SAXException(ex);
+        }
+    }
 
     /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
+     * From which we get a Marshaller 
      */
-    public String getPlainText();
+    private JAXBContext jc;
 
     /**
-     * Method getJAXBVerse.
-     * @return Object
+     * The JAXB element to work from
      */
-    public Object getJAXBVerse();
+    private Object jaxbelement;
 }

@@ -1,10 +1,14 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.common.xml;
 
-import org.crosswire.jsword.passage.Verse;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.output.SAXOutputter;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 /**
- * A VerseData represents a Verse that exists inside a BibleData.
+ * A SAXEventProvider that provides SAX events from a JDOM Document.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,29 +31,35 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface RefData
+public class JDOMSAXEventProvider implements SAXEventProvider
 {
     /**
-     * Get the verse that this element contains
-     * @param The verse
+     * Simple constructor
      */
-    public Verse getVerse();
+    public JDOMSAXEventProvider(Document doc)
+    {
+        this.doc = doc;
+    }
 
     /**
-     * Add some plain text to the verse
+     * Serialize the JDOM Document
+     * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(ContentHandler)
      */
-    public void setPlainText(String text);
+    public void provideSAXEvents(ContentHandler handler) throws SAXException
+    {
+        try
+        {
+            SAXOutputter output = new SAXOutputter(handler);
+            output.output(doc);
+        }
+        catch (JDOMException ex)
+        {
+            throw new SAXException(ex);
+        }
+    }
 
     /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
+     * The document to work from
      */
-    public String getPlainText();
-
-    /**
-     * Method getJAXBVerse.
-     * @return Object
-     */
-    public Object getJAXBVerse();
+    private Document doc;
 }

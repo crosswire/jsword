@@ -3,7 +3,8 @@ package org.crosswire.jsword.book.data;
 
 import java.util.Iterator;
 
-import org.jdom.Document;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * Basic section of BookData.
@@ -32,10 +33,17 @@ import org.jdom.Document;
 public interface BibleData extends BookData
 {
     /**
-     * Get a reference to the real JDOM Document.
-     * @return The Document
+     * Output the current data as a SAX stream.
+     * @return SAXEventProvider
      */
-    public Document getDocument();
+    public SAXEventProvider getSAXEventProvider();
+
+    /**
+     * A simplified plain text version of the data in this verse with all
+     * the markup stripped out.
+     * @return The text without markup
+     */
+    public String getPlainText();
 
     /**
      * This is an enumeration through all the sections in this Document.
@@ -50,26 +58,5 @@ public interface BibleData extends BookData
      * @param title The heading for this section
      * @param version The Bible string
      */
-    public void addSectionData(SectionData section);
-
-    /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
-     */
-    public SectionData createSectionData(String title);
-
-    /**
-     * Start a new section
-     * @param title The heading for this section
-     * @param version The Bible string
-     */
-    public SectionData createSectionData(String title, String version);
-
-    /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The text without markup
-     */
-    public String getPlainText();
+    public SectionData createSectionData(String title) throws BookException;
 }

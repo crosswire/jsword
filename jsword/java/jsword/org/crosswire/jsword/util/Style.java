@@ -8,17 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-import org.jdom.transform.JDOMResult;
-import org.jdom.transform.JDOMSource;
-import org.xml.sax.SAXException;
+import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.SAXEventProviderInputSource;
+import org.crosswire.common.xml.SAXEventProviderXMLReader;
 
 /**
  * Turn XML from a Bible into HTML according to a Display style.
@@ -116,14 +118,15 @@ public class Style
     /**
      * Reading and writing an XML document stored in a file.
      */
-    public Document applyStyle(Document doc_in, String style) throws IOException, SAXException, TransformerException
+    public String applyStyleToString(SAXEventProvider doc_in, String style) throws IOException, TransformerException
     {
-        // Load the xml document
-        JDOMSource src_in = new JDOMSource(doc_in);
+        Source src_in = new SAXSource(new SAXEventProviderXMLReader(doc_in), new SAXEventProviderInputSource());
 
         // html output
-        JDOMResult res_out = new JDOMResult();
+        StringWriter html_writer = new StringWriter();
+        Result res_out = new StreamResult(html_writer);
 
+        // PENDING(joe): cache this properly
         Transformer transformer = (Transformer) txers.get(style);
         if (transformer == null)
         {
@@ -138,36 +141,10 @@ public class Style
 
         transformer.transform(src_in, res_out);
 
-        return res_out.getDocument();
-    }
-
-    /**
-     * Convenience method to create a String from a JDOM document
-     */
-    public String getString(Document doc) throws IOException
-    {
-        StringWriter html_writer = new StringWriter();
-        outputter.output(doc, html_writer);
-
-        String output = html_writer.toString();
-
-        // For some reason the new TRaX stuff leaves the
-        // <?xml version="1.0" encoding="UTF-8"?> string in the result.
-        if (output.startsWith("<?xml"))
-        {
-            int close = output.indexOf("?>");
-            if (close != -1)
-            {
-                output = output.substring(close+2);
-                log.debug("no effect from setting "+OutputKeys.OMIT_XML_DECLARATION);
-            }
-        }
-
-        return output;
+        return html_writer.toString();
     }
 
     private TransformerFactory transfact = TransformerFactory.newInstance();
-    private XMLOutputter outputter = new XMLOutputter();
 
     /** A cache of transfotmers */
     private Map txers = new HashMap();
