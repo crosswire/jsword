@@ -178,7 +178,7 @@ public class Reporter
      * @param message The message to pass to the user
      * @param params The parameters to the message
      */
-    public static void informUser(Object source, MsgBase message, Object [] params)
+    public static void informUser(Object source, MsgBase message, Object[] params)
     {
         String msg = message.toString(params);
         log.debug(msg);

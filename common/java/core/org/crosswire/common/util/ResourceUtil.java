@@ -104,7 +104,7 @@ public class ResourceUtil
 
         if (resource == null)
         {
-            throw new MalformedURLException(Msg.NO_RESOURCE.toString(new Object[] { search }));
+            throw new MalformedURLException(Msg.NO_RESOURCE.toString(search));
         }
 
         return resource;

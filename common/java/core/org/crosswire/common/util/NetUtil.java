@@ -102,7 +102,7 @@ public class NetUtil
         // If it is a file, except
         if (file.isFile())
         {
-            throw new MalformedURLException(Msg.IS_FILE.toString(new Object[] { orig }));
+            throw new MalformedURLException(Msg.IS_FILE.toString(orig));
         }
 
         // Is it already a directory ?
@@ -113,7 +113,7 @@ public class NetUtil
             // Did that work?
             if (!file.isDirectory())
             {
-                throw new MalformedURLException(Msg.CREATE_DIR_FAIL.toString(new Object[] { orig }));
+                throw new MalformedURLException(Msg.CREATE_DIR_FAIL.toString(orig));
             }
         }
     }
@@ -132,7 +132,7 @@ public class NetUtil
         // If it is a file, except
         if (file.isDirectory())
         {
-            throw new MalformedURLException(Msg.IS_DIR.toString(new Object[] { orig }));
+            throw new MalformedURLException(Msg.IS_DIR.toString(orig));
         }
 
         // Is it already a directory ?
@@ -144,7 +144,7 @@ public class NetUtil
             // Did that work?
             if (!file.isFile())
             {
-                throw new MalformedURLException(Msg.CREATE_FILE_FAIL.toString(new Object[] { orig }));
+                throw new MalformedURLException(Msg.CREATE_FILE_FAIL.toString(orig));
             }
         }
     }
@@ -524,7 +524,7 @@ public class NetUtil
         File fdir = new File(url.getFile());
         if (!fdir.isDirectory())
         {
-            throw new MalformedURLException(Msg.NOT_DIR.toString(new Object[] { url.toExternalForm() }));
+            throw new MalformedURLException(Msg.NOT_DIR.toString(url.toExternalForm()));
         }
 
         return fdir.list(new URLFilterFilenameFilter(filter));
@@ -640,7 +640,7 @@ public class NetUtil
     {
         if (!url.getProtocol().equals(PROTOCOL_FILE))
         {
-            throw new MalformedURLException(Msg.NOT_FILE_URL.toString(new Object[] { url }));
+            throw new MalformedURLException(Msg.NOT_FILE_URL.toString(url));
         }
     }
 

@@ -217,7 +217,7 @@ public class MapField extends JPanel implements Field, ActionListener
         }
         catch (ClassNotFoundException ex)
         {
-            JOptionPane.showMessageDialog(this, Msg.CLASS_NOT_FOUND.toString(new Object[] { name }));
+            JOptionPane.showMessageDialog(this, Msg.CLASS_NOT_FOUND.toString(name));
         }
         catch (Exception ex)
         {

@@ -80,8 +80,7 @@ public class MsgBase
      */
     public String toString(Object param)
     {
-        Object [] params = {param};
-        return MessageFormat.format(toString(), params);
+        return MessageFormat.format(toString(), new Object[] { param });
     }
 
     /**
@@ -114,11 +113,10 @@ public class MsgBase
                 {
                     resources = ResourceBundle.getBundle(className, defaultLocale, new CWClassLoader(implementingClass));
                     resourceMap.put(className, resources);
-                    log.debug("Using resources for " + className + " in locale " + defaultLocale.getDisplayName()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 catch (MissingResourceException ex)
                 {
-                    log.debug("Assuming key is the default message " + className + ": " + name); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Assuming key is the default message " + className + ": " + name); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
@@ -130,7 +128,7 @@ public class MsgBase
      * resource map maintains a mapping of class names to resources found by that name.
      */
     private static Map resourceMap = new HashMap();
-    
+
     /**
      * If there is any internationalization to be done, it is thru this
      */

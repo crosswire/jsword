@@ -8,7 +8,6 @@ We are here
 
 Swing
 - status bar re-size (is this still bothering people?)
-- check i18n basic works
 - make debugger options only display if advanced user is set in options
 
 BookData Display
@@ -16,6 +15,7 @@ BookData Display
   Each verse is shown RtoL, which is correct, but the verses are ordered from LtoR.
   Also the verse numbers need to be at the beginning of the verse, which is on the right
 - Vines shows internal markup around verse references.
+- remove swing (not cswing)
 
 Sword
 - unsupported Bibles are displayed in Bible list
@@ -45,8 +45,6 @@ POST 1.0
 --------------------------------------------------------------------------------
 
 Swing
-- full internationalization
-- lighter weight i18n via ant?
 - help screens
 - recreate module creator/tester
 - merge dict/comment to form reference pane
@@ -60,7 +58,6 @@ Modules
 
 General
 - Make config use Preferences
-- OSIS 2
 - other application installation systems (rpm, deb, nullsoft, msi, etc)
 
 BookData Display
