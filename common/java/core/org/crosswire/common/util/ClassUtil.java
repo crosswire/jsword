@@ -14,7 +14,7 @@ import java.util.zip.ZipFile;
 
 /**
  * Various Java Class Utilities.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -89,7 +89,7 @@ public class ClassUtil
 
                 if (!paths[i].endsWith(File.separator))
                 {
-                    paths[i] = paths[i] + File.separator;
+                    paths[i] += File.separator;
                 }
 
                 String file_name = paths[i] + extra + EXTENSION_CLASS;
@@ -231,7 +231,7 @@ public class ClassUtil
      * @throws ClassCastException if the read contents are not valid
      * @see ClassUtil#getImplementors(Class)
      */
-    public static Class getImplementor(Class clazz) throws MalformedURLException, IOException, ClassNotFoundException, ClassCastException
+    public static Class getImplementor(Class clazz) throws IOException, ClassNotFoundException, ClassCastException
     {
         Properties props = ResourceUtil.getProperties(clazz);
         String name = props.getProperty(DEFAULT);
@@ -265,7 +265,7 @@ public class ClassUtil
 
     /**
      * <p>Gets the class name minus the package name for an <code>Object</code>.</p>
-     * 
+     *
      * @param object  the class to get the short name for, may be null
      * @param valueIfNull  the value to return if null
      * @return the class name of the object without the package name, or the null value
@@ -281,7 +281,7 @@ public class ClassUtil
 
     /**
      * <p>Gets the class name minus the package name from a <code>Class</code>.</p>
-     * 
+     *
      * @param cls  the class to get the short name for, must not be
      *  <code>null</code>
      * @return the class name without the package name
@@ -300,7 +300,7 @@ public class ClassUtil
      * <p>Gets the class name minus the package name from a String.</p>
      *
      * <p>The string passed in is assumed to be a class name - it is not checked.</p>
-     * 
+     *
      * @param className  the className to get the short name for,
      *  must not be empty or <code>null</code>
      * @return the class name of the class without the package name

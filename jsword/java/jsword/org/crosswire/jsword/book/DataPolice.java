@@ -61,7 +61,7 @@ public class DataPolice
     {
         if (bmd != null && key != null)
         {
-            log.debug(bmd.getInitials() + ":" + key.getName()); //$NON-NLS-1$
+            log.debug(bmd.getInitials() + ':' + key.getName());
         }
 
         log.debug(message);
@@ -70,12 +70,12 @@ public class DataPolice
     /**
      * the last known verse
      */
-    private static Key key;
+    private static Key key = null;
 
     /**
      * The last known Book
      */
-    private static BookMetaData bmd;
+    private static BookMetaData bmd = null;
 
     /**
      * The log stream

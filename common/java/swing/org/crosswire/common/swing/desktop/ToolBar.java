@@ -47,7 +47,7 @@ import org.crosswire.common.swing.CWAction;
  */
 public class ToolBar extends JToolBar
 {
-    /**
+	/**
      * ToolBar constructor.
      */
     public ToolBar(JFrame frame)
@@ -209,4 +209,9 @@ public class ToolBar extends JToolBar
      */
     private JFrame frame;
     private ActionFactory actions;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3544669594414690871L;
 }

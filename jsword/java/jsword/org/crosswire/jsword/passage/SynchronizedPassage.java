@@ -33,7 +33,7 @@ import java.util.Iterator;
  */
 final class SynchronizedPassage implements Passage
 {
-    /**
+	/**
      * Construct a SynchronizedPassage from a real Passage to which we proxy.
      * @param ref The real Passage
      */
@@ -342,4 +342,9 @@ final class SynchronizedPassage implements Passage
      * The object we are proxying to
      */
     private Passage ref;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3833181441264531251L;
 }

@@ -54,7 +54,7 @@ import org.crosswire.common.util.Logger;
  */
 public class JobsProgressBar extends JPanel implements WorkListener
 {
-    /**
+	/**
      * Simple ctor
      */
     public JobsProgressBar(boolean small)
@@ -271,6 +271,11 @@ public class JobsProgressBar extends JPanel implements WorkListener
      * The log stream
      */
     private static final Logger log = Logger.getLogger(JobsProgressBar.class);
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257563988660663606L;
 
     /**
      * A simple struct to group information about a Job

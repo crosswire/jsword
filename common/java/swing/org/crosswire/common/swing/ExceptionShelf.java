@@ -47,7 +47,7 @@ import org.crosswire.common.util.ReporterListener;
  */
 public class ExceptionShelf extends JPanel
 {
-    /**
+	/**
      *
      */
     public ExceptionShelf()
@@ -399,6 +399,11 @@ public class ExceptionShelf extends JPanel
      * Are we in the list of listeners
      */
     private static boolean joined;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3976741375951647288L;
 
     /**
      * A class to listen to Exceptions

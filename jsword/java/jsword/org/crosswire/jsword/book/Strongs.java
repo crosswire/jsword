@@ -76,6 +76,8 @@ public class Strongs
 
                 set(PARSING, Integer.parseInt(desc.substring(1, desc.length() - 1)));
             }
+
+            throw new BookException(Msg.STRONGS_ERROR_PARSE, new Object[] { desc });
         }
         catch (NumberFormatException ex)
         {
@@ -111,17 +113,17 @@ public class Strongs
         int newtype = -1;
         if (lemma.charAt(0) == 'H')
         {
-            newtype = Strongs.HEBREW;
+            newtype = HEBREW;
             lemma = lemma.substring(1);
         }
         else if (lemma.charAt(0) == 'G')
         {
-            newtype = Strongs.GREEK;
+            newtype = GREEK;
             lemma = lemma.substring(1);
         }
         else
         {
-            newtype = Strongs.PARSING;
+            newtype = PARSING;
         }
 
         int newnum = Integer.parseInt(lemma);
@@ -139,11 +141,11 @@ public class Strongs
         switch (type)
         {
         case GREEK:
-            return "<" + number + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+            return "<" + number + '>'; //$NON-NLS-1$
         case HEBREW:
-            return "<0" + number + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+            return "<0" + number + '>'; //$NON-NLS-1$
         case PARSING:
-            return "(" + number + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+            return "(" + number + ')'; //$NON-NLS-1$
         default:
             assert false : type;
             return "!Error!"; //$NON-NLS-1$

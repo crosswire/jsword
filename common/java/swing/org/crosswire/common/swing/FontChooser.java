@@ -54,7 +54,7 @@ import javax.swing.SwingUtilities;
  */
 public class FontChooser extends JPanel
 {
-    /**
+	/**
      * Create a FontChooser.
      */
     public FontChooser()
@@ -238,7 +238,7 @@ public class FontChooser extends JPanel
      */
     static class CustomComboBoxModel extends AbstractListModel implements ComboBoxModel
     {
-        /**
+		/**
          * Create a custom data model for a JComboBox
          */
         protected CustomComboBoxModel()
@@ -295,6 +295,11 @@ public class FontChooser extends JPanel
          * The currently selected item
          */
         private Object selection;
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258129150505071664L;
     }
 
     /**
@@ -303,7 +308,7 @@ public class FontChooser extends JPanel
      */
     private static class CustomListCellRenderer extends DefaultListCellRenderer
     {
-        /* (non-Javadoc)
+		/* (non-Javadoc)
          * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
          */
         public Component getListCellRendererComponent(JList listbox, Object value, int index, boolean selected, boolean focus)
@@ -322,6 +327,11 @@ public class FontChooser extends JPanel
 
             return this;
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256726195025358905L;
     }
 
     /**
@@ -373,4 +383,9 @@ public class FontChooser extends JPanel
      * Are we doing some processing, that makes us not want to send events?
      */
     protected boolean suppressEvents;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3978992071925250097L;
 }

@@ -28,7 +28,7 @@ import javax.swing.JFileChooser;
  */
 public class DirectoryField extends FileField
 {
-    /* (non-Javadoc)
+	/* (non-Javadoc)
      * @see org.crosswire.common.config.swing.FileField#doBrowse()
      */
     public void doBrowse()
@@ -40,4 +40,9 @@ public class DirectoryField extends FileField
             text.setText(chooser.getSelectedFile().getPath());
         }
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3905239018106075189L;
 }

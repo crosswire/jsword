@@ -38,7 +38,7 @@ public class PassageUtil
      * @param persistentNaming True to keep the old string
      *        False (default) to generate a new better one
      */
-    public static final void setPersistentNaming(boolean persistentNaming)
+    public static void setPersistentNaming(boolean persistentNaming)
     {
         PassageUtil.persistentNaming = persistentNaming;
     }
@@ -48,7 +48,7 @@ public class PassageUtil
      * @return True if we keep the old string
      *         False (default) if we generate a new better one
      */
-    public static final boolean isPersistentNaming()
+    public static boolean isPersistentNaming()
     {
         return persistentNaming;
     }
@@ -57,7 +57,7 @@ public class PassageUtil
      * By default do we remember the original string used to configure us?
      * @return false getDefaultPersistentNaming() is always false
      */
-    public static final boolean getDefaultPersistentNaming()
+    public static boolean getDefaultPersistentNaming()
     {
         return false;
     }
@@ -65,5 +65,4 @@ public class PassageUtil
      * Do we store the original string?
      */
     private static boolean persistentNaming = getDefaultPersistentNaming();
-
 }

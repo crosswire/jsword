@@ -828,5 +828,4 @@ public abstract class AccuracyType implements Serializable
      * Characters that are used to indicate end of verse/chapter, part 2
      */
     public static final String VERSE_END_MARK2 = "ff"; //$NON-NLS-1$
-
 }

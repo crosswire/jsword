@@ -55,12 +55,11 @@ public final class StringUtil
     public static String read(Reader in) throws IOException
     {
         StringBuffer retcode = new StringBuffer();
-        String line = ""; //$NON-NLS-1$
         BufferedReader din = new BufferedReader(in);
 
         while (true)
         {
-            line = din.readLine();
+            String line = din.readLine();
 
             if (line == null)
             {
@@ -159,7 +158,7 @@ public final class StringUtil
      *
      * <p>The separator is not included in the returned String array.
      * Adjacent separators are treated as one separator.</p>
-     * 
+     *
      * <p>A <code>null</code> input String returns <code>null</code>.</p>
      *
      * <pre>
@@ -169,7 +168,7 @@ public final class StringUtil
      * StringUtils.split("abc  def") = ["abc", "def"]
      * StringUtils.split(" abc ")    = ["abc"]
      * </pre>
-     * 
+     *
      * @param str  the String to parse, may be null
      * @return an array of parsed Strings, <code>null</code> if null String input
      */
@@ -184,7 +183,7 @@ public final class StringUtil
      *
      * <p>The separator is not included in the returned String array.
      * Adjacent separators are treated as one separator.</p>
-     * 
+     *
      * <p>A <code>null</code> input String returns <code>null</code>.</p>
      *
      * <pre>
@@ -196,7 +195,7 @@ public final class StringUtil
      * StringUtils.split("a\tb\nc", null) = ["a", "b", "c"]
      * StringUtils.split("a b c", ' ')    = ["a", "b", "c"]
      * </pre>
-     * 
+     *
      * @param str  the String to parse, may be null
      * @param separatorChar  the character used as the delimiter,
      *  <code>null</code> splits on whitespace
@@ -248,7 +247,7 @@ public final class StringUtil
      *
      * <p>The separator is not included in the returned String array.
      * Adjacent separators are treated as one separator.</p>
-     * 
+     *
      * <p>A <code>null</code> input String returns <code>null</code>.
      * A <code>null</code> separatorChars splits on whitespace.</p>
      *
@@ -260,7 +259,7 @@ public final class StringUtil
      * StringUtils.split("abc  def", " ") = ["abc", "def"]
      * StringUtils.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
      * </pre>
-     * 
+     *
      * @param str  the String to parse, may be null
      * @param separatorChars  the characters used as the delimiters,
      *  <code>null</code> splits on whitespace
@@ -280,7 +279,7 @@ public final class StringUtil
      *
      * <p>A <code>null</code> input String returns <code>null</code>.
      * A <code>null</code> separatorChars splits on whitespace.</p>
-     * 
+     *
      * <pre>
      * StringUtils.split(null, *, *)            = null
      * StringUtils.split("", *, *)              = []
@@ -289,7 +288,7 @@ public final class StringUtil
      * StringUtils.split("ab:cd:ef", ":", 0)    = ["ab", "cd", "ef"]
      * StringUtils.split("ab:cd:ef", ":", 2)    = ["ab", "cdef"]
      * </pre>
-     * 
+     *
      * @param str  the String to parse, may be null
      * @param separatorChars  the characters used as the delimiters,
      *  <code>null</code> splits on whitespace
@@ -399,8 +398,8 @@ public final class StringUtil
      * containing the provided list of elements.</p>
      *
      * <p>No delimiter is added before or after the list.
-     * A <code>null</code> separator is the same as an empty String (""). 
-     * Null objects or empty strings within the array are represented by 
+     * A <code>null</code> separator is the same as an empty String ("").
+     * Null objects or empty strings within the array are represented by
      * empty strings.</p>
      *
      * <pre>
@@ -433,13 +432,13 @@ public final class StringUtil
         // ArraySize > 0:   Len = NofStrings *(len(firstString) + len(separator))
         //           (Assuming that all Strings are roughly equally long)
         int bufSize = arraySize == 0 ? 0 : arraySize
-                        * ((array[0] == null ? 16 : array[0].toString().length()) + (separator != null ? separator.length() : 0));
+                        * ((array[0] == null ? 16 : array[0].toString().length()) + separator.length());
 
         StringBuffer buf = new StringBuffer(bufSize);
 
         for (int i = 0; i < arraySize; i++)
         {
-            if (separator != null && (i > 0))
+            if (i > 0)
             {
                 buf.append(separator);
             }

@@ -1,23 +1,3 @@
-/*
- * Distribution Licence:
- * JSword is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * 
- * See the GNU General Public License for more details.
- * The License is available on the internet at:
- *     http://www.gnu.org/copyleft/gpl.html,
- * or by writing to:
- *     Free Software Foundation, Inc.
- *     59 Temple Place - Suite 330
- *     Boston, MA 02111-1307, USA
- * 
- * The copyright to this program is held by it's authors
- * Copyright: 2004
- */
 package org.crosswire.common.swing;
 
 import java.awt.Component;
@@ -33,20 +13,30 @@ import javax.swing.table.TableColumn;
 /**
  * A SortRenderer indicates the column that is sorted by italizing it.
  * 
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class SortRenderer extends DefaultTableCellRenderer
 {
-
-    /**
-     * Field pressedColumn
-     */
-    private TableColumn pressedColumn;
-    /**
-     * Field model
-     */
-    private RowTableModel model;
-
     /**
      * Constructor for SortRenderer
      * @param stm SegmentTableModel
@@ -114,4 +104,18 @@ public class SortRenderer extends DefaultTableCellRenderer
         pressedColumn = tc;
     }
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3977303200573765939L;
+
+    /**
+     * Field pressedColumn
+     */
+    private TableColumn pressedColumn;
+
+    /**
+     * Field model
+     */
+    private RowTableModel model;
 }

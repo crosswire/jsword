@@ -29,7 +29,7 @@ import java.util.EventObject;
  */
 public class WorkEvent extends EventObject
 {
-    /**
+	/**
      * Initialize a WorkEvent
      */
     public WorkEvent(Job source, boolean predicted)
@@ -58,4 +58,9 @@ public class WorkEvent extends EventObject
      * Is this a predicted or actual progress report?
      */
     private boolean predicted;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3976736990807011378L;
 }

@@ -49,17 +49,17 @@ public class Defaults
     /**
      * The default Bible
      */
-    private static BookMetaData bdeft;
+    private static BookMetaData bdeft = null;
 
     /**
      * The default Commentary
      */
-    private static BookMetaData cdeft;
+    private static BookMetaData cdeft = null;
 
     /**
      * The default Dictionary
      */
-    private static BookMetaData ddeft;
+    private static BookMetaData ddeft = null;
 
     /**
      * Set the default Bible. The new name must be equal() to a string

@@ -301,7 +301,7 @@ public class Reporter
         /**
          * Handle AWT exceptions
          */
-        public void handle(final Throwable ex)
+        public void handle(Throwable ex)
         {
             Reporter.informUser(this, ex);
         }

@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Utilities for working with SAX XML parsing.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -82,7 +82,7 @@ public class XMLUtil
     {
         for (int i = 0; i < attrs.getLength(); i++)
         {
-            log.debug("attr[" + i + "]: " + attrs.getQName(i) + "=" + attrs.getValue(i)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.debug("attr[" + i + "]: " + attrs.getQName(i) + '=' + attrs.getValue(i)); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -173,7 +173,7 @@ public class XMLUtil
         {
             broken = broken.substring(0, broken.length() - 1);
         }
-        if (broken.startsWith("&")) //$NON-NLS-1$
+        if (broken.charAt(0) == '&')
         {
             broken = broken.substring(1);
         }

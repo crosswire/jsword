@@ -2,6 +2,7 @@ package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.util.StringUtil;
 
@@ -51,7 +52,7 @@ public class SentanceUtil
      */
     public static String[] tokenize(String sentence)
     {
-        ArrayList tokens = new ArrayList();
+        List tokens = new ArrayList();
 
         int pos = 0;
         String temp;
@@ -85,7 +86,7 @@ public class SentanceUtil
             else if ((nextSpace != -1 && nextSpace < nextDDash) || (nextDDash == -1))
             {
                 // The next separator is a space
-                temp = sentence.substring(pos, nextSpace) + " "; //$NON-NLS-1$
+                temp = sentence.substring(pos, nextSpace) + ' ';
                 pos = nextSpace + 1;
             }
             else
@@ -251,7 +252,7 @@ public class SentanceUtil
      * @param word The word to search for letters
      * @return The offset of the first letter
      */
-    public static final int firstLetter(String word)
+    public static int firstLetter(String word)
     {
         int first;
 
@@ -272,7 +273,7 @@ public class SentanceUtil
      * @param word The word to search for letters
      * @return The offset of the last letter
      */
-    public static final int lastLetter(String word)
+    public static int lastLetter(String word)
     {
         int last;
 

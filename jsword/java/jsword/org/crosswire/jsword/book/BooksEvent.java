@@ -29,7 +29,7 @@ import java.util.EventObject;
  */
 public class BooksEvent extends EventObject
 {
-    /**
+	/**
      * Basic constructor
      * @param bmd The meta-data of the changed Bible, or null if there is more than one change.
      * @param added True if the changed Bible is an addition.
@@ -68,4 +68,9 @@ public class BooksEvent extends EventObject
      * The name of the changed Bible
      */
     private BookMetaData bmd;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3834876879554819894L;
 }

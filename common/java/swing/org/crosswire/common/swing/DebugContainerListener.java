@@ -52,7 +52,7 @@ public class DebugContainerListener implements ContainerListener
     }
 
     /**
-     * 
+     *
      */
     private void setAlert(Component comp, Color color)
     {
@@ -65,7 +65,7 @@ public class DebugContainerListener implements ContainerListener
     }
 
     /**
-     * 
+     *
      */
     private void addChild(Container parent, Component child)
     {
@@ -116,11 +116,11 @@ public class DebugContainerListener implements ContainerListener
     }
 
     /**
-     * 
+     *
      */
     private String toString(Component parent)
     {
-        return ClassUtil.getShortClassName(parent, "Null") + "(" + parent.hashCode() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return ClassUtil.getShortClassName(parent, "Null") + '(' + parent.hashCode() + ')'; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)

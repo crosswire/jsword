@@ -70,7 +70,7 @@ public class SerializingContentHandler implements ContentHandler
 
         if (newlines)
         {
-            buffer.append("\n"); //$NON-NLS-1$
+            buffer.append('\n');
         }
     }
 
@@ -100,7 +100,7 @@ public class SerializingContentHandler implements ContentHandler
      */
     public void startElement(String uri, String localname, String qname, Attributes attrs)
     {
-        buffer.append("<"); //$NON-NLS-1$
+        buffer.append('<');
         if (qname != null)
         {
             buffer.append(qname);
@@ -112,18 +112,18 @@ public class SerializingContentHandler implements ContentHandler
 
         for (int i = 0; i < attrs.getLength(); i++)
         {
-            buffer.append(" "); //$NON-NLS-1$
+            buffer.append(' ');
             buffer.append(attrs.getLocalName(i));
             buffer.append("=\""); //$NON-NLS-1$
             buffer.append(attrs.getValue(i));
-            buffer.append("\""); //$NON-NLS-1$
+            buffer.append('\"');
         }
 
-        buffer.append(">"); //$NON-NLS-1$
+        buffer.append('>');
 
         if (newlines)
         {
-            buffer.append("\n"); //$NON-NLS-1$
+            buffer.append('\n');
         }
     }
 
@@ -142,11 +142,11 @@ public class SerializingContentHandler implements ContentHandler
             buffer.append(localname);
         }
 
-        buffer.append(">"); //$NON-NLS-1$
+        buffer.append('>');
 
         if (newlines)
         {
-            buffer.append("\n"); //$NON-NLS-1$
+            buffer.append('\n');
         }
     }
 
@@ -175,13 +175,13 @@ public class SerializingContentHandler implements ContentHandler
     {
         buffer.append("<!"); //$NON-NLS-1$
         buffer.append(target);
-        buffer.append(" "); //$NON-NLS-1$
+        buffer.append(' ');
         buffer.append(data);
         buffer.append("!>"); //$NON-NLS-1$
 
         if (newlines)
         {
-            buffer.append("\n"); //$NON-NLS-1$
+            buffer.append('\n');
         }
     }
 

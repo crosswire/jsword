@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import org.crosswire.common.util.LucidException;
@@ -30,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class StartupException extends LucidException
 {
-    /**
+	/**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
@@ -70,5 +69,9 @@ public class StartupException extends LucidException
     {
         super(msg, ex, params);
     }
-}
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3616451198199345203L;
+}

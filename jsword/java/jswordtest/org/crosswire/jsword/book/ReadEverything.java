@@ -39,6 +39,13 @@ import org.jdom.JDOMException;
 public class ReadEverything
 {
     /**
+     * Prevent instansiation
+     */
+    private ReadEverything()
+    {
+    }
+
+    /**
      * Read all the modules that we can get our hands on.
      */
     public static void main(String[] args) throws IOException, JDOMException

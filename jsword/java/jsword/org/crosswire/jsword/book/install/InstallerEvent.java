@@ -29,7 +29,7 @@ import java.util.EventObject;
  */
 public class InstallerEvent extends EventObject
 {
-    /**
+	/**
      * Basic constructor
      * @param installer The installer, or null if there is more than one change.
      * @param added True if the changed installer is an addition.
@@ -68,4 +68,9 @@ public class InstallerEvent extends EventObject
      * The name of the changed Bible
      */
     private Installer installer;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257290248836102194L;
 }

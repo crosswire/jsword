@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 /**
  * A SAXEventProvider that gets its output data from an XSL stylesheet and
  * another SAXEventProvider (supplying input XML).
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -295,7 +295,6 @@ public class TransformingSAXEventProvider implements SAXEventProvider
          */
         public TemplateInfo(Templates templates, long modtime)
         {
-            super();
             this.templates = templates;
             this.modtime = modtime;
         }

@@ -32,7 +32,7 @@ import javax.swing.JSplitPane;
  * <p>
  * Since the preferred way of managing the sizes of containers is not with
  * pixel counts, the solution here is to set the preferred size to zero.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -57,12 +57,11 @@ import javax.swing.JSplitPane;
  */
 public class FixedSplitPane extends JSplitPane
 {
-    /**
+	/**
      * Constructor for FixedSplitPane
      */
     public FixedSplitPane()
     {
-        super();
     }
 
     /**
@@ -177,21 +176,26 @@ public class FixedSplitPane extends JSplitPane
     /**
      * Sets the divider location as a percentage of the JSplitPane's size.
      */
-    public void setDividerLocation(double newProportionalLocation)
+    public void setDividerLocation(double newProportionalLoc)
     {
         if (!firstValidate)
         {
             hasProportionalLocation = true;
-            proportionalLocation = newProportionalLocation;
+            proportionalLocation = newProportionalLoc;
         }
         else
         {
-            super.setDividerLocation(newProportionalLocation);
+            super.setDividerLocation(newProportionalLoc);
         }
     }
 
     private static final Dimension DOT = new Dimension(0, 0);
     private boolean firstValidate = true;
-    private boolean hasProportionalLocation;
-    private double proportionalLocation;
+    private boolean hasProportionalLocation = false;
+    private double proportionalLocation = 0.0D;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3761687909593789241L;
 }

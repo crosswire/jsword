@@ -35,7 +35,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ReporterEvent;
 import org.crosswire.common.util.ReporterListener;
@@ -43,7 +42,7 @@ import org.crosswire.common.util.StackTrace;
 
 /**
  * A simple way of reporting problems to the user.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -67,7 +66,7 @@ import org.crosswire.common.util.StackTrace;
  */
 public class ExceptionPane extends JPanel
 {
-    /**
+	/**
      * Use showExceptionDialog for the time being
      */
     private ExceptionPane(Throwable ex)
@@ -109,8 +108,6 @@ public class ExceptionPane extends JPanel
         {
             public void itemStateChanged(ItemEvent ev)
             {
-                System.err.println("In itemStateChanged"); //$NON-NLS-1$
-
                 changeDetail();
             }
         });
@@ -246,11 +243,11 @@ public class ExceptionPane extends JPanel
 
     /**
      * Set the directories to search for source files.
-     * @param source_path A string array of the source directories
+     * @param sourcePath A string array of the source directories
      */
-    public static void setSourcePath(File[] source_path)
+    public static void setSourcePath(File[] sourcePath)
     {
-        ExceptionPane.sources = source_path;
+        ExceptionPane.sources = (File[]) sourcePath.clone();
     }
 
     /**
@@ -331,14 +328,11 @@ public class ExceptionPane extends JPanel
         retcode.append(msg);
 
         // If this is a LucidException with a nested Exception
-        if (ex instanceof LucidException)
+        Throwable nex = ex.getCause();
+        if (nex != null)
         {
-            Throwable nex = ((LucidException) ex).getCause();
-            if (nex != null)
-            {
-                retcode.append("<p><br><font size=\"-1\">" + Msg.CAUSED_BY + "</font>"); //$NON-NLS-1$ //$NON-NLS-2$
-                retcode.append(getHTMLDescription(nex));
-            }
+            retcode.append("<p><br><font size=\"-1\">" + Msg.CAUSED_BY + "</font>"); //$NON-NLS-1$ //$NON-NLS-2$
+            retcode.append(getHTMLDescription(nex));
         }
 
         return retcode.toString();
@@ -556,4 +550,9 @@ public class ExceptionPane extends JPanel
      * The listener that pops up the ExceptionPanes
      */
     private static ExceptionPaneReporterListener li;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258126947203495219L;
 }

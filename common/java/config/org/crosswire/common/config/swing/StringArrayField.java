@@ -50,7 +50,7 @@ import org.crosswire.common.util.Convert;
  */
 public class StringArrayField extends JPanel implements Field
 {
-    /**
+	/**
      * Create a PropertyHashtableField for editing String arrays.
      */
     public StringArrayField()
@@ -193,7 +193,7 @@ public class StringArrayField extends JPanel implements Field
      */
     public static class InputPane extends JPanel
     {
-        /**
+		/**
          * Simple ctor
          */
         public InputPane()
@@ -210,6 +210,11 @@ public class StringArrayField extends JPanel implements Field
          * To edit a name (hashtable key)
          */
         protected JTextField name_field = new JTextField();
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256444715753878326L;
     }
 
     private static final String ADD = "AddStringEntry"; //$NON-NLS-1$
@@ -234,7 +239,7 @@ public class StringArrayField extends JPanel implements Field
     private JList list;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3256444715753878326L;
 }

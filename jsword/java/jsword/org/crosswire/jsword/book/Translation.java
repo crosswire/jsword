@@ -1,13 +1,13 @@
 package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * A Translation links a Greek/Hebrew work with a localized translation, and can
  * link a number of verses that are examples of the given translation.
  * 
  * <p>Perhpas we should consider linking to the Bible that translated the
- * original in the ways listed in the Passage?.</p>
+ * original in the ways listed in the Key?.</p>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -37,10 +37,11 @@ public class Translation
      * @param word The localized word(s).
      * @param strongs The original word.
      */
-    public Translation(String word, Strongs strongs)
+    public Translation(String word, Strongs strongs, Key key)
     {
         this.word = word;
         this.strongs = strongs;
+        this.key = key;
     }
 
     /**
@@ -60,11 +61,11 @@ public class Translation
     }
 
     /**
-     * Accessor for the passages that translate the word/number in this way.
+     * Accessor for the Keys that translate the word/number in this way.
      */
-    public Passage getRef()
+    public Key getKey()
     {
-        return ref;
+        return key;
     }
 
     /**
@@ -80,5 +81,5 @@ public class Translation
     /**
      * The matching verses
      */
-    private Passage ref;
+    private Key key;
 }

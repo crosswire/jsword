@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class NoSuchVerseException extends NoSuchKeyException
 {
-    /**
+	/**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
@@ -68,4 +68,9 @@ public class NoSuchVerseException extends NoSuchKeyException
     {
         super(msg, ex, params);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257572797638129463L;
 }

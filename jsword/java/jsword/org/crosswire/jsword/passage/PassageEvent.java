@@ -30,7 +30,7 @@ import java.util.EventObject;
  */
 public class PassageEvent extends EventObject
 {
-    /**
+	/**
      * Constructs a PassageEvent object.
      * @param source the source Object (typically <code>this</code>)
      * @param type an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED
@@ -128,5 +128,9 @@ public class PassageEvent extends EventObject
      * The highest numbered element to have changed
      */
     private Verse upper;
-}
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3906647492467898675L;
+}

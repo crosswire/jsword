@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import javax.swing.text.AttributeSet;
@@ -33,9 +32,15 @@ import javax.swing.text.PlainDocument;
  */
 public class NumericDocument extends PlainDocument
 {
-    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
+	/* (non-Javadoc)
+	 * @see javax.swing.text.Document#insertString(int, java.lang.String, javax.swing.text.AttributeSet)
+	 */
+	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
     {
-        if (str == null) return;
+        if (str == null)
+        {
+            return;
+        }
 
         char[] upper = str.toCharArray();
         StringBuffer clear = new StringBuffer();
@@ -47,4 +52,9 @@ public class NumericDocument extends PlainDocument
 
         super.insertString(offs, clear.toString(), a);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3761973765420102192L;
 }

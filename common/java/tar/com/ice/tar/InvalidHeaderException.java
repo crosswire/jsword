@@ -24,8 +24,7 @@ import java.io.IOException;
 
 public class InvalidHeaderException extends IOException
 {
-
-    public InvalidHeaderException()
+	public InvalidHeaderException()
     {
         super();
     }
@@ -34,4 +33,6 @@ public class InvalidHeaderException extends IOException
     {
         super(msg);
     }
+
+    private static final long serialVersionUID = 3258126959988193331L;
 }

@@ -31,7 +31,7 @@ import org.crosswire.common.config.Choice;
  */
 public class TextField extends JTextField implements Field
 {
-    /**
+	/**
      * Some fields will need some extra info to display properly
      * like the options in an options field. FieldMap calls this
      * method with options provided by the choice.
@@ -74,4 +74,9 @@ public class TextField extends JTextField implements Field
     {
         return this;
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257009864814311474L;
 }

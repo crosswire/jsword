@@ -42,7 +42,7 @@ public class ConverterFactory
     /**
      * Generate a converter for the current converter name
      */
-    public static final Converter getConverter()
+    public static Converter getConverter()
     {
         try
         {
@@ -61,7 +61,7 @@ public class ConverterFactory
     /**
      * Get a map of the known converters, by looking up the answers in Project
      */
-    public static final Map getKnownConverters()
+    public static Map getKnownConverters()
     {
         return ClassUtil.getImplementorsMap(Converter.class);
     }
@@ -69,7 +69,7 @@ public class ConverterFactory
     /**
      * For config to set the currently preferred converter implementation
      */
-    public static final void setCurrentConverterName(String name)
+    public static void setCurrentConverterName(String name)
     {
         ConverterFactory.name = name;
     }
@@ -77,7 +77,7 @@ public class ConverterFactory
     /**
      * For config to read the currently preferred converter implementation
      */
-    public static final String getCurrentConverterName()
+    public static String getCurrentConverterName()
     {
         return name;
     }

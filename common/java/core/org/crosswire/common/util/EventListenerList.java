@@ -11,7 +11,7 @@ import java.util.EventListener;
  * This code is lifted from javax.sw*ng.event.EventListnerList. It is
  * very useful in non GUI code which does not need the rest of sw*ng.
  * BORROWED: From javax.sw*ng.event.EventListnerList
- * 
+ *
  * <p>If you inculde sw*ng code in non-gui code then you can end up not being
  * able to run your code in a headerless environment because X includes Y which
  * inculdes Font which tries to lookup font metrics and then everything dies.
@@ -116,22 +116,22 @@ public class EventListenerList implements Serializable
     /**
      * Add the listener as a listener of the specified type.
      * @param t the type of the listener to be added
-     * @param l the listener to be added
+     * @param li the listener to be added
      */
-    public synchronized void add(Class t, EventListener l)
+    public synchronized void add(Class t, EventListener li)
     {
-        assert l != null;
+        assert li != null;
 
-        if (!t.isInstance(l))
+        if (!t.isInstance(li))
         {
-            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] { l, t }));
+            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] { li, t }));
         }
 
         if (listenerList == NULL_ARRAY)
         {
             // if this is the first listener added,
             // initialize the lists
-            listenerList = new Object[] { t, l };
+            listenerList = new Object[] { t, li };
         }
         else
         {
@@ -141,7 +141,7 @@ public class EventListenerList implements Serializable
             System.arraycopy(listenerList, 0, tmp, 0, i);
 
             tmp[i] = t;
-            tmp[i + 1] = l;
+            tmp[i + 1] = li;
 
             listenerList = tmp;
         }
@@ -150,22 +150,22 @@ public class EventListenerList implements Serializable
     /**
      * Remove the listener as a listener of the specified type.
      * @param t the type of the listener to be removed
-     * @param l the listener to be removed
+     * @param li the listener to be removed
      */
-    public synchronized void remove(Class t, EventListener l)
+    public synchronized void remove(Class t, EventListener li)
     {
-        assert l != null;
+        assert li != null;
 
-        if (!t.isInstance(l))
+        if (!t.isInstance(li))
         {
-            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] { l, t }));
+            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] { li, t }));
         }
 
-        // Is l on the list?
+        // Is li on the list?
         int index = -1;
         for (int i = listenerList.length - 2; i >= 0; i -= 2)
         {
-            if (listenerList[i] == t && listenerList[i + 1].equals(l))
+            if (listenerList[i] == t && listenerList[i + 1].equals(li))
             {
                 index = i;
                 break;
@@ -196,42 +196,44 @@ public class EventListenerList implements Serializable
     /**
      * Serialization support
      */
-    private void writeObject(ObjectOutputStream s) throws IOException
+    private void writeObject(ObjectOutputStream oos) throws IOException
     {
         Object[] lList = listenerList;
-        s.defaultWriteObject();
+        oos.defaultWriteObject();
 
         // Save the non-null event listeners:
         for (int i = 0; i < lList.length; i += 2)
         {
             Class t = (Class) lList[i];
-            EventListener l = (EventListener) lList[i + 1];
-            if ((l != null) && (l instanceof Serializable))
+            EventListener li = (EventListener) lList[i + 1];
+            if ((li != null) && (li instanceof Serializable))
             {
-                s.writeObject(t.getName());
-                s.writeObject(l);
+                oos.writeObject(t.getName());
+                oos.writeObject(li);
             }
         }
 
-        s.writeObject(null);
+        oos.writeObject(null);
     }
 
     /**
      * Serialization support
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException
     {
         listenerList = NULL_ARRAY;
-        s.defaultReadObject();
+        ois.defaultReadObject();
 
         while (true)
         {
-            Object listenerTypeOrNull = s.readObject();
+            Object listenerTypeOrNull = ois.readObject();
             if (listenerTypeOrNull == null)
+            {
                 break;
+            }
 
-            EventListener l = (EventListener) s.readObject();
-            add(Class.forName((String) listenerTypeOrNull), l);
+            EventListener li = (EventListener) ois.readObject();
+            add(Class.forName((String) listenerTypeOrNull), li);
         }
     }
 

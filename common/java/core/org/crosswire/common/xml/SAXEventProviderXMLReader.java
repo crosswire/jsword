@@ -10,7 +10,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * A helper to aid people working with a SAXEventProvider.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -37,9 +37,9 @@ public class SAXEventProviderXMLReader implements XMLReader
     /**
      * Constructor SAXEventProviderXMLReader.
      */
-    public SAXEventProviderXMLReader(SAXEventProvider doc_in)
+    public SAXEventProviderXMLReader(SAXEventProvider docIn)
     {
-        this.doc_in = doc_in;
+        this.docIn = docIn;
     }
 
     /* (non-Javadoc)
@@ -146,7 +146,7 @@ public class SAXEventProviderXMLReader implements XMLReader
             throw new SAXException("SAXEventProviderInputSource required"); //$NON-NLS-1$
         }
 
-        doc_in.provideSAXEvents(getContentHandler());
+        docIn.provideSAXEvents(getContentHandler());
     }
 
     /* (non-Javadoc)
@@ -157,9 +157,9 @@ public class SAXEventProviderXMLReader implements XMLReader
         throw new SAXException("SAXEventProviderInputSource required"); //$NON-NLS-1$
     }
 
-    private SAXEventProvider doc_in;
-    private ErrorHandler errors;
-    private ContentHandler content;
-    private DTDHandler dtds;
-    private EntityResolver entities;
+    private SAXEventProvider docIn = null;
+    private ErrorHandler errors = null;
+    private ContentHandler content = null;
+    private DTDHandler dtds = null;
+    private EntityResolver entities = null;
 }

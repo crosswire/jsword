@@ -32,7 +32,7 @@ import java.util.Iterator;
  */
 public class RocketPassage extends BitwisePassage
 {
-    /**
+	/**
      * Create a new RocketPassage
      */
     public RocketPassage()
@@ -253,4 +253,9 @@ public class RocketPassage extends BitwisePassage
      * The contained RangedPassage
      */
     private transient RangedPassage ranged;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258125864771401268L;
 }

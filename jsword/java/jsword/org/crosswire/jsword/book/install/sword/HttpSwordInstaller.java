@@ -46,7 +46,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
      */
     public String getURL()
     {
-        return PROTOCOL_WEB + ":" + host + directory; //$NON-NLS-1$
+        return PROTOCOL_WEB + ':' + host + directory;
     }
 
     /* (non-Javadoc)
@@ -64,7 +64,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
 
         try
         {
-            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX); //$NON-NLS-1$
+            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX);
         }
         catch (MalformedURLException ex)
         {

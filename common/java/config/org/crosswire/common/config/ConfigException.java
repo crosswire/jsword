@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class ConfigException extends LucidException
 {
-    /**
+	/**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
@@ -68,4 +68,9 @@ public class ConfigException extends LucidException
     {
         super(msg, ex, params);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258135764670689593L;
 }

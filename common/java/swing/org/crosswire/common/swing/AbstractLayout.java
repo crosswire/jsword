@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * AbstractLayout - support for DeckLayout.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -36,7 +36,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
     /**
      * Defaults the horizontal and vertical gaps to 0
      */
-    public AbstractLayout()
+    protected AbstractLayout()
     {
         this(0, 0);
     }
@@ -44,7 +44,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
     /**
      * Constructor that specifies the horizontal and vertical gaps
      */
-    public AbstractLayout(int hgap, int vgap)
+    protected AbstractLayout(int hgap, int vgap)
     {
         setHgap(hgap);
         setVgap(vgap);
@@ -53,7 +53,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
     /**
      * Get the horizontal gap between components.
      */
-    public int getHgap()
+    public final int getHgap()
     {
         return hgap;
     }
@@ -61,7 +61,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
     /**
      * Get the vertical gap between components.
      */
-    public int getVgap()
+    public final int getVgap()
     {
         return vgap;
     }
@@ -70,7 +70,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
      * Set the horizontal gap between components.
      * @param gap The horizontal gap to be set
      */
-    public void setHgap(int gap)
+    public final void setHgap(int gap)
     {
         hgap = gap;
     }
@@ -79,7 +79,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
      * Set the vertical gap between components.
      * @param gap The vertical gap to be set
      */
-    public void setVgap(int gap)
+    public final void setVgap(int gap)
     {
         vgap = gap;
     }
@@ -163,7 +163,7 @@ public abstract class AbstractLayout implements LayoutManager2, Serializable
      */
     public String toString()
     {
-        return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + ']'; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

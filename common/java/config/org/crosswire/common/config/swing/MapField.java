@@ -53,7 +53,7 @@ import org.crosswire.common.util.Convert;
  */
 public class MapField extends JPanel implements Field
 {
-    /**
+	/**
      * Create a PropertyHashtableField for editing Hashtables.
      */
     public MapField()
@@ -137,12 +137,12 @@ public class MapField extends JPanel implements Field
 
         if (JOptionPane.showConfirmDialog(this, input, Msg.NEW_CLASS.toString(), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
-            String new_class = input.class_field.getText();
-            String new_name = input.name_field.getText();
+            String newClass = input.classField.getText();
+            String newName = input.nameField.getText();
 
-            if (isValid(new_class))
+            if (isValid(newClass))
             {
-                tableModel.add(new_name, new_class);
+                tableModel.add(newName, newClass);
             }
         }
     }
@@ -153,17 +153,17 @@ public class MapField extends JPanel implements Field
     public void doUpdateEntry()
     {
         InputPane input = new InputPane();
-        input.name_field.setText(currentKey());
-        input.class_field.setText(currentValue());
+        input.nameField.setText(currentKey());
+        input.classField.setText(currentValue());
 
         if (JOptionPane.showConfirmDialog(this, input, Msg.EDIT_CLASS.toString(), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
         {
-            String new_class = input.class_field.getText();
-            String new_name = input.name_field.getText();
+            String newClass = input.classField.getText();
+            String newName = input.nameField.getText();
 
-            if (isValid(new_class))
+            if (isValid(newClass))
             {
-                tableModel.update(currentKey(), new_name, new_class);
+                tableModel.update(currentKey(), newName, newClass);
             }
         }
     }
@@ -189,10 +189,7 @@ public class MapField extends JPanel implements Field
 
             if (!superclass.isAssignableFrom(clazz))
             {
-                throw new ClassCastException(Msg.BAD_SUPERCLASS.toString(new Object[]
-                {
-                                name, superclass
-                }));
+                throw new ClassCastException(Msg.BAD_SUPERCLASS.toString(new Object[] { name, superclass }));
             }
 
             return true;
@@ -232,7 +229,7 @@ public class MapField extends JPanel implements Field
      */
     static class NamedMapTableModel extends MapTableModel
     {
-        /**
+		/**
          * 
          */
         protected NamedMapTableModel()
@@ -255,6 +252,11 @@ public class MapField extends JPanel implements Field
         {
             return false;
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257566217748427059L;
     }
 
     /**
@@ -263,20 +265,20 @@ public class MapField extends JPanel implements Field
      */
     static class InputPane extends JPanel
     {
-        /**
+		/**
          * 
          */
         protected InputPane()
         {
             super(new FieldLayout(10, 10));
 
-            name_field = new JTextField();
-            class_field = new JTextField(20);
+            nameField = new JTextField();
+            classField = new JTextField(20);
 
             add(new JLabel(Msg.NAME + ":")); //$NON-NLS-1$
-            add(name_field);
+            add(nameField);
             add(new JLabel(Msg.CLASS + ":")); //$NON-NLS-1$
-            add(class_field);
+            add(classField);
 
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
@@ -284,12 +286,17 @@ public class MapField extends JPanel implements Field
         /**
          * To edit a name (Map key)
          */
-        protected JTextField name_field;
+        protected JTextField nameField;
 
         /**
          * To edit a class (Map value)
          */
-        protected JTextField class_field;
+        protected JTextField classField;
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257849861683296313L;
     }
 
     private static final String ADD = "AddMapEntry"; //$NON-NLS-1$
@@ -314,7 +321,7 @@ public class MapField extends JPanel implements Field
     private Class superclass;
 
     /**
-     * SERIALUID(dm): A placeholder for the ultimate version id.
+     * Serialization ID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3257849861683296313L;
 }

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config;
 
 import java.util.EventObject;
@@ -29,7 +28,7 @@ import java.util.EventObject;
  */
 public class ConfigEvent extends EventObject
 {
-    /**
+	/**
      * Constructs an ConfigEvent object.
      * @param source The event originator, or log stream
      */
@@ -77,4 +76,9 @@ public class ConfigEvent extends EventObject
      * The Choice
      */
     private Choice model;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257006561900376375L;
 }

@@ -9,7 +9,7 @@ import java.util.Enumeration;
  * user in various forms. This code is slightly dodgy in that it
  * makes use of the way exceptions print their stack straces, however
  * it is probably a safe enough assumption for the moment.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -57,50 +57,50 @@ public final class StackTrace
      */
     private void init(Throwable ex, int disgard)
     {
-        StringWriter str = new StringWriter();
-        ex.printStackTrace(new PrintWriter(str));
-        String msg = new String(str.getBuffer());
+        StringWriter sout = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sout));
+        String msg = new String(sout.getBuffer());
         String[] calls = StringUtil.split(msg, "\n\r"); //$NON-NLS-1$
 
-        class_names = new String[calls.length - disgard];
-        method_names = new String[calls.length - disgard];
-        file_names = new String[calls.length - disgard];
-        line_numbers = new int[calls.length - disgard];
+        classNames = new String[calls.length - disgard];
+        methodNames = new String[calls.length - disgard];
+        fileNames = new String[calls.length - disgard];
+        lineNumbers = new int[calls.length - disgard];
 
-        for (int i = 0; i < class_names.length; i++)
+        for (int i = 0; i < classNames.length; i++)
         {
             String call = calls[i + disgard];
 
             try
             {
-                int spc_index = call.indexOf(' ');
-                int lhs_index = call.indexOf('(');
-                int cln_index = call.indexOf(':');
-                int rhs_index = call.indexOf(')');
+                int spcIndex = call.indexOf(' ');
+                int lhsIndex = call.indexOf('(');
+                int clnIndex = call.indexOf(':');
+                int rhsIndex = call.indexOf(')');
 
-                String full_fn = call.substring(spc_index + 1, lhs_index).trim();
-                int last_dot = full_fn.lastIndexOf('.');
+                String fullFn = call.substring(spcIndex + 1, lhsIndex).trim();
+                int lastDot = fullFn.lastIndexOf('.');
 
-                class_names[i] = full_fn.substring(0, last_dot).replace('/', '.'); //$NON-NLS-1$ //$NON-NLS-2$
-                method_names[i] = full_fn.substring(last_dot + 1);
+                classNames[i] = fullFn.substring(0, lastDot).replace('/', '.');
+                methodNames[i] = fullFn.substring(lastDot + 1);
 
-                if (cln_index != -1)
+                if (clnIndex != -1)
                 {
-                    file_names[i] = call.substring(lhs_index + 1, cln_index);
-                    line_numbers[i] = Integer.parseInt(call.substring(cln_index + 1, rhs_index));
+                    fileNames[i] = call.substring(lhsIndex + 1, clnIndex);
+                    lineNumbers[i] = Integer.parseInt(call.substring(clnIndex + 1, rhsIndex));
                 }
                 else
                 {
-                    file_names[i] = call.substring(lhs_index + 1, rhs_index);
-                    line_numbers[i] = 0;
+                    fileNames[i] = call.substring(lhsIndex + 1, rhsIndex);
+                    lineNumbers[i] = 0;
                 }
             }
             catch (Exception ex2)
             {
-                class_names[i] = "ParseError: "; //$NON-NLS-1$
-                method_names[i] = call;
-                file_names[i] = "Error"; //$NON-NLS-1$
-                line_numbers[i] = 0;
+                classNames[i] = "ParseError: "; //$NON-NLS-1$
+                methodNames[i] = call;
+                fileNames[i] = "Error"; //$NON-NLS-1$
+                lineNumbers[i] = 0;
             }
         }
     }
@@ -108,65 +108,65 @@ public final class StackTrace
     /**
      * How many stack elements are there?
      */
-    public final int countStackElements()
+    public int countStackElements()
     {
-        return method_names.length;
+        return methodNames.length;
     }
 
     /**
      * Get the name of a function
      * @param level Number of calling function
      */
-    public final String getFunctionName(int level)
+    public String getFunctionName(int level)
     {
-        return method_names[level];
+        return methodNames[level];
     }
 
     /**
      * Get the name of a function including class name
      * @param level Number of calling function
      */
-    public final String getFullFunctionName(int level)
+    public String getFullFunctionName(int level)
     {
-        return class_names[level] + "." + method_names[level] + "()"; //$NON-NLS-1$ //$NON-NLS-2$
+        return classNames[level] + '.' + methodNames[level] + "()"; //$NON-NLS-1$
     }
 
     /**
      * Get the name of a class
      * @param level Number of calling function
      */
-    public final String getClassName(int level)
+    public String getClassName(int level)
     {
-        return class_names[level];
+        return classNames[level];
     }
 
     /**
      * Get the name of a file
      * @param level Number of calling function
      */
-    public final String getFileName(int level)
+    public String getFileName(int level)
     {
-        return file_names[level];
+        return fileNames[level];
     }
 
     /**
      * Get the line number within a file
      * @param level Number of calling function
      */
-    public final int getLineNumber(int level)
+    public int getLineNumber(int level)
     {
-        return line_numbers[level];
+        return lineNumbers[level];
     }
 
     /**
      * Get the Class that owns the function
      * @param level Number of calling function
      */
-    public final Class getClass(int level)
+    public Class getClass(int level)
     {
         try
         {
-            return Class.forName(class_names[level]);
+            return Class.forName(classNames[level]);
         }
         catch (ClassNotFoundException ex)
         {
@@ -185,7 +185,7 @@ public final class StackTrace
          */
         public boolean hasMoreElements()
         {
-            return level < class_names.length;
+            return level < classNames.length;
         }
 
         /**
@@ -197,7 +197,7 @@ public final class StackTrace
     /**
      * To itterate over the class names
      */
-    public final Enumeration getClassNameElements()
+    public Enumeration getClassNameElements()
     {
         return new AbstractStackEnumeration()
         {
@@ -211,7 +211,7 @@ public final class StackTrace
     /**
      * To itterate over the function names
      */
-    public final Enumeration getFunctionNameElements()
+    public Enumeration getFunctionNameElements()
     {
         return new AbstractStackEnumeration()
         {
@@ -225,7 +225,7 @@ public final class StackTrace
     /**
      * To itterate over the full function names
      */
-    public final Enumeration getFullFunctionNameElements()
+    public Enumeration getFullFunctionNameElements()
     {
         return new AbstractStackEnumeration()
         {
@@ -239,20 +239,20 @@ public final class StackTrace
     /**
      * Array containing the class names
      */
-    protected String[] class_names;
+    protected String[] classNames;
 
     /**
      * Array containing the method names
      */
-    private String[] method_names;
+    private String[] methodNames;
 
     /**
      * Array containing the file names
      */
-    private String[] file_names;
+    private String[] fileNames;
 
     /**
      * Array containing the line numbers
      */
-    private int[] line_numbers;
+    private int[] lineNumbers;
 }

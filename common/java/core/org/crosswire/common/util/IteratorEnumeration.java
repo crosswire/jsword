@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * Convert an Iterator into a Enumeration.
  * <p>The only real difference between the 2 is the naming and
  * that Enumeration does not have the delete method.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -43,7 +43,7 @@ public final class IteratorEnumeration implements Enumeration
     /**
      * Returns true if the iteration has more elements
      */
-    public final boolean hasMoreElements()
+    public boolean hasMoreElements()
     {
         return it.hasNext();
     }
@@ -51,7 +51,7 @@ public final class IteratorEnumeration implements Enumeration
     /**
      *  Returns the next element in the interation
      */
-    public final Object nextElement() throws NoSuchElementException
+    public Object nextElement() throws NoSuchElementException
     {
         return it.next();
     }

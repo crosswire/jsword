@@ -28,7 +28,7 @@ import java.util.EventObject;
  */
 public class ReporterEvent extends EventObject
 {
-    /**
+	/**
      * Constructs an CaptureEvent object.
      * @param source The event originator (typically <code>this</code>)
      * @param ex An exception
@@ -73,14 +73,14 @@ public class ReporterEvent extends EventObject
         }
 
         String full = clazz.getName();
-        int last_dot = full.lastIndexOf("."); //$NON-NLS-1$
-        if (last_dot == -1)
+        int lastDot = full.lastIndexOf("."); //$NON-NLS-1$
+        if (lastDot == -1)
         {
             return full;
         }
         else
         {
-            return full.substring(last_dot + 1);
+            return full.substring(lastDot + 1);
         }
     }
 
@@ -111,4 +111,9 @@ public class ReporterEvent extends EventObject
      * The message that is being passed around
      */
     private String message;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 4121978048640988213L;
 }

@@ -8,7 +8,7 @@ import java.net.URL;
 /**
  * A TabbedFileReader reads a file consisting of lines with
  * tab separated columns.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -69,9 +69,14 @@ public class TabbedFileReader
 
         // read the file a line at a time and send it to the
         // processor for processing
-        String line = null;
-        while ((line = in.readLine()) != null)
+        while (true)
         {
+            String line = in.readLine();
+            if (line == null)
+            {
+                break;
+            }
+
             // Split it on tabs
             int previousLoc = 0;
             int lastColumn = columns - 1;

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing.desktop.event;
 
 import java.util.EventObject;
@@ -29,7 +28,7 @@ import java.util.EventObject;
  */
 public class TitleChangedEvent extends EventObject
 {
-    /**
+	/**
      *
      */
     public TitleChangedEvent(Object source, String title)
@@ -38,10 +37,18 @@ public class TitleChangedEvent extends EventObject
         this.title = title;
     }
 
+    /**
+     * Accessor for the title
+     */
     public String getTitle()
     {
         return title;
     }
 
     private String title;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3256444685672526641L;
 }

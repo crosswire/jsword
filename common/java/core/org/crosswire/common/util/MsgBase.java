@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
  * A base class for implementing type safe internationalization (i18n) that is
  * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
  * example of how to inherit from here.
- * 
+ *
  * <p>Some Regex/Vi macros to convert from a half way house i18n scheme where
  * the strings are in Msg classes but not properties files:
  * The following makes the lookup string simple
@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
  *   :%s/    static final Msg //
  *   :%s/ = new Msg("/: /
  *   :%s/");\/\/\$NON-NLS-1\$$/
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -94,7 +94,7 @@ public class MsgBase
     /**
      * Initialise any resource bundles
      */
-    protected void loadResources()
+    protected final void loadResources()
     {
         Class implementingClass = getClass();
         String className = implementingClass.getName();

@@ -181,7 +181,7 @@ public class CWClassLoader extends ClassLoader
     }
 
     /**
-     * 
+     *
      */
     public ClassLoader getClassLoader()
     {
@@ -197,7 +197,7 @@ public class CWClassLoader extends ClassLoader
      * set their parent pointers correctly. 'null' is interpreted as the
      * primordial loader [i.e., everybody's parent].
      */
-    private static ClassLoader pickLoader(final ClassLoader loader1, final ClassLoader loader2)
+    private static ClassLoader pickLoader(ClassLoader loader1, ClassLoader loader2)
     {
         ClassLoader loader = loader2;
         if (loader1 != loader2)
@@ -272,8 +272,8 @@ public class CWClassLoader extends ClassLoader
             URL override = NetUtil.lengthenURL(homeURL, search);
 
             // Make sure the file exists and can be read
-            File f = new File(override.getFile());
-            if (f.canRead())
+            File file = new File(override.getFile());
+            if (file.canRead())
             {
                 reply = override;
             }
@@ -285,10 +285,10 @@ public class CWClassLoader extends ClassLoader
     /**
      * The class to which the resources belong
      */
-    private Class owner;
+    private Class owner = null;
 
     /**
      * Notion of a project's home from where additional resources can be found.
      */
-    private static URL home;
+    private static URL home = null;
 }

@@ -19,7 +19,7 @@ import org.crosswire.common.util.NetUtil;
 
 /**
  * A Generic method of keeping track of Threads and monitoring their progress.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -45,7 +45,7 @@ public final class Job
 {
     /**
      * Create a new Job. This will automatically fire a workProgressed event to
-     * all WorkListeners, with the percent property of this job set to 0. 
+     * all WorkListeners, with the percent property of this job set to 0.
      * @param description Short description of this job
      * @param predicturl Optional URL to save/load prediction times from
      * @param work Optional thread to use in request to stop work
@@ -328,7 +328,7 @@ public final class Job
 
         percentend = reportedpc + pcdiff;
 
-        log.debug("Predicting " + predsecttime + "ms (" + reportedpc + "-" + percentend + "%) for section " + message); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        log.debug("Predicting " + predsecttime + "ms (" + reportedpc + '-' + percentend + "%) for section " + message); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -494,7 +494,7 @@ public final class Job
      */
     private final class PredictAction extends AbstractAction
     {
-        /* (non-Javadoc)
+		/* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent ev)
@@ -502,6 +502,11 @@ public final class Job
             guessProgress();
             JobManager.fireWorkProgressed(Job.this, true);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256721784160924983L;
     }
 
     /**

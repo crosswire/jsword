@@ -36,7 +36,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class MapCellRenderer extends JTextArea implements TableCellRenderer
 {
-    /**
+	/**
      * Create a MapCellRenderer
      */
     public MapCellRenderer()
@@ -157,4 +157,9 @@ public class MapCellRenderer extends JTextArea implements TableCellRenderer
      * the DefaultTableCellRenderer
      */
     private Color unselectedBackground;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258130254177448499L;
 }

@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class NoSuchKeyException extends LucidException
 {
-    /**
+	/**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
@@ -69,4 +69,9 @@ public class NoSuchKeyException extends LucidException
     {
         super(msg, ex, params);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257288032582185777L;
 }

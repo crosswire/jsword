@@ -34,7 +34,7 @@ import org.crosswire.common.swing.GuiConvert;
  */
 public class FontField extends FontChooser implements Field
 {
-    /**
+	/**
      *
      */
     public FontField()
@@ -80,4 +80,9 @@ public class FontField extends FontChooser implements Field
     {
         return this;
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258411729237848625L;
 }

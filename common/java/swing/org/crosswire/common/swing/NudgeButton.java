@@ -36,9 +36,9 @@ import javax.swing.SwingConstants;
  */
 public class NudgeButton extends JPanel
 {
-    /**
-    *
-    */
+	/**
+     *
+     */
     public NudgeButton()
     {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -48,72 +48,81 @@ public class NudgeButton extends JPanel
     }
 
     /**
-    *
-    */
+     *
+     */
     public void setUpEnabled(boolean active)
     {
         up.setEnabled(active);
     }
 
     /**
-    *
-    */
+     *
+     */
     public void setDownEnabled(boolean active)
     {
         down.setEnabled(active);
     }
 
     /**
-    *
-    */
+     *
+     */
     public boolean getUpEnabled()
     {
         return up.isEnabled();
     }
 
     /**
-    *
-    */
+     *
+     */
     public boolean getDownEnabled()
     {
         return down.isEnabled();
     }
 
     /**
-    *
-    */
+     *
+     */
     public void addUpActionListener(ActionListener al)
     {
         up.addActionListener(al);
     }
 
     /**
-    *
-    */
+     *
+     */
     public void removeUpActionListener(ActionListener al)
     {
         up.removeActionListener(al);
     }
 
     /**
-    *
-    */
+     *
+     */
     public void addDownActionListener(ActionListener al)
     {
         down.addActionListener(al);
     }
 
     /**
-    *
-    */
+     *
+     */
     public void removeDownActionListener(ActionListener al)
     {
         down.removeActionListener(al);
     }
 
-    /** The up button */
+    /**
+     * The up button
+     */
     private JButton up = new javax.swing.plaf.basic.BasicArrowButton(SwingConstants.NORTH);
 
-    /** The down button */
+    /**
+     * The down button
+     */
     private JButton down = new javax.swing.plaf.basic.BasicArrowButton(SwingConstants.SOUTH);
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3257008748156499508L;
 }

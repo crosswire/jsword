@@ -50,6 +50,7 @@ public class Books implements BookList
         books = new ArrayList();
         drivers = new ArrayList();
         listeners = new EventListenerList();
+        threaded = false;
 
         initialize(threaded);
     }
@@ -410,7 +411,7 @@ public class Books implements BookList
      * At this time there is no way to set this or influence it
      * So it just acts as a means of commenting out code.
      */
-    private boolean threaded;
+    private boolean threaded =  false;
 
     /**
      * The log stream

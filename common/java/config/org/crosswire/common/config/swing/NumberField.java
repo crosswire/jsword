@@ -36,7 +36,7 @@ import org.crosswire.common.swing.NumericDocument;
  */
 public class NumberField extends JPanel implements Field
 {
-    /**
+	/**
      * Create a new FileField
      */
     public NumberField()
@@ -89,4 +89,9 @@ public class NumberField extends JPanel implements Field
      * The text field
      */
     private JTextField text = new JTextField();
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3256443594867750451L;
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Conversions between various types and Strings.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -219,9 +219,9 @@ public class Convert
                 value = (String) commands.get(key);
 
                 retcode.append(key);
-                retcode.append("="); //$NON-NLS-1$
+                retcode.append('=');
                 retcode.append(value);
-                retcode.append(" "); //$NON-NLS-1$
+                retcode.append(' ');
             }
             catch (ClassCastException ex)
             {

@@ -24,13 +24,21 @@ import java.util.EventObject;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public final class ViewEvent extends EventObject
 {
-    public ViewEvent(Component view)
+	/**
+	 * Default ctor to set the event source
+	 */
+	public ViewEvent(Component view)
     {
         super(view);
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3258689927188590898L;
 }

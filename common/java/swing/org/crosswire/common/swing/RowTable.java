@@ -1,23 +1,3 @@
-/*
- * Distribution Licence:
- * JSword is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * 
- * See the GNU General Public License for more details.
- * The License is available on the internet at:
- *     http://www.gnu.org/copyleft/gpl.html,
- * or by writing to:
- *     Free Software Foundation, Inc.
- *     59 Temple Place - Suite 330
- *     Boston, MA 02111-1307, USA
- * 
- * The copyright to this program is held by it's authors
- * Copyright: 2004
- */
 package org.crosswire.common.swing;
 
 import java.awt.Component;
@@ -39,23 +19,30 @@ import javax.swing.table.TableColumnModel;
 /**
  * Presents a table of items to a user in a table.
  * 
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class RowTable extends JTable
 {
-    /**
-     * Field ONE_STANDARD_CHARACTER
-     */
-    private static final String ONE_STANDARD_CHARACTER = "M"; //$NON-NLS-1$
-    /**
-     * Field TWO_STANDARD_CHARACTERS
-     */
-    private static final String TWO_STANDARD_CHARACTERS = "MM"; //$NON-NLS-1$
-    /**
-     * Field PADDING
-     */
-    private static final int PADDING = 3;
-
     /**
      * Constructor for RowTable
      * @param aList
@@ -115,12 +102,11 @@ public class RowTable extends JTable
         final ListSelectionModel lsm = aTable.getSelectionModel();
         final RowTableModel tm = (RowTableModel) aTable.getModel();
         // reset the selection
-        Object obj = null;
-        int where = -1;
+
         for (int i = 0; i < objs.size(); i++)
         {
-            obj = objs.get(i);
-            where = tm.getRow(obj);
+            Object obj = objs.get(i);
+            int where = tm.getRow(obj);
             if (where != -1)
             {
                 lsm.addSelectionInterval(where, where);
@@ -204,12 +190,11 @@ public class RowTable extends JTable
         // and an extra pixel for between the columns
         //  that the text needs to not display ...
         final int margins = (tcm.getColumnMargin() << 1) + PADDING;
-        TableColumn tc = null;
-        int width = -1;
+
         for (int i = 0; i < widths.length; i++)
         {
-            tc = tcm.getColumn(i);
-            width = widths[i] * mWidth + margins;
+            TableColumn tc = tcm.getColumn(i);
+            int width = widths[i] * mWidth + margins;
             if (fixed[i])
             {
                 tc.setMinWidth(width);
@@ -231,10 +216,10 @@ public class RowTable extends JTable
         // TableCellRenderer rowRenderer = new RowRenderer();
         final TableColumnModel model = getColumnModel();
         final int colCount = model.getColumnCount();
-        TableColumn tc = null;
+
         for (int i = 0; i < colCount; i++)
         {
-            tc = model.getColumn(i);
+            TableColumn tc = model.getColumn(i);
             tc.setHeaderRenderer(sortRenderer);
         }
     }
@@ -290,6 +275,9 @@ public class RowTable extends JTable
      * Method sort
      * @param col int
      */
+    /**
+     * @param col
+     */
     public void sort(int col)
     {
         if (col != -1)
@@ -299,12 +287,16 @@ public class RowTable extends JTable
             final SortRenderer renderer = (SortRenderer) tc.getHeaderRenderer();
             renderer.setPressedColumn(tc);
         }
+
         final List objs = saveSelection(this);
         getSelectionModel().clearSelection();
         ((RowTableModel) getModel()).sort(convertColumnIndexToModel(col));
         loadSelection(this, objs);
     }
 
+    /**
+     * 
+     */
     public void reset()
     {
         final RowTableModel stm = (RowTableModel) getModel();
@@ -314,4 +306,23 @@ public class RowTable extends JTable
         stm.reset();
     }
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3761407508275081783L;
+
+    /**
+     * Field ONE_STANDARD_CHARACTER
+     */
+    private static final String ONE_STANDARD_CHARACTER = "M"; //$NON-NLS-1$
+
+    /**
+     * Field TWO_STANDARD_CHARACTERS
+     */
+    private static final String TWO_STANDARD_CHARACTERS = "MM"; //$NON-NLS-1$
+
+    /**
+     * Field PADDING
+     */
+    private static final int PADDING = 3;
 }

@@ -54,7 +54,7 @@ import org.crosswire.common.util.Logger;
  */
 public class JobsViewPane extends JPanel implements WorkListener
 {
-    /**
+	/**
      * Simple ctor
      */
     public JobsViewPane()
@@ -289,6 +289,11 @@ public class JobsViewPane extends JPanel implements WorkListener
      * The log stream
      */
     private static final Logger log = Logger.getLogger(JobsViewPane.class);
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3546366136561315891L;
 
     /**
      * A simple struct to group information about a Job

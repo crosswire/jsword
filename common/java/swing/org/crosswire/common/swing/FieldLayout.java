@@ -34,7 +34,7 @@ import java.awt.Insets;
  */
 public class FieldLayout extends AbstractLayout
 {
-    /**
+	/**
      * A default FieldLayout with intercomponent
      * spacing of 0.
      */
@@ -184,4 +184,9 @@ public class FieldLayout extends AbstractLayout
             vpos += h + hgap;
         }
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3617576015757719097L;
 }

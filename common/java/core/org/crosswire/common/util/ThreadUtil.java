@@ -162,7 +162,7 @@ public class ThreadUtil
 
         try
         {
-            addItem(vec, depth, thread.getName() + " (" + thread.getPriority() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            addItem(vec, depth, thread.getName() + " (" + thread.getPriority() + ')'); //$NON-NLS-1$
         }
         catch (SecurityException ex)
         {

@@ -33,7 +33,7 @@ import javax.swing.JTextPane;
  */
 public class AntiAliasedTextPane extends JTextPane
 {
-    /* (non-Javadoc)
+	/* (non-Javadoc)
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics g)
@@ -64,6 +64,11 @@ public class AntiAliasedTextPane extends JTextPane
     {
         AntiAliasedTextPane.antiAliasing = antiAliasing;
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3256728398477734965L;
 
     /**
      * Do we anti-alias the text box?
