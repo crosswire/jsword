@@ -51,6 +51,11 @@ public abstract class PassageListType implements Serializable
             }
             return ref.countVerses();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 4050199730607109682L;
     };
 
     /**
@@ -75,6 +80,11 @@ public abstract class PassageListType implements Serializable
             }
             return ref.countRanges(restrict);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3834030242750083129L;
     };
 
     /**
