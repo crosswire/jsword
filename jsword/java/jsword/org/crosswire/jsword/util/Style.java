@@ -142,9 +142,6 @@ public class Style
             // But check it is up to date        
             if (tinfo != null)
             {
-                log.debug("real modtime="+modtime);
-                log.debug("cached modtime="+tinfo.getModtime());
-
                 if (modtime > tinfo.getModtime())
                 {
                     txers.remove(style);
@@ -154,11 +151,7 @@ public class Style
             }
         }
 
-        if (tinfo != null)
-        {
-            log.debug("using cached style for "+style);
-        }
-        else
+        if (tinfo == null)
         {
             log.debug("generating templates for "+style);
 

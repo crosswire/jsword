@@ -29,6 +29,10 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.swing.GuiUtil;
@@ -102,16 +106,23 @@ public class PassageSelectionPane extends JPanel
      */
     private void jbInit()
     {
-        tre_all.setModel(new WholeBibleTreeModel());
-        tre_all.setShowsRootHandles(true);
-        tre_all.setRootVisible(false);
         lbl_all.setDisplayedMnemonic('T');
         lbl_all.setLabelFor(tre_all);
         lbl_all.setText("Bible Tree:");
         scr_all.getViewport().add(tre_all, null);
+        tre_all.setModel(new WholeBibleTreeModel());
+        tre_all.setShowsRootHandles(true);
+        tre_all.setRootVisible(false);
+        tre_all.addTreeSelectionListener(new TreeSelectionListener()
+        {
+            public void valueChanged(TreeSelectionEvent ev)
+            {
+                treeSelected();
+            }
+        });
 
-        btn_add.setMnemonic('>');
-        btn_add.setText(">>>");
+        btn_add.setText("Add");
+        btn_add.setMnemonic('A');
         btn_add.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -119,8 +130,8 @@ public class PassageSelectionPane extends JPanel
                 addTreeToCurrent();
             }
         });
-        btn_del.setMnemonic('<');
-        btn_del.setText("<<<");
+        btn_del.setText("Delete");
+        btn_del.setMnemonic('D');
         btn_del.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -133,6 +144,13 @@ public class PassageSelectionPane extends JPanel
         lbl_sel.setLabelFor(lst_sel);
         lbl_sel.setText("Selected Verses:");
         scr_sel.getViewport().add(lst_sel, null);
+        lst_sel.addListSelectionListener(new ListSelectionListener()
+        {
+            public void valueChanged(ListSelectionEvent ev)
+            {
+                listSelected();
+            }
+        });
 
         lbl_display.setDisplayedMnemonic('V');
         lbl_display.setLabelFor(txt_display);
@@ -147,8 +165,8 @@ public class PassageSelectionPane extends JPanel
         this.add(lbl_all, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 10, 5, 5), 0, 0));
         this.add(scr_all, new GridBagConstraints(0, 1, 1, 4, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 10, 10, 2), 0, 0));
         this.add(pnl_space1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(btn_del, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-        this.add(btn_add, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+        this.add(btn_del, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+        this.add(btn_add, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
         this.add(pnl_space2, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         this.add(lbl_sel, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 10), 0, 0));
         this.add(scr_sel, new GridBagConstraints(2, 1, 1, 4, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 2, 10, 10), 0, 0));
@@ -162,7 +180,9 @@ public class PassageSelectionPane extends JPanel
     protected void copyListToText()
     {
         if (changing)
+        {
             return;
+        }
 
         changing = true;
         txt_display.setText(ref.getName());
@@ -176,7 +196,9 @@ public class PassageSelectionPane extends JPanel
     protected void copyTextToList()
     {
         if (changing)
+        {
             return;
+        }
 
         changing = true;
         String refstr = txt_display.getText();
@@ -253,10 +275,29 @@ public class PassageSelectionPane extends JPanel
             updateMessage(ex);
         }
 
+        // Make sure the add/delete buttons start right
+        treeSelected();
+        listSelected();
+
         final JDialog dlg_main = new JDialog(JOptionPane.getFrameForComponent(parent));
         JButton btn_go = new JButton();
         JPanel pnl_action = new JPanel();
         KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        bailout = true;
+
+        btn_go.setText("Done");
+        btn_go.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                bailout = false;
+                dlg_main.dispose();
+            }
+        });
+
+        pnl_action.setLayout(new BorderLayout());
+        pnl_action.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 20));
+        pnl_action.add(btn_go, BorderLayout.EAST);
 
         ActionListener closer = new ActionListener()
         {
@@ -265,13 +306,6 @@ public class PassageSelectionPane extends JPanel
                 dlg_main.dispose();
             }
         };
-
-        btn_go.setText("Done");
-        btn_go.addActionListener(closer);
-
-        pnl_action.setLayout(new BorderLayout());
-        pnl_action.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 20));
-        pnl_action.add(btn_go, BorderLayout.EAST);
 
         dlg_main.getContentPane().setLayout(new BorderLayout());
         dlg_main.getContentPane().add(this, BorderLayout.CENTER);
@@ -286,7 +320,14 @@ public class PassageSelectionPane extends JPanel
         GuiUtil.centerWindow(dlg_main);
         dlg_main.setVisible(true);
 
-        return txt_display.getText();
+        if (bailout)
+        {
+            return null;
+        }
+        else
+        {
+            return txt_display.getText();
+        }
     }
 
     /**
@@ -295,11 +336,14 @@ public class PassageSelectionPane extends JPanel
     protected void addTreeToCurrent()
     {
         TreePath[] selected = tre_all.getSelectionPaths();
-        for (int i=0; i<selected.length; i++)
+        if (selected != null)
         {
-            WholeBibleTreeNode node = (WholeBibleTreeNode) selected[i].getLastPathComponent();
-            VerseRange range = node.getVerseRange();
-            ref.add(range);
+            for (int i=0; i<selected.length; i++)
+            {
+                WholeBibleTreeNode node = (WholeBibleTreeNode) selected[i].getLastPathComponent();
+                VerseRange range = node.getVerseRange();
+                ref.add(range);
+            }
         }
     }
 
@@ -309,18 +353,54 @@ public class PassageSelectionPane extends JPanel
     protected void deleteFromCurrent()
     {
         Object[] selected = lst_sel.getSelectedValues();
-        for (int i=0; i<selected.length; i++)
+        if (selected != null)
         {
-            VerseRange range = (VerseRange) selected[i];
-            ref.remove(range);
+            for (int i=0; i<selected.length; i++)
+            {
+                VerseRange range = (VerseRange) selected[i];
+                ref.remove(range);
+            }
         }
     }
 
-    private Passage ref;
+    /**
+     * The tree selection has changed
+     */
+    protected void treeSelected()
+    {
+        TreePath[] selected = tre_all.getSelectionPaths();
+        btn_add.setEnabled(selected != null && selected.length > 0);
+    }
+
+    /**
+     * List selection has changed
+     */
+    protected void listSelected()
+    {
+        Object[] selected = lst_sel.getSelectedValues();
+        btn_del.setEnabled(selected != null && selected.length > 0);
+    }
+
+    /**
+     * If escape was pressed we don't want to update the parent
+     */
+    protected boolean bailout = false;
+    
+    /**
+     * Prevent us getting in an event cascade loop
+     */
     private boolean changing = false;
+
+    /**
+     * The psaage we are editing
+     */
+    private Passage ref;
+
+    /*
+     * GUI Components
+     */
     private Icon ico_good;
     private Icon ico_bad;
-
     private JScrollPane scr_all = new JScrollPane();
     private JScrollPane scr_sel = new JScrollPane();
     private JLabel lbl_all = new JLabel();
@@ -341,7 +421,7 @@ public class PassageSelectionPane extends JPanel
      */
     private class CustomDocumentEvent implements DocumentListener
     {
-        /**
+        /* (non-Javadoc)
          * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
          */
         public void insertUpdate(DocumentEvent ev)
@@ -349,7 +429,7 @@ public class PassageSelectionPane extends JPanel
             copyTextToList();
         }
 
-        /**
+        /* (non-Javadoc)
          * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
          */
         public void removeUpdate(DocumentEvent ev)
@@ -357,7 +437,7 @@ public class PassageSelectionPane extends JPanel
             copyTextToList();
         }
 
-        /**
+        /* (non-Javadoc)
          * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
          */
         public void changedUpdate(DocumentEvent ev)
@@ -371,7 +451,7 @@ public class PassageSelectionPane extends JPanel
      */
     private class CustomPassageListener implements PassageListener
     {
-        /**
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.PassageListener#versesAdded(org.crosswire.jsword.passage.PassageEvent)
          */
         public void versesAdded(PassageEvent ev)
@@ -379,7 +459,7 @@ public class PassageSelectionPane extends JPanel
             copyListToText();
         }
 
-        /**
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.PassageListener#versesRemoved(org.crosswire.jsword.passage.PassageEvent)
          */
         public void versesRemoved(PassageEvent ev)
@@ -387,7 +467,7 @@ public class PassageSelectionPane extends JPanel
             copyListToText();
         }
 
-        /**
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.PassageListener#versesChanged(org.crosswire.jsword.passage.PassageEvent)
          */
         public void versesChanged(PassageEvent ev)

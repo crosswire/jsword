@@ -35,10 +35,10 @@ public class Msg extends MsgBase
 
     protected static final Msg PASSAGE_READONLY = new Msg("Can't alter a read-only passage");
 
-    protected static final Msg ABSTRACT_BOOK_SINGULAR = new Msg("verse, in");
-    protected static final Msg ABSTRACT_BOOK_PLURAL = new Msg("verses, in");
-    protected static final Msg ABSTRACT_VERSE_SINGULAR = new Msg("book");
-    protected static final Msg ABSTRACT_VERSE_PLURAL = new Msg("books");
+    protected static final Msg ABSTRACT_VERSE_SINGULAR = new Msg("verse in");
+    protected static final Msg ABSTRACT_VERSE_PLURAL = new Msg("verses in");
+    protected static final Msg ABSTRACT_BOOK_SINGULAR = new Msg("book");
+    protected static final Msg ABSTRACT_BOOK_PLURAL = new Msg("books");
 
     protected static final Msg BOOKS_BOOK = new Msg("Book must be between 1 and 66. (Given {0,number,integer}).");
     protected static final Msg BOOKS_SECTION = new Msg("Section must be between 1 and 8. (Given {0,number,integer}).");

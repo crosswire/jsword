@@ -12,8 +12,6 @@ Filters
 - Check THML debug tags needing work (Joe)
 
 GUI
-- escape and enter in sel.pasg.dia not 100%
-- CRTL+anything does not open sel.psg.dialog
 - Heb and Greek Fonts not used
 
 Sword Modules
@@ -28,3 +26,4 @@ CVS tidyup
 - remove junit from jsword-support
 - move map and maptest into jsword-support
 - deletes from web/images?
+
