@@ -13,6 +13,7 @@ import org.crosswire.jsword.book.ProgressEvent;
 import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -155,7 +156,9 @@ public class Verifier
             // This could take a long time ...
             Thread.yield();
             if (Thread.currentThread().isInterrupted())
+            {
                 break;
+            }
         }
     }
 
@@ -182,7 +185,9 @@ public class Verifier
             // This could take a long time ...
             Thread.yield();
             if (Thread.currentThread().isInterrupted())
+            {
                 break;
+            }
         }
     }
 
@@ -202,21 +207,26 @@ public class Verifier
         alive = true;
 
         // For every word in the word list
-        // NOTE(joe): think of a new way to do this
-        Iterator it = null; //bible1.getSearcher().getStartsWith(starts);
-
-        while (it.hasNext())
+        if (bible1 instanceof Index)
         {
-            String s = (String) it.next();
-            checkSinglePassage(s, out);
+            Index index1 = (Index) bible1;
+            Iterator it = index1.getStartsWith(starts);
 
-            // Fire a progress event?
-            fireProgressMade("Checking Words:", 100 * count++ / GUESS_WORDS);
+            while (it.hasNext())
+            {
+                String s = (String) it.next();
+                checkSinglePassage(s, out);
 
-            // This could take a long time ...
-            Thread.yield();
-            if (Thread.currentThread().isInterrupted())
-                break;
+                // Fire a progress event?
+                fireProgressMade("Checking Words:", 100 * count++ / GUESS_WORDS);
+
+                // This could take a long time ...
+                Thread.yield();
+                if (Thread.currentThread().isInterrupted())
+                {
+                    break;
+                }
+            }
         }
     }
 
@@ -274,7 +284,9 @@ public class Verifier
     protected void fireProgressMade(String name, int newpercent)
     {
         if (this.percent == newpercent)
+        {
             return;
+        }
 
         this.percent = newpercent;
 

@@ -7,9 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Commentary;
@@ -51,6 +49,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
         super(driver, prop);
+        setBible(new StubBook(this));
     }
 
     /**
@@ -59,6 +58,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         super(driver, name, edition, initials, pub, open, licence);
+        setBible(new StubBook(this));
     }
 
     /**
@@ -67,6 +67,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(driver, name, edition, initials, pubstr, openstr, licencestr);
+        setBible(new StubBook(this));
     }
 
     /**
@@ -75,14 +76,7 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     public StubBookMetaData(BookDriver driver, String name)
     {
         super(driver, name);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBibleMetaData#createBible()
-     */
-    public Bible createBible()
-    {
-        return (Bible) getBookInternal();
+        setBible(new StubBook(this));
     }
 
     /* (non-Javadoc)
@@ -90,7 +84,8 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
      */
     public Dictionary getDictionary()
     {
-        return (Dictionary) getBookInternal();
+        // Bizarre, but it implements both
+        return (Dictionary) getBible();
     }
 
     /* (non-Javadoc)
@@ -98,20 +93,8 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
      */
     public Commentary getCommentary()
     {
-        return (Commentary) getBookInternal();
-    }
-
-    /**
-     * Decides if we need to create a new book, or re-use on already created.
-     */
-    private synchronized Book getBookInternal()
-    {
-        if (book == null)
-        {
-            book = new StubBook(this);
-        }
-
-        return book;
+        // Bizarre, but it implements both
+        return (Commentary) getBible();
     }
 
     /* (non-Javadoc)
@@ -129,9 +112,4 @@ public class StubBookMetaData extends AbstractBibleMetaData implements BibleMeta
     {
         return Books.SPEED_INACCURATE;
     }
-
-    /**
-     * The cached bible so we don't have to create too many
-     */
-    private Book book = null;
 }

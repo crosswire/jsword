@@ -44,7 +44,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
     protected void ping() throws RemoterException
     {
         Remoter remoter = getRemoter();
-        
+
         RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
         remoter.execute(method);
     }

@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
@@ -45,16 +44,6 @@ public abstract class LocalURLBible extends AbstractBible
      * Initializer to check on resources.
      */
     public abstract void init() throws BookException;
-
-    /**
-     * Initializer to check on resources.
-     */
-    public abstract void activate();
-
-    /**
-     * Initializer to check on resources.
-     */
-    public abstract void deactivate();
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
@@ -100,11 +89,6 @@ public abstract class LocalURLBible extends AbstractBible
             throw new BookException(Msg.FLUSH_FAIL, ex);
         }
     }
-
-    /**
-     * The log stream
-     */
-    private static Logger log = Logger.getLogger(LocalURLBible.class);
 
     /**
      * The Version of the Bible that this produces

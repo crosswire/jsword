@@ -98,6 +98,20 @@ public class ReadingsDictionary implements Dictionary
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#activate()
+     */
+    public void activate()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#deactivate()
+     */
+    public void deactivate()
+    {
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Dictionary#getDictionaryMetaData()
      */
     public DictionaryMetaData getDictionaryMetaData()

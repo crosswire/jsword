@@ -35,7 +35,7 @@ import org.crosswire.jsword.passage.Passage;
 public class GrammarParamWord implements ParamWord
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.LocalParser)
      */
     public String getWord(LocalParser engine) throws BookException
     {
@@ -47,7 +47,7 @@ public class GrammarParamWord implements ParamWord
      * this method is a PassageTally which is not a 100% match for the
      * Passage interface. Maybe this needs to be fixed somehow.
      * @exception SearchException If this action is not appropriate
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
      */
     public Passage getPassage(LocalParser engine) throws BookException
     {

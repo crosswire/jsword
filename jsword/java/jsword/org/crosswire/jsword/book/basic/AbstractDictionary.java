@@ -36,6 +36,20 @@ import org.crosswire.jsword.book.Search;
 public abstract class AbstractDictionary implements Dictionary
 {
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#activate()
+     */
+    public void activate()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#deactivate()
+     */
+    public void deactivate()
+    {
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
     public BookMetaData getBookMetaData()

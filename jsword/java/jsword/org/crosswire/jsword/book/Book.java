@@ -32,6 +32,19 @@ import org.crosswire.jsword.book.data.BookData;
 public interface Book
 {
     /**
+     * Called to indicate that the Book should initialize itself, and consume
+     * whatever system resources it needs to be able to respond to other
+     * queries.
+     */
+    public void activate();
+
+    /**
+     * Called to indicate that the Book should release whatever system
+     * resources it can to make way for other uses.
+     */
+    public void deactivate();
+
+    /**
      * Meta-Information: What version of the Bible is this?
      * @return A Version for this Bible
      */

@@ -85,19 +85,9 @@ public abstract class AbstractBibleMetaData extends AbstractBookMetaData impleme
      */
     public final Bible getBible()
     {
-        // DCL
-        // I know double checked locking is theoretically broken however it isn't
-        // practically broken 99% of the time, and even if the 1% comes up here
-        // the only effect is some temporary wasted memory
-        if (bible == null)
+        if (!active)
         {
-            synchronized(this)
-            {
-                if (bible == null)
-                {
-                    return createBible();
-                }
-            }
+            bible.activate();
         }
 
         return bible;
@@ -109,10 +99,18 @@ public abstract class AbstractBibleMetaData extends AbstractBookMetaData impleme
      * for many calls to getBible()
      * @see BibleMetaData#getBible()
      */
-    protected abstract Bible createBible();
+    protected void setBible(Bible bible)
+    {
+        this.bible = bible;
+    }
 
     /**
      * The cached bible so we don't have to create too many
      */
     private Bible bible = null;
+
+    /**
+     * Is the Bible activated?
+     */
+    private boolean active = false;
 }

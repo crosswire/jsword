@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.ser;
 
 import java.net.URL;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
@@ -221,9 +220,4 @@ public class SerBible extends LocalURLBible
      * The search implementation
      */
     protected SearchEngine searcher;
-
-    /**
-     * The log stream
-     */
-    private static Logger log = Logger.getLogger(SerBible.class);
 }

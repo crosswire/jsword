@@ -10,7 +10,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.util.Project;
 
 /**
- * PENDING(joe): write javadoc.
+ * Factory class for creating SearchEngines.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -36,16 +36,7 @@ import org.crosswire.jsword.util.Project;
 public class SearchEngineFactory
 {
     /**
-     * @param bible
-     * @param li
-     * @param indexdir
-     * @return
-     * @throws MalformedURLException
-     * @throws IOException
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws BookException
+     * Factory constructor for a SearchEngine
      */
     public static SearchEngine createSearchEngine(Bible bible, URL indexdir) throws MalformedURLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, BookException
     {

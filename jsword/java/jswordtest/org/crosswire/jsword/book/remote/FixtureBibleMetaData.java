@@ -4,7 +4,6 @@ package org.crosswire.jsword.book.remote;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
@@ -50,14 +49,6 @@ public class FixtureBibleMetaData extends AbstractBibleMetaData
     public FixtureBibleMetaData(BookDriver driver, String name)
     {
         super(driver, name);
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
-     */
-    public Bible createBible()
-    {
-        return null;
     }
 
     /**

@@ -4,7 +4,6 @@ package org.crosswire.jsword.book.remote;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
@@ -44,14 +43,8 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
         this.remoter = remoter;
         this.id = id;
         this.speed = speed;
-    }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBibleMetaData#createBible()
-     */
-    public Bible createBible()
-    {
-        return new RemoteBible(remoter, this);
+        setBible(new RemoteBible(remoter, this));
     }
 
     /* (non-Javadoc)

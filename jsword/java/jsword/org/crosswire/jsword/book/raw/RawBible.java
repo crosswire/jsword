@@ -483,15 +483,6 @@ public class RawBible extends LocalURLBible implements Index
     }
 
     /**
-     * Save a list of found words. This has been dome already
-     * @param word The word to write
-     * @param ref The data to write
-     */
-    public void foundPassage(String word, Passage ref) throws BookException
-    {
-    }
-
-    /**
      * Flush the data written to disk
      */
     public void flush() throws BookException

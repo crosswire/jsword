@@ -7,9 +7,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Properties;
 
-import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
@@ -43,31 +41,35 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor LocalURLBibleMetaData.
      */
-    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, BibleMetaData basis) throws InstantiationException, IllegalAccessException
+    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, BibleMetaData basis) throws BookException, InstantiationException, IllegalAccessException
     {
         super(driver, basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
 
         this.dir = dir;
         this.prop = new Properties();
 
-        // Check that we can do this (but ignore the results) to ensure that
-        // it will work in getBible()
-        driver.bibleclass.newInstance();
+        LocalURLBible bible = (LocalURLBible) driver.bibleclass.newInstance();
+        bible.setLocalURLBibleMetaData(this);
+        bible.init();
+
+        setBible(bible);
     }
 
     /**
      * Basic constructor
      */
-    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException, InstantiationException, IllegalAccessException
+    public LocalURLBibleMetaData(LocalURLBookDriver driver, URL dir, Properties prop) throws InstantiationException, IllegalAccessException, BookException, MalformedURLException, ParseException
     {
         super(driver, prop);
 
         this.dir = dir;
         this.prop = prop;
 
-        // Check that we can do this (but ignore the results) to ensure that
-        // it will work in getBible()
-        driver.bibleclass.newInstance();
+        LocalURLBible bible = (LocalURLBible) driver.bibleclass.newInstance();
+        bible.setLocalURLBibleMetaData(this);
+        bible.init();
+
+        setBible(bible);
     }
 
     /* (non-Javadoc)
@@ -85,29 +87,6 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData
         catch (IOException ex)
         {
             throw new BookException(Msg.DELETE_FAIL, ex, new Object[] { getName() });
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBibleMetaData#createBible()
-     */
-    protected Bible createBible()
-    {
-        try
-        {
-            LocalURLBookDriver driver = (LocalURLBookDriver) getDriver();
-
-            LocalURLBible bible = (LocalURLBible) driver.bibleclass.newInstance();
-            bible.setLocalURLBibleMetaData(this);
-            bible.init();
-
-            return bible;
-        }
-        catch (Exception ex)
-        {
-            // This may sound harsh but we tried this in the ctor
-            // so it really should not break here.
-            throw new LogicError(ex);
         }
     }
 

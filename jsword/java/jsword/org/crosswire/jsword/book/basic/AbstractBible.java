@@ -47,6 +47,20 @@ import org.crosswire.jsword.passage.Verse;
 public abstract class AbstractBible implements Bible
 {
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#activate()
+     */
+    public void activate()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#deactivate()
+     */
+    public void deactivate()
+    {
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
     public BookMetaData getBookMetaData()
@@ -95,28 +109,6 @@ public abstract class AbstractBible implements Bible
     }
 
     /**
-     * Write the XML to disk. Children will almost certainly want to
-     * override this.
-     * @param verse The verse to write
-     * @param text The data to write
-     */
-    public void setDocument(Verse verse, BookData text) throws BookException
-    {
-        throw new BookException(Msg.DRIVER_READONLY);
-    }
-
-    /**
-     * Save a list of found words. Children will probably want to
-     * override this.
-     * @param word The word to write
-     * @param ref The data to write
-     */
-    public void foundPassage(String word, Passage ref) throws BookException
-    {
-        throw new BookException(Msg.DRIVER_READONLY);
-    }
-
-    /**
      * Read from the given source version to generate ourselves
      * @param source The Bible to read data from
      * @param li How progress is reported
@@ -147,8 +139,21 @@ public abstract class AbstractBible implements Bible
             // This could take a long time ...
             Thread.yield();
             if (Thread.currentThread().isInterrupted())
+            {
                 break;
+            }
         }
+    }
+
+    /**
+     * Write the XML to disk. Children will almost certainly want to
+     * override this.
+     * @param verse The verse to write
+     * @param text The data to write
+     */
+    public void setDocument(Verse verse, BookData text) throws BookException
+    {
+        throw new BookException(Msg.DRIVER_READONLY);
     }
 
     /**

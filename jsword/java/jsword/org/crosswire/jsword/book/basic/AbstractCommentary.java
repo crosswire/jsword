@@ -50,6 +50,20 @@ import org.crosswire.jsword.passage.VerseRange;
 public abstract class AbstractCommentary implements Commentary
 {
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#activate()
+     */
+    public void activate()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#deactivate()
+     */
+    public void deactivate()
+    {
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
     public BookMetaData getBookMetaData()
