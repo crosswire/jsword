@@ -1,0 +1,134 @@
+package org.crosswire.common.util;
+
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+/**
+ * A base class for implementing type safe internationalization (i18n) that is
+ * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
+ * example of how to inherit from here.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @version $Id$
+ * @see org.crosswire.common.util.Msg
+ */
+public class MsgBase
+{
+    /**
+     * Create a MsgBase object
+     */
+    protected MsgBase(String name)
+    {
+        this.name = name;
+        loadResources();
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.commons.lang.enum.Enum#toString()
+     */
+    public String toString()
+    {
+        try
+        {
+            if (resources != null)
+            {
+                return resources.getString(name);
+            }
+        }
+        catch (MissingResourceException ex)
+        {
+            log.warn("Missing resource in " + Locale.getDefault().getDisplayName() + " for " + name); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        return name;
+    }
+
+    /**
+     * Formats the message with the given parameter.
+     */
+    public String toString(Object param)
+    {
+        Object [] params = {param};
+        return MessageFormat.format(toString(), params);
+    }
+
+    /**
+     * Formats the message with the given parameters.
+     */
+    public String toString(Object[] params)
+    {
+        return MessageFormat.format(toString(), params);
+    }
+
+    /**
+     * Initialise any resource bundles
+     */
+    protected void loadResources()
+    {
+        Class implementingClass = getClass();
+        String className = implementingClass.getName();
+
+        // Class lock is needed around static resourceMap
+        synchronized (MsgBase.class)
+        {
+            // see if it is in the cache
+            resources = (ResourceBundle) resourceMap.get(className);
+
+            // if not then create it and put it into the cache
+            if (resources == null)
+            {
+                Locale defaultLocale = Locale.getDefault();
+                try
+                {
+                    resources = ResourceBundle.getBundle(className, defaultLocale, new CWClassLoader(implementingClass));
+                    resourceMap.put(className, resources);
+                    log.debug("Using resources for " + className + " in locale " + defaultLocale.getDisplayName()); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                catch (MissingResourceException ex)
+                {
+                    log.debug("Assuming key is the default message " + className + ": " + name); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+        }
+    }
+
+    private String name;
+
+    /**
+     * resource map maintains a mapping of class names to resources found by that name.
+     */
+    private static Map resourceMap = new HashMap();
+    
+    /**
+     * If there is any internationalization to be done, it is thru this
+     */
+    private ResourceBundle resources;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(MsgBase.class);
+}
