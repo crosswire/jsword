@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
@@ -44,12 +43,13 @@ public class SwordConfig
     /**
      * Loads a sword config from a given URL.
      */
-    public SwordConfig(SwordBookDriver driver, File parent, String bookdir) throws IOException
+    public SwordConfig(SwordBookDriver driver, File parent, String bookdir, URL progdir) throws IOException
     {
         this.driver = driver;
         this.url = new File(parent, bookdir).toURL();
         this.name = bookdir.substring(0, bookdir.indexOf(".conf"));
         this.reader = new ConfigReader(url.openStream());
+        this.progdir = progdir;
 
         setAllProperties();
     }
@@ -760,8 +760,23 @@ public class SwordConfig
         return version;
     }
 
-    /** The log stream */
+    /**
+     * Accessor for the program directory
+     */
+    public URL getProgramDirectory()
+    {
+        return progdir;
+    }
+
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(SwordConfig.class);
+
+    /**
+     * The program directory
+     */
+    private URL progdir;
 
     // we use java.util.Properties to save us from having to parse.
     private ConfigReader reader;

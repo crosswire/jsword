@@ -62,7 +62,7 @@
     <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>
   </option>
 
-  <option key="Bibles.Sword.Base Directory" type="string">
+  <option key="Bibles.Sword.Base Directory" type="path">
   	<introspect class="org.crosswire.jsword.book.sword.SwordBookDriver" property="SwordDir"/>
     <help>Where is the SWORD Project base directory.</help>
   </option>

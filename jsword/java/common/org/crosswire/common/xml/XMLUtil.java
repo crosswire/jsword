@@ -66,34 +66,33 @@ public class XMLUtil
             }
 
             // Check for chars that should not be in an entity name
-            int i = amp;
+            int i = amp + 1;
             singleEntity: while (true)
             {
-                if (i >= working.length())
-                {
-                    break singleEntity;
-                }
-
                 char c = working.charAt(i);
-
                 if (c == ';')
                 {
-                    // log.warn("disguarding potentially valid entity: "+working.substring(amp, i));
+                    //ConversionLogger.report("disguarding potentially valid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
                 }
 
                 if (!Character.isLetterOrDigit(c) && c != '-')
                 {
-                    // log.debug("disguarding invalid entity: "+working.substring(amp, i));
+                    //ConversionLogger.report("disguarding invalid entity: "+working.substring(amp, i));
                     working = working.substring(0, amp)+working.substring(i);
                     break singleEntity;
                 }
 
                 i++;
+
+                if (i >= working.length())
+                {
+                    break singleEntity;
+                }
             }
         }
-        
+
         return working;
     }
 
@@ -128,7 +127,7 @@ public class XMLUtil
                 char c = working.charAt(i);
                 if (c == '>')
                 {
-                    // log.warn("disguarding potentially valid tag: "+working.substring(lt, i+1));
+                    //ConversionLogger.report("disguarding potentially valid tag: "+working.substring(lt, i+1));
                     working = working.substring(0, lt)+working.substring(i+1);
                     break singleTag;
                 }

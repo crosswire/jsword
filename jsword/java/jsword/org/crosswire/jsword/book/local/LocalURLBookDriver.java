@@ -324,15 +324,7 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
 
         public boolean accept(String name)
         {
-            try
-            {
-                return NetUtil.isDirectory(NetUtil.lengthenURL(parent, name));
-            }
-            catch (IOException ex)
-            {
-                Reporter.informUser(LocalURLBookDriver.class, ex);
-                return false;
-            }
+            return NetUtil.isDirectory(NetUtil.lengthenURL(parent, name));
         }
 
         private URL parent;

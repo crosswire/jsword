@@ -147,13 +147,16 @@ public class NetUtil
 
     /**
      * If there is a directory at the other end of this URL return true.
-     * Note this currently only works with file: type URLs
+     * Note non file: type URLs will always return false
      * @param orig The URL to check
-     * @return true if the URL points at a directory
+     * @return true if the URL points at a file: directory
      */
-    public static boolean isDirectory(URL orig) throws MalformedURLException
+    public static boolean isDirectory(URL orig)
     {
-        checkFileURL(orig);
+        if (!orig.getProtocol().equals(PROTOCOL_FILE))
+        {
+            return false;
+        }
 
         File file = new File(orig.getFile());
         return file.isDirectory();
@@ -467,7 +470,9 @@ public class NetUtil
                 for (int i=0; i<files.length; i++)
                 {
                     if (!list.contains(files[i]))
+                    {
                         log.warn("file: based index found "+files[i]+" but this was not found using index file.");
+                    }
                 }
             }
         }
@@ -476,11 +481,8 @@ public class NetUtil
     }
 
     /**
-     * 
-     * @param url
-     * @param filter
-     * @return String[]
-     * @throws MalformedURLException
+     * List all the files specified by the index file passed in.
+     * @return String[] Matching results.
      */
     public static String[] listByFile(URL url, URLFilter filter) throws MalformedURLException
     {

@@ -87,7 +87,10 @@ public class OptionsField implements Field
         }
 
         log.warn("Illegal option setting: '"+value+"'. Using default");
-        combo.setSelectedItem(list[0]);
+        if (list != null && list.length > 0)
+        {
+            combo.setSelectedItem(list[0]);
+        }
     }
 
     /**
@@ -100,23 +103,17 @@ public class OptionsField implements Field
     }
 
     /**
-     * Return the Choice that created us.
-     * @return Our source Choice
+     * The component that we are wrapping in a field
      */
-    public Choice getChoice()
-    {
-        return Field;
-    }
-
-    /** The component that we are wrapping in a field */
     private JComboBox combo = new JComboBox(new String[] { "No Options Set" });
 
-    /** Our source Field */
-    private Choice Field = null;
-
-    /** The options */
+    /**
+     * The options
+     */
     private String[] list = null;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(OptionsField.class);
 }

@@ -2,15 +2,18 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import org.apache.commons.lang.SystemUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -56,72 +59,66 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public BookMetaData[] getBooks()
     {
-        if (dir == null)
+        if (dirs == null)
         {
-            log.debug("getBooks() empty because dir == null");
-            return new BibleMetaData[0];
+            return new BookMetaData[0];
         }
 
-        try
-        {
-            // load each config withing mods.d, discard those which are not bibles, return names of remaining
-            URL mods = NetUtil.lengthenURL(dir, "mods.d");
-            if (!NetUtil.isDirectory(mods))
-            {
-                log.debug("getBooks() empty mods.d does not exist");
-                return new BibleMetaData[0];
-            }
-
-            return createBookMetaDataArray(mods);
-        }
-        catch (MalformedURLException ex)
-        {
-            log.warn("Failed to get mods.d directory", ex);
-            return new BibleMetaData[0];
-        }
-    }
-
-    /**
-     * Create a list of BookMetaDatas at the given URL
-     * @param mods
-     * @return BookMetaData[]
-     * @throws IOException
-     */
-    public BookMetaData[] createBookMetaDataArray(URL mods)
-    {
-        File modsdir = new File(mods.getFile());
-        String[] bookdirs = modsdir.list(new SwordBookDriver.CustomFilenameFilter());
         List valid = new ArrayList();
-        
-        for (int i=0; i<bookdirs.length; i++)
+
+        // Loop through the dirs in the lookup path
+        for (int j=0; j<dirs.length; j++)
         {
-            try
+            URL mods = NetUtil.lengthenURL(dirs[j], "mods.d");
+            if (NetUtil.isDirectory(mods))
             {
-                SwordConfig config = new SwordConfig(this, modsdir, bookdirs[i]);
-                if (config.isSupported())
+                try
                 {
-                    SwordBookMetaData bmd = config.getMetaData();
-                    valid.add(bmd);
+                    File modsdir = NetUtil.getAsFile(mods);
+                    String[] bookdirs = modsdir.list(new CustomFilenameFilter());
+                    //String[] bookdirs = NetUtil.listByFile(mods, new CustomURLFilter());
+
+                    // Loop through the entries in this mods.d directory
+                    for (int i=0; i<bookdirs.length; i++)
+                    {
+                        try
+                        {
+                            SwordConfig config = new SwordConfig(this, modsdir, bookdirs[i], dirs[0]);
+                            if (config.isSupported())
+                            {
+                                SwordBookMetaData bmd = config.getMetaData();
+                                valid.add(bmd);
+                            }
+                            else
+                            {
+                                log.warn("Unsupported Book: "+config.getName());
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            log.warn("Couldn't create SwordBookMetaData", ex);
+                        }
+                    }            
                 }
-                else
+                catch (IOException ex)
                 {
-                    log.warn("Unsupported Book: "+config.getName());
+                    log.warn("Couldn't list mods.d at: "+mods, ex);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                log.warn("Couldn't create SwordBookMetaData", ex);
+                log.debug("mods.d directory at "+mods+" does not exist");
             }
         }
-        
+
         return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
     }
 
     /**
      * Accessor for the Sword directory
-     * @param sword_dir The new Sword directory
+     * @param paths The new Sword directory
      */
-    public static void setSwordDir(String sword_dir) throws MalformedURLException, BookException
+    public static void setSwordDir(String[] paths) throws MalformedURLException, BookException
     {
         // Fist we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
@@ -130,53 +127,114 @@ public class SwordBookDriver extends AbstractBookDriver
             Books.unregisterDriver(matches[i]);
         }
 
-        // If the new dir is empty then just accept that we're not supposed to work ...
-        if (sword_dir == null || sword_dir.trim().length() == 0)
+        // If the new paths are empty then guess ...
+        if (paths == null || paths.length == 0)
         {
-            dir = null;
-            log.info("No sword dir set.");
-            return;
+            paths = getDefaultPaths();
         }
 
-        URL dir_temp = new URL("file", null, sword_dir);
-
-        if (!NetUtil.isDirectory(dir_temp))
+        dirs = new URL[paths.length];
+        for (int i = 0; i < dirs.length; i++)
         {
-            throw new MalformedURLException("No sword source found under " + sword_dir);
+            dirs[i] = new URL("file", null, paths[i]);
+            if (!NetUtil.isDirectory(dirs[i]))
+            {
+                log.warn("No sword source found under: "+dirs[i]);
+            }
         }
-
-        dir = dir_temp;
 
         // Now we need to register ourselves
         Books.registerDriver(new SwordBookDriver());
     }
 
     /**
-     * Accessor for the Sword directory
-     * @return The new Sword directory
+     * Have an OS dependent guess at where Sword might be installed
      */
-    public static String getSwordDir()
+    private static String[] getDefaultPaths()
     {
-        if (dir == null)
+        List reply = new ArrayList();
+
+        if (SystemUtils.IS_OS_WINDOWS)
         {
-            return "";
+            reply.add("C:\\Program Files\\CrossWire\\The SWORD Project");
+        }
+        else
+        {
+            // If it isn't unix then assume some sort of unix
+            File sysconfig = new File("/etc/sword.conf");
+            if (sysconfig.canRead())
+            {
+                try
+                {
+                    Properties prop = new Properties();
+                    prop.load(new FileInputStream(sysconfig));
+                    String datapath = prop.getProperty("DataPath");
+                    testDefaultPath(reply, datapath+"/mods.d");
+                }
+                catch (IOException ex)
+                {
+                    log.warn("Failed to read system config file", ex);
+                }
+            }
         }
 
-        return dir.getFile();
+        // if there is a property set for the sword home directory
+        String swordhome = System.getProperty("sword.home");
+        if (swordhome != null)
+        {
+            testDefaultPath(reply, swordhome+"/mods.d");
+        }
+
+        // .sword in the users home directory?
+        testDefaultPath(reply, System.getProperty("user.home")+"/.sword/mods.d");
+
+        // .jsword in the users home directory?
+        testDefaultPath(reply, System.getProperty("user.home")+"/.jsword/mods.d");
+
+        // mods.d in the current directory?
+        testDefaultPath(reply, new File(".").getAbsolutePath()+"/mods.d");
+
+        return (String[]) reply.toArray(new String[reply.size()]);
     }
 
     /**
-     * Accessor for the SWORD project installation directory
+     * Check to see if the given directory is a Sword mods.d directory
+     * and then add it to the list if it is.
      */
-    public static URL getSwordURL()
+    private static void testDefaultPath(List reply, String path)
     {
-        return dir;
+        File test = new File(path);
+        if (test.isDirectory())
+        {
+            reply.add(path);
+        }
+    }
+
+    /**
+     * Accessor for the Sword directory
+     * @return The new Sword directory
+     */
+    public static String[] getSwordDir()
+    {
+        if (dirs == null || dirs.length == 0)
+        {
+            return new String[0];
+        }
+
+        String[] paths = new String[dirs.length];
+
+        for (int i = 0; i < paths.length; i++)
+        {
+            paths[i] = dirs[i].getFile();
+        }
+
+        return paths;
     }
 
     /**
      * The directory URL
      */
-    private static URL dir;
+    private static URL[] dirs;
 
     /**
      * The log stream
@@ -187,11 +245,30 @@ public class SwordBookDriver extends AbstractBookDriver
      * Check that the directories in the version directory really
      * represent versions.
      */
-    static class CustomFilenameFilter implements FilenameFilter
+    private static class CustomFilenameFilter implements FilenameFilter
     {
+        /* (non-Javadoc)
+         * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
+         */
         public boolean accept(File parent, String name)
         {
-            return name.endsWith(".conf") && !name.startsWith("globals.");
+            return !name.startsWith("globals.") && name.endsWith(".conf");
         }
     }
+
+    /**
+     * Check that the directories in the version directory really
+     * represent versions.
+     *
+    private static class CustomURLFilter implements URLFilter
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.common.util.URLFilter#accept(java.lang.String)
+         *
+        public boolean accept(String name)
+        {
+            return !name.startsWith("globals.") && name.endsWith(".conf");
+        }
+    }
+    */
 }

@@ -57,14 +57,14 @@ public class RawKeyBackend implements KeyBackend
         try
         {
             // Open the files
-            URL url = NetUtil.lengthenURL(SwordBookDriver.getSwordURL(), config.getDataPath());
+            URL url = NetUtil.lengthenURL(config.getProgramDirectory(), config.getDataPath());
             if (!url.getProtocol().equals("file"))
             {
                 throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
             }
-            
+
             String path = url.getFile();
-            
+
             idx_raf = new RandomAccessFile(path + ".idx", "r");
             dat_raf = new RandomAccessFile(path + ".dat", "r");
         }

@@ -47,7 +47,7 @@ public class ReadEverything
     public static void main(String[] args) throws IOException, JDOMException
     {
         // Load JAXB so we don't mess up any timings later
-        Logger.outputInfoMinimum();
+        //Logger.outputInfoMinimum();
         JAXBUtil.getJAXBContext();
 
         // Load the desktop configuration so we can find the sword drivers
@@ -117,6 +117,8 @@ public class ReadEverything
     {
         try
         {
+            log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
+
             BookData data = bible.getData(key);
             if (data.getPlainText() == null)
             {
