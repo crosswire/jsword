@@ -20,41 +20,30 @@
   	throw new NullPointerException("webprefix");
 ]]></jsp:scriptlet>
 
+<h1>J-Sword via WebStart</h1>
+
+<p>
+  The latest release of J-Sword is 0.97.
+  It is available via <a href="http://java.sun.com/products/javawebstart/">WebStart</a>.
+  which you will need installed. On MacOSX that job is done for you.
+  It is an easy <a href="http://java.sun.com/products/javawebstart/">download</a> on
+  Windows since it comes with JDK 1.4. Once you have this installed ...
+</p>
+
+<div align="center">
+  <a href="stable/jsword.jnlp"><img src="images/webstart.jpg" width="247" height="60" border="0"/></a>
+</div>
+
+<p>
+  You may need to download Java to get Webstart working. If so, the
+  <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK download page</a>
+  is the place to get started.
+</p>
+
 <h1>Download</h1>
 
-<h2>Official Installer Based Releases</h2>
-<p>From Version 0.9.6 we are using ZeroG based installers.</p>
-
-<h3>Windows</h3>
-<ul>
-  <p>After downloading double-click on the downloaded file to install.</p>
-  <li>With bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-win-vm.exe">jsword-0.9.6-win-vm.exe</a> (20Mb)</li>
-  <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-win-novm.exe">jsword-0.9.6-win-novm.exe</a> (7.2Mb)</li>
-</ul>
-
-<h3>Linux</h3>
-<ul>
-  <p>After downloading, cd to the download directory and type:<br />
-  <code>sh ./jsword-0.9.6-linux-*.bin</code></p>
-  <li>With bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linux-vm.bin">jsword-0.9.6-linux-vm.bin</a> (40Mb) </li>
-  <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linux-novm.bin">jsword-0.9.6-linux-novm.bin</a> (7.3Mb) </li>
-</ul>
-
-<h3>MacOS X</h3>
-<ul>
-  <p>The compressed installer should be recognized by <a href="http://www.aladdinsys.com/expander/index.html">Stuffit Expander</a>, you will need version 6.0 or later.</p>
-  <li>Without JVM (Requires JDK 1.4.1): <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-osx-novm.zip">jsword-0.9.6-osx-novm.zip</a> (6.8Mb) </li>
-</ul>
-
-<h3>Other</h3>
-<ul>
-  <p>After downloading type:<br />
-  <code>java -jar jsword-0.9.6-generic-novm.jar</code></p>
-  <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-generic-novm.jar">jsword-0.9.6-generic-novm.jar</a> (7.3Mb) </li>
-</ul>
-
 <h2>Official Zip/Tar Based Releases</h2>
-<p>Version 0.9.5 is the first beta for JSword 1.0.</p>
+<p>We keep official releases hanging around for a while.</p>
 <table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
   <tr>
 	<td>-</td>

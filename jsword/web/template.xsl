@@ -59,6 +59,17 @@
 <table width="100%" border="0">
   
   <tr> 
+
+    <td valign="top" class="maincell">
+      <table cellpadding="5" border="0" width="100%">
+        <tr>
+          <td>
+            <xsl:apply-templates select="html:body"/>
+          </td>
+        </tr>
+      </table>
+    </td>
+
     <td class="sidenav" valign="top"> 
       <p>About JSword</p>
       <ul>
@@ -68,11 +79,10 @@
       </ul>
       <p>Getting-JSword</p>
       <ul>
-        <li><a href="demo.jsp">Web-Demo</a></li>
-        <li><a href="jnlp.html">Web-Start</a></li>
-        <li><a href="screenshot.html">Screenshots</a></li>
         <li><a href="download.jsp">Download</a></li>
         <li><a href="http://www.crosswire.org/sword/modules/index.jsp">Modules</a></li>
+        <li><a href="screenshot.html">Screenshots</a></li>
+        <li><a href="demo.jsp">Web-Demo</a></li>
       </ul>
       <p>Getting-Involved</p>
       <ul>
@@ -106,15 +116,6 @@
       </ul>
     </td>
 
-    <td valign="top" class="maincell">
-      <table cellpadding="5" border="0" width="100%">
-        <tr>
-          <td>
-            <xsl:apply-templates select="html:body"/>
-          </td>
-        </tr>
-      </table>
-    </td>
   </tr>
 </table>
 
