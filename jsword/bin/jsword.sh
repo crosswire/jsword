@@ -10,5 +10,6 @@ CP=$CP:$JSWORD/jdom.jar
 CP=$CP:$JSWORD/jlfgr-1_0.jar
 CP=$CP:$JSWORD/jsword.jar
 CP=$CP:$JSWORD/xalan.jar
+CP=$CP:$JSWORD/log4j.jar
 
 java -cp $CP org.crosswire.jsword.view.swing.desktop.Desktop
