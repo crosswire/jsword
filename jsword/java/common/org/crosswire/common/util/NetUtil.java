@@ -199,11 +199,20 @@ public class NetUtil
     {
         if (orig.getProtocol().equals("file"))
         {
-            return new URL(orig.getProtocol(),
-                           orig.getHost(),
-                           orig.getPort(),
-                           orig.getFile()+
-                           (orig.toString().endsWith(File.separator)?"":File.separator+extra));
+            if (orig.toExternalForm().endsWith(File.separator))
+            {
+                return new URL(orig.getProtocol(),
+                               orig.getHost(),
+                               orig.getPort(),
+                               orig.getFile()+extra);
+            }
+            else
+            {
+                return new URL(orig.getProtocol(),
+                               orig.getHost(),
+                               orig.getPort(),
+                               orig.getFile()+File.separator+extra);
+            }
         }
         else
         {

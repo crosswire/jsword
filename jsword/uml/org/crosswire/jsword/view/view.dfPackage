@@ -191,16 +191,16 @@ class __options {
 }
 /**
 @__positions 
-<oigroup:<oiref:design#Class#id34x5nd0nmd8tnd0nmhbtp.diagram:oiref>=320,20,58,65,1:oigroup>
+<oigroup:<oiref:design#Class#id34x5nd0nmd8tnd0nmhbtp.diagram:oiref>=320,20,63,72,1:oigroup>
 <oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link26:oiref>=73,142,310,142:oigroup>
-<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram:oiref>=173,20,69,81,1:oigroup>
-<oigroup:<oiref:design#Class#ida80c37li4p0c37mqqk7.diagram.link294:oiref>=200,190,108,190:oigroup>
-<oigroup:<oiref:design#Class#ida80c37li4p0c37mqqk7.diagram:oiref>=200,150,65,123,1:oigroup>
-<oigroup:<oiref:design#Class#id2d1nocvzpttgbcvzred79.diagram:oiref>=40,320,74,54,1:oigroup>
-<oigroup:<oiref:design#Class#id2gax8d0mi2vggd0mjslmj.diagram:oiref>=30,150,78,81,1:oigroup>
-<oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram:oiref>=30,20,65,65,1:oigroup>
+<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram:oiref>=173,20,83,91,1:oigroup>
+<oigroup:<oiref:design#Class#ida80c37li4p0c37mqqk7.diagram.link294:oiref>=200,195,118,195:oigroup>
+<oigroup:<oiref:design#Class#ida80c37li4p0c37mqqk7.diagram:oiref>=200,150,80,139,1:oigroup>
+<oigroup:<oiref:design#Class#id2d1nocvzpttgbcvzred79.diagram:oiref>=40,320,63,63,1:oigroup>
+<oigroup:<oiref:design#Class#id2gax8d0mi2vggd0mjslmj.diagram:oiref>=30,150,88,91,1:oigroup>
+<oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram:oiref>=30,20,67,72,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.bible.view.style.Style:oiref>=336,10,200,315,1:oigroup>
-<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram.link275:oiref>=173,52,95,52:oigroup>
+<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram.link275:oiref>=173,56,97,56:oigroup>
 */
 class __positions {
 }

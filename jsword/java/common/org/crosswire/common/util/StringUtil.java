@@ -736,7 +736,7 @@ public final class StringUtil
 
     /**
     * Ensure a string is of a fixed length by truncating it or
-    * by adding spaces untill it is.
+    * by adding spaces until it is.
     * @param str The string to check
     * @param len The number of characters needed
     */
@@ -747,6 +747,22 @@ public final class StringUtil
         if (diff == 0)  return str;
         if (diff < 0)   return str.substring(0, len);
         else            return str+chain(diff, ' ');
+    }
+
+    /**
+    * Like setLength() however this method only shortens strings that are too
+    * long, and it shortens them in a human friendly way, currently this is
+    * limited to adding "..." to show that it has been shortened, but we could
+    * implement a fancy remove spaces/vowels algorythm.
+    * @param str The string to check
+    * @param len The number of characters needed
+    */
+    public static String shorten(String str, int len)
+    {
+        if (str.length() <= len)
+            return str;
+
+        return str.substring(0, len-3) + "...";
     }
 
     /**

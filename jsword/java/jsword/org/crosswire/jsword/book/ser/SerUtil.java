@@ -59,7 +59,7 @@ public class SerUtil
             config.add("Advanced.User Level", new UserLevelChoice());
             config.add("Advanced.Available Drivers", new DriversChoice());
 
-            config.setProperties(Project.resource().getProperties("Tools"));
+            config.setProperties(Project.resource().getProperties("Desktop"));
             config.localToApplication(true);
 
             // SerBible ser = (SerBible) Bibles.getBible("av-ser");

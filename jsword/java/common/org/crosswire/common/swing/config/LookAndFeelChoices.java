@@ -15,45 +15,52 @@ import org.crosswire.common.config.choices.ClassChoices;
 import org.crosswire.common.swing.GuiUtil;
 
 /**
-* LookAndFeelChoices declares the Choices and actions
-* needed to dynamically change the look and feel (PLAF) and to add new
-* PLAFs without needing to restart.
-*
-* <table border='1' cellPadding='3' cellSpacing='0' width="100%">
-* <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
-* Distribution Licence:<br />
-* Project B is free software; you can redistribute it
-* and/or modify it under the terms of the GNU General Public License,
-* version 2 as published by the Free Software Foundation.<br />
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* General Public License for more details.<br />
-* The License is available on the internet
-* <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
-* <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-* MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
-* The copyright to this program is held by it's authors.
-* </font></td></tr></table>
-* @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
-* @see <{docs.Licence}>
-* @author Joe Walker
-*/
+ * LookAndFeelChoices declares the Choices and actions
+ * needed to dynamically change the look and feel (PLAF) and to add new
+ * PLAFs without needing to restart.
+ *
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
 public class LookAndFeelChoices extends ClassChoices
 {
-    /** Changing the look of the config dialog */
+    /**
+     * Changing the look of the config dialog
+     */
     public LookAndFeelChoices() throws ClassNotFoundException
     {
         super(LookAndFeel.class, defaults);
     }
 
-    /** The Options customization */
+    /**
+     * The Options customization
+     */
     protected Class getCurrentClass()
     {
         return current;
     }
 
-    /** The Options customization */
+    /**
+     * The Options customization
+     */
     protected void setCurrentClass(Class new_class) throws InstantiationException, IllegalAccessException
     {
         current = new_class;
@@ -63,9 +70,9 @@ public class LookAndFeelChoices extends ClassChoices
     }
 
     /**
-    * Make the specified PLAF the current
-    * @param plaf The PLAf to install
-    */
+     * Make the specified PLAF the current
+     * @param plaf The PLAf to install
+     */
     public static void setLookAndFeel(LookAndFeel plaf)
     {
         // The global new setting
@@ -82,8 +89,8 @@ public class LookAndFeelChoices extends ClassChoices
     }
 
     /**
-    * Make all the windows fall into line with the current look
-    */
+     * Make all the windows fall into line with the current look
+     */
     public static void resetWindows()
     {
         // Re-jig all the frames
@@ -99,10 +106,10 @@ public class LookAndFeelChoices extends ClassChoices
     }
 
     /**
-    * Add a Frame to the list that need to be updated
-    * when the PLAF changes.
-    * @param window The frame to be registered
-    */
+     * Add a Frame to the list that need to be updated
+     * when the PLAF changes.
+     * @param window The frame to be registered
+     */
     public static void addWindow(Window window)
     {
         // Should we add ourselves as a ComponentListener?
@@ -114,9 +121,9 @@ public class LookAndFeelChoices extends ClassChoices
     }
 
     /**
-    * Remove a Frame from the list that need to be updated
-    * when the PLAF changes.
-    * @param frame The frame to be de-registered
+     * Remove a Frame from the list that need to be updated
+     * when the PLAF changes.
+     * @param frame The frame to be de-registered
     */
     public static void removeWindow(Window window)
     {
@@ -133,8 +140,8 @@ public class LookAndFeelChoices extends ClassChoices
     private static Hashtable defaults = new Hashtable();
 
     /**
-    * Setup the defaults Hashtable
-    */
+     * Setup the defaults Hashtable
+     */
     static
     {
         defaults.put("Java", "javax.swing.plaf.metal.MetalLookAndFeel");

@@ -159,6 +159,15 @@ public class TestStringUtil extends TestCase
     public void testSetLength() throws Exception
     {
         assertEquals(StringUtil.setLength("12345", 5), "12345");
+        assertEquals(StringUtil.setLength("1234567890", 5), "12345");
+        assertEquals(StringUtil.setLength("123", 5), "123  ");
+    }
+
+    public void testShorten() throws Exception
+    {
+        assertEquals(StringUtil.shorten("12345", 5), "12345");
+        assertEquals(StringUtil.shorten("1234567890", 5), "12...");
+        assertEquals(StringUtil.shorten("123", 5), "123");
     }
 
     public void testSwap() throws Exception

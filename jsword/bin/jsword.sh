@@ -11,4 +11,4 @@ CP=$CP:$JSWORD/jlfgr-1_0.jar
 CP=$CP:$JSWORD/jsword.jar
 CP=$CP:$JSWORD/xalan.jar
 
-java -cp $CP dtools
+java -cp $CP org.crosswire.jsword.view.swing.desktop.Desktop

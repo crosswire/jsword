@@ -27,52 +27,53 @@ import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 
 /**
-* Bible Generator allows the creation of new Books - although it
-* really only converts from one implementation of Book to another.
-* This is needed because I drivers like JDBCBook and GBMLBook will not
-* be very speed optimized.
-* <p>Since this code has been edited by JBuilder I have changed it
-* and expect problems if it is edited that way again. The code that JB
-* created did not compile with JDK1.1 and Swing 1.1 because it uses a
-* constructor special to AWT in JDK 1.2, So I have changed code that read
-*   <code>new GridBagConstraints</code>
-* to
-*   <code>GuiUtil.getConstraints</code>
-* to fix this.
-*
-* <table border='1' cellPadding='3' cellSpacing='0' width="100%">
-* <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
-* Distribution Licence:<br />
-* Project B is free software; you can redistribute it
-* and/or modify it under the terms of the GNU General Public License,
-* version 2 as published by the Free Software Foundation.<br />
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* General Public License for more details.<br />
-* The License is available on the internet
-* <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
-* <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-* MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
-* The copyright to this program is held by it's authors.
-* </font></td></tr></table>
-* @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
-* @see <{docs.Licence}>
-* @author Joe Walker
-*/
+ * Bible Generator allows the creation of new Books - although it
+ * really only converts from one implementation of Book to another.
+ * This is needed because I drivers like JDBCBook and GBMLBook will not
+ * be very speed optimized.
+ * <p>Since this code has been edited by JBuilder I have changed it
+ * and expect problems if it is edited that way again. The code that JB
+ * created did not compile with JDK1.1 and Swing 1.1 because it uses a
+ * constructor special to AWT in JDK 1.2, So I have changed code that read
+ *   <code>new GridBagConstraints</code>
+ * to
+ *   <code>GuiUtil.getConstraints</code>
+ * to fix this.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
 public class GeneratorPane extends EirPanel
 {
     /**
-    * Construct a Bible Generator tool, this simply calls jbInit
-    */
+     * Construct a Bible Generator tool, this simply calls jbInit
+     */
     public GeneratorPane()
     {
         jbInit();
     }
 
     /**
-    * Create the GUI components.
-    */
+     * Create the GUI components.
+     */
     private void jbInit()
     {
         cbo_source.setModel(mdl_source);
@@ -138,9 +139,9 @@ public class GeneratorPane extends EirPanel
     }
 
     /**
-    * This allows up to easily display this component in a window and
-    * have the 2 work together on close actions and so on.
-    */
+     * This allows up to easily display this component in a window and
+     * have the 2 work together on close actions and so on.
+     */
     public void showInFrame(Frame parent)
     {
         final JDialog frame = new JDialog(parent, "Bible Generator");
@@ -175,8 +176,8 @@ public class GeneratorPane extends EirPanel
     }
 
     /**
-    * Actually start generating the new Book
-    */
+     * Actually start generating the new Book
+     */
     public void generate()
     {
         // New thread to do the real work
@@ -252,9 +253,9 @@ public class GeneratorPane extends EirPanel
     private CustomProgressListener cpl = new CustomProgressListener();
 
     /**
-    * A class to be run in a Thread to do the real work of generating the
-    * new Bible
-    */
+     * A class to be run in a Thread to do the real work of generating the
+     * new Bible
+     */
     class GeneratorRunnable implements Runnable
     {
         public void run()
@@ -327,15 +328,15 @@ public class GeneratorPane extends EirPanel
     }
 
     /**
-    * Report progress changes to the screen
-    */
+     * Report progress changes to the screen
+     */
     class CustomProgressListener implements ProgressListener
     {
         /**
-        * This method is called to indicate that some progress has been made.
-        * The amount of progress is indicated by ev.getPercent()
-        * @param ev Describes the progress
-        */
+         * This method is called to indicate that some progress has been made.
+         * The amount of progress is indicated by ev.getPercent()
+         * @param ev Describes the progress
+         */
         public void progressMade(final ProgressEvent ev)
         {
             SwingUtilities.invokeLater(new Runnable() {

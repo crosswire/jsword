@@ -201,7 +201,7 @@ public class Resource
         reply = getClass().getClassLoader().getSystemResource(subject+".properties");
         if (reply == null)
         {
-            throw new MalformedURLException("Failed to find Tools.properties");
+            throw new MalformedURLException("Failed to find Desktop.properties");
         }
 
         return reply;
@@ -406,7 +406,7 @@ public class Resource
     {
         // First look in the classpath where we are situated
         URL base = getLocalClasspath(getClass());
-        System.out.print("looking for Bibles local classpath entry "+base+": ");
+        System.out.print("looking for Bibles in local classpath "+base+": ");
         URL found = findBibleRoot(base);
         if (found != null)
         {
