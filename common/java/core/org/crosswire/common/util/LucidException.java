@@ -87,7 +87,14 @@ public class LucidException extends Exception
     {
         super(msg.toString(), cause);
         this.deprecated = false;
-        this.params = (Object[]) params.clone();
+        if (params != null)
+        {
+            this.params = (Object[]) params.clone();
+        }
+        else
+        {
+            this.params = null;
+        }
     }
 
     /**

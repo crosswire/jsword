@@ -53,16 +53,17 @@ public class CustomTokenizer
     {
         List output = new ArrayList();
         String commandChars = getSingleCharWords(commands);
-        int currentType = charType(sought.charAt(0), commandChars);
+        char firstChar = sought.charAt(0);
+        int currentType = charType(firstChar, commandChars);
         int startIndex = 0;
 
-        // If the first character is a [ then we have a problem because
+        // If the first character is a [  or : then we have a problem because
         // the loop starts with the second character because it needs
-        // something to compare with - so if we do start with a [ then
+        // something to compare with - so if we do start with a [ or : then
         // we make sure that we prepend with a " "
-        if (sought.length() > 0 && sought.charAt(0) == '[')
+        if (sought.length() > 0 && (firstChar == '[' || firstChar == ':'))
         {
-            sought = " " + sought; //$NON-NLS-1$
+            sought = ' ' + sought;
         }
 
         // Loop, comparing each character with the previous one
@@ -88,12 +89,12 @@ public class CustomTokenizer
             // Pass through everything between pairs of :: e.g. ::bread::
             // as a single word. If there is no trailing :: take it
             // to the end of the line
-            if (i < sought.length() - 4 && sought.indexOf("::", i) != -1) //$NON-NLS-1$
+            if (i < sought.length() - 4 && sought.indexOf("::", i) == i) //$NON-NLS-1$
             {
                 int end = sought.indexOf("::", i + 2); //$NON-NLS-1$
                 if (end == -1)
                 {
-                    addWord(output, commands, sought.substring(i + 1));
+                    addWord(output, commands, sought.substring(i + 2));
                     i = sought.length();
                 }
                 else

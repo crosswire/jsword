@@ -39,6 +39,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ReporterEvent;
 import org.crosswire.common.util.ReporterListener;
 import org.crosswire.common.util.StackTrace;
+import org.crosswire.common.xml.XMLUtil;
 
 /**
  * A simple way of reporting problems to the user.
@@ -304,7 +305,7 @@ public class ExceptionPane extends JPanel
         {
             msg = Msg.NO_DESC.toString();
         }
-        String orig = msg;
+        String orig = XMLUtil.escape(msg);
         msg = orig.replaceAll("\n", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
 
         // The name of the exception
