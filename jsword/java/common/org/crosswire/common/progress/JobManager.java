@@ -159,7 +159,7 @@ public class JobManager
             log.debug("ignoring NoClassDefFoundError because we are headerless?");
         }
 
-        if (invoke)
+        if (!invoke)
         {
             firer.run();
         }
