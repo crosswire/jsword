@@ -1,15 +1,16 @@
 
 package org.crosswire.jsword.book.remote;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bibles;
 import org.jdom.Document;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
@@ -39,14 +40,6 @@ import org.jdom.input.SAXBuilder;
 public class HttpRemoter implements Remoter
 {
     /**
-     * A simple name
-     */
-    public String getRemoterName()
-    {
-        return "Remote (HTTP)";
-    }
-
-    /**
      * Create an HttpRemoter with a baseurl to call.
      */
     public HttpRemoter(String baseurl)
@@ -58,30 +51,35 @@ public class HttpRemoter implements Remoter
     }
 
     /**
+     * A simple name
+     */
+    public String getRemoterName()
+    {
+        return "Remote (HTTP)";
+    }
+
+    /**
      * @see Remoter#execute(RemoteMethod)
      */
     public Document execute(RemoteMethod method) throws RemoterException
     {
         try
         {
-            URL url = new URL(baseurl+methodToParam(method));
+            String query = baseurl+methodToParam(method);
+            log.debug("Executing query: "+query);
+
+            URL url = new URL(query);
             InputStream in = url.openStream();
             SAXBuilder builder = new SAXBuilder();
-            
+
             Document doc = builder.build(in);
+            log.debug("Counting children of root element: "+doc.getRootElement().getChildren().size());
+
             return doc;
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
-            throw new RemoterException(ex);
-        }
-        catch (JDOMException ex)
-        {
-            throw new RemoterException(ex);
-        }
-        catch (IOException ex)
-        {
-            throw new RemoterException(ex);
+            throw new RemoterException("remote_execute", ex);
         }
     }
 
@@ -107,17 +105,33 @@ public class HttpRemoter implements Remoter
         Iterator it = method.getParameterKeys();
         while (it.hasNext())
         {
-            String key = (String) it.next();
-            String val = method.getParameter(key);
-
-            buffer.append("&");
-            buffer.append(key);
-            buffer.append("=");
-            buffer.append(val);
+            try
+            {
+                String key = (String) it.next();
+                String val = method.getParameter(key);
+                String b64 = URLEncoder.encode(val, "UTF-8");
+                
+                buffer.append("&");
+                buffer.append(key);
+                buffer.append("=");
+                buffer.append(b64);
+            }
+            catch (UnsupportedEncodingException ex)
+            {
+                throw new LogicError(ex);
+            }
         }
 
         return buffer.toString();
     }
 
+    /**
+     * The URL that we append to to get valid queries
+     */
     private String baseurl;
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(HttpRemoter.class);
 }

@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.raw;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 
 /**
@@ -37,6 +38,6 @@ public class RawBibleDriver extends LocalURLBibleDriver
      */
     public RawBibleDriver() throws MalformedURLException, IOException
     {
-        super("Raw", "raw", RawBible.class, 4);
+        super("Raw", "raw", RawBible.class, Bibles.SPEED_SLOW);
     }
 }

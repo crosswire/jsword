@@ -30,6 +30,15 @@ package org.crosswire.jsword.book.remote;
 public class LocalRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
+     * Pass on the exception because RemoteBibleDriver.ctor() could fail due to
+     * its ping start-up operation.
+     */
+    public LocalRemoteBibleDriver() throws RemoterException
+    {
+        ping();
+    }
+
+    /**
      * Accessor for the current remoter.
      * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
      * @return The remoter or null if none is available.

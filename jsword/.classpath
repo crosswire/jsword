@@ -5,6 +5,9 @@
     <classpathentry kind="lib" path="jar/jdom08/crimson.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/jaxp.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/jdom.jar" sourcepath="/jsword/jar/jdom08/jdom-b8.zip"/>
+    <classpathentry kind="lib" path="jar/jaxb10b/jaxb-api.jar" sourcepath="/jsword/jar/jaxb10b/jaxb-api-src.zip"/>
+    <classpathentry kind="lib" path="jar/jaxb10b/jaxb-ri.jar"/>
+    <classpathentry kind="lib" path="jar/jaxb10b/jaxb-libs.jar"/>
     <classpathentry kind="lib" path="jar/jdom08/xalan.jar"/>
     <classpathentry kind="lib" path="jar/jlf10/jlfgr-1_0.jar"/>
     <classpathentry kind="lib" path="jar/servlet23/servlet.jar" sourcepath="/jsword/jar/servlet23/jakarta-servletapi-4-src-20021215.zip"/>
@@ -22,6 +25,8 @@
     <classpathentry kind="src" path="java/swordtest"/>
     <classpathentry kind="src" path="java/servlet"/>
     <classpathentry kind="src" path="java/servlettest"/>
+    <classpathentry kind="src" path="gener/config"/>
+    <classpathentry kind="src" path="gener/osis"/>
     <classpathentry exported="true" kind="lib" path="resource"/>
     <classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

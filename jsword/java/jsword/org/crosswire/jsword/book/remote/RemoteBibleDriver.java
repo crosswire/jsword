@@ -36,6 +36,18 @@ import org.jdom.Document;
 public abstract class RemoteBibleDriver extends AbstractBibleDriver
 {
     /**
+     * Test the connection
+     * @throws RemoterException if the ping fails
+     */
+    protected void ping() throws RemoterException
+    {
+        Remoter remoter = getRemoter();
+        
+        RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
+        remoter.execute(method);
+    }
+
+    /**
      * Accessor for the current remoter.
      * @return The remoter or null if none is available.
      */
@@ -56,16 +68,11 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
                 try
                 {
                     Remoter remoter = getRemoter();
-                    if (remoter == null)
-                    {
-                        rbmd = new RemoteBibleMetaData[0];
-                    }
 
                     RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
                     Document doc = remoter.execute(method);
 
-                    rbmd = Converter.convertDocumentToBibleMetaDatas(doc, getRemoter(), getRemoter().getSpeed());
-
+                    rbmd = Converter.convertDocumentToBibleMetaDatas(doc, remoter, remoter.getSpeed());
                     for (int i=0; i<rbmd.length; i++)
                     {
                         ids.put(rbmd[i].getID(), rbmd[i]);

@@ -4,6 +4,7 @@ package org.crosswire.jsword.book.ser;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 
 /**
@@ -37,6 +38,6 @@ public class SerBibleDriver extends LocalURLBibleDriver
      */
     public SerBibleDriver() throws MalformedURLException, IOException
     {
-        super("Serialized", "ser", SerBible.class, 2);
+        super("Serialized", "ser", SerBible.class, Bibles.SPEED_FAST);
     }
 }

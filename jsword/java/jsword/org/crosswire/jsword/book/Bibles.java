@@ -193,9 +193,13 @@ public class Bibles
     /**
      * Trawl through all the known Bibles looking for the one closest to
      * the given name.
-     * This method is for use with config scripts and other things that
+     * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
      * BibleMetaData objects.
+     * <p>This method is picky in that it only matches when the driver and the
+     * version are the same. The user (probably) only cares about the version
+     * though, and so might be dissapointed when we fail to match AV (FooDriver)
+     * against AV (BarDriver).
      * @param name The version to use as default.
      * @exception BookException If the name is not valid
      */
@@ -206,14 +210,16 @@ public class Bibles
         BibleMetaData[] bmds = getBibles();
         for (int i=0; i<bmds.length; i++)
         {
-            if (bmds[i].getName().equals(name))
+            BibleMetaData bmd = bmds[i];
+            String tname = bmd.getFullName();
+            if (tname.equals(name))
             {
-                setDefault(bmds[i]);
+                setDefault(bmd);
                 return;
             }
         }
 
-        throw new BookException("bible_not_found");
+        throw new BookException("bibles_not_found", new Object[] { name });
     }
 
     /**

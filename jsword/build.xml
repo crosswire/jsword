@@ -8,9 +8,8 @@
   <property name="source.jar" value="${source.root}/jar"/>
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
-  <property name="source.xsl" value="${source.root}/xsl"/>
-  <property name="source.versions" value="../notes/versions"/>
-  <property name="source.web" value="${source.root}/web"/>
+  <property name="source.gener" value="${source.root}/gener"/>
+  <property name="source.keystore" value="${basedir}/jsword.keystore"/>
   <property name="target.root" value="target/ant"/>
   <property name="target.classes" value="${target.root}/temp/classes"/>
   <property name="target.jar" value="${target.root}/temp/jar"/>
@@ -19,11 +18,12 @@
   <property name="target.jnlp" value="${target.doc}/jnlp"/>
   <property name="target.junit" value="${target.root}/junit"/>
   <property name="notes.root" value="notes"/>
-  <property name="jnlp.keystore" value="${basedir}/jsword.keystore"/>
+
   <property name="jnlp.alias" value="test builds"/>
   <property name="jnlp.password" value="p455w0rd"/>
-
   <property name="product.version" value="0.9.1"/>
+  <!-- override this with -Djnlp.hostname=www.crosswire.org to build in live -->
+  <property name="jnlp.hostname" value="localhost:8080"/>
 
   <!--=======================================================================-->
   <patternset id="java.non.compile">
@@ -38,14 +38,54 @@
   <target name="init" description="Prepare for other tasks">
     <tstamp/>
     <echo message="Building to: ${target.root}"/>
-    <available property="keystore.exists" file="${jnlp.keystore}"/>
   </target>
 
   <!--=======================================================================-->
-  <target name="compile" depends="init" description="Validate source syntax">
+  <target name="xjc" depends="init, xjc.check" if="xjc.required" description="Run XJC">
+    <rmdir dir="${source.gener}/osis"/>
+    <mkdir dir="${source.gener}/osis"/>
+    <java fork="true" classname="com.sun.tools.xjc.Driver">
+      <arg value="-d"/>
+      <arg value="${source.gener}/osis"/>
+      <arg value="-p"/>
+      <arg value="org.crosswire.jsword.osis"/>
+      <arg value="${source.etc}/osisCore.1.1.xsd"/>
+      <classpath>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </java>
+  </target>
+  <target name="xjc.check" depends="init" description="Check to see if xjc is needed">
+    <mkdir dir="${source.gener}/osis"/>
+    <uptodate property="xjc.required">
+      <srcfiles dir= "${source.gener}/osis" includes="**/*"/>
+      <mapper type="merge" to="${source.etc}/osisCore.1.1.xsd"/>
+    </uptodate>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="compile" depends="init, xjc" description="Validate source syntax">
     <antcall target="compile.section">
       <param name="section" value="common"/>
     </antcall>
+    <echo message="Compiling ${source.gener}/osis"/>
+    <mkdir dir="${target.classes}/osis"/>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
+      <src path="${source.java}/osis"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+    <copy todir="${target.classes}/osis">
+      <fileset dir="${source.gener}/osis">
+        <patternset refid="java.non.compile"/>
+      </fileset>
+    </copy>
     <antcall target="compile.section">
       <param name="section" value="jsword"/>
     </antcall>
@@ -102,7 +142,26 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jar" depends="compile" description="Create a jsword jar file">
+  <target name="check.config">
+    <mkdir dir="${source.gener}/config"/>
+    <style
+        in="${source.res}/config.xml"
+        out="${source.gener}/config/ConfigTest.java"
+        style="${source.etc}/config-test.xsl"/>
+    <mkdir dir="${target.classes}/config"/>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
+      <src path="${source.gener}/config"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="jar" depends="compile, check.config" description="Create a jsword jar file">
     <mkdir dir="${target.jar}"/>
     <jar
         manifest="${source.etc}/desktop/MANIFEST.MF"
@@ -370,9 +429,9 @@
   </target>
   
   <!--=======================================================================-->
-  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="keystore.exists" depends="init">
+  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="keystore.exists" depends="init, keystore.check">
     <echo message="Generating keystore for webstart testing"/>
-    <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${jnlp.keystore}">
+    <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${source.keystore}">
       <dname>
         <param name="CN" value="JSword Project"/>
         <param name="OU" value="Test Builds"/>
@@ -381,19 +440,28 @@
       </dname>
     </genkey>
   </target>
-  
+  <target name="keystore.check" description="Check the keystore is there">
+    <available property="keystore.exists" file="${source.keystore}"/>
+  </target>
+
   <!--=======================================================================-->
   <target name="jnlp.deploy" description="sign jars to complete deployment" depends="jnlp.keygen, jnlp.prepare">
     <echo message="Signing project JARs"/>
-    <signjar storepass="p455w0rd"
+    <signjar storepass="${jnlp.password}"
          alias="${jnlp.alias}"
-         keystore="${jnlp.keystore}"
+         keystore="${source.keystore}"
          keypass="${jnlp.password}">
       <fileset dir="${target.jnlp}">
         <include name="**/*.jar"/>
         <include name="**/*.zip"/>
       </fileset>
     </signjar>
+    <copy todir="${target.jnlp}" file="${source.etc}/jnlp/jsword.jnlp" filtering="true">
+      <filterset>
+        <filter token="HOSTNAME" value="${jnlp.hostname}"/>
+        <filter token="WEBAPP" value="jsword"/>
+      </filterset>
+    </copy>
   </target>
 
   <!--=======================================================================-->

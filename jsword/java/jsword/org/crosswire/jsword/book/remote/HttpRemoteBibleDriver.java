@@ -1,6 +1,14 @@
 
 package org.crosswire.jsword.book.remote;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.BibleDriver;
+import org.crosswire.jsword.book.Bibles;
+import org.crosswire.jsword.book.BookException;
+
 
 /**
  * A fullfilment of RemoteBibleDriver that uses an HTTP commection to
@@ -30,57 +38,13 @@ package org.crosswire.jsword.book.remote;
 public class HttpRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
-     * Simple ctor
+     * Pass on the exception because RemoteBibleDriver.ctor() could fail due to
+     * its ping start-up operation.
      */
-    public HttpRemoteBibleDriver(String baseurl)
+    public HttpRemoteBibleDriver(String baseurl) throws RemoterException
     {
-        this.baseurl = baseurl;
-    }
-
-    /**
-     * Sets the baseurl.
-     * @param baseurl The baseurl to set
-     *
-    public void setLocalBaseURL(String baseurl) throws BookException
-    {
-        // This is a bit nasty - we need to get the singleton of us that was
-        // created by the Bibles class so we can unregister and then re-register
-        // the Bibles
-
-        if (driver != null)
-        {
-            BibleMetaData[] bmds = getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.removeBible(bmds[i]);
-            }
-        }
-
-        if (baseurl == null)
-        {
-            remoter = null;
-            driver = null;
-            HttpRemoteBibleDriver.baseurl = null;
-        }
-        else
-        {
-            try
-            {
-                remoter = new HttpRemoter(baseurl);
-                driver = new HttpRemoteBibleDriver();
-                HttpRemoteBibleDriver.baseurl = baseurl;
-
-                BibleMetaData[] bmds = driver.getBibles();
-                for (int i=0; i<bmds.length; i++)
-                {
-                    Bibles.addBible(bmds[i]);
-                }
-            }
-            catch (Exception ex)
-            {
-                Reporter.informUser(RemoteBibleDriver.class, ex);
-            }
-        }
+        remoter = new HttpRemoter(baseurl);
+        ping();
     }
 
     /**
@@ -93,7 +57,69 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
         return remoter;
     }
 
-    private String baseurl = null;
+    /**
+     * The method by which we talk
+     */
+    private Remoter remoter = null;
 
-    private static Remoter remoter = null;
+    /**
+     * Accessor for the URLs that we talk to.
+     * @return String
+     */
+    public static String[] getURLs()
+    {
+        return urls;
+    }
+
+    /**
+     * Accessor for the URLs that we talk to.
+     * @param stemp
+     */
+    public static void setURLs(String[] urls)
+    {
+        // first unregister all the old drivers
+        for (int i=0; i<drivers.length; i++)
+        {
+            try
+            {
+                Bibles.unregisterDriver(drivers[i]);
+            }
+            catch (BookException ex)
+            {
+                Reporter.informUser(HttpRemoteBibleDriver.class, ex);
+            }
+        }
+
+        // Then create and register the new ones
+        HttpRemoteBibleDriver.urls = urls;
+        List dlist = new ArrayList();
+        for (int i=0; i<urls.length; i++)
+        {
+            try
+            {
+                BibleDriver driver = new HttpRemoteBibleDriver(urls[i]); 
+                dlist.add(driver);
+                Bibles.registerDriver(driver);
+            }
+            catch (Exception ex)
+            {
+                Reporter.informUser(HttpRemoteBibleDriver.class, ex);
+            }
+        }
+
+        // We do this via a temporary list because any drivers that fail to
+        // start get excluded, so we shouldn't remember them in case we later
+        // unregister() them
+        drivers = (HttpRemoteBibleDriver[]) dlist.toArray(new HttpRemoteBibleDriver[dlist.size()]);
+    }
+
+    /**
+     * An array of the urls that we are currently using.
+     */
+    private static String[] urls = new String[0];
+    
+    /**
+     * An array of the drivers that we are currently using. 
+     */
+    private static HttpRemoteBibleDriver[] drivers = new HttpRemoteBibleDriver[0];
 }

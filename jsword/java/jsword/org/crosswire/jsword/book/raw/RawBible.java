@@ -208,7 +208,7 @@ public class RawBible extends LocalURLBible
      * disk and then read it at query time.
      * @return True if we are cacheing data in memory
      */
-    public static boolean getDefaultCacheData()
+    public static boolean isDefaultCacheData()
     {
         return defaultmemory;
     }

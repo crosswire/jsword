@@ -1,10 +1,8 @@
 
 package org.crosswire.jsword.book.remote;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.crosswire.jsword.book.Bible;
@@ -64,14 +62,13 @@ public class LocalRemoter implements Remoter
         {
             try
             {
-                BibleMetaData[] orig_bmds = Bibles.getBibles();
-                BibleMetaData[] bmds = trimRemote(orig_bmds);
+                BibleMetaData[] bmds = Bibles.getFastBibles(Bibles.SPEED_SLOWEST);
                 String[] uids = getUIDs(bmds);
                 return Converter.convertBibleMetaDatasToDocument(bmds, uids);
             }
             catch (BookException ex)
             {
-                throw new RemoterException(ex);
+                throw new RemoterException("remote_getbible_fail", ex);
             }
         }
         else if (RemoteConstants.METHOD_GETDATA.equals(methodname))
@@ -88,11 +85,11 @@ public class LocalRemoter implements Remoter
             }
             catch (BookException ex)
             {
-                throw new RemoterException(ex);
+                throw new RemoterException("remote_getdata_fail", ex);
             }
             catch (NoSuchVerseException ex)
             {
-                throw new RemoterException(ex);
+                throw new RemoterException("remote_getdata_noverse", ex);
             }
         }
         else if (RemoteConstants.METHOD_FINDPASSAGE.equals(methodname))
@@ -108,7 +105,7 @@ public class LocalRemoter implements Remoter
             }
             catch (BookException ex)
             {
-                throw new RemoterException(ex);
+                throw new RemoterException("remote_findpassage_fail", ex);
             }
         }
         else if (RemoteConstants.METHOD_STARTSWITH.equals(methodname))
@@ -124,7 +121,7 @@ public class LocalRemoter implements Remoter
             }
             catch (BookException ex)
             {
-                throw new RemoterException(ex);
+                throw new RemoterException("remote_startswith_fail", ex);
             }
         }
         else
@@ -139,25 +136,6 @@ public class LocalRemoter implements Remoter
     public int getSpeed()
     {
         return Bibles.SPEED_REMOTE_FASTEST;
-    }
-
-    /**
-     * Method trimRemote
-     * @param orig_bmds
-     * @return BibleMetaData[]
-     */
-    private BibleMetaData[] trimRemote(BibleMetaData[] orig_bmds)
-    {
-        List temp = new ArrayList();
-        
-        for (int i = 0; i < orig_bmds.length; i++)
-        {
-            BibleMetaData bmd = orig_bmds[i];
-            if (bmd.getSpeed() > Bibles.SPEED_REMOTE_FASTEST)
-                temp.add(bmd);
-        }
-
-        return (BibleMetaData[]) temp.toArray(new BibleMetaData[temp.size()]);
     }
 
     /**

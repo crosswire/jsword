@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.remote;
 
+import org.crosswire.common.util.LucidException;
+
 /**
  * For use in Remoter calls that fail.
  * 
@@ -25,7 +27,7 @@ package org.crosswire.jsword.book.remote;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RemoterException extends Exception
+public class RemoterException extends LucidException
 {
     /**
      * Constructor RemoterException.
@@ -47,17 +49,9 @@ public class RemoterException extends Exception
     /**
      * Constructor RemoterException.
      */
-    public RemoterException(String string, Throwable cause)
+    public RemoterException(String message, Throwable cause)
     {
-        super(string);
-        this.cause = cause;
-    }
-
-    /**
-     * Constructor RemoterException.
-     */
-    public RemoterException(Throwable cause)
-    {
+        super(message);
         this.cause = cause;
     }
 
