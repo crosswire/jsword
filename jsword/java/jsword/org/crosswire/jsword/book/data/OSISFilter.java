@@ -2,14 +2,14 @@
 package org.crosswire.jsword.book.data;
 
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.bind.Element;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.crosswire.common.util.Logger;
 import org.xml.sax.InputSource;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Filter to convert an OSIS XML string to OSIS format.
@@ -37,27 +37,52 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class OSISFilter implements Filter
 {
+    /**
+     * Ctor
+     */
+    public OSISFilter()
+    {
+        try
+        {
+            unm = JAXBUtil.getJAXBContext().createUnmarshaller();
+        }
+        catch (JAXBException ex)
+        {
+            log.fatal("Failed to init JAXB unmarshaller", ex);
+        }
+    }
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
     public void toOSIS(Element ele, String plain) throws DataException
     {
+        if (unm == null)
+        {
+            throw new DataException(Msg.OSIS_INIT);
+        }
+
         try
         {
             // create a root element to house our document fragment
             StringReader in = new StringReader("<root>"+plain+"</root>");
             InputSource is = new InputSource(in);
-            
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser parser = spf.newSAXParser();
-            DefaultHandler handler = new OSISDefaultHandler(ele);
-            parser.parse(is, handler);
+
+            Object data = unm.unmarshal(is);
+
+            List content = JAXBUtil.getList(ele);
+            content.add(data);
         }
         catch (Exception ex)
         {
             throw new DataException(Msg.THML_BADTOKEN, ex);
         }
     }
+
+    /**
+     * The JAXB unmarshaller
+     */
+    private Unmarshaller unm = null;
 
     /**
      * The log stream

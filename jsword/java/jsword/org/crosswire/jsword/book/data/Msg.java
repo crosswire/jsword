@@ -29,6 +29,8 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
+    static final Msg OSIS_INIT = new Msg("OSIS layer failed to initialise");
+
     static final Msg GBF_JAXB = new Msg("Parse Error");
     static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
 

@@ -85,11 +85,14 @@ public class JAXBUtil
         }
         catch (Exception ex)
         {
-            log.error("Failed to test JAXB", ex);
+            log.fatal("Failed to test JAXB", ex);
             initex = ex;
         }
     }
 
+    /**
+     * Accessor for the JAXB context created at startup
+     */
     public static JAXBContext getJAXBContext()
     {
         if (jc == null)
