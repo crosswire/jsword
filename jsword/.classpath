@@ -6,6 +6,7 @@
 	<classpathentry sourcepath="/jsword-support/othersource/javatar-2.5.zip" kind="lib" path="jar/jtar-2.5/tar.jar"/>
 	<classpathentry kind="src" path="/common"/>
 	<classpathentry kind="src" path="java/jsword"/>
+	<classpathentry kind="src" path="java/limbo"/>
 	<classpathentry kind="src" path="java/jswordtest"/>
 	<classpathentry exported="true" kind="lib" path="resource"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>

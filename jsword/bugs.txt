@@ -9,15 +9,19 @@ We are here
 Swing
 - Add raw/original text to view-source
 - Interrupting/cancelling a download does not cleanup the download.
-  This is perhaps a bigger problem of the semantic of job cancellation merely interrupting a thread.
+  This is perhaps a bigger problem of the semantic of job cancellation merely
+  interrupting a thread.
 
 BookData Display
 - BHS does not display the text in the right order.
-  Each verse is shown RtoL, which is correct, but the verses are ordered from LtoR.
-  Also the verse numbers need to be at the beginning of the verse, which is on the right
+  Each verse is shown RtoL, which is correct, but the verses are ordered from
+  LtoR. Also the verse numbers need to be at the beginning of the verse, which
+  is on the right
 - Vines shows internal markup around verse references.
 - remove swing (not cswing)
 - some nt verses badly displayed in ot refs
+- SwordBook.getText(Verse v) gets called 4 times for the same verse when that
+  verse is visible and the bible is changed.
 
 Web
 - auto test for web demo
@@ -29,6 +33,12 @@ Install
 
 Search
 - match does not support restrict
+
+Build
+- get nightly build to work again
+
+Data Problems
+- Notes in Ruth 1-2 are corrupt in BHS
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.8
