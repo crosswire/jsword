@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.raw;
 
 import java.util.Iterator;
@@ -40,7 +39,7 @@ public interface Items
     /**
      * Fetch an item from the dictionary by an id.
      * @param index The id of the word to fetch
-     * @exception NoSuchWordException
+     * @exception NoSuchResourceException
      */
     public String getItem(int index) throws NoSuchResourceException;
 

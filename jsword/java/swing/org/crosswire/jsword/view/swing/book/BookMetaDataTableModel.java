@@ -60,7 +60,15 @@ public class BookMetaDataTableModel extends MapTableModel
     {
         if (bmd != this.bmd)
         {
-            setMap(bmd.getProperties());
+            if (bmd == null)
+            {
+                setMap(null);
+            }
+            else
+            {
+                setMap(bmd.getProperties());
+            }
+
             this.bmd = bmd;
         }
     }

@@ -1,4 +1,3 @@
-
 package org.crosswire.common.swing;
 
 import javax.swing.AbstractAction;
@@ -44,7 +43,7 @@ public abstract class EirAbstractAction extends AbstractAction
             putValue(Action.NAME, name);
         }
 
-        // For JDK1.2/1.3/1.4 compatibility
+        // JDK: For JDK1.2/1.3/1.4 compatibility
         if (large_icon != null)
         {
             putValue("LargeIcon" /*Action.LARGE_ICON*/, GuiUtil.getIcon(large_icon));

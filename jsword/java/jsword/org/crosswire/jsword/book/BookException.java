@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.util.MsgBase;
@@ -70,4 +69,3 @@ public class BookException extends LucidException
         super(msg, ex, params);
     }
 }
-

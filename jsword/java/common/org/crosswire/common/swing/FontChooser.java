@@ -101,13 +101,11 @@ public class FontChooser extends JPanel
         Component root = SwingUtilities.getRoot(parent);
         FontChooser fontc = new FontChooser();
 
-        /*
-        For some reason we can't do this in the version of Swing that we are on
-        it is only available in the JDK1.2.2 implementation
-        fontc.dialog = (root instanceof JFrame)
-                     ? new JDialog((JFrame) root, title, true)
-                     : new JDialog((JDialog) root, title, true);
-        */
+        // JDK: For some reason we can't do this in the version of Swing that we are on
+        // it is only available in the JDK1.2.2 implementation
+        // fontc.dialog = (root instanceof JFrame)
+        //              ? new JDialog((JFrame) root, title, true)
+        //              : new JDialog((JDialog) root, title, true);
         fontc.dialog = new JDialog((JFrame) root, title, true);
 
         // Not sure if this is the right thing to do?

@@ -316,7 +316,7 @@ public class MapperPane extends JPanel implements Scrollable
      * when the viewports width changes.  This allows horizontal
      * scrolling if the JViewport is itself embedded in a JScrollPane.
      * @return False - don't track the viewports width.
-     * @see Scrollable#getScrollableTracksViewportWidth
+     * @see Scrollable#getScrollableTracksViewportWidth()
      */
     public boolean getScrollableTracksViewportWidth()
     {
@@ -336,7 +336,7 @@ public class MapperPane extends JPanel implements Scrollable
      * when the viewports height changes.  This allows vertical
      * scrolling if the JViewport is itself embedded in a JScrollPane.
      * @return False - don't track the viewports width.
-     * @see Scrollable#getScrollableTracksViewportWidth
+     * @see Scrollable#getScrollableTracksViewportWidth()
      */
     public boolean getScrollableTracksViewportHeight()
     {
@@ -351,34 +351,46 @@ public class MapperPane extends JPanel implements Scrollable
         return false;
     }
 
-    /** constant for the X part */
+    /**
+     * constant for the X part
+     */
     private static final int X = 0;
 
-    /** constant for the Y part */
+    /**
+     * constant for the Y part
+     */
     private static final int Y = 1;
 
-    /** The Map that we are viewing */
+    /**
+     * The Map that we are viewing
+     */
     private Map map;
 
-    /** Do we force height and width to be the same */
+    /**
+     * Do we force height and width to be the same
+     */
     private boolean lock_aspect = true;
 
-    /** The map listener */
+    /**
+     * The map listener
+     */
     private CustomMapListener cml = new CustomMapListener();
 
-    /** The VerseColorizer */
+    /**
+     * The VerseColorizer
+     */
     private VerseColor versecolor = new RainbowVerseColor();
 
     /**
-    * Sync the map and the table
-    */
+     * Sync the map and the table
+     */
     class CustomMapListener implements MapListener
     {
         /**
-        * This method is called to indicate that a node on the map has
-        * moved.
-        * @param ev Describes the change
-        */
+         * This method is called to indicate that a node on the map has
+         * moved.
+         * @param ev Describes the change
+         */
         public void mapChanged(final MapEvent ev)
         {
             if (!SwingUtilities.isEventDispatchThread())
@@ -397,9 +409,9 @@ public class MapperPane extends JPanel implements Scrollable
         }
 
         /**
-        * This method is called to indicate that the whole map has changed
-        * @param ev Describes the change
-        */
+         * This method is called to indicate that the whole map has changed
+         * @param ev Describes the change
+         */
         public void mapRewritten(final MapEvent ev)
         {
             if (!SwingUtilities.isEventDispatchThread())

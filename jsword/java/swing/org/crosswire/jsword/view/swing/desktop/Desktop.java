@@ -41,6 +41,7 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
@@ -116,7 +117,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * Construct a Desktop.
      */
-    public Desktop() throws IOException, JDOMException
+    public Desktop() throws IOException, JDOMException, InstallException
     {
         URL predicturl = Project.instance().getWritablePropertiesURL("splash");
         Splash splash = new Splash(frame, 60000);
@@ -203,7 +204,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * Call all the constructors
      */
-    private void createComponents()
+    private void createComponents() throws InstallException
     {
         layouts = new ViewLayout[2];
         layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();

@@ -47,8 +47,19 @@ import org.jdom.input.SAXBuilder;
  */
 public class Project
 {
+    /**
+     * Extension for XSLT files
+     */
     public static final String XSLT_EXTENSION = ".xsl";
+
+    /**
+     * Extension for properties files
+     */
     public static final String PROPERTIES_EXTENSION = ".properties";
+
+    /**
+     * The JSword user settings directory
+     */
     public static final String PROJECT_DIRECTORY = ".jsword";
 
     /**
@@ -391,7 +402,6 @@ public class Project
     /**
      * Get and load an XML file from the classpath and a few other places
      * into a JDOM Document object.
-     * @return The project root as a URL
      * @param subject The name of the desired resource (without any extension)
      * @return The requested resource
      * @throws IOException if there is a problem reading the file

@@ -11,8 +11,8 @@
  * config-test.xsl.
  * <p>It is stored in CVS purely on the principle that users ought to be able to compile
  * without needed all the code-generation tools.</p>
- * @see ../../etc/config-test.xsl
- * @see ../../resource/config.xml
+ * see ../../etc/config-test.xsl
+ * see ../../resource/config.xml
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class ConfigTest

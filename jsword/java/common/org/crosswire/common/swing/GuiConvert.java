@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.Logger;
 
 /**
  * Conversions between various types and Strings.
@@ -46,9 +47,18 @@ public class GuiConvert
      */
     public static Font string2Font(String value)
     {
-        if (value == null || value.equals("")) return null;
+        if (value == null || value.equals(""))
+        {
+            return null;
+        }
 
         String[] values = StringUtils.split(value, ",");
+        if (values.length != 3)
+        {
+            log.warn("illegal font name: "+value);
+            return null;
+        }
+
         return new Font(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
     }
 
@@ -59,7 +69,10 @@ public class GuiConvert
      */
     public static String font2String(Font font)
     {
-        if (font == null || font.equals("")) return "";
+        if (font == null || font.equals(""))
+        {
+            return "";
+        }
 
         return font.getName()+","+font.getStyle()+","+font.getSize();
     }
@@ -73,6 +86,12 @@ public class GuiConvert
     {
         if (value == null || value.equals(""))
         {
+            return null;
+        }
+
+        if (value.length() != 7)
+        {
+            log.warn("illegal colour name: "+value);
             return null;
         }
 
@@ -94,7 +113,10 @@ public class GuiConvert
      */
     public static String color2String(Color color)
     {
-        if (color == null) return "";
+        if (color == null)
+        {
+            return "";
+        }
 
         String red = "00" + Integer.toHexString(color.getRed());
         String green = "00" + Integer.toHexString(color.getGreen());
@@ -106,4 +128,9 @@ public class GuiConvert
 
         return "#"+red+green+blue;
     }
+    
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(GuiConvert.class);
 }

@@ -32,12 +32,14 @@ public interface Activatable
      * Called to indicate that the Book should initialize itself, and consume
      * whatever system resources it needs to be able to respond to other
      * queries.
+     * @param lock An attempt to ensure that only the Activator calls this method
      */
     public void activate(Lock lock);
 
     /**
      * Called to indicate that the Book should release whatever system
      * resources it can to make way for other uses.
+     * @param lock An attempt to ensure that only the Activator calls this method
      */
     public void deactivate(Lock lock);
 }

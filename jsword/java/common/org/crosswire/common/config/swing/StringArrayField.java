@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -220,6 +219,9 @@ public class StringArrayField extends JPanel implements Field
      */
     public static class InputPane extends JPanel
     {
+        /**
+         * Simple ctor
+         */
         public InputPane()
         {
             super(new FieldLayout(10, 10));
@@ -230,27 +232,41 @@ public class StringArrayField extends JPanel implements Field
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
-        /** To edit a name (hashtable key) */
+        /**
+         * To edit a name (hashtable key)
+         */
         protected JTextField name_field = new JTextField();
     }
     
     private String separator = "#";
 
-    /** The TableModel that points the JTable at the Hashtable */
+    /**
+     * The TableModel that points the JTable at the Hashtable
+     */
     private DefaultComboBoxModel list_model = new DefaultComboBoxModel();
 
-    /** The Table - displays the Hashtble */
+    /**
+     * The Table - displays the Hashtble
+     */
     private JList list = new JList(list_model);
 
-    /** The Scroller for the JTable */
+    /**
+     * The Scroller for the JTable
+     */
     private JScrollPane scroll = new JScrollPane();
 
-    /** Button bar: add */
+    /**
+     * Button bar: add
+     */
     private JButton add = new JButton("Add");
 
-    /** Button bar: remove */
+    /**
+     * Button bar: remove
+     */
     private JButton remove = new JButton("Remove");
 
-    /** Button bar: update */
+    /**
+     * Button bar: update
+     */
     private JButton update = new JButton("Update");
 }

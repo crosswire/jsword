@@ -3,6 +3,8 @@ package org.crosswire.common.swing;
 import java.awt.Component;
 import java.util.Properties;
 
+import org.crosswire.common.util.Reporter;
+
 /**
  * Handle AWT exceptions that reach the event thread.
  * 
@@ -40,7 +42,7 @@ public class CustomAWTExceptionHandler
      */
     public void handle(final Throwable ex)
     {
-        //Reporter.informUser(this, ex);
+        Reporter.informUser(this, ex);
 
         /* This is done by the above
         SwingUtilities.invokeLater(new Runnable()
@@ -55,11 +57,11 @@ public class CustomAWTExceptionHandler
     
     /**
      * Sets the parent of any exception windows.
-     * @param comp The comp to set
+     * @param newcomp The comp to set
      */
-    public static void setParentComponent(Component comp)
+    public static void setParentComponent(Component newcomp)
     {
-        if (comp != null)
+        if (newcomp != null)
         {
             // register ourselves
             System.setProperty(AWT_HANDLER_PROPERTY, OUR_NAME);
@@ -75,7 +77,7 @@ public class CustomAWTExceptionHandler
             }
         }
 
-        //CustomAWTExceptionHandler.comp = comp;
+        //CustomAWTExceptionHandler.comp = newcomp;
     }
 
     private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";

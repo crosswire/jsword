@@ -42,7 +42,7 @@ public class ResourceUtil
     /**
      * Generic resource URL fetcher. One way or the other we'll find it!
      * I'm fairly sure some of these do the same thing, but which and how they
-     * change on various JDK's is complex, and it seems simpler to take the
+     * change on various VMs is complex, and it seems simpler to take the
      * shotgun approach.
      * @param search The name of the resource (without a leading /) to find
      * @return The requested resource

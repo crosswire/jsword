@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Convert a JDK 1.2 Iterator into a JDK 1.1 Enumeration.
- * The only real difference between the 2 is the naming and
+ * Convert an Iterator into a Enumeration.
+ * <p>The only real difference between the 2 is the naming and
  * that Enumeration does not have the delete method.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>

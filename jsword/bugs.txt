@@ -2,6 +2,7 @@
 This file is our equivalent of bugzilla for the time being.
 
 GUI
+- status bar re-size
 
 Modules
 

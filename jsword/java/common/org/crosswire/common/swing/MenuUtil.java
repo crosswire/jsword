@@ -234,7 +234,7 @@ public class MenuUtil
 
     /**
      * Yarked from JMenu, ideally this would be public.
-     * @see JMenu#createActionChangeListener(javax.swing.JMenuItem)
+     * see JMenu#createActionChangeListener(javax.swing.JMenuItem)
      */
     protected static PropertyChangeListener createActionChangeListener(JMenuItem b)
     {

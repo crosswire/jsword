@@ -547,11 +547,17 @@ public class NetUtil
      */
     public static class URLFilterFilenameFilter implements FilenameFilter
     {
+        /**
+         * Simple ctor
+         */
         public URLFilterFilenameFilter(URLFilter filter)
         {
             this.filter = filter;
         }
 
+        /* (non-Javadoc)
+         * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
+         */
         public boolean accept(File arg0, String name)
         {
             return filter.accept(name);

@@ -59,7 +59,7 @@ public class MsgBase extends Enum
         return base;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.apache.commons.lang.enum.Enum#toString()
      */
     public String toString(Object[] params)

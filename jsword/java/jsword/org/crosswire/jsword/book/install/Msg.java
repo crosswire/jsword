@@ -1,8 +1,9 @@
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.book.install;
+
+import org.crosswire.common.util.MsgBase;
 
 /**
- * Commentary in the core interface to works that provide text on a verse-by-
- * verse basis.
+ * Compile safe Msg resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -24,9 +25,24 @@ package org.crosswire.jsword.book;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see org.crosswire.jsword.book.Bible
- * @deprecated Use Book
  */
-public interface Commentary extends Book
+class Msg extends MsgBase
 {
+    static final Msg INIT = new Msg("Failed to load installer classes");
+
+    /**
+     * Initialise any resource bundles
+     */
+    static
+    {
+        init(Msg.class.getName());
+    }
+
+    /**
+     * Passthrough ctor
+     */
+    private Msg(String name)
+    {
+        super(name);
+    }
 }

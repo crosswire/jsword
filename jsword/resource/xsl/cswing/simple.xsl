@@ -37,7 +37,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
+
   <!--=======================================================================-->
   <xsl:template match="/osis">
     <html>
@@ -251,6 +251,13 @@
     </xsl:choose>
   </xsl:template>
   
+  <!--=======================================================================-->
+  <xsl:template match="title">
+    <b>
+      <xsl:apply-templates/>
+    </b><br/>
+  </xsl:template>
+
   <!--=======================================================================-->
 
   <xsl:template match="caption">
@@ -548,21 +555,7 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-  
-  <!-- This is the title of a chapter or other division. -->
-  <xsl:template match="div/title">
-    <h3 class="div-title">
-      <xsl:apply-templates/>
-    </h3>
-  </xsl:template>
-  
-  <!-- This is an inline title of some other work. -->
-  <xsl:template match="title">
-    <cite class="title">
-      <xsl:apply-templates/>
-    </cite>
-  </xsl:template>
-  
+
   <xsl:template match="transChange">
     <span class="transChange">
       <xsl:apply-templates/>

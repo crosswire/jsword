@@ -7,7 +7,7 @@ import org.apache.log4j.Level;
 
 /**
  * This class is very similar to Commons-Logging except it should be even
- * smaller and have an API closer to the Log4J API (and even JDK 1.4 logging)
+ * smaller and have an API closer to the Log4J API (and even J2SE 1.4 logging)
  * to help us to move over.
  * Having our own class will also help with re-factoring.
  * 

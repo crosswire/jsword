@@ -65,8 +65,8 @@ public class DemoServlet extends HttpServlet
         }
     }
 
-    /**
-     * @see javax.servlet.http.HttpServlet#doPost(HttpServletRequest, HttpServletResponse)
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -107,10 +107,9 @@ public class DemoServlet extends HttpServlet
                 {
                     Passage waiting = ref.trimVerses(page_size);
 
-                    // Well, do you or not?  A deprecation error if you don't, won't build or run on
-                    // java < 1.4 if you do.
-                    //String link = URLEncoder.encode(waiting.getName(), "UTF-8");
-                    String link = URLEncoder.encode(waiting.getName());
+                    // JDK: A deprecation error if you don't, won't build or run on java < 1.4 if you do.
+                    //String link = URLEncoder.encode(waiting.getName());
+                    String link = URLEncoder.encode(waiting.getName(), "UTF-8");
 
                     request.setAttribute("next-link", link);
                     request.setAttribute("next-name", waiting.getName());
@@ -134,8 +133,8 @@ public class DemoServlet extends HttpServlet
         getServletContext().getRequestDispatcher("/demo.jsp").forward(request, response);
     }
 
-    /**
-     * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

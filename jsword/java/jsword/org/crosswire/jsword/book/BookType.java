@@ -30,9 +30,24 @@ import org.apache.commons.lang.enum.Enum;
  */
 public class BookType extends Enum
 {
+    /**
+     * Books that are Bibles
+     */
     public static final BookType BIBLE = new BookType("Bible");
+
+    /**
+     * Books that are Dictionaries
+     */
     public static final BookType DICTIONARY = new BookType("Dictionary");
+
+    /**
+     * Books that are Commentaries
+     */
     public static final BookType COMMENTARY = new BookType("Commentary");
+
+    /**
+     * Books that are not any of the above
+     */
     public static final BookType OTHER = new BookType("Other");
 
     /**

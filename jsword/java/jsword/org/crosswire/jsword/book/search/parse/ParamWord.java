@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
@@ -39,7 +38,7 @@ public interface ParamWord extends SearchWord
      * @param engine The controller that can provide access to the search
      *               string or a default Bible.
      * @return The requested text
-     * @exception SearchException If this action is not appropriate
+     * @exception BookException If this action is not appropriate
      */
     public String getWord(LocalParser engine) throws BookException;
 
@@ -49,7 +48,7 @@ public interface ParamWord extends SearchWord
      * @param engine The controller that can provide access to the search
      *               string or a default Bible.
      * @return A Passage relevant to this command
-     * @exception SearchException If this action is not appropriate
+     * @exception BookException If this action is not appropriate
      */
     public Passage getPassage(LocalParser engine) throws BookException;
 }

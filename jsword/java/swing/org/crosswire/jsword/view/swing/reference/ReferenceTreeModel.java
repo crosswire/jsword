@@ -343,7 +343,7 @@ public class ReferenceTreeModel implements TreeModel
 
     /**
      * Adds a listener for the TreeModelEvent posted after the tree changes.
-     * @see #removeTreeModelListener
+     * @see ReferenceTreeModel#removeTreeModelListener(TreeModelListener)
      * @param l the listener to add
      */
     public void addTreeModelListener(TreeModelListener l)
@@ -353,7 +353,7 @@ public class ReferenceTreeModel implements TreeModel
 
     /**
      * Removes a listener previously added with <B>addTreeModelListener()</B>.
-     * @see #addTreeModelListener
+     * @see ReferenceTreeModel#addTreeModelListener(TreeModelListener)
      * @param l the listener to remove
      */
     public void removeTreeModelListener(TreeModelListener l)
@@ -535,9 +535,6 @@ public class ReferenceTreeModel implements TreeModel
      * If this value is false, then any node which has no 
      * children is a leaf node, and any node may acquire 
      * children.
-     *
-     * @see TreeNode#getAllowsChildren
-     * @see TreeModel#isLeaf
      */
     protected boolean asksAllowsChildren;
 }

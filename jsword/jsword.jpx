@@ -28,6 +28,7 @@
   <property category="javaFormatting" name="packageThreshold" value="10"/>
   <property category="javaFormatting" name="wrapAtColumn" value="256"/>
   <property category="optimize.0" name="OptimizableType" value="com.borland.jbuilder.optimize.IntroOptimizeitProfiler"/>
+  <property category="personality" name="personality" value=""/>
   <property category="runtime.0" name="BuildTargetOnRun" value="com.borland.jbuilder.build.ProjectBuilder$ProjectBuildAction;make"/>
   <property category="runtime.0" name="ConfigurationName" value="jsword"/>
   <property category="runtime.0" name="RunnableType" value="com.borland.jbuilder.runtime.ApplicationRunner"/>
@@ -64,12 +65,13 @@
   <property category="sys" name="ExcludeClassEnabled" value="0"/>
   <property category="sys" name="IncludeTestPath" value="1"/>
   <property category="sys" name="InstanceVisibility" value="2"/>
-  <property category="sys" name="JDK" value="java version 1.4.1-b21"/>
+  <property category="sys" name="JDK" value="java version 1.4.2_01-b06"/>
   <property category="sys" name="LastTag" value="0"/>
   <property category="sys" name="Libraries" value="jsword"/>
   <property category="sys" name="MakeStable" value="0"/>
   <property category="sys" name="OutPath" value="target/jbuilder/classes"/>
   <property category="sys" name="SourcePath" value="java/common;java/jsword;java/sword;java/map;java/commontest;java/jswordtest;java/swordtest;java/maptest;target/gener/osis;target/gener/config;java/swing;java/swingtest;java/servlet;java/servlettest"/>
+  <property category="sys" name="SourceVersion" value="1.4"/>
   <property category="sys" name="TestPath" value="java/jswordtest"/>
   <property category="sys" name="Title" value="JSword"/>
   <property category="sys" name="TitleLabel" value=""/>

@@ -14,7 +14,7 @@ import javax.swing.text.html.HTMLDocument;
 import org.crosswire.common.util.Logger;
 
 /**
- * Make up for problems with JDK1_3.
+ * JDK: Make up for problems with 1_3.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -54,7 +54,7 @@ public class BackportUtil
      */
     public static void scrollToReference(String reference, JEditorPane pane)
     {
-        // JDK14: just do -
+        // 1_4: just do -
         // pane.scrollToReference(url);
 
         Document doc = pane.getDocument();
@@ -121,7 +121,7 @@ public class BackportUtil
     }
 
     /**
-     * JToolBar.setRollover(boolean) is not supported in JDK1.3, instead we use reflection
+     * JToolBar.setRollover(boolean) is not supported in 1.3, instead we use reflection
      * to find out whether the method is available, if so call it.
      */
     public static void setRollover(JToolBar pnl_tbar, boolean value)

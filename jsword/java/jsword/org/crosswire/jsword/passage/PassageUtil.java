@@ -240,8 +240,8 @@ public class PassageUtil
      * @param word The word to be manipulated
      * @param new_case LOWER, SENTANCE, UPPER or MIXED
      * @return The altered word
-     * @exception IllegalArgumentException If the case is not between 0 and 3.
-     * @exception IllegalArgumentException For MIXED if the word is not LORD's
+     * @exception IllegalArgumentException If the case is not between 0 and 3
+     * Or for MIXED if the word is not LORD's
      */
     public static String setCase(String word, int new_case)
     {

@@ -173,15 +173,54 @@ public interface BookMetaData
      */
     public Map getProperties();
 
+    /**
+     * The key for the type in the properties map
+     */
     public static final String KEY_TYPE = "Key";
+
+    /**
+     * The key for the book in the properties map
+     */
     public static final String KEY_BOOK = "Book";
+
+    /**
+     * The key for the driver in the properties map
+     */
     public static final String KEY_DRIVER = "Driver";
+
+    /**
+     * The key for the name in the properties map
+     */
     public static final String KEY_NAME = "Name";
+
+    /**
+     * The key for the edition in the properties map
+     */
     public static final String KEY_EDITION = "Edition";
+
+    /**
+     * The key for the initials in the properties map
+     */
     public static final String KEY_INITIALS = "Initials";
+
+    /**
+     * The key for the speed in the properties map
+     */
     public static final String KEY_SPEED = "Speed";
+
+    /**
+     * The key for the first pub in the properties map
+     */
     public static final String KEY_FIRSTPUB = "FirstPublished";
+
+    /**
+     * The key for the openness in the properties map
+     */
     public static final String KEY_OPENNESS = "Openness";
+
+    /**
+     * The key for the licence in the properties map
+     */
     public static final String KEY_LICENCE = "Licence";
 
     /**

@@ -85,7 +85,6 @@ public class Defaults
      * returned from getBibleNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
      * @param bmd The version to use as default.
-     * @exception BookException If the name is not valid
      */
     public static void setBibleMetaData(BookMetaData bmd)
     {
@@ -252,7 +251,6 @@ public class Defaults
      * returned from getDictionaryNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
      * @param dmd The version to use as default.
-     * @exception BookException If the name is not valid
      */
     public static void setDictionaryMetaData(BookMetaData dmd)
     {

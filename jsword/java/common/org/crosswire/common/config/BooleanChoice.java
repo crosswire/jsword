@@ -52,7 +52,7 @@ public class BooleanChoice extends ReflectedChoice
     {
         return Convert.string2Boolean(orig) ? Boolean.TRUE : Boolean.FALSE;
 
-        // JDK14: This could be simplified
+        // JDK: At 14 this could be simplified
         // return Boolean.valueOf(Convert.string2Boolean(orig));
     }
 }

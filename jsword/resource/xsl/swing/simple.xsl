@@ -2,16 +2,16 @@
 
 <xsl:stylesheet xmlns="http://www.w3.org/TR/REC-html40" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html" omit-xml-declaration = "yes" indent="yes"/>
-  
+
   <xsl:param name="strongs.hebrew.url" select="'dict:'"/>
   <xsl:param name="strongs.greek.url" select="'dict:'"/>
-    
+
   <!--
   For now, we assume that all the works inside a corpus are of the
   same type.
   -->
   <xsl:variable name="osis-id-type" select="substring-before((//osisText)[1]/@osisIDWork, '.')"/>
-  
+
   <xsl:variable name="page-div-type">
     <xsl:choose>
       <!--
@@ -35,7 +35,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
+
   <!--=======================================================================-->
   <xsl:template match="/osis">
     <html>
@@ -249,6 +249,13 @@
     </xsl:choose>
   </xsl:template>
   
+  <!--=======================================================================-->
+  <xsl:template match="title">
+    <h3>
+      <xsl:apply-templates/>
+    </h3>
+  </xsl:template>
+
   <!--=======================================================================-->
 
   <xsl:template match="caption">
@@ -546,21 +553,7 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-  
-  <!-- This is the title of a chapter or other division. -->
-  <xsl:template match="div/title">
-    <h3 class="div-title">
-      <xsl:apply-templates/>
-    </h3>
-  </xsl:template>
-  
-  <!-- This is an inline title of some other work. -->
-  <xsl:template match="title">
-    <cite class="title">
-      <xsl:apply-templates/>
-    </cite>
-  </xsl:template>
-  
+
   <xsl:template match="transChange">
     <span class="transChange">
       <xsl:apply-templates/>

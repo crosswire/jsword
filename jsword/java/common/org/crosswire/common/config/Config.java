@@ -30,7 +30,7 @@ import org.jdom.Element;
  * because different apps may wish to store the data in different ways.
  * Possible storage mechanisms include:<ul>
  *   <li>Properties Files</li>
- *   <li>Resource Objects (Merlin, JDK 1.4)</li>
+ *   <li>Resource Objects (J2SE 1.4)</li>
  *   <li>Network Sockets (see Remote)</li>
  * </ul></p>
  *

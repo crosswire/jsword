@@ -161,7 +161,7 @@ public class BookChooser extends JPanel
 
     /**
      * Sets the string that goes in the FileChooser window's title bar.
-     * @see #getDialogTitle
+     * @see #getDialogTitle()
      */
     public void setDialogTitle(String title)
     {
@@ -170,7 +170,7 @@ public class BookChooser extends JPanel
 
     /**
      * Gets the string that goes in the FileChooser's titlebar.
-     * @see #setDialogTitle
+     * @see #setDialogTitle(String)
      */
     public String getDialogTitle()
     {

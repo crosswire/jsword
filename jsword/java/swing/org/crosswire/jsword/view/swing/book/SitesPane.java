@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Properties;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -16,7 +19,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.swing.EirAbstractAction;
+import org.crosswire.jsword.book.install.InstallException;
+import org.crosswire.jsword.book.install.InstallManager;
+import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.util.Project;
 
 /**
  * A panel for use within a SitesPane to display one set of Books that are
@@ -48,9 +56,18 @@ public class SitesPane extends JPanel
     /**
      * Simple ctor
      */
-    public SitesPane()
+    public SitesPane() throws InstallException
     {
         jbInit();
+
+        InstallManager imgr = new InstallManager();
+        installers = imgr.getInstallers();
+
+        for (int i = 0; i < installers.length; i++)
+        {
+            SitePane site = new SitePane(installers[i]);
+            tabMain.add(site, site.getTabName());
+        }
     }
 
     /**
@@ -83,7 +100,7 @@ public class SitesPane extends JPanel
         pnlButtons.add(btnAdd, null);
         pnlButtons.add(btnOK);
 
-        tabMain.add(steLocal, "Local");
+        tabMain.add(steLocal, steLocal.getTabName());
 
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -132,6 +149,11 @@ public class SitesPane extends JPanel
         dlgMain.setVisible(true);
     }
 
+    /**
+     * The known installers fetched from InstallManager
+     */
+    private Installer[] installers = null;
+
     /*
      * GUI Components
      */
@@ -145,7 +167,7 @@ public class SitesPane extends JPanel
     /**
      * Create an 'open' Action
      */
-    public static Action createOpenAction(Component parent)
+    public static Action createOpenAction(Component parent) throws InstallException
     {
         return new OpenAction(parent);
     }
@@ -158,7 +180,7 @@ public class SitesPane extends JPanel
         /**
          * Simple ctor
          */
-        public OpenAction(Component parent)
+        public OpenAction(Component parent) throws InstallException
         {
             super("Books ...",
                   "toolbarButtonGraphics/general/Import16.gif",

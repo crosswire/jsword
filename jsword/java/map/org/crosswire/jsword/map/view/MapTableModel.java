@@ -93,7 +93,7 @@ public class MapTableModel extends AbstractTableModel
     /**
      * Returns the number of records in the map
      * @return the number or rows in the model
-     * @see #getColumnCount
+     * @see #getColumnCount()
      */
     public int getRowCount()
     {
@@ -103,7 +103,7 @@ public class MapTableModel extends AbstractTableModel
     /**
      * Returns the number of columns in the map
      * @return the number or columns in the model
-     * @see #getRowCount
+     * @see #getRowCount()
      */
     public int getColumnCount()
     {
@@ -164,7 +164,7 @@ public class MapTableModel extends AbstractTableModel
      * @param row The row whose value is to be looked up
      * @param col The column whose value is to be looked up
      * @return rue if the cell is editable.
-     * @see #setValueAt
+     * @see #setValueAt(Object, int, int)
      */
     public boolean isCellEditable(int row, int col)
     {
@@ -237,8 +237,8 @@ public class MapTableModel extends AbstractTableModel
      * @param val The new value
      * @param row The row whose value is to be changed
      * @param col The column whose value is to be changed
-     * @see #getValueAt
-     * @see #isCellEditable
+     * @see #getValueAt(int, int)
+     * @see #isCellEditable(int, int)
      */
     public void setValueAt(Object val, int row, int col)
     {

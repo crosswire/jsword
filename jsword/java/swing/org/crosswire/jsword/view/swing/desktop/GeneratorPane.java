@@ -46,14 +46,6 @@ import org.crosswire.jsword.view.swing.book.DriversComboBoxModel;
  * really only converts from one implementation of Book to another.
  * This is needed because I drivers like JDBCBook and GBMLBook will not
  * be very speed optimized.
- * <p>Since this code has been edited by JBuilder I have changed it
- * and expect problems if it is edited that way again. The code that JB
- * created did not compile with JDK 1.1 and Swing 1.1 because it uses a
- * constructor special to AWT in JDK 1.2, So I have changed code that read
- *   <code>new GridBagConstraints</code>
- * to
- *   <code>GuiUtil.getConstraints</code>
- * to fix this.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

@@ -39,8 +39,8 @@ public class ReflectionUtil
     /**
      * Call a method on a class given a sting
      * @param base The object to invoke a method on
-     * @param called_method_name The text of the invocation eg "getName"
-     * @param called_params For example new Object[] { ...}
+     * @param methodName The text of the invocation eg "getName"
+     * @param params For example new Object[] { ...}
      */
     public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
@@ -91,7 +91,7 @@ public class ReflectionUtil
     /**
      * Call a static method on a class given a sting
      * @param call The text of the invocation eg "java.lang.String.getName"
-     * @param called_params For example new Object[] { ...}
+     * @param params For example new Object[] { ...}
      */
     public static Object invoke(String call, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {

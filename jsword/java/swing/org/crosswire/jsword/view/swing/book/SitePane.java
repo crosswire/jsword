@@ -2,6 +2,11 @@ package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,11 +18,19 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.crosswire.common.swing.MapTableModel;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.install.InstallException;
+import org.crosswire.jsword.book.install.Installer;
 
 /**
  * A panel for use within a SitesPane to display one set of Books that are
@@ -47,11 +60,40 @@ import org.crosswire.jsword.book.BookMetaData;
 public class SitePane extends JPanel
 {
     /**
-     * Simple ctor
+     * For local installations
      */
     public SitePane()
     {
+        this.installer = null;
+
         jbInit();
+
+        pnlActions.add(btnDelete);
+        lblAvailable.setLabelFor(treAvailable);
+        lblAvailable.setText("Installed Books:");
+        lblAvailable.setDisplayedMnemonic('B');
+
+        TreeModel model = new BooksTreeModel();
+        treAvailable.setModel(model);
+    }
+
+    /**
+     * For remote installations
+     */
+    public SitePane(Installer installer) throws InstallException
+    {
+        this.installer = installer;
+
+        jbInit();
+
+        pnlActions.add(btnInstall);
+        pnlActions.add(btnRefresh);
+        lblAvailable.setLabelFor(treAvailable);
+        lblAvailable.setText("Available Books:");
+        lblAvailable.setDisplayedMnemonic('B');
+
+        TreeModel model = getTreeModel(installer.getIndex());
+        treAvailable.setModel(model);
     }
 
     /**
@@ -59,27 +101,48 @@ public class SitePane extends JPanel
      */
     private void jbInit()
     {
-        pnlActions.add(btnInstall);
+        btnDelete.setMnemonic('D');
+        btnDelete.setText("Delete");
+        btnDelete.setEnabled(false);
+        btnDelete.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                delete();
+            }
+        });
         btnInstall.setMnemonic('I');
         btnInstall.setText("Install");
-        lblAvailable.setDisplayedMnemonic('B');
-        lblAvailable.setLabelFor(treAvailable);
-        lblAvailable.setText("Installed Books:");
+        btnInstall.setEnabled(false);
+        btnInstall.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                install();
+            }
+        });
+        btnRefresh.setMnemonic('R');
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                refresh();
+            }
+        });
         pnlAvailable.setLayout(new BorderLayout());
-        pnlAvailable.add(scrAvailable, BorderLayout.CENTER);
-        //pnlAvailable.add(pnlActions, BorderLayout.SOUTH);
         pnlAvailable.add(lblAvailable, BorderLayout.NORTH);
+        pnlAvailable.add(scrAvailable, BorderLayout.CENTER);
+        pnlAvailable.add(pnlActions, BorderLayout.SOUTH);
         treAvailable.setCellEditor(null);
-        treAvailable.setCellRenderer(new CustomTreeCellRenderer());
         treAvailable.setRootVisible(false);
         treAvailable.setShowsRootHandles(true);
-        treAvailable.setModel(mdlAvailable);
+        treAvailable.setCellRenderer(new CustomTreeCellRenderer());
         treAvailable.addTreeSelectionListener(new TreeSelectionListener()
         {
             public void valueChanged(TreeSelectionEvent ev)
             {
-                TreePath path = ev.getPath();
-                selected(path.getLastPathComponent());
+                selected();
             }
         });
         scrAvailable.getViewport().add(treAvailable);
@@ -90,7 +153,6 @@ public class SitePane extends JPanel
         pnlSelected.setLayout(new BorderLayout());
         pnlSelected.add(scrSelected, BorderLayout.CENTER);
         pnlSelected.add(lblSelected, BorderLayout.NORTH);
-        tblSelected.setModel(mdlSelected);
         scrSelected.getViewport().add(tblSelected);
 
         sptMain.setResizeWeight(0.5);
@@ -106,19 +168,111 @@ public class SitePane extends JPanel
     }
 
     /**
-     * Something has been selected in the tree
+     * A name for the tab that this SitePane sits in
      */
-    protected void selected(Object last)
+    public String getTabName()
     {
-        if (last instanceof BookMetaData)
+        if (installer == null)
         {
-            BookMetaData bmd = (BookMetaData) last;
-            mdlSelected.setBookMetaData(bmd);
+            return "Local";
         }
         else
         {
-            mdlSelected.setBookMetaData(null);
+            return installer.getName();
         }
+    }
+
+    /**
+     * 
+     */
+    protected void delete()
+    {
+    }
+
+    /**
+     * 
+     */
+    protected void refresh()
+    {
+        if (installer != null)
+        {
+            try
+            {
+                TreeModel model = getTreeModel(installer.reloadIndex());
+                treAvailable.setModel(model);
+            }
+            catch (InstallException ex)
+            {
+                Reporter.informUser(this, ex);
+            }
+        }
+    }
+
+    /**
+     * 
+     */
+    protected void install()
+    {
+        if (installer != null)
+        {
+            TreePath path = treAvailable.getSelectionPath();
+            if (path != null)
+            {
+                Object last = path.getLastPathComponent();
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
+                String name = (String) node.getUserObject();
+
+                installer.install(name);
+            }
+        }
+    }
+
+    /**
+     * Something has been selected in the tree
+     */
+    protected void selected()
+    {
+        TreePath path = treAvailable.getSelectionPath();
+
+        btnDelete.setEnabled(path != null);
+        btnInstall.setEnabled(path != null);
+
+        if (path != null)
+        {
+            Object last = path.getLastPathComponent();
+
+            if (last instanceof BookMetaData)
+            {
+                BookMetaData bmd = (BookMetaData) last;
+                tblSelected.setModel(new BookMetaDataTableModel(bmd));
+            }
+            else if (last instanceof DefaultMutableTreeNode && installer != null)
+            {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
+                String name = (String) node.getUserObject();
+                Properties prop = installer.getEntry(name);
+                tblSelected.setModel(new MapTableModel(prop));
+            }
+            else
+            {
+                tblSelected.setModel(new MapTableModel(null));
+            }
+        }
+    }
+
+    /**
+     * Convert an Installer index list into a Tree model
+     */
+    private TreeModel getTreeModel(List entries)
+    {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Modules");
+        for (Iterator it = entries.iterator(); it.hasNext();)
+        {
+            String entry = (String) it.next();
+            root.add(new DefaultMutableTreeNode(entry));
+        }
+        DefaultTreeModel dtm = new DefaultTreeModel(root);
+        return dtm;
     }
 
     /**
@@ -132,14 +286,25 @@ public class SitePane extends JPanel
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean focus)
         {
             super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, focus);
+
             if (value instanceof BookMetaData)
             {
                 BookMetaData bmd = (BookMetaData) value;
                 setText(bmd.getFullName());
             }
+            else if (value instanceof String)
+            {
+                setText((String) value);
+            }
+
             return this;
         }
     }
+
+    /**
+     * From which we get our list of installable modules
+     */
+    private Installer installer;
 
     /*
      * GUI Components
@@ -149,12 +314,17 @@ public class SitePane extends JPanel
     private JScrollPane scrAvailable = new JScrollPane();
     private JSplitPane sptMain = new JSplitPane();
     private JButton btnInstall = new JButton();
+    private JButton btnRefresh = new JButton();
+    private JButton btnDelete = new JButton();
     private JPanel pnlActions = new JPanel();
     private JLabel lblSelected = new JLabel();
     private JTree treAvailable = new JTree();
     private JPanel pnlSelected = new JPanel();
     private JPanel pnlAvailable = new JPanel();
     private JTable tblSelected = new JTable();
-    private TreeModel mdlAvailable = new BooksTreeModel();
-    private BookMetaDataTableModel mdlSelected = new BookMetaDataTableModel();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(SitePane.class);
 }

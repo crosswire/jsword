@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.parse;
 
 import java.util.Iterator;
@@ -46,7 +45,6 @@ public class GrammarParamWord implements ParamWord
      * Get a Passage for something else to work on. WARNING the return from
      * this method is a PassageTally which is not a 100% match for the
      * Passage interface. Maybe this needs to be fixed somehow.
-     * @exception SearchException If this action is not appropriate
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
      */
     public Passage getPassage(LocalParser engine) throws BookException

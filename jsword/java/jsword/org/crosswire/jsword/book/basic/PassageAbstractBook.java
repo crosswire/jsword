@@ -121,8 +121,8 @@ public abstract class PassageAbstractBook extends AbstractBook
      */
     protected abstract String getText(Verse verse) throws BookException;
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.filter.BookData)
+    /**
+     * For when we want to add writing functionality
      */
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {

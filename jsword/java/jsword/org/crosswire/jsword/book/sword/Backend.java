@@ -34,7 +34,6 @@ public interface Backend extends Activatable
     /**
      * Initialise a Backend before use. This method needs to call addKey() a
      * number of times on SwordDictionary
-     * @throws BookException If we should not be used for some reason
      */
     public KeyList readIndex();
 

@@ -72,7 +72,7 @@ public class BibleInfo
      * How do we report the names of the books?.
      * @return The current case setting
      * @see Passage
-     * @see #setCase
+     * @see BibleInfo#setCase(int)
      */
     public static final int getCase()
     {
@@ -236,7 +236,6 @@ public class BibleInfo
      * getBookNumber() will return a number and not throw an exception.
      * @param find The string to identify
      * @return The book number (1 to 66)
-     * @exception NoSuchVerseException If the text can not be matched
      */
     public static final boolean isBookName(String find)
     {

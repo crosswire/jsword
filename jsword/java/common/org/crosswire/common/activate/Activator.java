@@ -44,6 +44,7 @@ public class Activator
 
     /**
      * Check that a subject is activated and call activate() if not.
+     * @param subject The thing to activate
      */
     public static void activate(Activatable subject)
     {
@@ -82,8 +83,19 @@ public class Activator
         }
     }
 
+    /**
+     * Try as hard as possible to conserve memory
+     */
     public static final int KILL_EVERYTHING = 0;
+
+    /**
+     * Reduce memory usage, but only where sensible
+     */
     public static final int KILL_LEAST_USED = 1;
+
+    /**
+     * Reduce memory usage, but only if we really need to
+     */
     public static final int KILL_ONLY_IF_TIGHT = 2;
 
     /**
@@ -92,6 +104,7 @@ public class Activator
      * since we keep a track of activated objects and will automatically
      * deactivate() when needed, so this method should only be used when we are
      * sure that something will not be needed again.
+     * @param subject The thing to de-activate
      */
     public static void deactivate(Activatable subject)
     {

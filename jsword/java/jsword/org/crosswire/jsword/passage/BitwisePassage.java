@@ -454,7 +454,6 @@ public class BitwisePassage extends AbstractPassage
      * @serialData Write the ordinal number of this verse
      * @see AbstractPassage#writeObjectSupport(ObjectOutputStream)
      * @throws IOException if the read fails
-     * @throws ClassNotFoundException If the read data is incorrect
      */
     private void writeObject(ObjectOutputStream out) throws IOException
     {

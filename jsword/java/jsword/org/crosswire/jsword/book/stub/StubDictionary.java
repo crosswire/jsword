@@ -15,7 +15,6 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * StubBook is a simple stub implementation of Book that is pretty much
@@ -53,14 +52,6 @@ public class StubDictionary extends AbstractBook
         setBookMetaData(bmd);
 
         initSearchEngine();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
-     */
-    protected void setText(Verse verse, String text) throws BookException
-    {
-        throw new BookException(Msg.DRIVER_READONLY);
     }
 
     /* (non-Javadoc)

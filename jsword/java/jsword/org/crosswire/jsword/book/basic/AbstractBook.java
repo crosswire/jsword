@@ -53,7 +53,7 @@ public abstract class AbstractBook implements Book
         return bmd;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
     public final void setBookMetaData(BookMetaData bmd)

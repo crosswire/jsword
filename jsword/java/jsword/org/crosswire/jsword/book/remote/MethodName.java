@@ -28,9 +28,9 @@ import org.apache.commons.lang.enum.Enum;
  */
 public class MethodName extends Enum
 {
-    public static final MethodName GETBIBLES = new MethodName("getBibles");
-    public static final MethodName GETDATA = new MethodName("getData");
-    public static final MethodName FINDPASSAGE = new MethodName("findPassage");
+    static final MethodName GETBIBLES = new MethodName("getBibles");
+    static final MethodName GETDATA = new MethodName("getData");
+    static final MethodName FINDPASSAGE = new MethodName("findPassage");
 
     /**
      * Find a constant given a name.

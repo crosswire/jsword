@@ -67,6 +67,9 @@ public class LogPane extends EirPanel
      */
     public static class OpenAction extends ComponentAbstractAction
     {
+        /**
+         * Simple ctor
+         */
         public OpenAction(Component comp)
         {
             super(comp,

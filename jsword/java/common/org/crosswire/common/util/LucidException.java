@@ -13,7 +13,7 @@ import java.text.MessageFormat;
  * However the interface should have no idea how it will be implemented and so
  * the details of exactly what broke under the covers gets lost. With
  * LucidException this detail is kept in the wrapped Exception. This
- * functionallity has been added to the base Exception class in JDK 1.4</p>
+ * functionallity has been added to the base Exception class in J2SE 1.4</p>
  *
  * <p>The second addition is the concept of i18n messages. Normal Exceptions are
  * created with an almost random string in the message field, LucidExceptions

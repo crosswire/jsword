@@ -1,11 +1,9 @@
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.book.install.sword;
+
+import org.crosswire.common.util.MsgBase;
 
 /**
- * Dictionary is an interface for all the Lexicon/Dictionary type works.
- * 
- * We include in this category all works where there are a number of entries
- * retrieved using a word (traditional dictionary or lexicon) or number (like
- * Strongs indexing System).
+ * Compile safe Msg resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,8 +25,29 @@ package org.crosswire.jsword.book;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @deprecated Use Book
  */
-public interface Dictionary extends Book
+class Msg extends MsgBase
 {
+    static final Msg AUTH_REFUSED = new Msg("Login failed: User={0}. FTP code={1}, {2}");
+    static final Msg CONNECT_REFUSED = new Msg("Failed to connect to remote server: {0}. FTP code={1}, {2}");
+    static final Msg CWD_REFUSED = new Msg("Failed to change to remote directory: {0}. FTP code={1}, {2}");
+    static final Msg DOWNLOAD_REFUSED = new Msg("Failed to download index file: {0}. FTP code={1}, {2}");
+    static final Msg UNKNOWN_ERROR = new Msg("Unexpected Error occured");
+    static final Msg CACHE_ERROR = new Msg("Error loading from cache");
+
+    /**
+     * Initialise any resource bundles
+     */
+    static
+    {
+        init(Msg.class.getName());
+    }
+
+    /**
+     * Passthrough ctor
+     */
+    private Msg(String name)
+    {
+        super(name);
+    }
 }

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -114,20 +115,28 @@ import org.crosswire.jsword.book.filter.FilterFactory;
 public class SwordConfig
 {
     /**
-     * Loads a sword config from a given URL.
+     * Loads a sword config from a given File.
      */
     public SwordConfig(File file) throws IOException
     {
-        BufferedReader in = new BufferedReader(new FileReader(file));
+        this(new FileReader(file));
+    }
+
+    /**
+     * Loads a sword config from a given Reader.
+     */
+    public SwordConfig(Reader in) throws IOException
+    {
+        BufferedReader bin = new BufferedReader(in);
 
         while (true)
         {
-            String line = in.readLine();
+            String line = bin.readLine();
             if (line == null)
             {
                 break;
             }
-
+        
             parseLine(line);
         }
         
@@ -142,7 +151,7 @@ public class SwordConfig
                 String element = (String) vit.next();
                 combined.append(element);
             }
-
+        
             prop.setProperty(key, combined.toString());
         }
     }
@@ -244,7 +253,7 @@ public class SwordConfig
     /**
      * Is this one of the supported book types?
      */
-    protected boolean isSupported()
+    public boolean isSupported()
     {
         switch (getModDrv())
         {
@@ -269,7 +278,7 @@ public class SwordConfig
      * Returns the description.
      * @return String
      */
-    protected String getDescription()
+    public String getDescription()
     {
         return getFirstValue("Description");
     }
@@ -278,7 +287,7 @@ public class SwordConfig
      * Returns the Charset of the module based on the encoding attribute
      * @return the charset of the module.
      */
-    protected String getModuleCharset()
+    public String getModuleCharset()
     {
         int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", SwordConstants.ENCODING_LATIN1);
         
@@ -294,7 +303,7 @@ public class SwordConfig
      * Returns the modDrv.
      * @return int
      */
-    protected int getModDrv()
+    public int getModDrv()
     {
         return matchingIndex(SwordConstants.DRIVER_STRINGS, "ModDrv");
     }
@@ -303,7 +312,7 @@ public class SwordConfig
      * Returns the sourceType.
      * @return int
      */
-    protected Filter getFilter()
+    public Filter getFilter()
     {
         String sourcetype = getFirstValue("SourceType");
         return FilterFactory.getFilter(sourcetype);
