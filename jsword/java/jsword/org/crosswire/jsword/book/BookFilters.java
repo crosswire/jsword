@@ -39,13 +39,15 @@ public class BookFilters
      */
     public static BookFilter getAll()
     {
-        return new BookFilter()
+        return allBookFilter;
+    }
+    private static BookFilter allBookFilter = new AllBookFilter();
+    private static class AllBookFilter implements BookFilter
+    {
+        public boolean test(BookMetaData bmd)
         {
-            public boolean test(BookMetaData bmd)
-            {
-                return true;
-            }
-        };
+            return true;
+        }
     }
 
     /**
@@ -53,13 +55,15 @@ public class BookFilters
      */
     public static BookFilter getBibles()
     {
-        return new BookFilter()
+        return biblesBookFilter;
+    }
+    private static BookFilter biblesBookFilter = new BiblesBookFilter();
+    private static class BiblesBookFilter implements BookFilter
+    {
+        public boolean test(BookMetaData bmd)
         {
-            public boolean test(BookMetaData bmd)
-            {
-                return bmd instanceof BibleMetaData;
-            }
-        };
+            return bmd instanceof BibleMetaData;
+        }
     }
 
     /**
@@ -67,27 +71,32 @@ public class BookFilters
      */
     public static BookFilter getDictionaries()
     {
-        return new BookFilter()
-        {
-            public boolean test(BookMetaData bmd)
-            {
-                return bmd instanceof DictionaryMetaData;
-            }
-        };
+        return dictionariesBookFilter;
     }
+    private static BookFilter dictionariesBookFilter = new DictionariesBookFilter();
+    private static class DictionariesBookFilter implements BookFilter
+    {
+        public boolean test(BookMetaData bmd)
+        {
+            return bmd instanceof DictionaryMetaData;
+        }
+    }
+
 
     /**
      * A filter that accepts everything that implements Commentary
      */
     public static BookFilter getCommentaries()
     {
-        return new BookFilter()
+        return commentariesBookFilter;
+    }
+    private static BookFilter commentariesBookFilter = new CommentariesBookFilter();
+    private static class CommentariesBookFilter implements BookFilter
+    {
+        public boolean test(BookMetaData bmd)
         {
-            public boolean test(BookMetaData bmd)
-            {
-                return bmd instanceof CommentaryMetaData;
-            }
-        };
+            return bmd instanceof CommentaryMetaData;
+        }
     }
 
     /**
