@@ -1,11 +1,12 @@
 package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Content;
 import org.jdom.Element;
+import org.jdom.Text;
 
 /**
  * Tag syntax: word&lt;WHxxxx> or word&lt;WGxxxx>.
@@ -50,22 +51,24 @@ public class StrongsWordTagBuilder implements TagBuilder
                 String name = tagname.trim();
 
                 Element ele = (Element) stack.get(0);
-                List list = ele.getContent();
-                if (list.isEmpty())
+                int size = ele.getContentSize();
+                if (size == 0)
                 {
                     DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
 
-                int lastIndex = list.size() - 1;
-                Object prevObj = list.get(lastIndex);
+                int lastIndex = size - 1;
+                Content prevObj = ele.getContent(lastIndex);
                 Element word = null;
 
-                if (prevObj instanceof String)
+                if (prevObj instanceof Text)
                 {
+                    Text textItem = (Text) prevObj;
                     word = OSISUtil.factory().createW();
-                    word.getContent().add(prevObj);
-                    list.set(lastIndex, word);
+                    ele.removeContent(textItem);
+                    word.addContent(textItem);
+                    ele.addContent(word);
                 }
                 else if (prevObj instanceof Element)
                 {

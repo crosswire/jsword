@@ -31,14 +31,14 @@ import org.crosswire.jsword.book.filter.FilterFactory;
 
 /**
  * A utility class for loading and representing Sword module configs.
- * 
+ *
  * <p>Config file format. See also:
  * <a href="http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
- * 
+ *
  * <p> The contents of the About field are in rtf.
  * <p> \ is used as a continuation line.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -674,6 +674,15 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getFullName()
     {
+        if (fullName == null)
+        {
+            fullName = computeFullName();
+        }
+        return fullName;
+    }
+
+    private String computeFullName()
+    {
         StringBuffer buf = new StringBuffer(getName());
         String ed = getEdition();
         if (!ed.equals("")) //$NON-NLS-1$
@@ -794,7 +803,15 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String toString()
     {
-        return getFullName();
+        if (displayName == null)
+        {
+            StringBuffer buf = new StringBuffer("["); //$NON-NLS-1$
+            buf.append(getInitials());
+            buf.append("] - "); //$NON-NLS-1$
+            buf.append(getFullName());
+            displayName = buf.toString();
+        }
+        return displayName;
     }
 
     /* (non-Javadoc)
@@ -830,6 +847,8 @@ public class SwordBookMetaData implements BookMetaData
     private Book book;
     private BookDriver driver = null;
     private String name = ""; //$NON-NLS-1$
+    private String fullName;
+    private String displayName;
     private String edition = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
     private int speed = BookMetaData.SPEED_SLOWEST;

@@ -623,22 +623,31 @@ public abstract class AccuracyType implements Serializable
             args[argc++] = tokenize.nextToken();
         }
 
-        // If the first word is a number, and the second a word, but not an
+        // If the first word is a number (possibly Roman),
+        // and the second a word, but not an
         // EndMarker then this must be something like "2 Ki ...", so join
         // them together to get "2Ki ..."
         if (args.length > 1)
         {
-            if (Character.isDigit(args[0].charAt(0))
-                && Character.isLetter(args[1].charAt(0))
+            if (Character.isLetter(args[1].charAt(0))
                 && !isEndMarker(args[1]))
             {
-                String[] oldargs = args;
-                args = new String[oldargs.length - 1];
-
-                args[0] = oldargs[0] + oldargs[1];
-                for (int i = 1; i < args.length; i++)
+                // If the first word is roman then convert it
+                int roman = isRoman(args[0]);
+                if (roman != 0)
                 {
-                    args[i] = oldargs[i + 1];
+                    args[0] = Integer.toString(roman);
+                }
+                if (Character.isDigit(args[0].charAt(0)))
+                {
+                    String[] oldargs = args;
+                    args = new String[oldargs.length - 1];
+
+                    args[0] = oldargs[0] + oldargs[1];
+                    for (int i = 1; i < args.length; i++)
+                    {
+                        args[i] = oldargs[i + 1];
+                    }
                 }
             }
         }
@@ -695,6 +704,19 @@ public abstract class AccuracyType implements Serializable
         return args;
     }
 
+    /**
+     * Return true if the string is a roman number of I, II or III
+     * @param text
+     * @return
+     */
+    private static int isRoman(String text)
+    {
+        if (text.matches("^[Ii]{1,3}$")) //$NON-NLS-1$
+        {
+            return text.length();
+        }
+        return 0;
+    }
     /**
      * This is simply a convenience function to wrap Character.isLetter()
      * @param text The string to be parsed

@@ -142,7 +142,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                 Passage ref = (Passage) keyf.getKey(readings);
 
                 Element list = OSISUtil.factory().createList();
-                div.getContent().add(list);
+                div.addContent(list);
                 for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext(); )
                 {
                     VerseRange range = (VerseRange) it.next();
@@ -152,13 +152,13 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                     reading.addContent(range.getName());
 
                     Element item = OSISUtil.factory().createItem();
-                    item.getContent().add(reading);
-                    list.getContent().add(item);
+                    item.addContent(reading);
+                    list.addContent(item);
                 }
             }
             catch (NoSuchVerseException ex)
             {
-                div.getContent().add(Msg.DECODE_ERROR.toString(readings));
+                div.addContent(Msg.DECODE_ERROR.toString(readings));
             }
 
             BookData bdata = new BookData(osis, this, key);

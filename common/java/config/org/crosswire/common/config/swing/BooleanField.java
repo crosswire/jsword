@@ -85,6 +85,16 @@ public class BooleanField extends JPanel implements Field
         off.setSelected(!Convert.string2Boolean(value));
     }
 
+    public void doYes()
+    {
+        on.setSelected(true);
+    }
+
+    public void doNo()
+    {
+        off.setSelected(true);
+    }
+
     /**
      * Get the actual component that we can add to a Panel.
      * (This can well be this in an implementation).

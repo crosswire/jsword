@@ -48,31 +48,34 @@ public class ScripRefTag implements Tag
      */
     public Element processTag(Element ele, Attributes attrs)
     {
-        Element div = OSISUtil.factory().createDiv();
+        Element reference = null;
 
         String refstr = attrs.getValue("passage"); //$NON-NLS-1$
         if (refstr != null)
         {
+            reference = OSISUtil.factory().createReference();
             try
             {
                 Passage ref = (Passage) keyf.getKey(refstr);
                 String osisname = ref.getOSISName();
-                div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, osisname);
+                reference.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, osisname);
             }
             catch (NoSuchKeyException ex)
             {
                 DataPolice.report("Unparsable passage:" + refstr + " due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
+            ele.addContent(reference);
         }
         else
         {
+            // Don't lose the text
+            reference = OSISUtil.factory().createDiv();
             // NOTE(joe): is it right to ignore a missing passage
             //DataPolice.report("Missing passage.");
             //XMLUtil.debugSAXAttributes(attrs);
         }
 
-        ele.addContent(div);
-        return div;
+        return reference;
     }
 
     /**

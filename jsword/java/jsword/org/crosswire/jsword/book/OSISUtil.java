@@ -457,11 +457,7 @@ public class OSISUtil
      */
     private static void recurseElement(Object sub, StringBuffer buffer)
     {
-        if (sub instanceof String)
-        {
-            buffer.append((String) sub);
-        }
-        else if (sub instanceof Text)
+        if (sub instanceof Text)
         {
             buffer.append(((Text) sub).getText());
         }

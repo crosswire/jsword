@@ -2,11 +2,11 @@ package org.crosswire.jsword.book.filter.thml;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
+import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Text;
 import org.xml.sax.Attributes;
@@ -107,7 +107,7 @@ public class CustomHandler extends DefaultHandler
             return;
         }
 
-        List list = current.getContent();
+        int size = current.getContentSize();
 
         // what we are adding
         String text = new String(data, offset, length);
@@ -117,22 +117,17 @@ public class CustomHandler extends DefaultHandler
         // because (probably as an atrifact of the HTML/XSL transform we get
         // a space inserted in the output even when 2 calls to this method
         // split a word.
-        if (list.size() > 0)
+        if (size > 0)
         {
-            Object last = list.get(list.size() - 1);
-            if (last instanceof String)
+            Content last = current.getContent(size - 1);
+            if (last instanceof Text)
             {
-                list.remove(list.size() - 1);
-                text = ((String) last) + text;
-            }
-            else if (last instanceof Text)
-            {
-                list.remove(list.size() - 1);
+                current.removeContent(size - 1);
                 text = ((Text) last).getText() + text;
             }
         }
 
-        list.add(new Text(text));
+        current.addContent(new Text(text));
     }
 
     /* (non-Javadoc)

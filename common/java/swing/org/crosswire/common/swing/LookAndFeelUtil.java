@@ -44,6 +44,15 @@ public class LookAndFeelUtil
     }
 
     /**
+     * Establish the system look and feel
+     */
+    public static void initialize()
+    {
+        // Calling any method in this package will force the
+        // static initializer to be called.
+    }
+
+    /**
      * The Options customization
      */
     public static Class getLookAndFeel()
@@ -90,14 +99,28 @@ public class LookAndFeelUtil
      */
     static
     {
+        defaultLAF = MetalLookAndFeel.class;
+        String systemLAF = UIManager.getSystemLookAndFeelClassName();
         try
         {
-            defaultLAF = Class.forName(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(systemLAF);
+            defaultLAF = Class.forName(systemLAF);
         }
         catch (ClassNotFoundException e)
         {
             assert false;
-            defaultLAF = MetalLookAndFeel.class;
+        }
+        catch (InstantiationException e)
+        {
+            assert false;
+        }
+        catch (IllegalAccessException e)
+        {
+            assert false;
+        }
+        catch (UnsupportedLookAndFeelException e)
+        {
+            assert false;
         }
     }
 }

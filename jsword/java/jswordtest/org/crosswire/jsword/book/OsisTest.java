@@ -47,16 +47,16 @@ public class OsisTest extends TestCase
     public void testManual() throws Exception
     {
         Element seg = OSISUtil.factory().createSeg();
-        seg.getContent().add("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
+        seg.addContent("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
 
         Element verse = OSISUtil.factory().createVerse();
         verse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, "Gen.1.1"); //$NON-NLS-1$
-        verse.getContent().add(seg);
+        verse.addContent(seg);
 
         Element div = OSISUtil.factory().createDiv();
         div.setAttribute("type", "chapter"); //$NON-NLS-1$ //$NON-NLS-2$
         div.setAttribute("osisID", "Gen.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
-        div.getContent().add(verse);
+        div.addContent(verse);
 
         Element work = OSISUtil.factory().createWork();
 

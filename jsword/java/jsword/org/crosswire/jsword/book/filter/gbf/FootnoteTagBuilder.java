@@ -1,7 +1,6 @@
 package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 import org.crosswire.jsword.book.DataPolice;
@@ -65,12 +64,11 @@ public class FootnoteTagBuilder implements TagBuilder
                     if (pop instanceof Element)
                     {
                         Element note = (Element) pop;
-                        List list = note.getContent();
 
-                        if (list.size() < 1)
+                        if (note.getContentSize() < 1)
                         {
                             Element ele = (Element) stack.get(0);
-                            ele.getContent().remove(note);
+                            ele.removeContent(note);
                         }
                     }
                     else

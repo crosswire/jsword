@@ -26,7 +26,7 @@ import org.crosswire.common.util.ResourceUtil;
 
 /**
  * Various Gui Utilities.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -190,29 +190,114 @@ public class GuiUtil
     }
 
     /**
-     * Move the specified window to the centre of the screen
+     * Move the specified window to the centre of the screen.
+     * It is the programmer's responsibility to ensure that the window
+     * fits on the screen.
+     *
      * @param win The window to be moved
      */
     public static void centerWindow(Window win)
     {
-        Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+        Toolkit tk = Toolkit.getDefaultToolkit();
 
-        // If the window is wider than the screen, clip it
-        if (screen_dim.width < win.getSize().width)
+        // If the window is maximized then we can't center it
+        if (win instanceof Frame)
         {
-            win.setSize(screen_dim.width, win.getSize().height);
+            Frame frame = (Frame) win;
+            if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != 0)
+            {
+                return;
+            }
         }
 
-        // If the window is taller than the screen, clip it
-        if (screen_dim.height < win.getSize().height)
+        Dimension screenDim = tk.getScreenSize();
+        Dimension windowDim = win.getSize();
+
+        // If the window is not maximized but is the entire size of the screen
+        // then we can't center it.
+        if (windowDim.equals(screenDim))
         {
-            win.setSize(win.getSize().width, screen_dim.height);
+            return;
         }
 
         // Center Frame, Dialogue or Window on screen
-        int x = (screen_dim.width - win.getSize().width) / 2;
-        int y = (screen_dim.height - win.getSize().height) / 2;
+        int x = (screenDim.width - win.getSize().width) / 2;
+        int y = (screenDim.height - win.getSize().height) / 2;
         win.setLocation(x, y);
+    }
+
+    /**
+     * Set the size of the window, but no bigger than the screen.
+     * If the platform supports it, this may maximize the window.
+     * <p>
+     * On platforms that allow docking of other windows, this routine does not take
+     * that into account for sizes that are near that of the screen. For example,
+     * on Windows XP, the user may have a task bar showing permanently on one side of the screen
+     * and another application's toolbar on another side of the screen. If the requested size of
+     * the window is less than the screen size in a particular dimension, it will not be
+     * able to adjust for it.
+     * <p>
+     * For that reason, either have the application significantly smaller than the screen size
+     * or maximize the window.
+     *
+     * @param win the window to resize
+     * @param requestedDim how wide and tall to make the window, if possible
+     * @param honoredDim is an output parameter that has the final dimensions based on the resize
+     * @return whether the window has been maximized horizontally (Frame.MAXIMIZED_HORIZ),
+     *         vertically (Frame.MAXIMIZED_VERT
+     */
+    public static int setSize(Window win, Dimension requestedDim)
+    {
+        // If possible we try to honor the request
+        Dimension honoredDim = (Dimension) requestedDim.clone();
+        Toolkit tk = win.getToolkit();
+        Dimension originalDim = win.getSize();
+        Dimension screenDim = tk.getScreenSize();
+        boolean isFrame = win instanceof Frame;
+
+        // Frames may allow for maximizing in one direction the other or both
+        // store any state changes in requestedState
+        int honoredState = 0;
+
+        // If the window is wider than the screen, limit it to the width of the screen
+        if (honoredDim.width >= screenDim.width)
+        {
+            honoredDim.width = screenDim.width;
+        }
+
+        if (honoredDim.height >= screenDim.height)
+        {
+            honoredDim.height = screenDim.height;
+        }
+
+        if (isFrame
+            && honoredDim.equals(screenDim)
+            && tk.isFrameStateSupported(Frame.MAXIMIZED_BOTH))
+        {
+            honoredState |= Frame.MAXIMIZED_BOTH;
+        }
+
+        // If either the height or the width changed then use it.
+        if (!honoredDim.equals(originalDim))
+        {
+            win.setSize(honoredDim);
+        }
+
+        // One of the dimensions may have changed via setSize,
+        // and the other may be waiting to change here
+        if (honoredState != 0)
+        {
+            Frame frame = (Frame) win;
+            // Make sure to preserve existing states
+            frame.setExtendedState(honoredState | frame.getExtendedState());
+        }
+
+        // setExtendedState can change it.
+        Dimension finalDim = win.getSize();
+        honoredDim.width = finalDim.width;
+        honoredDim.height = finalDim.height;
+
+        return honoredState;
     }
 
     /**
@@ -222,9 +307,21 @@ public class GuiUtil
      */
     public static void maximizeWindow(Window win)
     {
-        Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-        win.setLocation(0, 0);
-        win.setSize(screen_dim);
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        // Check to see if the window supports maximizing
+        if (win instanceof Frame && tk.isFrameStateSupported(Frame.MAXIMIZED_BOTH))
+        {
+            Frame frame = (Frame) win;
+            // Make sure to preserve existing states
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH | frame.getExtendedState());
+        }
+        else
+        {
+            // No, then just simulate it.
+            Dimension screenDim = tk.getScreenSize();
+            win.setLocation(0, 0);
+            win.setSize(screenDim);
+        }
     }
 
     /**
@@ -266,18 +363,18 @@ public class GuiUtil
             win.setSize(win.getSize().width, min.height);
         }
 
-        Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 
         // If the window is wider than the screen, clip it
-        if (screen_dim.width < win.getSize().width)
+        if (screenDim.width < win.getSize().width)
         {
-            win.setSize(screen_dim.width, win.getSize().height);
+            win.setSize(screenDim.width, win.getSize().height);
         }
 
         // If the window is taller than the screen, clip it
-        if (screen_dim.height < win.getSize().height)
+        if (screenDim.height < win.getSize().height)
         {
-            win.setSize(win.getSize().width, screen_dim.height);
+            win.setSize(win.getSize().width, screenDim.height);
         }
 
         win.invalidate();

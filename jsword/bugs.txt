@@ -12,16 +12,9 @@ Swing
   interrupting a thread.
 - Maybe hide the reference pane if there are no reference works
 - Help (By linking to web?)
-- Make search tooltip easier
-- Make passage list sidebar optional
-- Make Bible selection combo size better
-- Right click tab closer
-- New tab tool-tip is "new window"
 - Split panes resize when they should not.
   (Probably due to packing issues when flipping components)
 - Menu shortcuts are duplicated on several menus and don't work as expected.
-- After switching to sub-window mode, the sub-windows can be very wide (> 1 screen width)
-  Maybe limit them to the size of the JDesktop
 
 BookData Display
 - Naves shows internal markup around verse references.
@@ -32,12 +25,10 @@ BookData Display
 SplitBookDataDisplay
 - Selection not maintained when blur button is clicked.
 - Consider a context menu to open a verse in a new tab.
-- blur should reflect in "Passage Lookup" passage display.
 - Reuse tabs when possible. When opening a daily reading,
   check to see if it is already a BibleView.
 
 Reference Sidebar:
-- Readings might be a little prettier if they were bulleted
 - Selecting a commentary should (possibly) display the comments for the currently displayed passage
 - I don't see any entries after selecting "Webster's Revised Unabridged Dictionary"
     - I think it's waiting for me to type something in, but that's not obvious from the UI
@@ -50,7 +41,6 @@ Web
 
 Install
 - save install sites
-- pop-up install dialog if no modules present
 - warning about web access in install
 - Cannot see any bibles until hitting "Update Index" for the first time
 - Need a progress bar (even with .setIndeterminate(true)) instead of two dialogs
@@ -67,23 +57,17 @@ About box:
     - Maybe add a list of developers or something
 
 Search
-- debate ser vs. lucene
+- Implement match in lucene using wild cards
+- retire ser, replacing it w/ lucene
 - make index creation happen at a better time
 
 Options:
 - Even after installation, there are no bibles/dictionaries/commentaries to select from for the defaults ("Bibles" item)
 - Internationalize the text of some of the options and make them friendly.
   Many of the options are rather user-unfriendly and need help text, e.g.:
-    - What's "ot1nt2"?
     - What's "Persistent Naming"?
-    - The user is never going to input a L&F class name
-- Hide options that are not useful to regular users.
-- Hide options that really are not options.
-  Some "options" have only one selectable item (e.g. "Configurable Stylesheet" in "Bible Display"), so they're not really options :)
-- It's not obvious that "Advanced" has items of its own (although that's probably just me)
 - Make sure tree has horizontal and vertical lines on all platforms.
 	Under FC2: tree has only horizontal lines, no vertical lines
-- Turning on "Advanced tabs" in the About dialog does nothing
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.9
@@ -104,6 +88,7 @@ Swing
   Font name should be in the default font, not in the font's font.
 - Highlighting of searches
 - In View Source, it would be nice to have the source syntax-highlighted and maybe tidied
+- Add toolbar customization
 
 Search
 - Create the index in the background after the module is downloaded.
