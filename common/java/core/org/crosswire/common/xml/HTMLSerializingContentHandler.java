@@ -29,7 +29,6 @@ import java.io.Writer;
  */
 public class HTMLSerializingContentHandler extends PrettySerializingContentHandler
 {
-
     /**
      * A formatting serializer that does not add whitespace to the document.
      * This uses a StringWriter and the toString method will return its content.
@@ -127,16 +126,18 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     public void startDocument()
     {
         StringBuffer buf = new StringBuffer();
+
         // Note: we should be using SPAN here but Sun's Java does not support styling it.
         // Also, it introduces whitespace between the span and the text.
-        buf.append("FONT.tag    { color : #666699; font-weight: bold; }\n"); //$NON-NLS-1$
-        buf.append("FONT.attr   { color : #669966; font-weight: bold; }\n"); //$NON-NLS-1$
-        buf.append("FONT.value  { color : #669966; font-style: italic; }\n"); //$NON-NLS-1$
+        buf.append("<html><head><style type='text/css'>\n"); //$NON-NLS-1$
+        buf.append("FONT.tag    { font-family:courier new, monospaced; color:#666699; font-weight:bold; }\n"); //$NON-NLS-1$
+        buf.append("FONT.attr   { font-family:courier new, monospaced; color:#669966; font-weight:bold; }\n"); //$NON-NLS-1$
+        buf.append("FONT.value  { font-family:courier new, monospaced; color:#669966; font-style:italic; }\n"); //$NON-NLS-1$
         buf.append("FONT.indent { }\n"); //$NON-NLS-1$
-        buf.append("FONT.text   { background : yellow; }\n"); //$NON-NLS-1$
-        write("<html><head><style type='text/css'>\n"); //$NON-NLS-1$
+        buf.append("FONT.text   { font-family:courier new, monospaced; background:#FFFF99; }\n"); //$NON-NLS-1$
+        buf.append("</style></head><body>\n"); //$NON-NLS-1$
+
         write(buf.toString());
-        write("</style></head><body>\n"); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
