@@ -69,7 +69,7 @@
     <exclude name="gpl/**"/>
   </patternset>
   <path id="source.path">
-    <dirset dir="${source.java}" includes="*" excludes="*test*"/>
+    <dirset dir="${source.java}" includes="*" excludes="*test*,*limbo*"/>
   </path>
 
   <!--=======================================================================
