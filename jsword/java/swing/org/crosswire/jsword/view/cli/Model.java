@@ -55,12 +55,12 @@ public class Model
     public Model() throws MalformedURLException, JDOMException, IOException
     {
         config = new Config("Tool Shed Options");
-        Document xmlconfig = Project.resource().getDocument("config");
+        Document xmlconfig = Project.instance().getDocument("config");
         config.add(xmlconfig);
 
         try
         {
-            config.setProperties(Project.resource().getProperties("cli"));
+            config.setProperties(Project.instance().getProperties("cli"));
             config.localToApplication(true);
         }
         catch (Exception ex)
@@ -230,7 +230,7 @@ public class Model
 
     public String save() throws IOException
     {
-        URL url = Project.resource().getWritablePropertiesURL("cli");
+        URL url = Project.instance().getWritablePropertiesURL("cli");
         config.applicationToLocal();
         config.localToPermanent(url);
         

@@ -76,7 +76,7 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
             {
                 try
                 {
-                    URL predicturl = Project.resource().getWritablePropertiesURL("display");
+                    URL predicturl = Project.instance().getWritablePropertiesURL("display");
                     Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
 
                     job.setProgress("Setup");

@@ -51,9 +51,9 @@ public class ReadEverything
 
         // Load the desktop configuration so we can find the sword drivers
         Config config = new Config("Desktop Options");
-        Document xmlconfig = Project.resource().getDocument("config");
+        Document xmlconfig = Project.instance().getDocument("config");
         config.add(xmlconfig);
-        config.setProperties(Project.resource().getProperties("desktop"));
+        config.setProperties(Project.instance().getProperties("desktop"));
         config.localToApplication(true);
 
         // Loop through all the Commentaries

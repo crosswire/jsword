@@ -4,6 +4,7 @@ package org.crosswire.jsword.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.util.URLFilter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SAXEventProviderInputSource;
 import org.crosswire.common.xml.SAXEventProviderXMLReader;
@@ -70,7 +73,7 @@ public class Style
     {
         try
         {
-            URL in = Project.resource().getStyle(subject, name);
+            URL in = getStyle(name);
             return in != null;
         }
         catch (Exception ex)
@@ -97,9 +100,17 @@ public class Style
     {
         try
         {
-            return Project.resource().getStyles(subject);
+            String search = "xsl/"+subject+"/"+NetUtil.INDEX_FILE;
+            URL index = ResourceUtil.getResource(search);
+            return NetUtil.listByIndexFile(index, new URLFilter()
+            {
+                public boolean accept(String name)
+                {
+                    return name.endsWith(Project.XSLT_EXTENSION);
+                }
+            });
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             return new String[0];
         }
@@ -122,11 +133,12 @@ public class Style
 
     /**
      * Reading and writing an XML document stored in a file.
+     * @throws IOException if there is a problem reading the file
      */
     public String applyStyleToString(SAXEventProvider doc_in, String style) throws IOException, TransformerException
     {
         Source src_in = new SAXSource(new SAXEventProviderXMLReader(doc_in), new SAXEventProviderInputSource());
-        URL xsl_url = Project.resource().getStyle(subject, style);
+        URL xsl_url = getStyle(style);
         long modtime = NetUtil.getLastModified(xsl_url);
 
         // html output
@@ -146,7 +158,7 @@ public class Style
                 {
                     txers.remove(style);
                     tinfo = null;
-                    log.debug("updated style "+style+" recaching");
+                    log.debug("updated style "+style+" re-caching");
                 }
             }
         }
@@ -170,6 +182,15 @@ public class Style
         transformer.transform(src_in, res_out);
 
         return html_writer.toString();
+    }
+
+    /**
+     * What is the URL for a given style name
+     */
+    private URL getStyle(String name) throws MalformedURLException
+    {
+        String path = "xsl/"+subject+"/"+name;
+        return ResourceUtil.getResource(path);
     }
 
     /**

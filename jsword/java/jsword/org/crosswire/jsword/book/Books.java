@@ -327,7 +327,7 @@ public class Books
     static
     {
         // This will classload them all and they will register themselves.
-        Class[] types = Project.resource().getImplementors(BookDriver.class);
+        Class[] types = Project.instance().getImplementors(BookDriver.class);
 
         log.debug("begin auto-registering "+types.length+" drivers:");
 

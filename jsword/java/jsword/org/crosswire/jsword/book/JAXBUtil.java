@@ -143,7 +143,7 @@ public class JAXBUtil
     {
         try
         {
-            Properties test = Project.resource().getProperties("org/crosswire/jsword/osis/jaxb");
+            Properties test = Project.instance().getProperties("org/crosswire/jsword/osis/jaxb");
             for (Iterator it = test.keySet().iterator(); it.hasNext();)
             {
                 String key = (String) it.next();

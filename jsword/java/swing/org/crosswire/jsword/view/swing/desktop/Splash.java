@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -89,7 +89,7 @@ public class Splash extends JWindow
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
-        lbl_info.setText("Version "+Project.resource().getVersion());
+        lbl_info.setText("Version "+Project.instance().getVersion());
 
         pnl_info.setLayout(new BorderLayout(5, 0));
         pnl_info.setBackground(Color.black);

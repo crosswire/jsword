@@ -84,7 +84,7 @@ public class Main
         BufferedReader cin = new BufferedReader(in);
         PrintWriter pout = new PrintWriter(out);
 
-        pout.println("JSword CLI. Version "+Project.resource().getVersion());
+        pout.println("JSword CLI. Version "+Project.instance().getVersion());
 
         int linenum = 1;
         while (true)

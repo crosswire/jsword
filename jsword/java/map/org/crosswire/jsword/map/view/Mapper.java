@@ -144,10 +144,10 @@ public class Mapper extends JFrame
         {
             LookAndFeelUtil.addComponentToUpdate(this);
 
-            Document xmlconfig = Project.resource().getDocument("config");
+            Document xmlconfig = Project.instance().getDocument("config");
             config.add(xmlconfig);
 
-            Properties prop = Project.resource().getProperties("mapper");
+            Properties prop = Project.instance().getProperties("mapper");
             if (prop != null)
             {
                 config.setProperties(prop);

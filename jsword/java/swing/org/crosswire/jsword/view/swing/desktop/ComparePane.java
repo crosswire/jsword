@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,6 +28,8 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
+import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
 
 /**
  * A ComparePane allows you to compare 2 differing version of the Bible

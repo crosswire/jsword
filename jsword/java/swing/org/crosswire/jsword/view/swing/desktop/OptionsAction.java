@@ -71,7 +71,7 @@ public class OptionsAction extends DesktopAbstractAction
             fillChoiceFactory();
 
             // SwingConfig.setDisplayClass(TreeConfigPane.class);
-            URL config_url = Project.resource().getWritablePropertiesURL("desktop");
+            URL config_url = Project.instance().getWritablePropertiesURL("desktop");
             SwingConfig.showDialog(config, getDesktop(), config_url);
         }
         catch (Exception ex)
@@ -85,13 +85,13 @@ public class OptionsAction extends DesktopAbstractAction
         fillChoiceFactory();
 
         config = new Config("Desktop Options");
-        Document xmlconfig = Project.resource().getDocument("config");
+        Document xmlconfig = Project.instance().getDocument("config");
         config.add(xmlconfig);
     }
 
     public void loadConfig() throws IOException
     {
-        config.setProperties(Project.resource().getProperties("desktop"));
+        config.setProperties(Project.instance().getProperties("desktop"));
         config.localToApplication(true);
     }
 

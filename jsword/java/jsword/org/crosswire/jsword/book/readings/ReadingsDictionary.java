@@ -72,7 +72,7 @@ public class ReadingsDictionary extends AbstractDictionary
         Properties prop;
         try
         {
-            prop = Project.resource().getReadingsSet(name);
+            prop = Project.instance().getReadingsSet(name);
         }
         catch (Exception ex)
         {

@@ -91,7 +91,7 @@ public class DebugAction extends DesktopAbstractAction
      */
     public static void createTestJob(final long millis, final String predictbase, final int steps, final boolean fake) throws MalformedURLException
     {
-        final URL predicturl = Project.resource().getWritablePropertiesURL(predictbase);
+        final URL predicturl = Project.instance().getWritablePropertiesURL(predictbase);
         final Thread test = new Thread()
         {
             /* (non-Javadoc)

@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /**
- * save all the passage windows.
+ * Save all the passage windows.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -34,6 +34,9 @@ import javax.swing.KeyStroke;
  */
 public class FileSaveAllAction extends DesktopAbstractAction
 {
+    /**
+     * Simple ctor
+     */
     public FileSaveAllAction(Desktop tools)
     {
         super(tools,
@@ -41,9 +44,12 @@ public class FileSaveAllAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/SaveAll16.gif",
               "toolbarButtonGraphics/general/SaveAll24.gif",
               "Save All Passages", "Save all the passages.",
-              'A', KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK, false));
+              'A', KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.SHIFT_MASK + InputEvent.CTRL_MASK, false));
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         JOptionPane.showMessageDialog(getDesktop(), "Not implemented");

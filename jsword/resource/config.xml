@@ -108,9 +108,8 @@
   <option key="Looks.Initial Layout" type="int-options">
   	<introspect class="org.crosswire.jsword.view.swing.desktop.Desktop" property="InitialLayoutType"/>
     <help>Do you want to start in SDI, TDI or MDI view mode</help>
-    <alternative number="0" name="Single Document Interface"/>
-    <alternative number="1" name="Tabbed Document Interface"/>
-    <alternative number="2" name="Multiple Document Interface"/>
+    <alternative number="0" name="Tabbed Document Interface"/>
+    <alternative number="1" name="Multiple Document Interface"/>
   </option>
 
   <option key="Reports.Exceptions to Dialog Box" type="boolean" priority="8">

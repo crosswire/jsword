@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -21,6 +21,8 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
+import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
 
 /**
  * Allows various maintenance procedures to be done on Bibles like

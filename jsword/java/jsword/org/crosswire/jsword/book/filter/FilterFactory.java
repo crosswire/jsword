@@ -62,7 +62,7 @@ public class FilterFactory
      */
     static
     {
-        Map map = Project.resource().getImplementorsMap(Filter.class);
+        Map map = Project.instance().getImplementorsMap(Filter.class);
 
         // the default value
         try

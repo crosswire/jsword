@@ -66,7 +66,7 @@ public class SwordBible extends AbstractBible
 
         try
         {
-            URL url = Project.resource().getTempScratchSpace("sword-"+sbmd.getInitials());
+            URL url = Project.instance().getTempScratchSpace("sword-"+sbmd.getInitials());
             searcher = SearchEngineFactory.createSearchEngine(this, url);
         }
         catch (Exception ex)

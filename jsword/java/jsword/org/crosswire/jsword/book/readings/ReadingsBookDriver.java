@@ -45,7 +45,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public static String[] getInstalledReadingsSets()
     {
-        return Project.resource().getInstalledReadingsSets();
+        return Project.instance().getInstalledReadingsSets();
     }
 
     /**

@@ -17,7 +17,6 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -40,7 +39,6 @@ import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LookAndFeelUtil;
-import org.crosswire.common.swing.SystemPropertiesPane;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -48,13 +46,10 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.view.swing.book.AdvancedToolsPane;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
-import org.crosswire.jsword.view.swing.book.Splash;
-import org.crosswire.jsword.view.swing.book.StatusBar;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
 import org.crosswire.jsword.view.swing.book.TitleChangedListener;
 import org.jdom.JDOMException;
@@ -122,7 +117,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     public Desktop() throws IOException, JDOMException
     {
-        URL predicturl = Project.resource().getWritablePropertiesURL("splash");
+        URL predicturl = Project.instance().getWritablePropertiesURL("splash");
         Splash splash = new Splash(this, 60000);
         startjob = JobManager.createJob("Startup", predicturl, true);
         splash.pack();
@@ -228,27 +223,22 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         
         act_view_tdi = new ViewTDIAction(this);
         act_view_mdi = new ViewMDIAction(this);
-        act_view_tbar = new ViewToolBarAction(this);
-        act_view_sbar = new ViewStatusBarAction(this);
+        //act_view_tbar = new ViewToolBarAction(this);
         act_view_ghtml = new ViewSourceGHTMLAction(this);
         act_view_vhtml = new ViewSourceHTMLAction(this);
         act_view_osis = new ViewSourceOSISAction(this);
-        
+
         act_list_delete = new ListDeleteAction(this);
-        
+
         //act_tools_generate = GeneratorPane.createOpenAction(this);
         //act_tools_diff = ComparePane.createOpenAction(this);
-        
+
         act_help_contents = new HelpContentsAction(this);
-        act_help_system = SystemPropertiesPane.createOpenAction(this);
-        act_help_about = Splash.createOpenAction(this);
-        act_help_log = AdvancedToolsPane.createOpenAction(this);
-        //act_help_debug = new DebugAction(this);
+        act_help_about = AboutPane.createOpenAction(this);
 
         rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
         rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
-        chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
-        chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
+        //chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
 
         bar_menu = new JMenuBar();
         menu_file = new JMenu();
@@ -293,10 +283,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         rdo_view_tdi.addMouseListener(bar_status);
         rdo_view_mdi.addMouseListener(bar_status);
-        chk_view_tbar.addMouseListener(bar_status);
-        chk_view_sbar.addMouseListener(bar_status);
-        chk_view_tbar.setSelected(view_status);
-        chk_view_sbar.setSelected(view_tool);
+        //chk_view_tbar.addMouseListener(bar_status);
+        //chk_view_tbar.setSelected(view_tool);
         grp_views.add(rdo_view_mdi);
         grp_views.add(rdo_view_tdi);
 
@@ -304,9 +292,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_view.setMnemonic('V');
         menu_view.add(rdo_view_tdi);
         menu_view.add(rdo_view_mdi);
-        menu_view.addSeparator();
-        menu_view.add(chk_view_tbar);
-        menu_view.add(chk_view_sbar);
+        //menu_view.add(chk_view_tbar);
         menu_view.addSeparator();
         menu_view.add(act_view_ghtml).addMouseListener(bar_status);
         menu_view.add(act_view_vhtml).addMouseListener(bar_status);
@@ -327,12 +313,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_help.setMnemonic('H');
         menu_help.add(act_help_contents).addMouseListener(bar_status);
         menu_help.addSeparator();
-        menu_help.add(act_help_system).addMouseListener(bar_status);
-        menu_help.add(act_help_log).addMouseListener(bar_status);
-        menu_help.addSeparator();
         menu_help.add(act_help_about).addMouseListener(bar_status);
-        //menu_help.addSeparator();
-        //menu_help.add(act_help_debug).addMouseListener(bar_status);
 
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
@@ -355,8 +336,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         //pnl_tbar.add(act_tools_diff).addMouseListener(bar_status);
         //pnl_tbar.addSeparator();
         pnl_tbar.add(act_help_contents).addMouseListener(bar_status);
-        pnl_tbar.add(act_help_system).addMouseListener(bar_status);
-        pnl_tbar.add(act_help_log).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
         bar_side.addHyperlinkListener(this);
@@ -383,7 +362,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         this.setJMenuBar(bar_menu);
 
         this.setEnabled(true);
-        this.setTitle("JSword");
+        this.setTitle(Project.instance().getName());
     }
 
     /**
@@ -467,7 +446,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         Component comp = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
         // So we've got the current component, we now need to walk up the tree
-        // to find something that we recognise.
+        // to find something that we recognize.
         while (comp != null)
         {
             if (comp instanceof DisplayArea)
@@ -576,6 +555,11 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     public static void setInitialLayoutType(int initial)
     {
+        if (initial != LAYOUT_TYPE_TDI && initial != LAYOUT_TYPE_MDI)
+        {
+            throw new IllegalArgumentException();
+        }
+
         Desktop.initial = initial;
     }
 
@@ -839,8 +823,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
     private Action act_view_tdi = null;
     private Action act_view_mdi = null;
-    private Action act_view_tbar = null;
-    private Action act_view_sbar = null;
+    //private Action act_view_tbar = null;
 
     private Action act_view_ghtml = null;
     private Action act_view_vhtml = null;
@@ -853,15 +836,12 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private OptionsAction act_tools_options = null;
 
     private Action act_help_contents = null;
-    private Action act_help_system = null;
     private Action act_help_about = null;
-    private Action act_help_log = null;
     //private Action act_help_debug = null;
 
     private JRadioButtonMenuItem rdo_view_tdi = null;
     private JRadioButtonMenuItem rdo_view_mdi = null;
-    private JCheckBoxMenuItem chk_view_sbar = null;
-    private JCheckBoxMenuItem chk_view_tbar = null;
+    //private JCheckBoxMenuItem chk_view_tbar = null;
 
     private JMenuBar bar_menu = null;
     private JMenu menu_file = null;

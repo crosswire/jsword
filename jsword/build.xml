@@ -554,13 +554,6 @@
         style="${support.tools}/javancss2141/javancss2html.xsl"/>
   </target>
 
-  <target name="">
-    <delete dir="" >
-      
-    </delete>
-    <copy todir=""></copy>
-  </target>
-
   <!--=======================================================================-->
   <target name="web.findbugs" depends="jar">
     <mkdir dir="${target.web}/findbugs"/>
@@ -698,7 +691,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="release.version" depends="swingui, ser-av, web">
+  <target name="release.version" depends="swingui, ser-av, web.javadoc">
     <echo message="Building release ${version} to ${directory}"/>
     <!-- source packages -->
     <mkdir dir="${directory}"/>
@@ -723,11 +716,16 @@
     </tar>
     <!-- documentation packages -->
     <zip zipfile="${directory}/${ant.project.name}-${version}-doc.zip">
-      <zipfileset prefix="${ant.project.name}-${version}" dir="${target.web}"/>
+      <zipfileset prefix="${ant.project.name}-${version}" dir="${target.web}/api"/>
     </zip>
     <tar tarfile="${directory}/${ant.project.name}-${version}-doc.tar.gz" compression="gzip">
-      <tarfileset prefix="${ant.project.name}-${version}" dir="${target.web}"/>
+      <tarfileset prefix="${ant.project.name}-${version}" dir="${target.web}/api"/>
     </tar>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="nightly" depends="web, release.nightly" description="To be run nightly at crosswire">
+    <!-- also used to depend on veryclean -->
   </target>
 
   <!--=======================================================================-->
@@ -772,11 +770,6 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="nightly" depends="release.nightly" description="To be run nightly at crosswire">
-    <!-- we used also to depend on: veryclean -->
-  </target>
-
-  <!--=======================================================================-->
   <target name="clean" depends="init" description="Remove the target directory">
     <delete dir="${target.root}"/>
   </target>
@@ -797,7 +790,7 @@
 
   <!--=======================================================================-->
   <target name="cvsup" description="cvs update">
-    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" dest="..">
+    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" dest=".">
       <commandline>
         <argument value="-q"/>
         <argument value="update"/>

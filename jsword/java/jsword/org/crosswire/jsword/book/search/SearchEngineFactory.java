@@ -47,7 +47,7 @@ public class SearchEngineFactory
     {
         try
         {
-            Class impl = Project.resource().getImplementor(SearchEngine.class);
+            Class impl = Project.instance().getImplementor(SearchEngine.class);
             SearchEngine searcher = (SearchEngine) impl.newInstance();
             searcher.init(bible, indexdir);
             

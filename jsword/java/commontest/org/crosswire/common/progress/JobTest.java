@@ -46,7 +46,7 @@ public class JobTest extends TestCase
     public void testJob() throws MalformedURLException
     {
         Job job;
-        URL url = Project.resource().getWritablePropertiesURL("splash");
+        URL url = Project.instance().getWritablePropertiesURL("splash");
 
         job = JobManager.createJob("wibble", false);
         assertEquals(job.getJobDescription(), "wibble");

@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -37,6 +37,9 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.basic.Verifier;
+import org.crosswire.jsword.view.swing.book.BookListCellRenderer;
+import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
+import org.crosswire.jsword.view.swing.book.DriversComboBoxModel;
 
 /**
  * Bible Generator allows the creation of new Books - although it

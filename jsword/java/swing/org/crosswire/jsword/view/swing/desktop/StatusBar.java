@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.book;
+package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -17,6 +17,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import org.crosswire.common.progress.swing.JobsProgressBar;
+import org.crosswire.jsword.util.Project;
 
 /**
  * The status bar provides useful info to the user as to the current
@@ -78,13 +79,13 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
         */
 
         lbl_name.setBorder(BorderFactory.createEtchedBorder());
-        lbl_name.setText(" JSword ");
+        lbl_name.setText(" "+Project.instance().getName()+" v"+Project.instance().getVersion()+" ");
 
         this.setBorder(BorderFactory.createLoweredBevelBorder());
         this.setLayout(new GridBagLayout());
 
         this.add(lbl_message, new GridBagConstraints(0, 0, 1, 1, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(pnl_progr,   new GridBagConstraints(1, 0, 1, 1, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        this.add(pnl_progr,   new GridBagConstraints(1, 0, 1, 1, 0.5, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         this.add(lbl_name,    new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     }
 
