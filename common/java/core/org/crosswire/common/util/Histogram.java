@@ -55,6 +55,10 @@ public class Histogram
         counter.increment();
     }
 
+    public void clear()
+    {
+        hist.clear();
+    }
     /**
      * The format of the histogram is an unordered list
      * of string and the counts of the number of times it has been seen.

@@ -1,49 +1,18 @@
 package org.crosswire.jsword.book.sword;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import org.crosswire.common.util.Histogram;
+import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
+import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.OSISUtil;
+import org.jdom.Element;
 
 /**
- * Constants for the keys in a SwordConfig file.
- * Taken from
- * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
- * 
- * <p>Keys that might be available that we are ignoring for now:
- * <li>DistributionLicense: single value coded string, a ';' separated string of license attributes
- *     There are mis-spellings, etc. so there is a need for a distributionLicenseAdditionalInfo field. (Ugh!)
- *     See also SwordConstants.DISTIBUTION_LICENSE_STRINGS.
- *     <pre>
- *     // Returns the distributionLicense - this is a 'flag type' field - the value
- *     // will be the result of several constants ORed. See the
- *     // DISTRIBUTION_LICENSE* constants in SwordConstants. It appears some
- *     // versions do not stick to this convention, because of this, there is an
- *     // additional menber distributionLicenseAdditionInfo, to store additional
- *     // information.
- *     private int distributionLicense;
- *     private String distributionLicenseAdditionalInfo = "";
- *     String licensesString = reader.getFirstValue("DistributionLicense");
- *     if (licensesString != null)
- *     {
- *         StringTokenizer tok = new StringTokenizer(licensesString, ";");
- *         while (tok.hasMoreTokens())
- *         {
- *             String distributionLicenseString = tok.nextToken().trim();
- *             int index = matchingIndex(SwordConstants.DISTIBUTION_LICENSE_STRINGS, distributionLicenseString, -1);
- *             if (index != -1)
- *             {
- *                 distributionLicense |= 1 << index;
- *             }
- *             else
- *             {
- *                 if (!distributionLicenseAdditionalInfo.equals(""))
- *                 {
- *                     distributionLicenseAdditionalInfo += "; ";
- *                 }
- *                 distributionLicenseAdditionalInfo += distributionLicenseString;
- *             }
- *         }
- *     }
- *     </pre>
+ * A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -63,366 +32,287 @@ import java.io.Serializable;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [ dmsmith555 at hotmail dot com]
  * @version $Id$
  */
-public class ConfigEntry implements Serializable
+public class ConfigEntry
 {
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry ABOUT = new ConfigEntry("About"); //$NON-NLS-1$
 
     /**
-     * single value integer, unknown use, some indications that we ought to be using it
+     * Create a ConfigEntry whose type is not certain
+     * and whose value is not known.
+     * @param moduleName the internal name of the module
+     * @param aName the name of the ConfigEntry.
      */
-    public static final ConfigEntry BLOCK_COUNT = new ConfigEntry("BlockCount"); //$NON-NLS-1$
-
-    /**
-     * The block type in use
-     */
-    public static final ConfigEntry BLOCK_TYPE = new ConfigEntry("BlockType"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry CATEGORY = new ConfigEntry("Category"); //$NON-NLS-1$
-
-    /**
-     * single value string, for encryption
-     */
-    public static final ConfigEntry CIPHER_KEY = new ConfigEntry("CipherKey"); //$NON-NLS-1$
-
-    /**
-     * The type of compression in use
-     */
-    public static final ConfigEntry COMPRESS_TYPE = new ConfigEntry("CompressType"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT = new ConfigEntry("Copyright"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT_CONTACT_ADDRESS = new ConfigEntry("CopyrightContactAddress"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT_CONTACT_EMAIL = new ConfigEntry("CopyrightContactEmail"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT_CONTACT_NAME = new ConfigEntry("CopyrightContactName"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT_DATE = new ConfigEntry("CopyrightDate"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT_HOLDER = new ConfigEntry("CopyrightHolder"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry COPYRIGHT_NOTES = new ConfigEntry("CopyrightNotes"); //$NON-NLS-1$
-
-    /**
-     * Relative path to the data files, some issues with this
-     */
-    public static final ConfigEntry DATA_PATH = new ConfigEntry("DataPath"); //$NON-NLS-1$
-
-    /**
-     * The full name of this module
-     */
-    public static final ConfigEntry DESCRIPTION = new ConfigEntry("Description"); //$NON-NLS-1$
-
-    /**
-     * single value choice, from SwordConstants.DIRECTION_STRINGS we should probably use it?
-     */
-    public static final ConfigEntry DIRECTION = new ConfigEntry("Direction"); //$NON-NLS-1$
-
-    /**
-     * single value integer, unknown use, some indications that we ought to be using it
-     */
-    public static final ConfigEntry DISPLAY_LEVEL = new ConfigEntry("DisplayLevel"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry DISTRIBUTION = new ConfigEntry("Distribution"); //$NON-NLS-1$
-
-    /**
-     * single value coded string, a ';' separated string of license attributes
-     */
-    public static final ConfigEntry DISTRIBUTION_LICENSE = new ConfigEntry("DistributionLicense"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry DISTRIBUTION_NOTES = new ConfigEntry("DistributionNotes"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry DISTRIBUTION_SOURCE = new ConfigEntry("DistributionSource"); //$NON-NLS-1$
-
-    /**
-     * The character encoding
-     */
-    public static final ConfigEntry ENCODING = new ConfigEntry("Encoding"); //$NON-NLS-1$
-
-    /**
-     * multiple value flagset, from SwordConstants.GOF_STRINGS
-     */
-    public static final ConfigEntry GLOBAL_OPTION_FILTER = new ConfigEntry("GlobalOptionFilter"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry GLOSSARY_FROM = new ConfigEntry("GlossaryFrom"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry GLOSSARY_TO = new ConfigEntry("GlossaryTo"); //$NON-NLS-1$
-
-    /**
-     * multiple values starting with History, some sort of change-log?
-     */
-    public static final ConfigEntry HISTORY = new ConfigEntry("History"); //$NON-NLS-1$
-
-    /**
-     * single value integer, the installed size (in bytes?)
-     */
-    public static final ConfigEntry INSTALL_SIZE = new ConfigEntry("InstallSize"); //$NON-NLS-1$
-
-    /**
-     * multiple value flagset, from SwordConstants.FEATURE_STRINGS
-     */
-    public static final ConfigEntry FEATURE = new ConfigEntry("Feature"); //$NON-NLS-1$
-
-    /**
-     * single value string
-     */
-    public static final ConfigEntry FONT = new ConfigEntry("Font"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_0_1 = new ConfigEntry("History_0.1"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_0_2 = new ConfigEntry("History_0.2"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_0_3 = new ConfigEntry("History_0.3"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_0_9 = new ConfigEntry("History_0.9"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_0_91 = new ConfigEntry("History_0.91"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_0_92 = new ConfigEntry("History_0.92"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_0 = new ConfigEntry("History_1.0"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_1 = new ConfigEntry("History_1.1"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_2 = new ConfigEntry("History_1.2"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_3 = new ConfigEntry("History_1.3"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_4 = new ConfigEntry("History_1.4"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_5 = new ConfigEntry("History_1.5"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_6 = new ConfigEntry("History_1.6"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_7 = new ConfigEntry("History_1.7"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_8 = new ConfigEntry("History_1.8"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_1_9 = new ConfigEntry("History_1.9"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_2_0 = new ConfigEntry("History_2.0"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_2_1 = new ConfigEntry("History_2.1"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_2_2 = new ConfigEntry("History_2.2"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry HISTORY_2_5 = new ConfigEntry("History_2.5"); //$NON-NLS-1$
-
-    /**
-     * single value string, defaults to en, the language of the module
-     */
-    public static final ConfigEntry LANG = new ConfigEntry("Lang"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry LCSH = new ConfigEntry("LCSH"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry LEXICON_FROM = new ConfigEntry("LexiconFrom"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry LEXICON_TO = new ConfigEntry("LexiconTo"); //$NON-NLS-1$
-
-    /**
-     * The type of module
-     */
-    public static final ConfigEntry MOD_DRV = new ConfigEntry("ModDrv"); //$NON-NLS-1$
-
-    /**
-     * single value version number, lowest sword c++ version that can read this module
-     */
-    public static final ConfigEntry MINIMUM_VERSION = new ConfigEntry("MinimumVersion"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry MINIMUM_SWORD_VERSION = new ConfigEntry("MinimumSwordVersion"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry OBSOLETES = new ConfigEntry("Obsoletes"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry SOURCE_TYPE = new ConfigEntry("SourceType"); //$NON-NLS-1$
-
-    /**
-     * unknown
-     */
-    public static final ConfigEntry SWORD_VERSION_DATE = new ConfigEntry("SwordVersionDate"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry TEXT_SOURCE = new ConfigEntry("TextSource"); //$NON-NLS-1$
-
-    /**
-     * single value string, unknown use
-     */
-    public static final ConfigEntry VERSION = new ConfigEntry("Version"); //$NON-NLS-1$
-
-    /**
-     * Simple ctor
-     */
-    private ConfigEntry(String name)
+    public ConfigEntry(String moduleName, String aName)
     {
-        this.name = name;
+        internal = moduleName;
+        name = aName;
+        type = ConfigEntryType.fromString(aName);
     }
 
     /**
-     * Lookup method to convert from a String
+     * Create a ConfigEntry directly with an initial value.
+     * @param moduleName the internal name of the module
+     * @param aType the kind of ConfigEntry
+     * @param aValue the initial value for the ConfigEntry
      */
-    public static ConfigEntry fromString(String name)
+    public ConfigEntry(String moduleName, ConfigEntryType aType, String aValue)
     {
-        for (int i = 0; i < VALUES.length; i++)
+        internal = moduleName;
+        name = aType.getName();
+        type = aType;
+        addValue(aValue);
+    }
+
+    /**
+     * Get the key of this ConfigEntry
+     */
+    public String getName()
+    {
+        if (type != null)
         {
-            ConfigEntry o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
+            return type.getName();
+        }
+        return name;
+    }
+
+    /**
+     * Get the type of this ConfigEntry
+     */
+    public ConfigEntryType getType()
+    {
+        return type;
+    }
+
+    /**
+     * Determines whether the string is allowed. For some config entries, 
+     * the value is expected to be one of a group, for others the format is defined.
+     * 
+     * @param aValue
+     * @return true if the string is allowed
+     */
+    public boolean isAllowed(String aValue)
+    {
+        if (type != null)
+        {
+            return type.isAllowed(aValue);
+        }
+        return true;
+    }
+
+    /**
+     * RTF is allowed in a few config entries.
+     * @return true if rtf is allowed
+     */
+    public boolean allowsRTF()
+    {
+        if (type != null)
+        {
+            return type.allowsRTF();
+        }
+        return true;
+    }
+    
+    /**
+     * While most fields are single line or single value, some allow continuation.
+     * A continuation mark is a backslash at the end of a line. It is not to be followed by whitespace.
+     * @return true if continuation is allowed
+     */
+    public boolean allowsContinuation()
+    {
+        if (type != null)
+        {
+            return type.allowsContinuation();
+        }
+        return true;
+    }
+
+    /**
+     * Some keys can repeat. When this happens each is a single value pick from a list of choices.
+     * @return true if this ConfigEntryType can occur more than once
+     */
+    public boolean mayRepeat()
+    {
+        if (type != null)
+        {
+            return type.mayRepeat();
+        }
+        return true;
+    }
+    
+    /**
+     * 
+     */
+    public boolean reportDetails()
+    {
+        if (type != null)
+        {
+            return type.reportDetails();
+        }
+        return true;
+    }
+    /**
+     * Determine whether this config entry is supported.
+     * @return true if this ConfigEntry has a type.
+     */
+    public boolean isSupported()
+    {
+        return type != null;
+    }
+
+    /**
+     * Get the value(s) of this ConfigEntry.
+     * If mayRepeat() == true then it returns a List.
+     * Otherwise it returns a string.
+     * @return a list, value or null.
+     */
+    public Object getValue()
+    {
+        if (value != null)
+        {
+            return value;
+        }
+        if (values != null)
+        {
+            return values;
+        }
+        return type.getDefault();
+    }
+
+    /**
+     * Add a value to the list of values for this ConfigEntry
+     */
+    public void addValue(String aValue)
+    {
+        String confEntryName = getName();
+        aValue = handleRTF(aValue);
+        if (mayRepeat())
+        {
+            if (values == null)
             {
-                return o;
+                histogram.increment(confEntryName);
+                values = new ArrayList();
+            }
+            if (reportDetails())
+            {
+                histogram.increment(confEntryName + '.' + aValue);
+            }
+            if (!isAllowed(aValue))
+            {
+                log.info("Ignoring unknown config value for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$  //$NON-NLS-3$
+                return;
+            }
+            values.add(aValue);
+        }
+        else
+        {
+            if (value != null)
+            {
+                log.info("Ignoring unexpected additional entry for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
+            }
+            else
+            {
+                histogram.increment(confEntryName);
+                if (type.hasChoices())
+                {
+                    histogram.increment(confEntryName + '.' + aValue);
+                }
+                if (!isAllowed(aValue))
+                {
+                    log.info("Ignoring unknown config value for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$  //$NON-NLS-3$
+                    return;
+                }
+                value = aValue;
             }
         }
-        // should not get here.
-        // But there are typos in the keys in the module conf files
-        return null;
     }
-
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static ConfigEntry fromInteger(int i)
+    
+    public Element toOSIS()
     {
-        return VALUES[i];
+        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        
+        Element rowEle = factory.createRow();
+
+        Element nameEle = factory.createCell();
+        Element hiEle = factory.createHI();
+        hiEle.setAttribute("rend", "bold"); //$NON-NLS-1$ //$NON-NLS-2$
+        nameEle.addContent(hiEle);
+        Element valueElement = factory.createCell();
+        rowEle.addContent(nameEle);
+        rowEle.addContent(valueElement);
+        
+        // I18N(DMS): use name to lookup translation. 
+        hiEle.addContent(getName());
+
+        if (value != null)
+        {
+            String expandedValue = XMLUtil.escape(value);
+            if (allowsContinuation() || allowsRTF())
+            {
+                valueElement.addContent(processLines(factory, expandedValue));
+            }
+            else
+            {
+                valueElement.addContent(expandedValue);
+            }
+        }
+
+        if (values != null)
+        {
+            Element listEle = factory.createLG();
+            valueElement.addContent(listEle);
+
+            Iterator iter = values.iterator();
+            while (iter.hasNext())
+            {
+                Element itemEle = factory.createL();
+                listEle.addContent(itemEle);
+                itemEle.addContent(XMLUtil.escape(iter.next().toString()));
+            }
+        }
+        return rowEle;
     }
 
-    /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+    public static void resetStatistics()
+    {
+        histogram.clear();
+    }
+
+    public static void dumpStatistics()
+    {
+        // Uncomment the following line to produce statistics
+        //System.out.println(histogram.toString());
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
+    public boolean equals(Object obj)
     {
-        return super.equals(o);
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // Check that that is the same as this
+        // Don't use instanceOf since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        ConfigEntry that = (ConfigEntry) obj;
+        return that.getName().equals(this.getName());
     }
 
-    /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+    /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
+    public int hashCode()
     {
-        return super.hashCode();
+        return getName().hashCode();
     }
 
     /* (non-Javadoc)
@@ -430,90 +320,71 @@ public class ConfigEntry implements Serializable
      */
     public String toString()
     {
-        return name;
+        return getName();
+    }
+
+    private String handleRTF(String aValue)
+    {
+        String copy = aValue;
+        // This method is a hack! It could be made much nicer.
+
+        // strip \pard
+        copy = copy.replaceAll("\\\\pard ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // replace rtf newlines
+        copy = copy.replaceAll("\\\\pa[er] ?", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip whatever \qc is.
+        copy = copy.replaceAll("\\\\qc ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip bold and italic
+        copy = copy.replaceAll("\\\\[bi]0? ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip unicode characters
+        copy = copy.replaceAll("\\\\u-?[0-9]{4,6}+\\?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // strip { and } which are found in {\i text }
+        copy = copy.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // This check is here rather than at the top, so we can find the problems
+        // and fix the source.
+        if (!allowsRTF())
+        {
+            if (!copy.equals(aValue))
+            {
+                log.info("Ignoring unexpected RTF for " + getName() + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+            return aValue;
+        }
+
+        return copy;
+    }
+    
+    private List processLines(OSISUtil.ObjectFactory factory, String aValue)
+    {
+        List list = new ArrayList();
+        String [] lines = StringUtil.splitAll(aValue, '\n');
+        for (int i = 0; i < lines.length; i++)
+        {
+            Element lineElement = factory.createL();
+            lineElement.addContent(lines[i]);
+            list.add(lineElement);
+        }
+        return list;
     }
 
     /**
-     * The name of the ConfigEntry
+     * The log stream
      */
+    private static final Logger log = Logger.getLogger(ConfigEntry.class);
+    /**
+     * A histogram for debugging.
+     */
+    private static Histogram histogram = new Histogram();
+
+    private ConfigEntryType type;
+    private String internal;
     private String name;
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3258125873411273014L;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve()
-    {
-        return VALUES[obj];
-    }
-
-    private static final ConfigEntry[] VALUES =
-    {
-                    ABOUT,
-                    BLOCK_COUNT,
-                    BLOCK_TYPE,
-                    CATEGORY,
-                    CIPHER_KEY,
-                    COMPRESS_TYPE,
-                    COPYRIGHT,
-                    COPYRIGHT_CONTACT_ADDRESS,
-                    COPYRIGHT_CONTACT_EMAIL,
-                    COPYRIGHT_CONTACT_NAME,
-                    COPYRIGHT_DATE,
-                    COPYRIGHT_HOLDER,
-                    COPYRIGHT_NOTES,
-                    DATA_PATH,
-                    DESCRIPTION,
-                    DIRECTION,
-                    DISPLAY_LEVEL,
-                    DISTRIBUTION,
-                    DISTRIBUTION_LICENSE,
-                    DISTRIBUTION_NOTES,
-                    DISTRIBUTION_SOURCE,
-                    ENCODING,
-                    GLOBAL_OPTION_FILTER,
-                    GLOSSARY_FROM,
-                    GLOSSARY_TO,
-                    HISTORY,
-                    INSTALL_SIZE,
-                    FEATURE,
-                    FONT,
-                    HISTORY_0_1,
-                    HISTORY_0_2,
-                    HISTORY_0_3,
-                    HISTORY_0_9,
-                    HISTORY_0_91,
-                    HISTORY_0_92,
-                    HISTORY_1_0,
-                    HISTORY_1_1,
-                    HISTORY_1_2,
-                    HISTORY_1_3,
-                    HISTORY_1_4,
-                    HISTORY_1_5,
-                    HISTORY_1_6,
-                    HISTORY_1_7,
-                    HISTORY_1_8,
-                    HISTORY_1_9,
-                    HISTORY_2_0,
-                    HISTORY_2_1,
-                    HISTORY_2_2,
-                    HISTORY_2_5,
-                    LANG,
-                    LCSH,
-                    LEXICON_FROM,
-                    LEXICON_TO,
-                    MOD_DRV,
-                    MINIMUM_VERSION,
-                    MINIMUM_SWORD_VERSION,
-                    OBSOLETES,
-                    SOURCE_TYPE,
-                    SWORD_VERSION_DATE,
-                    TEXT_SOURCE,
-                    VERSION,
-    };
+    private List values;
+    private String value;
 }

@@ -87,6 +87,44 @@ public class XMLUtil
     }
 
     /**
+     * Normalizes the given string
+     */
+     public static String escape(String s)
+     {
+         StringBuffer str = new StringBuffer(s.length());
+
+         int len = (s != null) ? s.length() : 0;
+         for (int i = 0; i < len; i++)
+         {
+             char ch = s.charAt(i); //$NON-NLS-1$
+             switch (ch)
+             {
+             case '<':
+                 str.append("&lt;"); //$NON-NLS-1$
+                 break;
+
+             case '>':
+                 str.append("&gt;"); //$NON-NLS-1$
+                 break;
+
+             case '&':
+                 str.append("&amp;"); //$NON-NLS-1$
+                 break;
+
+             case '"':
+                 str.append("&quot;"); //$NON-NLS-1$
+                 break;
+
+             default:
+                 str.append(ch);
+             }
+         }
+
+         return str.toString();
+     }
+
+
+    /**
      * A parse has failed so we can try to kill the broken entities and then have
      * another go.
      */

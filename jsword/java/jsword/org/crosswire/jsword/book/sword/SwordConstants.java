@@ -94,170 +94,6 @@ public class SwordConstants
     static final int TESTAMENT_NEW = 2;
 
     /**
-     * Constants for global option filter
-     */
-    static final int GOF_GBF_STRONGS = 1;
-    static final int GOF_GBF_FOOTNOTES = 1 << 1;
-    static final int GOF_GBF_SCRIPREF = 1 << 2;
-    static final int GOF_GBF_MORPH = 1 << 3;
-    static final int GOF_GBF_HEADINGS = 1 << 4;
-    static final int GOF_THML_STRONGS = 1 << 5;
-    static final int GOF_THML_FOOTNOTES = 1 << 6;
-    static final int GOF_THML_SCRIPREF = 1 << 7;
-    static final int GOF_THML_MORPH = 1 << 8;
-    static final int GOF_THML_HEADINGS = 1 << 9;
-    static final int GOF_THML_VARIANTS = 1 << 10;
-    static final int GOF_THML_LEMMA = 1 << 11;
-    static final int GOF_UTF8_CANTILLATION = 1 << 12;
-    static final int GOF_UTF8_GREEK_ACCENTS = 1 << 13;
-    static final int GOF_UTF8_HEBREW_VOWELS = 1 << 14;
-
-    /**
-     * Strings for global option filter
-     */
-    static final String[] GOF_STRINGS =
-    {
-        "GBFStrongs", //$NON-NLS-1$
-        "GBFFootnotes", //$NON-NLS-1$
-        "GBFScripref", //$NON-NLS-1$
-        "GBFMorph", //$NON-NLS-1$
-        "GBFHeadings", //$NON-NLS-1$
-        "GBFRedLetterWords", //$NON-NLS-1$
-        "ThMLStrongs", //$NON-NLS-1$
-        "ThMLFootnotes", //$NON-NLS-1$
-        "ThMLScripref", //$NON-NLS-1$
-        "ThMLMorph", //$NON-NLS-1$
-        "ThMLHeadings", //$NON-NLS-1$
-        "ThMLVariants", //$NON-NLS-1$
-        "THMLLemma", //$NON-NLS-1$
-        "UTF8Cantillation", //$NON-NLS-1$
-        "UTF8GreekAccents", //$NON-NLS-1$
-        "UTF8HebrewVowels", //$NON-NLS-1$
-        "OSISStrongs", //$NON-NLS-1$
-        "OSISFootnotes", //$NON-NLS-1$
-        "OSISMorph", //$NON-NLS-1$
-        "OSISHeadings", //$NON-NLS-1$
-        "OSISRedLetterWords", //$NON-NLS-1$
-    };
-
-    /**
-     * Constants for direction
-     */
-    static final int DIRECTION_LTOR = 0;
-    static final int DIRECTION_RTOL = 1;
-    static final int DIRECTION_BIDI = 2;
-
-    /**
-     * Strings for direction
-     */
-    static final String[] DIRECTION_STRINGS =
-    {
-        "LtoR", //$NON-NLS-1$
-        "RtoL", //$NON-NLS-1$
-        "bidi" //$NON-NLS-1$
-    };
-
-    /**
-     * Constants for source type
-     */
-    static final int SOURCE_PLAINTEXT = 0;
-    static final int SOURCE_GBF = 1;
-    static final int SOURCE_THML = 2;
-    static final int SOURCE_OSIS = 3;
-
-    /**
-     * Strings for source type
-     */
-    static final String[] SOURCE_STRINGS =
-    {
-        "Plaintext", //$NON-NLS-1$
-        "GBF", //$NON-NLS-1$
-        "ThML", //$NON-NLS-1$
-        "OSIS", //$NON-NLS-1$
-    };
-
-    /**
-     * constants for encoding
-     */
-    static final int ENCODING_LATIN1 = 0;
-    static final int ENCODING_UTF8 = 1;
-
-    /**
-     * Strings for encoding
-     */
-    static final String[] ENCODING_STRINGS =
-    {
-        "Latin-1", //$NON-NLS-1$
-        "UTF-8", //$NON-NLS-1$
-        "SCSU", //$NON-NLS-1$
-        "UTF-16" //$NON-NLS-1$
-    };
-
-    static final String[] ENCODING_JAVA =
-    {
-        "ISO-8859-1", //$NON-NLS-1$
-        "UTF-8", //$NON-NLS-1$
-        "SCSU", //$NON-NLS-1$
-        "UTF-16", //$NON-NLS-1$
-    };
-
-    /**
-     * Constants for feature
-     */
-    static final int FEATURE_STRONGS_NUMBERS = 1;
-    static final int FEATURE_GREEK_DEF = 1 << 1;
-    static final int FEATURE_HEBREW_DEF = 1 << 2;
-    static final int FEATURE_GREEK_PARSE = 1 << 3;
-    static final int FEATURE_HEBREW_PARSE = 1 << 4;
-    static final int FEATURE_DAILY_DEVOTION = 1 << 5;
-    static final int FEATURE_GLOSSARY = 1 << 6;
-
-    /**
-     * Strings for feature
-     */
-    static final String[] FEATURE_STRINGS =
-    {
-        "StrongsNumbers", //$NON-NLS-1$
-        "GreekDef", //$NON-NLS-1$
-        "HebrewDef", //$NON-NLS-1$
-        "GreekParse", //$NON-NLS-1$
-        "HebrewParse", //$NON-NLS-1$
-        "DailyDevotion", //$NON-NLS-1$
-        "Glossary", //$NON-NLS-1$
-    };
-    
-    /**
-     * public domain
-     */
-    static final int DISTRIBUTION_LICENSE_PD = 1;
-
-    /**
-     * copyrighted but free for distribution
-     */
-    static final int DISTRIBUTION_LICENSE_CBFFD = 1 << 1;
-
-    /**
-     * copyrighted by licensed for distribution by crosswire
-     */
-    static final int DISTRIBUTION_LICENSE_CBLFDBC = 1 << 2;
-
-    /**
-     * copyrighted
-     */
-    static final int DISTRIBUTION_LICENSE_C = 1 << 3;
-
-    /**
-     * Strings for distribution license
-     */
-    static final String[] DISTIBUTION_LICENSE_STRINGS =
-    {
-        "public domain", //$NON-NLS-1$
-        "copyrighted but free for distribution", //$NON-NLS-1$
-        "copyrighted by licensed for distribution by crosswire", //$NON-NLS-1$
-        "copyrighted" //$NON-NLS-1$
-    };
-
-    /**
      * Get the testament of a given verse
      */
     static int getTestament(Verse v)
@@ -306,21 +142,22 @@ public class SwordConstants
     }
 
     /**
-     * array containing LUT of offsets in the chapter table.
-     */
-    private static int[][] bks;
-
-    /**
-     * array containing LUT of positions of initial verses per chapter.
-     * This and all the cps* below were longs but I have no idea why so I made
-     * them all ints
-     */
-    private static int[][] cps;
-
-    /**
      * The start of the new testament
      */
     static final int ORDINAL_MAT11 = new Verse(BibleInfo.Names.MATTHEW, 1, 1, true).getOrdinal();
+
+    /**
+     * array containing LUT of offsets in the chapter table.
+     */
+    private static short[][] bks;
+
+    /**
+     * array containing LUT of positions of initial verses per chapter.
+     * This and all the cps* below were longs and then ints
+     * This was an artifact of a port from C/C++ where int/long vary
+     * in size dependeing on architecture.
+     */
+    private static short[][] cps;
 
     /**
      * initialise our LUTs with data shamelessly stolen from our sister project (Sword)
@@ -331,10 +168,10 @@ public class SwordConstants
      */
     static
     {
-        bks = new int[3][];
-        cps = new int[3][];
+        bks = new short[3][];
+        cps = new short[3][];
 
-        int[] bksot =
+        short[] bksot =
         {
             0, 1, 52, 93, 121, 158,
             193, 218, 240, 245, 277, 302, 325,
@@ -344,7 +181,7 @@ public class SwordConstants
             934, 938, 942, 946, 949, 964
         };
 
-        int[] bksnt =
+        short[] bksnt =
         {
             0, 1, 30, 47, 72, 94,
             123, 140, 157, 171, 178, 185, 190,
@@ -356,7 +193,7 @@ public class SwordConstants
         bks[SwordConstants.TESTAMENT_OLD] = bksot;
         bks[SwordConstants.TESTAMENT_NEW] = bksnt;
 
-        int[] cpsot =
+        short[] cpsot =
         {
             0, 2, 3, 35, 61, 86,
             113, 146, 169, 194, 217, 247, 280,
@@ -499,7 +336,7 @@ public class SwordConstants
             24056, 24071, 24089, 24108
         };
 
-        int[] cpsnt =
+        short[] cpsnt =
         {
             0, 2, 3, 29, 53, 71,
             97, 146, 181, 211, 246, 285, 328,

@@ -61,6 +61,8 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public BookMetaData[] getBookMetaDatas()
     {
+        ConfigEntry.resetStatistics();
+
         List valid = new ArrayList();
 
         // Loop through the dirs in the lookup path
@@ -119,6 +121,8 @@ public class SwordBookDriver extends AbstractBookDriver
                 log.debug("mods.d directory at " + mods + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
+
+        ConfigEntry.dumpStatistics();
 
         return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
     }
@@ -319,7 +323,7 @@ public class SwordBookDriver extends AbstractBookDriver
                 {
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(sysconfig));
-                    String datapath = prop.getProperty(ConfigEntry.DATA_PATH.toString());
+                    String datapath = prop.getProperty(ConfigEntryType.DATA_PATH.toString());
                     testDefaultPath(reply, datapath);
                 }
                 catch (IOException ex)

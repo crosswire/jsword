@@ -3,6 +3,8 @@ package org.crosswire.jsword.book;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
+import org.jdom.Document;
+
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
  * the same BookMetaData should return identical text for any call to
@@ -124,7 +126,7 @@ public interface BookMetaData extends Comparable
      * will fail.
      */
     public Map getProperties();
-
+    
     /**
      * Has anyone generated a search index for this Book?
      * @see org.crosswire.jsword.book.search.IndexManager
@@ -137,6 +139,11 @@ public interface BookMetaData extends Comparable
      * @see org.crosswire.jsword.book.search.IndexManager
      */
     public void setIndexStatus(IndexStatus status);
+
+    /**
+     * Get an OSIS representation of information concerning this Book.
+     */
+    public Document toOSIS();
 
     /**
      * Adds a <code>PropertyChangeListener</code> to the listener list.

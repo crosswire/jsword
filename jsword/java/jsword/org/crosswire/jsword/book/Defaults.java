@@ -116,9 +116,8 @@ public class Defaults
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
      * against AV (BarDriver).
      * @param name The version to use as default.
-     * @exception BookException If the name is not valid
      */
-    public static void setBibleByName(String name) throws BookException
+    public static void setBibleByName(String name)
     {
         if (name == null || name.length() == 0)
         {
@@ -138,7 +137,11 @@ public class Defaults
             }
         }
 
-        throw new BookException(Msg.BIBLE_NOTFOUND, new Object[] { name });
+        // This is thrown while the splash screen is up.
+        // It only occurs if the book has been deleted, but the reference
+        // has not changed.
+        // This happens if the user manually deletes the entry.
+        //throw new BookException(Msg.BIBLE_NOTFOUND, new Object[] { name });
     }
 
     /**
@@ -198,9 +201,8 @@ public class Defaults
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
      * against AV (BarDriver).
      * @param name The version to use as default.
-     * @exception BookException If the name is not valid
      */
-    public static void setCommentaryByName(String name) throws BookException
+    public static void setCommentaryByName(String name)
     {
         if (name == null || name.length() == 0)
         {
@@ -220,7 +222,11 @@ public class Defaults
             }
         }
 
-        throw new BookException(Msg.COMMENTARY_NOTFOUND, new Object[] { name });
+        // This is thrown while the splash screen is up.
+        // It only occurs if the book has been deleted, but the reference
+        // has not changed.
+        // This happens if the user manually deletes the entry.
+        //throw new BookException(Msg.COMMENTARY_NOTFOUND, new Object[] { name });
     }
 
     /**
@@ -280,9 +286,8 @@ public class Defaults
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
      * against AV (BarDriver).
      * @param name The version to use as default.
-     * @exception BookException If the name is not valid
      */
-    public static void setDictionaryByName(String name) throws BookException
+    public static void setDictionaryByName(String name)
     {
         if (name == null || name.length() == 0)
         {
@@ -302,7 +307,11 @@ public class Defaults
             }
         }
 
-        throw new BookException(Msg.DICTIONARY_NOTFOUND, new Object[] { name });
+        // This is thrown while the splash screen is up.
+        // It only occurs if the book has been deleted, but the reference
+        // has not changed.
+        // This happens if the user manually deletes the entry.
+        //throw new BookException(Msg.DICTIONARY_NOTFOUND, new Object[] { name });
     }
 
     /**

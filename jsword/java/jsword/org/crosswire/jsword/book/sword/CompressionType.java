@@ -42,7 +42,7 @@ public abstract class CompressionType implements Serializable
         }
         protected Backend getBackend(SwordBookMetaData sbmd, String path) throws BookException
         {
-            BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntry.BLOCK_TYPE));
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new GZIPBackend(path, blockType);
         }
 

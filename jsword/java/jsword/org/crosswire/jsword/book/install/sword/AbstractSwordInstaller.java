@@ -27,6 +27,7 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.sword.ConfigEntry;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordConstants;
@@ -250,10 +251,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         try
         {
+            ConfigEntry.resetStatistics();
+
             InputStream in = cache.openStream();
             GZIPInputStream gin = new GZIPInputStream(in);
             TarInputStream tin = new TarInputStream(gin);
-
             while (true)
             {
                 TarEntry entry = tin.getNextEntry();
@@ -296,12 +298,13 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     }
                 }
             }
-
             IOUtil.close(tin);
             IOUtil.close(gin);
             IOUtil.close(in);
 
             loaded = true;
+
+            ConfigEntry.dumpStatistics();
         }
         catch (IOException ex)
         {

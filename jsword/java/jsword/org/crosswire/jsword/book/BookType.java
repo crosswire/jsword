@@ -71,9 +71,7 @@ public class BookType implements Serializable
                 return o;
             }
         }
-        // cannot get here
-        assert false;
-        return null;
+        return OTHER;
     }
 
     /**

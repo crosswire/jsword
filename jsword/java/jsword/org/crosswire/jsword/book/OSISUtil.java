@@ -121,6 +121,10 @@ public class OSISUtil
     public static final String OSIS_ELEMENT_HEADER = "header"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_OSISTEXT = "osisText"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_SEG = "seg"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_LG = "lg"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_L = "l"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_LB = "lb"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_HI = "hi"; //$NON-NLS-1$
 
     public static final String ATTRIBUTE_TEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
     public static final String ATTRIBUTE_WORK_OSISWORK = "osisWork"; //$NON-NLS-1$
@@ -341,6 +345,34 @@ public class OSISUtil
         public Element createTitle()
         {
             return new Element(OSIS_ELEMENT_TITLE);
+        }
+        /**
+         * Line Group
+         */
+        public Element createLG()
+        {
+            return new Element(OSIS_ELEMENT_LG);
+        }
+        /**
+         * Line
+         */
+        public Element createL()
+        {
+            return new Element(OSIS_ELEMENT_L);
+        }
+        /**
+         * Line Break
+         */
+        public Element createLB()
+        {
+            return new Element(OSIS_ELEMENT_LB);
+        }
+        /**
+         * Highlight
+         */
+        public Element createHI()
+        {
+            return new Element(OSIS_ELEMENT_HI);
         }
     }
 

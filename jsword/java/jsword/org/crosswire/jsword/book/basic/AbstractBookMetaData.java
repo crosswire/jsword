@@ -17,6 +17,7 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.IndexStatus;
+import org.jdom.Document;
 
 /**
  * An implementaion of the Propery Change methods from BookMetaData.
@@ -169,6 +170,14 @@ public abstract class AbstractBookMetaData implements BookMetaData
         firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
+     */
+    public Document toOSIS()
+    {
+        throw new UnsupportedOperationException("If you want to use this, implement it."); //$NON-NLS-1$
+    }
+
     /**
      * @param book The book to set.
      */
@@ -191,12 +200,11 @@ public abstract class AbstractBookMetaData implements BookMetaData
      * @param iso639Code
      * @return the name of the language
      */
-    protected String getLanguage(String ident, String iso639Code)
+    public static String getLanguage(String ident, String iso639Code)
     {
         String lookup = iso639Code;
         if (lookup == null || lookup.length() == 0)
         {
-            log.warn("Book " + ident + " named " + getName() + " has no language specified. Assuming English."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return getLanguage(ident, DEFAULT_LANG_CODE);
         }
 
@@ -351,7 +359,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     private static final Logger log = Logger.getLogger(AbstractBookMetaData.class);
 
-    private static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
+    public static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
     private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
 
     /**

@@ -151,7 +151,7 @@ public class BibleInfo
      * This is only used by config
      * @return The current case setting
      * @see Passage
-     * @see BibleInfo#setCase(int)
+     * @see BibleInfo#setCase(CaseType)
      */
     public static final int getCase()
     {
@@ -1048,7 +1048,7 @@ public class BibleInfo
     private static final int CHAPTERS_IN_BIBLE = 1189;
 
     /** Constant for the number of chapters in each book */
-    private static final int[] CHAPTERS_IN_BOOK =
+    private static final short[] CHAPTERS_IN_BOOK =
     {
         50, 40, 27, 36, 34, 24, 21,  4, 31, 24,
         22, 25, 29, 36, 10, 13, 10, 42, 150, 31,
@@ -1060,10 +1060,10 @@ public class BibleInfo
     };
 
     /** Constant for the number of verses in the Bible */
-    private static final int VERSES_IN_BIBLE = 31102;
+    private static final short VERSES_IN_BIBLE = 31102;
 
     /** Constant for the number of verses in each book */
-    private static final int[] VERSES_IN_BOOK =
+    private static final short[] VERSES_IN_BOOK =
     {
         1533, 1213,  859, 1288,  959,  658,  618,   85,  810,  695,
         816,  719,  942,  822,  280,  406,  167, 1070, 2461,  915,
@@ -1075,7 +1075,7 @@ public class BibleInfo
     };
 
     /** Constant for the number of verses in each chapter */
-    private static final int[][] VERSES_IN_CHAPTER =
+    private static final short[][] VERSES_IN_CHAPTER =
     {
         { 31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26 },
         { 22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22, 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31, 43, 38 },
@@ -1146,7 +1146,7 @@ public class BibleInfo
     };
 
     /** Constant for the ordinal number of the first verse in each book */
-    private static final int[] ORDINAL_AT_START_OF_BOOK =
+    private static final short[] ORDINAL_AT_START_OF_BOOK =
     {
         1,  1534,  2747,  3606,  4894,  5853,  6511,  7129,  7214,  8024,
         8719,  9535, 10254, 11196, 12018, 12298, 12704, 12871, 13941, 16402,
@@ -1163,7 +1163,7 @@ public class BibleInfo
      * this module) then you will need to cut the psalms line in half to
      * get it to compile under JBuilder.
      */
-    private static final int[][] ORDINAL_AT_START_OF_CHAPTER =
+    private static final short[][] ORDINAL_AT_START_OF_CHAPTER =
     {
         {     1,    32,    57,    81,   107,   139,   161,   185,   207,   236,   268,   300,   320,   338,   362,   383,   399,   426,   459,   497,   515,   549,   573,   593,   660,   694,   729,   775,   797,   832,   875,   930,   962,   982,  1013,  1042,  1085,  1121,  1151,  1174,  1197,  1254,  1292,  1326,  1360,  1388,  1422,  1453,  1475,  1508, },
         {  1534,  1556,  1581,  1603,  1634,  1657,  1687,  1712,  1744,  1779,  1808,  1818,  1869,  1891,  1922,  1949,  1985,  2001,  2028,  2053,  2079,  2115,  2146,  2179,  2197,  2237,  2274,  2295,  2338,  2384,  2422,  2440,  2475,  2498,  2533,  2568,  2606,  2635,  2666,  2709, },
@@ -1237,7 +1237,7 @@ public class BibleInfo
     /**
      * The number of books in each section
      */
-    private static final int[] BOOKS_IN_SECTION =
+    private static final short[] BOOKS_IN_SECTION =
     {
         0, // Does not exist
         5, // Pentateuch = 1;
@@ -1256,8 +1256,8 @@ public class BibleInfo
     protected static final BibleInfo instance = new BibleInfo();
 
     /**
-     * This is the code used to create ordinal_at_start_of_chapter and
-     * ordinal_at_start_of_book. It is usually commented out because I
+     * This is the code used to create ORDINAL_AT_START_OF_CHAPTER and
+     * ORDINAL_AT_START_OF_BOOK. It is usually commented out because I
      * don't see any point in making .class files bigger for no reason
      * and this is needed only very rarely.
      *
@@ -1266,7 +1266,7 @@ public class BibleInfo
         int verse_num;
 
         verse_num = 1;
-        log.fine("    private static final int[] ordinal_at_start_of_book =");
+        log.fine("    private static final short[] ORDINAL_AT_START_OF_BOOK =");
         log.fine("    {");
         log.fine("        ");
         for (int b = 1; b <= booksInBible(); b++)
@@ -1282,7 +1282,7 @@ public class BibleInfo
         log.fine("    };");
 
         verse_num = 1;
-        log.fine("    private static final int[][] ordinal_at_start_of_chapter =");
+        log.fine("    private static final short[][] ORDINAL_AT_START_OF_CHAPTER =");
         log.fine("    {");
         for (int b = 1; b <= BibleInfo.booksInBible(); b++)
         {

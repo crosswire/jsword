@@ -1,31 +1,19 @@
 package org.crosswire.jsword.book.sword;
 
-import java.awt.ComponentOrientation;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Reader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
-import org.crosswire.common.util.Histogram;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
+import org.jdom.Document;
 
 /**
  * A utility class for loading and representing Sword module configs.
@@ -83,292 +71,22 @@ public class SwordBookMetaData extends AbstractBookMetaData
     public SwordBookMetaData(Reader in, String internal) throws IOException
     {
         setBook(null);
-        this.internal = internal;
-        this.supported = true;
 
-        // read the config file
-        BufferedReader bin = new BufferedReader(in);
-        StringBuffer buf = new StringBuffer();
-        while (true)
+        cet = new ConfigEntryTable(in, internal);
+//        Element ele = cet.toOSIS();
+//        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
+//        try
+//        {
+//        System.out.println(XMLUtil.writeToString(sep));
+//        }
+//        catch(Exception e)
+//        {
+//        }
+        if (isSupported())
         {
-            // Empty out the buffer
-            buf.setLength(0);
-
-            String line = advance(bin);
-            if (line == null)
-            {
-                break;
-            }
-
-            int length = line.length();
-            if (length > 0)
-            {
-                buf.append(line);
-            }
-            else
-            {
-                buf.append(' ');
-            }
-
-            getContinuation(bin, buf);
-
-            parseEntry(buf.toString());
+            buildProperties();
         }
 
-        // merge entries into properties file
-        for (Iterator kit = getKeys(); kit.hasNext();)
-        {
-            String key = (String) kit.next();
-
-            // Only copy the valid ones
-            if (ConfigEntry.fromString(key) == null)
-            {
-                continue;
-            }
-
-            List list = (List) table.get(key);
-
-            StringBuffer combined = new StringBuffer();
-            boolean appendSeparator = false;
-            for (Iterator vit = list.iterator(); vit.hasNext();)
-            {
-                String element = (String) vit.next();
-                if (appendSeparator)
-                {
-                    combined.append('\n');
-                }
-                combined.append(element);
-                appendSeparator = true;
-            }
-
-            putProperty(key, combined.toString());
-        }
-
-        // set the key property file entries
-        putProperty(KEY_INITIALS, initials);
-
-        validate();
-
-        if (!isSupported())
-        {
-            return;
-        }
-
-        // From the config map, extract the important bean properties
-        String modTypeName = getProperty(ConfigEntry.MOD_DRV);
-        if (modTypeName != null)
-        {
-            mtype = ModuleType.getModuleType(modTypeName);
-        }
-
-        // The default compression type is BOOK.
-        // This probably a data problem as it only occurs with webstersdict
-        String cStr = getProperty(ConfigEntry.COMPRESS_TYPE);
-        String blocking = getProperty(ConfigEntry.BLOCK_TYPE);
-        if (cStr != null && blocking == null)
-        {
-            log.warn("Fixing data for " + internal + ". Adding BlockType of BOOK"); //$NON-NLS-1$ //$NON-NLS-2$
-            fixEntry(ConfigEntry.BLOCK_TYPE, BlockType.BLOCK_BOOK.toString());
-        }
-
-        String lang = getProperty(ConfigEntry.LANG);
-        putProperty(KEY_LANGUAGE, getLanguage(internal, lang));
-        if (lang != null) //$NON-NLS-1$
-        {
-            // This returns ComponentOrientation.LEFT_TO_RIGHT if
-            // it does not know what it is.
-            boolean leftToRight = ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
-            String dir = getProperty(ConfigEntry.DIRECTION);
-            // Java thinks it is RtoL but it is not stated to be such in the conf.
-            if (!leftToRight && dir == null)
-            {
-                log.warn("Fixing data for " + internal + ". Adding DIRECTION=RtoL"); //$NON-NLS-1$ //$NON-NLS-2$
-                fixEntry(ConfigEntry.DIRECTION, SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_RTOL]);
-            }
-            // Java thinks it is LtoR but it is stated to be something else
-            String ltor = SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_LTOR];
-            if (leftToRight && dir != null && !dir.equals(ltor))
-            {
-                log.warn("Fixing data for " + internal + ". Changing DIRECTION=RtoL to LtoR"); //$NON-NLS-1$ //$NON-NLS-2$
-                fixEntry(ConfigEntry.DIRECTION, ltor);
-            }
-        }
-
-        if (mtype != null)
-        {
-            BookType type = mtype.getBookType();
-            putProperty(KEY_TYPE, type != null ? type.toString() : ""); //$NON-NLS-1$
-        }
-
-        // now that prop is fully populated we can organize it.
-        organize();
-    }
-
-    /**
-     * Save this config file to a URL
-     * @param dest The URL to save the data to
-     */
-    public void save(URL dest)
-    {
-        PrintWriter out = null;
-        try
-        {
-            out = new PrintWriter(NetUtil.getOutputStream(dest));
-            out.print(data);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (out != null)
-            {
-                out.close();
-            }
-        }
-    }
-
-    /**
-     * Returns an Enumeration of all the keys found in the config file.
-     */
-    public Iterator getKeys()
-    {
-        return table.keySet().iterator();
-    }
-
-    /**
-     * returns the index of the array element that matches the specified string
-     */
-    private int matchingIndex(String[] array, ConfigEntry title, int deft)
-    {
-        String value = getProperty(title);
-        if (value == null)
-        {
-            return deft;
-        }
-
-        for (int i = 0; i < array.length; i++)
-        {
-            if (value.equalsIgnoreCase(array[i]))
-            {
-                return i;
-            }
-        }
-
-        // Some debug to say: no match
-        log.error("String " + value + " (title=" + title + ") not found in array: " + StringUtil.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        return deft;
-    }
-
-    /**
-     * Sort the keys for a more meaningful presentation order.
-     * TODO(DM): Replace this with a conversion of the properties to XML and then by XSLT to HTML.
-     */
-    private void organize()
-    {
-        Map orderedMap = new LinkedHashMap();
-        organize(orderedMap, BASIC_INFO);
-        organize(orderedMap, LANG_INFO);
-        organize(orderedMap, HISTORY_INFO);
-        organize(orderedMap, SYSTEM_INFO);
-        organize(orderedMap, COPYRIGHT_INFO);
-        // add everything else in sorted order
-        orderedMap.putAll(new TreeMap(getProperties()));
-        setProperties(orderedMap);
-    }
-
-    /**
-     * 
-     */
-    private void organize(Map result, Object[] category)
-    {
-        for (int i = 0; i < category.length; i++)
-        {
-            String key = category[i].toString();
-            Object value = getProperties().remove(key);
-            if (value != null)
-            {
-                result.put(key, value);
-            }
-        }
-    }
-
-    /**
-     * 
-     */
-    public void validate()
-    {
-        // See if the ModuleType can handle this BookMetaData
-
-        // Locked modules are described but don't exist.
-        if (getProperty(ConfigEntry.CIPHER_KEY) != null)
-        {
-            // Don't need to say we don't support locked modules. We already know that!
-            //log.debug("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
-            supported = false;
-            return;
-        }
-
-        // It has to have a usable name
-        String name = getName();
-
-        if (name == null || name.length() == 0)
-        {
-            log.debug("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
-            supported = false;
-            return;
-        }
-
-        String modTypeName = getProperty(ConfigEntry.MOD_DRV);
-        if (modTypeName == null || modTypeName.length() == 0)
-        {
-            log.error("Book not supported: " + internal + " because it has no " + ConfigEntry.MOD_DRV); //$NON-NLS-1$ //$NON-NLS-2$
-            supported = false;
-            return;
-        }
-
-        ModuleType type = ModuleType.getModuleType(modTypeName);
-        if (type == null)
-        {
-            log.debug("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
-            supported = false;
-            return;
-        }
-
-        if (type.getBookType() == null)
-        {
-            // We plan to add RawGenBook at a later time. So we don't need to be reminded all the time.
-            if (!modTypeName.equals("RawGenBook")) //$NON-NLS-1$
-            {
-                log.debug("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-            supported = false;
-            return;
-        }
-
-        if (!type.isSupported(this))
-        {
-            log.debug("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            supported = false;
-            return;
-        }
-
-        // report on unknown config entries
-        for (Iterator kit = getKeys(); kit.hasNext();)
-        {
-            String key = (String) kit.next();
-            if (ConfigEntry.fromString(key) == null)
-            {
-                log.warn("Unknown config entry for " + internal + ": " + key); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
-
-        // output collected warnings
-        for (Iterator kit = warnings.iterator(); kit.hasNext();)
-        {
-            log.warn((String) kit.next());
-        }
     }
 
     /**
@@ -376,7 +94,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public boolean isSupported()
     {
-        return supported;
+        return cet.isSupported();
     }
 
     /* (non-Javadoc)
@@ -384,7 +102,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getName()
     {
-        return getProperty(ConfigEntry.DESCRIPTION);
+        return getProperty(ConfigEntryType.DESCRIPTION);
     }
 
     /**
@@ -393,14 +111,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getModuleCharset()
     {
-        int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, ConfigEntry.ENCODING, SwordConstants.ENCODING_LATIN1);
-
-        // There was code here that said:
-        // if (encoding < 0)
-        //  encoding = SwordConstants.ENCODING_UTF8;
-        // However this would never trigger since we give a default above
-
-        return SwordConstants.ENCODING_JAVA[encoding];
+        return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
     /**
@@ -408,7 +119,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public ModuleType getModuleType()
     {
-        return mtype;
+        return cet.getModuleType();
     }
 
     /**
@@ -416,228 +127,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public Filter getFilter()
     {
-        String sourcetype = getProperty(ConfigEntry.SOURCE_TYPE);
+        String sourcetype = getProperty(ConfigEntryType.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
-    }
-
-    /**
-     * Parse a single line.
-     * The About field may use RTF, where \par is a line break.
-     */
-    private void parseEntry(String line)
-    {
-        String key = null;
-        String value = ""; //$NON-NLS-1$
-        int eqpos = line.indexOf('=');
-        if (eqpos == -1)
-        {
-            key = line;
-        }
-        else
-        {
-            key = line.substring(0, eqpos).trim();
-            value = line.substring(eqpos + 1).trim();
-        }
-
-        if (key.charAt(0) == '[' && key.charAt(key.length() - 1) == ']')
-        {
-            // The conf file contains a leading line of the form [KJV]
-            // This is the acronymn by which Sword refers to it.
-            initials = key.substring(1, key.length() - 1);
-        }
-        else
-        {
-            value = handleRTF(key, value);
-            addEntry(key, value);
-        }
-
-    }
-
-    private String handleRTF(String key, String value)
-    {
-        String copy = value;
-        // This method is a hack! It could be made much nicer.
-
-        // strip \pard
-        copy = copy.replaceAll("\\\\pard ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // replace rtf newlines
-        copy = copy.replaceAll("\\\\pa[er] ?", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip whatever \qc is.
-        copy = copy.replaceAll("\\\\qc ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip bold and italic
-        copy = copy.replaceAll("\\\\[bi]0? ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip unicode characters
-        copy = copy.replaceAll("\\\\u-?[0-9]{4,6}+\\?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip { and } which are found in {\i text }
-        copy = copy.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        if (!allowsRTF.contains(key))
-        {
-            if (!copy.equals(value))
-            {
-                warnings.add("Ignoring unexpected RTF for " + key + " in " + internal + ": " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-            return value;
-        }
-
-        return copy;
-    }
-
-    /**
-     * Get continuation lines, if any.
-     */
-    private void getContinuation(BufferedReader bin, StringBuffer buf) throws IOException
-    {
-        String key = null;
-        int eqpos = buf.indexOf("="); //$NON-NLS-1$
-        if (eqpos != -1)
-        {
-            key = buf.substring(0, eqpos).trim();
-        }
-
-        for (String line = advance(bin); line != null; line = advance(bin))
-        {
-            int length = buf.length();
-
-            // Look for bad data as this condition did exist
-            boolean continuation_expected = buf.charAt(length - 1) == '\\';
-
-            if (continuation_expected)
-            {
-                // delete the continuation character
-                buf.deleteCharAt(length - 1);
-            }
-
-            if (isKeyLine(line))
-            {
-                if (continuation_expected)
-                {
-                    warnings.add("Continuation followed by key for " + key + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                }
-
-                backup(line);
-                break;
-            }
-            else if (!continuation_expected)
-            {
-                warnings.add("Line without previous continuation for " + key + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-
-            if (singleLine.contains(key))
-            {
-                warnings.add("Ignoring unexpected additional line for " + key + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
-            }
-            else
-            {
-                buf.append(line);
-            }
-        }
-    }
-
-    /**
-     * Get the next line from the input
-     * @param bin The reader to get data from
-     * @return the next line
-     * @throws IOException
-     */
-    private String advance(BufferedReader bin) throws IOException
-    {
-        // Was something put back? If so, return it.
-        if (readahead != null)
-        {
-            String line = readahead;
-            readahead = null;
-            return line;
-        }
-
-        // Get the next non-blank, non-comment line
-        for (String line = bin.readLine(); line != null; line = bin.readLine())
-        {
-            // Save the original for diagnostics and for save
-            data.append(line).append('\n');
-
-            // Remove trailing whitespace
-            line = line.trim();
-
-            int length = line.length();
-
-            // skip blank and comment lines
-            if (length != 0 && line.charAt(0) != '#')
-            {
-                return line;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Read too far ahead and need to return a line.
-     */
-    private void backup(String oops)
-    {
-        if (oops.length() > 0)
-        {
-            readahead = oops;
-        }
-        else
-        {
-            // should never happen
-            log.error("Backup an empty string for " + internal); //$NON-NLS-1$
-        }
-    }
-
-    /**
-     * Does this line of text represent a key/value pair?
-     */
-    private boolean isKeyLine(String line)
-    {
-        return line.indexOf('=') != -1;
-    }
-
-    /**
-     * Add a value to the list of values for a key
-     */
-    private void addEntry(String key, String value)
-    {
-        // check to see if there already values for this key...
-        List list = (ArrayList) table.get(key);
-        if (list != null)
-        {
-            if (multipleEntry.contains(key))
-            {
-                list.add(value);
-            }
-            else
-            {
-                warnings.add("Ignoring unexpected additional entry for " + key + " in " + internal + ": " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
-            }
-        }
-        else
-        {
-            list = new ArrayList();
-            list.add(value);
-            table.put(key, list);
-        }
-    }
-
-    /**
-     * Fix the configuration
-     */
-    private void fixEntry(ConfigEntry entry, String value)
-    {
-        String key = entry.toString();
-
-        table.remove(key);
-        List list = new ArrayList();
-        list.add(value);
-        table.put(key, list);
-
-        putProperty(key, value);
     }
 
     /**
@@ -645,17 +136,20 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getDiskName()
     {
-        return initials.toLowerCase();
+        return getInitials().toLowerCase();
     }
-
-    //==========================================================================
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
     public BookType getType()
     {
-        return mtype.getBookType();
+        return getModuleType().getBookType();
+    }
+    
+    public Document toOSIS()
+    {
+        return new Document(cet.toOSIS());
     }
 
     /* (non-Javadoc)
@@ -663,39 +157,20 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getInitials()
     {
-        return initials;
+        return getProperty(ConfigEntryType.INITIALS);
     }
 
     /**
      * Get the string value for the property or null if it is not defined.
      * It is assumed that all properties gotten with this method are single line.
-     * @param entry typically a string or a ConfigEntry
+     * @param entry the ConfigEntryType
      * @return the property or null
      */
-    public String getProperty(Object entry)
+    public String getProperty(ConfigEntryType entry)
     {
-        String result = (String) getProperty(entry.toString());
-
-        if (result == null)
-        {
-            return null;
-        }
-
-        int index = result.indexOf('\n');
-        if (index != -1)
-        {
-            log.warn("Fixing data for " + internal + ". Stripping all but first line of " + entry); //$NON-NLS-1$ //$NON-NLS-2$
-            result = result.substring(0, index);
-            if (entry instanceof ConfigEntry)
-            {
-                fixEntry((ConfigEntry) entry, result);
-            }
-            else
-            {
-                putProperty(entry.toString(), result);
-            }
-        }
-        return result;
+        Object obj = cet.getValue(entry);
+        
+        return obj != null ? obj.toString() : null; 
     }
 
     /* (non-Javadoc)
@@ -703,146 +178,56 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public boolean isLeftToRight()
     {
-        String ltor = getProperty(ConfigEntry.DIRECTION);
-        return ltor == null || ltor.equals(SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_LTOR]);
+        String dir = getProperty(ConfigEntryType.DIRECTION);
+        return dir == null || dir.equals(ConfigEntryType.DIRECTION.getDefault());
     }
 
-    public static void dumpStatistics()
+    private void buildProperties()
     {
-        System.out.println(histogram.toString());
+        // merge entries into properties file
+        for (Iterator kit = cet.getKeys(); kit.hasNext();)
+        {
+            ConfigEntryType key = (ConfigEntryType) kit.next();
+    
+            Object value = cet.getValue(key);
+            // value is null if the config entry was rejected.
+            if (value == null)
+            {
+                continue;
+            }
+            if (value instanceof List)
+            {
+                List list = (List) value;
+                StringBuffer combined = new StringBuffer();
+                boolean appendSeparator = false;
+                for (Iterator vit = list.iterator(); vit.hasNext();)
+                {
+                    String element = (String) vit.next();
+                    if (appendSeparator)
+                    {
+                        combined.append('\n');
+                    }
+                    combined.append(element);
+                    appendSeparator = true;
+                }
+    
+                value = combined.toString();
+            }
+    
+            putProperty(key.toString(), value.toString());
+        }
     }
-
+ 
     /**
-     * The log stream
+     * The language strings need to be converted to Java charsets
      */
-    private static final Logger log = Logger.getLogger(SwordBookMetaData.class);
-
-    private static final Object[] BASIC_INFO =
-    {
-        KEY_INITIALS,
-        ConfigEntry.DESCRIPTION,
-        KEY_TYPE,
-        ConfigEntry.LCSH,
-        ConfigEntry.CATEGORY,
-        ConfigEntry.VERSION,
-        ConfigEntry.SWORD_VERSION_DATE,
-    };
-
-    private static final Object[] LANG_INFO =
-    {
-        KEY_LANGUAGE,
-        ConfigEntry.LANG,
-        ConfigEntry.GLOSSARY_FROM,
-        ConfigEntry.GLOSSARY_TO,
-        ConfigEntry.LEXICON_FROM,
-        ConfigEntry.LEXICON_TO,
-    };
-
-    private static final Object[] HISTORY_INFO =
-    {
-        ConfigEntry.HISTORY_2_5,
-        ConfigEntry.HISTORY_2_2,
-        ConfigEntry.HISTORY_2_1,
-        ConfigEntry.HISTORY_2_0,
-        ConfigEntry.HISTORY_1_9,
-        ConfigEntry.HISTORY_1_8,
-        ConfigEntry.HISTORY_1_7,
-        ConfigEntry.HISTORY_1_6,
-        ConfigEntry.HISTORY_1_5,
-        ConfigEntry.HISTORY_1_4,
-        ConfigEntry.HISTORY_1_3,
-        ConfigEntry.HISTORY_1_2,
-        ConfigEntry.HISTORY_1_1,
-        ConfigEntry.HISTORY_1_0,
-        ConfigEntry.HISTORY_0_92,
-        ConfigEntry.HISTORY_0_91,
-        ConfigEntry.HISTORY_0_9,
-        ConfigEntry.HISTORY_0_3,
-        ConfigEntry.HISTORY_0_2,
-        ConfigEntry.HISTORY_0_1
-    };
-
-    private static final Object[] SYSTEM_INFO =
-    {
-        ConfigEntry.DATA_PATH,
-        ConfigEntry.MOD_DRV,
-        ConfigEntry.SOURCE_TYPE,
-        ConfigEntry.BLOCK_TYPE,
-        ConfigEntry.COMPRESS_TYPE,
-        ConfigEntry.ENCODING,
-        ConfigEntry.MINIMUM_VERSION,
-        ConfigEntry.MINIMUM_SWORD_VERSION,
-        ConfigEntry.DIRECTION
-    };
-
-    private static final Object[] COPYRIGHT_INFO =
-    {
-        ConfigEntry.ABOUT,
-        ConfigEntry.DISTRIBUTION,
-        ConfigEntry.DISTRIBUTION_LICENSE,
-        ConfigEntry.DISTRIBUTION_NOTES,
-        ConfigEntry.DISTRIBUTION_SOURCE,
-        ConfigEntry.COPYRIGHT,
-        ConfigEntry.COPYRIGHT_DATE,
-        ConfigEntry.COPYRIGHT_HOLDER,
-        ConfigEntry.COPYRIGHT_CONTACT_NAME,
-        ConfigEntry.COPYRIGHT_CONTACT_ADDRESS,
-        ConfigEntry.COPYRIGHT_CONTACT_EMAIL,
-        ConfigEntry.COPYRIGHT_NOTES,
-        ConfigEntry.TEXT_SOURCE,
-    };
-
-    // Some config entries are expected to be single line entries
-    private static final Set singleLine = new HashSet();
+    static final Map ENCODING_JAVA = new HashMap();
     static
     {
-        singleLine.add(ConfigEntry.BLOCK_TYPE.toString());
-        singleLine.add(ConfigEntry.DATA_PATH.toString());
-        singleLine.add(ConfigEntry.COMPRESS_TYPE.toString());
-        singleLine.add(ConfigEntry.SOURCE_TYPE.toString());
-        singleLine.add(ConfigEntry.DESCRIPTION.toString());
-        singleLine.add(ConfigEntry.LANG.toString());
-        singleLine.add(ConfigEntry.DIRECTION.toString());
-        singleLine.add(ConfigEntry.CIPHER_KEY.toString());
-        singleLine.add(ConfigEntry.MOD_DRV.toString());
-        singleLine.add(ConfigEntry.ENCODING.toString());
+        ENCODING_JAVA.put("Latin-1", "ISO-8859-1"); //$NON-NLS-1$ //$NON-NLS-2$
+        ENCODING_JAVA.put("UTF-8","UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    // Some config entries may exist more than once
-    private static final Set multipleEntry = new HashSet();
-    static
-    {
-        multipleEntry.add(ConfigEntry.FEATURE.toString());
-        multipleEntry.add(ConfigEntry.GLOBAL_OPTION_FILTER.toString());
-        multipleEntry.add(ConfigEntry.OBSOLETES.toString());
-    }
+    private ConfigEntryTable cet;
 
-    // Some config entries allow RTF
-    private static final Set allowsRTF = new HashSet();
-    static
-    {
-        allowsRTF.add(ConfigEntry.ABOUT.toString());
-        allowsRTF.add(ConfigEntry.COPYRIGHT_CONTACT_ADDRESS.toString());
-        allowsRTF.add(ConfigEntry.COPYRIGHT_NOTES.toString());
-        allowsRTF.add(ConfigEntry.COPYRIGHT_CONTACT_NAME.toString());
-    }
-
-    /**
-     * A map of lists of known keys. Keys are presented in insertion order
-     */
-    private Map table = new LinkedHashMap();
-
-    /**
-     * The original name of this config file from mods.d.
-     * This is only used for reporting
-     */
-    private String internal;
-
-    private ModuleType mtype;
-    private String initials = ""; //$NON-NLS-1$
-    private boolean supported;
-    private StringBuffer data = new StringBuffer();
-    private String readahead;
-    private static Histogram histogram = new Histogram();
-    private List warnings = new ArrayList();
 }

@@ -173,7 +173,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         }
         this.type = type;
 
-        putProperty(KEY_TYPE, type == null ? "" : type.toString()); //$NON-NLS-1$
+        putProperty(KEY_TYPE, type.toString());
     }
 
     /**
