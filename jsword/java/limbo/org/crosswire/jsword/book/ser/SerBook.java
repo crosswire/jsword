@@ -1,8 +1,6 @@
 package org.crosswire.jsword.book.ser;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.Properties;
 
 import org.crosswire.jsword.book.BookDriver;
@@ -146,7 +144,7 @@ public class SerBook extends PassageAbstractBook
     /**
      * Simple ctor
      */
-    public SerBook(BookDriver driver, Properties prop, URL url) throws MalformedURLException, ParseException, BookException
+    public SerBook(BookDriver driver, Properties prop, URL url) throws BookException
     {
         BookMetaData bmd = new DefaultBookMetaData(driver, this, prop);
         setBookMetaData(bmd);

@@ -44,7 +44,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     {
         Book[] books = new Book[]
         {
-            new ReadingsBook(this, Msg.TITLE.toString(), BookType.DICTIONARY, BookMetaData.SPEED_MEDIUM),
+            new ReadingsBook(this, Msg.TITLE.toString(), BookType.DICTIONARY),
         };
 
         bmds = new BookMetaData[books.length];

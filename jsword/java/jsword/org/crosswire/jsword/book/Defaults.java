@@ -47,32 +47,14 @@ public class Defaults
     private static final Logger log = Logger.getLogger(Defaults.class);
 
     /**
-     * Has the default Bible been manually set or are we picking the fastest
-     * as the default?
-     */
-    private static boolean autobdeft = true;
-
-    /**
      * The default Bible
      */
     private static BookMetaData bdeft;
 
     /**
-     * Has the default Commentary been manually set or are we picking the fastest
-     * as the default?
-     */
-    private static boolean autocdeft = true;
-
-    /**
      * The default Commentary
      */
     private static BookMetaData cdeft;
-
-    /**
-     * Has the default Dictionary been manually set or are we picking the fastest
-     * as the default?
-     */
-    private static boolean autoddeft = true;
 
     /**
      * The default Dictionary
@@ -87,7 +69,6 @@ public class Defaults
      */
     public static void setBibleMetaData(BookMetaData bmd)
     {
-        autobdeft = false;
         bdeft = bmd;
     }
 
@@ -96,7 +77,6 @@ public class Defaults
      */
     protected static void unsetBibleMetaData()
     {
-        autobdeft = true;
         bdeft = null;
 
         checkAllPreferable();
@@ -169,7 +149,6 @@ public class Defaults
      */
     public static void setCommentaryMetaData(BookMetaData cmd)
     {
-        autocdeft = false;
         cdeft = cmd;
     }
 
@@ -178,7 +157,6 @@ public class Defaults
      */
     protected static void unsetCommentaryMetaData()
     {
-        autocdeft = true;
         cdeft = null;
 
         checkAllPreferable();
@@ -253,7 +231,6 @@ public class Defaults
      */
     public static void setDictionaryMetaData(BookMetaData dmd)
     {
-        autoddeft = false;
         ddeft = dmd;
     }
 
@@ -262,7 +239,6 @@ public class Defaults
      */
     protected static void unsetDictionaryMetaData()
     {
-        autoddeft = true;
         ddeft = null;
 
         checkAllPreferable();
@@ -344,53 +320,24 @@ public class Defaults
     }
 
     /**
-     * Should this Bible become the default?
+     * Should this Book become the default?
+     * Only if there is not one.
      */
     protected static void checkPreferable(BookMetaData bmd)
     {
         assert bmd != null;
 
-        if (bmd.getType().equals(BookType.BIBLE))
+        if (bmd.getType().equals(BookType.BIBLE) && bdeft == null)
         {
-            // Do we even think about replacing the default Bible?
-            if (autobdeft || bdeft == null)
-            {
-                // If there is no default or this is faster
-                if (bdeft == null || bmd.getSpeed() > bdeft.getSpeed())
-                {
-                    bdeft = bmd;
-                    autobdeft = true;
-                    log.debug("setting as default bible since speed=" + bdeft.getSpeed()); //$NON-NLS-1$
-                }
-            }
+            bdeft = bmd;
         }
-        else if (bmd.getType().equals(BookType.COMMENTARY))
+        else if (bmd.getType().equals(BookType.COMMENTARY) && cdeft == null)
         {
-            // Do we even think about replacing the default Bible?
-            if (autocdeft || cdeft == null)
-            {
-                // If there is no default or this is faster
-                if (cdeft == null || bmd.getSpeed() > cdeft.getSpeed())
-                {
-                    cdeft = bmd;
-                    autocdeft = true;
-                    log.debug("setting as default commentary since speed=" + cdeft.getSpeed()); //$NON-NLS-1$
-                }
-            }
+            cdeft = bmd;
         }
-        else if (bmd.getType().equals(BookType.DICTIONARY))
+        else if (bmd.getType().equals(BookType.DICTIONARY) && ddeft == null)
         {
-            // Do we even think about replacing the default Bible?
-            if (autoddeft || ddeft == null)
-            {
-                // If there is no default or this is faster
-                if (ddeft == null || bmd.getSpeed() > ddeft.getSpeed())
-                {
-                    ddeft = bmd;
-                    autoddeft = true;
-                    log.debug("setting as default dictionary since speed=" + ddeft.getSpeed()); //$NON-NLS-1$
-                }
-            }
+            ddeft = bmd;
         }
     }
 

@@ -285,7 +285,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
                     job.setProgress(Msg.JOB_CONFIG.toString());
                     File confdir = new File(dldir, SwordConstants.DIR_CONF);
                     confdir.mkdirs();
-                    File conf = new File(confdir, sbmd.getInternalName() + SwordConstants.EXTENSION_CONF);
+                    File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
                     URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
                     sbmd.save(configurl);
 
@@ -355,7 +355,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     {
         URL local = toLocalURL(bmd);
         SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-        local = NetUtil.lengthenURL(local, sbmd.getInternalName() + SwordConstants.EXTENSION_CONF);
+        local = NetUtil.lengthenURL(local, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
         URL remote = toRemoteURL(bmd);
         return NetUtil.isNewer(remote, local);
     }
@@ -375,7 +375,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
 
         ModuleType type = sbmd.getModuleType();
         String modpath = type.getInstallDirectory();
-        String destname = modpath + '/' + sbmd.getInternalName();
+        String destname = modpath + '/' + sbmd.getDiskName();
 
         File dldir = SwordBookDriver.getDownloadDir();
         File moddir = new File(dldir, SwordConstants.DIR_DATA);

@@ -1,9 +1,7 @@
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
@@ -211,7 +209,7 @@ public class RawBook extends PassageAbstractBook
     /**
      * Simple ctor
      */
-    public RawBook(BookDriver driver, Properties prop, URL url) throws MalformedURLException, ParseException
+    public RawBook(BookDriver driver, Properties prop, URL url)
     {
         BookMetaData bmd = new DefaultBookMetaData(driver, this, prop);
         setBookMetaData(bmd);

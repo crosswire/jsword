@@ -276,7 +276,7 @@ public abstract class ModuleType implements Serializable
      */
     public Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
     {
-        String dataPath = sbmd.getFirstValue(ConfigEntry.DATA_PATH);
+        String dataPath = sbmd.getProperty(ConfigEntry.DATA_PATH);
         File baseurl = new File(progdir, dataPath);
         String path = baseurl.getAbsolutePath();
         Backend backend = getBackend(sbmd, path);
@@ -300,7 +300,7 @@ public abstract class ModuleType implements Serializable
      */
     protected static Backend getCompressedBackend(SwordBookMetaData sbmd, String path) throws BookException
     {
-        String cStr = sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE);
+        String cStr = sbmd.getProperty(ConfigEntry.COMPRESS_TYPE);
         if (cStr != null)
         {
             return CompressionType.fromString(cStr).getBackend(sbmd, path);
@@ -313,7 +313,7 @@ public abstract class ModuleType implements Serializable
      */
     protected static boolean isCompressedBackendSupported(SwordBookMetaData sbmd)
     {
-        String cStr = sbmd.getFirstValue(ConfigEntry.COMPRESS_TYPE);
+        String cStr = sbmd.getProperty(ConfigEntry.COMPRESS_TYPE);
         if (cStr != null)
         {
             return CompressionType.fromString(cStr).isSupported();

@@ -81,7 +81,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
                     RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
                     Document doc = remoter.execute(method);
 
-                    rbmd = Converter.convertDocumentToBookMetaDatas(this, doc, remoter, remoter.getSpeed());
+                    rbmd = Converter.convertDocumentToBookMetaDatas(this, doc, remoter);
                 }
                 catch (Exception ex)
                 {

@@ -9,8 +9,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,8 +17,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.Histogram;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.StringUtil;
@@ -27,7 +29,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 
@@ -88,6 +89,7 @@ public class SwordBookMetaData implements BookMetaData
     {
         this.book = null;
         this.internal = internal;
+        this.supported = true;
 
         // read the config file
         BufferedReader bin = new BufferedReader(in);
@@ -115,64 +117,25 @@ public class SwordBookMetaData implements BookMetaData
 
             getContinuation(bin, buf);
 
-            parseLine(buf.toString());
-        }
-
-        // From the config map, extract the important bean properties
-        name = getFirstValue(ConfigEntry.DESCRIPTION);
-
-        // Set initials, if not already set
-        if (name != null && initials.length() == 0)
-        {
-            initials = StringUtil.getInitials(name);
-        }
-
-        String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
-        if (modTypeName != null)
-        {
-            mtype = ModuleType.getModuleType(modTypeName);
-        }
-
-        // The default compression type is BOOK.
-        // This probably a data problem as it only occurs with webstersdict
-        String cStr = getFirstValue(ConfigEntry.COMPRESS_TYPE);
-        String blocking = getFirstValue(ConfigEntry.BLOCK_TYPE);
-        if (cStr != null && blocking == null)
-        {
-            log.warn("Fixing data for " + internal + ". Adding BlockType of BOOK"); //$NON-NLS-1$ //$NON-NLS-2$
-            addEntry(ConfigEntry.BLOCK_TYPE.toString(), BlockType.BLOCK_BOOK.toString());
-        }
-
-        speed = BookMetaData.SPEED_FAST;
-        edition = ""; //$NON-NLS-1$
-        openness = Openness.UNKNOWN;
-        licence = null;
-        firstPublished = FIRSTPUB_DEFAULT;
-
-        if (name == null)
-        {
-            log.warn("Missing description for: " + internal); //$NON-NLS-1$
-            name = internal;
-        }
-
-        String lang = getFirstValue(ConfigEntry.LANG);
-        language = getLanguage(lang);
-        if (lang != null) //$NON-NLS-1$
-        {
-            // This returns ComponentOrientation.LEFT_TO_RIGHT if
-            // it does not know what it is.
-            leftToRight = ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
+            parseEntry(buf.toString());
         }
 
         // merge entries into properties file
-        for (Iterator kit = getKeys(); kit.hasNext(); )
+        for (Iterator kit = getKeys(); kit.hasNext();)
         {
             String key = (String) kit.next();
+
+            // Only copy the valid ones
+            if (ConfigEntry.fromString(key) == null)
+            {
+                continue;
+            }
+
             List list = (List) table.get(key);
 
             StringBuffer combined = new StringBuffer();
             boolean appendSeparator = false;
-            for (Iterator vit = list.iterator(); vit.hasNext(); )
+            for (Iterator vit = list.iterator(); vit.hasNext();)
             {
                 String element = (String) vit.next();
                 if (appendSeparator)
@@ -187,8 +150,54 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // set the key property file entries
-        prop.put(KEY_NAME, name);
         prop.put(KEY_INITIALS, initials);
+        
+        validate();
+        
+        if (!isSupported())
+        {
+            return;
+        }
+
+        // From the config map, extract the important bean properties
+        String modTypeName = getProperty(ConfigEntry.MOD_DRV);
+        if (modTypeName != null)
+        {
+            mtype = ModuleType.getModuleType(modTypeName);
+        }
+
+        // The default compression type is BOOK.
+        // This probably a data problem as it only occurs with webstersdict
+        String cStr = getProperty(ConfigEntry.COMPRESS_TYPE);
+        String blocking = getProperty(ConfigEntry.BLOCK_TYPE);
+        if (cStr != null && blocking == null)
+        {
+            log.warn("Fixing data for " + internal + ". Adding BlockType of BOOK"); //$NON-NLS-1$ //$NON-NLS-2$
+            fixEntry(ConfigEntry.BLOCK_TYPE, BlockType.BLOCK_BOOK.toString());
+        }
+
+        String lang = getProperty(ConfigEntry.LANG);
+        prop.put(KEY_LANGUAGE, getLanguage(lang));
+        if (lang != null) //$NON-NLS-1$
+        {
+            // This returns ComponentOrientation.LEFT_TO_RIGHT if
+            // it does not know what it is.
+            boolean leftToRight = ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
+            String dir = getProperty(ConfigEntry.DIRECTION);
+            // Java thinks it is RtoL but it is not stated to be such in the conf.
+            if (!leftToRight && dir == null)
+            {
+                log.warn("Fixing data for " + internal + ". Adding DIRECTION=RtoL"); //$NON-NLS-1$ //$NON-NLS-2$
+                fixEntry(ConfigEntry.DIRECTION, SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_RTOL]);
+            }
+            // Java thinks it is LtoR but it is stated to be something else
+            String ltor = SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_LTOR];
+            if (leftToRight && dir != null && !dir.equals(ltor))
+            {
+                log.warn("Fixing data for " + internal + ". Changing DIRECTION=RtoL to LtoR"); //$NON-NLS-1$ //$NON-NLS-2$
+                fixEntry(ConfigEntry.DIRECTION, ltor);
+            }
+        }
 
         if (mtype != null)
         {
@@ -196,12 +205,8 @@ public class SwordBookMetaData implements BookMetaData
             prop.put(KEY_TYPE, type != null ? type.toString() : ""); //$NON-NLS-1$
         }
 
-        prop.put(KEY_LANGUAGE, language); //$NON-NLS-1$
-        prop.put(KEY_SPEED, Integer.toString(speed));
-        prop.put(KEY_EDITION, edition);
-        prop.put(KEY_OPENNESS, openness.toString());
-        prop.put(KEY_LICENCE, licence == null ? "" : licence.toString()); //$NON-NLS-1$
-        prop.put(KEY_FIRSTPUB, firstPublished.toString());
+        // now that prop is fully populated we can organize it.
+        organize();
     }
 
     /**
@@ -214,7 +219,7 @@ public class SwordBookMetaData implements BookMetaData
         String lookup = iso639Code;
         if (lookup == null || lookup.length() == 0)
         {
-            log.warn("Book " + internal + " named " + name + " has no language specified. Assuming English."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.warn("Book " + internal + " named " + getName() + " has no language specified. Assuming English."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return getLanguage(DEFAULT_LANG_CODE);
         }
 
@@ -278,65 +283,11 @@ public class SwordBookMetaData implements BookMetaData
     }
 
     /**
-     * Returns only one value for the key (for cases where only one value is expected).
-     */
-    public String getFirstValue(ConfigEntry key)
-    {
-        ArrayList list = (ArrayList) table.get(key.toString());
-        if (list == null)
-        {
-            return null;
-        }
-
-        return (String) list.get(0);
-    }
-
-    /**
-     * Returns all values for the key (for cases where many values are expected).
-     */
-    public Iterator getAllValues(String key)
-    {
-        ArrayList list = (ArrayList) table.get(key);
-        if (list == null)
-        {
-            return Collections.EMPTY_LIST.iterator();
-        }
-
-        return list.iterator();
-    }
-
-    /**
      * returns the index of the array element that matches the specified string
      */
-    public int matchingIndex(String[] array, ConfigEntry title)
+    private int matchingIndex(String[] array, ConfigEntry title, int deft)
     {
-        String value = getFirstValue(title);
-
-        if (value == null)
-        {
-            log.error("Null string (title=" + title + ") in array: " + StringUtil.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            return -1;
-        }
-
-        for (int i = 0; i < array.length; i++)
-        {
-            if (value.equalsIgnoreCase(array[i]))
-            {
-                return i;
-            }
-        }
-
-        // Some debug to say: no match
-        log.error("String " + value + " (title=" + title + ") not found in array: " + StringUtil.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        return -1;
-    }
-
-    /**
-     * returns the index of the array element that matches the specified string
-     */
-    public int matchingIndex(String[] array, ConfigEntry title, int deft)
-    {
-        String value = getFirstValue(title);
+        String value = getProperty(title);
         if (value == null)
         {
             return deft;
@@ -356,48 +307,116 @@ public class SwordBookMetaData implements BookMetaData
     }
 
     /**
+     * Sort the keys for a more meaningful presentation order.
+     * TODO(DM): Replace this with a conversion of the properties to XML and then by XSLT to HTML.
+     */
+    private void organize()
+    {
+        Map orderedMap = new LinkedHashMap();
+        organize(orderedMap, BASIC_INFO);
+        organize(orderedMap, LANG_INFO);
+        organize(orderedMap, HISTORY_INFO);
+        organize(orderedMap, SYSTEM_INFO);
+        organize(orderedMap, COPYRIGHT_INFO);
+        // add everything else in sorted order
+        orderedMap.putAll(new TreeMap(prop));
+        prop = orderedMap;
+    }
+    
+    private void organize(Map result, Object[] category)
+    {
+        for (int i = 0; i < category.length; i++)
+        {
+            String key = category[i].toString();
+            Object value = prop.remove(key);
+            if (value != null)
+            {
+                result.put(key, value);
+            }
+        }
+    }
+
+    public void validate()
+    {
+        // See if the ModuleType can handle this BookMetaData
+
+        // Locked modules are described but don't exist.
+        if (getProperty(ConfigEntry.CIPHER_KEY) != null)
+        {
+            // Don't need to say we don't support locked modules. We already know that!
+            //log.debug("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
+            supported = false;
+            return;
+        }
+
+        // It has to have a usable name
+        String name = getName();
+
+        if (name == null || name.length() == 0)
+        {
+            log.debug("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
+            supported = false;
+            return;
+        }
+
+        String modTypeName = getProperty(ConfigEntry.MOD_DRV);
+        if (modTypeName == null || modTypeName.length() == 0)
+        {
+            log.error("Book not supported: " + internal + " because it has no " + ConfigEntry.MOD_DRV); //$NON-NLS-1$ //$NON-NLS-2$
+            supported = false;
+            return;
+        }
+
+        ModuleType type = ModuleType.getModuleType(modTypeName);
+        if (type == null)
+        {
+            log.debug("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
+            supported = false;
+            return;
+        }
+
+        if (type.getBookType() == null)
+        {
+            // We plan to add RawGenBook at a later time. So we don't need to be reminded all the time.
+            if (!modTypeName.equals("RawGenBook")) //$NON-NLS-1$
+            {
+                log.debug("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+            supported = false;
+            return;
+        }
+
+        if (!type.isSupported(this))
+        {
+            log.debug("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            supported = false;
+	        return;
+        }
+        
+        // report on unknown config entries
+        for (Iterator kit = getKeys(); kit.hasNext();)
+        {
+            String key = (String) kit.next();
+            if (ConfigEntry.fromString(key) == null)
+            {
+                log.warn("Unknown config entry for " + internal + ": " + key); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
+        
+        // output collected warnings
+        for (Iterator kit = warnings.iterator(); kit.hasNext(); )
+        {
+            log.warn((String) kit.next());
+        }
+
+    }
+
+    /**
      * Is this one of the supported book types?
      */
     public boolean isSupported()
     {
-        // It has to have a usable name
-        boolean named = name != null && name.length() > 0;
-
-        // If this has a CIPHER_KEY then it is locked
-        boolean unlocked = getFirstValue(ConfigEntry.CIPHER_KEY) == null;
-
-        // See if the ModuleType can handle this BookMetaData
-        ModuleType type = getModuleType();
-        boolean workable = type != null && type.isSupported(this);
-
-        if (!unlocked)
-        {
-            log.debug("Book not supported: " + internal + " because it is locked."); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (!named)
-        {
-            log.debug("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (!workable)
-        {
-            String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
-            if (mtype == null)
-            {
-                log.debug("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            else if (mtype.getBookType() == null)
-            {
-                log.debug("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-            else
-            {
-                log.debug("Book not supported: " + internal + " because ModuleType (" + modTypeName + ") is not supported."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-        }
-
-        return named && unlocked && workable;
+        return supported;
     }
 
     /* (non-Javadoc)
@@ -405,7 +424,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getName()
     {
-        return name;
+        return getProperty(ConfigEntry.DESCRIPTION);
     }
 
     /**
@@ -437,7 +456,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public Filter getFilter()
     {
-        String sourcetype = getFirstValue(ConfigEntry.SOURCE_TYPE);
+        String sourcetype = getProperty(ConfigEntry.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
     }
 
@@ -445,7 +464,7 @@ public class SwordBookMetaData implements BookMetaData
      * Parse a single line.
      * The About field may use RTF, where \par is a line break.
      */
-    private void parseLine(String line)
+    private void parseEntry(String line)
     {
         String key = null;
         String value = ""; //$NON-NLS-1$
@@ -468,42 +487,59 @@ public class SwordBookMetaData implements BookMetaData
         }
         else
         {
-            value = handleRTF(value);
+            value = handleRTF(key, value);
             addEntry(key, value);
         }
 
     }
 
-    private String handleRTF(String value)
+    private String handleRTF(String key, String value)
     {
+        String copy = value;
         // This method is a hack! It could be made much nicer.
 
         // strip \pard
-        value = value.replaceAll("\\\\pard ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        copy = copy.replaceAll("\\\\pard ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
         // replace rtf newlines
-        value = value.replaceAll("\\\\pa[er] ?", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        copy = copy.replaceAll("\\\\pa[er] ?", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
         // strip whatever \qc is.
-        value = value.replaceAll("\\\\qc ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        copy = copy.replaceAll("\\\\qc ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
         // strip bold and italic
-        value = value.replaceAll("\\\\[bi]0? ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        copy = copy.replaceAll("\\\\[bi]0? ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
         // strip unicode characters
-        value = value.replaceAll("\\\\u-?[0-9]{4,6}+\\?", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        copy = copy.replaceAll("\\\\u-?[0-9]{4,6}+\\?", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
         // strip { and } which are found in {\i text }
-        value = value.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        copy = copy.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        if (!allowsRTF.contains(key))
+        {
+            if (!copy.equals(value))
+            {
+                warnings.add("Ignoring unexpected RTF for " + key + " in " + internal + ": " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+            return value;
+        }
 
-        return value;
+        return copy;
     }
 
     /**
-     * Since the current line ended with \, append the next line.
+     * Get continuation lines, if any.
      */
     private void getContinuation(BufferedReader bin, StringBuffer buf) throws IOException
     {
+        String key = null;
+        int eqpos = buf.indexOf("="); //$NON-NLS-1$
+        if (eqpos != -1)
+        {
+            key = buf.substring(0, eqpos).trim();
+        }
+
         for (String line = advance(bin); line != null; line = advance(bin))
         {
             int length = buf.length();
@@ -521,7 +557,7 @@ public class SwordBookMetaData implements BookMetaData
             {
                 if (continuation_expected)
                 {
-                    log.warn("Continuation followed by key for " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
+                    warnings.add("Continuation followed by key for " + key + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 }
 
                 backup(line);
@@ -529,10 +565,17 @@ public class SwordBookMetaData implements BookMetaData
             }
             else if (!continuation_expected)
             {
-                log.warn("data without previous continuation for " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
+                warnings.add("Line without previous continuation for " + key + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
 
-            buf.append(line);
+            if (singleLine.contains(key))
+            {
+                warnings.add("Ignoring unexpected additional line for " + key + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
+            }
+            else
+            {
+                buf.append(line);
+            }
         }
     }
 
@@ -557,9 +600,6 @@ public class SwordBookMetaData implements BookMetaData
         {
             // Save the original for diagnostics and for save
             data.append(line).append('\n');
-
-            // Remove any RTF in the line
-            line = handleRTF(line);
 
             // Remove trailing whitespace
             line = line.trim();
@@ -604,16 +644,18 @@ public class SwordBookMetaData implements BookMetaData
      */
     private void addEntry(String key, String value)
     {
-        if (ConfigEntry.fromString(key) == null)
-        {
-            log.warn("Unknown config entry for " + internal + ": " + key); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         // check to see if there already values for this key...
         List list = (ArrayList) table.get(key);
         if (list != null)
         {
-            list.add(value);
+            if (multipleEntry.contains(key))
+            {
+                list.add(value);
+            }
+            else
+            {
+                warnings.add("Ignoring unexpected additional entry for " + key + " in " + internal + ": " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                
+            }
         }
         else
         {
@@ -624,11 +666,26 @@ public class SwordBookMetaData implements BookMetaData
     }
 
     /**
-     * @return Returns the internal name of this module.
+     * Fix the configuration
      */
-    public String getInternalName()
+    private void fixEntry(ConfigEntry entry, String value)
     {
-        return internal;
+        String key = entry.toString();
+
+        table.remove(key);
+        List list = new ArrayList();
+        list.add(value);
+        table.put(key, list);
+
+        prop.put(key, value);
+    }
+
+    /**
+     * @return Returns the name of this module as it is used for directory and filenames.
+     */
+    public String getDiskName()
+    {
+        return initials.toLowerCase();
     }
 
     //==========================================================================
@@ -662,15 +719,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getLanguage()
     {
-        return language;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getEdition()
-     */
-    public String getEdition()
-    {
-        return edition;
+        return getProperty(KEY_LANGUAGE);
     }
 
     /* (non-Javadoc)
@@ -682,43 +731,43 @@ public class SwordBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return speed;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFirstPublished()
-     */
-    public Date getFirstPublished()
-    {
-        return firstPublished;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getOpenness()
-     */
-    public Openness getOpenness()
-    {
-        return openness;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getLicence()
-     */
-    public URL getLicence()
-    {
-        return licence;
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
     public Map getProperties()
     {
         return prop;
+    }
+
+    /**
+     * Get the string value for the property or null if it is not defined.
+     * It is assumed that all properties gotten with this method are single line.
+     * @param entry typically a string or a ConfigEntry
+     * @return the property or null
+     */
+    public String getProperty(Object entry)
+    {
+        String result = (String) prop.get(entry.toString());
+
+        if (result == null)
+        {
+            return null;
+        }
+
+        int index = result.indexOf('\n');
+        if (index != -1)
+        {
+            log.warn("Fixing data for " + internal + ". Stripping all but first line of " + entry); //$NON-NLS-1$ //$NON-NLS-2$
+            result = result.substring(0, index);
+            if (entry instanceof ConfigEntry)
+            {
+                fixEntry((ConfigEntry) entry, result);
+            }
+            else
+            {
+                prop.put(entry.toString(), result);
+            }
+        }
+        return result;
     }
 
     /* (non-Javadoc)
@@ -736,11 +785,7 @@ public class SwordBookMetaData implements BookMetaData
     private String computeFullName()
     {
         StringBuffer buf = new StringBuffer(getName());
-        String ed = getEdition();
-        if (!ed.equals("")) //$NON-NLS-1$
-        {
-            buf.append(", ").append(ed); //$NON-NLS-1$
-        }
+
         if (driver != null)
         {
             buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -755,14 +800,6 @@ public class SwordBookMetaData implements BookMetaData
     public String getOsisID()
     {
         return getType().toString() + '.' + getInitials();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#isSameFamily(org.crosswire.jsword.book.BookMetaData)
-     */
-    public boolean isSameFamily(BookMetaData version)
-    {
-        return getName().equals(version.getName());
     }
 
     /* (non-Javadoc)
@@ -783,7 +820,8 @@ public class SwordBookMetaData implements BookMetaData
      */
     public boolean isLeftToRight()
     {
-        return leftToRight;
+        String ltor = getProperty(ConfigEntry.DIRECTION);
+        return ltor == null || ltor.equals(SwordConstants.DIRECTION_STRINGS[SwordConstants.DIRECTION_LTOR]);
     }
 
     /**
@@ -823,23 +861,11 @@ public class SwordBookMetaData implements BookMetaData
             return false;
         }
 
-        // If super does equals ...
-        /* Commented out because super.equals() always equals false
-         if (!super.equals(obj))
-         {
-         return false;
-         }
-         */
 
         // The real bit ...
         BookMetaData that = (BookMetaData) obj;
 
-        if (!getName().equals(that.getName()))
-        {
-            return false;
-        }
-
-        return getEdition().equals(that.getEdition());
+        return getName().equals(that.getName());
     }
 
     /* (non-Javadoc)
@@ -847,7 +873,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     public int hashCode()
     {
-        return (getName() + getEdition()).hashCode();
+        return getName().hashCode();
     }
 
     /* (non-Javadoc)
@@ -875,6 +901,11 @@ public class SwordBookMetaData implements BookMetaData
         return this.getName().compareTo(that.getName());
     }
 
+    public static void dumpStatistics()
+    {
+        System.out.println(histogram.toString());
+    }
+
     private static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
     private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
 
@@ -883,7 +914,7 @@ public class SwordBookMetaData implements BookMetaData
      */
     private static final Logger log = Logger.getLogger(SwordBookMetaData.class);
 
-    private static /*final*/ ResourceBundle languages;
+    private static/*final*/ResourceBundle languages;
     static
     {
         try
@@ -896,6 +927,117 @@ public class SwordBookMetaData implements BookMetaData
         }
     }
 
+    private static final Object[] BASIC_INFO =
+    {
+                    KEY_INITIALS,
+                    ConfigEntry.DESCRIPTION,
+                    KEY_TYPE,
+                    ConfigEntry.LCSH,
+                    ConfigEntry.CATEGORY,
+                    ConfigEntry.VERSION,
+                    ConfigEntry.SWORD_VERSION_DATE,
+    };
+
+    private static final Object[] LANG_INFO =
+    {
+                    KEY_LANGUAGE,
+                    ConfigEntry.LANG,
+                    ConfigEntry.GLOSSARY_FROM,
+                    ConfigEntry.GLOSSARY_TO,
+                    ConfigEntry.LEXICON_FROM,
+                    ConfigEntry.LEXICON_TO,
+    };
+
+    private static final Object[] HISTORY_INFO =
+    {
+                    ConfigEntry.HISTORY_2_5,
+                    ConfigEntry.HISTORY_2_2,
+                    ConfigEntry.HISTORY_2_1,
+                    ConfigEntry.HISTORY_2_0,
+                    ConfigEntry.HISTORY_1_9,
+                    ConfigEntry.HISTORY_1_8,
+                    ConfigEntry.HISTORY_1_7,
+                    ConfigEntry.HISTORY_1_6,
+                    ConfigEntry.HISTORY_1_5,
+                    ConfigEntry.HISTORY_1_4,
+                    ConfigEntry.HISTORY_1_3,
+                    ConfigEntry.HISTORY_1_2,
+                    ConfigEntry.HISTORY_1_1,
+                    ConfigEntry.HISTORY_1_0,
+                    ConfigEntry.HISTORY_0_92,
+                    ConfigEntry.HISTORY_0_91,
+                    ConfigEntry.HISTORY_0_9,
+                    ConfigEntry.HISTORY_0_3,
+                    ConfigEntry.HISTORY_0_2,
+                    ConfigEntry.HISTORY_0_1
+    };
+
+    private static final Object[] SYSTEM_INFO =
+    {
+                    ConfigEntry.DATA_PATH,
+                    ConfigEntry.MOD_DRV,
+                    ConfigEntry.SOURCE_TYPE,
+                    ConfigEntry.BLOCK_TYPE,
+                    ConfigEntry.COMPRESS_TYPE,
+                    ConfigEntry.ENCODING,
+                    ConfigEntry.MINIMUM_VERSION,
+                    ConfigEntry.MINIMUM_SWORD_VERSION,
+                    ConfigEntry.DIRECTION
+    };
+
+    private static final Object[] COPYRIGHT_INFO =
+    {
+                    ConfigEntry.ABOUT,
+                    ConfigEntry.DISTRIBUTION,
+                    ConfigEntry.DISTRIBUTION_LICENSE,
+                    ConfigEntry.DISTRIBUTION_NOTES,
+                    ConfigEntry.DISTRIBUTION_SOURCE,
+                    ConfigEntry.COPYRIGHT,
+                    ConfigEntry.COPYRIGHT_DATE,
+                    ConfigEntry.COPYRIGHT_HOLDER,
+                    ConfigEntry.COPYRIGHT_CONTACT_NAME,
+                    ConfigEntry.COPYRIGHT_CONTACT_ADDRESS,
+                    ConfigEntry.COPYRIGHT_CONTACT_EMAIL,
+                    ConfigEntry.COPYRIGHT_NOTES,
+                    ConfigEntry.TEXT_SOURCE,
+    };
+
+    // Some config entries are expected to be single line entries
+    private static final Set singleLine = new HashSet();
+    static
+    {
+        singleLine.add(ConfigEntry.BLOCK_TYPE.toString());
+        singleLine.add(ConfigEntry.DATA_PATH.toString());
+        singleLine.add(ConfigEntry.COMPRESS_TYPE.toString());
+        singleLine.add(ConfigEntry.SOURCE_TYPE.toString());
+        singleLine.add(ConfigEntry.DESCRIPTION.toString());
+        singleLine.add(ConfigEntry.LANG.toString());
+        singleLine.add(ConfigEntry.DIRECTION.toString());
+        singleLine.add(ConfigEntry.CIPHER_KEY.toString());
+        singleLine.add(ConfigEntry.MOD_DRV.toString());
+        singleLine.add(ConfigEntry.ENCODING.toString());
+    }
+
+    // Some config entries may exist more than once
+    private static final Set multipleEntry = new HashSet();
+    static
+    {
+        multipleEntry.add(ConfigEntry.FEATURE.toString());
+        multipleEntry.add(ConfigEntry.GLOBAL_OPTION_FILTER.toString());
+        multipleEntry.add(ConfigEntry.OBSOLETES.toString());
+    }
+
+    // Some config entries allow RTF
+    private static final Set allowsRTF = new HashSet();
+    static
+    {
+        allowsRTF.add(ConfigEntry.ABOUT.toString());
+        allowsRTF.add(ConfigEntry.COPYRIGHT_CONTACT_ADDRESS.toString());
+        allowsRTF.add(ConfigEntry.COPYRIGHT_NOTES.toString());
+        allowsRTF.add(ConfigEntry.COPYRIGHT_CONTACT_NAME.toString());
+    }
+
+
     /**
      * A map of lists of known keys. Keys are presented in insertion order
      */
@@ -907,24 +1049,21 @@ public class SwordBookMetaData implements BookMetaData
     private Map prop = new LinkedHashMap();
 
     /**
-     * The original name of this config file from mods.d
+     * The original name of this config file from mods.d.
+     * This is only used for reporting
      */
     private String internal;
 
     private ModuleType mtype;
     private Book book;
     private BookDriver driver;
-    private String name = ""; //$NON-NLS-1$
     private String fullName;
     private String displayName;
-    private String language = ""; //$NON-NLS-1$
-    private String edition = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
-    private int speed = BookMetaData.SPEED_SLOWEST;
-    private Date firstPublished = FIRSTPUB_DEFAULT;
-    private Openness openness = Openness.UNKNOWN;
-    private URL licence;
-    private boolean leftToRight = true;
+    private boolean supported;
     private StringBuffer data = new StringBuffer();
     private String readahead;
+    private static Histogram histogram = new Histogram();
+    private List warnings = new ArrayList();
+
 }

@@ -114,14 +114,6 @@ public class LocalRemoter implements Remoter
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.remote.Remoter#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return BookMetaData.SPEED_REMOTE_FASTEST;
-    }
-
     /**
      * Lookup a BibleMetaData using the UID that we assigned to it earlier
      */
@@ -172,7 +164,7 @@ public class LocalRemoter implements Remoter
     /**
      * The filter to select the bibles we are exporting
      */
-    private static final BookFilter FILTER = BookFilters.getFaster(BookMetaData.SPEED_SLOWEST);
+    private static final BookFilter FILTER = BookFilters.getAll();
 
     /**
      * To help finding uids from bmds

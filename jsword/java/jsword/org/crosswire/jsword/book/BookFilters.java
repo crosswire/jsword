@@ -131,21 +131,7 @@ public class BookFilters
     }
 
     /**
-     * A filter that accepts everything faster that a set minimum.
-     */
-    public static BookFilter getFaster(final int slowest)
-    {
-        return new BookFilter()
-        {
-            public boolean test(BookMetaData bmd)
-            {
-                return bmd.getSpeed() > slowest;
-            }
-        };
-    }
-
-    /**
-     * A filter that accepts everything faster that a set minimum.
+     * A filter that accepts Books that match two criteria.
      */
     public static BookFilter both(final BookFilter b1, final BookFilter b2)
     {
@@ -159,7 +145,7 @@ public class BookFilters
     }
 
     /**
-     * A filter that accepts everything faster that a set minimum.
+     * A filter that accepts Books that match either of two criteria.
      */
     public static BookFilter either(final BookFilter b1, final BookFilter b2)
     {

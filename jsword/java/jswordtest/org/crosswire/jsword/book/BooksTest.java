@@ -1,6 +1,5 @@
 package org.crosswire.jsword.book;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,16 +98,6 @@ public class BooksTest extends TestCase
         {
             BookMetaData bmd = bmds[i];
 
-            assertTrue(bmd.getEdition() != null);
-            assertTrue(!bmd.getEdition().endsWith("Edition")); //$NON-NLS-1$
-
-            Date pub = bmd.getFirstPublished();
-            if (pub != null)
-            {
-                // the date must be in the past
-                assertTrue(pub.before(new Date()));
-            }
-
             assertTrue(bmd.getFullName() != null);
             assertTrue(bmd.getFullName().length() > 0);
             assertTrue(bmd.getInitials() != null);
@@ -117,7 +106,6 @@ public class BooksTest extends TestCase
             assertTrue(bmd.getName().length() > 0);
             assertTrue(bmd.getFullName().length() > bmd.getName().length());
             assertTrue(bmd.getName().length() > bmd.getInitials().length());
-            assertTrue(bmd.getOpenness() != null);
         }
     }
 

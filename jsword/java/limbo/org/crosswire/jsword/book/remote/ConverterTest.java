@@ -56,11 +56,11 @@ public class ConverterTest extends TestCase
  
         t1 = new BookMetaData[]
         {
-            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE, BookMetaData.SPEED_MEDIUM), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE, BookMetaData.SPEED_MEDIUM), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE, BookMetaData.SPEED_MEDIUM), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, "tv", "PD", "http://nowhere.com/test", "1900-10-20"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE, BookMetaData.SPEED_MEDIUM, null, (String) null, null, null), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE), //$NON-NLS-1$
         };
         uid1 = new String[]
         {
@@ -72,7 +72,7 @@ public class ConverterTest extends TestCase
         };
 
         doc = Converter.convertBookMetaDatasToDocument(t1, uid1);
-        t2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter(), BookMetaData.SPEED_INACCURATE);
+        t2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter());
         assertEquals(t1.length, 5);
         assertEquals(t2.length, 5);
 
@@ -81,19 +81,15 @@ public class ConverterTest extends TestCase
             assertEquals(t1[i].getName(), t2[i].getName());
             //assertEquals(uid1[i], driver.getID(t2[i]));
             assertEquals(t1[i].getName(), t2[i].getName());
-            assertEquals(t1[i].getEdition(), t2[i].getEdition());
             // We scrapped this test because exact times were getting confused
-            //assertEquals(t1[i].getFirstPublished(), t2[i].getFirstPublished());
             assertEquals(t1[i].getInitials(), t2[i].getInitials());
-            assertEquals(t1[i].getLicence(), t2[i].getLicence());
-            assertEquals(t1[i].getOpenness(), t2[i].getOpenness());
             // this did check for not equals - surely this was wrong???
             assertTrue(t1[i].equals(t2[i]));
         }
 
         t1 = new BookMetaData[] { };
         doc = Converter.convertBookMetaDatasToDocument(t1, new String[] { });
-        t2 = Converter.convertDocumentToBookMetaDatas(null, doc, null, BookMetaData.SPEED_INACCURATE);
+        t2 = Converter.convertDocumentToBookMetaDatas(null, doc, null);
         assertEquals(t1.length, 0);
         assertEquals(t2.length, 0);
     }

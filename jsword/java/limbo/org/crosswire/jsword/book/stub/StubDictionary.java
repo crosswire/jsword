@@ -45,9 +45,9 @@ public class StubDictionary extends AbstractBook
     /**
      * Basic constructor for a StubBook
      */
-    public StubDictionary(StubBookDriver driver, String name, BookType type, int speed)
+    public StubDictionary(StubBookDriver driver, String name, BookType type)
     {
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type, speed);
+        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type);
         setBookMetaData(bmd);
     }
 

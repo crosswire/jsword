@@ -225,7 +225,7 @@ public class SwordConstants
         "DailyDevotion", //$NON-NLS-1$
         "Glossary", //$NON-NLS-1$
     };
-
+    
     /**
      * public domain
      */

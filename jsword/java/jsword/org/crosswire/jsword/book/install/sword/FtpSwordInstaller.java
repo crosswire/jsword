@@ -126,7 +126,7 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
 
         ModuleType type = sbmd.getModuleType();
         String modpath = type.getInstallDirectory();
-        String destname = modpath + '/' + sbmd.getInternalName();
+        String destname = modpath + '/' + sbmd.getDiskName();
 
         File dldir = SwordBookDriver.getDownloadDir();
         File moddir = new File(dldir, SwordConstants.DIR_DATA);
@@ -192,14 +192,14 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
 
                     ModuleType type = sbmd.getModuleType();
                     String modpath = type.getInstallDirectory();
-                    String destname = modpath + '/' + sbmd.getInternalName();
+                    String destname = modpath + '/' + sbmd.getDiskName();
                     downloadAll(job, host, USERNAME, PASSWORD, directory + '/' + SwordConstants.DIR_DATA + '/' + destname, desturl);
 
                     File dldir = SwordBookDriver.getDownloadDir();
                     job.setProgress(Msg.JOB_CONFIG.toString());
                     File confdir = new File(dldir, SwordConstants.DIR_CONF);
                     confdir.mkdirs();
-                    File conf = new File(confdir, sbmd.getInternalName() + SwordConstants.EXTENSION_CONF);
+                    File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
                     URL configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
                     sbmd.save(configurl);
 

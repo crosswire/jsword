@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.BookMetaData;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
@@ -81,14 +80,6 @@ public class HttpRemoter implements Remoter
         {
             throw new RemoterException(Msg.REMOTE_FAIL, ex);
         }
-    }
-
-    /**
-     * How fast are we?
-     */
-    public int getSpeed()
-    {
-        return BookMetaData.SPEED_REMOTE_SLOW;
     }
 
     /**

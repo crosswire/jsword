@@ -1,9 +1,5 @@
 package org.crosswire.jsword.book;
 
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -85,61 +81,11 @@ public interface BookMetaData extends Comparable
     public String getLanguage();
 
     /**
-     * The edition of this book, for example "Anglicised" (NIV),
-     * "Stephanus" (Greek).
-     * For 2 books to be equal both the name and the edition must be equal.
-     * In general the text returned by this method should not include the word
-     * "Edition". It is valid for an edition to be a blank string but not for it
-     * to be null.
-     * @return The name of the edition
-     */
-    public String getEdition();
-
-    /**
      * The initials of this book - how people familiar with this book will know
      * it, for example "NIV", "KJV".
      * @return The book's initials
      */
     public String getInitials();
-
-    /**
-     * The expected speed at which this implementation gets correct answers.
-     * This value is used by Books to decide the fastest implementation for a
-     * given job.
-     * <p>The valid values are defined in the Books class.
-     * @see Books
-     * @return a speed value between -1 and 10
-     */
-    public int getSpeed();
-
-    /**
-     * The date of first publishing.
-     * This does not need to be accurate and 2 books can be considered equal
-     * even if they have different first publishing dates for that reason.
-     * In general "1 Jan 1970" means published in 1970, and so on.
-     * <b>A null return from this method is entirely valid</b> if the date of
-     * first publishing is not known.
-     * If the date is required in string form it should be in the format
-     * YYYY-MM-DD so save US/UK confusion over MM/DD and DD/MM.
-     * @return The date of first publishing
-     */
-    public Date getFirstPublished();
-
-    /**
-     * Is this book sold for commercial profit like the NIV, or kept
-     * open like the NET book.
-     * @return A STATUS_* constant
-     */
-    public Openness getOpenness();
-
-    /**
-     * Not sure about this one - Do we need a way of getting at the dist.
-     * licence? Are we going to be able to tie it down to a single book
-     * policy like this? A null return is valid if the licence URL is not
-     * known.
-     * @return String detailing the users right to distribute this book
-     */
-    public URL getLicence();
 
     /**
      * Calculated field: Get an OSIS identifier for the OsisText.setOsisIDWork()
@@ -150,19 +96,11 @@ public interface BookMetaData extends Comparable
     public String getOsisID();
 
     /**
-     * Calculated field: The full name including edition of the book, for example
-     * "New International Version, Anglicised (Ser)".
-     * The format is "name, edition (Driver)"
+     * Calculated field: The full name of the book, for example
+     * The format is "name, (Driver)"
      * @return The full name of this book
      */
     public String getFullName();
-
-    /**
-     * Calculated method: Do the 2 books have matching names.
-     * @param book The book to compare to
-     * @return true if the names match
-     */
-    public boolean isSameFamily(BookMetaData book);
 
     /**
      * Calculated field: The name of the name, which could be helpful to
@@ -190,72 +128,6 @@ public interface BookMetaData extends Comparable
     public Map getProperties();
 
     /**
-     * The SPEED_* constants specify how fast a Book implementation is.
-     * 
-     * Important values include 5, were the remoting system will not remote
-     * Books where getSpeed() >= 5 (to save re-remoting already remote Books).
-     * 10 is also special - values > 10 indicate the data returned is likely to
-     * be wrong (i.e. test data) So we should probably not ship systems with
-     * BibleDrivers that return > 10.
-     */
-    public static final int SPEED_FASTEST = 10;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_FAST = 9;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_MEDIUM = 8;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_SLOW = 7;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_SLOWEST = 6;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_FASTEST = 5;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_FAST = 4;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_MEDIUM = 3;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_SLOW = 2;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_REMOTE_SLOWEST = 1;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_IGNORE = 0;
-
-    /**
-     * @see BookMetaData#SPEED_FASTEST
-     */
-    public static final int SPEED_INACCURATE = -1;
-
-    /**
      * The key for the type in the properties map
      */
     public static final String KEY_TYPE = "Key"; //$NON-NLS-1$
@@ -273,7 +145,7 @@ public interface BookMetaData extends Comparable
     /**
      * The key for the name in the properties map
      */
-    public static final String KEY_NAME = "Name"; //$NON-NLS-1$
+    public static final String KEY_NAME = "Description"; //$NON-NLS-1$
 
     /**
      * The key for the name in the properties map
@@ -281,45 +153,8 @@ public interface BookMetaData extends Comparable
     public static final String KEY_LANGUAGE = "Language"; //$NON-NLS-1$
 
     /**
-     * The key for the edition in the properties map
-     */
-    public static final String KEY_EDITION = "Edition"; //$NON-NLS-1$
-
-    /**
      * The key for the initials in the properties map
      */
     public static final String KEY_INITIALS = "Initials"; //$NON-NLS-1$
 
-    /**
-     * The key for the speed in the properties map
-     */
-    public static final String KEY_SPEED = "Speed"; //$NON-NLS-1$
-
-    /**
-     * The key for the first pub in the properties map
-     */
-    public static final String KEY_FIRSTPUB = "FirstPublished"; //$NON-NLS-1$
-
-    /**
-     * The key for the openness in the properties map
-     */
-    public static final String KEY_OPENNESS = "Openness"; //$NON-NLS-1$
-
-    /**
-     * The key for the licence in the properties map
-     */
-    public static final String KEY_LICENCE = "Licence"; //$NON-NLS-1$
-
-    /**
-     * The default creation date.
-     * Using new Date(0) is the same as FIRSTPUB_FORMAT.parse("1970-01-01")
-     * but does not throw
-     */
-    public static final Date FIRSTPUB_DEFAULT = new Date(0L);
-
-    /**
-     * The default way for format published dates when converting to and from
-     * strings
-     */
-    public static final DateFormat FIRSTPUB_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 }

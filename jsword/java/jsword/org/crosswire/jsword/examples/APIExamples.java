@@ -159,7 +159,7 @@ public class APIExamples
 
         // And you can get back to the MetaData object to find out more too:
         bmd = book.getBookMetaData();
-        System.out.println(bmd.getEdition());
+        System.out.println(bmd.getLanguage());
 
         // If you want a greater selection of Books:
         List books = Books.installed().getBookMetaDatas();

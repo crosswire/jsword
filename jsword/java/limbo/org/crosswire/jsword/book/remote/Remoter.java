@@ -41,8 +41,4 @@ public interface Remoter
      */
     public String getRemoterName();
 
-    /**
-     * The speed of the Remoter
-     */
-    public int getSpeed();
 }

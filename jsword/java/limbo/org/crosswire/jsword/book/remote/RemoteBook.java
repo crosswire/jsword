@@ -1,8 +1,5 @@
 package org.crosswire.jsword.book.remote;
 
-import java.net.MalformedURLException;
-import java.text.ParseException;
-
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -54,9 +51,9 @@ public class RemoteBook extends AbstractBook
     /**
      * Basic constructor for a SerBook
      */
-    public RemoteBook(Remoter remoter, RemoteBookDriver driver, String name, BookType type, String edition, String pubstr, String openstr, String licencestr, int speed) throws MalformedURLException, ParseException
+    public RemoteBook(Remoter remoter, RemoteBookDriver driver, String name, BookType type)
     {
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type, speed, edition, openstr, licencestr, pubstr);
+        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type);
         setBookMetaData(bmd);
 
         this.remoter = remoter;

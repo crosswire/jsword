@@ -1,9 +1,5 @@
 package org.crosswire.jsword.book.basic;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -13,7 +9,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Openness;
 
 /**
  * DefaultBookMetaData is an implementation of the of the BookMetaData
@@ -49,7 +44,7 @@ public class DefaultBookMetaData implements BookMetaData
      * Ctor with a properties from which to get values.
      * A call to setBook() is still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, Properties prop) throws MalformedURLException, ParseException
+    public DefaultBookMetaData(BookDriver driver, Book book, Properties prop)
     {
         this.driver = driver;
         this.book = book;
@@ -58,65 +53,21 @@ public class DefaultBookMetaData implements BookMetaData
 
         setName(prop.getProperty(BookMetaData.KEY_NAME));
         setType(prop.getProperty(BookMetaData.KEY_TYPE));
-        setSpeed(Integer.parseInt(prop.getProperty(BookMetaData.KEY_SPEED)));
 
         setLanguage(prop.getProperty(BookMetaData.KEY_LANGUAGE));
-        setEdition(prop.getProperty(BookMetaData.KEY_EDITION));
-        setOpenness(prop.getProperty(BookMetaData.KEY_OPENNESS));
-        setLicence(prop.getProperty(BookMetaData.KEY_LICENCE));
-        setFirstPublished(prop.getProperty(BookMetaData.KEY_FIRSTPUB));
     }
 
     /**
      * Ctor with some default values.
      * A call to setBook() is still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, String name, BookType type, int speed)
+    public DefaultBookMetaData(BookDriver driver, Book book, String name, BookType type)
     {
         this.driver = driver;
         this.book = book;
 
         setName(name);
         setType(type);
-        setSpeed(speed);
-    }
-
-    /**
-     * Ctor with all important values.
-     * A call to setBook() is still required after this ctor is called
-     */
-    public DefaultBookMetaData(BookDriver driver, Book book, String name, BookType type, int speed, String edition, Openness openness, URL licence, Date firstPublished)
-    {
-        this.driver = driver;
-        this.book = book;
-
-        setName(name);
-        setType(type);
-        setSpeed(speed);
-
-        setEdition(edition);
-        setOpenness(openness);
-        setLicence(licence);
-        setFirstPublished(firstPublished);
-    }
-
-    /**
-     * Ctor with all important values.
-     * A call to setBook() is still required after this ctor is called
-     */
-    public DefaultBookMetaData(BookDriver driver, Book book, String name, BookType type, int speed, String edition, String openstr, String licencestr, String pubstr) throws MalformedURLException, ParseException, NumberFormatException
-    {
-        this.driver = driver;
-        this.book = book;
-
-        setName(name);
-        setType(type);
-        setSpeed(speed);
-
-        setEdition(edition);
-        setOpenness(openstr);
-        setLicence(licencestr);
-        setFirstPublished(pubstr);
     }
 
     /* (non-Javadoc)
@@ -160,51 +111,11 @@ public class DefaultBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getEdition()
-     */
-    public String getEdition()
-    {
-        return edition;
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials()
     {
         return initials;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return speed;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFirstPublished()
-     */
-    public Date getFirstPublished()
-    {
-        return firstPublished;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getOpenness()
-     */
-    public Openness getOpenness()
-    {
-        return openness;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getLicence()
-     */
-    public URL getLicence()
-    {
-        return licence;
     }
 
     /* (non-Javadoc)
@@ -221,12 +132,6 @@ public class DefaultBookMetaData implements BookMetaData
     public String getFullName()
     {
         StringBuffer buf = new StringBuffer(getName());
-        String ed = getEdition();
-
-        if (!ed.equals("")) //$NON-NLS-1$
-        {
-            buf.append(", ").append(ed); //$NON-NLS-1$
-        }
 
         if (driver != null)
         {
@@ -242,14 +147,6 @@ public class DefaultBookMetaData implements BookMetaData
     public String getOsisID()
     {
         return getType().toString() + '.' + getInitials();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#isSameFamily(org.crosswire.jsword.book.BookMetaData)
-     */
-    public boolean isSameFamily(BookMetaData version)
-    {
-        return getName().equals(version.getName());
     }
 
     /* (non-Javadoc)
@@ -303,50 +200,6 @@ public class DefaultBookMetaData implements BookMetaData
     }
 
     /**
-     * @param edition The edition to set.
-     */
-    public void setEdition(String edition)
-    {
-        if (edition == null)
-        {
-            this.edition = ""; //$NON-NLS-1$
-        }
-        else
-        {
-            this.edition = edition;
-        }
-
-        map.put(KEY_EDITION, this.edition);
-    }
-
-    /**
-     * @param firstPublished The firstPublished to set.
-     */
-    public void setFirstPublished(Date firstPublished)
-    {
-        if (firstPublished == null)
-        {
-            firstPublished = FIRSTPUB_DEFAULT;
-        }
-        this.firstPublished = firstPublished;
-
-        map.put(KEY_FIRSTPUB, this.firstPublished.toString());
-    }
-
-    /**
-     * Internal setter for the first published date
-     */
-    public void setFirstPublished(String pubstr) throws ParseException
-    {
-        Date newPublished = null;
-        if (pubstr != null && pubstr.trim().length() > 0)
-        {
-            newPublished = FIRSTPUB_FORMAT.parse(pubstr);
-        }
-        setFirstPublished(newPublished);
-    }
-
-    /**
      * See note on setName() for side effect on setInitials(). If a value of
      * null is used then the initials are defaulted using the name
      * @see DefaultBookMetaData#setName(String)
@@ -374,30 +227,6 @@ public class DefaultBookMetaData implements BookMetaData
     }
 
     /**
-     * @param licence The licence to set.
-     */
-    public void setLicence(URL licence)
-    {
-        this.licence = licence;
-
-        map.put(KEY_LICENCE, licence == null ? "" : this.licence.toString()); //$NON-NLS-1$
-    }
-
-    /**
-     * Internal setter for the license
-     */
-    public void setLicence(String licencestr) throws MalformedURLException
-    {
-        URL newLicence = null;
-        if (licencestr != null)
-        {
-            newLicence = new URL(licencestr);
-        }
-
-        setLicence(newLicence);
-    }
-
-    /**
      * Setting the name also sets some default initials, so if you wish to set
      * some specific initials then it should be done after setting the name.
      * @see DefaultBookMetaData#setInitials(String)
@@ -410,52 +239,6 @@ public class DefaultBookMetaData implements BookMetaData
         map.put(KEY_NAME, this.name);
 
         setInitials(StringUtil.getInitials(name));
-    }
-
-    /**
-     * @param openness The openness to set.
-     */
-    public void setOpenness(Openness openness)
-    {
-        if (openness == null)
-        {
-            openness = Openness.UNKNOWN;
-        }
-        this.openness = openness;
-
-        map.put(KEY_OPENNESS, this.openness.toString());
-    }
-
-    /**
-     * @param openstr The string version of the openness to set.
-     */
-    public void setOpenness(String openstr)
-    {
-        Openness newOpenness = null;
-        if (openstr != null)
-        {
-            newOpenness = Openness.fromString(openstr);
-        }
-
-        setOpenness(newOpenness);
-    }
-
-    /**
-     * @param speed The speed to set.
-     */
-    public void setSpeed(int speed)
-    {
-        this.speed = speed;
-
-        map.put(KEY_SPEED, Integer.toString(this.speed));
-    }
-
-    /**
-     * @param speedstr The speed to set.
-     */
-    public void setSpeed(String speedstr) throws NumberFormatException
-    {
-        setSpeed(Integer.parseInt(speedstr));
     }
 
     /**
@@ -507,23 +290,10 @@ public class DefaultBookMetaData implements BookMetaData
             return false;
         }
 
-        // If super does equals ...
-        /* Commented out because super.equals() always equals false
-        if (!super.equals(obj))
-        {
-            return false;
-        }
-        */
-
         // The real bit ...
         BookMetaData that = (BookMetaData) obj;
 
-        if (!getName().equals(that.getName()))
-        {
-            return false;
-        }
-
-        return getEdition().equals(that.getEdition());
+        return getName().equals(that.getName());
     }
 
     /* (non-Javadoc)
@@ -531,7 +301,7 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public int hashCode()
     {
-        return (getName() + getEdition()).hashCode();
+        return getName().hashCode();
     }
 
     /* (non-Javadoc)
@@ -552,14 +322,6 @@ public class DefaultBookMetaData implements BookMetaData
     }
 
     /**
-     * Convert a published Date into the standard (String) format
-     */
-    public static String formatPublishedDate(Date pub)
-    {
-        return FIRSTPUB_FORMAT.format(pub);
-    }
-
-    /**
      * 
      */
     private Map map = new LinkedHashMap();
@@ -569,10 +331,5 @@ public class DefaultBookMetaData implements BookMetaData
     private BookDriver driver;
     private String name = ""; //$NON-NLS-1$
     private String language = ""; //$NON-NLS-1$
-    private String edition = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
-    private int speed = BookMetaData.SPEED_SLOWEST;
-    private Date firstPublished = FIRSTPUB_DEFAULT;
-    private Openness openness = Openness.UNKNOWN;
-    private URL licence;
 }

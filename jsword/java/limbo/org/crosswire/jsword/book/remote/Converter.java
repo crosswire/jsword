@@ -2,8 +2,6 @@ package org.crosswire.jsword.book.remote;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,8 +9,6 @@ import java.util.List;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.Openness;
-import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -52,10 +48,6 @@ public class Converter
     private static final String ELEMENT_REF = "ref"; //$NON-NLS-1$
     private static final String ELEMENT_ROOT = "root"; //$NON-NLS-1$
     private static final String ELEMENT_TYPE = "type"; //$NON-NLS-1$
-    private static final String ELEMENT_LICENCE = "licence"; //$NON-NLS-1$
-    private static final String ELEMENT_OPENNESS = "openness"; //$NON-NLS-1$
-    private static final String ELEMENT_PUB = "pub"; //$NON-NLS-1$
-    private static final String ELEMENT_EDITION = "edition"; //$NON-NLS-1$
     private static final String ELEMENT_NAME = "name"; //$NON-NLS-1$
     private static final String ATTRIBUTE_ID = "id"; //$NON-NLS-1$
     private static final String ELEMENT_METADATA = "metadata"; //$NON-NLS-1$
@@ -74,63 +66,44 @@ public class Converter
      * [root]
      *   [metadata id="uid"]
      *     [name]King James Version[/name]
-     *     [edition][/edition]
-     *     [initials]KJV[/initials]
-     *     [pub]1900[/pub]
-     *     [openness]PD[/openness]
-     *   [/metadata]
+\     *   [/metadata]
      * [/root]
      * </pre>
      * @param doc
      * @return BibleMetaData[]
      */
-    public static BookMetaData[] convertDocumentToBookMetaDatas(RemoteBookDriver driver, Document doc, Remoter remoter, int speed) throws ConverterException
+    public static BookMetaData[] convertDocumentToBookMetaDatas(RemoteBookDriver driver, Document doc, Remoter remoter)
     {
-        try
+        Element root = doc.getRootElement();
+        List bmds = root.getChildren(ELEMENT_METADATA);
+        BookMetaData[] rbmds = new BookMetaData[bmds.size()];
+        int i = 0;
+
+        for (Iterator it = bmds.iterator(); it.hasNext();)
         {
-            Element root = doc.getRootElement();
-            List bmds = root.getChildren(ELEMENT_METADATA);
-            BookMetaData[] rbmds = new BookMetaData[bmds.size()];
-            int i = 0;
+            Element bmdele = (Element) it.next();
 
-            for (Iterator it = bmds.iterator(); it.hasNext();)
-            {
-                Element bmdele = (Element) it.next();
+            String id = bmdele.getAttributeValue(ATTRIBUTE_ID);
 
-                String id = bmdele.getAttributeValue(ATTRIBUTE_ID);
+            String name = bmdele.getChildTextTrim(ELEMENT_NAME);
+            String typestr = bmdele.getChildTextTrim(ELEMENT_TYPE);
 
-                String name = bmdele.getChildTextTrim(ELEMENT_NAME);
-                String edition = bmdele.getChildTextTrim(ELEMENT_EDITION);
-                String pubstr = bmdele.getChildTextTrim(ELEMENT_PUB);
-                String openstr = bmdele.getChildTextTrim(ELEMENT_OPENNESS);
-                String licencestr = bmdele.getChildTextTrim(ELEMENT_LICENCE);
-                String typestr = bmdele.getChildTextTrim(ELEMENT_TYPE);
+            BookType type = BookType.fromString(typestr);
 
-                BookType type = BookType.fromString(typestr);
+            Book book = new RemoteBook(remoter, driver, name, type);
 
-                Book book = new RemoteBook(remoter, driver, name, type, edition, pubstr, openstr, licencestr, speed);
+            BookMetaData bmd = book.getBookMetaData();
+            driver.registerID(id, bmd);
 
-                BookMetaData bmd = book.getBookMetaData();
-                driver.registerID(id, bmd);
-
-                rbmds[i++] = bmd;
-            }
-
-            return rbmds;
+            rbmds[i++] = bmd;
         }
-        catch (MalformedURLException ex)
-        {
-            throw new ConverterException(Msg.CONVERT_BMD, ex);
-        }
-        catch (ParseException ex)
-        {
-            throw new ConverterException(Msg.CONVERT_BMD, ex);
-        }
+
+        return rbmds;
     }
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
-     * @see Converter#convertDocumentToBookMetaDatas(RemoteBookDriver, Document, Remoter, int)
+     * @see Converter#convertDocumentToBookMetaDatas(RemoteBookDriver, Document, Remoter)
      */
     public static Document convertBookMetaDatasToDocument(BookMetaData[] bmds, String[] ids)
     {
@@ -148,33 +121,6 @@ public class Converter
             temp = new Element(ELEMENT_NAME);
             temp.addContent(bmd.getName());
             bmdele.addContent(temp);
-
-            temp = new Element(ELEMENT_EDITION);
-            temp.addContent(bmd.getEdition());
-            bmdele.addContent(temp);
-
-            String pubstr = DefaultBookMetaData.formatPublishedDate(bmd.getFirstPublished());
-            if (pubstr != null)
-            {
-                temp = new Element(ELEMENT_PUB);
-                temp.addContent(pubstr);
-                bmdele.addContent(temp);
-            }
-
-            Openness open = bmd.getOpenness();
-            if (open != null)
-            {
-                temp = new Element(ELEMENT_OPENNESS);
-                temp.addContent(open.toString());
-                bmdele.addContent(temp);
-            }
-
-            if (bmd.getLicence() != null)
-            {
-                temp = new Element(ELEMENT_LICENCE);
-                temp.addContent(bmd.getLicence().toExternalForm());
-                bmdele.addContent(temp);
-            }
 
             root.addContent(bmdele);
         }

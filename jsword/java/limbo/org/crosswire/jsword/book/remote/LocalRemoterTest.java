@@ -49,14 +49,14 @@ public class LocalRemoterTest extends TestCase
 
     public void testGetBibles() throws Exception
     {
-        BookFilter filter = BookFilters.both(BookFilters.getFaster(BookMetaData.SPEED_SLOWEST), BookFilters.getBibles());
+        BookFilter filter = BookFilters.getBibles();
         List lbmds = Books.installed().getBookMetaDatas(filter);
         BookMetaData[] names1 = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
         RemoteBookDriver rbd = new LocalRemoteBookDriver();
 
         RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
         Document doc = remote.execute(method);
-        BookMetaData[] names2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter(), BookMetaData.SPEED_INACCURATE);
+        BookMetaData[] names2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter());
 
         assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)
