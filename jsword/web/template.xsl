@@ -36,7 +36,7 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td class="logo" align="center" bgcolor="#cccc99">
-      <a href="index.jsp"><img src="images/jsword.gif" width="512" height="75" border="0" alt="JSword Logo"/></a>
+      <a href="index.html"><img src="images/jsword.gif" width="512" height="75" border="0" alt="JSword Logo"/></a>
 	</td>
   </tr>
 </table>
