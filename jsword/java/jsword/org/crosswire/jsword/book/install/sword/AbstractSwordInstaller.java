@@ -167,7 +167,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     URL desturl = toLocalURL(sbmd);
                     NetUtil.makeDirectory(desturl);
 
-                    URL temp = NetUtil.getTemporaryURL("swd", "zip"); //$NON-NLS-1$ //$NON-NLS-2$
+                    URL temp = NetUtil.getTemporaryURL("swd", ZIP_SUFFIX); //$NON-NLS-1$
 
                     download(job, directory + '/' + PACKAGE_DIR, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
