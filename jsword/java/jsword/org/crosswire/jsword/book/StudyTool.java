@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.xml.bind.Element;
-
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.book.data.ParentLocator;
+import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * StudyTool is-an extension to Bible that knows about the original
@@ -52,31 +50,44 @@ public class StudyTool
         Search search = new Search(word, false);
         Passage ref = bible.findPassage(search);
         BookData data = bible.getData(ref);
+        ParentLocator loc = new ParentLocator(data.getOsis());
 
         Map reply = new HashMap();
-        Iterator it = iterateTranslations(data, word);
-        while (it.hasNext())
+
+        // Loop through all the divs in this BookData
+        Iterator oit = data.getOsis().getOsisText().getDiv().iterator();
+        while (oit.hasNext())
         {
-            W w = (W) it.next();
+            Div div = (Div) oit.next();
 
-            // Yes, it doesn't have to be english, the point it it is not greek or hebrew
-            Strongs strongs = new Strongs(w);
-
-            Translation trans = null;
-            trans = (Translation) reply.get(strongs);
-            if (trans == null)
+            // And loop over the content in this div
+            Iterator dit = JAXBUtil.getDeepContent(div, W.class).iterator();
+            while (dit.hasNext())
             {
-                trans = new Translation();
-                trans.word = word;
-                trans.strongs = strongs;
-                trans.ref = PassageFactory.createPassage();
-                reply.put(strongs, trans);
-            }
+                // NOTE: This only looks at level 1 content, what we need is a
+                // deep scan for all 'W's.
+                Object ele = dit.next();
+                W w = (W) ele;
+                String content = JAXBUtil.getPlainText(w);
 
-            trans.ref.add(JAXBUtil.getVerse(w));
+                // There will be many words in the passage in question,
+                // but not all of them will be translations of our word
+                if (content.indexOf(word) != -1)
+                {
+                    Strongs strongs = new Strongs(w);
+
+                    Translation trans = (Translation) reply.get(strongs);
+                    if (trans == null)
+                    {
+                        trans = new Translation(word, strongs);
+                        reply.put(strongs, trans);
+                    }
+
+                    trans.getRef().add(JAXBUtil.getVerse(w, loc));
+                }
+            }
         }
 
-        // find words and counts
         return reply.values();
     }
 
@@ -90,60 +101,45 @@ public class StudyTool
         Search search = new Search(number, false);
         Passage ref = bible.findPassage(search);
         BookData data = bible.getData(ref);
+        ParentLocator loc = new ParentLocator(data.getOsis());
 
         Map reply = new HashMap();
-        Iterator it = iterateTranslations(data, number);
-        while (it.hasNext())
+
+        // Loop through all the divs in this BookData
+        Iterator oit = data.getOsis().getOsisText().getDiv().iterator();
+        while (oit.hasNext())
         {
-            W w = (W) it.next();
+            Div div = (Div) oit.next();
 
-            // Yes, it doesn't have to be english, the point it it is not greek or hebrew
-            String english = JAXBUtil.getPlainText(w);
-
-            Translation trans = null;
-            trans = (Translation) reply.get(english);
-            if (trans == null)
+            // And loop over the content in this div        
+            Iterator dit = JAXBUtil.getDeepContent(div, W.class).iterator();
+            while (dit.hasNext())
             {
-                trans = new Translation();
-                trans.word = english;
-                trans.strongs = number;
-                trans.ref = PassageFactory.createPassage();
-                reply.put(english, trans);
-            }
+                // NOTE: This only looks at level 1 content, what we need is a
+                // deep scan for all 'W's.
+                Object ele = dit.next();
+                W w = (W) ele;
+                Strongs strongs = new Strongs(w);
 
-            trans.ref.add(JAXBUtil.getVerse(w));
+                // There will be many strongs number in the passage in
+                // question, but not all of them will be translations of our
+                // strongs number
+                if (strongs.equals(number))
+                {
+                    String translated = JAXBUtil.getPlainText(w);
+
+                    Translation trans = (Translation) reply.get(translated);
+                    if (trans == null)
+                    {
+                        trans = new Translation(translated, number);
+                        reply.put(translated, trans);
+                    }
+
+                    trans.getRef().add(JAXBUtil.getVerse(w, loc));
+                }
+            }
         }
 
-        // find words and counts
         return reply.values();
-    }
-
-    /**
-     * @param data
-     * @param word
-     * @return
-     */
-    private Iterator iterateTranslations(BookData data, String word)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * @param data
-     * @param number
-     * @return
-     */
-    private Iterator iterateTranslations(BookData data, Strongs number)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public class Translation
-    {
-        public String word;
-        public Strongs strongs;
-        public Passage ref;
     }
 }

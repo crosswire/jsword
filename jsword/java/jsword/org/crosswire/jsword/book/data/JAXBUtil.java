@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -166,11 +168,22 @@ public class JAXBUtil
     }
 
     /**
+     * Find all the instances of elements of type <code>find</code> under
+     * the element <code>div</code>.
+     */
+    public static Collection getDeepContent(Element div, Class find)
+    {
+        List reply = new ArrayList();
+        recurseDeepContent(div, find, reply);
+        return reply;
+    }
+
+    /**
      * Walk up the tree from the W to find out what verse we are in.
      * @param w The start point for our verse hunt.
      * @return The verse we are in
      */
-    public static org.crosswire.jsword.passage.Verse getVerse(Element ele) throws BookException
+    public static org.crosswire.jsword.passage.Verse getVerse(Element ele, ParentLocator loc) throws BookException
     {
         if (ele instanceof Verse)
         {
@@ -190,14 +203,32 @@ public class JAXBUtil
         else
         {
             // So we just walk up the tree trying to find a verse
-            // TODO: how?
-            Element parent = null; // ele.getParent();
+            Element parent = loc.getParent(ele);
             if (parent != null)
             {
-                return getVerse(parent);
+                return getVerse(parent, loc);
             }
 
             throw new BookException(Msg.MISSING_VERSE);
+        }
+    }
+
+    /**
+     * Find all the instances of elements of type <code>find</code> under
+     * the element <code>div</code>. For internal use only.
+     */
+    private static void recurseDeepContent(Element start, Class find, List reply)
+    {
+        if (find.isInstance(start))
+        {
+            reply.add(start);
+        }
+
+        Iterator it = getList(start).iterator();
+        while (it.hasNext())
+        {
+            Element ele = (Element) it.next();
+            recurseDeepContent(ele, find, reply);
         }
     }
 
