@@ -4,8 +4,8 @@ package org.crosswire.jsword.passage;
 import java.util.EventListener;
 
 /**
- * A PassageListener gets told when the verses in a Passage
- * have changed (added or removed). 
+ * A PassageListener gets told when the verses in a Passage have changed (added
+ * or removed).
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,27 +27,26 @@ import java.util.EventListener;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @stereotype role
  */
 public interface PassageListener extends EventListener
 {
     /** 
-     * Sent after stuff has been added to the Passage.
-     * More info about what and where can be had from the Event
+     * Sent after stuff has been added to the Passage, more info about what and
+     * where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */
     public void versesAdded(PassageEvent ev);
     
     /**
-     * Sent after stuff has been removed from the Passage.
-     * More info about what and where can be had from the Event
+     * Sent after stuff has been removed from the Passage, more info about what
+     * and where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */
     public void versesRemoved(PassageEvent ev);
 
     /** 
-     * Sent after verses have been symultaneously added and removed from the Passage.
-     * More info about what and where can be had from the Event
+     * Sent after verses have been symultaneously added and removed from
+     * the Passage, more info about what and where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */
     public void versesChanged(PassageEvent ev);

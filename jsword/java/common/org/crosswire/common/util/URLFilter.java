@@ -4,7 +4,7 @@ package org.crosswire.common.util;
 import java.net.URL;
 
 /**
- * This is the URL equivalent of FilenameFilter in the java.io package
+ * This is the URL equivalent of FilenameFilter in the java.io package.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

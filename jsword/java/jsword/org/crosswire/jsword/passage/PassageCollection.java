@@ -6,8 +6,10 @@ import java.util.Iterator;
 
 /**
  * Since a Passage no longer implements Collection, a proxy
- * interface might be useful. This is it. However it is not complete,
- * and won't be until I know it is needed.
+ * interface might be useful.
+ * 
+ * This is it. However it is not complete, and won't be until I know it is
+ * needed.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -66,8 +68,7 @@ public class PassageCollection implements Collection
      * collection contains at least one element <tt>e</tt> such that
      * <tt>(o==null ? e==null : o.equals(e))</tt>.
      * @param o element whose presence in this collection is to be tested.
-     * @return <tt>true</tt> if this collection contains the specified
-     *         element
+     * @return <tt>true</tt> if this collection contains the specified element
      */
     public boolean contains(Object o)
     {
@@ -79,7 +80,7 @@ public class PassageCollection implements Collection
      * guarantees concerning the order in which the elements are returned
      * (unless this collection is an instance of some class that provides a
      * guarantee).
-     * @returns an <tt>Iterator</tt> over the elements in this collection
+     * @return an <tt>Iterator</tt> over the elements in this collection
      */
     public Iterator iterator()
     {
@@ -336,8 +337,8 @@ public class PassageCollection implements Collection
      * <tt>List</tt> interfaces.)
      * @param o Object to be compared for equality with this collection.
      * @return <tt>true</tt> if the specified object is equal to this collection
-     * @see Object#equals(Object)
-     * @see Set#equals(Object)
+     * @see Object#equals(java.lang.Object)
+     * @see java.util.Set#equals(java.lang.Object)
      */
     public boolean equals(Object o)
     {
@@ -364,7 +365,6 @@ public class PassageCollection implements Collection
 
     /**
      * The real store of data
-     * @label Passage to proxy to
      */
     private Passage ref = null;
 }

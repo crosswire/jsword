@@ -7,7 +7,7 @@ import java.util.Map;
 import org.jdom.Element;
 
 /**
- * Factory for the well known Choices
+ * Factory for the well known Choices.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

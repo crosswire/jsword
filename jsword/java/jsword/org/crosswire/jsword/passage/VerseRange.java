@@ -1135,16 +1135,12 @@ public class VerseRange implements VerseBase
     /**
      * The real data - where do we end?.
      * All ctors init this so leave default
-     * @label end
-     * @supplierCardinality 1
      */
     private transient Verse end;
 
     /**
      * The real data - where do we start?.
      * All ctors init this so leave default
-     * @label start
-     * @supplierCardinality 1
      */
     private transient Verse start;
 
@@ -1155,7 +1151,6 @@ public class VerseRange implements VerseBase
 
     /**
      * The whole Bible VerseRange
-     * @label the whole Bible
      */
     private transient static VerseRange whole;
 

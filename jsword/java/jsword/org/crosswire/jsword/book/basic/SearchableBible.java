@@ -35,16 +35,14 @@ import org.crosswire.jsword.passage.Passage;
  */
 public abstract class SearchableBible extends AbstractBible
 {
-    private Searcher searcher;
-
     /**
      * Set ourselves up for searching. This will mean one of 2 things - either
      * loading a known index, or generating one by reading the whole Bible.
      * @param li Optional progress listener if you think this might take ages.
      */
-    public void initializeSearch(ProgressListener li) throws BookException
+    public void init(ProgressListener li) throws BookException
     {
-        searcher = new Searcher(this, getURL(), li);
+        searcher = new SerSearcher(this, getURL(), li);
     }
 
     /**
@@ -75,4 +73,6 @@ public abstract class SearchableBible extends AbstractBible
     {
         return searcher.getStartsWith(word);
     }
+
+    private Searcher searcher;
 }

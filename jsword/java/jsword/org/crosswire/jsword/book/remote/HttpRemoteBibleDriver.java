@@ -30,8 +30,7 @@ package org.crosswire.jsword.book.remote;
 public class HttpRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
-     * Returns the baseurl.
-     * @return String
+     * Simple ctor
      */
     public HttpRemoteBibleDriver(String baseurl)
     {
@@ -86,7 +85,7 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
 
     /**
      * Accessor for the current remoter.
-     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
+     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
      * @return The remoter or null if none is available.
      */
     protected Remoter getRemoter()

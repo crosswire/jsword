@@ -30,9 +30,18 @@ public class RemoterException extends Exception
     /**
      * Constructor RemoterException.
      */
-    public RemoterException(String string)
+    public RemoterException(String message)
     {
-        super(string);
+        super(message);
+    }
+
+    /**
+     * Constructor RemoterException.
+     */
+    public RemoterException(String message, Class original_type)
+    {
+        super(message);
+        this.original_type = original_type;
     }
 
     /**
@@ -61,7 +70,20 @@ public class RemoterException extends Exception
     }
 
     /**
+     * Accessor for the original type
+     */
+    public Class getOriginalType()
+    {
+        return original_type;
+    }
+
+    /**
      * The cause of this exception
      */
     private Throwable cause;
+
+    /**
+     * The original type of that caused this
+     */
+    private Class original_type;
 }

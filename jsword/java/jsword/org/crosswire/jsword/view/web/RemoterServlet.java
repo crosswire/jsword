@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.web;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.remote.Converter;
 import org.crosswire.jsword.book.remote.LocalRemoter;
+import org.crosswire.jsword.book.remote.RemoteConstants;
 import org.crosswire.jsword.book.remote.RemoteMethod;
 import org.crosswire.jsword.book.remote.Remoter;
 import org.crosswire.jsword.book.remote.RemoterException;
@@ -73,6 +76,8 @@ public class RemoterServlet extends HttpServlet
         }
         catch (RemoterException ex)
         {
+            Reporter.informUser(this, ex);
+
             Document doc = Converter.convertExceptionToDocument(ex);
             output.output(doc, response.getOutputStream());
         }
@@ -81,14 +86,29 @@ public class RemoterServlet extends HttpServlet
     /**
      * Convert an HttpServletRequest into a RemoteMethod call.
      * This is the inverse of
-     * {@link org.crosswire.jsword.util.remoter.HttpRemoter#methodToParam(RemoteMethod)}
+     * {@link org.crosswire.jsword.book.remote.HttpRemoter#execute(RemoteMethod)}
      */
     public static RemoteMethod requestToMethod(HttpServletRequest request)
     {
         Map params = request.getParameterMap();
-        String methodname = request.getParameter("method");
+        String methodname = request.getParameter(RemoteConstants.METHOD_KEY);
         RemoteMethod method = new RemoteMethod(methodname);
-        method.addParams(params);
+
+        Iterator it = params.keySet().iterator();
+        while (it.hasNext())
+        {
+            String key = (String) it.next();
+            String[] val = (String[]) params.get(key);
+            
+            // This is slightly dodgy - we basically ignore the fact that HTTP
+            // GET and POST allow multiple values for each key, however since we
+            // get to define the interface i.e. what the allowed keys are, I
+            // don't see this as a big problem.
+            if (val.length > 0)
+            {
+                method.addParam(key, val[0]);
+            }
+        }
 
         return method;
     }

@@ -148,13 +148,14 @@ public class ConverterTest extends TestCase
     public void testConvertException() throws Exception
     {
         Exception ex1;
-        Exception ex2;
+        RemoterException ex2;
         Document doc;
 
         ex1 = new NullPointerException("message");
         doc = Converter.convertExceptionToDocument(ex1);
         ex2 = Converter.convertDocumentToException(doc);
         assertEquals(ex1.getMessage(), ex2.getMessage());
+        assertEquals(ex1.getClass(), ex2.getOriginalType());
     }
 
     public void assertEquals(Iterator it1, Iterator it2)

@@ -48,7 +48,7 @@ public final class ReadOnlyPassage implements Passage
      * A Human readable version of the verse list. Uses short books names,
      * and the shortest sensible rendering eg "Mat 3:1-4"
      * and "Mar 1:1, 3, 5" and "3Jo, Jude"
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String getName()
     {
@@ -58,7 +58,7 @@ public final class ReadOnlyPassage implements Passage
     /**
      * A summary of the verses in this Passage For example
      * "10 verses in 4 books"
-     * @returns a String containing an overview of the verses
+     * @return a String containing an overview of the verses
      */
     public String getOverview()
     {
@@ -388,10 +388,11 @@ public final class ReadOnlyPassage implements Passage
 
     /**
      * The object we are proxying to
-     * @label proxy
      */
     private Passage ref;
 
-    /** Do we just silently ignore change attempts or throw up */
+    /**
+     * Do we just silently ignore change attempts or throw up
+     */
     private boolean ignore;
 }

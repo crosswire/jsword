@@ -17,7 +17,6 @@ import org.crosswire.jsword.book.Bibles;
 
 /**
  * DriversListModel.
- * @todo: we need a way of selecting only WritableBibleDrivers
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -45,9 +44,12 @@ public class DriversListModel extends AbstractListModel
     /**
      * Basic constructor
      */
-    public DriversListModel()
+    public DriversListModel(boolean include_ro)
     {
-        drivers = Bibles.getDrivers();
+        if (include_ro)
+            drivers = Bibles.getDrivers();
+        else
+            drivers = Bibles.getWritableDrivers();
     }
 
     /**

@@ -2,7 +2,7 @@
 package org.crosswire.jsword.book.remote;
 
 /**
- * Some constants so that everyone can agree on the names for various methods
+ * Some constants so that everyone can agree on the names for various methods.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,6 +27,7 @@ package org.crosswire.jsword.book.remote;
  */
 public interface RemoteConstants
 {
+    public static final String METHOD_KEY = "method";
     public static final String METHOD_GETBIBLES = "getBibles";
     public static final String METHOD_GETDATA = "getData";
     public static final String METHOD_FINDPASSAGE = "findPassage";

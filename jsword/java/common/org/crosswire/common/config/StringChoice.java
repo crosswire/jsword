@@ -2,7 +2,7 @@
 package org.crosswire.common.config;
 
 /**
- * A type of Choice that converts between strings and objects
+ * A type of Choice that converts between strings and objects.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

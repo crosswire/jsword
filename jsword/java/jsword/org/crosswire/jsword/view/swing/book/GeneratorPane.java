@@ -264,7 +264,7 @@ public class GeneratorPane extends EirPanel
     private JComboBox cbo_driver = new JComboBox();
 
     /** The model for the drivers */
-    private DriversComboBoxModel mdl_driver = new DriversComboBoxModel();
+    private DriversComboBoxModel mdl_driver = new DriversComboBoxModel(false);
 
     /** The progress area */
     private JPanel pnl_prog = new JPanel();

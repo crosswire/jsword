@@ -10,7 +10,7 @@ import org.crosswire.common.util.Reporter;
 import org.jdom.Element;
 
 /**
- * A class to convert between strings and objects of a type
+ * A class to convert between strings and objects of a type.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

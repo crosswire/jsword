@@ -116,7 +116,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * A Human readable version of the verse list. Uses short books names,
      * and the shortest possible rendering eg "Mat 3:1-4, 6"
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String getName()
     {
@@ -145,7 +145,7 @@ public abstract class AbstractPassage implements Passage
 
     /**
      * Simply bounce to getName() to help String concatenation.
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String toString()
     {
@@ -155,7 +155,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * A summary of the verses in this Passage
      * For example "Search (10 matches in 4 books)"
-     * @returns a String containing an overview of the verses
+     * @return a String containing an overview of the verses
      */
     public String getOverview()
     {

@@ -54,7 +54,7 @@ public class StubBible extends AbstractBible
     }
 
     /**
-     * @see org.crosswire.jsword.book.basic.AbstractBible#getMetaData()
+     * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
      */
     public BibleMetaData getBibleMetaData()
     {

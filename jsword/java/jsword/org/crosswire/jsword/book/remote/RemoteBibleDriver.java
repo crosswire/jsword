@@ -37,7 +37,6 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
 {
     /**
      * Accessor for the current remoter.
-     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
      * @return The remoter or null if none is available.
      */
     protected abstract Remoter getRemoter();

@@ -31,7 +31,7 @@ public class LocalRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
      * Accessor for the current remoter.
-     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
+     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
      * @return The remoter or null if none is available.
      */
     protected Remoter getRemoter()

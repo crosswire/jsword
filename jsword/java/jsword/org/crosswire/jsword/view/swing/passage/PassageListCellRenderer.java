@@ -85,7 +85,7 @@ public class PassageListCellRenderer implements ListCellRenderer, Serializable
                 if (text == null)
                 {
                     //BibleData data = Bibles.getDefaultBible().getData(ref);
-                    // @todo: Invoke the stylizer here to get plain text
+                    // PENDING(joe): Invoke the stylizer here to get plain text
                     String simple = "";
                     text = "<html><b>"+range.getName()+"</b> "+simple;
                     hash.put(range, text);

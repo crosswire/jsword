@@ -151,13 +151,13 @@ public class SerBible extends LocalURLBible
         try
         {
             cache = new BibleDataCache(getLocalURLBibleMetaData().getURL());
-            generateText(source, li);
-            initializeSearch(li);
         }
         catch (Exception ex)
         {
             throw new BookException("ser_init", ex);
         }
+
+        super.init(source, li);
     }
 
     /**
@@ -169,12 +169,13 @@ public class SerBible extends LocalURLBible
         {
             cache = new BibleDataCache(getLocalURLBibleMetaData().getURL());
             cache.load();
-            initializeSearch(li);
         }
         catch (Exception ex)
         {
             throw new BookException("ser_init", ex);
         }
+
+        super.init(li);
     }
 
     /**

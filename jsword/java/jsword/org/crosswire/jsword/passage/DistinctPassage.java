@@ -106,7 +106,7 @@ public class DistinctPassage extends AbstractPassage
     }
 
     /**
-     * @returns true if this Passage contains no Verses
+     * @return true if this Passage contains no Verses
      */
     public boolean isEmpty()
     {

@@ -6,9 +6,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -19,9 +16,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.crosswire.common.config.Config;
-import org.crosswire.common.config.swing.SwingConfig;
-import org.crosswire.common.config.swing.TabbedConfigPane;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
@@ -71,7 +65,6 @@ public class MaintenancePane extends EirPanel
     {
         boolean selected = (lst_versions.getSelectedIndex() != -1);
         btn_remove.setEnabled(selected);
-        btn_props.setEnabled(selected);
     }
 
     /**
@@ -95,14 +88,6 @@ public class MaintenancePane extends EirPanel
         {
             public void valueChanged(ListSelectionEvent ev) { updateButtons(); }
         });
-        lst_versions.addMouseListener(new MouseAdapter()
-        {
-            public void mouseClicked(MouseEvent ev)
-            {
-                if (ev.getClickCount() == 2)
-                    properties();
-            }
-        });
 
         btn_add.setText("Add ...");
         btn_add.setMnemonic('A');
@@ -118,18 +103,10 @@ public class MaintenancePane extends EirPanel
             public void actionPerformed(ActionEvent ev) { delete(); }
         });
 
-        btn_props.setText("Properties ...");
-        btn_props.setMnemonic('P');
-        btn_props.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev) { properties(); }
-        });
-
         lay_buttons.setAlignment(FlowLayout.RIGHT);
         pnl_buttons.setLayout(lay_buttons);
         pnl_buttons.add(btn_add, null);
         pnl_buttons.add(btn_remove, null);
-        pnl_buttons.add(btn_props, null);
 
         this.setLayout(new BorderLayout());
         this.add(scr_versions, BorderLayout.CENTER);
@@ -177,70 +154,6 @@ public class MaintenancePane extends EirPanel
     }
 
     /**
-     * View the properties for a selected Bible
-     */
-    public void properties()
-    {
-        // @todo: probably delete this method.
-        // Note the calls to Bible.getProperties() and Bible.getPropertiesURL()
-        // have been commented out because I am trying to simplify the Bible
-        // interface and I'm not sure if these methods add much value and they
-        // are only ever used here. This effectively makes this entire method
-        // obsolete however I'm not taking it out just yet in case there is a
-        // reason for it to be here.
-
-        try
-        {
-            BibleMetaData bmd = getSelected();
-            if (bmd == null)
-            {
-                JOptionPane.showMessageDialog(this,
-                    "Please select a Bible to view notes on.",
-                    "Delete Bible",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-                return;
-            }
-
-            //Bible version = Bibles.getBible(name);
-            Config config = null; //version.getProperties();
-
-            if (config == null)
-            {
-                JOptionPane.showMessageDialog(this,
-                    "There are no options to configure for the "+bmd.getName()+" Bible.",
-                    "Bible Properties",
-                    JOptionPane.INFORMATION_MESSAGE);
-            }
-            else
-            {
-                // The visuals for the display class
-                SwingConfig.setDisplayClass(TabbedConfigPane.class);
-
-                // Where do we save the choices?
-                URL prop_url = null; //version.getPropertiesURL();
-
-                if (prop_url == null)
-                {
-                    // Show the dialog, and don't bother to save.
-                    SwingConfig.showDialog(config, this, new ActionListener() {
-                        public void actionPerformed(ActionEvent ev) { }
-                        });
-                }
-                else
-                {
-                    // Show the dialog, with a place to save to.
-                    SwingConfig.showDialog(config, this, prop_url);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(this, ex);
-        }
-    }
-
-    /**
      * What is the selected Bible name?
      * @return The version name or null if none is selected
      */
@@ -263,9 +176,6 @@ public class MaintenancePane extends EirPanel
 
     /** View Notes button */
     private JButton btn_add = new JButton();
-
-    /** View Notes button */
-    private JButton btn_props = new JButton();
 
     /** Delete Bible button */
     private JButton btn_remove = new JButton();

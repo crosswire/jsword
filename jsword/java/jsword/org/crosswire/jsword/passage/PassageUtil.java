@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @stereotype utility
  */
 public class PassageUtil implements PassageConstants
 {

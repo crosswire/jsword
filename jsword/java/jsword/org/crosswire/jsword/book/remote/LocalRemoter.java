@@ -1,8 +1,10 @@
 
 package org.crosswire.jsword.book.remote;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.crosswire.jsword.book.Bible;
@@ -52,7 +54,7 @@ public class LocalRemoter implements Remoter
     }
 
     /**
-     * @see org.crosswire.jsword.util.remoter.Remoter#execute(org.crosswire.jsword.util.remoter.RemoteMethod)
+     * @see Remoter#execute(RemoteMethod)
      */
     public Document execute(RemoteMethod method) throws RemoterException
     {
@@ -62,7 +64,8 @@ public class LocalRemoter implements Remoter
         {
             try
             {
-                BibleMetaData[] bmds = Bibles.getBibles();
+                BibleMetaData[] orig_bmds = Bibles.getBibles();
+                BibleMetaData[] bmds = trimRemote(orig_bmds);
                 String[] uids = getUIDs(bmds);
                 return Converter.convertBibleMetaDatasToDocument(bmds, uids);
             }
@@ -126,8 +129,27 @@ public class LocalRemoter implements Remoter
         }
         else
         {
-            throw new RemoterException("methodname not supported. given: "+methodname);
+            throw new RemoterException("method not supported. given: "+methodname);
         }
+    }
+
+    /**
+     * Method trimRemote.
+     * @param orig_bmds
+     * @return BibleMetaData[]
+     */
+    private BibleMetaData[] trimRemote(BibleMetaData[] orig_bmds)
+    {
+        List temp = new ArrayList();
+        
+        for (int i = 0; i < orig_bmds.length; i++)
+        {
+            BibleMetaData bmd = orig_bmds[i];
+            if (bmd.getSpeed() < Bibles.SPEED_REMOTE)
+                temp.add(bmd);
+        }
+
+        return (BibleMetaData[]) temp.toArray(new BibleMetaData[temp.size()]);
     }
 
     /**

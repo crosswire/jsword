@@ -101,13 +101,11 @@ public class PassageEvent extends EventObject
 
     /**
      * When the lower verse is null
-     * @label highest
      */
     public static final Verse VERSE_LOWEST = new Verse(1, 1, 1, true);
 
     /**
      * When the upper verse is null
-     * @label lowest
      */
     public static final Verse VERSE_HIGHEST = new Verse(66, 22, 21, true);
 
@@ -118,13 +116,11 @@ public class PassageEvent extends EventObject
 
     /**
      * The lowest numbered element to have changed
-     * @label lower
      */
     private Verse lower;
 
     /**
      * The highest numbered element to have changed
-     * @label upper
      */
     private Verse upper;
     

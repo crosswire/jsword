@@ -93,6 +93,12 @@ public interface BookMetaData
      * The expected speed at which this implementation gets correct answers.
      * This value is used by Bibles to decide the fastest implementation for a
      * given job.
+     * Important values include 5, were the remoting system will not remote
+     * Bibles where getSpeed() >= 5 (to save re-remoting already remote Bibles).
+     * 10 is also special - values > 10 indicate the data returned is likely to
+     * be wrong (i.e. test data) So we should probably not ship systems with
+     * BibleDrivers that return > 10
+     * 
      * 0 = this is preferred
      * 1 = fastest known
      * 2 = fast local
@@ -137,9 +143,13 @@ public interface BookMetaData
 
     /**
      * Accessor for the real Book to read data.
-     * Note that constructing a Book may well consume system resources far more
-     * than the construction of a BookMetaData so you should only get a Book if
-     * you intend to use it.
+     * <p>Note that constructing a Book may well consume system resources far
+     * more than the construction of a BookMetaData so you should only get a
+     * Book if you intend to use it.
+     * <p>For implementors of BookMetaData - the objects returned by 2
+     * successive calls to getBook() should be the same (i.e. return true to an
+     * == test) unless for some reason the objects are not thread safe. Since
+     * Books are read-only once setup thread safety should not be hard.
      */
     public Book getBook() throws BookException;
 

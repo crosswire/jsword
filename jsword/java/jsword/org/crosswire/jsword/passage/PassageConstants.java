@@ -2,8 +2,9 @@
 package org.crosswire.jsword.passage;
 
 /**
- * Various constants used by the concrete Verse classes. This class is
- * intended to be implemented to get easy access to the constants. 
+ * Various constants used by the concrete Verse classes.
+ * 
+ * This class is intended to be implemented to get easy access to the constants.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -25,7 +26,6 @@ package org.crosswire.jsword.passage;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @stereotype description
  */
 public interface PassageConstants
 {

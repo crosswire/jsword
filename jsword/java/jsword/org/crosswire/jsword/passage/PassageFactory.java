@@ -31,7 +31,6 @@ import org.crosswire.common.util.LogicError;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @stereotype factory
  */
 public class PassageFactory
 {
@@ -170,15 +169,9 @@ public class PassageFactory
 
     /**
      * The cached whole Bible passage
-     * @label The whole Bible
      */
     private static Passage whole;
 
     /** The default type */
     private static int default_type = SPEED;
-
-    /**
-     * @link dependency
-     */
-    /*#Passage lnkPassage;*/
 }

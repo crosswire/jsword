@@ -7,9 +7,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -57,16 +54,6 @@ public class Style
     public Style(String subject)
     {
         this.subject = subject;
-
-        // @TODO: Handle this error
-        try
-        {
-            docbuild = docfact.newDocumentBuilder();
-        }
-        catch (ParserConfigurationException ex)
-        {
-            docbuild = null;
-        }
     }
 
     /**
@@ -179,8 +166,6 @@ public class Style
         return output;
     }
 
-    private DocumentBuilderFactory docfact = DocumentBuilderFactory.newInstance();
-    private DocumentBuilder docbuild = null;
     private TransformerFactory transfact = TransformerFactory.newInstance();
     private XMLOutputter outputter = new XMLOutputter();
 

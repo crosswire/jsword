@@ -73,18 +73,6 @@ public class SwingConfig
     }
 
     /**
-     * Create a dialog to house a TreeConfig component
-     * using the default set of Fields, with the default accept action
-     * of config.localToAppliation and config,localToPermanentURL
-     * @param config The set of Choices to display
-     * @param parent A component to use to find a frame to use as a dialog parent
-     */
-    public static void showDialog(Config config, Component parent, String host, int port)
-    {
-        showDialog(config, parent, new URLActionListener(config, host, port));
-    }
-
-    /**
      * Which display style to we use
      * @return The display style
      */
@@ -132,16 +120,6 @@ public class SwingConfig
         }
 
         /**
-         * To save to a remote computer
-         */
-        public URLActionListener(Config config, String host, int port)
-        {
-            this.config = config;
-            this.host = host;
-            this.port = port;
-        }
-
-        /**
          * The save action
          */
         public void actionPerformed(ActionEvent ev)
@@ -149,12 +127,7 @@ public class SwingConfig
             try
             {
                 config.localToApplication(false);
-
-                if (url != null)
-                    config.localToPermanent(url);
-
-                if (host != null)
-                    config.localToPermanent(host, port);
+                config.localToPermanent(url);
             }
             catch (IOException ex)
             {
@@ -167,11 +140,5 @@ public class SwingConfig
 
         /** The URL to save to if needed */
         private URL url;
-
-        /** The hostname to save to if remote saveing is enabled */
-        private String host;
-
-        /** The port on the remote host */
-        private int port;
     }
 }

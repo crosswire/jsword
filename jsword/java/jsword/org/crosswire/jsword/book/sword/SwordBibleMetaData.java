@@ -13,6 +13,7 @@ import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
+ * Simple BibleMetaData for the sword implementation.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -71,12 +72,24 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
 
     /**
      * Fetch a currently existing Bible, read-only
+     * @param name The name of the version to create
      * @exception BookException If the name is not valid
-     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
      */
     public Bible getBible() throws BookException
     {
-        return new SwordBible(driver, this);
+        // I know double checked locking is theoretically broken however it isn't
+        // practically broken 99% of the time, and even if the 1% comes up here
+        // the only effect is some temporary wasted memory
+        if (bible == null)
+        {
+            synchronized(this)
+            {
+                if (bible == null)
+                    bible = new SwordBible(driver, this);
+            }
+        }
+
+        return bible;
     }
 
     /**
@@ -98,6 +111,13 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
         return 3;
     }
 
-    /** Our parent name */
+    /**
+     * Needed for when we create the Bible
+     */
     private SwordBibleDriver driver;
+
+    /**
+     * The cached bible so we don't have to create too many
+     */
+    private Bible bible = null;
 }

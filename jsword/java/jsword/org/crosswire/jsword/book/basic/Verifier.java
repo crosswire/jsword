@@ -134,7 +134,7 @@ public class Verifier
                 //BibleData text1 = bible1.getData(ref2);
                 //BibleData text2 = bible2.getData(ref2);
 
-                // @todo: Create some sort of BibleData compare system
+                // PENDING(joe): Create some sort of BibleData compare system
                 // Check
 
                 /*
@@ -169,9 +169,6 @@ public class Verifier
     {
         int count = 0;
         alive = true;
-
-        // @todo: Reimplement this to make a note of all the words as they flash
-        // past whilst we are checking the passages.
 
         // For every word in the word list
         //Iterator it = bible1.listWords();

@@ -12,7 +12,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
- * Implement a Remoter using HTTP
+ * Implement a Remoter using HTTP.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -46,8 +46,7 @@ public class HttpRemoter implements Remoter
     }
 
     /**
-     * Create an HttpRemoter with a baseurl to call
-     * @param baseurl
+     * Create an HttpRemoter with a baseurl to call.
      */
     public HttpRemoter(String baseurl)
     {
@@ -58,7 +57,7 @@ public class HttpRemoter implements Remoter
     }
 
     /**
-     * @see org.crosswire.jsword.util.remoter.Remoter#execute(org.crosswire.jsword.util.remoter.RemoteMethod)
+     * @see Remoter#execute(RemoteMethod)
      */
     public Document execute(RemoteMethod method) throws RemoterException
     {
@@ -93,7 +92,7 @@ public class HttpRemoter implements Remoter
     {
         StringBuffer buffer = new StringBuffer();
 
-        buffer.append("?method=");
+        buffer.append("?"+RemoteConstants.METHOD_KEY+"=");
         buffer.append(method.getMethodName());
         
         Iterator it = method.getParameterKeys();

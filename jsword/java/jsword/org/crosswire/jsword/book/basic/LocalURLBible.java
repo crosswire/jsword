@@ -10,6 +10,10 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
+ * LocalURLBible is a helper for drivers that want to store files locally.
+ * 
+ * It takes care of providing you with a directory to work from and managing the
+ * files stored in that directory.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -35,14 +39,13 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public abstract class LocalURLBible extends SearchableBible
 {
     /**
-     * Startup
+     * Method init.
      */
-    public abstract void init(Bible source, ProgressListener li) throws BookException;
-
-    /**
-     * Startup
-     */
-    public abstract void init(ProgressListener li) throws BookException;
+    public void init(Bible source, ProgressListener li) throws BookException
+    {
+        generateText(source, li);
+        super.init(li);
+    }
 
     /**
      * Where can we write the search indexes.

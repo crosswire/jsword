@@ -148,7 +148,7 @@ public class RocketPassage extends BitwisePassage
     }
 
     /**
-     * @returns true if this Passage contains no Verses
+     * @return true if this Passage contains no Verses
      */
     public boolean isEmpty()
     {
@@ -243,13 +243,11 @@ public class RocketPassage extends BitwisePassage
 
     /**
      * The contained DistinctPassage
-     * @label cache
      */
     private transient DistinctPassage distinct = null;
 
     /**
      * The contained RangedPassage
-     * @label cache
      */
     private transient RangedPassage ranged = null;
 }

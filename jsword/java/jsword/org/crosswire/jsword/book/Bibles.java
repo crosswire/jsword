@@ -2,6 +2,7 @@
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -38,20 +39,32 @@ import org.crosswire.jsword.util.Project;
  */
 public class Bibles
 {
-    /** The list of Bibles */
+    public static final int SPEED_REMOTE = 5;
+    public static final int SPEED_INACCURATE = 11;
+
+    /**
+     * The list of Bibles
+     */
     private static List bibles = new ArrayList();
 
-    /** The default Bible */
+    /**
+     * The default Bible
+     */
     private static BibleMetaData deft = null;
 
-    /** The list of listeners */
+    /**
+     * The list of listeners
+     */
     protected static EventListenerList listeners = new EventListenerList();
+
     /**
      * An array of BookDrivers
      */
     private static List drivers = new ArrayList();
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     protected static Logger log = Logger.getLogger(Bibles.class);
 
     /**
@@ -246,6 +259,9 @@ public class Bibles
     {
         log.debug("begin registering driver: "+driver.getClass().getName());
 
+        if (drivers.contains(driver))
+            throw new BookException("book_duplicate_driver");
+
         drivers.add(driver);
 
         BibleMetaData[] bmds = driver.getBibles();
@@ -272,7 +288,7 @@ public class Bibles
         }
 
         if (!drivers.remove(driver))
-            throw new BookException("Can't unregister unregistered driver: "+driver.getClass().getName());
+            throw new BookException("book_not_registered", new Object[] { driver.getClass().getName() });
 
         log.debug("end un-registering driver: "+driver.getClass().getName());
     }
@@ -284,6 +300,33 @@ public class Bibles
     public static BibleDriver[] getDrivers()
     {
         return (BibleDriver[]) drivers.toArray(new BibleDriver[drivers.size()]);
+    }
+
+    /**
+     * Get an array of all the known drivers
+     * @return Found int or the default value
+     */
+    public static BibleDriver[] getWritableDrivers()
+    {
+        int i = 0;
+        for (Iterator it = drivers.iterator(); it.hasNext();)
+        {
+            BibleDriver driver = (BibleDriver) it.next();
+            if (driver.isWritable())
+                i++;
+        }
+        
+        BibleDriver[] reply = new BibleDriver[i];
+
+        i = 0;
+        for (Iterator it = drivers.iterator(); it.hasNext();)
+        {
+            BibleDriver driver = (BibleDriver) it.next();
+            if (driver.isWritable())
+                reply[i++] = driver;
+        }
+
+        return reply;
     }
 
     /**

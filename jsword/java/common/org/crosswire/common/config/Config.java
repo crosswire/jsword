@@ -5,10 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -389,66 +387,6 @@ public class Config implements Serializable
 
         // Send our updates
         PropertiesUtil.save(getProperties(), out, title);
-    }
-
-    /**
-     * Take the data stored permanently and copy it to the local
-     * storage area, using the configured storage area
-     * @TODO: suss out what the sin.readObject() line does
-     */
-    public void permanentToLocal(String host, int port) throws IOException
-    {
-        try
-        {
-            Socket sock = new Socket(host, port);
-            InputStream in = sock.getInputStream();
-            ObjectInputStream sin = new ObjectInputStream(in);
-            /*Config config = (Config)*/ sin.readObject();
-
-            Properties prop = new Properties();
-            PropertiesUtil.load(prop, in);
-
-            // Politeness: Send nothing to the server in return.
-            PropertiesUtil.save(new Properties(), sock.getOutputStream(), "Dump");
-            sock.close();
-
-            setProperties(prop);
-        }
-        catch (ClassNotFoundException ex)
-        {
-            throw new IOException("Serialization Error: "+ex);
-        }
-    }
-
-    /**
-     * Take the data in the local storage area and store it permanently,
-     * using the configured storage area.
-     * @TODO: suss out what the sin.readObject() line does
-     */
-    public void localToPermanent(String host, int port) throws IOException
-    {
-        try
-        {
-            Socket sock = new Socket(host, port);
-            OutputStream out = sock.getOutputStream();
-
-            // Politeness: Read the stuff the server sends to us, but ignore it.
-            InputStream in = sock.getInputStream();
-
-            ObjectInputStream sin = new ObjectInputStream(in);
-            /*Config config = (Config)*/ sin.readObject();
-
-            PropertiesUtil.load(new Properties(), in);
-
-            // Send our updates
-            PropertiesUtil.save(getProperties(), out, title);
-
-            sock.close();
-        }
-        catch (ClassNotFoundException ex)
-        {
-            throw new IOException("Serialization Error");
-        }
     }
 
     /**

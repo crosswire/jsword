@@ -31,9 +31,9 @@ import org.jdom.Document;
 public interface Remoter
 {
     /**
-     * Call a remote method
-     * @param method
-     * @return Document
+     * Call a remote method.
+     * @param method. What to execute
+     * @return Document The results of the execution.
      */
     public Document execute(RemoteMethod method) throws RemoterException;
     

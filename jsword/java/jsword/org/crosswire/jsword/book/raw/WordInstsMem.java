@@ -54,19 +54,19 @@ import org.crosswire.jsword.passage.Books;
 public class WordInstsMem extends InstsMem
 {
     /**
-    * Basic constructor
-    * @param raw Reference to the RawBible that is using us
-    * @param create Should we start all over again
-    */
+     * Basic constructor
+     * @param raw Reference to the RawBible that is using us
+     * @param create Should we start all over again
+     */
     public WordInstsMem(RawBible raw, boolean create) throws Exception
     {
         super(raw, "wordinst.idx", create);
     }
 
     /**
-    * Load the Resource from a stream
-    * @param in The stream to read from
-    */
+     * Load the Resource from a stream
+     * @param in The stream to read from
+     */
     public void load(InputStream in) throws IOException, ClassNotFoundException
     {
         DataInputStream din = new DataInputStream(in);
@@ -91,10 +91,9 @@ public class WordInstsMem extends InstsMem
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a stream
+     * @param out The stream to write to
+     */
     public void save(OutputStream out) throws IOException
     {
         DataOutputStream dout = new DataOutputStream(out);

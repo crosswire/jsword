@@ -31,7 +31,6 @@ td.navbutton {
   color : #ffffcc;
 }
 
-
 td.navbutton a:link {
   text-align : center;
   color : #ffffcc;
@@ -41,7 +40,6 @@ td.navbutton a:link {
   font-weight : bold;
   text-decoration : none;
 }
-
 
 td.navbutton a:visited {
   text-align : center;
@@ -53,7 +51,6 @@ td.navbutton a:visited {
   text-decoration : none;
 }
 
-
 td.navbutton a:hover {
   text-align : center;
   text-transform : uppercase;
@@ -63,11 +60,9 @@ td.navbutton a:hover {
   text-decoration : underline;
 }
 
-
 td.sidenav {
   background-color : #f5f5dc;
 }
-
 
 td.sidenav {
   padding: 5pt;
@@ -81,37 +76,29 @@ td.sidenav a:link {
   text-decoration : underline;
 }
 
-
 td.sidenav a:visited {
   color : #4d5c47;
   text-decoration : underline;
 }
-
 
 td.sidenav a:hover {
   color : #ff0000;
   text-decoration : none;
 }
 
-
 td.maincell {
   background-color : #ffffff;
 }
-
 
 td.maincell a:link {
   color : #4d5c47;
 }
 
-
 td.maincell a:visited {
   color : #4d5c47;
 }
-
 
 td.maincell a:hover {
   color : #ff0000;
   text-decoration : none;
 }
-
-

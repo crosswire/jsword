@@ -152,10 +152,6 @@ public class DefaultBibleData implements BibleData
 
     /**
      * The list of Sections
-     * @associates <{org.crosswire.jsword.book.data.DefaultSectionData}>
-     * @label contains
-     * @clientCardinality 1
-     * @supplierCardinality 1..*
      */
     private List sections = new ArrayList();
 

@@ -1099,7 +1099,6 @@ public class Verse implements VerseBase
 
     /**
      * The default verse
-     * @label default verse
      */
     protected static final Verse DEFAULT = new Verse(1, 1, 1, true);
 
@@ -1117,11 +1116,6 @@ public class Verse implements VerseBase
      * The verse number
      */
     private transient int verse;
-
-    /**
-     * The ordinal number. Cache only.
-     */
-    // private transient int ord = -1;
 
     /**
      * The original string for picky users

@@ -1,11 +1,8 @@
 
 package org.crosswire.common.config;
 
-
 /**
- * An AbstractChoice is one that registers itself with
- * AbstractChoice when it starts up, so that we don't need to pass
- * parameters around the place the whole time.
+ * An AbstractChoice is a helper in implementing the Choice interface.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

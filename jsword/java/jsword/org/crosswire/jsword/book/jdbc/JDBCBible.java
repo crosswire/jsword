@@ -123,6 +123,8 @@ public class JDBCBible extends LocalURLBible
         {
             throw new BookException("jdbc_bible_connect", ex);
         }
+
+        super.init(li);
     }
 
     /**

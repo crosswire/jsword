@@ -35,8 +35,10 @@ public class DriversComboBoxModel extends DriversListModel implements ComboBoxMo
     /**
      * Basic Constructor
      */
-    public DriversComboBoxModel()
+    public DriversComboBoxModel(boolean include_ro)
     {
+        super(include_ro);
+
         if (drivers.length > 0)
             current = drivers[0];
     }

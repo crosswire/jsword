@@ -95,8 +95,19 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
      */
     public Bible getBible() throws BookException
     {
-        LocalURLBibleDriver ldriver = (LocalURLBibleDriver) driver;
-        return ldriver.getBible(this);
+        // I know double checked locking is theoretically broken however it isn't
+        // practically broken 99% of the time, and even if the 1% comes up here
+        // the only effect is some temporary wasted memory
+        if (bible == null)
+        {
+            synchronized(this)
+            {
+                if (bible == null)
+                    bible = driver.getBible(this, null);
+            }
+        }
+
+        return bible;
     }
 
     /**
@@ -177,4 +188,9 @@ public class LocalURLBibleMetaData extends SearchableBibleMetaData
      * The location of our home directory
      */
     private URL dir;
+
+    /**
+     * The cached bible so we don't have to create too many
+     */
+    private Bible bible = null;
 }

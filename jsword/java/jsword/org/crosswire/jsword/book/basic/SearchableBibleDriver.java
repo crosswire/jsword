@@ -2,6 +2,8 @@
 package org.crosswire.jsword.book.basic;
 
 /**
+ * This class does not currently add anything to the inheritance hierachy,
+ * however it seems more sensible to leave it in to simply things.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

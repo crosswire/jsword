@@ -12,9 +12,9 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A SectionData contains a list of references, and a note that
- * describes them. We can also override the version settting on the bible
- * element here.
+ * A SectionData contains a list of references, and a note that describes them.
+ * 
+ * We can also override the version settting on the bible element here.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -153,16 +153,11 @@ public class DefaultSectionData implements SectionData
 
     /**
      * The document that we are a part of
-     * @label document
      */
     private BibleData doc;
 
     /**
      * The list of references
-     * @associates <{org.crosswire.jsword.book.data.DefaultRefData}>
-     * @label contains
-     * @clientCardinality 1
-     * @supplierCardinality 1..*
      */
     private List refs = new ArrayList();
 

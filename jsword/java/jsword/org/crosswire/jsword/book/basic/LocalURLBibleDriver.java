@@ -21,6 +21,10 @@ import org.crosswire.jsword.book.events.ProgressListener;
 import org.crosswire.jsword.util.Project;
 
 /**
+ * LocalURLBibleDriver is a helper for drivers that want to store files locally.
+ * 
+ * It takes care of providing you with a directory to work from and managing the
+ * files stored in that directory.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -47,9 +51,6 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
 {
     /**
      * The ctor checks on the filesystem
-     * @param subdir
-     * @throws MalformedURLException
-     * @throws IOException
      */
     protected LocalURLBibleDriver(String name, String subdir, Class bibleclass, int speed) throws MalformedURLException, IOException
     {
@@ -100,13 +101,13 @@ public abstract class LocalURLBibleDriver extends SearchableBibleDriver
     /**
      * Do the real creation using the right meta data
      */
-    public Bible getBible(LocalURLBibleMetaData lbmd) throws BookException
+    public Bible getBible(LocalURLBibleMetaData lbmd, ProgressListener li) throws BookException
     {
         try
         {
             LocalURLBible bible = (LocalURLBible) bibleclass.newInstance();
             bible.setLocalURLBibleMetaData(lbmd);
-            bible.init(null);
+            bible.init(li);
             return bible;
         }
         catch (Exception ex)

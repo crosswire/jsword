@@ -67,11 +67,4 @@ public interface SectionData
      * @return The Bible text without markup
      */
     public String getPlainText();
-
-    /**
-     * @label contains
-     * @clientCardinality 1
-     * @supplierCardinality 1..*
-     */
-    /*#RefData refs;*/
 }

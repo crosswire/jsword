@@ -242,7 +242,8 @@ public class RawBible extends LocalURLBible
 
         init(true);
         generateText(source, li);
-        initializeSearch(li);
+
+        super.init(source, li);
     }
 
     /**
@@ -253,7 +254,8 @@ public class RawBible extends LocalURLBible
         memory = defaultmemory;
 
         init(false);
-        initializeSearch(null);
+
+        super.init(li);
     }
 
     /**
@@ -289,7 +291,7 @@ public class RawBible extends LocalURLBible
         // So if any of them have failed to load we have a record of it.
         // We can carry on work fine, but shouldn't we be telling someone?
 
-        /* @todo work out if we should have this configurable */
+        /* PENDING(joe): work out if we should have this configurable */
         //createSearchCache();
     }
 

@@ -79,22 +79,6 @@ public class RemoteMethod
         params.put(name, value);
         return this;
     }
-    
-    /**
-     * Setting all the parameters from a map is useful if you got your
-     * parameters as a group from another source, e.g. Servlet parameters
-     * @param params The map of parameters add to our own.
-     */
-    public void addParams(Map params)
-    {
-        Iterator it = params.keySet().iterator();
-        while (it.hasNext())
-        {
-            String key = (String) it.next();
-            String val = (String) params.get(key);
-            this.params.put(key, val);
-        }
-    }
 
     /**
      * Remove all the parameters

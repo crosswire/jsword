@@ -28,8 +28,6 @@ import org.crosswire.jsword.passage.Passage;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see Bible
- * @see ProgressListener
  */
 public class CommandEvent extends EventObject
 {

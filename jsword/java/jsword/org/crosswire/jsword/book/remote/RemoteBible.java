@@ -14,8 +14,9 @@ import org.crosswire.jsword.passage.Passage;
 import org.jdom.Document;
 
 /**
- * A Biblical source that comes from some form of remoting code. The remoting
- * mechanism is defined by an implementation of RemoteBibleDriver.
+ * A Biblical source that comes from some form of remoting code.
+ * 
+ * The remoting mechanism is defined by an implementation of RemoteBibleDriver.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -37,7 +38,6 @@ import org.jdom.Document;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(String)
  */
 public class RemoteBible extends AbstractBible
 {

@@ -235,6 +235,7 @@
   <target name="doc.javadoc" depends="init" description="Create JavaDoc">
     <mkdir dir="${target.doc}/api"/>
     <javadoc
+        stylesheetfile="${source.doc}/javadoc/stylesheet.css"
         destdir="${target.doc}/api"
         overview="${source.java}/jsword/overview.html"
         private="true"
@@ -264,14 +265,14 @@
           <include name="**/*.jar"/>
         </fileset>
       </classpath>
-      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.doc}/jdk14api"/>
+      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.doc}/javadoc"/>
     </javadoc>
   </target>
 
   <!--=======================================================================-->
   <target name="doc.java2html" depends="init" description="HTML versions of the java code">
     <mkdir dir="${target.doc}/java2html"/>
-    <java fork="true" classname="j2h">
+    <java fork="true" classname="j2h" output="${target.doc}/java2html/output.txt">
       <classpath>
         <fileset dir="${source.jar}">
           <include name="**/*.jar"/>
@@ -398,16 +399,16 @@
     <!-- property name="username" value="myusername"/ -->
     <!-- property name="password" value="mypassword"/ -->
 
-		<taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
-		<taskdef name="install"   classname="org.apache.catalina.ant.InstallTask"/>
-		<taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
-		<taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
-		<taskdef name="remove"    classname="org.apache.catalina.ant.RemoveTask"/>
-		<taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
-		<taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
-		<taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
-		<taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
-		<taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
+    <taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
+    <taskdef name="install"   classname="org.apache.catalina.ant.InstallTask"/>
+    <taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
+    <taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
+    <taskdef name="remove"    classname="org.apache.catalina.ant.RemoveTask"/>
+    <taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
+    <taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
+    <taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
+    <taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
+    <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
   </target>
 
   <!--=======================================================================-->

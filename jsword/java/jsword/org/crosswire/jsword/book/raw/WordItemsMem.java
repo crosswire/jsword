@@ -115,7 +115,6 @@ public class WordItemsMem extends ItemsMem
     /**
      * This is a specialization of IndexedResource.getIndex(String) that
      * ensures that the word is lower case before we insert it.
-     * @see IndexedResource#getIndex(String)
      * @param data The word to find/create an id for
      * @return The (new) id for the item
      */

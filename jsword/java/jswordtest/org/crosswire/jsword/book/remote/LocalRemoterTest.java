@@ -14,6 +14,7 @@ import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 
 /**
+ * JUnit tests.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -59,6 +60,7 @@ public class LocalRemoterTest extends TestCase
         Document doc = remote.execute(method);
         BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter());
 
+        assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)
         {
             assertEquals(names1[i].getName(), names2[i].getName());

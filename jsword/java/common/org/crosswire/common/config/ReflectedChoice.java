@@ -9,12 +9,7 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 /**
- * Every Choice must be able to:<ul>
- * <li>get and set itself using a String</li>
- * <li>provide some simple help about itself</li>
- * <li>elect a user level for itself (Beginner, Intermediate, Advanced)</li>
- * <li>provide a GUI editor for itself</li>
- * </ul>
+ * A helper for when we need to be a choice created dynamically.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

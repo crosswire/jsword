@@ -198,25 +198,31 @@ public class DefaultRefData implements RefData
 
     /**
      * The document that we are a part of
-     * @label document
      */
     private BibleData doc;
 
-    /** The Verse that we model */
+    /**
+     * The Verse that we model
+     */
     private Verse verse;
 
-    /** Is this verse the start of a new paragraph */
+    /**
+     * Is this verse the start of a new paragraph
+     */
     private boolean para;
 
-    /** The current verse */
+    /**
+     * The current verse
+     */
     private Element ref;
 
     /**
      * The parent section
-     * @label parent
      */
     private SectionData section;
 
-    /** The formatted text */
+    /**
+     * The formatted text
+     */
     private String xml;
 }

@@ -1,7 +1,5 @@
-
 package org.crosswire.jsword.book.remote;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -21,6 +19,8 @@ import org.jdom.Element;
 /**
  * A set of converters to help implementing Bible[Driver] using XML as an
  * intermediate format for remoting.
+ * <p>PENDING(joe) A number of the methods here can throw due to invalid input
+ * documents - should we create another new Exception type or re-use another.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -66,7 +66,7 @@ public class Converter
     {
         Element root = doc.getRootElement();
         List bmds = root.getChildren("metadata");
-        RemoteBibleMetaData[] rbmds = new RemoteBibleMetaData[bmds.size()]; 
+        RemoteBibleMetaData[] rbmds = new RemoteBibleMetaData[bmds.size()];
         int i = 0;
 
         for (Iterator it = bmds.iterator(); it.hasNext();)
@@ -83,13 +83,13 @@ public class Converter
 
             rbmds[i++] = new RemoteBibleMetaData(remoter, id, name, edition, initials, pub, open, licence);
         }
-        
+
         return rbmds;
     }
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
-     * @see Converter#convertDocumentToBibleMetaDatas(Document)
+     * @see Converter#convertDocumentToBibleMetaDatas(Document, Remoter)
      */
     public static Document convertBibleMetaDatasToDocument(BibleMetaData[] bmds, String[] ids)
     {
@@ -97,7 +97,7 @@ public class Converter
             throw new IllegalArgumentException("bmds.length != ids.length");
 
         Element root = new Element("root");
-        for (int i=0; i<bmds.length; i++)
+        for (int i = 0; i < bmds.length; i++)
         {
             BibleMetaData bmd = bmds[i];
 
@@ -107,10 +107,10 @@ public class Converter
             bmdele.addContent(new Element("name").addContent(bmd.getName()));
             bmdele.addContent(new Element("edition").addContent(bmd.getEdition()));
             bmdele.addContent(new Element("initials").addContent(bmd.getInitials()));
-    
-            String pubstr = AbstractBibleMetaData.formatPublishedDate(bmd.getFirstPublished());        
+
+            String pubstr = AbstractBibleMetaData.formatPublishedDate(bmd.getFirstPublished());
             bmdele.addContent(new Element("pub").addContent(pubstr));
-    
+
             bmdele.addContent(new Element("openness").addContent(bmd.getOpenness().toString()));
 
             if (bmd.getLicence() != null)
@@ -138,7 +138,7 @@ public class Converter
     {
         Element root = doc.getRootElement();
         String refstr = root.getChild("ref").getTextTrim();
-        
+
         return PassageFactory.createPassage(refstr);
     }
 
@@ -179,7 +179,7 @@ public class Converter
             Element wordele = (Element) it.next();
             words.add(wordele.getTextTrim());
         }
-        
+
         return words.iterator();
     }
 
@@ -202,7 +202,7 @@ public class Converter
      * Throw an exception if this document represents one, do nothing otherwise
      * @param doc The document to test
      */
-    public static void testRethrow(Document doc) throws RemoterException
+    public static void testRethrow(Document doc) throws RemoterException, ClassNotFoundException
     {
         if (doc.getRootElement().getName().equals("exception"))
         {
@@ -223,34 +223,15 @@ public class Converter
      * [/exception]
      * </pre>
      */
-    public static RemoterException convertDocumentToException(Document doc)
+    public static RemoterException convertDocumentToException(Document doc) throws ClassNotFoundException
     {
         Element exce = doc.getRootElement();
-        final String message = exce.getChildTextTrim("message");
-        final String type = exce.getChildTextTrim("type");
-        final String trace = exce.getChildTextTrim("trace");
+        String message = exce.getChildTextTrim("message");
+        String typename = exce.getChildTextTrim("type");
 
-        return new RemoterException(message)
-        {
-            public void printStackTrace()
-            {
-                printStackTrace(System.err);
-            }
-            public void printStackTrace(PrintStream s)
-            {
-                super.printStackTrace(s);
-                s.println("Caused by:");
-                s.println(type+": "+message);
-                s.println(trace);
-            }
-            public void printStackTrace(PrintWriter s)
-            {
-                super.printStackTrace(s);
-                s.println("Caused by:");
-                s.println(type+": "+message);
-                s.println(trace);
-            }
-        };
+        Class type = Class.forName(typename);
+
+        return new RemoterException(message, type);
     }
 
     /**
@@ -260,13 +241,12 @@ public class Converter
     public static Document convertExceptionToDocument(Throwable ex)
     {
         Element exce = new Element("exception");
-        
+
         StringWriter buffer = new StringWriter();
         ex.printStackTrace(new PrintWriter(buffer));
 
         exce.addContent(new Element("type").addContent(ex.getClass().getName()));
         exce.addContent(new Element("message").addContent(ex.getMessage()));
-        exce.addContent(new Element("trace").addContent(buffer.toString()));
 
         return new Document(exce);
     }

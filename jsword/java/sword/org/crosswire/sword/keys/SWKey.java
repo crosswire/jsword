@@ -44,10 +44,9 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * SWKey::Persist - Gets whether this object itself persists within a
-     * module that it was used to SetKey or just a copy.
-     * (true - persists in module; false - a copy is attempted
-     * RET:	value of persist
+     * SWKey::Persist - Gets whether this object itself persists within a module
+     * that it was used to SetKey or just a copy: (true - persists in module;
+     * false - a copy is attempted RET:	value of persist
      */
     public boolean isPersist()
     {
@@ -60,11 +59,10 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * Sets whether this object itself persists within a
-     * module that it was used to SetKey or just a copy.
-     * (1 - persists in module; 0 - a copy is attempted
-     * ENT:	ipersist - value which to set persist
-     * RET:	value of persist
+     * Sets whether this object itself persists within a module that it was used
+     * to SetKey or just a copy: (1 - persists in module; 0 - a copy is
+     * attempted ENT: ipersist - value which to set persist RET: value of
+     * persist
      */
     public void setPersist(boolean ipersist)
     {
@@ -85,6 +83,7 @@ public class SWKey implements Cloneable, Comparable
 
     /**
      * SWKey::operator = Equates this SWKey to a character string.
+     * 
      * ENT:	ikey - other swkey object
      */
     public void setText(String ikey)
@@ -94,6 +93,7 @@ public class SWKey implements Cloneable, Comparable
 
     /**
      * SWKey::operator = Equates this SWKey to another SWKey object.
+     * 
      * ENT:	ikey - other swkey object
      */
     public void set(SWKey ikey)
@@ -116,7 +116,8 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * SWKey::compare	- Compares another VerseKey object.
+     * SWKey::compare - Compares another VerseKey object.
+     * 
      * ENT:	ikey - key to compare with this one
      * RET:	> 0 if this key is greater than compare key &lt; 0
      */
@@ -129,7 +130,7 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * SWKey::operator =(POSITION)	- Positions this key if applicable
+     * SWKey::operator =(POSITION) - Positions this key if applicable
      */
     public void position(int p)
     {
@@ -145,7 +146,8 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * SWKey::operator +=	- Increments key a number of entries.
+     * SWKey::operator += - Increments key a number of entries.
+     * 
      * ENT:	increment	- Number of entries to jump forward
      * RET: *this
      */
@@ -160,8 +162,9 @@ public class SWKey implements Cloneable, Comparable
     }
 
     /**
-     * SWKey::operator -=	- Decrements key a number of entries.
-     * ENT:	decrement	- Number of entries to jump backward
+     * SWKey::operator -= - Decrements key a number of entries.
+     * 
+     * ENT: decrement - Number of entries to jump backward
      * RET: *this
      */
     public void previous(int i)

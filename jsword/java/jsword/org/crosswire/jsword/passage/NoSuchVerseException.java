@@ -26,7 +26,6 @@ import org.crosswire.common.util.LucidException;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @stereotype exception
  */
 public class NoSuchVerseException extends LucidException
 {

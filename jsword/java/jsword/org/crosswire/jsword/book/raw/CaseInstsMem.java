@@ -39,8 +39,8 @@ import org.crosswire.jsword.passage.Books;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see PassageUtil#getCase(String)
- * @see PassageUtil#setCase(String,int)
+ * @see org.crosswire.jsword.passage.PassageUtil#getCase(String)
+ * @see org.crosswire.jsword.passage.PassageUtil#setCase(String, int)
  */
 public class CaseInstsMem extends InstsMem
 {

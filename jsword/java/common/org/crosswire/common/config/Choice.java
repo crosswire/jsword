@@ -7,6 +7,7 @@ import org.jdom.Element;
 
 /**
  * Choice is the fundamental building block of the config system.
+ * 
  * Every Choice must be able to:<ul>
  * <li>get and set itself using a String</li>
  * <li>provide some simple help about itself</li>

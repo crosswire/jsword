@@ -37,7 +37,6 @@ import org.crosswire.common.util.Reporter;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @stereotype utility
  */
 public class Books implements PassageConstants
 {

@@ -27,8 +27,6 @@ import org.crosswire.jsword.book.Bible;
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
- * @see Bible
- * @see ProgressListener
  */
 public class VersionEvent extends EventObject
 {

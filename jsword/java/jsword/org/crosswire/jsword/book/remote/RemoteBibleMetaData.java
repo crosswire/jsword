@@ -45,13 +45,25 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
     }
 
     /**
-     * Featch a currently existing Bible, read-only
+     * Fetch a currently existing Bible, read-only
      * @param name The name of the version to create
      * @exception BookException If the name is not valid
      */
     public Bible getBible() throws BookException
     {
-        return new RemoteBible(remoter, this);
+        // I know double checked locking is theoretically broken however it isn't
+        // practically broken 99% of the time, and even if the 1% comes up here
+        // the only effect is some temporary wasted memory
+        if (bible == null)
+        {
+            synchronized(this)
+            {
+                if (bible == null)
+                    bible = new RemoteBible(remoter, this);
+            }
+        }
+        
+        return bible;
     }
 
     /**
@@ -90,4 +102,9 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
     {
         return 6;
     }
+    
+    /**
+     * The cached bible so we don't have to create too many
+     */
+    private Bible bible = null;
 }

@@ -55,7 +55,6 @@ public abstract class AbstractRule implements Rule
      * Each call to getDesiredPosition() returns an array of Positions,
      * this method sets the preferred length of that returned array.
      * @param scale The preferred length of the desired position array
-     * @see #getDesiredPosition(Map, int)
      */
     public void setScale(int scale)
     {
@@ -66,7 +65,6 @@ public abstract class AbstractRule implements Rule
      * Each call to getDesiredPosition() returns an array of Positions,
      * this method gets the preferred length of that returned array.
      * @return The preferred length of the desired position array
-     * @see #getDesiredPosition(Map, int)
      */
     public int getScale()
     {

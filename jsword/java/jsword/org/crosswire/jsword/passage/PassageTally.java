@@ -141,7 +141,7 @@ public class PassageTally extends AbstractPassage
 
     /**
      * Simply bounce to getName() to help String concatenation.
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String toString()
     {
@@ -151,7 +151,7 @@ public class PassageTally extends AbstractPassage
     /**
      * A Human readable version of the PassageTally.
      * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String getName()
     {
@@ -162,7 +162,7 @@ public class PassageTally extends AbstractPassage
      * A Human readable version of the verse list. Uses short books names,
      * and the shortest possible rendering eg "Mat 3:1-4, 6"
      * @param max_count The number of matches to return, 0 gives all matches
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String getName(int max_count)
     {
@@ -223,7 +223,7 @@ public class PassageTally extends AbstractPassage
     /**
      * A Human readable version of the PassageTally.
      * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String getNameAndTally()
     {
@@ -234,7 +234,7 @@ public class PassageTally extends AbstractPassage
      * A Human readable version of the PassageTally.
      * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
      * @param max_count The number of matches to return, 0 gives all matches
-     * @returns a String containing a description of the verses
+     * @return a String containing a description of the verses
      */
     public String getNameAndTally(int max_count)
     {

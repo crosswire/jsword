@@ -53,7 +53,7 @@ public interface Rule
      * Each call to getDesiredPosition() returns an array of Positions,
      * this method sets the preferred length of that returned array.
      * @param scale The preferred length of the desired position array
-     * @see #getDesiredPosition(Map, int)
+     * @see #getDesiredPosition(Map, int, int)
      */
     public void setScale(int scale);
 
@@ -61,7 +61,7 @@ public interface Rule
      * Each call to getDesiredPosition() returns an array of Positions,
      * this method gets the preferred length of that returned array.
      * @return The preferred length of the desired position array
-     * @see #getDesiredPosition(Map, int)
+     * @see #getDesiredPosition(Map, int, int)
      */
     public int getScale();
 }

@@ -13,6 +13,7 @@ import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
+ * Stubbed out implementation of BibleMetaData.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -71,11 +72,25 @@ public class StubBibleMetaData extends AbstractBibleMetaData
     }
 
     /**
-     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
+     * Fetch a currently existing Bible, read-only
+     * @param name The name of the version to create
+     * @exception BookException If the name is not valid
      */
     public Bible getBible() throws BookException
     {
-        return new StubBible(this);
+        // I know double checked locking is theoretically broken however it isn't
+        // practically broken 99% of the time, and even if the 1% comes up here
+        // the only effect is some temporary wasted memory
+        if (bible == null)
+        {
+            synchronized(this)
+            {
+                if (bible == null)
+                    bible = new StubBible(this);
+            }
+        }
+
+        return bible;
     }
 
     /**
@@ -94,4 +109,9 @@ public class StubBibleMetaData extends AbstractBibleMetaData
     {
         return 11;
     }
+
+    /**
+     * The cached bible so we don't have to create too many
+     */
+    private Bible bible = null;
 }
