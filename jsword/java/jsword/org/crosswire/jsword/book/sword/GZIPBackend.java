@@ -355,12 +355,12 @@ public class GZIPBackend implements Backend
     /**
      * 
      */
-    private byte[] lastUncompressed = null;
+    private byte[] lastUncompressed;
 
     /**
      * Are we active
      */
-    private boolean active = false;
+    private boolean active;
 
     /**
      * The log stream

@@ -193,7 +193,7 @@ public final class StackTrace
         /**
          * Are there more stack levels
          */
-        protected int level = 0;
+        protected int level;
     }
 
     /**

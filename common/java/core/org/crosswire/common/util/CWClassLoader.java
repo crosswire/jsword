@@ -1,6 +1,7 @@
 package org.crosswire.common.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -26,7 +27,7 @@ import java.net.URL;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class CWClassLoader extends ClassLoader
@@ -230,6 +231,17 @@ public class CWClassLoader extends ClassLoader
      */
     public static synchronized URL getHome()
     {
+        try
+        {
+            if (home != null)
+            {
+                return new URL(home.getProtocol(), home.getHost(), home.getPort(), home.getFile());
+            }
+        }
+        catch (MalformedURLException e)
+        {
+            assert false;
+        }
         return home;
     }
 
@@ -252,29 +264,12 @@ public class CWClassLoader extends ClassLoader
     {
         URL reply = null;
 
+        URL homeURL = getHome();
+
         // Look at the application's home first to allow overrides
-        if (home != null)
+        if (homeURL != null)
         {
-            // Since home does not end in a '/'
-            // we need to add one to the front of search
-            // if it does not have it.
-            String ssearch = null;
-            if (search.charAt(0) == '/')
-            {
-                ssearch = search;
-            }
-            else
-            {
-                ssearch = '/' + search;
-            }
-
-            URL override = null;
-
-            // Make use of "home" thread safe
-            synchronized (CWClassLoader.class)
-            {
-                override = NetUtil.lengthenURL(home, ssearch);
-            }
+            URL override = NetUtil.lengthenURL(homeURL, search);
 
             // Make sure the file exists and can be read
             File f = new File(override.getFile());
@@ -295,5 +290,5 @@ public class CWClassLoader extends ClassLoader
     /**
      * Notion of a project's home from where additional resources can be found.
      */
-    private static URL home = null;
+    private static URL home;
 }

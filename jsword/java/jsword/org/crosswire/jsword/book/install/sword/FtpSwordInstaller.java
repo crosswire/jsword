@@ -605,7 +605,7 @@ public class FtpSwordInstaller extends AbstractBookList implements Installer, Co
     /**
      * Do we need to reload the index file
      */
-    private boolean loaded = false;
+    private boolean loaded;
 
     /**
      * The remote hostname.

@@ -24,7 +24,7 @@ package org.crosswire.common.util;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author DM Smith [ dmsmith555 at hotmail dot com]
+ * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class CallContext extends SecurityManager

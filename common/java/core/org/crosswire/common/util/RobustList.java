@@ -371,9 +371,9 @@ public class RobustList extends AbstractList implements List
         }
     }
 
-    protected Entry head = null;
-    protected Entry foot = null;
-    protected int size = 0;
+    protected Entry head;
+    protected Entry foot;
+    protected int size;
 
     /**
      * The log stream

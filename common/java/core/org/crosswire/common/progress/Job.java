@@ -432,17 +432,17 @@ public final class Job
     /**
      * When do we expect this section to end
      */
-    private long sectionend = 0;
+    private long sectionend;
 
     /**
      * When did this section start?
      */
-    private long sectionstart = 0;
+    private long sectionstart;
 
     /**
      * The percentage at the end of this section
      */
-    private int percentend = 0;
+    private int percentend;
 
     /**
      * A short descriptive phrase
@@ -487,7 +487,7 @@ public final class Job
     /**
      * The swing timer that lets us post fake progress events
      */
-    private Timer updater = null;
+    private Timer updater;
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing

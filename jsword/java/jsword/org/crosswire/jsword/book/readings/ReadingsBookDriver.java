@@ -74,7 +74,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     /**
      * The meta data array
      */
-    private BookMetaData[] bmds = null;
+    private BookMetaData[] bmds;
 
     /**
      * Get a list of the available readings sets
@@ -131,5 +131,5 @@ public class ReadingsBookDriver extends AbstractBookDriver
     /**
      * The current readings set
      */
-    private static String set = null;
+    private static String set;
 }

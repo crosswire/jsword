@@ -60,7 +60,7 @@ import org.crosswire.jsword.book.filter.FilterFactory;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class SwordBookMetaData implements BookMetaData
@@ -841,11 +841,11 @@ public class SwordBookMetaData implements BookMetaData
     /**
      * The original name of this config file from mods.d
      */
-    private String internal = null;
+    private String internal;
 
     private ModuleType mtype;
     private Book book;
-    private BookDriver driver = null;
+    private BookDriver driver;
     private String name = ""; //$NON-NLS-1$
     private String fullName;
     private String displayName;
@@ -854,8 +854,8 @@ public class SwordBookMetaData implements BookMetaData
     private int speed = BookMetaData.SPEED_SLOWEST;
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;
-    private URL licence = null;
+    private URL licence;
     private boolean leftToRight = true;
     private StringBuffer data = new StringBuffer();
-    private String readahead = null;
+    private String readahead;
 }

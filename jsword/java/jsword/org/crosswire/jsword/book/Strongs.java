@@ -295,10 +295,10 @@ public class Strongs
     /**
      * The type of this Strongs number
      */
-    private int type = 0;
+    private int type;
 
     /**
      * The actual number itself
      */
-    private int number = 0;
+    private int number;
 }

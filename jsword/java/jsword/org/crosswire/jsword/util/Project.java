@@ -73,7 +73,6 @@ public class Project
             String path = System.getProperty("user.home") + File.separator + DIR_PROJECT; //$NON-NLS-1$
             home = new URL(NetUtil.PROTOCOL_FILE, null, path);
             CWClassLoader.setHome(home);
-            base = NetUtil.lengthenURL(home, "/"); //$NON-NLS-1$
         }
         catch (MalformedURLException ex)
         {
@@ -107,7 +106,7 @@ public class Project
      */
     public URL getWritablePropertiesURL(String subject)
     {
-        return NetUtil.lengthenURL(base, subject + FileUtil.EXTENSION_PROPERTIES);
+        return NetUtil.lengthenURL(home, subject + FileUtil.EXTENSION_PROPERTIES);
     }
 
     /**
@@ -129,7 +128,7 @@ public class Project
      */
     public URL getTempScratchSpace(String subject, boolean create) throws IOException
     {
-        URL temp = NetUtil.lengthenURL(base, subject);
+        URL temp = NetUtil.lengthenURL(home, subject);
 
         if (create && !NetUtil.isDirectory(temp))
         {
@@ -143,11 +142,6 @@ public class Project
      * The home for this application
      */
     private URL home;
-
-    /**
-     * The home w/ trailing '/' for this application
-     */
-    private URL base;
 
     /**
      * The log stream

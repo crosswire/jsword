@@ -247,10 +247,10 @@ public class RocketPassage extends BitwisePassage
     /**
      * The contained DistinctPassage
      */
-    private transient DistinctPassage distinct = null;
+    private transient DistinctPassage distinct;
 
     /**
      * The contained RangedPassage
      */
-    private transient RangedPassage ranged = null;
+    private transient RangedPassage ranged;
 }

@@ -246,7 +246,7 @@ public class RawLDBackend implements Backend
     /**
      * Are we active
      */
-    private boolean active = false;
+    private boolean active;
 
     /**
      * Used to separate the key name from the key value

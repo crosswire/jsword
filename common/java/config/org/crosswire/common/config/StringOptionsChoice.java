@@ -83,5 +83,5 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
     /**
      * The options that we are presenting the user with
      */
-    private String[] array = null;
+    private String[] array;
 }

@@ -283,11 +283,8 @@ public class NetUtil
     public static URL shortenURL(URL orig, String strip) throws MalformedURLException
     {
         String file = orig.getFile();
-        if (file.endsWith(SEPARATOR))
-        {
-            file = file.substring(0, file.length() - 1);
-        }
-        if (file.endsWith("\\")) //$NON-NLS-1$
+        char lastChar = file.charAt(file.length() - 1);
+        if (isSeparator(lastChar))
         {
             file = file.substring(0, file.length() - 1);
         }
@@ -316,9 +313,17 @@ public class NetUtil
     {
         try
         {
+            char firstChar = extra.charAt(extra.length() - 1);
+            if (isSeparator(firstChar))
+            {
+                extra = extra.substring(1);
+            }
+
             if (orig.getProtocol().equals(PROTOCOL_FILE))
             {
-                if (orig.toExternalForm().endsWith(File.separator))
+                String file = orig.toExternalForm();
+                char lastChar = file.charAt(file.length() - 1);
+                if (isSeparator(lastChar))
                 {
                     return new URL(orig.getProtocol(),
                                    orig.getHost(),
@@ -348,74 +353,9 @@ public class NetUtil
         }
     }
 
-    /**
-     * Utility to add a string to the end of a URL.
-     * @param orig The URL to strip
-     * @param extra1 The text to add to the end of the URL
-     * @param extra2 The next bit of text to add to the end of the URL
-     * @return The stripped URL
-     */
-    public static URL lengthenURL(URL orig, String extra1, String extra2)
+    private static boolean isSeparator(char c)
     {
-        try
-        {
-            if (orig.getProtocol().equals(PROTOCOL_FILE))
-            {
-                return new URL(orig.getProtocol(),
-                               orig.getHost(),
-                               orig.getPort(),
-                               orig.getFile() + File.separator + extra1 + File.separator + extra2);
-            }
-            else
-            {
-                return new URL(orig.getProtocol(),
-                               orig.getHost(),
-                               orig.getPort(),
-                               orig.getFile() + SEPARATOR + extra1 + SEPARATOR + extra2);
-            }
-        }
-        catch (MalformedURLException ex)
-        {
-            assert false : ex;
-            return null;
-        }
-    }
-
-    /**
-     * Utility to add a string to the end of a URL.
-     * @param orig The URL to strip
-     * @param extra1 The text to add to the end of the URL
-     * @param extra2 The next bit of text to add to the end of the URL
-     * @param extra3 The next bit of text to add to the end of the URL
-     * @return The stripped URL
-     */
-    public static URL lengthenURL(URL orig, String extra1, String extra2, String extra3)
-    {
-        try
-        {
-            if (orig.getProtocol().equals(PROTOCOL_FILE))
-            {
-                return new URL(orig.getProtocol(),
-                               orig.getHost(),
-                               orig.getPort(),
-                               orig.getFile()
-                                    + File.separator + extra1
-                                    + File.separator + extra2
-                                    + File.separator + extra3);
-            }
-            else
-            {
-                return new URL(orig.getProtocol(),
-                               orig.getHost(),
-                               orig.getPort(),
-                               orig.getFile() + SEPARATOR + extra1 + SEPARATOR + extra2 + SEPARATOR + extra3);
-            }
-        }
-        catch (MalformedURLException ex)
-        {
-            assert false : ex;
-            return null;
-        }
+        return c == '/' || c == '\\';
     }
 
     /**

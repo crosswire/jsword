@@ -208,7 +208,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * The global key list
      */
-    private Key global = null;
+    private Key global;
 
     /**
      * The base for the keys in the properties file.

@@ -87,5 +87,5 @@ public class DefaultWord implements ParamWord, CommandWord
     /**
      * The word that we represent
      */
-    private String text = null;
+    private String text;
 }

@@ -58,7 +58,7 @@ import java.util.StringTokenizer;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public abstract class AccuracyType implements Serializable
@@ -705,9 +705,9 @@ public abstract class AccuracyType implements Serializable
     }
 
     /**
-     * Return true if the string is a roman number of I, II or III
+     * Return the value of the roman numeral if the string is a roman number of I, II or III
      * @param text
-     * @return
+     * @return the value of the allowable roman numeral, zero otherwise
      */
     private static int isRoman(String text)
     {
@@ -802,7 +802,7 @@ public abstract class AccuracyType implements Serializable
     private String name;
 
     // Support for serialization
-    private static int nextObj = 0;
+    private static int nextObj;
     private final int obj = nextObj++;
 
     Object readResolve()

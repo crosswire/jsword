@@ -189,7 +189,7 @@ public class RawBackend implements Backend
     /**
      * Are we active
      */
-    private boolean active = false;
+    private boolean active;
 
     /**
      * The log stream

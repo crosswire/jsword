@@ -177,6 +177,6 @@ public final class Logger
     }
 
     private static Map loggers = new HashMap();
-    private org.apache.log4j.Logger log4j = null;
+    private org.apache.log4j.Logger log4j;
     // private Exception ex;
 }

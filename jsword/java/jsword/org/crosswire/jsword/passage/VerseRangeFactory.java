@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public final class VerseRangeFactory

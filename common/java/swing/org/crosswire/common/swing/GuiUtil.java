@@ -61,7 +61,7 @@ public class GuiUtil
      * Returns the Icon associated with the name from the resources.
      * The resouce should be in the path.
      * @param name Name of the icon file i.e., help16.gif
-     * @return the name of the image or null if the icon is not found.
+     * @return the image or null if the icon is not found.
      */
     public static ImageIcon getIcon(String name)
     {

@@ -8,17 +8,14 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.Set;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -28,8 +25,8 @@ import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.WorkEvent;
 import org.crosswire.common.progress.WorkListener;
+import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.ResourceUtil;
 
 /**
  * JobsViewPane is a small JProgressBar based viewer for current jobs.
@@ -180,19 +177,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
      */
     private JButton createCancelButton(final Job job)
     {
-        Icon stop = null;
-        try
-        {
-            URL url = ResourceUtil.getResource("toolbarButtonGraphics/general/Stop16.gif"); //$NON-NLS-1$
-            if (url != null)
-            {
-                stop = new ImageIcon(url);
-            }
-        }
-        catch (MissingResourceException ex)
-        {
-            assert false : ex;
-        }
+        Icon stop = GuiUtil.getIcon("toolbarButtonGraphics/general/Stop16.gif"); //$NON-NLS-1$
 
         // Create a cancel button
         JButton cancel = new JButton(stop);

@@ -278,17 +278,17 @@ public class SwordDictionary extends AbstractBook
     /**
      * Are we active
      */
-    private boolean active = false;
+    private boolean active;
 
     /**
      * So we can quickly find a Key given the text for the key
      */
-    private Map map = null;
+    private Map map;
 
     /**
      * So we can implement getIndex() easily
      */
-    private Key set = null;
+    private Key set;
 
     /**
      * To read the data from the disk

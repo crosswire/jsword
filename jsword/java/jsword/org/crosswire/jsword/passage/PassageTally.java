@@ -802,7 +802,7 @@ public class PassageTally extends AbstractPassage
     /**
      * The maximum tally possible
      */
-    private int max = 0;
+    private int max;
 
     /**
      * The maximum tally possible
@@ -884,7 +884,7 @@ public class PassageTally extends AbstractPassage
         }
 
         /** What is the next Verse to be considered */
-        private int next = 0;
+        private int next;
     }
 
     /**
@@ -969,7 +969,7 @@ public class PassageTally extends AbstractPassage
         /**
          * The Iterator we are converting
          */
-        private Iterator it = null;
+        private Iterator it;
     }
 
     /**
@@ -1007,12 +1007,12 @@ public class PassageTally extends AbstractPassage
         /**
          * The verse id
          */
-        protected int ord = 0;
+        protected int ord;
 
         /**
          * The rank of the verse
          */
-        protected int tally = 0;
+        protected int tally;
     }
 
     /**
@@ -1101,7 +1101,7 @@ public class PassageTally extends AbstractPassage
         /**
          * The Iterator we are converting
          */
-        private Iterator it = null;
+        private Iterator it;
     }
 
     /**
@@ -1144,6 +1144,6 @@ public class PassageTally extends AbstractPassage
         /**
          * The rank of the verse
          */
-        protected int tally = 0;
+        protected int tally;
     }
 }

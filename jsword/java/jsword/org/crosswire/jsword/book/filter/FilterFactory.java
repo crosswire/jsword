@@ -54,7 +54,7 @@ public class FilterFactory
     /**
      * The lookup table of filters
      */
-    private static Filter deft = null;
+    private static Filter deft;
 
     /**
      * Populate the lookup table of filters and the default from the properties

@@ -500,7 +500,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * What are we going to reply with next?
          */
-        private VerseRange next = null;
+        private VerseRange next;
 
         /**
          * Where do we break ranges

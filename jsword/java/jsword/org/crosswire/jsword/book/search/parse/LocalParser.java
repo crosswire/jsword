@@ -350,22 +350,22 @@ public class LocalParser implements Parser
     /**
      * The cache of known words
      */
-    private static Map wordMap = null;
+    private static Map wordMap;
 
     /**
      * The parsed version of the current string
      */
-    private List output = null;
+    private List output;
 
     /**
      * The commands that we know about
      */
-    private Map commands = null;
+    private Map commands;
 
     /**
      * While the answer is being worked out ...
      */
-    private Iterator wit = null;
+    private Iterator wit;
 
     /**
      * The index

@@ -111,5 +111,5 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
         }
     }
 
-    private String[] options = null;
+    private String[] options;
 }

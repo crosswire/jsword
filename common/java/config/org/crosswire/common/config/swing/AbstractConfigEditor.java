@@ -328,7 +328,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     /**
      * How many cards have we created - we only need a tree if there are 2 or more cards
      */
-    protected int cards = 0;
+    protected int cards;
 
     /**
      * Action when the user clicks on accept

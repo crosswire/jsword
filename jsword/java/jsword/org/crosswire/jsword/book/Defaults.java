@@ -55,7 +55,7 @@ public class Defaults
     /**
      * The default Bible
      */
-    private static BookMetaData bdeft = null;
+    private static BookMetaData bdeft;
 
     /**
      * Has the default Commentary been manually set or are we picking the fastest
@@ -66,7 +66,7 @@ public class Defaults
     /**
      * The default Commentary
      */
-    private static BookMetaData cdeft = null;
+    private static BookMetaData cdeft;
 
     /**
      * Has the default Dictionary been manually set or are we picking the fastest
@@ -77,7 +77,7 @@ public class Defaults
     /**
      * The default Dictionary
      */
-    private static BookMetaData ddeft = null;
+    private static BookMetaData ddeft;
 
     /**
      * Set the default Bible. The new name must be equal() to a string

@@ -80,5 +80,5 @@ public class Translation
     /**
      * The matching verses
      */
-    private Passage ref = null;
+    private Passage ref;
 }

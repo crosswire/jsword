@@ -29,7 +29,7 @@ import org.crosswire.jsword.book.BookType;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public abstract class ModuleType implements Serializable
@@ -382,7 +382,7 @@ public abstract class ModuleType implements Serializable
 
     // Support for serialization
     static final long serialVersionUID = 1417463751329673026L;
-    private static int nextObj = 0;
+    private static int nextObj;
     private final int obj = nextObj++;
 
     Object readResolve()

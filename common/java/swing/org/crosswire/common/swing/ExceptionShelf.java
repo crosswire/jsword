@@ -330,7 +330,7 @@ public class ExceptionShelf extends JPanel
     /**
      * The card currently being displayed
      */
-    private int current = 0;
+    private int current;
 
     /**
      * The scrolled panel to which we can add stuff
@@ -345,7 +345,7 @@ public class ExceptionShelf extends JPanel
     /**
      * The current number of cards
      */
-    private int total = 0;
+    private int total;
 
     /**
      * The set of known errors
@@ -398,7 +398,7 @@ public class ExceptionShelf extends JPanel
     /**
      * Are we in the list of listeners
      */
-    private static boolean joined = false;
+    private static boolean joined;
 
     /**
      * A class to listen to Exceptions

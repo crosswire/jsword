@@ -1200,12 +1200,12 @@ public abstract class AbstractPassage implements Passage
         /**
          * What is the next VerseRange to be considered
          */
-        private VerseRange next_range = null;
+        private VerseRange next_range;
 
         /**
          * What is the next Verse to be considered
          */
-        private Verse next_verse = null;
+        private Verse next_verse;
 
         /**
          * Do we restrict ranges to not crossing chapter boundries
@@ -1406,7 +1406,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * The original string for picky users
      */
-    protected transient String originalName = null;
+    protected transient String originalName;
 
     /**
      * If we have several changes to make then we increment this and then
@@ -1414,13 +1414,13 @@ public abstract class AbstractPassage implements Passage
      * calculating the parameters to the fire is high then we can check that
      * this is 0 before doing the calculation.
      */
-    protected transient int suppressEvents = 0;
+    protected transient int suppressEvents;
 
     /**
      * Do we skip normalization for now - if we want to skip then we increment
      * this, and the decrement it when done.
      */
-    protected transient int skipNormalization = 0;
+    protected transient int skipNormalization;
 
     /**
      * What characters can we use to separate VerseRanges in a Passage

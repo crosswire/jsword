@@ -69,20 +69,16 @@ public class TransformingSAXEventProvider implements SAXEventProvider
         long modtime = NetUtil.getLastModified(xslurl);
 
         // we may have one cached
-        TemplateInfo tinfo = null;
-        if (cache)
-        {
-            tinfo = (TemplateInfo) txers.get(xslurl);
+        TemplateInfo tinfo = (TemplateInfo) txers.get(xslurl);
 
-            // But check it is up to date
-            if (tinfo != null)
+        // But check it is up to date
+        if (tinfo != null)
+        {
+            if (modtime > tinfo.getModtime())
             {
-                if (modtime > tinfo.getModtime())
-                {
-                    txers.remove(xslurl);
-                    tinfo = null;
-                    log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm()); //$NON-NLS-1$
-                }
+                txers.remove(xslurl);
+                tinfo = null;
+                log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm()); //$NON-NLS-1$
             }
         }
 
@@ -94,10 +90,8 @@ public class TransformingSAXEventProvider implements SAXEventProvider
             Templates templates = transfact.newTemplates(new StreamSource(xsl_in));
 
             tinfo = new TemplateInfo(templates, modtime);
-            if (cache)
-            {
-                txers.put(xslurl, tinfo);
-            }
+
+            txers.put(xslurl, tinfo);
         }
 
         return tinfo;
@@ -282,11 +276,6 @@ public class TransformingSAXEventProvider implements SAXEventProvider
     private TransformerFactory transfact = TransformerFactory.newInstance();
 
     /**
-     * Do we cache the transformers - speed vs devt ease trade off
-     */
-    private static boolean cache = true;
-
-    /**
      * A cache of transformers
      */
     private static Map txers = new HashMap();
@@ -295,28 +284,6 @@ public class TransformingSAXEventProvider implements SAXEventProvider
      * The log stream
      */
     private static final Logger log = Logger.getLogger(TransformingSAXEventProvider.class);
-
-    /**
-     * Returns the transformer cache status.
-     * @return boolean
-     */
-    public static boolean isCache()
-    {
-        return cache;
-    }
-
-    /**
-     * Sets the transformer cache status.
-     * @param cache The status to set
-     */
-    public static void setCache(boolean cache)
-    {
-        TransformingSAXEventProvider.cache = cache;
-        if (!cache)
-        {
-            txers.clear();
-        }
-    }
 
     /**
      * A simple struct to link modification times to Templates objects

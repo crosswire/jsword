@@ -109,7 +109,7 @@ public class BookFilterIterator implements Iterator
     /**
      * The stored next value
      */
-    private BookMetaData next = null;
+    private BookMetaData next;
 
     /**
      * The source of filtered values

@@ -289,7 +289,7 @@ public class FontChooser extends JPanel
         /**
          * An array of the fonts themselves
          */
-        private Font[] fonts = null;
+        private Font[] fonts;
 
         /**
          * The currently selected item
@@ -332,7 +332,7 @@ public class FontChooser extends JPanel
     /**
      * The dialog box
      */
-    protected JDialog dialog = null;
+    protected JDialog dialog;
 
     /**
      * People that want to know about font changes
@@ -342,7 +342,7 @@ public class FontChooser extends JPanel
     /**
      * The current font
      */
-    protected Font font = null;
+    protected Font font;
 
     /**
      * The default size of the rendered font

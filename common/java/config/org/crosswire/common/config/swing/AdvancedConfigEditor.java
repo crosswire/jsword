@@ -194,7 +194,7 @@ public class AdvancedConfigEditor extends TreeConfigEditor
     /**
      * A hash of components
      */
-    protected Map comps = null;
+    protected Map comps;
 
     /**
      * A custom data model for the TreeConfig Tree

@@ -875,7 +875,7 @@ public final class Verse implements VerseBase, Comparable
             throw new UnsupportedOperationException();
         }
 
-        private boolean done = false;
+        private boolean done;
     }
 
     /* (non-Javadoc)

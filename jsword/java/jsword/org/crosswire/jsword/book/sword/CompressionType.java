@@ -26,7 +26,7 @@ import org.crosswire.jsword.book.BookException;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public abstract class CompressionType implements Serializable
@@ -136,7 +136,7 @@ public abstract class CompressionType implements Serializable
     private String name;
 
     // Support for serialization
-    private static int nextObj = 0;
+    private static int nextObj;
     private final int obj = nextObj++;
 
     Object readResolve()

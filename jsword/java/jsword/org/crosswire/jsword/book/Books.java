@@ -35,7 +35,7 @@ import org.crosswire.common.util.Reporter;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at hotmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class Books implements BookList
@@ -410,7 +410,7 @@ public class Books implements BookList
      * At this time there is no way to set this or influence it
      * So it just acts as a means of commenting out code.
      */
-    private boolean threaded = false;
+    private boolean threaded;
 
     /**
      * The log stream

@@ -192,6 +192,6 @@ public class FixedSplitPane extends JSplitPane
 
     private static final Dimension DOT = new Dimension(0, 0);
     private boolean firstValidate = true;
-    private boolean hasProportionalLocation = false;
+    private boolean hasProportionalLocation;
     private double proportionalLocation;
 }

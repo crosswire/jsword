@@ -359,10 +359,10 @@ public class JobsViewPane extends JPanel implements WorkListener
             return index;
         }
 
-        private Job job = null;
-        private JLabel label = null;
-        private JProgressBar progress = null;
-        private JButton cancel = null;
+        private Job job;
+        private JLabel label;
+        private JProgressBar progress;
+        private JButton cancel;
         private int index = -1;
     }
 }

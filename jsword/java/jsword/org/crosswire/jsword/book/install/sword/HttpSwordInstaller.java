@@ -514,7 +514,7 @@ public class HttpSwordInstaller extends AbstractBookList implements Installer, C
     /**
      * Do we need to reload the index file
      */
-    private boolean loaded = false;
+    private boolean loaded;
 
     /**
      * A map of the entries in this download area

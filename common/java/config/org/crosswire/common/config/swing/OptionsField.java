@@ -117,7 +117,7 @@ public class OptionsField implements Field
     /**
      * The options
      */
-    private String[] list = null;
+    private String[] list;
 
     /**
      * The log stream

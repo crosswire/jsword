@@ -540,12 +540,12 @@ public class DefaultBookMetaData implements BookMetaData
 
     private BookType type;
     private Book book;
-    private BookDriver driver = null;
+    private BookDriver driver;
     private String name = ""; //$NON-NLS-1$
     private String edition = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
     private int speed = BookMetaData.SPEED_SLOWEST;
     private Date firstPublished = FIRSTPUB_DEFAULT;
     private Openness openness = Openness.UNKNOWN;
-    private URL licence = null;
+    private URL licence;
 }
