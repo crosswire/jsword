@@ -101,12 +101,16 @@ to generate all the source files required for tools like eclipse.
 	<td>Lint like report generated using PMD.</td>
   </tr>
   <tr>
-	<td><a href="cpd/report.txt">CPD&nbsp;Report</a></td>
-	<td>Cut and Paste Detection report generated using CPD/PMD.</td>
-  </tr>
-  <tr>
 	<td><a href="javancss/index.html">NCSS&nbsp;Report</a></td>
 	<td>Non-Comment Source Lines report generated using JavaNCSS.</td>
+  </tr>
+  <tr>
+	<td><a href="buildlog.txt">Build&nbsp;Log</a></td>
+	<td>Complete output from ANT during the last build.</td>
+  </tr>
+  <tr>
+	<td><a href="cpd/report.txt">CPD&nbsp;Report</a></td>
+	<td>Cut and Paste Detection report generated using CPD/PMD. (may be offline)</td>
   </tr>
 </table>
 <br>

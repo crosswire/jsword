@@ -552,20 +552,24 @@
       <fileset dir="${source.res}"/>
     </jar>
     <antcall target="jnlp.section">
-      <param name="jar" value="crimson.jar"/>
-      <param name="dir" value="${source.jar}/jdom08"/>
-    </antcall>
-    <antcall target="jnlp.section">
       <param name="jar" value="jdom.jar"/>
       <param name="dir" value="${source.jar}/jdom08"/>
     </antcall>
     <antcall target="jnlp.section">
-      <param name="jar" value="jaxp.jar"/>
-      <param name="dir" value="${source.jar}/jdom08"/>
+      <param name="jar" value="xalan.jar"/>
+      <param name="dir" value="${source.jar}/xalan25d1"/>
     </antcall>
     <antcall target="jnlp.section">
-      <param name="jar" value="xalan.jar"/>
-      <param name="dir" value="${source.jar}/jdom08"/>
+      <param name="jar" value="xercesImpl.jar"/>
+      <param name="dir" value="${source.jar}/xalan25d1"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="xml-apis.jar"/>
+      <param name="dir" value="${source.jar}/xalan25d1"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="commons-lang-1.0.1.jar"/>
+      <param name="dir" value="${source.jar}/lang101"/>
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="log4j-1.2.7.jar"/>
