@@ -3,7 +3,6 @@ package org.crosswire.jsword.passage;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
-
 /**
  * Types of Accuracy for verse references.
  * For example:
@@ -16,7 +15,7 @@ import java.util.StringTokenizer;
  * <li>1:1 == CHAPTER_VERSE;
  * <li>10 == BOOK_ONLY, CHAPTER_ONLY, or VERSE_ONLY
  * <ul>
- * 
+ *
  * With the last one, you will note that there is a choice. By itself there is not
  * enough information to determine which one it is. There has to be a context in
  * which it is used.
@@ -39,7 +38,7 @@ import java.util.StringTokenizer;
  * In all of these examples, the start verse was being interpreted. In the case of a
  * verse that is the end of a range, it is interpreted in the context of the range's
  * start.
- * 
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -69,6 +68,14 @@ public abstract class AccuracyType implements Serializable
      */
     public static final AccuracyType BOOK_VERSE = new AccuracyType("BOOK_VERSE") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
+         */
+        public boolean isVerse()
+        {
+            return true;
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
@@ -106,6 +113,14 @@ public abstract class AccuracyType implements Serializable
     public static final AccuracyType BOOK_CHAPTER = new AccuracyType("BOOK_CHAPTER") //$NON-NLS-1$
     {
         /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.AccuracyType#isChapter()
+         */
+        public boolean isChapter()
+        {
+            return true;
+        }
+
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
@@ -133,6 +148,14 @@ public abstract class AccuracyType implements Serializable
      */
     public static final AccuracyType BOOK_ONLY = new AccuracyType("BOOK_ONLY") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.AccuracyType#isBook()
+         */
+        public boolean isBook()
+        {
+            return true;
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
@@ -162,6 +185,14 @@ public abstract class AccuracyType implements Serializable
     public static final AccuracyType CHAPTER_VERSE = new AccuracyType("CHAPTER_VERSE") //$NON-NLS-1$
     {
         /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
+         */
+        public boolean isVerse()
+        {
+            return true;
+        }
+
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
@@ -169,7 +200,7 @@ public abstract class AccuracyType implements Serializable
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
             int verse = getVerse(book, chapter, parts[1]);
-            
+
             return new Verse(original, book, chapter, verse);
         }
 
@@ -191,6 +222,14 @@ public abstract class AccuracyType implements Serializable
      */
     public static final AccuracyType CHAPTER_ONLY = new AccuracyType("CHAPTER_ONLY") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.AccuracyType#isChapter()
+         */
+        public boolean isChapter()
+        {
+            return true;
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
@@ -220,6 +259,14 @@ public abstract class AccuracyType implements Serializable
      */
     public static final AccuracyType VERSE_ONLY = new AccuracyType("VERSE_ONLY") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
+         */
+        public boolean isVerse()
+        {
+            return true;
+        }
+
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
@@ -270,6 +317,30 @@ public abstract class AccuracyType implements Serializable
      * @throws NoSuchVerseException
      */
     public abstract Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException;
+
+    /**
+     * @return true if this AccuracyType specifies down to the book but not chapter or verse.
+     */
+    public boolean isBook()
+    {
+        return false;
+    }
+
+    /**
+     * @return true if this AccuracyType specifies down to the chapter but not the verse.
+     */
+    public boolean isChapter()
+    {
+        return false;
+    }
+
+    /**
+     * @return true if this AccuracyType specifies down to the verse.
+     */
+    public boolean isVerse()
+    {
+        return false;
+    }
     
     /**
      * Interprets the chapter value, which is either a number or "ff" or "$" (meaning "what follows")
@@ -341,7 +412,7 @@ public abstract class AccuracyType implements Serializable
     /**
      * @param parts
      * @param verseAccuracy
-     * @return
+     * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
     public static AccuracyType fromText(String[] parts, AccuracyType verseAccuracy) throws NoSuchVerseException
@@ -352,7 +423,7 @@ public abstract class AccuracyType implements Serializable
     /**
      * @param parts
      * @param basis
-     * @return
+     * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
     public static AccuracyType fromText(String[] parts, VerseRange basis) throws NoSuchVerseException
@@ -370,16 +441,10 @@ public abstract class AccuracyType implements Serializable
      * <li>fromText("1:1") == AccuracyType.CHAPTER_VERSE;
      * <li>fromText("1") == AccuracyType.VERSE_ONLY;
      * <ul>
-     * @param parts The string array to be tested for Rangeness
-     * @return A constant specifing how precise the Verse is.
-     * @exception NoSuchVerseException If the text can not be understood
-     * @see Passage
-     */
-    /**
      * @param parts
      * @param verseAccuracy
      * @param basis
-     * @return
+     * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
     public static AccuracyType fromText(String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException
@@ -399,14 +464,12 @@ public abstract class AccuracyType implements Serializable
             // What it is depends upon what stands before it.
             if (verseAccuracy != null)
             {
-                if (verseAccuracy.equals(BOOK_VERSE)
-                   || verseAccuracy.equals(VERSE_ONLY)
-                   || verseAccuracy.equals(CHAPTER_VERSE))
+                if (verseAccuracy.isVerse())
                 {
                     return VERSE_ONLY;
                 }
-                
-                if (verseAccuracy.equals(CHAPTER_ONLY) || verseAccuracy.equals(CHAPTER_VERSE))
+
+                if (verseAccuracy.isChapter())
                 {
                     return CHAPTER_ONLY;
                 }
@@ -609,7 +672,7 @@ public abstract class AccuracyType implements Serializable
                 {
                     if (!Character.isLetter(word.charAt(i))) break;
                 }
-            }            
+            }
 
             String[] oldargs = args;
             args = new String[oldargs.length + 1];
@@ -705,7 +768,7 @@ public abstract class AccuracyType implements Serializable
     {
         return name;
     }
-    
+
     /**
      * What characters can we use to separate parts to a verse
      */
