@@ -1,17 +1,7 @@
-<%@ page %>
 
-<html>
-<head>
-  <title>The J-SWORD Project - XML</title>
-  <META NAME="keywords" CONTENT="bible, free, software, christian, study, gpl, bible software,">
-  <META http-equiv="keywords" CONTENT="bible, free, software, christian, study, gpl, bible software,">
-  <META NAME="distribution" CONTENT="global">
-  <link rel="stylesheet" href="sword.css" type="text/css">
-</head>
-
-<body>
-
-<%@ include file="header.jsp" %>
+<jsp:include page="header.jsp">
+  <jsp:param name="title" value="JSword - XML" />
+</jsp:include>
 
 <h1>JSword - XML</h1>
 
@@ -114,7 +104,4 @@ element. -->
 
 </pre>
 
-<%@ include file="footer.jsp" %>
-
-</body>
-</html>
+<jsp:include page="footer.jsp" />

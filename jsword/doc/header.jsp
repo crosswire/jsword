@@ -1,4 +1,16 @@
 <%@ page %>
+<% String title = request.getParameter("title"); %>
+
+<html>
+<head>
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <link rel="stylesheet" type="text/css" href="generic.css">
+  <title><%=title%></title>
+  <link rel="stylesheet" href="sword.css" type="text/css">
+</head>
+
+<body>
 
 <table width="100%">
   <tr align="center">
@@ -50,6 +62,7 @@
       <li><a href="intro.jsp">Intro</a></li>
       <li><a href="design.jsp">Design</a></li>
       <li><a href="xml.jsp">XML</a></li>
+      <li><a href="osisCore.1.1.html">OSIS</a></li>
       <li><a href="config.jsp">Config</a></li>
       <li><a href="change.jsp">Changes</a></li>
       <li><a href="api/index.html">JavaDoc</a></li>
@@ -65,7 +78,7 @@
     <p><a href="http://www.crosswire.org/sword/contact.jsp">Contact</a></p>
   </td>
 
-    <td valign="top" class="maincell">
-	  <table cellpadding="5" border="0" width="100%">
-    <tr> 
-      <td>
+<td valign="top" class="maincell">
+<table cellpadding="5" border="0" width="100%">
+<tr> 
+<td>

@@ -1,38 +1,29 @@
-<%@ page %>
 
-<html>
-<head>
-  <title>JSword - Config SubSystem</title>
-  <meta name="keywords" content="bible, free, software, christian, study, gpl, bible software,">
-  <meta http-equiv="keywords" content="bible, free, software, christian, study, gpl, bible software,">
-  <meta name="distribution" content="global">
-  <link rel="stylesheet" href="sword.css" type="text/css">
-</head>
+<jsp:include page="header.jsp">
+  <jsp:param name="title" value="JSword - Config Subsystem" />
+</jsp:include>
 
-<body>
-
-<%@ include file="header.jsp" %>
-            <h1>The Config Sub-System</h1>
-            <h2>Introduction</h2>
-            <p>Config is (mostly) all kept in a few packages in the util source tree. 
-              The design aims for the following goals:</p>
-            <ul>
-              <li>Application Transparency - It should be possible to add a configuration 
-                dialog to an application without adding hundreds of hooks either to 
-                your application to read the current state, or to the configuration 
-                system to work with the application. This is achieved via an xml config 
-                file and a healthy dose of reflection.</li>
-              <li>View Independance - Currently there are a number of Swing front 
-                ends - a Mozilla style config dialog with a tree, a more conventional 
-                tabbed dialog, and a prototype wizard style interface. There has also 
-                been a servlet front-end however the code to do this has suffered 
-                bit-rot, and should not be considered useful. It does however prove 
-                the view independance concept.</li>
-            </ul>
-            <h3>How To Use Config</h3>
-            <p>There are a number of simple steps. First a config.xml file is needed 
-              to tell the config system what to configure and how.</p>
-            <pre>
+<h1>The Config Sub-System</h1>
+<h2>Introduction</h2>
+<p>Config is (mostly) all kept in a few packages in the util source tree. 
+  The design aims for the following goals:</p>
+<ul>
+  <li>Application Transparency - It should be possible to add a configuration 
+	dialog to an application without adding hundreds of hooks either to 
+	your application to read the current state, or to the configuration 
+	system to work with the application. This is achieved via an xml config 
+	file and a healthy dose of reflection.</li>
+  <li>View Independance - Currently there are a number of Swing front 
+	ends - a Mozilla style config dialog with a tree, a more conventional 
+	tabbed dialog, and a prototype wizard style interface. There has also 
+	been a servlet front-end however the code to do this has suffered 
+	bit-rot, and should not be considered useful. It does however prove 
+	the view independance concept.</li>
+</ul>
+<h3>How To Use Config</h3>
+<p>There are a number of simple steps. First a config.xml file is needed 
+  to tell the config system what to configure and how.</p>
+<pre>
 &lt;config>
 
   <font color="#00CC00">&lt;!-- A configuration is a set of options ... --></font>
@@ -91,7 +82,8 @@
 &lt;/config>
 
 </pre>
-            <p>Then you need to add the Java code:
+
+<p>Then you need to add the Java code:
 <pre><font color="#00CC00">
 // To load the config.xml file:
 </font>Config config = new Config("Tool Shed Options");
@@ -109,8 +101,7 @@ SwingConfig.showDialog(config, parentWind, configurl);
 <font color="#00CC00">// The code above needed help in setting up a string choice. This is how ...</font>
 ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibleNames());
 </pre>
-            <p>There are more examples in <code>org.crosswire.jsword.view.swing.desktop.OptionsAction.</code></p>
-            <%@ include file="footer.jsp" %>
 
-</body>
-</html>
+<p>There are more examples in <code>org.crosswire.jsword.view.swing.desktop.OptionsAction.</code></p>
+
+<jsp:include page="footer.jsp" />
