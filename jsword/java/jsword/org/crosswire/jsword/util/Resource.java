@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
@@ -323,6 +325,57 @@ public class Resource
             log.error("Failed to get any classes.", ex);
             return new Class[0];
         }
+    }
+
+    /**
+     * Get a map of known implementors of some interface or abstract class.
+     * This is currently done by looking up a properties file by the name of
+     * the given class, and assuming that values are implementors of said
+     * class. Those that are not are warned, but ignored. The reply is in the
+     * form of a map of keys=strings, and values=classes in case you need to get
+     * at the names given to the classes in the properties file.
+     * @see Resource#getImplementors(Class)
+     * @param clazz The class or interface to find implementors of.
+     * @return The map of implementing classes.
+     */
+    public Map getImplementorsMap(Class clazz)
+    {
+        Map matches = new HashMap();
+
+        try
+        {
+            Properties props = getProperties(clazz.getName());
+            Iterator it = props.keySet().iterator();
+            while (it.hasNext())
+            {
+                try
+                {
+                    String key = (String) it.next();
+                    String value = props.getProperty(key);
+                    Class impl = Class.forName(value);
+                    if (clazz.isAssignableFrom(impl))
+                    {
+                        matches.put(key, impl);
+                    }
+                    else
+                    {
+                        log.warn("Class "+impl.getName()+" does not implement "+clazz.getName()+". Ignoring.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.warn("Failed to add class to list: "+clazz.getName(), ex);
+                }            
+            }
+
+            log.debug("Found "+matches.size()+" implementors of "+clazz.getName());
+        }
+        catch (Exception ex)
+        {
+            log.error("Failed to get any classes.", ex);
+        }
+
+        return matches;
     }
 
     /**

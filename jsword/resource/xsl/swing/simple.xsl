@@ -234,13 +234,29 @@
   </xsl:template>
 
   <!--=======================================================================-->
+  <xsl:template match="speaker">
+    <xsl:choose>
+      <xsl:when test="@who='Jesus'">
+        <font color="red">
+          <xsl:apply-templates/>
+        </font>
+      </xsl:when>
+      <xsl:otherwise>
+        <font color="blue">
+          <xsl:apply-templates/>
+        </font>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <!--=======================================================================-->
+
   <xsl:template match="caption">
     <div class="caption">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   
-  <!--=======================================================================-->
   <xsl:template match="catchWord">
     <span class="catchWord">
       <xsl:apply-templates/>
@@ -477,22 +493,7 @@
       <xsl:apply-templates/>
     </span>
   </xsl:template>
-  
-  <xsl:template match="speaker">
-    <!--
-        FIXME: I do not print out the "who" attribute, because it is not clear
-               whether or not it should be part of the text.  This is very,
-               very bad, especially for a biblical text where one is trying to
-               present the original text as closely as possible!
-    -->
-    <span class="speaker">
-      <xsl:if test="@who">
-        <xsl:attribute name="title"><xsl:value-of select="@who"/></xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </span>
-  </xsl:template>
-  
+
   <xsl:template match="speech">
     <div class="speech">
       <xsl:apply-templates/>

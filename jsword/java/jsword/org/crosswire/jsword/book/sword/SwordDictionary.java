@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.crosswire.common.activate.Activator;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DictionaryMetaData;
@@ -79,11 +81,10 @@ public class SwordDictionary extends AbstractDictionary
         }
     }
 
-    /**
-     * Called just before we are pressed into service.
-     * Now is the time to read the indexes.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public void init()
+    public final void activate(Lock lock)
     {
         List raw = backend.readIndex();
 
@@ -98,10 +99,10 @@ public class SwordDictionary extends AbstractDictionary
         set.addAll(raw);
     }
 
-    /**
-     * Call this method to save memory.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
-    public void free()
+    public final void deactivate(Lock lock)
     {
         map = null;
         set = null;
@@ -118,12 +119,9 @@ public class SwordDictionary extends AbstractDictionary
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.KeyBackend#getIndex(java.lang.String)
      */
-    public SortedSet getIndex(String startswith) throws BookException
+    public SortedSet getIndex(String startswith)
     {
-        if (set == null)
-        {
-            throw new BookException(Msg.READ_FAIL);
-        }
+        checkActive();
 
         return set.subSet(startswith, startswith+"\u9999");
     }
@@ -133,10 +131,7 @@ public class SwordDictionary extends AbstractDictionary
      */
     public Key getKey(String text) throws BookException
     {
-        if (map == null)
-        {
-            throw new BookException(Msg.READ_FAIL);
-        }
+        checkActive();
 
         Key key = (Key) map.get(text);
         if (key == null)
@@ -153,6 +148,8 @@ public class SwordDictionary extends AbstractDictionary
      */
     public Key find(Search search) throws BookException
     {
+        checkActive();
+
         // URGENT(joe): write
         return getKey("");
     }
@@ -162,10 +159,7 @@ public class SwordDictionary extends AbstractDictionary
      */
     public Key getKeyFuzzy(String text) throws BookException
     {
-        if (map == null)
-        {
-            throw new BookException(Msg.READ_FAIL);
-        }
+        checkActive();
 
         Key key = (Key) map.get(text);
         if (key == null)
@@ -216,13 +210,11 @@ public class SwordDictionary extends AbstractDictionary
      */
     public BookData getData(Key key) throws BookException
     {
+        checkActive();
+
         if (key == null)
         {
             throw new NullPointerException();
-        }
-        if (map == null)
-        {
-            throw new BookException(Msg.READ_FAIL);
         }
 
         try
@@ -271,6 +263,22 @@ public class SwordDictionary extends AbstractDictionary
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
     }
+
+    /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    private final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
+    }
+
+    /**
+     * Are we active
+     */
+    private boolean active = false;
 
     /**
      * So we can quickly find a Key given the text for the key

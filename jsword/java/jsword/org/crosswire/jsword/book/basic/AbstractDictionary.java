@@ -36,14 +36,14 @@ public abstract class AbstractDictionary implements Dictionary
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public final void activate(Lock lock)
+    public void activate(Lock lock)
     {
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
-    public final void deactivate(Lock lock)
+    public void deactivate(Lock lock)
     {
     }
 

@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book.data.thml;
 
 import java.io.StringReader;
 import java.util.LinkedList;
@@ -11,11 +11,16 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.xml.SAXUtil;
+import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.data.DataException;
+import org.crosswire.jsword.book.data.Filter;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Item;
 import org.crosswire.jsword.osis.Name;
+import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.P;
+import org.crosswire.jsword.osis.Reference;
 import org.crosswire.jsword.osis.Seg;
 import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -72,7 +77,7 @@ public class THMLFilter implements Filter
         }
         catch (Exception ex)
         {
-            log.warn("parse failed", ex);
+            log.warn("parse failed: "+plain, ex);
 
             List list = JAXBUtil.getList(ele);
             list.add("Errors exist in the source module: " + ex.getMessage());
@@ -102,6 +107,9 @@ public class THMLFilter implements Filter
     private static final String TAG_FONT = "font";
     private static final String TAG_LI = "li";
     private static final String TAG_OL = "ol";
+    private static final String TAG_DIV = "div";
+    private static final String TAG_NOTE = "note";
+    private static final String TAG_A = "a";
 
     /*
     private static final String TAG_TABLE = "table";
@@ -177,6 +185,27 @@ public class THMLFilter implements Filter
                     seg.setType(SEG_UNDERLINE);
                     JAXBUtil.getList(ele).add(seg);
                 }
+                else if (qname.equals(TAG_A))
+                {
+                    // Reference
+                    Reference reference = JAXBUtil.factory().createReference();
+                    // PENDING(joe): put the correct reference here
+                    //reference.setOsisID("XX");
+                    JAXBUtil.getList(ele).add(reference);
+                }
+                else if (qname.equals(TAG_NOTE))
+                {
+                    // Notes
+                    Note note = JAXBUtil.factory().createNote();
+                    note.setNoteType("x-StudyNote");
+                    JAXBUtil.getList(ele).add(note);
+                }
+                else if (qname.equals(TAG_DIV))
+                {
+                    // Div
+                    Div div = JAXBUtil.factory().createDiv();
+                    JAXBUtil.getList(ele).add(div);
+                }
                 else if (qname.equals(TAG_FONT))
                 {
                     // Font
@@ -203,7 +232,7 @@ public class THMLFilter implements Filter
                     else
                     {
                         log.debug("Missing color/size attribute.");
-                        SAXUtil.debugAttributes(attrs);
+                        XMLUtil.debugSAXAttributes(attrs);
                     }
                     JAXBUtil.getList(ele).add(seg);
                 }
@@ -246,6 +275,12 @@ public class THMLFilter implements Filter
                         div.setOsisID("dict://"+value);
                         JAXBUtil.getList(ele).add(div);
                     }
+                    else if ("morph".equals(type))
+                    {
+                        Div div = JAXBUtil.factory().createDiv();
+                        div.setOsisID("morph://"+value);
+                        JAXBUtil.getList(ele).add(div);
+                    }
                     else
                     {
                         log.warn("sync tag has type="+type+" when value="+value);
@@ -272,7 +307,7 @@ public class THMLFilter implements Filter
                     else
                     {
                         log.warn("Missing passage.");
-                        SAXUtil.debugAttributes(attrs);
+                        XMLUtil.debugSAXAttributes(attrs);
                     }
 
                     JAXBUtil.getList(ele).add(div);
@@ -308,6 +343,22 @@ public class THMLFilter implements Filter
                     // No need for special treatment on the way out?
                 }
                 else if (qname.equals(TAG_B))
+                {
+                    // No need for special treatment on the way out?
+                }
+                else if (qname.equals(TAG_U))
+                {
+                    // No need for special treatment on the way out?
+                }
+                else if (qname.equals(TAG_A))
+                {
+                    // No need for special treatment on the way out?
+                }
+                else if (qname.equals(TAG_NOTE))
+                {
+                    // No need for special treatment on the way out?
+                }
+                else if (qname.equals(TAG_DIV))
                 {
                     // No need for special treatment on the way out?
                 }

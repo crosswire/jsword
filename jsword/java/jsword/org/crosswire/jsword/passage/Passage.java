@@ -68,7 +68,7 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Passage extends Serializable, Cloneable, PassageConstants
+public interface Passage extends Serializable, Cloneable
 {
     /**
      * A Human readable version of the verse list.

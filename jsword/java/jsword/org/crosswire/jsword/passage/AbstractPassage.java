@@ -125,7 +125,7 @@ public abstract class AbstractPassage implements Passage
 
         StringBuffer retcode = new StringBuffer();
 
-        Iterator it = rangeIterator(RESTRICT_NONE);
+        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
         Verse current = null;
         while (it.hasNext())
         {
@@ -134,7 +134,7 @@ public abstract class AbstractPassage implements Passage
 
             if (it.hasNext())
             {
-                retcode.append(REF_PREF_DELIM);
+                retcode.append(PassageConstants.REF_PREF_DELIM);
             }
 
             current = range.getStart();
@@ -150,7 +150,7 @@ public abstract class AbstractPassage implements Passage
     {
         StringBuffer retcode = new StringBuffer();
 
-        Iterator it = rangeIterator(RESTRICT_NONE);
+        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
         while (it.hasNext())
         {
             VerseRange range = (VerseRange) it.next();
@@ -158,7 +158,7 @@ public abstract class AbstractPassage implements Passage
 
             if (it.hasNext())
             {
-                retcode.append(REF_OSIS_DELIM);
+                retcode.append(PassageConstants.REF_OSIS_DELIM);
             }
         }
 
@@ -365,7 +365,7 @@ public abstract class AbstractPassage implements Passage
 
         if (that instanceof RangedPassage)
         {
-            that_it = ((RangedPassage) that).rangeIterator(RESTRICT_NONE);
+            that_it = ((RangedPassage) that).rangeIterator(PassageConstants.RESTRICT_NONE);
         }
         else
         {
@@ -496,7 +496,7 @@ public abstract class AbstractPassage implements Passage
 
         if (that instanceof RangedPassage)
         {
-            that_it = that.rangeIterator(RESTRICT_NONE);
+            that_it = that.rangeIterator(PassageConstants.RESTRICT_NONE);
         }
         else
         {
@@ -529,7 +529,7 @@ public abstract class AbstractPassage implements Passage
 
         if (that instanceof RangedPassage)
         {
-            that_it = that.rangeIterator(RESTRICT_NONE);
+            that_it = that.rangeIterator(PassageConstants.RESTRICT_NONE);
         }
         else
         {
@@ -612,7 +612,7 @@ public abstract class AbstractPassage implements Passage
         try
         {
             Passage temp = (Passage) this.clone();
-            Iterator it = temp.rangeIterator(RESTRICT_NONE);
+            Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
 
             while (it.hasNext())
             {
@@ -639,7 +639,7 @@ public abstract class AbstractPassage implements Passage
     {
         BufferedWriter bout = new BufferedWriter(out);
 
-        Iterator it = rangeIterator(RESTRICT_NONE);
+        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
 
         while (it.hasNext())
         {
@@ -827,7 +827,7 @@ public abstract class AbstractPassage implements Passage
     {
         optimizeWrites();
 
-        String[] parts = PassageUtil.tokenize(refs, REF_ALLOWED_DELIMS);
+        String[] parts = PassageUtil.tokenize(refs, PassageConstants.REF_ALLOWED_DELIMS);
         if (parts.length == 0) return;
 
         // We treat the first as a special case because there is
@@ -1078,17 +1078,17 @@ public abstract class AbstractPassage implements Passage
                 // if we have moved into a new chapter/book
                 switch (restrict)
                 {
-                case RESTRICT_NONE:
+                case PassageConstants.RESTRICT_NONE:
                     break;
 
-                case RESTRICT_BOOK:
+                case PassageConstants.RESTRICT_BOOK:
                     if (!end.isSameBook(next_verse))
                     {
                         break findnext;
                     }
                     break;
 
-                case RESTRICT_CHAPTER:
+                case PassageConstants.RESTRICT_CHAPTER:
                     if (!end.isSameChapter(next_verse))
                     {
                         break findnext;
@@ -1122,7 +1122,7 @@ public abstract class AbstractPassage implements Passage
         /**
          * Do we restrict ranges to not crossing chapter boundries
          */
-        private int restrict = RESTRICT_NONE;
+        private int restrict = PassageConstants.RESTRICT_NONE;
     }
 
     /**
@@ -1152,7 +1152,7 @@ public abstract class AbstractPassage implements Passage
 
         // the size in bits of teach storage method
         int bitwise_size = BibleInfo.versesInBible();
-        int ranged_size =  8 * countRanges(RESTRICT_NONE);
+        int ranged_size =  8 * countRanges(PassageConstants.RESTRICT_NONE);
         int distinct_size = 4 * countVerses();
 
         // if bitwise is equal smallest
@@ -1190,10 +1190,10 @@ public abstract class AbstractPassage implements Passage
         {
             // write the Passage type and the number of ranges
             out.writeInt(RANGED);
-            out.writeInt(countRanges(RESTRICT_NONE));
+            out.writeInt(countRanges(PassageConstants.RESTRICT_NONE));
 
             // write the verse ordinals in a loop
-            Iterator it = rangeIterator(RESTRICT_NONE);
+            Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();

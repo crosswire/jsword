@@ -103,7 +103,7 @@ public class BookData
                 }
             }
         }
-    
+
         return buffer.toString().trim();
     }
 

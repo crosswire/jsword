@@ -1,12 +1,14 @@
+package org.crosswire.jsword.book.data.gbf;
 
-package org.crosswire.jsword.book.data;
-
-import java.util.List;
+import java.util.LinkedList;
 
 import javax.xml.bind.Element;
+import javax.xml.bind.JAXBException;
+
+import org.crosswire.jsword.book.data.JAXBUtil;
 
 /**
- * Filter to convert plain text to OSIS format.
+ * Represent a trunc of bible text without any tags.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,14 +31,23 @@ import javax.xml.bind.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PlainTextFilter implements Filter
+public class TextTagBuilder implements TagBuilder
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
+     * @see org.crosswire.jsword.book.data.gbf.TagBuilder#createTag(java.lang.String)
      */
-    public void toOSIS(Element ele, String plain) throws DataException
+    public Tag createTag(final String name)
     {
-        List list = JAXBUtil.getList(ele);
-        list.add(plain);
+        return new Tag()
+        {
+            /* (non-Javadoc)
+             * @see org.crosswire.jsword.book.data.gbf.Tag#updateOsisStack(java.util.Stack)
+             */
+            public void updateOsisStack(LinkedList stack) throws JAXBException
+            {
+                Element ele = (Element) stack.get(0);
+                JAXBUtil.getList(ele).add(name);
+            }
+        };
     }
 }

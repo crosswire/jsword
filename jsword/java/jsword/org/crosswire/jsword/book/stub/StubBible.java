@@ -111,7 +111,7 @@ public class StubBible extends AbstractBible
                     
                     div.getContent().add(everse);
 
-                    Filters.PLAIN_TEXT.toOSIS(everse, "stub implementation");
+                    Filters.getDefaultFilter().toOSIS(everse, "stub implementation");
                 }
             }
             

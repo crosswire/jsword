@@ -1,8 +1,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,6 +32,7 @@ import java.util.Map;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Mark Goodwin [mark at thorubio dot org]
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class ConfigReader
@@ -122,34 +121,6 @@ public class ConfigReader
         }
 
         return list.iterator();
-    }
-
-    public static void main(String[] args)
-    {
-        // A little test
-        // PENGING(mark): (ask joe about a ${project.root}/misc/testdata dir - this (and many other tests) are data dependant)
-        try
-        {
-            File f = new File("/usr/share/sword/mods.d/kjv.conf");
-            FileInputStream fis = new FileInputStream(f);
-            ConfigReader reader = new ConfigReader(fis);
-
-            Iterator kit = reader.getKeys();
-            while (kit.hasNext())
-            {
-                String key = (String) kit.next();
-                Iterator vit = reader.getAllValues(key);
-                while (vit.hasNext())
-                {
-                    String value = (String) vit.next();
-                    System.out.println(key + " = " + value);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     private BufferedReader bufferedReader;

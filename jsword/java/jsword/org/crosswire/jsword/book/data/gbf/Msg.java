@@ -1,10 +1,10 @@
-package org.crosswire.common.xml;
 
-import org.crosswire.common.util.Logger;
-import org.xml.sax.Attributes;
+package org.crosswire.jsword.book.data.gbf;
+
+import org.crosswire.common.util.MsgBase;
 
 /**
- * Utilities for working with SAX XML parsing.
+ * Compile safe Msg resource settings.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,28 +27,24 @@ import org.xml.sax.Attributes;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SAXUtil
+class Msg extends MsgBase
 {
+    static final Msg GBF_JAXB = new Msg("Parse Error");
+    static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
+
     /**
-     * Prevent Instansiation
+     * Initialise any resource bundles
      */
-    private SAXUtil()
+    static
     {
+        init(Msg.class.getName());
     }
 
     /**
-     * Show the attributes of an element as debug
+     * Passthrough ctor
      */
-    public static void debugAttributes(Attributes attrs)
+    private Msg(String name)
     {
-        for (int i=0; i<attrs.getLength(); i++)
-        {
-            log.debug("attr["+i+"]: "+attrs.getQName(i)+"="+attrs.getValue(i));
-        }
+        super(name);
     }
-
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(SAXUtil.class);
 }

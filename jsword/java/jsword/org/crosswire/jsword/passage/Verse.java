@@ -94,12 +94,12 @@ public final class Verse implements VerseBase, Comparable
      */
     public Verse(String desc, Verse basis) throws NoSuchVerseException
     {
-        String[] parts = tokenize(desc, VERSE_ALLOWED_DELIMS);
+        String[] parts = tokenize(desc, PassageConstants.VERSE_ALLOWED_DELIMS);
         original_name = desc;
 
         switch (getAccuracy(parts))
         {
-        case ACCURACY_BOOK_VERSE:
+        case PassageConstants.ACCURACY_BOOK_VERSE:
             if (parts.length == 3)
             {
                 set(parts[0], parts[1], parts[2]);
@@ -110,23 +110,23 @@ public final class Verse implements VerseBase, Comparable
             }
             break;
 
-        case ACCURACY_BOOK_CHAPTER:
+        case PassageConstants.ACCURACY_BOOK_CHAPTER:
             set(parts[0], parts[1], 1);
             break;
 
-        case ACCURACY_BOOK_ONLY:
+        case PassageConstants.ACCURACY_BOOK_ONLY:
             set(parts[0], 1, 1);
             break;
 
-        case ACCURACY_CHAPTER_VERSE:
+        case PassageConstants.ACCURACY_CHAPTER_VERSE:
             set(basis.getBook(), parts[0], parts[1]);
             break;
 
-        case ACCURACY_NUMBER_ONLY:
+        case PassageConstants.ACCURACY_NUMBER_ONLY:
             set(basis.getBook(), basis.getChapter(), parts[0]);
             break;
 
-        case ACCURACY_NONE:
+        case PassageConstants.ACCURACY_NONE:
             set(basis.getBook(), basis.getChapter(), basis.getVerse());
             break;
 
@@ -214,11 +214,17 @@ public final class Verse implements VerseBase, Comparable
             // To cope with thing like Jude 2...
             if (BibleInfo.chaptersInBook(book) == 1)
             {
-                return BibleInfo.getShortBookName(book) + VERSE_PREF_DELIM1 + verse;
+                return BibleInfo.getShortBookName(book) +
+                    PassageConstants.VERSE_PREF_DELIM1 +
+                    verse;
             }
             else
             {
-                return BibleInfo.getShortBookName(book) + VERSE_PREF_DELIM1 + chapter + VERSE_PREF_DELIM2 + verse;
+                return BibleInfo.getShortBookName(book) +
+                    PassageConstants.VERSE_PREF_DELIM1 +
+                    chapter +
+                    PassageConstants.VERSE_PREF_DELIM2 +
+                    verse;
             }
         }
         catch (Exception ex)
@@ -251,7 +257,9 @@ public final class Verse implements VerseBase, Comparable
             {
                 if (base.book != book)
                 {
-                    return BibleInfo.getShortBookName(book) + VERSE_PREF_DELIM1 + verse;
+                    return BibleInfo.getShortBookName(book) +
+                        PassageConstants.VERSE_PREF_DELIM1 +
+                        verse;
                 }
 
                 return String.valueOf(verse);
@@ -260,12 +268,18 @@ public final class Verse implements VerseBase, Comparable
             {
                 if (base.book != book)
                 {
-                    return BibleInfo.getShortBookName(book) + VERSE_PREF_DELIM1 + chapter + VERSE_PREF_DELIM2 + verse;
+                    return BibleInfo.getShortBookName(book) +
+                        PassageConstants.VERSE_PREF_DELIM1 +
+                        chapter +
+                        PassageConstants.VERSE_PREF_DELIM2 +
+                        verse;
                 }
 
                 if (base.chapter != chapter)
                 {
-                    return chapter + VERSE_PREF_DELIM2 + verse;
+                    return chapter +
+                        PassageConstants.VERSE_PREF_DELIM2 +
+                        verse;
                 }
 
                 return String.valueOf(verse);
@@ -286,7 +300,11 @@ public final class Verse implements VerseBase, Comparable
     {
         try
         {
-            return BibleInfo.getOSISName(book) + VERSE_OSIS_DELIM + chapter + VERSE_OSIS_DELIM + verse;
+            return BibleInfo.getOSISName(book) +
+                PassageConstants.VERSE_OSIS_DELIM +
+                chapter +
+                PassageConstants.VERSE_OSIS_DELIM +
+                verse;
         }
         catch (NoSuchVerseException ex)
         {
@@ -612,7 +630,7 @@ public final class Verse implements VerseBase, Comparable
      */
     public static int getAccuracy(String desc) throws NoSuchVerseException
     {
-        String[] parts = tokenize(desc, VERSE_ALLOWED_DELIMS);
+        String[] parts = tokenize(desc, PassageConstants.VERSE_ALLOWED_DELIMS);
 
         return getAccuracy(parts);
     }
@@ -638,15 +656,15 @@ public final class Verse implements VerseBase, Comparable
         switch (parts.length)
         {
         case 0:
-            return ACCURACY_NONE;
+            return PassageConstants.ACCURACY_NONE;
 
         case 1:
             if (BibleInfo.isBookName(parts[0]))
             {
-                return ACCURACY_BOOK_ONLY;
+                return PassageConstants.ACCURACY_BOOK_ONLY;
             }
             checkValidChapterOrVerse(parts[0]);
-            return ACCURACY_NUMBER_ONLY;
+            return PassageConstants.ACCURACY_NUMBER_ONLY;
 
         case 2:
             try
@@ -655,28 +673,28 @@ public final class Verse implements VerseBase, Comparable
                 int pbook = BibleInfo.getBookNumber(parts[0]);
                 if (BibleInfo.chaptersInBook(pbook) == 1)
                 {
-                    return ACCURACY_BOOK_VERSE;
+                    return PassageConstants.ACCURACY_BOOK_VERSE;
                 }
                 else
                 {
-                    return ACCURACY_BOOK_CHAPTER;
+                    return PassageConstants.ACCURACY_BOOK_CHAPTER;
                 }
             }
             catch (NoSuchVerseException ex)
             {
                 checkValidChapterOrVerse(parts[0]);
                 checkValidChapterOrVerse(parts[1]);
-                return ACCURACY_CHAPTER_VERSE;
+                return PassageConstants.ACCURACY_CHAPTER_VERSE;
             }
 
         case 3:
             BibleInfo.getBookNumber(parts[0]);
             checkValidChapterOrVerse(parts[1]);
             checkValidChapterOrVerse(parts[2]);
-            return ACCURACY_BOOK_VERSE;
+            return PassageConstants.ACCURACY_BOOK_VERSE;
 
         default:
-            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { VERSE_ALLOWED_DELIMS });
+            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { PassageConstants.VERSE_ALLOWED_DELIMS });
         }
     }
 
@@ -738,12 +756,12 @@ public final class Verse implements VerseBase, Comparable
      */
     public static boolean isEndMarker(String text)
     {
-        if (text.equals(VERSE_END_MARK1))
+        if (text.equals(PassageConstants.VERSE_END_MARK1))
         {
             return true;
         }
 
-        if (text.equals(VERSE_END_MARK2))
+        if (text.equals(PassageConstants.VERSE_END_MARK2))
         {
             return true;
         }
@@ -863,7 +881,7 @@ public final class Verse implements VerseBase, Comparable
             if (!Character.isLetter(command.charAt(idx-1))
                 && !Character.isLetter(command.charAt(idx+1)))
             {
-                command = command.substring(0, idx) + VERSE_PREF_DELIM2 + command.substring(idx+1);
+                command = command.substring(0, idx) + PassageConstants.VERSE_PREF_DELIM2 + command.substring(idx+1);
             }
         }
         
@@ -927,10 +945,10 @@ public final class Verse implements VerseBase, Comparable
             // before the number is one of the numeric book identifiers,
             // in that case #2 means Exo and not the book of # chapter 2
             boolean is_numeric_book = false;
-            for (int i=0; i<VERSE_NUMERIC_BOOK.length && !is_numeric_book; i++)
+            for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length && !is_numeric_book; i++)
             {
                 // so if we start with a book number id mark
-                if (word.startsWith(VERSE_NUMERIC_BOOK[i]))
+                if (word.startsWith(PassageConstants.VERSE_NUMERIC_BOOK[i]))
                     is_numeric_book = true;
             }
 

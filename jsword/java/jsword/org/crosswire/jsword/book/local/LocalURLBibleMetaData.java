@@ -125,44 +125,6 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData
         return ((LocalURLBookDriver) getDriver()).getSpeed();
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj)
-    {
-        // Since this can not be null
-        if (obj == null)
-        {
-            return false;
-        }
-
-        // Check that that is the same type as this
-        // Don't use instanceof since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
-            return false;
-        }
-
-        // If super does equals ...
-        if (!super.equals(obj))
-        {
-            return false;
-        }
-
-        // The real bit ...
-        LocalURLBibleMetaData that = (LocalURLBibleMetaData) obj;
-
-        return getDriver().equals(that.getDriver());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#hashCode()
-     */
-    public int hashCode()
-    {
-        return getDriver().hashCode();
-    }
-
     /**
      * The properties by which we got our data
      */

@@ -328,14 +328,14 @@ public class BitwisePassage extends AbstractPassage
             throw new IllegalArgumentException(Msg.ERROR_BLUR.getName());
         }
 
-        if (restrict != RESTRICT_NONE)
+        if (restrict != PassageConstants.RESTRICT_NONE)
         {
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version
             try
             {
                 BitwisePassage temp = (BitwisePassage) this.clone();
-                Iterator it = temp.rangeIterator(RESTRICT_NONE);
+                Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
 
                 while (it.hasNext())
                 {

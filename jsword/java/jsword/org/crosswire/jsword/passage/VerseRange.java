@@ -91,7 +91,7 @@ public final class VerseRange implements VerseBase
         Verse vbasis = basis.getEnd();
 
         // Do we need this?
-        String[] parts = PassageUtil.tokenize(desc, RANGE_ALLOWED_DELIMS);
+        String[] parts = PassageUtil.tokenize(desc, PassageConstants.RANGE_ALLOWED_DELIMS);
 
         switch (parts.length)
         {
@@ -107,26 +107,26 @@ public final class VerseRange implements VerseBase
             // with the exception of whole chapters and books
             switch (Verse.getAccuracy(parts[0]))
             {
-            case ACCURACY_BOOK_ONLY:
+            case PassageConstants.ACCURACY_BOOK_ONLY:
                 start = new Verse(parts[0], vbasis);
                 verse_count = BibleInfo.versesInBook(start.getBook());
                 end = calcEnd(start, verse_count);
                 break;
 
-            case ACCURACY_BOOK_CHAPTER:
+            case PassageConstants.ACCURACY_BOOK_CHAPTER:
                 start = new Verse(parts[0], vbasis);
                 verse_count = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
                 end = calcEnd(start, verse_count);
                 break;
 
-            case ACCURACY_BOOK_VERSE:
-            case ACCURACY_CHAPTER_VERSE:
+            case PassageConstants.ACCURACY_BOOK_VERSE:
+            case PassageConstants.ACCURACY_CHAPTER_VERSE:
                 start = new Verse(parts[0], vbasis);
                 end = start;
                 verse_count = 1;
                 break;
 
-            case ACCURACY_NUMBER_ONLY:
+            case PassageConstants.ACCURACY_NUMBER_ONLY:
                 if (basis.isWholeChapter())
                 {
                     // This should be ACCURACY_CHAPTER_ONLY if it existed
@@ -138,7 +138,7 @@ public final class VerseRange implements VerseBase
                     }
                     else
                     {
-                        chapter = Verse.parseInt(parts[0]);
+                        chapter = Verse.parseInt(parts[0].trim());
                     }
     
                     start = new Verse(book, chapter, 1);
@@ -153,7 +153,7 @@ public final class VerseRange implements VerseBase
                 }
                 break;
     
-            case ACCURACY_NONE:
+            case PassageConstants.ACCURACY_NONE:
                 start = vbasis;
                 end = vbasis;
                 break;
@@ -166,12 +166,12 @@ public final class VerseRange implements VerseBase
         case 2:
             switch (Verse.getAccuracy(parts[0]))
             {
-            case ACCURACY_BOOK_ONLY:
+            case PassageConstants.ACCURACY_BOOK_ONLY:
                 // We start with only a Book like "Gen". For all of these the
                 // basis is irrelevant since we start with a book.
                 switch (Verse.getAccuracy(parts[1]))
                 {
-                case ACCURACY_BOOK_ONLY:
+                case PassageConstants.ACCURACY_BOOK_ONLY:
                     // And we end with a book, so we need to encompass the lot
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
@@ -179,7 +179,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_BOOK_CHAPTER:
+                case PassageConstants.ACCURACY_BOOK_CHAPTER:
                     // So we have something like "Gen-Exo 4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
@@ -187,19 +187,19 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInChapter();
                     break;
 
-                case ACCURACY_BOOK_VERSE:
+                case PassageConstants.ACCURACY_BOOK_VERSE:
                     // So we have something like "Gen-Exo 4:2"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
                     break;
 
-                case ACCURACY_CHAPTER_VERSE:
+                case PassageConstants.ACCURACY_CHAPTER_VERSE:
                     // This is a bit wierd: "Gen-3:4". Assume "Gen 1:1-3:4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NUMBER_ONLY:
+                case PassageConstants.ACCURACY_NUMBER_ONLY:
                     // This is like "Gen-3", which could mean anything, but since
                     // we interpret "1" to mean Genesis we will use "Gen-Num"
                     start = new Verse(parts[0]);
@@ -208,7 +208,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_NONE:
+                case PassageConstants.ACCURACY_NONE:
                     // Also wierd "Gen-". Perhaps we need to assume end of book?
                     start = new Verse(parts[0]);
                     end = start.getLastVerseInBook();
@@ -218,12 +218,12 @@ public final class VerseRange implements VerseBase
                     throw new LogicError();
                 }
 
-            case ACCURACY_BOOK_CHAPTER:
+            case PassageConstants.ACCURACY_BOOK_CHAPTER:
                 // So we start something like "Gen 3", as above the basis is
                 // not relevant for any of these
                 switch (Verse.getAccuracy(parts[1]))
                 {
-                case ACCURACY_BOOK_ONLY:
+                case PassageConstants.ACCURACY_BOOK_ONLY:
                     // For example "Gen 3-Exo"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
@@ -231,7 +231,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_BOOK_CHAPTER:
+                case PassageConstants.ACCURACY_BOOK_CHAPTER:
                     // For example "Gen 3-Exo 4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
@@ -239,26 +239,26 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInChapter();
                     break;
 
-                case ACCURACY_BOOK_VERSE:
+                case PassageConstants.ACCURACY_BOOK_VERSE:
                     // For example "Gen 4-Exo 3:4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
                     break;
 
-                case ACCURACY_CHAPTER_VERSE:
+                case PassageConstants.ACCURACY_CHAPTER_VERSE:
                     // For example "Gen 4-5:6"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NUMBER_ONLY:
+                case PassageConstants.ACCURACY_NUMBER_ONLY:
                     // For example "Gen 4-6"
                     start = new Verse(parts[0]);
-                    int chap = Integer.parseInt(parts[1]);
+                    int chap = Verse.parseInt(parts[1].trim());
                     end = new Verse(start.getBook(), chap, BibleInfo.versesInChapter(start.getBook(), chap));
                     break;
 
-                case ACCURACY_NONE:
+                case PassageConstants.ACCURACY_NONE:
                     // For example "Gen 4-", lets assume the end of the chapter?
                     start = new Verse(parts[0]);
                     end = start.getLastVerseInChapter();
@@ -269,11 +269,11 @@ public final class VerseRange implements VerseBase
                 }
                 break;
 
-            case ACCURACY_BOOK_VERSE:
+            case PassageConstants.ACCURACY_BOOK_VERSE:
                 // So we start something like "Gen 2:3"
                 switch (Verse.getAccuracy(parts[1]))
                 {
-                case ACCURACY_BOOK_ONLY:
+                case PassageConstants.ACCURACY_BOOK_ONLY:
                     // For example "Gen 3:2-Exo"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
@@ -281,7 +281,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_BOOK_CHAPTER:
+                case PassageConstants.ACCURACY_BOOK_CHAPTER:
                     // For example "Gen 3:2-Exo 4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
@@ -289,25 +289,25 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInChapter();
                     break;
 
-                case ACCURACY_BOOK_VERSE:
+                case PassageConstants.ACCURACY_BOOK_VERSE:
                     // For example "Gen 3:2-Exo 3:4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1]);
                     break;
 
-                case ACCURACY_CHAPTER_VERSE:
+                case PassageConstants.ACCURACY_CHAPTER_VERSE:
                     // For example "Gen 3:2-4:4"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NUMBER_ONLY:
+                case PassageConstants.ACCURACY_NUMBER_ONLY:
                     // For example "Gen 3:2-5"
                     start = new Verse(parts[0]);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NONE:
+                case PassageConstants.ACCURACY_NONE:
                     // Very wierd: "Gen 4:3-", can really assume end of anything
                     // so make end = start.
                     start = new Verse(parts[0]);
@@ -319,12 +319,12 @@ public final class VerseRange implements VerseBase
                 }
                 break;
 
-            case ACCURACY_CHAPTER_VERSE:
+            case PassageConstants.ACCURACY_CHAPTER_VERSE:
                 // So we start something like "3:4".
                 // Now the basis starts to become important
                 switch (Verse.getAccuracy(parts[1]))
                 {
-                case ACCURACY_BOOK_ONLY:
+                case PassageConstants.ACCURACY_BOOK_ONLY:
                     // For example "3:2-Exo"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
@@ -332,7 +332,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_BOOK_CHAPTER:
+                case PassageConstants.ACCURACY_BOOK_CHAPTER:
                     // For example "3:2-Exo 4"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
@@ -340,25 +340,25 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInChapter();
                     break;
 
-                case ACCURACY_BOOK_VERSE:
+                case PassageConstants.ACCURACY_BOOK_VERSE:
                     // For example "3:2-Exo 3:4"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     break;
 
-                case ACCURACY_CHAPTER_VERSE:
+                case PassageConstants.ACCURACY_CHAPTER_VERSE:
                     // For example "3:2-4:4"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NUMBER_ONLY:
+                case PassageConstants.ACCURACY_NUMBER_ONLY:
                     // For example "3:2-5"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NONE:
+                case PassageConstants.ACCURACY_NONE:
                     // Very wierd: "4:3-", can really assume end of anything
                     // so make end = start.
                     start = new Verse(parts[0], vbasis);
@@ -370,11 +370,11 @@ public final class VerseRange implements VerseBase
                 }
                 break;
 
-            case ACCURACY_NUMBER_ONLY:
+            case PassageConstants.ACCURACY_NUMBER_ONLY:
                 // So we start something like "5"
                 switch (Verse.getAccuracy(parts[1]))
                 {
-                case ACCURACY_BOOK_ONLY:
+                case PassageConstants.ACCURACY_BOOK_ONLY:
                     // Wierd - For example "1-Exo". Since there is a basis to
                     // work from we won't assume that 1 means Gen.
                     start = new Verse(parts[0], vbasis);
@@ -383,7 +383,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_BOOK_CHAPTER:
+                case PassageConstants.ACCURACY_BOOK_CHAPTER:
                     // For example "2-Exo 4". See note for ACCURACY_BOOK_ONLY 
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
@@ -391,19 +391,19 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInChapter();
                     break;
 
-                case ACCURACY_BOOK_VERSE:
+                case PassageConstants.ACCURACY_BOOK_VERSE:
                     // For example "2-Exo 3:4"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     break;
 
-                case ACCURACY_CHAPTER_VERSE:
+                case PassageConstants.ACCURACY_CHAPTER_VERSE:
                     // For example "2-4:4"
                     start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NUMBER_ONLY:
+                case PassageConstants.ACCURACY_NUMBER_ONLY:
                     // For example "3-5". Tricky because the scope of the basis
                     // tells us how to interpret this.
                     // "Gen 1, 3-5" probably means chapters, but
@@ -420,7 +420,7 @@ public final class VerseRange implements VerseBase
                         }
                         else
                         {
-                            chapter = Verse.parseInt(parts[0]);
+                            chapter = Verse.parseInt(parts[0].trim());
                         }
     
                         start = new Verse(book, chapter, 1);
@@ -433,7 +433,7 @@ public final class VerseRange implements VerseBase
                     }
                     break;
 
-                case ACCURACY_NONE:
+                case PassageConstants.ACCURACY_NONE:
                     // For example "4-".
                     start = new Verse(parts[0], vbasis);
                     end = vbasis;
@@ -444,12 +444,12 @@ public final class VerseRange implements VerseBase
                 }
                 break;
 
-            case ACCURACY_NONE:
+            case PassageConstants.ACCURACY_NONE:
                 // So we start with nothing. For most of these we will use
                 // the basis as the start point.
                 switch (Verse.getAccuracy(parts[1]))
                 {
-                case ACCURACY_BOOK_ONLY:
+                case PassageConstants.ACCURACY_BOOK_ONLY:
                     // For example "-Exo".
                     start = vbasis;
                     end = new Verse(parts[1]);
@@ -457,7 +457,7 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInBook();
                     break;
 
-                case ACCURACY_BOOK_CHAPTER:
+                case PassageConstants.ACCURACY_BOOK_CHAPTER:
                     // For example "-Exo 2"
                     start = vbasis;
                     end = new Verse(parts[1]);
@@ -465,26 +465,26 @@ public final class VerseRange implements VerseBase
                     end = end.getLastVerseInChapter();
                     break;
 
-                case ACCURACY_BOOK_VERSE:
+                case PassageConstants.ACCURACY_BOOK_VERSE:
                     // For example "-Exo 3:4"
                     start = vbasis;
                     end = new Verse(parts[1]);
                     break;
 
-                case ACCURACY_CHAPTER_VERSE:
+                case PassageConstants.ACCURACY_CHAPTER_VERSE:
                     // For example "-4:4"
                     start = vbasis;
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NUMBER_ONLY:
+                case PassageConstants.ACCURACY_NUMBER_ONLY:
                     // For example "-5". This is wierd enough that is is hard
                     // to say we got this wrong.
                     start = vbasis;
                     end = new Verse(parts[1], start);
                     break;
 
-                case ACCURACY_NONE:
+                case PassageConstants.ACCURACY_NONE:
                     // For example "-". We just make everything the basis,
                     // although I'm not sure we shouldn't except.
                     start = vbasis;
@@ -504,7 +504,7 @@ public final class VerseRange implements VerseBase
             break;
 
         default:
-            throw new NoSuchVerseException(Msg.RANGE_PARTS, new Object[] { RANGE_ALLOWED_DELIMS, desc });
+            throw new NoSuchVerseException(Msg.RANGE_PARTS, new Object[] { PassageConstants.RANGE_ALLOWED_DELIMS, desc });
         }
 
         verifyData();
@@ -662,7 +662,7 @@ public final class VerseRange implements VerseBase
 
         switch (restrict)
         {
-        case RESTRICT_CHAPTER:
+        case PassageConstants.RESTRICT_CHAPTER:
             try
             {
                 int start_book = base_start.getBook();
@@ -683,13 +683,13 @@ public final class VerseRange implements VerseBase
             }
             break;
 
-        case RESTRICT_NONE:
+        case PassageConstants.RESTRICT_NONE:
             start = base_start.subtract(blur_down);
             end = base_start.add(blur_up);
             verse_count = calcVerseCount(start, end);
             break;
 
-        case RESTRICT_BOOK:
+        case PassageConstants.RESTRICT_BOOK:
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURBOOK));
 
         default:
@@ -725,7 +725,7 @@ public final class VerseRange implements VerseBase
 
         switch (restrict)
         {
-        case RESTRICT_CHAPTER:
+        case PassageConstants.RESTRICT_CHAPTER:
             try
             {
 
@@ -750,13 +750,13 @@ public final class VerseRange implements VerseBase
             }
             break;
 
-        case RESTRICT_NONE:
+        case PassageConstants.RESTRICT_NONE:
             start = base_start.getStart().subtract(blur_down);
             end = base_start.getEnd().add(blur_up);
             verse_count = calcVerseCount(start, end);
             break;
 
-        case RESTRICT_BOOK:
+        case PassageConstants.RESTRICT_BOOK:
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURBOOK));
 
         default:
@@ -821,7 +821,7 @@ public final class VerseRange implements VerseBase
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
                     return BibleInfo.getShortBookName(start_book)
-                         + RANGE_PREF_DELIM
+                         + PassageConstants.RANGE_PREF_DELIM
                          + BibleInfo.getShortBookName(end_book);
                 }
 
@@ -830,12 +830,12 @@ public final class VerseRange implements VerseBase
                 {
                     // Just report book and chapter names
                     return BibleInfo.getShortBookName(start_book)
-                         + VERSE_PREF_DELIM1 + start_chapter
-                         + RANGE_PREF_DELIM + BibleInfo.getShortBookName(end_book)
-                         + VERSE_PREF_DELIM1 + end_chapter;
+                         + PassageConstants.VERSE_PREF_DELIM1 + start_chapter
+                         + PassageConstants.RANGE_PREF_DELIM + BibleInfo.getShortBookName(end_book)
+                         + PassageConstants.VERSE_PREF_DELIM1 + end_chapter;
                 }
 
-                return start.getName(base) + RANGE_PREF_DELIM + end.getName(base);
+                return start.getName(base) + PassageConstants.RANGE_PREF_DELIM + end.getName(base);
             }
 
             // This range is exactly a whole book
@@ -855,13 +855,13 @@ public final class VerseRange implements VerseBase
                 {
                     // Just report the name of the book and the chapters
                     return BibleInfo.getShortBookName(start_book)
-                         + VERSE_PREF_DELIM1 + start_chapter
-                         + RANGE_PREF_DELIM + end_chapter;
+                         + PassageConstants.VERSE_PREF_DELIM1 + start_chapter
+                         + PassageConstants.RANGE_PREF_DELIM + end_chapter;
                 }
 
                 return start.getName(base)
-                     + RANGE_PREF_DELIM + end_chapter
-                     + VERSE_PREF_DELIM2 + end_verse;
+                     + PassageConstants.RANGE_PREF_DELIM + end_chapter
+                     + PassageConstants.VERSE_PREF_DELIM2 + end_verse;
             }
 
             // If this range is exactly a whole chapter
@@ -869,14 +869,14 @@ public final class VerseRange implements VerseBase
             {
                 // Just report the name of the book and the chapter
                 return BibleInfo.getShortBookName(start_book)
-                     + VERSE_PREF_DELIM1 + start_chapter;
+                     + PassageConstants.VERSE_PREF_DELIM1 + start_chapter;
             }
 
             // If this is 2 separate verses
             if (start_verse != end_verse)
             {
                 return start.getName(base)
-                     + RANGE_PREF_DELIM + end_verse;
+                     + PassageConstants.RANGE_PREF_DELIM + end_verse;
             }
 
             // The range is a single verse
@@ -918,7 +918,7 @@ public final class VerseRange implements VerseBase
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
                     return BibleInfo.getOSISName(start_book)
-                         + RANGE_PREF_DELIM
+                         + PassageConstants.RANGE_PREF_DELIM
                          + BibleInfo.getOSISName(end_book);
                 }
 
@@ -927,12 +927,12 @@ public final class VerseRange implements VerseBase
                 {
                     // Just report book and chapter names
                     return BibleInfo.getOSISName(start_book)
-                         + VERSE_OSIS_DELIM + start_chapter
-                         + RANGE_PREF_DELIM + BibleInfo.getOSISName(end_book)
-                         + VERSE_OSIS_DELIM + end_chapter;
+                         + PassageConstants.VERSE_OSIS_DELIM + start_chapter
+                         + PassageConstants.RANGE_PREF_DELIM + BibleInfo.getOSISName(end_book)
+                         + PassageConstants.VERSE_OSIS_DELIM + end_chapter;
                 }
 
-                return start.getOSISName() + RANGE_PREF_DELIM + end.getOSISName();
+                return start.getOSISName() + PassageConstants.RANGE_PREF_DELIM + end.getOSISName();
             }
 
             // This range is exactly a whole book
@@ -952,13 +952,13 @@ public final class VerseRange implements VerseBase
                 {
                     // Just report the name of the book and the chapters
                     return BibleInfo.getOSISName(start_book)
-                         + VERSE_OSIS_DELIM + start_chapter
-                         + RANGE_PREF_DELIM + end_chapter;
+                         + PassageConstants.VERSE_OSIS_DELIM + start_chapter
+                         + PassageConstants.RANGE_PREF_DELIM + end_chapter;
                 }
 
                 return start.getOSISName()
-                     + RANGE_PREF_DELIM + end_chapter
-                     + VERSE_OSIS_DELIM + end_verse;
+                     + PassageConstants.RANGE_PREF_DELIM + end_chapter
+                     + PassageConstants.VERSE_OSIS_DELIM + end_verse;
             }
 
             // If this range is exactly a whole chapter
@@ -966,14 +966,14 @@ public final class VerseRange implements VerseBase
             {
                 // Just report the name of the book and the chapter
                 return BibleInfo.getOSISName(start_book)
-                     + VERSE_OSIS_DELIM + start_chapter;
+                     + PassageConstants.VERSE_OSIS_DELIM + start_chapter;
             }
 
             // If this is 2 separate verses
             if (start_verse != end_verse)
             {
                 return start.getOSISName()
-                     + RANGE_PREF_DELIM + end_verse;
+                     + PassageConstants.RANGE_PREF_DELIM + end_verse;
             }
 
             // The range is a single verse
@@ -1514,9 +1514,9 @@ public final class VerseRange implements VerseBase
      */
     public static boolean isVerseRange(String desc)
     {
-        for (int i=0; i<RANGE_ALLOWED_DELIMS.length(); i++)
+        for (int i=0; i<PassageConstants.RANGE_ALLOWED_DELIMS.length(); i++)
         {
-            if (desc.indexOf(RANGE_ALLOWED_DELIMS.charAt(i)) != -1)
+            if (desc.indexOf(PassageConstants.RANGE_ALLOWED_DELIMS.charAt(i)) != -1)
             {
                 return true;
             }

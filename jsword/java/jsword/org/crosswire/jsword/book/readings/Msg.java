@@ -30,8 +30,8 @@ import org.crosswire.common.util.MsgBase;
 class Msg extends MsgBase
 {
     public static final Msg INIT_FAIL = new Msg("Failed to initialise Readings driver");
-    public static final Msg PARSE_FAIL = new Msg("Failed to parse '{0}'");
-    public static final Msg NOT_FOUND = new Msg("Key not found '{0}'");
+    public static final Msg PARSE_FAIL = new Msg("Failed to parse {0}");
+    public static final Msg NOT_FOUND = new Msg("Key not found {0}");
 
     /** Initialise any resource bundles */
     static

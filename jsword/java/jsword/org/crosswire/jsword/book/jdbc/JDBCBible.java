@@ -215,7 +215,7 @@ public class JDBCBible extends LocalURLBible implements Index
                         div.getContent().add(everse);
     
                         String txt = JDBCBibleUtil.processText(vtext);
-                        Filters.PLAIN_TEXT.toOSIS(everse, txt);
+                        Filters.getDefaultFilter().toOSIS(everse, txt);
                     }
                 }
 

@@ -54,7 +54,7 @@ public interface Dictionary extends Book
      * @param startswith The text to base replies on.
      * @return String[]
      */
-    public SortedSet getIndex(String startswith) throws BookException;
+    public SortedSet getIndex(String startswith);
 
     /**
      * Someone has typed in a reference to find, but we need a Key to actually

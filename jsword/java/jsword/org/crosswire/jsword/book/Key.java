@@ -3,6 +3,7 @@ package org.crosswire.jsword.book;
 
 /**
  * Key is a pointer into a position (or positions) in a Book.
+ * PENDING(joe): should Key be Comparable?
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

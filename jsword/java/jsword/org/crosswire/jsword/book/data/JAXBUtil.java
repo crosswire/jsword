@@ -14,9 +14,18 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.DivineName;
+import org.crosswire.jsword.osis.Milestone;
 import org.crosswire.jsword.osis.Note;
 import org.crosswire.jsword.osis.ObjectFactory;
+import org.crosswire.jsword.osis.P;
+import org.crosswire.jsword.osis.Q;
+import org.crosswire.jsword.osis.Reference;
 import org.crosswire.jsword.osis.Seg;
+import org.crosswire.jsword.osis.Speaker;
+import org.crosswire.jsword.osis.Speech;
+import org.crosswire.jsword.osis.Title;
+import org.crosswire.jsword.osis.TransChange;
 import org.crosswire.jsword.osis.Verse;
 import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -147,30 +156,67 @@ public class JAXBUtil
      * not accoring to any interface, (or even with consistent names) so this
      * method extracts a content List from a JAXB element.
      */
-    public static List getList(Element current)
+    public static List getList(Element ele)
     {
-        if (current instanceof Verse)
+        if (ele instanceof Verse)
         {
-            return ((Verse) current).getContent();
+            return ((Verse) ele).getContent();
         }
-        else if (current instanceof Seg)
+        else if (ele instanceof Seg)
         {
-            return ((Seg) current).getContent();
+            return ((Seg) ele).getContent();
         }
-        else if (current instanceof Div)
+        else if (ele instanceof Div)
         {
-            return ((Div) current).getContent();
+            return ((Div) ele).getContent();
         }
-        else if (current instanceof Note)
+        else if (ele instanceof Note)
         {
-            return ((Note) current).getContent();
+            return ((Note) ele).getContent();
         }
-        else if (current instanceof W)
+        else if (ele instanceof W)
         {
-            return ((W) current).getContent();
+            return ((W) ele).getContent();
+        }
+        else if (ele instanceof P)
+        {
+            return ((P) ele).getContent();
+        }
+        else if (ele instanceof Q)
+        {
+            return ((Q) ele).getContent();
+        }
+        else if (ele instanceof TransChange)
+        {
+            return ((TransChange) ele).getContent();
+        }
+        else if (ele instanceof Speaker)
+        {
+            return ((Speaker) ele).getContent();
+        }
+        else if (ele instanceof Speech)
+        {
+            return ((Speech) ele).getContent();
+        }
+        else if (ele instanceof Reference)
+        {
+            return ((Reference) ele).getContent();
+        }
+        else if (ele instanceof DivineName)
+        {
+            return ((DivineName) ele).getContent();
+        }
+        else if (ele instanceof Title)
+        {
+            return ((Title) ele).getContent();
+        }
+        else if (ele instanceof Milestone)
+        {
+            // NOTE(joe): Milestone does not have content, so why are we here?
+            return new ArrayList();
         }
         
-        log.error("unknown element: "+current.getClass().getName());
+        log.error("unknown element: "+ele.getClass().getName());
         throw new LogicError();
     }
 

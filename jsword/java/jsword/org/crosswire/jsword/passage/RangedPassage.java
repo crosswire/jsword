@@ -107,7 +107,7 @@ public class RangedPassage extends AbstractPassage
      */
     public int countRanges(int restrict)
     {
-        if (restrict == RESTRICT_NONE)
+        if (restrict == PassageConstants.RESTRICT_NONE)
         {
             return store.size();
         }
@@ -120,7 +120,7 @@ public class RangedPassage extends AbstractPassage
      */
     public int countVerses()
     {
-        Iterator it = rangeIterator(RESTRICT_NONE);
+        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
         int count = 0;
 
         while (it.hasNext())
@@ -137,7 +137,7 @@ public class RangedPassage extends AbstractPassage
      */
     public Iterator verseIterator()
     {
-        return new VerseIterator(rangeIterator(RESTRICT_NONE));
+        return new VerseIterator(rangeIterator(PassageConstants.RESTRICT_NONE));
     }
 
     /* (non-Javadoc)
@@ -145,7 +145,7 @@ public class RangedPassage extends AbstractPassage
      */
     public Iterator rangeIterator(int restrict)
     {
-        if (restrict == RESTRICT_NONE)
+        if (restrict == PassageConstants.RESTRICT_NONE)
         {
             return store.iterator();
         }
@@ -172,7 +172,7 @@ public class RangedPassage extends AbstractPassage
 
         VerseRange that_range = toVerseRange(obj);
 
-        Iterator it = rangeIterator(RESTRICT_NONE);
+        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
         while (it.hasNext())
         {
             VerseRange this_range = (VerseRange) it.next();
@@ -287,7 +287,7 @@ public class RangedPassage extends AbstractPassage
             VerseRange that_range = toVerseRange(that_it.next());
 
             // go through all the VerseRanges
-            Iterator this_it = rangeIterator(RESTRICT_NONE);
+            Iterator this_it = rangeIterator(PassageConstants.RESTRICT_NONE);
             while (this_it.hasNext())
             {
                 // if this range touches the range to be removed ...
@@ -316,13 +316,16 @@ public class RangedPassage extends AbstractPassage
      */
     protected void normalize()
     {
-        if (skip_normalization != 0) return;
+        if (skip_normalization != 0)
+        {
+            return;
+        }
 
         VerseRange last = null;
         VerseRange next = null;
         SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
 
-        Iterator it = rangeIterator(RESTRICT_NONE);
+        Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
         while (it.hasNext())
         {
             next = (VerseRange) it.next();
@@ -464,10 +467,10 @@ public class RangedPassage extends AbstractPassage
             // splitting according to restrict
             switch (restrict)
             {
-            case RESTRICT_NONE:
+            case PassageConstants.RESTRICT_NONE:
                 return replyNext();
 
-            case RESTRICT_CHAPTER:
+            case PassageConstants.RESTRICT_CHAPTER:
                 if (next.isMultipleChapters())
                 {
                     return splitNext();
@@ -477,7 +480,7 @@ public class RangedPassage extends AbstractPassage
                     return replyNext();
                 }
 
-            case RESTRICT_BOOK:
+            case PassageConstants.RESTRICT_BOOK:
                 if (next.isMultipleBooks())
                 {
                     return splitNext();

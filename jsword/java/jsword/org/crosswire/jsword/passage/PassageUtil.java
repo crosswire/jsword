@@ -33,7 +33,7 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class PassageUtil implements PassageConstants
+public class PassageUtil
 {
     /**
      * Prevent Instansiation
@@ -78,9 +78,9 @@ public class PassageUtil implements PassageConstants
     {
         switch (test)
         {
-        case RESTRICT_BOOK:
-        case RESTRICT_CHAPTER:
-        case RESTRICT_NONE:
+        case PassageConstants.RESTRICT_BOOK:
+        case PassageConstants.RESTRICT_CHAPTER:
+        case PassageConstants.RESTRICT_NONE:
             return true;
 
         default:
@@ -94,7 +94,7 @@ public class PassageUtil implements PassageConstants
      */
     public static String[] getBlurRestrictions()
     {
-        return RESTRICTIONS;
+        return PassageConstants.RESTRICTIONS;
     }
 
     /**
@@ -106,10 +106,10 @@ public class PassageUtil implements PassageConstants
     {
         switch (test)
         {
-        case CASE_LOWER:
-        case CASE_MIXED:
-        case CASE_SENTANCE:
-        case CASE_UPPER:
+        case PassageConstants.CASE_LOWER:
+        case PassageConstants.CASE_MIXED:
+        case PassageConstants.CASE_SENTANCE:
+        case PassageConstants.CASE_UPPER:
             return true;
 
         default:
@@ -123,7 +123,7 @@ public class PassageUtil implements PassageConstants
      */
     public static String[] getCases()
     {
-        return CASES;
+        return PassageConstants.CASES;
     }
 
     /**
@@ -135,12 +135,12 @@ public class PassageUtil implements PassageConstants
     {
         switch (test)
         {
-        case ACCURACY_BOOK_VERSE:
-        case ACCURACY_BOOK_CHAPTER:
-        case ACCURACY_BOOK_ONLY:
-        case ACCURACY_CHAPTER_VERSE:
-        case ACCURACY_NUMBER_ONLY:
-        case ACCURACY_NONE:
+        case PassageConstants.ACCURACY_BOOK_VERSE:
+        case PassageConstants.ACCURACY_BOOK_CHAPTER:
+        case PassageConstants.ACCURACY_BOOK_ONLY:
+        case PassageConstants.ACCURACY_CHAPTER_VERSE:
+        case PassageConstants.ACCURACY_NUMBER_ONLY:
+        case PassageConstants.ACCURACY_NONE:
             return true;
 
         default:
@@ -200,26 +200,26 @@ public class PassageUtil implements PassageConstants
         // Blank word
         if (word.equals(""))
         {
-            return CASE_LOWER;
+            return PassageConstants.CASE_LOWER;
         }
 
         // Lower case?
         if (word.equals(word.toLowerCase()))
         {
-            return CASE_LOWER;
+            return PassageConstants.CASE_LOWER;
         }
 
         // Upper case?
         // A string length of 1 is no good ('I' or 'A' is sentance case)
         if (word.equals(word.toUpperCase()) && word.length() != 1)
         {
-            return CASE_UPPER;
+            return PassageConstants.CASE_UPPER;
         }
 
         // If initial is lower then it must be mixed
         if (Character.isLowerCase(word.charAt(0)))
         {
-            return CASE_MIXED;
+            return PassageConstants.CASE_MIXED;
         }
 
         // Hack the only real caseMixed is LORD's
@@ -227,11 +227,11 @@ public class PassageUtil implements PassageConstants
         // as CASE_SENTANCE, so for now ...
         if (word.equals("LORD's"))
         {
-            return CASE_MIXED;
+            return PassageConstants.CASE_MIXED;
         }
 
         // So ...
-        return CASE_SENTANCE;
+        return PassageConstants.CASE_SENTANCE;
     }
 
     /**
@@ -249,13 +249,13 @@ public class PassageUtil implements PassageConstants
 
         switch (new_case)
         {
-        case CASE_LOWER:
+        case PassageConstants.CASE_LOWER:
             return word.toLowerCase();
 
-        case CASE_UPPER:
+        case PassageConstants.CASE_UPPER:
             return word.toUpperCase();
 
-        case CASE_SENTANCE:
+        case PassageConstants.CASE_SENTANCE:
             index = word.indexOf('-');
             if (index == -1)
             {
@@ -282,7 +282,7 @@ public class PassageUtil implements PassageConstants
             return toSentanceCase(word.substring(0, index))
                    + "-" + toSentanceCase(word.substring(index+1));
 
-        case CASE_MIXED:
+        case PassageConstants.CASE_MIXED:
             if (word.toLowerCase().equals("lord's"))
             {
                 return "LORD's";
@@ -327,7 +327,7 @@ public class PassageUtil implements PassageConstants
     {
         // store these locally we use them so often
         int verses = ref.countVerses();
-        int ranges = ref.countRanges(RESTRICT_NONE);
+        int ranges = ref.countRanges(PassageConstants.RESTRICT_NONE);
 
         // the size in bytes of teach storage method
         int bitwise_size = BibleInfo.versesInBible() / 8;
@@ -402,7 +402,7 @@ public class PassageUtil implements PassageConstants
             index += toBinary(buffer, index, ranges, BibleInfo.versesInBible()/2);
 
             // write the verse ordinals in a loop
-            Iterator it = ref.rangeIterator(RESTRICT_NONE);
+            Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE);
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();

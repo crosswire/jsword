@@ -40,6 +40,7 @@ public interface SearchEngine extends Activatable
      * runtime. This method is run first of all, before anything else and should
      * do everything it can to ensure that future method calls will be error
      * free without consuming significant system resources.
+     * PENDING(joe): generalize this for Books and not just Bibles
      */
     public void init(Bible bible, URL url) throws BookException;
 

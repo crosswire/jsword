@@ -178,7 +178,7 @@ public class PassageTally extends AbstractPassage
         {
             if (order == ORDER_BIBLICAL)
             {
-                Iterator it = rangeIterator(RESTRICT_NONE);
+                Iterator it = rangeIterator(PassageConstants.RESTRICT_NONE);
                 Verse current = null;
                 while (it.hasNext())
                 {
@@ -187,7 +187,7 @@ public class PassageTally extends AbstractPassage
 
                     if (it.hasNext())
                     {
-                        retcode.append(REF_PREF_DELIM);
+                        retcode.append(PassageConstants.REF_PREF_DELIM);
                     }
 
                     current = range.getStart();
@@ -636,7 +636,7 @@ public class PassageTally extends AbstractPassage
             throw new IllegalArgumentException(Msg.ERROR_BLUR.getName());
         }
 
-        if (restrict != RESTRICT_NONE)
+        if (restrict != PassageConstants.RESTRICT_NONE)
         {
             log.warn("Restrict="+restrict+" is not properly supported.");
 
@@ -645,7 +645,7 @@ public class PassageTally extends AbstractPassage
             try
             {
                 PassageTally temp = (PassageTally) this.clone();
-                Iterator it = temp.rangeIterator(RESTRICT_NONE);
+                Iterator it = temp.rangeIterator(PassageConstants.RESTRICT_NONE);
 
                 while (it.hasNext())
                 {
@@ -1022,7 +1022,7 @@ public class PassageTally extends AbstractPassage
         {
             TreeSet output = new TreeSet();
 
-            Iterator rit = new VerseRangeIterator(vit, RESTRICT_NONE);
+            Iterator rit = new VerseRangeIterator(vit, PassageConstants.RESTRICT_NONE);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();

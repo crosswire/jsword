@@ -47,7 +47,7 @@ public class Main
      */
     public static void main(String[] args) throws MalformedURLException, JDOMException, IOException
     {
-        Logger.stopLogging();
+        Logger.outputNothing();
 
         Reader in = new InputStreamReader(System.in);
         Writer out = new PrintWriter(System.out);

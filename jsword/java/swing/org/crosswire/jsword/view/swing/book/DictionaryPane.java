@@ -3,7 +3,6 @@ package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JList;
@@ -240,20 +239,10 @@ public class DictionaryPane extends JPanel implements DisplayArea
      */
     protected void newDictionary()
     {
-        SortedSet set;
-
-        try
-        {
-            Object selected = lstdicts.getSelectedValue();
-            DictionaryMetaData cmd = (DictionaryMetaData) selected;
-            dict = cmd.getDictionary();
-            set = dict.getIndex("");
-        }
-        catch (BookException ex)
-        {
-            Reporter.informUser(this, ex);
-            set = new TreeSet();
-        }
+        Object selected = lstdicts.getSelectedValue();
+        DictionaryMetaData cmd = (DictionaryMetaData) selected;
+        dict = cmd.getDictionary();
+        SortedSet set = dict.getIndex("");
 
         SortedSetListModel model = new SortedSetListModel(set);
         lstentries.setModel(model);

@@ -191,30 +191,8 @@ public class SwordConfig
 
         direction = matchingIndex(SwordConstants.DIRECTION_STRINGS, "Direction", 0);
 
-        int sourceType = matchingIndex(SwordConstants.SOURCE_STRINGS, "SourceType", 0);
-        switch (sourceType)
-        {
-        case SwordConstants.SOURCE_PLAINTEXT:
-            filter = Filters.PLAIN_TEXT;
-            break;
-
-        case SwordConstants.SOURCE_GBF:
-            filter = Filters.GBF;
-            break;
-
-        case SwordConstants.SOURCE_THML:
-            filter = Filters.THML;
-            break;
-
-        case SwordConstants.SOURCE_OSIS:
-            filter = Filters.OSIS;
-            break;
-
-        default:
-            log.warn("SourceType set to invalid value, using default");
-            filter = Filters.PLAIN_TEXT;
-            break;
-        }
+        String sourcetype = reader.getFirstValue("SourceType");
+        filter = Filters.getFilter(sourcetype);
 
         encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", 0);
         if (encoding < 0)

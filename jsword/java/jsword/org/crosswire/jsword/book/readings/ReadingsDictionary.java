@@ -79,7 +79,7 @@ public class ReadingsDictionary extends AbstractDictionary
             prop = new Properties();
             log.error("Failed to read readings set", ex);
         }
-            
+
         /*String title = (String)*/ prop.remove("title");
 
         // We use 1972 because it is a leap year.
@@ -122,7 +122,7 @@ public class ReadingsDictionary extends AbstractDictionary
      * startswith was a bit strange when the keys are dates.
      * @see org.crosswire.jsword.book.Dictionary#getIndex(java.lang.String)
      */
-    public SortedSet getIndex(String startswith) throws BookException
+    public SortedSet getIndex(String startswith)
     {
         SortedSet keys = new TreeSet();
         keys.addAll(hash.keySet());
@@ -158,7 +158,6 @@ public class ReadingsDictionary extends AbstractDictionary
     public BookData getData(Key key) throws BookException
     {
         String readings = (String) hash.get(key);
-        
         if (readings == null)
         {
             throw new BookException(Msg.NOT_FOUND, new Object[] { key.getText() });
@@ -171,10 +170,10 @@ public class ReadingsDictionary extends AbstractDictionary
 
             Work work = JAXBUtil.factory().createWork();
             work.setOsisWork(osisid);
-            
+
             Header header = JAXBUtil.factory().createHeader();
             header.getWork().add(work);
-            
+
             OsisText text = JAXBUtil.factory().createOsisText();
             text.setOsisIDWork("Readings."+osisid);
             text.setHeader(header);

@@ -365,7 +365,7 @@ public class RawBible extends LocalURLBible implements Index
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        Filters.PLAIN_TEXT.toOSIS(everse, txt);                
+                        Filters.getDefaultFilter().toOSIS(everse, txt);                
                     }
                 }
             }

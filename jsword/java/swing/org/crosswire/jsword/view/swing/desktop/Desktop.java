@@ -143,6 +143,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         createComponents();
 
         // GUI setup
+        debug();
         init();
         accelerateMenu(bar_menu);
 
@@ -188,6 +189,17 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         splash.close();
 
         this.pack();
+    }
+
+    /**
+     * Sometimes we need to make some changes to debug the GUI.
+     */
+    private void debug()
+    {
+        //this.getContentPane().addContainerListener(new DebugContainerListener());
+
+        //javax.swing.RepaintManager.currentManager(this).setDoubleBufferingEnabled(false);
+        //((javax.swing.JComponent) getContentPane()).setDebugGraphicsOptions(javax.swing.DebugGraphics.LOG_OPTION);
     }
 
     /**
@@ -258,8 +270,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     private void init()
     {
-        //this.getContentPane().addContainerListener(new DebugContainerListener());
-
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);

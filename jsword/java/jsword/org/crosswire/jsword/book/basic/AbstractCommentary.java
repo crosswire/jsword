@@ -179,7 +179,7 @@ public abstract class AbstractCommentary implements Commentary
 
                     try
                     {
-                        Filters.PLAIN_TEXT.toOSIS(everse, message.getName());
+                        Filters.getDefaultFilter().toOSIS(everse, message.getName());
                     }
                     catch (DataException ex)
                     {

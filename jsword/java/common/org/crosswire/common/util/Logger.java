@@ -46,9 +46,25 @@ public final class Logger
     /**
      * Stop all logging output
      */
-    public static void stopLogging()
+    public static void outputNothing()
     {
         org.apache.log4j.Logger.getRootLogger().setLevel(Level.ERROR);
+    }
+
+    /**
+     * Stop all logging output
+     */
+    public static void outputInfoMinimum()
+    {
+        org.apache.log4j.Logger.getRootLogger().setLevel(Level.INFO);
+    }
+
+    /**
+     * Stop all logging output
+     */
+    public static void outputEverything()
+    {
+        org.apache.log4j.Logger.getRootLogger().setLevel(Level.DEBUG);
     }
 
     /**

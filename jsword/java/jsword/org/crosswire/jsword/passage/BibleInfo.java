@@ -37,7 +37,7 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class BibleInfo implements PassageConstants
+public class BibleInfo
 {
     /**
      * Ensure that we can not be instansiated
@@ -92,9 +92,9 @@ public class BibleInfo implements PassageConstants
         {
             switch (book_case)
             {
-            case CASE_LOWER:
+            case PassageConstants.CASE_LOWER:
                 return full_books_lower[book-1];
-            case CASE_UPPER:
+            case PassageConstants.CASE_UPPER:
                 return full_books_upper[book-1];
             default:
                 return full_books[book-1];
@@ -122,9 +122,9 @@ public class BibleInfo implements PassageConstants
         {
             switch (book_case)
             {
-            case CASE_LOWER:
+            case PassageConstants.CASE_LOWER:
                 return short_books_lower[book-1];
-            case CASE_UPPER:
+            case PassageConstants.CASE_UPPER:
                 return short_books_upper[book-1];
             default:
                 return short_books[book-1];
@@ -175,9 +175,9 @@ public class BibleInfo implements PassageConstants
         if (!PassageUtil.containsLetter(find))
         {
             boolean numeric_book = false;
-            for (int i=0; i<VERSE_NUMERIC_BOOK.length; i++)
+            for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length; i++)
             {
-                if (find.startsWith(VERSE_NUMERIC_BOOK[i]))
+                if (find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK[i]))
                 {
                     numeric_book = true;
                 }
@@ -215,11 +215,11 @@ public class BibleInfo implements PassageConstants
         }
 
         // if we start with a book number id mark
-        for (int i=0; i<VERSE_NUMERIC_BOOK.length; i++)
+        for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length; i++)
         {
-            if (find.startsWith(VERSE_NUMERIC_BOOK[i]))
+            if (find.startsWith(PassageConstants.VERSE_NUMERIC_BOOK[i]))
             {
-                int book = Integer.parseInt(find.substring(VERSE_NUMERIC_BOOK[i].length()));
+                int book = Integer.parseInt(find.substring(PassageConstants.VERSE_NUMERIC_BOOK[i].length()));
                 if (book < 1 || book > 66)
                 {
                     throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
@@ -739,9 +739,9 @@ public class BibleInfo implements PassageConstants
         {
             switch (book_case)
             {
-            case CASE_LOWER:
+            case PassageConstants.CASE_LOWER:
                 return sections_lower[section-1];
-            case CASE_UPPER:
+            case PassageConstants.CASE_UPPER:
                 return sections_upper[section-1];
             default:
                 return sections[section-1];
@@ -759,7 +759,7 @@ public class BibleInfo implements PassageConstants
     /**
      * How the book names are reported
      */
-    private static int book_case = CASE_SENTANCE;
+    private static int book_case = PassageConstants.CASE_SENTANCE;
 
     /**
      * Handy section finder. There is a bit of moderately bad programming

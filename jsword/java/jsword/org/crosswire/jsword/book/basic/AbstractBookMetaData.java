@@ -314,10 +314,12 @@ public abstract class AbstractBookMetaData implements BookMetaData
         }
 
         // If super does equals ...
+        /* NOTE(joe): Commented out because super.equals() always equals false
         if (!super.equals(obj))
         {
             return false;
         }
+        */
 
         // The real bit ...
         AbstractBookMetaData that = (AbstractBookMetaData) obj;

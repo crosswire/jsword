@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.data;
+package org.crosswire.jsword.book.data.osis;
 
 import java.io.StringReader;
 import java.util.List;
@@ -9,6 +9,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.data.DataException;
+import org.crosswire.jsword.book.data.Filter;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.xml.sax.InputSource;
 
 /**
@@ -56,39 +60,59 @@ public class OSISFilter implements Filter
 
         try
         {
-            // create a root element to house our document fragment
-            StringReader in = new StringReader("<div>"+plain+"</div>");
-            InputSource is = new InputSource(in);
-
-            Element data = (Element) unm.unmarshal(is);
-
-            // data is the div we added above so the input was a well formed
-            // XML so we need to add the content of the div and not the div
-            // itself
-
-            List host = JAXBUtil.getList(ele);
-            List content = JAXBUtil.getList(data);
-
-            host.addAll(content);
+            parse(ele, plain);
         }
-        catch (Exception ex)
+        catch (JAXBException ex)
         {
-            log.warn("parse failed", ex);
+            log.warn("failed to parse. try=1, ex="+ex.getMessage()+", source: "+plain);
 
-            List list = JAXBUtil.getList(ele);
-            list.add("Errors exist in the source module: " + ex.getMessage());
-
+            String cropped = XMLUtil.guessKillEntities(plain);
             try
             {
-                list.add(JAXBUtil.factory().createP());
+                parse(ele, cropped);
             }
-            catch (Exception ex2)
+            catch (JAXBException ex2)
             {
-                log.warn("createP() failed", ex2);
-            }
+                log.warn("failed to parse. try=1, ex="+ex.getMessage()+", source: "+cropped);
+                log.warn("location", ex2);
 
-            list.add(plain);
+                List list = JAXBUtil.getList(ele);
+                list.add("Errors exist in the source module: " + ex.getMessage());
+
+                try
+                {
+                    list.add(JAXBUtil.factory().createP());
+                }
+                catch (Exception ex3)
+                {
+                    log.warn("createP() failed", ex3);
+                }
+
+                list.add(plain);
+            }
         }
+    }
+
+    /**
+     * If the string is invalid then we might want to have more than one
+     * crack at parsing it
+     */
+    private void parse(Element ele, String plain) throws JAXBException
+    {
+        // create a root element to house our document fragment
+        StringReader in = new StringReader("<div>"+plain+"</div>");
+        InputSource is = new InputSource(in);
+
+        Element data = (Element) unm.unmarshal(is);
+
+        // data is the div we added above so the input was a well formed
+        // XML so we need to add the content of the div and not the div
+        // itself
+
+        List host = JAXBUtil.getList(ele);
+        List content = JAXBUtil.getList(data);
+
+        host.addAll(content);
     }
 
     /**

@@ -149,7 +149,10 @@ public class Mapper extends JFrame
 
             Properties prop = Project.resource().getProperties("mapper");
             if (prop != null)
+            {
                 config.setProperties(prop);
+            }
+
             config.localToApplication(true);
 
             la = new LinkArray(Defaults.getBibleMetaData().getBible());

@@ -1,6 +1,13 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.util.Project;
+
 /**
  * A simple container for all the known filters.
  * 
@@ -25,25 +32,103 @@ package org.crosswire.jsword.book.data;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Filters
+public class Filters
 {
     /**
-     * Plain text to OSIS
+     * The log stream
      */
-    public static final Filter PLAIN_TEXT = new PlainTextFilter();
+    private static final Logger log = Logger.getLogger(Filters.class);
 
     /**
-     * GBF text to OSIS
+     * The lookup table of filters
      */
-    public static final Filter GBF = new GBFFilter();
+    private static Map filters = new HashMap();
 
     /**
-     * THML text to OSIS
+     * The lookup table of filters
      */
-    public static final Filter THML = new THMLFilter();
+    private static Filter deft = null;
 
     /**
-     * OSIS format XML string to OSIS
+     * Populate the lookup table of filters and the default from the properties
+     * file.
      */
-    public static final Filter OSIS = new OSISFilter();
+    static
+    {
+        Map map = Project.resource().getImplementorsMap(Filter.class);
+
+        // the default value
+        try
+        {
+            Class cdeft = (Class) map.remove("default");
+            deft = (Filter) cdeft.newInstance();            
+        }
+        catch (Exception ex)
+        {
+            log.fatal("Failed to get default filter, will attempt to use first", ex);
+        }
+
+        // the lookup table
+        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        {
+            try
+            {
+                String key = (String) it.next();
+                Class clazz = (Class) map.get(key);
+                Filter instance = (Filter) clazz.newInstance();
+                addFilter(key, instance);
+            }
+            catch (Exception ex)
+            {
+                log.error("Failed to add filter", ex);
+            }
+        }
+        
+        // if the default didn't work then make a stab at an answer
+        if (deft == null)
+        {
+            deft = (Filter) filters.values().iterator().next();
+        }
+    }
+
+    /**
+     * Find a filter given a lookup string. If lookup is null or the filter is
+     * not found then the default filter will be used.
+     */
+    public static Filter getFilter(String lookup)
+    {
+        Filter reply = null;
+        for (Iterator it = filters.keySet().iterator(); it.hasNext();)
+        {
+            String key = (String) it.next();
+            if (key.equalsIgnoreCase(lookup))
+            {
+                reply = (Filter) filters.get(key);
+                break;
+            }
+        }
+
+        if (reply == null)
+        {
+            reply = deft;
+        }
+
+        return reply;
+    }
+
+    /**
+     * Find a filter given a lookup string
+     */
+    public static Filter getDefaultFilter()
+    {
+        return deft;
+    }
+
+    /**
+     * Add to our list of known filters
+     */
+    public static void addFilter(String name, Filter instance)
+    {
+        filters.put(name, instance);
+    }
 }

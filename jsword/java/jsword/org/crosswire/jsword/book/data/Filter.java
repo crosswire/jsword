@@ -48,9 +48,14 @@ public interface Filter
     public static final String SEG_BOLD = "font-weight: bold;";
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the bold tag
+     * Constant to help narrow down what we use seg for. In this case the underline tag
      */
     public static final String SEG_UNDERLINE = "text-decoration: underline;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case justify right tag
+     */
+    public static final String SEG_JUSTIFYRIGHT = "text-align: right;";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the color tag

@@ -108,7 +108,7 @@ public class StubCommentary extends AbstractCommentary
                     
                     div.getContent().add(everse);
 
-                    Filters.PLAIN_TEXT.toOSIS(everse, "stub implementation");
+                    Filters.getDefaultFilter().toOSIS(everse, "stub implementation");
                 }
             }
             

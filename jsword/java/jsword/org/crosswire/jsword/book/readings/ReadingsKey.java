@@ -38,7 +38,7 @@ public class ReadingsKey implements Key, Comparable
      * @param text The textual version of the date for these readings in the
      * format "d mmmm"
      */
-    public ReadingsKey(String text) throws ParseException
+    protected ReadingsKey(String text) throws ParseException
     {
         date = DF.parse(text);
     }
@@ -47,7 +47,7 @@ public class ReadingsKey implements Key, Comparable
      * Simple Constructor.
      * @param date The date for this key
      */
-    public ReadingsKey(Date date)
+    protected ReadingsKey(Date date)
     {
         this.date = date;
     }
@@ -69,6 +69,46 @@ public class ReadingsKey implements Key, Comparable
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // Check that that is the same as this
+        // Don't use instanceof since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        // If super does equals ...
+        /* NOTE(joe): Commented out because super.equals() always equals false
+        if (!super.equals(obj))
+        {
+            return false;
+        }
+        */
+
+        // The real bit ...
+        ReadingsKey that = (ReadingsKey) obj;
+
+        return date.equals(that.date);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return date.hashCode();
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object obj)
@@ -86,7 +126,6 @@ public class ReadingsKey implements Key, Comparable
      * Date formatter
      */
     private static final DateFormat DF = new SimpleDateFormat("d MMMM");
-    
     static
     {
         DF.setLenient(true);

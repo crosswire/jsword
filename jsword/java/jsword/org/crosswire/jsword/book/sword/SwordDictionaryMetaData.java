@@ -38,9 +38,7 @@ public class SwordDictionaryMetaData extends SwordBookMetaData implements Dictio
     public SwordDictionaryMetaData(SwordBookDriver driver, SwordConfig config) throws BookException
     {
         super(driver, config);
-
         dict = new SwordDictionary(this, config);
-        dict.init();
     }
 
     /* (non-Javadoc)

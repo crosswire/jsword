@@ -29,26 +29,22 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg OSIS_INIT = new Msg("OSIS layer failed to initialise");
-    static final Msg OSIS_BADID = new Msg("OsisID not valid: {0}");
-
-    static final Msg GBF_JAXB = new Msg("Parse Error");
-    static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
-
-    static final Msg THML_BADTOKEN = new Msg("Bad XML string line={1}, column={2}: {0}");
-    static final Msg THML_PARSE = new Msg("Parse failed: {0}");
-
     static final Msg JAXB_ERROR = new Msg("JAXB Error");
 
     static final Msg MISSING_VERSE = new Msg("Verse element could not be found");
+    static final Msg OSIS_BADID = new Msg("OsisID not valid: {0}");
 
-    /** Initialise any resource bundles */
+    /**
+     * Initialise any resource bundles
+     */
     static
     {
         init(Msg.class.getName());
     }
 
-    /** Passthrough ctor */
+    /**
+     * Passthrough ctor
+     */
     private Msg(String name)
     {
         super(name);
