@@ -423,10 +423,9 @@ public final class VerseRange implements VerseBase
                         {
                             chapter = Verse.parseInt(parts[0]);
                         }
+    
                         start = new Verse(book, chapter, 1);
-                        end = new Verse(parts[1], start);
-                        // except that this gives us end at verse 1, and not the book end
-                        end = end.getLastVerseInChapter();
+                        end = new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter));
                     }
                     else
                     {

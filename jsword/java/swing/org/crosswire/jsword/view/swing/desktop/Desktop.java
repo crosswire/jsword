@@ -108,8 +108,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     {
         try
         {
+            Splash splash = new Splash(this, 60000);
+
             URL predicturl = Project.resource().getWritablePropertiesURL("splash");
-            splash = new Splash(this, 60000);
             startjob = JobManager.createJob("Startup", predicturl);
 
             // Initial setup
@@ -222,6 +223,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             InnerDisplayPane.preload();
 
             startjob.done();
+            splash.close();
         }
         catch (Exception ex)
         {
@@ -516,13 +518,13 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     private void setLayoutComponent(Component next)
     {
-        Component current = spt_books.getLeftComponent();
-        if (current == next)
+        Component leftcurr = spt_books.getLeftComponent();
+        if (leftcurr == next)
         {
             return;
         }
         
-        if (current != null)
+        if (leftcurr != null)
         {
             // Not sure why we have to use a number in place of
             // the JSplitPane.LEFT string constant.
@@ -774,7 +776,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private static final Logger log = Logger.getLogger(Desktop.class);
 
     private Job startjob = null;
-    private Splash splash = null;
     private Action act_file_new = null;
     private Action act_file_open = null;
     private Action act_file_save = null;

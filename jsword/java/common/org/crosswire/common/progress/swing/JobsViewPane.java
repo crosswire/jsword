@@ -58,16 +58,16 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     public JobsViewPane()
     {
+        init();
+
         JobManager.addWorkListener(this);
 
-        Set jobs = JobManager.getJobs();
-        for (Iterator it = jobs.iterator(); it.hasNext();)
+        Set current = JobManager.getJobs();
+        for (Iterator it = current.iterator(); it.hasNext();)
         {
             Job job = (Job) it.next();
             addJob(job);
         }
-
-        init();
     }
 
     /**
@@ -123,9 +123,8 @@ public class JobsViewPane extends JPanel implements WorkListener
         jobdata.job = job;
         
         // find the next empty position
-        int i = findEmptyPosition();
-        
         jobs.put(job, jobdata);
+        int i = findEmptyPosition();
         if (i >= positions.size())
         {
             positions.add(jobdata);

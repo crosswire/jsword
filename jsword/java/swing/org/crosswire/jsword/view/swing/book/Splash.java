@@ -18,15 +18,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.progress.WorkEvent;
-import org.crosswire.common.progress.WorkListener;
 import org.crosswire.common.progress.swing.JobsProgressBar;
 import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.jsword.util.Project;
@@ -55,7 +51,7 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Splash extends JWindow implements WorkListener
+public class Splash extends JWindow
 {
     /**
      * Create a splash window
@@ -67,7 +63,6 @@ public class Splash extends JWindow implements WorkListener
 
         jbInit();
 
-        JobManager.addWorkListener(this);
         new Thread(new CloseRunnable()).start();
     }
 
@@ -95,16 +90,12 @@ public class Splash extends JWindow implements WorkListener
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);
         lbl_info.setText("Version "+Project.resource().getVersion());
 
-        prg_info.setString("Loading ...");
-        prg_info.setStringPainted(true);
-
         pnl_info.setLayout(new BorderLayout(5, 0));
         pnl_info.setBackground(Color.black);
         pnl_info.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         pnl_info.add(lbl_info, BorderLayout.NORTH);
-        pnl_info.add(prg_info, BorderLayout.CENTER);
+        pnl_info.add(pnl_jobs, BorderLayout.CENTER);
 
-        this.getContentPane().add(pnl_jobs, BorderLayout.NORTH);
         this.getContentPane().add(pnl_info, BorderLayout.SOUTH);
         this.getContentPane().add(lbl_picture, BorderLayout.CENTER);
         this.pack();
@@ -123,27 +114,11 @@ public class Splash extends JWindow implements WorkListener
         this.setVisible(true);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.progress.WorkListener#workProgressed(org.crosswire.common.progress.WorkEvent)
-     */
-    public void workProgressed(WorkEvent ev)
-    {
-        prg_info.setValue(ev.getPercent());
-        prg_info.setString(ev.getDescription());
-        
-        if (ev.isFinished())
-        {
-            close();
-        }
-    }
-
     /**
      * Shut up shop
      */
-    protected void close()
+    public void close()
     {
-        JobManager.removeWorkListener(this);
-
         setVisible(false);
         dispose();
     }
@@ -173,7 +148,7 @@ public class Splash extends JWindow implements WorkListener
     
         public void actionPerformed(ActionEvent ev)
         {
-            Splash splash = new Splash(getComponent(), 60000);
+            new Splash(getComponent(), 60000);
         }
     }
 
@@ -208,7 +183,6 @@ public class Splash extends JWindow implements WorkListener
     private Icon icon;
     private JPanel pnl_info = new JPanel();
     private JLabel lbl_picture = new JLabel();
-    protected JProgressBar prg_info = new JProgressBar();
     private JLabel lbl_info = new JLabel();
     private JobsProgressBar pnl_jobs = new JobsProgressBar();
 }

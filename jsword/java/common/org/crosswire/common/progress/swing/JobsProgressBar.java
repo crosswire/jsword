@@ -1,10 +1,11 @@
 
 package org.crosswire.common.progress.swing;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,8 +51,8 @@ public class JobsProgressBar extends JPanel implements WorkListener
     {
         JobManager.addWorkListener(this);
 
-        Set jobs = JobManager.getJobs();
-        for (Iterator it = jobs.iterator(); it.hasNext();)
+        Set current = JobManager.getJobs();
+        for (Iterator it = current.iterator(); it.hasNext();)
         {
             Job job = (Job) it.next();
             addJob(job);
@@ -79,7 +80,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         {
             addJob(job);
         }
-        
+
         updateJob(job, ev);
 
         if (ev.isFinished())
@@ -97,15 +98,27 @@ public class JobsProgressBar extends JPanel implements WorkListener
         jobdata.job = job;
 
         jobs.put(job, jobdata);
+        int i = findEmptyPosition();
+        if (i >= positions.size())
+        {
+            positions.add(jobdata);
+        }
+        else
+        {
+            positions.set(i, jobdata);
+        }
+
+        jobdata.index = i;
         jobdata.progress = new JProgressBar();
+        jobdata.progress.setStringPainted(true);
 
-        Dimension preferred = jobdata.progress.getPreferredSize();
-        preferred.width = 50;
-        jobdata.progress.setPreferredSize(preferred);
+        // Dimension preferred = jobdata.progress.getPreferredSize();
+        // preferred.width = 50;
+        // jobdata.progress.setPreferredSize(preferred);
 
-        this.add(jobdata.progress);
+        this.add(jobdata.progress, i);
         this.revalidate();
-        
+
         log.debug("added job to panel: "+jobdata.job.getDescription());
     }
 
@@ -127,7 +140,8 @@ public class JobsProgressBar extends JPanel implements WorkListener
     private void removeJob(Job job)
     {
         JobData jobdata = (JobData) jobs.get(job);
-        
+
+        positions.set(jobdata.index, null);
         jobs.remove(job);
         log.debug("removing job from panel: "+jobdata.job.getDescription());
         
@@ -136,6 +150,31 @@ public class JobsProgressBar extends JPanel implements WorkListener
         
         jobdata.job = null;
         jobdata.progress = null;
+        jobdata.index = -1;
+    }
+
+    /**
+     * Where is the next hole in the positions array
+     */
+    private int findEmptyPosition()
+    {
+        int i = 0;
+        while (true)
+        {
+            if (i >= positions.size())
+            {
+                break;
+            }
+
+            if (positions.get(i) == null)
+            {
+                break;
+            }
+
+            i++;
+        }
+
+        return i;
     }
 
     /**
@@ -149,11 +188,17 @@ public class JobsProgressBar extends JPanel implements WorkListener
     private Map jobs = new HashMap();
 
     /**
+     * Array telling us what y position the jobs have in the window
+     */
+    private List positions = new ArrayList();
+
+    /**
      * A simple struct to group information about a Job
      */
     private class JobData
     {
         Job job = null;
         JProgressBar progress = null;
+        int index = -1;
     }
 }
