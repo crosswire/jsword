@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /**
  * EirPanel is an extension of JPanel that adds the ability to be visible in
- * a separate Panel.
+ * a separate dialog.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

@@ -161,9 +161,9 @@ public class BooksListModel extends AbstractListModel
          */
         public void bookAdded(BooksEvent ev)
         {
-            int old_size = getSize();
+            int oldsize = getSize();
             cacheData();
-            fireIntervalAdded(ev.getSource(), 0, old_size);
+            fireIntervalAdded(ev.getSource(), 0, oldsize);
         }
 
         /* (non-Javadoc)
@@ -171,9 +171,9 @@ public class BooksListModel extends AbstractListModel
          */
         public void bookRemoved(BooksEvent ev)
         {
-            int old_size = getSize();
+            int oldsize = getSize();
             cacheData();
-            fireIntervalRemoved(ev.getSource(), 0, old_size);
+            fireIntervalRemoved(ev.getSource(), 0, oldsize);
         }    
     }
 

@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -28,7 +27,6 @@ import javax.swing.WindowConstants;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.WorkEvent;
 import org.crosswire.common.progress.WorkListener;
-import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
@@ -45,6 +43,11 @@ import org.crosswire.jsword.view.swing.book.DriversComboBoxModel;
  * really only converts from one implementation of Book to another.
  * This is needed because I drivers like JDBCBook and GBMLBook will not
  * be very speed optimized.
+ * <p>To start one of these call:
+ * <pre>
+ * MaintenancePane maint = new MaintenancePane();
+ * maint.showInDialog(getComponent());
+ * </pre>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -135,36 +138,6 @@ public class GeneratorPane extends EirPanel
         this.add(box_main, BorderLayout.NORTH);
         this.add(pnl_prog, BorderLayout.CENTER);
         this.add(pnl_buttons, BorderLayout.SOUTH);
-    }
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Component parent)
-    {
-        return new OpenAction(parent);
-    }
-
-    /**
-     * An Action to open a new one of these
-     */
-    public static class OpenAction extends ComponentAbstractAction
-    {
-        public OpenAction(Component comp)
-        {
-            super(comp,
-                  "Generate ...",
-                  "toolbarButtonGraphics/development/BeanAdd16.gif",
-                  "toolbarButtonGraphics/development/BeanAdd24.gif",
-                  "Generate", "Generate a new version file set.",
-                  'G', null);
-        }
-    
-        public void actionPerformed(ActionEvent ev)
-        {
-            MaintenancePane pnl_maint = new MaintenancePane();
-            pnl_maint.showInDialog(getComponent());
-        }
     }
 
     /**

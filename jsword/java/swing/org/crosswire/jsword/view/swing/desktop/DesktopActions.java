@@ -5,10 +5,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import org.crosswire.common.config.swing.ConfigEditorFactory;
 import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.CWAction;
 import org.crosswire.common.swing.TextViewPanel;
@@ -19,9 +21,13 @@ import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.StringSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BooksEvent;
+import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
+import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.SitesPane;
 import org.crosswire.jsword.view.swing.display.FocusablePart;
@@ -464,8 +470,32 @@ public class DesktopActions implements ActionListener
      */
     protected void doOptions()
     {
-        // TODO Auto-generated method stub
-        
+        try
+        {
+            desktop.fillChoiceFactory();
+            BooksListener cbl = new BooksListener()
+            {
+                public void bookAdded(BooksEvent ev)
+                {
+                    desktop.refreshBooks();
+                }
+
+                public void bookRemoved(BooksEvent ev)
+                {
+                    desktop.refreshBooks();
+                }
+            };
+            Books.installed().addBooksListener(cbl);
+
+            URL configUrl = Project.instance().getWritablePropertiesURL("desktop");
+            ConfigEditorFactory.showDialog(desktop.getConfig(), desktop.getJFrame(), configUrl);
+
+            Books.installed().removeBooksListener(cbl);
+        }
+        catch (Exception ex)
+        {
+            Reporter.informUser(desktop, ex);
+        }
     }
 
     /**
@@ -501,7 +531,7 @@ public class DesktopActions implements ActionListener
     /**
      * The desktop on which these actions work
      */
-    private Desktop desktop;
+    protected Desktop desktop;
 
     /**
      * The factory for actions that this class works with

@@ -2,9 +2,7 @@ package org.crosswire.common.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 
 /**
@@ -52,39 +50,6 @@ public class LogPane extends EirPanel
         this.add(pnl_shelf, BorderLayout.NORTH);
         //pnl_log.add(pnl_status, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    }
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Component parent)
-    {
-        return new OpenAction(parent);
-    }
-
-    /**
-     * An Action to open a new one of these
-     */
-    public static class OpenAction extends ComponentAbstractAction
-    {
-        /**
-         * Simple ctor
-         */
-        public OpenAction(Component comp)
-        {
-            super(comp,
-                  "Problem History ...",
-                  "toolbarButtonGraphics/general/History16.gif",
-                  "toolbarButtonGraphics/general/History24.gif",
-                  "Problem History", "Display list of captured problems.",
-                  'P', null);
-        }
-    
-        public void actionPerformed(ActionEvent ev)
-        {
-            LogPane pnl_log = new LogPane();
-            pnl_log.showInDialog(getComponent());
-        }
     }
 
     /**

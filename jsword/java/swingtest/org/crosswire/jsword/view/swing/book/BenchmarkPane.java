@@ -6,14 +6,12 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
@@ -23,6 +21,11 @@ import org.crosswire.jsword.book.test.Speed;
 /**
  * BenchmarkPane allows an application to test the speed of a Bible by
  * giving it some stress tests.
+ * <p>To start one of these call:
+ * <pre>
+ * BenchmarkPane bench = new BenchmarkPane();
+ * bench.showInDialog(getComponent());
+ * </pre>
  *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -88,36 +91,6 @@ public class BenchmarkPane extends EirPanel
     public void showInDialog(Component parent)
     {
         showInDialog(parent, "Benchmark", false);
-    }
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Component parent)
-    {
-        return new OpenAction(parent);
-    }
-
-    /**
-     * An Action to open a new one of these
-     */
-    public static class OpenAction extends ComponentAbstractAction
-    {
-        public OpenAction(Component comp)
-        {
-            super(comp,
-                  "Benchmark ...",
-                  "toolbarButtonGraphics/media/Movie16.gif",
-                  "toolbarButtonGraphics/media/Movie24.gif",
-                  "Becnhmark", "Run a benchmark test.",
-                  'B', null);
-        }
-    
-        public void actionPerformed(ActionEvent ev)
-        {
-            BenchmarkPane pnl_bench = new BenchmarkPane();
-            pnl_bench.showInDialog(getComponent());
-        }
     }
 
     /**

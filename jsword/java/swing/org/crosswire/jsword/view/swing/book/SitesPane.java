@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.crosswire.common.swing.EirAbstractAction;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerEvent;
@@ -27,6 +25,11 @@ import org.crosswire.jsword.book.install.InstallerListener;
 /**
  * A panel for use within a SitesPane to display one set of Books that are
  * installed or could be installed.
+ * <p>so start one of these call:
+ * <pre>
+ * sites = new SitesPane();
+ * sites.showInDialog(parent);
+ * </pre>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -215,48 +218,4 @@ public class SitesPane extends JPanel
     protected JTabbedPane tabMain = new JTabbedPane();
     private JButton btnAdd = new JButton();
     private SitePane steLocal = new SitePane();
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Component parent)
-    {
-        return new OpenAction(parent);
-    }
-
-    /**
-     * An Action to open a new one of these
-     */
-    public static class OpenAction extends EirAbstractAction
-    {
-        /**
-         * Simple ctor
-         */
-        public OpenAction(Component parent)
-        {
-            super("Books ...",
-                  "toolbarButtonGraphics/general/Import16.gif",
-                  "toolbarButtonGraphics/general/Import24.gif",
-                  "Display/Install Books", "Investigate Books and link to sites that allow new downloads",
-                  'A', null);
-
-            this.parent = parent;
-        }
-
-        /* (non-Javadoc)
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ev)
-        {
-            if (sites == null)
-            {
-                sites = new SitesPane();
-            }
-
-            sites.showInDialog(parent);
-        }
-
-        private Component parent;
-        private SitesPane sites = null;
-    }
 }

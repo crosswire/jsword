@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
@@ -34,6 +36,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import org.crosswire.common.config.ChoiceFactory;
+import org.crosswire.common.config.Config;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.swing.BackportUtil;
@@ -46,8 +50,11 @@ import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.readings.ReadingsBookDriver;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -58,6 +65,9 @@ import org.crosswire.jsword.view.swing.book.SidebarPane;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
 import org.crosswire.jsword.view.swing.book.TitleChangedListener;
 import org.crosswire.jsword.view.swing.display.FocusablePart;
+import org.crosswire.jsword.view.swing.util.ConfigurableSwingConverter;
+import org.crosswire.jsword.view.swing.util.SimpleSwingConverter;
+import org.jdom.Document;
 import org.jdom.JDOMException;
 
 /**
@@ -144,13 +154,9 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         frame = new JFrame();
 
         startJob.setProgress("Setting-up config");
-        actToolsOptions = new OptionsAction(this);
 
         startJob.setProgress("Loading Configuration System");
-        actToolsOptions.createConfig();
-
-        startJob.setProgress("Loading Stored Settings");
-        actToolsOptions.loadConfig();
+        generateConfig();
 
         startJob.setProgress("Generating Components");
         createComponents();
@@ -289,7 +295,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
         //menuTools.add(actions.getAction("Diff")).addMouseListener(barStatus);
         //menuTools.addSeparator();
         menuTools.add(actions.getAction("Books")).addMouseListener(barStatus);
-        menuTools.add(actToolsOptions).addMouseListener(barStatus);
+        menuTools.add(actions.getAction("Options")).addMouseListener(barStatus);
 
         JMenu menuHelp = new JMenu(actions.getAction("Help"));
         menuHelp.add(actions.getAction("Contents")).addMouseListener(barStatus);
@@ -797,6 +803,97 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     }
 
     /**
+     * Load the config.xml file
+     */
+    public void generateConfig() throws IOException, JDOMException
+    {
+        fillChoiceFactory();
+
+        config = new Config("Desktop Options");
+        Document xmlconfig = Project.instance().getDocument("config");
+        config.add(xmlconfig);
+
+        config.setProperties(Project.instance().getProperties("desktop"));
+        config.localToApplication(true);
+    }
+
+    /**
+     * Setup the choices so that the options dialog knows what there is to
+     * select from.
+     */
+    protected void fillChoiceFactory()
+    {
+        refreshBooks();
+
+        // Create the array of readings sets
+        ChoiceFactory.getDataMap().put("readings", ReadingsBookDriver.getInstalledReadingsSets());
+
+        // And the array of allowed osis>html converters
+        Map converters = ConverterFactory.getKnownConverters();
+        Set keys = converters.keySet();
+        String[] names = (String[]) keys.toArray(new String[keys.size()]);
+        ChoiceFactory.getDataMap().put("converters", names);
+
+        // The choice of simple XSL stylesheets
+        SimpleSwingConverter sstyle = new SimpleSwingConverter();
+        String[] sstyles = sstyle.getStyles();
+        ChoiceFactory.getDataMap().put("swing-styles", sstyles);
+
+        // The choice of configurable XSL stylesheets
+        ConfigurableSwingConverter cstyle = new ConfigurableSwingConverter();
+        String[] cstyles = cstyle.getStyles();
+        ChoiceFactory.getDataMap().put("cswing-styles", cstyles);
+    }
+
+    /**
+     * Setup the book choices
+     */
+    protected void refreshBooks()
+    {
+        // Create the array of Bibles
+        String[] bnames = getFullNameArray(BookFilters.getBibles());
+        ChoiceFactory.getDataMap().put("biblenames", bnames);
+
+        // Create the array of Commentaries
+        String[] cnames = getFullNameArray(BookFilters.getCommentaries());
+        ChoiceFactory.getDataMap().put("commentarynames", cnames);
+
+        // Create the array of Dictionaries
+        String[] dnames = getFullNameArray(BookFilters.getDictionaries());
+        ChoiceFactory.getDataMap().put("dictionarynames", dnames);
+    }
+
+    /**
+     * Convert a filter into an array of names of Books that pass the filter.
+     */
+    private String[] getFullNameArray(BookFilter filter)
+    {
+        List bmds = Books.installed().getBookMetaDatas(filter);
+        List names = new ArrayList();
+
+        for (Iterator it = bmds.iterator(); it.hasNext();)
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            names.add(bmd.getFullName());
+        }
+
+        return (String[]) names.toArray(new String[names.size()]);
+    }
+
+    /**
+     * @return The config set that this application uses to configure itself
+     */
+    public Config getConfig()
+    {
+        return config;
+    }
+
+    /**
+     * The configuration engine
+     */
+    private Config config = null;
+
+    /**
      * Tabbed document interface
      */
     protected static final int LAYOUT_TYPE_TDI = 0;
@@ -851,8 +948,6 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /*
      * GUI components
      */
-    private OptionsAction actToolsOptions;
-
     private JRadioButtonMenuItem rdoViewTdi;
     private JRadioButtonMenuItem rdoViewMdi;
 

@@ -10,7 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -200,43 +199,4 @@ public class AboutPane
     private JPanel pnl_main = new JPanel();
     private JPanel pnl_buttons = new JPanel();
     private JButton btn_ok = new JButton();
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Desktop desktop)
-    {
-        return new OpenAction(desktop);
-    }
-
-    /**
-     * An Action to open a new one of these
-     */
-    public static class OpenAction extends DesktopAbstractAction
-    {
-        /**
-         * Simple ctor
-         */
-        public OpenAction(Desktop desktop)
-        {
-            super(desktop,
-                  "About ...",
-                  "toolbarButtonGraphics/general/About16.gif",
-                  "toolbarButtonGraphics/general/About24.gif",
-                  "The more information about "+Project.instance().getName(), "Investigate tasks, errors and logs",
-                  'A', null);
-
-            atp = new AboutPane(getDesktop());
-        }
-
-        /* (non-Javadoc)
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ev)
-        {
-            atp.showInDialog(getDesktop().getJFrame());
-        }
-
-        private AboutPane atp = null;
-    }
 }

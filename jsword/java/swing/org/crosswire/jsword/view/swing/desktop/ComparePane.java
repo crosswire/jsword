@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.Reporter;
@@ -34,6 +32,11 @@ import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
 /**
  * A ComparePane allows you to compare 2 differing version of the Bible
  * verse, by verse.
+ * <p>so start one of these call:
+ * <pre>
+ * ComparePane comp = new ComparePane();
+ * comp.showInDialog(getComponent());
+ * </pre>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -128,36 +131,6 @@ public class ComparePane extends EirPanel
     public void showInDialog(Component parent)
     {
         showInDialog(parent, "Bible Compare", false);
-    }
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Component parent)
-    {
-        return new OpenAction(parent);
-    }
-
-    /**
-     * An Action to open a new one of these
-     */
-    public static class OpenAction extends ComponentAbstractAction
-    {
-        public OpenAction(Component comp)
-        {
-            super(comp,
-                  "Version Compare ...",
-                  "toolbarButtonGraphics/media/Pause16.gif",
-                  "toolbarButtonGraphics/media/Pause24.gif",
-                  "Compare Versions", "Compare text produced by different drivers.",
-                  'S', null);
-        }
-
-        public void actionPerformed(ActionEvent ev)
-        {
-            ComparePane pnl_comp = new ComparePane();
-            pnl_comp.showInDialog(getComponent());
-        }
     }
 
     /**

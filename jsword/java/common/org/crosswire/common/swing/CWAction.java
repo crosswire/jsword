@@ -117,5 +117,4 @@ public class CWAction extends AbstractAction
     }
 
     private EventListenerList listeners;
-
 }

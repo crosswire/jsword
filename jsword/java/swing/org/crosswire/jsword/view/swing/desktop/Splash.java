@@ -7,12 +7,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -25,11 +23,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.crosswire.common.progress.swing.JobsProgressBar;
-import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.jsword.util.Project;
 
 /**
  * A Simple splash screen.
+ * <p>so start one of these call:
+ * <pre>
+ * new Splash(getComponent(), 60000);
+ * </pre>
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -122,35 +123,6 @@ public class Splash extends JWindow
     {
         setVisible(false);
         dispose();
-    }
-
-    /**
-     * Create an 'open' Action
-     */
-    public static Action createOpenAction(Component parent)
-    {
-        return new OpenAction(parent);
-    }
-
-    /**
-     * An Action to open a new Splash
-     */
-    public static class OpenAction extends ComponentAbstractAction
-    {
-        public OpenAction(Component comp)
-        {
-            super(comp,
-                  "About ...",
-                  "toolbarButtonGraphics/general/About16.gif",
-                  "toolbarButtonGraphics/general/About24.gif",
-                  "About this program", "Display details about this program.",
-                  'A', null);
-        }
-    
-        public void actionPerformed(ActionEvent ev)
-        {
-            new Splash(getComponent(), 60000);
-        }
     }
 
     /**
