@@ -40,8 +40,8 @@ public class MapAllTests extends TestCase
     {
         TestSuite suite = new TestSuite();
 
-        suite.addTestSuite(org.crosswire.jsword.map.model.TestLinkArray.class);
-        suite.addTestSuite(org.crosswire.jsword.map.model.TestMap.class);
+        suite.addTestSuite(org.crosswire.jsword.map.model.LinkArrayTest.class);
+        suite.addTestSuite(org.crosswire.jsword.map.model.MapTest.class);
 
         return suite;
     }

@@ -40,48 +40,48 @@ public class JSwordAllTests extends TestCase
     {
         TestSuite suite = new TestSuite();
 
-        suite.addTestSuite(org.crosswire.jsword.util.TestStyle.class);
+        suite.addTestSuite(org.crosswire.jsword.util.StyleTest.class);
 
-        suite.addTestSuite(org.crosswire.jsword.passage.TestBibleInfo.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageConstants.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageMix.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSize.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSpeed.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.BibleInfoTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageConstantsTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageMixTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageSizeTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageSpeedTest.class);
         // commented out because it causes OutOfMemoryErrors.
         //suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSpeedOpt.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageTally.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageTally2.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageUtil.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageWriteSpeed.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestVerse.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestVerseRange.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageTallyTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageTally2Test.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageUtilTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.PassageWriteSpeedTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.VerseTest.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.VerseRangeTest.class);
 
-        suite.addTestSuite(org.crosswire.jsword.book.TestBibles.class);
-        suite.addTestSuite(org.crosswire.jsword.book.TestBookMetaData.class);
-        suite.addTestSuite(org.crosswire.jsword.book.TestBookUtil.class);
+        suite.addTestSuite(org.crosswire.jsword.book.BiblesTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.BookMetaDataTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.BookUtilTest.class);
         // commented out because the tests were very poor.
         //suite.addTestSuite(org.crosswire.jsword.book.data.jaxb.TestOsis.class);
-        suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleDriver.class);
-        suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleUtil.class);
-        suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBibleDriver.class);
-        suite.addTestSuite(org.crosswire.jsword.book.remote.TestLocalRemoteBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.remote.TestLocalRemoteBibleDriver.class);
-        suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBibleDriver.class);
-        suite.addTestSuite(org.crosswire.jsword.book.stub.TestStubBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.stub.TestStubBibleDriver.class);
-        suite.addTestSuite(org.crosswire.jsword.book.sword.TestSwordBible.class);
-        suite.addTestSuite(org.crosswire.jsword.book.sword.TestSwordBibleDriver.class);
+        suite.addTestSuite(org.crosswire.jsword.book.jdbc.JDBCBibleTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.jdbc.JDBCBibleDriverTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.jdbc.JDBCBibleUtilTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.raw.RawBibleTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.raw.RawBibleDriverTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoteBibleTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoteBibleDriverTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.ser.SerBibleTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.ser.SerBibleDriverTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.stub.StubBibleTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.stub.StubBibleDriverTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBibleTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBibleDriverTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.remote.ConverterTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoterTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.remote.RemoteMethodTest.class);
 
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestDictionary.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestCustomTokenizer.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestParser.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestSearchWords.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.DictionaryTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.CustomTokenizerTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.ParserTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.SearchWordsTest.class);
 
         return suite;
     }

@@ -87,9 +87,17 @@ public class Job
     {
         synchronized (this)
         {
-            this.reportedpc = 100 * getAgeFromMap(predicted, statedesc) / predictedlen;
-            this.guessedpc = reportedpc;
             this.statedesc = statedesc;
+            if (predictedlen != 0)
+            {
+                this.reportedpc = 100 * getAgeFromMap(predicted, statedesc) / predictedlen;
+                this.guessedpc = reportedpc;
+            }
+            else
+            {
+                this.reportedpc = 0;
+                this.guessedpc = 0;
+            }
 
             predictSection(statedesc);
 
@@ -107,9 +115,9 @@ public class Job
     {
         synchronized (this)
         {
+            this.statedesc = statedesc;
             this.reportedpc = percent;
             this.guessedpc = percent;
-            this.statedesc = statedesc;
     
             predictSection(statedesc);
     
@@ -160,7 +168,7 @@ public class Job
      */
     public void interrupt()
     {
-        if (work != null)
+        if (work != null && !finished)
         {
             work.interrupt();
         }
@@ -171,7 +179,7 @@ public class Job
      */
     public boolean canInterrupt()
     {
-        return work != null;
+        return work != null && !finished;
     }
 
     /**
@@ -277,7 +285,7 @@ public class Job
         sectionstart = System.currentTimeMillis();
 
         // if we have nothing to go on assume 10 sections of 10 sec each.
-        if (predicted == null)
+        if (predicted == null || predictedlen == 0)
         {
             sectionend = 10000;
             percentend = 10;

@@ -1,10 +1,17 @@
 
-package org.crosswire.jsword.book.search.ser;
+package org.crosswire.jsword.map.model;
 
-import org.crosswire.common.util.MsgBase;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+
+import junit.framework.TestCase;
+
+import org.crosswire.jsword.book.Bible;
+import org.crosswire.jsword.book.Defaults;
+import org.crosswire.jsword.book.raw.RawBible;
 
 /**
- * Compile safe Msg resource settings.
+ * JUnit Test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,23 +34,29 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Msg extends MsgBase
+public class LinkArrayTest extends TestCase
 {
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
-    protected static final Msg INITIALIZE = new Msg("Error initializing.");
-    protected static final Msg READ_ERROR = new Msg("Read Error.");
-    protected static final Msg WRITE_ERROR = new Msg("Write Error.");
-    protected static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
-
-    /** Initialise any resource bundles */
-    static
+    public LinkArrayTest(String s)
     {
-        init(Msg.class.getName());
+        super(s);
     }
 
-    /** Passthrough ctor */
-    private Msg(String name)
+    protected void setUp() throws Exception
     {
-        super(name);
+    }
+
+    protected void tearDown() throws Exception
+    {
+    }
+
+    public void testLinkArray() throws Exception
+    {
+        RawBible.setDefaultCacheData(true);
+        Bible bible = Defaults.getBibleMetaData().getBible();
+        LinkArray la = new LinkArray(bible);
+
+        ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream());
+        out.writeObject(la);
+        out.close();
     }
 }

@@ -1,10 +1,14 @@
 
-package org.crosswire.jsword.book.search.ser;
+package org.crosswire.jsword.book;
 
-import org.crosswire.common.util.MsgBase;
+import java.util.Iterator;
+import java.util.List;
+
+import junit.framework.TestCase;
 
 /**
- * Compile safe Msg resource settings.
+ * JUnit Test.
+ * For when we don't actually want to do testing of responses
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,23 +31,37 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Msg extends MsgBase
+public class BibleParentTst extends TestCase
 {
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
-    protected static final Msg INITIALIZE = new Msg("Error initializing.");
-    protected static final Msg READ_ERROR = new Msg("Read Error.");
-    protected static final Msg WRITE_ERROR = new Msg("Write Error.");
-    protected static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
-
-    /** Initialise any resource bundles */
-    static
+    public BibleParentTst(String s)
     {
-        init(Msg.class.getName());
+        super(s);
     }
 
-    /** Passthrough ctor */
-    private Msg(String name)
+    protected BibleMetaData[] bmds = null;
+    protected Bible[] bibles = null;
+
+    protected void setUp() throws Exception
     {
-        super(name);
+        List lbmds = Books.getBooks(BookFilters.getBibles());
+        bibles = new Bible[lbmds.size()];
+        bmds = new BibleMetaData[lbmds.size()];
+
+        int i = 0;
+        for (Iterator it = lbmds.iterator(); it.hasNext();)
+        {
+            bmds[i] = (BibleMetaData) it.next();
+            bibles[i] = bmds[i].getBible();
+            i++;
+        }
+    }
+
+    protected void tearDown() throws Exception
+    {
+    }
+
+    public void testNothing()
+    {
+        assertTrue(true);
     }
 }

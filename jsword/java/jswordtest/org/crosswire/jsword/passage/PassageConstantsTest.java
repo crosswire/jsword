@@ -1,10 +1,10 @@
 
-package org.crosswire.jsword.book.search.ser;
+package org.crosswire.jsword.passage;
 
-import org.crosswire.common.util.MsgBase;
+import junit.framework.TestCase;
 
 /**
- * Compile safe Msg resource settings.
+ * JUnit Test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,23 +27,32 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Msg extends MsgBase
+public class PassageConstantsTest extends TestCase
 {
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
-    protected static final Msg INITIALIZE = new Msg("Error initializing.");
-    protected static final Msg READ_ERROR = new Msg("Read Error.");
-    protected static final Msg WRITE_ERROR = new Msg("Write Error.");
-    protected static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
-
-    /** Initialise any resource bundles */
-    static
+    public PassageConstantsTest(String s)
     {
-        init(Msg.class.getName());
+        super(s);
     }
 
-    /** Passthrough ctor */
-    private Msg(String name)
+    protected void setUp()
     {
-        super(name);
+    }
+
+    protected void tearDown()
+    {
+    }
+
+    public void testAllowedDelims() throws Exception
+    {
+        // Check that we're not re-using delimitters
+        for (int i=0; i<Passage.VERSE_ALLOWED_DELIMS.length(); i++)
+        {
+            assertEquals(Passage.REF_ALLOWED_DELIMS.indexOf(Passage.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
+            assertEquals(Passage.RANGE_ALLOWED_DELIMS.indexOf(Passage.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
+        }
+        for (int i=0; i<Passage.REF_ALLOWED_DELIMS.length(); i++)
+        {
+            assertEquals(Passage.RANGE_ALLOWED_DELIMS.indexOf(Passage.REF_ALLOWED_DELIMS.charAt(i)), -1);
+        }
     }
 }

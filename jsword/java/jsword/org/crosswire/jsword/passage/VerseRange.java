@@ -404,7 +404,6 @@ public final class VerseRange implements VerseBase
                     break;
 
                 case ACCURACY_NUMBER_ONLY:
-                    // TODO: This needs work
                     // For example "3-5". Tricky because the scope of the basis
                     // tells us how to interpret this.
                     // "Gen 1, 3-5" probably means chapters, but

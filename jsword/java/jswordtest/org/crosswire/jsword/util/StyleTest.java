@@ -1,10 +1,12 @@
 
-package org.crosswire.jsword.book.search.ser;
+package org.crosswire.jsword.util;
 
-import org.crosswire.common.util.MsgBase;
+import junit.framework.TestCase;
+
+import org.crosswire.jsword.util.Style;
 
 /**
- * Compile safe Msg resource settings.
+ * JUnit Test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,23 +29,41 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Msg extends MsgBase
+public class StyleTest extends TestCase
 {
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
-    protected static final Msg INITIALIZE = new Msg("Error initializing.");
-    protected static final Msg READ_ERROR = new Msg("Read Error.");
-    protected static final Msg WRITE_ERROR = new Msg("Write Error.");
-    protected static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
-
-    /** Initialise any resource bundles */
-    static
+    public StyleTest(String s)
     {
-        init(Msg.class.getName());
+        super(s);
     }
 
-    /** Passthrough ctor */
-    private Msg(String name)
+    private Style style = null;
+
+    protected void setUp() throws Exception
     {
-        super(name);
+        style = new Style("test");
+    }
+
+    protected void tearDown() throws Exception
+    {
+    }
+
+    public void testGetStyles() throws Exception
+    {
+        String[] names = style.getStyles();
+        assertEquals(names.length, 2);
+        assertEquals(names[0], "test.xsl");
+        assertEquals(names[1], "test2.xsl");
+    }
+
+    public void testGetFilename() throws Exception
+    {
+        /*
+        assertEquals(style.getFilename("test"),
+             "S:\\Joe\\Devt\\DoE" + File.separator +
+             "lib" + File.separator +
+             "styles" + File.separator +
+             "test" + File.separator +
+             "test.xsl");
+        */
     }
 }

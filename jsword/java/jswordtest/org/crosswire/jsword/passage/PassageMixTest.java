@@ -1,10 +1,8 @@
 
-package org.crosswire.jsword.book.search.ser;
-
-import org.crosswire.common.util.MsgBase;
+package org.crosswire.jsword.passage;
 
 /**
- * Compile safe Msg resource settings.
+ * JUnit Test.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,23 +25,10 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Msg extends MsgBase
+public class PassageMixTest extends PassageParentTst
 {
-    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
-    protected static final Msg INITIALIZE = new Msg("Error initializing.");
-    protected static final Msg READ_ERROR = new Msg("Read Error.");
-    protected static final Msg WRITE_ERROR = new Msg("Write Error.");
-    protected static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
-
-    /** Initialise any resource bundles */
-    static
+    public PassageMixTest(String s)
     {
-        init(Msg.class.getName());
-    }
-
-    /** Passthrough ctor */
-    private Msg(String name)
-    {
-        super(name);
+        super(s, PassageFactory.MIX, false);
     }
 }

@@ -1,6 +1,10 @@
 
 This file is our equivalent of bugzilla for the time being.
 
+Name
+- change name of swing packages
+- change name of servlet packages
+
 Tests
 - write tests to check support for all modules
 
@@ -23,5 +27,7 @@ Sword Modules
 - GenBook
 - Locale/font support (Joe)
 
-Search
-- add incomplete index warning to sersearchengine
+CVS tidyup
+- remove junit from jsword-support
+- move map and maptest into jsword-support
+- deletes from web/images?

@@ -29,19 +29,18 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg NO_KEY = new Msg("No '{0}' in index.");
-    public static final Msg BAD_KEY = new Msg("Invalid Key type '{0}'");
-    public static final Msg GZIP_FORMAT = new Msg("Error whilst reading field '{0}'");
-    public static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
-    public static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");
-    public static final Msg MISSING_FILE = new Msg("Missing file.");
-    public static final Msg NOT_FOUND = new Msg("Module directory not found.");
-    public static final Msg READ_FAIL = new Msg("Error reading {0}");
-    public static final Msg READ_ONLY = new Msg("Sword modules are read-only");
-    public static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type: {0}");
-    public static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0}");
-    public static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0}");
-    public static final Msg TYPE_INDEXGEN = new Msg("Generating index for this work. Search results will be more accurate when index is complete.");
+    protected static final Msg NO_KEY = new Msg("No '{0}' in index.");
+    protected static final Msg BAD_KEY = new Msg("Invalid Key type '{0}'");
+    protected static final Msg GZIP_FORMAT = new Msg("Error whilst reading field '{0}'");
+    protected static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    protected static final Msg FILE_ONLY = new Msg("SwordDrivers only work from file: URLs");
+    protected static final Msg MISSING_FILE = new Msg("Missing file.");
+    protected static final Msg NOT_FOUND = new Msg("Module directory not found.");
+    protected static final Msg READ_FAIL = new Msg("Error reading {0}");
+    protected static final Msg READ_ONLY = new Msg("Sword modules are read-only");
+    protected static final Msg COMPRESSION_UNSUPPORTED = new Msg("Unsupported compression type: {0}");
+    protected static final Msg TYPE_UNSUPPORTED = new Msg("Unsupported type: {0}");
+    protected static final Msg TYPE_UNKNOWN = new Msg("Unknown type: {0}");
 
     /** Initialise any resource bundles */
     static

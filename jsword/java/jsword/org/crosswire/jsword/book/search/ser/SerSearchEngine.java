@@ -108,27 +108,15 @@ public class SerSearchEngine implements SearchEngine, Index
         }
         else
         {
-            // At this point the index is usable, even if it doesn't always
-            // return full results so we can do the rest in a thread.
-            // NOTE(joe): at some stage have a better monitor for this.
-            Thread work = new Thread(new Runnable()
+            Reporter.informUser(this, Msg.TYPE_INDEXGEN.getName());
+
+            // The index is usable but incomplete, so kick off a generation
+            // thread if there is not one running already.
+            if (job != null)
             {
-                public void run()
-                {
-                    try
-                    {
-                        Job job = JobManager.createJob("Indexing "+bible.getBibleMetaData().getName(), Thread.currentThread(), false);
-                        generateSearchIndex(job);
-                        saveIndexes(job);
-                        job.done();
-                    }
-                    catch (BookException ex)
-                    {
-                        Reporter.informUser(SerSearchEngine.this, ex);
-                    }
-                }
-            });
-            work.start();
+                Thread work = new Thread(new IndexerRunnable());
+                work.start();
+            }
         }
     }
 
@@ -455,6 +443,11 @@ public class SerSearchEngine implements SearchEngine, Index
     private SortedMap datamap = new TreeMap();
 
     /**
+     * The job used when generating a search index
+     */
+    protected Job job = null;
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SerSearchEngine.class);
@@ -475,6 +468,28 @@ public class SerSearchEngine implements SearchEngine, Index
      * The Whole Bible
      */
     private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
+
+    /**
+     * The index creation thread
+     */
+    private class IndexerRunnable implements Runnable
+    {
+        public void run()
+        {
+            try
+            {
+                job = JobManager.createJob("Indexing "+bible.getBibleMetaData().getName(), Thread.currentThread(), false);
+                generateSearchIndex(job);
+                saveIndexes(job);
+                job.done();
+                job = null;
+            }
+            catch (BookException ex)
+            {
+                Reporter.informUser(SerSearchEngine.this, ex);
+            }
+        }
+    }
 
     /**
      * A simple class to hold an offset and length into the passages random

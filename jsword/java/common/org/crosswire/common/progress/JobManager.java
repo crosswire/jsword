@@ -81,20 +81,12 @@ public class JobManager
     public static synchronized void addWorkListener(WorkListener li)
     {
         List temp = new ArrayList();
-        if (listeners == null)
+        temp.addAll(listeners);
+
+        if (!temp.contains(li))
         {
             temp.add(li);
             listeners = temp;
-        }
-        else
-        {
-            temp.addAll(listeners);
-
-            if (!temp.contains(li))
-            {
-                temp.add(li);
-                listeners = temp;
-            }
         }
     }
 
@@ -103,7 +95,7 @@ public class JobManager
      */
     public static synchronized void removeWorkListener(WorkListener li)
     {
-        if (listeners != null && listeners.contains(li))
+        if (listeners.contains(li))
         {
             List temp = new ArrayList();
             temp.addAll(listeners);
@@ -187,7 +179,7 @@ public class JobManager
     /**
      * List of listeners
      */
-    protected static List listeners;
+    protected static List listeners = new ArrayList();
 
     /**
      * List of current jobs

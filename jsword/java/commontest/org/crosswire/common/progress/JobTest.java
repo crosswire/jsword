@@ -55,6 +55,11 @@ public class JobTest extends TestCase
         assertEquals(job.getStateDescription(), "wibble");
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
+        job.done();
+        assertEquals(job.isFinished(), true);
+        assertEquals(job.getPercent(), 100);
+        assertEquals(job.getReportedPercent(), 100);
+        assertEquals(job.canInterrupt(), false);
 
         job = JobManager.createJob("wibble", Thread.currentThread(), false);
         assertEquals(job.getJobDescription(), "wibble");
@@ -63,6 +68,11 @@ public class JobTest extends TestCase
         assertEquals(job.getStateDescription(), "wibble");
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
+        job.done();
+        assertEquals(job.isFinished(), true);
+        assertEquals(job.getPercent(), 100);
+        assertEquals(job.getReportedPercent(), 100);
+        assertEquals(job.canInterrupt(), false);
 
         job = JobManager.createJob("wibble", url, false);
         assertEquals(job.getJobDescription(), "wibble");
@@ -71,6 +81,11 @@ public class JobTest extends TestCase
         assertEquals(job.getStateDescription(), "wibble");
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
+        job.done();
+        assertEquals(job.isFinished(), true);
+        assertEquals(job.getPercent(), 100);
+        assertEquals(job.getReportedPercent(), 100);
+        assertEquals(job.canInterrupt(), false);
 
         job = JobManager.createJob("wibble", url, Thread.currentThread(), false);
         assertEquals(job.getJobDescription(), "wibble");
@@ -79,6 +94,11 @@ public class JobTest extends TestCase
         assertEquals(job.getStateDescription(), "wibble");
         assertEquals(job.getPercent(), 0);
         assertEquals(job.getReportedPercent(), 0);
+        job.done();
+        assertEquals(job.isFinished(), true);
+        assertEquals(job.getPercent(), 100);
+        assertEquals(job.getReportedPercent(), 100);
+        assertEquals(job.canInterrupt(), false);
     }
 
     /*

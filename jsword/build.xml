@@ -8,22 +8,17 @@
 
   <!--=======================================================================-->
   <property name="source.root" value="."/>
-  <property name="source.bin" value="${source.root}/bin"/>
-  <property name="source.web" value="${source.root}/web"/>
   <property name="source.etc" value="${source.root}/etc"/>
   <property name="source.jar" value="${source.root}/jar"/>
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
+  <property name="source.web" value="${source.root}/web"/>
   <property name="source.keystore" value="${basedir}/jsword.keystore"/>
   <property name="gener.root" value="target/gener"/>
   <property name="target.root" value="target/ant"/>
-  <property name="target.classes" value="${target.root}/temp/classes"/>
-  <property name="target.jar" value="${target.root}/temp/jar"/>
-  <property name="target.jdepend" value="${target.root}/temp/jdepend"/>
-  <property name="target.checkstyle" value="${target.root}/temp/checkstyle"/>
-  <property name="target.javancss" value="${target.root}/temp/javancss"/>
-  <property name="target.clover" value="${target.root}/temp/clover"/>
-  <property name="target.junit" value="${target.root}/temp/junit"/>
+  <property name="target.temp" value="${target.root}/temp"/>
+  <property name="target.classes" value="${target.temp}/classes"/>
+  <property name="target.jar" value="${target.temp}/jar"/>
   <property name="target.swingui" value="${target.root}/swingui/jsword"/>
   <property name="target.download" value="${target.root}/download"/>
   <property name="target.web" value="${target.root}/web"/>
@@ -208,7 +203,7 @@
   <target name="swingui" depends="jar" description="Build a ready to ship/test app">
     <mkdir dir="${target.swingui}/bin"/>
     <copy todir="${target.swingui}/bin">
-      <fileset dir="${source.bin}"/>
+      <fileset dir="${source.etc}/bin"/>
     </copy>
     <chmod perm="a+x">
       <fileset dir="${target.swingui}">
@@ -289,32 +284,57 @@
 
   <!--=======================================================================-->
   <target name="test" depends="swingui" description="Run the standard test suite">
-    <mkdir dir="${target.junit}"/>
-    <echo message="If this fails you might need to:"/>
-    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar ${ant.home}/lib"/>
-    <echo message="using -Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
+    <taskdef resource="tasks.properties">
+      <classpath>
+        <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
+      </classpath>
+    </taskdef>
+    <instrument todir="${target.temp}/jcoverage">
+      <ignore regex="org.apache.log4j.*"/>
+      <fileset dir="${target.classes}/common" includes="**/*.class"/>
+    </instrument>
+      <!--
+    <instrument todir="${target.temp}/jcoverage">
+      <fileset dir="${target.classes}/jsword" includes="**/*.class"/>
+      <fileset dir="${target.classes}/swing" includes="**/*.class"/>
+      <fileset dir="${target.classes}/servlet" includes="**/*.class"/>
+      <fileset dir="${target.classes}/map" includes="**/*.class"/>
+      <fileset dir="${target.classes}/sword" includes="**/*.class"/>
+    </instrument>
+      -->
+    <mkdir dir="${target.temp}/junit"/>
+    <echo message="This needs jars in ${ant.home}/lib. See the antlibs task."/>
+    <echo message="Using -Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
-      <test name="CommonAllTests" todir="${target.junit}"/>
-      <test name="JSwordAllTests" todir="${target.junit}"/>
-      <test name="MapAllTests" todir="${target.junit}"/>
+      <test name="CommonAllTests" todir="${target.temp}/junit"/>
+      <!--
+      <test name="JSwordAllTests" todir="${target.temp}/junit"/>
+      <test name="MapAllTests" todir="${target.temp}/junit"/>
+      -->
       <formatter type="plain" usefile="false"/>
       <formatter type="xml"/>
       <classpath>
+        <!--
         <fileset dir="${ant.home}/lib" includes="**/*.jar"/>
+        -->
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <pathelement path="${target.classes}/osis"/>
+        <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
+        <pathelement path="${target.temp}/jcoverage"/>
+        <!--
         <pathelement path="${target.classes}/common"/>
-        <pathelement path="${target.classes}/commontest"/>
+        -->
         <pathelement path="${target.classes}/jsword"/>
-        <pathelement path="${target.classes}/jswordtest"/>
         <pathelement path="${target.classes}/servlet"/>
-        <pathelement path="${target.classes}/servlettest"/>
         <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/swingtest"/>
         <pathelement path="${target.classes}/map"/>
-        <pathelement path="${target.classes}/maptest"/>
         <pathelement path="${target.classes}/sword"/>
+        <pathelement path="${target.classes}/osis"/>
+        <pathelement path="${target.classes}/commontest"/>
+        <pathelement path="${target.classes}/jswordtest"/>
+        <pathelement path="${target.classes}/servlettest"/>
+        <pathelement path="${target.classes}/swingtest"/>
+        <pathelement path="${target.classes}/maptest"/>
         <pathelement path="${target.classes}/swordtest"/>
         <pathelement path="${target.classes}/resource"/>
         <pathelement path="${source.res}"/>
@@ -324,12 +344,18 @@
 
   <!--=======================================================================-->
   <target name="web.testreport" depends="test" description="Compile test report">
-    <junitreport todir="${target.junit}">
-      <fileset dir="${target.junit}">
+    <mkdir dir="${target.web}/test"/>
+    <junitreport> <!-- todir="${target.temp}/junit"> -->
+      <fileset dir="${target.temp}/junit">
         <include name="TEST-*.xml"/>
       </fileset>
       <report format="frames" todir="${target.web}/test"/>
     </junitreport>
+    <mkdir dir="${target.web}/jcoverage"/>
+    <report srcdir="${source.java}/common" destdir="${target.web}/jcoverage"/>
+    <!--
+    <report srcdir="${source.java}/jsword" destdir="${target.web}/jcoverage"/>
+    -->
   </target>
 
   <!--=======================================================================-->
@@ -410,11 +436,10 @@
 
   <!--=======================================================================-->
   <target name="web.jdepend" depends="jar">
-    <mkdir dir="${target.jdepend}"/>
+    <mkdir dir="${target.temp}/jdepend"/>
     <mkdir dir="${target.web}/jdepend"/>
-    <echo message="If this fails you might need to:"/>
-    <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
-    <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml" fork="yes">
+    <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
+    <jdepend format="xml" outputfile="${target.temp}/jdepend/jdepend-report.xml" fork="yes">
       <sourcespath>
         <pathelement path="${source.java}/common"/>
         <pathelement path="${source.java}/jsword"/>
@@ -430,7 +455,7 @@
       </classpath>
     </jdepend>
     <style
-        basedir="${target.jdepend}"
+        basedir="${target.temp}/jdepend"
         destdir="${target.web}/jdepend"
         includes="jdepend-report.xml"
         style="${support.tools}/jdepend26/jdepend.xsl"/>
@@ -438,7 +463,7 @@
 
   <!--=======================================================================-->
   <target name="web.checkstyle">
-    <mkdir dir="${target.checkstyle}"/>
+    <mkdir dir="${target.temp}/checkstyle"/>
     <mkdir dir="${target.web}/checkstyle"/>
     <taskdef resource="checkstyletask.properties">
       <classpath>
@@ -446,23 +471,23 @@
       </classpath>
     </taskdef>
     <copy file="${support.tools}/checkstyle30/custom.xml" overwrite="true"
-        tofile="${target.checkstyle}/custom.xml">
+        tofile="${target.temp}/checkstyle/custom.xml">
       <filterset>
         <filter token="source.java" value="${basedir}/${source.java}"/>
-        <filter token="target.checkstyle" value="${basedir}/${target.checkstyle}"/>
+        <filter token="target.checkstyle" value="${basedir}/${target.temp}/checkstyle"/>
       </filterset>
     </copy>
-    <checkstyle config="${target.checkstyle}/custom.xml" failOnViolation="false">
+    <checkstyle config="${target.temp}/checkstyle/custom.xml" failOnViolation="false">
       <fileset dir="${source.java}/common" includes="**/*.java"/>
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
       <fileset dir="${source.java}/servlet" includes="**/*.java"/>
       <fileset dir="${source.java}/swing" includes="**/*.java"/>
       <fileset dir="${source.java}/map" includes="**/*.java"/>
       <formatter type="plain"/>
-      <formatter type="xml" toFile="${target.checkstyle}/checkstyle_errors.xml"/>
+      <formatter type="xml" toFile="${target.temp}/checkstyle/checkstyle_errors.xml"/>
     </checkstyle>
     <style
-        basedir="${target.checkstyle}"
+        basedir="${target.temp}/checkstyle"
         destdir="${target.web}/checkstyle"
         includes="checkstyle_errors.xml"
         style="${support.tools}/checkstyle30/checkstyle-noframes.xsl"/>
@@ -501,25 +526,25 @@
 
   <!--=======================================================================-->
   <target name="web.javancss">
-    <echo message="If this fails with a DTM ID exception you might need to:"/>
-    <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
+    <echo message="If this fails with a DTM ID exception you might need to upgrade the Xalan in your JDK"/>
+    <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
     <taskdef name="javancss" classname="javancss.JavancssAntTask">
       <classpath>
         <fileset dir="${support.tools}/javancss2141" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    <mkdir dir="${target.javancss}"/>
+    <mkdir dir="${target.temp}/javancss"/>
     <javancss
-    	srcdir="${source.java}"
-    	includes="**/*.java"
-    	generateReport="true"
-    	outputfile="${target.javancss}/javancss_metrics.xml"
-    	format="xml"/>
+        srcdir="${source.java}"
+        includes="**/*.java"
+        generateReport="true"
+        outputfile="${target.temp}/javancss/javancss_metrics.xml"
+        format="xml"/>
     <mkdir dir="${target.web}/javancss"/>
     <style
-    	in="${target.javancss}/javancss_metrics.xml"
-    	out="${target.web}/javancss/index.html"
-    	style="${support.tools}/javancss2141/javancss2html.xsl"/>
+        in="${target.temp}/javancss/javancss_metrics.xml"
+        out="${target.web}/javancss/index.html"
+        style="${support.tools}/javancss2141/javancss2html.xsl"/>
   </target>
 
   <!--=======================================================================-->
@@ -538,15 +563,15 @@
   <!--=======================================================================-->
   <target name="clover">
     <taskdef resource="clovertasks"/>
-    <mkdir dir="${target.clover}"/>
-    <clover-setup initString="${target.clover}/demo_coverage.db"/>
+    <mkdir dir="${target.temp}/clover"/>
+    <clover-setup initString="${target.temp}/clover/demo_coverage.db"/>
   </target>
   <target name="web.clover" depends="clover">
     <mkdir dir="${target.web}/clover"/>
     <clover-report>
       <current outfile="${target.web}/clover" title="Clover Report">
-        <format type="html"/> 
-      </current>	 
+        <format type="html"/>
+      </current>
     </clover-report>
   </target>
 
@@ -694,6 +719,39 @@
   </target>
 
   <!--=======================================================================-->
+  <target name="exec" depends="compile" description="Run the project using Ant">
+    <java classname="abbot.editor.Costello" fork="true">
+      <!--
+      org.crosswire.jsword.view.swing.desktop.Desktop
+      abbot.editor.Costello
+      -->
+      <sysproperty key="jsword.bible.dir" value="${source.res}"/>
+      <!-- ${basedir}/${target.swingui}/resource -->
+      <classpath>
+        <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
+        <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
+        <fileset dir="${source.jar}/lang101" includes="**/*.jar"/>
+        <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
+        <fileset dir="${source.jar}/jaxb10">
+          <include name="jaxb-api.jar"/>
+          <include name="jaxb-ri.jar"/>
+          <include name="jaxb-libs.jar"/>
+        </fileset>
+        <pathelement path="${target.classes}/common"/>
+        <pathelement path="${target.classes}/jsword"/>
+        <pathelement path="${target.classes}/servlet"/>
+        <pathelement path="${target.classes}/swing"/>
+        <pathelement path="${target.classes}/map"/>
+        <pathelement path="${target.classes}/sword"/>
+        <pathelement path="${target.classes}/osis"/>
+        <pathelement path="${target.classes}/resource"/>
+        <pathelement path="${source.res}"/>
+        <fileset dir="${support.tools}/abbot090" includes="**/*.jar"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!--=======================================================================-->
   <target name="all" depends="clean, swingui" description="Run a full clean/build/deploy/test cycle">
   </target>
 
@@ -710,6 +768,14 @@
   <target name="veryclean" depends="init" description="Remove the target directory">
     <delete dir="${target.root}"/>
     <delete dir="${gener.root}"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="antlibs" description="Copy required jars to ant/lib">
+    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar"/>
+    <copy file="${source.jar}/junit381/junit.jar" todir="${ant.home}/lib"/>
+    <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar"/>
+    <copy file="${support.tools}/jdepend24/jdepend.jar" todir="${ant.home}/lib"/>
   </target>
 
   <!--=======================================================================-->
@@ -731,7 +797,6 @@
     <!-- You will need to -Dusername=fred -Dpassword=secret -->
     <!-- property name="username" value="myusername"/ -->
     <!-- property name="password" value="mypassword"/ -->
-
     <taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
     <taskdef name="install"   classname="org.apache.catalina.ant.InstallTask"/>
     <taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
@@ -760,3 +825,4 @@
   </target>
 
 </project>
+
