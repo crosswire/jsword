@@ -1,12 +1,19 @@
+<%@ page %>
+
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="default.css">
-  <title>JSword</title>
+  <title>The J-SWORD Project</title>
+  <META NAME="keywords" CONTENT="bible, free, software, christian, study, gpl, bible software,">
+  <META http-equiv="keywords" CONTENT="bible, free, software, christian, study, gpl, bible software,">
+  <META NAME="distribution" CONTENT="global">
+  <link rel="stylesheet" href="sword.css" type="text/css">
 </head>
 
 <body>
 
-<h1>JSword</h1>
+<%@ include file="header.jsp" %>
+
+<h2>JSword</h2>
 
 <table width="100%" cellpadding="5" cellspacing="0">
   <tr> 
@@ -113,6 +120,8 @@
 </table>
 <br>
 -->
+
+<%@ include file="footer.jsp" %>
 
 </body>
 </html>
