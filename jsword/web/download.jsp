@@ -20,29 +20,23 @@
   	throw new NullPointerException("webprefix");
 ]]></jsp:scriptlet>
 
-<h1>J-Sword via WebStart</h1>
+<h1>Stable Release</h1>
 
+<h2>Webstart</h2>
 <p>
   The latest release of J-Sword is 0.97.
-  It is available via <a href="http://java.sun.com/products/javawebstart/">WebStart</a>.
-  which you will need installed. On MacOSX that job is done for you.
-  It is an easy <a href="http://java.sun.com/products/javawebstart/">download</a> on
-  Windows since it comes with JDK 1.4. Once you have this installed ...
+  It is available via <a href="http://java.sun.com/products/javawebstart/">WebStart</a> which
+  you will need installed. On MacOSX that job is done for you.
+  On Windows it is an easy download either from
+  the <a href="http://java.sun.com/products/javawebstart/">webstart download page</a> or
+  it <a href="http://java.sun.com/j2se/1.4.2/download.html">comes with J2SE 1.4</a>.
+  Once you have Java installed ...
 </p>
-
 <div align="center">
   <a href="stable/jsword.jnlp"><img src="images/webstart.jpg" width="247" height="60" border="0"/></a>
 </div>
 
-<p>
-  You may need to download Java to get Webstart working. If so,
-  the <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK download page</a>
-  is the place to get started.
-</p>
-
-<h1>Download</h1>
-
-<h2>Official Zip/Tar Based Releases</h2>
+<h2>Zip/Tar Based Downloads</h2>
 <p>We keep official releases hanging around for a while.</p>
 <table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
   <tr>
@@ -80,12 +74,22 @@
 </table>
 
 
-<h2>Nightly Releases</h2>
-<p>
-Regular releases are made and stored for a short time. You will need to use GNU
-tar to extract the doc.tar.gz files, although any tar should do for the others.
-</p>
+<h1>Nightly Releases</h1>
 
+<h2>Webstart</h2>
+<p>
+  A nightly webstart build of J-Sword is available. You'll need an installation
+  of Java as for the stable release of J-Sword.
+</p>
+<div align="center">
+  <a href="jnlp/jsword.jnlp"><img src="images/webstart.jpg" width="247" height="60" border="0"/></a>
+</div>
+
+<h2>Zip/Tar Based Downloads</h2>
+<p>
+  Regular releases are made and stored for a short time. You will need to use GNU
+  tar to extract the doc.tar.gz files, although any tar should do for the others.
+</p>
 <table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
   <tr>
 	<td>-</td>
