@@ -57,6 +57,16 @@ public class NetUtil
     public static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
 
     /**
+     * Constant for the file: protocol
+     */
+    public static final String PROTOCOL_HTTP = "http"; //$NON-NLS-1$
+
+    /**
+     * Constant for the file: protocol
+     */
+    public static final String PROTOCOL_FTP = "ftp"; //$NON-NLS-1$
+
+    /**
      * Constant for the jar: protocol
      */
     public static final String PROTOCOL_JAR = "jar"; //$NON-NLS-1$
