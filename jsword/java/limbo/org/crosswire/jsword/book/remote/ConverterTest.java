@@ -33,7 +33,7 @@ import org.jdom.Document;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
+ * @version $Id$
  */
 public class ConverterTest extends TestCase
 {
