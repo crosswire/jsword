@@ -67,11 +67,29 @@
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
     </java>
+    <echo message="Compiling ${gener.root}/osis"/>
+    <mkdir dir="${target.classes}/osis"/>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
+      <src path="${gener.root}/osis"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${target.classes}/resource">
+      <fileset dir="${gener.root}/osis">
+        <patternset refid="java.non.compile"/>
+      </fileset>
+    </copy>
+    <jar jarfile="${gener.root}/jsword-osis.jar">
+      <fileset dir="${target.classes}/osis"/>
+    </jar>
   </target>
   <target name="xjc.check" depends="init" description="Check to see if xjc is needed">
     <mkdir dir="${gener.root}/osis"/>
     <condition property="xjc.notrequired">
       <and>
+        <available file="${gener.root}/jsword-osis.jar" type="file"/>
         <available file="${gener.root}/osis/org" type="dir"/>
         <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
           <uptodate targetfile="${source.etc}/osisCore.1.1.1.xsd">
@@ -102,20 +120,6 @@
     <antcall target="compile.section">
       <param name="section" value="common"/>
     </antcall>
-    <echo message="Compiling ${gener.root}/osis"/>
-    <mkdir dir="${target.classes}/osis"/>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
-      <src path="${gener.root}/osis"/>
-      <classpath>
-        <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
-    <copy todir="${target.classes}/resource">
-      <fileset dir="${gener.root}/osis">
-        <patternset refid="java.non.compile"/>
-      </fileset>
-    </copy>
     <antcall target="compile.section">
       <param name="section" value="jsword"/>
     </antcall>
@@ -131,13 +135,6 @@
     <antcall target="compile.section">
       <param name="section" value="map"/>
     </antcall>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
-      <src path="${gener.root}/config"/>
-      <classpath>
-        <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
     <antcall target="compile.section">
       <param name="section" value="commontest"/>
     </antcall>
@@ -156,6 +153,13 @@
     <antcall target="compile.section">
       <param name="section" value="maptest"/>
     </antcall>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
+      <src path="${gener.root}/config"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
   </target>
 
   <!--=======================================================================-->

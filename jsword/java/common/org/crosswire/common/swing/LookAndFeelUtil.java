@@ -106,7 +106,7 @@ public class LookAndFeelUtil
      * are temporarily (whenever a L&F change could occur) not part of this
      * hierachy then add them in also so they get updated with everything else.
      * when the PLAF changes.
-     * @param window The frame to be registered
+     * @param comp The Component to be registered
      */
     public static void addComponentToUpdate(Component comp)
     {
@@ -122,17 +122,21 @@ public class LookAndFeelUtil
     /**
      * Remove a Frame from the list that need to be updated
      * when the PLAF changes.
-     * @param frame The frame to be de-registered
+     * @param comp The Component to be de-registered
      */
     public static void removeComponentToUpdate(Component comp)
     {
         windows.remove(comp);
     }
 
-    /** The frames to update */
+    /**
+     * The frames to update 
+     */
     private static transient List windows = new ArrayList();
 
-    /** The current PLAF (and the default value) */
+    /**
+     * The current PLAF (and the default value)
+     */
     private static Class current;
 
     /**

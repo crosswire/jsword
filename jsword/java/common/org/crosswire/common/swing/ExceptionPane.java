@@ -298,7 +298,6 @@ public class ExceptionPane extends JPanel
      * You must call setJoinHelpDesk() in order to start displaying
      * Exceptions sent to the Log, and in order to properly
      * close this class you must call it again (with false).
-     * @param joined Are we listening to the Log
      */
     public static boolean isHelpDeskListener()
     {

@@ -32,7 +32,7 @@ public class CaptureEvent extends EventObject
     /**
      * Constructs an CaptureEvent object.
      * @param source The event originator (typically <code>this</code>)
-     * @param ev An exception
+     * @param ex An exception
      */
     public CaptureEvent(Object source, Throwable ex, int level)
     {
@@ -46,7 +46,7 @@ public class CaptureEvent extends EventObject
     /**
      * Constructs an CaptureEvent object.
      * @param source The event originator (typically <code>this</code>)
-     * @param ev An exception
+     * @param message A message to report on
      */
     public CaptureEvent(Object source, String message, int level)
     {

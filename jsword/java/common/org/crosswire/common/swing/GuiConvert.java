@@ -33,17 +33,17 @@ import org.apache.commons.lang.StringUtils;
 public class GuiConvert
 {
     /**
-    * We don't want anyone doing this ...
-    */
+     * We don't want anyone doing this ...
+     */
     private GuiConvert()
     {
     }
 
     /**
-    * Convert a String to a Font
-    * @param data the thing to convert
-    * @return the converted data
-    */
+     * Convert a String to a Font
+     * @param value the thing to convert
+     * @return the converted data
+     */
     public static Font string2Font(String value)
     {
         if (value == null || value.equals("")) return null;
@@ -53,10 +53,10 @@ public class GuiConvert
     }
 
     /**
-    * Convert a Font to a String
-    * @param data the thing to convert
-    * @return the converted data
-    */
+     * Convert a Font to a String
+     * @param font the thing to convert
+     * @return the converted data
+     */
     public static String font2String(Font font)
     {
         if (font == null || font.equals("")) return "";
@@ -65,13 +65,16 @@ public class GuiConvert
     }
 
     /**
-    * Convert a String to a Color
-    * @param data the thing to convert
-    * @return the converted data
-    */
+     * Convert a String to a Color
+     * @param value the thing to convert
+     * @return the converted data
+     */
     public static Color string2Color(String value)
     {
-        if (value == null || value.equals("")) return null;
+		if (value == null || value.equals(""))
+		{
+			return null;
+		}
 
         // log.fine("input="+value);
         String red = value.substring(1, 3);
@@ -85,10 +88,10 @@ public class GuiConvert
     }
 
     /**
-    * Convert a Color to a String
-    * @param data the thing to convert
-    * @return the converted data
-    */
+     * Convert a Color to a String
+     * @param color the thing to convert
+     * @return the converted data
+     */
     public static String color2String(Color color)
     {
         if (color == null) return "";
@@ -104,4 +107,3 @@ public class GuiConvert
         return "#"+red+green+blue;
     }
 }
-

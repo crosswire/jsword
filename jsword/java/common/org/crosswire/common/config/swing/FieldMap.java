@@ -40,7 +40,7 @@ public class FieldMap
 {
     /**
      * Get a field from a string
-     * @param the configuration type
+     * @param type the configuration type
      * @return The best Field that matches
      */
     public static Field getField(Choice type)

@@ -33,8 +33,8 @@ import org.jdom.Element;
 public abstract class ChoiceFactory
 {
     /**
-     * Get a ChoiceFactory by string.
-     * @param name The string to check
+     * Get a ChoiceFactory by element.
+     * @param option The element to check
      * @return One of the ChoiceTypes.
      */
     public static Choice getChoice(Element option) throws ClassNotFoundException, IllegalAccessException, InstantiationException, StartupException

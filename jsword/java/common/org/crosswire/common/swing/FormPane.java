@@ -35,8 +35,8 @@ import javax.swing.JPanel;
 public class FormPane extends JPanel
 {
     /**
-    * Create a FormPane
-    */
+     * Create a FormPane
+     */
     public FormPane()
     {
         setLayout(new FieldLayout(15, 20));
@@ -44,10 +44,10 @@ public class FormPane extends JPanel
     }
 
     /**
-    * Add a field to this panel
-    * @param prompt The name for the field
-    * @param comp The component to add alongside the label
-    */
+     * Add a field to this panel
+     * @param prompt The name for the field
+     * @param comp The component to add alongside the label
+     */
     public void addEntry(String prompt, Component comp)
     {
         JLabel label = new JLabel(prompt);
@@ -60,10 +60,9 @@ public class FormPane extends JPanel
     }
 
     /**
-    * Add a field to this panel
-    * @param prompt The name for the field
-    * @param comp The component to add alongside the label
-    */
+     * Add a field to this panel
+     * @param prompt The name for the field
+     */
     public void removeEntry(String prompt)
     {
         JLabel label = (JLabel) comps.get(prompt+"_label");
@@ -77,18 +76,16 @@ public class FormPane extends JPanel
     }
 
     /**
-    * Add a field to this panel
-    * @param prompt The name for the field
-    * @param comp The component to add alongside the label
-    */
+     * Is this panel empty
+     */
     public boolean isEmpty()
     {
         return comps.size() == 0;
     }
 
     /**
-    * Get a list of the labels
-    */
+     * Get a list of the labels
+     */
     public String[] getFieldNames()
     {
         int count = getComponentCount() / 2;
@@ -104,8 +101,8 @@ public class FormPane extends JPanel
     }
 
     /**
-    * Get at list of the values in the fields
-    */
+     * Get at list of the values in the fields
+     */
     public String[] getFieldValues()
     {
         int count = getComponentCount() / 2;
@@ -120,6 +117,8 @@ public class FormPane extends JPanel
         return list;
     }
 
-    /** A store of the availabel components */
+    /**
+     * A store of the available components
+     */
     protected Hashtable comps = new Hashtable();
 }

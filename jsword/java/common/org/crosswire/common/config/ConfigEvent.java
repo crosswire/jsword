@@ -32,7 +32,6 @@ public class ConfigEvent extends EventObject
     /**
      * Constructs an ConfigEvent object.
      * @param source The event originator, or log stream
-     * @param message The string to be logged
      */
     public ConfigEvent(Object source, String key, Choice model)
     {

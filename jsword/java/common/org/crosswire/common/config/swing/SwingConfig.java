@@ -83,7 +83,7 @@ public class SwingConfig
 
     /**
      * Which display style to we use
-     * @param display_class The new display style
+     * @param display The new display style
      */
     public static void setDisplayClass(Class display) throws ClassCastException
     {

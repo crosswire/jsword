@@ -15,8 +15,9 @@
     <classpathentry kind="lib" path="jar/lucene12/lucene-1.2.jar" sourcepath="/jsword-support/jar/lucene12/lucene-1.2-src.zip"/>
     <classpathentry kind="lib" path="jar/bsf23/js.jar" sourcepath="C:/joe/xfer/installed/java/rhino15R4.zip"/>
     <classpathentry kind="lib" path="jar/junit381/junit.jar" sourcepath="/jsword-support/othersource/junit-3.8.1-src.jar"/>
+    <classpathentry exported="true" kind="lib"
+        path="target/gener/jsword-osis.jar" sourcepath="target/gener/osis"/>
     <classpathentry kind="src" path="java/common"/>
-    <classpathentry kind="src" path="target/gener/osis"/>
     <classpathentry kind="src" path="java/jsword"/>
     <classpathentry kind="src" path="target/gener/config"/>
     <classpathentry kind="src" path="java/map"/>
@@ -29,6 +30,6 @@
     <classpathentry kind="src" path="java/swingtest"/>
     <classpathentry kind="src" path="java/swordtest"/>
     <classpathentry kind="src" path="java/servlettest"/>
-    <classpathentry kind="lib" path="resource"/>
+    <classpathentry exported="true" kind="lib" path="resource"/>
     <classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

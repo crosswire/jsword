@@ -57,8 +57,6 @@ public class MapField extends JPanel implements Field
 {
     /**
      * Create a PropertyHashtableField for editing Hashtables.
-     * @param sel_model The Choice to inform of our changes
-     * @param superclass The type to check all new members against
      */
     public MapField()
     {

@@ -153,20 +153,31 @@ public final class StringUtil
 
             lastlower = !Character.isUpperCase(c);
 
-            if (lastspace)              c = Character.toUpperCase(c);
-            if (c == '_')               c = ' ';
-            if (!lastspace || c != ' ') retcode.append(c);
+			if (lastspace)
+			{
+				c = Character.toUpperCase(c);
+			}
+
+			if (c == '_')
+			{
+				c = ' ';
+			}
+
+			if (!lastspace || c != ' ')
+			{
+				retcode.append(c);
+			}
 
             lastspace = (c == ' ');
         }
 
-        return ""+retcode;
+		return "" + retcode;
     }
 
     /**
      * For example getInitials("Java DataBase Connectivity") = "JDC" and
      * getInitials("Church of England") = "CoE".
-     * @param The phrase from which to get the initial letters.
+     * @param words The phrase from which to get the initial letters.
      * @return The initial letters in the given words.
      */
     public static String getInitials(String words)
@@ -186,7 +197,7 @@ public final class StringUtil
      * For example getCapitals("Java DataBase Connectivity") = "JDBC" and
      * getCapitals("Church of England") = "CE".
      * A character is tested for capitalness using Character.isUpperCase
-     * @param The phrase from which to get the capital letters.
+     * @param words The phrase from which to get the capital letters.
      * @return The capital letters in the given words.
      * @see #getInitials(String)
      */

@@ -37,27 +37,27 @@ import org.apache.commons.lang.StringUtils;
 public final class StackTrace
 {
     /**
-    * Generate a stack trace an model it
-    */
+     * Generate a stack trace an model it
+     */
     public StackTrace()
     {
         init(new Throwable(), 2);
     }
 
     /**
-    * We already have an Exception that we'd like to model
-    * @param ex The Exception to model
-    */
+     * We already have an Exception that we'd like to model
+     * @param ex The Exception to model
+     */
     public StackTrace(Throwable ex)
     {
         init(ex, 1);
     }
 
     /**
-    * Create a stack trace of the code at this point
-    * @param ex The Throwable containing the Stack Trace
-    * @param disgard The number of uppermost stack frames to ignore
-    */
+     * Create a stack trace of the code at this point
+     * @param ex The Throwable containing the Stack Trace
+     * @param disgard The number of uppermost stack frames to ignore
+     */
     private void init(Throwable ex, int disgard)
     {
         StringWriter str = new StringWriter();
@@ -109,63 +109,62 @@ public final class StackTrace
     }
 
     /**
-    * Get the name of a function
-    * @param level Number of calling function
-    */
+     * How many stack elements are there?
+     */
     public final int countStackElements()
     {
         return method_names.length;
     }
 
     /**
-    * Get the name of a function
-    * @param level Number of calling function
-    */
+     * Get the name of a function
+     * @param level Number of calling function
+     */
     public final String getFunctionName(int level)
     {
         return method_names[level];
     }
 
     /**
-    * Get the name of a function including class name
-    * @param level Number of calling function
-    */
+     * Get the name of a function including class name
+     * @param level Number of calling function
+     */
     public final String getFullFunctionName(int level)
     {
         return class_names[level]+"."+method_names[level]+"()";
     }
 
     /**
-    * Get the name of a class
-    * @param level Number of calling function
-    */
+     * Get the name of a class
+     * @param level Number of calling function
+     */
     public final String getClassName(int level)
     {
         return class_names[level];
     }
 
     /**
-    * Get the name of a file
-    * @param level Number of calling function
-    */
+     * Get the name of a file
+     * @param level Number of calling function
+     */
     public final String getFileName(int level)
     {
         return file_names[level];
     }
 
     /**
-    * Get the line number within a file
-    * @param level Number of calling function
-    */
+     * Get the line number within a file
+     * @param level Number of calling function
+     */
     public final int getLineNumber(int level)
     {
         return line_numbers[level];
     }
 
     /**
-    * Get the Class that owns the function
-    * @param level Number of calling function
-    */
+     * Get the Class that owns the function
+     * @param level Number of calling function
+     */
     public final Class getClass(int level)
     {
         try
@@ -179,23 +178,27 @@ public final class StackTrace
     }
 
     /**
-    * Base class for the real enumeration implementations below
-    */
+     * Base class for the real enumeration implementations below
+     */
     public abstract class AbstractStackEnumeration implements Enumeration
     {
-        /** Are there more stack levels */
+        /**
+         * Are there more stack levels
+         */
         public boolean hasMoreElements()
         {
             return level<class_names.length;
         }
 
-        /** Are there more stack levels */
+        /**
+         * Are there more stack levels
+         */
         protected int level = 0;
     }
 
     /**
-    * To itterate over the class names
-    */
+     * To itterate over the class names
+     */
     public final Enumeration getClassNameElements()
     {
         return new AbstractStackEnumeration()
@@ -208,8 +211,8 @@ public final class StackTrace
     }
 
     /**
-    * To itterate over the function names
-    */
+     * To itterate over the function names
+     */
     public final Enumeration getFunctionNameElements()
     {
         return new AbstractStackEnumeration()
@@ -222,8 +225,8 @@ public final class StackTrace
     }
 
     /**
-    * To itterate over the full function names
-    */
+     * To itterate over the full function names
+     */
     public final Enumeration getFullFunctionNameElements()
     {
         return new AbstractStackEnumeration()
@@ -235,15 +238,23 @@ public final class StackTrace
         };
     }
 
-    /** Array containing the class names */
+    /**
+     * Array containing the class names
+     */
     protected String[] class_names;
 
-    /** Array containing the method names */
+    /**
+     * Array containing the method names
+     */
     private String[] method_names;
 
-    /** Array containing the file names */
+    /**
+     * Array containing the file names
+     */
     private String[] file_names;
 
-    /** Array containing the line numbers */
+    /**
+     * Array containing the line numbers
+     */
     private int[] line_numbers;
 }

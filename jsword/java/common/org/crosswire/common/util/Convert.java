@@ -201,7 +201,7 @@ public class Convert
 
     /**
      * Convert a Hashtable to a Sting
-     * @param data the thing to convert
+     * @param commands the thing to convert
      * @return the converted data
      */
     public static String hashtable2String(Map commands)
@@ -236,7 +236,7 @@ public class Convert
 
     /**
      * Convert a String to a StringArray
-     * @param data the thing to convert
+     * @param value the thing to convert
      * @return the converted data
      */
     public static String[] string2StringArray(String value, String separator)
@@ -246,7 +246,7 @@ public class Convert
 
     /**
      * Convert a StringArray to a String
-     * @param data the thing to convert
+     * @param value the thing to convert
      * @return the converted data
      */
     public static String stringArray2String(String[] value, String separator)
@@ -254,7 +254,8 @@ public class Convert
         return StringUtils.join(value, separator);
     }
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(Convert.class);
 }
-

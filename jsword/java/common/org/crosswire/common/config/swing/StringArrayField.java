@@ -43,9 +43,7 @@ import org.crosswire.common.util.Convert;
 public class StringArrayField extends JPanel implements Field
 {
     /**
-     * Create a PropertyHashtableField for editing Hashtables.
-     * @param sel_model The Choice to inform of our changes
-     * @param superclass The type to check all new members against
+     * Create a PropertyHashtableField for editing String arrays.
      */
     public StringArrayField()
     {

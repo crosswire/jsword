@@ -126,7 +126,7 @@ public class NetUtil
     /**
      * If there is a file at the other end of this URL return true.
      * Note this currently only works with file: type URLs
-     * @param orig The URL to check
+     * @param url The URL to check
      * @return true if the URL points at a file
      */
     public static boolean isFile(URL url)
@@ -179,7 +179,7 @@ public class NetUtil
     /**
      * Delete a URL. Currently this only works for file: URLs, however
      * the interface should not need to change to handle more complex URLs
-     * @param url The URL to delete
+     * @param orig The URL to delete
      */
     public static boolean delete(URL orig) throws IOException
     {
@@ -564,8 +564,8 @@ public class NetUtil
     }
 
     /**
-     * Sets the uRLCacheDir.
-     * @param uRLCacheDir The uRLCacheDir to set
+     * Sets the cache directory.
+     * @param cachedir The uRLCacheDir to set
      */
     public static void setURLCacheDir(File cachedir)
     {

@@ -106,7 +106,7 @@ public class JobTest extends TestCase
      */
     public void testSetProgressString()
     {
-        //TODO Implement setProgress().
+        //NOTE: Implement setProgress().
     }
 
     /*
@@ -114,21 +114,21 @@ public class JobTest extends TestCase
      */
     public void testSetProgressintString()
     {
-        //TODO Implement setProgress().
+        //NOTE: Implement setProgress().
     }
 
     public void testPredictProgress()
     {
-        //TODO Implement predictProgress().
+        //NOTE: Implement predictProgress().
     }
 
     public void testDone()
     {
-        //TODO Implement done().
+        //NOTE: Implement done().
     }
 
     public void testInterrupt()
     {
-        //TODO Implement interrupt().
+        //NOTE: Implement interrupt().
     }
 }

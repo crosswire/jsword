@@ -61,7 +61,7 @@ public class Reporter
      * it to Reporter.informUser(), you should not throw another Exception.
      * Called to fire a commandEntered event to all the Listeners
      * @param source The cause of the problem, a Component if possible.
-     * @param ex The Exception that was thrown
+     * @param prob The Exception that was thrown
      */
     public static void informUser(Object source, Throwable prob)
     {
@@ -69,7 +69,6 @@ public class Reporter
         Logger templog = Logger.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
-
         if (prob instanceof ThreadDeath)
         {
             throw (ThreadDeath) prob;
@@ -115,9 +114,7 @@ public class Reporter
     }
 
     /**
-     * Log a message
-     * @param source Where the message comes from
-     * @param message The text message
+     * Log a message.
      */
     protected static void fireCapture(ReporterEvent ev)
     {

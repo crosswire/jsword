@@ -285,7 +285,6 @@ public class TextViewPanel extends JPanel
 
     /**
      * Setter for the main body of text
-     * @param file A pointer to the text to display
      */
     public void setText(final InputStream in) throws IOException
     {

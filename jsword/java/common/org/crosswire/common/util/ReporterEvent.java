@@ -32,7 +32,7 @@ public class ReporterEvent extends EventObject
     /**
      * Constructs an CaptureEvent object.
      * @param source The event originator (typically <code>this</code>)
-     * @param ev An exception
+     * @param ex An exception
      */
     public ReporterEvent(Object source, Throwable ex)
     {
@@ -45,7 +45,7 @@ public class ReporterEvent extends EventObject
     /**
      * Constructs an CaptureEvent object.
      * @param source The event originator (typically <code>this</code>)
-     * @param ev An exception
+     * @param message An message to log
      */
     public ReporterEvent(Object source, String message)
     {

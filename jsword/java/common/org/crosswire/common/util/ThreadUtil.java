@@ -244,9 +244,9 @@ public class ThreadUtil
 
     /**
      * Private, used by getListing. Adds to a Vector the sub-threads
-     * @param vec The Vector to add to.
+     * @param vec The List to add to.
      * @param depth The current recursion depth
-     * @param group The ThreadGroup to detail
+     * @param thread The Thread to detail
      */
     private static void listThread(List vec, int depth, Thread thread)
     {
@@ -264,9 +264,8 @@ public class ThreadUtil
 
     /**
      * Private, used by getListing. Adds to a Vector the sub-threads
-     * @param vec The Vector to add to.
+     * @param vec The List to add to.
      * @param depth The current recursion depth
-     * @param group The ThreadGroup to detail
      */
     private static void addItem(List vec, int depth, String item)
     {

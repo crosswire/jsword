@@ -59,7 +59,6 @@ public class DocumentWriter extends Writer
 
     /**
      * Accessor for the Document that we are updating
-     * @param doc The current document
      */
     public Document getDocument()
     {

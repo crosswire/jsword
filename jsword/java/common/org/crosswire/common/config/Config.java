@@ -343,9 +343,7 @@ public class Config
     }
 
     /**
-     * Take the data in the local storage area and store it permanently,
-     * using the specified stream.
-     * @param out an output stream.
+     * Take the data in the local storage area and store it permanently
      */
     public Properties getProperties()
     {
