@@ -13,10 +13,11 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Document;
 
-import org.crosswire.jsword.book.ProgressEvent;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.basic.Verifier;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.progress.WorkEvent;
+import org.crosswire.common.progress.WorkListener;
 import org.crosswire.common.swing.DocumentWriter;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
@@ -149,8 +150,7 @@ public class CompareResultsPane extends JPanel implements Runnable
         }
         else
         {
-            alive = false;
-            ver.stopChecking();
+            work.interrupt();
             work = null;
         }
     }
@@ -219,7 +219,7 @@ public class CompareResultsPane extends JPanel implements Runnable
 
         try
         {
-            ver.addProgressListener(cpl);
+            JobManager.addWorkListener(cpl);
 
             if (check_text != null && check_text.equals("") && alive)
             {
@@ -243,7 +243,7 @@ public class CompareResultsPane extends JPanel implements Runnable
         }
         finally
         {
-            ver.removeProgressListener(cpl);
+            JobManager.removeWorkListener(cpl);
         }
 
         // Re-enable the values
@@ -290,16 +290,14 @@ public class CompareResultsPane extends JPanel implements Runnable
     private JLabel lbl_bible2 = new JLabel();
 
     /**
-    * Report progress changes to the screen
-    */
-    class CustomProgressListener implements ProgressListener
+     * Report progress changes to the screen
+     */
+    class CustomProgressListener implements WorkListener
     {
-        /**
-        * This method is called to indicate that some progress has been made.
-        * The amount of progress is indicated by ev.getPercent()
-        * @param ev Describes the progress
-        */
-        public void progressMade(final ProgressEvent ev)
+        /* (non-Javadoc)
+         * @see org.crosswire.common.progress.WorkListener#progressMade(org.crosswire.common.progress.WorkEvent)
+         */
+        public void workProgressed(final WorkEvent ev)
         {
             SwingUtilities.invokeLater(new Runnable()
             {

@@ -39,13 +39,13 @@ public class LogPane extends EirPanel
      */
     public LogPane()
     {
-        jbInit();
+        init();
     }
 
     /**
      * Create the GUI
      */
-    private void jbInit()
+    private void init()
     {
         pnl_shelf = new ExceptionShelf();
 

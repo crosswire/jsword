@@ -1,11 +1,11 @@
 
-package org.crosswire.jsword.book;
+package org.crosswire.common.progress;
 
 import java.util.EventObject;
 
 
 /**
- * A ProgressEvent happens whenever a MutableBook makes some progress
+ * A WorkEvent happens whenever a MutableBook makes some progress
  * in generating a new Bible.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -29,19 +29,51 @@ import java.util.EventObject;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ProgressEvent extends EventObject
+public class WorkEvent extends EventObject
 {
     /**
-     * Initialize a ProgressEvent
-     * @param source The Object that started this off
-     * @param command The command typed
-     * @param lang The Progress that interprets this command
+     * Initialize a WorkEvent
      */
-    public ProgressEvent(Book source, String desc, int percent)
+    public WorkEvent(Job source, String desc, int percent)
     {
         super(source);
+
         this.desc = desc;
         this.percent = percent;
+        this.finished = false;
+    }
+
+    /**
+     * Initialize a WorkEvent that is just finishing
+     */
+    public WorkEvent(Job source, String desc, boolean finished)
+    {
+        super(source);
+
+        if (!finished)
+        {
+            throw new IllegalArgumentException("finished must be true");
+        }
+
+        this.desc = desc;
+        this.percent = 100;
+        this.finished = true;
+    }
+
+    /**
+     * Accessor for the Job
+     */
+    public Job getJob()
+    {
+        return (Job) getSource();
+    }
+
+    /**
+     * Shortcut to check if percent == 100
+     */
+    public boolean isFinished()
+    {
+        return finished;
     }
 
     /**
@@ -62,9 +94,18 @@ public class ProgressEvent extends EventObject
         return desc;
     }
 
-    /** The total progress */
+    /**
+     * Have we just finished?
+     */
+    private boolean finished;
+
+    /**
+     * The total progress
+     */
     private int percent;
 
-    /** A short descriptive phrase */
+    /**
+     * A short descriptive phrase
+     */
     private String desc;
 }

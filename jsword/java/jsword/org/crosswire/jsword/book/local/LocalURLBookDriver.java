@@ -19,7 +19,6 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
@@ -127,9 +126,9 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.ProgressListener)
+     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.WorkListener)
      */
-    public Book create(Book book, ProgressListener li) throws BookException
+    public Book create(Book book) throws BookException
     {
         if (!(book instanceof Bible))
         {
@@ -165,7 +164,7 @@ public abstract class LocalURLBookDriver extends AbstractBookDriver
 
             LocalURLBible dest = (LocalURLBible) bibleclass.newInstance();
             dest.setLocalURLBibleMetaData(bbmd);
-            dest.generateText(source, li);
+            dest.generateText(source);
 
             return dest;
         }

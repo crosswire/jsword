@@ -12,11 +12,12 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 /**
- * The status bar provides usefull info to the user as to the current
+ * The status bar provides useful info to the user as to the current
  * state of the program.
  * <p>We need to think about the stuff to put in here:<ul>
  * <li>A status message. This changes with what the user is pointing at,
@@ -61,18 +62,20 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
      */
     private void jbInit()
     {
+        pnl_progr.setBorder(BorderFactory.createEtchedBorder());
+
         lbl_message.setBorder(BorderFactory.createEtchedBorder());
         lbl_message.setText(DEFAULT);
 
         lbl_name.setBorder(BorderFactory.createEtchedBorder());
         lbl_name.setText(" JSword ");
 
-        this.setLayout(new GridBagLayout());
         this.setBorder(BorderFactory.createLoweredBevelBorder());
-        this.add(lbl_message, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
-            GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        this.add(lbl_name, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-            GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+        this.setLayout(new GridBagLayout());
+
+        this.add(pnl_progr,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+        this.add(lbl_message, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        this.add(lbl_name,    new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     }
 
     /**
@@ -153,9 +156,23 @@ public class StatusBar extends JComponent implements MouseListener, HyperlinkLis
     {
     }
 
-    /** The default text */
+    /**
+     * The default text
+     */
     private static final String DEFAULT = "Ready ...        ";
 
+    /**
+     * Where the progress bars go
+     */
+    private JPanel pnl_progr = new JPanel();
+
+    /**
+     * Where the help messages go
+     */
     private JLabel lbl_message = new JLabel();
+
+    /**
+     * Where the product name goes
+     */
     private JLabel lbl_name = new JLabel();
 }

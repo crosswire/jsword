@@ -1,10 +1,10 @@
 
-package org.crosswire.jsword.book;
+package org.crosswire.common.progress;
 
 import java.util.EventListener;
 
 /**
- * Implement ProgressListener and call MutableBook.addProgressListener()
+ * Implement WorkListener and call MutableBook.addProgressListener()
  * to recieve ProgressEvents when ever we make progress.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -28,12 +28,12 @@ import java.util.EventListener;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
 */
-public interface ProgressListener extends EventListener
+public interface WorkListener extends EventListener
 {
     /**
      * This method is called to indicate that some progress has been made.
      * The amount of progress is indicated by ev.getPercent()
      * @param ev Describes the progress
      */
-    public void progressMade(ProgressEvent ev);
+    public void workProgressed(WorkEvent ev);
 }

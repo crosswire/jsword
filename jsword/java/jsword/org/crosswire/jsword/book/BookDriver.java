@@ -46,11 +46,10 @@ public interface BookDriver
     /**
      * Create a new Book based on a source.
      * @param name The name of the version to create
-     * @param li Somewhere to repost progress (can be null)
      * @return The new WritableBible
      * @exception BookException If the name is not valid
      */
-    public Book create(Book source, ProgressListener li) throws BookException;
+    public Book create(Book source) throws BookException;
     
     /**
      * Delete this Book from the system.

@@ -87,6 +87,7 @@ public class EirPanel extends JPanel
         });
         dlg_main.pack();
         dlg_main.setVisible(true);
+        dlg_main.setLocationRelativeTo(parent);
     }
 
     /**

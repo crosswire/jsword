@@ -9,12 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Properties;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -29,9 +24,11 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.crosswire.common.util.Logger;
+import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.progress.WorkEvent;
+import org.crosswire.common.progress.WorkListener;
+import org.crosswire.common.progress.swing.JobsProgressBar;
 import org.crosswire.common.swing.ComponentAbstractAction;
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -58,7 +55,7 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Splash extends JWindow
+public class Splash extends JWindow implements WorkListener
 {
     /**
      * Create a splash window
@@ -68,28 +65,9 @@ public class Splash extends JWindow
         super(JOptionPane.getFrameForComponent(comp));
         this.wait = wait;
 
-        // Set-up the timings files. It's not a disaster if it doesn't load
-        predicted = new Properties();
-        try
-        {
-            predicturl = Project.resource().getWritablePropertiesURL("splash");
-            InputStream in = predicturl.openStream();
-            if (in != null)
-            {
-                predicted.load(in);
-            }
-        }
-        catch (IOException ex)
-        {
-            log.debug("Failed to load prediction times - guessing");
-        }
-        
-        // And the predictions for next time
-        current = new Properties();
-        current.setProperty(START, Long.toString(System.currentTimeMillis()));
-
         jbInit();
 
+        JobManager.addWorkListener(this);
         new Thread(new CloseRunnable()).start();
     }
 
@@ -126,6 +104,7 @@ public class Splash extends JWindow
         pnl_info.add(lbl_info, BorderLayout.NORTH);
         pnl_info.add(prg_info, BorderLayout.CENTER);
 
+        this.getContentPane().add(pnl_jobs, BorderLayout.NORTH);
         this.getContentPane().add(pnl_info, BorderLayout.SOUTH);
         this.getContentPane().add(lbl_picture, BorderLayout.CENTER);
         this.pack();
@@ -138,144 +117,35 @@ public class Splash extends JWindow
         {
             public void mousePressed(MouseEvent ev)
             {
-                setVisible(false);
-                dispose();
+                close();
             }
         });
         this.setVisible(true);
     }
 
-    /**
-     * Set progress bar.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.WorkListener#workProgressed(org.crosswire.common.progress.WorkEvent)
      */
-    public void setProgress(String message)
+    public void workProgressed(WorkEvent ev)
     {
-        int percent = getPredictedProgress(message);
-        setProgress(percent, message);
+        prg_info.setValue(ev.getPercent());
+        prg_info.setString(ev.getDescription());
+        
+        if (ev.isFinished())
+        {
+            close();
+        }
     }
 
     /**
-     * Called to indicate that we are finished with the dialog
+     * Shut up shop
      */
-    public void done()
+    protected void close()
     {
-        // New status
-        setProgress(100, "Done");
+        JobManager.removeWorkListener(this);
 
-        // We need to create a new prediction file. Work out the start point
-        long start = getCurrentTime(START);
-
-        // And the end point
-        long end = start;
-        for (Iterator it = current.keySet().iterator(); it.hasNext();)
-        {
-            String message = (String) it.next();
-            long time = getCurrentTime(message);
-            if (time > end)
-                end = time;
-        }
-        long length = end - start;
-
-        // Now we know the start and the end we can convert all times to percents
-        Properties predictions = new Properties();
-        for (Iterator it = current.keySet().iterator(); it.hasNext();)
-        {
-            String message = (String) it.next();
-            long time = getCurrentTime(message);
-            long offset = time - start;
-            long percent = (100L * offset) / length;
-            predictions.setProperty(message, Long.toString(percent));
-        }
-
-        // And save. It's not a disaster if this goes wrong
-        try
-        {
-            OutputStream out = NetUtil.getOutputStream(predicturl);
-            predictions.store(out, "Predicted Startup Percentages");
-        }
-        catch (IOException ex)
-        {
-            log.error("Failed to save prediction times", ex);
-        }
-
-        // shut up shop
         setVisible(false);
         dispose();
-    }
-
-    /**
-     * Set progress bar.
-     */
-    protected void setProgress(int percent, String message)
-    {
-        try
-        {
-            current.setProperty(message, Long.toString(System.currentTimeMillis()));
-
-            Runnable setter = new SplashUpdater(message, percent);
-            if (SwingUtilities.isEventDispatchThread())
-            {
-                setter.run();
-            }
-            else
-            {
-                SwingUtilities.invokeAndWait(setter);
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Method getProgress.
-     * @param message
-     * @return int
-     */
-    private int getPredictedProgress(String message)
-    {
-        int reply = 0;
-
-        String timestr = predicted.getProperty(message);
-        if (timestr != null)
-        {
-            try
-            {
-                reply = Integer.parseInt(timestr);
-            }
-            catch (NumberFormatException ex)
-            {
-                log.error("Progress format error", ex);
-            }
-        }
-
-        return reply;
-    }
-
-    /**
-     * Method getProgress.
-     * @param message
-     * @return int
-     */
-    private long getCurrentTime(String message)
-    {
-        long reply = 0;
-
-        String timestr = current.getProperty(message);
-        if (timestr != null)
-        {
-            try
-            {
-                reply = Long.parseLong(timestr);
-            }
-            catch (NumberFormatException ex)
-            {
-                log.error("Current format error", ex);
-            }
-        }
-
-        return reply;
     }
 
     /**
@@ -284,27 +154,6 @@ public class Splash extends JWindow
     public static Action createOpenAction(Component parent)
     {
         return new OpenAction(parent);
-    }
-
-    /**
-     * A class to update the dialog with progress.
-     */
-    private final class SplashUpdater implements Runnable
-    {
-        SplashUpdater(String message, int percent)
-        {
-            this.message = message;
-            this.percent = percent;
-        }
-
-        public void run()
-        {
-            prg_info.setValue(percent);
-            prg_info.setString(message);
-        }
-
-        private final String message;
-        private final int percent;
     }
 
     /**
@@ -325,7 +174,6 @@ public class Splash extends JWindow
         public void actionPerformed(ActionEvent ev)
         {
             Splash splash = new Splash(getComponent(), 60000);
-            splash.setProgress(100, "");
         }
     }
 
@@ -356,18 +204,11 @@ public class Splash extends JWindow
         }
     }
 
-    private static final String START = "Start";
-
     protected final int wait;
     private Icon icon;
     private JPanel pnl_info = new JPanel();
     private JLabel lbl_picture = new JLabel();
     protected JProgressBar prg_info = new JProgressBar();
     private JLabel lbl_info = new JLabel();
-    private URL predicturl;
-    private Properties current;
-    private Properties predicted;
-
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(Splash.class);
+    private JobsProgressBar pnl_jobs = new JobsProgressBar();
 }

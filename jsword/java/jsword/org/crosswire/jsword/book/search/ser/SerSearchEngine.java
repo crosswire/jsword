@@ -286,7 +286,7 @@ public class SerSearchEngine implements SearchEngine, Index
                 /*
                 if (li != null)
                 {
-                    li.progressMade(new ProgressEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
+                    li.progressMade(new WorkEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
                 }
                 */
 
@@ -350,7 +350,7 @@ public class SerSearchEngine implements SearchEngine, Index
             /*
             if (li != null)
             {
-                li.progressMade(new ProgressEvent(bible, "Writing Words:", 90 + (10 * count++ / words)));
+                li.progressMade(new WorkEvent(bible, "Writing Words:", 90 + (10 * count++ / words)));
             }
             */
 

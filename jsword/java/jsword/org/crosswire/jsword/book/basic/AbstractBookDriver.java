@@ -5,7 +5,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.ProgressListener;
 
 /**
  * The AbstractBookDriver class implements some BibleDriver methods, making a
@@ -43,13 +42,13 @@ public abstract class AbstractBookDriver implements BookDriver
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.events.ProgressListener)
+     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.events.WorkListener)
      */
-    public Book create(Book source, ProgressListener li) throws BookException
+    public Book create(Book source) throws BookException
     {
         throw new BookException(Msg.DRIVER_READONLY);
     }
-    
+
     /**
      * Delete this Book from the system.
      * Take care with this method for obvious reasons. For most implemenations

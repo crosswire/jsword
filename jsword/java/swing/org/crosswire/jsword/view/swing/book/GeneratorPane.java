@@ -26,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
+import org.crosswire.common.progress.WorkEvent;
+import org.crosswire.common.progress.WorkListener;
 import org.crosswire.common.swing.ComponentAbstractAction;
 import org.crosswire.common.swing.EirPanel;
 import org.crosswire.common.swing.ExceptionPane;
@@ -33,8 +35,6 @@ import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.ProgressEvent;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.basic.Verifier;
 
 /**
@@ -358,7 +358,7 @@ public class GeneratorPane extends EirPanel
 
                 // The real work
                 // This cast is safe because we passed in a Bible
-                Bible dest_version = (Bible) dest_driver.create(source, cpl);
+                Bible dest_version = (Bible) dest_driver.create(source);
 
                 // Check
                 if (chk_verify.isEnabled())
@@ -401,14 +401,12 @@ public class GeneratorPane extends EirPanel
     /**
      * Report progress changes to the screen
      */
-    class CustomProgressListener implements ProgressListener
+    class CustomProgressListener implements WorkListener
     {
-        /**
-         * This method is called to indicate that some progress has been made.
-         * The amount of progress is indicated by ev.getPercent()
-         * @param ev Describes the progress
+        /* (non-Javadoc)
+         * @see org.crosswire.common.progress.WorkListener#progressMade(org.crosswire.common.progress.WorkEvent)
          */
-        public void progressMade(final ProgressEvent ev)
+        public void workProgressed(final WorkEvent ev)
         {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run()

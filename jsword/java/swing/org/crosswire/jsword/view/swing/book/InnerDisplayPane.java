@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
@@ -13,6 +14,8 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -25,6 +28,7 @@ import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.util.Style;
 import org.xml.sax.SAXException;
 
@@ -67,20 +71,28 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public static void preload()
     {
-        Thread worker = new Thread(new Runnable()
+        final Thread worker = new Thread("DisplayPreLoader")
         {
             public void run()
             {
                 try
                 {
+                    URL predicturl = Project.resource().getWritablePropertiesURL("display");
+                    Job job = JobManager.createJob("Display Pre-load", predicturl, this);
+
+                    job.setProgress("Setup");
                     Passage ref = PassageFactory.createPassage("Gen 1:1");
                     Bible version = Defaults.getBibleMetaData().getBible();
 
+                    job.setProgress("Getting init data");
                     BookData data = version.getData(ref);
                     SAXEventProvider provider = data.getSAXEventProvider();
-            
+
+                    job.setProgress("Compiling stylesheet");
                     Style style = new Style("swing");
                     style.applyStyleToString(provider, "simple.xsl");
+                    
+                    job.done();
 
                     log.debug("View pre-load finished");
                 }
@@ -89,7 +101,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     log.warn("View pre-load failed", ex);
                 }
             }
-        }, "DisplayPreLoader");
+        };
+
         worker.setPriority(Thread.MIN_PRIORITY);
         worker.start();
     }

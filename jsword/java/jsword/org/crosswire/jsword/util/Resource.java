@@ -122,10 +122,10 @@ public class Resource
      * @throws IOException if there is a problem reading the file
      * @throws MalformedURLException if the resource can not be found
      */
-    public InputStream getStyleInputStream(String subject, String name) throws IOException, MalformedURLException
+    public URL getStyle(String subject, String name) throws IOException, MalformedURLException
     {
         String path = "xsl/"+subject+"/"+name;
-        return ResourceUtil.getResourceAsStream(path);
+        return ResourceUtil.getResource(path);
     }
 
     /**

@@ -4,6 +4,7 @@ package org.crosswire.jsword.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SAXEventProviderInputSource;
 import org.crosswire.common.xml.SAXEventProviderXMLReader;
@@ -68,8 +70,8 @@ public class Style
     {
         try
         {
-            InputStream in = Project.resource().getStyleInputStream(subject, name);
-            return (in != null);
+            URL in = Project.resource().getStyle(subject, name);
+            return in != null;
         }
         catch (Exception ex)
         {
@@ -124,74 +126,86 @@ public class Style
     public String applyStyleToString(SAXEventProvider doc_in, String style) throws IOException, TransformerException
     {
         Source src_in = new SAXSource(new SAXEventProviderXMLReader(doc_in), new SAXEventProviderInputSource());
+        URL xsl_url = Project.resource().getStyle(subject, style);
+        long modtime = NetUtil.getLastModified(xsl_url);
 
         // html output
         StringWriter html_writer = new StringWriter();
         Result res_out = new StreamResult(html_writer);
 
         // we may have one cached
-        Templates template = null;
+        TemplateInfo tinfo = null;
         if (cache)
         {
-            template = (Templates) txers.get(style);
-            log.debug("trying to get xslt from cache for "+style+": template="+template);
-        }
+            tinfo = (TemplateInfo) txers.get(style);
 
-        if (template == null)
-        {
-            // Load the xsl document
-            InputStream xsl_in = Project.resource().getStyleInputStream(subject, style);
-
-            template = transfact.newTemplates(new StreamSource(xsl_in));
-
-            if (cache)
+            // But check it is up to date        
+            if (tinfo != null)
             {
-                txers.put(style, template);
+                log.debug("real modtime="+modtime);
+                log.debug("cached modtime="+tinfo.modtime);
+
+                if (modtime > tinfo.modtime)
+                {
+                    txers.remove(style);
+                    tinfo = null;
+                    log.debug("updated style "+style+" recaching");
+                }
             }
         }
 
-        Transformer transformer = template.newTransformer();
+        if (tinfo != null)
+        {
+            log.debug("using cached style for "+style);
+        }
+        else
+        {
+            log.debug("generating templates for "+style);
+
+            InputStream xsl_in = xsl_url.openStream();
+
+            tinfo = new TemplateInfo();
+            tinfo.modtime = modtime;
+            tinfo.templates = transfact.newTemplates(new StreamSource(xsl_in));
+            // Load the xsl document
+
+            if (cache)
+            {
+                txers.put(style, tinfo);
+            }
+        }
+
+        Transformer transformer = tinfo.templates.newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.transform(src_in, res_out);
 
         return html_writer.toString();
     }
 
-    /** Do we cache the transformers - speed vs devt ease trade off */
+    /**
+     * Do we cache the transformers - speed vs devt ease trade off
+     */
     private static boolean cache = true;
 
-    /** The how we get the transformer objects */
+    /**
+     * A cache of transformers
+     */
+    private static Map txers = new HashMap();
+
+    /**
+     * How we get the transformer objects
+     */
     private TransformerFactory transfact = TransformerFactory.newInstance();
 
-    /** A cache of transfotmers */
-    private Map txers = new HashMap();
-
-    /** The current subject */
+    /**
+     * The current subject
+     */
     private String subject;
 
-    /** Do we log.fine() the documents as we format them? */
-    private static boolean debug = false;
-
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(Style.class);
-
-    /**
-     * Do we log all the intermediate XML?
-     * @return boolean
-     */
-    public static boolean isDebug()
-    {
-        return debug;
-    }
-
-    /**
-     * Do we log all the intermediate XML?
-     * @param debug The log value to set
-     */
-    public static void setDebug(boolean debug)
-    {
-        Style.debug = debug;
-    }
 
     /**
      * Returns the transformer cache status.
@@ -209,5 +223,18 @@ public class Style
     public static void setCache(boolean cache)
     {
         Style.cache = cache;
+        if (!cache)
+        {
+            txers.clear();
+        }
+    }
+
+    /**
+     * A simple struct to link modification times to Templates objects
+     */    
+    class TemplateInfo
+    {
+        Templates templates;
+        long modtime;
     }
 }

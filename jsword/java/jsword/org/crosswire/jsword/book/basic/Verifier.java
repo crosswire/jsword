@@ -6,11 +6,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.crosswire.common.util.EventListenerList;
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.ProgressEvent;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.search.Index;
@@ -111,12 +110,12 @@ public class Verifier
      */
     public void checkText(Passage ref, PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
-        int progress = 0;
-        alive = true;
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
+        int percent = 0;
 
         // For every verse in the Bible
         Iterator it = ref.verseIterator();
-        while (it.hasNext() && alive)
+        while (it.hasNext())
         {
             Verse verse = (Verse) it.next();
             VerseRange range = new VerseRange(verse);
@@ -124,11 +123,11 @@ public class Verifier
             ref2.add(range);
 
             // Fire a progress event?
-            int new_progress = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
-            if (progress != new_progress)
+            int newpercent = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
+            if (percent != newpercent)
             {
-                progress = new_progress;
-                fireProgressMade("Checking Verses:", progress);
+                percent = newpercent;
+                job.setProgress(percent, "Checking Verses");
             }
 
             try
@@ -168,19 +167,25 @@ public class Verifier
      */
     public void checkPassage(PrintWriter out) throws IOException, NoSuchVerseException, BookException
     {
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
         int count = 0;
-        alive = true;
+        int percent = -1;
 
         // For every word in the word list
         //Iterator it = bible1.listWords();
         Iterator it = new ArrayList().iterator();
-        while (it.hasNext() && alive)
+        while (it.hasNext())
         {
             String word = (String) it.next();
             checkSinglePassage(word, out);
 
             // Fire a progress event?
-            fireProgressMade("Checking Words:", 100 * count++ / GUESS_WORDS);
+            int newpercent = 100 * count++ / GUESS_WORDS;
+            if (percent != newpercent)
+            {
+                percent = newpercent;
+                job.setProgress(percent, "Checking Words");
+            }
 
             // This could take a long time ...
             Thread.yield();
@@ -203,29 +208,36 @@ public class Verifier
             return;
         }
 
+        if (!(bible1 instanceof Index))
+        {
+            return;
+        }
+
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
         int count = 0;
-        alive = true;
+        int percent = -1;
 
         // For every word in the word list
-        if (bible1 instanceof Index)
+        Index index1 = (Index) bible1;
+        Iterator it = index1.getStartsWith(starts);
+        while (it.hasNext())
         {
-            Index index1 = (Index) bible1;
-            Iterator it = index1.getStartsWith(starts);
+            String s = (String) it.next();
+            checkSinglePassage(s, out);
 
-            while (it.hasNext())
+            // Fire a progress event?
+            int newpercent = 100 * count++ / GUESS_WORDS;
+            if (percent != newpercent)
             {
-                String s = (String) it.next();
-                checkSinglePassage(s, out);
+                percent = newpercent;
+                job.setProgress(percent, "Checking Words");
+            }
 
-                // Fire a progress event?
-                fireProgressMade("Checking Words:", 100 * count++ / GUESS_WORDS);
-
-                // This could take a long time ...
-                Thread.yield();
-                if (Thread.currentThread().isInterrupted())
-                {
-                    break;
-                }
+            // This could take a long time ...
+            Thread.yield();
+            if (Thread.currentThread().isInterrupted())
+            {
+                break;
             }
         }
     }
@@ -250,67 +262,6 @@ public class Verifier
     }
 
     /**
-     * Since many of these operations take a long time, we may want to
-     * kill them politely without killing any Threads
-     */
-    public void stopChecking()
-    {
-        alive = false;
-    }
-
-    /**
-     * Add a progress listener to the list of things wanting
-     * to know whenever we make some progress
-     */
-    public void addProgressListener(ProgressListener li)
-    {
-        listeners.add(ProgressListener.class, li);
-    }
-
-    /**
-     * Remove a progress listener from the list of things wanting
-     * to know whenever we make some progress
-     */
-    public void removeProgressListener(ProgressListener li)
-    {
-        listeners.remove(ProgressListener.class, li);
-    }
-
-    /**
-     * Called to fire a ProgressEvent to all the Listeners, but only if
-     * there is actual progress since last time.
-     * @param percent The percentage of the way through that we are now
-     */
-    protected void fireProgressMade(String name, int newpercent)
-    {
-        if (this.percent == newpercent)
-        {
-            return;
-        }
-
-        this.percent = newpercent;
-
-        // Guaranteed to return a non-null array
-        Object[] contents = listeners.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        ProgressEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2)
-        {
-            if (contents[i] == ProgressListener.class)
-            {
-                if (ev == null)
-                {
-                    ev = new ProgressEvent(bible2, name, percent);
-                }
-
-                ((ProgressListener) contents[i + 1]).progressMade(ev);
-            }
-        }
-    }
-
-    /**
      * We have no way of knowing exactly how many words there are in a Version ...
      */
     public static final int GUESS_WORDS = 18500;
@@ -321,16 +272,6 @@ public class Verifier
     public static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 
     /**
-     * The list of listeners
-     */
-    protected EventListenerList listeners = new EventListenerList();
-
-    /**
-     * The current progress
-     */
-    protected int percent = -1;
-
-    /**
      * The first Bible that we are checking
      */
     private Bible bible1;
@@ -339,9 +280,4 @@ public class Verifier
      * The second Bible that we are checking
      */
     private Bible bible2;
-
-    /**
-     * Is it OK to carry on
-     */
-    private boolean alive = true;
 }

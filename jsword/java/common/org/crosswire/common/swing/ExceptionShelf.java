@@ -97,11 +97,15 @@ public class ExceptionShelf extends JPanel
     {
         // Error checking
         if (ex == null)
+        {
             throw new NullPointerException();
+        }
 
         // Get rid of the 'no problems' panel if it exists
         if (total == 0)
+        {
             removePanel(noproblems);
+        }
 
         // Add in the new panel
         JPanel panel = createExceptionPanel(ex);

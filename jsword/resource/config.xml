@@ -128,11 +128,6 @@
     <help>The directories to search for source code in when investigating an exception.</help>
   </option>
 
-  <option key="Advanced.XSLT.Debug" type="boolean">
-  	<introspect class="org.crosswire.jsword.util.Style" property="Debug"/>
-    <help>Do we log the whole OSIS document to the system logger (can be slow).</help>
-  </option>
-
   <option key="Advanced.XSLT.Cache" type="boolean">
   	<introspect class="org.crosswire.jsword.util.Style" property="Cache"/>
     <help>Do we cache the XSLT pages (faster but a pain for development).</help>

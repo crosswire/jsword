@@ -8,7 +8,6 @@ import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.crosswire.common.util.Logger;
 import org.xml.sax.InputSource;
 
 /**
@@ -42,14 +41,6 @@ public class OSISFilter implements Filter
      */
     public OSISFilter()
     {
-        try
-        {
-            unm = JAXBUtil.getJAXBContext().createUnmarshaller();
-        }
-        catch (JAXBException ex)
-        {
-            log.fatal("Failed to init JAXB unmarshaller", ex);
-        }
     }
     
     /* (non-Javadoc)
@@ -59,7 +50,14 @@ public class OSISFilter implements Filter
     {
         if (unm == null)
         {
-            throw new DataException(Msg.OSIS_INIT);
+            try
+            {
+                unm = JAXBUtil.getJAXBContext().createUnmarshaller();
+            }
+            catch (JAXBException ex)
+            {
+                throw new DataException(Msg.OSIS_INIT, ex);
+            }
         }
 
         try
@@ -83,9 +81,4 @@ public class OSISFilter implements Filter
      * The JAXB unmarshaller
      */
     private Unmarshaller unm = null;
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(OSISFilter.class);
 }

@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,10 +31,11 @@ import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.swing.CustomAWTExceptionHandler;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.swing.LogPane;
 import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
 import org.crosswire.common.util.Logger;
@@ -41,6 +43,8 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.util.Project;
+import org.crosswire.jsword.view.swing.book.AdvancedToolsPane;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
@@ -104,20 +108,22 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     {
         try
         {
+            URL predicturl = Project.resource().getWritablePropertiesURL("splash");
             splash = new Splash(this, 60000);
+            startjob = JobManager.createJob("Startup", predicturl);
 
             // Initial setup
-            splash.setProgress("Creating GUI : Setting-up config");
+            startjob.setProgress("Creating GUI : Setting-up config");
             act_tools_options = new OptionsAction(this);
             CustomAWTExceptionHandler.setParentComponent(this);
 
-            splash.setProgress("Creating GUI : Loading Configuration System");
+            startjob.setProgress("Creating GUI : Loading Configuration System");
             act_tools_options.createConfig();
 
-            splash.setProgress("Creating GUI : Loading Stored Settings");
+            startjob.setProgress("Creating GUI : Loading Stored Settings");
             act_tools_options.loadConfig();
 
-            splash.setProgress("Creating GUI : Generating Components");
+            startjob.setProgress("Creating GUI : Generating Components");
             layouts = new ViewLayout[2];
             layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();
             layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout();
@@ -153,7 +159,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             act_help_contents = new HelpContentsAction(this);
             act_help_system = SystemPropertiesPane.createOpenAction(this);
             act_help_about = Splash.createOpenAction(this);
-            act_help_log = LogPane.createOpenAction(this);
+            act_help_log = AdvancedToolsPane.createOpenAction(this);
             act_help_debug = new DebugAction(this);
 
             rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
@@ -177,7 +183,16 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 			bar_side.addHyperlinkListener(this);
 
             // GUI setup
-            jbInit();
+            init();
+
+            if (initial == LAYOUT_TYPE_MDI)
+            {
+                rdo_view_mdi.setSelected(true);
+            }
+            if (initial == LAYOUT_TYPE_TDI)
+            {
+                rdo_view_tdi.setSelected(true);
+            }
 
             // Sort out the current ViewLayout. We need to reset current to be
             // initial because the config system may well have changed initial
@@ -185,7 +200,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             ensureAvailableBibleViewPane();
 
             // Configuration
-            splash.setProgress("General configuration");
+            startjob.setProgress("General configuration");
             LookAndFeelUtil.addComponentToUpdate(this);
 
             // Keep track of the selected DisplayArea
@@ -203,10 +218,10 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             last = recurseDisplayArea();
 
             // Preload the PassageInnerPane for faster initial view
-            splash.setProgress("Creating GUI : Preloading view system");
+            startjob.setProgress("Creating GUI : Preloading view system");
             InnerDisplayPane.preload();
 
-            splash.done();
+            startjob.done();
         }
         catch (Exception ex)
         {
@@ -220,9 +235,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     /**
      * Initialize the GUI, and display it.
      */
-    private void jbInit()
+    private void init()
     {
-        splash.setProgress("Creating GUI : Laying out menus");
+        startjob.setProgress("Creating GUI : Laying out menus");
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);
@@ -249,7 +264,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         rdo_view_mdi.addMouseListener(bar_status);
         chk_view_tbar.addMouseListener(bar_status);
         chk_view_sbar.addMouseListener(bar_status);
-        rdo_view_tdi.setSelected(true);
         chk_view_tbar.setSelected(view_status);
         chk_view_sbar.setSelected(view_tool);
         grp_views.add(rdo_view_mdi);
@@ -288,7 +302,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         menu_help.addSeparator();
         menu_help.add(act_help_debug).addMouseListener(bar_status);
 
-        splash.setProgress("Creating GUI : Toolbars");
+        startjob.setProgress("Creating GUI : Toolbars");
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
         bar_menu.add(menu_view);
@@ -330,7 +344,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         pnl_tbar.add(act_help_log).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
-        splash.setProgress("Creating GUI : Main Window");
+        startjob.setProgress("Creating GUI : Main Window");
         spt_books.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         spt_books.setOneTouchExpandable(true);
         spt_books.setDividerLocation(1.0D);
@@ -382,6 +396,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         views.remove(view);
 
         getViewLayout().remove(view);
+
+        // Just in case that was the last one
+        ensureAvailableBibleViewPane();
 
         setLayoutComponent(getViewLayout().getRootComponent());
         //getViewLayout().getSelected().adjustFocus(); 
@@ -450,98 +467,76 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
-     * Returns the view_status.
-     * @return boolean
+     * What is the current layout?
      */
-    public boolean isStatusBarVisible()
+    private final ViewLayout getViewLayout()
     {
-        return view_status;
+        return layouts[current];
     }
 
     /**
-     * Sets the view_status.
-     * @param view_status The view_status to set
+     * Setup the current view
      */
-    public void setStatusBarVisible(boolean view_status)
+    public void setLayoutType(int next)
     {
-        bar_status.setVisible(true);
-        this.view_status = view_status;
-    }
-
-    /**
-     * Returns the view_tool.
-     * @return boolean
-     */
-    public boolean isToolbarVisible()
-    {
-        return view_tool;
-    }
-
-    /**
-     * Sets the view_tool.
-     * @param view_tool The view_tool to set
-     */
-    public void setToolbarVisible(boolean view_tool)
-    {
-        pnl_tbar.setVisible(true);
-        this.view_tool = view_tool;
-    }
-
-    /**
-     * Are the close buttons enabled?
-     * @param The enabled state
-     */
-    public void setCloseEnabled(boolean b)
-    {
-        act_file_close.setEnabled(false);
-        act_file_closeall.setEnabled(false);
-    }
-
-    /**
-     * A Select pane is telling us that it has changed, and we might want to
-     * update the BibleViewPane and the ViewLayout to reflect any potentially
-     * new titles
-     */
-    public void titleChanged(TitleChangedEvent ev)
-    {
-        BibleViewPane bvp = (BibleViewPane) ev.getSource();
-        getViewLayout().updateTitle(bvp);
-    }
-
-    /**
-     * Run down the menus adding the accelerators
-     */
-    private void accelerateMenu(JMenuBar menubar)
-    {
-        for (int i = 0; i < menubar.getMenuCount(); i++)
+        // Check this is a change
+        if (current == next)
         {
-            JMenu menu = menubar.getMenu(i);
-            for (int j = 0; j < menu.getItemCount(); j++)
-            {
-                JMenuItem item = menu.getItem(j);
-                if (item instanceof AbstractButton)
-                {
-                    AbstractButton button = (AbstractButton) item;
-                    Action action = button.getAction();
-
-                    if (action != null)
-                    {
-                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-                        if (accel != null)
-                        {
-                            item.setAccelerator(accel);
-                        }
-                    }
-                }
-            }
+            return;
         }
+
+        // Go through the views removing them from the layout
+        Iterator it = iterateBibleViewPanes();
+        while (it.hasNext())
+        {
+            BibleViewPane view = (BibleViewPane) it.next();
+            getViewLayout().remove(view);
+        }
+
+        current = next;
+
+        // Go through the views adding them to the layout SDIViewLayout may well add
+        // a view, in which case the view needs to be set already so this must come
+        // last.
+        it = iterateBibleViewPanes();
+        while (it.hasNext())
+        {
+            BibleViewPane view = (BibleViewPane) it.next();
+            getViewLayout().add(view);
+        }
+
+        // Allow the current BibleViewPane to set the focus in the right place
+        setLayoutComponent(getViewLayout().getRootComponent());
+        getViewLayout().getSelected().adjustFocus();
+    }
+
+    /**
+     * For the use of the various Layout components to update the UI with
+     * their Layout component.
+     */
+    private void setLayoutComponent(Component next)
+    {
+        Component current = spt_books.getLeftComponent();
+        if (current == next)
+        {
+            return;
+        }
+        
+        if (current != null)
+        {
+            // Not sure why we have to use a number in place of
+            // the JSplitPane.LEFT string constant.
+            spt_books.remove(1/*JSplitPane.LEFT*/);
+        }
+
+        spt_books.add(next, JSplitPane.LEFT);
     }
 
     /**
      * If there are no current BibleViewPanes then add one in.
      * final because the ctor calls this method
      */
-    public final void ensureAvailableBibleViewPane()
+    private final void ensureAvailableBibleViewPane()
     {
         // If there are no views in the pool, create one
         if (!iterateBibleViewPanes().hasNext())
@@ -549,6 +544,22 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             BibleViewPane view = new BibleViewPane();
             addBibleViewPane(view);
         }
+    }
+
+    /**
+     * What is the initial layout state?
+     */
+    public static int getInitialLayoutType()
+    {
+        return initial;
+    }
+
+    /**
+     * What should the initial layout state be?
+     */
+    public static void setInitialLayoutType(int initial)
+    {
+        Desktop.initial = initial;
     }
 
     /* (non-Javadoc)
@@ -627,85 +638,89 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
-     * What is the current layout?
+     * Returns the view_status.
+     * @return boolean
      */
-    private final ViewLayout getViewLayout()
+    public boolean isStatusBarVisible()
     {
-        return layouts[current];
+        return view_status;
     }
 
     /**
-     * Setup the current view
+     * Sets the view_status.
+     * @param view_status The view_status to set
      */
-    public void setLayoutType(int next)
+    public void setStatusBarVisible(boolean view_status)
     {
-        // Check this is a change
-        if (current == next)
-        {
-            return;
-        }
-
-        // Go through the views removing them from the layout
-        Iterator it = iterateBibleViewPanes();
-        while (it.hasNext())
-        {
-            BibleViewPane view = (BibleViewPane) it.next();
-            getViewLayout().remove(view);
-        }
-
-        current = next;
-
-        // Go through the views adding them to the layout SDIViewLayout may well add
-        // a view, in which case the view needs to be set already so this must come
-        // last.
-        it = iterateBibleViewPanes();
-        while (it.hasNext())
-        {
-            BibleViewPane view = (BibleViewPane) it.next();
-            getViewLayout().add(view);
-        }
-
-        // Allow the current BibleViewPane to set the focus in the right place
-        setLayoutComponent(getViewLayout().getRootComponent());
-        getViewLayout().getSelected().adjustFocus();
+        bar_status.setVisible(true);
+        this.view_status = view_status;
     }
 
     /**
-     * For the use of the various Layout components to update the UI with
-     * their Layout component.
+     * Returns the view_tool.
+     * @return boolean
      */
-    private void setLayoutComponent(Component next)
+    public boolean isToolbarVisible()
     {
-        Component current = spt_books.getLeftComponent();
-        if (current == next)
-        {
-            return;
-        }
-        
-        if (current != null)
-        {
-            // Not sure why we have to use a number in place of
-            // the JSplitPane.LEFT string constant.
-            spt_books.remove(1/*JSplitPane.LEFT*/);
-        }
-
-        spt_books.add(next, JSplitPane.LEFT);
+        return view_tool;
     }
 
     /**
-     * What is the initial layout state?
+     * Sets the view_tool.
+     * @param view_tool The view_tool to set
      */
-    public static int getInitialLayoutType()
+    public void setToolbarVisible(boolean view_tool)
     {
-        return initial;
+        pnl_tbar.setVisible(true);
+        this.view_tool = view_tool;
     }
 
     /**
-     * What should the initial layout state be?
+     * Are the close buttons enabled?
+     * @param The enabled state
      */
-    public static void setInitialLayoutType(int initial)
+    public void setCloseEnabled(boolean b)
     {
-        Desktop.initial = initial;
+        act_file_close.setEnabled(false);
+        act_file_closeall.setEnabled(false);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.book.TitleChangedListener#titleChanged(org.crosswire.jsword.view.swing.book.TitleChangedEvent)
+     */
+    public void titleChanged(TitleChangedEvent ev)
+    {
+        BibleViewPane bvp = (BibleViewPane) ev.getSource();
+        getViewLayout().updateTitle(bvp);
+    }
+
+    /**
+     * Run down the menus adding the accelerators
+     */
+    private void accelerateMenu(JMenuBar menubar)
+    {
+        for (int i = 0; i < menubar.getMenuCount(); i++)
+        {
+            JMenu menu = menubar.getMenu(i);
+            for (int j = 0; j < menu.getItemCount(); j++)
+            {
+                JMenuItem item = menu.getItem(j);
+                if (item instanceof AbstractButton)
+                {
+                    AbstractButton button = (AbstractButton) item;
+                    Action action = button.getAction();
+
+                    if (action != null)
+                    {
+                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+                        if (accel != null)
+                        {
+                            item.setAccelerator(accel);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -719,14 +734,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     protected static final int LAYOUT_TYPE_MDI = 1;
 
     /**
-     * Single document interface
-     */
-    //protected static final int LAYOUT_TYPE_SDI = 2;
-
-    /**
      * The initial layout state
      */
-    private static int initial = LAYOUT_TYPE_TDI;
+    private static int initial = LAYOUT_TYPE_MDI;
 
     /**
      * The array of valid layouts
@@ -763,6 +773,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     private static final Logger log = Logger.getLogger(Desktop.class);
 
+    private Job startjob = null;
     private Splash splash = null;
     private Action act_file_new = null;
     private Action act_file_open = null;

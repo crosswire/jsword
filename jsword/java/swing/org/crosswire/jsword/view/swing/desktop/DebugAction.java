@@ -4,6 +4,7 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -59,6 +60,8 @@ public class DebugAction extends DesktopAbstractAction
             BibleViewPane view = (BibleViewPane) it.next();
             System.out.println(""+(i++)+": "+view.getTitle()+" "+view.toString());
         }
+        
+        JobManager.createTestJob(30000);
     }
 }
 

@@ -74,7 +74,7 @@
       <head>
         <style>
           .w-x-Strongs a { text-decoration: none; color: black; }
-          .note-ref { font-size: smaller; vertical-align: super; }
+          .note-ref { font-size: -2; }
           .figure { text-align: center; }
           .caption { text-align: center; font-size: smaller; }
           .lg { padding-left: 0.5in; padding-bottom: 1em; }

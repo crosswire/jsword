@@ -390,7 +390,6 @@ public class NetUtil
     {
         // We favour the FileOutputStream method here because append
         // is not well defined for the openConnection method
-
         if (url.getProtocol().equals(PROTOCOL_FILE))
         {
             return new FileOutputStream(url.getFile(), append);
@@ -505,6 +504,23 @@ public class NetUtil
         }
 
         return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * When was the given URL last modified. If no modification time is
+     * available then this method return the current time.
+     */
+    public static long getLastModified(URL url)
+    {
+        if (url.getProtocol().equals(PROTOCOL_FILE))
+        {
+            File file = new File(url.getFile());
+            return file.lastModified();
+        }
+        else
+        {
+            return System.currentTimeMillis();
+        }
     }
     
     /**

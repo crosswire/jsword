@@ -11,7 +11,6 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.Filters;
@@ -215,12 +214,13 @@ import org.crosswire.jsword.passage.VerseRange;
 public class RawBible extends LocalURLBible implements Index
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.local.LocalURLBible#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.ProgressListener)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.WorkListener)
      */
-    public void generateText(Bible source, ProgressListener li) throws BookException
+    public void generateText(Bible source) throws BookException
     {
         init(true);
-        super.generateText(source, li);
+
+        super.generateText(source);
     }
 
     /* (non-Javadoc)

@@ -3,13 +3,13 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Iterator;
 
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
-import org.crosswire.jsword.book.ProgressEvent;
-import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -111,12 +111,14 @@ public abstract class AbstractBible implements Bible
     /**
      * Read from the given source version to generate ourselves
      * @param source The Bible to read data from
-     * @param li How progress is reported
      * @throws BookException If generation fails
      */
-    public void generateText(Bible source, ProgressListener li) throws BookException
+    public void generateText(Bible source) throws BookException
     {
         Passage temp = PassageFactory.createPassage(PassageFactory.SPEED);
+
+        Job job = JobManager.createJob("Copying Bible data to new driver", Thread.currentThread());
+        int percent = -1;
 
         // For every verse in the Bible
         Iterator it = WHOLE.verseIterator();
@@ -128,7 +130,12 @@ public abstract class AbstractBible implements Bible
             temp.add(verse);
 
             // Fire a progress event?
-            li.progressMade(new ProgressEvent(this, "Writing Verses:", 100 * verse.getOrdinal() / BibleInfo.versesInBible()));
+            int newpercent = 100 * verse.getOrdinal() / BibleInfo.versesInBible(); 
+            if (percent != newpercent)
+            {
+                percent = newpercent;
+                job.setProgress(percent, "Writing Verses");
+            }
 
             // Read the document from the original version
             BookData doc = source.getData(temp);
