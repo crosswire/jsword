@@ -110,9 +110,7 @@ public class ActionFactory implements ActionListener
     public Action getAction(String key)
     {
         Action action = (CWAction) actions.get(key);
-
-        assert action != null : "Missing key: "+key; //$NON-NLS-1$
-
+        assert action != null : "Missing key: " + key; //$NON-NLS-1$
         return action;
     }
 
@@ -126,7 +124,7 @@ public class ActionFactory implements ActionListener
     {
         Action action = getAction(key);
 
-        assert action != null : "Missing resource: "+key; //$NON-NLS-1$
+        assert action != null : "Missing resource: " + key; //$NON-NLS-1$
 
         JLabel label = new JLabel();
         if (action != null)
@@ -154,7 +152,7 @@ public class ActionFactory implements ActionListener
         try
         {
             ResourceBundle resources = ResourceBundle.getBundle(basis.getName(), Locale.getDefault(), new CWClassLoader(basis));
-    
+
             Enumeration en = resources.getKeys();
             while (en.hasMoreElements())
             {
@@ -164,48 +162,65 @@ public class ActionFactory implements ActionListener
                     String actionName = key.substring(0, key.length() - TEST.length());
 
                     String name = getActionString(resources, actionName, Action.NAME);
-                    String shortDesc = getActionString(resources, actionName, Action.SHORT_DESCRIPTION);
-                    String longDesc = getActionString(resources, actionName, Action.LONG_DESCRIPTION);
+
+                    String shortDesc = getOptionalActionString(resources, actionName, Action.SHORT_DESCRIPTION);
+                    String longDesc = getOptionalActionString(resources, actionName, Action.LONG_DESCRIPTION);
+                    if (shortDesc == null && longDesc != null)
+                    {
+                        shortDesc = longDesc;
+                    }
+                    if (longDesc == null && shortDesc != null)
+                    {
+                        longDesc = shortDesc;
+                    }
+
                     Icon smallIcon = getIcon(resources, actionName, Action.SMALL_ICON);
                     Icon largeIcon = getIcon(resources, actionName, CWAction.LARGE_ICON);
                     Integer mnemonic = getMnemonic(resources, actionName);
                     KeyStroke accelerator = getAccelerator(resources, actionName);
 
-                    String enabledStr = getActionString(resources, actionName, "Enabled"); //$NON-NLS-1$
-                    boolean enabled = Boolean.valueOf(enabledStr).booleanValue();
+                    String enabledStr = getOptionalActionString(resources, actionName, "Enabled"); //$NON-NLS-1$
+                    boolean enabled = enabledStr == null ? true : Boolean.valueOf(enabledStr).booleanValue();
                     createAction(actionName, name, shortDesc, longDesc, mnemonic, accelerator, smallIcon, largeIcon, enabled);
                 }
             }
         }
         catch (MissingResourceException ex)
         {
-            log.error("Missing resource for class: "+basis.getName()); //$NON-NLS-1$
+            log.error("Missing resource for class: " + basis.getName()); //$NON-NLS-1$
             throw ex;
         }
     }
 
     /**
-     * A convienence method
+     * Lookup an action/field combination, warning about missing resources
+     * rather than excepting.
      */
     private String getActionString(ResourceBundle resources, String actionName, String field)
     {
-        String key = actionName + '.' + field;
-        return getString(resources, actionName, key);
+        try
+        {
+            return resources.getString(actionName + '.' + field);
+        }
+        catch (MissingResourceException ex)
+        {
+            log.info("Missing key for " + actionName, ex); //$NON-NLS-1$
+            return null;
+        }
     }
 
     /**
-     * Get a string out of a PropertyResourceBundle and eat the exceptions
+     * Lookup an action/field combination, returning null for missing resoruces.
      */
-    private String getString(ResourceBundle resources, String actionName, String key)
+    private String getOptionalActionString(ResourceBundle resources, String actionName, String field)
     {
         try
         {
-            return resources.getString(key);
+            return resources.getString(actionName + '.' + field);
         }
-        catch (MissingResourceException e)
+        catch (MissingResourceException ex)
         {
-            log.info("Missing key for " + actionName, e); //$NON-NLS-1$
-            return ""; //$NON-NLS-1$
+            return null;
         }
     }
 
@@ -215,8 +230,8 @@ public class ActionFactory implements ActionListener
     private Icon getIcon(ResourceBundle resources, String actionName, String iconName)
     {
         Icon icon = null;
-        String iconStr = getActionString(resources, actionName, iconName);
-        if (iconStr.length() > 0)
+        String iconStr = getOptionalActionString(resources, actionName, iconName);
+        if (iconStr != null && iconStr.length() > 0)
         {
             icon = GuiUtil.getIcon(iconStr);
         }
@@ -229,8 +244,8 @@ public class ActionFactory implements ActionListener
     private Integer getMnemonic(ResourceBundle resources, String actionName)
     {
         Integer mnemonic = null;
-        String mnemonicStr = getActionString(resources, actionName, Action.MNEMONIC_KEY);
-        if (mnemonicStr.length() > 0)
+        String mnemonicStr = getOptionalActionString(resources, actionName, Action.MNEMONIC_KEY);
+        if (mnemonicStr != null && mnemonicStr.length() > 0)
         {
             try
             {
@@ -251,10 +266,11 @@ public class ActionFactory implements ActionListener
     {
         // Create the KeyStroke for the action's shortcut/accelerator
         KeyStroke accelerator = null;
-        String acceleratorStr = getActionString(resources, actionName, Action.ACCELERATOR_KEY);
-        String [] modifiers = StringUtils.split(getActionString(resources, actionName, Action.ACCELERATOR_KEY + ".Modifiers"), ','); //$NON-NLS-1$
-        if (acceleratorStr.length() > 0)
+        String acceleratorStr = getOptionalActionString(resources, actionName, Action.ACCELERATOR_KEY);
+        if (acceleratorStr != null && acceleratorStr.length() > 0)
         {
+            String[] modifiers = StringUtils.split(getActionString(resources, actionName, Action.ACCELERATOR_KEY + ".Modifiers"), ','); //$NON-NLS-1$
+
             try
             {
                 int shortcut = getInteger(acceleratorStr);
