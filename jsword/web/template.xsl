@@ -8,9 +8,9 @@
     >
 
 <xsl:template match="/jsp:root">
-  <jsp:root version="1.2">
+  < version="1.2">
     <xsl:apply-templates/>
-  </jsp:root>
+  </>
 </xsl:template>
 
 <xsl:template match="html:html">
@@ -68,7 +68,7 @@
       <p><a href="devt.html">Getting-Involved</a></p>
       <ul>
         <li><a href="writingcode.html">Intro</a></li>
-        <li><a href="java2html/docs/APIExamples.html">API Primer</a></li>
+        <li><a href="java2html/docs/APIExamples.java.html">API Primer</a></li>
         <li><a href="design.html">Design</a></li>
         <li><a href="osisCore.1.1.html">OSIS</a></li>
         <li><a href="api/org/crosswire/common/config/package-summary.html">Config</a></li>

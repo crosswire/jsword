@@ -1,3 +1,4 @@
+
 package org.crosswire.common.util;
 
 import java.io.IOException;
@@ -6,7 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * PENDING(joe): write javadoc.
+ * Better implemenetations of the getResource methods with les ambiguity and
+ * that are less dependent on the specific classloader situation.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
