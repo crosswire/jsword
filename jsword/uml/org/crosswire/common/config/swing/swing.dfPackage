@@ -7,12 +7,6 @@ package id3s1x2d0mod6ytd0mpfenx;
 */
 class diagram {
 /**
-@__ref <oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref><oihard>
-@__modelType reference
-@__fqn <oiref:#Package#org.crosswire.config.swing.fields:oiref> 
-*/
-class reference127 {
-}/**
 @shapeType DependencyLink
 @__modelType link
 @__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
@@ -120,6 +114,56 @@ class reference147 {
 @automatic 
 */
 class link202 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.OptionsField:oiref><oihard>
+@__modelType reference 
+*/
+class reference6 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.FontField:oiref><oihard>
+@__modelType reference 
+*/
+class reference7 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.ColorField:oiref><oihard>
+@__modelType reference 
+*/
+class reference8 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.TextField:oiref><oihard>
+@__modelType reference 
+*/
+class reference9 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.NumberField:oiref><oihard>
+@__modelType reference 
+*/
+class reference10 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.BooleanField:oiref><oihard>
+@__modelType reference 
+*/
+class reference11 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.MapField:oiref><oihard>
+@__modelType reference 
+*/
+class reference12 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.FileField:oiref><oihard>
+@__modelType reference 
+*/
+class reference13 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.StringArrayField:oiref><oihard>
+@__modelType reference 
+*/
+class reference14 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.PasswordField:oiref><oihard>
+@__modelType reference 
+*/
+class reference15 {
 }}/**
 @__tags
 @shapeType ClassDiagram 
