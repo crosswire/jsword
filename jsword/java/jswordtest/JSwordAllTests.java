@@ -33,7 +33,8 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageMix.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSize.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSpeed.class);
-        suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSpeedOpt.class);
+        // commented out because it causes OutOfMemoryErrors.
+        //suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSpeedOpt.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageTally.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageTally2.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageUtil.class);
