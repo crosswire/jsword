@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Bibles;
 
 /**
  * A fullfilment of RemoteBibleDriver that uses a Local commection for test
@@ -70,6 +72,12 @@ public class LocalRemoteBibleDriver extends RemoteBibleDriver
         try
         {
             driver = new LocalRemoteBibleDriver();
+            BibleMetaData[] bmds = driver.getBibles();
+            for (int i=0; i<bmds.length; i++)
+            {
+                Bibles.addBible(bmds[i]);
+            }
+
             BibleDriverManager.registerDriver(driver);
         }
         catch (Exception ex)

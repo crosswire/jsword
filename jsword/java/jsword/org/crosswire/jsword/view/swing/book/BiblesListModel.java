@@ -81,7 +81,7 @@ public class BiblesListModel extends AbstractListModel implements BiblesListener
         if (index >= bmds.length)
             return null;
 
-        return bmds[index].getFullName();
+        return bmds[index];
     }
 
     /**

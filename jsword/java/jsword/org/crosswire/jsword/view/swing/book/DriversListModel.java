@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.Component;
+import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
@@ -47,7 +48,8 @@ public class DriversListModel extends AbstractListModel
      */
     public DriversListModel()
     {
-        drivers = BibleDriverManager.getDrivers();
+        List list = BibleDriverManager.getDrivers();
+        drivers = (BibleDriver[]) list.toArray(new BibleDriver[list.size()]);
     }
 
     /**

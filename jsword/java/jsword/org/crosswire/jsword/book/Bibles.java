@@ -1,11 +1,10 @@
 
 package org.crosswire.jsword.book;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.events.BiblesEvent;
 import org.crosswire.jsword.book.events.BiblesListener;
 
@@ -44,43 +43,7 @@ public class Bibles
      */
     public static BibleMetaData[] getBibles() throws BookException
     {
-        int total = 0;
-
-        // How many Bibles do we have in total?
-        BibleDriver[] drivers = BibleDriverManager.getDrivers();
-        for (int i = 0; i < drivers.length; i++)
-        {
-            try
-            {
-                total += drivers[i].getBibles().length;
-            }
-            catch (Exception ex)
-            {
-                Reporter.informUser(Bibles.class, ex);
-            }
-        }
-
-        if (total == 0)
-            return new BibleMetaData[0];
-
-        // Fetch them all into a big list
-        BibleMetaData[] retcode = new BibleMetaData[total];
-        int count = 0;
-        for (int i = 0; i < drivers.length; i++)
-        {
-            try
-            {
-                BibleMetaData[] names = drivers[i].getBibles();
-                System.arraycopy(names, 0, retcode, count, names.length);
-                count += names.length;
-            }
-            catch (Exception ex)
-            {
-                Reporter.informUser(Bibles.class, ex);
-            }
-        }
-
-        return retcode;
+        return (BibleMetaData[]) bibles.toArray(new BibleMetaData[bibles.size()]);
     }
 
     /**

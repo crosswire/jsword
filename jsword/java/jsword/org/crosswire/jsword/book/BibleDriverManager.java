@@ -43,54 +43,32 @@ public class BibleDriverManager
     /**
      * Add to the list of drivers
      * @param driver The BookDriver to add
-     * @deprecated
      */
     public static void registerDriver(BibleDriver driver) throws BookException
     {
-        BibleMetaData[] bmds = driver.getBibles();
-        for (int i=0; i<bmds.length; i++)
-        {
-            Bibles.addBible(bmds[i]);
-        }
-        
         drivers.add(driver);
     }
 
     /**
      * Remove from the list of drivers
      * @param driver The BookDriver to remove
-     * @deprecated
      */
     public static void unregisterDriver(BibleDriver driver) throws BookException
     {
-        BibleMetaData[] bmds = driver.getBibles();
-        for (int i=0; i<bmds.length; i++)
-        {
-            Bibles.removeBible(bmds[i]);
-        }
-
         drivers.remove(driver);
     }
 
     /**
      * Get an array of all the known drivers
      * @return Found int or the default value
-     * @deprecated
      */
-    public static BibleDriver[] getDrivers()
+    public static List getDrivers()
     {
-        BibleDriver[] da = new BibleDriver[drivers.size()];
-        for (int i=0; i<da.length; i++)
-        {
-            da[i] = (BibleDriver) drivers.get(i);
-        }
-
-        return da;
+        return drivers;
     }
 
     /**
      * An array of BookDrivers
-     * URGENT(joe) remove this and the whole of BibleDriverManager
      */
     private static List drivers = new ArrayList();
 

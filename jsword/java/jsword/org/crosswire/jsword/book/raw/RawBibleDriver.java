@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
@@ -104,6 +106,12 @@ public class RawBibleDriver extends LocalURLBibleDriver
         try
         {
             driver = new RawBibleDriver();
+            BibleMetaData[] bmds = driver.getBibles();
+            for (int i=0; i<bmds.length; i++)
+            {
+                Bibles.addBible(bmds[i]);
+            }
+
             BibleDriverManager.registerDriver(driver);
         }
         catch (Exception ex)

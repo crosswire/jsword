@@ -12,6 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.crosswire.common.swing.GuiUtil;
+import org.crosswire.jsword.book.BibleMetaData;
 
 /**
  * A custom list view that paints icons alongside the words. This is a
@@ -73,8 +74,9 @@ public class BibleListCellRenderer extends JLabel implements ListCellRenderer
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-
-        setText((value == null) ? "" : value.toString());
+        
+        BibleMetaData bmd = (BibleMetaData) value;
+        setText((bmd == null) ? "" : bmd.getFullName());
         setIcon(small_icon);
 
         setEnabled(list.isEnabled());

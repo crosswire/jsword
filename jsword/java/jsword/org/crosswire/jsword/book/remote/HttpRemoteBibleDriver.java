@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 
 /**
@@ -51,7 +53,15 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
     public static void setBaseURL(String baseurl) throws BookException
     {
         if (driver != null)
+        {
+            BibleMetaData[] bmds = driver.getBibles();
+            for (int i=0; i<bmds.length; i++)
+            {
+                Bibles.removeBible(bmds[i]);
+            }
+
             BibleDriverManager.unregisterDriver(driver);
+        }
 
         if (baseurl == null)
         {
@@ -67,6 +77,12 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
                 driver = new HttpRemoteBibleDriver();
                 HttpRemoteBibleDriver.baseurl = baseurl;
                 
+                BibleMetaData[] bmds = driver.getBibles();
+                for (int i=0; i<bmds.length; i++)
+                {
+                    Bibles.addBible(bmds[i]);
+                }
+
                 BibleDriverManager.registerDriver(driver);
             }
             catch (Exception ex)

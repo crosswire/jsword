@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 /**
@@ -64,24 +66,24 @@ public class TestDriverManager extends TestCase
 
     public void testRegUnreg() throws Exception
     {
-        BibleDriver[] drivers = BibleDriverManager.getDrivers();
+        List drivers = BibleDriverManager.getDrivers();
 
-        int before = drivers.length;
+        int before = drivers.size();
 
         for (int i=0; i<before; i++)
         {
-            BibleDriverManager.unregisterDriver(drivers[i]);
+            BibleDriverManager.unregisterDriver((BibleDriver) drivers.get(i));
 
-            BibleDriver[] temp = BibleDriverManager.getDrivers();
-            assertEquals(before - i, temp.length + 1);
+            List temp = BibleDriverManager.getDrivers();
+            assertEquals(before - i, temp.size() + 1);
         }
 
         for (int i=0; i<before; i++)
         {
-            BibleDriverManager.registerDriver(drivers[i]);
+            BibleDriverManager.registerDriver((BibleDriver)drivers.get(i));
 
-            BibleDriver[] temp = BibleDriverManager.getDrivers();
-            assertEquals(i + 1, temp.length);
+            List temp = BibleDriverManager.getDrivers();
+            assertEquals(i + 1, temp.size());
         }
     }
 }
