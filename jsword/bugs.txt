@@ -15,13 +15,11 @@ GUI
 - escape and enter in sel.pasg.dia not 100%
 - CRTL+anything does not open sel.psg.dialog
 - Heb and Greek Fonts not used
-- slow startup
 
 Sword Modules
 - ISV (NT only?) refs in with text????
 - RSV for Rev 22:21 contains bizarre markup
 - KJV1769+Strong and Young's - stange <small><br>
-- ACV/AKJV dies on Jer 7:1-7:34, Mal 1:1-14
 - zLD
 - GenBook
 - Locale/font support (Joe)
