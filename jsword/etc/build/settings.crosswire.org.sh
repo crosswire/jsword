@@ -3,9 +3,9 @@
 export WEBAPP_JSWORD=/home/jsword/html
 export WEBAPP_BIBLEDESKTOP=/home/jsword/bibledesktop/html
 export FTP_BASE=/home/jsword/ftp
-
 export FTP_PREFIX=http://www.crosswire.org/ftpmirror/pub/jsword
-export JNLP_HOSTNAME=www.crosswire.org
+export JNLP_HOSTNAME=http://www.crosswire.org
+
 export EMAIL=joe@eireneh.com
 export ANT_HOME=/home/joe/local/ant
 export JAVA_HOME=/usr/local/java
