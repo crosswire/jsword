@@ -4,9 +4,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.jdom.Document;
 
@@ -50,18 +50,18 @@ public class LocalRemoterTest extends TestCase
     public void testGetBibles() throws Exception
     {
         BookFilter filter = BookFilters.getBibles();
-        List lbmds = Books.installed().getBookMetaDatas(filter);
-        BookMetaData[] names1 = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
+        List lbooks = Books.installed().getBooks(filter);
+        Book[] names1 = (Book[]) lbooks.toArray(new Book[lbooks.size()]);
         RemoteBookDriver rbd = new LocalRemoteBookDriver();
 
         RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
         Document doc = remote.execute(method);
-        BookMetaData[] names2 = Converter.convertDocumentToBookMetaDatas(rbd, doc, new FixtureRemoter());
+        Book[] names2 = Converter.convertDocumentToBooks(rbd, doc, new FixtureRemoter());
 
         assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)
         {
-            assertEquals(names1[i].getName(), names2[i].getName());
+            assertEquals(names1[i].getBookMetaData().getName(), names2[i].getBookMetaData().getName());
         }
     }
 

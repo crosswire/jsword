@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilterIterator;
 import org.crosswire.jsword.book.BookList;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
 
@@ -41,11 +41,11 @@ import org.crosswire.jsword.book.BooksListener;
 public abstract class AbstractBookList implements BookList
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas(org.crosswire.jsword.book.BookFilter)
+     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
      */
-    public List getBookMetaDatas(BookFilter filter)
+    public List getBooks(BookFilter filter)
     {
-        List temp = CollectionUtil.createList(new BookFilterIterator(getBookMetaDatas().iterator(), filter));
+        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
         return Collections.unmodifiableList(temp);
     }
 
@@ -68,10 +68,10 @@ public abstract class AbstractBookList implements BookList
     /**
      * Kick of an event sequence
      * @param source The event source
-     * @param bmd The meta-data of the changed Bible
+     * @param book The changed Book
      * @param added Is it added?
      */
-    protected static synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
+    protected static synchronized void fireBooksChanged(Object source, Book book, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -85,7 +85,7 @@ public abstract class AbstractBookList implements BookList
             {
                 if (ev == null)
                 {
-                    ev = new BooksEvent(source, bmd, added);
+                    ev = new BooksEvent(source, book, added);
                 }
 
                 if (added)

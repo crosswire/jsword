@@ -48,7 +48,7 @@ public class Activator
      */
     public static void activate(Activatable subject)
     {
-        if (!activated.contains(subject))
+        if (!activated.contains(subject) && subject != null)
         {
             subject.activate(lock);
             activated.add(subject);
@@ -108,7 +108,7 @@ public class Activator
      */
     public static void deactivate(Activatable subject)
     {
-        if (activated.contains(subject))
+        if (activated.contains(subject) && subject != null)
         {
             subject.deactivate(lock);
             activated.remove(subject);

@@ -50,7 +50,7 @@ public class BooksTest extends TestCase
 
     protected void setUp() throws Exception
     {
-        List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
+        List lbmds = Books.installed().getBooks(BookFilters.getBibles());
         int numBibles = lbmds.size();
         bibles = new Book[numBibles];
         bmds = new BookMetaData[numBibles];
@@ -59,11 +59,9 @@ public class BooksTest extends TestCase
         int i = 0;
         for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
-            bmds[i] = (BookMetaData) it.next();
-            bibles[i] = bmds[i].getBook();
-
+            bibles[i] = (Book) it.next();
+            bmds[i] = bibles[i].getBookMetaData();
             gen11[i] = bibles[i].getKey("Gen 1:1"); //$NON-NLS-1$
-
             i++;
         }
     }
@@ -77,7 +75,7 @@ public class BooksTest extends TestCase
         for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
-            log.debug("testing bible: " + bible.getBookMetaData().getFullName()); //$NON-NLS-1$
+            log.debug("testing bible: " + bible.getFullName()); //$NON-NLS-1$
             assertTrue(bible != null);
         }
     }

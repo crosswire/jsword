@@ -21,13 +21,14 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.sword.ConfigEntry;
+import org.crosswire.jsword.book.sword.SwordBook;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordConstants;
@@ -74,13 +75,19 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.BookMetaData)
      */
-    public boolean isNewer(BookMetaData bmd)
+    public boolean isNewer(Book book)
     {
-        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
         File dldir = SwordBookDriver.getDownloadDir();
 
-        File confdir = new File(dldir, SwordConstants.DIR_CONF);
-        File conf = new File(confdir, sbmd.getDiskName() + SwordConstants.EXTENSION_CONF);
+        SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
+        File conf = new File(dldir, sbmd.getConfPath());
+        
+        // The conf may not exist in our download dir.
+        // In this case we say that it should not be downloaded again.
+        if (!conf.exists())
+        {
+            return false;
+        }
 
         URL configurl = null;
         try
@@ -95,14 +102,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             return false;
         }
 
-        URL remote = toRemoteURL(bmd);
+        URL remote = toRemoteURL(book);
         return NetUtil.isNewer(remote, configurl);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas()
+     * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public List getBookMetaDatas()
+    public List getBooks()
     {
         try
         {
@@ -125,23 +132,17 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.BookMetaData)
+     * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.Book)
      */
-    public void install(BookMetaData bmd)
+    public void install(Book book)
     {
-        if (!(bmd instanceof SwordBookMetaData))
-        {
-            assert false;
-            return;
-        }
-
         // Is the book already installed? Then nothing to do.
-        if (Books.installed().getBookMetaData(bmd.getName()) != null)
+        if (Books.installed().getBook(book.getBookMetaData().getName()) != null)
         {
             return;
         }
 
-        final SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
+        final SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
 
         // So now we know what we want to install - all we need to do
         // is installer.install(name) however we are doing it in the
@@ -218,13 +219,13 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
      */
-    public void downloadSearchIndex(BookMetaData bmd, URL localDest) throws InstallException
+    public void downloadSearchIndex(Book book, URL localDest) throws InstallException
     {
         Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
 
         try
         {
-            download(job, directory + '/' + SEARCH_DIR, bmd.getInitials() + ZIP_SUFFIX, localDest);
+            download(job, directory + '/' + SEARCH_DIR, book.getInitials() + ZIP_SUFFIX, localDest);
         }
         catch (Exception ex)
         {
@@ -291,10 +292,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
                         SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
                         sbmd.setDriver(fake);
+                        Book book = new SwordBook(sbmd, null);
 
                         if (sbmd.isSupported())
                         {
-                            entries.put(sbmd.getName(), sbmd);
+                            entries.put(book.getName(), book);
                         }
                     }
                     catch (Exception ex)

@@ -59,18 +59,6 @@ public interface BookMetaData extends Comparable
     public BookType getType();
 
     /**
-     * Accessor for the real Book to read data.
-     * <p>Note that constructing a Book may well consume system resources far
-     * more than the construction of a BookMetaData so you should only get a
-     * Book if you intend to use it.
-     * <p>For implementors of BookMetaData - the objects returned by 2
-     * successive calls to getBook() should be the same (i.e. return true to an
-     * == test) unless for some reason the objects are not thread safe. Since
-     * Books are read-only once setup thread safety should not be hard.
-     */
-    public Book getBook();
-
-    /**
      * Accessor for the driver that runs this Book.
      * Note this method should only be used to delete() Books. Everything else
      * you should want to do to a Book should be available in other ways.

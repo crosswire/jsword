@@ -63,7 +63,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      */
     public ReadingsBook(ReadingsBookDriver driver, String name, BookType type)
     {
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type);
+        BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         setBookMetaData(bmd);
 
         String setname = ReadingsBookDriver.getReadingsSet();

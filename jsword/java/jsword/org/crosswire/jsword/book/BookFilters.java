@@ -52,7 +52,7 @@ public class BookFilters
      */
     private static class AllBookFilter implements BookFilter
     {
-        public boolean test(BookMetaData bmd)
+        public boolean test(Book book)
         {
             return true;
         }
@@ -76,9 +76,9 @@ public class BookFilters
      */
     private static class BiblesBookFilter implements BookFilter
     {
-        public boolean test(BookMetaData bmd)
+        public boolean test(Book book)
         {
-            return bmd.getType().equals(BookType.BIBLE);
+            return book.getType().equals(BookType.BIBLE);
         }
     }
 
@@ -100,9 +100,9 @@ public class BookFilters
      */
     private static class DictionariesBookFilter implements BookFilter
     {
-        public boolean test(BookMetaData bmd)
+        public boolean test(Book book)
         {
-            return bmd.getType().equals(BookType.DICTIONARY);
+            return book.getType().equals(BookType.DICTIONARY);
         }
     }
 
@@ -124,9 +124,9 @@ public class BookFilters
      */
     private static class CommentariesBookFilter implements BookFilter
     {
-        public boolean test(BookMetaData bmd)
+        public boolean test(Book book)
         {
-            return bmd.getType().equals(BookType.COMMENTARY);
+            return book.getType().equals(BookType.COMMENTARY);
         }
     }
 
@@ -137,9 +137,9 @@ public class BookFilters
     {
         return new BookFilter()
         {
-            public boolean test(BookMetaData bmd)
+            public boolean test(Book book)
             {
-                return b1.test(bmd) && b2.test(bmd);
+                return b1.test(book) && b2.test(book);
             }
         };
     }
@@ -151,9 +151,9 @@ public class BookFilters
     {
         return new BookFilter()
         {
-            public boolean test(BookMetaData bmd)
+            public boolean test(Book book)
             {
-                return b1.test(bmd) || b2.test(bmd);
+                return b1.test(book) || b2.test(book);
             }
         };
     }

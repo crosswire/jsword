@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.jdom.Document;
@@ -68,7 +69,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
      * flush the cache because the list of Bibles on the server could change.
      * @return an array of book names
      */
-    public BookMetaData[] getBookMetaDatas()
+    public Book[] getBooks()
     {
         synchronized (this)
         {
@@ -81,12 +82,12 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
                     RemoteMethod method = new RemoteMethod(MethodName.GETBIBLES);
                     Document doc = remoter.execute(method);
 
-                    rbmd = Converter.convertDocumentToBookMetaDatas(this, doc, remoter);
+                    rbmd = Converter.convertDocumentToBooks(this, doc, remoter);
                 }
                 catch (Exception ex)
                 {
                     log.warn("failed to remote getBibleNames", ex); //$NON-NLS-1$
-                    rbmd = new BookMetaData[0];
+                    rbmd = new Book[0];
                 }
             }
         }
@@ -103,7 +104,7 @@ public abstract class RemoteBookDriver extends AbstractBookDriver
      * The cache of Bible names.
      * At some stage it would be good to work out a way to clear the cache.
      */
-    private BookMetaData[] rbmd;
+    private Book[] rbmd;
 
     /**
      * The id to metadata map

@@ -7,7 +7,6 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
@@ -42,25 +41,18 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public ReadingsBookDriver()
     {
-        Book[] books = new Book[]
+        books = new Book[]
         {
             new ReadingsBook(this, Msg.TITLE.toString(), BookType.DICTIONARY),
         };
-
-        bmds = new BookMetaData[books.length];
-
-        for (int i = 0; i < books.length; i++)
-        {
-            bmds[i] = books[i].getBookMetaData();
-        }
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public BookMetaData[] getBookMetaDatas()
+    public Book[] getBooks()
     {
-        return bmds;
+        return books;
     }
 
     /* (non-Javadoc)
@@ -74,7 +66,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     /**
      * The meta data array
      */
-    private BookMetaData[] bmds;
+    private Book[] books;
 
     /**
      * Get a list of the available readings sets

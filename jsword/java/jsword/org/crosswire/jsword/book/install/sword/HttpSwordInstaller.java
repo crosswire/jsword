@@ -10,9 +10,8 @@ import java.net.URLConnection;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.install.InstallException;
-import org.crosswire.jsword.book.sword.SwordBookMetaData;
 
 /**
  * An implementation of Installer for reading data from Sword Web sites.
@@ -52,19 +51,11 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#toURL(org.crosswire.jsword.book.BookMetaData)
      */
-    public URL toRemoteURL(BookMetaData bmd)
+    public URL toRemoteURL(Book book)
     {
-        if (!(bmd instanceof SwordBookMetaData))
-        {
-            assert false;
-            return null;
-        }
-
-        SwordBookMetaData sbmd = (SwordBookMetaData) bmd;
-
         try
         {
-            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + sbmd.getInitials() + ZIP_SUFFIX);
+            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + book.getBookMetaData().getInitials() + ZIP_SUFFIX);
         }
         catch (MalformedURLException ex)
         {

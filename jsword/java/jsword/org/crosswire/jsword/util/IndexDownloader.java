@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.search.IndexManager;
@@ -46,9 +46,9 @@ public class IndexDownloader
 
     /**
      * Download and install a search index
-     * @param bmd The book to get an index for
+     * @param book The book to get an index for
      */
-    public static void downloadIndex(BookMetaData bmd, Installer installer) throws IOException, InstallException, BookException
+    public static void downloadIndex(Book book, Installer installer) throws IOException, InstallException, BookException
     {
         // Get a temp home
         URL tempDownload = NetUtil.getTemporaryURL(TEMP_PREFIX, TEMP_SUFFIX);
@@ -56,11 +56,11 @@ public class IndexDownloader
         try
         {
             // Now we know what installer to use, download to the temp file
-            installer.downloadSearchIndex(bmd, tempDownload);
+            installer.downloadSearchIndex(book, tempDownload);
 
             // And install from that file.
             IndexManager idxman = IndexManagerFactory.getIndexManager();
-            idxman.installDownloadedIndex(bmd, tempDownload);
+            idxman.installDownloadedIndex(book, tempDownload);
         }
         finally
         {

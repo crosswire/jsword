@@ -13,7 +13,6 @@ import javax.swing.event.EventListenerList;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.IndexStatus;
@@ -45,14 +44,6 @@ import org.jdom.Document;
  */
 public abstract class AbstractBookMetaData implements BookMetaData
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getBook()
-     */
-    public Book getBook()
-    {
-        return book;
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getDriver()
      */
@@ -179,21 +170,12 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /**
-     * @param book The book to set.
-     */
-    public void setBook(Book book)
-    {
-        this.book = book;
-    }
-
-    /**
      * @param driver The driver to set.
      */
     public void setDriver(BookDriver driver)
     {
         this.driver = driver;
     }
-
 
     /**
      * Get the language name from the language code. Note, this code does not support dialects.
@@ -385,7 +367,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     private Map prop = new LinkedHashMap();
 
-    private Book book;
     private BookDriver driver;
     private String fullName;
     private String displayName;

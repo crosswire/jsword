@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.basic;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 
 /**
  * The AbstractBookDriver class implements some BibleDriver methods, making a
@@ -48,13 +47,18 @@ public abstract class AbstractBookDriver implements BookDriver
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-    /**
-     * Delete this Book from the system.
-     * Take care with this method for obvious reasons. For most implemenations
-     * of Book etc, this method will throw up because most will be read-only.
-     * @throws BookException If the Book can't be deleted.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword.book.Book)
      */
-    public void delete(BookMetaData dead) throws BookException
+    public boolean isDeletable(Book dead)
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book.Book)
+     */
+    public void delete(Book dead) throws BookException
     {
         throw new BookException(Msg.DRIVER_READONLY);
     }

@@ -47,7 +47,7 @@ class Msg extends MsgBase
     static final Msg OPEN_COPYABLE = new Msg("Openness.Copyable"); //$NON-NLS-1$
     static final Msg OPEN_COMMERCIAL = new Msg("Openness.Commercial"); //$NON-NLS-1$
 
-    static final Msg BOOK_METADATA_SET_OTHER = new Msg("BookMetaDataSet.Other"); //$NON-NLS-1$
+    static final Msg BOOK_METADATA_SET_OTHER = new Msg("BookSet.Other"); //$NON-NLS-1$
 
     static final Msg STRONGS_GREEK = new Msg("Strongs.Greek"); //$NON-NLS-1$
     static final Msg STRONGS_HEBREW = new Msg("Strongs.Hebrew"); //$NON-NLS-1$

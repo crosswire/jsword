@@ -4,7 +4,6 @@ import java.util.List;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.test.Speed;
 
@@ -50,9 +49,8 @@ public class Bench
 
         try
         {
-            List dicts = Books.installed().getBookMetaDatas(BookFilters.getBibles());
-            BookMetaData bmd = (BookMetaData) dicts.get(0);
-            version = bmd.getBook();
+            List dicts = Books.installed().getBooks(BookFilters.getBibles());
+            version = (Book) dicts.get(0);
         }
         catch (Exception ex)
         {
@@ -96,11 +94,11 @@ public class Bench
     private static void versions()
     {
         System.out.println("  Available versions:"); //$NON-NLS-1$
-        List lbmds = Books.installed().getBookMetaDatas();
+        List lbmds = Books.installed().getBooks();
         for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            System.out.println("    " + bmd.getName()); //$NON-NLS-1$
+            Book book = (Book) it.next();
+            System.out.println("    " + book.getName()); //$NON-NLS-1$
         }
     }
 }

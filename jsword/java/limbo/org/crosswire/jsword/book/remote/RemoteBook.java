@@ -52,7 +52,7 @@ public class RemoteBook extends AbstractBook
      */
     public RemoteBook(Remoter remoter, RemoteBookDriver driver, String name, BookType type)
     {
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type);
+        BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         setBookMetaData(bmd);
 
         this.remoter = remoter;

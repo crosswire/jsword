@@ -3,13 +3,17 @@ package org.crosswire.jsword.book.basic;
 import java.util.Properties;
 
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.IndexStatus;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.search.IndexManager;
 import org.crosswire.jsword.book.search.IndexManagerFactory;
+import org.jdom.Document;
+import org.jdom.Element;
 
 /**
  * DefaultBookMetaData is an implementation of the of the BookMetaData
@@ -48,7 +52,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     public DefaultBookMetaData(BookDriver driver, Book book, Properties prop)
     {
         setDriver(driver);
-        setBook(book);
 
         setProperties(prop);
         setName(prop.getProperty(BookMetaData.KEY_NAME));
@@ -70,10 +73,9 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      * Ctor with some default values.
      * A call to setBook() is still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, String name, BookType type)
+    public DefaultBookMetaData(BookDriver driver, String name, BookType type)
     {
         setDriver(driver);
-        setBook(book);
         setName(name);
         setType(type);
         setLanguage(null); // Default language
@@ -188,6 +190,49 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         }
 
         setType(newType);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
+     */
+    public Document toOSIS()
+    {
+        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        Element ele = factory.createTable();
+        // initials, description, key, language, 
+        addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
+        addRow(ele, "Description", getFullName()); //$NON-NLS-1$
+        addRow(ele, "Key", getType().toString()); //$NON-NLS-1$
+        addRow(ele, "Language", getLanguage()); //$NON-NLS-1$
+        return new Document(ele);
+    }
+
+    private void addRow(Element table, String key, String value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+
+        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+
+        Element rowEle = factory.createRow();
+
+        Element nameEle = factory.createCell();
+        Element hiEle = factory.createHI();
+        hiEle.setAttribute("rend", "bold"); //$NON-NLS-1$ //$NON-NLS-2$
+        nameEle.addContent(hiEle);
+        Element valueElement = factory.createCell();
+        rowEle.addContent(nameEle);
+        rowEle.addContent(valueElement);
+
+        // I18N(DMS): use name to lookup translation.
+        hiEle.addContent(key);
+
+        String expandedValue = XMLUtil.escape(value);
+        valueElement.addContent(expandedValue);
+
+        table.addContent(rowEle);
     }
 
     private BookType type;

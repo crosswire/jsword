@@ -323,7 +323,6 @@ public abstract class ModuleType implements Serializable
     {
         Backend backend = getBackend(sbmd, progdir);
         Book book = getBook(sbmd, backend);
-        sbmd.setBook(book);
         return book;
     }
 

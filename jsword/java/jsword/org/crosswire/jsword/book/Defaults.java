@@ -45,17 +45,17 @@ public class Defaults
      * Set the default Bible. The new name must be equal() to a string
      * returned from getBibleNames. (if does not need to be == however)
      * A BookException results if you get it wrong.
-     * @param bmd The version to use as default.
+     * @param book The version to use as default.
      */
-    public static void setBibleMetaData(BookMetaData bmd)
+    public static void setBible(Book book)
     {
-        bdeft = bmd;
+        bdeft = book;
     }
 
     /**
      * UnSet the current default Bible and attempt to appoint another.
      */
-    protected static void unsetBibleMetaData()
+    protected static void unsetBible()
     {
         bdeft = null;
 
@@ -66,7 +66,7 @@ public class Defaults
      * Get the current default Bible or null if there are no Bibles.
      * @return the current default version
      */
-    public static BookMetaData getBibleMetaData()
+    public static Book getBible()
     {
         return bdeft;
     }
@@ -82,7 +82,7 @@ public class Defaults
             return null;
         }
 
-        return bdeft.getFullName();
+        return bdeft.getBookMetaData().getFullName();
     }
 
     /**
@@ -90,7 +90,7 @@ public class Defaults
      * the given name.
      * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
-     * BookMetaData objects.
+     * Book objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
@@ -105,14 +105,14 @@ public class Defaults
             return;
         }
 
-        List lbmds = Books.installed().getBookMetaDatas(BookFilters.getBibles());
+        List lbmds = Books.installed().getBooks(BookFilters.getBibles());
         for (Iterator it = lbmds.iterator(); it.hasNext(); )
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            String tname = bmd.getFullName();
+            Book book = (Book) it.next();
+            String tname = book.getBookMetaData().getFullName();
             if (tname.equals(name))
             {
-                setBibleMetaData(bmd);
+                setBible(book);
                 return;
             }
         }
@@ -130,7 +130,7 @@ public class Defaults
      * A BookException results if you get it wrong.
      * @param cmd The version to use as default.
      */
-    public static void setCommentaryMetaData(BookMetaData cmd)
+    public static void setCommentary(Book cmd)
     {
         cdeft = cmd;
     }
@@ -138,7 +138,7 @@ public class Defaults
     /**
      * UnSet the current default Commentary and attempt to appoint another.
      */
-    protected static void unsetCommentaryMetaData()
+    protected static void unsetCommentary()
     {
         cdeft = null;
 
@@ -149,7 +149,7 @@ public class Defaults
      * Get the current default Commentary or null if none exist.
      * @return the current default version
      */
-    public static BookMetaData getCommentaryMetaData()
+    public static Book getCommentary()
     {
         return cdeft;
     }
@@ -167,7 +167,7 @@ public class Defaults
             return null;
         }
 
-        return cdeft.getFullName();
+        return cdeft.getBookMetaData().getFullName();
     }
 
     /**
@@ -175,7 +175,7 @@ public class Defaults
      * the given name.
      * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
-     * BookMetaData objects.
+     * Book objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
@@ -190,14 +190,14 @@ public class Defaults
             return;
         }
 
-        List lbmds = Books.installed().getBookMetaDatas(BookFilters.getCommentaries());
+        List lbmds = Books.installed().getBooks(BookFilters.getCommentaries());
         for (Iterator it = lbmds.iterator(); it.hasNext(); )
         {
-            BookMetaData cmd = (BookMetaData) it.next();
-            String tname = cmd.getFullName();
+            Book book = (Book) it.next();
+            String tname = book.getBookMetaData().getFullName();
             if (tname.equals(name))
             {
-                setCommentaryMetaData(cmd);
+                setCommentary(book);
                 return;
             }
         }
@@ -215,7 +215,7 @@ public class Defaults
      * A BookException results if you get it wrong.
      * @param dmd The version to use as default.
      */
-    public static void setDictionaryMetaData(BookMetaData dmd)
+    public static void setDictionary(Book dmd)
     {
         ddeft = dmd;
     }
@@ -223,7 +223,7 @@ public class Defaults
     /**
      * UnSet the current default Dictionary and attempt to appoint another.
      */
-    protected static void unsetDictionaryMetaData()
+    protected static void unsetDictionary()
     {
         ddeft = null;
 
@@ -234,7 +234,7 @@ public class Defaults
      * Get the current default Dictionary or null if none exist.
      * @return the current default version
      */
-    public static BookMetaData getDictionaryMetaData()
+    public static Book getDictionary()
     {
         return ddeft;
     }
@@ -252,7 +252,7 @@ public class Defaults
             return null;
         }
 
-        return ddeft.getFullName();
+        return ddeft.getBookMetaData().getFullName();
     }
 
     /**
@@ -260,7 +260,7 @@ public class Defaults
      * the given name.
      * <p>This method is for use with config scripts and other things that
      * <b>need</b> to work with Strings. The preferred method is to use
-     * BookMetaData objects.
+     * Book objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be dissapointed when we fail to match AV (FooDriver)
@@ -275,14 +275,14 @@ public class Defaults
             return;
         }
 
-        List lbmds = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
+        List lbmds = Books.installed().getBooks(BookFilters.getDictionaries());
         for (Iterator it = lbmds.iterator(); it.hasNext(); )
         {
-            BookMetaData dmd = (BookMetaData) it.next();
-            String tname = dmd.getFullName();
+            Book book = (Book) it.next();
+            String tname = book.getBookMetaData().getFullName();
             if (tname.equals(name))
             {
-                setDictionaryMetaData(dmd);
+                setDictionary(book);
                 return;
             }
         }
@@ -300,11 +300,11 @@ public class Defaults
      */
     protected static void checkAllPreferable()
     {
-        List bmds = Books.installed().getBookMetaDatas();
+        List bmds = Books.installed().getBooks();
         for (Iterator it = bmds.iterator(); it.hasNext(); )
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            checkPreferable(bmd);
+            Book book = (Book) it.next();
+            checkPreferable(book);
         }
     }
 
@@ -312,21 +312,21 @@ public class Defaults
      * Determine whether this Book become the default.
      * It should, only if there is not one.
      */
-    protected static void checkPreferable(BookMetaData bmd)
+    protected static void checkPreferable(Book book)
     {
-        assert bmd != null;
+        assert book != null;
 
-        if (bmd.getType().equals(BookType.BIBLE) && bdeft == null)
+        if (book.getType().equals(BookType.BIBLE) && bdeft == null)
         {
-            bdeft = bmd;
+            bdeft = book;
         }
-        else if (bmd.getType().equals(BookType.COMMENTARY) && cdeft == null)
+        else if (book.getType().equals(BookType.COMMENTARY) && cdeft == null)
         {
-            cdeft = bmd;
+            cdeft = book;
         }
-        else if (bmd.getType().equals(BookType.DICTIONARY) && ddeft == null)
+        else if (book.getType().equals(BookType.DICTIONARY) && ddeft == null)
         {
-            ddeft = bmd;
+            ddeft = book;
         }
     }
 
@@ -349,8 +349,8 @@ public class Defaults
          */
         public void bookAdded(BooksEvent ev)
         {
-            BookMetaData bmd = ev.getBookMetaData();
-            checkPreferable(bmd);
+            Book book = ev.getBook();
+            checkPreferable(book);
         }
 
         /* (non-Javadoc)
@@ -358,22 +358,22 @@ public class Defaults
          */
         public void bookRemoved(BooksEvent ev)
         {
-            BookMetaData bmd = ev.getBookMetaData();
+            Book book = ev.getBook();
 
             // Was this a default?
-            if (getBibleMetaData().equals(bmd))
+            if (getBible().equals(book))
             {
-                unsetBibleMetaData();
+                unsetBible();
             }
 
-            if (getCommentaryMetaData().equals(bmd))
+            if (getCommentary().equals(book))
             {
-                unsetCommentaryMetaData();
+                unsetCommentary();
             }
 
-            if (getDictionaryMetaData().equals(bmd))
+            if (getDictionary().equals(book))
             {
-                unsetDictionaryMetaData();
+                unsetDictionary();
             }
         }
     }
@@ -385,16 +385,16 @@ public class Defaults
     /**
      * The default Bible
      */
-    private static BookMetaData bdeft;
+    private static Book bdeft;
 
     /**
      * The default Commentary
      */
-    private static BookMetaData cdeft;
+    private static Book cdeft;
 
     /**
      * The default Dictionary
      */
-    private static BookMetaData ddeft;
+    private static Book ddeft;
 
 }

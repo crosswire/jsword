@@ -72,14 +72,14 @@ public class BookFilterIterator implements Iterator
     /**
      * Find the next (if there is one)
      */
-    private BookMetaData findNext()
+    private Book findNext()
     {
         while (it.hasNext())
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            if (filter == null || filter.test(bmd))
+            Book book = (Book) it.next();
+            if (filter == null || filter.test(book))
             {
-                return bmd;
+                return book;
             }
         }
 
@@ -89,7 +89,7 @@ public class BookFilterIterator implements Iterator
     /**
      * The stored next value
      */
-    private BookMetaData next;
+    private Book next;
 
     /**
      * The source of filtered values

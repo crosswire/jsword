@@ -61,15 +61,14 @@ public class ReadEverything
 
         // Loop through all the Bookks
         log.info("*** Reading all known Books"); //$NON-NLS-1$
-        List comments = Books.installed().getBookMetaDatas();
+        List comments = Books.installed().getBooks();
         for (Iterator cit = comments.iterator(); cit.hasNext();)
         {
-            BookMetaData bmd = (BookMetaData) cit.next();
+            Book book = (Book) cit.next();
 
-            Book book = bmd.getBook();
             Key set = book.getGlobalKeyList();
 
-            testReadMultiple(bmd, book, set);
+            testReadMultiple(book.getBookMetaData(), book, set);
         }
     }
 

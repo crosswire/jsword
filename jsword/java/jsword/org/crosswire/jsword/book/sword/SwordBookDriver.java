@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
@@ -59,7 +59,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public BookMetaData[] getBookMetaDatas()
+    public Book[] getBooks()
     {
         ConfigEntry.resetStatistics();
 
@@ -92,7 +92,7 @@ public class SwordBookDriver extends AbstractBookDriver
                         if (sbmd.isSupported())
                         {
                             Book book = createBook(sbmd, dirs[j]);
-                            valid.add(book.getBookMetaData());
+                            valid.add(book);
 
                             IndexManager imanager = IndexManagerFactory.getIndexManager();
                             if (imanager.isIndexed(book))
@@ -124,7 +124,57 @@ public class SwordBookDriver extends AbstractBookDriver
 
         ConfigEntry.dumpStatistics();
 
-        return (BookMetaData[]) valid.toArray(new BookMetaData[valid.size()]);
+        return (Book[]) valid.toArray(new Book[valid.size()]);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword.book.BookMetaData)
+     */
+    public boolean isDeletable(Book dead)
+    {
+        SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
+        File downloadDir = SwordBookDriver.getDownloadDir();
+        File confFile = new File(downloadDir, sbmd.getConfPath());
+        
+        // We can only uninstall what we download into our download dir.
+        return confFile.exists();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book.BookMetaData)
+     */
+    public void delete(Book dead) throws BookException
+    {
+        SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
+        File downloadDir = SwordBookDriver.getDownloadDir();
+        File confFile = new File(downloadDir, sbmd.getConfPath());
+        
+        // We can only uninstall what we download into our download dir.
+        if (!confFile.exists())
+        {
+            throw new BookException(Msg.DELETE_FAILED, new Object [] {confFile});
+        }
+
+        File moduleDir = new File(downloadDir, sbmd.getModulePath());
+    
+        // Delete the conf
+        List failures = FileUtil.delete(confFile);
+        if (failures.size() == 0)
+        {
+            // If the conf is gone, then we cannot get to the module
+            // and then we can download it again.
+            // But if the conf is present and the module is gone,
+            // then we get errors.
+            // Delete the download module's dir
+            failures = FileUtil.delete(moduleDir);
+            Books.installed().removeBook(dead);
+        }
+
+        // TODO(DM): list all that failed
+        if (failures.size() > 0)
+        {
+            throw new BookException(Msg.DELETE_FAILED, new Object [] {failures.get(0)});
+        }
     }
 
     /**
@@ -173,7 +223,7 @@ public class SwordBookDriver extends AbstractBookDriver
             {
                 SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
                 Book book = sdriver.createBook(sbmd, bookpath);
-                Books.installed().addBook(book.getBookMetaData());
+                Books.installed().addBook(book);
             }
         }
     }

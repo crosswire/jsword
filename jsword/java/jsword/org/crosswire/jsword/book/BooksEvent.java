@@ -31,24 +31,24 @@ public class BooksEvent extends EventObject
 {
     /**
      * Basic constructor
-     * @param bmd The meta-data of the changed Bible, or null if there is more than one change.
+     * @param book The book of the changed Bible, or null if there is more than one change.
      * @param added True if the changed Bible is an addition.
      */
-    public BooksEvent(Object source, BookMetaData bmd, boolean added)
+    public BooksEvent(Object source, Book book, boolean added)
     {
         super(source);
 
-        this.bmd = bmd;
+        this.book = book;
         this.added = added;
     }
 
     /**
-     * Get the name of the changed Bible
-     * @return The Bible bmd
+     * Get the name of the changed Book
+     * @return The Book
      */
-    public BookMetaData getBookMetaData()
+    public Book getBook()
     {
-        return bmd;
+        return book;
     }
 
     /**
@@ -67,7 +67,7 @@ public class BooksEvent extends EventObject
     /**
      * The name of the changed Bible
      */
-    private BookMetaData bmd;
+    private Book book;
 
     /**
      * Serialization ID

@@ -4,7 +4,6 @@ import java.net.URL;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 
 /**
  * A way of managing a way of creating a search index for a book.
@@ -51,10 +50,10 @@ public interface IndexManager
     /**
      * We have downloaded a search index to a zip file. It should be installed
      * from here.
-     * @param bmd The book that we downloaded an index for
+     * @param book The book that we downloaded an index for
      * @param tempDest The URL of a zip file to install
      */
-    public void installDownloadedIndex(BookMetaData bmd, URL tempDest) throws BookException;
+    public void installDownloadedIndex(Book book, URL tempDest) throws BookException;
 
     /**
      * Tidy up after yourself and remove all the files that make up any indexes

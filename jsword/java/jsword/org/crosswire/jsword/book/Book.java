@@ -30,13 +30,18 @@ import org.crosswire.jsword.passage.KeyFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Book extends Activatable, KeyFactory
+public interface Book extends Activatable, KeyFactory, BookMetaData
 {
     /**
      * Meta-Information: What version of the Bible is this?
      * @return A Version for this Bible
      */
     public BookMetaData getBookMetaData();
+
+    /**
+     * Set the meta-information for this book.
+     */
+    public void setBookMetaData(BookMetaData bmd);
 
     /**
      * Retrieval: Add to the given document some mark-up for the specified

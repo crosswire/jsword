@@ -11,6 +11,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
@@ -52,8 +53,9 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#toURL(org.crosswire.jsword.book.BookMetaData)
      */
-    public URL toRemoteURL(BookMetaData bmd)
+    public URL toRemoteURL(Book book)
     {
+        BookMetaData bmd = book.getBookMetaData();
         if (!(bmd instanceof SwordBookMetaData))
         {
             assert false;

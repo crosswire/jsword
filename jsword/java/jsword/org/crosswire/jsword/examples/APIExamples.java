@@ -12,7 +12,6 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
@@ -61,7 +60,7 @@ public class APIExamples
     public void readPlainText() throws BookException, NoSuchKeyException
     {
         Books books = Books.installed();
-        Book bible = books.getBookMetaData(BIBLE_NAME).getBook();
+        Book bible = books.getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
         BookData data = bible.getData(key);
@@ -79,7 +78,7 @@ public class APIExamples
      */
     public void readStyledText() throws NoSuchKeyException, BookException, TransformerException, SAXException
     {
-        Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
+        Book bible = Books.installed().getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
         BookData data = bible.getData(key);
@@ -104,9 +103,8 @@ public class APIExamples
         // This just gets a list of all the known dictionaries and picks the
         // first. In a real world app you will probably have a better way
         // of doing this.
-        List dicts = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
-        BookMetaData bmd = (BookMetaData) dicts.get(0);
-        Book dict = bmd.getBook();
+        List dicts = Books.installed().getBooks(BookFilters.getDictionaries());
+        Book dict = (Book) dicts.get(0);
 
         // If I want every key in the Dictionary then I do this (or something
         // like it - in the real world you want to call hasNext() on an iterator
@@ -125,7 +123,7 @@ public class APIExamples
      */
     public void search() throws BookException
     {
-        Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
+        Book bible = Books.installed().getBook(BIBLE_NAME);
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
@@ -148,35 +146,31 @@ public class APIExamples
     public void pickBible()
     {
         // The Default Bible - JSword does everything it can to make this work
-        BookMetaData bmd = Books.installed().getBookMetaData(BIBLE_NAME);
+        Book book = Books.installed().getBook(BIBLE_NAME);
 
-        // You get a Book via a MetaData object to help save resources.
-        Book book = bmd.getBook();
-
-        // And you can get back to the MetaData object to find out more too:
-        bmd = book.getBookMetaData();
-        System.out.println(bmd.getLanguage());
+        // And you can find out more too:
+        System.out.println(book.getLanguage());
 
         // If you want a greater selection of Books:
-        List books = Books.installed().getBookMetaDatas();
-        bmd = (BookMetaData) books.get(0);
+        List books = Books.installed().getBooks();
+        book = (Book) books.get(0);
 
         // Or you can narrow the range a bit
-        books = Books.installed().getBookMetaDatas(BookFilters.getBibles());
+        books = Books.installed().getBooks(BookFilters.getBibles());
 
         // There are implementations of BookFilter for all sorts of things in
         // the BookFilters class
 
         // If you are wanting to get really fancy you can implement your own
         // Bookfilter easily
-        List test = Books.installed().getBookMetaDatas(new BookFilter()
+        List test = Books.installed().getBooks(new BookFilter()
         {
-            public boolean test(BookMetaData tbmd)
+            public boolean test(Book bk)
             {
-                return tbmd.getName().equals("My Favorite Version"); //$NON-NLS-1$
+                return bk.getName().equals("My Favorite Version"); //$NON-NLS-1$
             }
         });
-        bmd = (BookMetaData) test.get(0);
+        book = (Book) test.get(0);
 
         // If you want to know about new books as they arrive:
         Books.installed().addBooksListener(new BooksListener()

@@ -1,13 +1,19 @@
 package org.crosswire.jsword.book.basic;
 
+import java.beans.PropertyChangeListener;
+import java.util.Map;
+
 import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.SearcherFactory;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Document;
 
 /**
  * AbstractBook implements a few of the more generic methods of Book.
@@ -45,8 +51,8 @@ public abstract class AbstractBook implements Book
         return bmd;
     }
 
-    /**
-     * @see org.crosswire.jsword.book.Book#getBookMetaData()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setBookMetaData(org.crosswire.jsword.book.BookMetaData)
      */
     public final void setBookMetaData(BookMetaData bmd)
     {
@@ -88,11 +94,183 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getBook()
+     */
+    public Book getBook()
+    {
+        return this;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriver()
+     */
+    public BookDriver getDriver()
+    {
+        return bmd.getDriver();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
+     */
+    public String getDriverName()
+    {
+        return bmd.getDriverName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
+     */
+    public String getFullName()
+    {
+        return bmd.getFullName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
+     */
+    public IndexStatus getIndexStatus()
+    {
+        return bmd.getIndexStatus();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(org.crosswire.jsword.book.IndexStatus)
+     */
+    public void setIndexStatus(IndexStatus status)
+    {
+        bmd.setIndexStatus(status);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getInitials()
+     */
+    public String getInitials()
+    {
+        return bmd.getInitials();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
+     */
+    public String getLanguage()
+    {
+        return bmd.getLanguage();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getName()
+     */
+    public String getName()
+    {
+        return bmd.getName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getOsisID()
+     */
+    public String getOsisID()
+    {
+        return bmd.getOsisID();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getProperties()
+     */
+    public Map getProperties()
+    {
+        return bmd.getProperties();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getType()
+     */
+    public BookType getType()
+    {
+        return bmd.getType();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
+     */
+    public boolean isLeftToRight()
+    {
+        return bmd.isLeftToRight();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#removePropertyChangeListener(java.beans.PropertyChangeListener)
+     */
+    public void removePropertyChangeListener(PropertyChangeListener li)
+    {
+        bmd.removePropertyChangeListener(li);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#addPropertyChangeListener(java.beans.PropertyChangeListener)
+     */
+    public void addPropertyChangeListener(PropertyChangeListener li)
+    {
+        bmd.addPropertyChangeListener(li);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
+     */
+    public Document toOSIS()
+    {
+        return bmd.toOSIS();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // We might consider checking for equality against all Books?
+        // However currently we dont.
+
+        // Check that that is the same as this
+        // Don't use instanceof since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        // The real bit ...
+        Book that = (Book) obj;
+
+        return bmd.equals(that.getBookMetaData());
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return bmd.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        Book that = (Book) obj;
+        return this.bmd.compareTo(that.getBookMetaData());
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    public final String toString()
+    public String toString()
     {
-        return ClassUtil.getShortClassName(getClass()) + ":" + getBookMetaData().toString(); //$NON-NLS-1$
+        return bmd.toString();
     }
 
     /**

@@ -70,8 +70,6 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public SwordBookMetaData(Reader in, String internal) throws IOException
     {
-        setBook(null);
-
         cet = new ConfigEntryTable(in, internal);
 //        Element ele = cet.toOSIS();
 //        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
@@ -132,11 +130,29 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @return Returns the name of this module as it is used for directory and filenames.
+     * @return Returns the relative path of the module's conf.
      */
-    public String getDiskName()
+    public String getConfPath()
     {
-        return getInitials().toLowerCase();
+        return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase() + SwordConstants.EXTENSION_CONF;
+    }
+
+    /**
+     * @return the relative path of the module.
+     */
+    public String getModulePath()
+    {
+        // The path begins with ./
+        String dataPath = getProperty(ConfigEntryType.DATA_PATH).substring(2);
+        // Dictionaries and Daily Devotionals end with the prefix of the data
+        // files name, not a directory name.
+        // Lots of paths end with '/'
+        if (getType() == BookType.DICTIONARY ||
+            dataPath.charAt(dataPath.length() - 1) == '/')
+        {
+            dataPath = dataPath.substring(0, dataPath.lastIndexOf('/'));
+        }
+        return dataPath;
     }
 
     /* (non-Javadoc)

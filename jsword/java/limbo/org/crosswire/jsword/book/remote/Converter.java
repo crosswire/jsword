@@ -72,11 +72,11 @@ public class Converter
      * @param doc
      * @return BibleMetaData[]
      */
-    public static BookMetaData[] convertDocumentToBookMetaDatas(RemoteBookDriver driver, Document doc, Remoter remoter)
+    public static Book[] convertDocumentToBooks(RemoteBookDriver driver, Document doc, Remoter remoter)
     {
         Element root = doc.getRootElement();
         List bmds = root.getChildren(ELEMENT_METADATA);
-        BookMetaData[] rbmds = new BookMetaData[bmds.size()];
+        Book[] rbooks = new Book[bmds.size()];
         int i = 0;
 
         for (Iterator it = bmds.iterator(); it.hasNext();)
@@ -95,31 +95,31 @@ public class Converter
             BookMetaData bmd = book.getBookMetaData();
             driver.registerID(id, bmd);
 
-            rbmds[i++] = bmd;
+            rbooks[i++] = book;
         }
 
-        return rbmds;
+        return rbooks;
     }
 
     /**
      * Reverse of convertDocumentToBibleMetaDatas().
-     * @see Converter#convertDocumentToBookMetaDatas(RemoteBookDriver, Document, Remoter)
+     * @see Converter#convertDocumentToBooks(RemoteBookDriver, Document, Remoter)
      */
-    public static Document convertBookMetaDatasToDocument(BookMetaData[] bmds, String[] ids)
+    public static Document convertBookToDocument(Book[] books, String[] ids)
     {
-        assert bmds.length != ids.length;
+        assert books.length != ids.length;
 
         Element root = new Element(ELEMENT_ROOT);
-        for (int i = 0; i < bmds.length; i++)
+        for (int i = 0; i < books.length; i++)
         {
-            BookMetaData bmd = bmds[i];
+            Book book = books[i];
 
             Element bmdele = new Element(ELEMENT_METADATA);
             Element temp = null;
 
             bmdele.setAttribute(ATTRIBUTE_ID, ids[i]);
             temp = new Element(ELEMENT_NAME);
-            temp.addContent(bmd.getName());
+            temp.addContent(book.getName());
             bmdele.addContent(temp);
 
             root.addContent(bmdele);

@@ -9,7 +9,7 @@ import org.crosswire.common.util.Filter;
 import org.crosswire.common.util.SortedListSet;
 
 /**
- * BookMetaDataSet represents a collection of descriptions about Books
+ * BookSet represents a collection of descriptions about Books
  * which may be subsetted into other BookMetaDataSets.
  * Each set is naturally ordered.
  * 
@@ -34,17 +34,17 @@ import org.crosswire.common.util.SortedListSet;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class BookMetaDataSet extends SortedListSet
+public class BookSet extends SortedListSet
 {
 
-    public BookMetaDataSet()
+    public BookSet()
     {
         super();
     }
 
-    public BookMetaDataSet(Collection bmds)
+    public BookSet(Collection books)
     {
-        super(bmds);
+        super(books);
     }
 
     /**
@@ -55,11 +55,11 @@ public class BookMetaDataSet extends SortedListSet
     public Set getGroups()
     {
         Set results = new TreeSet();
-        Iterator bmdIter = iterator();
-        while (bmdIter.hasNext())
+        Iterator bookIter = iterator();
+        while (bookIter.hasNext())
         {
-            BookMetaData bmd = (BookMetaData) bmdIter.next();
-            results.addAll(bmd.getProperties().keySet());
+            Book book = (Book) bookIter.next();
+            results.addAll(book.getProperties().keySet());
         }
         return results;
     }
@@ -78,20 +78,20 @@ public class BookMetaDataSet extends SortedListSet
     public Set getGroup(String key)
     {
         Set results = new TreeSet();
-        Iterator bmdIter = iterator();
-        while (bmdIter.hasNext())
+        Iterator bookIter = iterator();
+        while (bookIter.hasNext())
         {
-            BookMetaData bmd = (BookMetaData) bmdIter.next();
-            Object property = bmd.getProperties().get(key);
+            Book book = (Book) bookIter.next();
+            Object property = book.getProperties().get(key);
             String propertyValue = property == null ? Msg.BOOK_METADATA_SET_OTHER.toString() : property.toString();
             results.add(propertyValue);
         }
         return results;
     }
 
-    public BookMetaDataSet filter(String key, String value)
+    public BookSet filter(String key, String value)
     {
-        return (BookMetaDataSet) filter(new GroupFilter(key, value));
+        return (BookSet) filter(new GroupFilter(key, value));
     }
 
     /**
@@ -107,8 +107,8 @@ public class BookMetaDataSet extends SortedListSet
 
         public boolean test(Object obj)
         {
-            BookMetaData bmd = (BookMetaData) obj;
-            return bmd.getProperties().get(key) == value;
+            Book book = (Book) obj;
+            return book.getProperties().get(key) == value;
         }
         private String key;
         private String value;

@@ -33,7 +33,7 @@ public interface BookDriver
      * you use this method.
      * @return A list of the known Bibles
      */
-    public BookMetaData[] getBookMetaDatas();
+    public Book[] getBooks();
 
     /**
      * Is this name capable of creating writing data in the correct format
@@ -51,12 +51,19 @@ public interface BookDriver
     public Book create(Book source) throws BookException;
 
     /**
+     * Is this book able to be deleted.
+     * @param dead the book to be deleted
+     * @return whether the book can be deleted.
+     */
+    public boolean isDeletable(Book dead);
+
+    /**
      * Delete this Book from the system.
      * Take care with this method for obvious reasons. For most implemenations
      * of Book etc, this method will throw up because most will be read-only.
      * @throws BookException If the Book can't be deleted.
      */
-    public void delete(BookMetaData dead) throws BookException;
+    public void delete(Book dead) throws BookException;
 
     /**
      * A short name for this BookDriver

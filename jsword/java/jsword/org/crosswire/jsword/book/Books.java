@@ -65,36 +65,36 @@ public class Books implements BookList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas()
+     * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public synchronized List getBookMetaDatas()
+    public synchronized List getBooks()
     {
         return Collections.unmodifiableList(books);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBookMetaData(java.lang.String)
+     * @see org.crosswire.jsword.book.BookList#getBook(java.lang.String)
      */
-    public synchronized BookMetaData getBookMetaData(String name)
+    public synchronized Book getBook(String name)
     {
         // Check name first
         // First check for exact matches
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            if (name.equals(bmd.getName()))
+            Book book = (Book) it.next();
+            if (name.equals(book.getName()))
             {
-                return bmd;
+                return book;
             }
         }
 
         // Next check for case-insensitive matches
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            if (name.equalsIgnoreCase(bmd.getName()))
+            Book book = (Book) it.next();
+            if (name.equalsIgnoreCase(book.getName()))
             {
-                return bmd;
+                return book;
             }
         }
 
@@ -102,31 +102,32 @@ public class Books implements BookList
         // First check for exact matches
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
-            BookMetaData bmd = (BookMetaData) it.next();
+            Book book = (Book) it.next();
+            BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials()))
             {
-                return bmd;
+                return book;
             }
         }
 
         // Next check for case-insensitive matches
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
-            BookMetaData bmd = (BookMetaData) it.next();
-            if (name.equalsIgnoreCase(bmd.getInitials()))
+            Book book = (Book) it.next();
+            if (name.equalsIgnoreCase(book.getInitials()))
             {
-                return bmd;
+                return book;
             }
         }
         return null;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBookMetaDatas(org.crosswire.jsword.book.BookFilter)
+     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
      */
-    public synchronized List getBookMetaDatas(BookFilter filter)
+    public synchronized List getBooks(BookFilter filter)
     {
-        List temp = CollectionUtil.createList(new BookFilterIterator(getBookMetaDatas().iterator(), filter));
+        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
         return Collections.unmodifiableList(temp);
     }
 
@@ -149,10 +150,10 @@ public class Books implements BookList
     /**
      * Kick of an event sequence
      * @param source The event source
-     * @param bmd The meta-data of the changed Bible
+     * @param book The changed Book
      * @param added Is it added?
      */
-    protected synchronized void fireBooksChanged(Object source, BookMetaData bmd, boolean added)
+    protected synchronized void fireBooksChanged(Object source, Book book, boolean added)
     {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
@@ -166,7 +167,7 @@ public class Books implements BookList
             {
                 if (ev == null)
                 {
-                    ev = new BooksEvent(source, bmd, added);
+                    ev = new BooksEvent(source, book, added);
                 }
 
                 if (added)
@@ -186,13 +187,13 @@ public class Books implements BookList
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public synchronized void addBook(BookMetaData bmd)
+    public synchronized void addBook(Book book)
     {
         //log.debug("registering book: "+bmd.getName());
 
-        books.add(bmd);
+        books.add(book);
 
-        fireBooksChanged(instance, bmd, true);
+        fireBooksChanged(instance, book, true);
     }
 
     /**
@@ -200,16 +201,16 @@ public class Books implements BookList
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
-    public synchronized void removeBook(BookMetaData bmd) throws BookException
+    public synchronized void removeBook(Book book) throws BookException
     {
         //log.debug("unregistering book: "+bmd.getName());
 
-        Activator.deactivate(bmd.getBook());
+        Activator.deactivate(book);
 
-        boolean removed = books.remove(bmd);
+        boolean removed = books.remove(book);
         if (removed)
         {
-            fireBooksChanged(instance, bmd, true);
+            fireBooksChanged(instance, book, true);
         }
         else
         {
@@ -232,10 +233,10 @@ public class Books implements BookList
 
         drivers.add(driver);
 
-        BookMetaData[] bmds = driver.getBookMetaDatas();
-        for (int j = 0; j < bmds.length; j++)
+        Book[] bookArray = driver.getBooks();
+        for (int j = 0; j < bookArray.length; j++)
         {
-            addBook(bmds[j]);
+            addBook(bookArray[j]);
         }
 
         log.debug("end registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
@@ -249,10 +250,10 @@ public class Books implements BookList
     {
         log.debug("begin un-registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
 
-        BookMetaData[] bmds = driver.getBookMetaDatas();
-        for (int j = 0; j < bmds.length; j++)
+        Book[] bookArray = driver.getBooks();
+        for (int j = 0; j < bookArray.length; j++)
         {
-            removeBook(bmds[j]);
+            removeBook(bookArray[j]);
         }
 
         if (!drivers.remove(driver))

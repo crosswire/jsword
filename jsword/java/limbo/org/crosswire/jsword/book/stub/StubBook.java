@@ -42,7 +42,7 @@ public class StubBook extends PassageAbstractBook
      */
     public StubBook(StubBookDriver driver, String name, BookType type)
     {
-        BookMetaData bmd = new DefaultBookMetaData(driver, this, name, type);
+        BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         setBookMetaData(bmd);
     }
 

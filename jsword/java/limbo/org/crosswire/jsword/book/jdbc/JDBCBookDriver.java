@@ -9,7 +9,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.book.basic.BookRoot;
 
@@ -42,7 +41,7 @@ public class JDBCBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public BookMetaData[] getBookMetaDatas()
+    public Book[] getBooks()
     {
         try
         {
@@ -51,7 +50,7 @@ public class JDBCBookDriver extends AbstractBookDriver
             if (!NetUtil.isDirectory(dir))
             {
                 log.debug("Missing jdbc directory: "+dir.toExternalForm()); //$NON-NLS-1$
-                return new BookMetaData[0];
+                return new Book[0];
             }
 
             String[] names = null;
@@ -64,7 +63,7 @@ public class JDBCBookDriver extends AbstractBookDriver
                 names = NetUtil.list(dir, new NetUtil.IsDirectoryURLFilter(dir));
             }
 
-            List bmds = new ArrayList();
+            List books = new ArrayList();
 
             for (int i=0; i<names.length; i++)
             {
@@ -76,15 +75,15 @@ public class JDBCBookDriver extends AbstractBookDriver
 
                 Book book = new JDBCBook(this, prop);
 
-                bmds.add(book.getBookMetaData());
+                books.add(book);
             }
 
-            return (BookMetaData[]) bmds.toArray(new BookMetaData[bmds.size()]);
+            return (Book[]) books.toArray(new Book[books.size()]);
         }
         catch (Exception ex)
         {
             Reporter.informUser(this, ex);
-            return new BookMetaData[0];
+            return new Book[0];
         }
     }
 

@@ -1,5 +1,9 @@
 package org.crosswire.common.util;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * .
  * 
@@ -33,6 +37,48 @@ public class FileUtil
     {
     }
 
+    /**
+     * Deletes a file or a directory and all of its contents
+     * @param file or directory to delete
+     * @return the list of files that could not be deleted
+     */
+    public static List delete(File file)
+    {
+        List failures = new ArrayList();
+        if (file.isDirectory())
+        {
+            deleteContents(file, failures);
+        }
+        if (!file.delete())
+        {
+            failures.add(file);
+        }
+        return failures;
+    }
+
+    /**
+     * Recursive delete files.
+     * @param dirPath  directory of files to delete
+     * @param failures the list of files that could not be deleted
+    */
+    private static void deleteContents(File dirPath, List failures)
+    {
+        String[] ls = dirPath.list();
+
+        for (int idx = 0; idx < ls.length; idx++)
+        {
+            File file = new File(dirPath, ls[idx]);
+            if (file.isDirectory())
+            {
+                deleteContents(file, failures);
+            }
+            if (!file.delete())
+            {
+                failures.add(file);
+            }
+        }
+    }
+ 
     /**
      * Extension for java files
      */

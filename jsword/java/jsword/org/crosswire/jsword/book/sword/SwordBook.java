@@ -42,7 +42,7 @@ public class SwordBook extends PassageAbstractBook
     /**
      * Simple ctor
      */
-    protected SwordBook(SwordBookMetaData sbmd, Backend backend)
+    public SwordBook(SwordBookMetaData sbmd, Backend backend)
     {
         setBookMetaData(sbmd);
 
@@ -76,6 +76,11 @@ public class SwordBook extends PassageAbstractBook
      */
     protected String getText(Key key) throws BookException
     {
+        if (backend == null)
+        {
+            return ""; //$NON-NLS-1$
+        }
+
         String result = backend.getRawText(key);
 
         assert result != null;

@@ -34,13 +34,13 @@ public interface BookList
     /**
      * Get an iterator over all the Books of all types.
      */
-    public List getBookMetaDatas();
+    public List getBooks();
 
     /**
      * Get a filtered iterator over all the Books.
      * @see BookFilters
      */
-    public List getBookMetaDatas(BookFilter filter);
+    public List getBooks(BookFilter filter);
 
     /**
      * Remove a BibleListener from our list of listeners

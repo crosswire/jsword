@@ -9,7 +9,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Document;
@@ -62,17 +61,16 @@ public class LocalRemoter implements Remoter
         {
             if (MethodName.GETBIBLES.equals(methodname))
             {
-                List lbmds = Books.installed().getBookMetaDatas(FILTER);
-                BookMetaData[] bmds = (BookMetaData[]) lbmds.toArray(new BookMetaData[lbmds.size()]);
+                List books = Books.installed().getBooks(FILTER);
+                Book[] bookArray = (Book[]) books.toArray(new Book[books.size()]);
 
-                String[] uids = getUIDs(bmds);
-                return Converter.convertBookMetaDatasToDocument(bmds, uids);
+                String[] uids = getUIDs(bookArray);
+                return Converter.convertBookToDocument(bookArray, uids);
             }
             else if (MethodName.GETDATA.equals(methodname))
             {
                 String uid = method.getParameter(ParamName.PARAM_BIBLE);
-                BookMetaData bmd = lookupBookMetaData(uid);
-                Book book = bmd.getBook();
+                Book book = lookupBook(uid);
                 String refstr = method.getParameter(ParamName.PARAM_PASSAGE);
                 Key ref = book.getKey(refstr);
                 BookData data = book.getData(ref);
@@ -85,8 +83,7 @@ public class LocalRemoter implements Remoter
             else if (MethodName.FINDPASSAGE.equals(methodname))
             {
                 String uid = method.getParameter(ParamName.PARAM_BIBLE);
-                BookMetaData bmd = lookupBookMetaData(uid);
-                Book book = bmd.getBook();
+                Book book = lookupBook(uid);
 
                 String word = method.getParameter(ParamName.PARAM_FINDSTRING);
                 Key key = book.find(word);
@@ -110,31 +107,31 @@ public class LocalRemoter implements Remoter
     /**
      * Lookup a BibleMetaData using the UID that we assigned to it earlier
      */
-    private BookMetaData lookupBookMetaData(String uid)
+    private Book lookupBook(String uid)
     {
-        return (BookMetaData) uid2bmd.get(uid);
+        return (Book) uid2book.get(uid);
     }
 
     /**
      * Create a list of UIDs for the given BibleMetaDatas.
      * This method does rely on the HashMap using equals() to deturmine
      * equality. I'm not sure if it does this.
-     * @param bmds The array to create/retrieve UIDs for
+     * @param books The array to create/retrieve UIDs for
      * @return String[] The new UID array
      */
-    private String[] getUIDs(BookMetaData[] bmds)
+    private String[] getUIDs(Book[] books)
     {
-        String[] uids = new String[bmds.length];
-        for (int i=0; i<bmds.length; i++)
+        String[] uids = new String[books.length];
+        for (int i=0; i<books.length; i++)
         {
-            BookMetaData bmd = bmds[i];
-            String uid = (String) bmd2uid.get(bmd);
+            Book book = books[i];
+            String uid = (String) book2uid.get(book);
             
             if (uid == null)
             {
                 uid = createUID();
-                bmd2uid.put(bmd, uid);
-                uid2bmd.put(uid, bmd);
+                book2uid.put(book, uid);
+                uid2book.put(uid, book);
             }
             
             uids[i] = uid;
@@ -162,10 +159,10 @@ public class LocalRemoter implements Remoter
     /**
      * To help finding uids from bmds
      */
-    private Map bmd2uid = new HashMap();
+    private Map book2uid = new HashMap();
 
     /**
      * To help finding bmds from uids
      */
-    private Map uid2bmd = new HashMap();
+    private Map uid2book = new HashMap();
 }

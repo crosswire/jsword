@@ -3,8 +3,8 @@ package org.crosswire.jsword.book.install;
 import java.net.URL;
 import java.util.List;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookList;
-import org.crosswire.jsword.book.BookMetaData;
 
 /**
  * An interface that allows us to download from a specific source of Bible data.
@@ -45,10 +45,10 @@ public interface Installer extends BookList
     public String getURL();
 
     /**
-     * @param bmd The book meta-data to get a URL from.
+     * @param book The book meta-data to get a URL from.
      * @return the remote url for the BookMetaData
      */
-    public URL toRemoteURL(BookMetaData bmd);
+    public URL toRemoteURL(Book book);
 
     /**
      * Get a list of BookMetaData objects that represent downloadable modules.
@@ -57,15 +57,15 @@ public interface Installer extends BookList
      * remote source. See notes on reload for more information.
      * @see Installer#reloadBookList()
      */
-    public List getBookMetaDatas();
+    public List getBooks();
 
     /**
      * Return true if the module is not installed or there is a newer
      * version to install.
-     * @param bmd The book meta-data to check on.
+     * @param book The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    public boolean isNewer(BookMetaData bmd);
+    public boolean isNewer(Book book);
 
     /**
      * Refetch a list of names from the remote source.
@@ -79,17 +79,17 @@ public interface Installer extends BookList
      * Download and install a module locally.
      * The name should be one from an index list retrieved from getIndex() or
      * reloadIndex()
-     * @param bmd The module to install
+     * @param book The module to install
      */
-    public void install(BookMetaData bmd) throws InstallException;
+    public void install(Book book) throws InstallException;
 
     /**
      * Download a search index for the given Book.
      * The installation of the search index is the responsibility of the
      * IndexManager.
-     * @param bmd The book to download a search index for.
+     * @param book The book to download a search index for.
      * @param tempDest A temporary URL for downloading to. Passed to the
      * IndexManager for installation.
      */
-    public void downloadSearchIndex(BookMetaData bmd, URL tempDest) throws InstallException;
+    public void downloadSearchIndex(Book book, URL tempDest) throws InstallException;
 }
