@@ -59,5 +59,10 @@ public class ConfigTest
         <xsl:value-of select="@class"/>.set<xsl:value-of select="@property"/>(itemp);
   </xsl:template>
 
+  <xsl:template match="/config/option[@type='number']/introspect">
+        itemp = <xsl:value-of select="@class"/>.get<xsl:value-of select="@property"/>();
+        <xsl:value-of select="@class"/>.set<xsl:value-of select="@property"/>(itemp);
+  </xsl:template>
+
 </xsl:stylesheet>
 
