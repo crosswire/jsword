@@ -16,6 +16,7 @@ import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
 import org.crosswire.jsword.osis.Foreign;
+import org.crosswire.jsword.osis.Hi;
 import org.crosswire.jsword.osis.Item;
 import org.crosswire.jsword.osis.Milestone;
 import org.crosswire.jsword.osis.Note;
@@ -282,6 +283,10 @@ public class JAXBUtil
         else if (ele instanceof Cell)
         {
             return ((Cell) ele).getContent();
+        }
+        else if (ele instanceof Hi)
+        {
+            return ((Hi) ele).getContent();
         }
         else if (ele instanceof Milestone)
         {

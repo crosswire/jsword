@@ -314,8 +314,8 @@
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.temp}/junit"/>
-      <!--
       <test name="JSwordAllTests" todir="${target.temp}/junit"/>
+      <!--
       <test name="MapAllTests" todir="${target.temp}/junit"/>
       -->
       <formatter type="plain" usefile="false"/>
