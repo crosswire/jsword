@@ -226,7 +226,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="docs" depends="files, javadoc, java2html" description="All the documentation tasks">
+  <target name="doc" depends="files, javadoc, java2html" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->
@@ -265,7 +265,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean,test" description="Run a full clean/build/deploy/test cycle">
+  <target name="all" depends="clean,test,doc" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->
@@ -273,5 +273,9 @@
     <delete dir="${target.root}"/>
   </target>
 
-</project>
+  <!--=======================================================================-->
+  <target name="cvsup" description="cvs update">
+    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" package="jsword" dest=".."/>
+  </target>
 
+</project>
