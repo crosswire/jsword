@@ -8,9 +8,9 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
 
@@ -71,7 +71,7 @@ public class DownloadSet implements Comparable
             }
         });
 
-        List reply = new ArrayList();
+        SortedSet reply = new TreeSet();
         for (int i = 0; i < files.length; i++)
         {
             String name = files[i].getName();

@@ -88,7 +88,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         scr_jobs.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scr_jobs.setViewportView(pnl_ojobs);
 
-        this.setPreferredSize(new Dimension(700, 300));
+        this.setPreferredSize(new Dimension(500, 300));
         this.setLayout(new BorderLayout());
         this.add(scr_jobs, BorderLayout.CENTER);
         this.add(new JPanel(), BorderLayout.SOUTH);

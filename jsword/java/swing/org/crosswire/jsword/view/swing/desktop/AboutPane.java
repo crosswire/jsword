@@ -2,8 +2,8 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +25,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 import org.crosswire.common.progress.swing.JobsViewPane;
 import org.crosswire.common.swing.ExceptionShelf;
@@ -101,10 +100,12 @@ public class AboutPane
         pnl_splash.add(lbl_picture, BorderLayout.CENTER);
         pnl_splash.add(lbl_info, BorderLayout.SOUTH);
 
+        pnl_hshelf.setLayout(new BorderLayout());
         pnl_hshelf.add(pnl_shelf, BorderLayout.NORTH);
         pnl_hshelf.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         tbl_props.setModel(mdl_props);
+        scr_props.setPreferredSize(new Dimension(500, 300));
         scr_props.getViewport().add(tbl_props);
         pnl_props.setLayout(new BorderLayout());
         pnl_props.add(scr_props, BorderLayout.CENTER);
@@ -114,10 +115,10 @@ public class AboutPane
         pnl_debug.add(bar_debug);
         
         tab_main.add(pnl_splash, Project.instance().getName());
-        tab_main.add(pnl_props, "System Properties");
         tab_main.add(pnl_jobs, "Running Tasks");
         tab_main.add(pnl_hshelf, "Errors");
-        tab_main.add(pnl_logs, "Logs");
+        tab_main.add(pnl_props, "System Properties");
+        //tab_main.add(pnl_logs, "Logs");
         tab_main.add(pnl_debug, "Debug");
 
         btn_ok.setText("OK");
@@ -174,6 +175,23 @@ public class AboutPane
         dlg_main.setVisible(true);
     }
 
+    /**
+     * Is the debug tab visible?
+     */
+    public static boolean isDebugging()
+    {
+        return debugging;
+    }
+
+    /**
+     * Set the visibility of the debug tab?
+     */
+    public static void setDebugging(boolean debugging)
+    {
+        AboutPane.debugging = debugging;
+    }
+
+    private static boolean debugging = false;
     private Icon icon;
     private JLabel lbl_picture = new JLabel();
     private JLabel lbl_info = new JLabel();
@@ -186,7 +204,7 @@ public class AboutPane
     private JPanel pnl_hshelf = new JPanel();
     private JobsViewPane pnl_jobs = new JobsViewPane();
     private JTabbedPane tab_main = new JTabbedPane();
-    private JPanel pnl_logs = new JPanel();
+    //private JPanel pnl_logs = new JPanel();
     private Action act_debug;
     private JToolBar bar_debug = new JToolBar();
     private JPanel pnl_debug = new JPanel();

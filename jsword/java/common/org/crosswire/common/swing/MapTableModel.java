@@ -163,7 +163,8 @@ public class MapTableModel extends AbstractTableModel
      */
     public boolean isCellEditable(int row, int col)
     {
-        return true;
+        // NOTE(joe): editing was broken, and there didn't seem much benefit in it
+        return false;
     }
 
     /**
@@ -195,9 +196,13 @@ public class MapTableModel extends AbstractTableModel
         col_names[col] = name;
     }
 
-    /** The Hashtable that we are providing an interface to */
+    /**
+     * The Hashtable that we are providing an interface to
+     */
     private Map hash;
 
-    /** The default column names */
+    /**
+     * The default column names
+     */
     private String[] col_names = new String[] { "Keys", "Values" };
 }

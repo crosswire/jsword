@@ -141,4 +141,9 @@
     <alternative number="3" name="Mix (Ranged)"/>
   </option>
 
+  <option key="Advanced.Debug.Show Debug Tab" type="boolean">
+  	<introspect class="org.crosswire.jsword.view.swing.desktop.AboutPane" property="Debugging"/>
+    <help>Is the debug tab visible in the about dialog.</help>
+  </option>
+
 </config>

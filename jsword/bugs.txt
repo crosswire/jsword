@@ -2,6 +2,7 @@
 This file is our equivalent of bugzilla for the time being.
 
 GUI
+- tidy up options dialog
 - better display management, font selections etc
 - Get better HTML renderer (see: http://java.sun.com/products/jfc/tsc/articles/tictactoe/index.html)
 
@@ -16,12 +17,11 @@ GUI
 - Select first dict entry when picking new dict
 
 - test junit dialog (advanced)
-- log4j dialog? (advanced)
 - put debug back in somewhere
 
 Modules
 - background sword (+others?) module loading/discovery
-- Locale/font support (Joe)
+- Locale/font support
 
 Other
 - change name of swing packages
@@ -34,6 +34,7 @@ Other
 POST 1.0
 
 GUI
+- full internationalization
 - help screens?
 - recreate module creator/tester
 
