@@ -112,6 +112,7 @@ public class PassageInnerPane extends JPanel
         }
 
         txt_view.setText(text);
+        //txt_view.scrollRectToVisible(new Rectangle());
     }
 
     /**

@@ -140,7 +140,7 @@ public class Desktop extends JFrame implements TitleChangedListener
             act_list_toggle = new ListToggleAction(this);
             act_list_delete = new ListDeleteAction(this);
         
-            splash.setProgress(15, "Creating GUI : Ctors (Desktop Menu)");
+            splash.setProgress(15, "Creating GUI : Ctors (Tools Menu)");
             act_tools_generate = new GenerateAction(this);
             act_tools_diff = new DiffAction(this);
             act_tools_options = new OptionsAction(this);
@@ -264,7 +264,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_list.add(act_list_delete).addMouseListener(bar_status);
 
         splash.setProgress(32, "Creating GUI : Menus");
-        menu_tools.setText("Desktop");
+        menu_tools.setText("Tools");
         menu_tools.setMnemonic('T');
         //menu_tools.add(act_tools_bench).addMouseListener(bar_status);
         menu_tools.add(act_tools_generate).addMouseListener(bar_status);

@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.StringUtil;
@@ -166,25 +167,25 @@ public class Resource
         in = getClass().getClassLoader().getSystemResourceAsStream(subject+".properties");
         if (in != null)
         {
-            System.out.println("Loading "+subject+".properties from classpath: [OK]");
+            log.debug("Loading "+subject+".properties from classpath: [OK]");
             PropertiesUtil.load(prop, in);
         }
         else
         {
-            System.out.println("Loading "+subject+".properties from classpath: [NOT FOUND]");
+            log.debug("Loading "+subject+".properties from classpath: [NOT FOUND]");
         }
 
         String path = System.getProperty("user.home") + File.separator + ".jsword/" + subject + ".properties";
         File file = new File(path);
         if (file.isFile() && file.canRead())
         {
-            System.out.println("Loading "+subject+".properties from ~/.jsword/" + subject + ".properties: [OK]");
+            log.debug("Loading "+subject+".properties from ~/.jsword/" + subject + ".properties: [OK]");
             in = new FileInputStream(file);
             PropertiesUtil.load(prop, in);
         }
         else
         {
-            System.out.println("Loading "+subject+".properties from ~/.jsword/" + subject + ".properties: [NOT FOUND]");
+            log.debug("Loading "+subject+".properties from ~/.jsword/" + subject + ".properties: [NOT FOUND]");
         }
 
         return prop;
@@ -289,18 +290,18 @@ public class Resource
             {
                 Properties prop = new Properties();
                 PropertiesUtil.load(prop, in);
-                System.out.println("[Loading]");
+                log.debug("[Loading]");
 
                 load(prop);
             }
             else
             {
-                System.out.println("[Skipping]");
+                log.debug("[Skipping]");
             }
         }
         catch (IOException ex)
         {
-            System.out.println("[Skipping]");
+            log.debug("[Skipping]");
         }
     }
 
@@ -316,18 +317,18 @@ public class Resource
             {
                 Properties prop = new Properties();
                 PropertiesUtil.load(prop, in);
-                System.out.println("[Loading]");
+                log.debug("[Loading]");
 
                 load(prop);
             }
             catch (IOException ex)
             {
-                System.out.println("[Failed: "+ex+"]");
+                log.debug("[Failed: "+ex+"]");
             }
         }
         else
         {
-            System.out.println("[Skipping]");
+            log.debug("[Skipping]");
         }
     }
 
@@ -344,11 +345,11 @@ public class Resource
             try
             {
                 log_out = new PrintWriter(new FileWriter(temp));
-                System.out.println(" set logfile="+temp);
+                log.debug(" set logfile="+temp);
             }
             catch (IOException ex)
             {
-                System.out.println(" ignoring logfile="+temp);
+                log.debug(" ignoring logfile="+temp);
             }
         }
 
@@ -358,11 +359,11 @@ public class Resource
             try
             {
                 err_out = new PrintWriter(new FileWriter(temp));
-                System.out.println(" set errfile="+temp);
+                log.debug(" set errfile="+temp);
             }
             catch (IOException ex)
             {
-                System.out.println(" ignoring errfile="+temp);
+                log.debug(" ignoring errfile="+temp);
             }
         }
 
@@ -387,13 +388,13 @@ public class Resource
             if (temp != null && !temp.equals(""))
             {
                 URL url = new URL(temp);
-                System.out.println(" set "+name+"="+temp+" (was "+deft+")");
+                log.debug(" set "+name+"="+temp+" (was "+deft+")");
                 return url;
             }
         }
         catch (MalformedURLException ex)
         {
-            System.out.println(" ignoring as invalid "+name+"="+temp);
+            log.debug(" ignoring as invalid "+name+"="+temp);
         }
 
         return null;
@@ -404,41 +405,70 @@ public class Resource
      */
     private URL findBibleRoot() throws MalformedURLException
     {
+        URL found;
+
+        log.debug("Looking for Bibles:");
+
+        // First see if there is a System property that can help us out
+        String sysprop = System.getProperty("jsword.bible.dir");
+        if (sysprop == null)
+        {
+            log.debug("-- Unset system property jsword.bible.dir");
+        }
+        else
+        {
+            found = findBibleRoot(new URL("file", null, sysprop));
+            if (found == null)
+            {
+                log.debug("-- Not found from system property jsword.bible.dir at "+sysprop+"");
+            }
+            else
+            {
+                log.debug("-- Found from system property jsword.bible.dir at "+sysprop+"");
+                return found;
+            }
+        }
+
         // First look in the classpath where we are situated
         URL base = getLocalClasspath(getClass());
-        System.out.print("looking for Bibles in local classpath "+base+": ");
-        URL found = findBibleRoot(base);
-        if (found != null)
+        found = findBibleRoot(base);
+        if (found == null)
         {
-            System.out.println("[Found at "+found+"]");
+            log.debug("-- Not found in local classpath: "+base);
+        }
+        else
+        {
+            log.debug("-- Found in local classpath at "+found);
             return found;
         }
-        System.out.println("[Not Found]");
 
         // The go through the rest in turn
         String full = System.getProperty("java.class.path");
+        log.debug("-- Trying other classpath entries using: "+full);
         String[] paths = StringUtil.tokenize(full, File.pathSeparator);
         for (int i=0; i<paths.length; i++)
         {
-            System.out.print("looking for Bibles within "+paths[i]+": ");
-
             try
             {
                 base = new URL("file", null, paths[i]);
                 found = findBibleRoot(base);
-                if (found != null)
+                if (found == null)
                 {
-                    System.out.println("[Found at "+found+"]");
+                    log.debug("-- Not found at classpath component: "+paths[i]);
+                }
+                else
+                {
+                    log.debug("-- Found at classpath component: "+paths[i]);
                     return found;
                 }
-                System.out.println("[Not Found]");
             }
             catch (MalformedURLException ex)
             {
-                System.out.println("[Error: "+ex+"]");
+                log.debug("-- Error trying classpath component: "+paths[i]+" "+ex);
             }
         }
 
+        log.warn("No Bible source found.");
         return null;
     }
 
@@ -497,7 +527,7 @@ public class Resource
         String us_full = StringUtil.findClasspathEntry(getClass().getName());
 
         URL clazz = new URL("file", null, us_full);
-        System.out.println("getClassRoot()="+clazz);
+        log.debug("getClassRoot()="+clazz);
         return clazz;
     }
 
@@ -524,6 +554,9 @@ public class Resource
 
     /** The cached write root as a url */
     private URL write = null;
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger("bible.util");
 }
 
 /*
@@ -543,7 +576,7 @@ public class Resource
             // This bit is easy
             root = NetUtil.shortenURL(clazz, "classes");
 
-            log.fine("Found Root as "+root+" from classes directory.");
+            log.debug("Found Root as "+root+" from classes directory.");
         }
         else
         {
@@ -575,7 +608,7 @@ public class Resource
             // actually create the URL - the result is the root directory
             root = NetUtil.shortenURL(clazz, remove);
 
-            log.fine("Found Root as "+root+" from archive "+file);
+            log.debug("Found Root as "+root+" from archive "+file);
         }
 
         return root;
@@ -599,7 +632,7 @@ public class Resource
         ClassLoader loader = Project.class.getClassLoader();
         if (loader == null)
         {
-            log.fine("getClassLoader failed. Using alternative version");
+            log.debug("getClassLoader failed. Using alternative version");
             return getClassRootAlternate();
         }
 
@@ -610,12 +643,12 @@ public class Resource
         URL url = loader.getResource(us_leaf);
         if (url == null)
         {
-            log.fine("getResource failed. Using alternative version");
+            log.debug("getResource failed. Using alternative version");
             return getClassRootAlternate();
         }
 
         clazz = NetUtil.shortenURL(url, us_leaf);
-        log.fine("getClassRoot()="+clazz);
+        log.debug("getClassRoot()="+clazz);
         return clazz;
     }
 
@@ -627,7 +660,4 @@ public class Resource
 
     /** The cached lib root as a url *
     private static URL lib = null;
-
-    /** The log stream *
-    protected static Logger log = Logger.getLogger("bible.util");
 */
