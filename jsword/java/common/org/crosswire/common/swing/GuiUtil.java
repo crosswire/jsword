@@ -22,7 +22,7 @@ import javax.swing.JToolTip;
 import javax.swing.text.JTextComponent;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.util.Project;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * Various Gui Utilities.
@@ -60,7 +60,7 @@ public class GuiUtil
     {
         try
         {
-            URL url = Project.resource().getResource(name);
+            URL url = ResourceUtil.getResource(name);
             return new ImageIcon(url);
         }
         catch (MalformedURLException ex)

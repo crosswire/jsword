@@ -64,7 +64,8 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
 
         jbInit();
 
-        config.addConfigListener(new ConfigListener() {
+        config.addConfigListener(new ConfigListener()
+        {
             public void choiceAdded(ConfigEvent ev)
             {
                 addChoice(ev.getKey(), ev.getChoice());
@@ -125,7 +126,8 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
         apply.setMnemonic('A');
         help.setMnemonic('H');
 
-        ok.addActionListener(new ActionListener() {
+        ok.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
                 try
@@ -140,20 +142,25 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
                 }
             }
         });
-        cancel.addActionListener(new ActionListener() {
+        cancel.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
                 hideDialog();
             }
         });
-        apply.addActionListener(new ActionListener() {
+        apply.addActionListener(new ActionListener()
+        {
             public void actionPerformed(ActionEvent ev)
             {
                 try
                 {
                     screenToLocal();
                     al.actionPerformed(ev);
-                    if (dialog != null) dialog.pack();
+                    if (dialog != null)
+                    {
+                        dialog.pack();
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -3,12 +3,9 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -81,7 +78,7 @@ public class GZIPBackend implements Backend
             URL url = NetUtil.lengthenURL(swordBase, config.getDataPath());
             if (!url.getProtocol().equals("file"))
             {
-                throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol()});
+                throw new BookException(Msg.FILE_ONLY, new Object[] { url.getProtocol() });
             }
 
             String path = url.getFile();
@@ -190,7 +187,7 @@ public class GZIPBackend implements Backend
                 // PENDING(joe): implement encryption?
                 // byte[] decrypted = decrypt(compressed);
 
-                uncompr = uncompress(compressed, endsize);
+                uncompr = SwordUtil.uncompress(compressed, endsize);
 
                 // cache the uncompressed data for next time
                 lastbuffernum = buffernum;
@@ -236,30 +233,6 @@ public class GZIPBackend implements Backend
         {
             throw new BookException(Msg.READ_FAIL, ex);
         }
-    }
-
-    /**
-     * Uncompress a block of GZIP compressed data
-     * @param compressed
-     * @param endsize
-     * @return byte[]
-     */
-    public static byte[] uncompress(byte[] compressed, int endsize) throws IOException, DataFormatException, BookException
-    {
-        // Create the decompressor and give it the data to compress
-        Inflater decompressor = new Inflater();
-        decompressor.setInput(compressed);
-    
-        // Decompress the data
-        byte[] uncompressed = new byte[endsize];
-        int realendsize = decompressor.inflate(uncompressed);
-        
-        if (!decompressor.finished() || realendsize != endsize)
-        {
-            throw new BookException(Msg.GZIP_FORMAT, new Object[] { "wrong uncompressed size", });
-        }
-
-        return uncompressed;
     }
 
     private int lastbuffernum = -1;

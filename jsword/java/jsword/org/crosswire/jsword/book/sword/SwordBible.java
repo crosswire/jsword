@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.sword;
 
+import java.net.URL;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
@@ -12,10 +13,12 @@ import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.search.SearchEngine;
+import org.crosswire.jsword.book.search.SearchEngineFactory;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.util.Project;
 
 /**
  * A BibleDriver to read Sword format data.
@@ -56,8 +59,11 @@ public class SwordBible extends AbstractBible
         {
             backend = config.getBackend();
             backend.init(config);
+
+            URL url = Project.resource().getTempScratchSpace(getBibleMetaData().getFullName());
+            searcher = SearchEngineFactory.createSearchEngine(this, null, url);
         }
-        catch (BookException ex)
+        catch (Exception ex)
         {
             backend = null;
             log.error("Failed to init", ex);
@@ -78,7 +84,9 @@ public class SwordBible extends AbstractBible
     public BookData getData(Passage ref) throws BookException
     {
         if (backend == null)
+        {
             throw new BookException(Msg.READ_FAIL);
+        }
 
         try
         {
@@ -122,10 +130,20 @@ public class SwordBible extends AbstractBible
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
-    public Passage findPassage(Search word) throws BookException
+    public Passage findPassage(Search match) throws BookException
     {
-        return PassageFactory.createPassage();
+        if (searcher == null)
+        {
+            throw new BookException(Msg.READ_FAIL);
+        }
+
+        return searcher.findPassage(match);
     }
+
+    /*=-0
+     * The search implementation
+     */
+    private SearchEngine searcher;
 
     /**
      * To read the data from the disk

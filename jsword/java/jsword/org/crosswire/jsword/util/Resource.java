@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -82,7 +83,7 @@ public class Resource
         try
         {
             String search = "xsl/"+subject+"/"+NetUtil.INDEX_FILE;
-            URL index = getResource(search);
+            URL index = ResourceUtil.getResource(search);
             return NetUtil.listByIndexFile(index, new URLFilter()
             {
                 public boolean accept(String name)
@@ -106,7 +107,7 @@ public class Resource
     public InputStream getStyleInputStream(String subject, String name) throws IOException, MalformedURLException
     {
         String path = "xsl/"+subject+"/"+name;
-        return getResourceAsStream(path);
+        return ResourceUtil.getResourceAsStream(path);
     }
 
     /**
@@ -119,7 +120,7 @@ public class Resource
         try
         {
             String search = "readings/"+NetUtil.INDEX_FILE;
-            URL index = getResource(search);
+            URL index = ResourceUtil.getResource(search);
             return NetUtil.listByIndexFile(index, new URLFilter()
             {
                 public boolean accept(String name)
@@ -142,7 +143,7 @@ public class Resource
     public Properties getReadingsSet(String name) throws MalformedURLException, IOException
     {
         String lookup = "readings/"+name;
-        InputStream in = getResourceAsStream(lookup);
+        InputStream in = ResourceUtil.getResourceAsStream(lookup);
 
         Properties prop = new Properties();
         prop.load(in);
@@ -187,7 +188,7 @@ public class Resource
     public Properties getResourceProperties(String subject) throws IOException, MalformedURLException
     {
         String lookup = subject+PROPERTIES_EXTENSION;
-        InputStream in = getResourceAsStream(lookup);
+        InputStream in = ResourceUtil.getResourceAsStream(lookup);
 
         Properties prop = new Properties();
         prop.load(in);
@@ -347,84 +348,11 @@ public class Resource
     public Document getDocument(String subject) throws JDOMException, IOException, MalformedURLException
     {
         String resource = subject+".xml";
-        InputStream in = getResourceAsStream(resource);
+        InputStream in = ResourceUtil.getResourceAsStream(resource);
 
         log.debug("Loading "+subject+".xml from classpath: [OK]");
         SAXBuilder builder = new SAXBuilder(true);
         return builder.build(in);
-    }
-
-    /**
-     * Generic resource URL fetcher. One way or the other we'll find it!
-     * I'm fairly sure some of these do the same thing, but which and how they
-     * change on various JDK's is complex, and it seems simpler to take the
-     * shotgun approach.
-     * @param search The name of the resource (without a leading /) to find
-     * @return The requested resource
-     * @throws MalformedURLException if the resource can not be found
-     */
-    public URL getResource(String search) throws MalformedURLException
-    {
-        if (search.startsWith("/"))
-        {
-            log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't");
-        }
-
-        URL reply = getClass().getResource(search);
-        if (reply != null)
-        {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getResource(search);");
-            return reply;
-        }
-
-        reply = getClass().getResource("/"+search);
-        if (reply != null)
-        {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getResource(/search);");
-            return reply;
-        }
-
-        reply = getClass().getClassLoader().getResource(search);
-        if (reply != null)
-        {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(search);");
-            return reply;
-        }
-
-        reply = getClass().getClassLoader().getResource("/"+search);
-        if (reply != null)
-        {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(/search);");
-            return reply;
-        }
-
-        reply = ClassLoader.getSystemResource(search);
-        if (reply != null)
-        {
-            log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(search);");
-            return reply;
-        }
-
-        reply = ClassLoader.getSystemResource("/"+search);
-        if (reply != null)
-        {
-            log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(/search);");
-            return reply;
-        }
-
-        throw new MalformedURLException("Can't find resource: "+search);
-    }
-
-    /**
-     * Generic resource URL fetcher
-     * @return The requested resource
-     * @throws IOException if there is a problem reading the file
-     * @throws MalformedURLException if the resource can not be found
-     */
-    public InputStream getResourceAsStream(String search) throws IOException, MalformedURLException
-    {
-        URL url = getResource(search);
-        return url.openStream();
     }
 
     /**

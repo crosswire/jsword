@@ -6,13 +6,13 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.ProgressListener;
-import org.crosswire.jsword.book.search.SearchableBible;
+import org.crosswire.jsword.book.basic.AbstractBible;
 
 /**
  * LocalURLBible is a helper for drivers that want to store files locally.
@@ -41,33 +41,17 @@ import org.crosswire.jsword.book.search.SearchableBible;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class LocalURLBible extends SearchableBible
+public abstract class LocalURLBible extends AbstractBible
 {
     /**
      * Method init.
      */
-    public void init(Bible source, ProgressListener li) throws BookException
-    {
-        generateText(source, li);
-        super.init(li);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.SearchableBible#getIndexDirectory()
-     */
-    protected URL getIndexDirectory() throws IOException
-    {
-        return lbmd.getURL();
-    }
+    public abstract void init(Bible source, ProgressListener li) throws BookException;
 
     /**
-     * Meta-Information: What version of the Bible is this?
-     * @return A Version for this Bible
+     * Method init.
      */
-    public BookMetaData getMetaData()
-    {
-        return lbmd;
-    }
+    public abstract void init(ProgressListener li) throws BookException;
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#getBibleMetaData()
@@ -102,7 +86,7 @@ public abstract class LocalURLBible extends SearchableBible
         try
         {
             Properties prop = new Properties();
-            prop.put("Version", getMetaData().getFullName());
+            prop.put("Version", getBibleMetaData().getFullName());
 
             URL prop_url = NetUtil.lengthenURL(getLocalURLBibleMetaData().getURL(), "bible.properties");
             OutputStream prop_out = NetUtil.getOutputStream(prop_url);
@@ -113,6 +97,11 @@ public abstract class LocalURLBible extends SearchableBible
             throw new BookException(Msg.FLUSH_FAIL, ex);
         }
     }
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(LocalURLBible.class);
 
     /**
      * The Version of the Bible that this produces

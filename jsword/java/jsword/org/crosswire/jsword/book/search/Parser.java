@@ -1,11 +1,12 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.Passage;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * The central interface to all searching.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,22 +29,18 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public interface Parser
 {
     /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
-     * @throws BookException If we should not be used for some reason
+     * Setup the index that this parser can use to do word level searches
+     * @param index The Index to query for words
      */
-    public void init(SwordConfig config) throws BookException;
+    public void init(Index index);
 
     /**
-     * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
-     * @return byte[] The data for the verse in question
-     * @throws BookException If the data can not be read.
+     * Take a search string and decipher it into a Passage.
+     * @param sought The string to be searched for
+     * @return The matching verses
      */
-    public byte[] getRawText(Verse verse) throws BookException;
+    public Passage search(Search search) throws BookException;
 }

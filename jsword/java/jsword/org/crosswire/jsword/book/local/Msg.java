@@ -28,9 +28,10 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg DELETE_FAIL = new Msg("Failed to delete Book '{0}'");
-    public static final Msg FLUSH_FAIL = new Msg("Failed to write data.");
-    public static final Msg CREATE_FAIL = new Msg("Failed to create Book.");
+    protected static final Msg CREATE_NOBIBLE = new Msg("Can't create a Bible from a non-Bible source");
+    protected static final Msg DELETE_FAIL = new Msg("Failed to delete Book '{0}'");
+    protected static final Msg FLUSH_FAIL = new Msg("Failed to write data.");
+    protected static final Msg CREATE_FAIL = new Msg("Failed to create Book.");
 
     /** Initialise any resource bundles */
     static

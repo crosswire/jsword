@@ -1,11 +1,11 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.search.parse;
 
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.Passage;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * The end of an escape to specify a passage directly.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,22 +28,21 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public class PassageRightParamWord implements ParamWord
 {
-    /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
-     * @throws BookException If we should not be used for some reason
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getWord(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public void init(SwordConfig config) throws BookException;
+    public String getWord(LocalParser engine) throws BookException
+    {
+        throw new BookException(Msg.RIGHT_PARAM);
+    }
 
-    /**
-     * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
-     * @return byte[] The data for the verse in question
-     * @throws BookException If the data can not be read.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public byte[] getRawText(Verse verse) throws BookException;
+    public Passage getPassage(LocalParser engine) throws BookException
+    {
+        throw new BookException(Msg.RIGHT_BRACKETS);
+    }
 }

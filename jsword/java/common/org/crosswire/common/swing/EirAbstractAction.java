@@ -40,22 +40,39 @@ public abstract class EirAbstractAction extends AbstractAction
                              int mnemonic, KeyStroke accel)
     {
         if (name != null)
+        {
             putValue(Action.NAME, name);
+        }
 
         // For JDK1.2/1.3/1.4 compatibility
         if (large_icon != null)
-            putValue("LargeIcon"/*Action.LARGE_ICON*/, GuiUtil.getIcon(large_icon));
+        {
+            putValue("LargeIcon" /*Action.LARGE_ICON*/, GuiUtil.getIcon(large_icon));
+        }
+
         if (small_icon != null)
+        {
             putValue(Action.SMALL_ICON, GuiUtil.getIcon(small_icon));
+        }
 
         if (short_desc != null)
+        {
             putValue(Action.SHORT_DESCRIPTION, short_desc);
+        }
+
         if (long_desc != null)
+        {
             putValue(Action.LONG_DESCRIPTION, long_desc);
+        }
 
         if (mnemonic != -1)
-            putValue("MnemonicKey"/*Action.MNEMONIC_KEY*/, new Integer(mnemonic));
+        {
+            putValue("MnemonicKey" /*Action.MNEMONIC_KEY*/, new Integer(mnemonic));
+        }
+
         if (accel != null)
-            putValue("AcceleratorKey"/*Action.ACCELERATOR_KEY*/, accel);
+        {
+            putValue("AcceleratorKey" /*Action.ACCELERATOR_KEY*/, accel);
+        }
     }
 }

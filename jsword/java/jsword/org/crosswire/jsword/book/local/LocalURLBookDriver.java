@@ -11,12 +11,16 @@ import java.util.Properties;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.util.URLFilter;
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.search.SearchableBookDriver;
-import org.crosswire.jsword.util.Project;
+import org.crosswire.jsword.book.ProgressListener;
+import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * LocalURLBookDriver is a helper for drivers that want to store files locally.
@@ -45,7 +49,7 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class LocalURLBookDriver extends SearchableBookDriver
+public abstract class LocalURLBookDriver extends AbstractBookDriver
 {
     /**
      * The ctor checks on the filesystem
@@ -122,36 +126,21 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
         }
     }
 
-    /*
-     * A new Bible with new source data
-     *
-    private Bible createBible(LocalURLBibleMetaData lbmd, Bible source, ProgressListener li) throws BookException
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.ProgressListener)
+     */
+    public Book create(Book book, ProgressListener li) throws BookException
     {
+        if (!(book instanceof Bible))
+        {
+            throw new BookException(Msg.CREATE_NOBIBLE);
+        }
+
+        Bible source = (Bible) book;
+        BibleMetaData basis = source.getBibleMetaData();
+
         try
         {
-            LocalURLBible bible = (LocalURLBible) bibleclass.newInstance();
-            bible.setLocalURLBibleMetaData(lbmd);
-            bible.init(source, li);
-            return bible;
-        }
-        catch (Exception ex)
-        {
-            throw new BookException(Msg.CREATE_FAIL, ex);
-        }
-    }
-
-    /*
-     * PENDING(joe): delete this?
-     * Create a new blank Bible read for writing
-     * @param name The name of the version to create
-     * @exception BookException If the name is not valid
-     *
-    private Bible create(Bible source, ProgressListener li) throws BookException
-    {
-        try
-        {
-            BibleMetaData basis = source.getBibleMetaData();
-
             String base = source.getBibleMetaData().getFullName();
             base = StringUtil.createJavaName(base);
             base = StringUtil.shorten(base, 10);
@@ -173,14 +162,18 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
             NetUtil.makeDirectory(url);
 
             LocalURLBibleMetaData bbmd = new LocalURLBibleMetaData(this, url, basis);
-            return createBible(bbmd, source, li);
+
+            LocalURLBible dest = (LocalURLBible) bibleclass.newInstance();
+            dest.setLocalURLBibleMetaData(bbmd);
+            dest.init(source, li);
+
+            return dest;
         }
-        catch (MalformedURLException ex)
+        catch (Exception ex)
         {
             throw new BookException(Msg.CREATE_FAIL, ex);
         }
     }
-    */
 
     /**
      * A simple name description name.
@@ -255,7 +248,7 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
             // If not then try a wild guess
             if (root == null)
             {
-                URL found = Project.resource().getResource("versions/locator.properties");
+                URL found = ResourceUtil.getResource("versions/locator.properties");
                 root = NetUtil.shortenURL(found, "locator.properties");
                 log.debug("Guessing we'll find it at: "+root);
             }

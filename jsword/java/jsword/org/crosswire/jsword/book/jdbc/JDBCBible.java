@@ -16,6 +16,7 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.ProgressListener;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.DataFactory;
@@ -23,6 +24,11 @@ import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.Parser;
+import org.crosswire.jsword.book.search.ParserFactory;
+import org.crosswire.jsword.book.search.SearchEngine;
+import org.crosswire.jsword.book.search.SearchEngineFactory;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -54,7 +60,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class JDBCBible extends LocalURLBible
+public class JDBCBible extends LocalURLBible implements Index
 {
     /**
      * Startup
@@ -128,14 +134,34 @@ public class JDBCBible extends LocalURLBible
             log.error("Failed to connect", ex);
         }
 
-        super.init(li);
+        try
+        {
+            searcher = SearchEngineFactory.createSearchEngine(this, li, lbmd.getURL());
+        }
+        catch (Exception ex)
+        {
+            log.error("Bad index", ex);
+        }
     }
 
-    /**
-     * Create an XML document for the specified Verses
-     * @param doc The XML document
-     * @param ele The Element to start adding at. null if the doc is empty
-     * @param ref The verses to search for
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
+     */
+    public Passage findPassage(Search search) throws BookException
+    {
+        try
+        {
+            Parser parser = ParserFactory.createParser(this);
+            return parser.search(search);
+        }
+        catch (InstantiationException ex)
+        {
+            throw new BookException(Msg.SEARCH_FAIL, ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
     public BookData getData(Passage ref) throws BookException
     {
@@ -194,7 +220,7 @@ public class JDBCBible extends LocalURLBible
     /**
      * Part of the Bible interface - Get the Passage for this word.
      */
-    public Passage findPassage(String word) throws BookException
+    public Passage findWord(String word) throws BookException
     {
         if (word == null)
         {
@@ -318,6 +344,9 @@ public class JDBCBible extends LocalURLBible
 
         return retcode;
     }
+
+    /** The search implementation */
+    protected SearchEngine searcher;
 
     /** Cached statement for getDocument */
     private PreparedStatement doc_stmt;

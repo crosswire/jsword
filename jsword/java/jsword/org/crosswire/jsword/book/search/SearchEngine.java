@@ -1,11 +1,16 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.jsword.passage.Verse;
+import java.net.URL;
+
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
+import org.crosswire.jsword.book.Search;
+import org.crosswire.jsword.passage.Passage;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * An interface that Bibles can use for help in becoming searchable.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,22 +33,24 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public interface SearchEngine
 {
     /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
-     * @throws BookException If we should not be used for some reason
+     * An initializer type method so we can configure the Search engine at
+     * runtime.
      */
-    public void init(SwordConfig config) throws BookException;
+    public void init(Bible bible, URL url, ProgressListener li) throws BookException;
 
     /**
-     * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
-     * @return byte[] The data for the verse in question
-     * @throws BookException If the data can not be read.
+     * For a given word find a list of references to it
+     * @param word The text to search for
+     * @return The references to the word
      */
-    public byte[] getRawText(Verse verse) throws BookException;
+    public Passage findPassage(Search search) throws BookException;
+
+    /**
+     * Tidy up after yourself and remove all the files that make up any indexes
+     * you created.
+     */
+    public void delete() throws BookException;
 }

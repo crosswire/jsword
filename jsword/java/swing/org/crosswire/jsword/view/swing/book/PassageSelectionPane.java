@@ -32,13 +32,13 @@ import javax.swing.tree.TreePath;
 
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.util.LogicError;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageEvent;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageListener;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.passage.PassageListModel;
 import org.crosswire.jsword.view.swing.passage.WholeBibleTreeModel;
 import org.crosswire.jsword.view.swing.passage.WholeBibleTreeNode;
@@ -76,13 +76,13 @@ public class PassageSelectionPane extends JPanel
     {
         try
         {
-            URL url_good = Project.resource().getResource("toolbarButtonGraphics/general/About24.gif");
+            URL url_good = ResourceUtil.getResource("toolbarButtonGraphics/general/About24.gif");
             if (url_good != null)
             {
                 ico_good = new ImageIcon(url_good);
             }
             
-            URL url_bad = Project.resource().getResource("toolbarButtonGraphics/general/Stop24.gif");
+            URL url_bad = ResourceUtil.getResource("toolbarButtonGraphics/general/Stop24.gif");
             if (url_bad != null)
             {
                 ico_bad = new ImageIcon(url_bad);

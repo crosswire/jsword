@@ -29,10 +29,11 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    public static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
-    public static final Msg INIT_FAIL = new Msg("Failed to initialise Raw driver");
-    public static final Msg FLUSH_FAIL = new Msg("Failed to flush data.");
-    public static final Msg FIND_FAIL = new Msg("Failed to find data.");
+    protected static final Msg FILTER_FAIL = new Msg("Filtering input data failed.");
+    protected static final Msg INIT_FAIL = new Msg("Failed to initialise Raw driver");
+    protected static final Msg FLUSH_FAIL = new Msg("Failed to flush data.");
+    protected static final Msg FIND_FAIL = new Msg("Failed to find data.");
+    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
 
     /** Initialise any resource bundles */
     static

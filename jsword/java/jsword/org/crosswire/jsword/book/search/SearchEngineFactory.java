@@ -1,11 +1,17 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.jsword.passage.Verse;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.ProgressListener;
+import org.crosswire.jsword.util.Project;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * PENDING(joe): write javadoc.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,22 +34,26 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public class SearchEngineFactory
 {
     /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
-     * @throws BookException If we should not be used for some reason
+     * @param bible
+     * @param li
+     * @param indexdir
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws BookException
      */
-    public void init(SwordConfig config) throws BookException;
-
-    /**
-     * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
-     * @return byte[] The data for the verse in question
-     * @throws BookException If the data can not be read.
-     */
-    public byte[] getRawText(Verse verse) throws BookException;
+    public static SearchEngine createSearchEngine(Bible bible, ProgressListener li, URL indexdir) throws MalformedURLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, BookException
+    {
+        Class impl = Project.resource().getImplementor(SearchEngine.class);
+        SearchEngine searcher = (SearchEngine) impl.newInstance();
+        searcher.init(bible, indexdir, li);
+        
+        return searcher;
+    }
 }

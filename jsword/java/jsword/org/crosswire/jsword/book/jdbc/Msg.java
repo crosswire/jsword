@@ -42,6 +42,8 @@ class Msg extends MsgBase
     public static final Msg DRIVER_SAVE = new Msg("Error saving configuration file \"{0}\".");
     public static final Msg DRIVER_READONLY = new Msg("The JDBC Version is read only. Sorry.");
 
+    protected static final Msg SEARCH_FAIL = new Msg("Could not start search engine");
+
     /** Initialise any resource bundles */
     static
     {

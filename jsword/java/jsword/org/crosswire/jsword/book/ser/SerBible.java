@@ -1,12 +1,19 @@
 
 package org.crosswire.jsword.book.ser;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.ProgressListener;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.local.LocalURLBible;
+import org.crosswire.jsword.book.search.SearchEngine;
+import org.crosswire.jsword.book.search.SearchEngineFactory;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
@@ -138,20 +145,19 @@ import org.crosswire.jsword.passage.Verse;
 public class SerBible extends LocalURLBible
 {
     /**
+     * Ctor
+     */
+    public SerBible() throws BookException, FileNotFoundException, IOException
+    {
+        cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
+    }
+
+    /**
      * Startup a SerBible.
+     * PENDING(joe): so when does the searchengine get setup?
      */
     public void init(Bible source, ProgressListener li) throws BookException
     {
-        try
-        {
-            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
-        }
-        catch (Exception ex)
-        {
-            log.error("Failed to initialize", ex);
-        }
-
-        super.init(source, li);
     }
 
     /**
@@ -161,48 +167,46 @@ public class SerBible extends LocalURLBible
     {
         try
         {
-            cache = new BibleDataCache(getLocalURLBibleMetaData().getURL(), getBibleMetaData());
             cache.load();
+
+            URL url = getLocalURLBibleMetaData().getURL();
+            searcher = SearchEngineFactory.createSearchEngine(this, li, url);
         }
         catch (Exception ex)
         {
             log.error("Failed to initialize", ex);
         }
-
-        super.init(li);
     }
 
-    /**
-     * Create an XML document for the specified Verses
-     * @param ref The verses to search for
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
+     */
+    public Passage findPassage(Search match) throws BookException
+    {
+        return searcher.findPassage(match);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
     public BookData getData(Passage ref) throws BookException
     {
-        if (cache == null)
-            throw new BookException(Msg.READ_ERROR);
-
         return cache.getData(ref);
     }
 
-    /**
-     * Write the XML to disk
-     * @param doc The data to write
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.data.BookData)
      */
     public void setDocument(Verse verse, BookData doc) throws BookException
     {
         cache.setDocument(verse, doc);
     }
 
-    /**
-     * Flush the data written to disk.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#flush()
      */
     public void flush() throws BookException
     {
-        if (cache != null)
-        {
-            cache.flush();
-        }
-
         super.flush();
     }
 
@@ -210,6 +214,11 @@ public class SerBible extends LocalURLBible
      * The BibleDataCache to which we delegate all questions
      */
     private BibleDataCache cache;
+
+    /**
+     * The search implementation
+     */
+    protected SearchEngine searcher;
 
     /**
      * The log stream

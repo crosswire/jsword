@@ -12,7 +12,7 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.search.SearchableBibleMetaData;
+import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
  * A default implmentation of BibleMetaData.
@@ -38,7 +38,7 @@ import org.crosswire.jsword.book.search.SearchableBibleMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LocalURLBibleMetaData extends SearchableBibleMetaData
+public class LocalURLBibleMetaData extends AbstractBibleMetaData
 {
     /**
      * Constructor LocalURLBibleMetaData.

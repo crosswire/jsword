@@ -81,10 +81,10 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoterTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.remote.RemoteMethodTest.class);
 
-        suite.addTestSuite(org.crosswire.jsword.book.search.ser.TestDictionary.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.ser.TestCustomTokenizer.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.ser.TestParser.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.ser.TestSearchWords.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestDictionary.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestCustomTokenizer.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestParser.class);
+        suite.addTestSuite(org.crosswire.jsword.book.search.parse.TestSearchWords.class);
 
         return suite;
     }

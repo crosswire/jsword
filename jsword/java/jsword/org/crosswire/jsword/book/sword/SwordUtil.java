@@ -3,8 +3,11 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * Various utilities used by different Sword classes.
@@ -120,6 +123,30 @@ public class SwordUtil
         }
         
         return -1;
+    }
+
+    /**
+     * Uncompress a block of GZIP compressed data
+     * @param compressed
+     * @param endsize
+     * @return byte[]
+     */
+    public static byte[] uncompress(byte[] compressed, int endsize) throws IOException, DataFormatException, BookException
+    {
+        // Create the decompressor and give it the data to compress
+        Inflater decompressor = new Inflater();
+        decompressor.setInput(compressed);
+    
+        // Decompress the data
+        byte[] uncompressed = new byte[endsize];
+        int realendsize = decompressor.inflate(uncompressed);
+        
+        if (!decompressor.finished() || realendsize != endsize)
+        {
+            throw new BookException(Msg.GZIP_FORMAT, new Object[] { "wrong uncompressed size", });
+        }
+    
+        return uncompressed;
     }
 
     /**

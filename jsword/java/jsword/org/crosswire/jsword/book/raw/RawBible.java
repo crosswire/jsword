@@ -2,6 +2,7 @@
 package org.crosswire.jsword.book.raw;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 
 import org.crosswire.common.util.Logger;
@@ -11,6 +12,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.ProgressListener;
+import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.data.BookDataListener;
 import org.crosswire.jsword.book.data.DataFactory;
@@ -19,6 +21,11 @@ import org.crosswire.jsword.book.data.Filters;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.data.VerseData;
 import org.crosswire.jsword.book.local.LocalURLBible;
+import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.search.Parser;
+import org.crosswire.jsword.book.search.ParserFactory;
+import org.crosswire.jsword.book.search.SearchEngine;
+import org.crosswire.jsword.book.search.SearchEngineFactory;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -204,44 +211,16 @@ import org.crosswire.jsword.passage.VerseRange;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawBible extends LocalURLBible
+public class RawBible extends LocalURLBible implements Index
 {
-    /**
-     * Do the Bibles we create cache everything in memory or leave it on
-     * disk and then read it at query time.
-     * @return True if we are cacheing data in memory
-     */
-    public static boolean isDefaultCacheData()
-    {
-        return defaultmemory;
-    }
-
-    /**
-     * Do the Bibles we create cache everything in memory or leave it on
-     * disk and then read it at query time.
-     * @param memory True if we are cacheing data in memory
-     */
-    public static void setDefaultCacheData(boolean memory)
-    {
-        RawBible.defaultmemory = memory;
-    }
-
-    /**
-     * Do we instruct new RawBibles to cache data in memory?
-     */
-    private static boolean defaultmemory = true;
-
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.local.LocalURLBible#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.events.ProgressListener)
+     * @see org.crosswire.jsword.book.local.LocalURLBible#init(org.crosswire.jsword.book.Bible, org.crosswire.jsword.book.ProgressListener)
      */
     public void init(Bible source, ProgressListener li) throws BookException
     {
-        memory = false;
-
         init(true);
-        generateText(source, li);
 
-        super.init(source, li);
+        generateText(source, li);
     }
 
     /* (non-Javadoc)
@@ -249,11 +228,17 @@ public class RawBible extends LocalURLBible
      */
     public void init(ProgressListener li)
     {
-        memory = defaultmemory;
-
         init(false);
 
-        super.init(li);
+        try
+        {
+            URL url = getLocalURLBibleMetaData().getURL();
+            searcher = SearchEngineFactory.createSearchEngine(this, li, url);
+        }
+        catch (Exception ex)
+        {
+            log.error("Bad index", ex);
+        }
     }
 
     /**
@@ -261,6 +246,15 @@ public class RawBible extends LocalURLBible
      */
     public void init(boolean create)
     {
+        if (create)
+        {
+            memory = false;
+        }
+        else
+        {
+            memory = defaultmemory;
+        }
+
         try
         {
             // Without these we can't go on
@@ -305,6 +299,22 @@ public class RawBible extends LocalURLBible
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
+     */
+    public Passage findPassage(Search search) throws BookException
+    {
+        try
+        {
+            Parser parser = ParserFactory.createParser(this);
+            return parser.search(search);
+        }
+        catch (InstantiationException ex)
+        {
+            throw new BookException(Msg.SEARCH_FAIL, ex);
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#getData(org.crosswire.jsword.passage.Passage)
      */
     public BookData getData(Passage ref) throws BookException
@@ -343,12 +353,10 @@ public class RawBible extends LocalURLBible
         }
     }
 
-    /**
-     * For a given word find a list of references to it
-     * @param word The text to search for
-     * @return The references to the word
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
      */
-    public Passage findPassage(String word) throws BookException
+    public Passage findWord(String word) throws BookException
     {
         if (word == null)
             return PassageFactory.createPassage();
@@ -387,10 +395,8 @@ public class RawBible extends LocalURLBible
         return ref;
     }
 
-    /**
-     * Find a list of words that start with the given word
-     * @param word The word to search for
-     * @return An array of matches
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.parse.Index#getStartsWith(java.lang.String)
      */
     public Iterator getStartsWith(String word) throws BookException
     {
@@ -601,6 +607,31 @@ public class RawBible extends LocalURLBible
         cache = null;
     }
 
+    /**
+     * Do the Bibles we create cache everything in memory or leave it on
+     * disk and then read it at query time.
+     * @return True if we are cacheing data in memory
+     */
+    public static boolean isDefaultCacheData()
+    {
+        return defaultmemory;
+    }
+
+    /**
+     * Do the Bibles we create cache everything in memory or leave it on
+     * disk and then read it at query time.
+     * @param memory True if we are cacheing data in memory
+     */
+    public static void setDefaultCacheData(boolean memory)
+    {
+        RawBible.defaultmemory = memory;
+    }
+
+    /**
+     * Do we instruct new RawBibles to cache data in memory?
+     */
+    private static boolean defaultmemory = true;
+
     /** Constant for read-only, data in memory mode */
     public static final int MODE_READ_MEMORY = 0;
 
@@ -630,6 +661,11 @@ public class RawBible extends LocalURLBible
 
     /** The cache of word searches */
     private Passage[] cache;
+
+    /**
+     * The search implementation
+     */
+    protected SearchEngine searcher;
 
     /**
      * Are we cacheing or in on disk mode?.

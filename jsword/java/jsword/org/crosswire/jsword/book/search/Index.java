@@ -1,11 +1,13 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.jsword.passage.Verse;
+import java.util.Iterator;
+
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.Passage;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * An index into a body of text that knows what words exist and where they are.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,22 +30,22 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public interface Index
 {
     /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
-     * @throws BookException If we should not be used for some reason
+     * Return an array of words that are used by this Bible that start with the
+     * given string. For example calling:
+     * <code>getStartsWith("love")</code> will return something like:
+     * { "love", "loves", "lover", "lovely", ... }
+     * @param base The word to base your word array on
+     * @return An array of words starting with the base
      */
-    public void init(SwordConfig config) throws BookException;
+    public Iterator getStartsWith(String word) throws BookException;
 
     /**
-     * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
-     * @return byte[] The data for the verse in question
-     * @throws BookException If the data can not be read.
+     * For a given word find a list of references to it
+     * @param word The text to search for
+     * @return The references to the word
      */
-    public byte[] getRawText(Verse verse) throws BookException;
+    public Passage findWord(String word) throws BookException;
 }

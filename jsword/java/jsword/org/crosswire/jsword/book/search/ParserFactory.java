@@ -1,11 +1,11 @@
 
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book.search;
 
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.book.BookException;
+import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.util.Project;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * Factory method for creating a new Parser.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,22 +28,29 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend
+public class ParserFactory
 {
     /**
-     * Initialise a Backend before use.
-     * This method should do everything it can to ensure that a subsequent call
-     * to activate() will succeed whilst using as little memory as possible.
-     * @param config The settings object
-     * @throws BookException If we should not be used for some reason
+     * Create a new Parser.
      */
-    public void init(SwordConfig config) throws BookException;
+    public static Parser createParser(Index index) throws InstantiationException
+    {
+        try
+        {
+            Class impl = Project.resource().getImplementor(Parser.class);
+            Parser parser = (Parser) impl.newInstance();
+            
+            return parser;
+        }
+        catch (Exception ex)
+        {
+            log.error("createParser failed", ex);
+            throw new InstantiationException();
+        }
+    }
 
     /**
-     * Get the bytes alotted for the given verse
-     * @param verse The verse to fetch
-     * @return byte[] The data for the verse in question
-     * @throws BookException If the data can not be read.
+     * The log stream
      */
-    public byte[] getRawText(Verse verse) throws BookException;
+    private static Logger log = Logger.getLogger(ParserFactory.class);
 }
