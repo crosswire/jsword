@@ -59,25 +59,6 @@ public class JSwordAllTests extends TestCase
         // commented out because the tests were very poor.
         //suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
 
-        // The following tests are commented out because the code is in limbo
-//        suite.addTestSuite(org.crosswire.jsword.book.jdbc.JDBCBookTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.jdbc.JDBCBookDriverTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.jdbc.JDBCBookUtilTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.raw.RawBookTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.raw.RawBookDriverTest.class);
-        suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoteBookTest.class);
-        suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoteBookDriverTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.ser.SerBookTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.ser.SerBookDriverTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.stub.StubBookTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.stub.StubBookDriverTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookTest.class);
-//        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookDriverTest.class);
-
-        suite.addTestSuite(org.crosswire.jsword.book.remote.ConverterTest.class);
-        suite.addTestSuite(org.crosswire.jsword.book.remote.LocalRemoterTest.class);
-        suite.addTestSuite(org.crosswire.jsword.book.remote.RemoteMethodTest.class);
-
         suite.addTestSuite(org.crosswire.jsword.book.search.parse.DictionaryTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.search.parse.CustomTokenizerTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.search.parse.ParserTest.class);
