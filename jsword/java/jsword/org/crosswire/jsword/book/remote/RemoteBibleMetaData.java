@@ -2,13 +2,10 @@
 package org.crosswire.jsword.book.remote;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
-import java.util.Date;
 
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
@@ -40,20 +37,10 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for RemoteBibleMetaData.
      */
-    public RemoteBibleMetaData(RemoteBibleDriver driver, String id, String name, String edition, String initials, Date pub, Openness open, URL licence)
-    {
-        super(name, edition, initials, pub, open, licence);
-        this.driver = driver;
-        this.id = id;
-    }
-
-    /**
-     * Constructor for RemoteBibleMetaData.
-     */
-    public RemoteBibleMetaData(RemoteBibleDriver driver, String id, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public RemoteBibleMetaData(Remoter remoter, String id, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(name, edition, initials, pubstr, openstr, licencestr);
-        this.driver = driver;
+        this.remoter = remoter;
         this.id = id;
     }
 
@@ -64,7 +51,7 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
      */
     public Bible getBible() throws BookException
     {
-        return new RemoteBible((RemoteBibleDriver) driver, this);
+        return new RemoteBible(remoter, this);
     }
 
     /**
@@ -80,16 +67,27 @@ public class RemoteBibleMetaData extends AbstractBibleMetaData
      */
     public String getDriverName()
     {
-        return driver.getDriverName();
+        return remoter.getRemoterName();
     }
 
     /**
-     * The driver
+     * Remote access method
      */
-    protected RemoteBibleDriver driver;
+    protected Remoter remoter;
 
     /**
      * The ID for this instance
      */
     private String id;
+
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * Perhaps we should allow this to be customized more by concrete
+     * implementations?
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public int getSpeed()
+    {
+        return 6;
+    }
 }

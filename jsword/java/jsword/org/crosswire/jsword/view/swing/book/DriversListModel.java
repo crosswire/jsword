@@ -2,7 +2,6 @@
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.Component;
-import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
@@ -14,7 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.BibleDriverManager;
+import org.crosswire.jsword.book.Bibles;
 
 /**
  * DriversListModel.
@@ -48,8 +47,7 @@ public class DriversListModel extends AbstractListModel
      */
     public DriversListModel()
     {
-        List list = BibleDriverManager.getDrivers();
-        drivers = (BibleDriver[]) list.toArray(new BibleDriver[list.size()]);
+        drivers = Bibles.getDrivers();
     }
 
     /**
@@ -65,8 +63,10 @@ public class DriversListModel extends AbstractListModel
      */
     public Object getElementAt(int index)
     {
-        if (index >= drivers.length) return null;
-        return drivers[index].getDriverName() + " (" + drivers[index].getClass().getName() + ")";
+        if (index >= drivers.length)
+            return null;
+
+        return drivers[index].getClass().getName();
     }
 
     /**

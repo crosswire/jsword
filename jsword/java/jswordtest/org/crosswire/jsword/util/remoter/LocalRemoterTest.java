@@ -57,7 +57,7 @@ public class LocalRemoterTest extends TestCase
 
         RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
         Document doc = remote.execute(method);
-        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoteBibleDriver());
+        BibleMetaData[] names2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter());
 
         for (int i=0; i<names1.length; i++)
         {

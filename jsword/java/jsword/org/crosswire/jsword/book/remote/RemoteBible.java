@@ -44,9 +44,9 @@ public class RemoteBible extends AbstractBible
     /**
      * Basic constructor for a SerBible
      */
-    public RemoteBible(RemoteBibleDriver driver, RemoteBibleMetaData rbmd)
+    public RemoteBible(Remoter remoter, RemoteBibleMetaData rbmd)
     {
-        this.driver = driver;
+        this.remoter = remoter;
         this.rbmd = rbmd;
 
         log.debug("Started RemoteBible");
@@ -74,7 +74,7 @@ public class RemoteBible extends AbstractBible
             RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETDATA);
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
             method.addParam(RemoteConstants.PARAM_PASSAGE, ref.getName());
-            Document doc = driver.getRemoter().execute(method);
+            Document doc = remoter.execute(method);
 
             return new DefaultBibleData(doc);
         }
@@ -96,7 +96,7 @@ public class RemoteBible extends AbstractBible
             RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_FINDPASSAGE);
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
             method.addParam(RemoteConstants.PARAM_WORD, word);
-            Document doc = driver.getRemoter().execute(method);
+            Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToPassage(doc);
         }
@@ -125,7 +125,7 @@ public class RemoteBible extends AbstractBible
             RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_STARTSWITH);
             method.addParam(RemoteConstants.PARAM_BIBLE, rbmd.getID());
             method.addParam(RemoteConstants.PARAM_WORD, word);
-            Document doc = driver.getRemoter().execute(method);
+            Document doc = remoter.execute(method);
 
             return Converter.convertDocumentToStartsWith(doc);
         }
@@ -136,9 +136,9 @@ public class RemoteBible extends AbstractBible
     }
 
     /**
-     * The bible driver from which we can request remote services
+     * So we can request remote services
      */
-    private RemoteBibleDriver driver;
+    private Remoter remoter;
 
     /**
      * The Version of the Bible that this produces

@@ -3,8 +3,6 @@ package org.crosswire.common.util.event;
 
 import java.util.EventObject;
 
-import org.crosswire.common.util.Reporter;
-
 /**
  * An event indicating that some bit of data needs capturing.
  * 
@@ -36,9 +34,9 @@ public class ReporterEvent extends EventObject
      * @param source The event originator (typically <code>this</code>)
      * @param ev An exception
      */
-    public ReporterEvent(Throwable ex)
+    public ReporterEvent(Object source, Throwable ex)
     {
-        super(Reporter.class);
+        super(source);
 
         this.ex = ex;
         this.message = null;
@@ -49,9 +47,9 @@ public class ReporterEvent extends EventObject
      * @param source The event originator (typically <code>this</code>)
      * @param ev An exception
      */
-    public ReporterEvent(String message)
+    public ReporterEvent(Object source, String message)
     {
-        super(Reporter.class);
+        super(source);
 
         this.ex = null;
         this.message = message;

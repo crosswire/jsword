@@ -1,18 +1,15 @@
 
 package org.crosswire.jsword.book.basic;
 
-import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriver;
-import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
- * The AbstractBibleDriver class implements some of the BibleDriver
- * methods, that various BibleDrivers may do in the same way.
+ * The AbstractBibleDriver class implements some BibleDriver methods, making a
+ * simple read-only BibleDriver.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -38,60 +35,7 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public abstract class AbstractBibleDriver implements BibleDriver
 {
     /**
-     * @see org.crosswire.jsword.book.BookDriver#getBooks()
-     */
-    public BookMetaData[] getBooks()
-    {
-        return getBibles();
-    }
-
-    /**
-     * Method getBibleMetaDataFromName.
-     * @param name
-     * @return String
-     */
-    private BibleMetaData getBibleMetaDataFromName(String name)
-    {
-        BibleMetaData[] bbmds = getBibles();
-        for (int i=0; i<bbmds.length; i++)
-        {
-            if (bbmds[i].getName().equals(name))
-            {
-                return bbmds[i];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get a list of the Books available from the driver
-     * @return an array of book names
-     */
-    public String[] getBibleNames()
-    {
-        BibleMetaData[] bmds = getBibles();
-        String[] names = new String[bmds.length];
-
-        for (int i=0; i<bmds.length; i++)
-        {
-            names[i] = bmds[i].getName();
-        }
-        
-        return names;
-    }
-
-    /**
-     * How many Bibles does this driver control?
-     * @return A count of the Bibles
-     */
-    public int countBibles()
-    {
-        return getBibles().length;
-    }
-
-    /**
-     * Is this driver capable of creating writing data in the correct format
+     * Is this name capable of creating writing data in the correct format
      * as well as reading it?
      * @return true/false to indicate ability to write data
      */
@@ -120,7 +64,4 @@ public abstract class AbstractBibleDriver implements BibleDriver
 
         return create((Bible) source, li);
     }
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(AbstractBibleDriver.class);
 }

@@ -5,7 +5,7 @@ import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * The BibleDriver class is an gateway to all the instances of the Books
- * controlled by this driver.
+ * controlled by this name.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,21 +31,7 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public interface BookDriver
 {
     /**
-     * A simple driver description name. This should be callable before
-     * init() is called, so that we can find the friendly name of a
-     * Bible without having to fully initialize it.
-     * @return A short identifing string
-     */
-    public String getDriverName();
-
-    /**
-     * Get a list of the Books available from the driver
-     * @return an array of book names
-     */
-    public BookMetaData[] getBooks();
-
-    /**
-     * Is this driver capable of creating writing data in the correct format
+     * Is this name capable of creating writing data in the correct format
      * as well as reading it?
      * @return true/false to indicate ability to write data
      */

@@ -1,12 +1,7 @@
 
 package org.crosswire.jsword.book.stub;
 
-import org.apache.log4j.Logger;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 
 /**
@@ -38,24 +33,7 @@ import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 public class StubBibleDriver extends AbstractBibleDriver
 {
     /**
-     * Some basic driver initialization
-     */
-    public StubBibleDriver()
-    {
-        log.debug("Starting");
-    }
-
-    /**
-     * Some basic info about who we are
-     * @param A short identifing string
-     */
-    public String getDriverName()
-    {
-        return "Stub";
-    }
-
-    /**
-     * Get a list of the Books available from the driver
+     * Get a list of the Books available from the name
      * @return an array of book names
      */
     public BibleMetaData[] getBibles()
@@ -65,35 +43,5 @@ public class StubBibleDriver extends AbstractBibleDriver
             new StubBibleMetaData("Stub Version"),
             new StubBibleMetaData("New Stub Version"),
         };
-    }
-
-    /**
-     * The singleton driver
-     */
-    protected static StubBibleDriver driver;
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(StubBibleDriver.class);
-
-    /**
-     * Register ourselves with the Driver Manager
-     */
-    static
-    {
-        try
-        {
-            driver = new StubBibleDriver();
-            BibleMetaData[] bmds = driver.getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.addBible(bmds[i]);
-            }
-
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (BookException ex)
-        {
-            Reporter.informUser(StubBibleDriver.class, ex);
-        }
     }
 }

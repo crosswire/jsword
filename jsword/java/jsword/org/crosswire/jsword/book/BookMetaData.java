@@ -62,13 +62,6 @@ public interface BookMetaData
     public String getEdition();
 
     /**
-     * The name of the driver, which could be helpful to distinguish similar
-     * Books available through 2 BookDrivers.
-     * @return The driver name
-     */
-    public String getDriverName();
-
-    /**
      * The full name including edition of the version, for example
      * "New International Version, Anglicised (Ser)". The format is "name, edition (Driver)"
      * @return The full name of this version
@@ -83,11 +76,35 @@ public interface BookMetaData
     public boolean isSameFamily(BookMetaData version);
 
     /**
-     * The initials of the version - how most people will know it, for
-     * example "NIV", "KJV".
+     * The initials of this book - how people familiar with this book will know
+     * it, for example "NIV", "KJV".
      * @return The versions initials
      */
     public String getInitials();
+
+    /**
+     * The name of the name, which could be helpful to distinguish similar
+     * Books available through 2 BookDrivers.
+     * @return The name name
+     */
+    public String getDriverName();
+
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * This value is used by Bibles to decide the fastest implementation for a
+     * given job.
+     * 0 = this is preferred
+     * 1 = fastest known
+     * 2 = fast local
+     * 5 = fast remote speeds
+     * 7 = slow remote speeds
+     * 8 = very slow
+     * 9 = slowest known
+     * 10 = not preferred
+     * 11 = not guaranteed to get correct results!
+     * @return a speed value between 0 and 11
+     */
+    public int getSpeed();
 
     /**
      * The date of first publishing.

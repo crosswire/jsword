@@ -1,14 +1,6 @@
 
 package org.crosswire.jsword.book.remote;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriverManager;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
-import org.crosswire.jsword.book.BookException;
 
 /**
  * A fullfilment of RemoteBibleDriver that uses an HTTP commection to
@@ -41,26 +33,28 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
      * Returns the baseurl.
      * @return String
      */
-    public static String getBaseURL()
+    public HttpRemoteBibleDriver(String baseurl)
     {
-        return baseurl;
+        this.baseurl = baseurl;
     }
 
     /**
      * Sets the baseurl.
      * @param baseurl The baseurl to set
-     */
-    public static void setBaseURL(String baseurl) throws BookException
+     *
+    public void setLocalBaseURL(String baseurl) throws BookException
     {
+        // This is a bit nasty - we need to get the singleton of us that was
+        // created by the Bibles class so we can unregister and then re-register
+        // the Bibles
+
         if (driver != null)
         {
-            BibleMetaData[] bmds = driver.getBibles();
+            BibleMetaData[] bmds = getBibles();
             for (int i=0; i<bmds.length; i++)
             {
                 Bibles.removeBible(bmds[i]);
             }
-
-            BibleDriverManager.unregisterDriver(driver);
         }
 
         if (baseurl == null)
@@ -76,27 +70,18 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
                 remoter = new HttpRemoter(baseurl);
                 driver = new HttpRemoteBibleDriver();
                 HttpRemoteBibleDriver.baseurl = baseurl;
-                
+
                 BibleMetaData[] bmds = driver.getBibles();
                 for (int i=0; i<bmds.length; i++)
                 {
                     Bibles.addBible(bmds[i]);
                 }
-
-                BibleDriverManager.registerDriver(driver);
             }
             catch (Exception ex)
             {
                 Reporter.informUser(RemoteBibleDriver.class, ex);
             }
         }
-    }
-
-    /**
-     * 
-     */
-    private HttpRemoteBibleDriver() throws MalformedURLException, IOException
-    {
     }
 
     /**
@@ -109,17 +94,7 @@ public class HttpRemoteBibleDriver extends RemoteBibleDriver
         return remoter;
     }
 
-    /**
-     * @see org.crosswire.jsword.book.BibleDriver#getDriverName()
-     */
-    public String getDriverName()
-    {
-        return "Remote (HTTP)";
-    }
-
-    private static String baseurl = null;
+    private String baseurl = null;
 
     private static Remoter remoter = null;
-
-    private static HttpRemoteBibleDriver driver = null;
 }

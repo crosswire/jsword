@@ -31,6 +31,6 @@ public class TestLocalRemoteBibleDriver extends ParentTstBibleDriver
 {
     public TestLocalRemoteBibleDriver(String s)
     {
-        super(s, LocalRemoteBibleDriver.driver);
+        super(s);
     }
 }

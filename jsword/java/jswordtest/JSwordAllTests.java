@@ -23,7 +23,6 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.TestBibles.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookMetaData.class);
         suite.addTestSuite(org.crosswire.jsword.book.TestBookUtil.class);
-        suite.addTestSuite(org.crosswire.jsword.book.TestDriverManager.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBible.class);
@@ -34,9 +33,9 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.ser.TestSerBibleDriver.class);
         suite.addTestSuite(org.crosswire.jsword.book.stub.TestStubBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.stub.TestStubBibleDriver.class);
-        suite.addTestSuite(org.crosswire.jsword.control.dictionary.TestDictionary.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.TestSwordBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.TestSwordBibleDriver.class);
+        suite.addTestSuite(org.crosswire.jsword.control.dictionary.TestDictionary.class);
 
         suite.addTestSuite(org.crosswire.jsword.control.search.TestCustomTokenizer.class);
         suite.addTestSuite(org.crosswire.jsword.control.search.TestEngine.class);

@@ -4,12 +4,7 @@ package org.crosswire.jsword.book.ser;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.apache.log4j.Logger;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleDriverManager;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
@@ -43,20 +38,11 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public class SerBibleDriver extends LocalURLBibleDriver
 {
     /**
-     * Some basic driver initialization
+     * Some basic name initialization
      */
-    private SerBibleDriver() throws MalformedURLException, IOException
+    public SerBibleDriver() throws MalformedURLException, IOException
     {
-        super("ser");
-    }
-
-    /**
-     * Some basic info about who we are
-     * @param A short identifing string
-     */
-    public String getDriverName()
-    {
-        return "Serialized";
+        super("Serialized", "ser");
     }
 
     /**
@@ -75,31 +61,12 @@ public class SerBibleDriver extends LocalURLBibleDriver
         return new SerBible(lbmd, source, li);
     }
 
-    /** The singleton driver */
-    protected static SerBibleDriver driver;
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(SerBibleDriver.class);
-
     /**
-     * Register ourselves with the Driver Manager
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
      */
-    static
+    public int getSpeed()
     {
-        try
-        {
-            driver = new SerBibleDriver();
-            BibleMetaData[] bmds = driver.getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.addBible(bmds[i]);
-            }
-
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(SerBibleDriver.class, ex);
-        }
+        return 2;
     }
 }

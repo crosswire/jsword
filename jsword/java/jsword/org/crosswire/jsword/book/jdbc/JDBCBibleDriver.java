@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleDriverManager;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
@@ -40,22 +37,13 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public class JDBCBibleDriver extends LocalURLBibleDriver
 {
     /**
-     * Some basic driver initialization. If we couldn't get a Bibles root
+     * Some basic name initialization. If we couldn't get a Bibles root
      * then just give a warning but do no more. Perhaps there are other
      * BibleDrivers that can cope, so this needent be a big error.
      */
-    private JDBCBibleDriver() throws MalformedURLException, IOException
+    public JDBCBibleDriver() throws MalformedURLException, IOException
     {
-        super("jdbc");
-    }
-
-    /**
-     * Some basic info about who we are
-     * @param A short identifing string
-     */
-    public String getDriverName()
-    {
-        return "Database";
+        super("Database", "jdbc");
     }
 
     /**
@@ -84,28 +72,12 @@ public class JDBCBibleDriver extends LocalURLBibleDriver
         throw new BookException("jdbc_driver_readonly");
     }
 
-    /** The singleton driver */
-    protected static JDBCBibleDriver driver;
-
     /**
-     * Register ourselves with the Driver Manager
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
      */
-    static
+    public int getSpeed()
     {
-        try
-        {
-            driver = new JDBCBibleDriver();
-            BibleMetaData[] bmds = driver.getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.addBible(bmds[i]);
-            }
-            
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (Exception ex)
-        {
-            log.info("JDBCBibleDriver init failure", ex);
-        }
+        return 4;
     }
 }

@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BibleDriverManager;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.LocalURLBibleDriver;
 import org.crosswire.jsword.book.basic.LocalURLBibleMetaData;
@@ -60,20 +57,11 @@ public class RawBibleDriver extends LocalURLBibleDriver
     }
 
     /**
-     * Some basic driver initialization
+     * Some basic name initialization
      */
-    private RawBibleDriver() throws MalformedURLException, IOException
+    public RawBibleDriver() throws MalformedURLException, IOException
     {
-        super("raw");
-    }
-
-    /**
-     * Some basic info about who we are
-     * @param A short identifing string
-     */
-    public String getDriverName()
-    {
-        return "Raw";
+        super("Raw", "raw");
     }
 
     /**
@@ -92,31 +80,15 @@ public class RawBibleDriver extends LocalURLBibleDriver
         return new RawBible(lbmd, source, li);
     }
 
-    /** The singleton driver */
-    protected static RawBibleDriver driver;
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public int getSpeed()
+    {
+        return 4;
+    }
 
     /** Do we instruct new RawBibles to cache data in memory? */
     private static boolean memory = true;
-
-    /**
-     * Register ourselves with the Driver Manager
-     */
-    static
-    {
-        try
-        {
-            driver = new RawBibleDriver();
-            BibleMetaData[] bmds = driver.getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.addBible(bmds[i]);
-            }
-
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (Exception ex)
-        {
-            log.info("RawBibleDriver init failure", ex);
-        }
-    }
 }

@@ -38,6 +38,14 @@ import org.jdom.input.SAXBuilder;
 public class HttpRemoter implements Remoter
 {
     /**
+     * A simple name
+     */
+    public String getRemoterName()
+    {
+        return "Remote (HTTP)";
+    }
+
+    /**
      * Create an HttpRemoter with a baseurl to call
      * @param baseurl
      */

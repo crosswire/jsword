@@ -73,7 +73,7 @@ public class ConverterTest extends TestCase
         };
 
         doc = Converter.convertBibleMetaDatasToDocument(t1, uid1);
-        t2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoteBibleDriver());
+        t2 = Converter.convertDocumentToBibleMetaDatas(doc, new FixtureRemoter());
         assertEquals(t1.length, 5);
         assertEquals(t2.length, 5);
 

@@ -62,7 +62,7 @@ public class JDBCBible extends LocalURLBible
     {
         super(lbmd);
 
-        // Load the specified JDBC driver
+        // Load the specified JDBC name
         int driver_attempt = 1;
         while (true)
         {
@@ -80,7 +80,7 @@ public class JDBCBible extends LocalURLBible
             }
             catch (Exception ex)
             {
-                log.debug("Failed to load JDBC driver: "+
+                log.debug("Failed to load JDBC name: "+
                                   driver+" (System Message: "+ex+")");
             }
 
@@ -115,20 +115,6 @@ public class JDBCBible extends LocalURLBible
         {
             throw new BookException("jdbc_bible_connect", ex);
         }
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.basic.VersewiseBible#setDocument(org.crosswire.jsword.book.data.BibleData)
-     */
-    public void setDocument(BibleData data) throws BookException
-    {
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.basic.VersewiseBible#foundPassage(java.lang.String, org.crosswire.jsword.passage.Passage)
-     */
-    public void foundPassage(String word, Passage ref) throws BookException
-    {
     }
 
     /**

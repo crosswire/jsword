@@ -43,18 +43,35 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class LocalURLBibleDriver extends AbstractBibleDriver
+public abstract class LocalURLBibleDriver extends SearchableBibleDriver
 {
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public abstract int getSpeed();
+
+    /**
+     * A Bible to read data from
+     */
+    public abstract Bible getBible(LocalURLBibleMetaData version) throws BookException;
+
+    /**
+     * A new place to write Bible data
+     */
+    public abstract Bible createBible(LocalURLBibleMetaData bbmd, Bible source, ProgressListener li) throws BookException;
+
     /**
      * The ctor checks on the filesystem
      * @param subdir
      * @throws MalformedURLException
      * @throws IOException
      */
-    protected LocalURLBibleDriver(String subdir) throws MalformedURLException, IOException
+    protected LocalURLBibleDriver(String name, String subdir) throws MalformedURLException, IOException
     {
-        log.debug("Starting: "+subdir);
+        log.debug("Starting "+name+" in "+subdir);
 
+        this.name = name;
         URL root = findBibleRoot();
         if (root == null)
         {
@@ -85,14 +102,13 @@ public abstract class LocalURLBibleDriver extends AbstractBibleDriver
     }
 
     /**
-     * A Bible to read data from
+     * A simple name description name.
+     * @return A short identifing string
      */
-    public abstract Bible getBible(LocalURLBibleMetaData version) throws BookException;
-
-    /**
-     * A new place to write Bible data
-     */
-    public abstract Bible createBible(LocalURLBibleMetaData bbmd, Bible source, ProgressListener li) throws BookException;
+    public String getDriverName()
+    {
+        return name;
+    }
 
     /**
      * @see org.crosswire.jsword.book.basic.AbstractBibleDriver#getBibles()
@@ -173,37 +189,37 @@ public abstract class LocalURLBibleDriver extends AbstractBibleDriver
     /**
      * Search for versions directories
      */
-    protected URL findBibleRoot() throws MalformedURLException
+    protected static synchronized URL findBibleRoot() throws MalformedURLException
     {
-        URL found;
-
-        log.debug("Looking for Bibles:");
-
         // First see if there is a System property that can help us out
-        String sysprop = System.getProperty("jsword.bible.dir");
-        if (sysprop != null)
+        if (root == null)
         {
-            found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
-            URL test = NetUtil.lengthenURL(found, "locator.properties");
-            if (NetUtil.isFile(test))
+            String sysprop = System.getProperty("jsword.bible.dir");
+            if (sysprop != null)
             {
-                log.debug("-- Found from system property jsword.bible.dir at "+sysprop+"");
-                return found;
+                URL found = NetUtil.lengthenURL(new URL("file", null, sysprop), "versions");
+                URL test = NetUtil.lengthenURL(found, "locator.properties");
+                if (NetUtil.isFile(test))
+                {
+                    log.debug("Found BibleRoot from system property jsword.bible.dir at "+sysprop+"");
+                    root = found;
+                }
             }
 
-            log.debug("-- Not found from system property jsword.bible.dir at "+sysprop+"");
-        }
-        else
-        {
-            log.debug("-- Unset system property jsword.bible.dir");
+            // If not then try a wild guess
+            if (root == null)
+            {
+                URL found = Project.resource().getResource("/versions/locator.properties");
+                if (found == null)
+                    throw new MalformedURLException("Missing locator.properties.");
+
+                log.debug("Found BibleRoot by guessing");
+
+                root = NetUtil.shortenURL(found, "/locator.properties");
+            }
         }
 
-        String locator = "/versions/locator.properties";
-        found = Project.resource().getResource(locator);
-        if (found == null)
-            throw new MalformedURLException("Missing locator.properties.");
-
-        return NetUtil.shortenURL(found, "/locator.properties");
+        return root;
     }
 
     /**
@@ -214,11 +230,17 @@ public abstract class LocalURLBibleDriver extends AbstractBibleDriver
         return dir;
     }
 
+    /** The diriver name */
+    private String name;
+
     /** The directory URL */
     private URL dir;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(LocalURLBibleDriver.class);
+
+    /** The Bibles root */
+    private static URL root;
 
     /**
      * Check that the directories in the version directory really

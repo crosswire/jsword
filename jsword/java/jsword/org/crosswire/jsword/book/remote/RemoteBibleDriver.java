@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.book.remote;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,14 +36,6 @@ import org.jdom.Document;
 public abstract class RemoteBibleDriver extends AbstractBibleDriver
 {
     /**
-     * Some basic driver initialization
-     */
-    protected RemoteBibleDriver() throws MalformedURLException, IOException
-    {
-        log.debug("Starting");
-    }
-
-    /**
      * Accessor for the current remoter.
      * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
      * @return The remoter or null if none is available.
@@ -53,7 +43,7 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
     protected abstract Remoter getRemoter();
 
     /**
-     * Get a list of the Books available from the driver.
+     * Get a list of the Books available from the name.
      * We cache the reply, for speed but we probably ought to have some way to
      * flush the cache because the list of Bibles on the server could change.
      * @return an array of book names
@@ -75,7 +65,7 @@ public abstract class RemoteBibleDriver extends AbstractBibleDriver
                     RemoteMethod method = new RemoteMethod(RemoteConstants.METHOD_GETBIBLES);
                     Document doc = remoter.execute(method);
 
-                    rbmd = Converter.convertDocumentToBibleMetaDatas(doc, this);
+                    rbmd = Converter.convertDocumentToBibleMetaDatas(doc, getRemoter());
 
                     for (int i=0; i<rbmd.length; i++)
                     {

@@ -1,12 +1,6 @@
 
 package org.crosswire.jsword.book.remote;
 
-import java.io.IOException;
-
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriverManager;
-import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
 
 /**
  * A fullfilment of RemoteBibleDriver that uses a Local commection for test
@@ -36,13 +30,6 @@ import org.crosswire.jsword.book.Bibles;
 public class LocalRemoteBibleDriver extends RemoteBibleDriver
 {
     /**
-     * 
-     */
-    private LocalRemoteBibleDriver() throws IOException
-    {
-    }
-
-    /**
      * Accessor for the current remoter.
      * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getXML(java.lang.String)
      * @return The remoter or null if none is available.
@@ -52,37 +39,5 @@ public class LocalRemoteBibleDriver extends RemoteBibleDriver
         return remoter;
     }
 
-    /**
-     * @see org.crosswire.jsword.book.BibleDriver#getDriverName()
-     */
-    public String getDriverName()
-    {
-        return "Remote (Local)";
-    }
-
     private static Remoter remoter = new LocalRemoter();
-
-    protected static LocalRemoteBibleDriver driver;
-
-    /**
-     * Register ourselves with the Driver Manager
-     */
-    static
-    {
-        try
-        {
-            driver = new LocalRemoteBibleDriver();
-            BibleMetaData[] bmds = driver.getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.addBible(bmds[i]);
-            }
-
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(RemoteBibleDriver.class, ex);
-        }
-    }
 }

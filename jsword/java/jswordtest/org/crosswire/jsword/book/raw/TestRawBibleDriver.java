@@ -31,6 +31,6 @@ public class TestRawBibleDriver extends ParentTstBibleDriver
 {
     public TestRawBibleDriver(String s)
     {
-        super(s, RawBibleDriver.driver);
+        super(s);
     }
 }

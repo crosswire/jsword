@@ -31,6 +31,6 @@ public class TestSwordBible extends AdvancedParentTstBible
 {
     public TestSwordBible(String s)
     {
-        super(s, SwordBibleDriver.driver);
+        super(s);
     }
 }

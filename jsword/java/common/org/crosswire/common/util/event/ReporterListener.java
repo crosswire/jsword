@@ -1,7 +1,7 @@
 
 package org.crosswire.common.util.event;
 
-import java.util.*;
+import java.util.EventListener;
 
 /**
  * ReporterListener informs users of problems and messages.

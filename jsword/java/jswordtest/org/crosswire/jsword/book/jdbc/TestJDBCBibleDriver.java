@@ -31,6 +31,6 @@ public class TestJDBCBibleDriver extends ParentTstBibleDriver
 {
     public TestJDBCBibleDriver(String s)
     {
-        super(s, JDBCBibleDriver.driver);
+        super(s);
     }
 }

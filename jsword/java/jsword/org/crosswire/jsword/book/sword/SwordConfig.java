@@ -77,7 +77,7 @@ public class SwordConfig
         if (modDrv == -1)
         {
             log.warn("No data path could be found in the config: " + url.toString());
-            // TODO: Throw - we can't sensibly assume a driver.
+            // TODO: Throw - we can't sensibly assume a name.
         }
     }
 

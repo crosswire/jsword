@@ -36,4 +36,9 @@ public interface Remoter
      * @return Document
      */
     public Document execute(RemoteMethod method) throws RemoterException;
+    
+    /**
+     * The name of this remoter to help the metadata
+     */
+    public String getRemoterName();
 }

@@ -77,7 +77,7 @@ public class Reporter
         if (prob instanceof ThreadDeath)
             throw (ThreadDeath) prob;
 
-        fireCapture(new ReporterEvent(prob));
+        fireCapture(new ReporterEvent(source, prob));
     }
 
     /**
@@ -91,11 +91,11 @@ public class Reporter
      * @param source The cause of the message, a Component if possible.
      * @param message The message to pass to the user
      */
-    public static void informUser(String message)
+    public static void informUser(Object source, String message)
     {
         log.debug(message);
 
-        fireCapture(new ReporterEvent(message));
+        fireCapture(new ReporterEvent(source, message));
     }
 
     /**

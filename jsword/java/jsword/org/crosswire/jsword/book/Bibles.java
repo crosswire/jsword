@@ -4,9 +4,12 @@ package org.crosswire.jsword.book;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.EventListenerList;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.events.BiblesEvent;
 import org.crosswire.jsword.book.events.BiblesListener;
+import org.crosswire.jsword.util.Project;
 
 /**
  * The Bibles class (along with Bible) is the central point of contact
@@ -35,6 +38,22 @@ import org.crosswire.jsword.book.events.BiblesListener;
  */
 public class Bibles
 {
+    /** The list of Bibles */
+    private static List bibles = new ArrayList();
+
+    /** The default Bible */
+    private static BibleMetaData deft = null;
+
+    /** The list of listeners */
+    protected static EventListenerList listeners = new EventListenerList();
+    /**
+     * An array of BookDrivers
+     */
+    private static List drivers = new ArrayList();
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(Bibles.class);
+
     /**
      * Get an array of the available Bible names.
      * This is done by asking all of the available Bibles in turn and collating
@@ -164,6 +183,8 @@ public class Bibles
      */
     public static void addBible(BibleMetaData bmd) throws BookException
     {
+        log.debug("registering bible: "+bmd.getName());
+
         bibles.add(bmd);
         fireBiblesChanged(Bibles.class, bmd, true);
     }
@@ -175,6 +196,8 @@ public class Bibles
      */
     public static void removeBible(BibleMetaData bmd) throws BookException
     {
+        log.debug("unregistering bible: "+bmd.getName());
+
         boolean removed = bibles.remove(bmd);
         if (removed)
         {
@@ -215,12 +238,77 @@ public class Bibles
         }
     }
 
-    /** The list of Bibles */
-    private static List bibles = new ArrayList();
+    /**
+     * Add to the list of drivers
+     * @param driver The BookDriver to add
+     */
+    public static void registerDriver(BibleDriver driver) throws BookException
+    {
+        log.debug("begin registering driver: "+driver.getClass().getName());
 
-    /** The default Bible */
-    private static BibleMetaData deft = null;
+        drivers.add(driver);
 
-    /** The list of listeners */
-    protected static EventListenerList listeners = new EventListenerList();
+        BibleMetaData[] bmds = driver.getBibles();
+        for (int j=0; j<bmds.length; j++)
+        {
+            addBible(bmds[j]);
+        }
+
+        log.debug("end registering driver: "+driver.getClass().getName());
+    }
+
+    /**
+     * Remove from the list of drivers
+     * @param driver The BookDriver to remove
+     */
+    public static void unregisterDriver(BibleDriver driver) throws BookException
+    {
+        log.debug("begin un-registering driver: "+driver.getClass().getName());
+
+        BibleMetaData[] bmds = driver.getBibles();
+        for (int j=0; j<bmds.length; j++)
+        {
+            removeBible(bmds[j]);
+        }
+
+        if (!drivers.remove(driver))
+            throw new BookException("Can't unregister unregistered driver: "+driver.getClass().getName());
+
+        log.debug("end un-registering driver: "+driver.getClass().getName());
+    }
+
+    /**
+     * Get an array of all the known drivers
+     * @return Found int or the default value
+     */
+    public static BibleDriver[] getDrivers()
+    {
+        return (BibleDriver[]) drivers.toArray(new BibleDriver[drivers.size()]);
+    }
+
+    /**
+     * Initialize the name array
+     */
+    static
+    {
+        // This will classload them all and they will register themselves.
+        Class[] types = Project.resource().getImplementors(BibleDriver.class);
+
+        log.debug("begin auto-registering "+types.length+" drivers:");
+
+        for (int i=0; i<types.length; i++)
+        {
+            try
+            {
+                BibleDriver driver = (BibleDriver) types[i].newInstance();
+                registerDriver(driver);
+            }
+            catch (Throwable ex)
+            {
+                Reporter.informUser(Bibles.class, ex);
+            }
+        }
+
+        log.debug("end auto-registering drivers:");
+    }
 }

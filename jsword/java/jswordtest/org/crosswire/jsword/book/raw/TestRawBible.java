@@ -32,13 +32,16 @@ public class TestRawBible extends AdvancedParentTstBible
 {
     public TestRawBible(String s)
     {
-        super(s, RawBibleDriver.driver);
+        super(s);
     }
 
     public void testRawUtil() throws Exception
     {
         for (int i=0; i<bibles.length; i++)
         {
+            if (!(bibles[i] instanceof RawBible))
+                continue;
+
             RawBible raw = (RawBible) bibles[i];
 
             Items words = raw.getWords();

@@ -44,6 +44,14 @@ import org.jdom.Document;
 public class LocalRemoter implements Remoter
 {
     /**
+     * A simple name
+     */
+    public String getRemoterName()
+    {
+        return "Local";
+    }
+
+    /**
      * @see org.crosswire.jsword.util.remoter.Remoter#execute(org.crosswire.jsword.util.remoter.RemoteMethod)
      */
     public Document execute(RemoteMethod method) throws RemoterException

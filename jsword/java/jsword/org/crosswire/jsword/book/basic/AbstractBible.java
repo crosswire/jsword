@@ -1,17 +1,27 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.util.Iterator;
+
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
+import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.events.ProgressEvent;
+import org.crosswire.jsword.book.events.ProgressListener;
+import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.Verse;
 
 /**
  * An AbstractBible implements a few of the more generic methods of Bible.
- * @todo: probably delete this class, it doesn't do much now and I doubt it ever will
+ * This class does a lot of work in helping make search easier, and implementing
+ * some basic write methods. 
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -75,4 +85,64 @@ public abstract class AbstractBible implements Bible
             return null;
         }
     }
+    /**
+     * Write the XML to disk. Children will almost certainly want to
+     * override this.
+     * @param verse The verse to write
+     * @param text The data to write
+     */
+    public void setDocument(BibleData text) throws BookException
+    {
+        throw new BookException("bible_driver_readonly");
+    }
+
+    /**
+     * Save a list of found words. Children will probably want to
+     * override this.
+     * @param word The word to write
+     * @param ref The data to write
+     */
+    public void foundPassage(String word, Passage ref) throws BookException
+    {
+        throw new BookException("bible_driver_readonly");
+    }
+
+    /**
+     * Read from the given source version to generate ourselves
+     * @param version The source
+     */
+    protected void generateText(Bible source, ProgressListener li) throws BookException
+    {
+        Passage temp = PassageFactory.createPassage(PassageFactory.SPEED);
+
+        // For every verse in the Bible
+        Iterator it = WHOLE.verseIterator();
+        while (it.hasNext())
+        {
+            // Create a Passage containing that verse alone
+            Verse verse = (Verse) it.next();
+            temp.clear();
+            temp.add(verse);
+
+            // Fire a progress event?
+            li.progressMade(new ProgressEvent(this, "Writing Verses:", 100 * verse.getOrdinal() / Books.versesInBible()));
+
+            // Read the document from the original version
+            BibleData doc = source.getData(temp);
+
+            // Write the document to the mutable version
+            setDocument(doc);
+
+            // This could take a long time ...
+            Thread.yield();
+            if (Thread.currentThread().isInterrupted())
+                break;
+        }
+    }
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(AbstractBible.class);
+
+    /** The Whole Bible */
+    private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 }

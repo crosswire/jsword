@@ -1,14 +1,7 @@
 
-package org.crosswire.jsword.util.remoter;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.crosswire.jsword.book.remote.RemoteBibleDriver;
-import org.crosswire.jsword.book.remote.Remoter;
+package org.crosswire.jsword.book.basic;
 
 /**
- * A Fixture to help testing Converters and Remoters
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -29,33 +22,8 @@ import org.crosswire.jsword.book.remote.Remoter;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
+ * @version $Id$
  */
-public class FixtureRemoteBibleDriver extends RemoteBibleDriver
+public abstract class SearchableBibleDriver extends AbstractBibleDriver
 {
-    /**
-     * Constructor for FixtureRemoteBibleDriver.
-     * @throws MalformedURLException
-     * @throws IOException
-     */
-    public FixtureRemoteBibleDriver() throws MalformedURLException, IOException
-    {
-        super();
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.remote.RemoteBibleDriver#getRemoter()
-     */
-    protected Remoter getRemoter()
-    {
-        return null;
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
-     */
-    public String getDriverName()
-    {
-        return "Fixture Remote";
-    }
 }

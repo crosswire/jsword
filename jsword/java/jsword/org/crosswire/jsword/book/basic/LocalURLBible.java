@@ -1,7 +1,10 @@
 
 package org.crosswire.jsword.book.basic;
 
+import java.net.URL;
+
 import org.crosswire.jsword.book.BibleMetaData;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 
 /**
@@ -27,14 +30,22 @@ import org.crosswire.jsword.book.BookMetaData;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class LocalURLBible extends VersewiseBible
+public abstract class LocalURLBible extends SearchableBible
 {
     /**
-     * Simple constructor
+     * Constructor SerBible.
      */
-    public LocalURLBible(LocalURLBibleMetaData lbmd)
+    public LocalURLBible(LocalURLBibleMetaData lbmd) throws BookException
     {
         this.lbmd = lbmd;
+    }
+
+    /**
+     * Where can we write the search indexes.
+     */
+    public URL getURL()
+    {
+        return lbmd.getURL();
     }
 
     /**

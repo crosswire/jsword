@@ -221,7 +221,8 @@ public class RawBible extends LocalURLBible
         memory = false;
 
         init(true);
-        generate(source, li);
+        generateText(source, li);
+        loadSearchIndex(li);
     }
 
     /**
@@ -234,6 +235,7 @@ public class RawBible extends LocalURLBible
         memory = RawBibleDriver.getDefaultCacheData();
 
         init(false);
+        loadSearchIndex(null);
     }
 
     /**

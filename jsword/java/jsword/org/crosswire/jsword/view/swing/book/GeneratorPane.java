@@ -254,13 +254,13 @@ public class GeneratorPane extends EirPanel
     /** The new version name label */
     private JLabel lbl_name = new JLabel();
 
-    /** Label for the new driver class */
+    /** Label for the new name class */
     private JLabel lbl_driver = new JLabel();
 
     /** Input field for the new version */
     private JTextField txt_name = new JTextField();
 
-    /** Input field for the driver class */
+    /** Input field for the name class */
     private JComboBox cbo_driver = new JComboBox();
 
     /** The model for the drivers */

@@ -32,14 +32,17 @@ public class TestJDBCBible extends ParentTstBible
 {
     public TestJDBCBible(String s)
     {
-        super(s, JDBCBibleDriver.driver);
+        super(s);
     }
 
     public void testVerseOrdinal() throws Exception
     {
         for (int i=0; i<bibles.length; i++)
         {
-            //Bible ver = bibles[i];
+            if (!(bibles[i] instanceof JDBCBible))
+                continue;
+
+            // JDBCBible ver = (JDBCBible) bibles[i];
 
             for (int b=1; b<=Books.booksInBible(); b++)
             {

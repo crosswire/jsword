@@ -54,12 +54,12 @@ public class SwordBible extends AbstractBible
      * Constructor SwordBible.
      * @param swordConfig
      */
-    public SwordBible(SwordBibleMetaData sbmd) throws BookException
+    public SwordBible(SwordBibleDriver driver, SwordBibleMetaData sbmd) throws BookException
     {
         this.sbmd = sbmd;
 
-        URL swordBase = SwordBibleDriver.driver.dir;
-        SwordConfig swordConfig = (SwordConfig) SwordBibleDriver.driver.configCache.get(sbmd);
+        URL swordBase = SwordBibleDriver.dir;
+        SwordConfig swordConfig = (SwordConfig) driver.configCache.get(sbmd);
 
         if (mat11_ord == -1)
         {

@@ -37,8 +37,8 @@ public class SwordConstants
     /** constant for the new testament */
     static final int TESTAMENT_NEW = 2;
     
-    // driver data info taken from http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
-    /** constants for driver types (These are mutually exclusive, thus the lack of bit-shifting)*/
+    // name data info taken from http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
+    /** constants for name types (These are mutually exclusive, thus the lack of bit-shifting)*/
     static final int DRIVER_RAW_TEXT=			0;
     static final int DRIVER_Z_TEXT=				1;
     static final int DRIVER_RAW_COM=			2;
@@ -50,7 +50,7 @@ public class SwordConstants
     static final int DRIVER_Z_LD=				8;
     static final int DRIVER_RAW_GEN_BOOK=9;
     
-    /** Strings for driver type matching */
+    /** Strings for name type matching */
     static final String[] DRIVER_STRINGS = 
     {"RawText","zText","RawCom","zCom","HREFCom","RawFiles","RawLD","RawLD4","zLD","RawGenBook"};
     

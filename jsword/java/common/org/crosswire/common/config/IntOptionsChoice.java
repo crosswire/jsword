@@ -87,7 +87,7 @@ public class IntOptionsChoice extends ReflectedChoice implements MultipleChoice
                 return new Integer(i);
         }
         
-        Reporter.informUser("Ignoring invalid option: "+orig);
+        Reporter.informUser(this, "Ignoring invalid option: "+orig);
         return options[0];
     }
 

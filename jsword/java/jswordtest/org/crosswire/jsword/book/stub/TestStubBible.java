@@ -31,6 +31,6 @@ public class TestStubBible extends ParentTstBible
 {
     public TestStubBible(String s)
     {
-        super(s, StubBibleDriver.driver);
+        super(s);
     }
 }

@@ -62,7 +62,7 @@ public interface Book
      * For example calling: <code>getStartsWith("love")</code> will return
      * something like:
      * { "love", "loves", "lover", "lovely", ... }
-     * <p>This is only needed to make your this driver play well
+     * <p>This is only needed to make your this name play well
      * in searches it is not vital for normal display. To save yourself
      * the bother of implementing this properly you could do:
      *   <code>return new String[] { base };</code>

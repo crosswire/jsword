@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.book.stub;
+package org.crosswire.jsword.book.basic;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,10 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.crosswire.jsword.book.Bible;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Openness;
-import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
 
 /**
  * 
@@ -33,65 +30,40 @@ import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
+ * @version $Id$
  */
-public class StubBibleMetaData extends AbstractBibleMetaData
+public abstract class SearchableBibleMetaData extends AbstractBibleMetaData
 {
-
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for SearchableBibleMetaData.
      */
-    public StubBibleMetaData(Properties prop) throws MalformedURLException, ParseException
+    public SearchableBibleMetaData(Properties prop) throws MalformedURLException, ParseException
     {
         super(prop);
     }
 
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for SearchableBibleMetaData.
      */
-    public StubBibleMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public SearchableBibleMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         super(name, edition, initials, pub, open, licence);
     }
 
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for SearchableBibleMetaData.
      */
-    public StubBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public SearchableBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(name, edition, initials, pubstr, openstr, licencestr);
     }
 
     /**
-     * Constructor for StubBibleMetaData.
+     * Constructor for SearchableBibleMetaData.
+     * @param name
      */
-    public StubBibleMetaData(String name)
+    public SearchableBibleMetaData(String name)
     {
         super(name);
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.BibleMetaData#getBible()
-     */
-    public Bible getBible() throws BookException
-    {
-        return new StubBible(this);
-    }
-
-    /**
-     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
-     */
-    public String getDriverName()
-    {
-        return "Stub";
-    }
-
-    /**
-     * The expected speed at which this implementation gets correct answers.
-     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
-     */
-    public int getSpeed()
-    {
-        return 11;
     }
 }

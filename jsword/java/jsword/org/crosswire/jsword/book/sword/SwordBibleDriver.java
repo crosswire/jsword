@@ -12,10 +12,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BibleMetaData;
-import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 
 /**
@@ -45,19 +42,10 @@ import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 public class SwordBibleDriver extends AbstractBibleDriver
 {
     /**
-     * Some basic driver initialization
+     * Some basic name initialization
      */
-    private SwordBibleDriver() throws MalformedURLException
+    public SwordBibleDriver() throws MalformedURLException
     {
-    }
-
-    /**
-     * Some basic info about who we are
-     * @param A short identifing string
-     */
-    public String getDriverName()
-    {
-        return "Sword";
     }
 
     /**
@@ -88,7 +76,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
                 // check to see if it's a bible
                 if (isBible(configs[i]))
                 {
-                    BibleMetaData bmd = new SwordBibleMetaData(biblename);
+                    BibleMetaData bmd = new SwordBibleMetaData(this, biblename);
                     valid.add(bmd);
                     configCache.put(bmd, configs[i]);
                 }
@@ -128,7 +116,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
         // Just accept that we're not supposed to work ...
         if (sword_dir == null || sword_dir.trim().length() == 0)
         {
-            driver.dir = null;
+            dir = null;
             log.info("No sword dir set.");
             return;
         }
@@ -138,7 +126,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
         if (!NetUtil.isDirectory(dir_temp))
             throw new MalformedURLException("No sword source found under " + sword_dir);
 
-        driver.dir = dir_temp;
+        dir = dir_temp;
     }
 
     /**
@@ -147,45 +135,20 @@ public class SwordBibleDriver extends AbstractBibleDriver
      */
     public static String getSwordDir()
     {
-        if (driver.dir == null)
+        if (dir == null)
             return "";
 
-        return driver.dir.toExternalForm().substring(5);
+        return dir.toExternalForm().substring(5);
     }
 
     /** config cache */
     protected Map configCache = new HashMap();
 
     /** The directory URL */
-    protected URL dir;
-
-    /** The singleton driver */
-    protected static SwordBibleDriver driver;
+    protected static URL dir;
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(SwordBibleDriver.class);
-
-    /**
-     * Register ourselves with the Driver Manager
-     */
-    static
-    {
-        try
-        {
-            driver = new SwordBibleDriver();
-            BibleMetaData[] bmds = driver.getBibles();
-            for (int i=0; i<bmds.length; i++)
-            {
-                Bibles.addBible(bmds[i]);
-            }
-
-            BibleDriverManager.registerDriver(driver);
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(SwordBibleDriver.class, ex);
-        }
-    }
 
     /**
      * Check that the directories in the version directory really

@@ -5,7 +5,7 @@ import org.crosswire.jsword.book.events.ProgressListener;
 
 /**
  * The BibleDriver class is an gateway to all the instances of the Books
- * controlled by this driver.
+ * controlled by this name.
  * <p>In an ideal world users would not need to touch an BibleDrivers, however
  * there are times (create() when the user needs to select the Driver to handle
  * the new data) when this is not possible.
@@ -34,20 +34,6 @@ import org.crosswire.jsword.book.events.ProgressListener;
 public interface BibleDriver extends BookDriver
 {
     /**
-     * A simple driver description name. This should be callable before
-     * init() is called, so that we can find the friendly name of a
-     * Bible without having to fully initialize it.
-     * @return A short identifing string
-     */
-    public String getDriverName();
-
-    /**
-     * Get a list of the Books available from the driver
-     * @return an array of book names
-     */
-    public BibleMetaData[] getBibles();
-
-    /**
      * Create a new Bible based on a source
      * @param name The name of the version to create
      * @param li Somewhere to repost progress (can be null)
@@ -55,4 +41,13 @@ public interface BibleDriver extends BookDriver
      * @exception BookException If the name is not valid
      */
     public Bible create(Bible source, ProgressListener li) throws BookException;
+
+    /**
+     * This method should only be used by Bibles at startup to register the
+     * Bibles known at start time.
+     * Generally there will be a better way of doing whatever you want to do if
+     * you use this method.
+     * @return A list of the known Bibles
+     */
+    public BibleMetaData[] getBibles();
 }

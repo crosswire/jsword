@@ -122,7 +122,7 @@ public class SWModule {
 
 
 /******************************************************************************
- * SWModule::Disp - Sets/gets display driver
+ * SWModule::Disp - Sets/gets display name
  *
  * ENT:	idisp - value which to set disp
  *		[0] - only get

@@ -35,20 +35,18 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LocalURLBibleMetaData extends AbstractBibleMetaData implements BibleMetaData
+public class LocalURLBibleMetaData extends SearchableBibleMetaData
 {
     /**
      * Constructor LocalURLBibleMetaData.
-     * @param localURLBibleDriver
-     * @param url
-     * @param name
      */
     public LocalURLBibleMetaData(LocalURLBibleDriver driver, URL dir, BibleMetaData basis)
     {
         super(basis.getName(), basis.getEdition(), basis.getInitials(), basis.getFirstPublished(), basis.getOpenness(), basis.getLicence());
-        setDriver(driver);
         this.dir = dir;
         this.prop = new Properties();
+
+        setDriver(driver);
     }
 
     /**
@@ -57,15 +55,15 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData implements Bibl
     public LocalURLBibleMetaData(LocalURLBibleDriver driver, URL dir, Properties prop) throws MalformedURLException, ParseException
     {
         super(prop);
-        setDriver(driver);
         this.dir = dir;
         this.prop = prop;
+
+        setDriver(driver);
     }
 
     /**
      * Delete the set of files that make up this version.
      * @throws BookException If anything goes wrong with this method
-     * @see org.crosswire.jsword.book.BookMetaData#delete()
      */
     public void delete() throws BookException
     {
@@ -124,7 +122,7 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData implements Bibl
     private void setDriver(LocalURLBibleDriver driver)
     {
         if (driver == null)
-            throw new NullPointerException("driver");
+            throw new NullPointerException("name");
 
         this.driver = driver;
     }
@@ -155,10 +153,20 @@ public class LocalURLBibleMetaData extends AbstractBibleMetaData implements Bibl
         return driver.equals(that.driver);
     }
 
+
     /**
-     * The driver
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
      */
-    protected LocalURLBibleDriver driver;
+    public int getSpeed()
+    {
+        return driver.getSpeed();
+    }
+
+    /**
+     * The name
+     */
+    private LocalURLBibleDriver driver;
 
     /**
      * The properties by which we got our data

@@ -40,7 +40,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(Properties prop) throws MalformedURLException, ParseException
+    public SwordBibleMetaData(SwordBibleDriver driver, Properties prop) throws MalformedURLException, ParseException
     {
         super(prop);
     }
@@ -48,7 +48,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(String name, String edition, String initials, Date pub, Openness open, URL licence)
+    public SwordBibleMetaData(SwordBibleDriver driver, String name, String edition, String initials, Date pub, Openness open, URL licence)
     {
         super(name, edition, initials, pub, open, licence);
     }
@@ -56,7 +56,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
+    public SwordBibleMetaData(SwordBibleDriver driver, String name, String edition, String initials, String pubstr, String openstr, String licencestr) throws ParseException, MalformedURLException
     {
         super(name, edition, initials, pubstr, openstr, licencestr);
     }
@@ -64,7 +64,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
     /**
      * Constructor for SwordBibleMetaData.
      */
-    public SwordBibleMetaData(String name)
+    public SwordBibleMetaData(SwordBibleDriver driver, String name)
     {
         super(name);
     }
@@ -76,14 +76,28 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
      */
     public Bible getBible() throws BookException
     {
-        return new SwordBible(this);
+        return new SwordBible(driver, this);
     }
 
     /**
-     * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
+     * Some basic info about who we are
+     * @param A short identifing string
      */
     public String getDriverName()
     {
-        return SwordBibleDriver.driver.getDriverName();
+        return "Sword";
     }
+
+
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public int getSpeed()
+    {
+        return 3;
+    }
+
+    /** Our parent name */
+    private SwordBibleDriver driver;
 }

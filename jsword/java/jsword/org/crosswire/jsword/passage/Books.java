@@ -1302,11 +1302,11 @@ public class Books implements PassageConstants
             }
 
             if (!success)
-                Reporter.informUser("Failed to load all resources correctly, using defaults.");
+                Reporter.informUser(Books.class, "Failed to load all resources correctly, using defaults.");
         }
         catch (Throwable ex)
         {
-            Reporter.informUser("Can't find resources for Locale '" + Locale.getDefault().toString() + "'");
+            Reporter.informUser(Books.class, "Can't find resources for Locale '" + Locale.getDefault().toString() + "'");
         }
 
         try

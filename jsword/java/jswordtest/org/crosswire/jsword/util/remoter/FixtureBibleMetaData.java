@@ -66,4 +66,13 @@ public class FixtureBibleMetaData extends AbstractBibleMetaData
     {
         return "test";
     }
+
+    /**
+     * The expected speed at which this implementation gets correct answers.
+     * @see org.crosswire.jsword.book.BookMetaData#getSpeed()
+     */
+    public int getSpeed()
+    {
+        return 11;
+    }
 }

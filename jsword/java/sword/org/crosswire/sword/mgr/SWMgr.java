@@ -309,7 +309,7 @@ public class SWMgr {
     }
 
 /*
-SWModule *SWMgr::CreateMod(string name, string driver, ConfigEntMap &section)
+SWModule *SWMgr::CreateMod(string name, string name, ConfigEntMap &section)
 {
     string description, datapath, misc1;
     ConfigEntMap::iterator entry;
@@ -320,29 +320,29 @@ SWModule *SWMgr::CreateMod(string name, string driver, ConfigEntMap &section)
     datapath += "/";
     datapath += ((entry = section.find("DataPath")) != section.end()) ? (*entry).second : (string)"";
 
-    if (!stricmp(driver.c_str(), "RawText")) {
+    if (!stricmp(name.c_str(), "RawText")) {
         newmod = new RawText(datapath.c_str(), name.c_str(), description.c_str());
     }
 
     // backward support old drivers
-    if (!stricmp(driver.c_str(), "RawGBF")) {
+    if (!stricmp(name.c_str(), "RawGBF")) {
         newmod = new RawText(datapath.c_str(), name.c_str(), description.c_str());
     }
 
-    if (!stricmp(driver.c_str(), "RawCom")) {
+    if (!stricmp(name.c_str(), "RawCom")) {
         newmod = new RawCom(datapath.c_str(), name.c_str(), description.c_str());
     }
 
-    if (!stricmp(driver.c_str(), "RawFiles")) {
+    if (!stricmp(name.c_str(), "RawFiles")) {
         newmod = new RawFiles(datapath.c_str(), name.c_str(), description.c_str());
     }
 
-    if (!stricmp(driver.c_str(), "HREFCom")) {
+    if (!stricmp(name.c_str(), "HREFCom")) {
         misc1 = ((entry = section.find("Prefix")) != section.end()) ? (*entry).second : (string)"";
         newmod = new HREFCom(datapath.c_str(), misc1.c_str(), name.c_str(), description.c_str());
     }
 
-    if (!stricmp(driver.c_str(), "RawLD"))
+    if (!stricmp(name.c_str(), "RawLD"))
         newmod = new RawLD(datapath.c_str(), name.c_str(), description.c_str());
 
     return newmod;
@@ -437,14 +437,14 @@ void SWMgr::CreateMods() {
     ConfigEntMap::iterator end;
     ConfigEntMap::iterator entry;
     SWModule *newmod;
-    string driver, misc1;
+    string name, misc1;
     for (it = config->Sections.begin(); it != config->Sections.end(); it++) {
         ConfigEntMap &section = (*it).second;
         newmod = 0;
 
-        driver = ((entry = section.find("ModDrv")) != section.end()) ? (*entry).second : (string)"";
-        if (!driver.empty()) {
-            newmod = CreateMod((*it).first, driver, section);
+        name = ((entry = section.find("ModDrv")) != section.end()) ? (*entry).second : (string)"";
+        if (!name.empty()) {
+            newmod = CreateMod((*it).first, name, section);
             if (newmod) {
                 start = (*it).second.lower_bound("GlobalOptionFilter");
                 end   = (*it).second.upper_bound("GlobalOptionFilter");

@@ -31,6 +31,6 @@ public class TestSerBible extends AdvancedParentTstBible
 {
     public TestSerBible(String s)
     {
-        super(s, SerBibleDriver.driver);
+        super(s);
     }
 }

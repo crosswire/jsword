@@ -1,9 +1,13 @@
 
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.util.remoter;
 
+import org.crosswire.jsword.book.remote.RemoteMethod;
+import org.crosswire.jsword.book.remote.Remoter;
+import org.crosswire.jsword.book.remote.RemoterException;
+import org.jdom.Document;
 
 /**
- * JUnit Test.
+ * A Fixture to help testing Converters and Remoters
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -24,12 +28,23 @@ package org.crosswire.jsword.book;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id: ParentTstBible.java,v 1.4 2002/11/25 18:07:52 joe Exp $
+ * @version $Id: Bible.java,v 1.2 2002/10/08 21:36:07 joe Exp $
  */
-public class AdvancedParentTstBible extends ParentTstBible
+public class FixtureRemoter implements Remoter
 {
-    public AdvancedParentTstBible(String s)
+    /**
+     * @see org.crosswire.jsword.book.remote.Remoter#execute(org.crosswire.jsword.book.remote.RemoteMethod)
+     */
+    public Document execute(RemoteMethod method) throws RemoterException
     {
-        super(s);
+        return null;
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.remote.Remoter#getRemoterName()
+     */
+    public String getRemoterName()
+    {
+        return "Fixture Remote";
     }
 }
