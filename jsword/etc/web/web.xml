@@ -36,4 +36,11 @@
     <url-pattern>/remoter</url-pattern>
   </servlet-mapping>
 
+  <!--
+  <mime-mapping>
+    <extension>jnlp</extension>
+    <mime-type>application/x-java-jnlp-file</mime-type>
+  </mime-mapping>
+  -->
+
 </web-app>

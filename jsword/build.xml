@@ -72,11 +72,11 @@
     <mkdir dir="${gener.root}/osis"/>
     <condition property="xjc.notrequired">
       <and>
-        <available file="${gener.root}/jsword-osis.jar" type="file"/>
+        <available file="${target.jar}/jsword-osis.jar" type="file"/>
         <available file="${gener.root}/osis/org" type="dir"/>
         <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
           <uptodate targetfile="${source.etc}/osisCore.1.1.1.xsd">
-            <srcfiles dir="${gener.root}" includes="jsword-osis.jar"/>
+            <srcfiles dir="${target.jar}" includes="jsword-osis.jar"/>
           </uptodate>
         </not>
       </and>
@@ -84,7 +84,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="osis" depends="xjc">
+  <target name="osis" depends="xjc, jar.dir">
     <echo message="Compiling ${gener.root}/osis"/>
     <mkdir dir="${target.classes}/osis"/>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
@@ -99,7 +99,7 @@
         <patternset refid="java.non.compile"/>
       </fileset>
     </copy>
-    <jar jarfile="${gener.root}/jsword-osis.jar">
+    <jar jarfile="${target.jar}/jsword-osis.jar">
       <fileset dir="${target.classes}/osis"/>
     </jar>
   </target>
@@ -126,13 +126,11 @@
     <antcall target="compile.section"><param name="section" value="servlet"/></antcall>
     <antcall target="compile.section"><param name="section" value="swing"/></antcall>
     <antcall target="compile.section"><param name="section" value="sword"/></antcall>
-    <antcall target="compile.section"><param name="section" value="map"/></antcall>
     <antcall target="compile.section"><param name="section" value="commontest"/></antcall>
     <antcall target="compile.section"><param name="section" value="jswordtest"/></antcall>
     <antcall target="compile.section"><param name="section" value="servlettest"/></antcall>
     <antcall target="compile.section"><param name="section" value="swingtest"/></antcall>
     <antcall target="compile.section"><param name="section" value="swordtest"/></antcall>
-    <antcall target="compile.section"><param name="section" value="maptest"/></antcall>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
       <src path="${gener.root}/config"/>
       <classpath>
@@ -161,28 +159,52 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jar" unless="jar.notrequired" depends="compile, jar.check" description="Create a jar file">
+  <target name="jar" unless="jar.notrequired" depends="compile, jar.dir, jar.api, jar.swing, jar.servlet, resource.jar" description="create the jar files">
+  </target>
+  <target name="jar.dir" description="Create the directory for jars">
     <mkdir dir="${target.jar}"/>
-    <jar manifest="${source.etc}/desktop/MANIFEST.MF" jarfile="${target.jar}/${ant.project.name}.jar">
+  </target>
+  <target name="jar.api" unless="jar.notrequired" depends="jar.api.check" description="Create a api jar file">
+    <jar jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
-      <fileset dir="${target.classes}/osis"/>
       <fileset dir="${target.classes}/jsword"/>
+    </jar>
+  </target>
+  <target name="jar.api.check" description="Check to see that the api jar file is up to date">
+    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword.jar">
+      <srcfiles dir="${target.classes}/common"/>
+      <srcfiles dir="${target.classes}/jsword"/>
+    </uptodate>
+  </target>
+  <target name="jar.swing" unless="jar.notrequired" depends="jar.swing.check" description="Create a gui jar file">
+    <jar jarfile="${target.jar}/jsword-swing.jar">
       <fileset dir="${target.classes}/swing"/>
+    </jar>
+  </target>
+  <target name="jar.swing.check" description="Check to see that the gui jar file is up to date">
+    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword-swing.jar">
+      <srcfiles dir="${target.classes}/swing"/>
+    </uptodate>
+  </target>
+  <target name="jar.servlet" unless="jar.notrequired" depends="jar.servlet.check" description="Create a servlet jar file">
+    <jar jarfile="${target.jar}/jsword-servlet.jar">
       <fileset dir="${target.classes}/servlet"/>
     </jar>
   </target>
-  <target name="jar.check" description="Check to see that the jar file is up to date">
-    <uptodate property="jar.notrequired" targetfile="${target.jar}/${ant.project.name}.jar">
-      <srcfiles dir="${target.classes}/common"/>
-      <srcfiles dir="${target.classes}/osis"/>
-      <srcfiles dir="${target.classes}/jsword"/>
-      <srcfiles dir="${target.classes}/swing"/>
+  <target name="jar.servlet.check" description="Check to see that the servlet jar file is up to date">
+    <uptodate property="jar.notrequired" targetfile="${target.jar}/jsword-servlet.jar">
       <srcfiles dir="${target.classes}/servlet"/>
     </uptodate>
   </target>
+  <target name="resource.jar" unless="jar.notrequired" description="Create a resource jar file">
+    <jar destfile="${target.jar}/resource.jar">
+      <fileset dir="${target.classes}/resource"/>
+      <fileset dir="${source.res}"/>
+    </jar>
+  </target>
 
   <!--=======================================================================-->
-  <target name="swingui" depends="jar" description="Build a ready to ship/test app">
+  <target name="swingui" depends="jnlp" description="Build a ready to ship/test app">
     <mkdir dir="${target.swingui}/bin"/>
     <copy todir="${target.swingui}/bin">
       <fileset dir="${source.etc}/bin"/>
@@ -200,16 +222,7 @@
     </fixcrlf>
     <mkdir dir="${target.swingui}/lib"/>
     <copy todir="${target.swingui}/lib">
-      <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/lang200" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/jaxb10">
-        <include name="jaxb-api.jar"/>
-        <include name="jaxb-ri.jar"/>
-        <include name="jaxb-libs.jar"/>
-      </fileset>
-      <fileset dir="${target.jar}" includes="${ant.project.name}.jar"/>
+      <fileset dir="${target.web}/jnlp" includes="**/*.jar"/>
     </copy>
     <mkdir dir="${target.swingui}/resource"/>
     <copy todir="${target.swingui}/resource">
@@ -238,7 +251,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="web.files" depends="jar" description="Copy the file based documentation">
+  <target name="web.files" depends="jnlp" description="Copy the file based documentation">
     <mkdir dir="${target.web}"/>
     <style basedir="${source.web}" extension=".html" style="${source.web}/template.xsl" destdir="${target.web}">
       <include name="**/*.html"/>
@@ -272,16 +285,8 @@
     <unzip src="${support.notes}/versions/projectb-ser-av.zip" dest="${target.web}/WEB-INF/classes"/>
     <mkdir dir="${target.web}/WEB-INF/lib"/>
     <copy todir="${target.web}/WEB-INF/lib">
-      <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/lang200" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
-      <fileset dir="${source.jar}/jaxb10">
-        <include name="jaxb-api.jar"/>
-        <include name="jaxb-ri.jar"/>
-        <include name="jaxb-libs.jar"/>
-      </fileset>
-      <fileset dir="${target.jar}" includes="**/*.jar"/>
+      <fileset dir="${target.web}/jnlp" includes="**/*.jar"/>
+      <fileset dir="${target.jar}" includes="jsword-servlet.jar"/>
     </copy>
     <!-- needed by the download servlet -->
     <mkdir dir="${nightly.dir}"/>
@@ -312,12 +317,10 @@
       <ignore regex="org.apache.log4j.*"/>
       <fileset dir="${target.classes}/swing" includes="**/*.class"/>
       <fileset dir="${target.classes}/servlet" includes="**/*.class"/>
-      <fileset dir="${target.classes}/map" includes="**/*.class"/>
-      <fileset dir="${target.classes}/sword" includes="**/*.class"/>
       -->
     </instrument>
     <mkdir dir="${target.temp}/junit"/>
-    <echo message="This needs jars in ${ant.lib}. See the antlibs task."/>
+    <echo message="JUnit needs jars in ${ant.lib}. See the antlibs task."/>
     <echo message="Using -Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
@@ -338,15 +341,11 @@
         -->
         <pathelement path="${target.classes}/servlet"/>
         <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/map"/>
-        <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/osis"/>
         <pathelement path="${target.classes}/commontest"/>
         <pathelement path="${target.classes}/jswordtest"/>
         <pathelement path="${target.classes}/servlettest"/>
         <pathelement path="${target.classes}/swingtest"/>
-        <pathelement path="${target.classes}/maptest"/>
-        <pathelement path="${target.classes}/swordtest"/>
         <pathelement path="${target.classes}/resource"/>
         <pathelement path="${source.res}"/>
       </classpath>
@@ -396,12 +395,6 @@
       <packageset dir="${source.java}/swing" defaultexcludes="yes">
         <include name="**"/>
       </packageset>
-      <packageset dir="${source.java}/sword" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
-      <packageset dir="${source.java}/map" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
       <footer>Copyright &#168; 2003</footer>
       <classpath>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
@@ -425,10 +418,6 @@
       <arg value="${basedir}/${source.java}/servlet"/>
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/swing"/>
-      <arg value="-js"/>
-      <arg value="${basedir}/${source.java}/sword"/>
-      <arg value="-js"/>
-      <arg value="${basedir}/${source.java}/map"/>
       <arg value="-d" />
       <arg value="${target.web}/java2html"/>
       <arg value="-n"/>
@@ -452,8 +441,6 @@
         <pathelement path="${source.java}/jsword"/>
         <pathelement path="${source.java}/servlet"/>
         <pathelement path="${source.java}/swing"/>
-        <pathelement path="${source.java}/sword"/>
-        <pathelement path="${source.java}/map"/>
       </sourcespath>
       <classpath>
         <dirset dir="${target.classes}"/>
@@ -474,10 +461,10 @@
     <mkdir dir="${target.web}/checkstyle"/>
     <taskdef resource="checkstyletask.properties">
       <classpath>
-        <fileset dir="${support.tools}/checkstyle31" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/checkstyle33" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    <copy file="${support.tools}/checkstyle31/custom.xml" overwrite="true"
+    <copy file="${support.tools}/checkstyle33/custom.xml" overwrite="true"
         tofile="${target.temp}/checkstyle/custom.xml">
       <filterset>
         <filter token="source.java" value="${basedir}/${source.java}"/>
@@ -489,7 +476,6 @@
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
       <fileset dir="${source.java}/servlet" includes="**/*.java"/>
       <fileset dir="${source.java}/swing" includes="**/*.java"/>
-      <fileset dir="${source.java}/map" includes="**/*.java"/>
       <formatter type="plain"/>
       <formatter type="xml" toFile="${target.temp}/checkstyle/checkstyle_errors.xml"/>
     </checkstyle>
@@ -497,7 +483,7 @@
         basedir="${target.temp}/checkstyle"
         destdir="${target.web}/checkstyle"
         includes="checkstyle_errors.xml"
-        style="${support.tools}/checkstyle31/checkstyle-noframes.xsl"/>
+        style="${support.tools}/checkstyle33/checkstyle-noframes.xsl"/>
   </target>
 
   <!--=======================================================================-->
@@ -514,8 +500,6 @@
       <fileset dir="${source.java}/jsword" includes="**/*.java"/>
       <fileset dir="${source.java}/servlet" includes="**/*.java"/>
       <fileset dir="${source.java}/swing" includes="**/*.java"/>
-      <!-- <fileset dir="${source.java}/sword" includes="**/*.java"/> -->
-      <fileset dir="${source.java}/map" includes="**/*.java"/>
     </pmd>
   </target>
 
@@ -568,7 +552,7 @@
         reportLevel="low"
         sort="text"
         >
-      <class location="${target.jar}/${ant.project.name}.jar" />
+      <class location="${target.jar}/jsword.jar" />
       <sourcePath path="${source.java}/jsword"/>
       <auxClasspath path="${source.jar}/jdom09/jdom.jar"/>
       <auxClasspath path="${source.jar}/log4j127/log4j-1.2.7.jar"/>
@@ -585,7 +569,6 @@
       <sourcePath path="${source.java}/common"/>
       <sourcePath path="${source.java}/servlet"/>
       <sourcePath path="${source.java}/swing"/>
-      <sourcePath path="${source.java}/map"/>
       -->
     </findbugs>
   </target>
@@ -601,7 +584,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jnlp" description="moves files to correct location for JNLP deploy" depends="jar, jnlp.keygen">
+  <target name="jnlp" description="moves files to correct location for JNLP deploy" depends="osis, jar, jnlp.keygen">
   <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
     <mkdir dir="${target.web}/jnlp"/>
     <copy todir="${target.web}/jnlp" file="${source.etc}/jnlp/${ant.project.name}.jnlp" filtering="true">
@@ -610,12 +593,12 @@
         <filter token="WEBAPP" value="${ant.project.name}"/>
       </filterset>
     </copy>
-    <jar destfile="${target.jar}/resource.jar">
-      <fileset dir="${target.classes}/resource"/>
-      <fileset dir="${source.res}"/>
-    </jar>
     <antcall target="jnlp.section">
-      <param name="jar" value="${ant.project.name}.jar"/>
+      <param name="jar" value="jsword.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jsword-swing.jar"/>
       <param name="dir" value="${target.jar}"/>
     </antcall>
     <antcall target="jnlp.section">
@@ -624,7 +607,7 @@
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="jsword-osis.jar"/>
-      <param name="dir" value="${gener.root}"/>
+      <param name="dir" value="${target.jar}"/>
     </antcall>
     <antcall target="jnlp.section">
       <param name="jar" value="commons-lang-2.0.jar"/>
@@ -777,8 +760,6 @@
         <pathelement path="${target.classes}/jsword"/>
         <pathelement path="${target.classes}/servlet"/>
         <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/map"/>
-        <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/osis"/>
         <pathelement path="${target.classes}/resource"/>
         <pathelement path="${target.classes}/jswordtest"/>
@@ -805,7 +786,7 @@
 
   <!--=======================================================================-->
   <target name="antlibs" description="Copy required jars to ant/lib">
-    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar"/>
+    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar to ${ant.home}/lib"/>
     <copy file="${source.jar}/junit381/junit.jar" todir="${ant.home}/lib"/>
     <echo message="copy ${basedir}/${support.tools}/jdepend24/jdepend.jar"/>
     <copy file="${support.tools}/jdepend24/jdepend.jar" todir="${ant.home}/lib"/>

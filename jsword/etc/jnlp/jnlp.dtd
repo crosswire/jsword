@@ -1,0 +1,158 @@
+
+
+<!ELEMENT jnlp (information+, security?, resources*, (application-desc |
+ applet-desc | component-desc | installer-desc )) >
+
+<!ATTLIST jnlp spec CDATA #IMPLIED>
+
+<!ATTLIST jnlp version CDATA #IMPLIED>
+
+<!ATTLIST jnlp codebase CDATA #IMPLIED>
+
+<!ATTLIST jnlp href CDATA #IMPLIED>
+
+<!ELEMENT information (title?, vendor?, homepage?, description*, icon*, 
+  offline-allowed?)>
+
+<!ATTLIST information locale CDATA #IMPLIED>
+
+<!ELEMENT title (#PCDATA)>
+
+<!ELEMENT vendor (#PCDATA)>
+
+<!ELEMENT homepage EMPTY>
+
+<!ATTLIST homepage href CDATA #REQUIRED>
+
+<!ELEMENT description (#PCDATA)>
+
+<!ATTLIST description kind (one-line | short | tooltip ) #IMPLIED>
+
+<!ELEMENT icon EMPTY>
+
+<!ATTLIST icon href CDATA #REQUIRED>
+
+<!ATTLIST icon version CDATA #IMPLIED>
+
+<!ATTLIST icon width CDATA #IMPLIED>
+
+<!ATTLIST icon height CDATA #IMPLIED>
+
+<!ATTLIST icon kind (default | selected | disabled | rollover) "default">
+
+<!ATTLIST icon depth CDATA #IMPLIED>
+
+<!ATTLIST icon size CDATA #IMPLIED>
+
+<!ELEMENT offline-allowed EMPTY>
+
+<!ELEMENT security (all-permissions?, j2ee-application-client-permissions?)>
+
+<!ELEMENT all-permissions EMPTY>
+
+<!ELEMENT j2ee-application-client-permissions EMPTY>
+
+<!ELEMENT resources (j2se | jar | nativelib | extension | property | package)*>
+
+<!ATTLIST resources os CDATA #IMPLIED>
+
+<!ATTLIST resources arch CDATA #IMPLIED>
+
+<!ATTLIST resources locale CDATA #IMPLIED>
+
+<!ELEMENT j2se (resources*)>
+
+<!ATTLIST j2se version CDATA #REQUIRED>
+
+<!ATTLIST j2se href CDATA #IMPLIED>
+
+<!ATTLIST j2se initial-heap-size CDATA #IMPLIED>
+
+<!ATTLIST j2se max-heap-size CDATA #IMPLIED>
+
+<!ELEMENT jar EMPTY>
+
+<!ATTLIST jar href CDATA #REQUIRED>
+
+<!ATTLIST jar version CDATA #IMPLIED>
+
+<!ATTLIST jar main (true|false) "false">
+
+<!ATTLIST jar download (eager|lazy) "eager">
+
+<!ATTLIST jar size CDATA #IMPLIED>
+
+<!ATTLIST jar part CDATA #IMPLIED>
+
+<!ELEMENT nativelib EMPTY>
+
+<!ATTLIST nativelib href CDATA #REQUIRED>
+
+<!ATTLIST nativelib version CDATA #IMPLIED>
+
+<!ATTLIST nativelib download (eager|lazy) "eager">
+
+<!ATTLIST nativelib size CDATA #IMPLIED>
+
+<!ATTLIST nativelib part CDATA #IMPLIED>
+
+<!ELEMENT extension (ext-download*)>
+
+<!ATTLIST extension version CDATA #IMPLIED>
+
+<!ATTLIST extension name CDATA #IMPLIED>
+
+<!ATTLIST extension href CDATA #REQUIRED>
+
+<!ELEMENT ext-download EMPTY>
+
+<!ATTLIST ext-download ext-part CDATA #REQUIRED>
+
+<!ATTLIST ext-download download (lazy|eager) "eager">
+
+<!ATTLIST ext-download part CDATA #IMPLIED>
+
+<!ELEMENT property EMPTY>
+
+<!ATTLIST property name CDATA #REQUIRED>
+
+<!ATTLIST property value CDATA #REQUIRED>
+
+<!ELEMENT package EMPTY>
+
+<!ATTLIST package name CDATA #REQUIRED>
+
+<!ATTLIST package part CDATA #REQUIRED>
+
+<!ATTLIST package recursive (true|false) "false">
+
+<!ELEMENT application-desc (argument*)>
+
+<!ATTLIST application-desc main-class CDATA #IMPLIED>
+
+<!ELEMENT argument (#PCDATA)>
+
+<!ELEMENT applet-desc (param*)>
+
+<!ATTLIST applet-desc documentbase CDATA #IMPLIED>
+
+<!ATTLIST applet-desc main-class CDATA #REQUIRED>
+
+<!ATTLIST applet-desc name CDATA #REQUIRED>
+
+<!ATTLIST applet-desc width CDATA #REQUIRED>
+
+<!ATTLIST applet-desc height CDATA #REQUIRED>
+
+<!ELEMENT param EMPTY>
+
+<!ATTLIST param name CDATA #REQUIRED>
+
+<!ATTLIST param value CDATA #REQUIRED>
+
+<!ELEMENT component-desc EMPTY>
+
+<!ELEMENT installer-desc EMPTY>
+
+<!ATTLIST installer-desc main-class CDATA #IMPLIED>
+

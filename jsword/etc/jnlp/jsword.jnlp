@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE jnlp PUBLIC "-//Sun Microsystems, Inc//DTD JNLP Descriptor 1.0//EN" "jnlp.dtd">
 
 <jnlp spec="1.0+" codebase="http://@HOSTNAME@/@WEBAPP@/" href="jnlp/jsword.jnlp">
 
@@ -6,8 +7,9 @@
     <title>J-Sword Demo Application</title>
     <vendor>The J-Sword project</vendor>
     <homepage href="http://@HOSTNAME@/@WEBAPP@/"/>
-    <description>J-Sword</description>
-    <description kind="short">A demo of the J-Sword UI</description>
+    <description>J-Sword Bible Desktop Application</description>
+    <description kind="short">J-Sword is a Bible study package available over the internet</description>
+    <description kind="tooltip">J-Sword Bible Desktop Application</description>
     <offline-allowed/>
   </information>
 
@@ -17,19 +19,21 @@
   </security>
 
   <resources>
+    <j2se version="1.4+" max-heap-size="256m"/>
     <jar href="jsword.jar"/>
+    <jar href="jsword-swing.jar"/>
+    <jar href="jsword-osis.jar"/>
     <jar href="jdom.jar"/>
     <jar href="log4j-1.2.7.jar"/>
     <jar href="resource.jar"/>
-    <jar href="commons-lang-2.0.jar" />
-    <jar href="commons-net-1.1.0.jar" />
-    <jar href="jaxb-api.jar" />
-    <jar href="jaxb-libs.jar" />
-    <jar href="jaxb-ri.jar" />
-    <jar href="jsword-osis.jar" />
-    <jar href="lucene-1.3-final.jar" />
-    <jar href="tar.jar" />
-    <jar href="winlaf-0.4.jar" />
+    <jar href="commons-lang-2.0.jar"/>
+    <jar href="commons-net-1.1.0.jar"/>
+    <jar href="jaxb-api.jar"/>
+    <jar href="jaxb-libs.jar"/>
+    <jar href="jaxb-ri.jar"/>
+    <jar href="lucene-1.3-final.jar"/>
+    <jar href="tar.jar"/>
+    <jar href="winlaf-0.4.jar"/>
   </resources>
 
   <application-desc main-class="org.crosswire.jsword.view.swing.desktop.Desktop"/>
