@@ -23,7 +23,8 @@ import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -232,20 +233,20 @@ public class RawBook extends PassageAbstractBook implements Index
         {
             // Without these we can't go on
             wordItems = new WordItemsMem(this, create);
-            
+
             if (memory)
             {
                 wordInsts = new WordInstsMem(this, create);
-            } 
+            }
             else
             {
                 wordInsts = new WordInstsDisk(this, create);
             }
-            
+
             // We can still produce text without these though so they
             // should not except if the load fails.
             StringBuffer messages = new StringBuffer();
-            
+
             if (memory)
             {
                 puncInsts = new PuncInstsMem(this, create, messages);
@@ -254,14 +255,14 @@ public class RawBook extends PassageAbstractBook implements Index
             {
                 puncInsts = new PuncInstsDisk(this, create, messages);
             }
-            
+
             puncItems = new PuncItemsMem(this, create, messages);
             caseInsts = new CaseInstsMem(this, create, messages);
             paraInsts = new ParaInstsMem(this, create, messages);
-            
+
             // So if any of them have failed to load we have a record of it.
             // We can carry on work fine, but shouldn't we be telling someone?
-            
+
             /* should have this configurable? */
             //createSearchCache();
         }
@@ -272,7 +273,6 @@ public class RawBook extends PassageAbstractBook implements Index
 
         initSearchEngine();
     }
-
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getFilter()
@@ -293,7 +293,7 @@ public class RawBook extends PassageAbstractBook implements Index
         int[] caseIdxs = caseInsts.getIndexes(verse);
         int[] puncIdxs = puncInsts.getIndexes(verse);
 
-        for (int j=0; j<wordIdxs.length; j++)
+        for (int j = 0; j < wordIdxs.length; j++)
         {
             String punc = null;
             String word = null;
@@ -320,7 +320,7 @@ public class RawBook extends PassageAbstractBook implements Index
         {
             if (puncIdxs.length != 0)
             {
-                retcode.append(puncItems.getItem(puncIdxs[puncIdxs.length-1]));
+                retcode.append(puncItems.getItem(puncIdxs[puncIdxs.length - 1]));
             }
         }
         catch (Exception ex)
@@ -342,7 +342,7 @@ public class RawBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#findWord(java.lang.String)
      */
-    public KeyList findWord(String word)
+    public Key findWord(String word)
     {
         if (word == null)
         {
@@ -358,19 +358,20 @@ public class RawBook extends PassageAbstractBook implements Index
         }
 
         // Do the real seacrh
-        KeyList key = createEmptyKeyList();
+        Key key = createEmptyKeyList();
         try
         {
             int total = BibleInfo.versesInBible();
 
-            for (int ord=1; ord<=total; ord++)
+            for (int ord = 1; ord <= total; ord++)
             {
                 int[] wordItemIds = wordInsts.getIndexes(ord);
-                for (int i=0; i<wordItemIds.length; i++)
+                for (int i = 0; i < wordItemIds.length; i++)
                 {
                     if (wordItemIds[i] == wordIdx)
                     {
-                        key.add(new Verse(ord));
+                        Key added = KeyUtil.getKeyList(new Verse(ord), this);
+                        key.addAll(added);
                     }
                 }
             }
@@ -403,7 +404,7 @@ public class RawBook extends PassageAbstractBook implements Index
             Element div = (Element) sit.next();
 
             // For all of the Verses in the section
-            for (Iterator vit=div.getContent().iterator(); vit.hasNext(); )
+            for (Iterator vit = div.getContent().iterator(); vit.hasNext();)
             {
                 Object data = vit.next();
                 if (data instanceof Element)
@@ -417,20 +418,20 @@ public class RawBook extends PassageAbstractBook implements Index
                     // fix it properly since Raw does not fit well with marked-up
                     // text.
                     paraInsts.setPara(false, verse);
-    
+
                     // Chop the sentance into words.
                     String[] textArray = SentanceUtil.tokenize(text);
-    
+
                     // The word index
                     String[] wordArray = SentanceUtil.stripPunctuation(textArray);
                     int[] wordIndexes = wordItems.getIndex(wordArray);
                     wordInsts.setIndexes(wordIndexes, verse);
-    
+
                     // The punctuation index
                     String[] puncArray = SentanceUtil.stripWords(textArray);
                     int[] puncIndexes = puncItems.getIndex(puncArray);
                     puncInsts.setIndexes(puncIndexes, verse);
-    
+
                     // The case index
                     int[] caseIndexes = SentanceUtil.getCases(wordArray);
                     caseInsts.setIndexes(caseIndexes, verse);

@@ -29,6 +29,6 @@ public class PassageWriteSpeedTest extends PassageParentTst
 {
     public PassageWriteSpeedTest(String s)
     {
-        super(s, PassageFactory.WRITE_SPEED, false);
+        super(s, PassageKeyFactory.WRITE_SPEED, false);
     }
 }

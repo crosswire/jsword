@@ -7,15 +7,13 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Element;
@@ -60,8 +58,7 @@ public abstract class PassageAbstractBook extends AbstractBook
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
 
             // For all the ranges in this Passage
-            KeyList keylist = DefaultKeyList.getKeyList(key);
-            Passage ref = PassageUtil.getPassage(keylist);
+            Passage ref = KeyUtil.getPassage(key);
             Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
 
             while (rit.hasNext())
@@ -156,7 +153,7 @@ public abstract class PassageAbstractBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public KeyList createEmptyKeyList()
+    public final Key createEmptyKeyList()
     {
         return keyf.createEmptyKeyList();
     }
@@ -164,7 +161,7 @@ public abstract class PassageAbstractBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public final KeyList getGlobalKeyList()
+    public final Key getGlobalKeyList()
     {
         return keyf.getGlobalKeyList();
     }
@@ -193,14 +190,13 @@ public abstract class PassageAbstractBook extends AbstractBook
     public String getRawData(Key key) throws BookException
     {
         assert key != null;
-    
+
         try
         {
             StringBuffer buffer = new StringBuffer();
     
             // For all the ranges in this Passage
-            KeyList keylist = DefaultKeyList.getKeyList(key);
-            Passage ref = PassageUtil.getPassage(keylist);
+            Passage ref = KeyUtil.getPassage(key);
             Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
     
             while (rit.hasNext())

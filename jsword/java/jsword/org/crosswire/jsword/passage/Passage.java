@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.IOException;
@@ -68,35 +67,14 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Passage extends KeyList, Serializable, Cloneable
+public interface Passage extends Key, Serializable, Cloneable
 {
-    /**
-     * A Human readable version of the verse list.
-     * Uses short books names, and the shortest sensible rendering eg "Mat 3:1-4"
-     * and "Mar 1:1, 3, 5" and "3Jo, Jude"
-     * @return a String containing a description of the verses
-     */
-    public String getName();
-
-    /**
-     * The OSIS defined specification for this Passage.
-     * Uses short books names, with "." as a verse part separator.
-     * @return a String containing the OSIS description of the verses
-     */
-    public String getOSISName();
-
     /**
      * A summary of the verses in this Passage
      * For example "10 verses in 4 books"
      * @return a String containing an overview of the verses
      */
     public String getOverview();
-
-    /**
-     * Does this Passage have 0 members
-     * @return true if the Passage is empty
-     */
-    public boolean isEmpty();
 
     /**
      * Returns the number of verses in this collection. Like Collection.size()
@@ -184,22 +162,16 @@ public interface Passage extends KeyList, Serializable, Cloneable
      * @return The Verse Range
      * @throws ArrayIndexOutOfBoundsException If the offset is out of range
      */
-    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException;
-
-    /**
-     * Iterate over the Verses in this collection
-     * @return A list enumerator
-     */
-    public Iterator verseIterator();
+    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException;
 
     /**
      * Like verseElements() that iterates over VerseRanges instead of Verses.
      * Exactly the same data will be traversed, however using rangeIterator()
      * will usually give less iterations (and never more)
-     * @param restrict Do we break ranges over chapters
+     * @param bounds Do we break ranges over chapters
      * @return A list enumerator
      */
-    public Iterator rangeIterator(int restrict);
+    public Iterator rangeIterator(int bounds);
 
     /**
      * Returns true if this collection contains all the specified Verse
@@ -226,40 +198,6 @@ public interface Passage extends KeyList, Serializable, Cloneable
      * @return true if this reference contains all of the Verses in that Passage
      */
     public boolean containsAll(Passage that);
-
-    /**
-     * Adds all that Passage's verses to this Passage
-     * @param that The Verses to be removed from this Passage
-     */
-    public void addAll(Passage that);
-
-    /**
-     * Removes all this collection's elements that are also contained in the
-     * specified collection.
-     * @param that The Verses to be removed from this Passage
-     */
-    public void removeAll(Passage that);
-
-    /**
-     * Removes all the Verses from this reference that are not in that reference
-     * specified collection.
-     * @param that The Verses to be removed from this Passage
-     */
-    public void retainAll(Passage that);
-
-    /**
-     * Removes all the verses is this Passage
-     */
-    public void clear();
-
-    /**
-     * Widen the range of the verses in this list. This is primarily for
-     * "find x within n verses of y" type applications.
-     * @param verses The number of verses to widen by
-     * @param restrict How should we restrict the blurring?
-     * @see Passage
-     */
-    public void blur(int verses, int restrict);
 
     /**
      * To be compatible with humans we read/write ourselves to a file that a human can

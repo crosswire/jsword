@@ -11,8 +11,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
-import org.crosswire.jsword.passage.PassageUtil;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -166,7 +165,7 @@ public class GZIPBackend implements Backend
     {
         checkActive();
 
-        Verse verse = PassageUtil.getVerse(key);
+        Verse verse = KeyUtil.getVerse(key);
 
         try
         {
@@ -271,7 +270,7 @@ public class GZIPBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#readIndex()
      */
-    public KeyList readIndex()
+    public Key readIndex()
     {
         // PENDING(joe): refactor to get rid of this
         return null;

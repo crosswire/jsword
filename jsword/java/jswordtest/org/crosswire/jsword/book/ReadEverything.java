@@ -9,7 +9,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 
@@ -61,7 +60,7 @@ public class ReadEverything
             BookMetaData bmd = (BookMetaData) cit.next();
 
             Book book = bmd.getBook();
-            KeyList set = book.getGlobalKeyList();
+            Key set = book.getGlobalKeyList();
 
             testReadMultiple(bmd, book, set);
         }
@@ -70,7 +69,7 @@ public class ReadEverything
     /**
      * Perform a test read on an iterator over a set of keys
      */
-    private static void testReadMultiple(BookMetaData bmd, Book book, KeyList set)
+    private static void testReadMultiple(BookMetaData bmd, Book book, Key set)
     {
         DataPolice.setBook(bmd);
 
@@ -81,15 +80,14 @@ public class ReadEverything
         Iterator it = set.iterator();
         while (it.hasNext())
         {
-            Key key = (Key) it.next();
-            if (key instanceof KeyList)
+            Key subset = (Key) it.next();
+            if (subset.canHaveChildren())
             {
-                KeyList subset = (KeyList) key;
                 testReadSingle(bmd, book, subset);
             }
             else
             {
-                testReadSingle(bmd, book, key);
+                testReadSingle(bmd, book, subset);
             }
 
             entries++;

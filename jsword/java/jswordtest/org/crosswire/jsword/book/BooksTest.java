@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.stub.StubBook;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -196,46 +196,46 @@ public class BooksTest extends TestCase
             log.debug("thorough testing bible: " + ver.getBookMetaData().getFullName()); //$NON-NLS-1$
 
             Key key = ver.find(new Search("aaron", false)); //$NON-NLS-1$
-            Passage ref = PassageUtil.getPassage(key);
+            Passage ref = KeyUtil.getPassage(key);
             assertTrue(ref.countVerses() > 10);
             key = ver.find(new Search("jerusalem", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             assertTrue(ref.countVerses() > 10);
             key = ver.find(new Search("god", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             assertTrue(ref.countVerses() > 10);
             key = ver.find(new Search("GOD", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             assertTrue(ref.countVerses() > 10);
             key = ver.find(new Search("brother's", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             assertTrue(ref.countVerses() > 2);
             key = ver.find(new Search("BROTHER'S", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             assertTrue(ref.countVerses() > 2);
 
             key = ver.find(new Search("maher-shalal-hash-baz", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             if (ref.isEmpty())
             {
                 key = ver.find(new Search("mahershalalhashbaz", false)); //$NON-NLS-1$
-                ref = PassageUtil.getPassage(key);
+                ref = KeyUtil.getPassage(key);
             }
             if (ref.isEmpty())
             {
                 key = ver.find(new Search("maher*", false)); //$NON-NLS-1$
-                ref = PassageUtil.getPassage(key);
+                ref = KeyUtil.getPassage(key);
             }
             assertEquals(ref.countVerses(), 2);
             assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1")); //$NON-NLS-1$
             assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3")); //$NON-NLS-1$
 
             key = ver.find(new Search("MAHER-SHALAL-HASH-BAZ", false)); //$NON-NLS-1$
-            ref = PassageUtil.getPassage(key);
+            ref = KeyUtil.getPassage(key);
             if (ref.isEmpty())
             {
                 key = ver.find(new Search("MAHERSHALALHASHBAZ", false)); //$NON-NLS-1$
-                ref = PassageUtil.getPassage(key);
+                ref = KeyUtil.getPassage(key);
             }
             assertEquals(ref.countVerses(), 2);
             assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1")); //$NON-NLS-1$

@@ -13,14 +13,12 @@ import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
-import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.passage.PassageUtil;
 import org.jdom.Document;
 import org.xml.sax.SAXException;
 
@@ -72,11 +70,9 @@ public class RemoteBook extends AbstractBook
      */
     public BookData getData(Key key) throws BookException
     {
-        KeyList keylist = DefaultKeyList.getKeyList(key);
-
         try
         {
-            Passage ref = PassageUtil.getPassage(keylist);
+            Passage ref = KeyUtil.getPassage(key);
 
             RemoteMethod method = new RemoteMethod(MethodName.GETDATA);
             method.addParam(ParamName.PARAM_BIBLE, driver.getID(getBookMetaData()));
@@ -105,11 +101,11 @@ public class RemoteBook extends AbstractBook
         StringBuffer buffer = new StringBuffer();
         return buffer.toString();
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
-    public KeyList find(Search search) throws BookException
+    public Key find(Search search) throws BookException
     {
         try
         {
@@ -135,7 +131,7 @@ public class RemoteBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public final KeyList getGlobalKeyList()
+    public final Key getGlobalKeyList()
     {
         return keyf.getGlobalKeyList();
     }
@@ -151,7 +147,7 @@ public class RemoteBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public KeyList createEmptyKeyList()
+    public Key createEmptyKeyList()
     {
         return keyf.createEmptyKeyList();
     }

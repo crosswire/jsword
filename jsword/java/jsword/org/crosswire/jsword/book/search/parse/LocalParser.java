@@ -14,7 +14,6 @@ import org.crosswire.jsword.book.SentanceUtil;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageTally;
 
@@ -67,9 +66,9 @@ public class LocalParser implements Parser
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Parser#search(org.crosswire.jsword.book.Search)
      */
-    public KeyList search(Search search) throws BookException
+    public Key search(Search search) throws BookException
     {
-        KeyList ref = null;
+        Key ref = null;
 
         if (search.isBestMatch())
         {
@@ -84,7 +83,10 @@ public class LocalParser implements Parser
         if (search.isRestricted())
         {
             Key restrict = search.getRestriction();
-            ref.retain(restrict);
+            if (restrict != Search.UNRESTRICTED)
+            {
+                ref.retainAll(restrict);
+            }
         }
 
         return ref;
@@ -93,7 +95,7 @@ public class LocalParser implements Parser
     /**
      * Generate a bestmatch search
      */
-    private KeyList bestMatch(String sought) throws BookException
+    private Key bestMatch(String sought) throws BookException
     {
         String[] words = SentanceUtil.getWords(sought);
         words = Grammar.stripSmallWords(words);
@@ -104,7 +106,7 @@ public class LocalParser implements Parser
 
         for (int i = 0; i < words.length; i++)
         {
-            tally.add(wordSearch(words[i]));
+            tally.addAll(wordSearch(words[i]));
         }
 
         // This uses updatePassageTallyFlat() so that words like God
@@ -118,7 +120,7 @@ public class LocalParser implements Parser
             // Check that the root is still a word. If not then we
             // use the full version. This catches misses like se is
             // the root of seed, and matches sea and so on ...
-            KeyList ref = wordSearch(root);
+            Key ref = wordSearch(root);
             if (ref.isEmpty())
             {
                 root = words[i];
@@ -140,7 +142,7 @@ public class LocalParser implements Parser
      * @param sought The string to be searched for
      * @return The matching verses
      */
-    protected KeyList wordSearch(String sought) throws BookException
+    protected Key wordSearch(String sought) throws BookException
     {
         return index.findWord(sought);
     }
@@ -149,9 +151,9 @@ public class LocalParser implements Parser
      * Take a search string and decipher it into a Passage.
      * @return The matching verses
      */
-    protected KeyList search(List matches) throws BookException
+    protected Key search(List matches) throws BookException
     {
-        KeyList key = index.findWord(null);
+        Key key = index.findWord(null);
 
         // Need a CommandWord, but a ParamWord we can deal with using an
         // AddCommandWord chucked on the front
@@ -194,13 +196,13 @@ public class LocalParser implements Parser
      * @return The Passage
      * @throws BookException If anything goes wrong with this method
      */
-    protected KeyList getPassage(String[] words) throws BookException
+    protected Key getPassage(String[] words) throws BookException
     {
-        KeyList ref = index.findWord(null);
+        Key ref = index.findWord(null);
 
         for (int i = 0; i < words.length; i++)
         {
-            ref.add(wordSearch(words[i]));
+            ref.addAll(wordSearch(words[i]));
         }
 
         return ref;
@@ -219,7 +221,7 @@ public class LocalParser implements Parser
 
         for (int i = 0; i < words.length; i++)
         {
-            temp.add(wordSearch(words[i]));
+            temp.addAll(wordSearch(words[i]));
         }
 
         temp.flatten();
@@ -270,7 +272,7 @@ public class LocalParser implements Parser
     /**
      * @throws BookException
      */
-    public KeyList iteratePassage() throws BookException
+    public Key iteratePassage() throws BookException
     {
         if (!iterator().hasNext())
         {
@@ -284,7 +286,7 @@ public class LocalParser implements Parser
         }
 
         ParamWord param = (ParamWord) next;
-        KeyList ref = param.getKeyList(this);
+        Key ref = param.getKeyList(this);
 
         return ref;
     }

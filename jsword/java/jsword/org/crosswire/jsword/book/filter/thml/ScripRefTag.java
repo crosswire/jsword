@@ -2,9 +2,10 @@ package org.crosswire.jsword.book.filter.thml;
 
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.KeyFactory;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.jdom.Element;
 import org.xml.sax.Attributes;
 
@@ -54,11 +55,11 @@ public class ScripRefTag implements Tag
         {
             try
             {
-                Passage ref = PassageFactory.createPassage(refstr);
+                Passage ref = (Passage) keyf.getKey(refstr);
                 String osisname = ref.getOSISName();
                 div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, osisname);
             }
-            catch (NoSuchVerseException ex)
+            catch (NoSuchKeyException ex)
             {
                 DataPolice.report("Unparsable passage:"+refstr+" due to "+ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -72,4 +73,9 @@ public class ScripRefTag implements Tag
 
         ele.addContent(div);
     }
+
+    /**
+     * To convert strings into Biblical keys
+     */
+    protected KeyFactory keyf = new PassageKeyFactory();
 }

@@ -18,11 +18,8 @@ import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
 
@@ -63,25 +60,15 @@ public class APIExamples
      * same as reading from a Bible.
      * @see Book
      * @see Passage
-     * @see PassageFactory
      */
     public void readPlainText() throws BookException, NoSuchKeyException
     {
         Books books = Books.installed();
         Book bible = books.getBookMetaData(BIBLE_NAME).getBook();
 
-        Passage ref = PassageFactory.createPassage("Gen 1 1"); //$NON-NLS-1$
-
-        BookData data = bible.getData(ref);
-        String text = data.getPlainText();
-
-        // At some stage in the future you may need to use keys rather than
-        // Passages. Passage is-a Key that does a while lot more, but Passage
-        // can be a bit tied to the English way of laying out a Bible so use
-        // of Key is recommended
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        data = bible.getData(key);
-        text = data.getPlainText();
+        BookData data = bible.getData(key);
+        String text = data.getPlainText();
 
         System.out.println("The plain text of Gen 1:1 is "+text); //$NON-NLS-1$
     }
@@ -92,15 +79,14 @@ public class APIExamples
      * same as reading from a Bible.
      * @see Book
      * @see Passage
-     * @see PassageFactory
      * @see SAXEventProvider
      */
-    public void readStyledText() throws NoSuchVerseException, BookException, TransformerException, SAXException
+    public void readStyledText() throws NoSuchKeyException, BookException, TransformerException, SAXException
     {
-        Passage ref = PassageFactory.createPassage("Gen 1 1"); //$NON-NLS-1$
         Book bible = Books.installed().getBookMetaData(BIBLE_NAME).getBook();
 
-        BookData data = bible.getData(ref);
+        Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
+        BookData data = bible.getData(key);
         SAXEventProvider osissep = data.getSAXEventProvider();
 
         Converter styler = ConverterFactory.getConverter();
@@ -115,7 +101,6 @@ public class APIExamples
      * While Bible and Commentary are very similar, a Dictionary is read in a
      * slightly different way. It is also worth looking at the JavaDoc for
      * Book that has a way of treating Bible, Commentary and Dictionary the same.
-     * @see Key
      * @see Book
      */
     public void readDictionary() throws BookException
@@ -130,12 +115,12 @@ public class APIExamples
         // If I want every key in the Dictionary then I do this (or something
         // like it - in the real world you want to call hasNext() on an iterator
         // before next() but the point is the same:
-        KeyList keys = dict.getGlobalKeyList();
+        Key keys = dict.getGlobalKeyList();
         Key first = (Key) keys.iterator().next();
 
         System.out.println("The first Key in the default dictionary is "+first); //$NON-NLS-1$
-        
-        BookData data = dict.getData(first);
+
+        BookData data = dict.getData(keys);
         System.out.println("And the text against that key is "+data.getPlainText()); //$NON-NLS-1$
     }
 

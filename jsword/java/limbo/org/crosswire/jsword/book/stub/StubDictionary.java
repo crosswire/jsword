@@ -8,9 +8,8 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.filter.FilterFactory;
-import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Element;
 
@@ -93,7 +92,7 @@ public class StubDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public KeyList getGlobalKeyList()
+    public Key getGlobalKeyList()
     {
         return keyf.getGlobalKeyList();
     }
@@ -109,7 +108,7 @@ public class StubDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public KeyList createEmptyKeyList()
+    public Key createEmptyKeyList()
     {
         return keyf.createEmptyKeyList();
     }

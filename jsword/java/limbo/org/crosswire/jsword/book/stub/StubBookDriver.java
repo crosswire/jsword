@@ -47,7 +47,7 @@ public class StubBookDriver extends AbstractBookDriver
         };
 
         bmds = new BookMetaData[books.length];
-        
+
         for (int i = 0; i < books.length; i++)
         {
             bmds[i] = books[i].getBookMetaData();

@@ -35,7 +35,6 @@ import java.util.SortedSet;
  */
 public class PassageSet implements SortedSet
 {
-    // DEAD(DM): This class is not used. Find a use for it or delete it.
     /**
      * Construct a Collection proxy with a Passage to proxy to.
      * @param ref The real store od data
@@ -225,7 +224,7 @@ public class PassageSet implements SortedSet
      */
     public boolean retainAll(Collection col)
     {
-        Passage temp = PassageFactory.createPassage();
+        Passage temp = keyf.createPassage();
 
         for (Iterator it = col.iterator(); it.hasNext(); )
         {
@@ -253,7 +252,7 @@ public class PassageSet implements SortedSet
      */
     public Object first()
     {
-        return ref.getVerseRangeAt(0, restrict);
+        return ref.getRangeAt(0, restrict);
     }
 
     /* (non-Javadoc)
@@ -261,7 +260,7 @@ public class PassageSet implements SortedSet
      */
     public Object last()
     {
-        return ref.getVerseRangeAt(ref.countRanges(restrict)-1, restrict);
+        return ref.getRangeAt(ref.countRanges(restrict)-1, restrict);
     }
 
     /* (non-Javadoc)
@@ -317,6 +316,11 @@ public class PassageSet implements SortedSet
     {
         return ref.hashCode();
     }
+
+    /**
+     * How we create Passages
+     */
+    private static PassageKeyFactory keyf = new PassageKeyFactory();
 
     /**
      * What restrictions are we using which dividing the passage up

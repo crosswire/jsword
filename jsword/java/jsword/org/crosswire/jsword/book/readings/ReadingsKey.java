@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
@@ -32,20 +33,22 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReadingsKey implements Key
+public class ReadingsKey extends DefaultLeafKeyList
 {
     /**
      * Simple Constructor.
      * @param text The textual version of the date for these readings in the
      * format "d mmmm"
+     * @param osisName The OSIS id of this Key
+     * @param parent This Key's parent (or null of this Key has no parent)
      */
-    protected ReadingsKey(String text, Key parent) throws NoSuchKeyException
+    protected ReadingsKey(String text, String osisName, Key parent) throws NoSuchKeyException
     {
-        this.parent = parent;
+        super(text, osisName, parent);
 
         try
         {
-            date = DF.parse(text);
+            date = NAME_DF.parse(text);
         }
         catch (ParseException ex)
         {
@@ -59,31 +62,8 @@ public class ReadingsKey implements Key
      */
     protected ReadingsKey(Date date)
     {
+        super(NAME_DF.format(date), OSIS_DF.format(date));
         this.date = date;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Key#getText()
-     */
-    public String getName()
-    {
-        return DF.format(date);
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getName();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getParent()
-     */
-    public Key getParent()
-    {
-        return parent;
     }
 
     /* (non-Javadoc)
@@ -136,11 +116,6 @@ public class ReadingsKey implements Key
     }
 
     /**
-     * The parent key
-     */
-    private Key parent;
-
-    /**
      * The day of the year for the readings
      */
     private Date date;
@@ -148,9 +123,10 @@ public class ReadingsKey implements Key
     /**
      * Date formatter
      */
-    private static final DateFormat DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
+    private static final DateFormat NAME_DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
+    private static final DateFormat OSIS_DF = new SimpleDateFormat("d.MMMM"); //$NON-NLS-1$
     static
     {
-        DF.setLenient(true);
+        NAME_DF.setLenient(true);
     }
 }

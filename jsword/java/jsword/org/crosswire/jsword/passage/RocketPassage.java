@@ -130,14 +130,14 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator verseIterator()
+    public Iterator iterator()
     {
         if (distinct != null)
         {
-            return distinct.verseIterator();
+            return distinct.iterator();
         }
 
-        return super.verseIterator();
+        return super.iterator();
     }
 
     /* (non-Javadoc)
@@ -182,14 +182,14 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
         if (ranged != null)
         {
-            return ranged.getVerseRangeAt(offset, restrict);
+            return ranged.getRangeAt(offset, restrict);
         }
 
-        return super.getVerseRangeAt(offset, restrict);
+        return super.getRangeAt(offset, restrict);
     }
 
     /* (non-Javadoc)

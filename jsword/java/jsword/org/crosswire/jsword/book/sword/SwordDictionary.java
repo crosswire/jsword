@@ -12,7 +12,6 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
 import org.jdom.Element;
@@ -153,7 +152,7 @@ public class SwordDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public KeyList getGlobalKeyList()
+    public Key getGlobalKeyList()
     {
         checkActive();
 
@@ -166,53 +165,57 @@ public class SwordDictionary extends AbstractBook
     public Key getKey(String text) throws NoSuchKeyException
     {
         checkActive();
+        DefaultKeyList reply = new DefaultKeyList();
 
         Key key = (Key) map.get(text);
-        if (key == null)
+        if (key != null)
         {
-            String keyName = null;
-            // So we need to find a matching key.
-
-            // First check for keys that match ignoring case
-            for (Iterator it = map.keySet().iterator(); it.hasNext();)
-            {
-                keyName = (String)it.next();
-                if (keyName.equalsIgnoreCase(text))
-                {
-                    return (Key) map.get(keyName);
-                }
-            }
-
-            // Next keys that start with the given text
-            for (Iterator it = map.keySet().iterator(); it.hasNext();)
-            {
-                keyName = (String)it.next();
-                if (keyName.startsWith(text))
-                {
-                    return (Key) map.get(keyName);
-                }
-            }
-
-            // Next try keys that contain the given text
-            for (Iterator it = map.keySet().iterator(); it.hasNext();)
-            {
-                keyName = (String)it.next();
-                if (keyName.indexOf(text) != -1)
-                {
-                    return (Key) map.get(keyName);
-                }
-            }
-
-            throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text });
+            reply.addAll(key);
+            return reply;
         }
 
-        return key;
+        // So we need to find a matching key.
+
+        // First check for keys that match ignoring case
+        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        {
+            String keyName = (String) it.next();
+            if (keyName.equalsIgnoreCase(text))
+            {
+                reply.addAll((Key) map.get(keyName));
+                return reply;
+            }
+        }
+
+        // Next keys that start with the given text
+        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        {
+            String keyName = (String)it.next();
+            if (keyName.startsWith(text))
+            {
+                reply.addAll((Key) map.get(keyName));
+                return reply;
+            }
+        }
+
+        // Next try keys that contain the given text
+        for (Iterator it = map.keySet().iterator(); it.hasNext();)
+        {
+            String keyName = (String) it.next();
+            if (keyName.indexOf(text) != -1)
+            {
+                reply.addAll((Key) map.get(keyName));
+                return reply;
+            }
+        }
+
+        throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text });
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public KeyList createEmptyKeyList()
+    public Key createEmptyKeyList()
     {
         return new DefaultKeyList();
     }
@@ -231,7 +234,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * The global key list
      */
-    private KeyList global;
+    private Key global;
 
     /**
      * Are we active
@@ -246,7 +249,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * So we can implement getIndex() easily
      */
-    private KeyList set = null;
+    private Key set = null;
 
     /**
      * To read the data from the disk

@@ -14,7 +14,7 @@ import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.Openness;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -92,11 +92,11 @@ public class Converter
             List bmds = root.getChildren(ELEMENT_METADATA);
             BookMetaData[] rbmds = new BookMetaData[bmds.size()];
             int i = 0;
-            
+
             for (Iterator it = bmds.iterator(); it.hasNext();)
             {
                 Element bmdele = (Element) it.next();
-            
+
                 String id = bmdele.getAttributeValue(ATTRIBUTE_ID);
 
                 String name = bmdele.getChildTextTrim(ELEMENT_NAME);
@@ -105,7 +105,7 @@ public class Converter
                 String openstr = bmdele.getChildTextTrim(ELEMENT_OPENNESS);
                 String licencestr = bmdele.getChildTextTrim(ELEMENT_LICENCE);
                 String typestr = bmdele.getChildTextTrim(ELEMENT_TYPE);
-                
+
                 BookType type = BookType.get(typestr);
 
                 Book book = new RemoteBook(remoter, driver, name, type, edition, pubstr, openstr, licencestr, speed);
@@ -115,7 +115,7 @@ public class Converter
 
                 rbmds[i++] = bmd;
             }
-            
+
             return rbmds;
         }
         catch (MalformedURLException ex)
@@ -192,7 +192,7 @@ public class Converter
      * </pre>
      * @param doc The document to convert
      */
-    public static KeyList convertDocumentToKeyList(Document doc, Book book) throws ConverterException
+    public static Key convertDocumentToKeyList(Document doc, Book book) throws ConverterException
     {
         String refstr = null;
 
@@ -200,10 +200,10 @@ public class Converter
         {
             Element root = doc.getRootElement();
             refstr = root.getChild(ELEMENT_REF).getTextTrim();
-            
-            KeyList keylist = new DefaultKeyList();
-            keylist.add(book.getKey(refstr));
-            return keylist;
+
+            Key key = new DefaultKeyList();
+            key.addAll(book.getKey(refstr));
+            return key;
         }
         catch (NoSuchKeyException ex)
         {
@@ -215,7 +215,7 @@ public class Converter
      * Reverse of convertDocumentToPassage().
      * @see Converter#convertDocumentToKeyList(Document, Book)
      */
-    public static Document convertKeyListToDocument(KeyList key)
+    public static Document convertKeyListToDocument(Key key)
     {
         Element root = new Element(ELEMENT_ROOT);
         Element temp = new Element(ELEMENT_REF);
@@ -307,7 +307,7 @@ public class Converter
             Element exce = doc.getRootElement();
             String message = exce.getChildTextTrim(ELEMENT_MESSAGE);
             typename = exce.getChildTextTrim(ELEMENT_TYPE);
-            
+
             Class type = Class.forName(typename);
             
             return new RemoterException(Msg.REMOTE_NOSUPPORT, new Object[] { message, type });

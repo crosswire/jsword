@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.search;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * The central interface to all searching.
@@ -42,5 +42,5 @@ public interface Parser
      * @param search The string to be searched for
      * @return The matching verses
      */
-    public KeyList search(Search search) throws BookException;
+    public Key search(Search search) throws BookException;
 }

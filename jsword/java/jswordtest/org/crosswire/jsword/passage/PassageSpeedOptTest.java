@@ -29,6 +29,6 @@ public class PassageSpeedOptTest extends PassageParentTst
 {
     public PassageSpeedOptTest(String s)
     {
-        super(s, PassageFactory.SPEED, true);
+        super(s, PassageKeyFactory.SPEED, true);
     }
 }

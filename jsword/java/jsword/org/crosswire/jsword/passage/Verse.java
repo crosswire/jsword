@@ -964,7 +964,7 @@ public final class Verse implements VerseBase, Comparable
         // to get "Gen 1"
         if (args.length > 0
             && Character.isDigit(args[0].charAt(args[0].length()-1))
-            && PassageUtil.containsLetter(args[0]))
+            && containsLetter(args[0]))
         {
             // This might make the code quicker (less array subscripting)
             // It certainly makes for more readable code.
@@ -1316,6 +1316,24 @@ public final class Verse implements VerseBase, Comparable
 
         // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
+    }
+
+    /**
+     * This is simply a convenience function to wrap Character.isLetter()
+     * @param text The string to be parsed
+     * @return true if the string contains letters
+     */
+    private static boolean containsLetter(String text)
+    {
+        for (int i=0; i<text.length(); i++)
+        {
+            if (Character.isLetter(text.charAt(i)))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -4,9 +4,10 @@ import java.util.LinkedList;
 
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.KeyFactory;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.jdom.Element;
 
 /**
@@ -51,12 +52,12 @@ public class CrossRefTagBuilder implements TagBuilder
                     String refstr = name.substring(2);
                     try
                     {
-                        Passage ref = PassageFactory.createPassage(refstr);
+                        Passage ref = (Passage) keyf.getKey(refstr);
                         seg.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, ref.getOSISName());
                     }
-                    catch (NoSuchVerseException ex)
+                    catch (NoSuchKeyException ex)
                     {
-                        DataPolice.report("unable to parse reference: "+refstr); //$NON-NLS-1$
+                        DataPolice.report("unable to parse reference: " + refstr); //$NON-NLS-1$
                     }
 
                     Element current = (Element) stack.get(0);
@@ -65,7 +66,7 @@ public class CrossRefTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         if (name.startsWith("Rx")) //$NON-NLS-1$
         {
             return new Tag()
@@ -76,7 +77,12 @@ public class CrossRefTagBuilder implements TagBuilder
                 }
             };
         }
-    
+
         return null;
-    }        
+    }
+
+    /**
+     * To convert strings into Biblical keys
+     */
+    protected KeyFactory keyf = new PassageKeyFactory();
 }

@@ -28,13 +28,13 @@ public interface KeyFactory
 {
     /**
      * Get a complete list of index entries.
-     * Create a KeyList that encompasses all of the known valid keys for the
+     * Create a Key that encompasses all of the known valid keys for the
      * given context. For a dictionary this will include all of the entries
      * in the dictionary, for a Bible this will probably include all the verses
      * in the Bible, but a commentary may well miss some out.
-     * @return A KeyList that includes all of the known Keys
+     * @return A Key that includes all of the known Keys
      */
-    public KeyList getGlobalKeyList();
+    public Key getGlobalKeyList();
 
     /**
      * Someone has typed in a reference to find, but we need a Key to actually
@@ -49,12 +49,12 @@ public interface KeyFactory
     public Key getKey(String name) throws NoSuchKeyException;
 
     /**
-     * Fetch an empty KeyList to which we can add Keys.
-     * Not all implementations of KeyList are able to hold any type of Key,
-     * It isn't reasonable to expect a KeyList of Bible verses (=Passage) to
+     * Fetch an empty Key to which we can add Keys.
+     * Not all implementations of Key are able to hold any type of Key,
+     * It isn't reasonable to expect a Key of Bible verses (=Passage) to
      * hold a dictionary Key. So each KeyFactory must be able to create you an
-     * empty KeyList to which you can safely add other Keys it generates.
-     * @return An empty KeyList that can hold other Keys from this factory.
+     * empty Key to which you can safely add other Keys it generates.
+     * @return An empty Key that can hold other Keys from this factory.
      */
-    public KeyList createEmptyKeyList();
+    public Key createEmptyKeyList();
 }

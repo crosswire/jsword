@@ -19,6 +19,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.SentanceUtil;
@@ -28,11 +29,10 @@ import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.PassageUtil;
+import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -82,7 +82,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#findKeyListe(org.crosswire.jsword.book.Search)
      */
-    public KeyList findKeyList(Search search) throws BookException
+    public Key findKeyList(Search search) throws BookException
     {
         checkActive();
 
@@ -122,7 +122,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
      */
-    public KeyList findWord(String word)
+    public Key findWord(String word)
     {
         checkActive();
 
@@ -151,7 +151,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             }
 
             // De-serialize
-            return PassageUtil.fromBinaryRepresentation(blob);
+            return PassageKeyFactory.fromBinaryRepresentation(blob);
         }
         catch (Exception ex)
         {
@@ -240,58 +240,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
-
-        // If we get an error reading a verse dont give up straight away
-        int errors = 0;
-
-        // loop through all the verses
-        int percent = -1;
-        for (Iterator it = WHOLE.verseIterator(); it.hasNext();)
-        {
-            Verse verse = (Verse) it.next();
-            try
-            {
-                int newpercent = PERCENT_READ * verse.getOrdinal() / BibleInfo.versesInBible();
-                if (percent != newpercent)
-                {
-                    percent = newpercent;
-                    job.setProgress(percent, Msg.FINDING_WORDS.toString(verse.getName()));
-                }
-
-                // loop through all the words in this verse
-                String text = book.getData(verse).getPlainText();
-                String[] words = SentanceUtil.getWords(text);
-                for (int i = 0; i < words.length; i++)
-                {
-                    // ensure there is a Passage for this word in the word/passage hashmap
-                    KeyList matches = (KeyList) matchmap.get(words[i]);
-                    if (matches == null)
-                    {
-                        matches = book.createEmptyKeyList();
-                        matchmap.put(words[i], matches);
-                    }
-
-                    // add this verse to this words passage
-                    matches.add(verse);
-                }
-
-                // This could take a long time ...
-                Thread.yield();
-                if (Thread.currentThread().isInterrupted())
-                {
-                    break;
-                }
-            }
-            catch (Exception ex)
-            {
-                errors++;
-                log.error("Error reading "+verse.getName()+" in "+book.getBookMetaData().getFullName()+": errors="+errors, ex); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                if (errors > MAX_ERRORS)
-                {
-                    throw new BookException(Msg.REPEATED_READ_ERROR, ex);
-                }
-            }
-        }
+        generateSearchIndexImpl(job, book.getGlobalKeyList(), matchmap);
 
         // For the progress listener
         int count = 0;
@@ -312,16 +261,12 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
         {
             String word = (String) it.next();
-            KeyList match = (KeyList) matchmap.get(word);
+            Key match = (Key) matchmap.get(word);
             recordFoundPassage(word, match);
 
             // Fire a progress event?
-            int newpercent = PERCENT_READ + (PERCENT_WRITE * count++ / words) / BibleInfo.versesInBible();
-            if (percent != newpercent)
-            {
-                percent = newpercent;
-                job.setProgress(percent, Msg.WRITING_WORDS.toString(word));
-            }
+            int percent = PERCENT_READ + (PERCENT_WRITE * count++ / words) / BibleInfo.versesInBible();
+            job.setProgress(percent, Msg.WRITING_WORDS.toString(word));
 
             // This could take a long time ...
             Thread.yield();
@@ -355,11 +300,65 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     }
 
     /**
+     * Dig down into a Key indexing as we go.
+     */
+    private void generateSearchIndexImpl(Job job, Key key, Map matchmap) throws BookException
+    {
+        // loop through all the verses
+
+        int percent = 0;
+        for (Iterator it = key.iterator(); it.hasNext();)
+        {
+            Key sublist = (Key) it.next();
+            if (sublist.canHaveChildren())
+            {
+                generateSearchIndexImpl(job, sublist, matchmap);
+            }
+            else
+            {
+                BookData data = book.getData(sublist);
+                String text = data.getPlainText();
+
+                String[] words = SentanceUtil.getWords(text);
+                for (int i = 0; i < words.length; i++)
+                {
+                    // ensure there is a Passage for this word in the word/passage hashmap
+                    Key matches = (Key) matchmap.get(words[i]);
+                    if (matches == null)
+                    {
+                        matches = book.createEmptyKeyList();
+                        matchmap.put(words[i], matches);
+                    }
+
+                    // add this verse to this words passage
+                    matches.addAll(sublist);
+                }
+
+                // report progress
+                if (sublist instanceof Passage)
+                {
+                    Verse verse = KeyUtil.getVerse(sublist);
+                    percent = PERCENT_READ * verse.getOrdinal() / BibleInfo.versesInBible();
+                }
+
+                job.setProgress(percent, Msg.FINDING_WORDS.toString(sublist.getName()));
+
+                // This could take a long time ...
+                Thread.yield();
+                if (Thread.currentThread().isInterrupted())
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Add to the main index data the references against this word
      * @param word The word to write
-     * @param keylist The references to the word
+     * @param key The references to the word
      */
-    private void recordFoundPassage(String word, KeyList keylist) throws BookException
+    private void recordFoundPassage(String word, Key key) throws BookException
     {
         if (word == null)
         {
@@ -368,8 +367,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
 
         try
         {
-            Passage ref = PassageUtil.getPassage(keylist);
-            byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
+            Passage ref = KeyUtil.getPassage(key);
+            byte[] buffer = PassageKeyFactory.toBinaryRepresentation(ref);
 
             Section section = new Section(dataRaf.getFilePointer(), buffer.length);
 
@@ -423,17 +422,6 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     private static final int PERCENT_READ = 60;
     private static final int PERCENT_WRITE = 39;
     // private static final int PERCENT_INDEX = 1;
-
-    /**
-     * When generating the index, how many tries before we give up?
-     */
-    private static final int MAX_ERRORS = 256;
-
-    /**
-     * The Whole Bible
-     * LATER(joe): this should be getIndex();
-     */
-    private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 
     /**
      * A simple class to hold an offset and length into the passages random

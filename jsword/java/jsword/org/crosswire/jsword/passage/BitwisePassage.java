@@ -108,7 +108,7 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator verseIterator()
+    public Iterator iterator()
     {
         return new VerseIterator();
     }
@@ -118,7 +118,7 @@ public class BitwisePassage extends AbstractPassage
      */
     public Iterator rangeIterator(int restrict)
     {
-        return new VerseRangeIterator(verseIterator(), restrict);
+        return new VerseRangeIterator(iterator(), restrict);
     }
 
     /* (non-Javadoc)
@@ -186,8 +186,10 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
      */
-    public void addAll(Passage that)
+    public void addAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
 
         if (that instanceof BitwisePassage)
@@ -211,8 +213,10 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
      */
-    public void removeAll(Passage that)
+    public void removeAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
 
         if (that instanceof BitwisePassage)
@@ -223,7 +227,7 @@ public class BitwisePassage extends AbstractPassage
         }
         else
         {
-            super.removeAll(that);
+            super.removeAll(key);
         }
 
         // we do an extra check here because the cost of calculating the
@@ -237,8 +241,10 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
-    public void retainAll(Passage that)
+    public void retainAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
 
         BitSet thatStore = null;
@@ -250,7 +256,7 @@ public class BitwisePassage extends AbstractPassage
         {
             thatStore = new BitSet(BibleInfo.versesInBible() + 1);
 
-            Iterator it = that.verseIterator();
+            Iterator it = that.iterator();
             while (it.hasNext())
             {
                 int ord = ((Verse) it.next()).getOrdinal();

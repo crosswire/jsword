@@ -44,9 +44,9 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void add(Key key)
+    public void addAll(Key key)
     {
         if (ignore)
         {
@@ -57,9 +57,9 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void remove(Key key)
+    public void removeAll(Key key)
     {
         if (ignore)
         {
@@ -70,9 +70,9 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retain(Key key)
+    public void retainAll(Key key)
     {
         if (ignore)
         {
@@ -83,7 +83,7 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key)
     {
@@ -91,15 +91,23 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#size()
+     * @see org.crosswire.jsword.passage.Key#isLeaf()
      */
-    public int size()
+    public boolean canHaveChildren()
     {
-        return ref.size();
+        return ref.canHaveChildren();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     * @see org.crosswire.jsword.passage.Key#size()
+     */
+    public int getChildCount()
+    {
+        return ref.getChildCount();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#iterator()
      */
     public Iterator iterator()
     {
@@ -107,7 +115,7 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index)
     {
@@ -115,7 +123,7 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that)
     {
@@ -229,17 +237,9 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
-        return ref.getVerseRangeAt(offset, restrict);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#verseIterator()
-     */
-    public Iterator verseIterator()
-    {
-        return ref.verseIterator();
+        return ref.getRangeAt(offset, restrict);
     }
 
     /* (non-Javadoc)
@@ -293,45 +293,6 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
-     */
-    public void addAll(Passage that)
-    {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
-     */
-    public void removeAll(Passage that)
-    {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
-     */
-    public void retainAll(Passage that)
-    {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public void clear()
@@ -345,22 +306,9 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
+     * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int verses, int restrict)
-    {
-        if (ignore)
-        {
-            return;
-        }
-
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#blur(int)
-     */
-    public void blur(int by)
+    public void blur(int by, int bounds)
     {
         if (ignore)
         {

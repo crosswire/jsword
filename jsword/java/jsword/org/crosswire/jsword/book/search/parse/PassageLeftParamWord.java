@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
@@ -44,9 +43,9 @@ public class PassageLeftParamWord implements ParamWord
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.search.parse.ParamWord#KeyList(org.crosswire.jsword.book.search.parse.Parser)
+     * @see org.crosswire.jsword.book.search.parse.ParamWord#Key(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public KeyList getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(LocalParser engine) throws BookException
     {
         Iterator it = engine.iterator();
         StringBuffer buff = new StringBuffer();
@@ -83,11 +82,8 @@ public class PassageLeftParamWord implements ParamWord
         try
         {
             Index index = engine.getIndex();
-            KeyList keylist = index.findWord(null);
-            Key key = index.getKey(buff.toString());
-            keylist.add(key);
 
-            return keylist;
+            return index.getKey(buff.toString());
         }
         catch (NoSuchKeyException ex)
         {

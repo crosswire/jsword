@@ -102,7 +102,7 @@ public class ConverterTest extends TestCase
     {
         /*
         Passage p1;
-        KeyList p2;
+        Key p2;
         Document doc;
 
         p1 = PassageFactory.createPassage("Gen 1:1"); //$NON-NLS-1$

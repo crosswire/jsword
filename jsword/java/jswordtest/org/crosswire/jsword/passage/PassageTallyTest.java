@@ -29,6 +29,6 @@ public class PassageTallyTest extends PassageParentTst
 {
     public PassageTallyTest(String s)
     {
-        super(s, PassageFactory.TALLY, false);
+        super(s, PassageKeyFactory.TALLY, false);
     }
 }

@@ -13,8 +13,8 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
-import org.crosswire.jsword.passage.PassageFactory;
+import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -95,64 +95,64 @@ public class Verifier
     /**
      * Read from the given source version to generate ourselves
      */
-    public void checkText(PrintWriter out)
-    {
-        checkText(WHOLE, out);
-    }
-
-    /**
-     * Read from the given source version to generate ourselves
-     */
-    public void checkText(KeyList ref, PrintWriter out)
+    public void checkText(Key key, PrintWriter out)
     {
         Job job = JobManager.createJob(Msg.VERIFY_START.toString(), Thread.currentThread(), false);
-        int percent = 0;
+
+        if (key == null)
+        {
+            key = book1.getGlobalKeyList();
+        }
 
         // For every verse in the Bible
-        Iterator it = ref.iterator();
-        while (it.hasNext())
+        int percent = 0;
+        for (Iterator it = key.iterator(); it.hasNext();)
         {
-            Key key = (Key) it.next();
+            Key subkey = (Key) it.next();
 
-            // Fire a progress event?
-            if (key instanceof Verse)
+            if (subkey.canHaveChildren())
             {
-                Verse verse = (Verse) key;
-                int newpercent = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
-                if (percent != newpercent)
-                {
-                    percent = newpercent;
-                    job.setProgress(percent, Msg.VERIFY_VERSES.toString());
-                }
+                checkText(subkey, out);
             }
-
-            try
+            else
             {
-                // Read the document from the first bible
-                BookData text1 = book1.getData(key);
-                BookData text2 = book2.getData(key);
-
-                // Check - this needs some work
-                if (!text1.equals(text2))
+                try
                 {
-                    out.println(Msg.VERIFY_VERSE.toString()+key);
-                    out.println(book1.getBookMetaData().getName()+": "+text1); //$NON-NLS-1$
-                    out.println(book2.getBookMetaData().getName()+": "+text2); //$NON-NLS-1$
+                    // Read the document from the first bible
+                    BookData text1 = book1.getData(subkey);
+                    BookData text2 = book2.getData(subkey);
+
+                    // Check - this needs some work
+                    if (!text1.equals(text2))
+                    {
+                        out.println(Msg.VERIFY_VERSE.toString() + subkey);
+                        out.println(book1.getBookMetaData().getName() + ": " + text1); //$NON-NLS-1$
+                        out.println(book2.getBookMetaData().getName() + ": " + text2); //$NON-NLS-1$
+                        out.println();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    out.println(Msg.VERIFY_VERSE.toString() + subkey);
+                    ex.printStackTrace(out);
                     out.println();
                 }
-            }
-            catch (Exception ex)
-            {
-                out.println(Msg.VERIFY_VERSE.toString() + key);
-                ex.printStackTrace(out);
-                out.println();
-            }
 
-            // This could take a long time ...
-            Thread.yield();
-            if (Thread.currentThread().isInterrupted())
-            {
-                break;
+                // Fire a progress event?
+                if (subkey instanceof Passage)
+                {
+                    Verse verse = KeyUtil.getVerse(key);
+                    percent = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
+                }
+
+                job.setProgress(percent, Msg.VERIFY_VERSES.toString());
+
+                // This could take a long time ...
+                Thread.yield();
+                if (Thread.currentThread().isInterrupted())
+                {
+                    break;
+                }
             }
         }
     }
@@ -260,11 +260,6 @@ public class Verifier
      * We have no way of knowing exactly how many words there are in a Version ...
      */
     public static final int GUESS_WORDS = 18500;
-
-    /**
-     * The Whole Bible
-     */
-    public static final KeyList WHOLE = PassageFactory.getWholeBiblePassage();
 
     /**
      * The first Bible that we are checking

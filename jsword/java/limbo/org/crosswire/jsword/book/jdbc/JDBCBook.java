@@ -27,7 +27,8 @@ import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
@@ -190,7 +191,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
-    public KeyList find(Search search) throws BookException
+    public Key find(Search search) throws BookException
     {
         try
         {
@@ -206,7 +207,7 @@ public class JDBCBook extends PassageAbstractBook implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#findWord(java.lang.String)
      */
-    public KeyList findWord(String word) throws BookException
+    public Key findWord(String word) throws BookException
     {
         if (word == null)
         {
@@ -217,14 +218,15 @@ public class JDBCBook extends PassageAbstractBook implements Index
 
         try
         {
-            KeyList retcode = createEmptyKeyList();
+            Key retcode = createEmptyKeyList();
 
             refStmt.setString(1, word);
             ResultSet rs = refStmt.executeQuery();
             while (rs.next())
             {
                 Verse temp = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
-                retcode.add(temp);
+                Key key = KeyUtil.getKeyList(temp, this);
+                retcode.addAll(key);
             }
 
             rs.close();

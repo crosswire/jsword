@@ -3,7 +3,6 @@ package org.crosswire.jsword.book.sword;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
  * A backend to read LZSS compressed data files.
@@ -65,7 +64,7 @@ public class LZSSBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#readIndex()
      */
-    public KeyList readIndex()
+    public Key readIndex()
     {
         // PENDING(joe): refactor to get rid of this
         return null;

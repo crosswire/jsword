@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 
 /**
@@ -43,7 +43,7 @@ public class StudyTool
     public Collection getTranslations(Book bible, String word) throws BookException
     {
         Search search = new Search(word, false);
-        KeyList key = bible.find(search);
+        Key key = bible.find(search);
         BookData data = bible.getData(key);
 
         Map reply = new HashMap();
@@ -92,7 +92,7 @@ public class StudyTool
     public Collection getTranslations(Book bible, Strongs number) throws BookException
     {
         Search search = new Search(number, false);
-        KeyList key = bible.find(search);
+        Key key = bible.find(search);
         BookData data = bible.getData(key);
 
         Map reply = new HashMap();

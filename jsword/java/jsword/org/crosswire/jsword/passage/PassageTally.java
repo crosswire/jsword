@@ -280,7 +280,7 @@ public class PassageTally extends AbstractPassage
      * Iterate through the verse elements in the current sort order
      * @return A verse Iterator
      */
-    public Iterator verseIterator()
+    public Iterator iterator()
     {
         if (order == ORDER_BIBLICAL)
         {
@@ -300,11 +300,11 @@ public class PassageTally extends AbstractPassage
     {
         if (order == ORDER_BIBLICAL)
         {
-            return new VerseRangeIterator(verseIterator(), restrict);
+            return new VerseRangeIterator(iterator(), restrict);
         }
         else
         {
-            return new OrderedVerseRangeIterator(verseIterator(), board);
+            return new OrderedVerseRangeIterator(iterator(), board);
         }
     }
 
@@ -345,7 +345,7 @@ public class PassageTally extends AbstractPassage
     {
         int reply = 0;
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             if (verse.equals(it.next()))
@@ -420,7 +420,7 @@ public class PassageTally extends AbstractPassage
      * Add/Increment these verses in the rankings
      * @param that The verses to add/increment
      */
-    public void addAll(Passage that)
+    public void addAll(Key that)
     {
         optimizeWrites();
 
@@ -438,7 +438,7 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            Iterator it = that.verseIterator();
+            Iterator it = that.iterator();
 
             while (it.hasNext())
             {
@@ -472,7 +472,7 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            Iterator it = that.verseIterator();
+            Iterator it = that.iterator();
 
             while (it.hasNext())
             {
@@ -490,10 +490,12 @@ public class PassageTally extends AbstractPassage
 
     /**
      * Remove/Decrement these verses in the rankings
-     * @param that The verses to remove/decrement
+     * @param key The verses to remove/decrement
      */
-    public void removeAll(Passage that)
+    public void removeAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
 
         if (that instanceof PassageTally)
@@ -509,7 +511,7 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            Iterator it = that.verseIterator();
+            Iterator it = that.iterator();
 
             while (it.hasNext())
             {
@@ -562,7 +564,7 @@ public class PassageTally extends AbstractPassage
 
         remainder = (Passage) this.clone();
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             Verse verse = (Verse) it.next();

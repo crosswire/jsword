@@ -13,7 +13,6 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.jdom.Document;
 import org.jdom.input.SAXHandler;
 
@@ -97,8 +96,8 @@ public class LocalRemoter implements Remoter
                 Search search = new Search(word, match);
                 search.setRestriction(range);
 
-                KeyList keylist = book.find(search);
-                return Converter.convertKeyListToDocument(keylist);
+                Key key = book.find(search);
+                return Converter.convertKeyListToDocument(key);
             }
             else
             {

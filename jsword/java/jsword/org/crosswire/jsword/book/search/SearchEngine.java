@@ -6,7 +6,7 @@ import org.crosswire.common.activate.Activatable;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * An interface that Bibles can use for help in becoming searchable.
@@ -47,7 +47,7 @@ public interface SearchEngine extends Activatable
      * @param search The text to search for
      * @return The references to the word
      */
-    public KeyList findKeyList(Search search) throws BookException;
+    public Key findKeyList(Search search) throws BookException;
 
     /**
      * Tidy up after yourself and remove all the files that make up any indexes

@@ -1,9 +1,8 @@
-
 package org.crosswire.jsword.passage;
 
-
 /**
- * A simple default implementation of the Key interface.
+ * A default implementation of KeyVisitor that does nothing, for use in
+ * inheritance where you want to save space by not overriding all methods.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,65 +25,19 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DefaultKey implements Key
+public class DefaultKeyVisitor implements KeyVisitor
 {
-    /**
-     * Default ctor
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
      */
-    public DefaultKey(String name)
+    public void visitLeaf(Key key)
     {
-        this.name = name;
-    }
-
-    /**
-     * Default ctor
-     */
-    public DefaultKey(String name, Key parent)
-    {
-        this.name = name;
-        this.parent = parent;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Key#getText()
+     * @see org.crosswire.jsword.passage.KeyVisitor#visitBranch(org.crosswire.jsword.passage.Key)
      */
-    public String getName()
+    public void visitBranch(Key key)
     {
-        return name;
     }
-
-    /**
-     * @return Returns the parent of this key
-     */
-    public Key getParent()
-    {
-        return parent;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getName();
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object obj)
-    {
-        DefaultKey that = (DefaultKey) obj;
-        return name.compareTo(that.name);
-    }
-
-    /**
-     * The parent of this key
-     */
-    private Key parent;
-
-    /**
-     * The string that this key represents
-     */
-    private String name;
 }

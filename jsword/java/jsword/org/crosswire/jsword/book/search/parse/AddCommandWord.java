@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * Alter the Passage by calling addAll with a
@@ -33,8 +33,8 @@ public class AddCommandWord implements CommandWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Parser, org.crosswire.jsword.passage.Passage)
      */
-    public void updatePassage(LocalParser engine, KeyList key) throws BookException
+    public void updatePassage(LocalParser engine, Key key) throws BookException
     {
-        key.add(engine.iteratePassage());
+        key.addAll(engine.iteratePassage());
     }
 }

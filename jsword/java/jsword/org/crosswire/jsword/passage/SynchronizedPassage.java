@@ -43,31 +43,31 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public synchronized void add(Key key)
+    public synchronized void addAll(Key key)
     {
-        ref.add(key);
+        ref.addAll(key);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public synchronized void remove(Key key)
+    public synchronized void removeAll(Key key)
     {
-        ref.remove(key);
+        ref.removeAll(key);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public synchronized void retain(Key key)
+    public synchronized void retainAll(Key key)
     {
-        ref.retain(key);
+        ref.retainAll(key);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public synchronized boolean contains(Key key)
     {
@@ -75,15 +75,23 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#size()
+     * @see org.crosswire.jsword.passage.Key#size()
      */
-    public synchronized int size()
+    public synchronized int getChildCount()
     {
-        return ref.size();
+        return ref.getChildCount();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     */
+    public boolean canHaveChildren()
+    {
+        return ref.canHaveChildren();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#iterator()
      */
     public synchronized Iterator iterator()
     {
@@ -91,7 +99,7 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public synchronized Key get(int index)
     {
@@ -99,7 +107,7 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public synchronized int indexOf(Key that)
     {
@@ -213,17 +221,9 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public synchronized VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public synchronized VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
-        return ref.getVerseRangeAt(offset, restrict);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#verseIterator()
-     */
-    public synchronized Iterator verseIterator()
-    {
-        return ref.verseIterator();
+        return ref.getRangeAt(offset, restrict);
     }
 
     /* (non-Javadoc)
@@ -267,30 +267,6 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
-     */
-    public synchronized void addAll(Passage that)
-    {
-        ref.addAll(that);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
-     */
-    public synchronized void removeAll(Passage that)
-    {
-        ref.removeAll(that);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
-     */
-    public synchronized void retainAll(Passage that)
-    {
-        ref.retainAll(that);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public synchronized void clear()
@@ -299,19 +275,11 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
+     * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public synchronized void blur(int verses, int restrict)
+    public synchronized void blur(int by, int bounds)
     {
-        ref.blur(verses, restrict);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#blur(int)
-     */
-    public synchronized void blur(int by)
-    {
-        ref.blur(by);
+        ref.blur(by, bounds);
     }
 
     /* (non-Javadoc)

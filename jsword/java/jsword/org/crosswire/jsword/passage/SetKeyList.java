@@ -8,7 +8,7 @@ import java.util.Set;
 import org.crosswire.common.util.Logger;
 
 /**
- * A KeyList that uses a Set of Keys as it's store of data.
+ * A Key that uses a Set of Keys as it's store of data.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -31,7 +31,7 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SetKeyList extends AbstractKeyList implements KeyList
+public class SetKeyList extends AbstractKeyList implements Key
 {
     /**
      * Simple ctor
@@ -70,15 +70,15 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void add(Key key)
+    public void addAll(Key key)
     {
         list.add(key);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#clear()
+     * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear()
     {
@@ -86,7 +86,7 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key)
     {
@@ -110,7 +110,7 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty()
     {
@@ -118,7 +118,7 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     * @see org.crosswire.jsword.passage.Key#iterator()
      */
     public Iterator iterator()
     {
@@ -126,23 +126,31 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void remove(Key key)
+    public void removeAll(Key key)
     {
         list.remove(key);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#size()
+     * @see org.crosswire.jsword.passage.Key#size()
      */
-    public int size()
+    public int getChildCount()
     {
         return list.size();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     */
+    public boolean canHaveChildren()
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index)
     {
@@ -150,7 +158,7 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that)
     {
@@ -166,9 +174,9 @@ public class SetKeyList extends AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by)
+    public void blur(int by, int bounds)
     {
         log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
     }

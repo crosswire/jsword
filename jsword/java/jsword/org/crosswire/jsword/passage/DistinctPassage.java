@@ -98,7 +98,7 @@ public class DistinctPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator verseIterator()
+    public Iterator iterator()
     {
         return store.iterator();
     }

@@ -12,7 +12,7 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.book.search.SearchEngineFactory;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -80,7 +80,7 @@ public abstract class AbstractBook implements Book
     {
         try
         {
-            URL url = Project.instance().getTempScratchSpace("sword-"+getBookMetaData().getInitials(), false); //$NON-NLS-1$
+            URL url = Project.instance().getTempScratchSpace(getBookMetaData().getDriverName() + "-" + getBookMetaData().getInitials(), false); //$NON-NLS-1$
             searcher = SearchEngineFactory.createSearchEngine(this, url);
         }
         catch (Exception ex)
@@ -93,7 +93,7 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#find(org.crosswire.jsword.book.Search)
      */
-    public KeyList find(Search match) throws BookException
+    public Key find(Search match) throws BookException
     {
         if (searcher != null)
         {
@@ -110,7 +110,7 @@ public abstract class AbstractBook implements Book
      */
     public final String toString()
     {
-        return ClassUtils.getShortClassName(getClass())+":"+getBookMetaData().toString(); //$NON-NLS-1$
+        return ClassUtils.getShortClassName(getClass()) + ":" + getBookMetaData().toString(); //$NON-NLS-1$
     }
 
     /**

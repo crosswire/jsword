@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * The Search Word for a Word to search for.
@@ -40,7 +40,7 @@ public class SubRightParamWord implements ParamWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public KeyList getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(LocalParser engine) throws BookException
     {
         throw new BookException(Msg.RIGHT_BRACKETS);
     }

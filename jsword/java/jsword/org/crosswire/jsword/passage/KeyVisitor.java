@@ -1,11 +1,7 @@
-package org.crosswire.jsword.book.sword;
-
-import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.Key;
+package org.crosswire.jsword.passage;
 
 /**
- * A generic way to read data from disk for later formatting.
+ * An interface for components wanting to visit all the nodes in a Key tree.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,26 +24,19 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface Backend extends Activatable
+public interface KeyVisitor
 {
     /**
-     * Initialise a Backend before use. This method needs to call addKey() a
-     * number of times on SwordDictionary
+     * We've found a leaf node in a Key tree, and are giving the visitor a
+     * change to do processing based on it.
+     * @param key The found leaf node.
      */
-    public Key readIndex();
+    public void visitLeaf(Key key);
 
     /**
-     * Get the bytes alotted for the given verse
-     * @param key The key to fetch
-     * @param charset the Java standard charset to convert the text into
-     * @return String The data for the verse in question
-     * @throws BookException If the data can not be read.
+     * We've found a branch node in a Key tree, and are giving the visitor a
+     * change to do processing based on it.
+     * @param key The found branch node.
      */
-    public String getRawText(Key key, String charset) throws BookException;
-    
-    /**
-     * Returns whether this Backend is implemented.
-     * @return true if this Backend is implemented.
-     */
-    public boolean isSupported();
+    public void visitBranch(Key key);
 }

@@ -25,10 +25,9 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.search.AbstractSearchEngine;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 
@@ -85,7 +84,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#findKeyList(org.crosswire.jsword.book.Search)
      */
-    public KeyList findKeyList(Search search) throws BookException
+    public Key findKeyList(Search search) throws BookException
     {
         checkActive();
 
@@ -193,35 +192,57 @@ public class LuceneSearchEngine extends AbstractSearchEngine
         // create argument set to true.
         IndexWriter writer = new IndexWriter(NetUtil.getAsFile(url), new StandardAnalyzer(), true);
 
-        int percent = -1;
-        for (Iterator it = WHOLE.verseIterator(); it.hasNext();)
-        {
-            Verse verse = (Verse) it.next();
-            Key key = book.getKey(verse.getName());
-            BookData data = book.getData(key);
-            Reader reader = new StringReader(data.getPlainText());
+        generateSearchIndexImpl(job, writer, book.getGlobalKeyList());
 
-            Document doc = new Document();
-            doc.add(Field.Text(FIELD_NAME, verse.getName()));
-            doc.add(Field.Text(FIELD_BODY, reader));
-
-            writer.addDocument(doc);
-
-            // report progress
-            int newpercent = 95 * verse.getOrdinal() / BibleInfo.versesInBible();
-            if (percent != newpercent)
-            {
-                percent = newpercent;
-                job.setProgress(percent, Msg.INDEXING.toString(verse.getName()));
-            }
-        }
-
-        job.setProgress(percent, Msg.OPTIMIZING.toString());
+        job.setProgress(95, Msg.OPTIMIZING.toString());
 
         writer.optimize();
         writer.close();
 
         loadIndexes();
+    }
+
+    /**
+     * Dig down into a Key indexing as we go.
+     */
+    private void generateSearchIndexImpl(Job job, IndexWriter writer, Key key) throws BookException, IOException
+    {
+        int percent = 0;
+        for (Iterator it = key.iterator(); it.hasNext();)
+        {
+            Key subkey = (Key) it.next();
+            if (subkey.canHaveChildren())
+            {
+                generateSearchIndexImpl(job, writer, subkey);
+            }
+            else
+            {
+                BookData data = book.getData(subkey);
+                Reader reader = new StringReader(data.getPlainText());
+
+                Document doc = new Document();
+                doc.add(Field.Text(FIELD_NAME, subkey.getName()));
+                doc.add(Field.Text(FIELD_BODY, reader));
+
+                writer.addDocument(doc);
+
+                // report progress
+                if (subkey instanceof Passage)
+                {
+                    Verse verse = KeyUtil.getVerse(key);
+                    percent = 95 * verse.getOrdinal() / BibleInfo.versesInBible();
+                }
+
+                job.setProgress(percent, Msg.INDEXING.toString(subkey.getName()));
+
+                // This could take a long time ...
+                Thread.yield();
+                if (Thread.currentThread().isInterrupted())
+                {
+                    break;
+                }
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -275,10 +296,4 @@ public class LuceneSearchEngine extends AbstractSearchEngine
      * The Lucene search engine
      */
     private Searcher searcher;
-
-    /**
-     * The Whole Bible
-     * LATER(joe): this should be getIndex();
-     */
-    private static final Passage WHOLE = PassageFactory.getWholeBiblePassage();
 }

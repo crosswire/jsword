@@ -1,9 +1,8 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * Book is the most basic store of textual data - It can retrieve data
@@ -63,5 +62,5 @@ public interface Book extends Activatable, KeyFactory
      * @param search The search spec.
      * @throws BookException If anything goes wrong with this method
      */
-    public KeyList find(Search search) throws BookException;
+    public Key find(Search search) throws BookException;
 }

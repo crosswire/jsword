@@ -5,6 +5,8 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.PassageAbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -71,7 +73,8 @@ public class SwordBook extends PassageAbstractBook
      */
     protected String getText(Verse verse) throws BookException
     {
-        String result = backend.getRawText(verse, sbmd.getModuleCharset());
+        Key key = KeyUtil.getKeyList(verse, this);
+        String result = backend.getRawText(key, sbmd.getModuleCharset());
 
         assert result != null;
         

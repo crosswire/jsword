@@ -4,7 +4,6 @@ import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
  * A test SearchParamWord
@@ -32,16 +31,13 @@ class FixtureParamWord implements ParamWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.Parser)
      */
-    public KeyList getKeyList(LocalParser engine)
+    public Key getKeyList(LocalParser engine)
     {
         try
         {
             Index index = engine.getIndex();
-            KeyList keylist = index.findWord(null);
-            Key key = index.getKey(ref);
-            keylist.add(key);
 
-            return keylist;
+            return index.getKey(ref);
         }
         catch (Exception ex)
         {

@@ -12,10 +12,9 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.passage.DefaultKey;
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 
 /**
  * An implementation KeyBackend to read RAW format files.
@@ -117,11 +116,11 @@ public class RawLDBackend implements Backend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.KeyBackend#readIndex()
      */
-    public KeyList readIndex()
+    public Key readIndex()
     {
         checkActive();
 
-        KeyList reply = new DefaultKeyList(sbmd.getName());
+        Key reply = new DefaultKeyList(null, sbmd.getName());
 
         int entrysize = OFFSETSIZE + datasize;
         long entries;
@@ -176,8 +175,8 @@ public class RawLDBackend implements Backend
                     keytitle = keytitle.substring(0, keytitle.length()-1);
                 }
                 Key key = new IndexKey(keytitle, offset, size, reply);
-                
-                reply.add(key);
+
+                reply.addAll(key);
             }
             catch (IOException ex)
             {
@@ -297,14 +296,14 @@ public class RawLDBackend implements Backend
     /**
      * A Key that knows where the data is in the real file.
      */
-    static class IndexKey extends DefaultKey
+    static class IndexKey extends DefaultLeafKeyList
     {
         /**
          * Setup with the key name and positions of data in the file
          */
         protected IndexKey(String text, long offset, int size, Key parent)
         {
-            super(text, parent);
+            super(text, text, parent);
 
             this.offset = offset;
             this.size = size;

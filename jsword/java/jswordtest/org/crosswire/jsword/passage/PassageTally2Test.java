@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.ByteArrayInputStream;
@@ -39,6 +38,11 @@ public class PassageTally2Test extends TestCase
     {
         super(s);
     }
+
+    /**
+     * How we create Passages
+     */
+    private static PassageKeyFactory keyf = new PassageKeyFactory();
 
     VerseRange gen11_1 = null;
     VerseRange gen11_2 = null;
@@ -82,9 +86,9 @@ public class PassageTally2Test extends TestCase
         exo23 = new Verse(2, 2, 3);
         exo3b = new Verse(2, 3, 11);
 
-        gen1_135 = PassageFactory.createPassage("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
-        gen123_1 = PassageFactory.createPassage("Gen 1:1, Gen 2:1, Gen 3:1"); //$NON-NLS-1$
-        gen1_157 = PassageFactory.createPassage("Gen 1:1, Gen 1:5, Gen 1:7"); //$NON-NLS-1$
+        gen1_135 = keyf.createPassage("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
+        gen123_1 = keyf.createPassage("Gen 1:1, Gen 2:1, Gen 3:1"); //$NON-NLS-1$
+        gen1_157 = keyf.createPassage("Gen 1:1, Gen 1:5, Gen 1:7"); //$NON-NLS-1$
 
         tally.setOrdering(PassageTally.ORDER_TALLY);
         empty.setOrdering(PassageTally.ORDER_TALLY);
@@ -161,7 +165,7 @@ public class PassageTally2Test extends TestCase
 
     public void testVerseIterator() throws Exception
     {
-        Iterator it = tally.verseIterator();
+        Iterator it = tally.iterator();
         assertTrue(it.hasNext());
         assertEquals(it.next(), new Verse("Gen 1:1")); //$NON-NLS-1$
         assertTrue(it.hasNext());
@@ -175,7 +179,7 @@ public class PassageTally2Test extends TestCase
         assertTrue(it.hasNext());
         assertEquals(it.next(), new Verse("Gen 3:1")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
-        it = empty.verseIterator();
+        it = empty.iterator();
         assertTrue(!it.hasNext());
     }
 
@@ -245,10 +249,22 @@ public class PassageTally2Test extends TestCase
         temp = (PassageTally) tally.clone();
         temp.add(new VerseRange("Gen 1:2-4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 2, 4, 7, 2:1, 3:1"); //$NON-NLS-1$
-        try { temp.add((Key) null); fail(); }
-        catch (NullPointerException ex) { }
-        try { temp.add((Verse) null); fail(); }
-        catch (NullPointerException ex) { }
+        try
+        {
+            temp.addAll((Key) null);
+            fail();
+        }
+        catch (NullPointerException ex)
+        {
+        }
+        try
+        {
+            temp.add((Verse) null);
+            fail();
+        }
+        catch (NullPointerException ex)
+        {
+        }
     }
 
     public void testUnAdd() throws Exception
@@ -265,7 +281,7 @@ public class PassageTally2Test extends TestCase
     public void testAddAll() throws Exception
     {
         temp = (PassageTally) tally.clone();
-        temp.addAll(PassageFactory.createPassage("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
+        temp.addAll(keyf.createPassage("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1"); //$NON-NLS-1$
     }
 

@@ -1,9 +1,6 @@
-
 package org.crosswire.jsword.book;
 
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
 
 /**
  * Search is a way of specifying what we are searching for.
@@ -110,7 +107,7 @@ public class Search
     /**
      * the whole Bible - ie no restrictions.
      */
-    private static final Passage UNRESTRICTED = PassageFactory.getWholeBiblePassage(); 
+    public static final Key UNRESTRICTED = null; 
 
     /**
      * default to no restrictions

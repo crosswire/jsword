@@ -253,7 +253,7 @@ public abstract class AbstractPassage implements Passage
     {
         int count = 0;
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             it.next();
@@ -288,7 +288,7 @@ public abstract class AbstractPassage implements Passage
         int current_book = 0;
         int book_count = 0;
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             Verse verse = (Verse) it.next();
@@ -312,7 +312,7 @@ public abstract class AbstractPassage implements Passage
         int current_chapter = 0;
         int chapter_count = 0;
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             Verse verse = (Verse) it.next();
@@ -336,7 +336,7 @@ public abstract class AbstractPassage implements Passage
 
         int verse_count = 0;
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             Verse verse = (Verse) it.next();
@@ -355,7 +355,7 @@ public abstract class AbstractPassage implements Passage
      */
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException
     {
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         Object retcode = null;
 
         for (int i=0; i<=offset; i++)
@@ -375,7 +375,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
+    public VerseRange getRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
         Iterator it = rangeIterator(restrict);
         Object retcode = null;
@@ -399,7 +399,7 @@ public abstract class AbstractPassage implements Passage
      */
     public Iterator rangeIterator(int restrict)
     {
-        return new VerseRangeIterator(verseIterator(), restrict);
+        return new VerseRangeIterator(iterator(), restrict);
     }
 
     /* (non-Javadoc)
@@ -415,7 +415,7 @@ public abstract class AbstractPassage implements Passage
         }
         else
         {
-            that_it = that.verseIterator();
+            that_it = that.iterator();
         }
 
         while (that_it.hasNext())
@@ -441,7 +441,7 @@ public abstract class AbstractPassage implements Passage
 
         remainder = (Passage) this.clone();
 
-        Iterator it = verseIterator();
+        Iterator it = iterator();
         while (it.hasNext())
         {
             i++;
@@ -518,8 +518,10 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
      */
-    public void addAll(Passage that)
+    public void addAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
@@ -532,7 +534,7 @@ public abstract class AbstractPassage implements Passage
         }
         else
         {
-            that_it = that.verseIterator();
+            that_it = that.iterator();
         }
 
         while (that_it.hasNext())
@@ -551,8 +553,10 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
      */
-    public void removeAll(Passage that)
+    public void removeAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
@@ -565,7 +569,7 @@ public abstract class AbstractPassage implements Passage
         }
         else
         {
-            that_it = that.verseIterator();
+            that_it = that.iterator();
         }
 
         while (that_it.hasNext())
@@ -582,16 +586,18 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retainAll(Passage that)
+    public void retainAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
         Passage temp = (Passage) this.clone();
-        Iterator it = temp.verseIterator();
+        Iterator it = temp.iterator();
 
         while (it.hasNext())
         {
@@ -741,67 +747,32 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
-     */
-    public void add(Key key)
-    {
-        Passage ref = PassageUtil.getPassage(key);
-        addAll(ref);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
-     */
-    public void remove(Key key)
-    {
-        Passage ref = PassageUtil.getPassage(key);
-        removeAll(ref);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
-     */
-    public void retain(Key key)
-    {
-        Passage ref = PassageUtil.getPassage(key);
-        retainAll(ref);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key)
     {
-        Passage ref = PassageUtil.getPassage(key);
+        Passage ref = KeyUtil.getPassage(key);
         return containsAll(ref);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     * @see org.crosswire.jsword.passage.Key#size()
      */
-    public void blur(int by)
-    {
-        blur(by, PassageUtil.getBlurRestriction());
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#size()
-     */
-    public int size()
+    public int getChildCount()
     {
         return countVerses();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     * @see org.crosswire.jsword.passage.Key#iterator()
      */
     public Iterator iterator()
     {
-        return verseIterator();
+        return iterator();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that)
     {
@@ -822,11 +793,20 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     */
+    public boolean canHaveChildren()
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index)
     {
-        return getVerseAt(index);
+        Key key = KeyUtil.getKeyList(getVerseAt(index), null);
+        return key;
     }
 
     /* (non-Javadoc)
@@ -1293,7 +1273,7 @@ public abstract class AbstractPassage implements Passage
             out.writeInt(BITWISE);
 
             BitSet store = new BitSet(BibleInfo.versesInBible());
-            Iterator it = verseIterator();
+            Iterator it = iterator();
             while (it.hasNext())
             {
                 Verse verse = (Verse) it.next();
@@ -1310,7 +1290,7 @@ public abstract class AbstractPassage implements Passage
             out.writeInt(countVerses());
 
             // write the verse ordinals in a loop
-            Iterator it = verseIterator();
+            Iterator it = iterator();
             while (it.hasNext())
             {
                 Verse verse = (Verse) it.next();

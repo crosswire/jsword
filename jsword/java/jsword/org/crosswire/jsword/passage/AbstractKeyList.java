@@ -2,10 +2,8 @@ package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
 
-import org.crosswire.common.util.Logger;
-
 /**
- * An implementation of some of the easier methods from KeyList.
+ * An implementation of some of the easier methods from Key.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -28,18 +26,18 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class AbstractKeyList implements KeyList
+public abstract class AbstractKeyList implements Key
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty()
     {
-        return size() == 0;
+        return getChildCount() == 0;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key)
     {
@@ -56,28 +54,27 @@ public abstract class AbstractKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retain(Key key)
+    public void retainAll(Key key)
     {
-        KeyList shared = new DefaultKeyList();
-        shared.add(key);
+        Key shared = new DefaultKeyList();
+        shared.addAll(key);
         retain(this, shared);
     }
 
     /**
      * Utility to remove all the keys from alter that are not in base
-     * @param alter The keylist to remove keys from
-     * @param base The check keylist
+     * @param alter The key to remove keys from
+     * @param base The check key
      */
-    protected static void retain(KeyList alter, KeyList base)
+    protected static void retain(Key alter, Key base)
     {
         for (Iterator it = alter.iterator(); it.hasNext();)
         {
-            Key key = (Key) it.next();
-            if (key instanceof KeyList)
+            Key sublist = (Key) it.next();
+            if (sublist.canHaveChildren())
             {
-                KeyList sublist = (KeyList) key;
                 retain(sublist, base);
                 if (sublist.isEmpty())
                 {
@@ -86,7 +83,7 @@ public abstract class AbstractKeyList implements KeyList
             }
             else
             {
-                if (!base.contains(key))
+                if (!base.contains(sublist))
                 {
                     it.remove();
                 }
@@ -122,27 +119,54 @@ public abstract class AbstractKeyList implements KeyList
             return name;
         }
 
-        StringBuffer buffer = new StringBuffer();
-
-        for (Iterator it = iterator(); it.hasNext();)
+        final StringBuffer buffer = new StringBuffer();
+        KeyUtil.visit(this, new DefaultKeyVisitor()
         {
-            Key key = (Key) it.next();
-            String keyname = key.getName();
-
-            if (keyname.indexOf(',') != -1)
+            public void visitLeaf(Key key)
             {
-                log.warn("getName() will break because a key contains the , char"); //$NON-NLS-1$
+                buffer.append(key.getName());
+                buffer.append(PassageConstants.REF_PREF_DELIM);
             }
+        });
 
-            buffer.append(keyname);
-
-            if (it.hasNext())
-            {
-                buffer.append(", "); //$NON-NLS-1$
-            }
+        String reply = buffer.toString();
+        if (reply.length() > 0)
+        {
+            // strip off the final ", "
+            reply = reply.substring(0, reply.length() - PassageConstants.REF_PREF_DELIM.length());
         }
 
-        return buffer.toString();
+        return reply;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOSISName()
+     */
+    public String getOSISName()
+    {
+        if (osisName != null)
+        {
+            return osisName;
+        }
+
+        final StringBuffer buffer = new StringBuffer();
+        KeyUtil.visit(this, new DefaultKeyVisitor()
+        {
+            public void visitLeaf(Key key)
+            {
+                buffer.append(key.getOSISName());
+                buffer.append(PassageConstants.REF_OSIS_DELIM);
+            }
+        });
+
+        String reply = buffer.toString();
+        if (reply.length() > 0)
+        {
+            // strip off the final ", "
+            reply = reply.substring(0, reply.length() - PassageConstants.REF_OSIS_DELIM.length());
+        }
+
+        return reply;
     }
 
     /* (non-Javadoc)
@@ -150,7 +174,7 @@ public abstract class AbstractKeyList implements KeyList
      */
     public int compareTo(Object obj)
     {
-        KeyList that = (KeyList) obj;
+        Key that = (Key) obj;
 
         Key thisfirst = (Key) this.iterator().next();
         Key thatfirst = (Key) that.iterator().next();
@@ -178,10 +202,13 @@ public abstract class AbstractKeyList implements KeyList
         return thisfirst.compareTo(thatfirst);
     }
 
+    /**
+     * The common user visible name for this work
+     */
     private String name;
 
     /**
-     * The log stream
+     * The OSIS ID attribute
      */
-    private static Logger log = Logger.getLogger(AbstractKeyList.class);
+    private String osisName;
 }

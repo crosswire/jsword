@@ -27,7 +27,7 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface VerseBase extends Cloneable, Comparable, Serializable, Key
+public interface VerseBase extends Cloneable, Comparable, Serializable
 {
     /**
      * Translate the Passage into a human readable string

@@ -2,11 +2,10 @@ package org.crosswire.jsword.book.stub;
 
 import java.util.Iterator;
 
-import org.crosswire.jsword.passage.DefaultKey;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
@@ -40,8 +39,8 @@ public class StubDictionaryKeyFactory implements KeyFactory
      */
     public StubDictionaryKeyFactory()
     {
-        set.add(KEY_STUB);
-        set.add(KEY_IMPL);
+        set.addAll(KEY_STUB);
+        set.addAll(KEY_IMPL);
     }
 
     /* (non-Javadoc)
@@ -49,12 +48,15 @@ public class StubDictionaryKeyFactory implements KeyFactory
      */
     public Key getKey(String name) throws NoSuchKeyException
     {
+        DefaultKeyList reply = new DefaultKeyList();
+
         for (Iterator it = set.iterator(); it.hasNext();)
         {
             Key key = (Key) it.next();
             if (key.getName().equals(name))
             {
-                return key;
+                reply.addAll(key);
+                return reply;
             }
         }
 
@@ -64,7 +66,7 @@ public class StubDictionaryKeyFactory implements KeyFactory
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public KeyList getGlobalKeyList()
+    public Key getGlobalKeyList()
     {
         return set;
     }
@@ -72,12 +74,14 @@ public class StubDictionaryKeyFactory implements KeyFactory
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public KeyList createEmptyKeyList()
+    public Key createEmptyKeyList()
     {
         return new DefaultKeyList();
     }
 
-    private KeyList set = new DefaultKeyList("Stub Dictionary"); //$NON-NLS-1$
-    private static final DefaultKey KEY_IMPL = new DefaultKey("implementation"); //$NON-NLS-1$
-    private static final DefaultKey KEY_STUB = new DefaultKey("stub"); //$NON-NLS-1$
+    private Key set = new DefaultKeyList(null, "Stub Dictionary"); //$NON-NLS-1$
+
+    private static final DefaultLeafKeyList KEY_IMPL = new DefaultLeafKeyList("implementation", "implementation"); //$NON-NLS-1$ //$NON-NLS-2$
+
+    private static final DefaultLeafKeyList KEY_STUB = new DefaultLeafKeyList("stub", "stub"); //$NON-NLS-1$ //$NON-NLS-2$
 }

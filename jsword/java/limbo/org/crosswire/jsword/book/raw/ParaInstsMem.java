@@ -6,7 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 
@@ -62,7 +63,7 @@ public class ParaInstsMem extends InstsMem
      */
     public void init()
     {
-        keylist = raw.createEmptyKeyList();
+        key = raw.createEmptyKeyList();
     }
 
     /* (non-Javadoc)
@@ -80,7 +81,7 @@ public class ParaInstsMem extends InstsMem
 
         try
         {
-            keylist = (Passage) oin.readObject();
+            key = (Passage) oin.readObject();
         }
         catch (ClassNotFoundException ex)
         {
@@ -98,7 +99,7 @@ public class ParaInstsMem extends InstsMem
         ObjectOutputStream oout = new ObjectOutputStream(out);
 
         oout.writeBytes(RawConstants.SIG_PARA_INST);
-        oout.writeObject(keylist);
+        oout.writeObject(key);
 
         oout.close();
     }
@@ -112,11 +113,13 @@ public class ParaInstsMem extends InstsMem
     {
         if (para)
         {
-            keylist.add(verse);
+            Key temp = KeyUtil.getKeyList(verse, null);
+            key.addAll(temp);
         }
         else
         {
-            keylist.remove(verse);
+            Key temp = KeyUtil.getKeyList(verse, null);
+            key.removeAll(temp);
         }
     }
 
@@ -127,11 +130,12 @@ public class ParaInstsMem extends InstsMem
      */
     public boolean getPara(Verse verse)
     {
-        return keylist.contains(verse);
+        Key temp = KeyUtil.getKeyList(verse, null);
+        return key.contains(temp);
     }
 
     /**
      * The storage of the Para markers
      */
-    private KeyList keylist;
+    private Key key;
 }

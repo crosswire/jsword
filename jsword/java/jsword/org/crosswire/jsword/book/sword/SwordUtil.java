@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
@@ -56,20 +55,20 @@ public class SwordUtil
     {
         if (offset + size > raf.length())
         {
-            DataPolice.report("Need to reduce size to avoid EOFException. offset="+offset+" size="+size+" but raf.length="+raf.length()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            DataPolice.report("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + raf.length()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             size = (int) (raf.length() - offset);
         }
 
         if (size < 1)
         {
-            DataPolice.report("Nothing to read returning empty because size="+size); //$NON-NLS-1$
+            DataPolice.report("Nothing to read returning empty because size=" + size); //$NON-NLS-1$
             return new byte[0];
         }
 
         raf.seek(offset);
         byte[] read = new byte[size];
         raf.readFully(read);
-        
+
         return read;
     }
 
@@ -81,11 +80,11 @@ public class SwordUtil
      */
     protected static long decodeLittleEndian32(byte[] data, int offset)
     {
-        long byte1 = SwordUtil.un2complement(data[0+offset]);
-        long byte2 = SwordUtil.un2complement(data[1+offset]) << 8;
-        long byte3 = SwordUtil.un2complement(data[2+offset]) << 16;
-        long byte4 = SwordUtil.un2complement(data[3+offset]) << 24;
-    
+        long byte1 = SwordUtil.un2complement(data[0 + offset]);
+        long byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
+        long byte3 = SwordUtil.un2complement(data[2 + offset]) << 16;
+        long byte4 = SwordUtil.un2complement(data[3 + offset]) << 24;
+
         return byte4 | byte3 | byte2 | byte1;
     }
 
@@ -101,7 +100,7 @@ public class SwordUtil
 
         if (result > Integer.MAX_VALUE)
         {
-            log.warn("loss of precision converting to integer from "+result+" to "+((int) result)); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("loss of precision converting to integer from " + result + " to " + ((int) result)); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return (int) result;
@@ -114,9 +113,9 @@ public class SwordUtil
      * @return The decoded data
      */
     protected static int decodeLittleEndian16(byte[] data, int offset)
-    {        
-        int byte1 = SwordUtil.un2complement(data[0+offset]);
-        int byte2 = SwordUtil.un2complement(data[1+offset]) << 8;
+    {
+        int byte1 = SwordUtil.un2complement(data[0 + offset]);
+        int byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
 
         return byte2 | byte1;
     }
@@ -137,7 +136,7 @@ public class SwordUtil
      */
     protected static int findByte(byte[] data, byte sought)
     {
-        for (int i=0; i<data.length; i++)
+        for (int i = 0; i < data.length; i++)
         {
             if (data[i] == sought)
             {
@@ -159,18 +158,19 @@ public class SwordUtil
         // Create the decompressor and give it the data to compress
         Inflater decompressor = new Inflater();
         decompressor.setInput(compressed);
-    
+
         // Decompress the data
         byte[] uncompressed = new byte[endsize];
         int realendsize = decompressor.inflate(uncompressed);
-        
+
         if (!decompressor.finished() || realendsize != endsize)
         {
             throw new BookException(Msg.GZIP_FORMAT);
         }
-    
+
         return uncompressed;
     }
+
     /**
      * Transform a byte array into a string given the encoding.
      * If the encoding is bad then it just does it as a string.
@@ -200,13 +200,10 @@ public class SwordUtil
      * These are characters that are not valid in ISO-LATIN-1 (8859-1)
      * and in UTF-8 or are non-printing control characters in the range
      * of 0-32.
-     * @param data
-     * @param key
-     * @return
      */
     public static String clean(Key key, String data)
     {
-        char [] buffer = data.toCharArray();
+        char[] buffer = data.toCharArray();
         for (int i = 0; i < buffer.length; i++)
         {
             // between 0-32 only allow whitespace
@@ -217,12 +214,12 @@ public class SwordUtil
             if ((c >= 0 && c < 32 && c != 9 && c != 10 && c != 13) || c == 255 || (c >= 127 && c <= 159))
             {
                 buffer[i] = ' ';
-                // NOTE: Should this be a call to DataPolice???
-                log.debug(key.getName() + " has bad character " + (int)c + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                // NOTE(joe): Should this be a call to DataPolice???
+                log.debug(key.getName() + " has bad character " + (int) c + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
         return new String(buffer);
-	}
+    }
 
     /**
      * The log stream

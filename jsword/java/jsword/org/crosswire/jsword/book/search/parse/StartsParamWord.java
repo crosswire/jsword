@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.search.parse;
 import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * The Search Word for a Word to search for. The default if no other SearchWords
@@ -46,7 +46,7 @@ public class StartsParamWord implements ParamWord
      * somehow.
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getKeyList(org.crosswire.jsword.book.search.parse.LocalParser)
      */
-    public KeyList getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(LocalParser engine) throws BookException
     {
         String word = engine.iterateWord();
 

@@ -132,7 +132,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator verseIterator()
+    public Iterator iterator()
     {
         return new VerseIterator(rangeIterator(PassageConstants.RESTRICT_NONE));
     }
@@ -263,8 +263,10 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
-    public void retainAll(Passage that)
+    public void retainAll(Key key)
     {
+        Passage that = KeyUtil.getPassage(key);
+
         optimizeWrites();
 
         SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
@@ -276,7 +278,7 @@ public class RangedPassage extends AbstractPassage
         }
         else
         {
-            that_it = that.verseIterator();
+            that_it = that.iterator();
         }
 
         while (that_it.hasNext())

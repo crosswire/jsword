@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.search.parse;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * The Search Word for a Word to search for. This is the default if no other
@@ -59,7 +59,7 @@ public class DefaultWord implements ParamWord, CommandWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.ParamWord#getPassage(org.crosswire.jsword.book.search.parse.LocalParser)
      */
-    public KeyList getKeyList(LocalParser engine) throws BookException
+    public Key getKeyList(LocalParser engine) throws BookException
     {
         return engine.wordSearch(text);
     }
@@ -67,7 +67,7 @@ public class DefaultWord implements ParamWord, CommandWord
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.CommandWord#updatePassage(org.crosswire.jsword.book.search.parse.Parser, org.crosswire.jsword.passage.Passage)
      */
-    public void updatePassage(LocalParser engine, KeyList key) throws BookException
+    public void updatePassage(LocalParser engine, Key key) throws BookException
     {
         // We need to have DefaultWord pretend to be a CommandWord so that
         // seearches like "moses aaron" work. DefaultWord(moses) has to be a
@@ -76,11 +76,11 @@ public class DefaultWord implements ParamWord, CommandWord
         // done using us as a word.
         if (engine.iterator().hasNext())
         {
-            key.retain(engine.iteratePassage());
+            key.retainAll(engine.iteratePassage());
         }
         else
         {
-            key.retain(engine.wordSearch(text));
+            key.retainAll(engine.wordSearch(text));
         }
     }
 

@@ -34,6 +34,7 @@ class Msg extends MsgBase
     static final Msg FINDING_WORDS = new Msg("SerSearchEngine.FindingWords"); //$NON-NLS-1$
     static final Msg WRITING_WORDS = new Msg("SerSearchEngine.WritingWords"); //$NON-NLS-1$
     static final Msg SAVING = new Msg("SerSearchEngine.Saving"); //$NON-NLS-1$
+    static final Msg INTERRUPTED = new Msg("SerSearchEngine.Interrupted"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor 

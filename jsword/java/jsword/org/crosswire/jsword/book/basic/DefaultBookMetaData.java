@@ -256,7 +256,7 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public boolean isLeftToRight()
     {
-        // TODO: Do this correctly
+        // TODO(joe): Do this correctly
         return true;
     }
 

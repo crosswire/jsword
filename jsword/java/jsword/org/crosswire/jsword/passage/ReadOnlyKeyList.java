@@ -3,7 +3,7 @@ package org.crosswire.jsword.passage;
 import java.util.Iterator;
 
 /**
- * A read-only wrapper around any writable implementation of KeyList.
+ * A read-only wrapper around any writable implementation of Key.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -26,27 +26,35 @@ import java.util.Iterator;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class ReadOnlyKeyList implements KeyList
+public class ReadOnlyKeyList implements Key
 {
     /**
      * Simple ctor
      */
-    public ReadOnlyKeyList(KeyList keys, boolean ignore)
+    public ReadOnlyKeyList(Key keys, boolean ignore)
     {
         this.keys = keys;
         this.ignore = ignore;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#size()
+     * @see org.crosswire.jsword.passage.Key#size()
      */
-    public int size()
+    public int getChildCount()
     {
-        return keys.size();
+        return keys.getChildCount();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#isEmpty()
+     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     */
+    public boolean canHaveChildren()
+    {
+        return keys.canHaveChildren();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty()
     {
@@ -54,7 +62,7 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#contains(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key)
     {
@@ -62,7 +70,7 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#iterator()
+     * @see org.crosswire.jsword.passage.Key#iterator()
      */
     public Iterator iterator()
     {
@@ -70,9 +78,9 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#add(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void add(Key key)
+    public void addAll(Key key)
     {
         if (ignore)
         {
@@ -83,9 +91,9 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#remove(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void remove(Key key)
+    public void removeAll(Key key)
     {
         if (ignore)
         {
@@ -96,9 +104,9 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#retain(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retain(Key key)
+    public void retainAll(Key key)
     {
         if (ignore)
         {
@@ -109,7 +117,7 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#clear()
+     * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear()
     {
@@ -130,6 +138,14 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOSISName()
+     */
+    public String getOSISName()
+    {
+        return keys.getOSISName();
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object o)
@@ -138,7 +154,7 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#get(int)
+     * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index)
     {
@@ -146,7 +162,7 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#indexOf(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that)
     {
@@ -162,9 +178,9 @@ public class ReadOnlyKeyList implements KeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyList#blur(int)
+     * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by)
+    public void blur(int by, int bounds)
     {
         if (ignore)
         {
@@ -180,7 +196,7 @@ public class ReadOnlyKeyList implements KeyList
     private boolean ignore;
 
     /**
-     * The KeyList to which we proxy
+     * The Key to which we proxy
      */
-    private KeyList keys;
+    private Key keys;
 }

@@ -20,9 +20,8 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.KeyList;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -72,13 +71,13 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();
-        ResourceBundle prop =  ResourceBundle.getBundle(setname, defaultLocale, new CWClassLoader(ReadingsBookDriver.class));
+        ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, new CWClassLoader(ReadingsBookDriver.class));
 
         // We use 1972 because it is a leap year.
         GregorianCalendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
         while (greg.get(Calendar.YEAR) == 1972)
         {
-            String key = KEYBASE + (1+greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE); //$NON-NLS-1$
+            String key = KEYBASE + (1 + greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE); //$NON-NLS-1$
             String readings = ""; //$NON-NLS-1$
 
             try
@@ -147,7 +146,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                     VerseRange range = (VerseRange) it.next();
 
                     Element reading = OSISUtil.factory().createDiv();
-                    reading.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, OSISUtil.PROTOCOL_BIBLE+range.getOSISName());
+                    reading.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, OSISUtil.PROTOCOL_BIBLE + range.getOSISName());
                     reading.addContent(range.getName());
 
                     Element p = OSISUtil.factory().createP();
@@ -178,19 +177,21 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         StringBuffer buffer = new StringBuffer();
         return buffer.toString();
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
     public Key getKey(String name) throws NoSuchKeyException
     {
-        return new ReadingsKey(name, global);
+        DefaultKeyList reply = new DefaultKeyList();
+        reply.addAll(new ReadingsKey(name, name, global));
+        return reply;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public KeyList getGlobalKeyList()
+    public Key getGlobalKeyList()
     {
         return global;
     }
@@ -198,7 +199,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public KeyList createEmptyKeyList()
+    public Key createEmptyKeyList()
     {
         return new DefaultKeyList();
     }
@@ -206,7 +207,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * The global key list
      */
-    private KeyList global = null;
+    private Key global = null;
 
     /**
      * The base for the keys in the properties file.
@@ -216,7 +217,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * The store of keys and data
      */
-    private Map hash = new TreeMap(); 
+    private Map hash = new TreeMap();
 
     /**
      * The log stream

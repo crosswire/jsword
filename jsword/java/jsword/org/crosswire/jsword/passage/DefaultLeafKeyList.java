@@ -1,15 +1,9 @@
 package org.crosswire.jsword.passage;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-import org.crosswire.common.util.Logger;
 
 /**
- * A default implementation of Key.
- * 
- * <p>This implementation uses <tt>java.util.TreeSet</tt> to store keys.
+ * A simple default implementation of the Key interface.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -32,26 +26,29 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DefaultKeyList extends AbstractKeyList implements Key
+public class DefaultLeafKeyList implements Key
 {
     /**
-     * Simple ctor
+     * Default ctor
      */
-    public DefaultKeyList()
+    public DefaultLeafKeyList(String name, String osisName)
     {
+        this.name = name;
+        this.osisName = osisName;
     }
 
     /**
-     * Simple ctor
+     * Default ctor
      */
-    public DefaultKeyList(Key parent, String name)
+    public DefaultLeafKeyList(String name, String osisName, Key parent)
     {
+        this.name = name;
         this.parent = parent;
-        setName(name);
+        this.osisName = osisName;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren()
     {
@@ -59,79 +56,23 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.book.Key#getText()
      */
-    public int getChildCount()
+    public String getName()
     {
-        return keys.size();
+        return name;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#isEmpty()
+     * @see org.crosswire.jsword.passage.Key#getOSISName()
      */
-    public boolean isEmpty()
+    public String getOSISName()
     {
-        return keys.isEmpty();
+        return osisName;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
-     */
-    public boolean contains(Key key)
-    {
-        return keys.contains(key);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#iterator()
-     */
-    public Iterator iterator()
-    {
-        return keys.iterator();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
-     */
-    public void addAll(Key key)
-    {
-        keys.add(key);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
-     */
-    public void removeAll(Key key)
-    {
-        keys.remove(key);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#clear()
-     */
-    public void clear()
-    {
-        keys.clear();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#get(int)
-     */
-    public Key get(int index)
-    {
-        return (Key) keys.get(index);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
-     */
-    public int indexOf(Key that)
-    {
-        return keys.indexOf(that);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getParent()
+    /**
+     * @return Returns the parent of this key
      */
     public Key getParent()
     {
@@ -139,11 +80,123 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#size()
+     */
+    public int getChildCount()
+    {
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
+     */
+    public boolean isEmpty()
+    {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key)
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#iterator()
+     */
+    public Iterator iterator()
+    {
+        return new Iterator()
+        {
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            public boolean hasNext()
+            {
+                return false;
+            }
+
+            public Object next()
+            {
+                return null;
+            }
+        };
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+     */
+    public void addAll(Key key)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void removeAll(Key key)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+     */
+    public void retainAll(Key key)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#clear()
+     */
+    public void clear()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#get(int)
+     */
+    public Key get(int index)
+    {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+     */
+    public int indexOf(Key that)
+    {
+        return -1;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
     public void blur(int by, int bounds)
     {
-        log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return getName();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
+        return name.compareTo(that.name);
     }
 
     /**
@@ -152,12 +205,12 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     private Key parent;
 
     /**
-     * The store of Keys
+     * The human readable string that this key represents
      */
-    private List keys = new ArrayList();
+    private String name;
 
     /**
-     * The log stream
+     * The OSIS version of this Key
      */
-    private static final Logger log = Logger.getLogger(DefaultKeyList.class);
+    private String osisName;
 }

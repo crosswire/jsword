@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
@@ -45,14 +44,21 @@ public interface Index
 
     /**
      * For a given word find a list of references to it.
-     * If the <code>word</code> being searched for is null then an empty KeyList
+     * If the <code>word</code> being searched for is null then an empty Key
      * <b>MUST</b> be returned. Users of this index may use this functionality
      * to get empty KeyLists which they then use to aggregate other searches
      * done on this index.
      * @param word The text to search for
      * @return The references to the word
      */
-    public KeyList findWord(String word) throws BookException;
+    public Key findWord(String word) throws BookException;
 
+    /**
+     * An index must be able to create KeyLists for users in a similar way to
+     * the Book that it is indexing.
+     * @param name The string to convert to a Key
+     * @return A new Key representing the given string, if possible
+     * @throws NoSuchKeyException If the string can not be turned into a Key
+     */
     public Key getKey(String name) throws NoSuchKeyException;
 }
