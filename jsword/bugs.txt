@@ -16,9 +16,6 @@ GUI
 - merge dict/comment to form reference pane
 - Select first dict entry when picking new dict
 
-- test junit dialog (advanced)
-- put debug back in somewhere
-
 Modules
 - background sword (+others?) module loading/discovery
 - Locale/font support

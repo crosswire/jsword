@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.crosswire.common.progress.swing.JobsViewPane;
@@ -64,15 +63,15 @@ public class AboutPane
     public AboutPane(Desktop desktop)
     {
         // Object creation that must be postponed
-        act_debug = new DebugAction(desktop);
+        pnl_debug = new DebugPane(desktop);
 
-        init();
+        jbInit();
     }
 
     /**
      * Build the GUI components
      */
-    private void init()
+    private void jbInit()
     {
         URL url = getClass().getResource("/images/splash.png");
         if (url != null)
@@ -111,9 +110,6 @@ public class AboutPane
         pnl_props.add(scr_props, BorderLayout.CENTER);
         pnl_props.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        bar_debug.add(act_debug);
-        pnl_debug.add(bar_debug);
-        
         tab_main.add(pnl_splash, Project.instance().getName());
         tab_main.add(pnl_jobs, "Running Tasks");
         tab_main.add(pnl_hshelf, "Errors");
@@ -205,9 +201,7 @@ public class AboutPane
     private JobsViewPane pnl_jobs = new JobsViewPane();
     private JTabbedPane tab_main = new JTabbedPane();
     //private JPanel pnl_logs = new JPanel();
-    private Action act_debug;
-    private JToolBar bar_debug = new JToolBar();
-    private JPanel pnl_debug = new JPanel();
+    private DebugPane pnl_debug = null;
 
     private JDialog dlg_main;
     private JPanel pnl_main = new JPanel();

@@ -34,7 +34,8 @@
 
 <h3>Linux</h3>
 <ul>
-  <p>After downloading, cd to the download directory and type <code>sh ./jsword-0.9.6-linux-*.bin</code>.</p>
+  <p>After downloading, cd to the download directory and type:<br />
+  <code>sh ./jsword-0.9.6-linux-*.bin</code></p>
   <li>With bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linux-vm.bin">jsword-0.9.6-linux-vm.bin</a> (40Mb) </li>
   <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linux-novm.bin">jsword-0.9.6-linux-novm.bin</a> (7.3Mb) </li>
 </ul>
@@ -47,7 +48,8 @@
 
 <h3>Other</h3>
 <ul>
-  <p>After downloading type <code>java -jar jsword-0.9.6-generic-novm.jar</code>.</p>
+  <p>After downloading type:<br />
+  <code>java -jar jsword-0.9.6-generic-novm.jar</code></p>
   <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-generic-novm.jar">jsword-0.9.6-generic-novm.jar</a> (7.3Mb) </li>
 </ul>
 

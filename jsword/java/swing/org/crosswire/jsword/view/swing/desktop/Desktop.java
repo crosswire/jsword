@@ -50,6 +50,7 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.DisplayArea;
 import org.crosswire.jsword.view.swing.book.InnerDisplayPane;
 import org.crosswire.jsword.view.swing.book.SidebarPane;
+import org.crosswire.jsword.view.swing.book.SitesPane;
 import org.crosswire.jsword.view.swing.book.TitleChangedEvent;
 import org.crosswire.jsword.view.swing.book.TitleChangedListener;
 import org.jdom.JDOMException;
@@ -232,6 +233,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         //act_tools_generate = GeneratorPane.createOpenAction(this);
         //act_tools_diff = ComparePane.createOpenAction(this);
+        act_tools_sites = SitesPane.createOpenAction(this);
 
         act_help_contents = new HelpContentsAction(this);
         act_help_about = AboutPane.createOpenAction(this);
@@ -307,6 +309,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         //menu_tools.add(act_tools_generate).addMouseListener(bar_status);
         //menu_tools.add(act_tools_diff).addMouseListener(bar_status);
         //menu_tools.addSeparator();
+        menu_tools.add(act_tools_sites).addMouseListener(bar_status);
         menu_tools.add(act_tools_options).addMouseListener(bar_status);
 
         menu_help.setText("Help");
@@ -834,6 +837,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     //private Action act_tools_generate = null;
     //private Action act_tools_diff = null;
     private OptionsAction act_tools_options = null;
+    private Action act_tools_sites = null;
 
     private Action act_help_contents = null;
     private Action act_help_about = null;
