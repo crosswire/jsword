@@ -45,16 +45,16 @@ public interface PassageConstants
     public static final String[] CASES = { "lower", "Sentance", "UPPER", "MIXed", };
 
 
-    /** Don't restrict a blurring at all */
+    /** Don't stop at all */
     public static final int RESTRICT_NONE = 0;
 
-    /** Stop blurring at the edge of a book */
+    /** Stop at the edge of a book */
     public static final int RESTRICT_BOOK = 1;
 
-    /** Stop blurring at the edge of a chapter */
+    /** Stop at the edge of a chapter */
     public static final int RESTRICT_CHAPTER = 2;
 
-    /** Stop blurring at the edge of a chapter */
+    /** Stop at the edge of a chapter */
     public static final String[] RESTRICTIONS = { "None", "Book", "Chapter", };
 
 

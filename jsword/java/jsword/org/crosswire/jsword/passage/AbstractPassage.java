@@ -125,7 +125,7 @@ public abstract class AbstractPassage implements Passage
 
         StringBuffer retcode = new StringBuffer();
 
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(RESTRICT_NONE);
         Verse current = null;
         while (it.hasNext())
         {
@@ -133,7 +133,9 @@ public abstract class AbstractPassage implements Passage
             retcode.append(range.getName(current));
 
             if (it.hasNext())
+            {
                 retcode.append(REF_PREF_DELIM);
+            }
 
             current = range.getStart();
         }
@@ -148,14 +150,16 @@ public abstract class AbstractPassage implements Passage
     {
         StringBuffer retcode = new StringBuffer();
 
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(RESTRICT_NONE);
         while (it.hasNext())
         {
             VerseRange range = (VerseRange) it.next();
             retcode.append(range.getOSISName());
 
             if (it.hasNext())
+            {
                 retcode.append(REF_OSIS_DELIM);
+            }
         }
 
         return retcode.toString();
@@ -214,13 +218,13 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#countRanges()
+     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges()
+    public int countRanges(int restrict)
     {
         int count = 0;
 
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(restrict);
         while (it.hasNext())
         {
             it.next();
@@ -323,11 +327,11 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int)
+     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getVerseRangeAt(int offset) throws ArrayIndexOutOfBoundsException
+    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(restrict);
         Object retcode = null;
 
         for (int i=0; i<=offset; i++)
@@ -347,9 +351,9 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator()
      */
-    public Iterator rangeIterator()
+    public Iterator rangeIterator(int restrict)
     {
-        return new VerseRangeIterator(verseIterator());
+        return new VerseRangeIterator(verseIterator(), restrict);
     }
 
     /* (non-Javadoc)
@@ -361,7 +365,7 @@ public abstract class AbstractPassage implements Passage
 
         if (that instanceof RangedPassage)
         {
-            that_it = ((RangedPassage) that).rangeIterator();
+            that_it = ((RangedPassage) that).rangeIterator(RESTRICT_NONE);
         }
         else
         {
@@ -429,9 +433,9 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#trimRanges(int)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
      */
-    public Passage trimRanges(int count)
+    public Passage trimRanges(int count, int restrict)
     {
         optimizeWrites();
         raiseNormalizeProtection();
@@ -444,7 +448,7 @@ public abstract class AbstractPassage implements Passage
         {
             remainder = (Passage) this.clone();
 
-            Iterator it = rangeIterator();
+            Iterator it = rangeIterator(restrict);
             while (it.hasNext())
             {
                 i++;
@@ -492,7 +496,7 @@ public abstract class AbstractPassage implements Passage
 
         if (that instanceof RangedPassage)
         {
-            that_it = that.rangeIterator();
+            that_it = that.rangeIterator(RESTRICT_NONE);
         }
         else
         {
@@ -525,7 +529,7 @@ public abstract class AbstractPassage implements Passage
 
         if (that instanceof RangedPassage)
         {
-            that_it = that.rangeIterator();
+            that_it = that.rangeIterator(RESTRICT_NONE);
         }
         else
         {
@@ -608,7 +612,7 @@ public abstract class AbstractPassage implements Passage
         try
         {
             Passage temp = (Passage) this.clone();
-            Iterator it = temp.rangeIterator();
+            Iterator it = temp.rangeIterator(RESTRICT_NONE);
 
             while (it.hasNext())
             {
@@ -635,7 +639,7 @@ public abstract class AbstractPassage implements Passage
     {
         BufferedWriter bout = new BufferedWriter(out);
 
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(RESTRICT_NONE);
 
         while (it.hasNext())
         {
@@ -994,9 +998,10 @@ public abstract class AbstractPassage implements Passage
         /**
          * iterate, amalgumating Verses into VerseRanges
          */
-        protected VerseRangeIterator(Iterator it)
+        protected VerseRangeIterator(Iterator it, int restrict)
         {
             this.it = it;
+            this.restrict = restrict;
 
             if (it.hasNext())
             {
@@ -1052,6 +1057,7 @@ public abstract class AbstractPassage implements Passage
             Verse start = next_verse;
             Verse end = next_verse;
 
+            findnext:
             while (true)
             {
                 if (!it.hasNext())
@@ -1061,9 +1067,36 @@ public abstract class AbstractPassage implements Passage
                 }
 
                 next_verse = (Verse) it.next();
+
+                // If the next verse adjacent
                 if (!end.adjacentTo(next_verse))
                 {
                     break;
+                }
+
+                // Even if the next verse is adjacent we might want to break
+                // if we have moved into a new chapter/book
+                switch (restrict)
+                {
+                case RESTRICT_NONE:
+                    break;
+
+                case RESTRICT_BOOK:
+                    if (!end.isSameBook(next_verse))
+                    {
+                        break findnext;
+                    }
+                    break;
+
+                case RESTRICT_CHAPTER:
+                    if (!end.isSameChapter(next_verse))
+                    {
+                        break findnext;
+                    }
+                    break;
+
+                default:
+                    throw new LogicError();
                 }
                 end = next_verse;
             }
@@ -1071,14 +1104,25 @@ public abstract class AbstractPassage implements Passage
             next_range = new VerseRange(start, end);
         }
 
-        /** The Iterator that we are proxying to */
+        /**
+         * The Iterator that we are proxying to
+         */
         private Iterator it;
 
-        /** What is the next VerseRange to be considered */
+        /**
+         * What is the next VerseRange to be considered
+         */
         private VerseRange next_range = null;
 
-        /** What is the next Verse to be considered */
+        /**
+         * What is the next Verse to be considered
+         */
         private Verse next_verse = null;
+
+        /**
+         * Do we restrict ranges to not crossing chapter boundries
+         */
+        private int restrict = RESTRICT_NONE;
     }
 
     /**
@@ -1108,7 +1152,7 @@ public abstract class AbstractPassage implements Passage
 
         // the size in bits of teach storage method
         int bitwise_size = BibleInfo.versesInBible();
-        int ranged_size =  8 * countRanges();
+        int ranged_size =  8 * countRanges(RESTRICT_NONE);
         int distinct_size = 4 * countVerses();
 
         // if bitwise is equal smallest
@@ -1146,10 +1190,10 @@ public abstract class AbstractPassage implements Passage
         {
             // write the Passage type and the number of ranges
             out.writeInt(RANGED);
-            out.writeInt(countRanges());
+            out.writeInt(countRanges(RESTRICT_NONE));
 
             // write the verse ordinals in a loop
-            Iterator it = rangeIterator();
+            Iterator it = rangeIterator(RESTRICT_NONE);
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();
@@ -1239,22 +1283,34 @@ public abstract class AbstractPassage implements Passage
      */
     private static final Logger log = Logger.getLogger(AbstractPassage.class);
 
-    /** Serialization type constant for a BitWise layout */
+    /**
+     * Serialization type constant for a BitWise layout
+     */
     protected static final int BITWISE = 0;
 
-    /** Serialization type constant for a Distinct layout */
+    /**
+     * Serialization type constant for a Distinct layout
+     */
     protected static final int DISTINCT = 1;
 
-    /** Serialization type constant for a Ranged layout */
+    /**
+     * Serialization type constant for a Ranged layout
+     */
     protected static final int RANGED = 2;
 
-    /** Count of serializations methods */
+    /**
+     * Count of serializations methods
+     */
     protected static final int METHOD_COUNT = 3;
 
-    /** Support for change notification */
+    /**
+     * Support for change notification
+     */
     protected transient List listeners = new Vector();
 
-    /** The original string for picky users */
+    /**
+     * The original string for picky users
+     */
     protected transient String original_name = null;
 
     /**
@@ -1271,4 +1327,3 @@ public abstract class AbstractPassage implements Passage
      */
     protected transient int skip_normalization = 0;
 }
-

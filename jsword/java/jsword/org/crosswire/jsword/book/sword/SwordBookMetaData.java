@@ -157,10 +157,10 @@ public abstract class SwordBookMetaData implements BookMetaData
      */
     public String toString()
     {
-        return getInitials()+
-            "[moddrv="+SwordConstants.DRIVER_STRINGS[config.getModDrv()]+
-            //",compress="+SwordConstants.COMPRESSION_STRINGS[config.getCompressType()]+
-            "]";
+        return getInitials()
+            + "[moddrv="+SwordConstants.DRIVER_STRINGS[config.getModDrv()]
+            // + ",compress="+SwordConstants.COMPRESSION_STRINGS[config.getCompressType()]
+            + "]";
     }
 
     /* (non-Javadoc)

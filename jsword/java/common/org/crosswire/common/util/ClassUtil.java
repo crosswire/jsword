@@ -35,6 +35,13 @@ import org.apache.commons.lang.StringUtils;
 public class ClassUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private ClassUtil()
+    {
+    }
+
+    /**
      * This function finds the first matching filename for a Java class
      * file from the classpath, if none is found it returns null.
      */
@@ -108,25 +115,6 @@ public class ClassUtil
     {
         String classpath = System.getProperty("java.class.path", "");
         return findClasspathEntry(classname, classpath);
-    }
-
-    /**
-     * What is the short name of a class (e.g. String for java lang.String)
-     * @param clazz The class to find the short name of
-     * @return The short name
-     */
-    public static String getShortName(Class clazz)
-    {
-        String longname = clazz.getName();
-        int lastdot = longname.lastIndexOf('.');
-        if (lastdot == -1)
-        {
-            return longname;
-        }
-        else
-        {
-            return longname.substring(lastdot+1);
-        }
     }
 
     /**

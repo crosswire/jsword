@@ -127,7 +127,7 @@ public final class VerseRange implements VerseBase
                 break;
 
             case ACCURACY_NUMBER_ONLY:
-                if (basis.isChapter())
+                if (basis.isWholeChapter())
                 {
                     // This should be ACCURACY_CHAPTER_ONLY if it existed
                     int book = basis.getStart().getBook();
@@ -409,7 +409,7 @@ public final class VerseRange implements VerseBase
                     // "Gen 1, 3-5" probably means chapters, but
                     // "Gen 1:1, 3-5" probably means verses.
                     // also "Gen, 3-5" might mean "Gen, Num-Deu" but I think we can ignore that for now
-                    if (basis.isChapter())
+                    if (basis.isWholeChapter())
                     {
                         // This should be ACCURACY_CHAPTER_ONLY if it existed
                         int book = basis.getStart().getBook();
@@ -603,7 +603,9 @@ public final class VerseRange implements VerseBase
     public VerseRange(Verse start, Verse end)
     {
         if (start == null || end == null)
+        {
             throw new NullPointerException();
+        }
 
         this.original_name = null;
 
@@ -813,7 +815,7 @@ public final class VerseRange implements VerseBase
             if (start_book != end_book)
             {
                 // This range is exactly a whole book
-                if (isBooks())
+                if (isWholeBooks())
                 {
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
@@ -824,7 +826,7 @@ public final class VerseRange implements VerseBase
                 }
 
                 // If this range is exactly a whole chapter
-                if (isChapters())
+                if (isWholeChapters())
                 {
                     // Just report book and chapter names
                     return BibleInfo.getShortBookName(start_book)
@@ -837,7 +839,7 @@ public final class VerseRange implements VerseBase
             }
 
             // This range is exactly a whole book
-            if (isBook())
+            if (isWholeBook())
             {
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
@@ -849,7 +851,7 @@ public final class VerseRange implements VerseBase
             if (start_chapter != end_chapter)
             {
                 // If this range is a whole number of chapters
-                if (isChapters())
+                if (isWholeChapters())
                 {
                     // Just report the name of the book and the chapters
                     return BibleInfo.getShortBookName(start_book)
@@ -863,7 +865,7 @@ public final class VerseRange implements VerseBase
             }
 
             // If this range is exactly a whole chapter
-            if (isChapter())
+            if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
                 return BibleInfo.getShortBookName(start_book)
@@ -910,7 +912,7 @@ public final class VerseRange implements VerseBase
             if (start_book != end_book)
             {
                 // This range is exactly a whole book
-                if (isBooks())
+                if (isWholeBooks())
                 {
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
@@ -921,7 +923,7 @@ public final class VerseRange implements VerseBase
                 }
 
                 // If this range is exactly a whole chapter
-                if (isChapters())
+                if (isWholeChapters())
                 {
                     // Just report book and chapter names
                     return BibleInfo.getOSISName(start_book)
@@ -934,7 +936,7 @@ public final class VerseRange implements VerseBase
             }
 
             // This range is exactly a whole book
-            if (isBook())
+            if (isWholeBook())
             {
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
@@ -946,7 +948,7 @@ public final class VerseRange implements VerseBase
             if (start_chapter != end_chapter)
             {
                 // If this range is a whole number of chapters
-                if (isChapters())
+                if (isWholeChapters())
                 {
                     // Just report the name of the book and the chapters
                     return BibleInfo.getOSISName(start_book)
@@ -960,7 +962,7 @@ public final class VerseRange implements VerseBase
             }
 
             // If this range is exactly a whole chapter
-            if (isChapter())
+            if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
                 return BibleInfo.getOSISName(start_book)
@@ -1021,13 +1023,53 @@ public final class VerseRange implements VerseBase
     }
 
     /**
-     * Get a copy of ourselves. Points to note:
-     *   Call clone() not new() on member Objects, and on us.
-     *   Do not use Copy Constructors! - they do not inherit well.
-     *   Think about this needing to be synchronized
-     *   If this is not cloneable then writing cloneable children is harder
-     * @return A complete copy of ourselves
-     * @exception java.lang.CloneNotSupportedException We don't do this but our kids might
+     * How many chapters in this range
+     * @return The number of chapters. Always >= 1.
+     */
+    public int getChapterCount()
+    {
+        int startbook = start.getBook();
+        int startchap = start.getChapter();
+        int endbook = end.getBook();
+        int endchap = end.getChapter();
+
+        if (startbook == endbook)
+        {
+            return endchap - startchap + 1;
+        }
+
+        try
+        {
+            // So we are going to have to count up chapters from start to end
+            int total = BibleInfo.chaptersInBook(startbook) - startchap;
+            for (int b = startbook+1; b<endbook; b++)
+            {
+                total += BibleInfo.chaptersInBook(b);
+            }
+            total += endchap;
+            
+            return total;
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
+    }
+
+    /**
+     * How many books in this range
+     * @return The number of books. Always >= 1.
+     */
+    public int getBookCount()
+    {
+        int startbook = start.getBook();
+        int endbook = end.getBook();
+
+        return endbook - startbook + 1;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
      */
     public Object clone() throws CloneNotSupportedException
     {
@@ -1042,27 +1084,36 @@ public final class VerseRange implements VerseBase
         return copy;
     }
 
-    /**
-     * Is this Object equal to us. Points to note:
-     *   If you override equals(), you must override hashCode() too.
-     *   If you are doing this it is a good idea to be immutable.
-     * @param obj The thing to test against
-     * @return True/False is we are or are not equal to obj
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj)
     {
         // Since this can not be null
-        if (obj == null) return false;
+        if (obj == null)
+        {
+            return false;
+        }
 
         // Check that that is the same as this
         // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass())) return false;
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
 
         VerseRange vr = (VerseRange) obj;
 
         // The real tests
-        if (!vr.getStart().equals(getStart())) return false;
-        if (vr.getVerseCount() != getVerseCount()) return false;
+        if (!vr.getStart().equals(getStart()))
+        {
+            return false;
+        }
+
+        if (vr.getVerseCount() != getVerseCount())
+        {
+            return false;
+        }
 
         // We don't really need to check this one too.
         //if (!vr.getEnd().equals(getEnd())) return false;
@@ -1070,30 +1121,16 @@ public final class VerseRange implements VerseBase
         return true;
     }
 
-    /**
-     * The hashing number is currently calculated using the start ordinal
-     * in the upper 16 bits, and the verse_count in the lower.
-     * <p><b>Note that this may change and should not be relied upon</b>
-     * Use getStart().getOrdinal() and so on to get that kind of info.
-     * <p>The news from this however is that sorting by hashCode() is
-     * currently the same as sorting using compareTo().
-     * @return The hashing number
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
         return (start.getOrdinal() << 16) + verse_count;
     }
 
-    /**
-     * Compare initially using the first element in a VerseRange. If the
-     * starting verses are the same then sort according to length, shortest
-     * first so:
-     * <tt>Gen 1:1 &lt; Gen 1:1-2 &lt; Gen 1:1-26 &lt; Gen 1:2</tt>
-     * <p>Note that this compares Verse("Gen 1:1") = VerseRange("Gen 1:1")
-     * I'm not sure if this is 100% pucka, but it doesn't seem to cause any
-     * problems.
-     * @param obj The thing to compare against
-     * @return 1 means he is earlier than me, -1 means he is later ...
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object obj)
     {
@@ -1109,15 +1146,29 @@ public final class VerseRange implements VerseBase
         }
 
         int start_compare = getStart().compareTo(that);
-        if (start_compare != 0) return start_compare;
+        if (start_compare != 0)
+        {
+            return start_compare;
+        }
 
         // So the start verses are the same, but the Verse(Range)s may not
         // be equal() since they have lengths
         int that_length = 1;
-        if (obj instanceof VerseRange) that_length = ((VerseRange) obj).getVerseCount();
+        if (obj instanceof VerseRange)
+        {
+            that_length = ((VerseRange) obj).getVerseCount();
+        }
 
-        if (that_length == getVerseCount()) return 0;
-        if (that_length < getVerseCount()) return 1;
+        if (that_length == getVerseCount())
+        {
+            return 0;
+        }
+
+        if (that_length < getVerseCount())
+        {
+            return 1;
+        }
+
         return -1;
     }
 
@@ -1139,10 +1190,16 @@ public final class VerseRange implements VerseBase
         int this_end = getEnd().getOrdinal();
 
         // if that starts inside or is next to this we are adjacent.
-        if (that_start >= this_start-1 && that_start <= this_end+1) return true;
+        if (that_start >= this_start - 1 && that_start <= this_end + 1)
+        {
+            return true;
+        }
 
         // if this starts inside or is next to that we are adjacent.
-        if (this_start >= that_start-1 && this_start <= that_end+1) return true;
+        if (this_start >= that_start - 1 && this_start <= that_end + 1)
+        {
+            return true;
+        }
 
         // otherwise we're not adjacent
         return false;
@@ -1166,10 +1223,16 @@ public final class VerseRange implements VerseBase
         int this_end = getEnd().getOrdinal();
 
         // if that starts inside this we are adjacent.
-        if (that_start >= this_start && that_start <= this_end) return true;
+        if (that_start >= this_start && that_start <= this_end)
+        {
+            return true;
+        }
 
         // if this starts inside that we are adjacent.
-        if (this_start >= that_start && this_start <= that_end) return true;
+        if (this_start >= that_start && this_start <= that_end)
+        {
+            return true;
+        }
 
         // otherwise we're not adjacent
         return false;
@@ -1185,8 +1248,15 @@ public final class VerseRange implements VerseBase
      */
     public boolean contains(Verse that)
     {
-        if (start.compareTo(that) == 1) return false;
-        if (end.compareTo(that) == -1) return false;
+        if (start.compareTo(that) == 1)
+        {
+            return false;
+        }
+
+        if (end.compareTo(that) == -1)
+        {
+            return false;
+        }
 
         return true;
     }
@@ -1201,8 +1271,15 @@ public final class VerseRange implements VerseBase
      */
     public boolean contains(VerseRange that)
     {
-        if (start.compareTo(that.getStart()) == 1) return false;
-        if (end.compareTo(that.getEnd()) == -1) return false;
+        if (start.compareTo(that.getStart()) == 1)
+        {
+            return false;
+        }
+
+        if (end.compareTo(that.getEnd()) == -1)
+        {
+            return false;
+        }
 
         return true;
     }
@@ -1211,11 +1288,22 @@ public final class VerseRange implements VerseBase
      * Does this range represent exactly one chapter, no more or less.
      * @return true if we are exactly one chapter.
      */
-    public boolean isChapter()
+    public boolean isWholeChapter()
     {
-        if (!start.isStartOfChapter()) return false;
-        if (!end.isEndOfChapter()) return false;
-        if (!start.isSameChapter(end)) return false;
+        if (!start.isStartOfChapter())
+        {
+            return false;
+        }
+
+        if (!end.isEndOfChapter())
+        {
+            return false;
+        }
+
+        if (!start.isSameChapter(end))
+        {
+            return false;
+        }
 
         return true;
     }
@@ -1224,23 +1312,60 @@ public final class VerseRange implements VerseBase
      * Does this range represent a number of whole chapters
      * @return true if we are a whole number of chapters.
      */
-    public boolean isChapters()
+    public boolean isWholeChapters()
     {
-        if (!start.isStartOfChapter()) return false;
-        if (!end.isEndOfChapter()) return false;
+        if (!start.isStartOfChapter())
+        {
+            return false;
+        }
+
+        if (!end.isEndOfChapter())
+        {
+            return false;
+        }
 
         return true;
+    }
+
+    /**
+     * Does this range occupy more than one chapter;
+     * @return true if we occupy 2 or more chapters
+     */
+    public boolean isMultipleChapters()
+    {
+        if (start.getBook() != end.getBook())
+        {
+            return true;
+        }
+
+        if (start.getChapter() != end.getChapter())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Does this range represent exactly one book, no more or less.
      * @return true if we are exactly one book.
      */
-    public boolean isBook()
+    public boolean isWholeBook()
     {
-        if (!start.isStartOfBook()) return false;
-        if (!end.isEndOfBook()) return false;
-        if (!start.isSameBook(end)) return false;
+        if (!start.isStartOfBook())
+        {
+            return false;
+        }
+
+        if (!end.isEndOfBook())
+        {
+            return false;
+        }
+
+        if (!start.isSameBook(end))
+        {
+            return false;
+        }
 
         return true;
     }
@@ -1249,12 +1374,28 @@ public final class VerseRange implements VerseBase
      * Does this range represent a whole number of books.
      * @return true if we are a whole number of books.
      */
-    public boolean isBooks()
+    public boolean isWholeBooks()
     {
-        if (!start.isStartOfBook()) return false;
-        if (!end.isEndOfBook()) return false;
+        if (!start.isStartOfBook())
+        {
+            return false;
+        }
+
+        if (!end.isEndOfBook())
+        {
+            return false;
+        }
 
         return true;
+    }
+
+    /**
+     * Does this range occupy more than one book;
+     * @return true if we occupy 2 or more books
+     */
+    public boolean isMultipleBooks()
+    {
+        return start.getBook() != end.getBook();
     }
 
     /**
@@ -1287,6 +1428,15 @@ public final class VerseRange implements VerseBase
     public Iterator verseIterator()
     {
         return new VerseIterator(this);
+    }
+
+    /**
+     * Enumerate the subranges in this range
+     * @return a range iterator
+     */
+    public Iterator rangeIterator(int restrict)
+    {
+        return new AbstractPassage.VerseRangeIterator(verseIterator(), restrict);
     }
 
     /**

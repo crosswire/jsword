@@ -20,6 +20,7 @@ import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.OsisText;
 import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.util.Project;
@@ -111,7 +112,7 @@ public class SwordBible extends AbstractBible
             osis.setOsisText(text);
 
             // For all the ranges in this Passage
-            Iterator rit = ref.rangeIterator();
+            Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();

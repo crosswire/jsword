@@ -30,6 +30,13 @@ import org.apache.commons.lang.StringUtils;
 public class Grammar
 {
     /**
+     * Prevent Instansiation
+     */
+    private Grammar()
+    {
+    }
+
+    /**
      * Strip of any parts of speech to leave a root word.
      * This class may not be the best place for this code, however I'm not
      * sure if we have a better place for it at the mo. Maybe it should be

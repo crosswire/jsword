@@ -39,6 +39,13 @@ import org.crosswire.common.util.Reporter;
 public class FieldMap
 {
     /**
+     * Prevent Instansiation
+     */
+    private FieldMap()
+    {
+    }
+
+    /**
      * Get a field from a string
      * @param type the configuration type
      * @return The best Field that matches

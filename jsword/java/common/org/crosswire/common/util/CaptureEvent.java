@@ -1,7 +1,7 @@
 
 package org.crosswire.common.util;
 
-import java.util.*;
+import java.util.EventObject;
 
 /**
  * An event indicating that some bit of data needs capturing.

@@ -51,6 +51,13 @@ import org.crosswire.common.util.ResourceUtil;
 public class GuiUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private GuiUtil()
+    {
+    }
+
+    /**
      * Returns the Icon associated with the name from the resources.
      * The resouce should be in the path.
      * @param name Name of the icon file i.e., help16.gif

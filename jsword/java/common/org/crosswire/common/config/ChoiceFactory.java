@@ -30,8 +30,15 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class ChoiceFactory
+public class ChoiceFactory
 {
+    /**
+     * Prevent Instansiation
+     */
+    private ChoiceFactory()
+    {
+    }
+
     /**
      * Get a ChoiceFactory by element.
      * @param option The element to check

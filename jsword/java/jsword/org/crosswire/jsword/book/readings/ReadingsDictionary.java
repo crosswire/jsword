@@ -30,6 +30,7 @@ import org.crosswire.jsword.osis.OsisText;
 import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.util.Project;
@@ -210,7 +211,7 @@ public class ReadingsDictionary implements Dictionary
             try
             {
                 Passage ref = PassageFactory.createPassage(readings);
-                for (Iterator it = ref.rangeIterator(); it.hasNext();)
+                for (Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER); it.hasNext();)
                 {
                     VerseRange range = (VerseRange) it.next();
 

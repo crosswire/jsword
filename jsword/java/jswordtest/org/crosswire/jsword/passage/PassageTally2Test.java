@@ -181,7 +181,7 @@ public class PassageTally2Test extends TestCase
 
     public void testRangeIterator() throws Exception
     {
-        Iterator it = tally.rangeIterator();
+        Iterator it = tally.rangeIterator(PassageConstants.RESTRICT_NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), new VerseRange("Gen 1:1"));
         assertTrue(it.hasNext());
@@ -195,7 +195,7 @@ public class PassageTally2Test extends TestCase
         assertTrue(it.hasNext());
         assertEquals(it.next(), new VerseRange("Gen 3:1"));
         assertTrue(!it.hasNext());
-        it = empty.rangeIterator();
+        it = empty.rangeIterator(PassageConstants.RESTRICT_NONE);
         assertTrue(!it.hasNext());
     }
 
@@ -213,8 +213,8 @@ public class PassageTally2Test extends TestCase
 
     public void testCountRanges() throws Exception
     {
-        assertEquals(tally.countRanges(), 6);
-        assertEquals(empty.countRanges(), 0);
+        assertEquals(tally.countRanges(PassageConstants.RESTRICT_NONE), 6);
+        assertEquals(empty.countRanges(PassageConstants.RESTRICT_NONE), 0);
     }
 
     public void testContainsVerse() throws Exception

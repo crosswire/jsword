@@ -32,6 +32,13 @@ import org.crosswire.jsword.passage.Verse;
  */
 public class SwordConstants
 {
+    /**
+     * Prevent Instansiation
+     */
+    private SwordConstants()
+    {
+    }
+
     /** constant for the introduction */
     static final int TESTAMENT_INTRO = 0;
 

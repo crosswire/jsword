@@ -9,12 +9,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.PrintWriter;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Document;
 
-import org.crosswire.jsword.book.basic.Verifier;
-import org.crosswire.jsword.passage.Passage;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.WorkEvent;
@@ -22,6 +30,8 @@ import org.crosswire.common.progress.WorkListener;
 import org.crosswire.common.swing.DocumentWriter;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
+import org.crosswire.jsword.book.basic.Verifier;
+import org.crosswire.jsword.passage.Passage;
 
 /**
  * This displays the results of a comparision that occurs in a separate

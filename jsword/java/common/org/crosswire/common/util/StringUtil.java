@@ -35,6 +35,13 @@ import org.apache.commons.lang.StringUtils;
 public final class StringUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private StringUtil()
+    {
+    }
+
+    /**
      * The newline character
      */
     public static final String NEWLINE = System.getProperty("line.separator", "\r\n");

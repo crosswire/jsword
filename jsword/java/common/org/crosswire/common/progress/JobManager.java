@@ -39,6 +39,13 @@ import org.crosswire.common.util.Logger;
 public class JobManager
 {
     /**
+     * Prevent Instansiation
+     */
+    private JobManager()
+    {
+    }
+
+    /**
      * Create a new Job
      */
     public static Job createJob(String description, URL predicturl, Thread work, boolean fakeupdates)

@@ -1,8 +1,8 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -19,9 +19,8 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
-import org.crosswire.jsword.view.swing.event.DisplaySelectListener;
-import org.crosswire.jsword.view.swing.passage.PassageList;
+import org.crosswire.jsword.view.swing.passage.PassageGuiUtil;
+import org.crosswire.jsword.view.swing.passage.PassageListModel;
 
 /**
  * A quick Swing Bible display pane.
@@ -72,6 +71,10 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     private void jbInit()
     {
+        mdl_passg.setMode(PassageListModel.LIST_RANGES);
+        mdl_passg.setRestriction(PassageConstants.RESTRICT_CHAPTER);
+
+        lst_passg.setModel(mdl_passg);
         lst_passg.addListSelectionListener(new ListSelectionListener()
         {
             public void valueChanged(ListSelectionEvent ev)
@@ -105,9 +108,11 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void setPassage(Passage ref)
     {
+        this.ref = ref;
+
         try
         {
-            lst_passg.setPassage(ref);
+            mdl_passg.setPassage(ref);
             txt_passg.setPassage(ref);
         }
         catch (Throwable ex)
@@ -121,7 +126,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public Passage getPassage()
     {
-        return lst_passg.getPassage();
+        return mdl_passg.getPassage();
     }
 
     /**
@@ -129,10 +134,10 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
      */
     public void deleteSelected(BibleViewPane view)
     {
-        lst_passg.deleteSelected();
-        
+        PassageGuiUtil.deleteSelectedVersesFromList(lst_passg);
+
         // Update the text box
-        Passage ref = lst_passg.getPassage();
+        ref = mdl_passg.getPassage();
         DisplaySelectPane psel = view.getSelectPane();
         psel.setPassage(ref);
     }
@@ -219,25 +224,38 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
         {
             Object[] ranges = lst_passg.getSelectedValues();
 
-            Passage ref = PassageFactory.createPassage();
-            for (int i=0; i<ranges.length; i++)
+            Passage local = null;
+            if (ranges.length == 0)
             {
-                ref.add((VerseRange) ranges[i]);
+                local = ref;
+            }
+            else
+            {
+                local = PassageFactory.createPassage();
+                for (int i=0; i<ranges.length; i++)
+                {
+                    local.add((VerseRange) ranges[i]);
+                }
+
+                // if there was a single selection then show the whole chapter
+                if (ranges.length == 1)
+                {
+                    local.blur(1000, PassageConstants.RESTRICT_CHAPTER);
+                }
             }
 
-            // if there was a single selection then show the whole chapter
-            if (ranges.length == 1)
-            {
-                ref.blur(1000, PassageConstants.RESTRICT_CHAPTER);
-            }
-
-            txt_passg.setPassage(ref);
+            txt_passg.setPassage(local);
         }
         catch (Throwable ex)
         {
             Reporter.informUser(this, ex);
         }
     }
+
+    /**
+     * The whole passage that we are viewing
+     */
+    private Passage ref;
 
     /**
      * The log stream
@@ -250,7 +268,8 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
     private JSplitPane spt_passg = new JSplitPane();
     private JScrollPane scr_passg = new JScrollPane();
     protected TabbedDisplayPane txt_passg = new TabbedDisplayPane();
-    private PassageList lst_passg = new PassageList();
+    private JList lst_passg = new JList();
+    private PassageListModel mdl_passg = new PassageListModel();
     private DisplaySelectListener dsli = new CustomDisplaySelectListener();
 
     /**
@@ -282,7 +301,6 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
         public void passageSelected(DisplaySelectEvent ev)
         {
             log.debug("new passage chosen: "+ev.getPassage().getName());
-
             setPassage(ev.getPassage());
         }
     }

@@ -84,14 +84,8 @@ public class RangedPassage extends AbstractPassage
         normalize();
     }
 
-    /**
-     * Get a copy of ourselves. Points to note:
-     *   Call clone() not new() on member Objects, and on us.
-     *   Do not use Copy Constructors! - they do not inherit well.
-     *   Think about this needing to be synchronized
-     *   If this is not cloneable then writing cloneable children is harder
-     * @return A complete copy of ourselves
-     * @exception CloneNotSupportedException We don't do this but our kids might
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
      */
     public Object clone() throws CloneNotSupportedException
     {
@@ -108,20 +102,25 @@ public class RangedPassage extends AbstractPassage
         return copy;
     }
 
-    /**
-     * @return the number of VerseRanges in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges()
+    public int countRanges(int restrict)
     {
-        return store.size();
+        if (restrict == RESTRICT_NONE)
+        {
+            return store.size();
+        }
+
+        return super.countRanges(restrict);
     }
 
-    /**
-     * @return the number of Verses in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses()
     {
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(RESTRICT_NONE);
         int count = 0;
 
         while (it.hasNext())
@@ -133,36 +132,37 @@ public class RangedPassage extends AbstractPassage
         return count;
     }
 
-    /**
-     * Iterate over the Verses
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
     public Iterator verseIterator()
     {
-        return new VerseIterator(rangeIterator());
+        return new VerseIterator(rangeIterator(RESTRICT_NONE));
     }
 
-    /**
-     * Iterate over the VerseRanges
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator()
+    public Iterator rangeIterator(int restrict)
     {
-        return store.iterator();
+        if (restrict == RESTRICT_NONE)
+        {
+            return store.iterator();
+        }
+
+        return new VerseRangeIterator(store.iterator(), restrict);
     }
 
-    /**
-     * @return true if this Passage contains no Verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     public boolean isEmpty()
     {
         return store.isEmpty();
     }
 
-    /**
-     * Returns true if this Passage contains the specified Verse.
-     * @param obj Verse whose presence in this Passage is to be tested.
-     * @return true if this Passage contains the specified Verse
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
     public boolean contains(VerseBase obj)
     {
@@ -172,7 +172,7 @@ public class RangedPassage extends AbstractPassage
 
         VerseRange that_range = toVerseRange(obj);
 
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(RESTRICT_NONE);
         while (it.hasNext())
         {
             VerseRange this_range = (VerseRange) it.next();
@@ -184,9 +184,8 @@ public class RangedPassage extends AbstractPassage
         return false;
     }
 
-    /**
-     * Ensures that this Passage contains the specified Verse
-     * @param obj Verse whose presence in this Passage is to be ensured.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
     public void add(VerseBase obj)
     {
@@ -200,11 +199,13 @@ public class RangedPassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0)
+        {
             fireIntervalAdded(this, that_range.getStart(), that_range.getEnd());
+        }
     }
 
-    /**
-     * Removes all of the Verses from this Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public void clear()
     {
@@ -214,9 +215,8 @@ public class RangedPassage extends AbstractPassage
         fireIntervalRemoved(this, null, null);
     }
 
-    /**
-     * Removes a single instance of the specified Verse from this Passage
-     * @param obj Verse to be removed from this Passage, if present.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
     public void remove(VerseBase obj)
     {
@@ -250,18 +250,21 @@ public class RangedPassage extends AbstractPassage
             }
         }
 
-        if (removed) normalize();
+        if (removed)
+        {
+            normalize();
+        }
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0)
+        {
             fireIntervalRemoved(this, that_range.getStart(), that_range.getEnd());
+        }
     }
 
-    /**
-     * Retains only the Verses in this Passage that are contained in the
-     * specified Passage
-     * @param that Verses to be retained in this Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
     public void retainAll(Passage that)
     {
@@ -272,7 +275,7 @@ public class RangedPassage extends AbstractPassage
         Iterator that_it = null;
         if (that instanceof RangedPassage)
         {
-            that_it = that.rangeIterator();
+            that_it = that.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
         }
         else
         {
@@ -284,7 +287,7 @@ public class RangedPassage extends AbstractPassage
             VerseRange that_range = toVerseRange(that_it.next());
 
             // go through all the VerseRanges
-            Iterator this_it = rangeIterator();
+            Iterator this_it = rangeIterator(RESTRICT_NONE);
             while (this_it.hasNext())
             {
                 // if this range touches the range to be removed ...
@@ -306,10 +309,10 @@ public class RangedPassage extends AbstractPassage
 
     /**
      * We sometimes need to sort ourselves out ...
-     * I don't think we need to be synchronised since we are private
-     * and we could check that all public calling of normalize() are
-     * synchronised, however this is safe, and I don't think there is
-     * a cost associated with a double synchronize. (?)
+     * <p>I don't think we need to be synchronised since we are private and we
+     * could check that all public calling of normalize() are synchronised,
+     * however this is safe, and I don't think there is a cost associated with
+     * a double synchronize. (?)
      */
     protected void normalize()
     {
@@ -319,7 +322,7 @@ public class RangedPassage extends AbstractPassage
         VerseRange next = null;
         SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
 
-        Iterator it = rangeIterator();
+        Iterator it = rangeIterator(RESTRICT_NONE);
         while (it.hasNext())
         {
             next = (VerseRange) it.next();
@@ -345,13 +348,12 @@ public class RangedPassage extends AbstractPassage
 
     /**
      * This class is here to prevent users of RangedPassage.iterator() from
-     * altering the underlying store and getting us out of sync. Right
-     * now there are no issues with someone else removing a RangedPassage
-     * without telling us, however there may be some day, and I'm not
-     * sure that we need the functionality right now.
-     * Also buy using this we get to ensure synchronization.
-     * Everything is final so to save the proxying performace hit.
-     * @author Joe Walker
+     * altering the underlying store and getting us out of sync. Right now there
+     * are no issues with someone else removing a RangedPassage without telling
+     * us, however there may be some day, and I'm not sure that we need the
+     * functionality right now. Also buy using this we get to ensure
+     * synchronization. Everything is final so to save the proxying performace
+     * hit.
      */
     private static final class VerseIterator implements Iterator
     {
@@ -407,7 +409,129 @@ public class RangedPassage extends AbstractPassage
             throw new UnsupportedOperationException();
         }
 
-        /** The Iterator that we are proxying to */
+        /**
+         * The Iterator that we are proxying to
+         */
+        private Iterator real;
+    }
+
+    /**
+     * Loop over the VerseRanges and check that they do not require digging into
+     */
+    private static final class VerseRangeIterator implements Iterator
+    {
+        /**
+         * Simple ctor
+         */
+        public VerseRangeIterator(Iterator it, int restrict)
+        {
+            this.restrict = restrict;
+            this.real = it;
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
+         */
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext()
+        {
+            return next != null || real.hasNext();
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
+         */
+        public Object next()
+        {
+            if (next == null)
+            {
+                next = (VerseRange) real.next();
+            }
+            
+            if (next == null)
+            {
+                throw new NoSuchElementException();
+            }
+            
+            // So we know what is broadly next, however the range might need
+            // splitting according to restrict
+            switch (restrict)
+            {
+            case RESTRICT_NONE:
+                return replyNext();
+
+            case RESTRICT_CHAPTER:
+                if (next.isMultipleChapters())
+                {
+                    return splitNext();
+                }
+                else
+                {
+                    return replyNext();
+                }
+
+            case RESTRICT_BOOK:
+                if (next.isMultipleBooks())
+                {
+                    return splitNext();
+                }
+                else
+                {
+                    return replyNext();
+                }
+
+            default:
+                throw new LogicError();
+            }
+        }
+
+        /**
+         * The next object is correct, use that one
+         */
+        private Object replyNext()
+        {
+            VerseRange reply = next;
+            next = null;
+            return reply;
+        }
+
+        /**
+         * The next object is too big, so cut it up
+         */
+        private Object splitNext()
+        {
+            Iterator chop = next.rangeIterator(restrict);
+            VerseRange first = (VerseRange) chop.next();
+            VerseRange[] ranges = VerseRange.remainder(next, first);
+            if (ranges.length != 1)
+            {
+                throw new LogicError();
+            }
+            next = ranges[0];
+
+            return first;
+        }
+
+        /**
+         * What are we going to reply with next?
+         */
+        private VerseRange next = null;
+
+        /**
+         * Where do we break ranges
+         */
+        private int restrict;
+
+        /**
+         * Where we read our base ranges from
+         */
         private Iterator real;
     }
 
@@ -439,9 +563,13 @@ public class RangedPassage extends AbstractPassage
         readObjectSupport(in);
     }
 
-    /** To make serialization work across new versions */
+    /**
+     * To make serialization work across new versions
+     */
     static final long serialVersionUID = 955115811339960826L;
 
-    /** The place the real data is stored */
+    /**
+     * The place the real data is stored
+     */
     private transient SortedSet store = Collections.synchronizedSortedSet(new TreeSet());
 }

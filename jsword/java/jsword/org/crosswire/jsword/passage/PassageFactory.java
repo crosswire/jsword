@@ -34,6 +34,13 @@ import org.crosswire.common.util.LogicError;
  */
 public class PassageFactory
 {
+    /**
+     * Prevent Instansiation
+     */
+    private PassageFactory()
+    {
+    }
+
     /** Optimize the Passage for speed */
     public static final int SPEED = 0;
 

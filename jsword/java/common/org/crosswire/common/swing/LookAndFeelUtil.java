@@ -43,6 +43,13 @@ import org.crosswire.common.util.Logger;
 public class LookAndFeelUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private LookAndFeelUtil()
+    {
+    }
+
+    /**
      * The Options customization
      */
     public static Class getLookAndFeel()

@@ -448,10 +448,10 @@
     <mkdir dir="${target.web}/checkstyle"/>
     <taskdef resource="checkstyletask.properties">
       <classpath>
-        <fileset dir="${support.tools}/checkstyle30" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/checkstyle31" includes="**/*.jar"/>
       </classpath>
     </taskdef>
-    <copy file="${support.tools}/checkstyle30/custom.xml" overwrite="true"
+    <copy file="${support.tools}/checkstyle31/custom.xml" overwrite="true"
         tofile="${target.temp}/checkstyle/custom.xml">
       <filterset>
         <filter token="source.java" value="${basedir}/${source.java}"/>
@@ -471,7 +471,7 @@
         basedir="${target.temp}/checkstyle"
         destdir="${target.web}/checkstyle"
         includes="checkstyle_errors.xml"
-        style="${support.tools}/checkstyle30/checkstyle-noframes.xsl"/>
+        style="${support.tools}/checkstyle31/checkstyle-noframes.xsl"/>
   </target>
 
   <!--=======================================================================-->

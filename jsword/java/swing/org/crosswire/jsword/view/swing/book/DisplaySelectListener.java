@@ -1,5 +1,5 @@
 
-package org.crosswire.jsword.view.swing.event;
+package org.crosswire.jsword.view.swing.book;
 
 import java.util.EventListener;
 

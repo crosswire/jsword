@@ -174,7 +174,7 @@ public class PassageParentTst extends TestCase
         // exception right now. Maybe we ought to be more thorough at some stage.
         for (int i=0; i<12; i++)
         {
-            Iterator it = gen1_135.rangeIterator();
+            Iterator it = gen1_135.rangeIterator(PassageConstants.RESTRICT_NONE);
             assertTrue(it.hasNext());
             assertEquals(it.next(), new VerseRange("Gen 1:1"));
             assertTrue(it.hasNext());
@@ -182,7 +182,7 @@ public class PassageParentTst extends TestCase
             assertTrue(it.hasNext());
             assertEquals(it.next(), new VerseRange("Gen 1:5"));
             assertTrue(!it.hasNext());
-            it = empty.rangeIterator();
+            it = empty.rangeIterator(PassageConstants.RESTRICT_NONE);
             assertTrue(!it.hasNext());
         }
     }
@@ -228,8 +228,8 @@ public class PassageParentTst extends TestCase
     {
         for (int i=0; i<10; i++)
         {
-            assertEquals(gen1_135.countRanges(), 3);
-            assertEquals(exo2a_3b.countRanges(), 2);
+            assertEquals(gen1_135.countRanges(PassageConstants.RESTRICT_NONE), 3);
+            assertEquals(exo2a_3b.countRanges(PassageConstants.RESTRICT_NONE), 2);
             assertEquals(empty.countVerses(), 0);
         }
     }
@@ -252,11 +252,11 @@ public class PassageParentTst extends TestCase
     {
         for (int i=0; i<5; i++)
         {
-            assertEquals(gen1_135.getVerseRangeAt(0), gen11_1);
-            assertEquals(gen1_135.getVerseRangeAt(1), new VerseRange("Gen 1:3"));
-            assertEquals(gen1_135.getVerseRangeAt(2), new VerseRange("Gen 1:5"));
-            assertEquals(exo2a_3b.getVerseRangeAt(0), new VerseRange("Exo 2:1-10"));
-            assertEquals(exo2a_3b.getVerseRangeAt(1), new VerseRange("Exo 3:1-11"));
+            assertEquals(gen1_135.getVerseRangeAt(0, PassageConstants.RESTRICT_NONE), gen11_1);
+            assertEquals(gen1_135.getVerseRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:3"));
+            assertEquals(gen1_135.getVerseRangeAt(2, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:5"));
+            assertEquals(exo2a_3b.getVerseRangeAt(0, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 2:1-10"));
+            assertEquals(exo2a_3b.getVerseRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 3:1-11"));
         }
     }
 
@@ -535,10 +535,7 @@ public class PassageParentTst extends TestCase
 
     public void testWriteRangeIterator() throws Exception
     {
-        // We used to check for a UnsupportedOperationException until DistinctPassage started
-        // throwing IllegalStateExceptions here. I'm not too bothered about the exact type of the
-        // exception right now. Maybe we ought to be more thorough at some stage.
-        Iterator it = gen1_135.rangeIterator();
+        Iterator it = gen1_135.rangeIterator(PassageConstants.RESTRICT_NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), new VerseRange("Gen 1:1"));
         assertTrue(it.hasNext());
@@ -546,7 +543,35 @@ public class PassageParentTst extends TestCase
         assertTrue(it.hasNext());
         assertEquals(it.next(), new VerseRange("Gen 1:5"));
         assertTrue(!it.hasNext());
-        it = empty.rangeIterator();
+
+        it = gen_rev.rangeIterator(PassageConstants.RESTRICT_NONE);
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Gen-Rev"));
+        assertTrue(!it.hasNext());
+
+        it = gen_rev.rangeIterator(PassageConstants.RESTRICT_BOOK);
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Gen"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Exo"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Lev"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Num"));
+        //assertTrue(!it.hasNext());
+
+        it = gen_rev.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Gen 1"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Gen 2"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Gen 3"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), new VerseRange("Gen 4"));
+        //assertTrue(!it.hasNext());
+
+        it = empty.rangeIterator(PassageConstants.RESTRICT_NONE);
         assertTrue(!it.hasNext());
     }
 
@@ -580,8 +605,8 @@ public class PassageParentTst extends TestCase
 
     public void testWriteCountRanges() throws Exception
     {
-        assertEquals(gen1_135.countRanges(), 3);
-        assertEquals(exo2a_3b.countRanges(), 2);
+        assertEquals(gen1_135.countRanges(PassageConstants.RESTRICT_NONE), 3);
+        assertEquals(exo2a_3b.countRanges(PassageConstants.RESTRICT_NONE), 2);
         assertEquals(empty.countVerses(), 0);
     }
 
@@ -598,11 +623,11 @@ public class PassageParentTst extends TestCase
 
     public void testWriteGetVerseRangeAt() throws Exception
     {
-        assertEquals(gen1_135.getVerseRangeAt(0), gen11_1);
-        assertEquals(gen1_135.getVerseRangeAt(1), new VerseRange("Gen 1:3"));
-        assertEquals(gen1_135.getVerseRangeAt(2), new VerseRange("Gen 1:5"));
-        assertEquals(exo2a_3b.getVerseRangeAt(0), new VerseRange("Exo 2:1-10"));
-        assertEquals(exo2a_3b.getVerseRangeAt(1), new VerseRange("Exo 3:1-11"));
+        assertEquals(gen1_135.getVerseRangeAt(0, PassageConstants.RESTRICT_NONE), gen11_1);
+        assertEquals(gen1_135.getVerseRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:3"));
+        assertEquals(gen1_135.getVerseRangeAt(2, PassageConstants.RESTRICT_NONE), new VerseRange("Gen 1:5"));
+        assertEquals(exo2a_3b.getVerseRangeAt(0, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 2:1-10"));
+        assertEquals(exo2a_3b.getVerseRangeAt(1, PassageConstants.RESTRICT_NONE), new VerseRange("Exo 3:1-11"));
     }
 
     public void testWriteBooksInPassage() throws Exception

@@ -36,6 +36,13 @@ import org.crosswire.common.util.MsgBase;
 public class PassageUtil implements PassageConstants
 {
     /**
+     * Prevent Instansiation
+     */
+    private PassageUtil()
+    {
+    }
+
+    /**
      * The default Blur settings. This is not explicitly used by any of
      * the blur methods. It simply provides a convienient place to store
      * a default blur setting if desired.
@@ -320,7 +327,7 @@ public class PassageUtil implements PassageConstants
     {
         // store these locally we use them so often
         int verses = ref.countVerses();
-        int ranges = ref.countRanges();
+        int ranges = ref.countRanges(RESTRICT_NONE);
 
         // the size in bytes of teach storage method
         int bitwise_size = BibleInfo.versesInBible() / 8;
@@ -395,7 +402,7 @@ public class PassageUtil implements PassageConstants
             index += toBinary(buffer, index, ranges, BibleInfo.versesInBible()/2);
 
             // write the verse ordinals in a loop
-            Iterator it = ref.rangeIterator();
+            Iterator it = ref.rangeIterator(RESTRICT_NONE);
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();

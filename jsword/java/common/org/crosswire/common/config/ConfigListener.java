@@ -1,7 +1,7 @@
 
 package org.crosswire.common.config;
 
-import java.util.*;
+import java.util.EventListener;
 
 /**
  * ConfigListener.

@@ -258,6 +258,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     private void init()
     {
+        //this.getContentPane().addContainerListener(new DebugContainerListener());
+
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);

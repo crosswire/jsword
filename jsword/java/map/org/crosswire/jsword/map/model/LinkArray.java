@@ -198,7 +198,7 @@ public class LinkArray implements Serializable
     /**
      * Fill up the link cache
      */
-    public void cacheAll() throws NoSuchVerseException, BookException
+    public void cacheAll() throws BookException, NoSuchVerseException
     {
         // Create the array of Nodes
         for (int b=1; b<=BibleInfo.booksInBible(); b++)

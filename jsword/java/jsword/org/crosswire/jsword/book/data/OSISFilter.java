@@ -8,6 +8,7 @@ import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.crosswire.common.util.Logger;
 import org.xml.sax.InputSource;
 
 /**
@@ -72,9 +73,28 @@ public class OSISFilter implements Filter
         }
         catch (Exception ex)
         {
-            throw new DataException(Msg.THML_BADTOKEN, ex);
+            log.warn("parse failed", ex);
+
+            List list = JAXBUtil.getList(ele);
+            list.add("Errors exist in the source module: " + ex.getMessage());
+
+            try
+            {
+                list.add(JAXBUtil.factory().createP());
+            }
+            catch (Exception ex2)
+            {
+                log.warn("createP() failed", ex2);
+            }
+
+            list.add(plain);
         }
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(OSISFilter.class);
 
     /**
      * The JAXB unmarshaller

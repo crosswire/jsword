@@ -81,15 +81,15 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     Job job = JobManager.createJob("Display Pre-load", predicturl, this, true);
 
                     job.setProgress("Setup");
-                    Passage ref = PassageFactory.createPassage("Gen 1:1");
-                    Bible version = Defaults.getBibleMetaData().getBible();
+                    Passage gen11 = PassageFactory.createPassage("Gen 1:1");
+                    Bible deftbible = Defaults.getBibleMetaData().getBible();
                     if (interrupted())
                     {
                         return;
                     }
 
                     job.setProgress("Getting initial data");
-                    BookData data = version.getData(ref);
+                    BookData data = deftbible.getData(gen11);
                     if (interrupted())
                     {
                         return;
@@ -103,8 +103,8 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
                     }
 
                     job.setProgress("Compiling stylesheet");
-                    Style style = new Style("swing");
-                    style.applyStyleToString(provider, "simple.xsl");
+                    Style swing = new Style("swing");
+                    swing.applyStyleToString(provider, "simple.xsl");
                     if (interrupted())
                     {
                         return;

@@ -35,10 +35,9 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
-import org.crosswire.jsword.view.swing.event.DisplaySelectListener;
 
 /**
  * Passage Selection area.
@@ -337,7 +336,7 @@ public class DisplaySelectPane extends JPanel
             {
                 PassageTally tally = (PassageTally) ref;
                 tally.setOrdering(PassageTally.ORDER_TALLY);
-                tally.trimRanges(20);
+                tally.trimRanges(20, PassageConstants.RESTRICT_NONE);
             }
 
             txt_passg.setText(ref.getName());

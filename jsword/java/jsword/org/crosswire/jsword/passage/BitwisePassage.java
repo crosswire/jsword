@@ -102,8 +102,8 @@ public class BitwisePassage extends AbstractPassage
         return copy;
     }
 
-    /**
-     * @return the number of Verses in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses()
     {
@@ -121,8 +121,8 @@ public class BitwisePassage extends AbstractPassage
         return count;
     }
 
-    /**
-     * @return true if this Passage contains no Verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     public boolean isEmpty()
     {
@@ -138,28 +138,24 @@ public class BitwisePassage extends AbstractPassage
         return true;
     }
 
-    /**
-     * Iterate over the Verses
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
     public Iterator verseIterator()
     {
         return new VerseIterator();
     }
 
-    /**
-     * Enumerate over the VerseRanges
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#rangeIterator()
      */
-    public Iterator rangeIterator()
+    public Iterator rangeIterator(int restrict)
     {
-        return new VerseRangeIterator(verseIterator());
+        return new VerseRangeIterator(verseIterator(), restrict);
     }
 
-    /**
-     * Returns true if this Passage contains the specified Verse
-     * @param obj Verse whose presence in this Passage is to be tested
-     * @return true if this Passage contains the specified Verse
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
     public boolean contains(VerseBase obj)
     {
@@ -176,9 +172,8 @@ public class BitwisePassage extends AbstractPassage
         return true;
     }
 
-    /**
-     * Ensures that this Passage contains the specified Verse
-     * @param obj Verse whose presence in this Passage is to be ensured
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
     public void add(VerseBase obj)
     {
@@ -199,9 +194,8 @@ public class BitwisePassage extends AbstractPassage
         }
     }
 
-    /**
-     * Removes a single instance of the specified Verse from this Passage
-     * @param obj Verse to be removed from this Passage, if present
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
     public void remove(VerseBase obj)
     {
@@ -222,9 +216,8 @@ public class BitwisePassage extends AbstractPassage
         }
     }
 
-    /**
-     * Adds the Verses in that Passage to this Passage
-     * @param that Verses to be added to this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
      */
     public void addAll(Passage that)
     {
@@ -248,11 +241,8 @@ public class BitwisePassage extends AbstractPassage
         }
     }
 
-    /**
-     * Removes the Verses in this Passage that are contained in the
-     * specified Passage.  In other words, removes from this Passage
-     * all of its Verses that are not contained in the specified Passage
-     * @param that Verses to be removed from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
      */
     public void removeAll(Passage that)
     {
@@ -277,11 +267,8 @@ public class BitwisePassage extends AbstractPassage
         }
     }
 
-    /**
-     * Retains only the Verses in this Passage that are contained in the
-     * specified Passage. In other words, removes from this Passage
-     * all of its Verses that are not contained in the specified Passage
-     * @param that Verses to be retained in this Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
     public void retainAll(Passage that)
     {
@@ -312,8 +299,8 @@ public class BitwisePassage extends AbstractPassage
         fireIntervalRemoved(this, null, null);
     }
 
-    /**
-     * Removes all of the Verses from this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public void clear()
     {
@@ -328,13 +315,8 @@ public class BitwisePassage extends AbstractPassage
         fireIntervalRemoved(this, null, null);
     }
 
-    /**
-     * Widen the range of the verses in this list. This is primarily for
-     * "find x within n verses of y" type applications.
-     * @param verses The number of verses to widen by
-     * @param restrict How should we restrict the blurring?
-     * @exception IllegalArgumentException If a blurring is negative or the restrict mode is illegal
-     * @see Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
      */
     public void blur(int verses, int restrict)
     {
@@ -353,7 +335,7 @@ public class BitwisePassage extends AbstractPassage
             try
             {
                 BitwisePassage temp = (BitwisePassage) this.clone();
-                Iterator it = temp.rangeIterator();
+                Iterator it = temp.rangeIterator(RESTRICT_NONE);
 
                 while (it.hasNext())
                 {
@@ -406,17 +388,16 @@ public class BitwisePassage extends AbstractPassage
             calculateNext();
         }
 
-        /**
-         * @return true if the iteration has more Verses
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext()
         {
             return next <= BibleInfo.versesInBible();
         }
 
-        /**
-         * @return the next Verse in the interation
-         * @throws NoSuchElementException if hasNext() == false
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
          */
         public Object next() throws NoSuchElementException
         {
@@ -438,9 +419,8 @@ public class BitwisePassage extends AbstractPassage
             }
         }
 
-        /**
-         * Not supported
-         * @throws UnsupportedOperationException Every time ...
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException
         {
@@ -462,7 +442,9 @@ public class BitwisePassage extends AbstractPassage
             }
         }
 
-        /** What is the next Verse to be considered */
+        /**
+         * What is the next Verse to be considered
+         */
         private int next = 0;
     }
 
@@ -495,9 +477,13 @@ public class BitwisePassage extends AbstractPassage
         readObjectSupport(in);
     }
 
-    /** To make serialization work across new versions */
+    /**
+     * To make serialization work across new versions
+     */
     static final long serialVersionUID = -5931560451407396276L;
 
-    /** The place the real data is stored */
+    /**
+     * The place the real data is stored
+     */
     protected transient BitSet store = new BitSet(BibleInfo.versesInBible()+1);
 }

@@ -209,9 +209,13 @@ public class BiblesTest extends TestCase
             ref = ver.findPassage(new Search("maher-shalal-hash-baz", false));
             if (ref.isEmpty())
                 ref = ver.findPassage(new Search("mahershalalhashbaz", false));
+            if (ref.isEmpty())
+                ref = ver.findPassage(new Search("maher*", false));
+
             assertEquals(ref.countVerses(), 2);
             assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1"));
             assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3"));
+
             ref = ver.findPassage(new Search("MAHER-SHALAL-HASH-BAZ", false));
             if (ref.isEmpty())
                 ref = ver.findPassage(new Search("MAHERSHALALHASHBAZ", false));

@@ -54,7 +54,7 @@ public class WholeBibleTreeNode implements TreeNode
         {
             Verse start = null;
             Verse end = null;
-            int level;
+            int thislevel;
 
             if (b == -1)
             {
@@ -62,7 +62,7 @@ public class WholeBibleTreeNode implements TreeNode
             } 
             else if (c == -1)
             {
-                level = LEVEL_BOOK;
+                thislevel = LEVEL_BOOK;
                 int ec = BibleInfo.chaptersInBook(b);
                 int ev = BibleInfo.versesInChapter(b, ec);
                 start = new Verse(b, 1, 1);
@@ -70,20 +70,20 @@ public class WholeBibleTreeNode implements TreeNode
             }
             else if (v == -1)
             {
-                level = LEVEL_CHAPTER;
+                thislevel = LEVEL_CHAPTER;
                 int ev = BibleInfo.versesInChapter(b, c);
                 start = new Verse(b, c, 1);
                 end = new Verse(b, c, ev);
             }
             else
             {
-                level = LEVEL_VERSE;
+                thislevel = LEVEL_VERSE;
                 start = new Verse(b, c, v);
                 end = start;
             }
 
-            VerseRange range = new VerseRange(start, end);
-            return new WholeBibleTreeNode(parent, range, level);
+            VerseRange rng = new VerseRange(start, end);
+            return new WholeBibleTreeNode(parent, rng, thislevel);
         }
         catch (NoSuchVerseException ex)
         {

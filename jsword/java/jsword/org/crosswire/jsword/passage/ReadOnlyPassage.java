@@ -85,11 +85,11 @@ public final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#countRanges()
+     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges()
+    public int countRanges(int restrict)
     {
-        return ref.countRanges();
+        return ref.countRanges(restrict);
     }
 
     /* (non-Javadoc)
@@ -101,11 +101,11 @@ public final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#trimRanges(int)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
      */
-    public Passage trimRanges(int count)
+    public Passage trimRanges(int count, int restrict)
     {
-        return ref.trimRanges(count);
+        return ref.trimRanges(count, restrict);
     }
 
     /* (non-Javadoc)
@@ -141,11 +141,11 @@ public final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int)
+     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getVerseRangeAt(int offset) throws ArrayIndexOutOfBoundsException
+    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
-        return ref.getVerseRangeAt(offset);
+        return ref.getVerseRangeAt(offset, restrict);
     }
 
     /* (non-Javadoc)
@@ -157,11 +157,11 @@ public final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#rangeIterator()
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator()
+    public Iterator rangeIterator(int restrict)
     {
-        return ref.rangeIterator();
+        return ref.rangeIterator(restrict);
     }
 
     /* (non-Javadoc)

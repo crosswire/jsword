@@ -604,28 +604,28 @@ public class VerseRangeTest extends TestCase
 
     public void testIsChapter() throws Exception
     {
-        assertTrue(new VerseRange("Gen 1").isChapter());
-        assertTrue(new VerseRange("Gen 1:1-ff").isChapter());
-        assertTrue(new VerseRange("Gen 1:1-$").isChapter());
-        assertTrue(new VerseRange("Exo 2").isChapter());
-        assertTrue(new VerseRange("Exo 2:1-ff").isChapter());
-        assertTrue(new VerseRange("Exo 2:1-$").isChapter());
-        assertTrue(!new VerseRange("Num 3:1").isChapter());
-        assertTrue(!new VerseRange("Num 4:1-5:1").isChapter());
-        assertTrue(!new VerseRange("Num 5:1-6:ff").isChapter());
-        assertTrue(!new VerseRange("Lev").isChapter());
+        assertTrue(new VerseRange("Gen 1").isWholeChapter());
+        assertTrue(new VerseRange("Gen 1:1-ff").isWholeChapter());
+        assertTrue(new VerseRange("Gen 1:1-$").isWholeChapter());
+        assertTrue(new VerseRange("Exo 2").isWholeChapter());
+        assertTrue(new VerseRange("Exo 2:1-ff").isWholeChapter());
+        assertTrue(new VerseRange("Exo 2:1-$").isWholeChapter());
+        assertTrue(!new VerseRange("Num 3:1").isWholeChapter());
+        assertTrue(!new VerseRange("Num 4:1-5:1").isWholeChapter());
+        assertTrue(!new VerseRange("Num 5:1-6:ff").isWholeChapter());
+        assertTrue(!new VerseRange("Lev").isWholeChapter());
     }
 
     public void testIsBook() throws Exception
     {
-        assertTrue(new VerseRange("Gen").isBook());
-        assertTrue(new VerseRange("Gen 1:1-Gen 50:ff").isBook());
-        assertTrue(new VerseRange("Gen 1:1-Gen 50:$").isBook());
-        assertTrue(new VerseRange("Gen 1-50:ff").isBook());
-        assertTrue(!new VerseRange("Num 1:2-Num $:$").isBook());
-        assertTrue(!new VerseRange("Num 4:1-5:1").isBook());
-        assertTrue(!new VerseRange("Num 5:1-6:ff").isBook());
-        assertTrue(!new VerseRange("Lev-Deu 1:1").isBook());
+        assertTrue(new VerseRange("Gen").isWholeBook());
+        assertTrue(new VerseRange("Gen 1:1-Gen 50:ff").isWholeBook());
+        assertTrue(new VerseRange("Gen 1:1-Gen 50:$").isWholeBook());
+        assertTrue(new VerseRange("Gen 1-50:ff").isWholeBook());
+        assertTrue(!new VerseRange("Num 1:2-Num $:$").isWholeBook());
+        assertTrue(!new VerseRange("Num 4:1-5:1").isWholeBook());
+        assertTrue(!new VerseRange("Num 5:1-6:ff").isWholeBook());
+        assertTrue(!new VerseRange("Lev-Deu 1:1").isWholeBook());
     }
 
     public void testToVerseArray() throws Exception

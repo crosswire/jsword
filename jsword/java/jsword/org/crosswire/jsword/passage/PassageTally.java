@@ -178,7 +178,7 @@ public class PassageTally extends AbstractPassage
         {
             if (order == ORDER_BIBLICAL)
             {
-                Iterator it = rangeIterator();
+                Iterator it = rangeIterator(RESTRICT_NONE);
                 Verse current = null;
                 while (it.hasNext())
                 {
@@ -297,11 +297,11 @@ public class PassageTally extends AbstractPassage
      * Iterate through the range elements in the current sort order
      * @return A range Iterator
      */
-    public Iterator rangeIterator()
+    public Iterator rangeIterator(int restrict)
     {
         if (order == ORDER_BIBLICAL)
         {
-            return new VerseRangeIterator(verseIterator());
+            return new VerseRangeIterator(verseIterator(), restrict);
         }
         else
         {
@@ -645,7 +645,7 @@ public class PassageTally extends AbstractPassage
             try
             {
                 PassageTally temp = (PassageTally) this.clone();
-                Iterator it = temp.rangeIterator();
+                Iterator it = temp.rangeIterator(RESTRICT_NONE);
 
                 while (it.hasNext())
                 {
@@ -1022,7 +1022,7 @@ public class PassageTally extends AbstractPassage
         {
             TreeSet output = new TreeSet();
 
-            Iterator rit = new VerseRangeIterator(vit);
+            Iterator rit = new VerseRangeIterator(vit, RESTRICT_NONE);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();

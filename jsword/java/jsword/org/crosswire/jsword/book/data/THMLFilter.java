@@ -1,14 +1,12 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -26,7 +24,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -73,21 +70,23 @@ public class THMLFilter implements Filter
             CustomHandler handler = new CustomHandler(ele);
             parser.parse(is, handler);
         }
-        catch (SAXParseException ex)
+        catch (Exception ex)
         {
-            throw new DataException(Msg.THML_BADTOKEN, ex, new Object[] { plain, ""+ex.getLineNumber(), ""+ex.getColumnNumber() });
-        }
-        catch (SAXException ex)
-        {
-            throw new DataException(Msg.THML_PARSE, ex, new Object[] { plain });
-        }
-        catch (ParserConfigurationException ex)
-        {
-            throw new DataException(Msg.THML_PARSE, ex, new Object[] { plain });
-        }
-        catch (IOException ex)
-        {
-            throw new DataException(Msg.THML_PARSE, ex, new Object[] { plain });
+            log.warn("parse failed", ex);
+
+            List list = JAXBUtil.getList(ele);
+            list.add("Errors exist in the source module: " + ex.getMessage());
+
+            try
+            {
+                list.add(JAXBUtil.factory().createP());
+            }
+            catch (Exception ex2)
+            {
+                log.warn("createP() failed", ex2);
+            }
+
+            list.add(plain);
         }
     }
 

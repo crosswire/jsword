@@ -34,6 +34,13 @@ import java.net.URL;
 public class ResourceUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private ResourceUtil()
+    {
+    }
+
+    /**
      * Generic resource URL fetcher. One way or the other we'll find it!
      * I'm fairly sure some of these do the same thing, but which and how they
      * change on various JDK's is complex, and it seems simpler to take the

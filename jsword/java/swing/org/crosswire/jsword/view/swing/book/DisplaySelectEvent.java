@@ -1,10 +1,13 @@
-package org.crosswire.common.xml;
 
-import org.crosswire.common.util.Logger;
-import org.xml.sax.Attributes;
+package org.crosswire.jsword.view.swing.book;
+
+import java.util.EventObject;
+
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.passage.Passage;
 
 /**
- * Utilities for working with SAX XML parsing.
+ * A DisplaySelectEvent happens whenever a user makes a command.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -27,28 +30,45 @@ import org.xml.sax.Attributes;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SAXUtil
+public class DisplaySelectEvent extends EventObject
 {
     /**
-     * Prevent Instansiation
+     * For when a command has been made
+     * @param source The thing that started this off
      */
-    private SAXUtil()
+    public DisplaySelectEvent(Object source, Passage ref, Book book)
     {
+        super(source);
+
+        this.ref = ref;
+        this.book = book;
     }
 
     /**
-     * Show the attributes of an element as debug
+     * Get the type of command
+     * @return The type of command
      */
-    public static void debugAttributes(Attributes attrs)
+    public Passage getPassage()
     {
-        for (int i=0; i<attrs.getLength(); i++)
-        {
-            log.debug("attr["+i+"]: "+attrs.getQName(i)+"="+attrs.getValue(i));
-        }
+        return ref;
     }
 
     /**
-     * The log stream
+     * Get the type of command
+     * @return The type of command
      */
-    protected static final Logger log = Logger.getLogger(SAXUtil.class);
+    public Book getBook()
+    {
+        return book;
+    }
+
+    /**
+     * The new passage
+     */
+    private Passage ref = null;
+
+    /**
+     * The new Book
+     */
+    private Book book;
 }

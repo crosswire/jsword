@@ -40,6 +40,7 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageEvent;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageListener;
@@ -264,7 +265,7 @@ public class PassageSelectionPane extends JPanel
             ref = PassageFactory.createPassage(refstr);
 
             txt_display.setText(refstr);
-            lst_sel.setModel(new PassageListModel(ref, PassageListModel.LIST_RANGES));
+            lst_sel.setModel(new PassageListModel(ref, PassageListModel.LIST_RANGES, PassageConstants.RESTRICT_CHAPTER));
 
             ref.addPassageListener(new CustomPassageListener());
             updateMessageSummary();

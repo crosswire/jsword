@@ -75,7 +75,7 @@ public class StringSAXEventProvider implements SAXEventProvider
     /**
      * The SAX parser
      */
-    XMLReader reader = null;
+    private XMLReader reader = null;
 
     /**
      * The source of XML data

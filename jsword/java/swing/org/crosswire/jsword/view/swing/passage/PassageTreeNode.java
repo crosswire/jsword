@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageEvent;
 import org.crosswire.jsword.passage.PassageListener;
 import org.crosswire.common.util.IteratorEnumeration;
@@ -40,7 +41,7 @@ import org.crosswire.common.util.IteratorEnumeration;
 public class PassageTreeNode implements TreeNode, PassageListener
 {
     /**
-     *
+     * Simple ctor
      */
     public PassageTreeNode(Passage ref, JTree tree)
     {
@@ -54,7 +55,7 @@ public class PassageTreeNode implements TreeNode, PassageListener
      */
     public TreeNode getChildAt(int index)
     {
-        return new VerseRangeTreeNode(ref.getVerseRangeAt(index));
+        return new VerseRangeTreeNode(ref.getVerseRangeAt(index, PassageConstants.RESTRICT_CHAPTER));
     }
 
     /**
@@ -63,7 +64,7 @@ public class PassageTreeNode implements TreeNode, PassageListener
      */
     public int getChildCount()
     {
-        return ref.countRanges();
+        return ref.countRanges(PassageConstants.RESTRICT_CHAPTER);
     }
 
     /**
@@ -82,12 +83,14 @@ public class PassageTreeNode implements TreeNode, PassageListener
     public int getIndex(TreeNode node)
     {
         int count = 0;
-        Iterator it = ref.rangeIterator();
+        Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_NONE);
 
         while (it.hasNext())
         {
             if (it.next() == node)
+            {
                 return count;
+            }
 
             count++;
         }
@@ -145,7 +148,7 @@ public class PassageTreeNode implements TreeNode, PassageListener
      */
     public Enumeration children()
     {
-        return new IteratorEnumeration(ref.rangeIterator());
+        return new IteratorEnumeration(ref.rangeIterator(PassageConstants.RESTRICT_NONE));
     }
 
     /**
@@ -156,10 +159,13 @@ public class PassageTreeNode implements TreeNode, PassageListener
         return ref.getOverview();
     }
 
-    /** The Passage to be displayed */
+    /**
+     * The Passage to be displayed
+     */
     protected Passage ref = null;
 
-    /** The Passage to be displayed */
+    /**
+     * The Passage to be displayed
+     */
     protected JTree tree = null;
 }
-

@@ -3,7 +3,6 @@ package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -92,7 +91,7 @@ public class OptionsAction extends DesktopAbstractAction
         config.add(xmlconfig);
     }
 
-    public void loadConfig() throws MalformedURLException, IOException
+    public void loadConfig() throws IOException
     {
         config.setProperties(Project.resource().getProperties("desktop"));
         config.localToApplication(true);

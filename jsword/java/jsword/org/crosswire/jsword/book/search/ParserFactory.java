@@ -31,6 +31,13 @@ import org.crosswire.jsword.util.Project;
 public class ParserFactory
 {
     /**
+     * Prevent Instansiation
+     */
+    private ParserFactory()
+    {
+    }
+
+    /**
      * Create a new Parser.
      */
     public static Parser createParser(Index index) throws InstantiationException

@@ -24,6 +24,7 @@ import org.crosswire.jsword.osis.OsisText;
 import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
@@ -154,7 +155,7 @@ public abstract class AbstractCommentary implements Commentary
             osis.setOsisText(text);
 
             // For all the ranges in this Passage
-            Iterator rit = ref.rangeIterator();
+            Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();

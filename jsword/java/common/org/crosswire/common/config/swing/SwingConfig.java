@@ -40,6 +40,13 @@ import org.crosswire.common.util.Reporter;
 public class SwingConfig
 {
     /**
+     * Prevent Instansiation
+     */
+    private SwingConfig()
+    {
+    }
+
+    /**
      * Create a dialog to house a TreeConfig component
      * using the default set of Fields
      * @param config The set of Choices to display

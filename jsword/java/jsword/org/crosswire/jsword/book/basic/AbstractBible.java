@@ -3,9 +3,9 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -114,7 +114,7 @@ public abstract class AbstractBible implements Bible
      */
     public String toString()
     {
-        return ClassUtil.getShortName(getClass())+":"+getBookMetaData().toString();
+        return ClassUtils.getShortClassName(getClass())+":"+getBookMetaData().toString();
     }
 
     /**

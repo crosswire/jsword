@@ -1,13 +1,14 @@
 
-package org.crosswire.jsword.view.swing.event;
+package org.crosswire.jsword.view.swing.passage;
 
-import java.util.EventObject;
+import javax.swing.JList;
 
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.VerseRange;
 
 /**
- * A DisplaySelectEvent happens whenever a user makes a command.
+ * A Simple extension to JList to customize it to hold a Passage and
+ * provide Passage related actions.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -30,45 +31,30 @@ import org.crosswire.jsword.passage.Passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class DisplaySelectEvent extends EventObject
+public class PassageGuiUtil
 {
     /**
-     * For when a command has been made
-     * @param source The thing that started this off
+     * Prevent Instansiation
      */
-    public DisplaySelectEvent(Object source, Passage ref, Book book)
+    private PassageGuiUtil()
     {
-        super(source);
-
-        this.ref = ref;
-        this.book = book;
     }
 
     /**
-     * Get the type of command
-     * @return The type of command
+     * Remove all of the selected verses from the passage
      */
-    public Passage getPassage()
+    public static void deleteSelectedVersesFromList(JList list)
     {
-        return ref;
+        PassageListModel plm = (PassageListModel) list.getModel();
+ 
+        Passage ref = plm.getPassage();
+        Object[] selected = list.getSelectedValues();
+        for (int i=0; i<selected.length; i++)
+        {
+            VerseRange range = (VerseRange) selected[i];
+            ref.remove(range);
+        }
+
+        list.setSelectedIndices(new int[0]);
     }
-
-    /**
-     * Get the type of command
-     * @return The type of command
-     */
-    public Book getBook()
-    {
-        return book;
-    }
-
-    /**
-     * The new passage
-     */
-    private Passage ref = null;
-
-    /**
-     * The new Book
-     */
-    private Book book;
 }

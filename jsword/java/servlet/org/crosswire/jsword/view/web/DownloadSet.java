@@ -76,8 +76,8 @@ public class DownloadSet implements Comparable
         {
             String name = files[i].getName();
             log.debug("adding "+name);
-            String setname = name.substring(TEST_PREFIX.length(), name.length() - TEST_SUFFIX.length());
-            reply.add(new DownloadSet(localprefix, webprefix, setname, datesort));
+            String sets = name.substring(TEST_PREFIX.length(), name.length() - TEST_SUFFIX.length());
+            reply.add(new DownloadSet(localprefix, webprefix, sets, datesort));
         }
 
         return (DownloadSet[]) reply.toArray(new DownloadSet[reply.size()]);

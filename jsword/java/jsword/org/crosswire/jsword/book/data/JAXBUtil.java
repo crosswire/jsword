@@ -49,6 +49,13 @@ import org.crosswire.jsword.util.Project;
 public class JAXBUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private JAXBUtil()
+    {
+    }
+
+    /**
      * The package into which JAXB generates its stuff
      */
     protected static final String OSIS_PACKAGE = "org.crosswire.jsword.osis";

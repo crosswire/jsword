@@ -177,7 +177,9 @@ public class CliMapper
                 tally.add(start, chaptotal);
 
                 if (chaptotal > PassageTally.MAX_TALLY)
+                {
                     System.out.println("truncated chaptotal: "+chaptotal);
+                }
             }
         }        
     }

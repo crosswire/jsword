@@ -1,8 +1,8 @@
 
 package org.crosswire.common.util;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
-import java.text.*;
 
 /**
  * EventExceptions are generally used for passing problems through

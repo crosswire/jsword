@@ -48,6 +48,13 @@ import org.jdom.Element;
 public class Converter
 {
     /**
+     * Prevent Instansiation
+     */
+    private Converter()
+    {
+    }
+
+    /**
      * Converter for calls to getBibleNames().
      * <p>The XML reply is expected to be in the form: (swapping ] and > for readibility)
      * <pre>

@@ -17,6 +17,7 @@ import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.util.Style;
@@ -86,7 +87,7 @@ public class DemoServlet extends HttpServlet
                 request.setAttribute("match", match);
                 PassageTally tally = (PassageTally) version.findPassage(new Search(match, true));
                 tally.setOrdering(PassageTally.ORDER_TALLY);
-                tally.trimRanges(tally_trim);
+                tally.trimRanges(tally_trim, PassageConstants.RESTRICT_NONE);
                 ref = tally;
             }
 

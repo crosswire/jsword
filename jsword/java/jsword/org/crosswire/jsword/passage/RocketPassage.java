@@ -92,8 +92,8 @@ public class RocketPassage extends BitwisePassage
         lowerEventSuppresionAndTest();
     }
 
-    /**
-     * Simple method to instruct children to stop caching results
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#optimizeWrites()
      */
     protected void optimizeWrites()
     {
@@ -101,142 +101,145 @@ public class RocketPassage extends BitwisePassage
         ranged = null;
     }
 
-    /**
-     * @return the number of VerseRanges in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges()
+    public int countRanges(int restrict)
     {
         if (ranged != null)
-            return ranged.countRanges();
+        {
+            return ranged.countRanges(restrict);
+        }
 
-        return super.countRanges();
+        return super.countRanges(restrict);
     }
 
-    /**
-     * @return the number of Verses in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses()
     {
         if (distinct != null)
+        {
             return distinct.countVerses();
+        }
 
         return super.countVerses();
     }
 
-    /**
-     * Iterate over the Verses
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
     public Iterator verseIterator()
     {
         if (distinct != null)
+        {
             return distinct.verseIterator();
+        }
 
         return super.verseIterator();
     }
 
-    /**
-     * Iterate over the VerseRanges
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator()
+    public Iterator rangeIterator(int restrict)
     {
         if (ranged != null)
-            return ranged.rangeIterator();
+        {
+            return ranged.rangeIterator(restrict);
+        }
 
-        return super.rangeIterator();
+        return super.rangeIterator(restrict);
     }
 
-    /**
-     * @return true if this Passage contains no Verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     public boolean isEmpty()
     {
         if (distinct != null)
+        {
             return distinct.isEmpty();
+        }
 
         return super.isEmpty();
     }
 
-    /**
-     * Get a specific Verse from this collection
-     * @param offset The verse offset (legal values are 0 to countVerses()-1)
-     * @return The Verse
-     * @throws ArrayIndexOutOfBoundsException If the offset is out of range
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException
     {
         if (distinct != null)
+        {
             return distinct.getVerseAt(offset);
+        }
 
         return super.getVerseAt(offset);
     }
 
-    /**
-     * Get a specific VerseRange from this collection
-     * @param offset The verse range offset (legal values are 0 to countRanges()-1)
-     * @return The Verse Range
-     * @throws ArrayIndexOutOfBoundsException If the offset is out of range
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getVerseRangeAt(int offset) throws ArrayIndexOutOfBoundsException
+    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException
     {
         if (ranged != null)
-            return ranged.getVerseRangeAt(offset);
+        {
+            return ranged.getVerseRangeAt(offset, restrict);
+        }
 
-        return super.getVerseRangeAt(offset);
+        return super.getVerseRangeAt(offset, restrict);
     }
 
-    /**
-     * How many books are there in this Passage
-     * @return The number of distinct books
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
     public int booksInPassage()
     {
         if (distinct != null)
+        {
             return distinct.booksInPassage();
+        }
 
         return super.booksInPassage();
     }
 
-    /**
-     * How many chapters are there in a particular book in this Passage
-     * @param book The book to check (0 for distinct chapters in all books)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException if book is invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
     public int chaptersInPassage(int book) throws NoSuchVerseException
     {
         if (distinct != null)
+        {
             return distinct.chaptersInPassage(book);
+        }
 
         return super.chaptersInPassage(book);
     }
 
-    /**
-     * How many chapters are there in a particular book in this Passage
-     * Note that <code>versesInPassage(ref, 0, 0) == ref.countVerses()</code>
-     * @param book The book to check (0 for distinct chapters in all books)
-     * @param chapter The chapter to check (0 for distinct verses in all chapters)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException if book/chapter is invalid
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException
     {
         if (distinct != null)
+        {
             return distinct.versesInPassage(book, chapter);
+        }
 
         return super.versesInPassage(book, chapter);
     }
 
-    /**
-     * Returns true if this Passage contains all of the verses in that Passage
-     * @param that Passage to be checked for containment in this collection.
-     * @return true if this reference contains all of the Verses in that Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
      */
     public boolean containsAll(Passage that)
     {
         if (ranged != null)
+        {
             return ranged.containsAll(that);
+        }
 
         return super.containsAll(that);
     }

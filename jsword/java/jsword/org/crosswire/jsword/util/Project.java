@@ -28,6 +28,13 @@ package org.crosswire.jsword.util;
 public class Project
 {
     /**
+     * Prevent Instansiation
+     */
+    private Project()
+    {
+    }
+
+    /**
      * Accessor for the resource singleton.
      */
     public static Resource resource()

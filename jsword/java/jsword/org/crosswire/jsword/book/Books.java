@@ -40,6 +40,13 @@ import org.crosswire.jsword.util.Project;
 public class Books
 {
     /**
+     * Prevent Instansiation
+     */
+    private Books()
+    {
+    }
+
+    /**
      * The SPEED_* constants specify how fast a Book implementation is.
      * 
      * Important values include 5, were the remoting system will not remote

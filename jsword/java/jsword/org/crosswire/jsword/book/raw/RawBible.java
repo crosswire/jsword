@@ -29,6 +29,7 @@ import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
 import org.crosswire.jsword.passage.Verse;
@@ -356,7 +357,7 @@ public class RawBible extends LocalURLBible implements Index
             
             osis.setOsisText(text);
 
-            Iterator it = ref.rangeIterator();
+            Iterator it = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();

@@ -38,6 +38,13 @@ import org.crosswire.jsword.book.BookException;
 public class CustomTokenizer
 {
     /**
+     * Prevent Instansiation
+     */
+    private CustomTokenizer()
+    {
+    }
+
+    /**
      * Convenience method to generate a Vector of SearchWords
      * @param sought The text to parse
      * @param commands The Hashtable of SearchWords to select from

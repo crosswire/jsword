@@ -36,6 +36,13 @@ import org.apache.commons.lang.StringUtils;
 public class ThreadUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private ThreadUtil()
+    {
+    }
+
+    /**
      * Call a static method on a class given a sting
      * @param base The object to invoke a method on
      * @param called_method_name The text of the invocation eg "getName"

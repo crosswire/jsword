@@ -4,6 +4,7 @@ package org.crosswire.jsword.view.swing.passage;
 import javax.swing.AbstractListModel;
 
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageEvent;
 import org.crosswire.jsword.passage.PassageListener;
 
@@ -37,17 +38,46 @@ import org.crosswire.jsword.passage.PassageListener;
 public class PassageListModel extends AbstractListModel implements PassageListener
 {
     /**
+     * Create a PassageListModel (in verse mode) from a Passage.
+     * @exception IllegalArgumentException If the mode is illegal
+     */
+    public PassageListModel()
+    {
+        this.ref = null;
+        this.restrict = PassageConstants.RESTRICT_NONE;
+
+        setMode(PassageListModel.LIST_VERSES);
+        setPassage(ref);
+    }
+
+    /**
+     * Create a PassageListModel (in verse mode) from a Passage.
+     * @param ref The reference that we are modeling
+     * @exception IllegalArgumentException If the mode is illegal
+     */
+    public PassageListModel(Passage ref)
+    {
+        this.ref = ref;
+        this.restrict = PassageConstants.RESTRICT_NONE;
+
+        setMode(PassageListModel.LIST_VERSES);
+        setPassage(ref);
+    }
+
+    /**
      * Create a PassageListModel from a Passage. We also specify whether
      * to list the individual verses using the constant
      * <code>PassageListModel.LIST_VERSES</code> or to list ranges using
      * <code>PassageListModel.LIST_RANGES</code>.
      * @param ref The reference that we are modeling
      * @param mode The verse/range mode
+     * @param restrict When we are in range mode, do we chop at chapter boundries
      * @exception IllegalArgumentException If the mode is illegal
      */
-    public PassageListModel(Passage ref, int mode)
+    public PassageListModel(Passage ref, int mode, int restrict)
     {
         this.ref = ref;
+        this.restrict = restrict;
 
         setMode(mode);
         setPassage(ref);
@@ -63,7 +93,9 @@ public class PassageListModel extends AbstractListModel implements PassageListen
     public void setMode(int mode)
     {
         if (mode != LIST_VERSES && mode != LIST_RANGES)
+        {
             throw new IllegalArgumentException(""+mode);
+        }
 
         this.mode = mode;
     }
@@ -75,6 +107,26 @@ public class PassageListModel extends AbstractListModel implements PassageListen
     public int getMode()
     {
         return mode;
+    }
+
+    /**
+     * Change the restrictions we are using when the mode is LIST_RANGES.
+     * Must be one of:
+     * <code>RESTRICT_NONE</code>, <code>RESTRICT_BOOK</code> or
+     * <code>RESTRICT_CHAPTER</code>
+     * @param restrict The new restrictions
+     */
+    public void setRestriction(int restrict)
+    {
+        this.restrict = restrict;
+    }
+
+    /**
+     * Return the current restriction
+     */
+    public int getRestriction()
+    {
+        return restrict;
     }
 
     /**
@@ -90,10 +142,12 @@ public class PassageListModel extends AbstractListModel implements PassageListen
 
         if (mode == LIST_RANGES)
         {
-            return ref.countRanges();
+            return ref.countRanges(restrict);
         }
-
-        return ref.countVerses();
+        else
+        {
+            return ref.countVerses();
+        }
     }
 
     /**
@@ -110,10 +164,12 @@ public class PassageListModel extends AbstractListModel implements PassageListen
 
         if (mode == LIST_RANGES)
         {
-            return ref.getVerseRangeAt(index);
+            return ref.getVerseRangeAt(index, restrict);
         }
-        
-        return ref.getVerseAt(index);
+        else
+        {
+            return ref.getVerseAt(index);
+        }
     }
 
     /**
@@ -180,16 +236,28 @@ public class PassageListModel extends AbstractListModel implements PassageListen
         return ref;
     }
 
-    /** Constant to make us list individual verses not ranges */
+    /**
+     * Constant to make us list individual verses not ranges
+     */
     public static final int LIST_VERSES = 0;
 
-    /** Constant to make us list verses in ranges */
+    /**
+     * Constant to make us list verses in ranges
+     */
     public static final int LIST_RANGES = 1;
 
-    /** The Passage that we are modeling */
+    /**
+     * The Passage that we are modelling
+     */
     private Passage ref;
 
-    /** Are we modeling in groups or individually */
+    /**
+     * Are we modelling in groups or individually
+     */
     private int mode;
-}
 
+    /**
+     * If we are modelling in groups, do we break at chapter/book boundries
+     */
+    private int restrict;
+}

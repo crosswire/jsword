@@ -167,7 +167,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
             {
                 key = (Key) it.next();
                 String match = key.getText();
-                if (match.equalsIgnoreCase(text));
+                if (match.equalsIgnoreCase(text))
                 {
                     return key;
                 }
@@ -178,7 +178,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
             {
                 key = (Key) it.next();
                 String match = key.getText();
-                if (match.startsWith(text));
+                if (match.startsWith(text))
                 {
                     return key;
                 }
@@ -189,7 +189,7 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
             {
                 key = (Key) it.next();
                 String match = key.getText();
-                if (match.indexOf(text) != -1);
+                if (match.indexOf(text) != -1)
                 {
                     return key;
                 }

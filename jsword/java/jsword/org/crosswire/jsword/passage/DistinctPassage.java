@@ -96,35 +96,32 @@ public class DistinctPassage extends AbstractPassage
         return copy;
     }
 
-    /**
-     * Iterate over the Verses
-     * @return A list enumerator
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
     public Iterator verseIterator()
     {
         return store.iterator();
     }
 
-    /**
-     * @return true if this Passage contains no Verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     public boolean isEmpty()
     {
         return store.isEmpty();
     }
 
-    /**
-     * @return the number of Verses in this Passage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses()
     {
         return store.size();
     }
 
-    /**
-     * Returns true if this Passage contains the specified Verse.
-     * @param obj Verse whose presence in this Passage is to be tested.
-     * @return true if this Passage contains the specified Verse
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
     public boolean contains(VerseBase obj)
     {
@@ -138,9 +135,8 @@ public class DistinctPassage extends AbstractPassage
         return true;
     }
 
-    /**
-     * Ensures that this Passage contains the specified Verse
-     * @param obj Verse whose presence in this Passage is to be ensured
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
     public void add(VerseBase obj)
     {
@@ -156,12 +152,13 @@ public class DistinctPassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0)
-            fireIntervalAdded(this, verses[0], verses[verses.length-1]);
+        {
+            fireIntervalAdded(this, verses[0], verses[verses.length - 1]);
+        }
     }
 
-    /**
-     * Removes a single instance of the specified Verse from this Passage
-     * @param obj Verse to be removed from this Passage, if present.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
     public void remove(VerseBase obj)
     {
@@ -177,11 +174,13 @@ public class DistinctPassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0)
-            fireIntervalRemoved(this, verses[0], verses[verses.length-1]);
+        {
+            fireIntervalRemoved(this, verses[0], verses[verses.length - 1]);
+        }
     }
 
-    /**
-     * Removes all of the Verses from this Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#clear()
      */
     public void clear()
     {
@@ -219,9 +218,13 @@ public class DistinctPassage extends AbstractPassage
         readObjectSupport(in);
     }
 
-    /** To make serialization work across new versions */
+    /**
+     * To make serialization work across new versions
+     */
     static final long serialVersionUID = 817374460730441662L;
 
-    /** The place the real data is stored */
+    /**
+     * The place the real data is stored
+     */
     private transient SortedSet store = Collections.synchronizedSortedSet(new TreeSet());
 }

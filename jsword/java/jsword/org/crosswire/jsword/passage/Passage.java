@@ -112,10 +112,11 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
      * Returns the number of fragments in this collection.
      * This does not mean the Passage needs to use VerseRanges, just that it
      * understands the concept.
+     * @param restrict Do we break ranges at chapter/book boundries
      * @return the number of VerseRanges in this collection
      * @see VerseRange
      */
-    public int countRanges();
+    public int countRanges(int restrict);
 
     /**
      * Ensures that there are a maximum of <code>count</code> Verses in
@@ -138,10 +139,11 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
      * greater than <code>count</code> in the Passage, then the passage
      * remains unchanged, and null is returned.
      * @param count The maximum number of VerseRanges to allow in this collection
+     * @param restrict Do we break ranges at chapter/book boundries
      * @return A new Passage conatining the remaining verses or null
      * @see VerseRange
      */
-    public Passage trimRanges(int count);
+    public Passage trimRanges(int count, int restrict);
 
     /**
      * How many books are there in this Passage
@@ -178,10 +180,11 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
     /**
      * Get a specific VerseRange from this collection
      * @param offset The verse range offset (legal values are 0 to countRanges()-1)
+     * @param restrict Do we break ranges at chapter/book boundries
      * @return The Verse Range
      * @throws ArrayIndexOutOfBoundsException If the offset is out of range
      */
-    public VerseRange getVerseRangeAt(int offset) throws ArrayIndexOutOfBoundsException;
+    public VerseRange getVerseRangeAt(int offset, int restrict) throws ArrayIndexOutOfBoundsException;
 
     /**
      * Iterate over the Verses in this collection
@@ -190,12 +193,13 @@ public interface Passage extends Serializable, Cloneable, PassageConstants
     public Iterator verseIterator();
 
     /**
-     * Like verseElements() that iterates over VerseRanges instead
-     * of Verses. Exactly the same data will be traversed, however using
-     * rangeIterator() will usually give less iterations (and never more)
+     * Like verseElements() that iterates over VerseRanges instead of Verses.
+     * Exactly the same data will be traversed, however using rangeIterator()
+     * will usually give less iterations (and never more)
+     * @param restrict Do we break ranges over chapters
      * @return A list enumerator
      */
-    public Iterator rangeIterator();
+    public Iterator rangeIterator(int restrict);
 
     /**
      * Returns true if this collection contains all the specified Verse

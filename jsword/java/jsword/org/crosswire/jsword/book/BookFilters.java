@@ -41,7 +41,15 @@ public class BookFilters
     {
         return allBookFilter;
     }
+
+    /**
+     * Filter for all books
+     */
     private static BookFilter allBookFilter = new AllBookFilter();
+
+    /**
+     * Filter for all books
+     */
     private static class AllBookFilter implements BookFilter
     {
         public boolean test(BookMetaData bmd)
@@ -57,7 +65,15 @@ public class BookFilters
     {
         return biblesBookFilter;
     }
+
+    /**
+     * Filter for all Bibles
+     */
     private static BookFilter biblesBookFilter = new BiblesBookFilter();
+
+    /**
+     * Filter for all Bibles
+     */
     private static class BiblesBookFilter implements BookFilter
     {
         public boolean test(BookMetaData bmd)
@@ -73,7 +89,15 @@ public class BookFilters
     {
         return dictionariesBookFilter;
     }
+
+    /**
+     * Filter for all dictionaries
+     */
     private static BookFilter dictionariesBookFilter = new DictionariesBookFilter();
+
+    /**
+     * Filter for all dictionaries
+     */
     private static class DictionariesBookFilter implements BookFilter
     {
         public boolean test(BookMetaData bmd)
@@ -90,7 +114,15 @@ public class BookFilters
     {
         return commentariesBookFilter;
     }
+
+    /**
+     * Filter for all commentaries
+     */
     private static BookFilter commentariesBookFilter = new CommentariesBookFilter();
+
+    /**
+     * Filter for all commentaries
+     */
     private static class CommentariesBookFilter implements BookFilter
     {
         public boolean test(BookMetaData bmd)

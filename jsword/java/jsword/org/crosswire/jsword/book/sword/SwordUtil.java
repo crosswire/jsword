@@ -36,6 +36,13 @@ import org.crosswire.jsword.book.BookException;
 public class SwordUtil
 {
     /**
+     * Prevent Instansiation
+     */
+    private SwordUtil()
+    {
+    }
+
+    /**
      * Read a RandomAccessFile
      * @param raf The file to read
      * @param index The record to read

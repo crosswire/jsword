@@ -36,6 +36,13 @@ import org.crosswire.jsword.util.Project;
 public class SearchEngineFactory
 {
     /**
+     * Prevent Instansiation
+     */
+    private SearchEngineFactory()
+    {
+    }
+
+    /**
      * Factory constructor for a SearchEngine
      */
     public static SearchEngine createSearchEngine(Bible bible, URL indexdir) throws MalformedURLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, BookException

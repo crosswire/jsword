@@ -12,8 +12,6 @@ import javax.swing.event.HyperlinkListener;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
-import org.crosswire.jsword.view.swing.event.DisplaySelectListener;
 
 /**
  * A quick Swing Bible display pane.

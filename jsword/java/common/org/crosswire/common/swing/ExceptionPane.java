@@ -313,13 +313,13 @@ public class ExceptionPane extends JPanel
         StringBuffer retcode = new StringBuffer();
     
         // The message in the exception
-        String message = ex.getMessage();
-        if (message == null || message.equals(""))
+        String msg = ex.getMessage();
+        if (msg == null || msg.equals(""))
         {
-            message = "No description available";
+            msg = "No description available";
         }
-        String orig = message;
-        message = StringUtils.replace(orig, "\n", "<br>");
+        String orig = msg;
+        msg = StringUtils.replace(orig, "\n", "<br>");
     
         // The name of the exception
         /*
@@ -339,7 +339,7 @@ public class ExceptionPane extends JPanel
         retcode.append("</strong></font>");
         */
         retcode.append("<br>");
-        retcode.append(message);
+        retcode.append(msg);
     
         // If this is a LucidException with a nested Exception
         if (ex instanceof LucidException)
@@ -390,8 +390,8 @@ public class ExceptionPane extends JPanel
             SwingUtilities.getRoot(label).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
             // Get a stack trace
-            JList list = (JList) ev.getSource();
-            int level = list.getSelectedIndex();
+            JList lst = (JList) ev.getSource();
+            int level = lst.getSelectedIndex();
             String name = st.getClassName(level);
 
             if (name.indexOf('$') != -1)
