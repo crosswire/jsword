@@ -45,6 +45,12 @@ public interface Choice extends Serializable
     public void init(Element option) throws StartupException;
 
     /**
+     * The type by which UIs can pick an appropriate editor
+     * @return String The type string as supplied in config.xml
+     */
+    public String getType();
+
+    /**
      * The class that this Choice works on. Used to decide how to display the
      * choice to the user.
      * @return The Class that this Choice works using.

@@ -341,7 +341,7 @@ public class ExceptionShelf extends JPanel
     /**
     * Get the listening status
     */
-    public static boolean getHelpDeskListener()
+    public static boolean isHelpDeskListener()
     {
         return (li != null);
     }

@@ -68,7 +68,7 @@ public class LogUtil
         // If this is a LucidException with a nested Exception
         if (ex instanceof LucidException)
         {
-            Throwable nex = ((LucidException) ex).getException();
+            Throwable nex = ((LucidException) ex).getCause();
             if (nex != null)
             {
                 retcode.append("<p><br><font size=\"-1\">This was caused by: </font>");

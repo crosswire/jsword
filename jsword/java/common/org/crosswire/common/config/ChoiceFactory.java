@@ -77,6 +77,7 @@ public abstract class ChoiceFactory
 
     /**
      * Setup the map of Choices
+     * @see org.crosswire.common.config.swing.FieldMap#hash
      */
     static
     {
@@ -84,6 +85,7 @@ public abstract class ChoiceFactory
         map.put("boolean", BooleanChoice.class);
         map.put("int-options", IntOptionsChoice.class);
         map.put("string-options", StringOptionsChoice.class);
+        map.put("string-array", StringArrayChoice.class);
         map.put("file", FileChoice.class);
         map.put("path", PathChoice.class);
         map.put("directory", DirectoryChoice.class);

@@ -226,10 +226,10 @@ public class LucidException extends Exception
     }
 
     /**
-     * The nested Exception (is any)
+     * The nested Exception (if any)
      * @return The Exception
      */
-    public Throwable getException()
+    public Throwable getCause()
     {
         return ex;
     }

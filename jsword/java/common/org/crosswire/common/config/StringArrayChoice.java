@@ -1,6 +1,7 @@
 
 package org.crosswire.common.config;
 
+import org.crosswire.common.util.Convert;
 import org.jdom.Element;
 
 /**
@@ -27,38 +28,28 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StringOptionsChoice extends ReflectedChoice implements MultipleChoice
+public class StringArrayChoice extends ReflectedChoice
 {
     public void init(Element option) throws StartupException
     {
         super.init(option);
-        Element map = option.getChild("map");
-        if (map == null)
-            throw new StartupException("config_missing_map");
-
-        String name = map.getAttributeValue("name");
-        array = (String[]) ChoiceFactory.getDataMap().get(name);
-    }
-
-    public String[] getOptions()
-    {
-        return array;
+        separator = option.getAttributeValue("separator");
     }
 
     public Class getConvertionClass()
     {
-        return String.class;
+        return String[].class;
     }
 
     public String convertToString(Object orig)
     {
-        return (String) orig;
+        return Convert.stringArray2String((String[]) orig, separator);
     }
 
     public Object convertToObject(String orig)
     {
-        return orig;
+        return Convert.string2StringArray(orig, separator);
     }
 
-    private String[] array = null;
+    private String separator = " ";
 }

@@ -1,13 +1,10 @@
 
 package org.crosswire.common.config.swing;
 
-import java.awt.Font;
-import java.io.File;
 import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.config.Choice;
-import org.crosswire.common.config.DirectoryChoice;
 import org.crosswire.common.config.MultipleChoice;
 import org.crosswire.common.util.Reporter;
 
@@ -61,7 +58,7 @@ public class FieldMap
             }
             else
             {
-                Class clazz = (Class) hash.get(type.getConvertionClass());
+                Class clazz = (Class) map.get(type.getType());
                 if (clazz != null)
                 {
                     field = (Field) clazz.newInstance();
@@ -96,30 +93,29 @@ public class FieldMap
      */
     public static Hashtable getHashtable()
     {
-        return hash;
+        return map;
     }
 
     /** The configuration table */
-    private static Hashtable hash = new Hashtable();
+    private static Hashtable map = new Hashtable();
 
     /**
      * Default hashtable configuration
+     * @see org.crosswire.common.config.ChoiceFactory#map
      */
     static
     {
-        hash.put(String.class, TextField.class);
-        hash.put(Boolean.TYPE, BooleanField.class);
-        hash.put(Integer.TYPE, NumberField.class);
-        //hash.put("hash", MapField.class);
-        //hash.put("array", StringArrayField.class);
-        //hash.put("password", PasswordField.class);
-
-        //hash.put("color", ColorField.class);
-        hash.put(File.class, FileField.class);
-        hash.put(DirectoryChoice.class, FileField.class);
-        hash.put(String[].class, FileField.class);
-        hash.put(Font.class, FontField.class);
-        //hash.put("file", TextViewField.class);
+        map.put("string", TextField.class);
+        map.put("boolean", BooleanField.class);
+        map.put("int-options", NumberField.class);
+        map.put("string-options", StringArrayField.class);
+        map.put("string-array", StringArrayField.class);
+        map.put("file", FileField.class);
+        map.put("path", FileField.class);
+        map.put("directory", FileField.class);
+        map.put("number", NumberField.class);
+        map.put("font", FontField.class);
+        map.put("class", TextField.class);
     }
 
     /** The log stream */

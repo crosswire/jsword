@@ -107,7 +107,7 @@ public class DetailedExceptionPane
         if (ex instanceof LucidException)
         {
             LucidException lex = (LucidException) ex;
-            final Throwable nex = lex.getException();
+            final Throwable nex = lex.getCause();
             if (nex != null)
             {
                 JButton nest = new JButton();

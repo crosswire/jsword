@@ -86,7 +86,7 @@ public class ExceptionPane
      * close this class you must call it again (with false).
      * @param joined Are we listening to the Log
      */
-    public static boolean getHelpDeskListener()
+    public static boolean isHelpDeskListener()
     {
         return (li != null);
     }

@@ -35,10 +35,12 @@ import org.jdom.Element;
 public abstract class ReflectedChoice implements Choice, Serializable
 {
     /**
-     * Simple ctor so there is a default
+     * Setup the available options
      */
     public void init(Element option) throws StartupException
     {
+        type = option.getAttributeValue("type");
+
         // The important 3 things saying what we update and how we describe ourselves
         Element introspector = option.getChild("introspect");
         if (introspector == null)
@@ -101,6 +103,15 @@ public abstract class ReflectedChoice implements Choice, Serializable
             priority = ReflectedChoice.PRIORITY_NORMAL;
         else
             priority = Integer.parseInt(priorityname);
+    }
+
+    /**
+     * The type by which UIs can pick an appropriate editor
+     * @return String The type string as supplied in config.xml
+     */
+    public String getType()
+    {
+        return type;
     }
 
     /**
@@ -203,7 +214,21 @@ public abstract class ReflectedChoice implements Choice, Serializable
      */
     public void setString(String value) throws Exception
     {
-        setter.invoke(null, new Object[] { convertToObject(value) });
+        try
+        {
+            Object object = convertToObject(value);
+            setter.invoke(null, new Object[] { object });
+        }
+        catch (InvocationTargetException ex)
+        {
+            Throwable orig = ex.getTargetException();
+            if (orig instanceof Exception)
+                throw (Exception) orig;
+
+            // So we can't re-throw the original exception because it wasn't an
+            // Exception so we will have to re-throw the InvocationTargetException
+            throw ex;
+        }
     }
 
     /** The highest level priority generally for system level stuff */
@@ -227,8 +252,20 @@ public abstract class ReflectedChoice implements Choice, Serializable
     /** The lowest level priority generally for system level stuff */
     public static final int PRIORITY_LOWEST = 0;
 
+    /**
+     * Th type that we reflect to
+     */
     private Class clazz;
+
+    /**
+     * The property that we call on the reflecting class
+     */
     private String propertyname;
+
+    /**
+     * The type (as specified in config.xml)
+     */
+    private String type;
 
     /**
      * The method to call to get the value
