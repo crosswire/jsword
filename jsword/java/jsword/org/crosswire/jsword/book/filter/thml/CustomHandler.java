@@ -1,7 +1,9 @@
 package org.crosswire.jsword.book.filter.thml;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
@@ -44,9 +46,9 @@ public class CustomHandler extends DefaultHandler
     /**
      * Simple ctor
      */
-    public CustomHandler(Element ele)
+    public CustomHandler()
     {
-        stack.addFirst(ele);
+        stack = new LinkedList();
     }
 
     /* (non-Javadoc)
@@ -54,31 +56,40 @@ public class CustomHandler extends DefaultHandler
      */
     public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException
     {
-        Element ele = (Element) stack.getFirst();
+        Element ele = null;
 
-        for (int i = 0; i < TAGS.length; i++)
+        // If we are looking at the root element
+        // then the stack is empty
+        if (stack.size() > 0)
         {
-            if (qname.equals(TAGS[i].getTagName()))
+            ele = (Element) stack.getFirst();
+            // If the element and its descendants are to be ignored
+            // then there is a null element on the stack
+            if (ele == null)
             {
-                TAGS[i].processTag(ele, attrs);
                 return;
             }
         }
+
+        Tag t = (Tag) TAG_MAP.get(qname);
 
         // Some of the THML modules are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
-        for (int i = 0; i < TAGS.length; i++)
+        if (t == null)
         {
-            if (qname.equalsIgnoreCase(TAGS[i].getTagName()))
+            t = (Tag) TAG_MAP.get(qname.toLowerCase());
+
+            if (t == null)
             {
-                DataPolice.report("Wrong case used in element: " + qname); //$NON-NLS-1$
-                TAGS[i].processTag(ele, attrs);
+                log.warn("unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
                 return;
             }
+
+            DataPolice.report("Wrong case used in thml element: " + qname); //$NON-NLS-1$
         }
 
-        log.warn("unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
+        stack.addFirst(t.processTag(ele, attrs));
     }
 
     /* (non-Javadoc)
@@ -88,6 +99,14 @@ public class CustomHandler extends DefaultHandler
     {
         // What we are adding to
         Element current = (Element) stack.getFirst();
+
+        // If the element and its descendants are to be ignored
+        // then there is a null element on the stack
+        if (current == null)
+        {
+            return;
+        }
+
         List list = current.getContent(); 
 
         // what we are adding
@@ -121,69 +140,92 @@ public class CustomHandler extends DefaultHandler
      */
     public void endElement(String uri, String localname, String qname)
     {
-        // Not sure we need to do anything special
+        // When we are done processing an element we need to remove
+        // it from the stack so that nothing more is attached to it.
+        Element finished = (Element) stack.removeFirst();
+
+        // If it was the last element then it was the root element
+        // so save it
+        if (stack.size() == 0)
+        {
+            rootElement = finished;
+        }
+    }
+    
+    public Element getRootElement()
+    {
+        return rootElement;
     }
 
-    /* (non-Javadoc)
-     * @see org.xml.sax.helpers.DefaultHandler#endDocument()
+    /**
+     * When the document is parsed,
+     * this is the last element popped off the stack.
      */
-    public void endDocument()
-    {
-        stack.removeFirst();
-    }
+    private Element rootElement;
 
     /**
      * The stack of elements that we have created
      */
-    private LinkedList stack = new LinkedList();
-
+    private LinkedList stack;
+    
     /**
      * The known tag types
      */
-    private static final Tag[] TAGS = new Tag[]
-    {
-        new ATag(),
-        new BlockquoteTag(),
-        new BrTag(),
-        new BTag(),
-        new CenterTag(),
-        new CitationTag(),
-        new DivTag(),
-        new ForeignTag(),
-        new FontTag(),
-        new HrTag(),
-        new ITag(),
-        new LiTag(),
-        new NoteTag(),
-        new NameTag(),
-        new OlTag(),
-        new PTag(),
-        new PbTag(),
-        new RootTag(),
-        new ScriptureTag(),
-        new ScripRefTag(),
-        new SmallTag(),
-        new SupTag(),
-        new SyncTag(),
-        new TableTag(),
-        new TdTag(),
-        new TermTag(),
-        new ThTag(),
-        new TrTag(),
-        new UTag(),
-        new UlTag(),
-        new AliasTag("h1", new BTag()), //$NON-NLS-1$
-        new AliasTag("h2", new BTag()), //$NON-NLS-1$
-        new AliasTag("h3", new BTag()), //$NON-NLS-1$
-        new AliasTag("h4", new BTag()), //$NON-NLS-1$
-        new AliasTag("dl", new UlTag()), //$NON-NLS-1$
-        new AliasTag("dd", new LiTag()), //$NON-NLS-1$
-        new AliasTag("dt", new LiTag()), //$NON-NLS-1$
-        new IgnoreTag("img"), //$NON-NLS-1$
-        new IgnoreTag("span"), //$NON-NLS-1$
-        new IgnoreTag("dir"), //$NON-NLS-1$
-        new IgnoreTag("pre"), //$NON-NLS-1$
-    };
+    private static final Map TAG_MAP = new HashMap();
+    
+    static {
+        Tag[] tags = new Tag[]
+        	{
+            	new ATag(),
+                new BlockquoteTag(),
+                new BrTag(),
+                new BTag(),
+                new CenterTag(),
+                new CitationTag(),
+                new DivTag(),
+                new ForeignTag(),
+                new FontTag(),
+                new HrTag(),
+                new ITag(),
+                new LiTag(),
+                new NoteTag(),
+                new NameTag(),
+                new OlTag(),
+                new PTag(),
+                new PbTag(),
+                new RootTag(),
+                new ScriptureTag(),
+                new ScripRefTag(),
+                new SmallTag(),
+                new SupTag(),
+                new SyncTag(),
+                new TableTag(),
+                new TdTag(),
+                new TermTag(),
+                new ThTag(),
+                new TrTag(),
+                new UTag(),
+                new UlTag(),
+                new AliasTag("h1", new BTag()), //$NON-NLS-1$
+                new AliasTag("h2", new BTag()), //$NON-NLS-1$
+                new AliasTag("h3", new BTag()), //$NON-NLS-1$
+                new AliasTag("h4", new BTag()), //$NON-NLS-1$
+                new AliasTag("dl", new UlTag()), //$NON-NLS-1$
+                new AliasTag("dd", new LiTag()), //$NON-NLS-1$
+                new AliasTag("dt", new LiTag()), //$NON-NLS-1$
+                new IgnoreTag("img"), //$NON-NLS-1$
+                new IgnoreTag("span"), //$NON-NLS-1$
+                new IgnoreTag("dir"), //$NON-NLS-1$
+                new IgnoreTag("pre"), //$NON-NLS-1$
+        	};
+        for (int i = 0; i < tags.length; i++)
+        {
+            Tag t = tags[i];
+            String tagName = t.getTagName();
+            TAG_MAP.put(tagName, t);
+        }
+    }
+
 
     /**
      * The log stream

@@ -49,8 +49,10 @@ public class IgnoreTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs)
+    public Element processTag(Element ele, Attributes attrs)
     {
+        // FIXME: this is not right
+        return null;
     }
 
     /**

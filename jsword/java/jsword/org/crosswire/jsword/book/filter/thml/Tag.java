@@ -42,6 +42,7 @@ public interface Tag
      * in the source document.
      * @param ele The OSIS element to use as a parent
      * @param attrs The source document attributes.
+     * @return the element to which content is attached
      */
-    public void processTag(Element ele, Attributes attrs);
+    public Element processTag(Element ele, Attributes attrs);
 }

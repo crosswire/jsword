@@ -42,32 +42,38 @@ public class SyncTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs)
+    public Element processTag(Element ele, Attributes attrs)
     {
         // Strongs reference
         String type = attrs.getValue("type"); //$NON-NLS-1$
         String value = attrs.getValue("value"); //$NON-NLS-1$
+
         if ("Strongs".equals(type)) //$NON-NLS-1$
         {
             Element w = OSISUtil.factory().createW();
             w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_STRONGS + value);
             ele.addContent(w);
+            return w;
         }
-        else if ("Dict".equals(type)) //$NON-NLS-1$
+
+        if ("Dict".equals(type)) //$NON-NLS-1$
         {
             Element div = OSISUtil.factory().createDiv();
             div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "dict://" + value); //$NON-NLS-1$
             ele.addContent(div);
+            return div;
         }
-        else if ("morph".equals(type)) //$NON-NLS-1$
+
+        if ("morph".equals(type)) //$NON-NLS-1$
         {
             Element div = OSISUtil.factory().createDiv();
             div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "morph://" + value); //$NON-NLS-1$
             ele.addContent(div);
+            return div;
         }
-        else
-        {
-            DataPolice.report("sync tag has type=" + type + " when value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+
+        DataPolice.report("sync tag has type=" + type + " when value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
+        // FIXME(DMS)
+        return null;
     }
 }

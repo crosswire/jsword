@@ -56,10 +56,10 @@ public class THMLFilter implements Filter
      */
     public List toOSIS(String plain)
     {
-        Element ele = OSISUtil.factory().createDiv();
+        Element ele = null;
         try
         {
-            parse(ele, plain);
+            ele = parse(plain);
         }
         catch (Exception ex1)
         {
@@ -72,7 +72,7 @@ public class THMLFilter implements Filter
 
             try
             {
-                parse(ele, cropped);
+                ele = parse(cropped);
             }
             catch (Exception ex2)
             {
@@ -84,7 +84,7 @@ public class THMLFilter implements Filter
 
                 try
                 {
-                    parse(ele, shawn);
+                    ele = parse(shawn);
                 }
                 catch (Exception ex3)
                 {
@@ -110,16 +110,17 @@ public class THMLFilter implements Filter
     /**
      * Parse a string by creating a StringReader and all the other gubbins.
      */
-    private void parse(Element ele, String toparse) throws FactoryConfigurationError, ParserConfigurationException, SAXException, IOException
+    private Element parse(String toparse) throws FactoryConfigurationError, ParserConfigurationException, SAXException, IOException
     {
         // We need to create a root element to house our document fragment
         StringReader in = new StringReader("<" + RootTag.TAG_ROOT + ">" + toparse + "</" + RootTag.TAG_ROOT + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         InputSource is = new InputSource(in);
 
         SAXParser parser = spf.newSAXParser();
-        CustomHandler handler = new CustomHandler(ele);
+        CustomHandler handler = new CustomHandler();
 
         parser.parse(is, handler);
+        return handler.getRootElement();
     }
 
     /**

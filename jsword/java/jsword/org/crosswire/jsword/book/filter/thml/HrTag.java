@@ -41,8 +41,10 @@ public class HrTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs)
+    public Element processTag(Element ele, Attributes attrs)
     {
         // NOTE(joe): are we right to ignore HR tags in THML?
+        // FIXME(DM): this is not right
+        return null;
     }
 }

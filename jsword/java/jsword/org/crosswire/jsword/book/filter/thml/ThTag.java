@@ -41,7 +41,7 @@ public class ThTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs)
+    public Element processTag(Element ele, Attributes attrs)
     {
         Element cell = OSISUtil.factory().createCell();
         ele.addContent(cell);
@@ -49,5 +49,6 @@ public class ThTag implements Tag
         Element seg = OSISUtil.factory().createSeg();
         seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_BOLD);
         cell.addContent(seg);
+        return seg;
     }
 }

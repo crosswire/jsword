@@ -16,6 +16,9 @@ BookData Display
 - Vines shows internal markup around verse references.
 - some nt verses badly displayed in ot refs
 
+SplitBookDataDisplay
+- Selection not maintained when blur button is clicked.
+
 Web
 - auto test for web demo
 
@@ -23,6 +26,8 @@ Install
 - save install sites
 - pop-up install dialog if no modules present
 - warning about web access in install
+- Install does not work behind a firewall. WinXP SP2, FC2, Mac OS.
+  It throws a NPE.
 
 Search
 - match does not support restrict
@@ -34,10 +39,6 @@ Data Problems
 - dict: urls in a book w/ strong's numbering does not distinguish Hebrew from
   Greek numbers. The result is that in the OT, with the Greek Strongs choosen, a
   Greek word may be shown.
-- In GerElb1871, in Gen 1.1 the parsing of ThML is wrong. It created OSIS with
-  the note having the wrong content. Specifically the end tag is in the wrong
-  place.
-- WLS has <verse osisID="xxx">text</verse> surrounding each verse.
   
 View Source
   Copy button throws an exception.

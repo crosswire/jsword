@@ -43,7 +43,7 @@ public class FontTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs)
+    public Element processTag(Element ele, Attributes attrs)
     {
         Element seg = OSISUtil.factory().createSeg();
         StringBuffer buf = new StringBuffer();
@@ -72,5 +72,6 @@ public class FontTag implements Tag
         }
 
         ele.addContent(seg);
+        return seg;
     }
 }

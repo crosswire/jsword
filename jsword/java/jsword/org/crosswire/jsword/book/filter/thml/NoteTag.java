@@ -41,10 +41,11 @@ public class NoteTag implements Tag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public void processTag(Element ele, Attributes attrs)
+    public Element processTag(Element ele, Attributes attrs)
     {
         Element note = OSISUtil.factory().createNote();
         note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
         ele.addContent(note);
+        return note;
     }
 }
