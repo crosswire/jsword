@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jdom-b10.zip" kind="lib" path="jar/jdom-1.0.b10/jdom.jar"/>
-	<classpathentry exported="true" sourcepath="/jsword-support/othersource/junit-3.8.1-src.jar" kind="lib" path="jar/junit-3.8.1/junit.jar"/>
 	<classpathentry kind="src" path="java/gpl"/>
 	<classpathentry kind="src" path="java/limbo"/>
 	<classpathentry kind="src" path="java/core"/>
@@ -11,6 +8,9 @@
 	<classpathentry kind="src" path="java/test"/>
 	<classpathentry kind="src" path="java/tar"/>
 	<classpathentry exported="true" kind="lib" path="resource"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jdom-1.0.zip" kind="lib" path="jar/jdom-1.0/jdom.jar"/>
+	<classpathentry exported="true" sourcepath="/jsword-support/othersource/junit-3.8.1-src.jar" kind="lib" path="jar/junit-3.8.1/junit.jar"/>
 	<classpathentry kind="lib" path="jar/jaf-1.0.2/activation.jar"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>
