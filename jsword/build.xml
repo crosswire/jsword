@@ -3,19 +3,19 @@
   <!--=======================================================================-->
   <property name="source.root" value="."/>
   <property name="source.bin" value="${source.root}/bin"/>
-  <property name="source.doc" value="${source.root}/doc"/>
+  <property name="source.web" value="${source.root}/web"/>
   <property name="source.etc" value="${source.root}/etc"/>
   <property name="source.jar" value="${source.root}/jar"/>
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
-  <property name="source.gener" value="${source.root}/gener"/>
   <property name="source.keystore" value="${basedir}/jsword.keystore"/>
+  <property name="gener.root" value="target/gener"/>
   <property name="target.root" value="target/ant"/>
   <property name="target.classes" value="${target.root}/temp/classes"/>
   <property name="target.jar" value="${target.root}/temp/jar"/>
   <property name="target.deploy" value="${target.root}/deploy/jsword"/>
-  <property name="target.doc" value="${target.root}/doc"/>
-  <property name="target.jnlp" value="${target.doc}/jnlp"/>
+  <property name="target.web" value="${target.root}/web"/>
+  <property name="target.jnlp" value="${target.web}/jnlp"/>
   <property name="target.junit" value="${target.root}/junit"/>
   <property name="notes.root" value="notes"/>
 
@@ -41,12 +41,12 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="xjc" depends="init, xjc.check" if="xjc.required" description="Run XJC">
-    <rmdir dir="${source.gener}/osis"/>
-    <mkdir dir="${source.gener}/osis"/>
+  <target name="xjc" depends="init, xjc.check" unless="xjc.notrequired" description="Run XJC">
+    <delete dir="${gener.root}/osis"/>
+    <mkdir dir="${gener.root}/osis"/>
     <java fork="true" classname="com.sun.tools.xjc.Driver">
       <arg value="-d"/>
-      <arg value="${source.gener}/osis"/>
+      <arg value="${gener.root}/osis"/>
       <arg value="-p"/>
       <arg value="org.crosswire.jsword.osis"/>
       <arg value="${source.etc}/osisCore.1.1.xsd"/>
@@ -58,11 +58,17 @@
     </java>
   </target>
   <target name="xjc.check" depends="init" description="Check to see if xjc is needed">
-    <mkdir dir="${source.gener}/osis"/>
-    <uptodate property="xjc.required">
-      <srcfiles dir= "${source.gener}/osis" includes="**/*"/>
-      <mapper type="merge" to="${source.etc}/osisCore.1.1.xsd"/>
-    </uptodate>
+    <mkdir dir="${gener.root}/osis"/>
+    <condition property="xjc.notrequired">
+      <and>
+        <available file="${gener.root}/osis/org" type="dir"/>
+        <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
+          <uptodate targetfile="${source.etc}/osisCore.1.1.xsd">
+            <srcfiles dir="${gener.root}/osis"/>
+          </uptodate>
+        </not>
+      </and>
+    </condition>
   </target>
 
   <!--=======================================================================-->
@@ -70,10 +76,10 @@
     <antcall target="compile.section">
       <param name="section" value="common"/>
     </antcall>
-    <echo message="Compiling ${source.gener}/osis"/>
+    <echo message="Compiling ${gener.root}/osis"/>
     <mkdir dir="${target.classes}/osis"/>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
-      <src path="${source.java}/osis"/>
+      <src path="${gener.root}/osis"/>
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}">
@@ -82,7 +88,7 @@
       </classpath>
     </javac>
     <copy todir="${target.classes}/osis">
-      <fileset dir="${source.gener}/osis">
+      <fileset dir="${gener.root}/osis">
         <patternset refid="java.non.compile"/>
       </fileset>
     </copy>
@@ -143,14 +149,14 @@
 
   <!--=======================================================================-->
   <target name="check.config">
-    <mkdir dir="${source.gener}/config"/>
+    <mkdir dir="${gener.root}/config"/>
     <style
         in="${source.res}/config.xml"
-        out="${source.gener}/config/ConfigTest.java"
+        out="${gener.root}/config/ConfigTest.java"
         style="${source.etc}/config-test.xsl"/>
     <mkdir dir="${target.classes}/config"/>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
-      <src path="${source.gener}/config"/>
+      <src path="${gener.root}/config"/>
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}">
@@ -167,6 +173,7 @@
         manifest="${source.etc}/desktop/MANIFEST.MF"
         jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
+      <!--fileset dir="${target.classes}/osis"/-->
       <fileset dir="${target.classes}/jsword"/>
       <fileset dir="${target.classes}/sword"/>
       <fileset dir="${target.classes}/map"/>
@@ -273,47 +280,47 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.testreport" depends="test" description="Compile test report">
+  <target name="web.testreport" depends="test" description="Compile test report">
     <junitreport todir="${target.junit}">
       <fileset dir="${target.junit}">
         <include name="TEST-*.xml"/>
       </fileset>
-      <report format="frames" todir="${target.doc}/test"/>
+      <report format="frames" todir="${target.web}/test"/>
     </junitreport>
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.files" depends="jar, jnlp.deploy" description="Copy the file based documentation">
-    <mkdir dir="${target.doc}"/>
-    <copy todir="${target.doc}">
-      <fileset dir="${source.doc}"/>
+  <target name="web.files" depends="jar, jnlp.deploy" description="Copy the file based documentation">
+    <mkdir dir="${target.web}"/>
+    <copy todir="${target.web}">
+      <fileset dir="${source.web}"/>
     </copy>
-    <mkdir dir="${target.doc}/WEB-INF/lib"/>
-    <copy todir="${target.doc}/WEB-INF/lib">
+    <mkdir dir="${target.web}/WEB-INF/lib"/>
+    <copy todir="${target.web}/WEB-INF/lib">
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
       <fileset dir="${target.jar}" includes="*.jar"/>
     </copy>
-    <mkdir dir="${target.doc}/WEB-INF/classes"/>
-    <copy todir="${target.doc}/WEB-INF/classes">
+    <mkdir dir="${target.web}/WEB-INF/classes"/>
+    <copy todir="${target.web}/WEB-INF/classes">
       <fileset dir="${source.res}"/>
     </copy>
     <unzip
         src="${notes.root}/versions/projectb-ser-av.zip"
-        dest="${target.doc}/WEB-INF/classes"
+        dest="${target.web}/WEB-INF/classes"
         />
-    <copy todir="${target.doc}/WEB-INF">
+    <copy todir="${target.web}/WEB-INF">
       <fileset dir="${source.etc}/web"/>
     </copy>
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.javadoc" depends="init" description="Create JavaDoc">
-    <mkdir dir="${target.doc}/api"/>
+  <target name="web.javadoc" depends="init" description="Create JavaDoc">
+    <mkdir dir="${target.web}/api"/>
     <javadoc
-        stylesheetfile="${source.doc}/javadoc/stylesheet.css"
-        destdir="${target.doc}/api"
+        stylesheetfile="${source.web}/javadoc/stylesheet.css"
+        destdir="${target.web}/api"
         overview="${source.java}/jsword/overview.html"
         private="true"
         author="true"
@@ -348,14 +355,14 @@
           <include name="**/*.jar"/>
         </fileset>
       </classpath>
-      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.doc}/javadoc"/>
+      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.web}/javadoc"/>
     </javadoc>
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.java2html" depends="init" description="HTML versions of the java code">
-    <mkdir dir="${target.doc}/java2html"/>
-    <java fork="true" classname="j2h" output="${target.doc}/java2html/output.txt">
+  <target name="web.java2html" depends="init" description="HTML versions of the java code">
+    <mkdir dir="${target.web}/java2html"/>
+    <java fork="true" classname="j2h" output="${target.web}/java2html/output.txt">
       <classpath>
         <fileset dir="${source.jar}">
           <include name="**/*.jar"/>
@@ -374,7 +381,7 @@
       <arg value="-js"/>
       <arg value="${basedir}/${source.java}/map"/>
       <arg value="-d" />
-      <arg value="${target.doc}/java2html"/>
+      <arg value="${target.web}/java2html"/>
       <arg value="-n"/>
       <arg value="jsword"/>
       <arg value="-m"/>
@@ -386,8 +393,8 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.jdepend">
-    <mkdir dir="${target.doc}/jdepend"/>
+  <target name="web.jdepend">
+    <mkdir dir="${target.web}/jdepend"/>
     <jdepend format="xml" outputfile="${target.jdepend}/jdepend-report.xml">
       <sourcespath>
         <pathelement location="${source.java}/common"/>
@@ -405,7 +412,7 @@
     </jdepend>
     <style
         basedir="${target.jdepend}"
-        destdir="${target.doc}/jdepend"
+        destdir="${target.web}/jdepend"
         includes="jdepend-report.xml"
         style="${source.etc}/jdepend.xsl"/>
   </target>
@@ -465,11 +472,11 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc" depends="doc.files, doc.javadoc, doc.java2html, doc.testreport" description="All the documentation tasks">
+  <target name="web" depends="web.files, web.javadoc, web.java2html, web.testreport" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean,test,doc" description="Run a full clean/build/deploy/test cycle">
+  <target name="all" depends="clean, test, web" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->
@@ -510,12 +517,12 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="install" description="Install web application" depends="tomcatinit, doc.files">
-    <install url="${url}" username="${username}" password="${password}" path="${path}" war="file://$basedir}/${target.root}/doc"/>
+  <target name="install" description="Install web application" depends="tomcatinit, web.files">
+    <install url="${url}" username="${username}" password="${password}" path="${path}" war="file://$basedir}/${target.root}/web"/>
   </target>
 
   <!--=======================================================================-->
-  <target name="reload" description="Reload web application" depends="tomcatinit, doc.files">
+  <target name="reload" description="Reload web application" depends="tomcatinit, web.files">
     <reload url="${url}" username="${username}" password="${password}" path="${path}"/>
   </target>
 

@@ -15,8 +15,10 @@
     <classpathentry kind="lib" path="jar/junit381/junit.jar" sourcepath="/jsword/jar/junit381/src.jar"/>
     <classpathentry kind="src" path="java/common"/>
     <classpathentry kind="src" path="java/commontest"/>
+    <classpathentry kind="src" path="target/gener/osis"/>
     <classpathentry kind="src" path="java/jsword"/>
     <classpathentry kind="src" path="java/jswordtest"/>
+    <classpathentry kind="src" path="target/gener/config"/>
     <classpathentry kind="src" path="java/map"/>
     <classpathentry kind="src" path="java/maptest"/>
     <classpathentry kind="src" path="java/swing"/>
@@ -25,8 +27,6 @@
     <classpathentry kind="src" path="java/swordtest"/>
     <classpathentry kind="src" path="java/servlet"/>
     <classpathentry kind="src" path="java/servlettest"/>
-    <classpathentry kind="src" path="gener/config"/>
-    <classpathentry kind="src" path="gener/osis"/>
     <classpathentry exported="true" kind="lib" path="resource"/>
     <classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>
