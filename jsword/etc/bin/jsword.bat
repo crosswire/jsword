@@ -4,7 +4,7 @@ REM @echo off
 if "%OS%"=="Windows_NT" @setlocal
 
 REM STEP 2 - Check we know where we are installed
-set DEFAULT_JSWORD=%~dp0\..
+set DEFAULT_JSWORD=%~dp0
 if "%JSWORD%"=="" set JSWORD=%DEFAULT_JSWORD%
 set DEFAULT_JSWORD=
 if exist "%JSWORD%" goto DoneFindJSword
@@ -16,12 +16,14 @@ echo "Using JSWORD=%JSWORD%"
 
 REM STEP 3 - Setup the classpath
 set LOCALCLASSPATH=%CLASSPATH%
-for %%i in ("%JSWORD%\lib\*.jar") do call "%JSWORD%\bin\lcp.bat" %%i
+for %%i in ("%JSWORD%\*.jar") do call "%JSWORD%\lcp.bat" %%i
 
 REM STEP 4 - Run JSword
-REM we might need to get extra memory?
-REM set JSWORD_OPTS=-Xmx256M -classpath "%LOCALCLASSPATH%"
-"%JAVA_HOME%\bin\java.exe" "-Djava.endorsed.dirs=%JSWORD%\lib" -classpath "%JSWORD%\resource" "-Djsword.bible.dir=%JSWORD%\resource" %JSWORD_OPTS% org.crosswire.jsword.view.swing.desktop.Desktop
+REM -Xmx256M
+REM "-Djava.endorsed.dirs=%JSWORD%\lib"
+REM "-Djsword.bible.dir=%JSWORD%\resource"
+REM -classpath "%JSWORD%\resource"
+"%JAVA_HOME%\bin\java.exe" -classpath "%LOCALCLASSPATH%" org.crosswire.jsword.view.swing.desktop.Desktop
 goto End
 
 :FailedFindJSword

@@ -1,6 +1,5 @@
 package org.crosswire.jsword.passage;
 
-
 /**
  * A PassageFactory is in charge of creating Passages. The point of
  * implementing it as a Factory is that the Passage interface may be

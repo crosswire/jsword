@@ -144,7 +144,7 @@
   <target name="compile.section">
     <echo message="Compiling ${source.java}/${section}"/>
     <mkdir dir="${target.classes}/${section}"/>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/${section}">
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/${section}" source="1.4">
       <src path="${source.java}/${section}"/>
       <classpath>
         <dirset dir="${target.classes}"/>
@@ -262,30 +262,22 @@
 
   <!--=======================================================================-->
   <target name="swingui" depends="jnlp" description="Build a ready to ship/test app">
-    <mkdir dir="${target.swingui}/bin"/>
-    <copy todir="${target.swingui}/bin">
+    <mkdir dir="${target.swingui}"/>
+    <copy todir="${target.swingui}">
       <fileset dir="${source.etc}/bin"/>
+      <fileset dir="${target.web}/jnlp" includes="**/*.jar"/>
     </copy>
     <chmod perm="a+x">
       <fileset dir="${target.swingui}">
         <include name="**/*.sh"/>
       </fileset>
     </chmod>
-    <fixcrlf srcdir="${target.swingui}/bin" eol="lf">
+    <fixcrlf srcdir="${target.swingui}" eol="lf">
       <include name="**/*.sh"/>
     </fixcrlf>
-    <fixcrlf srcdir="${target.swingui}/bin" eol="crlf">
+    <fixcrlf srcdir="${target.swingui}" eol="crlf">
       <include name="**/*.bat"/>
     </fixcrlf>
-    <mkdir dir="${target.swingui}/lib"/>
-    <copy todir="${target.swingui}/lib">
-      <fileset dir="${target.web}/jnlp" includes="**/*.jar"/>
-    </copy>
-    <mkdir dir="${target.swingui}/resource"/>
-    <copy todir="${target.swingui}/resource">
-      <fileset dir="${target.classes}/resource"/>
-      <fileset dir="${source.res}"/>
-    </copy>
   </target>
 
   <!--=======================================================================-->
@@ -723,7 +715,10 @@
 
   <!--=======================================================================-->
   <target name="exec" depends="compile" description="Run the project using Ant">
-    <java classname="org.crosswire.jsword.book.ReadEverything" fork="true">
+    <java classname="org.crosswire.jsword.view.swing.desktop.Desktop" fork="true">
+      <assertions enablesystemassertions="true">
+        <enable/>
+      </assertions>
       <!--
       org.crosswire.jsword.view.swing.desktop.Desktop
       org.crosswire.jsword.book.ReadEverything

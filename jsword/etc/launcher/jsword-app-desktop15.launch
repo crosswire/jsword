@@ -4,7 +4,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_TYPE_ID" value="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_NAME" value="sun-jdk-1.5_beta1"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jsword"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=./target/ant/swingui/jsword/resource -Xmx256m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djsword.bible.dir=./target/ant/swingui/jsword/resource -Xmx256m -ea"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>

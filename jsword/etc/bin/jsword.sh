@@ -34,8 +34,8 @@ if [ -z "$JSWORD" ] ; then
 	PRG=`dirname "$PRG"`"/$link"
     fi
   done
-  
-  JSWORD=`dirname "$PRG"`/..
+
+  JSWORD=`dirname "$PRG"`
 
   cd "$saveddir"
 
@@ -81,7 +81,7 @@ fi
 
 # This is actually redundant because we are using the endorsed.dirs method
 # (which we need for JAXB purposes)
-for i in "${JSWORD}/lib/"*.jar
+for i in "${JSWORD}/"*.jar
 do
   # if the directory is empty, then it will return the input string
   # this is stupid, so case for it
@@ -103,4 +103,7 @@ if $cygwin; then
   CYGHOME=`cygpath --windows "$HOME"`
 fi
 
-"$JAVACMD" "-Djava.endorsed.dirs=${JSWORD}/lib" -classpath "${JSWORD}/resource" "-Djsword.bible.dir=${JSWORD}/resource" org.crosswire.jsword.view.swing.desktop.Desktop
+# "-Djava.endorsed.dirs=${JSWORD}/lib"
+# -classpath "${JSWORD}/resource"
+# "-Djsword.bible.dir=${JSWORD}/resource"
+"$JAVACMD" -classpath "${LOCALCLASSPATH}" org.crosswire.jsword.view.swing.desktop.Desktop

@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang.enum.Enum;
-
 /**
  * A base class for implementing type safe internationalization (i18n) that is
  * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
@@ -37,14 +35,14 @@ import org.apache.commons.lang.enum.Enum;
  * @version $Id$
  * @see org.crosswire.common.util.Msg
  */
-public class MsgBase extends Enum
+public class MsgBase
 {
     /**
      * Create a MsgBase object
      */
-    protected MsgBase(String key)
+    protected MsgBase(String name)
     {
-        super(key);
+        this.name = name;
         loadResources();
     }
 
@@ -53,21 +51,19 @@ public class MsgBase extends Enum
      */
     public String toString()
     {
-        String base = super.getName();
-
         try
         {
             if (resources != null)
             {
-                base = resources.getString(base);
+                return resources.getString(name);
             }
         }
         catch (MissingResourceException ex)
         {
-            log.warn("Missing resource in " + Locale.getDefault().getDisplayName() + " for " + base); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Missing resource in " + Locale.getDefault().getDisplayName() + " for " + name); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return base;
+        return name;
     }
 
     /**
@@ -113,11 +109,13 @@ public class MsgBase extends Enum
                 }
                 catch (MissingResourceException ex)
                 {
-                    log.debug("Assuming key is the default message " + className + ": " + getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.debug("Assuming key is the default message " + className + ": " + name); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
     }
+
+    private String name;
 
     /**
      * resource map maintains a mapping of class names to resources found by that name.
