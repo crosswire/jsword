@@ -3,12 +3,6 @@
   <!--JBuilder Library Definition File-->
   <fullname>jsword</fullname>
   <class>
-    <path>[jar/jaxb10/jaxb-api.jar]</path>
-    <path>[jar/jaxb10/jaxb-libs.jar]</path>
-    <path>[jar/jaxb10/jaxb-ri.jar]</path>
-    <path>[jar/jaxb10/jaxb-xjc.jar]</path>
-    <path>[jar/jaxb10/jax-qname.jar]</path>
-    <path>[jar/jaxb10/namespace.jar]</path>
     <path>[jar/jdom09/jdom.jar]</path>
     <path>[jar/junit381/junit.jar]</path>
     <path>[jar/lang200/commons-lang-2.0.jar]</path>
@@ -24,7 +18,6 @@
     <path>[jar/log4j127/jakarta-log4j-1.2.7.zip]/jakarta-log4j-1.2.7/src/java</path>
     <path>[jar/lucene12/lucene-1.2-src.zip]/lucene-1.2-src/src/java</path>
     <path>[jar/jdom08/jdom-b8.zip]/jdom-b8/src/java</path>
-    <path>[jar/jaxb10b/jaxb-api-src.zip]</path>
   </source>
   <lastmodsaved>1075828723940</lastmodsaved>
 </library>

@@ -28,7 +28,6 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg GBF_JAXB = new Msg("Parse Error"); //$NON-NLS-1$
     static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}."); //$NON-NLS-1$
     static final Msg NAME_JESUS = new Msg("Jesus"); //$NON-NLS-1$
 

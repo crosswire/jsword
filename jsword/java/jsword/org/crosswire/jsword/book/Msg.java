@@ -36,7 +36,6 @@ class Msg extends MsgBase
 
     static final Msg BIBLE_NOTFOUND = new Msg("Defaults.BibleNotFound"); //$NON-NLS-1$
 
-    static final Msg JAXB_NO_INIT = new Msg("OSISUtil.JAXBNoInit"); //$NON-NLS-1$
     static final Msg MISSING_VERSE = new Msg("OSISUtil.MissingVerse"); //$NON-NLS-1$
     static final Msg OSIS_BADID = new Msg("OSISUtil.OSISBadID"); //$NON-NLS-1$
 

@@ -45,7 +45,6 @@ public class StudyTool
         Search search = new Search(word, false);
         KeyList key = bible.find(search);
         BookData data = bible.getData(key);
-        ParentLocator loc = new ParentLocator(data.getOsis());
 
         Map reply = new HashMap();
 
@@ -77,7 +76,7 @@ public class StudyTool
                         reply.put(strongs, trans);
                     }
 
-                    trans.getRef().add(OSISUtil.getVerse(w, loc));
+                    trans.getRef().add(OSISUtil.getVerse(w));
                 }
             }
         }
@@ -95,7 +94,6 @@ public class StudyTool
         Search search = new Search(number, false);
         KeyList key = bible.find(search);
         BookData data = bible.getData(key);
-        ParentLocator loc = new ParentLocator(data.getOsis());
 
         Map reply = new HashMap();
 
@@ -128,7 +126,7 @@ public class StudyTool
                         reply.put(translated, trans);
                     }
 
-                    trans.getRef().add(OSISUtil.getVerse(w, loc));
+                    trans.getRef().add(OSISUtil.getVerse(w));
                 }
             }
         }

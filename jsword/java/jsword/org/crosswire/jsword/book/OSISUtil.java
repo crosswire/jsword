@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-
-import org.jdom.Element;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.jdom.Element;
+import org.jdom.Parent;
 
 /**
  * Some simple utilities to help working with OSIS classes.
@@ -155,24 +153,6 @@ public class OSISUtil
      */
     private OSISUtil()
     {
-    }
-
-    static
-    {
-        try
-        {
-            Properties test = ResourceUtil.getProperties("org/crosswire/jsword/osis/jaxb"); //$NON-NLS-1$
-            for (Iterator it = test.keySet().iterator(); it.hasNext();)
-            {
-                String key = (String) it.next();
-                String val = (String) test.get(key);
-                log.debug("jaxb: "+key+"="+val); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
-        catch (Exception ex)
-        {
-            log.fatal("Failed to test JAXB", ex); //$NON-NLS-1$
-        }
     }
 
     private static ObjectFactory factory = new ObjectFactory();
@@ -386,7 +366,7 @@ public class OSISUtil
     /**
      * Many of the OSIS elements have lists with content, but the accessors are
      * not accoring to any interface, (or even with consistent names) so this
-     * method extracts a content List from a JAXB element.
+     * method extracts a content List from a JDOM element.
      */
     public static List getList(Element ele)
     {
@@ -409,7 +389,7 @@ public class OSISUtil
      * @param ele The start point for our verse hunt.
      * @return The verse we are in
      */
-    public static Verse getVerse(Element ele, ParentLocator loc) throws BookException
+    public static Verse getVerse(Element ele) throws BookException
     {
         if (ele.getName().equals(OSIS_ELEMENT_VERSE))
         {
@@ -428,10 +408,10 @@ public class OSISUtil
         else
         {
             // So we just walk up the tree trying to find a verse
-            Element parent = loc.getParent(ele);
-            if (parent != null)
+            Parent parent = ele.getParent();
+            if (parent != null && parent instanceof Element)
             {
-                return getVerse(parent, loc);
+                return getVerse((Element) parent);
             }
 
             throw new BookException(Msg.MISSING_VERSE);
@@ -518,13 +498,13 @@ public class OSISUtil
     }
 
     /**
-     * Helper to extract the Strings from a nest of JAXB elements
-     * @param ele The JAXB Element to dig into
+     * Helper to extract the Strings from a nest of JDOM elements
+     * @param ele The JDOM Element to dig into
      * @param buffer The place we accumulate strings.
      */
     private static void recurseChildren(Element ele, StringBuffer buffer)
     {
-        // ele is a JAXBElement that might have a getContent() method
+        // ele is a JDOM Element that might have a getContent() method
         try
         {
             List content = getList(ele);

@@ -31,17 +31,12 @@
     == These jars are necessary for Bible Desktop to be compiled and run.
     == The version numbers in jar files is replaced w/ *.
     == This way we can upgrade without impacting this ant build file.
-    == Other jars are needed for other tasks, such as building jaxb
-    == from schema. These are not present in this patternset.
     =========================================================================-->
   <patternset id="external.runtime.jars">
     <include name="**/jdom.jar"/>
     <include name="**/log4j*.jar"/>
     <include name="**/commons-lang-*.jar"/>
     <include name="**/commons-net-*.jar"/>
-    <include name="**/jaxb-api.jar"/>
-    <include name="**/jaxb-libs.jar"/>
-    <include name="**/jaxb-ri.jar"/>
     <include name="**/lucene-*.jar"/>
     <include name="**/tar.jar"/>
     <include name="**/winlaf-*.jar"/>

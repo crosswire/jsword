@@ -44,7 +44,6 @@ public class ReadEverything
      */
     public static void main(String[] args) throws IOException, JDOMException
     {
-        // Load JAXB so we don't mess up any timings later
         Logger.outputInfoMinimum();
 
         // Load the desktop configuration so we can find the sword drivers

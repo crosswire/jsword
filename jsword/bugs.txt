@@ -61,7 +61,6 @@ Modules
 General
 - Make config use Preferences
 - OSIS 2
-- think about replacements for JAXB (JiBX, JaxME, JDOM, XOM, DOM, etc)
 - other application installation systems (rpm, deb, nullsoft, msi, etc)
 
 BookData Display
