@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.ser;
 
 import java.io.BufferedReader;
@@ -170,10 +169,15 @@ public class SerBible extends VersewiseBible
     public SerBible(String name, URL url, boolean create) throws BookException
     {
         this.name = name;
-        this.url = url;
 
         if (!url.getProtocol().equals("file"))
-            throw new BookException("ser_url");
+        {
+            log.debug("NOT A FILE URL");
+            if (create)
+                throw new BookException("ser_write");
+        }
+
+        this.url = url;
 
         try
         {
@@ -213,7 +217,8 @@ public class SerBible extends VersewiseBible
                 while (true)
                 {
                     String line = ref_idy_bin.readLine();
-                    if (line == null) break;
+                    if (line == null)
+                        break;
                     int colon1 = line.indexOf(":");
                     int colon2 = line.lastIndexOf(":");
                     String word = line.substring(0, colon1);
@@ -241,11 +246,11 @@ public class SerBible extends VersewiseBible
 
             // Open the Passage RAF
             URL ref_dat_url = NetUtil.lengthenURL(url, "ref.data");
-            ref_dat = new RandomAccessFile(ref_dat_url.getFile(), file_mode);
+            ref_dat = new RandomAccessFile(NetUtil.getAsFile(ref_dat_url), file_mode);
 
             // Open the XML RAF
             URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
-            xml_dat = new RandomAccessFile(xml_dat_url.getFile(), file_mode);
+            xml_dat = new RandomAccessFile(NetUtil.getAsFile(xml_dat_url), file_mode);
         }
         catch (Exception ex)
         {
@@ -411,12 +416,12 @@ public class SerBible extends VersewiseBible
         try
         {
             // For all of the sections
-            for (Enumeration sen = doc.getSectionDatas(); sen.hasMoreElements(); )
+            for (Enumeration sen = doc.getSectionDatas(); sen.hasMoreElements();)
             {
                 SectionData section = (SectionData) sen.nextElement();
 
                 // For all of the Verses in the section
-                for (Enumeration ven = section.getRefDatas(); ven.hasMoreElements(); )
+                for (Enumeration ven = section.getRefDatas(); ven.hasMoreElements();)
                 {
                     RefData vel = (RefData) ven.nextElement();
 
@@ -444,7 +449,8 @@ public class SerBible extends VersewiseBible
      */
     public void foundPassage(String word, Passage ref) throws BookException
     {
-        if (word == null) return;
+        if (word == null)
+            return;
 
         try
         {

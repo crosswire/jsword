@@ -16,8 +16,12 @@
   <property name="target.jar" value="${target.root}/temp/jar"/>
   <property name="target.deploy" value="${target.root}/deploy/jsword"/>
   <property name="target.doc" value="${target.root}/doc"/>
+  <property name="target.jnlp" value="${target.doc}/jnlp"/>
   <property name="target.junit" value="${target.root}/junit"/>
   <property name="notes.root" value="notes"/>
+  <property name="jnlp.keystore" value="${basedir}/jsword.keystore"/>
+  <property name="jnlp.alias" value="test builds"/>
+  <property name="jnlp.password" value="p455w0rd"/>
 
   <property name="product.version" value="0.9.1"/>
 
@@ -34,6 +38,7 @@
   <target name="init" description="Prepare for other tasks">
     <tstamp/>
     <echo message="Building to: ${target.root}"/>
+    <available property="keystore.exists" file="${keystore}"/>
   </target>
 
   <!--=======================================================================-->
@@ -315,5 +320,50 @@
       </commandline>
     </cvs>
   </target>
+  
+  <!--=======================================================================-->
+  <target name="jnlp.prepare" depends="jar" description="moves files to correct location for JNLP deploy">
+    <mkdir dir="${target.jnlp}"/>
+    <copy todir="${target.jnlp}">
+      <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
+      <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
+      <fileset dir="${source.jar}/log4j126" includes="*.jar"/>
+      <fileset dir="${target.jar}" includes="*.jar"/>
+      <fileset dir="${notes.root}/versions">
+        <include name="*.jar"/>
+        <include name="*.zip"/>
+      </fileset>
+      <fileset dir="${source.etc}/jnlp" includes="jsword.jnlp" />
+    </copy>
+    <jar destfile="${target.jnlp}/resource.jar" basedir="${source.res}"/>
+  </target>
+  
+  <!--=======================================================================-->
 
+  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="keystore.exists" depends="init">
+    <echo message="Generating keystore for webstart testing"/>
+    <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${jnlp.keystore}">
+      <dname>
+        <param name="CN" value="JSword Project"/>
+	<param name="OU" value="Test Builds"/>
+	<param name="O" value="Crosswire.org"/>
+	<param name="C" value="UK" />
+      </dname>
+    </genkey>
+  </target>
+  
+  <!--=======================================================================-->
+
+  <target name="jnlp.deploy" description="sign jars to complete deployment" depends="jnlp.keygen, jnlp.prepare">
+    <echo message="Signing project JARs"/>
+    <signjar storepass="p455w0rd"
+         alias="${jnlp.alias}"
+         keystore="${jnlp.keystore}"
+         keypass="${jnlp.password}">
+      <fileset dir="${target.jnlp}">
+        <include name="**/*.jar"/>
+        <include name="**/*.zip"/>
+      </fileset>
+    </signjar>
+  </target>
 </project>
