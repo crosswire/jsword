@@ -1,81 +1,112 @@
 
 package org.crosswire.common.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
-* A UserLevel keeps a track of how advanced the user is.
-* It may not be a graphical component, but many graphical components
-* depend on it, and it doesn't seem to be a 'util'.
-* <p>We should consider having a addUserLevelListener interface for
-* people that want to know about UserLevel changes. Hmmmm.
-*
-* <table border='1' cellPadding='3' cellSpacing='0' width="100%">
-* <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
-* Distribution Licence:<br />
-* Project B is free software; you can redistribute it
-* and/or modify it under the terms of the GNU General Public License,
-* version 2 as published by the Free Software Foundation.<br />
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* General Public License for more details.<br />
-* The License is available on the internet
-* <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
-* <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-* MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
-* The copyright to this program is held by it's authors.
-* </font></td></tr></table>
-* @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
-* @see <{docs.Licence}>
-* @author Joe Walker
-*/
+ * A UserLevel keeps a track of how advanced the user is.
+ * It may not be a graphical component, but many graphical components
+ * depend on it, and it doesn't seem to be a 'util'.
+ * <p>We should consider having a addUserLevelListener interface for
+ * people that want to know about UserLevel changes. Hmmmm.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
 public class UserLevel
 {
     /**
-    * Ensure that we can't be instansiated
-    */
-    private UserLevel()
+     * Ensure that we can't be instansiated
+     */
+    private UserLevel(int ordinal, String name)
     {
+        this.ordinal = ordinal;
+        this.name = name;
+
+        map.put(name, this);
     }
 
     /**
-    * Accessor for the user level
-    * @return the current users name
-    */
-    public static int getUserLevel()
+     * Accessor for the user level
+     * @return the current users name
+     */
+    public static UserLevel getGlobalUserLevel()
     {
-        return level;
+        return global;
     }
 
     /**
-    * Accessor for the user level
-    * @param level The new user level
-    */
-    public static void setUserLevel(int level)
+     * Accessor for the user level
+     * @param level The new user level
+     */
+    public static void setGlobalUserLevel(UserLevel level)
     {
-        UserLevel.level = level;
+        UserLevel.global = level;
     }
 
     /**
-    * Accessor for the user level
-    * @param level The new user level
-    */
-    public static String[] getLevels()
+     * Accessor for this UserLevels name.
+     */
+    public String getName()
     {
-        return names;
+        return name;
     }
+
+    /**
+     * Get a Username by string.
+     * @param levelname
+     * @return UserLevel
+     */
+    public static UserLevel forName(String levelname)
+    {
+        return (UserLevel) map.get(levelname);
+    }
+
+    /**
+     * Is this level available given the global UserLevel
+     */
+    public boolean isAvailable()
+    {
+        return this.ordinal <= global.ordinal;
+    }
+
+    /** The known UserLevels */
+    public static final Map map = new HashMap();
 
     /** User level - Beginner */
-    public static final int LEVEL_BEGINNER = 0;
+    public static final UserLevel LEVEL_BEGINNER = new UserLevel(0, "Beginner");
 
     /** User level - Intermediate */
-    public static final int LEVEL_INTERMEDIATE = 1;
+    public static final UserLevel LEVEL_INTERMEDIATE = new UserLevel(1, "Intermediate");
 
     /** User level - Advanced */
-    public static final int LEVEL_ADVANCED = 2;
+    public static final UserLevel LEVEL_ADVANCED = new UserLevel(2, "Advanced");
 
-    /** The level names */
-    private static final String[] names = { "Beginner", "Intermediate", "Advanced", };
+    /** The level name */
+    private String name;
+    
+    /** The ordinal of this UserLevel */
+    private int ordinal;
 
-    /** The User level */
-    private static int level = 0;
+    /** The current User level */
+    private static UserLevel global = LEVEL_BEGINNER;
 }

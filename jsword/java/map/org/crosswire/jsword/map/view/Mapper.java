@@ -39,14 +39,8 @@ import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.ExtensionFileFilter;
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.swing.config.DisplayExceptionChoice;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
-import org.crosswire.common.swing.config.SourcePathChoice;
+import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.UserLevelChoice;
-import org.crosswire.jsword.book.config.CacheBiblesChoice;
-import org.crosswire.jsword.book.config.DriversChoice;
-import org.crosswire.jsword.book.raw.config.CacheDataChoice;
 import org.crosswire.jsword.map.model.AntiGravityRule;
 import org.crosswire.jsword.map.model.BoundsRule;
 import org.crosswire.jsword.map.model.BrownianRule;
@@ -60,14 +54,16 @@ import org.crosswire.jsword.map.model.VBAExport;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleChooser;
+import org.jdom.Document;
 
 /**
  * Mapper is GUI wrapper around Map to allow it to be run standalone.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -75,14 +71,13 @@ import org.crosswire.jsword.view.swing.book.BibleChooser;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class Mapper extends JFrame
@@ -111,13 +106,13 @@ public class Mapper extends JFrame
         vcols = new VerseColor[76];
         vcols[0] = new RainbowVerseColor();
         vcols[1] = new GroupVerseColor();
-        for (int i=Books.Section.Pentateuch; i<=Books.Section.Letters; i++)
+        for (int i = Books.Section.Pentateuch; i <= Books.Section.Letters; i++)
         {
-            vcols[i+1] = new SectionVerseColor(i);
+            vcols[i + 1] = new SectionVerseColor(i);
         }
-        for (int i=Books.Names.Genesis; i<=Books.Names.Revelation; i++)
+        for (int i = Books.Names.Genesis; i <= Books.Names.Revelation; i++)
         {
-            vcols[i+1+Books.Section.Letters] = new BookVerseColor(i);
+            vcols[i + 1 + Books.Section.Letters] = new BookVerseColor(i);
         }
 
         jbInit();
@@ -146,20 +141,10 @@ public class Mapper extends JFrame
 
         try
         {
-            LookAndFeelChoices.addWindow(this);
+            LookAndFeelUtil.addComponentToUpdate(this);
 
-            LookAndFeelChoices plaf_class = new LookAndFeelChoices();
-            config.add("Bibles.Cache Versions", new CacheBiblesChoice());
-            config.add("Bibles.Raw.Cache Data", new CacheDataChoice());
-
-            config.add("Looks.Current Look", plaf_class.getCurrentChoice());
-            config.add("Looks.Available Looks", plaf_class.getOptionsChoice());
-
-            config.add("Reports.Exceptions to GUI", new DisplayExceptionChoice());
-
-            config.add("Advanced.Source Path", new SourcePathChoice());
-            config.add("Advanced.User Level", new UserLevelChoice());
-            config.add("Advanced.Available Drivers", new DriversChoice());
+            Document xmlconfig = Project.resource().getDocument("config");
+            config.add(xmlconfig);
 
             Properties prop = Project.resource().getProperties("Mapper");
             if (prop != null)
@@ -189,95 +174,134 @@ public class Mapper extends JFrame
         item_new.setText("New Map ...");
         item_new.setMnemonic('N');
         item_new.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { create(); }
-            });
+                create();
+            }
+        });
 
         item_open.setText("Open Map ...");
         item_open.setMnemonic('O');
         item_open.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { open(); }
-            });
+                open();
+            }
+        });
 
         item_save.setText("Save Map");
         item_save.setMnemonic('S');
         item_save.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { save(); }
-            });
+                save();
+            }
+        });
 
         item_saveas.setText("Save Map As ...");
         item_saveas.setMnemonic('A');
         item_saveas.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { saveas(); }
-            });
+                saveas();
+            }
+        });
 
         item_word.setText("Export Map to Word ...");
         item_word.setMnemonic('W');
         item_word.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { word(); }
-            });
+                word();
+            }
+        });
 
         item_print.setText("Print ...");
         item_print.setMnemonic('P');
         item_print.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { print(); }
-            });
+                print();
+            }
+        });
         item_print.setEnabled(false);
 
         item_exit.setText("Exit");
         item_exit.setMnemonic('X');
         item_exit.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { exit(); }
-            });
+                exit();
+            }
+        });
 
         item_link.setText("Generate Links ...");
         item_link.setMnemonic('L');
         item_link.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { link(); }
-            });
+                link();
+            }
+        });
         item_link.setEnabled(false);
 
         item_start.setText("Start Layout");
         item_start.setMnemonic('S');
         item_start.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { start(); }
-            });
+                start();
+            }
+        });
 
         item_initial.setText("Set Initial Positions");
         item_initial.setMnemonic('I');
         item_initial.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { simple(); }
-            });
+                simple();
+            }
+        });
 
         item_random.setText("Set Random Positions");
         item_random.setMnemonic('R');
         item_random.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { random(); }
-            });
+                random();
+            }
+        });
 
         item_contents.setText("Contents ...");
         item_contents.setMnemonic('C');
         item_contents.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { help(); }
-            });
+                help();
+            }
+        });
 
         item_about.setText("About ...");
         item_about.setMnemonic('A');
         item_about.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
             {
-            public void actionPerformed(ActionEvent ev)  { about(); }
-            });
+                about();
+            }
+        });
 
         menubar.add(menu_file);
         menubar.add(menu_edit);
@@ -304,15 +328,21 @@ public class Mapper extends JFrame
         cmd_zoom_in.setText("+");
         cmd_zoom_in.setFont(new Font("Dialog", 1, 14));
         cmd_zoom_in.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
             {
-            public void actionPerformed(ActionEvent e)  { zoom(+10); }
-            });
+                zoom(+10);
+            }
+        });
         cmd_zoom_out.setText("-");
         cmd_zoom_out.setFont(new Font("Dialog", 1, 14));
         cmd_zoom_out.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
             {
-            public void actionPerformed(ActionEvent e)  { zoom(-10); }
-            });
+                zoom(-10);
+            }
+        });
         lay_zoom.setAlignment(FlowLayout.RIGHT);
         pnl_zoom.setLayout(lay_zoom);
         pnl_zoom.add(cmd_zoom_out, null);
@@ -321,25 +351,29 @@ public class Mapper extends JFrame
         pnl_canvas.setSize(map_size, map_size);
         pnl_canvas.setVerseColor(vcols[0]);
         scr_map.getViewport().add(pnl_canvas, null);
-        pnl_mapper.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        pnl_mapper.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         pnl_mapper.setLayout(new BorderLayout());
         pnl_mapper.add(scr_map, BorderLayout.CENTER);
         pnl_mapper.add(pnl_zoom, BorderLayout.SOUTH);
 
         mdl_map.setMap(map);
         tbl_table.setModel(mdl_map);
-        pnl_table.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        pnl_table.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         pnl_table.setLayout(new BorderLayout());
         pnl_table.add(scr_table, BorderLayout.CENTER);
         scr_table.getViewport().add(tbl_table, null);
 
-        tab_main.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        tab_main.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tab_main.add(pnl_mapper, "Display");
         tab_main.add(pnl_table, "Table");
 
         cbo_color = new JComboBox(vcols);
-        cbo_color.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)  { verseColor(); }
+        cbo_color.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                verseColor();
+            }
         });
         pnl_color.setBorder(BorderFactory.createTitledBorder("Verse Colour Scheme"));
         pnl_color.setLayout(new BorderLayout());
@@ -350,8 +384,12 @@ public class Mapper extends JFrame
         pnl_tools.add(pnl_rules);
         pnl_tools.add(pnl_color);
 
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent ev) { exit(); }
+        this.addWindowListener(new WindowAdapter()
+        {
+            public void windowClosed(WindowEvent ev)
+            {
+                exit();
+            }
         });
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.getContentPane().setLayout(new BorderLayout());
@@ -376,7 +414,7 @@ public class Mapper extends JFrame
         }
         else
         {
-            this.setTitle("Mapper - ["+filename+"]");
+            this.setTitle("Mapper - [" + filename + "]");
         }
     }
 
@@ -408,10 +446,7 @@ public class Mapper extends JFrame
     {
         if (!saved)
         {
-            int reply = JOptionPane.showConfirmDialog(null,
-                                                      "Changes have been made to the current map.\nLose changes?",
-                                                      "Lose Changes?",
-                                                      JOptionPane.YES_NO_OPTION);
+            int reply = JOptionPane.showConfirmDialog(null, "Changes have been made to the current map.\nLose changes?", "Lose Changes?", JOptionPane.YES_NO_OPTION);
 
             return reply == JOptionPane.YES_OPTION;
         }
@@ -527,9 +562,7 @@ public class Mapper extends JFrame
 
                 if (file.exists())
                 {
-                    if (JOptionPane.showConfirmDialog(this, "A file called "+file.getPath()+" already exists.\n"+
-                                                            "Do you want to replace this file?")
-                        != JOptionPane.OK_OPTION)
+                    if (JOptionPane.showConfirmDialog(this, "A file called " + file.getPath() + " already exists.\n" + "Do you want to replace this file?") != JOptionPane.OK_OPTION)
                     {
                         return;
                     }
@@ -557,7 +590,7 @@ public class Mapper extends JFrame
     {
         try
         {
-            String basname = filename.substring(0, filename.length()-5) + ".bas";
+            String basname = filename.substring(0, filename.length() - 5) + ".bas";
 
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(bas_filter);
@@ -570,9 +603,7 @@ public class Mapper extends JFrame
 
                 if (file.exists())
                 {
-                    if (JOptionPane.showConfirmDialog(this, "A file called "+file.getPath()+" already exists.\n"+
-                                                            "Do you want to replace this file?")
-                        != JOptionPane.OK_OPTION)
+                    if (JOptionPane.showConfirmDialog(this, "A file called " + file.getPath() + " already exists.\n" + "Do you want to replace this file?") != JOptionPane.OK_OPTION)
                     {
                         return;
                     }
@@ -659,8 +690,7 @@ public class Mapper extends JFrame
      */
     protected void simple()
     {
-        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to reset the layout?")
-            == JOptionPane.OK_OPTION)
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to reset the layout?") == JOptionPane.OK_OPTION)
         {
             saved = false;
             map.setLayoutSimple();
@@ -673,8 +703,7 @@ public class Mapper extends JFrame
      */
     protected void random()
     {
-        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to reset the layout?")
-            == JOptionPane.OK_OPTION)
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to reset the layout?") == JOptionPane.OK_OPTION)
         {
             saved = false;
             map.setLayoutRandom();
@@ -770,15 +799,7 @@ public class Mapper extends JFrame
     private VBAExport vba = new VBAExport();
 
     /** The Rules */
-    protected Rule[] rules = new Rule[]
-    {
-        new AntiGravityRule(),
-        new DefraggingRule(),
-        new LinkAttractionRule(getLinkArray()),
-        new BrownianRule(0.001F),
-        new BoundsRule(),
-        new FrictionRule(),
-    };
+    protected Rule[] rules = new Rule[] { new AntiGravityRule(), new DefraggingRule(), new LinkAttractionRule(getLinkArray()), new BrownianRule(0.001F), new BoundsRule(), new FrictionRule(), };
 
     /** The Verse colorizers */
     private VerseColor[] vcols;

@@ -1,36 +1,36 @@
-
 th
 {
-	background-color: #9C9CC0;
+	background-color: #506D50;
 	text-align: left;
-	color: #282840;
+	color: #FFFFFF;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 small
 {
 	font-size: xx-small;
-	color: #464671;
+	color: #D2E3D2;
 	font-weight: normal;
 }
 
 table
 {
-	border: 1px solid #8282B0;
+	border: 2px solid #324632;
 	background-color: #FFFFFF;
 }
 
 body
 {
-	background-color: #CCCCDF;
+	background-color: #B4C8B4;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	margin: 10px;
-	color: #323250;
+	color: #666666;
 }
 
 h1
 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 28px;
+	font-size: large;
 	text-align: center;
 	color: #282840;
 }
@@ -38,4 +38,7 @@ h1
 td
 {
 	vertical-align: top;
+}
+a {
+	color: #006600;
 }

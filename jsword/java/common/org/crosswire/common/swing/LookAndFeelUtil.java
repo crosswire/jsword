@@ -1,21 +1,18 @@
 
-package org.crosswire.common.swing.config;
+package org.crosswire.common.swing;
 
 import java.awt.Component;
 import java.awt.Window;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.crosswire.common.config.choices.ClassChoices;
-import org.crosswire.common.swing.GuiUtil;
-
 /**
- * LookAndFeelChoices declares the Choices and actions
+ * LookAndFeelUtil declares the Choices and actions
  * needed to dynamically change the look and feel (PLAF) and to add new
  * PLAFs without needing to restart.
  *
@@ -40,20 +37,12 @@ import org.crosswire.common.swing.GuiUtil;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class LookAndFeelChoices extends ClassChoices
+public class LookAndFeelUtil
 {
-    /**
-     * Changing the look of the config dialog
-     */
-    public LookAndFeelChoices() throws ClassNotFoundException
-    {
-        super(LookAndFeel.class, defaults);
-    }
-
     /**
      * The Options customization
      */
-    protected Class getCurrentClass()
+    public static Class getLookAndFeel()
     {
         return current;
     }
@@ -61,7 +50,7 @@ public class LookAndFeelChoices extends ClassChoices
     /**
      * The Options customization
      */
-    protected void setCurrentClass(Class new_class) throws InstantiationException, IllegalAccessException
+    public static void setLookAndFeel(Class new_class) throws InstantiationException, IllegalAccessException
     {
         current = new_class;
 
@@ -71,7 +60,7 @@ public class LookAndFeelChoices extends ClassChoices
 
     /**
      * Make the specified PLAF the current
-     * @param plaf The PLAf to install
+     * @param plaf The PLAF to install
      */
     public static void setLookAndFeel(LookAndFeel plaf)
     {
@@ -85,19 +74,19 @@ public class LookAndFeelChoices extends ClassChoices
             throw new IllegalArgumentException("Invalid Look and Feel name");
         }
 
-        resetWindows();
+        updateComponents();
     }
 
     /**
      * Make all the windows fall into line with the current look
      */
-    public static void resetWindows()
+    public static void updateComponents()
     {
         // Re-jig all the frames
-        Enumeration en = windows.elements();
-        while (en.hasMoreElements())
+        Iterator it = windows.iterator();
+        while (it.hasNext())
         {
-            Component comp = (Component) en.nextElement();
+            Component comp = (Component) it.next();
             SwingUtilities.updateComponentTreeUI(comp);
 
             if (comp instanceof Window)
@@ -106,17 +95,21 @@ public class LookAndFeelChoices extends ClassChoices
     }
 
     /**
-     * Add a Frame to the list that need to be updated
+     * Add a Component to the list that need to be updated when the L&F changes.
+     * In general you will only need to add Windows to this list because the
+     * changes recurse down the hierachy, however if you have Components that
+     * are temporarily (whenever a L&F change could occur) not part of this
+     * hierachy then add them in also so they get updated with everything else.
      * when the PLAF changes.
      * @param window The frame to be registered
      */
-    public static void addWindow(Window window)
+    public static void addComponentToUpdate(Component comp)
     {
         // Should we add ourselves as a ComponentListener?
         // Probably not. Knowning what is registered may
         // then be complex.
 
-        windows.addElement(window);
+        windows.add(comp);
         // window.addContainerListener(new CustomContainerListener());
     }
 
@@ -125,27 +118,32 @@ public class LookAndFeelChoices extends ClassChoices
      * when the PLAF changes.
      * @param frame The frame to be de-registered
     */
-    public static void removeWindow(Window window)
+    public static void removeComponentToUpdate(Component comp)
     {
-        windows.removeElement(window);
+        windows.remove(comp);
     }
 
     /** The frames to update */
-    private static transient Vector windows = new Vector();
+    private static transient List windows = new ArrayList();
 
     /** The current PLAF (and the default value) */
     private static Class current = javax.swing.plaf.metal.MetalLookAndFeel.class;
 
     /** The default Configs */
-    private static Hashtable defaults = new Hashtable();
+    //private static Hashtable defaults = new Hashtable();
 
     /**
      * Setup the defaults Hashtable
      */
     static
     {
-        defaults.put("Java", "javax.swing.plaf.metal.MetalLookAndFeel");
-        defaults.put("Windows", "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        defaults.put("Motif", "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+        /*
+        Class[] impls = Project.resource().getImplementors(LookAndFeel.class);
+        for (int i=0; i<impls.length; i++)
+        {
+            LookAndFeel lnf = (LookAndFeel) impls[i].newInstance();
+            defaults.put(lnf.getName(), impls[i].getName());
+        }
+        */
     }
 }

@@ -13,13 +13,25 @@
 
 <xsl:template match='title'>
   <h2 align='center'>
-  <xsl:apply-templates/>
+    <xsl:apply-templates/>
   </h2>
 </xsl:template>
 
 <xsl:template match='section'>
-  <h4><xsl:value-of select='@title'/></h4>
-  <xsl:apply-templates/>
+  <table border="0" cellpadding="4">
+    <tr>
+      <td bgcolor="#cccccc">
+        <font size="+1" face="Verdana,sans-serif">
+          <xsl:value-of select='@title'/>
+        </font>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <xsl:apply-templates/>
+      </td>
+    </tr>
+  </table>
 </xsl:template>
 
 <xsl:template match='ref'>
@@ -32,7 +44,9 @@
 </xsl:template>
 
 <xsl:template match='it'>
-  <xsl:apply-templates/>
+  <font size="+1" color="#333333" face="Verdana,sans-serif">
+    <xsl:apply-templates/>
+  </font>
 </xsl:template>
 
 <xsl:template match='*|@*' priority='-1'>
@@ -42,3 +56,4 @@
 </xsl:template>
 
 </xsl:stylesheet>
+

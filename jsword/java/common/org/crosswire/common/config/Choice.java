@@ -3,6 +3,8 @@ package org.crosswire.common.config;
 
 import java.io.Serializable;
 
+import org.crosswire.common.util.UserLevel;
+
 /**
 * Choice is the fundamental building block of the config system.
 * Every Choice must be able to:<ul>
@@ -58,7 +60,7 @@ public interface Choice extends Serializable
     * Gets a default user level (beginner to advanced)
     * @return The user level
     */
-    public int getUserLevel();
+    public UserLevel getUserLevel();
 
     /**
     * This method is used to configure a good way of editing this

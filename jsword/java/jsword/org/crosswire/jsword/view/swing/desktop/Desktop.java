@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.swing.ExceptionPane;
 import org.crosswire.common.swing.GuiUtil;
 import org.crosswire.common.swing.LogPane;
+import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.swing.SystemPropertiesPane;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
@@ -183,7 +183,7 @@ public class Desktop extends JFrame implements TitleChangedListener
 
             // Configuration
             splash.setProgress(80, "General configuration");
-            LookAndFeelChoices.addWindow(this);
+            LookAndFeelUtil.addComponentToUpdate(this);
 
             // Create a default view for the tdi and mdi schemes
             splash.setProgress(90, "Creating config");

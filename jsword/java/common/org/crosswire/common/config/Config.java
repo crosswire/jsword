@@ -11,14 +11,18 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.config.choices.StaticReflectiveChoice;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.RobustList;
+import org.jdom.Document;
+import org.jdom.Element;
 
 /**
  * Config is the core part of the configuration system; it is simply a
@@ -52,11 +56,12 @@ import org.crosswire.common.util.RobustList;
  * </ul>
  * TODO: Questions that fail on load - ask
  * TODO: I18N
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -64,14 +69,14 @@ import org.crosswire.common.util.RobustList;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class Config implements Serializable
 {
@@ -113,6 +118,36 @@ public class Config implements Serializable
         local.put(key, value);
 
         fireChoiceAdded(key, model);
+    }
+
+    /**
+     * Add the set of configuration options specified in the xml file.
+     * @param xmlconfig The JDOM document to read.
+     */
+    public void add(Document xmlconfig)
+    {
+        // We are going to assume a DTD has validated the config file and
+        // just assume that everything is laid out properly.
+        Element root = xmlconfig.getRootElement();
+        Iterator it = root.getChildren().iterator();
+        while (it.hasNext())
+        {
+            Element element = (Element) it.next();
+            String key = element.getAttributeValue("key");
+            String type = element.getAttributeValue("type");
+            if (type.equals("static"))
+            {
+                try
+                {
+                    Choice choice = new StaticReflectiveChoice(element);
+                    add(key, choice);
+                }
+                catch (Exception ex)
+                {
+                    log.warn("Error creating config element, key="+key, ex);
+                }
+            }
+        }
     }
 
     /**

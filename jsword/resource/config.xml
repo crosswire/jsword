@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE config [
+<!ELEMENT config (option)+>
+<!ELEMENT option (class?, property?, help?, data?, level?, options?, priority?)>
+<!ATTLIST option
+  type CDATA #REQUIRED
+  key CDATA #REQUIRED
+>
+<!ELEMENT class (#PCDATA)>
+<!ELEMENT property (#PCDATA)>
+<!ELEMENT help (#PCDATA)>
+<!ELEMENT data (#PCDATA)>
+<!ELEMENT level (#PCDATA)>
+<!ELEMENT options (#PCDATA)>
+<!ELEMENT priority (#PCDATA)>
+]>
+
+<config>
+  <option type="static" key="Bibles.Default">
+    <class>org.crosswire.jsword.book.Bibles</class>
+    <property>DefaultName</property>
+    <help>Which of the available Bibles is the default.</help>
+    <data>Bibles.getBibleNames</data>
+  </option>
+
+  <option type="static" key="Bibles.Cache Versions">
+    <class>org.crosswire.jsword.book.Bibles</class>
+    <property>CacheingBibles</property>
+    <help>Does the Bible manager cache bibles for speed, or reinitialize them to save memory.</help>
+  </option>
+
+  <option type="static" key="Bibles.Raw.Cache Data">
+    <class>org.crosswire.jsword.book.raw.RawBibleDriver</class>
+    <property>DefaultCacheData</property>
+    <help>Do new RawBibles cache the entire Bible in memory, or just the indexes.</help>
+  </option>
+
+  <option type="static" key="Bibles.Sword.Base Directory">
+    <class>org.crosswire.jsword.book.sword.SwordBibleDriver</class>
+    <property>SwordDir</property>
+    <help>Where is the SWORD Project base directory.</help>
+  </option>
+
+  <option type="static" key="Bibles.Display.Persistent Naming">
+    <class>org.crosswire.jsword.passage.PassageUtil</class>
+    <property>PersistentNaming</property>
+    <help>True if the passage editor re-write the references to conform to its notation.</help>
+    <level>ADVANCED</level>
+  </option>
+
+  <option type="static" key="Bibles.Display.Blurring Rules">
+    <class>org.crosswire.jsword.passage.PassageUtil</class>
+    <property>BlurRestriction</property>
+    <help>What is the default blurring - Blur across chapter boundaries or not.</help>
+    <level>ADVANCED</level>
+    <options>None=0, Book=1, Chapter=2</options>
+  </option>
+
+  <option type="static" key="Bibles.Display.Book Case">
+    <class>org.crosswire.jsword.passage.Books</class>
+    <property>Case</property>
+    <help>What case should we use to display the references.</help>
+    <level>ADVANCED</level>
+    <options>Lower=0, Sentance=1, Upper=2, Mixed=3</options>
+  </option>
+
+  <option type="static" key="Looks.Look and Feel">
+    <class>org.crosswire.common.swing.LookAndFeelUtil</class>
+    <property>LookAndFeel</property>
+    <help>The look and feel of the application</help>
+  </option>
+
+  <option type="static" key="Reports.Exceptions to Dialog Box">
+    <class>org.crosswire.common.swing.ExceptionPane</class>
+    <property>HelpDeskListener</property>
+    <help>Do we display Exceptions in a GUI window.</help>
+  </option>
+
+  <option type="static" key="Reports.Exceptions to Log Window">
+    <class>org.crosswire.common.swing.ExceptionShelf</class>
+    <property>HelpDeskListener</property>
+    <help>Do we display Exceptions in a the GUI shelf.</help>
+  </option>
+
+  <option type="static" key="Reports.Exceptions to System Logger">
+    <class>org.crosswire.common.util.event.LogCaptureListener</class>
+    <property>HelpDeskListener</property>
+    <help>Do we log exceptions to the system logger.</help>
+    <priority>8</priority>
+  </option>
+
+  <option type="static" key="Advanced.Source Path">
+    <class>org.crosswire.common.swing.DetailedExceptionPane</class>
+    <property>SourcePath</property>
+    <help>The directories to search for source code in when investigating an exception.</help>
+    <data>File.pathSeparator</data>
+    <level>ADVANCED</level>
+  </option>
+
+  <option type="static" key="Advanced.User Level">
+    <class>org.crosswire.common.util.UserLevel</class>
+    <property>GlobalUserLevel</property>
+    <help>How confident are you with this program, and how much do you want to be botherd with new features.</help>
+    <data>Beginner, Intermediate, Advanced</data>
+  </option>
+
+  <!--
+  <option type="static" key="">
+    <class></class>
+    <property></property>
+    <help></help>
+    <level></level>
+  </option>
+  -->
+</config>

@@ -25,9 +25,8 @@ import org.crosswire.common.config.ConfigListener;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.swing.GuiUtil;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
+import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.UserLevel;
 
 /**
  * Some static methods for using the Config package.
@@ -182,7 +181,9 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
             Field field = FieldMap.getField(model.getType(), model.getTypeOptions());
             fields.put(key, field);
 
-            if (model.getUserLevel() <= UserLevel.getUserLevel())
+            // if model level less than or same as global level
+            // if global level greater than model level
+            if (model.getUserLevel().isAvailable())
             {
                 // Get or create a FieldPanel
                 FormPane card = (FormPane) decks.get(path);
@@ -253,7 +254,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
         if (dialog == null)
         {
             dialog = new JDialog((JFrame) SwingUtilities.getRoot(parent));
-            LookAndFeelChoices.addWindow(dialog);
+            LookAndFeelUtil.addComponentToUpdate(dialog);
 
             dialog.getRootPane().setDefaultButton(ok);
             dialog.getContentPane().add(this);
@@ -283,7 +284,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
     {
         if (dialog != null)
         {
-            LookAndFeelChoices.removeWindow(dialog);
+            LookAndFeelUtil.removeComponentToUpdate(dialog);
             dialog.setVisible(false);
         }
     }

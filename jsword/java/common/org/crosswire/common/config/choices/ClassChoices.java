@@ -219,7 +219,7 @@ public abstract class ClassChoices implements Serializable
         /**
          * This is not something we'd like to allow basic users to do
          */
-        public int getUserLevel()
+        public UserLevel getUserLevel()
         {
             return UserLevel.LEVEL_ADVANCED;
         }

@@ -10,12 +10,17 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.StringUtil;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 /**
  * Accessor for various resources available in jar files or in the filesystem
@@ -156,7 +161,9 @@ public class Resource
     }
 
     /**
-     * Get the root of the project installation.
+     * Get and load a properties file from the classpath and a few other places
+     * into a Properties object.
+     * @param subject The name of the desired resource (without any extension)
      * @return The project root as a URL
      */
     public Properties getProperties(String subject) throws IOException, MalformedURLException
@@ -189,6 +196,70 @@ public class Resource
         }
 
         return prop;
+    }
+
+    /**
+     * Get the known implementors of some interface or abstract class.
+     * This is currently done by looking up a properties file by the name of
+     * the given class, and assuming that values are implementors of said
+     * class. Those that are not are warned, but ignored.
+     * @param class The class or interface to find implementors of.
+     * @return Class[] The list of implementing classes.
+     */
+    public Class[] getImplementors(Class clazz)
+    {
+        try
+        {
+            List matches = new ArrayList();
+            Properties props = getProperties(clazz.getName());
+            Iterator it = props.values().iterator();
+            while (it.hasNext())
+            {
+                try
+                {
+                    String name = (String) it.next();
+                    Class impl = Class.forName(name);
+                    if (clazz.isAssignableFrom(impl))
+                    {
+                        matches.add(impl);
+                    }
+                    else
+                    {
+                        log.warn("Class "+impl.getName()+" does not implement "+clazz.getName()+". Ignoring.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.warn("Failed to add class to list: "+clazz.getName(), ex);
+                }            
+            }
+            
+            return (Class[]) matches.toArray(new Class[0]);
+        }
+        catch (Exception ex)
+        {
+            log.error("Failed to get any classes.", ex);
+            return new Class[0];
+        }
+    }
+
+    /**
+     * Get and load an XML file from the classpath and a few other places
+     * into a JDOM Document object.
+     * @return The project root as a URL
+     * @param subject The name of the desired resource (without any extension)
+     * @return Document
+     */
+    public Document getDocument(String subject) throws JDOMException, IOException
+    {
+        String resource = subject+".xml";
+        InputStream in = getClass().getClassLoader().getSystemResourceAsStream(resource);
+        if (in == null)
+            throw new IOException("Failed to find "+resource+" in classpath");
+
+        log.debug("Loading "+subject+".xml from classpath: [OK]");
+        SAXBuilder builder = new SAXBuilder(true);
+        return builder.build(in);
     }
 
     /**

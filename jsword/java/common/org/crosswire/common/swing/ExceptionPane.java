@@ -50,7 +50,7 @@ public class ExceptionPane
         String message = LogUtil.getHTMLDescription(ex);
 
         String[] options;
-        if (UserLevel.getUserLevel() == UserLevel.LEVEL_ADVANCED)
+        if (UserLevel.getGlobalUserLevel() == UserLevel.LEVEL_ADVANCED)
         {
             options = new String[] { "Ok", "More Info ..." };
         }

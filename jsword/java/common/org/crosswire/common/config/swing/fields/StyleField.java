@@ -1,5 +1,5 @@
 
-package org.crosswire.common.swing.config;
+package org.crosswire.common.config.swing.fields;
 
 import java.awt.FlowLayout;
 

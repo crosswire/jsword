@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /**
- * save the current passage window.
+ * Save the current passage window.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

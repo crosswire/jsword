@@ -14,6 +14,7 @@ import javax.swing.text.JTextComponent;
 import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
+import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
@@ -54,6 +55,13 @@ public class PassageTabbedPane extends JPanel
     public PassageTabbedPane()
     {
         jbInit();
+
+        // There are times when tab_main or pnl_view are not in visible or
+        // attached to the main widget hierachy, so when we change L&F the
+        // changes do not get propogated through. The solution is to register
+        // them with the L&F handler to be altered when the L&F changes.
+        LookAndFeelUtil.addComponentToUpdate(pnl_view);
+        LookAndFeelUtil.addComponentToUpdate(tab_main);
     }
 
     /**

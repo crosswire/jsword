@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
+import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 
@@ -253,7 +253,7 @@ public class WizardConfigPane extends PanelConfigPane
     public void showDialog(Component parent)
     {
         dialog = new JDialog((JFrame) SwingUtilities.getRoot(parent));
-        LookAndFeelChoices.addWindow(dialog);
+        LookAndFeelUtil.addComponentToUpdate(dialog);
 
         dialog.getRootPane().setDefaultButton(apply);
         dialog.getContentPane().add(this);

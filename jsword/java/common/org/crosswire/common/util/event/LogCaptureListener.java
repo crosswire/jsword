@@ -36,7 +36,11 @@ public class LogCaptureListener implements ReporterListener
      */
     public void reportException(ReporterEvent ev)
     {
-        log.warn(ev.getException().getMessage());
+        Object source = ev.getSource();
+        if (source == null) source = this;
+        Logger log = Logger.getLogger(source.getClass());
+
+        log.warn(ev.getMessage(), ev.getException());
     }
 
     /**
@@ -45,6 +49,10 @@ public class LogCaptureListener implements ReporterListener
      */
     public void reportMessage(ReporterEvent ev)
     {
+        Object source = ev.getSource();
+        if (source == null) source = this;
+        Logger log = Logger.getLogger(source.getClass());
+
         log.warn(ev.getMessage());
     }
 
@@ -79,7 +87,4 @@ public class LogCaptureListener implements ReporterListener
 
     /** The listener that pops up the ExceptionPanes */
     private static LogCaptureListener li = null;
-
-    /** The log stream */
-    protected static Logger log = Logger.getLogger(LogCaptureListener.class);
 }

@@ -8,17 +8,10 @@ import java.net.URL;
 
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
-import org.crosswire.common.swing.config.DisplayExceptionChoice;
-import org.crosswire.common.swing.config.LookAndFeelChoices;
-import org.crosswire.common.swing.config.ShelfExceptionChoice;
-import org.crosswire.common.swing.config.SourcePathChoice;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.UserLevelChoice;
-import org.crosswire.jsword.book.config.CacheBiblesChoice;
-import org.crosswire.jsword.book.config.DriversChoice;
-import org.crosswire.jsword.book.raw.config.CacheDataChoice;
-import org.crosswire.jsword.book.sword.config.SwordDirChoice;
 import org.crosswire.jsword.util.Project;
+import org.jdom.Document;
+import org.jdom.JDOMException;
 
 /**
  * Action from clicking on the options button. Opens a config dialog.
@@ -56,23 +49,12 @@ public class OptionsAction extends DesktopAbstractAction
               'O', null);
     }
 
-    public void createConfig() throws ClassNotFoundException
+    public void createConfig() throws IOException, JDOMException
     {
-        LookAndFeelChoices plaf_class = new LookAndFeelChoices();
         config = new Config("Tool Shed Options");
-        config.add("Bibles.Cache Versions", new CacheBiblesChoice());
-        config.add("Bibles.Raw.Cache Data", new CacheDataChoice());
-        config.add("Bibles.Sword.Base Directory", new SwordDirChoice());
 
-        config.add("Looks.Current Look", plaf_class.getCurrentChoice());
-        config.add("Looks.Available Looks", plaf_class.getOptionsChoice());
-
-        config.add("Reports.Exceptions to Dialog Box", new DisplayExceptionChoice());
-        config.add("Reports.Exceptions to Log Window", new ShelfExceptionChoice());
-
-        config.add("Advanced.Source Path", new SourcePathChoice());
-        config.add("Advanced.User Level", new UserLevelChoice());
-        config.add("Advanced.Available Drivers", new DriversChoice());
+        Document xmlconfig = Project.resource().getDocument("config");
+        config.add(xmlconfig);
     }
 
     public void loadConfig() throws MalformedURLException, IOException
