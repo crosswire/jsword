@@ -6,7 +6,9 @@
     <booleanAttribute
         key="org.eclipse.ui.externaltools.ATTR_RUN_IN_BACKGROUND" value="true"/>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/jsword/build.xml}"/>
+    <stringAttribute
+        key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${resource_loc:/jsword}"/>
     <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_default"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="all,clean,compile,compile.section,cvsup,deploy,doc,doc.files,doc.java2html,doc.javadoc,doc.jdepend,doc.report,init,install,jar,jnlp.deploy,jnlp.keygen,jnlp.prepare,release,release.final,release.version,reload,remove,test,tomcatinit,"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="doc,"/>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
 </launchConfiguration>

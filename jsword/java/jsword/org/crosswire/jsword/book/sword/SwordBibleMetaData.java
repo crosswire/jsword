@@ -78,6 +78,7 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
      */
     public Bible getBible() throws BookException
     {
+        // DCL
         // I know double checked locking is theoretically broken however it isn't
         // practically broken 99% of the time, and even if the 1% comes up here
         // the only effect is some temporary wasted memory
@@ -86,7 +87,9 @@ public class SwordBibleMetaData extends AbstractBibleMetaData
             synchronized(this)
             {
                 if (bible == null)
+                {
                     bible = new SwordBible(driver, this);
+                }
             }
         }
 

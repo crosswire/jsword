@@ -38,7 +38,20 @@ public class Project
      */
     public static void init()
     {
-        resource = new Resource();
+        // DCL
+        // I know double checked locking is theoretically broken however it isn't
+        // practically broken 99% of the time, and even if the 1% comes up here
+        // the only effect is some temporary wasted memory
+        if (resource == null)
+        {
+            synchronized(Project.class)
+            {
+                if (resource == null)
+                {
+                    resource = new Resource();
+                }
+            }
+        }
     }
 
     /**

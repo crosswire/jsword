@@ -71,7 +71,7 @@
 
   <!--=======================================================================-->
   <target name="compile.section">
-    <echo message="Compiling ${section}"/>
+    <echo message="Compiling ${source.java}/${section}"/>
     <mkdir dir="${target.classes}/${section}"/>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/${section}">
       <src path="${source.java}/${section}"/>
@@ -94,7 +94,7 @@
     <mkdir dir="${target.jar}"/>
     <jar
         manifest="${source.etc}/desktop/MANIFEST.MF"
-        jarfile="${target.jar}/${ant.project.name}.jar">
+        jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/jsword"/>
       <fileset dir="${target.classes}/sword"/>
@@ -149,24 +149,24 @@
   <target name="release.version" depends="deploy">
     <echo message="Building release ${version}"/>
     <!-- source packages -->
-    <zip zipfile="${target.deploy}/${ant.project.name}-${version}-src.zip">
+    <zip zipfile="${target.deploy}/jsword-${version}-src.zip">
       <zipfileset prefix="source" dir="${source.root}">
         <exclude name="${target.root}/**"/>
         <exclude name="${notes.root}/**"/>
       </zipfileset>
     </zip>
-    <tar tarfile="${target.deploy}/${ant.project.name}-${version}-src.tar.gz" compression="gzip">
+    <tar tarfile="${target.deploy}/jsword-${version}-src.tar.gz" compression="gzip">
       <tarfileset prefix="source" dir="${source.root}">
         <exclude name="${target.root}/**"/>
         <exclude name="${notes.root}/**"/>
       </tarfileset>
     </tar>
     <!-- binary packages -->
-    <zip zipfile="${target.deploy}/${ant.project.name}-${version}-bin.zip">
-      <fileset dir="${target.deploy}/${ant.project.name}"/>
+    <zip zipfile="${target.deploy}/jsword-${version}-bin.zip">
+      <fileset dir="${target.deploy}/jsword"/>
     </zip>
-    <tar tarfile="${target.deploy}/${ant.project.name}-${version}-bin.tar.gz" compression="gzip">
-      <tarfileset dir="${target.deploy}/${ant.project.name}"/>
+    <tar tarfile="${target.deploy}/jsword-${version}-bin.tar.gz" compression="gzip">
+      <tarfileset dir="${target.deploy}/jsword"/>
     </tar>
   </target>
 
@@ -174,7 +174,7 @@
   <target name="test" depends="deploy" description="Run the standard test suite">
     <mkdir dir="${target.junit}"/>
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
-    	<jvmarg value="-Djsword.bible.dir=${target.deploy}/resource"/>
+      <jvmarg value="-Djsword.bible.dir=${basedir}/${target.deploy}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
       <test name="JSwordAllTests" todir="${target.junit}"/>
       <test name="MapAllTests" todir="${target.junit}"/>
@@ -189,14 +189,14 @@
         <pathelement path="${target.classes}/maptest"/>
         <pathelement path="${target.classes}/sword"/>
         <pathelement path="${target.classes}/swordtest"/>
-        <pathelement path="${target.deploy}/${ant.project.name}/resource"/>
+        <pathelement path="${target.deploy}/resource"/>
         <fileset dir="${target.deploy}" includes="**/*.jar"/>
       </classpath>
     </junit>
   </target>
 
   <!--=======================================================================-->
-  <target name="doc.report" depends="test" description="Compile test report">
+  <target name="doc.testreport" depends="test" description="Compile test report">
     <junitreport todir="${target.junit}">
       <fileset dir="${target.junit}">
         <include name="TEST-*.xml"/>
@@ -289,7 +289,7 @@
       <arg value="-d" />
       <arg value="${target.doc}/java2html"/>
       <arg value="-n"/>
-      <arg value="${ant.project.name}"/>
+      <arg value="jsword"/>
       <arg value="-m"/>
       <arg value="4"/>
       <arg value="-jd"/>
@@ -367,7 +367,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="doc" depends="doc.files, doc.javadoc, doc.java2html, doc.report" description="All the documentation tasks">
+  <target name="doc" depends="doc.files, doc.javadoc, doc.java2html, doc.testreport" description="All the documentation tasks">
   </target>
 
   <!--=======================================================================-->

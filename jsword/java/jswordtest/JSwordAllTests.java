@@ -16,9 +16,9 @@ public class JSwordAllTests extends TestCase
 
     public static Test suite()
     {
-        TestSuite suite = new TestSuite();
-
         Project.init();
+
+        TestSuite suite = new TestSuite();
 
         suite.addTestSuite(org.crosswire.jsword.util.TestStyle.class);
 
