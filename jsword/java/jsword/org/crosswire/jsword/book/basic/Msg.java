@@ -28,25 +28,14 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
-    static final Msg DELETE_NOTIMPL = new Msg("DELETE_NOTIMPL"); //$NON-NLS-1$
-    static final Msg NO_VERSE = new Msg("NO_VERSE"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
-    static final Msg VERIFY_START = new Msg("VERIFY_START"); //$NON-NLS-1$
-    static final Msg VERIFY_VERSES = new Msg("VERIFY_VERSES"); //$NON-NLS-1$
-    static final Msg VERIFY_VERSE = new Msg("VERIFY_VERSE"); //$NON-NLS-1$
-    static final Msg VERIFY_PASSAGES = new Msg("VERIFY_PASSAGES"); //$NON-NLS-1$
-    static final Msg VERIFY_WORDS = new Msg("VERIFY_WORDS"); //$NON-NLS-1$
-    static final Msg WORD = new Msg("WORD"); //$NON-NLS-1$
-
-    /* From LocalURL*
-    static final Msg DRIVER_READONLY = new Msg("This Book is read-only.");
-    static final Msg CREATE_NOBIBLE = new Msg("Can't create a Bible from a non-Bible source");
-    static final Msg DELETE_FAIL = new Msg("Failed to delete Book '{0}'");
-    static final Msg FLUSH_FAIL = new Msg("Failed to write data.");
-    static final Msg CREATE_FAIL = new Msg("Failed to create Book.");
-    static final Msg IO_FAIL = new Msg("IO Failure.");
-    */
+    static final Msg DRIVER_READONLY = new Msg("AbstractBookDriver.DriverReadonly"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("PassageAbstractBook.FilterFail"); //$NON-NLS-1$
+    static final Msg VERIFY_START = new Msg("Verifier.Start"); //$NON-NLS-1$
+    static final Msg VERIFY_VERSES = new Msg("Verifier.Verses"); //$NON-NLS-1$
+    static final Msg VERIFY_VERSE = new Msg("Verifier.Verse"); //$NON-NLS-1$
+    static final Msg VERIFY_PASSAGES = new Msg("Verifier.Passages"); //$NON-NLS-1$
+    static final Msg VERIFY_WORDS = new Msg("Verifier.Words"); //$NON-NLS-1$
+    static final Msg WORD = new Msg("Verifier.Word"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

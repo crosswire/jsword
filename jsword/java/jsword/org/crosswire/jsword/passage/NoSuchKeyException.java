@@ -49,7 +49,7 @@ public class NoSuchKeyException extends LucidException
     }
 
     /**
-     * Construct the Exception with a message and some I18N params
+     * Construct the Exception with a message and some i18n params
      * @param msg The resource id to read
      * @param params An array of parameters
      */
@@ -60,7 +60,7 @@ public class NoSuchKeyException extends LucidException
 
     /**
      * Construct the Exception with a message, a nested Exception
-     * and some I18N params
+     * and some i18n params
      * @param msg The resource id to read
      * @param ex The nested Exception
      * @param params An array of parameters

@@ -28,24 +28,19 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg NO_KEY = new Msg("NO_KEY"); //$NON-NLS-1$
-    static final Msg BAD_KEY = new Msg("BAD_KEY"); //$NON-NLS-1$
-    static final Msg GZIP_FORMAT = new Msg("GZIP_FORMAT"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
-    static final Msg FILE_ONLY = new Msg("FILE_ONLY"); //$NON-NLS-1$
-    static final Msg MISSING_FILE = new Msg("MISSING_FILE"); //$NON-NLS-1$
-    static final Msg NOT_FOUND = new Msg("NOT_FOUND"); //$NON-NLS-1$
-    static final Msg READ_FAIL = new Msg("READ_FAIL"); //$NON-NLS-1$
-    static final Msg READ_ONLY = new Msg("READ_ONLY"); //$NON-NLS-1$
-    static final Msg COMPRESSION_UNSUPPORTED = new Msg("COMPRESSION_UNSUPPORTED"); //$NON-NLS-1$
-    static final Msg TYPE_UNSUPPORTED = new Msg("TYPE_UNSUPPORTED"); //$NON-NLS-1$
-    static final Msg TYPE_UNKNOWN = new Msg("TYPE_UNKNOWN"); //$NON-NLS-1$
-    static final Msg MISSING_SEARCHER = new Msg("MISSING_SEARCHER"); //$NON-NLS-1$
-    static final Msg MISSING_BACKEND = new Msg("MISSING_BACKEND"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
-    static final Msg MISSING_NAME = new Msg("MISSING_NAME"); //$NON-NLS-1$
-    static final Msg UNDEFINED_MODULE = new Msg("UNDEFINED_MODULE"); //$NON-NLS-1$
-    static final Msg UNDEFINED_DATATYPE = new Msg("UNDEFINED_DATATYPE"); //$NON-NLS-1$
+    static final Msg NO_KEY = new Msg("SwordDictionary.NoKey"); //$NON-NLS-1$
+    static final Msg BAD_KEY = new Msg("RawLDBackend.BadKey"); //$NON-NLS-1$
+    static final Msg GZIP_FORMAT = new Msg("SwordUtil.GZIPFormat"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("SwordDictionary.FilterFail"); //$NON-NLS-1$
+    static final Msg MISSING_FILE = new Msg("GZIPBackend.MissingFile"); //$NON-NLS-1$
+    static final Msg READ_FAIL = new Msg("GZIPBackend.ReadFail"); //$NON-NLS-1$
+    static final Msg COMPRESSION_UNSUPPORTED = new Msg("ModuleType.CompressionUnsupported"); //$NON-NLS-1$
+    static final Msg TYPE_UNSUPPORTED = new Msg("SwordBookDriver.TypeUnsuported"); //$NON-NLS-1$
+    static final Msg TYPE_UNKNOWN = new Msg("RawLDBackend.TypeUnknown"); //$NON-NLS-1$
+    static final Msg MISSING_BACKEND = new Msg("SwordDictionary.MissingBackend"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("SwordBook.DriverReadonly"); //$NON-NLS-1$
+    static final Msg UNDEFINED_MODULE = new Msg("ModuleType.UndefinedModule"); //$NON-NLS-1$
+    static final Msg UNDEFINED_DATATYPE = new Msg("ModuleType.UndefinedDatatype"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

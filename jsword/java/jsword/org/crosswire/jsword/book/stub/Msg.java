@@ -28,9 +28,9 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg NO_KEY = new Msg("NO_KEY"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
+    static final Msg NO_KEY = new Msg("StubDictionaryKeyFactory.NoKey"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("StubBook.DriverReadonly"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("StubDictionary.FilterFail"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

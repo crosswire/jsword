@@ -28,8 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg GBF_BADTOKEN = new Msg("GBF_BADTOKEN"); //$NON-NLS-1$
-    static final Msg NAME_JESUS = new Msg("NAME_JESUS"); //$NON-NLS-1$
+    static final Msg NAME_JESUS = new Msg("RedLetterTagBuilder.NameJesus"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

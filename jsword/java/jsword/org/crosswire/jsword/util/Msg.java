@@ -28,7 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    static final Msg NO_CONVERTER = new Msg("NO_CONVERTER"); //$NON-NLS-1$
+    static final Msg NO_CONVERTER = new Msg("ConverterFactory.NoConverter"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

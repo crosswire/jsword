@@ -7,9 +7,7 @@ We are here
 --------------------------------------------------------------------------------
 
 Swing
-- poor button images in splitlist
 - Add raw/original text to view-source
-- Drag of toolbar to bottom messes up the display of the status.
 - Interrupting/cancelling a download does not cleanup the download.
   This is perhaps a bigger problem of the semantic of job cancellation merely interrupting a thread.
 
@@ -20,7 +18,6 @@ BookData Display
 - Vines shows internal markup around verse references.
 - remove swing (not cswing)
 - some nt verses badly displayed in ot refs
-- widen notes pane
 
 Web
 - auto test for web demo
@@ -32,7 +29,6 @@ Install
 
 Search
 - match does not support restrict
-- default separator to and
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.8

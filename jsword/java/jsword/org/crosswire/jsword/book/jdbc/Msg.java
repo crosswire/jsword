@@ -28,25 +28,17 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
+    static final Msg BIBLE_CONNECT = new Msg("JDBCBook.BibleConnect"); //$NON-NLS-1$
+    static final Msg BIBLE_DB = new Msg("JDBCBook.BibleDB"); //$NON-NLS-1$
 
-    static final Msg BIBLE_LOAD = new Msg("BIBLE_LOAD"); //$NON-NLS-1$
-    static final Msg BIBLE_CONNECT = new Msg("BIBLE_CONNECT"); //$NON-NLS-1$
-    static final Msg BIBLE_DB = new Msg("BIBLE_DB"); //$NON-NLS-1$
-    static final Msg BIBLE_VERSE = new Msg("BIBLE_VERSE"); //$NON-NLS-1$
-    static final Msg BIBLE_LOST = new Msg("BIBLE_LOST"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("JDBCBook.DriverReadonly"); //$NON-NLS-1$
 
-    static final Msg DRIVER_FIND = new Msg("DRIVER_FIND"); //$NON-NLS-1$
-    static final Msg DRIVER_CONF = new Msg("DRIVER_CONF"); //$NON-NLS-1$
-    static final Msg DRIVER_SAVE = new Msg("DRIVER_SAVE"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
+    static final Msg SEARCH_FAIL = new Msg("JDBCBibleUtil.SearchFail"); //$NON-NLS-1$
 
-    static final Msg SEARCH_FAIL = new Msg("SEARCH_FAIL"); //$NON-NLS-1$
+    static final Msg DELIM_UNMATCHED = new Msg("JDBCBibleUtil.DelimUnmatched"); //$NON-NLS-1$
+    static final Msg DELIM_NESTED = new Msg("JDBCBibleUtil.DelimNested"); //$NON-NLS-1$
 
-    static final Msg DELIM_UNMATCHED = new Msg("DELIM_UNMATCHED"); //$NON-NLS-1$
-    static final Msg DELIM_NESTED = new Msg("DELIM_NESTED"); //$NON-NLS-1$
-
-    static final Msg ERROR = new Msg("ERROR"); //$NON-NLS-1$
+    static final Msg ERROR = new Msg("JDBCBibleUtil.Error"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

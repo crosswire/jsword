@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
 public class Msg extends MsgBase
 {
     static final Msg NO_JOBS = new Msg("JobsViewPane.NoJob"); //$NON-NLS-1$
-    static final Msg CANCEL = new Msg("JobsViewPane.Cancel"); //$NON-NLS-1$
+    static final Msg CANCEL = new Msg("JobsProgressBar.Cancel"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -58,8 +58,8 @@ class Msg extends MsgBase
     static final Msg STRONGS_ERROR_PARSING = new Msg("Strongs.ErrorParsing"); //$NON-NLS-1$
     static final Msg STRONGS_ERROR_TYPE = new Msg("Strongs.ErrorType"); //$NON-NLS-1$
 
-    static final Msg ERROR_MIXED = new Msg("ERROR_MIXED"); //$NON-NLS-1$
-    static final Msg ERROR_BADCASE = new Msg("ERROR_BADCASE"); //$NON-NLS-1$
+    static final Msg ERROR_MIXED = new Msg("SentenceUtil.ErrorMixed"); //$NON-NLS-1$
+    static final Msg ERROR_BADCASE = new Msg("SentenceUtil.ErrorBadcase"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -28,13 +28,12 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg CONVERT_BMD = new Msg("CONVERT_BMD"); //$NON-NLS-1$
-    static final Msg CONVERT_NOVERSE = new Msg("CONVERT_NOVERSE"); //$NON-NLS-1$
-    static final Msg CONVERT_NOCLASS = new Msg("CONVERT_NOCLASS"); //$NON-NLS-1$
-    static final Msg REMOTE_FAIL = new Msg("REMOTE_FAIL"); //$NON-NLS-1$
-    static final Msg REMOTE_NOSUPPORT = new Msg("REMOTE_NOSUPPORT"); //$NON-NLS-1$
-    static final Msg PARSE_FAIL = new Msg("PARSE_FAIL"); //$NON-NLS-1$
-    static final Msg REMOTE_MESSAGE = new Msg("REMOTE_MESSAGE"); //$NON-NLS-1$
+    static final Msg CONVERT_BMD = new Msg("Converter.BMD"); //$NON-NLS-1$
+    static final Msg CONVERT_NOVERSE = new Msg("Converter.NoVerse"); //$NON-NLS-1$
+    static final Msg CONVERT_NOCLASS = new Msg("Converter.NoClass"); //$NON-NLS-1$
+    static final Msg REMOTE_NOSUPPORT = new Msg("Converter.RemoteNoSupport"); //$NON-NLS-1$
+    static final Msg REMOTE_FAIL = new Msg("RemoteBook.Fail"); //$NON-NLS-1$
+    static final Msg PARSE_FAIL = new Msg("RemoteBook.ParseFail"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor#

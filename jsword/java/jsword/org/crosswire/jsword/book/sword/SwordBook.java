@@ -77,9 +77,27 @@ public class SwordBook extends PassageAbstractBook
         byte[] data = backend.getRawText(verse);
         String charset = sbmd.getModuleCharset();
 
+        // We often get rogue characters in the source so we have to chop them
+        // out. To start with we kill chars less than 32 and 255
+        int realLen = 0;
+        for (int i = 0; i < data.length; i++)
+        {
+            // copy the character across
+            if (i != realLen)
+            {
+                data[realLen] = data[i];
+            }
+
+            // but let it be overwritten id invalid
+            if (data[i] >= 32 && data[i] != 255)
+            {
+                realLen++;
+            }
+        }
+
         try
         {
-            return new String(data, charset);
+            return new String(data, 0, realLen, charset);
         }
         catch (UnsupportedEncodingException ex)
         {

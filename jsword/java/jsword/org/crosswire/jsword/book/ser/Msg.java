@@ -28,10 +28,10 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg READ_ERROR = new Msg("READ_ERROR"); //$NON-NLS-1$
-    static final Msg WRITE_ERROR = new Msg("WRITE_ERROR"); //$NON-NLS-1$
-    static final Msg SER_INIT = new Msg("SER_INIT"); //$NON-NLS-1$
-    static final Msg NON_FILE_URL = new Msg("NON_FILE_URL"); //$NON-NLS-1$
+    static final Msg READ_ERROR = new Msg("BookDataCache.ReadError"); //$NON-NLS-1$
+    static final Msg WRITE_ERROR = new Msg("BookDataCache.WriteError"); //$NON-NLS-1$
+    static final Msg SER_INIT = new Msg("SerBook.SerInit"); //$NON-NLS-1$
+    static final Msg NON_FILE_URL = new Msg("BookDataCache.NonFileURL"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

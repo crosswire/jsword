@@ -28,12 +28,7 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg FILTER_FAIL = new Msg("FILTER_FAIL"); //$NON-NLS-1$
-    static final Msg INIT_FAIL = new Msg("INIT_FAIL"); //$NON-NLS-1$
-    static final Msg FLUSH_FAIL = new Msg("FLUSH_FAIL"); //$NON-NLS-1$
-    static final Msg FIND_FAIL = new Msg("FIND_FAIL"); //$NON-NLS-1$
-    static final Msg SEARCH_FAIL = new Msg("SEARCH_FAIL"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("DRIVER_READONLY"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("RawBook.DriverReadonly"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor 

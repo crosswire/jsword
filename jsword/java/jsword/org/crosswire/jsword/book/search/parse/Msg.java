@@ -28,27 +28,22 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg ADD_BLANK = new Msg("ADD_BLANK"); //$NON-NLS-1$
-
-    static final Msg MISSED = new Msg("MISSED"); //$NON-NLS-1$
-    static final Msg RIGHT_PARAM = new Msg("RIGHT_PARAM"); //$NON-NLS-1$
-    static final Msg RIGHT_BRACKETS = new Msg("RIGHT_BRACKETS"); //$NON-NLS-1$
-    static final Msg LEFT_PARAM = new Msg("LEFT_PARAM"); //$NON-NLS-1$
-    static final Msg LEFT_BRACKETS = new Msg("LEFT_BRACKETS"); //$NON-NLS-1$
-    static final Msg STARTS_WORD = new Msg("STARTS_WORD"); //$NON-NLS-1$
-    static final Msg STARTS_BLANK = new Msg("STARTS_BLANK"); //$NON-NLS-1$
-    static final Msg STARTS_OTHER = new Msg("STARTS_OTHER"); //$NON-NLS-1$
-    static final Msg RETAIN_BLANK = new Msg("RETAIN_BLANK"); //$NON-NLS-1$
-    static final Msg REMOVE_BLANK = new Msg("REMOVE_BLANK"); //$NON-NLS-1$
-    static final Msg GRAMMAR_WORD = new Msg("GRAMMAR_WORD"); //$NON-NLS-1$
-    static final Msg GRAMMAR_BLANK = new Msg("GRAMMAR_BLANK"); //$NON-NLS-1$
-    static final Msg GRAMMER_OTHER = new Msg("GRAMMER_OTHER"); //$NON-NLS-1$
-    static final Msg DEFAULT_OTHER = new Msg("DEFAULT_OTHER"); //$NON-NLS-1$
-    static final Msg BLUR_BLANK = new Msg("BLUR_BLANK"); //$NON-NLS-1$
-    static final Msg BLUR_FORMAT = new Msg("BLUR_FORMAT"); //$NON-NLS-1$
-    static final Msg ENGINE_SYNTAX = new Msg("ENGINE_SYNTAX"); //$NON-NLS-1$
-    static final Msg ILLEGAL_PASSAGE = new Msg("ILLEGAL_PASSAGE"); //$NON-NLS-1$
-    static final Msg UNMATCHED_ESCAPE = new Msg("UNMATCHED_ESCAPE"); //$NON-NLS-1$
+    static final Msg ADD_BLANK = new Msg("AddCommandWord.AddBlank"); //$NON-NLS-1$
+    static final Msg RIGHT_PARAM = new Msg("PassageRightParamWord.RightParam"); //$NON-NLS-1$
+    static final Msg RIGHT_BRACKETS = new Msg("PassageRightParamWord.RightBrackets"); //$NON-NLS-1$
+    static final Msg LEFT_PARAM = new Msg("PassageLeftParamWord.LeftParam"); //$NON-NLS-1$
+    static final Msg LEFT_BRACKETS = new Msg("PassageLeftParamWord.LeftBrackets"); //$NON-NLS-1$
+    static final Msg STARTS_WORD = new Msg("StartsParamWord.StartsWord"); //$NON-NLS-1$
+    static final Msg STARTS_BLANK = new Msg("StartsParamWord.StartsBlank"); //$NON-NLS-1$
+    static final Msg RETAIN_BLANK = new Msg("RetainCommandWord.RetainBlank"); //$NON-NLS-1$
+    static final Msg REMOVE_BLANK = new Msg("RemoveCommandWord.RemoveBlank"); //$NON-NLS-1$
+    static final Msg GRAMMAR_WORD = new Msg("GrammarParamWord.GrammarWord"); //$NON-NLS-1$
+    static final Msg GRAMMAR_BLANK = new Msg("GrammarParamWord.GrammarBlank"); //$NON-NLS-1$
+    static final Msg BLUR_BLANK = new Msg("BlurCommandWord.BlurBlank"); //$NON-NLS-1$
+    static final Msg BLUR_FORMAT = new Msg("BlurCommandWord.BlurFormat"); //$NON-NLS-1$
+    static final Msg ENGINE_SYNTAX = new Msg("LocalParser.EngineSyntax"); //$NON-NLS-1$
+    static final Msg ILLEGAL_PASSAGE = new Msg("PassageLeftParamWord.IllegalPassage"); //$NON-NLS-1$
+    static final Msg UNMATCHED_ESCAPE = new Msg("CustomTokenizer.UnmatchedEscape"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

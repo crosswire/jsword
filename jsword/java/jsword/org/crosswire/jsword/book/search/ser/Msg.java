@@ -28,13 +28,12 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg SEARCH_FAIL = new Msg("SEARCH_FAIL"); //$NON-NLS-1$
-    static final Msg INITIALIZE = new Msg("INITIALIZE"); //$NON-NLS-1$
-    static final Msg REPEATED_READ_ERROR = new Msg("REPEATED_READ_ERROR"); //$NON-NLS-1$
-    static final Msg WRITE_ERROR = new Msg("WRITE_ERROR"); //$NON-NLS-1$
-    static final Msg FINDING_WORDS = new Msg("FINDING_WORDS"); //$NON-NLS-1$
-    static final Msg WRITING_WORDS = new Msg("WRITING_WORDS"); //$NON-NLS-1$
-    static final Msg SAVING = new Msg("SAVING"); //$NON-NLS-1$
+    static final Msg SEARCH_FAIL = new Msg("SerSearchEngine.SearchFail"); //$NON-NLS-1$
+    static final Msg REPEATED_READ_ERROR = new Msg("SerSearchEngine.RepeatedReadError"); //$NON-NLS-1$
+    static final Msg WRITE_ERROR = new Msg("SerSearchEngine.WriteError"); //$NON-NLS-1$
+    static final Msg FINDING_WORDS = new Msg("SerSearchEngine.FindingWords"); //$NON-NLS-1$
+    static final Msg WRITING_WORDS = new Msg("SerSearchEngine.WritingWords"); //$NON-NLS-1$
+    static final Msg SAVING = new Msg("SerSearchEngine.Saving"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor 

@@ -28,23 +28,23 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg AUTH_REFUSED = new Msg("AUTH_REFUSED"); //$NON-NLS-1$
-    static final Msg CONNECT_REFUSED = new Msg("CONNECT_REFUSED"); //$NON-NLS-1$
-    static final Msg CWD_REFUSED = new Msg("CWD_REFUSED"); //$NON-NLS-1$
-    static final Msg DOWNLOAD_REFUSED = new Msg("DOWNLOAD_REFUSED"); //$NON-NLS-1$
-    static final Msg UNKNOWN_ERROR = new Msg("UNKNOWN_ERROR"); //$NON-NLS-1$
-    static final Msg CACHE_ERROR = new Msg("CACHE_ERROR"); //$NON-NLS-1$
-    static final Msg INVALID_URL = new Msg("INVALID_URL"); //$NON-NLS-1$
-    static final Msg URL_FAILED = new Msg("URL_FAILED"); //$NON-NLS-1$
-    static final Msg URL_AT_COUNT = new Msg("URL_AT_COUNT"); //$NON-NLS-1$
-    static final Msg URL_COLON_COUNT = new Msg("URL_COLON_COUNT"); //$NON-NLS-1$
-    static final Msg INSTALLED = new Msg("INSTALLED"); //$NON-NLS-1$
-    static final Msg INSTALLING = new Msg("INSTALLING"); //$NON-NLS-1$
-    static final Msg INSTALL_DONE = new Msg("INSTALL_DONE"); //$NON-NLS-1$
-    static final Msg JOB_INIT = new Msg("JOB_INIT"); //$NON-NLS-1$
-    static final Msg JOB_CONFIG = new Msg("JOB_CONFIG"); //$NON-NLS-1$
-    static final Msg JOB_LOGIN = new Msg("JOB_LOGIN"); //$NON-NLS-1$
-    static final Msg JOB_DOWNLOADING = new Msg("JOB_DOWNLOADING"); //$NON-NLS-1$
+    static final Msg AUTH_REFUSED = new Msg("SwordInstaller.AuthRefused"); //$NON-NLS-1$
+    static final Msg CONNECT_REFUSED = new Msg("SwordInstaller.ConnectRefused"); //$NON-NLS-1$
+    static final Msg CWD_REFUSED = new Msg("SwordInstaller.CWDRefused"); //$NON-NLS-1$
+    static final Msg DOWNLOAD_REFUSED = new Msg("SwordInstaller.DownloadRefused"); //$NON-NLS-1$
+    static final Msg UNKNOWN_ERROR = new Msg("SwordInstaller.UnknownError"); //$NON-NLS-1$
+    static final Msg CACHE_ERROR = new Msg("SwordInstaller.CacheError"); //$NON-NLS-1$
+    static final Msg INVALID_URL = new Msg("SwordInstaller.InvalidURL"); //$NON-NLS-1$
+    static final Msg INSTALLED = new Msg("SwordInstaller.Installed"); //$NON-NLS-1$
+    static final Msg INSTALLING = new Msg("SwordInstaller.Installing"); //$NON-NLS-1$
+    static final Msg INSTALL_DONE = new Msg("SwordInstaller.InstallDone"); //$NON-NLS-1$
+    static final Msg JOB_INIT = new Msg("SwordInstaller.JobInit"); //$NON-NLS-1$
+    static final Msg JOB_CONFIG = new Msg("SwordInstaller.JobConfig"); //$NON-NLS-1$
+    static final Msg JOB_LOGIN = new Msg("SwordInstaller.JobLogin"); //$NON-NLS-1$
+    static final Msg JOB_DOWNLOADING = new Msg("SwordInstaller.JobDownloading"); //$NON-NLS-1$
+    static final Msg URL_FAILED = new Msg("SwordInstallerFactory.URLFailed"); //$NON-NLS-1$
+    static final Msg URL_AT_COUNT = new Msg("SwordInstallerFactory.URLAtCount"); //$NON-NLS-1$
+    static final Msg URL_COLON_COUNT = new Msg("SwordInstallerFactory.URLColonCount"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -28,32 +28,33 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg CLOSE = new Msg("CLOSE"); //$NON-NLS-1$
-    static final Msg ERROR_OCCURED = new Msg("ERROR_OCCURED"); //$NON-NLS-1$
-    static final Msg OK = new Msg("OK"); //$NON-NLS-1$
-    static final Msg DETAILS = new Msg("DETAILS"); //$NON-NLS-1$
-    static final Msg NO_FILE = new Msg("NO_FILE"); //$NON-NLS-1$
-    static final Msg ERROR = new Msg("ERROR"); //$NON-NLS-1$
-    static final Msg CAUSED_BY = new Msg("CAUSED_BY"); //$NON-NLS-1$
-    static final Msg NO_DESC = new Msg("NO_DESC"); //$NON-NLS-1$
-    static final Msg SOURCE_NOT_FOUND = new Msg("SOURCE_NOT_FOUND"); //$NON-NLS-1$
-    static final Msg SOURCE_ATTEMPT = new Msg("SOURCE_ATTEMPT"); //$NON-NLS-1$
-    static final Msg ERROR_TABLE_MODEL = new Msg("ERROR_TABLE_MODEL"); //$NON-NLS-1$
-    static final Msg NO_PROBLEMS = new Msg("NO_PROBLEMS"); //$NON-NLS-1$
-    static final Msg STATUS = new Msg("STATUS"); //$NON-NLS-1$
-    static final Msg REMOVE = new Msg("REMOVE"); //$NON-NLS-1$
-    static final Msg CANCEL = new Msg("CANCEL"); //$NON-NLS-1$
-    static final Msg SELECT_FONT = new Msg("SELECT_FONT"); //$NON-NLS-1$
-    static final Msg ERROR_CELL_RENDER = new Msg("ERROR_CELL_RENDER"); //$NON-NLS-1$
-    static final Msg PLAF_CHANGE = new Msg("PLAF_CHANGE"); //$NON-NLS-1$
-    static final Msg BOLD = new Msg("BOLD"); //$NON-NLS-1$
-    static final Msg ITALIC = new Msg("ITALIC"); //$NON-NLS-1$
-    static final Msg KEYS = new Msg("KEYS"); //$NON-NLS-1$
-    static final Msg VALUES = new Msg("VALUES"); //$NON-NLS-1$
-    static final Msg LOADING = new Msg("LOADING"); //$NON-NLS-1$
-    static final Msg COPY_TO_CLIP = new Msg("COPY_TO_CLIP"); //$NON-NLS-1$
-    static final Msg TEXT_VIEWER = new Msg("TEXT_VIEWER"); //$NON-NLS-1$
-    static final Msg ERROR_READING = new Msg("ERROR_READING"); //$NON-NLS-1$
+    static final Msg ERROR_READING = new Msg("BeanPanel.ErrorReading"); //$NON-NLS-1$
+    // I18N: migrate this to an ActionFactory
+    static final Msg CLOSE = new Msg("EirPanel.Close"); //$NON-NLS-1$
+    static final Msg ERROR_OCCURED = new Msg("ExceptionPane.ErrorOccurred"); //$NON-NLS-1$
+    // I18N: migrate this to an ActionFactory
+    static final Msg OK = new Msg("ExceptionPane.OK"); //$NON-NLS-1$
+    static final Msg DETAILS = new Msg("ExceptionPane.Details"); //$NON-NLS-1$
+    static final Msg NO_FILE = new Msg("ExceptionPane.NoFile"); //$NON-NLS-1$
+    static final Msg ERROR = new Msg("ExceptionPane.Error"); //$NON-NLS-1$
+    static final Msg CAUSED_BY = new Msg("ExceptionPane.CausedBy"); //$NON-NLS-1$
+    static final Msg NO_DESC = new Msg("ExceptionPane.NoDesc"); //$NON-NLS-1$
+    static final Msg SOURCE_NOT_FOUND = new Msg("ExceptionPane.SourceNotFound"); //$NON-NLS-1$
+    static final Msg SOURCE_ATTEMPT = new Msg("ExceptionPane.SourceAttempt"); //$NON-NLS-1$
+    static final Msg NO_PROBLEMS = new Msg("ExceptionShelf.NoProblems"); //$NON-NLS-1$
+    static final Msg STATUS = new Msg("ExceptionShelf.Status"); //$NON-NLS-1$
+    // I18N: migrate this to an ActionFactory
+    static final Msg REMOVE = new Msg("ExceptionShelf.Remove"); //$NON-NLS-1$
+    // I18N: migrate this to an ActionFactory
+    static final Msg CANCEL = new Msg("FontChooser.Cancel"); //$NON-NLS-1$
+    static final Msg SELECT_FONT = new Msg("FontChooser.SelectFont"); //$NON-NLS-1$
+    static final Msg BOLD = new Msg("FontChooser.Bold"); //$NON-NLS-1$
+    static final Msg ITALIC = new Msg("FontChooser.Italic"); //$NON-NLS-1$
+    static final Msg PLAF_CHANGE = new Msg("LookAndFeelUtil.PlafChange"); //$NON-NLS-1$
+    static final Msg ERROR_TABLE_MODEL = new Msg("MapTable.ErrorTableModel"); //$NON-NLS-1$
+    static final Msg ERROR_CELL_RENDER = new Msg("MapTable.ErrorCellRender"); //$NON-NLS-1$
+    static final Msg KEYS = new Msg("MapTableModel.Keys"); //$NON-NLS-1$
+    static final Msg VALUES = new Msg("MapTableModel.Values"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -69,7 +69,6 @@ public class Msg extends MsgBase
     static final Msg ABSTRACT_INDEX = new Msg("AbstractPassage.Index"); //$NON-NLS-1$
 
     static final Msg KEYLIST_READONLY = new Msg("ReadOnlyKeyList.Readonly"); //$NON-NLS-1$
-    static final Msg RESOURCE_LOAD_FAIL = new Msg("BibleInfo.ResourceLoadFail"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
