@@ -696,12 +696,24 @@ public abstract class AbstractPassage implements Passage
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
+        int count = 0; // number of lines read
         BufferedReader bin = new BufferedReader(in);
         while (true)
         {
             String line = bin.readLine();
-            if (line == null) break;
+            if (line == null)
+            {
+                break;
+            }
+
+            count++;
             addVerses(line);
+        }
+        
+        // If the file was empty then there is nothing to do
+        if (count == 0)
+        {
+            return;
         }
 
         lowerNormalizeProtection();

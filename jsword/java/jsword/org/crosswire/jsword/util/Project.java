@@ -76,6 +76,19 @@ public class Project
     {
         try
         {
+            String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY;
+            home = new URL("file", null, path);
+            ResourceUtil.setHome(home);
+            base = NetUtil.lengthenURL(home, "/");
+        }
+        catch (MalformedURLException ex)
+        {
+            log.fatal("Failed to create home directory URL", ex);
+            throw new LogicError(ex);
+        }
+
+        try
+        {
             URL urlcache = getTempScratchSpace("netcache", true);
             File filecache = new File(urlcache.getFile());
             NetUtil.setURLCacheDir(filecache);
@@ -99,7 +112,7 @@ public class Project
     }
 
     /**
-     * The name of this project.
+     * The version of this project.
      */
     public String getVersion()
     {
@@ -108,6 +121,7 @@ public class Project
 
     /**
      * The name of this project.
+     * @return the project's name
      */
     public String getName()
     {
@@ -162,41 +176,10 @@ public class Project
      * @param subject The name of the desired resource (without any extension)
      * @return The found and loaded properties file
      * @throws IOException if the resource can not be loaded
-     * @throws MalformedURLException if the resource can not be found
      */
     public Properties getProperties(String subject) throws IOException
     {
-        try
-        {
-            // Try for a writable version
-            Properties prop = getWritableProperties(subject);
-            //log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from writable area (ignoring resources): [OK]");
-            return prop;
-        }
-        catch (IOException ex)
-        {
-            // If not then rely on the static version
-            Properties prop = ResourceUtil.getProperties(subject);
-            //log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from classpath: [OK]");
-            return prop;
-        }
-    }
-
-    /**
-     * Get a the URL of a (potentially non-existant) properties file that we can
-     * write to. This method of aquiring properties files is preferred over
-     * getResourceProperties() as this iw writable and can take into account
-     * user preferences.
-     * @param subject The name (minus the .properties extension)
-     * @return The read properties file
-     */
-    private Properties getWritableProperties(String subject) throws IOException
-    {
-        URL url = getWritablePropertiesURL(subject);
-
-        Properties prop = new Properties();
-        prop.load(url.openStream());
-        return prop;
+        return ResourceUtil.getProperties(subject);
     }
 
     /**
@@ -211,25 +194,7 @@ public class Project
      */
     public URL getWritablePropertiesURL(String subject)
     {
-        URL base = getWritableBaseURL();
         return NetUtil.lengthenURL(base, subject+ResourceUtil.PROPERTIES_EXTENSION);
-    }
-
-    /**
-     * Where can we write cache or config files?
-     * @return URL of the users .jsword directory.
-     */
-    private URL getWritableBaseURL()
-    {
-        String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY + File.separator;
-        try
-        {
-            return new URL("file", null, path);
-        }
-        catch (MalformedURLException ex)
-        {
-            throw new LogicError(ex);
-        }
     }
 
     /**
@@ -251,7 +216,6 @@ public class Project
      */
     public URL getTempScratchSpace(String subject, boolean create) throws IOException
     {
-        URL base = getWritableBaseURL();
         URL temp = NetUtil.lengthenURL(base, subject);
         
         if (create && !NetUtil.isDirectory(temp))
@@ -358,6 +322,16 @@ public class Project
 
         private URL parent;
     }
+
+    /**
+     * The home for this application
+     */
+    private URL home;
+
+    /**
+     * The home w/ trailing '/' for this application
+     */
+    private URL base;
 
     /**
      * The log stream

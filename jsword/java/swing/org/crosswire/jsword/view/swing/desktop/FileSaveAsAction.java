@@ -57,6 +57,12 @@ public class FileSaveAsAction extends DesktopAbstractAction
         try
         {
             BibleViewPane view = getDesktop().getSelectedBibleViewPane();
+            if (!view.maySave())
+            {
+                Reporter.informUser(getDesktop(), "No Passage to Save");
+                return;
+            }
+
             view.saveAs();
         }
         catch (IOException ex)

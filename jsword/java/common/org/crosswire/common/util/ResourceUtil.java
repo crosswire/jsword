@@ -1,5 +1,6 @@
 package org.crosswire.common.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -51,6 +52,27 @@ public class ResourceUtil
     public static final String PROPERTIES_EXTENSION = ".properties";
 
     /**
+     * If the application has set the home, it will return
+     * the application's home directory, otherwise it returns null.
+     * @return Returns the home.
+     */
+    public static synchronized URL getHome()
+    {
+        return home;
+    }
+
+    /**
+     * Establish the applications home directory from where
+     * additional resources can be found. URL is expected to
+     * end with the directory name, not '/'.
+     * @param newhome The home to set.
+     */
+    public static synchronized void setHome(URL newhome)
+    {
+        home = newhome;
+    }
+
+    /**
      * Generic resource URL fetcher. One way or the other we'll find it!
      * I'm fairly sure some of these do the same thing, but which and how they
      * change on various VMs is complex, and it seems simpler to take the
@@ -61,13 +83,36 @@ public class ResourceUtil
      */
     public static URL getResource(String search) throws MalformedURLException
     {
+        if (search == null)
+        {
+            throw new MalformedURLException("Can't find resource: " + search);
+        }
+
         String ssearch = "/" + search;
 
         if (search.startsWith("/"))
         {
             ResourceUtil.log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't");
         }
-    
+
+        // Look at the application's home first to allow overrides
+        if (home != null)
+        {
+            URL override = null;
+
+            // Make use of "home" thread safe
+            synchronized (ResourceUtil.class)
+            {
+                override = NetUtil.lengthenURL(home, ssearch);
+            }
+
+            File f = new File(override.getFile());
+            if (f.canRead())
+            {
+                return override;
+            }
+        }
+
         URL reply = ResourceUtil.class.getResource(search);
         if (reply != null)
         {
@@ -290,4 +335,9 @@ public class ResourceUtil
      * The log stream
      */
     private static final Logger log = Logger.getLogger(ResourceUtil.class);
+
+    /**
+     * Notion of the project's home from where additional resources can be found.
+     */
+    private static URL home = null;
 }

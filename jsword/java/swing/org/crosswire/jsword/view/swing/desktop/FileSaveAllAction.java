@@ -56,7 +56,25 @@ public class FileSaveAllAction extends DesktopAbstractAction
      */
     public void actionPerformed(ActionEvent ev)
     {
+        boolean ok = false;
+        
         Iterator it = getDesktop().iterateBibleViewPanes();
+        while (it.hasNext())
+        {
+            BibleViewPane view = (BibleViewPane) it.next();
+            if (view.maySave())
+            {
+                ok = true;
+            }
+        }
+        
+        if (!ok)
+        {
+            Reporter.informUser(getDesktop(), "No Passage to Save");
+            return;
+        }
+
+        it = getDesktop().iterateBibleViewPanes();
         while (it.hasNext())
         {
             try

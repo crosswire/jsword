@@ -31,7 +31,20 @@ import javax.swing.KeyStroke;
 public abstract class EirAbstractAction extends AbstractAction
 {
     /**
+     * The icon to display when a large one is needed.
+	 * This is still not part of Java as of 1.5
+     */
+    public static final String LARGE_ICON = "LargeIcon";
+    
+    /**
      * Setup the defaults
+     * @param name The label for buttons, menu items, ...
+     * @param small_icon The icon used in labelling
+     * @param large_icon The icon to use if large icons are needed
+     * @param short_desc Tooltip text
+     * @param long_desc Context sensitive help
+     * @param mnemonic The java.awt.event.EventKey value for the mnemonic
+     * @param accel The accelerator key
      */
     public EirAbstractAction(String name,
                              String small_icon, String large_icon,
@@ -43,7 +56,7 @@ public abstract class EirAbstractAction extends AbstractAction
             putValue(Action.NAME, name);
         }
 
-        // JDK: For JDK1.2/1.3/1.4 compatibility
+        // Large Icon is not present even in Java 1.5
         if (large_icon != null)
         {
             putValue("LargeIcon" /*Action.LARGE_ICON*/, GuiUtil.getIcon(large_icon));
@@ -66,12 +79,12 @@ public abstract class EirAbstractAction extends AbstractAction
 
         if (mnemonic != -1)
         {
-            putValue("MnemonicKey" /*Action.MNEMONIC_KEY*/, new Integer(mnemonic));
+            putValue(Action.MNEMONIC_KEY, new Integer(mnemonic));
         }
 
         if (accel != null)
         {
-            putValue("AcceleratorKey" /*Action.ACCELERATOR_KEY*/, accel);
+            putValue(Action.ACCELERATOR_KEY, accel);
         }
     }
 }

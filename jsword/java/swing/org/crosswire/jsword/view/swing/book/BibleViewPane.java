@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -123,23 +124,46 @@ public class BibleViewPane extends JPanel
 
     /**
      * Save the view to disk.
+     * @throws IOException
      */
     public void save() throws IOException
     {
+        Passage passage = getPassage();
+        if (passage == null)
+        {
+            return;
+        }
+
         if (saved == null)
         {
             querySaveFile();
         }
 
         Writer out = new FileWriter(saved);
-        getPassage().writeDescription(out);
+        passage.writeDescription(out);
+    }
+    
+    /**
+     * Returns true if there is something to save.
+     * @return
+     */
+    public boolean maySave()
+    {
+        return getPassage() != null;
     }
 
     /**
      * Save the view to disk, but ask the user where to save it first.
+     * @throws IOException
      */
     public void saveAs() throws IOException
     {
+        Passage passage = getPassage();
+        if (passage == null)
+        {
+            return;
+        }
+
         querySaveFile();
 
         Writer out = new FileWriter(saved);
@@ -155,6 +179,11 @@ public class BibleViewPane extends JPanel
         if (reply == JFileChooser.APPROVE_OPTION)
         {
             saved = chooser.getSelectedFile();
+            if (saved.length() == 0)
+            {
+                Reporter.informUser(getRootPane(), "File '" + saved.getName() + "' is empty");
+                return;
+            }
 
             Reader in = new FileReader(saved);
             Passage ref = PassageFactory.createPassage();
@@ -263,7 +292,7 @@ public class BibleViewPane extends JPanel
     }
 
     /**
-     * Remote a listener from the list
+     * Remove a listener from the list
      */
     public synchronized void removeTitleChangedListener(TitleChangedListener li)
     {
@@ -278,7 +307,6 @@ public class BibleViewPane extends JPanel
 
     /**
      * Inform the listeners that a title has changed
-     * @param ev
      */
     protected void fireTitleChanged(TitleChangedEvent ev)
     {
