@@ -335,7 +335,9 @@
       </fileset>
       <fileset dir="${source.etc}/jnlp" includes="jsword.jnlp" />
     </copy>
-    <jar destfile="${target.jnlp}/resource.jar" basedir="${source.res}"/>
+    <jar destfile="${target.jnlp}/resource.jar" 
+      basedir="${source.res}" 
+      excludes="**/versions/**"/>
   </target>
   
   <!--=======================================================================-->
