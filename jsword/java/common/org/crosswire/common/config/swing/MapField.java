@@ -27,7 +27,7 @@ import org.crosswire.common.swing.MapTableModel;
 import org.crosswire.common.util.Convert;
 
 /**
- * A MapField allows editing of a Hashtable in a JTable.
+ * A MapField allows editing of a Map in a JTable.
  * It allows the user to specify additional classes that extend the
  * functionality of the program.
  * 
@@ -121,16 +121,7 @@ public class MapField extends JPanel implements Field
      */
     public String getValue()
     {
-        return Convert.map2String(getMap());
-    }
-
-    /**
-     * Return the actual Hashtable being edited
-     * @return The current value
-     */
-    public Map getMap()
-    {
-        return tableModel.getMap();
+        return tableModel.getValue();
     }
 
     /**
@@ -143,7 +134,7 @@ public class MapField extends JPanel implements Field
     }
 
     /**
-     * Set the current value using a hashtable
+     * Set the current value using a Map
      * @param value The new text
      */
     public void setMap(Map value)
@@ -177,7 +168,7 @@ public class MapField extends JPanel implements Field
 
             if (isValid(new_class))
             {
-                tableModel.getMap().put(new_name, new_class);
+                tableModel.add(new_name, new_class);
             }
         }
     }
@@ -198,22 +189,21 @@ public class MapField extends JPanel implements Field
 
             if (isValid(new_class))
             {
-                tableModel.getMap().remove(currentKey());
-                tableModel.getMap().put(new_name, new_class);
+                tableModel.update(currentKey(), new_name, new_class);
             }
         }
     }
 
     /**
-     * Delete the current value in the hashtable
+     * Delete the current value in the Map
      */
     public void removeEntry()
     {
-        tableModel.getMap().remove(currentKey());
+        tableModel.remove(currentKey());
     }
 
     /**
-     * Create an instance of a class for the hashtable
+     * Create an instance of a class for the Map
      * @param name The name of the class to create
      * @return The instansiated object or null if the name is not valid
      */
@@ -261,7 +251,7 @@ public class MapField extends JPanel implements Field
     }
 
     /**
-     * A HashtableModel with named columns that is not ediatble
+     * A MapTableModel with named columns that is not ediatble
      */
     static class NamedMapTableModel extends MapTableModel
     {
@@ -312,18 +302,18 @@ public class MapField extends JPanel implements Field
         }
 
         /**
-         * To edit a name (hashtable key)
+         * To edit a name (Map key)
          */
         protected JTextField name_field = new JTextField();
 
         /**
-         * To edit a class (hashtable value)
+         * To edit a class (Map value)
          */
         protected JTextField class_field = new JTextField(20);
     }
 
     /**
-     * The TableModel that points the JTable at the Hashtable
+     * The TableModel that points the JTable at the Map
      */
     private NamedMapTableModel tableModel = new NamedMapTableModel();
 

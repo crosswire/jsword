@@ -1,16 +1,19 @@
-
 package org.crosswire.common.swing;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.crosswire.common.util.Convert;
+
 /**
- * TableModel using a Hashtable internally. Note that an AbstractTableModel
+ * TableModel using a Map internally. Note that an AbstractTableModel
  * (this is-a AbstractTableModel) reports changes to the data to the table
- * itself. However since a Hashtable does not have a addChangeListener
- * interface we can't do the same - SO if you change the Hashtable whilst
+ * itself. However since a Map does not have a addChangeListener
+ * interface we can't do the same - SO if you change the Map whilst
  * we are displaying it then don't expect the changes to be automatically
  * reflected in the JTable.
  * 
@@ -42,147 +45,172 @@ public class MapTableModel extends AbstractTableModel
      */
     public MapTableModel()
     {
-        this.hash = null;
+        this(null);
     }
 
     /**
      * Create an internal store from a 2D array
-     * @param hash The table to model
+     * @param map The table to model
      */
-    public MapTableModel(Map hash)
+    public MapTableModel(Map map)
     {
-        this.hash = hash;
+        list = new ArrayList();
+        setMap(map);
     }
 
     /**
-     * Accessor for our source data
-     * @return The hashtable we are getting our data from
+     * Change the map that we report on
+     * @param map The map we are getting our data from
      */
-    public Map getMap()
+    public void setMap(Map map)
     {
-        return hash;
-    }
-
-    /**
-     * Change the hashtable that we report on
-     * @param hash The hashtable we are getting our data from
-     */
-    public void setMap(Map hash)
-    {
-        if (hash != this.hash)
+        this.map = map;
+        list.clear();
+        if (map != null)
         {
-            this.hash = hash;
-            fireTableStructureChanged();
+            Iterator iter = map.entrySet().iterator();
+            while (iter.hasNext())
+            {
+                Map.Entry me = (Map.Entry) iter.next();
+                Object k = me.getKey();
+                Object v = me.getValue();
+                if (k == null || v == null)
+                {
+                    // perhaps log a warning?
+                    continue;
+                }
+                String key = k.toString().trim();
+                String value = v.toString().trim();
+                if (key.length() == 0)
+                {
+                    // perhaps log a warning?
+                    continue;
+                }
+                list.add(new StringPair(key, value));
+            }
+        }
+        fireTableDataChanged();
+    }
+
+    /**
+     * @param key
+     * @param value
+     */
+    public void add(String key, String value)
+    {
+        if (value == null) {
+            value = "";
+        }
+        if (key == null || key.length() == 0)
+        {
+            return;
+        }
+        if (map.containsKey(key) && value.equals(map.get(key)))
+        {
+            return;
+        }
+        map.put(key, value);
+        setMap(map);
+    }
+    
+    /**
+     * @param key
+     */
+    public void remove(String key)
+    {
+        if (map != null) {
+            map.remove(key);
+            setMap(map);
         }
     }
 
     /**
-     * How many Cols are there in this store
-     * @return The number of columns - always 2 in this case
+     * @param oldkey
+     * @param newkey
+     * @param newvalue
      */
-    public int getColumnCount()
+    public void update(String oldkey, String newkey, String newvalue)
     {
-        return 2;
+        if (map != null) {
+            if (! oldkey.equals(newkey)) {
+                map.remove(oldkey);
+            }
+            add(newkey, newvalue);
+        }
     }
 
     /**
-     * How many Rows are there in this store
-     * @return the number of row in the TableModel = elements in the Hashtable
+     * Return a string version of the current value
+     * @return The current value
      */
-    public int getRowCount()
+    public String getValue()
     {
-        if (hash == null)
+        return Convert.map2String(map);
+    }
+
+    /**
+     * How many Cols are there in this store
+     * @return The number of columns
+     */
+    public int getColumnCount()
+    {
+        if (list == null)
         {
             return 0;
         }
         else
         {
-            return hash.size();
+            return 2;
+        }
+    }
+
+    /**
+     * How many Rows are there in this store
+     * @return the number of row in the TableModel = elements in the map
+     */
+    public int getRowCount()
+    {
+        if (list == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return list.size();
         }
     }
 
     /**
      * Return the Object at row, col
-     * @param row The element in the hash
+     * @param row The element in the list
      * @param col 1=keys, 2=values
      * @return The key/value of the given element
      */
     public Object getValueAt(int row, int col)
     {
-        if (hash == null)
+        if (list == null)
         {
             return null;
         }
-
-        Iterator it = (col == 0) ? hash.keySet().iterator() : hash.values().iterator();
-
-        try
+        StringPair entry = (StringPair) list.get(row);
+        if (col == 0)
         {
-            for (int i=0; i<row; i++)
-            {
-                it.next();
-            }
-
-            return it.next();
+            return entry.getKey();
         }
-        catch (Exception ex)
+        else
         {
-            return null;
+            return entry.getValue();
         }
-    }
-
-    /**
-     * Set the Object at row, coll
-     * @param obj The key/value to set
-     * @param row The element in the hash
-     * @param col 1=keys, 2=values
-     */
-    public void setValueAt(Object obj, int row, int col)
-    {
-        if (hash != null)
-        {
-            Iterator it = hash.keySet().iterator();
-    
-            for (int i=0; i<row; i++)
-            {
-                it.hasNext();
-            }
-    
-            Object old_key = it.next();
-            Object old_val = hash.get(old_key);
-    
-            if (col == 0)
-            {
-                // Changing a key
-                hash.remove(old_key);
-                hash.put(obj, old_val);
-            }
-            else
-            {
-                // Changing a value
-                hash.put(old_key, obj);
-            }
-        }
-    }
-
-    /**
-     * Can the specified cell be changed?
-     * @param row The element in the hash
-     * @param col 1=keys, 2=values
-     */
-    public boolean isCellEditable(int row, int col)
-    {
-        // Editing is broken, and there didn't seem much benefit in it
-        return false;
     }
 
     /**
      * Get the default class
      * @param col 1=keys, 2=values
+     * @return String.class
      */
     public Class getColumnClass(int col)
     {
-        return Object.class;
+        return String.class;
     }
 
     /**
@@ -206,12 +234,78 @@ public class MapTableModel extends AbstractTableModel
     }
 
     /**
-     * The Hashtable that we are providing an interface to
+     * The List that is a copy of the list.
+     * A list is used for direct access performance.
      */
-    private Map hash;
+    private List list;
+    /**
+     * The backing map
+     */
+    private Map map;
 
     /**
      * The default column names
      */
-    private String[] col_names = new String[] { "Keys", "Values" };
+    private String[] col_names = new String[]
+    {
+                    "Keys", "Values"
+    };
+
+    /**
+     * A simple holder of a key/value pair of Strings.
+     */
+    private class StringPair
+    {
+        /**
+         * @param k The non-null key.
+         * @param v The non-null value.
+         */
+        public StringPair(String k, String v)
+        {
+            key = k;
+            value = v;
+        }
+
+        /**
+         * @return Returns the key.
+         */
+        public String getKey()
+        {
+            return key;
+        }
+
+        /**
+         * @return Returns the value.
+         */
+        public String getValue()
+        {
+            return value;
+        }
+
+        /**
+         * @param key The key to set.
+         */
+        public void setKey(String key)
+        {
+            this.key = key;
+        }
+
+        /**
+         * @param value The value to set.
+         */
+        public void setValue(String value)
+        {
+            this.value = value;
+        }
+
+        /**
+         * <code>key</code> is the string representation of a Map entry key
+         */
+        private String key;
+
+        /**
+         * <code>value</code> is the string representation of a Map entry value
+         */
+        private String value;
+    }
 }

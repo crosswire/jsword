@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.crosswire.common.util.StringUtil;
@@ -199,7 +201,7 @@ public class DefaultBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Properties getProperties()
+    public Map getProperties()
     {
         return map;
     }
@@ -209,7 +211,20 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public String getFullName()
     {
-        return getName() + ", " + getEdition() + " (" + getDriverName() + ")";
+        StringBuffer buf = new StringBuffer(getName());
+        String ed = getEdition();
+
+        if (!ed.equals(""))
+        {
+            buf.append(", ").append(ed);
+        }
+
+        if (driver != null)
+        {
+            buf.append(" (").append(getDriverName()).append(")");
+        }
+
+        return buf.toString();
     }
 
     /* (non-Javadoc)
@@ -242,8 +257,6 @@ public class DefaultBookMetaData implements BookMetaData
     public void setBook(Book book)
     {
         this.book = book;
-
-        map.put(KEY_BOOK, this.book);
     }
 
     /**
@@ -252,8 +265,6 @@ public class DefaultBookMetaData implements BookMetaData
     public void setDriver(BookDriver driver)
     {
         this.driver = driver;
-
-        map.put(KEY_DRIVER, this.driver);
     }
 
     /**
@@ -280,14 +291,11 @@ public class DefaultBookMetaData implements BookMetaData
     {
         if (firstPublished == null)
         {
-            this.firstPublished = FIRSTPUB_DEFAULT;
+            firstPublished = FIRSTPUB_DEFAULT;
         }
-        else
-        {
-            this.firstPublished = firstPublished;
-        }
+        this.firstPublished = firstPublished;
 
-        map.put(KEY_FIRSTPUB, this.firstPublished);
+        map.put(KEY_FIRSTPUB, this.firstPublished.toString());
     }
 
     /**
@@ -295,16 +303,12 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public void setFirstPublished(String pubstr) throws ParseException
     {
-        if (pubstr == null || pubstr.trim().length() == 0)
+        Date newPublished = null;
+        if (pubstr != null && pubstr.trim().length() > 0)
         {
-            firstPublished = FIRSTPUB_DEFAULT;
+            newPublished = FIRSTPUB_FORMAT.parse(pubstr);
         }
-        else
-        {
-            firstPublished = FIRSTPUB_FORMAT.parse(pubstr);
-        }
-
-        map.put(KEY_FIRSTPUB, this.firstPublished);
+        setFirstPublished(newPublished);
     }
 
     /**
@@ -341,7 +345,7 @@ public class DefaultBookMetaData implements BookMetaData
     {
         this.licence = licence;
 
-        map.put(KEY_LICENCE, this.licence);
+        map.put(KEY_LICENCE, licence == null ? "" : this.licence.toString());
     }
 
     /**
@@ -349,16 +353,13 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public void setLicence(String licencestr) throws MalformedURLException
     {
-        if (licencestr == null)
+        URL newLicence = null;
+        if (licencestr != null)
         {
-            this.licence = null;
-        }
-        else
-        {
-            this.licence = new URL(licencestr);
+            newLicence = new URL(licencestr);
         }
 
-        map.put(KEY_LICENCE, this.licence);
+        setLicence(newLicence);
     }
 
     /**
@@ -383,14 +384,11 @@ public class DefaultBookMetaData implements BookMetaData
     {
         if (openness == null)
         {
-            this.openness = Openness.UNKNOWN;
+            openness = Openness.UNKNOWN;
         }
-        else
-        {
-            this.openness = openness;
-        }
+        this.openness = openness;
 
-        map.put(KEY_OPENNESS, this.openness);
+        map.put(KEY_OPENNESS, this.openness.getName());
     }
 
     /**
@@ -398,21 +396,13 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public void setOpenness(String openstr)
     {
-        if (openstr == null)
+        Openness newOpenness = null;
+        if (openstr != null)
         {
-            openness = Openness.UNKNOWN;
-        }
-        else
-        {
-            openness = Openness.get(openstr);
-            
-            if (openness == null)
-            {
-                openness = Openness.UNKNOWN;
-            }
+            newOpenness = Openness.get(openstr);
         }
 
-        map.put(KEY_OPENNESS, this.openness);
+        setOpenness(newOpenness);
     }
 
     /**
@@ -430,9 +420,7 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public void setSpeed(String speedstr) throws NumberFormatException
     {
-        this.speed = Integer.parseInt(speedstr);
-
-        map.put(KEY_SPEED, Integer.toString(this.speed));
+        setSpeed(Integer.parseInt(speedstr));
     }
 
     /**
@@ -440,9 +428,13 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public void setType(BookType type)
     {
+        if (type == null)
+        {
+            type = BookType.BIBLE;
+        }
         this.type = type;
 
-        map.put(KEY_TYPE, this.type);
+        map.put(KEY_TYPE, type == null ? "" : type.getName());
     }
 
     /**
@@ -450,21 +442,13 @@ public class DefaultBookMetaData implements BookMetaData
      */
     public void setType(String typestr)
     {
-        if (typestr == null)
+        BookType newType = null;
+        if (typestr != null)
         {
-            type = BookType.BIBLE;
-        }
-        else
-        {
-            type = BookType.get(typestr);
-            
-            if (type == null)
-            {
-                type = BookType.BIBLE;
-            }
+            newType = BookType.get(typestr);
         }
 
-        map.put(KEY_TYPE, this.type);
+        setType(newType);
     }
 
     /* (non-Javadoc)
@@ -543,7 +527,7 @@ public class DefaultBookMetaData implements BookMetaData
     /**
      * 
      */
-    private Properties map = new Properties();
+    private Map map = new LinkedHashMap();
 
     private BookType type;
     private Book book;

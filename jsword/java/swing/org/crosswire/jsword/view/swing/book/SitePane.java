@@ -22,6 +22,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.crosswire.common.swing.MapTableModel;
+import org.crosswire.common.swing.MapTable;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
@@ -314,5 +315,5 @@ public class SitePane extends JPanel
     private JTree treAvailable = new JTree();
     private JPanel pnlSelected = new JPanel();
     private JPanel pnlAvailable = new JPanel();
-    private JTable tblSelected = new JTable();
+    private JTable tblSelected = new MapTable();
 }

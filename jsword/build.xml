@@ -204,6 +204,88 @@
   </target>
 
   <!--=======================================================================-->
+  <target name="jnlp" description="moves files to correct location for JNLP deploy" depends="osis, jar, jnlp.keygen">
+  <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
+    <mkdir dir="${target.web}/jnlp"/>
+    <copy todir="${target.web}/jnlp" file="${source.etc}/jnlp/${ant.project.name}.jnlp" filtering="true">
+      <filterset>
+        <filter token="HOSTNAME" value="${jnlp.hostname}"/>
+        <filter token="WEBAPP" value="${ant.project.name}"/>
+      </filterset>
+    </copy>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jsword.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jsword-swing.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="resource.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jsword-osis.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="commons-lang-2.0.jar"/>
+      <param name="dir" value="${source.jar}/lang200"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="commons-net-1.1.0.jar"/>
+      <param name="dir" value="${source.jar}/net110"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxb-api.jar"/>
+      <param name="dir" value="${source.jar}/jaxb10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxb-libs.jar"/>
+      <param name="dir" value="${source.jar}/jaxb10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxb-ri.jar"/>
+      <param name="dir" value="${source.jar}/jaxb10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jdom.jar"/>
+      <param name="dir" value="${source.jar}/jdom09"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="log4j-1.2.7.jar"/>
+      <param name="dir" value="${source.jar}/log4j127"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="lucene-1.3-final.jar"/>
+      <param name="dir" value="${source.jar}/lucene13"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="tar.jar"/>
+      <param name="dir" value="${source.jar}/jtar25"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="winlaf-0.4.jar"/>
+      <param name="dir" value="${source.jar}/winlaf04"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jlfgr-1.0.jar"/>
+      <param name="dir" value="${source.jar}/jlfgr10"/>
+    </antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.notrequired" depends="jnlp.section.check">
+    <echo message="JNLP prepare: ${jar}"/>
+    <copy todir="${target.web}/jnlp" file="${dir}/${jar}"/>
+    <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${basedir}/${ant.project.name}.keystore" keypass="${jnlp.password}" jar="${target.web}/jnlp/${jar}"/>
+  </target>
+  <target name="jnlp.section.check" description="Check to see that the signed jars are up to date">
+    <uptodate property="jnlp.section.notrequired" srcfile="${dir}/${jar}" targetfile="${target.web}/jnlp/${jar}"/>
+  </target>
+
+  <!--=======================================================================-->
   <target name="swingui" depends="jnlp" description="Build a ready to ship/test app">
     <mkdir dir="${target.swingui}/bin"/>
     <copy todir="${target.swingui}/bin">
@@ -434,7 +516,6 @@
   <target name="web.jdepend" depends="jar">
     <mkdir dir="${target.temp}/jdepend"/>
     <mkdir dir="${target.web}/jdepend"/>
-<!--
     <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
     <jdepend format="xml" outputfile="${target.temp}/jdepend/jdepend-report.xml" fork="yes">
       <classespath>
@@ -453,7 +534,6 @@
         destdir="${target.web}/jdepend"
         includes="jdepend-report.xml"
         style="${support.tools}/jdepend26/jdepend.xsl"/>
--->
   </target>
 
   <!--=======================================================================-->
@@ -594,88 +674,6 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jnlp" description="moves files to correct location for JNLP deploy" depends="osis, jar, jnlp.keygen">
-  <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
-    <mkdir dir="${target.web}/jnlp"/>
-    <copy todir="${target.web}/jnlp" file="${source.etc}/jnlp/${ant.project.name}.jnlp" filtering="true">
-      <filterset>
-        <filter token="HOSTNAME" value="${jnlp.hostname}"/>
-        <filter token="WEBAPP" value="${ant.project.name}"/>
-      </filterset>
-    </copy>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jsword.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jsword-swing.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="resource.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jsword-osis.jar"/>
-      <param name="dir" value="${target.jar}"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="commons-lang-2.0.jar"/>
-      <param name="dir" value="${source.jar}/lang200"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="commons-net-1.1.0.jar"/>
-      <param name="dir" value="${source.jar}/net110"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jaxb-api.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jaxb-libs.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jaxb-ri.jar"/>
-      <param name="dir" value="${source.jar}/jaxb10"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jdom.jar"/>
-      <param name="dir" value="${source.jar}/jdom09"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="log4j-1.2.7.jar"/>
-      <param name="dir" value="${source.jar}/log4j127"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="lucene-1.3-final.jar"/>
-      <param name="dir" value="${source.jar}/lucene13"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="tar.jar"/>
-      <param name="dir" value="${source.jar}/jtar25"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="winlaf-0.4.jar"/>
-      <param name="dir" value="${source.jar}/winlaf04"/>
-    </antcall>
-    <antcall target="jnlp.section">
-      <param name="jar" value="jlfgr-1_0.jar"/>
-      <param name="dir" value="${source.jar}/jlfgr10"/>
-    </antcall>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.notrequired" depends="jnlp.section.check">
-    <echo message="JNLP prepare: ${jar}"/>
-    <copy todir="${target.web}/jnlp" file="${dir}/${jar}"/>
-    <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${basedir}/${ant.project.name}.keystore" keypass="${jnlp.password}" jar="${target.web}/jnlp/${jar}"/>
-  </target>
-  <target name="jnlp.section.check" description="Check to see that the signed jars are up to date">
-    <uptodate property="jnlp.section.notrequired" srcfile="${dir}/${jar}" targetfile="${target.web}/jnlp/${jar}"/>
-  </target>
-
-  <!--=======================================================================-->
   <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="jnlp.keygen.notrequired" depends="init, jnlp.keygen.check">
     <echo message="Generating keystore for webstart testing"/>
     <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${basedir}/${ant.project.name}.keystore">
@@ -744,7 +742,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="nightly" depends="clean, web, release.nightly" description="To be run nightly at crosswire">
+  <target name="nightly" depends="web, release.nightly" description="To be run nightly at crosswire">
     <!-- also used to depend on veryclean -->
   </target>
 
@@ -828,6 +826,7 @@
     <!-- You will need to -Dusername=fred -Dpassword=secret -->
     <!-- property name="username" value="myusername"/ -->
     <!-- property name="password" value="mypassword"/ -->
+    <!--
     <taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
     <taskdef name="install"   classname="org.apache.catalina.ant.InstallTask"/>
     <taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
@@ -838,6 +837,7 @@
     <taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
     <taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
     <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
+    -->
   </target>
 
   <!--=======================================================================-->

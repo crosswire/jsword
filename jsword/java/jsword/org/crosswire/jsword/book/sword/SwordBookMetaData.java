@@ -10,11 +10,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
@@ -56,6 +55,7 @@ import org.crosswire.jsword.book.filter.FilterFactory;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
+ * @author DM Smith [dmsmith555 at hotmail dot com]
  * @version $Id$
  */
 public class SwordBookMetaData implements BookMetaData
@@ -92,7 +92,19 @@ public class SwordBookMetaData implements BookMetaData
                 break;
             }
 
-            parseLine(line);
+            int length = line.length();
+            if (length > 0)
+            {
+                if (line.charAt(length - 1) == '\\')
+                {
+                    StringBuffer buf = new StringBuffer(line.substring(0, length - 1).trim());
+                    buf.append('\n');
+                    getContinuation(bin, buf);
+                    line = buf.toString();
+                }
+
+                parseLine(line);
+            }
         }
 
         // From the config map, extract the important bean properties
@@ -131,37 +143,43 @@ public class SwordBookMetaData implements BookMetaData
             }
         }
 
-        // merge entries into proerties file
+        // merge entries into properties file
         for (Iterator kit = getKeys(); kit.hasNext(); )
         {
             String key = (String) kit.next();
             List list = (List) table.get(key);
             
             StringBuffer combined = new StringBuffer();
+            boolean appendSeparator = false;
             for (Iterator vit = list.iterator(); vit.hasNext(); )
             {
                 String element = (String) vit.next();
+                if (appendSeparator)
+                {
+                    combined.append('\n');
+                }
                 combined.append(element);
+                appendSeparator = true;
             }
             
-            prop.setProperty(key, combined.toString());
+            prop.put(key, combined.toString());
         }
 
         // set the key property file entries
-        prop.setProperty(KEY_NAME, name);
-        prop.setProperty(KEY_INITIALS, initials);
-        
+        prop.put(KEY_NAME, name);
+        prop.put(KEY_INITIALS, initials);
+
         if (mtype != null)
         {
             BookType type = mtype.getBookType();
-            prop.setProperty(KEY_TYPE, type != null ? type.getName() : "");
+            prop.put(KEY_TYPE, type != null ? type.getName() : "");
         }
 
-        prop.setProperty(KEY_SPEED, Integer.toString(speed));
-        prop.setProperty(KEY_EDITION, edition);
-        prop.setProperty(KEY_OPENNESS, openness.getName());
-        prop.setProperty(KEY_LICENCE, ""+licence);
-        prop.setProperty(KEY_FIRSTPUB, ""+firstPublished);
+        prop.put(KEY_SPEED, Integer.toString(speed));
+        prop.put(KEY_EDITION, edition);
+        prop.put(KEY_OPENNESS, openness.getName());
+        prop.put(KEY_LICENCE, licence == null ? "" : licence.toString());
+        prop.put(KEY_FIRSTPUB, firstPublished.toString());
     }
 
     /**
@@ -329,6 +347,7 @@ public class SwordBookMetaData implements BookMetaData
 
     /**
      * Parse a single line.
+     * @param line
      */
     private void parseLine(String line)
     {
@@ -340,10 +359,35 @@ public class SwordBookMetaData implements BookMetaData
         else
         {
             String key = line.substring(0, eqpos).trim();
-            String value = line.substring(eqpos + 1);
+            String value = line.substring(eqpos + 1).trim();
 
             addEntry(key, value);
         }
+    }
+
+    /**
+     * Since the current line ended with \, append the next line.
+     * Use \n to separate lines.
+     * @param bin
+     * @param buf
+     */
+    private void getContinuation(BufferedReader bin, StringBuffer buf) throws IOException
+    {
+        String line = bin.readLine();
+        if (line == null)
+        {
+            return;
+        }
+        int length = line.length();
+        if (length > 0)
+        {
+            if (line.charAt(length - 1) == '\\')
+            {
+                buf.append(line.substring(0, length - 1).trim());
+                buf.append('\n');
+                getContinuation(bin, buf);
+            }
+        }        
     }
 
     /**
@@ -457,7 +501,7 @@ public class SwordBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Properties getProperties()
+    public Map getProperties()
     {
         return prop;
     }
@@ -467,12 +511,18 @@ public class SwordBookMetaData implements BookMetaData
      */
     public String getFullName()
     {
-        if (driver == null)
+        StringBuffer buf = new StringBuffer(getName());
+        String ed = getEdition();
+        if (!ed.equals(""))
         {
-            return getName() + ", " + getEdition();
+            buf.append(", ").append(ed);
+        }
+        if (driver != null)
+        {
+            buf.append(" (").append(getDriverName()).append(")");
         }
 
-        return getName() + ", " + getEdition() + " (" + getDriverName() + ")";
+        return buf.toString();
     }
 
     /* (non-Javadoc)
@@ -510,8 +560,6 @@ public class SwordBookMetaData implements BookMetaData
     protected void setBook(Book book)
     {
         this.book = book;
-
-        map.put(KEY_BOOK, this.book);
     }
 
     /**
@@ -520,8 +568,6 @@ public class SwordBookMetaData implements BookMetaData
     protected void setDriver(BookDriver driver)
     {
         this.driver = driver;
-
-        map.put(KEY_DRIVER, this.driver);
     }
 
     /* (non-Javadoc)
@@ -595,14 +641,14 @@ public class SwordBookMetaData implements BookMetaData
     private static final Logger log = Logger.getLogger(SwordBookMetaData.class);
 
     /**
-     * A map of lists of known keys
+     * A map of lists of known keys. Keys are presented in insertion order
      */
-    private Map table = new HashMap();
+    private Map table = new LinkedHashMap();
 
     /**
      * The single key version of the input file
      */
-    private Properties prop = new Properties();
+    private Map prop = new LinkedHashMap();
 
     /**
      * The original name of this config file from mods.d
@@ -610,7 +656,6 @@ public class SwordBookMetaData implements BookMetaData
     private String internal = null;
 
     private ModuleType mtype;
-    private Map map = new HashMap();
     private Book book;
     private BookDriver driver = null;
     private String name = "";

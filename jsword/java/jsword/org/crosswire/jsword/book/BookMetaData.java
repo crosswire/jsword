@@ -4,7 +4,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
+import java.util.Map;
 
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
@@ -172,7 +172,7 @@ public interface BookMetaData extends Comparable
      * This method is designed to support finding out more about a book
      * rather than as a covert method of
      */
-    public Properties getProperties();
+    public Map getProperties();
 
     /**
      * The SPEED_* constants specify how fast a Book implementation is.

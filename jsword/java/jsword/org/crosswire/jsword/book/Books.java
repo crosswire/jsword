@@ -1,15 +1,20 @@
 package org.crosswire.jsword.book;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
+import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.basic.AbstractBookList;
+import org.crosswire.jsword.util.Project;
 
 /**
  * The Bibles class (along with Bible) is the central point of contact
@@ -109,6 +114,11 @@ public class Books extends AbstractBookList
      */
     private static final Books instance = new Books();
 
+    /**
+     * Do we try to get clever in registering books
+     */
+    private static boolean threaded = false;
+    
     /**
      * Add a Bible to the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
@@ -258,8 +268,16 @@ public class Books extends AbstractBookList
     {
         Runnable regman = new RegisterRunnable();
         
-        Thread init = new Thread(regman, "book-driver-registration");
-        init.start();
+        if (threaded)
+        {
+            Thread init = new Thread(regman, "book-driver-registration");
+            init.setPriority(Thread.MIN_PRIORITY);
+            init.start();
+        }
+        else
+        {
+            regman.run();
+        }
     }
 
     /**
@@ -272,25 +290,39 @@ public class Books extends AbstractBookList
          */
         public void run()
         {
-            // This will classload them all and they will register themselves.
-            Class[] types = ResourceUtil.getImplementors(BookDriver.class);
+            URL predicturl = Project.instance().getWritablePropertiesURL("books");
+            Job job = JobManager.createJob("Job Title", predicturl, null, true);
 
-            log.debug("begin auto-registering "+types.length+" drivers:");
-
-            for (int i=0; i<types.length; i++)
+            try
             {
-                try
+                // This will classload them all and they will register themselves.
+                Class[] types = ResourceUtil.getImplementors(BookDriver.class);
+
+                log.debug("begin auto-registering "+types.length+" drivers:");
+
+                for (int i=0; i<types.length; i++)
                 {
-                    BookDriver driver = (BookDriver) types[i].newInstance();
-                    registerDriver(driver);
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(Books.class, ex);
+                    job.setProgress("Registering Driver: "+ClassUtils.getShortClassName(types[i]));
+
+                    try
+                    {
+                        BookDriver driver = (BookDriver) types[i].newInstance();
+                        registerDriver(driver);
+                    }
+                    catch (Exception ex)
+                    {
+                        Reporter.informUser(Books.class, ex);
+                    }
                 }
             }
-
-            log.debug("end auto-registering drivers:");
+            catch (Exception ex)
+            {
+                job.ignoreTimings();
+            }
+            finally
+            {
+                job.done();
+            }
         }
     }
 }
