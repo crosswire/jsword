@@ -48,6 +48,9 @@
       <li><a href="design.jsp">Design</a></li>
       <li><a href="xml.jsp">XML</a></li>
       <li><a href="change.jsp">Changes</a></li>
+      <li><a href="api/index.html">JavaDoc</a></li>
+      <li><a href="java2html/index.html">Java&nbsp;Source</a></li>
+      <li><a href="test/index.html">Test&nbsp;Results</a></li>
     </ul>
     <p>Other&nbsp;Projects</p>
     <ul>
