@@ -5,14 +5,11 @@ import org.crosswire.jsword.book.config.CacheBiblesChoice;
 import org.crosswire.jsword.book.config.DriversChoice;
 import org.crosswire.jsword.book.raw.config.CacheDataChoice;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.util.config.FileChoice;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.config.DisplayExceptionChoice;
 import org.crosswire.common.swing.config.ShelfExceptionChoice;
 import org.crosswire.common.swing.config.SourcePathChoice;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.StdOutCaptureInformChoice;
-import org.crosswire.common.util.config.StdOutCaptureLogChoice;
 import org.crosswire.common.util.config.UserLevelChoice;
 
 /**
@@ -55,9 +52,6 @@ public class SerUtil
             config.add("Bibles.Cache Versions", new CacheBiblesChoice());
             config.add("Bibles.Raw.Cache Data", new CacheDataChoice());
 
-            config.add("Reports.File", new FileChoice());
-            config.add("Reports.Log to StdOut", new StdOutCaptureLogChoice());
-            config.add("Reports.Exceptions to StdOut", new StdOutCaptureInformChoice());
             config.add("Reports.Exceptions to Dialog Box", new DisplayExceptionChoice());
             config.add("Reports.Exceptions to Log Window", new ShelfExceptionChoice());
 

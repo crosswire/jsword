@@ -1,6 +1,7 @@
 
 package org.crosswire.common.util;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.event.CaptureListener;
 import org.crosswire.common.util.event.ReporterEvent;
 import org.crosswire.common.util.event.ReporterListener;
@@ -144,7 +145,7 @@ public class Reporter
             
                         inform_list.remove(CaptureListener.class, li);
             
-                        log.log(Level.WARNING, "Dispatch failure", ex);
+                        log.warn("Dispatch failure", ex);
                     }
                 }
             }

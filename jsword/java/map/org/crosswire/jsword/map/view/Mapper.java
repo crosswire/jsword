@@ -42,8 +42,6 @@ import org.crosswire.common.swing.config.DisplayExceptionChoice;
 import org.crosswire.common.swing.config.LookAndFeelChoices;
 import org.crosswire.common.swing.config.SourcePathChoice;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.StdOutCaptureInformChoice;
-import org.crosswire.common.util.config.StdOutCaptureLogChoice;
 import org.crosswire.common.util.config.UserLevelChoice;
 import org.crosswire.jsword.book.config.CacheBiblesChoice;
 import org.crosswire.jsword.book.config.DriversChoice;
@@ -60,7 +58,6 @@ import org.crosswire.jsword.map.model.Rule;
 import org.crosswire.jsword.map.model.VBAExport;
 import org.crosswire.jsword.passage.Books;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.util.config.FileChoice;
 import org.crosswire.jsword.view.swing.book.BibleChooser;
 
 /**
@@ -144,9 +141,6 @@ public class Mapper extends JFrame
             config.add("Looks.Current Look", plaf_class.getCurrentChoice());
             config.add("Looks.Available Looks", plaf_class.getOptionsChoice());
 
-            config.add("Reports.File", new FileChoice());
-            config.add("Reports.Log to StdOut", new StdOutCaptureLogChoice());
-            config.add("Reports.Exceptions to StdOut", new StdOutCaptureInformChoice());
             config.add("Reports.Exceptions to GUI", new DisplayExceptionChoice());
 
             config.add("Advanced.Source Path", new SourcePathChoice());

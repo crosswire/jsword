@@ -1,8 +1,6 @@
 
 package org.crosswire.jsword.util;
 
-import org.crosswire.common.util.event.StdOutCaptureListener;
-
 /**
  * The Project class looks after the source of project files.
  *
@@ -57,8 +55,6 @@ public class Project
         resource = new Resource(base);
 
         // Some defaults while we get started
-        StdOutCaptureListener.setHelpDeskInformListener(false);
-        FileListener.setHelpDeskListener(true);
         // StdOutCaptureListener.setHelpDeskInformListener(true);
         // StdOutCaptureListener.setHelpDeskLogListener(true);
     }

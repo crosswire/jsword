@@ -5,9 +5,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.swing.Field;
-import org.crosswire.common.util.Logger;
 
 /**
  * Allow the user to choose from True/False.
@@ -78,7 +78,7 @@ public class OptionsField extends JComboBox implements Field
             }
         }
 
-        log.warning("illegal option setting: '"+value+"'. Using default");
+        log.warn("illegal option setting: '"+value+"'. Using default");
         setSelectedItem(list[0]);
     }
 

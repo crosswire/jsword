@@ -7,8 +7,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 
 /**
 * BeanInfo for the TextViewer. This was mostly generate using
@@ -66,7 +65,7 @@ public class TextViewPanelBeanInfo extends SimpleBeanInfo
         }
         catch (IntrospectionException ex)
         {
-            log.log(Level.INFO, "Failure", ex);
+            log.info("Failure", ex);
             return null;
         }
     }
@@ -84,7 +83,7 @@ public class TextViewPanelBeanInfo extends SimpleBeanInfo
         }
         catch (IntrospectionException ex)
         {
-            log.log(Level.INFO, "Failure", ex);
+            log.info("Failure", ex);
             return null;
         }
     }

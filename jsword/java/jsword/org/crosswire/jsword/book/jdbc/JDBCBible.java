@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
@@ -84,7 +84,7 @@ public class JDBCBible extends AbstractBible
             }
             catch (Exception ex)
             {
-                log.fine("Failed to load JDBC driver: "+
+                log.debug("Failed to load JDBC driver: "+
                                   driver+" (System Message: "+ex+")");
             }
 
@@ -233,12 +233,12 @@ public class JDBCBible extends AbstractBible
         }
         catch (NoSuchVerseException ex)
         {
-            log.warning("word="+word);
+            log.warn("word="+word);
             throw new LogicError(ex);
         }
         catch (SQLException ex)
         {
-            log.warning("word="+word);
+            log.warn("word="+word);
             throw new BookException("jdbc_bible_db", ex);
         }
     }
@@ -266,7 +266,7 @@ public class JDBCBible extends AbstractBible
         }
         catch (SQLException ex)
         {
-            log.warning("word="+word);
+            log.warn("word="+word);
             throw new BookException("jdbc_bible_db", ex);
         }
     }

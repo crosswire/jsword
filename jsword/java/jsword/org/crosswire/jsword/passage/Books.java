@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 
@@ -1260,7 +1260,7 @@ public class Books implements PassageConstants
                 }
                 catch (MissingResourceException ex)
                 {
-                    log.fine("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
+                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
                     success = false;
                 }
 
@@ -1271,7 +1271,7 @@ public class Books implements PassageConstants
                 }
                 catch (MissingResourceException ex)
                 {
-                    log.fine("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
+                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
                     success = false;
                 }
 
@@ -1282,7 +1282,7 @@ public class Books implements PassageConstants
                 }
                 catch (MissingResourceException ex)
                 {
-                    log.fine("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
+                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
                     success = false;
                 }
             }
@@ -1296,7 +1296,7 @@ public class Books implements PassageConstants
                 }
                 catch (MissingResourceException ex)
                 {
-                    log.fine("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
+                    log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'");
                     success = false;
                 }
             }

@@ -40,8 +40,7 @@ import org.crosswire.common.util.StringUtil;
  * @see <{docs.Licence}>
  * @author Joe Walker
  * @author Keith Ralston
- * @Changed findBibleURL:  Replace "/" literals with File.separator
- * @version D0.I0.T0
+ * @version $Id$
  */
 public class Resource
 {
@@ -465,9 +464,9 @@ public class Resource
 
         // remove the last leaf of the path
         String file = base.getFile();
-        if (file.endsWith(File.separator))                  //kr
+        if (file.endsWith(File.separator))
             file = file.substring(0, file.length()-1);
-        int lastslash = file.lastIndexOf(File.separator);   //kr
+        int lastslash = file.lastIndexOf(File.separator);
         if (lastslash == -1)
             file = ".";
         else

@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 
 /**
@@ -520,7 +520,7 @@ public class Verse implements VerseBase
             catch (NoSuchVerseException ex)
             {
                 // A verse should never be illegal so
-                log.warning("ref="+book+", "+chapter+", "+verse);
+                log.warn("ref="+book+", "+chapter+", "+verse);
                 throw new LogicError(ex);
             }
         }

@@ -3,6 +3,8 @@ package org.crosswire.jsword.map.model;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
@@ -14,8 +16,6 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
 
 /**
  * LinkArray contains a set of links for each verse in the Bible.

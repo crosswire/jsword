@@ -12,15 +12,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.xml.transform.TransformerException;
 
-import org.xml.sax.SAXException;
-
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.LogicError;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.view.style.Style;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.LogicError;
-import org.crosswire.common.util.Reporter;
+import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.

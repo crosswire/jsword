@@ -14,15 +14,14 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
-import org.jdom.Document;
-import org.xml.sax.SAXException;
-
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.view.style.Style;
-import org.crosswire.common.util.Logger;
+import org.jdom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -120,7 +119,7 @@ public class PassageInnerPane extends JPanel
      */
     public void link(HyperlinkEvent ev)
     {
-        log.warning("No listener for "+ev.getURL());
+        log.warn("No listener for "+ev.getURL());
     }
 
     /**

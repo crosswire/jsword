@@ -3,10 +3,11 @@ package org.crosswire.jsword.view.swing.book;
 
 import javax.swing.ComboBoxModel;
 
+import org.apache.log4j.Logger;
+
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
 
 /**
@@ -74,8 +75,8 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
         }
         catch (BookException ex)
         {
-            log.warning("current="+current);
-            log.warning("bible="+getBibleName(current));
+            log.warn("current="+current);
+            log.warn("bible="+getBibleName(current));
 
             throw new LogicError(ex);
         }

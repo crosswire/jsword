@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 
 /**
@@ -587,7 +587,7 @@ public class PassageTally extends AbstractPassage
 
         if (restrict != RESTRICT_NONE)
         {
-            log.warning("Restrict="+restrict+" is not properly supported.");
+            log.warn("Restrict="+restrict+" is not properly supported.");
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version

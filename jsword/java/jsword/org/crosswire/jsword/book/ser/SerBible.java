@@ -17,8 +17,8 @@ import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.ArrayEnumeration;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
@@ -252,7 +252,7 @@ public class SerBible extends VersewiseBible
             throw new BookException("ser_init", ex);
         }
 
-        log.fine("Started SerBible url=" + url + " name=" + name + " create=" + create);
+        log.debug("Started SerBible url=" + url + " name=" + name + " create=" + create);
     }
 
     /**
@@ -363,10 +363,10 @@ public class SerBible extends VersewiseBible
         }
         catch (Exception ex)
         {
-            log.warning("Search failed on:");
-            log.warning("  word=" + word);
-            log.warning("  ref_ptr=" + section.offset);
-            log.warning("  ref_length=" + section.length);
+            log.warn("Search failed on:");
+            log.warn("  word=" + word);
+            log.warn("  ref_ptr=" + section.offset);
+            log.warn("  ref_length=" + section.length);
             Reporter.informUser(this, ex);
 
             return PassageFactory.createPassage();
@@ -448,9 +448,9 @@ public class SerBible extends VersewiseBible
 
         try
         {
-            log.fine("s " + word + " " + System.currentTimeMillis());
+            log.debug("s " + word + " " + System.currentTimeMillis());
             byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
-            log.fine("e " + word + " " + System.currentTimeMillis());
+            log.debug("e " + word + " " + System.currentTimeMillis());
 
             Section section = new Section(ref_dat.getFilePointer(), buffer.length);
 

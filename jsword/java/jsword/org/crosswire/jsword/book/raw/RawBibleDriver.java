@@ -9,16 +9,15 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.StringUtil;
 
 /**
  * This represents all of the RawBibles.
@@ -78,7 +77,7 @@ public class RawBibleDriver extends AbstractBibleDriver
                 // Check that the dir exists
                 if (!fdir.isDirectory())
                 {
-                    log.fine("The directory '"+dir+"' does not exist.");
+                    log.debug("The directory '"+dir+"' does not exist.");
                     return new String[0];
                 }
 
@@ -95,7 +94,7 @@ public class RawBibleDriver extends AbstractBibleDriver
         }
         catch (IOException ex)
         {
-            log.warning("failed to load raw Bibles: "+ex);
+            log.warn("failed to load raw Bibles: "+ex);
             return new String[0];
         }
     }
@@ -296,7 +295,7 @@ public class RawBibleDriver extends AbstractBibleDriver
         }
         catch (Exception ex)
         {
-            log.log(Level.INFO, "RawBibleDriver init failure", ex);
+            log.info("RawBibleDriver init failure", ex);
         }
     }
 

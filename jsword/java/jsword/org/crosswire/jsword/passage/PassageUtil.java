@@ -7,8 +7,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * A Utility class containing various static methods.
@@ -664,7 +663,7 @@ public class PassageUtil implements PassageConstants
         }
         catch (MissingResourceException ex)
         {
-            log.log(Level.INFO, "PassageUtil init failure", ex);
+            log.info("PassageUtil init failure", ex);
         }
     }
 }

@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.event.ReporterEvent;
 import org.crosswire.common.util.event.ReporterListener;
@@ -261,7 +261,7 @@ public class ExceptionShelf extends JPanel
         }
         else
         {
-            report.setText("<html>"+Logger.getHTMLDescription(ex));
+            report.setText("<html>"+LogUtil.getHTMLDescription(ex));
             report.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
             remove.setEnabled(true);
         }

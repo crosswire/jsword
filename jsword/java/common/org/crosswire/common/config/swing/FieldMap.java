@@ -3,6 +3,7 @@ package org.crosswire.common.config.swing;
 
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.config.swing.fields.ActionField;
 import org.crosswire.common.config.swing.fields.BooleanField;
 import org.crosswire.common.config.swing.fields.ColorField;
@@ -16,7 +17,6 @@ import org.crosswire.common.config.swing.fields.PasswordField;
 import org.crosswire.common.config.swing.fields.StringArrayField;
 import org.crosswire.common.config.swing.fields.TextField;
 import org.crosswire.common.config.swing.fields.TextViewField;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -62,7 +62,7 @@ public class FieldMap
             Class clazz = (Class) hash.get(type);
             if (clazz == null)
             {
-                log.warning("field type ("+type+") unregistered.");
+                log.warn("field type ("+type+") unregistered.");
                 field = new TextField();
                 field.setOptions(data);
             }
@@ -74,12 +74,12 @@ public class FieldMap
         }
         catch (Exception ex)
         {
-            log.warning("field type ("+type+") initialization failed:");
+            log.warn("field type ("+type+") initialization failed:");
             Reporter.informUser(type, ex);
 
             if (field == null)
             {
-                log.warning("field type ("+type+") unregistered.");
+                log.warn("field type ("+type+") unregistered.");
                 field = new TextField();
                 field.setOptions(data);
             }

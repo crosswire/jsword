@@ -6,12 +6,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.common.util.Logger;
 
 /**
  * The WordItemsMem stores words in a dictionary for a Bible.
@@ -152,7 +152,7 @@ public class WordItemsMem extends ItemsMem
         {
             if (array[i] == null)
             {
-                log.warning("null word at index "+i);
+                log.warn("null word at index "+i);
             }
             else
             {

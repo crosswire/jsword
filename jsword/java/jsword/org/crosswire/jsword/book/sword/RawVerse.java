@@ -6,8 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Code for class 'RawVerse'- a module that reads raw text files.
@@ -85,7 +84,7 @@ public class RawVerse
         for (int i=0; i<temp.length; i++)
         {
             temp[i] = read[i] >= 0 ? read[i] : 256 + read[i];
-            log.fine("temp["+i+"]="+temp[i]);
+            log.debug("temp["+i+"]="+temp[i]);
         }
 
         loc.start = (temp[3] << 24) | (temp[2] << 16) | (temp[1] << 8) | temp[0];
@@ -310,13 +309,13 @@ public class RawVerse
             Location loc = verse.findOffset(RawVerse.TESTAMENT_NEW, 6);
             String pre = verse.getText(RawVerse.TESTAMENT_NEW, loc);
 
-            log.fine("loc="+loc);
-            log.fine("pre="+pre);
-            log.fine("post="+verse.prepText(pre));
+            log.debug("loc="+loc);
+            log.debug("pre="+pre);
+            log.debug("post="+verse.prepText(pre));
         }
         catch (Exception ex)
         {
-            log.log(Level.INFO, "Failure", ex);
+            log.info("Failure", ex);
         }
     }
 

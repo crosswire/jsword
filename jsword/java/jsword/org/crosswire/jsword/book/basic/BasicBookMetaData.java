@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Openness;
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.StringUtil;
 
 /**
  * BasicVersion is the default and probably only implementation of the
@@ -64,7 +63,7 @@ public class BasicBookMetaData implements BookMetaData
             }
             catch (MalformedURLException ex)
             {
-                log.log(Level.WARNING, "Invalid url format: "+licencestr, ex);
+                log.warn("Invalid url format: "+licencestr, ex);
                 licence = null;
             }
         }
@@ -82,7 +81,7 @@ public class BasicBookMetaData implements BookMetaData
             }
             catch (ParseException ex)
             {
-                log.log(Level.WARNING, "Invalid date format: "+pubstr, ex);
+                log.warn("Invalid date format: "+pubstr, ex);
                 pub = DEFAULT;
             }
         }
@@ -271,7 +270,7 @@ public class BasicBookMetaData implements BookMetaData
         }
         catch (ParseException ex)
         {
-            log.log(Level.WARNING, "Failed to set default fallback date", ex);
+            log.warn("Failed to set default fallback date", ex);
             DEFAULT = new Date();
         }
     }

@@ -1,7 +1,7 @@
 
 package org.crosswire.common.util.event;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -36,7 +36,7 @@ public class LogCaptureListener implements ReporterListener
      */
     public void reportException(ReporterEvent ev)
     {
-        log.warning(ev.getException().getMessage());
+        log.warn(ev.getException().getMessage());
     }
 
     /**
@@ -45,7 +45,7 @@ public class LogCaptureListener implements ReporterListener
      */
     public void reportMessage(ReporterEvent ev)
     {
-        log.warning(ev.getMessage());
+        log.warn(ev.getMessage());
     }
 
     /**

@@ -50,9 +50,6 @@ public class TestLinkArray extends TestCase
 
     public void testLinkArray() throws Exception
     {
-        org.crosswire.common.util.event.StdOutCaptureListener.setHelpDeskInformListener(true);
-        org.crosswire.common.util.event.StdOutCaptureListener.setHelpDeskLogListener(true);
-
         RawBibleDriver.setDefaultCacheData(true);
         Bible bible = Bibles.getBible("AV-SER");
         LinkArray la = new LinkArray(bible);

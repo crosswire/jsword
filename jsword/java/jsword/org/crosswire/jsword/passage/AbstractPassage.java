@@ -13,9 +13,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LogicError;
+import org.apache.log4j.Logger;
 
 /**
  * This is a base class to help with some of the common implementation
@@ -881,7 +880,7 @@ public abstract class AbstractPassage implements Passage
             // chance to fix the error
             //   throw new LogicError();
 
-            log.log(Level.WARNING, "skip_normalization="+skip_normalization, new Exception());
+            log.warn("skip_normalization="+skip_normalization, new Exception());
         }
     }
 
@@ -918,7 +917,7 @@ public abstract class AbstractPassage implements Passage
             // chance to fix the error
             //   throw new LogicError();
 
-            log.log(Level.WARNING, "suppress_events="+suppress_events, new Exception());
+            log.warn("suppress_events="+suppress_events, new Exception());
         }
     }
 

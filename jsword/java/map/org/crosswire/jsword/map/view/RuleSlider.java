@@ -10,8 +10,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.map.model.Rule;
-import org.crosswire.common.util.Logger;
 
 /**
 * RuleSlider allows the user to edit the scale for a given rule.

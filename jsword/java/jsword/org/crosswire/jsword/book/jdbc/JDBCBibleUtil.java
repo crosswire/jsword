@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.book.jdbc;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 
@@ -140,7 +140,7 @@ public class JDBCBibleUtil
         }
         catch (StringIndexOutOfBoundsException ex)
         {
-            log.warning("orig="+orig+" end_delim="+end_delim+" end_delim="+end_delim);
+            log.warn("orig="+orig+" end_delim="+end_delim+" end_delim="+end_delim);
             Reporter.informUser(JDBCBibleUtil.class, ex);
             return "Error";
         }

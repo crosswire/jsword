@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 
 /**
@@ -1065,9 +1065,9 @@ public class VerseRange implements VerseBase
     {
         if (verse_count != end.subtract(start) + 1)
         {
-            log.warning("start="+start);
-            log.warning("end="+end);
-            log.warning("verse_count="+verse_count);
+            log.warn("start="+start);
+            log.warn("end="+end);
+            log.warn("verse_count="+verse_count);
 
             throw new LogicError();
         }

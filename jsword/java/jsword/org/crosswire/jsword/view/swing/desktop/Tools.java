@@ -33,6 +33,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.swing.ExceptionPane;
@@ -42,10 +43,7 @@ import org.crosswire.common.swing.config.DisplayExceptionChoice;
 import org.crosswire.common.swing.config.LookAndFeelChoices;
 import org.crosswire.common.swing.config.ShelfExceptionChoice;
 import org.crosswire.common.swing.config.SourcePathChoice;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.config.StdOutCaptureInformChoice;
-import org.crosswire.common.util.config.StdOutCaptureLogChoice;
 import org.crosswire.common.util.config.UserLevelChoice;
 import org.crosswire.jsword.book.config.CacheBiblesChoice;
 import org.crosswire.jsword.book.config.DriversChoice;
@@ -53,7 +51,6 @@ import org.crosswire.jsword.book.raw.config.CacheDataChoice;
 import org.crosswire.jsword.book.sword.config.SwordDirChoice;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.jsword.util.config.FileChoice;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 import org.crosswire.jsword.view.swing.book.ComparePane;
 import org.crosswire.jsword.view.swing.book.EirAbstractAction;
@@ -127,9 +124,6 @@ public class Tools extends JFrame
             config.add("Looks.Current Look", plaf_class.getCurrentChoice());
             config.add("Looks.Available Looks", plaf_class.getOptionsChoice());
 
-            config.add("Reports.File", new FileChoice());
-            config.add("Reports.Log to StdOut", new StdOutCaptureLogChoice());
-            config.add("Reports.Exceptions to StdOut", new StdOutCaptureInformChoice());
             config.add("Reports.Exceptions to Dialog Box", new DisplayExceptionChoice());
             config.add("Reports.Exceptions to Log Window", new ShelfExceptionChoice());
 

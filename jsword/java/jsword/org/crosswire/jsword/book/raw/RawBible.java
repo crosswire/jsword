@@ -9,7 +9,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
@@ -238,7 +238,7 @@ public class RawBible extends VersewiseBible
             }
         }
 
-        log.fine("Started RawBible url="+url+ " name="+name+" mode="+mode);
+        log.debug("Started RawBible url="+url+ " name="+name+" mode="+mode);
     }
 
     /**

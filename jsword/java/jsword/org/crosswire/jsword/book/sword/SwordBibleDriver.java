@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Bible;
@@ -72,7 +72,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
             // Check that the dir exists
             if (!fdir.isDirectory())
             {
-                log.fine("The directory '"+dir+"' does not exist.");
+                log.debug("The directory '"+dir+"' does not exist.");
                 return new String[0];
             }
 

@@ -32,8 +32,7 @@ import java.net.URL;
 * @see <{docs.Licence}>
 * @author Joe Walke
 * @author Keith Ralston
-*   KR - Modified lengthenURL(URL, String)
-* @version D0.I0.T0
+* @version $Id$
 */
 public class NetUtil
 {
@@ -204,7 +203,7 @@ public class NetUtil
                            orig.getHost(),
                            orig.getPort(),
                            orig.getFile()+
-/*KR modification*/        (orig.toString().endsWith(File.separator)?"":File.separator+extra));
+                           (orig.toString().endsWith(File.separator)?"":File.separator+extra));
         }
         else
         {

@@ -4,6 +4,8 @@ package org.crosswire.common.util;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
+
 /**
  * Conversions between various types and Strings.
  *
@@ -157,7 +159,7 @@ public class Convert
             }
             catch (Exception ex)
             {
-                log.warning("Invalid config file entry: "+data_arr[i]+" System message: "+ex.getMessage());
+                log.warn("Invalid config file entry: "+data_arr[i]+" System message: "+ex.getMessage());
                 Reporter.informUser(Convert.class, ex);
             }
         }
@@ -202,7 +204,7 @@ public class Convert
             }
             catch (ClassCastException ex)
             {
-                log.warning("non-String member found: key="+key+" value="+value);
+                log.warn("non-String member found: key="+key+" value="+value);
                 Reporter.informUser(Convert.class, ex);
             }
         }

@@ -9,15 +9,15 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBibleDriver;
 import org.crosswire.jsword.util.Project;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.StringUtil;
 
 /**
  * This represents all of the SerBibles.
@@ -77,7 +77,7 @@ public class SerBibleDriver extends AbstractBibleDriver
                 // Check that the dir exists
                 if (!fdir.isDirectory())
                 {
-                    log.fine("The directory '"+dir+"' does not exist.");
+                    log.debug("The directory '"+dir+"' does not exist.");
                     return new String[0];
                 }
 
@@ -94,7 +94,7 @@ public class SerBibleDriver extends AbstractBibleDriver
         }
         catch (IOException ex)
         {
-            log.warning("failed to load ser Bibles: "+ex);
+            log.warn("failed to load ser Bibles: "+ex);
             return new String[0];
         }
     }

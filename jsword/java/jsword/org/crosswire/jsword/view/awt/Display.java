@@ -13,13 +13,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
 
 /**
 * An AWT Bible display pane.
@@ -146,7 +145,7 @@ public class Display extends Panel
         }
         catch (Exception ex)
         {
-            log.log(Level.INFO, "Failure", ex);
+            log.info("Failure", ex);
             txt_results.setText(ex.getMessage());
         }
     }

@@ -1,8 +1,10 @@
 
 package org.crosswire.common.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
+import java.util.Enumeration;
+
+import org.apache.log4j.Logger;
 
 /**
 * This is a version of LinkedList that is not fail-fast.
@@ -36,14 +38,14 @@ public class RobustList implements Serializable
 
     void debug(String title)
     {
-        log.fine(title);
-        log.fine(" head ="+head);
-        log.fine(" foot ="+foot);
+        log.debug(title);
+        log.debug(" head ="+head);
+        log.debug(" foot ="+foot);
         int i = 0;
         Entry e = head;
         while (e != null)
         {
-            log.fine(" index="+i);
+            log.debug(" index="+i);
             e.debug();
             e = e.next;
             i++;
@@ -306,10 +308,10 @@ public class RobustList implements Serializable
 
         void debug()
         {
-            log.fine("  prev="+prev);
-            log.fine("  this="+this);
-            log.fine("  next="+next);
-            log.fine("   obje="+object);
+            log.debug("  prev="+prev);
+            log.debug("  this="+this);
+            log.debug("  next="+next);
+            log.debug("   obje="+object);
         }
     }
 

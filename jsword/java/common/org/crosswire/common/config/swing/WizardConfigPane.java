@@ -23,11 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
 import org.crosswire.common.swing.config.LookAndFeelChoices;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 
@@ -266,7 +266,7 @@ public class WizardConfigPane extends PanelConfigPane
         // Why is this only available in Frames?
         // dialog.setIconImage(task_small);
 
-        log.fine("Modal fails on SunOS, take care. os.name="+System.getProperty("os.name"));
+        log.debug("Modal fails on SunOS, take care. os.name="+System.getProperty("os.name"));
         if (!"SunOS".equals(System.getProperty("os.name")))
         {
             dialog.dispose();

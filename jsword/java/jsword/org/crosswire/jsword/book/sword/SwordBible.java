@@ -9,8 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.crosswire.common.util.Level;
-import org.crosswire.common.util.Logger;
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleDriver;
 import org.crosswire.jsword.book.BookException;
@@ -303,11 +302,11 @@ public class SwordBible extends AbstractBible
             SwordBible data = new SwordBible("kjv", test);
             String text = data.getText(SwordBible.TESTAMENT_NEW, 6);
 
-            log.fine("text="+text);
+            log.debug("text="+text);
         }
         catch (Exception ex)
         {
-            log.log(Level.INFO, "Failure", ex);
+            log.info("Failure", ex);
         }
     }
 

@@ -16,14 +16,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.log4j.Logger;
+import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
 import org.jdom.transform.JDOMSource;
 import org.xml.sax.SAXException;
-
-import org.crosswire.jsword.util.Project;
-import org.crosswire.common.util.Logger;
 
 /**
  * Turn XML from a Bible into HTML according to a Display style.

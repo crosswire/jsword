@@ -12,6 +12,8 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.log4j.Logger;
+
 /**
 * A generic class of String utils.
 * It would be good if we could put this stuff in java.lang ...
@@ -977,7 +979,7 @@ public final class StringUtil
                     if (entry != null && !entry.isDirectory())
                     {
                         if (full != null && !full.equals(file_name))
-                            log.warning("Warning duplicate "+classname+" found: "+full+" and "+paths[i]);
+                            log.warn("Warning duplicate "+classname+" found: "+full+" and "+paths[i]);
                         else
                             full = paths[i];
                     }
@@ -1000,7 +1002,7 @@ public final class StringUtil
                 if (new File(file_name).isFile())
                 {
                     if (full != null && !full.equals(file_name))
-                        log.warning("Warning duplicate "+classname+" found: "+full+" and "+paths[i]);
+                        log.warn("Warning duplicate "+classname+" found: "+full+" and "+paths[i]);
                     else
                         full = paths[i];
                 }

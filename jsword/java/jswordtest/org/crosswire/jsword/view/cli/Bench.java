@@ -7,7 +7,6 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.control.test.Speed;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.event.StdOutCaptureListener;
 
 /**
  * Bench is a command line utility that runs the Speed benchmark program.
@@ -41,8 +40,6 @@ public class Bench
     public static void main(String[] args)
     {
         Project.init();
-        StdOutCaptureListener.setHelpDeskInformListener(true);
-        StdOutCaptureListener.setHelpDeskLogListener(true);
 
         Bible version = null;
 

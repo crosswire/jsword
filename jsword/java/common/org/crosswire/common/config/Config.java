@@ -14,8 +14,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.RobustList;
@@ -98,7 +98,7 @@ public class Config implements Serializable
      */
     public void add(String key, Choice model)
     {
-        log.config("Adding key="+key);
+        log.info("Adding key="+key);
 
         keys.addElement(key);
         models.addElement(model);
@@ -107,7 +107,7 @@ public class Config implements Serializable
         if (value == null)
         {
             value = "";
-            log.config("key="+key+" has a null value");
+            log.info("key="+key+" has a null value");
         }
 
         local.put(key, value);
@@ -220,7 +220,7 @@ public class Config implements Serializable
             }
             catch (Throwable ex)
             {
-                log.warning("Failure with setting "+key);
+                log.warn("Failure with setting "+key);
                 Reporter.informUser(this, ex);
             }
         }
@@ -236,11 +236,11 @@ public class Config implements Serializable
         int highest_change = Choice.PRIORITY_LOWEST;
 
         if (force)
-            log.config("Force=true, all changes will propogate regardless");
+            log.info("Force=true, all changes will propogate regardless");
 
         for (int priority=Choice.PRIORITY_SYSTEM; priority>=Choice.PRIORITY_LOWEST; priority--)
         {
-            log.config("Settings for priority level="+priority);
+            log.info("Settings for priority level="+priority);
 
             Enumeration en = keys.elements();
             while (en.hasMoreElements())
@@ -270,7 +270,7 @@ public class Config implements Serializable
                             priority < highest_change ||
                             !new_value.equals(old_value))
                         {
-                            log.config("Setting "+key+"="+new_value+" (was "+old_value+")");
+                            log.info("Setting "+key+"="+new_value+" (was "+old_value+")");
                             model.setString(new_value);
 
                             if (priority > highest_change)
@@ -278,13 +278,13 @@ public class Config implements Serializable
                                 highest_change = priority;
 
                                 if (!force)
-                                    log.config("Change at level "+highest_change+", all changes will propogate regardless");
+                                    log.info("Change at level "+highest_change+", all changes will propogate regardless");
                             }
                         }
                     }
                     catch (Throwable ex)
                     {
-                        log.warning("Failure with "+key+"="+new_value);
+                        log.warn("Failure with "+key+"="+new_value);
                         Reporter.informUser(this, ex);
                     }
                 }
