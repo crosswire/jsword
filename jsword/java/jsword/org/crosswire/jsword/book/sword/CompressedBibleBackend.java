@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
@@ -28,28 +29,28 @@ import java.net.URL;
  * @author The Sword project (don't know who - no credits in original files (canon.h))
  * @version $Id: $
  */
-public class CompressedBibleBackend implements SwordBibleBackend 
+public class CompressedBibleBackend implements SwordBibleBackend
 {
-	public CompressedBibleBackend(URL swordBase, SwordConfig config)
-	{
-		if(config.getCompressType()==SwordConstants.COMPRESSION_LZSS)
-		{
-			// plug in LZSS de / compressor
-		}
-		if(config.getCompressType()==SwordConstants.COMPRESSION_ZIP)
-		{
-			// plug in ZIP de / compressor
-		}
-		
-		// implementation of different compression types looks to be identical other than the above.
-	}
-	
-	/**
-	 * @see org.crosswire.jsword.book.sword.SwordBibleBackend#getText(int, int, int, int)
-	 */
-	public String getText(int testament, int book, int chapter, int verse)
-		throws IOException {
-			return "A stub for compressed bible backend. ";
-	}
+    public CompressedBibleBackend(URL swordBase, SwordConfig config)
+    {
+        if (config.getCompressType() == SwordConstants.COMPRESSION_LZSS)
+        {
+            // plug in LZSS de / compressor
+        }
 
+        if (config.getCompressType() == SwordConstants.COMPRESSION_ZIP)
+        {
+            // plug in ZIP de / compressor
+        }
+
+        // implementation of different compression types looks to be identical other than the above.
+    }
+
+    /**
+     * @see org.crosswire.jsword.book.sword.SwordBibleBackend#getText(int, int, int, int)
+     */
+    public String getText(int testament, int book, int chapter, int verse) throws IOException
+    {
+        return "A stub for compressed bible backend. ";
+    }
 }

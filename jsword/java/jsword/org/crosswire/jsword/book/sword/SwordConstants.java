@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.book.sword;
 
 /**
@@ -41,12 +42,12 @@ public class SwordConstants
     static final int DRIVER_RAW_TEXT=			0;
     static final int DRIVER_Z_TEXT=				1;
     static final int DRIVER_RAW_COM=			2;
-    static final int DRIVER_Z_COM=					3;
+    static final int DRIVER_Z_COM=				3;
     static final int DRIVER_HREF_COM=			4;
     static final int DRIVER_RAW_FILES=			5;
     static final int DRIVER_RAW_LD=				6;
-    static final int DRIVER_RAW_LD4=				7;
-    static final int DRIVER_Z_LD=						8;
+    static final int DRIVER_RAW_LD4=			7;
+    static final int DRIVER_Z_LD=				8;
     static final int DRIVER_RAW_GEN_BOOK=9;
     
     /** Strings for driver type matching */
