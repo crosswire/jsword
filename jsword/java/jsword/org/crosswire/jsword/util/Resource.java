@@ -2,7 +2,6 @@
 package org.crosswire.jsword.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -79,30 +78,34 @@ public class Resource
      * @return The project root as a URL
      * @see NetUtil#list(URL, URLFilter)
      */
-    public String[] getStyles(String subject) throws IOException
+    public String[] getStyles(String subject)
     {
         String search = "xsl/"+subject+"/index"+PROPERTIES_EXTENSION;
-        
-        InputStream in = getResourceAsStream(search);
-        if (in == null)
-            return new String[0];
 
-        Properties prop = new Properties();
-        prop.load(in);
-
-        int i = 0;
-        ArrayList list = new ArrayList();
-        while (true)
+        try
         {
-            i++;
-            String line = prop.getProperty("index."+i);
+            InputStream in = getResourceAsStream(search);
+            Properties prop = new Properties();
+            prop.load(in);
 
-            if (line == null) break;
+            int i = 0;
+            ArrayList list = new ArrayList();
+            while (true)
+            {
+                i++;
+                String line = prop.getProperty("index."+i);
 
-            list.add(line);
+                if (line == null) break;
+
+                list.add(line);
+            }
+
+            return (String[]) list.toArray(new String[0]);
         }
-
-        return (String[]) list.toArray(new String[0]);
+        catch (IOException e)
+        {
+            return new String[0];
+        }
     }
 
     /**
@@ -113,58 +116,50 @@ public class Resource
         String path = "xsl/"+subject+"/"+name+".xsl";
         InputStream in = getResourceAsStream(path);
 
-        if (in == null)
-            log.warn("Failed to find resource called "+path);
-
         return in;
     }
 
     /**
      * Get and load a properties file from the writable area or if that
-     * fails from the classpath (where a default ought to be stored).
+     * fails from the classpath (where a default ought to be stored)
      * @param subject The name of the desired resource (without any extension)
-     * @return The project root as a URL
+     * @return The found and loaded properties file
+     * @throws IOException if the resource can not be loaded
+     * @throws MalformedURLException if the resource can not be found
      */
     public Properties getProperties(String subject) throws IOException, MalformedURLException
     {
-        Properties prop;
-
-        prop = getWritableProperties(subject);
-        if (prop != null)
+        try
         {
+            // Try for a writable version
+            Properties prop = getWritableProperties(subject);
             log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from writable area (ignoring resources): [OK]");
             return prop;
         }
-
-        prop = getResourceProperties(subject);
-        if (prop != null)
+        catch (IOException ex)
         {
+            // If not then rely on the static version
+            Properties prop = getResourceProperties(subject);
             log.debug("Loaded "+subject+PROPERTIES_EXTENSION+" from classpath: [OK]");
             return prop;
         }
-
-        log.debug("Loading "+subject+" from classpath: [NOT FOUND]");
-        throw new FileNotFoundException("can't find properties: "+subject);
     }
 
     /**
      * Search the classpath for the specified properties file.
      * @param subject The name (minus the .properties extension)
-     * @return The found and loaded properties file or null if not found.
+     * @return The found and loaded properties file
+     * @throws IOException if the resource can not be loaded
+     * @throws MalformedURLException if the resource can not be found
      */
-    public Properties getResourceProperties(String subject) throws IOException
+    public Properties getResourceProperties(String subject) throws IOException, MalformedURLException
     {
         String lookup = subject+PROPERTIES_EXTENSION;
         InputStream in = getResourceAsStream(lookup);
 
-        if (in != null)
-        {
-            Properties prop = new Properties();
-            prop.load(in);
-            return prop;
-        }
-
-        return null;
+        Properties prop = new Properties();
+        prop.load(in);
+        return prop;
     }
 
     /**
@@ -173,20 +168,15 @@ public class Resource
      * getResourceProperties() as this iw writable and can take into account
      * user preferences.
      * @param subject The name (minus the .properties extension)
-     * @return The project root as a URL
+     * @return The read properties file
      */
     public Properties getWritableProperties(String subject) throws IOException, MalformedURLException
     {
         URL url = getWritablePropertiesURL(subject);
 
-        if (NetUtil.isFile(url))
-        {
-            Properties prop = new Properties();
-            prop.load(url.openStream());
-            return prop;
-        }
-        
-        return null;
+        Properties prop = new Properties();
+        prop.load(url.openStream());
+        return prop;
     }
 
     /**
@@ -194,8 +184,11 @@ public class Resource
      * write to. This method of aquiring properties files is preferred over
      * getResourceProperties() as this iw writable and can take into account
      * user preferences.
+     * This method makes no promise that the URL returned is valid. It is
+     * totally untested, so reading may well cause errors.
      * @param subject The name (minus the .properties extension)
-     * @return The project root as a URL
+     * @return The resource as a URL
+     * @throws MalformedURLException Something went very wrong creating the URL
      */
     public URL getWritablePropertiesURL(String subject) throws MalformedURLException
     {
@@ -209,7 +202,7 @@ public class Resource
      */
     private URL getWritableBaseURL() throws MalformedURLException
     {
-        String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY + "/";
+        String path = System.getProperty("user.home") + File.separator + PROJECT_DIRECTORY + File.separator;
         return new URL("file", null, path);
     }
 
@@ -293,8 +286,6 @@ public class Resource
     {
         String resource = subject+".xml";
         InputStream in = getResourceAsStream(resource);
-        if (in == null)
-            throw new IOException("Failed to find "+resource+" in classpath");
 
         log.debug("Loading "+subject+".xml from classpath: [OK]");
         SAXBuilder builder = new SAXBuilder(true);
@@ -309,26 +300,54 @@ public class Resource
      * @param search The name of the resource (without a leading /) to find
      * @return A URL of the found resource or null if we couldn't find one.
      */
-    public URL getResource(String search)
+    public URL getResource(String search) throws MalformedURLException
     {
+        if (search.startsWith("/"))
+            log.warn("getResource("+search+") starts with a /. More chance of success if it doesn't");
+
         URL reply = getClass().getResource(search);
+        if (reply != null)
+        {
+            log.debug("getResource("+search+") = "+reply+" using getClass().getResource(search);");
+            return reply;
+        }
 
-        if (reply == null)
-            reply = getClass().getResource("/"+search);
+        reply = getClass().getResource("/"+search);
+        if (reply != null)
+        {
+            log.debug("getResource("+search+") = "+reply+" using getClass().getResource(/search);");
+            return reply;
+        }
 
-        if (reply == null)
-            reply = getClass().getClassLoader().getResource(search);
+        reply = getClass().getClassLoader().getResource(search);
+        if (reply != null)
+        {
+            log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(search);");
+            return reply;
+        }
 
-        if (reply == null)
-            reply = getClass().getClassLoader().getResource("/"+search);
+        reply = getClass().getClassLoader().getResource("/"+search);
+        if (reply != null)
+        {
+            log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(/search);");
+            return reply;
+        }
 
-        if (reply == null)
-            reply = ClassLoader.getSystemResource(search);
+        reply = ClassLoader.getSystemResource(search);
+        if (reply != null)
+        {
+            log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(search);");
+            return reply;
+        }
 
-        if (reply == null)
-            reply = ClassLoader.getSystemResource("/"+search);
+        reply = ClassLoader.getSystemResource("/"+search);
+        if (reply != null)
+        {
+            log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(/search);");
+            return reply;
+        }
 
-        return reply;
+        throw new MalformedURLException("Can't find resource: "+search);
     }
 
     /**

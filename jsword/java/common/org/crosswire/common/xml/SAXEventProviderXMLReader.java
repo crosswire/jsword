@@ -14,7 +14,7 @@ import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 
 /**
- * A helper to aid people working with a SAXEventProvider
+ * A helper to aid people working with a SAXEventProvider.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

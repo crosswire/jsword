@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.crosswire.jsword.book.events.BooksEvent;
+import org.crosswire.jsword.book.events.BooksListener;
 
 /**
  * Handles the current default Books.
@@ -87,7 +89,7 @@ public class Defaults
      * @param bmd The version to use as default.
      * @exception BookException If the name is not valid
      */
-    public static void setBibleMetaData(BibleMetaData bmd) throws BookException
+    public static void setBibleMetaData(BibleMetaData bmd)
     {
         autobdeft = false;
         bdeft = bmd;
@@ -154,9 +156,23 @@ public class Defaults
     }
 
     /**
+     * Go through all of the current books checking to see if we need to replace
+     * the current defaults with one of these.
+     */
+    private static void checkAllPreferable()
+    {
+        List bmds = Books.getBooks();
+        for (Iterator it = bmds.iterator(); it.hasNext();)
+        {
+            BookMetaData bmd = (BookMetaData) it.next();
+            checkPreferable(bmd);
+        }
+    }
+
+    /**
      * Should this Bible become the default?
      */
-    protected static void isPreferable(BookMetaData bmd)
+    private static void checkPreferable(BookMetaData bmd)
     {
         if (bmd == null)
             throw new NullPointerException("null BookMetaData");
@@ -198,6 +214,43 @@ public class Defaults
                     ddeft = (DictionaryMetaData) bmd;
                     log.debug("setting as default dictionary since speed="+ddeft.getSpeed());
                 }
+            }
+        }
+    }
+
+    /**
+     * Register with Books so we know how to provide valid defaults
+     */
+    static
+    {
+        if (bdeft == null)
+        {
+            checkAllPreferable();
+        }
+
+        Books.addBooksListener(new DefaultsBookListener());
+    }
+
+    /**
+     * 
+     */
+    private static class DefaultsBookListener implements BooksListener
+    {
+        public void bookAdded(BooksEvent ev)
+        {
+            BookMetaData bmd = ev.getBookMetaData(); 
+            checkPreferable(bmd);
+        }
+
+        public void bookRemoved(BooksEvent ev)
+        {
+            BookMetaData bmd = ev.getBookMetaData(); 
+
+            // Was this a default?
+            if (bmd.equals(bdeft) || bmd.equals(cdeft) || bmd.equals(ddeft))
+            {
+                // find the next fastest
+                checkAllPreferable();
             }
         }
     }

@@ -1,9 +1,9 @@
-<project name="jsword" default="deploy">
+<project name="jsword" default="all">
 
   <!--=======================================================================-->
   <!--
-  When you first check files out of CVS you should run the generate and deploy
-  targets to generate all the source files required for tools like eclipse.
+  When you first check files out of CVS you should run ant using the all target
+  to generate all the source files required for tools like eclipse.
   -->
 
   <!--=======================================================================-->
@@ -37,8 +37,9 @@
     <include name="**/*.gif"/>
     <include name="**/*.jpg"/>
     <include name="**/*.png"/>
+    <include name="**/*.ser"/>
   </patternset>
-  <property name="java.non.compile" value="**/*.properties,**/*.gif,**/*.jpg,**/*.png"/>
+  <property name="java.non.compile" value="**/*.properties,**/*.gif,**/*.jpg,**/*.png,**/*.ser"/>
 
   <!--=======================================================================-->
   <target name="init" description="Prepare for other tasks">
@@ -93,7 +94,7 @@
         </fileset>
       </classpath>
     </javac>
-    <copy todir="${target.classes}/osis">
+    <copy todir="${target.classes}/resource">
       <fileset dir="${gener.root}/osis">
         <patternset refid="java.non.compile"/>
       </fileset>
@@ -146,7 +147,8 @@
         </fileset>
       </classpath>
     </javac>
-    <copy todir="${target.classes}/${section}">
+    <mkdir dir="${target.classes}/resource"/>
+    <copy todir="${target.classes}/resource">
       <fileset dir="${source.java}/${section}">
         <patternset refid="java.non.compile"/>
       </fileset>
@@ -175,11 +177,9 @@
   <!--=======================================================================-->
   <target name="jar" depends="compile, check.config" description="Create a jsword jar file">
     <mkdir dir="${target.jar}"/>
-    <jar
-        manifest="${source.etc}/desktop/MANIFEST.MF"
-        jarfile="${target.jar}/jsword.jar">
+    <jar manifest="${source.etc}/desktop/MANIFEST.MF" jarfile="${target.jar}/jsword.jar">
       <fileset dir="${target.classes}/common"/>
-      <!--fileset dir="${target.classes}/osis"/-->
+      <fileset dir="${target.classes}/osis"/>
       <fileset dir="${target.classes}/jsword"/>
       <fileset dir="${target.classes}/sword"/>
       <fileset dir="${target.classes}/map"/>
@@ -204,16 +204,19 @@
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
+      <fileset dir="${source.jar}/jaxb10b">
+        <include name="jaxb-api.jar"/>
+        <include name="jaxb-ri.jar"/>
+        <include name="jaxb-libs.jar"/>
+      </fileset>
       <fileset dir="${target.jar}" includes="*.jar"/>
     </copy>
     <mkdir dir="${target.deploy}/resource"/>
     <copy todir="${target.deploy}/resource">
+      <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </copy>
-    <unzip
-        src="${notes.root}/versions/projectb-ser-av.zip"
-        dest="${target.deploy}/resource"
-    />
+    <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.deploy}/resource"/>
   </target>
 
   <!--=======================================================================-->
@@ -306,16 +309,19 @@
       <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
       <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
       <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
+      <fileset dir="${source.jar}/jaxb10b">
+        <include name="jaxb-api.jar"/>
+        <include name="jaxb-ri.jar"/>
+        <include name="jaxb-libs.jar"/>
+      </fileset>
       <fileset dir="${target.jar}" includes="*.jar"/>
     </copy>
     <mkdir dir="${target.web}/WEB-INF/classes"/>
     <copy todir="${target.web}/WEB-INF/classes">
+      <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </copy>
-    <unzip
-        src="${notes.root}/versions/projectb-ser-av.zip"
-        dest="${target.web}/WEB-INF/classes"
-        />
+    <unzip src="${notes.root}/versions/projectb-ser-av.zip" dest="${target.web}/WEB-INF/classes"/>
     <copy todir="${target.web}/WEB-INF">
       <fileset dir="${source.etc}/web"/>
     </copy>
@@ -427,26 +433,69 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jnlp.prepare" depends="jar" description="moves files to correct location for JNLP deploy">
+  <target name="jnlp.deploy" description="moves files to correct location for JNLP deploy" depends="jar, jnlp.keygen">
   <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
     <mkdir dir="${target.jnlp}"/>
-    <copy todir="${target.jnlp}">
-      <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
-      <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
-      <fileset dir="${source.jar}/log4j127" includes="*.jar"/>
-      <fileset dir="${target.jar}" includes="*.jar"/>
-      <fileset dir="${notes.root}/versions">
-        <include name="*.jar"/>
-        <include name="*.zip"/>
-      </fileset>
+    <copy todir="${target.jnlp}" file="${source.etc}/jnlp/jsword.jnlp" filtering="true">
+      <filterset>
+        <filter token="HOSTNAME" value="${jnlp.hostname}"/>
+        <filter token="WEBAPP" value="jsword"/>
+      </filterset>
     </copy>
-    <jar destfile="${target.jnlp}/resource.jar" 
-      basedir="${source.res}" 
-      excludes="**/versions/**"/>
+    <jar destfile="${target.jar}/resource.jar">
+      <fileset dir="${target.classes}/resource"/>
+      <fileset dir="${source.res}"/>
+    </jar>
+    <antcall target="jnlp.section">
+      <param name="jar" value="crimson.jar"/>
+      <param name="dir" value="${source.jar}/jdom08"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jdom.jar"/>
+      <param name="dir" value="${source.jar}/jdom08"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jaxp.jar"/>
+      <param name="dir" value="${source.jar}/jdom08"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="xalan.jar"/>
+      <param name="dir" value="${source.jar}/jdom08"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="log4j-1.2.7.jar"/>
+      <param name="dir" value="${source.jar}/log4j127"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jlfgr-1_0.jar"/>
+      <param name="dir" value="${source.jar}/jlf10"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="projectb-ser-av.zip"/>
+      <param name="dir" value="${notes.root}/versions"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="jsword.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
+    <antcall target="jnlp.section">
+      <param name="jar" value="resource.jar"/>
+      <param name="dir" value="${target.jar}"/>
+    </antcall>
   </target>
-  
+
   <!--=======================================================================-->
-  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="keystore.exists" depends="init, keystore.check">
+  <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.notrequired" depends="jnlp.section.check">
+    <echo message="JNLP prepare: ${jar}"/>
+    <copy todir="${target.jnlp}" file="${dir}/${jar}"/>
+    <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${source.keystore}" keypass="${jnlp.password}" jar="${target.jnlp}/${jar}"/>
+  </target>
+  <target name="jnlp.section.check" description="Check to see that the signed jars are up to date">
+    <uptodate property="jnlp.section.notrequired" srcfile="${dir}/${jar}" targetfile="${target.jnlp}/${jar}"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="jnlp.keygen.notrequired" depends="init, jnlp.keygen.check">
     <echo message="Generating keystore for webstart testing"/>
     <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${source.keystore}">
       <dname>
@@ -457,28 +506,8 @@
       </dname>
     </genkey>
   </target>
-  <target name="keystore.check" description="Check the keystore is there">
-    <available property="keystore.exists" file="${source.keystore}"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="jnlp.deploy" description="sign jars to complete deployment" depends="jnlp.keygen, jnlp.prepare">
-    <echo message="Signing project JARs"/>
-    <signjar storepass="${jnlp.password}"
-         alias="${jnlp.alias}"
-         keystore="${source.keystore}"
-         keypass="${jnlp.password}">
-      <fileset dir="${target.jnlp}">
-        <include name="**/*.jar"/>
-        <include name="**/*.zip"/>
-      </fileset>
-    </signjar>
-    <copy todir="${target.jnlp}" file="${source.etc}/jnlp/jsword.jnlp" filtering="true">
-      <filterset>
-        <filter token="HOSTNAME" value="${jnlp.hostname}"/>
-        <filter token="WEBAPP" value="jsword"/>
-      </filterset>
-    </copy>
+  <target name="jnlp.keygen.check" description="Check the keystore is there">
+    <available property="jnlp.keygen.notrequired" file="${source.keystore}"/>
   </target>
 
   <!--=======================================================================-->
@@ -486,7 +515,7 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean, test, web" description="Run a full clean/build/deploy/test cycle">
+  <target name="all" depends="clean, web" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->

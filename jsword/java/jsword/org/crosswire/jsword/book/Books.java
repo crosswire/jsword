@@ -151,7 +151,6 @@ public class Books
         log.debug("registering book: "+bmd.getName());
 
         books.add(bmd);
-        Defaults.isPreferable(bmd);
 
         fireBooksChanged(Books.class, bmd, true);
     }
@@ -173,16 +172,6 @@ public class Books
         else
         {
             throw new BookException("bibles_booknotfound");
-        }
-
-        // Was this the default?
-        if (bmd.equals(Defaults.getBibleMetaData()))
-        {
-            // find the next fastest
-            for (Iterator it = books.iterator(); it.hasNext();)
-            {
-                Defaults.isPreferable((BibleMetaData) it.next());
-            }
         }
     }
 

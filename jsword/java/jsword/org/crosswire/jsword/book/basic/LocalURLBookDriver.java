@@ -244,12 +244,8 @@ public abstract class LocalURLBookDriver extends SearchableBookDriver
             if (root == null)
             {
                 URL found = Project.resource().getResource("/versions/locator.properties");
-                if (found == null)
-                    throw new MalformedURLException("Missing locator.properties.");
-
-                log.debug("Found BibleRoot by guessing");
-
                 root = NetUtil.shortenURL(found, "/locator.properties");
+                log.debug("Found BibleRoot using locator.properties: "+root);
             }
         }
 

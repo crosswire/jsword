@@ -1,10 +1,12 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
@@ -15,6 +17,7 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.Validator;
 
+import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
 import org.crosswire.common.xml.JAXBSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -25,6 +28,7 @@ import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.Osis;
 import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.util.Project;
 import org.xml.sax.SAXException;
 
 /**
@@ -63,15 +67,41 @@ public class OsisUtil
      */
     protected static JAXBContext jc = null;
 
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(OsisUtil.class);
+
+    /**
+     * Something went wrong at startup
+     */
+    private static Exception initex;
+
     static
     {
+        try
+        {
+            Properties test = Project.resource().getProperties("org/crosswire/jsword/osis/jaxb");
+            for (Iterator it = test.keySet().iterator(); it.hasNext();)
+            {
+                String key = (String) it.next();
+                String val = (String) test.get(key);
+                log.debug("jaxb: "+key+"="+val);
+            }
+        }
+        catch (IOException ex)
+        {
+            log.error("Failed to test JAXB", ex);
+        }
+
         try
         {
             jc = JAXBContext.newInstance(OsisUtil.OSIS_PACKAGE);
         }
         catch (JAXBException ex)
         {
-            ex.fillInStackTrace();
+            log.error("Failed to start JAXB", ex);
+            initex = ex;
         }
     }
 
@@ -84,6 +114,8 @@ public class OsisUtil
      */
     public static BibleData createBibleData(SAXEventProvider provider) throws SAXException
     {
+        checkJAXBContext();
+
         try
         {
             BibleData bdata = new BibleData();
@@ -137,6 +169,8 @@ public class OsisUtil
      */
     public static void validate(BibleData bdata) throws JAXBException
     {
+        checkJAXBContext();
+
         Validator val = jc.createValidator();
         val.setEventHandler(new ValidationEventHandler()
         {
@@ -203,6 +237,8 @@ public class OsisUtil
      */
     public static SAXEventProvider getSAXEventProvider(BibleData bdata)
     {
+        checkJAXBContext();
+
         return new JAXBSAXEventProvider(jc, bdata.osis);
     }
 
@@ -329,5 +365,15 @@ public class OsisUtil
         {
             // Ignore
         }
+    }
+
+    /**
+     * Check that the JAXBContext has been setup properly and throw if not.
+     * @throws SAXException
+     */
+    private static void checkJAXBContext()
+    {
+        if (jc == null)
+            throw new NullPointerException("jc is null");
     }
 }

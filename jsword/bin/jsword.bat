@@ -11,6 +11,9 @@ set CP=%CP%;%JSWORD%\lib\jdom.jar
 set CP=%CP%;%JSWORD%\lib\jlfgr-1_0.jar
 set CP=%CP%;%JSWORD%\lib\jsword.jar
 set CP=%CP%;%JSWORD%\lib\xalan.jar
-set CP=%CP%;%JSWORD%\lib\log4j.jar
+set CP=%CP%;%JSWORD%\lib\log4j-1.2.7.jar
+set CP=%CP%;%JSWORD%\lib\jaxb-ri.jar
+set CP=%CP%;%JSWORD%\lib\jaxb-libs.jar
+set CP=%CP%;%JSWORD%\lib\jaxb-api.jar
 
 java -cp %CP% org.crosswire.jsword.view.swing.desktop.Desktop
