@@ -8,6 +8,8 @@
 
   <!-- This build uses the core build targets -->
   <import file="../common/core.xml"/>
+  <property name="dependency" value="common"/>
+  <property name="dependency.jar" value="../${dependency}/target/ant/jar"/>
 
   <!--=======================================================================-->
   <property name="osis.schema" value="${source.etc}/osis/osisCore.1.1.1.xsd"/>
@@ -15,8 +17,6 @@
   <property name="osis.source" value="${osis.root}/src"/>
   <property name="osis.classes" value="${osis.root}/classes"/>
   <property name="osis.jar" value="${osis.root}"/>
-  <property name="dependency" value="common"/>
-  <property name="dependency.jar" value="../${dependency}/target/ant/jar"/>
 
   <!--=======================================================================-->
   <target name="xjc" depends="init, xjc.check" unless="xjc.uptodate" description="Run XJC">
@@ -37,7 +37,7 @@
       <and>
         <available file="${target.jar}/jsword-osis.jar" type="file"/>
         <available file="${osis.source}/org" type="dir"/>
-        <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
+        <not><!-- the sense of <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
           <uptodate targetfile="${osis.schema}">
             <srcfiles dir="${target.jar}" includes="jsword-osis.jar"/>
           </uptodate>
@@ -65,9 +65,8 @@
       <fileset dir="${osis.classes}"/>
     </jar>
     <!-- Sign the generated jar -->
-    <jar.sign jar="${osis.jar}/jsword-osis.jar"/>
-    <!-- Copy the built, signed jar to the place that the compile looks for jars -->
-    <copy file="${osis.jar}/jsword-osis.jar" todir="${target.jar}"/>
+    <copy todir="${target.jar}" file="${osis.jar}/jsword-osis.jar"/>
+    <jar.sign jar="jsword-osis.jar"/>
   </target>
 
 </project>

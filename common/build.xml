@@ -5,7 +5,7 @@
 
   <!--=======================================================================-->
   <target name="prepare.extra" description="Prepare extras files.">
-	<copy todir="${target.output}" flatten="true">
+    <copy todir="${target.output}" flatten="true">
       <fileset dir="${source.etc}">
         <include name="config-test.xsl"/>
       </fileset>

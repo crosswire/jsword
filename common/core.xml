@@ -19,6 +19,7 @@
   <property name="target.output"  value="${target.root}"/>
   <property name="target.classes" value="${target.root}/classes"/>
   <property name="target.jar"     value="${target.root}/jar"/>
+  <property name="target.signed"  value="${target.root}/signed"/>
   <property name="test.root"      value="${target.root}/test"/>
   <property name="test.classes"   value="${test.root}/classes"/>
   <property name="test.jar"       value="${test.root}"/>
@@ -185,13 +186,15 @@
   <target name="prepare"
           depends="build.dependency, keygen"
           description="Prepare the build by copying needed jars and files.">
-     <!-- Copy the jars from the std location to the target jar directory -->
+    <!-- Copy the jars from the std location to the target jar directory -->
+    <mkdir dir="${target.jar}"/>
     <copy todir="${target.jar}" flatten="true">
       <fileset dir="${source.jar}">
         <patternset refid="external.runtime.jars"/>
       </fileset>
     </copy>
     <!-- Now that we have them in the std location, (re)sign them -->
+    <!-- not sure why we need to do this shouldn't we sign them on the way out?
     <signjar storepass="${keystore.pswd}"
            alias="${keystore.alias}"
            keystore="${keystore.file}"
@@ -200,6 +203,7 @@
         <patternset refid="external.runtime.jars"/>
       </fileset>
     </signjar>
+    -->
     <antcall target="prepare.dependency"/>
     <antcall target="prepare.extra"/>
   </target>
@@ -222,9 +226,7 @@
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other needed preparation.
     =========================================================================-->
-  <target name="prepare.extra"
-          depends="prepare"
-          description="Prepare extras files.">
+  <target name="prepare.extra" description="Prepare extras files.">
     <echo message="${ant.project.name} has no extra files to prepare."/>
   </target>
 
@@ -291,26 +293,20 @@
     == where project is replaced with the name of the project.
     == This jar is built to the target.jar directory.
     =========================================================================-->
-  <target name="jar"
-          depends="compile"
-          description="Create the project jar file">
+  <target name="jar" depends="compile" description="Create the project jar">
     <antcall target="jar.do"/>
     <antcall target="jar.extra"/>
   </target>
-  <target name="jar.do"
-          depends="jar.check"
-          unless="jar.uptodate"
-          description="Actually create the project jar file">
+  <target name="jar.do" depends="jar.check" unless="jar.uptodate">
     <jar jarfile="${target.jar}/${ant.project.name}.jar">
       <fileset dir="${target.classes}"/>
       <fileset dir="${source.res}"/>
     </jar>
-    <jar.sign jar="${target.jar}/${ant.project.name}.jar"/>
+    <jar.sign jar="${ant.project.name}.jar"/>
   </target>
-  <target name="jar.check"
-          description="Check to see that the api jar file is up to date">
+  <target name="jar.check">
     <uptodate property="jar.uptodate"
-              targetfile="${target.root}/${ant.project.name}.jar">
+        targetfile="${target.root}/${ant.project.name}.jar">
       <srcfiles dir="${target.classes}"/>
       <srcfiles dir="${source.res}"/>
     </uptodate>
@@ -320,23 +316,36 @@
     == This is merely syntatic sugar.
     == Calls signjar for one jar file.
     =========================================================================-->
-  <macrodef name="jar.sign" description="Signs a jar file">
+  <macrodef name="jar.sign" description="Signs a jar">
     <attribute name="jar"/>
     <sequential>
-      <signjar storepass="${keystore.pswd}"
+      <antcall target="jar.section">
+        <param name="jar" value="@{jar}"/>
+      </antcall>
+    </sequential>
+  </macrodef>
+  <target name="jar.section" unless="jar.section.uptodate.${jar}" depends="jar.section.check">
+    <copy todir="${target.signed}" file="${target.jar}/${jar}"/>
+      <signjar
+          storepass="${keystore.pswd}"
           alias="${keystore.alias}"
           keystore="${keystore.file}"
           keypass="${keystore.pswd}"
-          jar="@{jar}"/>
-    </sequential>
-  </macrodef>
+          jar="${target.signed}/${jar}"/>
+  </target>
+  <target name="jar.section.check" description="Check to see that the signed jars are up to date">
+    <uptodate
+        property="jar.section.uptodate.${jar}"
+        srcfile="${target.jar}/${jar}"
+        targetfile="${target.signed}/${jar}"/>
+  </target>
 
-    <!--=======================================================================
+  <!--=======================================================================
     == Do any other needed work on jars.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other needed work.
     =========================================================================-->
-  <target name="jar.extra" description="Do extra jar stuff."/>
+  <target name="jar.extra" description="Extension point, executed after jar."/>
 
   <!--=======================================================================
     == A keystore is needed to sign jars.
