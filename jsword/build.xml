@@ -14,11 +14,10 @@
   <property name="source.res" value="${source.root}/resource"/>
   <property name="gener.root" value="target/gener"/>
   <property name="target.root" value="target/ant"/>
-  <property name="target.temp" value="${target.root}/temp"/>
-  <property name="target.classes" value="${target.temp}/classes"/>
-  <property name="target.jar" value="${target.temp}/jar"/>
-  <property name="common.target" value="../common/target/ant/temp/jar"/>
-  
+  <property name="target.output" value="${target.root}"/>
+  <property name="target.classes" value="${target.root}/classes"/>
+  <property name="output.common" value="../common/target/ant"/>
+
   <!--=======================================================================-->
   <patternset id="java.non.compile">
     <include name="**/*.properties"/>
@@ -34,7 +33,6 @@
     <tstamp/>
     <echo message="Building to: ${target.root}"/>
   </target>
-
 
   <!--=======================================================================-->
   <target name="xjc" depends="init, xjc.check" unless="xjc.uptodate" description="Run XJC">
@@ -55,11 +53,11 @@
     <mkdir dir="${gener.root}/osis"/>
     <condition property="xjc.uptodate">
       <and>
-        <available file="${target.jar}/jsword-osis.jar" type="file"/>
+        <available file="${target.root}/jsword-osis.jar" type="file"/>
         <available file="${gener.root}/osis/org" type="dir"/>
         <not><!-- the sense <uptodate> back to front, but adding <not> is simpler than making <uptodate> dance -->
           <uptodate targetfile="${source.etc}/osisCore.1.1.1.xsd">
-            <srcfiles dir="${target.jar}" includes="jsword-osis.jar"/>
+            <srcfiles dir="${target.root}" includes="jsword-osis.jar"/>
           </uptodate>
         </not>
       </and>
@@ -68,7 +66,6 @@
 
   <!--=======================================================================-->
   <target name="osis" depends="xjc">
-    <mkdir dir="${target.jar}"/>
     <echo message="Compiling ${gener.root}/osis"/>
     <mkdir dir="${target.classes}/osis"/>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
@@ -83,7 +80,7 @@
         <patternset refid="java.non.compile"/>
       </fileset>
     </copy>
-    <jar jarfile="${target.jar}/jsword-osis.jar">
+    <jar jarfile="${target.root}/jsword-osis.jar">
       <fileset dir="${target.classes}/osis"/>
     </jar>
   </target>
@@ -103,7 +100,7 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <fileset dir="${common.target}" includes="**/*.jar"/>
+        <fileset dir="${output.common}" includes="**/*.jar"/>
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -115,21 +112,35 @@
 
   <!--=======================================================================-->
   <target name="jar" depends="compile, jar.check" unless="jar.uptodate" description="create the jar files">
-    <mkdir dir="${target.jar}"/>
-    <jar jarfile="${target.jar}/jsword.jar">
+    <jar jarfile="${target.root}/jsword.jar">
       <fileset dir="${target.classes}/jsword"/>
       <fileset dir="${source.res}"/>
     </jar>
   </target>
   <target name="jar.check" description="Check to see that the api jar file is up to date">
-    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword.jar">
+    <uptodate property="jar.uptodate" targetfile="${target.root}/jsword.jar">
       <srcfiles dir="${target.classes}/jsword"/>
       <srcfiles dir="${source.res}"/>
     </uptodate>
   </target>
 
   <!--=======================================================================-->
-  <target name="all" depends="clean, jar" description="Run a full clean/build/deploy/test cycle">
+  <target name="output" depends="jar" description="Get all of the outputs in sync">
+    <copy todir="${target.output}" flatten="true">
+      <fileset dir="${source.jar}">
+        <include name="net-1.1.0/commons-net-1.1.0.jar"/>
+        <include name="jaxb-1.0/jaxb-api.jar"/>
+        <include name="jaxb-1.0/jaxb-libs.jar"/>
+        <include name="jaxb-1.0/jaxb-ri.jar"/>
+        <include name="jdom-1.0b10/jdom.jar"/>
+        <include name="lucene-1.3/lucene-1.3-final.jar"/>
+        <include name="jtar-2.5/tar.jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="all" depends="clean, output" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->
