@@ -173,7 +173,7 @@ public class FontChooser extends JPanel
 
         bold.setSelected(newFont.isBold());
         italic.setSelected(newFont.isItalic());
-        size.setSelectedItem(new Integer(font.getSize()));
+        size.setSelectedItem(new Integer(newFont.getSize()));
 
         suppressEvents = false;
         fireStateChange();
@@ -248,9 +248,6 @@ public class FontChooser extends JPanel
             for (int i = 0; i < fonts.length; i++)
             {
                 fonts[i] = new Font(names[i], Font.PLAIN, RENDERED_FONT_SIZE);
-//                System.err.println("Font name = " + fonts[i].getName()
-//                        + " Style = " + fonts[i].getStyle()
-//                        + " Size = " + fonts[i].getSize());
             }
         }
 

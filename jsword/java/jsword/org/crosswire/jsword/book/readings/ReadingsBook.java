@@ -113,7 +113,11 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      */
     public Key getPreferred()
     {
-        return new ReadingsKey(new Date());
+        GregorianCalendar now = new GregorianCalendar();
+        now.setTime(new Date());
+
+        GregorianCalendar greg = new GregorianCalendar(1972, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        return new ReadingsKey(greg.getTime());
     }
 
     /* (non-Javadoc)
