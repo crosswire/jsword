@@ -79,6 +79,12 @@ public interface BookMetaData extends Comparable
     public BookDriver getDriver();
 
     /**
+     * The language of the book is the common name for the iso639 code.
+     * @return the common name for the language
+     */
+    public String getLanguage();
+
+    /**
      * The edition of this book, for example "Anglicised" (NIV),
      * "Stephanus" (Greek).
      * For 2 books to be equal both the name and the edition must be equal.
@@ -268,6 +274,11 @@ public interface BookMetaData extends Comparable
      * The key for the name in the properties map
      */
     public static final String KEY_NAME = "Name"; //$NON-NLS-1$
+
+    /**
+     * The key for the name in the properties map
+     */
+    public static final String KEY_LANGUAGE = "Language"; //$NON-NLS-1$
 
     /**
      * The key for the edition in the properties map

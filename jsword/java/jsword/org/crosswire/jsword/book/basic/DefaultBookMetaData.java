@@ -60,6 +60,7 @@ public class DefaultBookMetaData implements BookMetaData
         setType(prop.getProperty(BookMetaData.KEY_TYPE));
         setSpeed(Integer.parseInt(prop.getProperty(BookMetaData.KEY_SPEED)));
 
+        setLanguage(prop.getProperty(BookMetaData.KEY_LANGUAGE));
         setEdition(prop.getProperty(BookMetaData.KEY_EDITION));
         setOpenness(prop.getProperty(BookMetaData.KEY_OPENNESS));
         setLicence(prop.getProperty(BookMetaData.KEY_LICENCE));
@@ -148,6 +149,14 @@ public class DefaultBookMetaData implements BookMetaData
     public String getName()
     {
         return name;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
+     */
+    public String getLanguage()
+    {
+        return language;
     }
 
     /* (non-Javadoc)
@@ -274,6 +283,23 @@ public class DefaultBookMetaData implements BookMetaData
     public void setDriver(BookDriver driver)
     {
         this.driver = driver;
+    }
+
+    /**
+     * @param language The language to set.
+     */
+    public void setLanguage(String language)
+    {
+        if (language == null)
+        {
+            this.language = ""; //$NON-NLS-1$
+        }
+        else
+        {
+            this.language = language;
+        }
+
+        map.put(KEY_LANGUAGE, this.language);
     }
 
     /**
@@ -542,6 +568,7 @@ public class DefaultBookMetaData implements BookMetaData
     private Book book;
     private BookDriver driver;
     private String name = ""; //$NON-NLS-1$
+    private String language = ""; //$NON-NLS-1$
     private String edition = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
     private int speed = BookMetaData.SPEED_SLOWEST;

@@ -16,8 +16,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.StringUtil;
@@ -154,6 +157,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         String lang = getFirstValue(ConfigEntry.LANG);
+        language = getLanguage(lang);
         if (lang != null) //$NON-NLS-1$
         {
             // This returns ComponentOrientation.LEFT_TO_RIGHT if
@@ -193,6 +197,7 @@ public class SwordBookMetaData implements BookMetaData
             prop.put(KEY_TYPE, type != null ? type.getName() : ""); //$NON-NLS-1$
         }
 
+        prop.put(KEY_LANGUAGE, language); //$NON-NLS-1$
         prop.put(KEY_SPEED, Integer.toString(speed));
         prop.put(KEY_EDITION, edition);
         prop.put(KEY_OPENNESS, openness.getName());
@@ -200,6 +205,46 @@ public class SwordBookMetaData implements BookMetaData
         prop.put(KEY_FIRSTPUB, firstPublished.toString());
     }
 
+    /**
+     * Get the language name from the language code. Note, this code does not support dialects.
+     * @param iso639Code
+     * @return the name of the language
+     */
+    private String getLanguage(String iso639Code)
+    {
+        String lookup = iso639Code;
+        if (lookup == null || lookup.length() == 0)
+        {
+            log.warn("Book " + internal + " named " + name + " has no language specified. Assuming English."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return getLanguage(DEFAULT_LANG_CODE);
+        }
+
+        if (lookup.indexOf('_') != -1)
+        {
+            String[] locale = StringUtils.split(lookup, '_');
+            return getLanguage(locale[0]);
+        }
+
+        char firstLangChar = lookup.charAt(0);
+        // If the language begins w/ an x then it is "Undetermined"
+        // Also if it is not a 2 or 3 character code then it is not a valid
+        // iso639 code.
+        if (firstLangChar == 'x' || firstLangChar == 'X' || lookup.length() > 3)
+        {
+            return getLanguage(UNKNOWN_LANG_CODE);
+        }
+
+        try
+        {
+            return languages.getString(lookup);
+        }
+        catch (MissingResourceException e)
+        {
+            log.error("Not a valid language code:" + iso639Code + " in book " + internal); //$NON-NLS-1$ //$NON-NLS-2$
+            return getLanguage(UNKNOWN_LANG_CODE);
+        }
+    }
+    
     /**
      * Save this config file to a URL
      * @param dest The URL to save the data to
@@ -614,6 +659,14 @@ public class SwordBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
+     */
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getEdition()
      */
     public String getEdition()
@@ -823,10 +876,26 @@ public class SwordBookMetaData implements BookMetaData
         return this.getName().compareTo(that.getName());
     }
 
+    private static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
+    private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
+
     /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SwordBookMetaData.class);
+
+    private static /*final*/ ResourceBundle languages;
+    static
+    {
+        try
+        {
+            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), new CWClassLoader()); //$NON-NLS-1$;
+        }
+        catch (MissingResourceException e)
+        {
+            assert false;
+        }
+    }
 
     /**
      * A map of lists of known keys. Keys are presented in insertion order
@@ -849,6 +918,7 @@ public class SwordBookMetaData implements BookMetaData
     private String name = ""; //$NON-NLS-1$
     private String fullName;
     private String displayName;
+    private String language = ""; //$NON-NLS-1$
     private String edition = ""; //$NON-NLS-1$
     private String initials = ""; //$NON-NLS-1$
     private int speed = BookMetaData.SPEED_SLOWEST;
