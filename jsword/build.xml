@@ -189,9 +189,15 @@
     </copy>
     <chmod perm="a+x">
       <fileset dir="${target.swingui}">
-        <include name="*.sh"/>
+        <include name="**/*.sh"/>
       </fileset>
     </chmod>
+    <fixcrlf srcdir="${target.swingui}/bin" eol="lf">
+      <include name="**/*.sh"/>
+    </fixcrlf>
+    <fixcrlf srcdir="${target.swingui}/bin" eol="crlf">
+      <include name="**/*.bat"/>
+    </fixcrlf>
     <mkdir dir="${target.swingui}/lib"/>
     <copy todir="${target.swingui}/lib">
       <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
@@ -210,6 +216,10 @@
       <fileset dir="${target.classes}/resource"/>
       <fileset dir="${source.res}"/>
     </copy>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="ser-av" depends="swingui" description="Add the ser-av data to the swing ui">
     <unzip src="${support.notes}/versions/projectb-ser-av.zip" dest="${target.swingui}/resource"/>
   </target>
 

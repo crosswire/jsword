@@ -3,3 +3,4 @@ jsword.keystore
 .build.xml.swp
 buildlog.txt
 jcoverage.ser
+target
