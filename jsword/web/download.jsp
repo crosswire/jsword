@@ -25,10 +25,10 @@ Sword drivers.
 </p>
 <table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
   <tr>
-	<td width="25%">Download</td>
-	<td width="25%" colspan="2" align="center">Binary</td>
-	<td width="25%" colspan="2" align="center">Source</td>
-	<td width="25%" colspan="2" align="center">Documentation</td>
+	<td>-</td>
+	<td colspan="2" align="center">Binary</td>
+	<td colspan="2" align="center">Source</td>
+	<td colspan="2" align="center">Docs</td>
   </tr>
   <tr>
     <td>Compression</td>
@@ -64,10 +64,10 @@ Regular releases are made and stored for a short time:
 
 <table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
   <tr>
-	<td width="25%">Download</td>
-	<td width="25%" colspan="2" align="center">Binary</td>
-	<td width="25%" colspan="2" align="center">Source</td>
-	<td width="25%" colspan="2" align="center">Documentation</td>
+	<td>-</td>
+	<td colspan="2" align="center">Binary</td>
+	<td colspan="2" align="center">Source</td>
+	<td colspan="2" align="center">Docs</td>
   </tr>
   <tr>
     <td>Compression</td>
@@ -99,7 +99,7 @@ Regular releases are made and stored for a short time:
 <h3>CVS Access</h3>
 <p>
 The most up to date access is via CVS. There are CVS access instruction 
-on the <a href="devt.jsp">Getting Involved</a> page.
+on the <a href="devt.html">Getting Involved</a> page.
 </p>
 <h3>Modules</h3>
 <p>

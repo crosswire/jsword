@@ -9,6 +9,9 @@
 
 <xsl:template match="/jsp:root">
   <jsp:root version="1.2">
+    <jsp:scriptlet><![CDATA[
+      response.setContentType("text/html");
+    ]]></jsp:scriptlet>
     <xsl:apply-templates/>
   </jsp:root>
 </xsl:template>

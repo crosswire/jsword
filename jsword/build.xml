@@ -279,6 +279,9 @@
       </fileset>
       <fileset dir="${target.jar}" includes="**/*.jar"/>
     </copy>
+    <!-- needed by the download servlet -->
+    <mkdir dir="${target.download}/release"/>
+    <mkdir dir="${target.download}/nightly"/>
   </target>
 
   <!--=======================================================================-->
