@@ -159,6 +159,7 @@ import org.crosswire.jsword.passage.VerseRange;
  * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
  * @see <{docs.Licence}>
  * @author Joe Walker
+ * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
 public class SerBible extends VersewiseBible

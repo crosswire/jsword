@@ -11,6 +11,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+
 /**
  * LookAndFeelUtil declares the Choices and actions
  * needed to dynamically change the look and feel (PLAF) and to add new
@@ -35,6 +37,7 @@ import javax.swing.UIManager;
  * </font></td></tr></table>
  * @see docs.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author Mark Goodwin [mark at thorubio dot org]
  * @version $Id$
  */
 public class LookAndFeelUtil
@@ -127,16 +130,29 @@ public class LookAndFeelUtil
     private static transient List windows = new ArrayList();
 
     /** The current PLAF (and the default value) */
-    private static Class current = javax.swing.plaf.metal.MetalLookAndFeel.class;
+    private static Class current;
 
     /** The default Configs */
     //private static Hashtable defaults = new Hashtable();
 
     /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(LookAndFeelUtil.class);
+
+    /**
      * Setup the defaults Hashtable
      */
     static
-    {
+    { 
+    	// try to set the default look and feel to the system default
+    	try {
+			current = Class.forName(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) 
+		{
+			log.debug("Failed to initialise system default LAF",e);
+			current = javax.swing.plaf.metal.MetalLookAndFeel.class;
+		}
         /*
         Class[] impls = Project.resource().getImplementors(LookAndFeel.class);
         for (int i=0; i<impls.length; i++)
