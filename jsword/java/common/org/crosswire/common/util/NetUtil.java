@@ -431,6 +431,7 @@ public class NetUtil
         public URLFilterFilenameFilter(URLFilter filter, URL base)
         {
             this.filter = filter;
+            this.base = base;
         }
 
         public boolean accept(File arg0, String name)
