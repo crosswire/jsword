@@ -68,12 +68,12 @@ public class AdvancedConfigEditor extends TreeConfigEditor
         scroll.setPreferredSize(new Dimension(150, 150));
         scroll.setViewportView(tree);
 
-        tree.putClientProperty("JTree.lineStyle", "Angled");  //$NON-NLS-1$//$NON-NLS-2$
         tree.setBackground(bg);
+        tree.setModel(ctm);
         tree.setCellRenderer(render);
         tree.setShowsRootHandles(true);
         tree.setRootVisible(false);
-        tree.setModel(ctm);
+        tree.putClientProperty("JTree.lineStyle", "None");  //$NON-NLS-1$//$NON-NLS-2$
         tree.setSelectionRow(0);
         tree.setEditable(true);
 

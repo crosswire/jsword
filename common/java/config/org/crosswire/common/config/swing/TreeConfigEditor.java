@@ -80,11 +80,13 @@ public class TreeConfigEditor extends AbstractConfigEditor
 
         dtcr.setLeafIcon(TASK_ICON_SMALL);
 
+        // These settings will need to change if we have a true tree.
+        tree.setModel(ctm);
         tree.setCellRenderer(dtcr);
         tree.setPreferredSize(new Dimension(150, 150));
-        tree.setShowsRootHandles(true);
+        tree.setShowsRootHandles(false);
         tree.setRootVisible(false);
-        tree.setModel(ctm);
+        tree.putClientProperty("JTree.lineStyle", "None"); //$NON-NLS-1$ //$NON-NLS-2$
         tree.setSelectionRow(0);
         tree.addTreeSelectionListener(new TreeSelectionListener()
         {
