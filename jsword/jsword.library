@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+  <!--JBuilder Library Definition File-->
+  <fullname>jsword</fullname>
+  <class>
+    <path>[jar/jdom08/crimson.jar]</path>
+    <path>[jar/jdom08/jaxp.jar]</path>
+    <path>[jar/jdom08/jdom.jar]</path>
+    <path>[jar/jdom08/xalan.jar]</path>
+    <path>[jar/javamail12/activation.jar]</path>
+    <path>[jar/javamail12/mail.jar]</path>
+    <path>resource</path>
+    <path>[jar/bsf22/bsf.jar]</path>
+    <path>[jar/bsf22/js.jar]</path>
+    <path>[jar/servlet23/servlet.jar]</path>
+    <path>[jar/junit37/httpunit.jar]</path>
+    <path>[jar/junit37/junit.jar]</path>
+  </class>
+</library>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--JBuilder XML Project-->
+<project>
+  <property category="UnitTestFixtures" name="AvailableFixture.0" value="CustomFixture1"/>
+  <property category="idl" name="ProcessIDL" value="false"/>
+  <property category="runtime" name="ConfigurationCount" value="2"/>
+  <property category="runtime.0" name="RunnableType" value="com.borland.jbuilder.runtime.ApplicationRunner"/>
+  <property category="runtime.0" name="application.class" value="dtools"/>
+  <property category="runtime.0" name="appserver.ejbJarsSaved" value="1"/>
+  <property category="runtime.0" name="appserver.parameters" value="-jts -jns -jss -jdb"/>
+  <property category="runtime.0" name="appserver.servername" value="ejbcontainer"/>
+  <property category="runtime.0" name="appserver.vmparameters" value=""/>
+  <property category="runtime.0" name="jsprunner.docbase" value="."/>
+  <property category="runtime.0" name="jsprunner.jspfile" value="../../../../opt/jbuilder40/bin"/>
+  <property category="runtime.1" name="ConfigurationName" value="AllTests"/>
+  <property category="runtime.1" name="RunnableType" value="com.borland.jbuilder.runtime.TestRunner"/>
+  <property category="runtime.1" name="test.class" value="org.crosswire.bible.passage.AllTests"/>
+  <property category="runtime.1" name="test.harness" value="com.borland.jbuilder.unittest.JBTestRunner"/>
+  <property category="runtime.2" name="ConfigurationName" value="AllTests"/>
+  <property category="runtime.2" name="RunnableType" value="com.borland.jbuilder.runtime.TestRunner"/>
+  <property category="runtime.2" name="test.class" value="AllTests"/>
+  <property category="runtime.2" name="test.harness" value="junit.textui.TestRunner"/>
+  <property category="sys" name="AuthorLabel" value="@author"/>
+  <property category="sys" name="BackupPath" value="target/jbuilder/bak"/>
+  <property category="sys" name="BeansInstantiate" value="false"/>
+  <property category="sys" name="BraceStyle" value="1"/>
+  <property category="sys" name="CheckStable" value="1"/>
+  <property category="sys" name="Company" value="www.eireneh.com"/>
+  <property category="sys" name="CompanyLabel" value="@see"/>
+  <property category="sys" name="Copyright" value=""/>
+  <property category="sys" name="CopyrightLabel" value=""/>
+  <property category="sys" name="DefaultPath" value="java/jsword"/>
+  <property category="sys" name="Description" value=""/>
+  <property category="sys" name="DescriptionLabel" value=""/>
+  <property category="sys" name="DocPath" value="target/jbuilder/doc"/>
+  <property category="sys" name="EventMatch" value="false"/>
+  <property category="sys" name="EventStyle" value="1"/>
+  <property category="sys" name="ExcludeClassEnabled" value="0"/>
+  <property category="sys" name="IncludeTestPath" value="1"/>
+  <property category="sys" name="InstanceVisibility" value="2"/>
+  <property category="sys" name="JDK" value="java 1.3.1-b24"/>
+  <property category="sys" name="LastTag" value="0"/>
+  <property category="sys" name="Libraries" value="jsword;JUnit"/>
+  <property category="sys" name="MakeStable" value="0"/>
+  <property category="sys" name="OutPath" value="target/jbuilder/classes"/>
+  <property category="sys" name="SourcePath" value="java/common;java/jsword;java/sword;java/map;java/commontest;java/jswordtest;java/swordtest;java/maptest"/>
+  <property category="sys" name="TestPath" value="java/jswordtest"/>
+  <property category="sys" name="Title" value="Project B"/>
+  <property category="sys" name="TitleLabel" value=""/>
+  <property category="sys" name="Version" value="$Id$"/>
+  <property category="sys" name="VersionLabel" value="@version"/>
+  <property category="sys" name="WorkingDirectory" value="."/>
+  <node name="Application" type="Archive">
+    <property category="archiving" name="archiverClass" value="com.borland.jbuilder.wizard.archive.ApplicationArchiver"/>
+    <property category="archiving" name="buildWithProject" value="0"/>
+    <property category="archiving" name="manifestMainClass" value="dtools"/>
+    <property category="archiving" name="overrideManifestPath" value="etc/MANIFEST.MF"/>
+    <property category="archiving" name="targetPath" value="/home/joe/devt/jsword/source/target/jbuilder/jsword.jar"/>
+  </node>
+  <node name="Standard Doclet" type="Javadoc">
+    <property category="docletJavadoc" name="author" value="1"/>
+    <property category="docletJavadoc" name="splitIndex" value="1"/>
+    <property category="nodeJavadoc" name="buildWithProject" value="0"/>
+    <property category="nodeJavadoc" name="directory" value="C%|/Documents and Settings/joe/Desktop/jsword/source/target/jbuilder/doc"/>
+    <property category="nodeJavadoc" name="displayAllOutput" value="0"/>
+  </node>
+</project>

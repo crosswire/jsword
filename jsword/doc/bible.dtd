@@ -1,0 +1,64 @@
+
+<!-- The document is some biblical text, contining a series of sections. -->
+<!ELEMENT bible (section)+>
+<!ATTLIST bible
+  version CDATA ''
+>
+
+<!-- A section contains a list of references, and a note that describes them.
+We can also override the version settting on the bible element here. -->
+<!ELEMENT section (ref)+>
+<!ATTLIST section
+  title CDATA #REQUIRED
+  version CDATA ''
+>
+
+<!-- A reference has a book, chapter and verse numbers (all counting from 1)
+and it might be a new paragraph. Inside a reference is a set of inspired text
+or uninspired text elements. We can also override the version settting on the
+bible element here. Internally this is referred to as a Verse since it only
+ever applies to one verse. Here calling it a Verse is confusing with the v
+attribute, to ref remains. -->
+<!ELEMENT ref (it|ut)*>
+<!ATTLIST ref
+  b CDATA #REQUIRED
+  c CDATA #REQUIRED
+  v CDATA #REQUIRED
+  para (true|false) 'false'
+  version CDATA ''
+>
+
+<!-- Inspired text is simply characters, but can include empasis (enspired or
+otherwise), and paragraph markers. -->
+<!ELEMENT it (#PCDATA|ue|ie|p)*>
+
+<!-- Inspired emphasis means the heading notes in the psalms -->
+<!ELEMENT ie (#PCDATA)*>
+<!ATTLIST ie
+  type (psnote) 'psnote'
+>
+
+<!-- Uninspired text is notes (usually textual clarifications) and headings -->
+<!ELEMENT ut (#PCDATA|ue|p)*>
+<!ATTLIST ut
+  type (note|head) 'note'
+>
+
+<!-- Uninspired emphasis. Not sure which of these should exist. The currently
+defined ones are:
+  small - indicates 'less important' text (some RSVs)
+  christ - red letter editions
+  poetry - all modern versions change format for poetry
+  clarify - KJV and NKJV use italics for clarifying text
+  quote - It could be useful to have all spoken words separated
+-->
+<!ELEMENT ue (#PCDATA)*>
+<!ATTLIST ue
+  type (small|christ|poetry|clarify|quote) 'clarify'
+>
+
+<!-- New paragraph marker. Not that these are only for mid verse new
+paragraphs. End of verse new paragraphs are as an attribute to the ref
+element. -->
+<!ELEMENT p EMPTY>
+

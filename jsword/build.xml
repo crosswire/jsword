@@ -1,0 +1,236 @@
+<project name="jsword" default="deploy">
+
+  <!--=======================================================================-->
+  <property name="source.root" value="."/>
+  <property name="source.bin" value="${source.root}/bin"/>
+  <property name="source.doc" value="${source.root}/doc"/>
+  <property name="source.etc" value="${source.root}/etc"/>
+  <property name="source.jar" value="${source.root}/jar"/>
+  <property name="source.java" value="${source.root}/java"/>
+  <property name="source.res" value="${source.root}/resource"/>
+  <property name="source.xsl" value="${source.root}/xsl"/>
+  <property name="source.versions" value="../notes/versions"/>
+  <property name="source.web" value="${source.root}/web"/>
+  <property name="target.root" value="target/ant"/>
+  <property name="target.classes" value="${target.root}/temp/classes"/>
+  <property name="target.deploy" value="${target.root}/deploy"/>
+  <property name="target.doc" value="${target.root}/doc"/>
+  <property name="target.junit" value="${target.root}/junit"/>
+  <property name="notes.root" value="notes"/>
+
+  <property file="${source.res}/jsword.properties"/>
+
+  <!--=======================================================================-->
+  <patternset id="java.non.compile">
+    <include name="**/*.properties"/>
+    <include name="**/*.gif"/>
+    <include name="**/*.jpg"/>
+    <include name="**/*.png"/>
+  </patternset>
+  <property name="java.non.compile" value="**/*.properties,**/*.gif,**/*.jpg,**/*.png"/>
+
+  <!--=======================================================================-->
+  <target name="init" description="Prepare for other tasks">
+    <tstamp/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="compile" depends="init" description="Validate source syntax">
+    <antcall target="compile.section">
+      <param name="section" value="common"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="jsword"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="sword"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="map"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="commontest"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="jswordtest"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="swordtest"/>
+    </antcall>
+    <antcall target="compile.section">
+      <param name="section" value="maptest"/>
+    </antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="compile.section">
+    <echo message="Compiling ${section}"/>
+    <mkdir dir="${target.classes}/${section}"/>
+    <javac debug="on" includes="**/*.java" destdir="${target.classes}/${section}">
+      <src path="${source.java}/${section}"/>
+      <classpath>
+        <dirset dir="${target.classes}"/>
+        <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
+        <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
+        <fileset dir="${source.jar}/servlet23" includes="*.jar"/>
+        <fileset dir="${source.jar}/junit37" includes="*.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${target.classes}/${section}">
+      <fileset dir="${source.java}/${section}">
+        <patternset refid="java.non.compile"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="deploy" depends="compile" description="Build a ready to ship/test app">
+    <mkdir dir="${target.deploy}/${ant.project.name}/resource"/>
+    <copy todir="${target.deploy}/${ant.project.name}">
+      <fileset dir="${source.bin}"/>
+    </copy>
+    <copy todir="${target.deploy}/${ant.project.name}/resource">
+      <fileset dir="${source.res}"/>
+    </copy>
+    <jar
+        manifest="${source.etc}/desktop/MANIFEST.MF"
+        jarfile="${target.deploy}/${ant.project.name}/${ant.project.name}.jar">
+      <fileset dir="${target.classes}/common"/>
+      <fileset dir="${target.classes}/jsword"/>
+      <fileset dir="${target.classes}/sword"/>
+      <fileset dir="${target.classes}/map"/>
+    </jar>
+    <copy todir="${target.deploy}/${ant.project.name}">
+      <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
+      <fileset dir="${source.jar}/jlf10" includes="*.jar"/>
+    </copy>
+    <unzip
+        src="${notes.root}/versions/projectb-ser-av.zip"
+        dest="${target.deploy}/${ant.project.name}"
+    />
+  </target>
+
+  <!--=======================================================================-->
+  <target name="release">
+    <buildnumber/>
+    <antcall target="release.version">
+      <param name="version" value="build${build.number}"/>
+    </antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="release.final">
+    <buildnumber/>
+    <antcall target="release.version">
+      <param name="version" value="${product.version}"/>
+    </antcall>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="release.version" depends="deploy">
+    <echo message="Building release ${version}"/>
+    <!-- source packages -->
+    <zip zipfile="${target.deploy}/${ant.project.name}-${version}-src.zip">
+      <zipfileset prefix="source" dir="${source.root}">
+        <exclude name="${target.root}/**"/>
+        <exclude name="${notes.root}/**"/>
+      </zipfileset>
+    </zip>
+    <tar tarfile="${target.deploy}/${ant.project.name}-${version}-src.tar.gz" compression="gzip">
+      <tarfileset prefix="source" dir="${source.root}">
+        <exclude name="${target.root}/**"/>
+        <exclude name="${notes.root}/**"/>
+      </tarfileset>
+    </tar>
+    <!-- binary packages -->
+    <zip zipfile="${target.deploy}/${ant.project.name}-${version}-bin.zip">
+      <fileset dir="${target.deploy}/${ant.project.name}"/>
+    </zip>
+    <tar tarfile="${target.deploy}/${ant.project.name}-${version}-bin.tar.gz" compression="gzip">
+      <tarfileset dir="${target.deploy}/${ant.project.name}"/>
+    </tar>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="doc" depends="init" description="Create project document documentation">
+    <mkdir dir="${target.doc}"/>
+    <javadoc
+        destdir="${target.doc}"
+        overview="${source.java}/jsword/overview.html"
+        private="true"
+        author="true"
+        use="true"
+        splitindex="true"
+        version="true">
+      <packageset dir="${source.java}/common" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
+      <packageset dir="${source.java}/jsword" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
+      <packageset dir="${source.java}/sword" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
+      <packageset dir="${source.java}/map" defaultexcludes="yes">
+        <include name="**" />
+      </packageset>
+      <tag name="todo" scope="all" description="To do:" />
+      <tag name="label" scope="all" description="Together label:" />
+      <doctitle>JSword</doctitle>
+      <header>JSword</header>
+      <footer>Copyright &#168; 2002</footer>
+      <classpath>
+        <fileset dir="${source.jar}/jdom08" includes="*.jar"/>
+        <fileset dir="${source.jar}/servlet23" includes="*.jar"/>
+        <fileset dir="${source.jar}/junit37" includes="*.jar"/>
+      </classpath>
+      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.doc}/jdk14api"/>
+    </javadoc>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="run" depends="deploy">
+    <java classname="${main}" fork="true">
+      <classpath>
+        <fileset dir="${target.deploy}" includes="**/*.jar"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="test" depends="deploy" description="Run the standard test suite">
+    <mkdir dir="${target.junit}"/>
+    <junit fork="yes" haltonfailure="yes">
+      <test name="AllJUnitTests" todir="${target.junit}"/>
+      <formatter type="plain" usefile="false"/>
+      <formatter type="xml"/>
+      <classpath>
+        <pathelement path="${target.classes}"/>
+        <pathelement path="${target.test}"/>
+      </classpath>
+    </junit>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="ftest" depends="deploy" description="perform functional tests">
+    <!-- classname is one of: junit.[textui|awt|swing].TestRunner -->
+    <java fork="yes" classname="junit.textui.TestRunner" taskname="junit" failonerror="true">
+      <arg value="AllHTTPUnitTests"/>
+      <classpath>
+        <pathelement path="${target.classes}"/>
+        <pathelement path="${target.test}"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="all" depends="clean,test" description="Run a full clean/build/deploy/test cycle">
+  </target>
+
+  <!--=======================================================================-->
+  <target name="clean" depends="init" description="Remove the target directory">
+    <delete dir="${target.root}"/>
+  </target>
+
+</project>
+
