@@ -7,8 +7,9 @@
   key CDATA #REQUIRED
   static (true|false) 'true'
   priority NMTOKEN '5'
-  type (string|boolean|int-options|string-options|file|path|directory|number|font|class|custom) #REQUIRED
+  type (string|boolean|int-options|string-options|string-array|file|path|directory|number|font|class|custom) #REQUIRED
   class CDATA #IMPLIED
+  separator CDATA #IMPLIED
 >
 <!ELEMENT introspect EMPTY>
 <!ATTLIST introspect
@@ -49,8 +50,8 @@
     <help>Where is the SWORD Project base directory.</help>
   </option>
 
-  <option key="Bibles.Remote.Remote Host" type="string">
-  	<introspect class="org.crosswire.jsword.book.remote.HttpRemoteBibleDriver" property="BaseURL"/>
+  <option key="Bibles.Remote.Remote Host" type="string-array" separator=" ">
+  	<introspect class="org.crosswire.jsword.book.remote.HttpRemoteBibleDriver" property="URLs"/>
     <help>The URL of a remote HTTP host.</help>
   </option>
 
