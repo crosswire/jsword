@@ -5,6 +5,8 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+
 /**
  * A LucidException adds 2 concepts to a base Exception, that of a wrapped
  * Exception, that of internationalised (i18n) messages.
@@ -25,8 +27,6 @@ import java.util.ResourceBundle;
  * a constructor that allows us to specify no I18N lookup, which is useful
  * if this lookup may have been done already.</p>
  *
- * NOTE(joe): find a way to make the i18n strings compile safe.
- * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -203,7 +203,7 @@ public class LucidException extends Exception
         res = ResourceBundle.getBundle(name);
         
         if (res == null)
-            System.err.println("Failed to find ResourceBundle for "+name);
+            log.error("Failed to find ResourceBundle for "+name);
     }
 
     /**
@@ -215,6 +215,11 @@ public class LucidException extends Exception
     {
         setResourceBundleName("Exception");
     }
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(LucidException.class);
 
     /**
      * Is the message to be included literally, or should we look it up as a
