@@ -152,7 +152,7 @@ public class MapField extends JPanel implements Field, ActionListener
     /**
      * Pop up a dialog to allow editing of a new value
      */
-    public void doAddEntry(ActionEvent e)
+    public void doAddEntry()
     {
         InputPane input = new InputPane();
 
@@ -171,7 +171,7 @@ public class MapField extends JPanel implements Field, ActionListener
     /**
      * Pop up a dialog to allow editing of a current value
      */
-    public void doUpdateEntry(ActionEvent e)
+    public void doUpdateEntry()
     {
         InputPane input = new InputPane();
         input.name_field.setText(currentKey());
@@ -192,7 +192,7 @@ public class MapField extends JPanel implements Field, ActionListener
     /**
      * Delete the current value in the Map
      */
-    public void doRemoveEntry(ActionEvent e)
+    public void doRemoveEntry()
     {
         tableModel.remove(currentKey());
     }

@@ -186,22 +186,22 @@ public class WizardConfigEditor extends AbstractConfigEditor implements ActionLi
         return retcode;
     }
 
-    protected void doWizardCancel(ActionEvent ev)
+    protected void doWizardCancel()
     {
         hideDialog();
     }
 
-    protected void doWizardHelp(ActionEvent ev)
+    protected void doWizardHelp()
     {
         
     }
 
-    protected void doWizardBack(ActionEvent ev)
+    protected void doWizardBack()
     {
         move(-1);
     }
 
-    protected void doWizardNext(ActionEvent ev)
+    protected void doWizardNext()
     {
         move(1);
     }

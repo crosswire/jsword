@@ -160,7 +160,7 @@ public class PathField extends JPanel implements Field, ActionListener
     /**
      * Pop up a dialog to allow editing of a new value
      */
-    public void doAddEntry(ActionEvent e)
+    public void doAddEntry()
     {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -174,7 +174,7 @@ public class PathField extends JPanel implements Field, ActionListener
     /**
      * Pop up a dialog to allow editing of a current value
      */
-    public void doUpdateEntry(ActionEvent e)
+    public void doUpdateEntry()
     {
         JFileChooser chooser = new JFileChooser(currentValue());
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -190,7 +190,7 @@ public class PathField extends JPanel implements Field, ActionListener
     /**
      * Delete the current value in the hashtable
      */
-    public void doRemoveEntry(ActionEvent e)
+    public void doRemoveEntry()
     {
         model.removeElement(currentValue());
     }
@@ -215,5 +215,4 @@ public class PathField extends JPanel implements Field, ActionListener
      * The Table - displays the Hashtble
      */
     private JList list;
-
 }

@@ -41,7 +41,6 @@ public class ButtonPane extends JPanel implements ActionListener
     private static final String OK = "OK"; //$NON-NLS-1$
     private static final String CANCEL = "Cancel"; //$NON-NLS-1$
     private static final String APPLY = "Apply"; //$NON-NLS-1$
-    private static final String HELP = "Help"; //$NON-NLS-1$
 
     /**
      * Simple ctor
@@ -71,7 +70,6 @@ public class ButtonPane extends JPanel implements ActionListener
         buttons.add(new JButton(actions.getAction(OK)));
         buttons.add(new JButton(actions.getAction(CANCEL)));
         buttons.add(new JButton(actions.getAction(APPLY)));
-        buttons.add(new JButton(actions.getAction(HELP)));
 
         this.setBorder(new EdgeBorder(SwingConstants.NORTH));
         this.setLayout(new BorderLayout(10, 10));
@@ -94,6 +92,7 @@ public class ButtonPane extends JPanel implements ActionListener
     {
         li.okPressed(ev);
     }
+
     /**
      * Do the Cancel action
      * @param ev
@@ -110,16 +109,6 @@ public class ButtonPane extends JPanel implements ActionListener
     protected void doApply(ActionEvent ev)
     {
         li.applyPressed(ev);
-    }
-
-    /**
-     * Do the Help action
-     * @param ev
-     */
-    protected void doHelp(ActionEvent ev)
-    {
-        // TODO: Help is not implemented.
-        //li.helpPressed(ev);
     }
 
     /**

@@ -162,7 +162,7 @@ public class StringArrayField extends JPanel implements Field, ActionListener
     /**
      * Pop up a dialog to allow editing of a new value
      */
-    public void doAddEntry(ActionEvent e)
+    public void doAddEntry()
     {
         InputPane input = new InputPane();
 
@@ -177,7 +177,7 @@ public class StringArrayField extends JPanel implements Field, ActionListener
     /**
      * Pop up a dialog to allow editing of a current value
      */
-    public void doUpdateEntry(ActionEvent e)
+    public void doUpdateEntry()
     {
         InputPane input = new InputPane();
         input.name_field.setText(currentValue());
@@ -194,7 +194,7 @@ public class StringArrayField extends JPanel implements Field, ActionListener
     /**
      * Delete the current value in the hashtable
      */
-    public void doRemoveEntry(ActionEvent e)
+    public void doRemoveEntry()
     {
         list_model.removeElement(currentValue());
     }

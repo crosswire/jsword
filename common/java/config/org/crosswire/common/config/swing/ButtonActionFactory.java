@@ -59,9 +59,9 @@ public final class ButtonActionFactory extends ActionFactory
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e, Object caller)
+    public void actionPerformed(ActionEvent ev, Object caller)
     {
-        String action = e.getActionCommand();
+        String action = ev.getActionCommand();
 
         assert action != null;
         assert action.length() != 0;
@@ -70,8 +70,18 @@ public final class ButtonActionFactory extends ActionFactory
         // use reflecton to do a direct lookup and call
         try
         {
-            Method doMethod = caller.getClass().getDeclaredMethod(METHOD_PREFIX+action, new Class[] { ActionEvent.class });
-            doMethod.invoke(caller, new Object [] { e });
+            String methodName = METHOD_PREFIX + action;
+
+            Method doMethod = caller.getClass().getDeclaredMethod(methodName, new Class[] { ActionEvent.class });
+            if (doMethod != null)
+            {
+                doMethod.invoke(caller, new Object[] { ev });
+            }
+            else
+            {
+                doMethod = caller.getClass().getDeclaredMethod(methodName, new Class[0]);
+                doMethod.invoke(caller, new Object[0]);
+            }
         }
         catch (NoSuchMethodException e1)
         {

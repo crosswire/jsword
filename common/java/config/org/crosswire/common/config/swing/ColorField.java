@@ -1,4 +1,3 @@
-
 package org.crosswire.common.config.swing;
 
 import java.awt.BorderLayout;
@@ -78,9 +77,8 @@ public class ColorField extends JPanel implements Field, ActionListener
 
     /**
      * Do the edit action
-     * @param ex
      */
-    public void doEditColor(ActionEvent ex)
+    public void doEditColor()
     {
         color = JColorChooser.showDialog(ColorField.this, Msg.EDIT.toString(), color);
     }

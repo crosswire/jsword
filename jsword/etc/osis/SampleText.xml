@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Sue Donime (None) -->
+<osisCorpus xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xsi:noNamespaceSchemaLocation="osisCore1.1.xsd">
+  <osisText osisIDWork="tev" osisRefWork="bible">
+    <header>
+      <work osisWork="bible">
+        <identifier type="OSIS">Bible</identifier>
+      </work>
+      <work osisWork="tev">
+        <identifier type="OSIS">Bible.TEV</identifier>
+      </work>
+    </header>
+    <div type="canon">
+      <title>Old Testament</title>
+      <div type="bookGroup">
+        <title>Poetry</title>
+        <div type="book" osisID="Ps">
+          <title> Psalms</title>
+          <div type="text" osisRef="Ps.1.1-Ps.3.8">
+            <div osisRef="Ps.1.1-Ps.3.8">
+              <title type="head">BOOK ONE </title>
+              <div osisID="Ps.1">
+                <title type="head">True Happiness</title>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.1.1" splitID="Ps.1.1">Happy are those</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.1" splitID="Ps.1.1">who reject the advice of evil people,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.1" splitID="Ps.1.1">who do not follow the example of sinners</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.1" splitID="Ps.1.1">or join those who have no use for God.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.2" splitID="Ps.1.2">Instead, they find joy in obeying the Law of the <divineName type="yhwh">LORD</divineName>,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.2" splitID="Ps.1.2">and they study it day and night.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.3" splitID="Ps.1.3">
+                        <note type="crossReference" osisRef="Ps.1.3-Ps.1.3">
+                          <note type="link">
+                            <reference osisRef="Jer.17.8"/>
+                          </note>
+                        </note> They are like trees that grow beside a stream,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.3" splitID="Ps.1.3">that bear fruit at the right time,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.3" splitID="Ps.1.3">and whose leaves do not dry up.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.3" splitID="Ps.1.3">They succeed in everything they do.</verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.1.4" splitID="Ps.1.4">But evil people are not like this at all;</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.4" splitID="Ps.1.4">they are like straw that the wind blows away.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.5" splitID="Ps.1.5">Sinners will be condemned by God</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.5" splitID="Ps.1.5">and kept apart from God's own people.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.6" splitID="Ps.1.6">The righteous are guided and protected by the <divineName type="yhwh">LORD</divineName>,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.1.6" splitID="Ps.1.6">but the evil are on the way to their doom.</verse>
+                    </l>
+                  </lg>
+                </q>
+              </div>
+              <div osisRef="Ps.2">
+                <title type="head">God's Chosen King</title>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.2.1" splitID="Ps.2.1">
+                        <note type="crossReference" osisRef="Ps.2.1">
+                          <note type="link">
+                            <reference osisRef="Acts.4.25"/>
+                            <reference osisRef="Acts.4.26"/>
+                          </note>
+                        </note> Why do the nations plan rebellion?</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.1" splitID="Ps.2.1">Why do people make their useless plots?</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.2" splitID="Ps.2.2">Their kings revolt,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.2" splitID="Ps.2.2">their rulers plot together against the <divineName type="yhwh">LORD</divineName>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.2" splitID="Ps.2.2">and against the king he chose.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.3" splitID="Ps.2.3">
+                        <q>Let us free ourselves from their rule,</q> they say;</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.3" splitID="Ps.2.3">
+                        <q>let us throw off their control.</q>
+                      </verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.2.4" splitID="Ps.2.4">From his throne in heaven the Lord laughs</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.4" splitID="Ps.2.4">and mocks their feeble plans.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.5" splitID="Ps.2.5">Then he warns them in anger</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.5" splitID="Ps.2.5">and terrifies them with his fury.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.6" splitID="Ps.2.6">
+                        <q>On Zion,<note type="background">
+                            <note type="content">ZION: The term <mentioned>Zion
+</mentioned> (originally a designation for <mentioned>David's City,</mentioned> the Jebusite stronghold captured by King David's forces) was later extended in meaning to refer to the hill on which the Temple stood.</note>
+                          </note> my sacred hill,</q> he says,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.6" splitID="Ps.2.6">
+                        <q>I have installed my king.</q>
+                      </verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.2.7" splitID="Ps.2.7">
+                        <note type="crossReference" osisRef="Ps.2.7">
+                          <note type="link">
+                            <reference osisRef="Acts.13.33"/>
+                            <reference osisRef="Heb.1.5"/>
+                            <reference osisRef="Heb.5.5"/>
+                          </note>
+                        </note>
+                        <q>I will announce,</q> says the king, <q splitID="Q-Ps.2.7-A">what the <divineName type="yhwh">LORD</divineName> has declared.</q>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.7" splitID="Ps.2.7">
+                        <q splitID="Q-Ps.2.7-A">He said to me: <q splitID="Q-Ps.2.7-B">You are my son;</q>
+                        </q>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.7" splitID="Ps.2.7">
+                        <q splitID="Q-Ps.2.7-A">
+                          <q splitID="Q-Ps.2.7-B">today I have become your father.</q>
+                        </q>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.8" splitID="Ps.2.8">
+                        <q splitID="Q-Ps.2.7-A">
+                          <q splitID="Q-Ps.2.7-B">Ask, and I will give you all the nations;</q>
+                        </q>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.8" splitID="Ps.2.8">
+                        <q splitID="Q-Ps.2.7-A">
+                          <q splitID="Q-Ps.2.7-B">the whole earth will be yours.</q>
+                        </q>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.9" splitID="Ps.2.9">
+                        <q splitID="Q-Ps.2.7-A">
+                          <q splitID="Q-Ps.2.7-B">
+                            <note type="crossReference" osisRef="Ps.2.9">
+                              <note type="link">
+                                <reference osisRef="Rev.2.26"/>
+                                <reference osisRef="Rev.2.27"/>
+                                <reference osisRef="Rev.12.5"/>
+                                <reference osisRef="Rev.19.15"/>
+                              </note>
+                            </note> You will break them with an iron rod;</q>
+                        </q>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.9" splitID="Ps.2.9">
+                        <q splitID="Q-Ps.2.7-A">
+                          <q splitID="Q-Ps.2.7-B">you will shatter them in pieces like a clay pot.</q>
+                        </q>
+                      </verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.2.10" splitID="Ps.2.10">Now listen to this warning, you kings;</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.10" splitID="Ps.2.10">learn this lesson, you rulers of the world:</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.11" splitID="Ps.2.11">Serve the <divineName type="yhwh">LORD</divineName> with fear;</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.11" splitID="Ps.2.11">tremble -|</verse>
+                      <verse osisID="Ps.2.12" splitID="Ps.2.12">and bow down to him;<note type="exegesis">
+                          <note type="content">Probable text<rdg> tremble ... him; </rdg>some other possible texts<rdg> with trembling kiss his feet </rdg>and<rdg> with trembling kiss the Son </rdg>and<rdg> tremble and kiss the mighty one; </rdg>Hebrew unclear.</note>
+                        </note>
+                      </verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.12" splitID="Ps.2.12">or else his anger will be quickly aroused,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.12" splitID="Ps.2.12">and you will suddenly die.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.2.12" splitID="Ps.2.12">Happy are all who go to him for protection.</verse>
+                    </l>
+                  </lg>
+                </q>
+              </div>
+              <div osisID="Ps.3">
+                <title type="head">Morning Prayer for Help HEBREW TITLE: A psalm by David, after he ran away from his son Absalom.</title>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.3.1" splitID="Ps.3.1">I have so many enemies, <divineName type="yhwh">LORD</divineName>,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.1" splitID="Ps.3.1">so many who turn against me!</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.2" splitID="Ps.3.2">They talk about me and say,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.2" splitID="Ps.3.2">
+                        <q>God will not help him.</q>
+                      </verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.3.3" splitID="Ps.3.3">But you, O <divineName type="yhwh">LORD</divineName>, are always my shield from danger;</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.3" splitID="Ps.3.3">you give me victory</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.3" splitID="Ps.3.3">and restore my courage.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.4" splitID="Ps.3.4">I call to the <divineName type="yhwh">LORD</divineName> for help,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.4" splitID="Ps.3.4">and from his sacred hill<note type="background">
+                          <note type="content">SACRED HILL: See 
+<reference osisRef="Ps.2.6"/> . </note>
+                        </note> he answers me.</verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.3.5" splitID="Ps.3.5">I lie down and sleep,</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.5" splitID="Ps.3.5">and all night long the <divineName type="yhwh">LORD</divineName> protects me.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.6" splitID="Ps.3.6">I am not afraid of the thousands of enemies</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.6" splitID="Ps.3.6">who surround me on every side.</verse>
+                    </l>
+                  </lg>
+                </q>
+                <q type="blockQuote">
+                  <lg>
+                    <l>
+                      <verse osisID="Ps.3.7" splitID="Ps.3.7">Come, <divineName type="yhwh">LORD</divineName>! Save me, my God!</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.7" splitID="Ps.3.7">You punish all my enemies</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.7" splitID="Ps.3.7">and leave them powerless to harm me.</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.8" splitID="Ps.3.8">Victory comes from the <divineName type="yhwh">LORD</divineName>--</verse>
+                    </l>
+                    <l>
+                      <verse osisID="Ps.3.8" splitID="Ps.3.8">may he bless his people.</verse>
+                    </l>
+                  </lg>
+                </q>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div type="canon">
+      <title>New Testament</title>
+      <div type="bookGroup">
+        <title>Gospels</title>
+        <div type="book" osisID="Matt">
+          <title>The Gospel according to Matthew</title>
+          <div type="text" osisRef="Matt.1.1-Matt.13.58">
+            <div osisID="Matt.1">
+              <div osisRef="Matt.1.1-Matt.1.17">
+                <title type="head">The Ancestors of Jesus Christ</title>
+                <reference osisRef="Luke.3.23-Luke.3.38"/>
+                <p osisID="Matt.1.1">This is the list of the ancestors of Jesus Christ, a descendant of David, who was a descendant of Abraham.</p>
+                <p osisID="Matt.1.2 Matt.1.3 Matt.1.4 Matt.1.5 Matt.1.6 Bible.TEV:Matt.1.6.a">From Abraham to King David, the following ancestors are listed: Abraham, Isaac, Jacob, Judah and his brothers; then Perez and Zerah (their mother was Tamar), Hezron, Ram, Amminadab, Nahshon, Salmon, Boaz (his mother was Rahab), Obed (his mother was Ruth), Jesse, and King David.</p>
+                <p osisID="Bible.TEV:Matt.1.6.b Matt.1.6 Matt.1.7 Matt.1.8 Matt.1.8 Matt.1.9 Matt.1.10 Matt.1.11">From<note type="crossReference" osisRef="Matt.1.6-Matt.1.11">
+                    <note type="link">
+                      <reference osisRef="_2Kgs.24.14"/>
+                      <reference osisRef="_2Kgs.24.15"/>
+                      <reference osisRef="_2Chr.36.10"/>
+                      <reference osisRef="Jer.27.20"/>
+                    </note>
+                  </note> David to the time when the people of Israel were taken into exile in Babylon, the following ancestors are listed: David, Solomon (his mother was the woman who had been Uriah's wife), Rehoboam, Abijah, Asa, Jehoshaphat, Jehoram, Uzziah, Jotham, Ahaz, Hezekiah, Manasseh, Amon, Josiah, and Jehoiachin and his brothers.</p>
+                <p osisID="Matt.1.12 Matt.1.13 Matt.1.14 Matt.1.15 Matt.1.16">From the time after the exile in Babylon to the birth of Jesus, the following ancestors are listed: Jehoiachin, Shealtiel, Zerubbabel, Abiud, Eliakim, Azor, Zadok, Achim, Eliud, Eleazar, Matthan, Jacob, and Joseph, who married Mary, the mother of Jesus, who was called the Messiah.</p>
+                <p osisID="Matt.1.17">So then, there were fourteen generations from Abraham to David, and fourteen from David to the exile in Babylon, and fourteen from then to the birth of the Messiah.</p>
+              </div>
+              <div osisRef="Matt.1.18-Matt.1.25">
+                <title type="head">The Birth of Jesus Christ</title>
+                <reference osisRef="Luke.2.1-Luke.2.7"/>
+                <p>
+                  <verse osisID="Matt.1.18">
+                    <note type="crossReference" osisRef="Matt.1.18-Matt.1.18">
+                      <note type="link">
+                        <reference osisRef="Luke.1.27"/>
+                      </note>
+                    </note> This was how the birth of Jesus Christ took place. His mother Mary was engaged to Joseph, but before they were married, she found out that she was going to have a baby by the Holy Spirit.</verse>
+                  <verse osisID="Matt.1.19">Joseph was a man who always did what was right, but he did not want to disgrace Mary publicly; so he made plans to break the engagement privately.</verse>
+                  <verse osisID="Matt.1.20">While he was thinking about this, an angel of the Lord appeared to him in a dream and said,<q splitID="Q-Matt.1.20-A">Joseph, descendant of David, do not be afraid to take Mary to be your wife. For it is by the Holy Spirit that she has conceived.</q>
+                  </verse>
+                  <verse osisID="Matt.1.21">
+                    <q splitID="Q-Matt.1.20-A">
+                      <note type="crossReference" osisRef="Matt.1.21-Matt.1.21">
+                        <note type="link">
+                          <reference osisRef="Sir.46.1"/>
+                          <reference osisRef="Luke.1.31"/>
+                        </note>
+                      </note>She will have a son, and you will name him Jesus--because he will save his people from their sins.</q>
+                  </verse>
+                </p>
+                <p>
+                  <verse osisID="Matt.1.22">Now all this happened in order to make come true what the Lord had said through the prophet,</verse>
+                  <verse osisID="Matt.1.23">
+                    <note type="crossReference" osisRef="Matt.1.23-Matt.1.23">
+                      <note type="link">
+                        <reference osisRef="Isa.7.14"/>
+                      </note>
+                    </note>
+                    <q>A virgin will become pregnant and have a son, and he will be called Immanuel</q> (which means, 
+	<q>God is with us</q>).</verse>
+                </p>
+                <p>
+                  <verse osisID="Matt.1.24">So when Joseph woke up, he married Mary, as the angel of the Lord had told him to.</verse>
+                  <verse osisID="Matt.1.25">
+                    <note type="crossReference" osisRef="Matt.1.25">
+                      <note type="link">
+                        <reference osisRef="Luke.2.21"/>
+                      </note>
+                    </note> But he had no sexual relations with her before she gave birth to her son. And Joseph named him Jesus.</verse>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </osisText>
+</osisCorpus>

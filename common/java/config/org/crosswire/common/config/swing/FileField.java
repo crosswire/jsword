@@ -67,7 +67,7 @@ public class FileField extends JPanel implements Field, ActionListener
     /**
      * Open a browse dialog
      */
-    protected void doBrowse(ActionEvent e)
+    protected void doBrowse()
     {
         JFileChooser chooser = new JFileChooser(text.getText());
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
