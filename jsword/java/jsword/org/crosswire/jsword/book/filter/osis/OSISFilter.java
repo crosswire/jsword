@@ -10,7 +10,7 @@ import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
-import org.crosswire.jsword.book.filter.FilterUtil;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -46,10 +46,9 @@ public class OSISFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public List toOSIS(String plain) throws FilterException
+    public List toOSIS(Key key, String plain) throws FilterException
     {
-//        Element ele = OSISUtil.factory().createDiv();
-
+        DataPolice.setKey(key);
         Element ele = null;
         try
         {
@@ -57,9 +56,8 @@ public class OSISFilter implements Filter
         }
         catch (Exception ex1)
         {
-            DataPolice.report("parse (1) original failed: " + ex1.getMessage() + //$NON-NLS-1$
-                              "\n  while parsing: " + plain); //$NON-NLS-1$
-//            DataPolice.report("  while parsing: " + FilterUtil.forOutput(plain)); //$NON-NLS-1$
+            DataPolice.report("Parse failed: " + ex1.getMessage() + //$NON-NLS-1$
+                              "\non: " + plain); //$NON-NLS-1$
 
             // Attempt to fix broken entities, that could be a low damage
             // way to fix a broken input string
@@ -71,8 +69,7 @@ public class OSISFilter implements Filter
             }
             catch (Exception ex2)
             {
-                DataPolice.report("parse (2) cropped failed: " + ex2.getMessage()); //$NON-NLS-1$
-                DataPolice.report("  while parsing: " + FilterUtil.forOutput(cropped)); //$NON-NLS-1$
+                log.warn("Could not fix it by cleaning entities", ex2); //$NON-NLS-1$
 
                 // So just try to strip out all XML looking things
                 String shawn = XMLUtil.cleanAllTags(cropped);
@@ -83,8 +80,7 @@ public class OSISFilter implements Filter
                 }
                 catch (Exception ex3)
                 {
-                    DataPolice.report("parse (3) shawn failed: " + ex3.getMessage()); //$NON-NLS-1$
-                    DataPolice.report("  while parsing: " + FilterUtil.forOutput(shawn)); //$NON-NLS-1$
+                    log.warn("Could not fix it by cleaning tags", ex3); //$NON-NLS-1$
 
                     try
                     {
@@ -98,6 +94,11 @@ public class OSISFilter implements Filter
                     }
                 }
             }
+        }
+        finally
+        {
+            // Make sure that other places don't report this problem
+            DataPolice.setKey(null);
         }
         return ele.removeContent();
     }

@@ -2,6 +2,8 @@ package org.crosswire.jsword.book.filter;
 
 import java.util.List;
 
+import org.crosswire.jsword.passage.Key;
+
 /**
  * A generic interface for things that can convert a String into OSIS data.
  * 
@@ -30,8 +32,9 @@ public interface Filter
 {
     /**
      * Converter from plain (encoded) text to OSIS data
+     * @param key The key for the text
      * @param plain The encoded text
      * @return a List of OSIS Elements
      */
-    public List toOSIS(String plain) throws FilterException;
+    public List toOSIS(Key key, String plain) throws FilterException;
 }

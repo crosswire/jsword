@@ -121,7 +121,7 @@ public class SwordDictionary extends AbstractBook
 
             String txt = backend.getRawText(key);
 
-            List osisContent = sbmd.getFilter().toOSIS(txt);
+            List osisContent = sbmd.getFilter().toOSIS(key, txt);
             div.addContent(osisContent);
 
             BookData bdata = new BookData(osis, this, key);

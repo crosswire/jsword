@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 
 /**
@@ -35,7 +36,7 @@ public class PlainTextFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public List toOSIS(String plain)
+    public List toOSIS(Key key, String plain)
     {
         Element ele = OSISUtil.factory().createDiv();
         ele.addContent(plain);
