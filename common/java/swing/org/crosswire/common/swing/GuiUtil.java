@@ -242,7 +242,6 @@ public class GuiUtil
      *
      * @param win the window to resize
      * @param requestedDim how wide and tall to make the window, if possible
-     * @param honoredDim is an output parameter that has the final dimensions based on the resize
      * @return whether the window has been maximized horizontally (Frame.MAXIMIZED_HORIZ),
      *         vertically (Frame.MAXIMIZED_VERT
      */
