@@ -46,7 +46,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
      */
     public String getURL()
     {
-        return PROTOCOL_WEB + ':' + host + directory;
+        return PROTOCOL_WEB + "://" + host + directory; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -147,5 +147,5 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     /**
      * We need to be ablee to provide a URL as part of the API
      */
-    private static final String PROTOCOL_WEB = "web"; //$NON-NLS-1$
+    private static final String PROTOCOL_WEB = "sword-http"; //$NON-NLS-1$
 }

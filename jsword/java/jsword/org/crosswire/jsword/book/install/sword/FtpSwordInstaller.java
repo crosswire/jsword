@@ -46,7 +46,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
      */
     public String getURL()
     {
-        return PROTOCOL_SWORD + ":" + username + ":" + password + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return PROTOCOL_SWORD + "://" + username + ":" + password + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /* (non-Javadoc)
@@ -197,7 +197,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
      */
     public String toString()
     {
-        return PROTOCOL_SWORD + ":" + username + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$
+        return getURL();
     }
 
     /* (non-Javadoc)
@@ -250,7 +250,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
     /**
      * We need to be ablee to provide a URL as part of the API
      */
-    private static final String PROTOCOL_SWORD = "sword"; //$NON-NLS-1$
+    private static final String PROTOCOL_SWORD = "sword-ftp"; //$NON-NLS-1$
 
     /**
      * The log stream

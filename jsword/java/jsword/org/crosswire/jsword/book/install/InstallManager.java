@@ -1,6 +1,8 @@
 package org.crosswire.jsword.book.install;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,8 +13,10 @@ import java.util.Set;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.jsword.util.Project;
 
 /**
  * A manager to abstract out the non-view specific module installation tasks.
@@ -86,11 +90,28 @@ public class InstallManager
     }
 
     /**
-     * 
+     * Save all properties to the user's local area.
+     * Uses the same property name so as to override it.
      */
     public void save()
     {
-        // PENDING(joe): write
+        Properties props = new Properties();
+        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
+        {
+            String name = (String) it.next();
+            Installer installer = (Installer) installers.get(name);
+            props.setProperty(name, installer.getURL());
+        }
+        URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName()); //$NON-NLS-1$
+        try
+        {
+            OutputStream out = NetUtil.getOutputStream(outputURL);
+            props.store(out, "Saved Installer Sites"); //$NON-NLS-1$
+        }
+        catch (IOException e)
+        {
+            log.error("Failed to save installers", e); //$NON-NLS-1$
+        }
     }
 
     /**
