@@ -148,18 +148,25 @@ public class SerBibleDriver extends AbstractBibleDriver
         try
         {
             URL url = NetUtil.lengthenURL(dir, name);
-            try{
-            	if(NetUtil.isDirectory(url)) return true;
-            }catch(MalformedURLException mue){
+            try
+            {
+            	if (NetUtil.isDirectory(url)) return true;
+            }
+            catch (MalformedURLException ex)
+            {
             	// For some reason isDirectory throws one...
             }
+
             url = NetUtil.lengthenURL(url,"bible.properties");
-            try {
+            try
+            {
             	// This will throw if the resource does not exist
 				InputStream is = url.openStream();
 				is.close();
 				return true;
-			} catch (IOException e) {
+			}
+            catch (IOException ex)
+            {
 			    // the resource does not exist!
 				return false;
 			}
@@ -184,7 +191,7 @@ public class SerBibleDriver extends AbstractBibleDriver
             // now we load from JARs and other resources we can no longer just discard non dir URLs...
             /*if (!NetUtil.isDirectory(url))
                 throw new BookException("ser_driver_find", new Object[] { name });*/
-            if(!exists(name))
+            if (!exists(name))
             	throw new BookException("ser_driver_find", new Object[] { name });
 
             return new SerBible(name, url, false);

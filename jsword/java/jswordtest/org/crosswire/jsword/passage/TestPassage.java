@@ -79,7 +79,6 @@ public class TestPassage extends TestCase
     Verse rev99 = null;
 
     /**
-     * @todo: fix tests
      * Some of these tests fail with an out of memory exception. The optimize
      * bit of these tests is wrong so we never optimize for write, and
      * performing tests aimed at writing after optimizing for reads is allowed

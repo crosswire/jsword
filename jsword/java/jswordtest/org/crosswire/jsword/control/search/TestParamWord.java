@@ -11,10 +11,13 @@ import org.crosswire.jsword.passage.PassageFactory;
 */
 class TestParamWord implements ParamWord
 {
-    /** Setup the Passage to hack up */
-    public TestParamWord(String ref_hack)
+    /**
+     * Setup the Passage to edit
+     * @param ref The Passage to edit
+     */
+    public TestParamWord(String ref)
     {
-        this.ref_hack = ref_hack;
+        this.ref = ref;
     }
 
     /** Get a word for something else to word on */
@@ -28,7 +31,7 @@ class TestParamWord implements ParamWord
     {
         try
         {
-            return PassageFactory.createPassage(ref_hack);
+            return PassageFactory.createPassage(ref);
         }
         catch (NoSuchVerseException ex)
         {
@@ -36,6 +39,6 @@ class TestParamWord implements ParamWord
         }
     }
 
-    /** The hacked up Passage */
-    private String ref_hack = null;
+    /** The editied up Passage */
+    private String ref = null;
 }

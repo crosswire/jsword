@@ -10,7 +10,6 @@ import org.crosswire.jsword.passage.Verse;
  * A SectionData contains a list of references, and a note that
  * describes them. We can also override the version settting on the bible
  * element here.
- * @todo: Convert the Enumeration to an Iterator
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

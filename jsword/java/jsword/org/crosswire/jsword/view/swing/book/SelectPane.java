@@ -59,15 +59,7 @@ public class SelectPane extends JPanel
      */
     public SelectPane()
     {
-        try
-        {
-            mdl_versn = new BiblesComboBoxModel();
-        }
-        catch (Exception ex)
-        {
-            /** @todo something better here */
-            ex.printStackTrace();
-        }
+        mdl_versn = new BiblesComboBoxModel();
 
         jbInit();
     }
