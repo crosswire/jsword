@@ -7,6 +7,7 @@ import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
 
+import org.crosswire.common.swing.LookAndFeelUtil;
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -52,6 +53,7 @@ public class TDIViewLayout extends ViewLayout
         {
             tab_main = new JTabbedPane();
             tab_main.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+            LookAndFeelUtil.addComponentToUpdate(tab_main);
         }
 
         // Setup

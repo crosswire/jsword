@@ -91,18 +91,24 @@ public class Desktop extends JFrame implements TitleChangedListener
     {
         try
         {
+            Project.init();
+
             splash = new Splash(this, 60000);
 
             // Initial setup
-            splash.setProgress(5, "Project initialization");
-            Project.init();
+            splash.setProgress("Project initialization");
 
-            splash.setProgress(10, "Creating GUI : Ctors (Layouts)");
+            splash.setProgress("Creating GUI : Setting-up config");
+            act_tools_options = new OptionsAction(this);
+            act_tools_options.createConfig();
+            act_tools_options.loadConfig();
+
+            splash.setProgress("Creating GUI : Ctors (Layouts)");
             VIEW_SDI = new SDIViewLayout(this);
             VIEW_MDI = new MDIViewLayout(this);
             VIEW_TDI = new TDIViewLayout(this);
 
-            splash.setProgress(11, "Creating GUI : Ctors (File Menu)");
+            splash.setProgress("Creating GUI : Ctors (File Menu)");
             act_file_new = new FileNewAction(this);
             act_file_open = new FileOpenAction(this);
             act_file_save = new FileSaveAction(this);
@@ -113,44 +119,44 @@ public class Desktop extends JFrame implements TitleChangedListener
             act_file_print = new FilePrintAction(this);
             act_file_exit = new ExitAction(this);
 
-            splash.setProgress(12, "Creating GUI : Ctors (Edit Menu)");
+            splash.setProgress("Creating GUI : Ctors (Edit Menu)");
             act_edit_cut = new EditCutAction(this);
             act_edit_copy = new EditCopyAction(this);
             act_edit_paste = new EditPasteAction(this);
             act_edit_blur1 = new BlurAction(this, 1, Passage.RESTRICT_CHAPTER);
             act_edit_blur5 = new BlurAction(this, 5, Passage.RESTRICT_CHAPTER);
 
-            splash.setProgress(13, "Creating GUI : Ctors (View Menu)");
+            splash.setProgress("Creating GUI : Ctors (View Menu)");
             act_view_sdi = new ViewSDIAction(this);
             act_view_tdi = new ViewTDIAction(this);
             act_view_mdi = new ViewMDIAction(this);
             act_view_tbar = new ViewToolBarAction(this);
             act_view_sbar = new ViewStatusBarAction(this);
 
-            splash.setProgress(14, "Creating GUI : Ctors (List Menu)");
+            splash.setProgress("Creating GUI : Ctors (List Menu)");
             act_list_toggle = new ListToggleAction(this);
             act_list_delete = new ListDeleteAction(this);
 
-            splash.setProgress(15, "Creating GUI : Ctors (Tools Menu)");
+            splash.setProgress("Creating GUI : Ctors (Tools Menu)");
             act_tools_generate = GeneratorPane.createOpenAction(this);
             act_tools_diff = ComparePane.createOpenAction(this);
-            act_tools_options = new OptionsAction(this);
+            //act_tools_options = new OptionsAction(this);
 
-            splash.setProgress(16, "Creating GUI : Ctors (Help Menu)");
+            splash.setProgress("Creating GUI : Ctors (Help Menu)");
             act_help_contents = new HelpContentsAction(this);
             act_help_system = SystemPropertiesPane.createOpenAction(this);
             act_help_about = Splash.createOpenAction(this);
             act_help_log = LogPane.createOpenAction(this);
             act_help_debug = new DebugAction(this);
 
-            splash.setProgress(17, "Creating GUI : Ctors (View Buttons)");
+            splash.setProgress("Creating GUI : Ctors (View Buttons)");
             rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
             rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
             rdo_view_sdi = new JRadioButtonMenuItem(act_view_sdi);
             chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
             chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
 
-            splash.setProgress(18, "Creating GUI : Ctors (Menu Bar)");
+            splash.setProgress("Creating GUI : Ctors (Menu Bar)");
             bar_menu = new JMenuBar();
             menu_file = new JMenu();
             menu_edit = new JMenu();
@@ -159,27 +165,21 @@ public class Desktop extends JFrame implements TitleChangedListener
             menu_tools = new JMenu();
             menu_help = new JMenu();
 
-            splash.setProgress(19, "Creating GUI : Ctors (Other Components)");
+            splash.setProgress("Creating GUI : Ctors (Other Components)");
             grp_views = new ButtonGroup();
             pnl_tbar = new JToolBar();
             bar_status = new StatusBar();
 
-            splash.setProgress(20, "Creating GUI : Setting-up config");
-            act_tools_options.createConfig();
-            act_tools_options.loadConfig();
-
             // GUI setup
-            splash.setProgress(21, "Creating GUI : Init");
+            splash.setProgress("Creating GUI : Init");
             jbInit();
             setViewLayout(VIEW_SDI);
 
             // Configuration
-            splash.setProgress(80, "General configuration");
+            splash.setProgress("General configuration");
             LookAndFeelUtil.addComponentToUpdate(this);
 
-            splash.setProgress(100, "Done");
-            splash.setVisible(false);
-            splash.dispose();
+            splash.done();
         }
         catch (Exception ex)
         {
@@ -195,7 +195,7 @@ public class Desktop extends JFrame implements TitleChangedListener
      */
     private void jbInit()
     {
-        splash.setProgress(22, "Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Menus");
         menu_file.setText("File");
         menu_file.setMnemonic('F');
         menu_file.add(act_file_new).addMouseListener(bar_status);
@@ -212,7 +212,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_file.addSeparator();
         menu_file.add(act_file_exit).addMouseListener(bar_status);
 
-        splash.setProgress(25, "Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Menus");
         menu_edit.setText("Edit");
         menu_edit.setMnemonic('E');
         menu_edit.add(act_edit_cut).addMouseListener(bar_status);
@@ -231,7 +231,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         grp_views.add(rdo_view_sdi);
         grp_views.add(rdo_view_tdi);
 
-        splash.setProgress(27, "Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Menus");
         menu_view.setText("View");
         menu_view.setMnemonic('V');
         menu_view.add(rdo_view_sdi);
@@ -241,7 +241,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_view.add(chk_view_tbar);
         menu_view.add(chk_view_sbar);
 
-        splash.setProgress(30, "Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Menus");
         menu_list.setText("List");
         menu_list.setMnemonic('L');
         menu_list.add(act_list_toggle).addMouseListener(bar_status);
@@ -251,7 +251,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_list.addSeparator();
         menu_list.add(act_list_delete).addMouseListener(bar_status);
 
-        splash.setProgress(32, "Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Menus");
         menu_tools.setText("Tools");
         menu_tools.setMnemonic('T');
         //menu_tools.add(act_tools_bench).addMouseListener(bar_status);
@@ -263,7 +263,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_tools.addSeparator();
         menu_tools.add(act_tools_options).addMouseListener(bar_status);
 
-        splash.setProgress(35, "Creating GUI : Menus");
+        splash.setProgress("Creating GUI : Menus");
         menu_help.setText("Help");
         menu_help.setMnemonic('H');
         menu_help.add(act_help_contents).addMouseListener(bar_status);
@@ -275,7 +275,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         menu_help.addSeparator();
         menu_help.add(act_help_debug).addMouseListener(bar_status);
 
-        splash.setProgress(37, "Creating GUI : Toolbars");
+        splash.setProgress("Creating GUI : Toolbars");
         bar_menu.add(menu_file);
         bar_menu.add(menu_edit);
         bar_menu.add(menu_view);
@@ -320,7 +320,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         pnl_tbar.add(act_help_log).addMouseListener(bar_status);
         pnl_tbar.add(act_help_about).addMouseListener(bar_status);
 
-        splash.setProgress(40, "Creating GUI : Actions");
+        splash.setProgress("Creating GUI : Actions");
         this.addWindowListener(new WindowAdapter()
         {
             public void windowClosed(WindowEvent ev)
