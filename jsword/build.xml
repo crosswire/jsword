@@ -237,8 +237,7 @@
   <!--=======================================================================-->
   <target name="java2html" depends="init" description="HTML versions of the java code">
     <mkdir dir="${target.doc}/java2html"/>
-    <java
-        classname="j2h">
+    <java fork="true" classname="j2h">
       <classpath>
         <fileset dir="${source.jar}">
           <include name="**/*.jar"/>
