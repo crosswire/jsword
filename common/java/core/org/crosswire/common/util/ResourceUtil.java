@@ -6,8 +6,6 @@ import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.Properties;
 
-import org.apache.commons.lang.ClassUtils;
-
 /**
  * Better implemenetations of the getResource methods with less ambiguity and
  * that are less dependent on the specific classloader situation.
@@ -120,7 +118,7 @@ public class ResourceUtil
      */
     public static Properties getProperties(Class clazz) throws IOException, MissingResourceException
     {
-        return getProperties(clazz, ClassUtils.getShortClassName(clazz));
+        return getProperties(clazz, ClassUtil.getShortClassName(clazz));
     }
 
     /**

@@ -2,6 +2,7 @@ package org.crosswire.common.swing;
 
 import java.awt.Color;
 import java.awt.Component;
+
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;

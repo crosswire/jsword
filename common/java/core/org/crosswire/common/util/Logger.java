@@ -1,8 +1,6 @@
 package org.crosswire.common.util;
 
-import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 
@@ -31,6 +29,7 @@ import java.util.logging.LogRecord;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM
  * @version $Id$
  */
 public final class Logger
@@ -163,7 +162,7 @@ public final class Logger
         String methodName = null;
         int lineNumber = -1;
         // Get the stack trace.
-        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+        StackTraceElement[] stack = (new Throwable()).getStackTrace();
         // First, search back to a method in the Logger class.
         int ix = 0;
         while (ix < stack.length)
@@ -206,17 +205,6 @@ public final class Logger
     {
         // Establish a class that will load logging properties into java.util.logging.LogManager
         System.setProperty("java.util.logging.config.class", LogConfig.class.getName()); //$NON-NLS-1$
-    }
-
-    /**
-     * This class will read the CWLogging.properties and load it into the java.util.logging.LogManager
-     */
-    static public class LogConfig
-    {
-        public LogConfig() throws SecurityException, IOException
-        {
-            LogManager.getLogManager().readConfiguration(ResourceUtil.getResourceAsStream("CWLogging.properties")); //$NON-NLS-1$
-        }
     }
 
     private static final String ROOT_LOGGER = ""; //$NON-NLS-1$

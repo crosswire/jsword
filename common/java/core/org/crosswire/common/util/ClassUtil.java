@@ -12,8 +12,6 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Various Java Class Utilities.
  * 
@@ -55,7 +53,7 @@ public class ClassUtil
     {
         String full = null;
 
-        String[] paths = StringUtils.split(classpath, File.pathSeparator);
+        String[] paths = StringUtil.split(classpath, File.pathSeparator);
         for (int i = 0; i < paths.length; i++)
         {
             // Search the jar
@@ -63,7 +61,7 @@ public class ClassUtil
             {
                 try
                 {
-                    String file_name = StringUtils.replace(classname, ".", "/") + EXTENSION_CLASS; //$NON-NLS-1$ //$NON-NLS-2$
+                    String file_name = classname.replace(',', '/') + EXTENSION_CLASS; //$NON-NLS-1$ //$NON-NLS-2$
                     ZipFile zip = new ZipFile(paths[i]);
                     ZipEntry entry = zip.getEntry(file_name);
 
@@ -87,7 +85,7 @@ public class ClassUtil
             else
             {
                 // Search for the file
-                String extra = StringUtils.replace(classname, ".", File.separator); //$NON-NLS-1$
+                String extra = classname.replace('.', File.separatorChar); //$NON-NLS-1$
 
                 if (!paths[i].endsWith(File.separator))
                 {
@@ -264,6 +262,81 @@ public class ClassUtil
         Class impl = getImplementor(clazz);
         return impl.newInstance();
     }
+
+    /**
+     * <p>Gets the class name minus the package name for an <code>Object</code>.</p>
+     * 
+     * @param object  the class to get the short name for, may be null
+     * @param valueIfNull  the value to return if null
+     * @return the class name of the object without the package name, or the null value
+     */
+    public static String getShortClassName(Object object, String valueIfNull)
+    {
+        if (object == null)
+        {
+            return valueIfNull;
+        }
+        return getShortClassName(object.getClass().getName());
+    }
+
+    /**
+     * <p>Gets the class name minus the package name from a <code>Class</code>.</p>
+     * 
+     * @param cls  the class to get the short name for, must not be
+     *  <code>null</code>
+     * @return the class name without the package name
+     * @throws IllegalArgumentException if the class is <code>null</code>
+     */
+    public static String getShortClassName(Class cls)
+    {
+        if (cls == null)
+        {
+            throw new IllegalArgumentException("The class must not be null"); //$NON-NLS-1$
+        }
+        return getShortClassName(cls.getName());
+    }
+
+    /**
+     * <p>Gets the class name minus the package name from a String.</p>
+     *
+     * <p>The string passed in is assumed to be a class name - it is not checked.</p>
+     * 
+     * @param className  the className to get the short name for,
+     *  must not be empty or <code>null</code>
+     * @return the class name of the class without the package name
+     * @throws IllegalArgumentException if the className is empty
+     */
+    public static String getShortClassName(String className)
+    {
+        if (className == null || className.length() == 0)
+        {
+            throw new IllegalArgumentException("The class name must not be empty"); //$NON-NLS-1$
+        }
+        char[] chars = className.toCharArray();
+        int lastDot = 0;
+        for (int i = 0; i < chars.length; i++)
+        {
+            if (chars[i] == PACKAGE_SEPARATOR_CHAR)
+            {
+                lastDot = i + 1;
+            }
+            else if (chars[i] == INNER_CLASS_SEPARATOR_CHAR)
+            {
+                chars[i] = PACKAGE_SEPARATOR_CHAR;
+            }
+        }
+        return new String(chars, lastDot, chars.length - lastDot);
+    }
+
+    /**
+     * <p>The package separator character: <code>&#x2e;</code>.</p>
+     */
+    private static final char PACKAGE_SEPARATOR_CHAR = '.';
+
+    /**
+     * <p>The inner class separator character: <code>$</code>.</p>
+     */
+    private static final char INNER_CLASS_SEPARATOR_CHAR = '$';
 
     private static final String EXTENSION_CLASS = ".class"; //$NON-NLS-1$
     private static final String EXTENSION_JAR = ".jar"; //$NON-NLS-1$

@@ -35,79 +35,83 @@ import javax.swing.table.TableColumn;
  * 
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class SortRenderer extends DefaultTableCellRenderer {
+public class SortRenderer extends DefaultTableCellRenderer
+{
 
-	/**
-	 * Field pressedColumn
-	 */
-	private TableColumn pressedColumn;
-	/**
-	 * Field model
-	 */
-	private RowTableModel model;
+    /**
+     * Field pressedColumn
+     */
+    private TableColumn pressedColumn;
+    /**
+     * Field model
+     */
+    private RowTableModel model;
 
-	/**
-	 * Constructor for SortRenderer
-	 * @param stm SegmentTableModel
-	 */
-	public SortRenderer(RowTableModel stm) {
-		model = stm;
-		pressedColumn = null;
-		setHorizontalAlignment(SwingConstants.CENTER);
-	}
+    /**
+     * Constructor for SortRenderer
+     * @param stm SegmentTableModel
+     */
+    public SortRenderer(RowTableModel stm)
+    {
+        model = stm;
+        pressedColumn = null;
+        setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
-	/**
-	 * Method getTableCellRendererComponent
-	 * @param table JTable
-	 * @param value Object
-	 * @param isSelected boolean
-	 * @param hasFocus boolean
-	 * @param row int
-	 * @param column int
-	 * @return Component
-	 */
-	public Component getTableCellRendererComponent(
-		JTable table,
-		Object value,
-		boolean isSelected,
-		boolean hasFocus,
-		int row,
-		int column) {
-		if (table != null) {
-			setToolTipText(model.getHeaderToolTip(column));
-			final JTableHeader header = table.getTableHeader();
-			final TableColumn tableColumn = table.getColumnModel().getColumn(column);
-			if (header != null) {
-				setForeground(header.getForeground());
-				setBackground(header.getBackground());
-				final Font headerFont = header.getFont();
-				if (tableColumn == pressedColumn) {
-					setFont(headerFont.deriveFont(Font.ITALIC));
-				} else {
-					setFont(headerFont);
-				}
-			}
-		}
+    /**
+     * Method getTableCellRendererComponent
+     * @param table JTable
+     * @param value Object
+     * @param isSelected boolean
+     * @param hasFocus boolean
+     * @param row int
+     * @param column int
+     * @return Component
+     */
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+    {
+        if (table != null)
+        {
+            setToolTipText(model.getHeaderToolTip(column));
+            final JTableHeader header = table.getTableHeader();
+            final TableColumn tableColumn = table.getColumnModel().getColumn(column);
+            if (header != null)
+            {
+                setForeground(header.getForeground());
+                setBackground(header.getBackground());
+                final Font headerFont = header.getFont();
+                if (tableColumn == pressedColumn)
+                {
+                    setFont(headerFont.deriveFont(Font.ITALIC));
+                }
+                else
+                {
+                    setFont(headerFont);
+                }
+            }
+        }
 
-		setText((value == null) ? "" : value.toString()); //$NON-NLS-1$
-		setBorder(UIManager.getBorder("TableHeader.cellBorder")); //$NON-NLS-1$
-		return this;
-	}
+        setText((value == null) ? "" : value.toString()); //$NON-NLS-1$
+        setBorder(UIManager.getBorder("TableHeader.cellBorder")); //$NON-NLS-1$
+        return this;
+    }
 
-	/**
-	 * Method getPressedColumn
-	 * @return the table column
-	 */
-	public TableColumn getPressedColumn() {
-		return pressedColumn;
-	}
+    /**
+     * Method getPressedColumn
+     * @return the table column
+     */
+    public TableColumn getPressedColumn()
+    {
+        return pressedColumn;
+    }
 
-	/**
-	 * Method setPressedColumn
-	 * @param tc the table column
-	 */
-	public void setPressedColumn(TableColumn tc) {
-		pressedColumn = tc;
-	}
+    /**
+     * Method setPressedColumn
+     * @param tc the table column
+     */
+    public void setPressedColumn(TableColumn tc)
+    {
+        pressedColumn = tc;
+    }
 
 }

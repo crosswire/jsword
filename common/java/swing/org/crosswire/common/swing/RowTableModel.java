@@ -64,7 +64,6 @@ public class RowTableModel extends AbstractTableModel
      * Builds a RowTable model for the provided (non-null) row list,
      * using the provided row column definition.
      * @param aList List
-     * @param aColumnModel RowColumns
      */
     public RowTableModel(List aList, RowColumns aRowColumnModel)
     {
@@ -233,7 +232,7 @@ public class RowTableModel extends AbstractTableModel
     // Bubble Sort!!! Replace if performance is an issue.
     /**
      * Method sort
-     * @param column int
+     * @param modelIndex int
      */
     public void sort(int modelIndex)
     {

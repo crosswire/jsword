@@ -7,7 +7,8 @@ import java.util.Iterator;
 import org.crosswire.common.swing.desktop.event.ViewEventListener;
 
 /**
- *
+ * Interface defining what is Viewable.
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

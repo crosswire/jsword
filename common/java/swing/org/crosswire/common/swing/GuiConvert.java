@@ -4,8 +4,8 @@ package org.crosswire.common.swing;
 import java.awt.Color;
 import java.awt.Font;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * Conversions between various types and Strings.
@@ -52,7 +52,7 @@ public class GuiConvert
             return null;
         }
 
-        String[] values = StringUtils.split(value, ","); //$NON-NLS-1$
+        String[] values = StringUtil.split(value, ","); //$NON-NLS-1$
         if (values.length != 3)
         {
             log.warn("Illegal font name: " + value); //$NON-NLS-1$

@@ -1,6 +1,7 @@
 package org.crosswire.common.swing;
 
 import java.io.File;
+
 import javax.swing.filechooser.FileFilter;
 
 /**

@@ -13,6 +13,8 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -32,8 +34,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.Reporter;
@@ -138,7 +138,15 @@ public class ExceptionPane extends JPanel
         JScrollPane textScroll = new JScrollPane(text);
         textScroll.setColumnHeaderView(label);
 
-        Throwable[] exs = ExceptionUtils.getThrowables(ex);
+        List causes = new ArrayList();
+        Throwable throwable = ex;
+        while (throwable != null)
+        {
+            causes.add(throwable);
+            throwable = throwable.getCause();
+        }
+        Throwable[] exs = (Throwable[]) causes.toArray(new Throwable[causes.size()]);
+
         final JComboBox traces = new JComboBox();
         traces.setModel(new DefaultComboBoxModel(exs));
         traces.addActionListener(new ActionListener()
@@ -300,7 +308,7 @@ public class ExceptionPane extends JPanel
             msg = Msg.NO_DESC.toString();
         }
         String orig = msg;
-        msg = StringUtils.replace(orig, "\n", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+        msg = orig.replaceAll("\n", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
 
         // The name of the exception
         /*
@@ -393,7 +401,7 @@ public class ExceptionPane extends JPanel
             mylabel.setText(Msg.NO_FILE.toString());
 
             // Find a file
-            name = File.separator + StringUtils.replace(orig, ".", Character.toString(File.separatorChar)) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
+            name = File.separator + orig.replace('.', File.separatorChar) + FileUtil.EXTENSION_JAVA; //$NON-NLS-1$ //$NON-NLS-2$
             for (int i = 0; i < sources.length; i++)
             {
                 File file = new File(sources[i], name);

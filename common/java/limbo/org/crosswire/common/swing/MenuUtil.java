@@ -18,7 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.apache.commons.lang.StringUtils;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * Various Menu creation utilities.
@@ -74,7 +74,7 @@ public class MenuUtil
     {
         JMenuBar menubar = new JMenuBar();
 
-        String[] menu_names = StringUtils.split(getResourceString("menubar")); //$NON-NLS-1$
+        String[] menu_names = StringUtil.split(getResourceString("menubar")); //$NON-NLS-1$
         for (int i=0; i<menu_names.length; i++)
         {
             JMenu menu = createMenu(menu_names[i]);
@@ -89,7 +89,7 @@ public class MenuUtil
      */
     public static JMenu createMenu(String name)
     {
-        String[] item_names = StringUtils.split(getResourceString(name));
+        String[] item_names = StringUtil.split(getResourceString(name));
         JMenu menu = new JMenu(getResourceString(name+SUFFIX_LABEL));
         for (int i=0; i<item_names.length; i++)
         {
@@ -165,7 +165,7 @@ public class MenuUtil
     public static Component createToolbar()
     {
         JToolBar toolbar = new JToolBar();
-        String[] toolKeys = StringUtils.split(getResourceString("toolbar")); //$NON-NLS-1$
+        String[] toolKeys = StringUtil.split(getResourceString("toolbar")); //$NON-NLS-1$
         for (int i = 0; i < toolKeys.length; i++)
         {
             if (toolKeys[i].equals("-")) //$NON-NLS-1$

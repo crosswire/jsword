@@ -48,8 +48,8 @@ public class MDIViewLayout extends ViewLayout
     public MDIViewLayout()
     {
         super();
-	    desk = new JDesktopPane();
-	    getPanel().add(desk, getConstraint());
+        desk = new JDesktopPane();
+        getPanel().add(desk, getConstraint());
     }
 
 
@@ -104,7 +104,7 @@ public class MDIViewLayout extends ViewLayout
             iframe.setVisible(true);
         }
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.common.swing.desktop.ViewLayout#forceRemoveView(java.awt.Component)
      */
@@ -165,7 +165,7 @@ public class MDIViewLayout extends ViewLayout
         Container contentPane = frame.getContentPane();
         if (contentPane.getComponentCount() > 0)
         {
-            return contentPane.getComponent(0);            
+            return contentPane.getComponent(0);
         }
         return null;
     }
@@ -251,7 +251,7 @@ public class MDIViewLayout extends ViewLayout
                 }
             }
         }
-        
+
     }
 
     /**

@@ -4,8 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Unscramble the current stack, and present the data from it to the
  * user in various forms. This code is slightly dodgy in that it
@@ -62,7 +60,7 @@ public final class StackTrace
         StringWriter str = new StringWriter();
         ex.printStackTrace(new PrintWriter(str));
         String msg = new String(str.getBuffer());
-        String[] calls = StringUtils.split(msg, "\n\r"); //$NON-NLS-1$
+        String[] calls = StringUtil.split(msg, "\n\r"); //$NON-NLS-1$
 
         class_names = new String[calls.length - disgard];
         method_names = new String[calls.length - disgard];
@@ -83,7 +81,7 @@ public final class StackTrace
                 String full_fn = call.substring(spc_index + 1, lhs_index).trim();
                 int last_dot = full_fn.lastIndexOf('.');
 
-                class_names[i] = StringUtils.replace(full_fn.substring(0, last_dot), "/", "."); //$NON-NLS-1$ //$NON-NLS-2$
+                class_names[i] = full_fn.substring(0, last_dot).replace('/', '.'); //$NON-NLS-1$ //$NON-NLS-2$
                 method_names[i] = full_fn.substring(last_dot + 1);
 
                 if (cln_index != -1)

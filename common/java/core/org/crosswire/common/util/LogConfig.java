@@ -1,7 +1,10 @@
 package org.crosswire.common.util;
 
+import java.io.IOException;
+import java.util.logging.LogManager;
+
 /**
- * A RowProcessor processes a single row consisting of an array of objects.
+ * Loads a java logging configuration file using the JSword methodology.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -24,13 +27,10 @@ package org.crosswire.common.util;
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public interface RowProcessor
+public class LogConfig
 {
-
-    /**
-     * Process a row of Objects making up a line.
-     * @param row the row to handle
-     */
-    public void process(Object[] row);
-
+    public LogConfig() throws SecurityException, IOException
+    {
+        LogManager.getLogManager().readConfiguration(ResourceUtil.getResourceAsStream("CWLogging.properties")); //$NON-NLS-1$
+    }
 }

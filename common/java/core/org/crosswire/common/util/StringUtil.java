@@ -3,8 +3,8 @@ package org.crosswire.common.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A generic class of String utils.
@@ -126,7 +126,7 @@ public final class StringUtil
      */
     public static String getInitials(String sentence)
     {
-        String[] words = StringUtils.split(sentence);
+        String[] words = StringUtil.split(sentence);
 
         StringBuffer retcode = new StringBuffer();
         for (int i = 0; i < words.length; i++)
@@ -151,4 +151,309 @@ public final class StringUtil
 
         return retcode.toString();
     }
+
+    /**
+     * <p>Splits the provided text into an array, using whitespace as the
+     * separator.
+     * Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+     *
+     * <p>The separator is not included in the returned String array.
+     * Adjacent separators are treated as one separator.</p>
+     * 
+     * <p>A <code>null</code> input String returns <code>null</code>.</p>
+     *
+     * <pre>
+     * StringUtils.split(null)       = null
+     * StringUtils.split("")         = []
+     * StringUtils.split("abc def")  = ["abc", "def"]
+     * StringUtils.split("abc  def") = ["abc", "def"]
+     * StringUtils.split(" abc ")    = ["abc"]
+     * </pre>
+     * 
+     * @param str  the String to parse, may be null
+     * @return an array of parsed Strings, <code>null</code> if null String input
+     */
+    public static String[] split(String str)
+    {
+        return split(str, null, -1);
+    }
+
+    /**
+     * <p>Splits the provided text into an array, separator specified.
+     * This is an alternative to using StringTokenizer.</p>
+     *
+     * <p>The separator is not included in the returned String array.
+     * Adjacent separators are treated as one separator.</p>
+     * 
+     * <p>A <code>null</code> input String returns <code>null</code>.</p>
+     *
+     * <pre>
+     * StringUtils.split(null, *)         = null
+     * StringUtils.split("", *)           = []
+     * StringUtils.split("a.b.c", '.')    = ["a", "b", "c"]
+     * StringUtils.split("a..b.c", '.')   = ["a", "b", "c"]
+     * StringUtils.split("a:b:c", '.')    = ["a:b:c"]
+     * StringUtils.split("a\tb\nc", null) = ["a", "b", "c"]
+     * StringUtils.split("a b c", ' ')    = ["a", "b", "c"]
+     * </pre>
+     * 
+     * @param str  the String to parse, may be null
+     * @param separatorChar  the character used as the delimiter,
+     *  <code>null</code> splits on whitespace
+     * @return an array of parsed Strings, <code>null</code> if null String input
+     * @since 2.0
+     */
+    public static String[] split(String str, char separatorChar)
+    {
+        // Performance tuned for 2.0 (JDK1.4)
+
+        if (str == null)
+        {
+            return null;
+        }
+        int len = str.length();
+        if (len == 0)
+        {
+            return EMPTY_STRING_ARRAY;
+        }
+        List list = new ArrayList();
+        int i = 0;
+        int start = 0;
+        boolean match = false;
+        while (i < len)
+        {
+            if (str.charAt(i) == separatorChar)
+            {
+                if (match)
+                {
+                    list.add(str.substring(start, i));
+                    match = false;
+                }
+                start = ++i;
+                continue;
+            }
+            match = true;
+            i++;
+        }
+        if (match)
+        {
+            list.add(str.substring(start, i));
+        }
+        return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * <p>Splits the provided text into an array, separators specified.
+     * This is an alternative to using StringTokenizer.</p>
+     *
+     * <p>The separator is not included in the returned String array.
+     * Adjacent separators are treated as one separator.</p>
+     * 
+     * <p>A <code>null</code> input String returns <code>null</code>.
+     * A <code>null</code> separatorChars splits on whitespace.</p>
+     *
+     * <pre>
+     * StringUtils.split(null, *)         = null
+     * StringUtils.split("", *)           = []
+     * StringUtils.split("abc def", null) = ["abc", "def"]
+     * StringUtils.split("abc def", " ")  = ["abc", "def"]
+     * StringUtils.split("abc  def", " ") = ["abc", "def"]
+     * StringUtils.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
+     * </pre>
+     * 
+     * @param str  the String to parse, may be null
+     * @param separatorChars  the characters used as the delimiters,
+     *  <code>null</code> splits on whitespace
+     * @return an array of parsed Strings, <code>null</code> if null String input
+     */
+    public static String[] split(String str, String separatorChars)
+    {
+        return split(str, separatorChars, -1);
+    }
+
+    /**
+     * <p>Splits the provided text into an array, separators specified.
+     * This is an alternative to using StringTokenizer.</p>
+     *
+     * <p>The separator is not included in the returned String array.
+     * Adjacent separators are treated as one separator.</p>
+     *
+     * <p>A <code>null</code> input String returns <code>null</code>.
+     * A <code>null</code> separatorChars splits on whitespace.</p>
+     * 
+     * <pre>
+     * StringUtils.split(null, *, *)            = null
+     * StringUtils.split("", *, *)              = []
+     * StringUtils.split("ab de fg", null, 0)   = ["ab", "cd", "ef"]
+     * StringUtils.split("ab   de fg", null, 0) = ["ab", "cd", "ef"]
+     * StringUtils.split("ab:cd:ef", ":", 0)    = ["ab", "cd", "ef"]
+     * StringUtils.split("ab:cd:ef", ":", 2)    = ["ab", "cdef"]
+     * </pre>
+     * 
+     * @param str  the String to parse, may be null
+     * @param separatorChars  the characters used as the delimiters,
+     *  <code>null</code> splits on whitespace
+     * @param max  the maximum number of elements to include in the
+     *  array. A zero or negative value implies no limit
+     * @return an array of parsed Strings, <code>null</code> if null String input
+     */
+    public static String[] split(String str, String separatorChars, int max)
+    {
+        // Performance tuned for 2.0 (JDK1.4)
+        // Direct code is quicker than StringTokenizer.
+        // Also, StringTokenizer uses isSpace() not isWhitespace()
+
+        if (str == null)
+        {
+            return null;
+        }
+        int len = str.length();
+        if (len == 0)
+        {
+            return EMPTY_STRING_ARRAY;
+        }
+        List list = new ArrayList();
+        int sizePlus1 = 1;
+        int i = 0;
+        int start = 0;
+        boolean match = false;
+        if (separatorChars == null)
+        {
+            // Null separator means use whitespace
+            while (i < len)
+            {
+                if (Character.isWhitespace(str.charAt(i)))
+                {
+                    if (match)
+                    {
+                        if (sizePlus1++ == max)
+                        {
+                            i = len;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                match = true;
+                i++;
+            }
+        }
+        else if (separatorChars.length() == 1)
+        {
+            // Optimise 1 character case
+            char sep = separatorChars.charAt(0);
+            while (i < len)
+            {
+                if (str.charAt(i) == sep)
+                {
+                    if (match)
+                    {
+                        if (sizePlus1++ == max)
+                        {
+                            i = len;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                match = true;
+                i++;
+            }
+        }
+        else
+        {
+            // standard case
+            while (i < len)
+            {
+                if (separatorChars.indexOf(str.charAt(i)) >= 0)
+                {
+                    if (match)
+                    {
+                        if (sizePlus1++ == max)
+                        {
+                            i = len;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                match = true;
+                i++;
+            }
+        }
+        if (match)
+        {
+            list.add(str.substring(start, i));
+        }
+        return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * <p>Joins the elements of the provided array into a single String
+     * containing the provided list of elements.</p>
+     *
+     * <p>No delimiter is added before or after the list.
+     * A <code>null</code> separator is the same as an empty String (""). 
+     * Null objects or empty strings within the array are represented by 
+     * empty strings.</p>
+     *
+     * <pre>
+     * StringUtils.join(null, *)                = null
+     * StringUtils.join([], *)                  = ""
+     * StringUtils.join([null], *)              = ""
+     * StringUtils.join(["a", "b", "c"], "--")  = "a--b--c"
+     * StringUtils.join(["a", "b", "c"], null)  = "abc"
+     * StringUtils.join(["a", "b", "c"], "")    = "abc"
+     * StringUtils.join([null, "", "a"], ',')   = ",,a"
+     * </pre>
+     *
+     * @param array  the array of values to join together, may be null
+     * @param separator  the separator character to use, null treated as ""
+     * @return the joined String, <code>null</code> if null array input
+     */
+    public static String join(Object[] array, String separator)
+    {
+        if (array == null)
+        {
+            return null;
+        }
+        if (separator == null)
+        {
+            separator = ""; //$NON-NLS-1$
+        }
+        int arraySize = array.length;
+
+        // ArraySize ==  0: Len = 0
+        // ArraySize > 0:   Len = NofStrings *(len(firstString) + len(separator))
+        //           (Assuming that all Strings are roughly equally long)
+        int bufSize = arraySize == 0 ? 0 : arraySize
+                        * ((array[0] == null ? 16 : array[0].toString().length()) + (separator != null ? separator.length() : 0));
+
+        StringBuffer buf = new StringBuffer(bufSize);
+
+        for (int i = 0; i < arraySize; i++)
+        {
+            if (separator != null && (i > 0))
+            {
+                buf.append(separator);
+            }
+            if (array[i] != null)
+            {
+                buf.append(array[i]);
+            }
+        }
+        return buf.toString();
+    }
+
+    /**
+     * An empty immutable <code>String</code> array.
+     */
+    public static final String[] EMPTY_STRING_ARRAY = new String[0];
+
 }

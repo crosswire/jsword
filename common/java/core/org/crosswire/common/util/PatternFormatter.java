@@ -9,15 +9,19 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 /**
- * {0} is the Date
- * {1} is the name of the logger
- * {2} is the level of the record
- * {3} is the message
- * {4} is the throwable
- * {5} is the class name (typically the same as the logger's name)
- * {6} is the method name
- * {7} is the line number
- * {8} is the system supplied new line
+ * Formats a log entry by pattern.
+ * <p>
+ * <ul>
+ * <li>{0} is the Date</li>
+ * <li>{1} is the name of the logger</li>
+ * <li>{2} is the level of the record</li>
+ * <li>{3} is the message</li>
+ * <li>{4} is the throwable</li>
+ * <li>{5} is the class name (typically the same as the logger's name)</li>
+ * <li>{6} is the method name</li>
+ * <li>{7} is the line number</li>
+ * <li>{8} is the system supplied new line</li>
+ * </ul>
  *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -43,14 +47,6 @@ import java.util.logging.LogRecord;
 public class PatternFormatter extends Formatter
 {
 
-    Date dat = new Date();
-    private final static String DEFAULT_FORMAT = "{1}({2}): {3}{8}"; //$NON-NLS-1$
-    private MessageFormat formatter;
-
-    // Line separator string.  This is the value of the line.separator
-    // property at the moment that the PatternFormatter was created.
-    private String lineSeparator = (String) java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator")); //$NON-NLS-1$
-
     /**
      * Format the given LogRecord.
      * @param record the log record to be formatted.
@@ -73,6 +69,7 @@ public class PatternFormatter extends Formatter
             }
             catch (Exception ex)
             {
+                assert false;
             }
         }
         String format = LogManager.getLogManager().getProperty(PatternFormatter.class.getName() + ".format"); //$NON-NLS-1$
@@ -84,7 +81,7 @@ public class PatternFormatter extends Formatter
             String aLoggerName = aLogger.getName();
             if (aLoggerName != null)
             {
-                property = LogManager.getLogManager().getProperty(aLoggerName+ ".format"); //$NON-NLS-1$
+                property = LogManager.getLogManager().getProperty(aLoggerName + ".format"); //$NON-NLS-1$
             }
             if (property != null)
             {
@@ -98,20 +95,21 @@ public class PatternFormatter extends Formatter
         }
         Object[] args =
         {
-                        dat, 
-                        record.getLoggerName(),
-                        record.getLevel().getLocalizedName(),
-                        formatMessage(record),
-                        throwable,
-                        record.getSourceClassName(),
-                        record.getSourceMethodName(),
-                        new Long(record.getSequenceNumber()),
-                        lineSeparator
+                        dat, record.getLoggerName(), record.getLevel().getLocalizedName(), formatMessage(record), throwable, record.getSourceClassName(),
+                        record.getSourceMethodName(), new Long(record.getSequenceNumber()), lineSeparator
         };
         StringBuffer text = new StringBuffer();
         formatter = new MessageFormat(format);
         formatter.format(args, text, null);
         return text.toString();
     }
+
+    private Date dat = new Date();
+    private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8}"; //$NON-NLS-1$
+    private MessageFormat formatter;
+
+    // Line separator string.  This is the value of the line.separator
+    // property at the moment that the PatternFormatter was created.
+    private String lineSeparator = (String) java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator")); //$NON-NLS-1$
 
 }

@@ -3,8 +3,6 @@ package org.crosswire.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Various utilities for examining the running Threads and
  * controlling their execution.
@@ -179,6 +177,9 @@ public class ThreadUtil
      */
     private static void addItem(List vec, int depth, String item)
     {
-        vec.add(StringUtils.leftPad("", depth * 2) + item); //$NON-NLS-1$
+        vec.add(PADDING.substring(0, depth * 2) + item); //$NON-NLS-1$
     }
+
+    private static final String PADDING = "                                                                "; //$NON-NLS-1$
+
 }

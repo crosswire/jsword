@@ -33,13 +33,13 @@
     =========================================================================-->
   <patternset id="external.runtime.jars">
     <include name="**/jdom.jar"/>
-    <include name="**/log4j*.jar"/>
-    <include name="**/commons-lang-*.jar"/>
+    <!-- include name="**/log4j*.jar"/ -->
+    <!-- include name="**/commons-lang-*.jar"/ -->
     <include name="**/commons-net-*.jar"/>
     <include name="**/lucene-*.jar"/>
     <include name="**/activation.jar"/>
     <!-- include name="**/tar.jar"/ -->
-    <include name="**/winlaf-*.jar"/>
+    <!-- include name="**/winlaf-*.jar"/ -->
     <include name="**/jlfgr-*.jar"/>
     <include name="**/servlet.jar"/>
   </patternset>

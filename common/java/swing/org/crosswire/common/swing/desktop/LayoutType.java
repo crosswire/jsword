@@ -91,7 +91,7 @@ public abstract class LayoutType implements Serializable
      * @return the created view layout
      */
     public abstract ViewLayout createLayout();
-    
+
     /**
      * Get an integer representation for this LayoutType
      */

@@ -17,9 +17,9 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * The ActionFactory is responsible for creating CWActions
@@ -269,7 +269,7 @@ public class ActionFactory implements ActionListener
         String acceleratorStr = getOptionalActionString(resources, actionName, Action.ACCELERATOR_KEY);
         if (acceleratorStr != null && acceleratorStr.length() > 0)
         {
-            String[] modifiers = StringUtils.split(getActionString(resources, actionName, Action.ACCELERATOR_KEY + ".Modifiers"), ','); //$NON-NLS-1$
+            String[] modifiers = StringUtil.split(getActionString(resources, actionName, Action.ACCELERATOR_KEY + ".Modifiers"), ','); //$NON-NLS-1$
 
             try
             {

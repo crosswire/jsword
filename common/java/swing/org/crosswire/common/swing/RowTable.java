@@ -19,6 +19,7 @@
  * Copyright: 2004
  */
 package org.crosswire.common.swing;
+
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -66,7 +67,7 @@ public class RowTable extends JTable
         setSortRenderer();
 
         // Don't display vertical lines in table
-        //		getColumnModel().setColumnMargin(0);
+        // getColumnModel().setColumnMargin(0);
 
         setColumnWidths(columns.getCharacterWidths(), columns.getFixedWidths());
 
@@ -140,7 +141,7 @@ public class RowTable extends JTable
         if (first != -1)
         {
             final Rectangle bounds = getRowBounds(aTable, first, last);
-            if (isVerticallyVisible(aTable, bounds) == false)
+            if (!isVerticallyVisible(aTable, bounds))
             {
                 // Is SwingUtilities.invokeLater needed ???
                 aTable.scrollRectToVisible(bounds);
@@ -227,7 +228,7 @@ public class RowTable extends JTable
     private void setSortRenderer()
     {
         final TableCellRenderer sortRenderer = new SortRenderer((RowTableModel) getModel());
-        //		TableCellRenderer rowRenderer = new RowRenderer();
+        // TableCellRenderer rowRenderer = new RowRenderer();
         final TableColumnModel model = getColumnModel();
         final int colCount = model.getColumnCount();
         TableColumn tc = null;

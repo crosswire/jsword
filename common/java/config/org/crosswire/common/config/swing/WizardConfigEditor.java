@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.swing.ActionFactory;
 import org.crosswire.common.swing.EdgeBorder;
 import org.crosswire.common.swing.FormPane;
@@ -96,7 +95,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
                 wcards++;
 
                 // The name for the title bar
-                names.add(StringUtils.replaceChars(path, '.', ' ')); //$NON-NLS-1$ //$NON-NLS-2$
+                names.add(path.replace('.', ' ')); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

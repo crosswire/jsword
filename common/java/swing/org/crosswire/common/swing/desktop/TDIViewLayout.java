@@ -73,7 +73,6 @@ public class TDIViewLayout extends ViewLayout
         super.addView(component);
     }
 
-    
     /* (non-Javadoc)
      * @see org.crosswire.common.swing.desktop.ViewLayout#removeView(java.awt.Component)
      */
@@ -119,18 +118,18 @@ public class TDIViewLayout extends ViewLayout
         }
         else
         {
-	        tabs.remove(component);
-	
-	        // There were two tabs and now there is one
-	        // We migrate from tabs to just the component
-	        if (viewCount == 2)
-	        {
-	            Component remaining = tabs.getComponentAt(0);
-	            // remove both tabs, because 0 will be reparented
-	            tabs.removeTabAt(0);
-	            getPanel().remove(tabs);
-	            getPanel().add(remaining, getConstraint());
-	        }
+            tabs.remove(component);
+
+            // There were two tabs and now there is one
+            // We migrate from tabs to just the component
+            if (viewCount == 2)
+            {
+                Component remaining = tabs.getComponentAt(0);
+                // remove both tabs, because 0 will be reparented
+                tabs.removeTabAt(0);
+                getPanel().remove(tabs);
+                getPanel().add(remaining, getConstraint());
+            }
         }
         super.forceRemoveView(component);
     }

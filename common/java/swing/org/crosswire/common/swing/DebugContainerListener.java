@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
-import org.apache.commons.lang.ClassUtils;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -120,7 +120,7 @@ public class DebugContainerListener implements ContainerListener
      */
     private String toString(Component parent)
     {
-        return ClassUtils.getShortClassName(parent, "Null") + "(" + parent.hashCode() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return ClassUtil.getShortClassName(parent, "Null") + "(" + parent.hashCode() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /* (non-Javadoc)

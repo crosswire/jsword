@@ -1,8 +1,8 @@
 
 package org.crosswire.common.config;
 
-import org.crosswire.common.util.MsgBase;
 import org.crosswire.common.util.LucidException;
+import org.crosswire.common.util.MsgBase;
 
 /**
  * Something in the startup config files failed to start properly.

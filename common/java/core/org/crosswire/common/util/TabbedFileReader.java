@@ -32,17 +32,25 @@ import java.net.URL;
  */
 public class TabbedFileReader
 {
-	/**
-	 * Process all the lines in the file.
-	 * @param fileName java.lang.String
-	 * @param columns int
-	 * @param lp lineProcessor
-	 * @throws IOException
-	 */
-	// Ideas: Add an array of index positions giving the columns that are useful
-	// Add an array of class types that the string is to become
-	static public void read(String fileName, int columns, RowProcessor lp)
-		throws IOException {
+    /**
+     * This is a utility class, so it should not be constructed.
+     *
+     */
+    private TabbedFileReader()
+    {
+    }
+
+    /**
+     * Process all the lines in the file.
+     * @param fileName java.lang.String
+     * @param columns int
+     * @param lp lineProcessor
+     * @throws IOException
+     */
+    // Ideas: Add an array of index positions giving the columns that are useful
+    // Add an array of class types that the string is to become
+    public static void read(String fileName, int columns, RowProcessor lp) throws IOException
+    {
         URL fileURL = ResourceUtil.getResource(fileName);
         FileReader reader = null;
         try
@@ -53,11 +61,11 @@ public class TabbedFileReader
         {
             reader = new FileReader(fileName);
         }
- 
+
         // open the file
         BufferedReader in = new BufferedReader(reader);
 
-        Object row[] = new Object[columns];
+        Object[] row = new Object[columns];
 
         // read the file a line at a time and send it to the
         // processor for processing
@@ -75,13 +83,13 @@ public class TabbedFileReader
                     throw new ArrayIndexOutOfBoundsException();
                 }
                 row[col] = line.substring(previousLoc, loc);
-                previousLoc = (loc + 1);
+                previousLoc = loc + 1;
             }
             row[lastColumn] = line.substring(previousLoc);
             lp.process(row);
         }
         // close the file
         in.close();
-	}
+    }
 
 }

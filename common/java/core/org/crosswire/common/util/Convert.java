@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Conversions between various types and Strings.
  * 
@@ -160,7 +158,7 @@ public class Convert
     {
         Map commands = new HashMap();
 
-        String[] data_arr = StringUtils.split(data, " "); //$NON-NLS-1$
+        String[] data_arr = StringUtil.split(data, " "); //$NON-NLS-1$
 
         for (int i = 0; i < data_arr.length; i++)
         {
@@ -242,7 +240,7 @@ public class Convert
      */
     public static String[] string2StringArray(String value, String separator)
     {
-        return StringUtils.split(value, separator);
+        return StringUtil.split(value, separator);
     }
 
     /**
@@ -252,7 +250,7 @@ public class Convert
      */
     public static String stringArray2String(String[] value, String separator)
     {
-        return StringUtils.join(value, separator);
+        return StringUtil.join(value, separator);
     }
 
     /**

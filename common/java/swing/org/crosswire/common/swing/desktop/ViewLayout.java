@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
-import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.swing.desktop.event.ViewEvent;
 import org.crosswire.common.swing.desktop.event.ViewEventListener;
 
@@ -224,7 +223,11 @@ public abstract class ViewLayout implements Viewable
             String title = view.getTitle();
             if (title != null && title.length() > 0)
             {
-                return StringUtils.abbreviate(title, MAX_TITLE_LEN);
+                if (title.length() <= MAX_TITLE_LEN)
+                {
+                    return title;
+                }
+                return title.substring(0, MAX_TITLE_LEN - 3) + "..."; //$NON-NLS-1$
             }
 
             // should set the title also

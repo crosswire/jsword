@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * The NetUtil class looks after general utility stuff around the
  * java.net package.
@@ -481,7 +479,7 @@ public class NetUtil
 
         // We still need to do the filtering
         List list = new ArrayList();
-        String[] names = StringUtils.split(contents, "\n"); //$NON-NLS-1$
+        String[] names = StringUtil.split(contents, "\n"); //$NON-NLS-1$
         for (int i = 0; i < names.length; i++)
         {
             // we need to trim, as we may have \r\n not \n
