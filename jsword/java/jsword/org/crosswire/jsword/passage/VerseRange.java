@@ -645,25 +645,98 @@ public class VerseRange implements VerseBase
     /**
      * The OSIS defined specification for this VerseRange.
      * Uses short books names, with "." as a verse part separator.
+     * NOTE(joe): This is technically wrong because we just have to list the
+     * verses separated by spaces, but that could get very messy, so I'm keeping
+     * things simple for the time being.
      * @return a String containing the OSIS description of the verses
      */
     public String getOSISName()
     {
-        // PENDING(joe): implement getOSISName() properly
-        return getName();
-    }
+        // Cache these we're going to be using them a lot.
+        int start_book = start.getBook();
+        int start_chapter = start.getChapter();
+        int start_verse = start.getVerse();
+        int end_book = end.getBook();
+        int end_chapter = end.getChapter();
+        int end_verse = end.getVerse();
 
-    /**
-     * The OSIS defined specification for this VerseRange.
-     * This method makes with the assumption that the specified Verse has just
-     * been output, so if we are in the same book, we do not need to display the
-     * book name, and so on.
-     * @return a String containing the OSIS description of the verses
-     */
-    public String getOSISName(Verse base)
-    {
-        // PENDING(joe): implement getOSISName() properly
-        return getName(base);
+        try
+        {
+            // If this is in 2 separate books
+            if (start_book != end_book)
+            {
+                // This range is exactly a whole book
+                if (isBooks())
+                {
+                    // Just report the name of the book, we don't need to worry about the
+                    // base since we start at the start of a book, and should have been
+                    // recently normalized()
+                    return BibleInfo.getOSISName(start_book)
+                         + RANGE_PREF_DELIM
+                         + BibleInfo.getOSISName(end_book);
+                }
+
+                // If this range is exactly a whole chapter
+                if (isChapters())
+                {
+                    // Just report book and chapter names
+                    return BibleInfo.getOSISName(start_book)
+                         + VERSE_OSIS_DELIM + start_chapter
+                         + RANGE_PREF_DELIM + BibleInfo.getOSISName(end_book)
+                         + VERSE_OSIS_DELIM + end_chapter;
+                }
+
+                return start.getOSISName() + RANGE_PREF_DELIM + end.getOSISName();
+            }
+
+            // This range is exactly a whole book
+            if (isBook())
+            {
+                // Just report the name of the book, we don't need to worry about the
+                // base since we start at the start of a book, and should have been
+                // recently normalized()
+                return BibleInfo.getOSISName(start_book);
+            }
+
+            // If this is 2 separate chapters
+            if (start_chapter != end_chapter)
+            {
+                // If this range is a whole number of chapters
+                if (isChapters())
+                {
+                    // Just report the name of the book and the chapters
+                    return BibleInfo.getOSISName(start_book)
+                         + VERSE_OSIS_DELIM + start_chapter
+                         + RANGE_PREF_DELIM + end_chapter;
+                }
+
+                return start.getOSISName()
+                     + RANGE_PREF_DELIM + end_chapter
+                     + VERSE_OSIS_DELIM + end_verse;
+            }
+
+            // If this range is exactly a whole chapter
+            if (isChapter())
+            {
+                // Just report the name of the book and the chapter
+                return BibleInfo.getOSISName(start_book)
+                     + VERSE_OSIS_DELIM + start_chapter;
+            }
+
+            // If this is 2 separate verses
+            if (start_verse != end_verse)
+            {
+                return start.getOSISName()
+                     + RANGE_PREF_DELIM + end_verse;
+            }
+
+            // The range is a single verse
+            return start.getOSISName();
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**

@@ -139,8 +139,19 @@ public abstract class AbstractPassage implements Passage
      */
     public String getOSISName()
     {
-        // PENDING(joe): implement getOSISName() properly
-        return getName();
+        StringBuffer retcode = new StringBuffer();
+
+        Iterator it = rangeIterator();
+        while (it.hasNext())
+        {
+            VerseRange range = (VerseRange) it.next();
+            retcode.append(range.getOSISName());
+
+            if (it.hasNext())
+                retcode.append(REF_OSIS_DELIM);
+        }
+
+        return retcode.toString();
     }
 
     /* (non-Javadoc)

@@ -54,15 +54,6 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, PassageC
     public String getOSISName();
 
     /**
-     * The OSIS defined specification for this Verse/VerseRange.
-     * This method makes with the assumption that the specified Verse has just
-     * been output, so if we are in the same book, we do not need to display the
-     * book name, and so on.
-     * @return a String containing the OSIS description of the verses
-     */
-    public String getOSISName(Verse base);
-
-    /**
      * Create an array of Verses.
      * See note on verseElements()
      * @return The array of verses that this makes up

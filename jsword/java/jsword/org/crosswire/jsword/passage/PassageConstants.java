@@ -112,4 +112,7 @@ public interface PassageConstants
 
     /** What characters should we use to separate VerseRanges in a Passage */
     public static final String REF_PREF_DELIM = ", ";
+
+    /** What characters should we use to separate VerseRanges in a Passage */
+    public static final String REF_OSIS_DELIM = " ";
 }

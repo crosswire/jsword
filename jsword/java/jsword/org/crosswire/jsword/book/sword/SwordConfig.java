@@ -314,7 +314,7 @@ public class SwordConfig
             return new SwordDictionaryMetaData(driver, this);
 
         case SwordConstants.DRIVER_RAW_GEN_BOOK:
-            // PENDING(joe): how do we support books?
+            // LATER(joe): how do we support books?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK in "+this.getName()+" desire="+(++desire_rawgenbook));
             throw new BookException(Msg.TYPE_UNSUPPORTED, new Object[] { new Integer(type) });
 

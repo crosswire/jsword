@@ -42,7 +42,7 @@ public class LZSSBackend implements Backend
      */
     public byte[] getRawText(Verse v) throws BookException
     {
-        // PENDING(joe): implement this
+        // LATER(joe): implement this
         return "lzss stub".getBytes();
     }
 }

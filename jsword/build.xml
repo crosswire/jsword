@@ -23,6 +23,7 @@
   <property name="target.jdepend" value="${target.root}/temp/jdepend"/>
   <property name="target.checkstyle" value="${target.root}/temp/checkstyle"/>
   <property name="target.javancss" value="${target.root}/temp/javancss"/>
+  <property name="target.clover" value="${target.root}/temp/clover"/>
   <property name="target.junit" value="${target.root}/temp/junit"/>
   <property name="target.swingui" value="${target.root}/swingui/jsword"/>
   <property name="target.download" value="${target.root}/download"/>
@@ -171,6 +172,7 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
+        <pathelement path="${ant.home}/lib/clover.jar"/>
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -187,8 +189,6 @@
       <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/osis"/>
       <fileset dir="${target.classes}/jsword"/>
-      <fileset dir="${target.classes}/sword"/>
-      <fileset dir="${target.classes}/map"/>
       <fileset dir="${target.classes}/swing"/>
       <fileset dir="${target.classes}/servlet"/>
     </jar>
@@ -198,8 +198,6 @@
       <srcfiles dir="${target.classes}/common"/>
       <srcfiles dir="${target.classes}/osis"/>
       <srcfiles dir="${target.classes}/jsword"/>
-      <srcfiles dir="${target.classes}/sword"/>
-      <srcfiles dir="${target.classes}/map"/>
       <srcfiles dir="${target.classes}/swing"/>
       <srcfiles dir="${target.classes}/servlet"/>
     </uptodate>
@@ -227,7 +225,7 @@
         <include name="jaxb-ri.jar"/>
         <include name="jaxb-libs.jar"/>
       </fileset>
-      <fileset dir="${target.jar}" includes="**/*.jar"/>
+      <fileset dir="${target.jar}" includes="jsword.jar"/>
     </copy>
     <mkdir dir="${target.swingui}/resource"/>
     <copy todir="${target.swingui}/resource">
@@ -292,7 +290,7 @@
   <target name="test" depends="compile" description="Run the standard test suite">
     <mkdir dir="${target.junit}"/>
     <echo message="If this fails you might need to:"/>
-    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar {ANT}/lib"/>
+    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar ${ant.home}/lib"/>
     <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
       <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
       <test name="CommonAllTests" todir="${target.junit}"/>
@@ -412,7 +410,7 @@
     <mkdir dir="${target.jdepend}"/>
     <mkdir dir="${target.web}/jdepend"/>
     <echo message="If this fails you might need to:"/>
-    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar {ANT}/lib"/>
+    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
     <!-- Why does this not work?
     <taskdef name="jdepend" classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
       <classpath>
@@ -502,7 +500,7 @@
   <!--=======================================================================-->
   <target name="web.javancss">
     <echo message="If this fails with a DTM ID exception you might need to:"/>
-    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar {ANT}/lib"/>
+    <echo message="copy ${basedir}/${source.tools}/jdepend24/jdepend.jar ${ant.home}/lib"/>
     <taskdef name="javancss" classname="javancss.JavancssAntTask">
       <classpath>
         <fileset dir="${source.tools}/javancss2141" includes="**/*.jar"/>
@@ -520,6 +518,13 @@
     	in="${target.javancss}/javancss_metrics.xml"
     	out="${target.web}/javancss/index.html"
     	style="${source.tools}/javancss2141/javancss2html.xsl"/>
+  </target>
+
+  <!--=======================================================================-->
+  <target name="clover">
+    <echo message="If this fails you might need to install clover:"/>
+    <taskdef resource="clovertasks"/>
+    <clover-setup initString="demo_coverage.db"/>
   </target>
 
   <!--=======================================================================-->

@@ -8,9 +8,9 @@
     >
 
 <xsl:template match="/jsp:root">
-  <version="1.2">
+  <jsp:root version="1.2">
     <xsl:apply-templates/>
-  </>
+  </jsp:root>
 </xsl:template>
 
 <xsl:template match="html:html">

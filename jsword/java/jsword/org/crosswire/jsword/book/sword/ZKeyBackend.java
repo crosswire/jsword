@@ -9,7 +9,7 @@ import org.crosswire.jsword.book.Key;
 
 /**
  * An implementation KeyBackend to read Z format files.
- * PENDING(joe): implement ZKeyBackend
+ * LATER(joe): implement ZKeyBackend
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

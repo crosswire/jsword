@@ -182,7 +182,7 @@ public class GZIPBackend implements Backend
                 // Read from the data file.
                 byte[] compressed = SwordUtil.readRAF(text_raf[testament], start, size);
 
-                // PENDING(joe): implement encryption?
+                // LATER(joe): implement encryption?
                 // byte[] decrypted = decrypt(compressed);
 
                 uncompr = SwordUtil.uncompress(compressed, endsize);

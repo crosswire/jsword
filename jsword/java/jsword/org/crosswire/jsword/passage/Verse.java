@@ -274,36 +274,14 @@ public class Verse implements VerseBase
      */
     public String getOSISName()
     {
-        // PENDING(joe): test getOSISName() properly
         try
         {
-            // To cope with thing like Jude 2...
-            if (BibleInfo.chaptersInBook(book) == 1)
-            {
-                return BibleInfo.getOSISName(book) + VERSE_OSIS_DELIM + verse;
-            }
-            else
-            {
-                return BibleInfo.getOSISName(book) + VERSE_OSIS_DELIM + chapter + VERSE_OSIS_DELIM + verse;
-            }
+            return BibleInfo.getOSISName(book) + VERSE_OSIS_DELIM + chapter + VERSE_OSIS_DELIM + verse;
         }
-        catch (Exception ex)
+        catch (NoSuchVerseException ex)
         {
             throw new LogicError(ex);
         }
-    }
-
-    /**
-     * The OSIS defined specification for this Verse.
-     * This method makes with the assumption that the specified Verse has just
-     * been output, so if we are in the same book, we do not need to display the
-     * book name, and so on.
-     * @return a String containing the OSIS description of the verses
-     */
-    public String getOSISName(Verse base)
-    {
-        // PENDING(joe): implement getOSISName() properly
-        return getName(base);
     }
 
     /**
