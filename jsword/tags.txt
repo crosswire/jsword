@@ -1,10 +1,10 @@
-
 TODO: Short term note to self
 URGENT: High priority bug to fix
 PENDING: Issue that needs fixing before next release
 NOTE: Something to thing about when we are next editing this code
 LATER: An issue that we don't need to think about until the next release
 BUG: Something isn't quite right but it isn't a serious problem
+DEAD: The class or method is not used. Or it is only used by something that is not used.
 
 SPEED: When we need to optimize - there is something that we could do here
 I18N: Take note of this when we complete internationalization

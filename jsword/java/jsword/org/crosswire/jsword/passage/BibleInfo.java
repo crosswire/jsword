@@ -1,9 +1,11 @@
 package org.crosswire.jsword.passage;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.Reporter;
+import org.apache.commons.lang.StringUtils;
+
+import org.crosswire.common.util.CWClassLoader;
 
 /**
  * BibleInfo is a static class that deals with Book number conversions and similar.
@@ -36,11 +38,95 @@ import org.crosswire.common.util.Reporter;
  */
 public class BibleInfo
 {
+    private static final String FULL_KEY = "BibleInfo.Full."; //$NON-NLS-1$
+    private static final String SHORT_KEY = "BibleInfo.Short."; //$NON-NLS-1$
+    private static final String ALT_KEY = "BibleInfo.Alt."; //$NON-NLS-1$
+    private static final String SECTION_KEY = "BibleInfo.Sections."; //$NON-NLS-1$
+    private static final String OSIS_KEY = "BibleInfo.OSIS."; //$NON-NLS-1$
+    private static final String OSIS_PROPERTIES = "OSISNames"; //$NON-NLS-1$
+
     /**
-     * Ensure that we can not be instansiated
+     * Ensure that we can not be instantiated
      */
     private BibleInfo()
     {
+        initialize();
+    }
+
+    /**
+     * Load up the resources for Bible book and section names,
+     * and cache the upper and lower versions of them.
+     */
+    private static void initialize()
+    {
+        // Create the book name arrays
+        full_books = new String[BOOKS_IN_BIBLE];
+        full_books_lower = new String[BOOKS_IN_BIBLE];
+        full_books_upper = new String[BOOKS_IN_BIBLE];
+
+        short_books = new String[BOOKS_IN_BIBLE];
+        short_books_lower = new String[BOOKS_IN_BIBLE];
+        short_books_upper = new String[BOOKS_IN_BIBLE];
+
+        alt_books = new String[BOOKS_IN_BIBLE][];
+        alt_books_lower = new String[BOOKS_IN_BIBLE][];
+
+        sections = new String[SECTIONS_IN_BIBLE];
+        sections_lower = new String[SECTIONS_IN_BIBLE];
+        sections_upper = new String[SECTIONS_IN_BIBLE];
+        
+        osis_books = new String[BOOKS_IN_BIBLE];
+
+        ResourceBundle resources = ResourceBundle.getBundle(BibleInfo.class.getName(), Locale.getDefault(), new CWClassLoader(BibleInfo.class));
+
+        for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
+        {
+            String fullBook = getString(resources, FULL_KEY+(i+1));
+            full_books[i] = fullBook;
+            full_books_lower[i] = fullBook.toLowerCase();
+            full_books_upper[i] = fullBook.toUpperCase();
+            
+            String shortBook = getString(resources, SHORT_KEY+(i+1));
+            short_books[i] = shortBook;
+            short_books_lower[i] = shortBook.toLowerCase();
+            short_books_upper[i] = shortBook.toUpperCase();
+            
+            String altBook = getString(resources, ALT_KEY+(i+1));
+            alt_books[i] = StringUtils.split(altBook, ',');
+            alt_books_lower[i] = StringUtils.split(altBook.toLowerCase(), ',');
+        }
+
+        for (int i=0; i<SECTIONS_IN_BIBLE; i++)
+        {
+            String section = getString(resources, SECTION_KEY+(i+1));
+            sections[i] = section;
+            sections_lower[i] = section.toLowerCase();
+            sections_upper[i] = section.toUpperCase();
+        }
+
+        // Get all the OSIS standard book names
+        resources = ResourceBundle.getBundle(OSIS_PROPERTIES, Locale.getDefault(), new CWClassLoader(BibleInfo.class));
+
+        for (int i = 0; i < osis_books.length; i++)
+        {
+            osis_books[i] = getString(resources, OSIS_KEY + (i+1));
+        }
+    }
+
+    /*
+     * Helper to make the code more readable.
+     */
+    private static String getString(ResourceBundle resources, String key)
+    {
+        try
+        {
+            return resources.getString(key);
+        }
+        catch (Exception e)
+        {
+            assert false;
+        }
+        return null;
     }
 
     /**
@@ -168,7 +254,7 @@ public class BibleInfo
 
         // Check this isn't a number.
         // And that it does not start with any of the numeric book markers
-        if (!PassageUtil.containsLetter(find))
+        if (!containsLetter(find))
         {
             boolean numeric_book = false;
             for (int i=0; i<PassageConstants.VERSE_NUMERIC_BOOK.length; i++)
@@ -237,7 +323,7 @@ public class BibleInfo
     {
         String match = find.toLowerCase();
 
-        if (!PassageUtil.containsLetter(find)) return false;
+        if (!containsLetter(find)) return false;
 
         // This could be sped up with less of the toLowerCase()
         for (int i=0; i<full_books.length; i++)
@@ -602,7 +688,7 @@ public class BibleInfo
     {
         if (ref1.length != 3 || ref2.length != 3)
         {
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.BOOKS_ORDINAL));
+            throw new IllegalArgumentException(Msg.BOOKS_ORDINAL.toString());
         }
 
         return verseCount(ref1[0], ref1[1], ref1[2], ref2[0], ref2[1], ref2[2]);
@@ -754,6 +840,21 @@ public class BibleInfo
     }
 
     /**
+     * This is simply a convenience function to wrap Character.isLetter()
+     * @param text The string to be parsed
+     * @return true if the string contains letters
+     */
+    protected static boolean containsLetter(String text)
+    {
+        for (int i=0; i<text.length(); i++)
+        {
+            if (Character.isLetter(text.charAt(i))) return true;
+        }
+
+        return false;
+    }
+
+    /**
      * How the book names are reported
      */
     private static int book_case = PassageConstants.CASE_SENTANCE;
@@ -861,211 +962,47 @@ public class BibleInfo
     public static final int VERSE = 2;
 
     /** The full names of the book of the Bible, in mixed case */
-    private static String[] full_books =
-    {
-        "Genesis", //$NON-NLS-1$
-        "Exodus", //$NON-NLS-1$
-        "Leviticus", //$NON-NLS-1$
-        "Numbers", //$NON-NLS-1$
-        "Deuteronomy", //$NON-NLS-1$
-        "Joshua", //$NON-NLS-1$
-        "Judges", //$NON-NLS-1$
-        "Ruth", //$NON-NLS-1$
-        "1 Samuel", //$NON-NLS-1$
-        "2 Samuel", //$NON-NLS-1$
-        "1 Kings", //$NON-NLS-1$
-        "2 Kings", //$NON-NLS-1$
-        "1 Chronicles", //$NON-NLS-1$
-        "2 Chronicles", //$NON-NLS-1$
-        "Ezra", //$NON-NLS-1$
-        "Nehemiah", //$NON-NLS-1$
-        "Esther", //$NON-NLS-1$
-        "Job", //$NON-NLS-1$
-        "Psalms", //$NON-NLS-1$
-        "Proberbs", //$NON-NLS-1$
-        "Ecclesiastes", //$NON-NLS-1$
-        "Song of Solomon", //$NON-NLS-1$
-        "Isaiah", //$NON-NLS-1$
-        "Jeremiah", //$NON-NLS-1$
-        "Lamentations", //$NON-NLS-1$
-        "Ezekiel", //$NON-NLS-1$
-        "Daniel", //$NON-NLS-1$
-        "Hosea", //$NON-NLS-1$
-        "Joel", //$NON-NLS-1$
-        "Amos", //$NON-NLS-1$
-        "Obdiah", //$NON-NLS-1$
-        "Jonah", //$NON-NLS-1$
-        "Micah", //$NON-NLS-1$
-        "Nahum", //$NON-NLS-1$
-        "Habakuk", //$NON-NLS-1$
-        "Zephaniah", //$NON-NLS-1$
-        "Haggai", //$NON-NLS-1$
-        "Zechariah", //$NON-NLS-1$
-        "Malachi", //$NON-NLS-1$
-        "Matthew", //$NON-NLS-1$
-        "Mark", //$NON-NLS-1$
-        "Luke", //$NON-NLS-1$
-        "John", //$NON-NLS-1$
-        "Acts", //$NON-NLS-1$
-        "Romans", //$NON-NLS-1$
-        "1 Corinthians", //$NON-NLS-1$
-        "2 Corinthians", //$NON-NLS-1$
-        "Galatians", //$NON-NLS-1$
-        "Ephesians", //$NON-NLS-1$
-        "Philippians", //$NON-NLS-1$
-        "Colossians", //$NON-NLS-1$
-        "1 Thessalonians", //$NON-NLS-1$
-        "2 Thessalonians", //$NON-NLS-1$
-        "1 Timothy", //$NON-NLS-1$
-        "2 Timothy", //$NON-NLS-1$
-        "Titus", //$NON-NLS-1$
-        "Philemon", //$NON-NLS-1$
-        "Hebrews", //$NON-NLS-1$
-        "James", //$NON-NLS-1$
-        "1 Peter", //$NON-NLS-1$
-        "2 Peter", //$NON-NLS-1$
-        "1 John", //$NON-NLS-1$
-        "2 John", //$NON-NLS-1$
-        "3 John", //$NON-NLS-1$
-        "Jude", //$NON-NLS-1$
-        "Revelation", //$NON-NLS-1$
-    };
-
-    /** Standard shortened names for the book of the Bible, in mixed case */
-    private static String[] short_books =
-    {
-        "Gen",  "Exo",  "Lev",  "Num",  "Deu",  "Jos",  "Judg", "Rut",  "1Sa",  "2Sa", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-        "1Ki",  "2Ki",  "1Ch",  "2Ch",  "Ezr",  "Neh",  "Est",  "Job",  "Psa",  "Pro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-        "Ecc",  "Son",  "Isa",  "Jer",  "Lam",  "Eze",  "Dan",  "Hos",  "Joe",  "Amo", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-        "Obd",  "Jon",  "Mic",  "Nah",  "Hab",  "Zep",  "Hag",  "Zec",  "Mal",  "Mat", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-        "Mar",  "Luk",  "Joh",  "Act",  "Rom",  "1Co",  "2Co",  "Gal",  "Eph",  "Phili", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-        "Col",  "1Th",  "2Th",  "1Ti",  "2Ti",  "Tit",  "Phile", "Heb", "Jam",  "1Pe", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-        "2Pe",  "1Jo",  "2Jo",  "3Jo",  "Jude", "Rev", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-    };
-
-    /** Standard OSIS names for the book of the Bible, in mixed case */
-    private static String[] osis_books =
-    {
-        "Gen",    "Exod",   "Lev",    "Num",    "Deut",   "Josh",   "Judg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Ruth",   "1Sam",   "2Sam",   "1Kgs",   "2Kgs",   "1Chr",   "2Chr", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Ezra",   "Neh",    "Esth",   "Job",    "Pss",    "Prov",   "Eccl", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Song",   "Isa",    "Jer",    "Lam",    "Ezek",   "Dan",    "Hos", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Joel",   "Amos",   "Obad",   "Jonah",  "Mic",    "Nah",    "Hab", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Zeph",   "Hag",    "Zech",   "Mal",    "Matt",   "Mark",   "Luke", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "John",   "Acts",   "Rom",    "1Cor",   "2Cor",   "Gal",    "Eph", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Phil",   "Col",    "1Thess", "2Thess", "1Tim",   "2Tim",   "Titus", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "Phlm",   "Heb",    "Jas",    "1Pet",   "2Pet",   "1John",  "2John", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        "3John",  "Jude",   "Rev",   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    };
-
-    /** Alternative shortened names for the book of the Bible, in mixed case */
-    private static String[][] alt_books =
-    {
-        /* Gen */   { },
-        /* Exo */   { },
-        /* Lev */   { },
-        /* Num */   { },
-        /* Deu */   { "Dt" }, //$NON-NLS-1$
-        /* Jos */   { },
-        /* Judg */  { "Jdg" }, //$NON-NLS-1$
-        /* Rut */   { "Rth" }, //$NON-NLS-1$
-        /* 1Sa */   { },
-        /* 2Sa */   { },
-        /* 1Ki */   { "1Kgs" }, //$NON-NLS-1$
-        /* 2Ki */   { "2Kgs" }, //$NON-NLS-1$
-        /* 1Ch */   { "1Chr" }, //$NON-NLS-1$
-        /* 2Ch */   { "2Chr" }, //$NON-NLS-1$
-        /* Ezr */   { },
-        /* Neh */   { },
-        /* Est */   { },
-        /* Job */   { },
-        /* Psa */   { "Pss", "Ps" }, //$NON-NLS-1$ //$NON-NLS-2$
-        /* Pro */   { },
-        /* Ecc */   { "Qoh", }, //$NON-NLS-1$
-        /* Son */   { "SS", "Canticle", "Can" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        /* Isa */   { },
-        /* Jer */   { },
-        /* Lam */   { },
-        /* Eze */   { },
-        /* Dan */   { },
-        /* Hos */   { },
-        /* Joe */   { },
-        /* Amo */   { },
-        /* Obd */   { },
-        /* Jon */   { "Jnh" }, //$NON-NLS-1$
-        /* Mic */   { },
-        /* Nah */   { },
-        /* Hab */   { },
-        /* Zep */   { },
-        /* Hag */   { },
-        /* Zec */   { },
-        /* Mal */   { },
-        /* Mat */   { "Mt" }, //$NON-NLS-1$
-        /* Mar */   { "Mk" }, //$NON-NLS-1$
-        /* Luk */   { "Lk" }, //$NON-NLS-1$
-        /* Joh */   { "Jn", "Jhn" }, //$NON-NLS-1$ //$NON-NLS-2$
-        /* Act */   { },
-        /* Rom */   { },
-        /* 1Co */   { },
-        /* 2Co */   { },
-        /* Gal */   { },
-        /* Eph */   { },
-        /* Phili */ { "Php" }, //$NON-NLS-1$
-        /* Col */   { },
-        /* 1Th */   { },
-        /* 2Th */   { },
-        /* 1Ti */   { "1Tm" }, //$NON-NLS-1$
-        /* 2Ti */   { "2Tm" }, //$NON-NLS-1$
-        /* Tit */   { },
-        /* Phile */ { "Phm", "Phlm" }, //$NON-NLS-1$ //$NON-NLS-2$
-        /* Heb */   { },
-        /* Jam */   { "Jas" }, //$NON-NLS-1$
-        /* 1Pe */   { "1Pt" }, //$NON-NLS-1$
-        /* 2Pe */   { "1Pt" }, //$NON-NLS-1$
-        /* 1Jo */   { "1Jn" }, //$NON-NLS-1$
-        /* 2Jo */   { "2Jn" }, //$NON-NLS-1$
-        /* 3Jo */   { "3Jn" }, //$NON-NLS-1$
-        /* Jude */  { },
-        /* Rev */   { "Rv" }, //$NON-NLS-1$
-    };
-
-    /** Standard names for the sections */
-    private static String[] sections =
-    {
-        "Pentateuch", //$NON-NLS-1$
-        "History", //$NON-NLS-1$
-        "Poetry", //$NON-NLS-1$
-        "MajorProphets", //$NON-NLS-1$
-        "MinorProphets", //$NON-NLS-1$
-        "GospelsAndActs", //$NON-NLS-1$
-        "Letters", //$NON-NLS-1$
-        "Revelation", //$NON-NLS-1$
-    };
+    private static String[] full_books;
 
     /** The full names of the book of the Bible, in lower case, generated at run time */
     private static String[] full_books_lower;
 
-    /** Standard shortened names for the book of the Bible, in lower case, generated at run time */
-    private static String[] short_books_lower;
-
-    /** Alternative shortened names for the book of the Bible, in lower case, generated at run time */
-    private static String[][] alt_books_lower;
-
     /** The full names of the book of the Bible, in upper case, generated at run time */
     private static String[] full_books_upper;
+
+    /** Standard shortened names for the book of the Bible, in mixed case */
+    private static String[] short_books;
+
+    /** Standard shortened names for the book of the Bible, in lower case, generated at run time */
+    private static String[] short_books_lower;
 
     /** Standard shortened names for the book of the Bible, in upper case, generated at run time */
     private static String[] short_books_upper;
 
-    /** Standard Bible section names, in upper case, generated at run time */
-    private static String[] sections_upper;
+    /** Alternative shortened names for the book of the Bible, in mixed case */
+    private static String[][] alt_books;
 
-    /** Standard Bible section names, in lower case, generated at run time */
-    private static String[] sections_lower;
+    /** Alternative shortened names for the book of the Bible, in lower case, generated at run time */
+    private static String[][] alt_books_lower;
 
     /* Alternative shortened names for the book of the Bible, in upper case, generated at run time */
     // Not needed as the lower version was only there to speed up searching.
     // private static String[][] alt_books_upper;
+
+    /** Standard OSIS names for the book of the Bible, in mixed case */
+    private static String[] osis_books;
+
+    /** Standard names for the sections */
+    private static String[] sections;
+
+    /** Standard Bible section names, in lower case, generated at run time */
+    private static String[] sections_lower;
+
+    /** Standard Bible section names, in upper case, generated at run time */
+    private static String[] sections_upper;
+
+    /** Constant for the number of sections in the Bible */
+    private static final int SECTIONS_IN_BIBLE = 8;
 
     /** Constant for the number of books in the Bible */
     private static final int BOOKS_IN_BIBLE = 66;
@@ -1276,132 +1213,10 @@ public class BibleInfo
         1, // Revelation = 8;
     };
 
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(BibleInfo.class);
-
     /**
-     * Set up the Internationalization (Msg), and cache the upper and
-     * lower versions of the book names. I have not used I18Ned strings
-     * for this code, because it copes with Msg failures. The bad news
-     * is that a non-english speaker may have trouble understanding the
-     * error message.
+     * A singleton used to do initialization. Could be used to change static methods to non-static
      */
-    static
-    {
-        // LATER(joe): Move these from PassageUtil lookups into this class
-        // as a variant on the Msg/Enum theme.
-        String key = ""; //$NON-NLS-1$
-        boolean success = true;
-
-        for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
-        {
-            // Read any customized versions of the Book names
-            try
-            {
-                key = "books_long_"+(i+1); //$NON-NLS-1$
-                full_books[i] = PassageUtil.getResource(key);
-            }
-            catch (Exception ex)
-            {
-                reportError(key);
-                success = false;
-            }
-
-            try
-            {
-                key = "books_short_"+(i+1); //$NON-NLS-1$
-                short_books[i] = PassageUtil.getResource(key);
-            }
-            catch (Exception ex)
-            {
-                reportError(key);
-                success = false;
-            }
-
-            try
-            {
-                key = "books_alt_"+(i+1); //$NON-NLS-1$
-                alt_books[i] = PassageUtil.tokenize(PassageUtil.getResource(key), " "); //$NON-NLS-1$
-            }
-            catch (Exception ex)
-            {
-                reportError(key);
-                success = false;
-            }
-        }
-
-        for (int i=0; i<sections.length; i++)
-        {
-            try
-            {
-                key = "sections_"+(i+1); //$NON-NLS-1$
-                sections[i] = PassageUtil.getResource(key);
-            }
-            catch (Exception ex)
-            {
-                reportError(key);
-                success = false;
-            }
-        }
-
-        if (!success)
-        {    
-            Reporter.informUser(BibleInfo.class, Msg.RESOURCE_LOAD_FAIL);
-        }
-
-        // Create the book name arrays
-        full_books_lower = new String[BOOKS_IN_BIBLE];
-        short_books_lower = new String[BOOKS_IN_BIBLE];
-        full_books_upper = new String[BOOKS_IN_BIBLE];
-        short_books_upper = new String[BOOKS_IN_BIBLE];
-        alt_books_lower = new String[BOOKS_IN_BIBLE][];
-
-        sections_lower = new String[sections.length];
-        sections_upper = new String[sections.length];
-
-        for (int i=0; i<BibleInfo.BOOKS_IN_BIBLE; i++)
-        {
-            // Cache the upper and lower case versions of the book names
-            full_books_lower[i] = full_books[i].toLowerCase();
-            short_books_lower[i] = short_books[i].toLowerCase();
-            full_books_upper[i] = full_books[i].toUpperCase();
-            short_books_upper[i] = short_books[i].toUpperCase();
-
-            alt_books_lower[i] = new String[alt_books[i].length];
-            for (int j=0; j<alt_books[i].length; j++)
-            {
-                alt_books_lower[i][j] = alt_books[i][j].toLowerCase();
-            }
-        }
-
-        for (int i=0; i<sections.length; i++)
-        {
-            sections_lower[i] = sections[i].toLowerCase();
-            sections_upper[i] = sections[i].toUpperCase();
-        }
-    }
-
-    /**
-     * How many MissingResourceException have we reported
-     */
-    private static int reportedMREs = 0;
-
-    /**
-     * @param key The missing key to report on
-     */
-    private static void reportError(String key)
-    {
-        if (reportedMREs < 5)
-        {
-            log.debug("Can't find resource for '"+key+"' in Locale '" + Locale.getDefault().toString() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            reportedMREs++;
-            
-            if (reportedMREs == 5)
-            {
-                log.debug("Skipping further reports of missing resources."); //$NON-NLS-1$
-            }
-        }
-    }
+    protected static final BibleInfo instance = new BibleInfo();
 
     /**
      * This is the code used to create ordinal_at_start_of_chapter and

@@ -12,7 +12,6 @@ import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A manager to abstract out the non-view specific module installation tasks.
@@ -47,7 +46,7 @@ public class InstallManager
     {
         try
         {
-            Properties sitemap = Project.instance().getProperties(getClass().getName());
+            Properties sitemap = ResourceUtil.getProperties(getClass().getName());
             factories = ResourceUtil.getImplementorsMap(InstallerFactory.class);
 
             for (Iterator it = sitemap.keySet().iterator(); it.hasNext();)

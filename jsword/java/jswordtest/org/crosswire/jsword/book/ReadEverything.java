@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.util.Project;
@@ -51,7 +52,7 @@ public class ReadEverything
         Config config = new Config("Desktop Options"); //$NON-NLS-1$
         Document xmlconfig = Project.instance().getDocument("config"); //$NON-NLS-1$
         config.add(xmlconfig);
-        config.setProperties(Project.instance().getProperties("desktop")); //$NON-NLS-1$
+        config.setProperties(ResourceUtil.getProperties("desktop")); //$NON-NLS-1$
         config.localToApplication(true);
 
         // Loop through all the Bookks

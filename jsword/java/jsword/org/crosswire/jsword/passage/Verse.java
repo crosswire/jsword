@@ -164,7 +164,7 @@ public final class Verse implements VerseBase, Comparable
     {
         if (!patch_up)
         {
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_PATCH));
+            throw new IllegalArgumentException(Msg.ERROR_PATCH.toString());
         }
 
         originalName = null;

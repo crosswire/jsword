@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -89,7 +90,7 @@ public final class VerseRange implements VerseBase
         Verse vbasis = basis.getEnd();
 
         // Do we need this?
-        String[] parts = PassageUtil.tokenize(desc, PassageConstants.RANGE_ALLOWED_DELIMS);
+        String[] parts = StringUtils.split(desc, PassageConstants.RANGE_ALLOWED_DELIMS);
 
         switch (parts.length)
         {
@@ -574,7 +575,7 @@ public final class VerseRange implements VerseBase
     {
         if (!patchUp)
         {
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_PATCH));
+            throw new IllegalArgumentException(Msg.ERROR_PATCH.toString());
         }
 
         // Not sure that any of the code below (except verifyData() which may not stay there)
@@ -653,7 +654,7 @@ public final class VerseRange implements VerseBase
 
         if (blur_down < 0 || blur_up < 0)
         {
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURS));
+            throw new IllegalArgumentException(Msg.RANGE_BLURS.toString());
         }
 
         this.originalName = null;
@@ -688,10 +689,10 @@ public final class VerseRange implements VerseBase
             break;
 
         case PassageConstants.RESTRICT_BOOK:
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURBOOK));
+            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
 
         default:
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURNONE));
+            throw new IllegalArgumentException(Msg.RANGE_BLURNONE.toString());
         }
 
         verifyData();
@@ -716,7 +717,7 @@ public final class VerseRange implements VerseBase
 
         if (blur_down < 0 || blur_up < 0)
         {
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURS));
+            throw new IllegalArgumentException(Msg.RANGE_BLURS.toString());
         }
 
         this.originalName = null;
@@ -755,10 +756,10 @@ public final class VerseRange implements VerseBase
             break;
 
         case PassageConstants.RESTRICT_BOOK:
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURBOOK));
+            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
 
         default:
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.RANGE_BLURNONE));
+            throw new IllegalArgumentException(Msg.RANGE_BLURNONE.toString());
         }
 
         verifyData();

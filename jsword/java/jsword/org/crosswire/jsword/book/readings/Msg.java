@@ -28,14 +28,12 @@ import org.crosswire.common.util.MsgBase;
  */
 class Msg extends MsgBase
 {
-    static final Msg INIT_FAIL = new Msg("Failed to initialise Readings driver"); //$NON-NLS-1$
-    static final Msg PARSE_FAIL = new Msg("Failed to parse {0}"); //$NON-NLS-1$
-    static final Msg NOT_FOUND = new Msg("Key not found {0}"); //$NON-NLS-1$
-    static final Msg NOT_IMPLEMENTED = new Msg("Not implemented"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("Filtering input data failed."); //$NON-NLS-1$
-    static final Msg TITLE = new Msg("Readings"); //$NON-NLS-1$
-    static final Msg HEADING = new Msg("Readings for {0}"); //$NON-NLS-1$
-    static final Msg DECODE_ERROR = new Msg("Error decoding: {0}"); //$NON-NLS-1$
+    static final Msg NOT_FOUND = new Msg("ReadingsBook.NotFound"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("ReadingsBook.FilterFail"); //$NON-NLS-1$
+    static final Msg HEADING = new Msg("ReadingsBook.Heading"); //$NON-NLS-1$
+    static final Msg DECODE_ERROR = new Msg("ReadingsBook.DecodeError"); //$NON-NLS-1$
+    static final Msg TITLE = new Msg("ReadingsBookDriver.Title"); //$NON-NLS-1$
+    static final Msg PARSE_FAIL = new Msg("ReadingsKey.ParseFail"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

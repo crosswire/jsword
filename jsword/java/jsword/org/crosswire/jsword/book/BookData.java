@@ -9,7 +9,6 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.Validator;
 
-import org.crosswire.common.xml.JAXBSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Osis;

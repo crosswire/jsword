@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.osis.Cell;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.DivineName;
@@ -37,7 +38,6 @@ import org.crosswire.jsword.osis.Verse;
 import org.crosswire.jsword.osis.W;
 import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.util.Project;
 
 /**
  * Some simple utilities to help working with OSIS classes.
@@ -171,7 +171,7 @@ public class JAXBUtil
     {
         try
         {
-            Properties test = Project.instance().getProperties("org/crosswire/jsword/osis/jaxb"); //$NON-NLS-1$
+            Properties test = ResourceUtil.getProperties("org/crosswire/jsword/osis/jaxb"); //$NON-NLS-1$
             for (Iterator it = test.keySet().iterator(); it.hasNext();)
             {
                 String key = (String) it.next();

@@ -20,10 +20,6 @@ BookData Display
 Sword
 - unsupported Bibles are displayed in Bible list
 
-Other
-- split out swing packages, call Bible Desktop
-- split out web stuff, call jsword-web?
-
 Web
 - auto test for web demo
 
@@ -31,9 +27,6 @@ Install
 - save install sites
 - pop-up install dialog if no modules present
 - warning about web access in install
-
-SwingUI
-- make structure more like jnlp
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.8

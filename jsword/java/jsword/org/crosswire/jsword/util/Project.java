@@ -124,33 +124,6 @@ public class Project
             // in place of a more permanent solution.
             log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex); //$NON-NLS-1$
         }
-
-        try
-        {
-            InputStream in = ResourceUtil.getResourceAsStream(FILE_PROJECT);
-            projprop.load(in);
-        }
-        catch (IOException ex)
-        {
-            log.warn("Failed to load project.properties file", ex); //$NON-NLS-1$
-        }
-    }
-
-    /**
-     * The version of this project.
-     */
-    public String getVersion()
-    {
-        return projprop.getProperty("version", "development"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
-     * The name of this project.
-     * @return the project's name
-     */
-    public String getName()
-    {
-        return projprop.getProperty("product", "J-Sword"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -195,17 +168,17 @@ public class Project
         return prop;
     }
 
-    /**
-     * Get and load a properties file from the writable area or if that
-     * fails from the classpath (where a default ought to be stored)
-     * @param subject The name of the desired resource (without any extension)
-     * @return The found and loaded properties file
-     * @throws IOException if the resource can not be loaded
-     */
-    public Properties getProperties(String subject) throws IOException
-    {
-        return ResourceUtil.getProperties(subject);
-    }
+//    /**
+//     * Get and load a properties file from the writable area or if that
+//     * fails from the classpath (where a default ought to be stored)
+//     * @param subject The name of the desired resource (without any extension)
+//     * @return The found and loaded properties file
+//     * @throws IOException if the resource can not be loaded
+//     */
+//    public Properties getProperties(String subject) throws IOException
+//    {
+//        return ResourceUtil.getProperties(subject);
+//    }
 
     /**
      * Get a the URL of a (potentially non-existant) properties file that we can
@@ -363,8 +336,4 @@ public class Project
      */
     private static final Logger log = Logger.getLogger(Project.class);
 
-    /**
-     * The project properties file containing things like the release version number.
-     */
-    private Properties projprop = new Properties();
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -947,7 +948,7 @@ public abstract class AbstractPassage implements Passage
     {
         optimizeWrites();
 
-        String[] parts = PassageUtil.tokenize(refs, PassageConstants.REF_ALLOWED_DELIMS);
+        String[] parts = StringUtils.split(refs, PassageConstants.REF_ALLOWED_DELIMS);
         if (parts.length == 0) return;
 
         // We treat the first as a special case because there is
@@ -1073,7 +1074,7 @@ public abstract class AbstractPassage implements Passage
             return new VerseRange((Verse) base);
         }
 
-        throw new ClassCastException(PassageUtil.getResource(Msg.ABSTRACT_CAST));
+        throw new ClassCastException(Msg.ABSTRACT_CAST.toString());
     }
 
     /**
@@ -1100,7 +1101,7 @@ public abstract class AbstractPassage implements Passage
             return new Verse[] { (Verse) base };
         }
 
-        throw new ClassCastException(PassageUtil.getResource(Msg.ABSTRACT_CAST));
+        throw new ClassCastException(Msg.ABSTRACT_CAST.toString());
     }
 
     /**
@@ -1375,7 +1376,7 @@ public abstract class AbstractPassage implements Passage
                 break;
 
             default:
-                throw new ClassCastException(PassageUtil.getResource(Msg.ABSTRACT_CAST));
+                throw new ClassCastException(Msg.ABSTRACT_CAST.toString());
             }
         }
         catch (NoSuchVerseException ex)

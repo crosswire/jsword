@@ -12,31 +12,13 @@
   <property name="source.jar" value="${source.root}/jar"/>
   <property name="source.java" value="${source.root}/java"/>
   <property name="source.res" value="${source.root}/resource"/>
-  <property name="source.web" value="${source.root}/web"/>
   <property name="gener.root" value="target/gener"/>
   <property name="target.root" value="target/ant"/>
   <property name="target.temp" value="${target.root}/temp"/>
   <property name="target.classes" value="${target.temp}/classes"/>
   <property name="target.jar" value="${target.temp}/jar"/>
-  <property name="target.swingui" value="${target.root}/swingui/jsword"/>
-  <property name="target.download" value="${target.root}/download"/> <!-- designed for override -->
-  <property name="target.web" value="${target.root}/web"/> <!-- designed for override -->
-  <property name="support.root" value="../jsword-support"/>
-  <property name="support.notes" value="${support.root}/notes"/>
-  <property name="support.tools" value="${support.root}/tools"/>
-
-  <property name="ant.lib" value="${ant.home}/lib"/>
-  <property name="jnlp.alias" value="test builds"/>
-  <property name="jnlp.password" value="p455w0rd"/>
-  <property name="product.version" value="0.9.6"/>
-  <!-- override this with -Djnlp.hostname=www.crosswire.org to build in live -->
-  <property name="jnlp.hostname" value="localhost:8080"/>
-  <!-- override this to build in live. This probably won't work without overriding -->
-  <property name="webprefix" value="../download"/>
-  <property name="localprefix" value="${basedir}/${target.download}"/>
-  <property name="nightly.dir" value="${localprefix}/nightly"/>
-  <property name="release.dir" value="${localprefix}/release"/>
-
+  <property name="common.target" value="../common/target/ant/temp/jar"/>
+  
   <!--=======================================================================-->
   <patternset id="java.non.compile">
     <include name="**/*.properties"/>
@@ -53,6 +35,7 @@
     <echo message="Building to: ${target.root}"/>
   </target>
 
+
   <!--=======================================================================-->
   <target name="xjc" depends="init, xjc.check" unless="xjc.uptodate" description="Run XJC">
     <delete dir="${gener.root}/osis"/>
@@ -62,7 +45,7 @@
       <arg value="${gener.root}/osis"/>
       <arg value="-p"/>
       <arg value="org.crosswire.jsword.osis"/>
-      <arg value="${source.etc}/osisCore.1.1.1.xsd"/>
+      <arg value="${source.etc}/osis/osisCore.1.1.1.xsd"/>
       <classpath>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
       </classpath>
@@ -84,7 +67,8 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="osis" depends="xjc, jar.dir">
+  <target name="osis" depends="xjc">
+    <mkdir dir="${target.jar}"/>
     <echo message="Compiling ${gener.root}/osis"/>
     <mkdir dir="${target.classes}/osis"/>
     <javac debug="on" includes="**/*.java" destdir="${target.classes}/osis">
@@ -105,39 +89,9 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="check.config">
-    <mkdir dir="${gener.root}/config"/>
-    <style
-        in="${source.res}/config.xml"
-        out="${gener.root}/config/ConfigTest.java"
-        style="${source.etc}/config-test.xsl"/>
-    <mkdir dir="${target.classes}/config"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="generate" depends="osis, check.config" description="Generate/update source files">
-  </target>
-
-  <!--=======================================================================-->
-  <target name="compile" depends="osis, generate" description="Validate source syntax">
-    <mkdir dir="${target.classes}/resource"/>
-    <antcall target="compile.section"><param name="section" value="common"/></antcall>
+  <target name="compile" depends="osis" description="Validate source syntax">
     <antcall target="compile.section"><param name="section" value="jsword"/></antcall>
-    <antcall target="compile.section"><param name="section" value="servlet"/></antcall>
-    <antcall target="compile.section"><param name="section" value="swing"/></antcall>
-    <antcall target="compile.section"><param name="section" value="sword"/></antcall>
-    <antcall target="compile.section"><param name="section" value="commontest"/></antcall>
     <antcall target="compile.section"><param name="section" value="jswordtest"/></antcall>
-    <antcall target="compile.section"><param name="section" value="servlettest"/></antcall>
-    <antcall target="compile.section"><param name="section" value="swingtest"/></antcall>
-    <antcall target="compile.section"><param name="section" value="swordtest"/></antcall>
-    <javac debug="on" includes="**/*.java" destdir="${target.classes}/config">
-      <src path="${gener.root}/config"/>
-      <classpath>
-        <dirset dir="${target.classes}"/>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-    </javac>
   </target>
 
   <!--=======================================================================-->
@@ -149,6 +103,7 @@
       <classpath>
         <dirset dir="${target.classes}"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
+        <fileset dir="${common.target}" includes="**/*.jar"/>
       </classpath>
     </javac>
     <copy todir="${target.classes}/resource">
@@ -159,619 +114,27 @@
   </target>
 
   <!--=======================================================================-->
-  <target name="jar" depends="compile, jar.dir, jar.api, jar.swing, jar.servlet, jar.resource" description="create the jar files">
-  </target>
-
-  <target name="jar.dir" description="Create the directory for jars">
+  <target name="jar" depends="compile, jar.check" unless="jar.uptodate" description="create the jar files">
     <mkdir dir="${target.jar}"/>
-  </target>
-
-  <target name="jar.api" unless="jar.api.uptodate" depends="jar.api.check" description="Create a api jar file">
     <jar jarfile="${target.jar}/jsword.jar">
-      <fileset dir="${target.classes}/common"/>
       <fileset dir="${target.classes}/jsword"/>
+      <fileset dir="${source.res}"/>
     </jar>
   </target>
-  <target name="jar.api.check" description="Check to see that the api jar file is up to date">
-    <uptodate property="jar.api.uptodate" targetfile="${target.jar}/jsword.jar">
-      <srcfiles dir="${target.classes}/common"/>
+  <target name="jar.check" description="Check to see that the api jar file is up to date">
+    <uptodate property="jar.uptodate" targetfile="${target.jar}/jsword.jar">
       <srcfiles dir="${target.classes}/jsword"/>
-    </uptodate>
-  </target>
-
-  <target name="jar.swing" unless="jar.swing.uptodate" depends="jar.swing.check" description="Create a gui jar file">
-    <jar jarfile="${target.jar}/jsword-swing.jar">
-      <fileset dir="${target.classes}/swing"/>
-    </jar>
-  </target>
-  <target name="jar.swing.check" description="Check to see that the gui jar file is up to date">
-    <uptodate property="jar.swing.uptodate" targetfile="${target.jar}/jsword-swing.jar">
-      <srcfiles dir="${target.classes}/swing"/>
-    </uptodate>
-  </target>
-
-  <target name="jar.servlet" unless="jar.servlet.uptodate" depends="jar.servlet.check" description="Create a servlet jar file">
-    <jar jarfile="${target.jar}/jsword-servlet.jar">
-      <fileset dir="${target.classes}/servlet"/>
-    </jar>
-  </target>
-  <target name="jar.servlet.check" description="Check to see that the servlet jar file is up to date">
-    <uptodate property="jar.servlet.uptodate" targetfile="${target.jar}/jsword-servlet.jar">
-      <srcfiles dir="${target.classes}/servlet"/>
-    </uptodate>
-  </target>
-
-  <target name="jar.resource" unless="jar.resource.uptodate" description="Create a resource jar file">
-    <jar destfile="${target.jar}/resource.jar">
-      <fileset dir="${target.classes}/resource"/>
-      <fileset dir="${source.res}"/>
-    </jar>
-  </target>
-  <target name="jar.resource.check" description="Check to see that the resource jar file is up to date">
-    <uptodate property="jar.resource.uptodate" targetfile="${target.jar}/jsword-resource.jar">
-      <srcfiles dir="${target.classes}/resource"/>
+      <srcfiles dir="${source.res}"/>
     </uptodate>
   </target>
 
   <!--=======================================================================-->
-  <target name="jnlp" description="moves files to correct location for JNLP deploy" depends="osis, jar, jnlp.keygen">
-  <!-- consider making smaller class files with: http://sadun-util.sourceforge.net/pack.html -->
-    <mkdir dir="${target.web}/jnlp"/>
-    <copy todir="${target.web}/jnlp" file="${source.etc}/jnlp/${ant.project.name}.jnlp" filtering="true">
-      <filterset>
-        <filter token="HOSTNAME" value="${jnlp.hostname}"/>
-        <filter token="WEBAPP" value="${ant.project.name}"/>
-      </filterset>
-    </copy>
-    <jnlp.sign jar="jsword.jar" dir="${target.jar}"/>
-    <jnlp.sign jar="jsword-swing.jar" dir="${target.jar}"/>
-    <jnlp.sign jar="resource.jar" dir="${target.jar}"/>
-    <jnlp.sign jar="jsword-osis.jar" dir="${target.jar}"/>
-    <jnlp.sign jar="commons-lang-2.0.jar" dir="${source.jar}/lang200"/>
-    <jnlp.sign jar="commons-net-1.1.0.jar" dir="${source.jar}/net110"/>
-    <jnlp.sign jar="jaxb-api.jar" dir="${source.jar}/jaxb10"/>
-    <jnlp.sign jar="jaxb-libs.jar" dir="${source.jar}/jaxb10"/>
-    <jnlp.sign jar="jaxb-ri.jar" dir="${source.jar}/jaxb10"/>
-    <jnlp.sign jar="jdom.jar" dir="${source.jar}/jdom09"/>
-    <jnlp.sign jar="log4j-1.2.7.jar" dir="${source.jar}/log4j127"/>
-    <jnlp.sign jar="lucene-1.3-final.jar" dir="${source.jar}/lucene13"/>
-    <jnlp.sign jar="tar.jar" dir="${source.jar}/jtar25"/>
-    <jnlp.sign jar="winlaf-0.4.jar" dir="${source.jar}/winlaf04"/>
-    <jnlp.sign jar="jlfgr-1_0.jar" dir="${source.jar}/jlfgr10"/>
-  </target>
-
-  <!--=======================================================================-->
-  <macrodef name="jnlp.sign" description="Signs the jar files for jnlp">
-    <attribute name="jar"/>
-    <attribute name="dir"/>
-    <sequential>
-      <antcall target="jnlp.section">
-        <param name="jar" value="@{jar}"/>
-        <param name="dir" value="@{dir}"/>
-      </antcall>
-    </sequential>
-  </macrodef>
-  <target name="jnlp.section" description="Signs the jar files for jnlp" unless="jnlp.section.uptodate.${jar}" depends="jnlp.section.check">
-    <echo message="JNLP prepare: ${jar}"/>
-    <copy todir="${target.web}/jnlp" file="${dir}/${jar}"/>
-    <signjar storepass="${jnlp.password}" alias="${jnlp.alias}" keystore="${basedir}/${ant.project.name}.keystore" keypass="${jnlp.password}" jar="${target.web}/jnlp/${jar}"/>
-  </target>
-  <target name="jnlp.section.check" description="Check to see that the signed jars are up to date">
-    <uptodate property="jnlp.section.uptodate.${jar}" srcfile="${dir}/${jar}" targetfile="${target.web}/jnlp/${jar}"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="swingui" depends="jnlp" description="Build a ready to ship/test app">
-    <mkdir dir="${target.swingui}"/>
-    <copy todir="${target.swingui}">
-      <fileset dir="${source.etc}/bin"/>
-      <fileset dir="${target.web}/jnlp" includes="**/*.jar"/>
-    </copy>
-    <chmod perm="a+x">
-      <fileset dir="${target.swingui}">
-        <include name="**/*.sh"/>
-      </fileset>
-    </chmod>
-    <fixcrlf srcdir="${target.swingui}" eol="lf">
-      <include name="**/*.sh"/>
-    </fixcrlf>
-    <fixcrlf srcdir="${target.swingui}" eol="crlf">
-      <include name="**/*.bat"/>
-    </fixcrlf>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="ser-av" depends="swingui" description="Add the ser-av data to the swing ui">
-    <unzip src="${support.notes}/versions/projectb-ser-av.zip" dest="${target.swingui}/resource"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="format" description="Format source code">
-    <taskdef name="pretty" classname="org.acm.seguin.ant.Pretty">
-      <classpath>
-        <fileset dir="${support.tools}/jrefactory2707" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    <pretty settingsDir="${support.tools}/jrefactory2707" cvs="true" compileDir="${target.root}">
-      <fileset dir="${source.java}">
-        <include name="**/*.java" />
-      </fileset>
-    </pretty>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.files" depends="jnlp" description="Copy the file based documentation">
-    <mkdir dir="${target.web}"/>
-    <style basedir="${source.web}" extension=".html" style="${source.web}/template.xsl" destdir="${target.web}">
-      <include name="**/*.html"/>
-      <xmlcatalog>
-        <dtd publicid="-//W3C//DTD XHTML 1.0 Transitional//EN" location="${source.etc}/xhtml1-transitional.dtd"/>
-      </xmlcatalog>
-    </style>
-    <style basedir="${source.web}" extension=".jsp" style="${source.web}/template.xsl" destdir="${target.web}">
-      <include name="*.jsp"/>
-    </style>
-    <copy todir="${target.web}">
-      <fileset dir="${source.web}">
-        <exclude name="*.jsp"/>
-        <exclude name="*.html"/>
-        <exclude name="*.xsl"/>
-      </fileset>
-    </copy>
-    <mkdir dir="${target.web}/WEB-INF"/>
-    <copy todir="${target.web}/WEB-INF" filtering="true">
-      <filterset>
-        <filter token="localprefix" value="${localprefix}"/>
-        <filter token="webprefix" value="${webprefix}"/>
-      </filterset>
-      <fileset dir="${source.etc}/web"/>
-    </copy>
-    <mkdir dir="${target.web}/WEB-INF/classes"/>
-    <copy todir="${target.web}/WEB-INF/classes">
-      <fileset dir="${target.classes}/resource"/>
-      <fileset dir="${source.res}"/>
-    </copy>
-    <unzip src="${support.notes}/versions/projectb-ser-av.zip" dest="${target.web}/WEB-INF/classes"/>
-    <mkdir dir="${target.web}/WEB-INF/lib"/>
-    <copy todir="${target.web}/WEB-INF/lib">
-      <fileset dir="${target.web}/jnlp" includes="**/*.jar"/>
-      <fileset dir="${target.jar}" includes="jsword-servlet.jar"/>
-    </copy>
-    <!-- needed by the download servlet -->
-    <mkdir dir="${nightly.dir}"/>
-    <mkdir dir="${release.dir}"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="test" depends="swingui" description="Run the standard test suite">
-    <taskdef resource="tasks.properties">
-      <classpath>
-        <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    <delete failonerror="false">
-      <fileset dir="${target.temp}/jcoverage"/>
-    </delete>
-    <delete failonerror="false">
-      <fileset dir="${source.root}">
-        <include name="jcoverage.ser"/>
-      </fileset>
-    </delete>
-    <instrument todir="${target.temp}/jcoverage">
-      <fileset dir="${target.classes}/common" includes="**/*.class"/>
-    </instrument>
-    <instrument todir="${target.temp}/jcoverage">
-      <fileset dir="${target.classes}/jsword" includes="**/*.class"/>
-      <!--
-      <ignore regex="org.apache.log4j.*"/>
-      <fileset dir="${target.classes}/swing" includes="**/*.class"/>
-      <fileset dir="${target.classes}/servlet" includes="**/*.class"/>
-      -->
-    </instrument>
-    <mkdir dir="${target.temp}/junit"/>
-    <echo message="JUnit needs jars in ${ant.lib}. See the antlibs task."/>
-    <echo message="Using -Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
-    <junit fork="yes" haltonfailure="no" printsummary="on" showoutput="yes">
-      <jvmarg value="-Djsword.bible.dir=${basedir}/${target.swingui}/resource"/>
-      <test name="CommonAllTests" todir="${target.temp}/junit"/>
-      <test name="JSwordAllTests" todir="${target.temp}/junit"/>
-      <!--
-      <test name="MapAllTests" todir="${target.temp}/junit"/>
-      -->
-      <formatter type="plain" usefile="false"/>
-      <formatter type="xml"/>
-      <classpath>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <fileset dir="${support.tools}/jcoverage104" includes="**/*.jar"/>
-        <pathelement path="${target.temp}/jcoverage"/>
-        <!--
-        <pathelement path="${target.classes}/common"/>
-        <pathelement path="${target.classes}/jsword"/>
-        -->
-        <pathelement path="${target.classes}/servlet"/>
-        <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/osis"/>
-        <pathelement path="${target.classes}/commontest"/>
-        <pathelement path="${target.classes}/jswordtest"/>
-        <pathelement path="${target.classes}/servlettest"/>
-        <pathelement path="${target.classes}/swingtest"/>
-        <pathelement path="${target.classes}/resource"/>
-        <pathelement path="${source.res}"/>
-      </classpath>
-    </junit>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.testreport" depends="test" description="Compile test report">
-    <mkdir dir="${target.web}/test"/>
-    <junitreport todir="${target.temp}/junit">
-      <fileset dir="${target.temp}/junit">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${target.web}/test"/>
-    </junitreport>
-    <mkdir dir="${target.web}/jcoverage"/>
-    <report srcdir="${source.java}/common" destdir="${target.web}/jcoverage"/>
-    <!--
-    <report srcdir="${source.java}/jsword" destdir="${target.web}/jcoverage"/>
-    -->
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.javadoc" depends="init" description="Create JavaDoc">
-    <mkdir dir="${target.web}/api"/>
-    <javadoc
-        stylesheetfile="${source.etc}/javadoc/stylesheet.css"
-        destdir="${target.web}/api"
-        overview="${source.java}/jsword/overview.html"
-        private="true"
-        author="true"
-        use="true"
-        splitindex="true"
-        version="true">
-      <packageset dir="${source.java}/common" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
-      <packageset dir="${gener.root}/osis" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
-      <packageset dir="${source.java}/jsword" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
-      <packageset dir="${source.java}/servlet" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
-      <packageset dir="${source.java}/swing" defaultexcludes="yes">
-        <include name="**"/>
-      </packageset>
-      <footer>Copyright &#168; 2003</footer>
-      <classpath>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-      </classpath>
-      <link offline="true" href="http://java.sun.com/j2se/1.4/docs/api/" packagelistLoc="${source.etc}/javadoc"/>
-    </javadoc>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.java2html" depends="init" description="HTML versions of the java code">
-    <mkdir dir="${target.web}/java2html"/>
-    <java fork="true" classname="j2h" output="${target.web}/java2html/output.txt">
-      <classpath>
-        <fileset dir="${support.tools}/java2html12" includes="**/*.jar"/>
-      </classpath>
-      <arg value="-js"/>
-      <arg value="${basedir}/${source.java}/common"/>
-      <arg value="-js"/>
-      <arg value="${basedir}/${source.java}/jsword"/>
-      <arg value="-js"/>
-      <arg value="${basedir}/${source.java}/servlet"/>
-      <arg value="-js"/>
-      <arg value="${basedir}/${source.java}/swing"/>
-      <arg value="-d" />
-      <arg value="${target.web}/java2html"/>
-      <arg value="-n"/>
-      <arg value="${ant.project.name}"/>
-      <arg value="-m"/>
-      <arg value="4"/>
-      <arg value="-jd"/>
-      <arg value="${javadoc.jdk130.local}"/>
-      <arg value="${javadoc.jdk130.web}"/>
-    </java>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.jdepend" depends="jar">
-    <mkdir dir="${target.temp}/jdepend"/>
-    <mkdir dir="${target.web}/jdepend"/>
-    <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
-    <jdepend format="xml" outputfile="${target.temp}/jdepend/jdepend-report.xml" fork="yes">
-      <classespath>
-        <pathelement path="${target.classes}/common"/>
-        <pathelement path="${target.classes}/jsword"/>
-        <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/servlet"/>
-      </classespath>
-      <classpath>
-        <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <fileset dir="${support.tools}/jdepend26" includes="**/*.jar"/>
-      </classpath>
-    </jdepend>
-    <style
-        basedir="${target.temp}/jdepend"
-        destdir="${target.web}/jdepend"
-        includes="jdepend-report.xml"
-        style="${support.tools}/jdepend26/jdepend.xsl"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.checkstyle">
-    <mkdir dir="${target.temp}/checkstyle"/>
-    <mkdir dir="${target.web}/checkstyle"/>
-    <taskdef resource="checkstyletask.properties">
-      <classpath>
-        <fileset dir="${support.tools}/checkstyle33" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    <copy file="${support.tools}/checkstyle33/custom.xml" overwrite="true"
-        tofile="${target.temp}/checkstyle/custom.xml">
-      <filterset>
-        <filter token="source.java" value="${basedir}/${source.java}"/>
-        <filter token="target.checkstyle" value="${basedir}/${target.temp}/checkstyle"/>
-      </filterset>
-    </copy>
-    <checkstyle config="${target.temp}/checkstyle/custom.xml" failOnViolation="false">
-      <fileset dir="${source.java}/common" includes="**/*.java"/>
-      <fileset dir="${source.java}/jsword" includes="**/*.java"/>
-      <fileset dir="${source.java}/servlet" includes="**/*.java"/>
-      <fileset dir="${source.java}/swing" includes="**/*.java"/>
-      <formatter type="plain"/>
-      <formatter type="xml" toFile="${target.temp}/checkstyle/checkstyle_errors.xml"/>
-    </checkstyle>
-    <style
-        basedir="${target.temp}/checkstyle"
-        destdir="${target.web}/checkstyle"
-        includes="checkstyle_errors.xml"
-        style="${support.tools}/checkstyle33/checkstyle-noframes.xsl"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.pmd">
-    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
-      <classpath>
-        <fileset dir="${support.tools}/pmd15" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    <mkdir dir="${target.web}/pmd"/>
-    <pmd rulesetfiles="${basedir}/${support.tools}/pmd15/ruleset.xml" shortFilenames="true">
-      <formatter type="html" toFile="${target.web}/pmd/index.html"/>
-      <fileset dir="${source.java}/common" includes="**/*.java"/>
-      <fileset dir="${source.java}/jsword" includes="**/*.java"/>
-      <fileset dir="${source.java}/servlet" includes="**/*.java"/>
-      <fileset dir="${source.java}/swing" includes="**/*.java"/>
-    </pmd>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.cpd">
-    <mkdir dir="${target.web}/cpd"/>
-    <java classname="net.sourceforge.pmd.cpd.CPD" output="${target.web}/cpd/report.txt">
-      <classpath>
-        <fileset dir="${support.tools}/pmd15" includes="**/*.jar"/>
-      </classpath>
-      <arg value="100"/>
-      <arg value="${source.java}"/>
-    </java>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.javancss">
-    <echo message="If this fails with a DTM ID exception you might need to upgrade the Xalan in your JDK"/>
-    <echo message="If this fails you might need to run the antlibs task to copy jars to ant/lib:"/>
-    <taskdef name="javancss" classname="javancss.JavancssAntTask">
-      <classpath>
-        <fileset dir="${support.tools}/javancss2141" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    <mkdir dir="${target.temp}/javancss"/>
-    <javancss
-        srcdir="${source.java}"
-        includes="**/*.java"
-        generateReport="true"
-        outputfile="${target.temp}/javancss/javancss_metrics.xml"
-        format="xml"/>
-    <mkdir dir="${target.web}/javancss"/>
-    <style
-        in="${target.temp}/javancss/javancss_metrics.xml"
-        out="${target.web}/javancss/index.html"
-        style="${support.tools}/javancss2141/javancss2html.xsl"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.findbugs" depends="jnlp">
-    <mkdir dir="${target.web}/findbugs"/>
-    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
-      <classpath>
-        <fileset dir="${support.tools}/findbugs070" includes="**/*.jar"/>
-      </classpath>
-    </taskdef>
-    <findbugs home="${support.tools}/findbugs070"
-        output="text"
-        outputFile="${target.web}/findbugs/report.txt"
-        reportLevel="low"
-        sort="text"
-        jvmargs="-Xmx512m"
-        >
-      <class location="${target.web}/jnlp/jsword-swing.jar" />
-      <class location="${target.web}/jnlp/jsword.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jsword-osis.jar"/>
-      <auxClasspath path="${target.web}/jnlp/commons-lang-2.0.jar"/>
-      <auxClasspath path="${target.web}/jnlp/commons-net-1.1.0.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jaxb-api.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jaxb-libs.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jaxb-ri.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jdom.jar"/>
-      <auxClasspath path="${target.web}/jnlp/log4j-1.2.7.jar"/>
-      <auxClasspath path="${target.web}/jnlp/lucene-1.3-final.jar"/>
-      <auxClasspath path="${target.web}/jnlp/winlaf-0.4.jar"/>
-      <auxClasspath path="${target.web}/jnlp/tar.jar"/>
-      <auxClasspath path="${target.web}/jnlp/jlfgr-1_0.jar"/>
-      <!--
-        ** The following is needed only for the unused org.crosswire.jsword.view.cli
-        ** It can be removed when cli is removed.
-        -->
-      <auxClasspath path="${source.jar}/bsf23/js.jar"/>
-      <!-- sourcePath is really only needed by the findbugs gui -->
-      <sourcePath>
-        <pathelement path="${source.java}/common"/>
-        <pathelement path="${source.java}/jsword"/>
-        <pathelement path="${source.java}/swing"/>
-        <pathelement path="${source.java}/servlet"/>
-      </sourcePath>
-    </findbugs>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web.analysis" depends="web.jdepend, web.checkstyle, web.pmd, web.java2html, web.javancss, web.findbugs">
-    <!-- I've taken web.cpd out because it is very slow and not that useful -->
-    <!-- I've taken XXX out because it ran out of memory -->
-  </target>
-
-  <!--=======================================================================-->
-  <target name="web" depends="web.files, jnlp, web.javadoc, web.testreport, web.analysis" description="All the documentation tasks">
-  </target>
-
-  <!--=======================================================================-->
-  <target name="jnlp.keygen" description="Generates a key for use in signing the JARs" unless="jnlp.keygen.uptodate" depends="init, jnlp.keygen.check">
-    <echo message="Generating keystore for webstart testing"/>
-    <genkey alias="${jnlp.alias}" storepass="${jnlp.password}" keystore="${basedir}/${ant.project.name}.keystore">
-      <dname>
-        <param name="CN" value="JSword Project"/>
-        <param name="OU" value="Test Builds"/>
-        <param name="O" value="Crosswire.org"/>
-        <param name="C" value="UK" />
-      </dname>
-    </genkey>
-  </target>
-  <target name="jnlp.keygen.check" description="Check the keystore is there">
-    <available property="jnlp.keygen.uptodate" file="${basedir}/${ant.project.name}.keystore"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="release.nightly" description="Build a nightly release fileset">
-    <tstamp>
-      <format property="today" pattern="yyyyMMdd"/>
-    </tstamp>
-    <antcall target="release.version">
-      <param name="version" value="${today}"/>
-      <param name="directory" value="${nightly.dir}"/>
-    </antcall>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="release.final">
-    <antcall target="release.version">
-      <param name="version" value="${product.version}"/>
-      <param name="directory" value="${release.dir}"/>
-    </antcall>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="release.version" depends="swingui, ser-av">
-    <echo message="Building release ${version} to ${directory}"/>
-    <!-- source packages -->
-    <mkdir dir="${directory}"/>
-    <zip zipfile="${directory}/${ant.project.name}-${version}-src.zip">
-      <zipfileset prefix="${ant.project.name}-${version}" dir="${source.root}">
-        <exclude name="target/**"/>
-        <exclude name="notes/**"/>
-      </zipfileset>
-    </zip>
-    <tar tarfile="${directory}/${ant.project.name}-${version}-src.tar.gz" compression="gzip">
-      <tarfileset prefix="${ant.project.name}-${version}" dir="${source.root}">
-        <exclude name="target/**"/>
-        <exclude name="notes/**"/>
-      </tarfileset>
-    </tar>
-    <!-- binary packages -->
-    <zip zipfile="${directory}/${ant.project.name}-${version}-bin.zip">
-      <zipfileset prefix="${ant.project.name}-${version}" dir="${target.swingui}"/>
-    </zip>
-    <tar tarfile="${directory}/${ant.project.name}-${version}-bin.tar.gz" compression="gzip">
-      <tarfileset prefix="${ant.project.name}-${version}" dir="${target.swingui}"/>
-    </tar>
-    <!-- documentation packages -->
-    <zip zipfile="${directory}/${ant.project.name}-${version}-doc.zip">
-      <zipfileset prefix="${ant.project.name}-${version}" dir="${target.web}/api"/>
-    </zip>
-    <tar tarfile="${directory}/${ant.project.name}-${version}-doc.tar.gz" compression="gzip">
-      <tarfileset prefix="${ant.project.name}-${version}" dir="${target.web}/api"/>
-    </tar>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="nightly" depends="web, release.nightly" description="To be run nightly at crosswire">
-    <!-- also used to depend on veryclean -->
-  </target>
-
-  <!--=======================================================================-->
-  <target name="exec" depends="compile" description="Run the project using Ant">
-    <java classname="org.crosswire.bibledesktop.desktop.Desktop" fork="true">
-      <assertions enablesystemassertions="true">
-        <enable/>
-      </assertions>
-      <!--
-      org.crosswire.jsword.bibledesktop.Desktop
-      org.crosswire.jsword.book.ReadEverything
-      abbot.editor.Costello
-      org.acm.seguin.tools.install.PrettyPrinterConfigGUI
-      -->
-      <sysproperty key="jsword.bible.dir" value="${source.res}"/>
-      <jvmarg value="-Xmx512m"/>
-      <!-- ${basedir}/${target.swingui}/resource -->
-      <classpath>
-        <fileset dir="${source.jar}/jdom09" includes="**/*.jar"/>
-        <fileset dir="${source.jar}/log4j127" includes="**/*.jar"/>
-        <fileset dir="${source.jar}/lang200" includes="**/*.jar"/>
-        <fileset dir="${source.jar}/jaxb10endorsed" includes="**/*.jar"/>
-        <fileset dir="${source.jar}/jaxb10">
-          <include name="jaxb-api.jar"/>
-          <include name="jaxb-ri.jar"/>
-          <include name="jaxb-libs.jar"/>
-        </fileset>
-        <pathelement path="${target.classes}/common"/>
-        <pathelement path="${target.classes}/jsword"/>
-        <pathelement path="${target.classes}/servlet"/>
-        <pathelement path="${target.classes}/swing"/>
-        <pathelement path="${target.classes}/osis"/>
-        <pathelement path="${target.classes}/resource"/>
-        <pathelement path="${target.classes}/jswordtest"/>
-        <pathelement path="${source.res}"/>
-        <fileset dir="${support.tools}/abbot090" includes="**/*.jar"/>
-      </classpath>
-    </java>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="all" depends="clean, swingui" description="Run a full clean/build/deploy/test cycle">
+  <target name="all" depends="clean, jar" description="Run a full clean/build/deploy/test cycle">
   </target>
 
   <!--=======================================================================-->
   <target name="clean" depends="init" description="Remove the target directory">
     <delete dir="${target.root}"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="veryclean" depends="init" description="Remove the target directory">
-    <delete dir="${target.root}"/>
-    <delete dir="${gener.root}"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="antlibs" description="Copy required jars to ant/lib">
-    <echo message="copy ${basedir}/${source.jar}/junit381/junit.jar to ${ant.home}/lib"/>
-    <copy file="${source.jar}/junit381/junit.jar" todir="${ant.home}/lib"/>
-    <echo message="copy ${basedir}/${support.tools}/jdepend26/jdepend.jar"/>
-    <copy file="${support.tools}/jdepend26/jdepend.jar" todir="${ant.home}/lib"/>
   </target>
 
   <!--=======================================================================-->
@@ -787,42 +150,6 @@
     <chmod perm="755">
       <fileset dir="${source.etc}/build" includes="**/*.sh"/>
     </chmod>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="tomcatinit">
-    <property name="web.path" value="/jsword"/>
-    <property name="url" value="http://localhost:8080/manager"/>
-    <!-- You will need to -Dusername=fred -Dpassword=secret -->
-    <!-- property name="username" value="myusername"/ -->
-    <!-- property name="password" value="mypassword"/ -->
-    <!--
-    <taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
-    <taskdef name="install"   classname="org.apache.catalina.ant.InstallTask"/>
-    <taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
-    <taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
-    <taskdef name="remove"    classname="org.apache.catalina.ant.RemoveTask"/>
-    <taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
-    <taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
-    <taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
-    <taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
-    <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
-    -->
-  </target>
-
-  <!--=======================================================================-->
-  <target name="install" description="Install web application" depends="tomcatinit, jnlp, web.files">
-    <install url="${url}" username="${username}" password="${password}" path="${path}" war="file://$basedir}/${target.root}/web"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="reload" description="Reload web application" depends="tomcatinit, web.files">
-    <reload url="${url}" username="${username}" password="${password}" path="${path}"/>
-  </target>
-
-  <!--=======================================================================-->
-  <target name="remove" description="Remove web application" depends="tomcatinit">
-    <remove url="${url}" username="${username}" password="${password}" path="${path}"/>
   </target>
 
 </project>

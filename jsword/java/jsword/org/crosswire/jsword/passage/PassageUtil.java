@@ -1,12 +1,8 @@
 package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.StringTokenizer;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.MsgBase;
 
 /**
  * A Utility class containing various static methods.
@@ -51,7 +47,7 @@ public class PassageUtil
     {
         if (!PassageUtil.isValidBlurRestriction(value))
         {
-            throw new IllegalArgumentException(getResource(Msg.ERROR_BLUR));
+            throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
         }
 
         blur = value;
@@ -269,10 +265,10 @@ public class PassageUtil
                 return "LORD's"; //$NON-NLS-1$
             }
             // This should not happen
-            throw new IllegalArgumentException(getResource(Msg.ERROR_MIXED));
+            throw new IllegalArgumentException(Msg.ERROR_MIXED.toString());
 
         default:
-            throw new IllegalArgumentException(getResource(Msg.ERROR_BADCASE));
+            throw new IllegalArgumentException(Msg.ERROR_BADCASE.toString());
         }
     }
 
@@ -583,27 +579,6 @@ public class PassageUtil
     }
 
     /**
-     * Take a string and parse it into an Array of Strings. I'm not sure that
-     * this is the correct place to put this.
-     * @param command The string to parse.
-     * @param delim A string containing the spacing characters.
-     * @return The string array
-     */
-    protected static final String[] tokenize(String command, String delim)
-    {
-        StringTokenizer tokenize = new StringTokenizer(command, delim);
-        String[] args = new String[tokenize.countTokens()];
-        int argc = 0;
-
-        while (tokenize.hasMoreTokens())
-        {
-            args[argc++] = tokenize.nextToken();
-        }
-
-        return args;
-    }
-
-    /**
      * This is simply a convenience function to wrap Character.isLetter()
      * @param text The string to be parsed
      * @return true if the string contains letters
@@ -616,49 +591,6 @@ public class PassageUtil
         }
 
         return false;
-    }
-
-    /**
-     * Utility that enables us to have a single resource file for all the
-     * passage classes
-     * @param id The resource id to fetch
-     * @return The String from the resource file
-     */
-    protected static String getResource(String id)
-    {
-        try
-        {
-            return res.getString(id);
-        }
-        catch (MissingResourceException ex)
-        {
-            return "Missing resource for: "+id; //$NON-NLS-1$
-        }
-    }
-
-    /**
-     * Utility that enables us to have a single resource file for all the
-     * passage classes
-     * @param id The resource id to fetch
-     * @return The String from the resource file
-     */
-    protected static String getResource(MsgBase id)
-    {
-        try
-        {
-            if (res != null)
-            {
-                return res.getString(id.toString());
-            }
-            else
-            {
-                return "Missing passage resource bundle"; //$NON-NLS-1$
-            }
-        }
-        catch (MissingResourceException ex)
-        {
-            return "Missing resource for: "+id; //$NON-NLS-1$
-        }
     }
 
     /**
@@ -710,11 +642,6 @@ public class PassageUtil
     }
 
     /**
-     * The ResourceBundle containing the name customizations
-     */
-    private static ResourceBundle res = null;
-
-    /**
      * Do we store the original string?
      */
     private static boolean persistent_naming = getDefaultPersistentNaming();
@@ -729,18 +656,4 @@ public class PassageUtil
      */
     private static final Logger log = Logger.getLogger(PassageUtil.class);
 
-    /**
-     * Setup the resources
-     */
-    static
-    {
-        try
-        {
-            res = ResourceBundle.getBundle("org.crosswire.jsword.passage.Passage"); //$NON-NLS-1$
-        }
-        catch (MissingResourceException ex)
-        {
-            log.debug("No custom resource found: "+ex.getMessage()); //$NON-NLS-1$
-        }
-    }
 }
