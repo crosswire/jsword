@@ -24,33 +24,63 @@
 
 <h2>Official Installer Based Releases</h2>
 <p>From Version 0.9.6 we are using ZeroG based installers.</p>
-<table cellpadding="2" cellspacing="0" bordercolor="#000000" border="1" align="center" width="90%">
+<h3>Windows</h3>
+<ul>
+  <li>With bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-win-vm.exe">jsword-0.9.6-win-vm.exe</a> (20Mb)</li>
+  <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-win-novm.exe">jsword-0.9.6-win-novm.exe</a> (7.2Mb)</li>
+</ul>
+<h3>Linux</h3>
+<ul>
+  <li>With bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linux-vm.bin">jsword-0.9.6-linux-vm.bin</a> (40Mb) </li>
+  <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linux-novm.bin">jsword-0.9.6-linux-novm.bin</a> (7.3Mb) </li>
+</ul>
+<h3>MacOS X</h3>
+<ul>
+  <li>Without JVM (Requires JDK 1.4.1): <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-osx-novm.zip">jsword-0.9.6-osx-novm.zip</a> (6.8Mb) </li>
+</ul>
+<h3>Other</h3>
+<ul>
+  <li>Without bundled JVM: <a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-generic-novm.jar">jsword-0.9.6-generic-novm.jar</a> (7.3Mb) </li>
+</ul>
+<h2>Official Archive Based Releases </h2>
+<p>
+Version 0.9.5 is the first beta for JSword 1.0.
+</p>
+<table width="90%" align="center" border="1" bordercolor="#000000" cellspacing="0" cellpadding="2">
   <tr>
-    <td>-</td>
-    <td align="center" colspan="2">Windows</td>
-    <td align="center" colspan="2">Linux</td>
-    <td align="center">MacOS</td>
-    <td align="center">Other</td>
+	<td>-</td>
+	<td colspan="2" align="center">Binary</td>
+	<td colspan="2" align="center">Source</td>
+	<td colspan="2" align="center">Docs</td>
   </tr>
   <tr>
-    <td>Includes JVM?</td>
-    <td>No VM</td>
-    <td>With VM</td>
-    <td>No VM</td>
-    <td>With VM</td>
-    <td>No VM</td>
-    <td>No VM</td>
+    <td>Compression</td>
+    <td>.zip</td>
+    <td>.tar.gz</td>
+    <td>.zip</td>
+    <td>.tar.gz</td>
+    <td>.zip</td>
+    <td>.tar.gz</td>
   </tr>
+  <jsp:scriptlet><![CDATA[
+  DownloadSet[] dls = DownloadSet.getDownloadSets(localprefix+"/release", webprefix+"/release", false);
+  for (int i=0; i<dls.length; i++)
+  {
+  ]]></jsp:scriptlet>
   <tr>
-    <td>Version 0.9.6</td>
-    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-winnovm.exe">7.88 Mb</a></td
-    ><td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-winvm.exe">7.81 Mb</a></td>
-    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linuxnovm.bin">14.56 Mb</a></td>
-    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-linuxvm.bin">13.98 Mb</a></td>
-    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-macosx.zip">27.53 Mb</a></td>
-    <td><a href="http://www.crosswire.org/ftpmirror/pub/jsword/release/jsword-0.9.6-other.jar">23.22 Mb</a>
+	<td><jsp:expression>dls[i].getVersionString()</jsp:expression></td>
+	<td><jsp:expression>dls[i].getLinkString(DownloadSet.BIN_ZIP)</jsp:expression></td>
+	<td><jsp:expression>dls[i].getLinkString(DownloadSet.BIN_TGZ)</jsp:expression></td>
+	<td><jsp:expression>dls[i].getLinkString(DownloadSet.SRC_ZIP)</jsp:expression></td>
+	<td><jsp:expression>dls[i].getLinkString(DownloadSet.SRC_TGZ)</jsp:expression></td>
+	<td><jsp:expression>dls[i].getLinkString(DownloadSet.DOC_ZIP)</jsp:expression></td>
+	<td><jsp:expression>dls[i].getLinkString(DownloadSet.DOC_TGZ)</jsp:expression></td>
   </tr>
+  <jsp:scriptlet><![CDATA[
+  }
+  ]]></jsp:scriptlet>
 </table>
+
 
 <h2>Nightly Releases</h2>
 <p>
