@@ -49,7 +49,9 @@ public class BooksComboBoxModel extends BooksListModel implements ComboBoxModel
         super(filter);
 
         if (bmds.size() > 0)
+        {
             current = (BookMetaData) bmds.get(0);
+        }
     }
 
     /**

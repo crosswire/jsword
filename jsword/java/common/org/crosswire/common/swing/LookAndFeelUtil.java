@@ -2,6 +2,7 @@
 package org.crosswire.common.swing;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.crosswire.common.util.Logger;
@@ -85,6 +87,7 @@ public class LookAndFeelUtil
         }
 
         updateComponents();
+        tweakLookAndFeel();
     }
 
     /**
@@ -134,6 +137,40 @@ public class LookAndFeelUtil
     public static void removeComponentToUpdate(Component comp)
     {
         windows.remove(comp);
+    }
+
+    /**
+     * Hack the windows look and feel to make the fonts more readable on
+     * bigger screens.
+     */
+    private static void tweakLookAndFeel()
+    {
+        LookAndFeel currentlnf = UIManager.getLookAndFeel();
+        if (currentlnf.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+        {
+            UIDefaults defaults = UIManager.getDefaults();
+            Font menufont = defaults.getFont("Menu.font");
+    
+            defaults.put("ProgressBar.font", menufont);
+            defaults.put("ToggleButton.font", menufont);
+            defaults.put("Panel.font", menufont);
+            defaults.put("TableHeader.font", menufont);
+            defaults.put("TextField.font", menufont);
+            defaults.put("Button.font", menufont);
+            defaults.put("Label.font", menufont);
+            defaults.put("ScrollPane.font", menufont);
+            defaults.put("List.font", menufont);
+            defaults.put("EditorPane.font", menufont);
+            defaults.put("Table.font", menufont);
+            defaults.put("TabbedPane.font", menufont);
+            defaults.put("RadioButton.font", menufont);
+            defaults.put("TextPane.font", menufont);
+            defaults.put("TitledBorder.font", menufont);
+            defaults.put("ComboBox.font", menufont);
+            defaults.put("CheckBox.font", menufont);
+            defaults.put("Tree.font", menufont);
+            defaults.put("Viewport.font", menufont);
+        }
     }
 
     /**

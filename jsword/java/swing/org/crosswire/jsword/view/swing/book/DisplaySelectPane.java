@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.BorderLayout;
@@ -115,6 +114,7 @@ public class DisplaySelectPane extends JPanel
         pnl_select.setLayout(new FlowLayout(FlowLayout.LEFT));
         cbo_versn.setModel(mdl_versn);
         cbo_versn.setRenderer(new BookListCellRenderer());
+        cbo_versn.setPrototypeDisplayValue(BookListCellRenderer.PROTOTYPE_BOOK_NAME);
         Dimension min = cbo_versn.getMinimumSize();
         min.width = 100;
         cbo_versn.setMinimumSize(min);

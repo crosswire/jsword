@@ -77,8 +77,9 @@ public class SitesPane extends JPanel
                 addSite();
             }
         });
+        btnAdd.setEnabled(false);
 
-        pnlButtons.setLayout(new FlowLayout());
+        pnlButtons.setLayout(new FlowLayout(FlowLayout.RIGHT));
         pnlButtons.add(btnAdd, null);
         pnlButtons.add(btnOK);
 

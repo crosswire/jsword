@@ -235,12 +235,12 @@ public class DebugPane extends JPanel
          */
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
         {
-            Component reply = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (value instanceof Method)
             {
                 setText(((Method) value).getName()+"()");
             }
-            return reply;
+            return this;
         }
     }
 }

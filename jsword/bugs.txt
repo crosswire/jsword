@@ -6,9 +6,6 @@ GUI
 - better display management, font selections etc
 - Get better HTML renderer (see: http://java.sun.com/products/jfc/tsc/articles/tictactoe/index.html)
 
-- install manager?
-- about modules dialog
-
 - how do we work with verse lists/bookmarks?
 - implement load/save
 - implement print
@@ -32,8 +29,9 @@ POST 1.0
 
 GUI
 - full internationalization
-- help screens?
+- help screens
 - recreate module creator/tester
+- install manager
 
 Modules
 - Sword GenBook

@@ -79,16 +79,12 @@ public class AboutPane
             icon = new ImageIcon(url);
         }
 
-        //lbl_picture.setBackground(Color.black);
-        //lbl_picture.setOpaque(true);
         lbl_picture.setIcon(icon);
         lbl_picture.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         lbl_picture.setHorizontalAlignment(SwingConstants.CENTER);
         lbl_picture.setVerticalAlignment(SwingConstants.CENTER);
 
-        //lbl_info.setBackground(Color.black);
         lbl_info.setFont(new Font("SansSerif", 1, 14));
-        //lbl_info.setForeground(UIManager.getColor("ScrollBar.thumbHighlight"));
         lbl_info.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         lbl_info.setOpaque(true);
         lbl_info.setHorizontalAlignment(SwingConstants.RIGHT);

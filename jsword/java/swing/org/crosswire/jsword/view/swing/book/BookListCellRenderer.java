@@ -77,17 +77,32 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
             setForeground(list.getForeground());
         }
 
-        BookMetaData bmd = (BookMetaData) value;
-        if (bmd == null)
+        if (value == null)
         {
             setText("None");
             setToolTipText(null);
             setIcon(null);
             setEnabled(false);
-            return this;
         }
-        else
+
+        // Hack to allow us to use PROTOTYPE_BOOK_NAME as a prototype value
+        if (value instanceof String)
         {
+            String str = (String) value;
+
+            setText(str);
+            setToolTipText(null);
+            setIcon(ICON_SMALL);
+
+            setEnabled(list.isEnabled());
+            setFont(list.getFont());
+            setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
+        }
+
+        if (value instanceof BookMetaData)
+        {
+            BookMetaData bmd = (BookMetaData) value;
+
             setText(bmd.getName());
             setToolTipText(bmd.getFullName());
             setIcon(ICON_SMALL);
@@ -95,9 +110,9 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
             setEnabled(list.isEnabled());
             setFont(list.getFont());
             setBorder(focus ? UIManager.getBorder("List.focusCellHighlightBorder") : no_focus);
-
-            return this;
         }
+
+        return this;
     }
 
     /**
@@ -109,4 +124,6 @@ public class BookListCellRenderer extends JLabel implements ListCellRenderer
      * border if we do not have focus
      */
     private static Border no_focus;
+
+    public static final String PROTOTYPE_BOOK_NAME = "012345678901234567890123456789";
 }

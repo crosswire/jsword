@@ -124,6 +124,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         splash.pack();
 
         // Initial setup
+        startjob.setProgress("Setting-up environment");
+
         startjob.setProgress("Setting-up config");
         act_tools_options = new OptionsAction(this);
         CustomAWTExceptionHandler.setParentComponent(this);
@@ -140,6 +142,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         // GUI setup
         debug();
         init();
+
         accelerateMenu(bar_menu);
 
         if (initial == LAYOUT_TYPE_MDI)
