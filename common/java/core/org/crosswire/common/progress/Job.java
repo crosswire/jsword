@@ -64,7 +64,7 @@ public final class Job
         this.listeners = new PropertyChangeSupport(this);
         this.start = -1;
         this.predictedlen = -1;
-        
+
         if (fakeupdates)
         {
             Action actupdate = new PredictAction();
@@ -213,7 +213,7 @@ public final class Job
         interruptable = newInterruptable;
         listeners.firePropertyChange("interruptable", oldValue, newValue); //$NON-NLS-1$
     }
-    
+
     /**
      * Shortcut to check if percent == 100
      */

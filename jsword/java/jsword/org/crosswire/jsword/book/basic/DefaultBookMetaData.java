@@ -199,7 +199,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     {
         OSISUtil.ObjectFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
-        // initials, description, key, language, 
         addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
         addRow(ele, "Description", getFullName()); //$NON-NLS-1$
         addRow(ele, "Key", getType().toString()); //$NON-NLS-1$

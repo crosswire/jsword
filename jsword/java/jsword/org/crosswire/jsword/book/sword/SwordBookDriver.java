@@ -135,7 +135,7 @@ public class SwordBookDriver extends AbstractBookDriver
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
         File downloadDir = SwordBookDriver.getDownloadDir();
         File confFile = new File(downloadDir, sbmd.getConfPath());
-        
+
         // We can only uninstall what we download into our download dir.
         return confFile.exists();
     }
@@ -148,7 +148,7 @@ public class SwordBookDriver extends AbstractBookDriver
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
         File downloadDir = SwordBookDriver.getDownloadDir();
         File confFile = new File(downloadDir, sbmd.getConfPath());
-        
+
         // We can only uninstall what we download into our download dir.
         if (!confFile.exists())
         {
@@ -156,7 +156,7 @@ public class SwordBookDriver extends AbstractBookDriver
         }
 
         File moduleDir = new File(downloadDir, sbmd.getModulePath());
-    
+
         // Delete the conf
         List failures = FileUtil.delete(confFile);
         if (failures.size() == 0)

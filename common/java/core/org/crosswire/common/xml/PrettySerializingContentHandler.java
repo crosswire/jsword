@@ -253,7 +253,7 @@ public class PrettySerializingContentHandler implements ContentHandler
     {
         return "</"; //$NON-NLS-1$
     }
-    
+
     protected String getPIStart()
     {
         return "<!"; //$NON-NLS-1$
@@ -278,22 +278,22 @@ public class PrettySerializingContentHandler implements ContentHandler
     {
         return attrName;
     }
-    
+
     protected String decorateAttributeValue(String attrValue)
     {
         return attrValue;
     }
-    
+
     protected String decorateCharacters(String characters)
     {
         return characters;
     }
-    
+
     protected String decorateIndent(int indentLevel)
     {
         return new String(indentation, 0, indentLevel).intern();
     }
-    
+
     protected void write(String obj)
     {
         try
@@ -338,7 +338,7 @@ public class PrettySerializingContentHandler implements ContentHandler
         }
         lookingForChars = false;
     }
-    
+
     private void emitWhitespace(int indentLevel)
     {
         write(getNewline());
@@ -347,11 +347,11 @@ public class PrettySerializingContentHandler implements ContentHandler
             write(decorateIndent(indentLevel));
         }
     }
-    
+
     /**
      * This allows for rapid output of whitespace.
      */
-    static private char[] indentation =
+    private static char[] indentation =
     {
         '\t', '\t', '\t', '\t', '\t',
         '\t', '\t', '\t', '\t', '\t',

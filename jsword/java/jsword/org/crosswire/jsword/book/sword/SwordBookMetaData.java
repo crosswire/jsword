@@ -147,8 +147,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
         // Dictionaries and Daily Devotionals end with the prefix of the data
         // files name, not a directory name.
         // Lots of paths end with '/'
-        if (getType() == BookType.DICTIONARY ||
-            dataPath.charAt(dataPath.length() - 1) == '/')
+        if (getType() == BookType.DICTIONARY
+            || dataPath.charAt(dataPath.length() - 1) == '/')
         {
             dataPath = dataPath.substring(0, dataPath.lastIndexOf('/'));
         }

@@ -56,7 +56,7 @@ public final class FormatType implements Serializable
     {
         return multiline;
     }
-    
+
     /**
      * Whether indents are introduced into the document.
      * @return true if indents are added to the document
@@ -75,7 +75,7 @@ public final class FormatType implements Serializable
     {
         return analytic;
     }
-    
+
     /**
      * Whether added whitespace is between tags. Note, this does
      * change the document as whitespace is added to either side of

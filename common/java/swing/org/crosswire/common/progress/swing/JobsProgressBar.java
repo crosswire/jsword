@@ -293,7 +293,7 @@ public class JobsProgressBar extends JPanel implements WorkListener, PropertyCha
             }
             return cancelButton;
         }
-        
+
         /**
          * Accessor for the index
          */

@@ -115,7 +115,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     {
         StringBuffer buf = new StringBuffer();
         buf.append("<font class='indent'>"); //$NON-NLS-1$
-        buf.append(super.decorateIndent(indentLevel).replaceAll("\t","&nbsp;&nbsp;&nbsp;&nbsp;")); //$NON-NLS-1$ //$NON-NLS-2$
+        buf.append(super.decorateIndent(indentLevel).replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")); //$NON-NLS-1$ //$NON-NLS-2$
         buf.append("</font>"); //$NON-NLS-1$
         return buf.toString();
     }

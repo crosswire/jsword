@@ -108,7 +108,7 @@ public class LuceneIndex implements Index, Activatable
                 File finalPath = NetUtil.getAsFile(storage);
                 String finalCanonicalPath = finalPath.getCanonicalPath();
                 File tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
-                
+
                 // An index is created by opening an IndexWriter with the
                 // create argument set to true.
                 IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);

@@ -81,7 +81,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
         File conf = new File(dldir, sbmd.getConfPath());
-        
+
         // The conf may not exist in our download dir.
         // In this case we say that it should not be downloaded again.
         if (!conf.exists())
