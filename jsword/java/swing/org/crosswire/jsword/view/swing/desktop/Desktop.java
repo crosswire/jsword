@@ -48,6 +48,8 @@ import org.crosswire.jsword.view.swing.book.TitleChangedListener;
  * some tests already, then the window can grow quite a lot. Also do we
  * want to disable the Exit button if work is going on?</p>
  * 
+ * PENDING(joe): add Dict/LEx/Book support to desktop
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

@@ -58,7 +58,8 @@ public interface Book
     public BookData getData(Key ref) throws BookException;
 
     /**
-     * Retrieval: For a given word find a list of references to it
+     * Retrieval: For a given word find a list of references to it.
+     * PENDING(joe): alter the search interface to subsume view.search
      * @param word The text to search for
      * @return The references to the word
      * @throws BookException If anything goes wrong with this method

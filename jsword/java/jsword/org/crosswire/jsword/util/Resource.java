@@ -110,13 +110,14 @@ public class Resource
 
     /**
      * To get at xsl documents in wherever they may be.
+     * @return The requested resource
+     * @throws IOException if there is a problem reading the file
+     * @throws MalformedURLException if the resource can not be found
      */
-    public InputStream getStyleInputStream(String subject, String name) throws IOException
+    public InputStream getStyleInputStream(String subject, String name) throws IOException, MalformedURLException
     {
         String path = "xsl/"+subject+"/"+name+".xsl";
-        InputStream in = getResourceAsStream(path);
-
-        return in;
+        return getResourceAsStream(path);
     }
 
     /**
@@ -221,7 +222,7 @@ public class Resource
      * directory name.
      * @return A file: URL pointing at a local writable directory.
      */
-    public URL getTempScratchSpace(String subject) throws IOException
+    public URL getTempScratchSpace(String subject) throws IOException, MalformedURLException
     {
         URL base = getWritableBaseURL();
         URL temp = NetUtil.lengthenURL(base, subject);
@@ -280,9 +281,12 @@ public class Resource
      * into a JDOM Document object.
      * @return The project root as a URL
      * @param subject The name of the desired resource (without any extension)
-     * @return Document
+     * @return The requested resource
+     * @throws IOException if there is a problem reading the file
+     * @throws JDOMException If the resource is not valid XML
+     * @throws MalformedURLException if the resource can not be found
      */
-    public Document getDocument(String subject) throws JDOMException, IOException
+    public Document getDocument(String subject) throws JDOMException, IOException, MalformedURLException
     {
         String resource = subject+".xml";
         InputStream in = getResourceAsStream(resource);
@@ -298,7 +302,8 @@ public class Resource
      * change on various JDK's is complex, and it seems simpler to take the
      * shotgun approach.
      * @param search The name of the resource (without a leading /) to find
-     * @return A URL of the found resource or null if we couldn't find one.
+     * @return The requested resource
+     * @throws MalformedURLException if the resource can not be found
      */
     public URL getResource(String search) throws MalformedURLException
     {
@@ -352,8 +357,11 @@ public class Resource
 
     /**
      * Generic resource URL fetcher
+     * @return The requested resource
+     * @throws IOException if there is a problem reading the file
+     * @throws MalformedURLException if the resource can not be found
      */
-    public InputStream getResourceAsStream(String search) throws IOException
+    public InputStream getResourceAsStream(String search) throws IOException, MalformedURLException
     {
         URL url = getResource(search);
         return url.openStream();

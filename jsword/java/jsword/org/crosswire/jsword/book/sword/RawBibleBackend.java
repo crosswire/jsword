@@ -74,8 +74,7 @@ public class RawBibleBackend implements SwordBibleBackend
         }
         catch (MalformedURLException mue)
         {
-            // URGENT(mark): Check out exception hierarchy
-            throw new BookException("NOT A CLUE");
+            throw new BookException("sword_init", mue);
         }
     }
 

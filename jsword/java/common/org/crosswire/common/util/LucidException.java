@@ -25,6 +25,8 @@ import java.util.ResourceBundle;
  * a constructor that allows us to specify no I18N lookup, which is useful
  * if this lookup may have been done already.</p>
  *
+ * NOTE(joe): find a way to make the i18n strings compile safe.
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

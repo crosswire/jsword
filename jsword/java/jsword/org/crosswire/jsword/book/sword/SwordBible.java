@@ -25,6 +25,8 @@ import org.crosswire.jsword.passage.VerseRange;
 /**
  * A BibleDriver to read Sword format data.
  * 
+ * URGENT(joe): fix sword drivers
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -81,8 +83,7 @@ public class SwordBible extends AbstractBible
 
         this.name = swordConfig.getName();
         if (backend == null)
-            // URGENT(mark): Checkout exception hierarchy
-            throw new BookException("No backend for " + SwordConstants.DRIVER_STRINGS[swordConfig.getModDrv()]);
+            throw new BookException("sword_nobackend", new Object[] { SwordConstants.DRIVER_STRINGS[swordConfig.getModDrv()] });
     }
 
     /**

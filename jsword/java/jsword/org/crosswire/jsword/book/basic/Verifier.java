@@ -134,7 +134,7 @@ public class Verifier
                 //BibleData text1 = bible1.getData(ref2);
                 //BibleData text2 = bible2.getData(ref2);
 
-                // PENDING(joe): Create some sort of BibleData compare system
+                // NOTE(joe): Create some sort of BibleData compare system
                 // Check
 
                 /*

@@ -17,6 +17,8 @@ import org.crosswire.common.util.LogicError;
  * be valid, although some versions may not return any text for verses
  * that they consider to be mis-translated in some way.
  * 
+ * PENDING(joe): make chapter ranges prefixed by book to separate from v-ranges
+ * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

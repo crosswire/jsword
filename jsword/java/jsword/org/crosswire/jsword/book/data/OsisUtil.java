@@ -23,6 +23,7 @@ import org.crosswire.common.xml.JAXBSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.ObjectFactory;
 import org.crosswire.jsword.osis.Osis;
@@ -107,9 +108,6 @@ public class OsisUtil
 
     /**
      * Constructor DefaultBibleData.
-     * PENDING(joe): warning, if you generate a BibleData this way and then try
-     * to call createSectionData() then it will fail because bdata.text has not
-     * been setup.
      * @param doc
      */
     public static BibleData createBibleData(SAXEventProvider provider) throws SAXException
@@ -124,6 +122,26 @@ public class OsisUtil
             UnmarshallerHandler unmh = unm.getUnmarshallerHandler();
             provider.provideSAXEvents(unmh);
             bdata.osis = (Osis) unmh.getResult();
+
+            bdata.text = bdata.osis.getOsisText();
+            List divs = bdata.text.getDiv();
+            for (Iterator dit = divs.iterator(); dit.hasNext();)
+            {
+                SectionData section = new SectionData();
+                section.div = (Div) dit.next();
+                bdata.sections.add(section);
+                
+                List everses = section.div.getContent();
+                for (Iterator cit = everses.iterator(); cit.hasNext();)
+                {
+                    Object element = cit.next();
+                    if (element instanceof org.crosswire.jsword.osis.Verse)
+                    {
+                        RefData ref = new RefData();
+                        section.refs.add(ref);
+                    }
+                }
+            }
 
             return bdata;
         }

@@ -248,13 +248,27 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
             if (view_mode == VIEW_LIST)
             {
                 Object[] ranges = lst_ranges.getSelectedValues();
-
-                Passage ref0 = PassageFactory.createPassage();
-                for (int i=0; i<ranges.length; i++)
+                
+                // if there was a single selection then show the whole chapter
+                if (ranges.length == 1)
                 {
-                    ref0.add((VerseRange) ranges[i]);
+                    VerseRange range = (VerseRange) ranges[0];
+
+                    Passage ref = PassageFactory.createPassage();
+                    ref.add(range);
+                    ref.blur(1000, Passage.RESTRICT_CHAPTER);
+
+                    txt_view.setPassage(ref);
                 }
-                txt_view.setPassage(ref0);
+                else
+                {
+                    Passage ref = PassageFactory.createPassage();
+                    for (int i=0; i<ranges.length; i++)
+                    {
+                        ref.add((VerseRange) ranges[i]);
+                    }
+                    txt_view.setPassage(ref);
+                }
             }
         }
         catch (Throwable ex)

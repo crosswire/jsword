@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -126,24 +127,34 @@ public class Style
         StringWriter html_writer = new StringWriter();
         Result res_out = new StreamResult(html_writer);
 
-        // PENDING(joe): cache this properly
-        Transformer transformer = (Transformer) txers.get(style);
-        if (transformer == null)
+        // we may have one cached
+        Templates template = null;
+        if (cache)
+        {
+            template = (Templates) txers.get(style);
+            log.debug("trying to get xslt from cache for "+style+": template="+template);
+        }
+
+        if (template == null)
         {
             // Load the xsl document
             InputStream xsl_in = Project.resource().getStyleInputStream(subject, style);
-            if (xsl_in == null)
-                throw new IOException("Resource not found subject="+subject+" style="+style);
 
-            transformer = transfact.newTransformer(new StreamSource(xsl_in));
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            if (cache)
+                template = transfact.newTemplates(new StreamSource(xsl_in));
         }
 
+        Transformer transformer = template.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.transform(src_in, res_out);
 
         return html_writer.toString();
     }
 
+    /** Do we cache the transformers - speed vs devt ease trade off */
+    private static boolean cache = true;
+
+    /** The how we get the transformer objects */
     private TransformerFactory transfact = TransformerFactory.newInstance();
 
     /** A cache of transfotmers */
@@ -153,12 +164,47 @@ public class Style
     private String subject;
 
     /** Do we log.fine() the documents as we format them? */
-    private static final boolean debug = false;
+    private static boolean debug = false;
 
     /** The extension for an XSL file */
     public static final String XSL_EXTENSION = ".xsl";
 
     /** The log stream */
     protected static Logger log = Logger.getLogger(Style.class);
-}
 
+    /**
+     * Do we log all the intermediate XML?
+     * @return boolean
+     */
+    public static boolean isDebug()
+    {
+        return debug;
+    }
+
+    /**
+     * Do we log all the intermediate XML?
+     * @param debug The log value to set
+     */
+    public static void setDebug(boolean debug)
+    {
+        Style.debug = debug;
+    }
+
+    /**
+     * Returns the transformer cache status.
+     * @return boolean
+     */
+    public static boolean isCache()
+    {
+        return cache;
+    }
+
+    /**
+     * Sets the transformer cache status.
+     * @param cache The status to set
+     */
+    public static void setCache(boolean cache)
+    {
+        Style.cache = cache;
+    }
+}

@@ -285,7 +285,7 @@ public class RawBible extends LocalURLBible
         // So if any of them have failed to load we have a record of it.
         // We can carry on work fine, but shouldn't we be telling someone?
 
-        /* PENDING(joe): work out if we should have this configurable */
+        /* should have this configurable? */
         //createSearchCache();
     }
 
