@@ -368,7 +368,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentanceUtil.stripPunctuationWord("test's!"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("test's?"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("test!?;;'#\""), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("!\"£$test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentanceUtil.stripPunctuationWord("!\"%$test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("   test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("--test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentanceUtil.stripPunctuationWord("'test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
