@@ -10,8 +10,17 @@ import java.util.EventListener;
  * A class which holds a list of EventListeners.
  * This code is lifted from javax.sw*ng.event.EventListnerList. It is
  * very useful in non GUI code which does not need the rest of sw*ng.
- * So I copied it here to save the need for sw*ngall.jar and the dependancy
- * on swing to help in a headless environment.
+ * 
+ * <p>If you inculde sw*ng code in non-gui code then you can end up not being
+ * able to run your code in a headerless environment because X includes Y which
+ * inculdes Font which tries to lookup font metrics and then everything dies.
+ * I appreciate the Headerless changes in 1.4 , but my rule (from before 1.4)
+ * was "Don't inculde swing code from non-swing code", and I enforced that by
+ * making sure all my swing code was in a package with swing in the name and by
+ * making sure that the word swing was not in any non-swing code (hence I
+ * spelled it sw*ng in comments)
+ * That way some simple greps will tell you if the servlet front end was likely
+ * to die.
  *
  * <p>A single instance
  * can be used to hold all listeners (of all types) for the instance

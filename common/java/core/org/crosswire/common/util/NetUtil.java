@@ -83,10 +83,10 @@ public class NetUtil
     public static final String AUTH_SEPERATOR_PASSWORD = ":"; //$NON-NLS-1$
 
     /**
-     * The temporary directory name
-     * TODO: This is project specific, remove it
+     * The temporary suffix, used when a temporary file is needed in the
+     * system's temporary directory.
      */
-    private static final String TEMP_DIR = "jswordtemp"; //$NON-NLS-1$
+    private static final String TEMP_SUFFIX = "tmp"; //$NON-NLS-1$
 
     /**
      * If the directory does not exist, create it.
@@ -252,7 +252,7 @@ public class NetUtil
             else
             {
                 // If there's no working dir, we just use temp...
-                workingFile = File.createTempFile(hashString, TEMP_DIR);
+                workingFile = File.createTempFile(hashString, TEMP_SUFFIX);
             }
             workingFile.deleteOnExit();
 
@@ -645,7 +645,7 @@ public class NetUtil
     }
 
     /**
-     * Returns the uRLCacheDir.
+     * Returns the URLCacheDir.
      * @return File
      */
     public static File getURLCacheDir()
@@ -655,7 +655,7 @@ public class NetUtil
 
     /**
      * Sets the cache directory.
-     * @param cachedir The uRLCacheDir to set
+     * @param cachedir The URLCacheDir to set
      */
     public static void setURLCacheDir(File cachedir)
     {

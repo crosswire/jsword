@@ -237,8 +237,8 @@ public class Reporter
                 }
                 catch (Exception ex)
                 {
-                    listeners.remove(CaptureListener.class, li);
-        
+                    listeners.remove(ReporterListener.class, li);
+
                     log.warn("Dispatch failure", ex); //$NON-NLS-1$
                 }
             }
