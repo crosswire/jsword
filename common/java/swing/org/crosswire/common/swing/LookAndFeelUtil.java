@@ -1,9 +1,11 @@
 package org.crosswire.common.swing;
 
+import java.awt.Color;
 import java.lang.reflect.Method;
 
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -80,47 +82,38 @@ public class LookAndFeelUtil
      */
     public static void tweakLookAndFeel()
     {
-        try
-        {
-            System.setProperty("winlaf.forceTahoma", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-            Class clazz = Class.forName("net.java.plaf.LookAndFeelPatchManager"); //$NON-NLS-1$
-            Method init = clazz.getMethod("initialize", new Class[0]); //$NON-NLS-1$
-            init.invoke(null, new Object[0]);
-
-            log.debug("installed Windows LookAndFeelPatchManager"); //$NON-NLS-1$
-        }
-        catch (Exception ex)
-        {
-            log.warn("Failed to install windows laf tweak tool: "+ex); //$NON-NLS-1$
-        }
-
         LookAndFeel currentlnf = UIManager.getLookAndFeel();
         if (currentlnf.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel")) //$NON-NLS-1$
         {
-            /*
             UIDefaults defaults = UIManager.getDefaults();
-            Font menufont = defaults.getFont("Menu.font");
-    
-            defaults.put("ProgressBar.font", menufont);
-            defaults.put("ToggleButton.font", menufont);
-            defaults.put("Panel.font", menufont);
-            defaults.put("TableHeader.font", menufont);
-            defaults.put("TextField.font", menufont);
-            defaults.put("Button.font", menufont);
-            defaults.put("Label.font", menufont);
-            defaults.put("ScrollPane.font", menufont);
-            defaults.put("List.font", menufont);
-            defaults.put("EditorPane.font", menufont);
-            defaults.put("Table.font", menufont);
-            defaults.put("TabbedPane.font", menufont);
-            defaults.put("RadioButton.font", menufont);
-            defaults.put("TextPane.font", menufont);
-            defaults.put("TitledBorder.font", menufont);
-            defaults.put("ComboBox.font", menufont);
-            defaults.put("CheckBox.font", menufont);
-            defaults.put("Tree.font", menufont);
-            defaults.put("Viewport.font", menufont);
-            */
+
+            //Color panebg = defaults.getColor("Panel.background"); //$NON-NLS-1$
+            defaults.put("SplitPane.darkShadow", Color.RED); //$NON-NLS-1$
+            defaults.put("SplitPane.highlight", Color.WHITE); //$NON-NLS-1$
+
+            /*
+            Font menufont = defaults.getFont("Menu.font"); //$NON-NLS-1$
+
+            defaults.put("ProgressBar.font", menufont); //$NON-NLS-1$
+            defaults.put("ToggleButton.font", menufont); //$NON-NLS-1$
+            defaults.put("Panel.font", menufont); //$NON-NLS-1$
+            defaults.put("TableHeader.font", menufont); //$NON-NLS-1$
+            defaults.put("TextField.font", menufont); //$NON-NLS-1$
+            defaults.put("Button.font", menufont); //$NON-NLS-1$
+            defaults.put("Label.font", menufont); //$NON-NLS-1$
+            defaults.put("ScrollPane.font", menufont); //$NON-NLS-1$
+            defaults.put("List.font", menufont); //$NON-NLS-1$
+            defaults.put("EditorPane.font", menufont); //$NON-NLS-1$
+            defaults.put("Table.font", menufont); //$NON-NLS-1$
+            defaults.put("TabbedPane.font", menufont); //$NON-NLS-1$
+            defaults.put("RadioButton.font", menufont); //$NON-NLS-1$
+            defaults.put("TextPane.font", menufont); //$NON-NLS-1$
+            defaults.put("TitledBorder.font", menufont); //$NON-NLS-1$
+            defaults.put("ComboBox.font", menufont); //$NON-NLS-1$
+            defaults.put("CheckBox.font", menufont); //$NON-NLS-1$
+            defaults.put("Tree.font", menufont); //$NON-NLS-1$
+            defaults.put("Viewport.font", menufont); //$NON-NLS-1$
+            // */
         }
     }
 
@@ -139,6 +132,20 @@ public class LookAndFeelUtil
      */
     static
     {
+        try
+        {
+            System.setProperty("winlaf.forceTahoma", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+            Class clazz = Class.forName("net.java.plaf.LookAndFeelPatchManager"); //$NON-NLS-1$
+            Method init = clazz.getMethod("initialize", new Class[0]); //$NON-NLS-1$
+            init.invoke(null, new Object[0]);
+
+            log.debug("installed Windows LookAndFeelPatchManager"); //$NON-NLS-1$
+        }
+        catch (Exception ex)
+        {
+            log.warn("Failed to install windows laf tweak tool: "+ex); //$NON-NLS-1$
+        }
+
         // try to set the default look and feel to the system default
         try
         {

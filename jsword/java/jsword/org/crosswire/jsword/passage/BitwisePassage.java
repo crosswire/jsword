@@ -314,7 +314,7 @@ public class BitwisePassage extends AbstractPassage
 
             for (int i=store.nextSetBit(0); i>=0; i=store.nextSetBit(i+1))
             {
-                int start = Math.max(0, i-verses);
+                int start = Math.max(1, i-verses);
                 int end = Math.min(versesInBible, i+verses);
 
                 for (int j=start; j<=end; j++)

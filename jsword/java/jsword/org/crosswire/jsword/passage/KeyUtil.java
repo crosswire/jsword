@@ -68,6 +68,8 @@ public class KeyUtil
      */
     public static Key getKeyList(VerseBase base, Book book)
     {
+        return base;
+        /*
         Key list = book.createEmptyKeyList();
         if (list instanceof Passage)
         {
@@ -80,6 +82,7 @@ public class KeyUtil
         }
 
         return list;
+        */
     }
 
     /**

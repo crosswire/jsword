@@ -1663,6 +1663,117 @@ public final class VerseRange implements VerseBase
         private int last;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
+     */
+    public boolean canHaveChildren()
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#size()
+     */
+    public int getChildCount()
+    {
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
+     */
+    public boolean isEmpty()
+    {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key)
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#iterator()
+     */
+    public Iterator iterator()
+    {
+        return new Iterator()
+        {
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            public boolean hasNext()
+            {
+                return false;
+            }
+
+            public Object next()
+            {
+                return null;
+            }
+        };
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+     */
+    public void addAll(Key key)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void removeAll(Key key)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+     */
+    public void retainAll(Key key)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#clear()
+     */
+    public void clear()
+    {
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#get(int)
+     */
+    public Key get(int index)
+    {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+     */
+    public int indexOf(Key that)
+    {
+        return -1;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int)
+     */
+    public void blur(int by, int bounds)
+    {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * To make serialization work across new versions
      */
