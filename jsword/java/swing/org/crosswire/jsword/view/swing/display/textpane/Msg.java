@@ -1,4 +1,4 @@
-package org.crosswire.jsword.view.swing.display;
+package org.crosswire.jsword.view.swing.display.textpane;
 
 import org.crosswire.common.util.MsgBase;
 

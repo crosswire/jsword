@@ -2,10 +2,10 @@ package org.crosswire.jsword.book.readings;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
@@ -185,7 +185,7 @@ public class ReadingsBook extends AbstractBook
     /**
      * The store of keys and data
      */
-    private Map hash = new HashMap(); 
+    private Map hash = new TreeMap(); 
 
     /**
      * The log stream

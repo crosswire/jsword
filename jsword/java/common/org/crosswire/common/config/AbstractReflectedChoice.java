@@ -227,6 +227,8 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         catch (InvocationTargetException ex)
         {
+            log.info("Exception while attempting to execute: "+setter.toString());
+
             Throwable orig = ex.getTargetException();
             if (orig instanceof Exception)
             {
@@ -235,6 +237,11 @@ public abstract class AbstractReflectedChoice implements Choice
 
             // So we can't re-throw the original exception because it wasn't an
             // Exception so we will have to re-throw the InvocationTargetException
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            log.info("Exception while attempting to execute: "+setter.toString());
             throw ex;
         }
     }

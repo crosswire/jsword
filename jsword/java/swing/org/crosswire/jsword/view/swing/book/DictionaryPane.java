@@ -24,6 +24,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
+import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
 import org.crosswire.jsword.view.swing.passage.KeyListListModel;
 
 /**
@@ -253,7 +254,7 @@ public class DictionaryPane extends JPanel implements FocusablePart
     /**
      * The display of OSIS data
      */
-    private BookDataDisplay txtdisplay = new BookDataDisplay();
+    private BookDataDisplay txtdisplay = BookDataDisplayFactory.createBookDataDisplay();
 
     private BookFilter filter = BookFilters.getDictionaries();
     private BooksComboBoxModel mdldicts = new BooksComboBoxModel(filter);

@@ -67,8 +67,10 @@ public class FontChooser extends JPanel
             }
         };
 
+        font = defaultFont.getFont();
         name.setModel(new CustomComboBoxModel());
         name.setRenderer(new CustomListCellRenderer());
+        name.setSelectedItem(font.deriveFont(Font.PLAIN, RENDERED_FONT_SIZE));
         name.addItemListener(changer);
 
         for (int i = 5; i < 20; i++)
@@ -76,6 +78,7 @@ public class FontChooser extends JPanel
             size.addItem(new Integer(i));
         }
 
+        size.setSelectedItem(new Integer(font.getSize()));
         size.addItemListener(changer);
 
         bold.setSelected(font.isBold());
@@ -154,17 +157,22 @@ public class FontChooser extends JPanel
 
     /**
      * Set the Font displayed
-     * @param font The current Font
+     * @param newFont The current Font
      */
-    public void setStyle(Font font)
+    public void setStyle(Font newFont)
     {
         suppressEvents = true;
 
-        CustomComboBoxModel model = (CustomComboBoxModel) name.getModel();
-        model.setSelectedItem(font);
+        if (newFont == null)
+        {
+            return;
+        }
 
-        bold.setSelected(font.isBold());
-        italic.setSelected(font.isItalic());
+        CustomComboBoxModel model = (CustomComboBoxModel) name.getModel();
+        model.setSelectedItem(newFont.deriveFont(Font.PLAIN, RENDERED_FONT_SIZE));
+
+        bold.setSelected(newFont.isBold());
+        italic.setSelected(newFont.isItalic());
         size.setSelectedItem(new Integer(font.getSize()));
 
         suppressEvents = false;
@@ -178,10 +186,15 @@ public class FontChooser extends JPanel
     {
         Font selected = (Font) name.getSelectedItem();
 
-        int font_style = 0 | (bold.isSelected() ? Font.BOLD : 0) | (italic.isSelected() ? Font.ITALIC : 0);
+        if (selected == null)
+        {
+            return defaultFont.getFont();
+        }
+
+        int font_style = (bold.isSelected() ? Font.BOLD : Font.PLAIN) | (italic.isSelected() ? Font.ITALIC : Font.PLAIN);
         int font_size = ((Integer) size.getSelectedItem()).intValue();
 
-        return new Font(selected.getName(), font_style, font_size);
+        return selected.deriveFont(font_style, font_size);
     }
 
     /**
@@ -234,7 +247,10 @@ public class FontChooser extends JPanel
 
             for (int i = 0; i < fonts.length; i++)
             {
-                fonts[i] = new Font(names[i], 0, 16);
+                fonts[i] = new Font(names[i], Font.PLAIN, RENDERED_FONT_SIZE);
+//                System.err.println("Font name = " + fonts[i].getName()
+//                        + " Style = " + fonts[i].getStyle()
+//                        + " Size = " + fonts[i].getSize());
             }
         }
 
@@ -325,9 +341,14 @@ public class FontChooser extends JPanel
     protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
     /**
-     * The currnet font
+     * The current font
      */
-    protected Font font = new Font("Serif", Font.PLAIN, 10);
+    protected Font font = null;
+
+    /**
+     * The default size of the rendered font
+     */
+    private final static int RENDERED_FONT_SIZE = 16;
 
     /**
      * The choice of font name

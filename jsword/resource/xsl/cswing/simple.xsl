@@ -1,12 +1,33 @@
 <?xml version="1.0"?>
 
 <xsl:stylesheet xmlns="http://www.w3.org/TR/REC-html40" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:output method="html" omit-xml-declaration = "yes" indent="yes"/>
+<xsl:output method="html" omit-xml-declaration="yes" indent="no"/>
+<xsl:strip-space elements="*"/>
 
   <xsl:param name="strongs.hebrew.url" select="'dict:'"/>
   <xsl:param name="strongs.greek.url" select="'dict:'"/>
 
+  <!-- Whether to show Strongs or not -->
+  <xsl:param name="strongs" select="'true'"/>
+
+  <!-- The CSS stylesheet to use. The url must be absolute. -->
+  <xsl:param name="css"/>
+
+  <!-- The font that is passed in is of the form: font,style,size
+       where style is a bit mask with 1 being bold and 2 being italic.
+       This needs to be changed into a style="xxx" specification
+    -->
   <xsl:param name="font"/>
+  <xsl:variable name="fontfamily" select='concat("font-family: &apos;", substring-before($font, ","), "&apos;;")' />
+  <xsl:variable name="fontsize" select="concat(' font-size: ', substring-after(substring-after($font, ','), ','), 'pt;')" />
+  <xsl:variable name="styling" select="substring-before(substring-after($font, ','), ',')" />
+  <xsl:variable name="fontweight">
+    <xsl:if test="$styling = '1' or $styling = '3'"><xsl:text> font-weight: bold;</xsl:text></xsl:if>
+  </xsl:variable>
+  <xsl:variable name="fontstyle">
+    <xsl:if test="$styling = '2' or $styling = '3'"> font-style: italic;</xsl:if>
+  </xsl:variable>
+  <xsl:variable name="fontspec" select="concat($fontfamily, $fontsize, $fontweight, $fontstyle, 'line-height: 300%;')"/>
 
   <!--
   For now, we assume that all the works inside a corpus are of the
@@ -41,7 +62,15 @@
   <!--=======================================================================-->
   <xsl:template match="/osis">
     <html>
-      <body>
+      <head>
+        <xsl:if test="$css != ''">
+          <link rel="stylesheet" type="text/css" href="{$css}" title="styling" />
+        </xsl:if>
+        <style>
+          a { color: black; text-decoration: none; background: #eef8ff; }
+        </style>
+      </head>
+      <body style="{$fontspec}">
         <xsl:apply-templates/>
         <xsl:apply-templates select="//note" mode="print-notes"/>
       </body>
@@ -87,6 +116,8 @@
       <a href="{@osisID}">
       <xsl:apply-templates/>
       </a>
+      <!-- DMS: reading references need a following space -->
+      <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:if test="not(@osisID)">
       <xsl:apply-templates/>
@@ -98,28 +129,30 @@
 
   <!--=======================================================================-->
   <xsl:template match="verse">
-    <font size="-1" color="gray" face="{$font}">
-      <a name="{@osisID}"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></a>
-    </font>
-    <font size="+1" face="{$font}">
+    <!-- DMS: if the verse is not the first verse of a set of siblings, output two spaces. -->
+    <xsl:if test="preceding-sibling::*[local-name() = 'verse']">
+      <xsl:text>&#160;&#160;</xsl:text>
+    </xsl:if>
+    <a name="{@osisID}"><sup><font size="-1" color="gray"><xsl:value-of select="substring-after(substring-after(@osisID, '.'), '.')"/></font></sup></a>
+    <font size="+1">
       <xsl:apply-templates />
     </font>
   </xsl:template>
-  
+
   <!--=======================================================================-->
   <xsl:template match="a">
     <a class="a" href="{@href}">
       <xsl:apply-templates/>
     </a>
   </xsl:template>
-  
+
   <!--=======================================================================-->
   <xsl:template match="note">
     <!-- if the note length is less than 4 chars this must be an insertion point and not the text -->
     <xsl:text> </xsl:text>
     <xsl:if test="string-length(.) &lt; 4">
       <a href="#{generate-id(.)}">
-        <font size="-1" face="{$font}">
+        <font size="-1">
           <xsl:number level="any" from="/" count="note[string-length(.) &lt; 4]" format="a"/>
         </font>
       </a>
@@ -161,8 +194,10 @@
   <!--=======================================================================-->
   <xsl:template match="w">
     <!-- FIXME: Handle all the other attributes besides lemma. -->
+      <xsl:variable name="siblings" select="../child::node()"/>
+      <xsl:variable name="next-position" select="position() + 1"/>
       <xsl:choose>
-        <xsl:when test="starts-with(@lemma, 'x-Strongs:')">
+        <xsl:when test="$strongs = 'true' and starts-with(@lemma, 'x-Strongs:')">
           <xsl:variable name="orig-strongs-number" select="substring-after(@lemma, ':')"/>
           <xsl:variable name="strongs-type" select="substring($orig-strongs-number, 1, 1)"/>
           <xsl:variable name="numeric-portion" select="substring($orig-strongs-number, 2)"/>
@@ -185,6 +220,13 @@
           <xsl:apply-templates/>
         </xsl:otherwise>
       </xsl:choose>
+      <!--
+        except when followed by a text node or non-printing node.
+        This is true whether the href is output or not.
+      -->
+      <xsl:if test="$siblings[$next-position] and name($siblings[$next-position]) != ''">
+        <xsl:text> </xsl:text>
+      </xsl:if>
   </xsl:template>
 
   <!--=======================================================================-->
@@ -206,12 +248,12 @@
         </u>
       </xsl:when>
       <xsl:when test="starts-with(@type, 'color:')">
-        <font color="substring-before(substring-after(@type, 'color: '), ';')" face="{$font}">
+        <font color="substring-before(substring-after(@type, 'color: '), ';')">
           <xsl:apply-templates/>
         </font>
       </xsl:when>
       <xsl:when test="starts-with(@type, 'font-size:')">
-        <font size="substring-before(substring-after(@type, 'font-size: '), ';')" face="{$font}">
+        <font size="substring-before(substring-after(@type, 'font-size: '), ';')">
           <xsl:apply-templates/>
         </font>
       </xsl:when>
@@ -239,12 +281,12 @@
   <xsl:template match="speaker">
     <xsl:choose>
       <xsl:when test="@who='Jesus'">
-        <font color="red" face="{$font}">
+        <font color="red">
           <xsl:apply-templates/>
         </font>
       </xsl:when>
       <xsl:otherwise>
-        <font color="blue" face="{$font}">
+        <font color="blue">
           <xsl:apply-templates/>
         </font>
       </xsl:otherwise>

@@ -111,6 +111,7 @@ public class SwordBookMetaData implements BookMetaData
         if (name == null)
         {
             log.warn("Missing description for: "+internal);
+            name = internal;
         }
         if (mtype == null)
         {
@@ -274,7 +275,8 @@ public class SwordBookMetaData implements BookMetaData
      */
     public boolean isSupported()
     {
-        return getModuleType().getBookType() != null;
+        ModuleType type = getModuleType();
+        return type != null && type.getBookType() != null;
     }
 
     /* (non-Javadoc)

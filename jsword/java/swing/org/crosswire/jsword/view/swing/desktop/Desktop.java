@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -96,25 +97,6 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     {
         try
         {
-            /*
-            Preferences prefs = Preferences.userNodeForPackage(Desktop.class);
-            prefs.put("test-node", "value");
-            prefs.put("TEST_NODE", "VALUE");
-            prefs.put(":-.!@#$%^&*()", "1");
-            prefs.putBoolean("BOOL-FALSE", false);
-            prefs.putBoolean("BOOL-TRUE", true);
-            prefs.putByteArray("ARRAY", new  byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } );
-            prefs.putDouble("DOUBLE", 42.0D);
-            prefs.putFloat("FLOAT", 42.0F);
-            prefs.putInt("INT", 42);
-            prefs.putLong("LONG", 42);
-            prefs = Preferences.systemNodeForPackage(Desktop.class);
-            prefs.put("test-node", "value");
-            prefs.put("TEST_NODE", "VALUE");
-            prefs.put(":-.!@#$%^&*()", "1");
-            System.exit(0);
-            */
-
             Desktop desktop = new Desktop();
             desktop.getJFrame().pack();
             GuiUtil.centerWindow(desktop.getJFrame());
@@ -200,7 +182,10 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
 
         // And setup the initial display area, by getting the first
         // BibleViewPane and asking it for a PassagePane.
-        last = ((BibleViewPane) iterateBibleViewPanes().next()).getPassagePane();
+        // According to the iterator contract hasNext has to be called before next
+        Iterator iter = iterateBibleViewPanes();
+        iter.hasNext();
+        last = ((BibleViewPane) iter.next()).getPassagePane();
 
         // Preload the PassageInnerPane for faster initial view
         InnerDisplayPane.preload();
@@ -430,11 +415,12 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     }
 
     /**
-     * Iterate through the list of views
+     * Iterate through a copied list of views
      */
     public Iterator iterateBibleViewPanes()
     {
-        return views.iterator();
+        Collection copy = new ArrayList(views);
+        return copy.iterator();
     }
 
     /**

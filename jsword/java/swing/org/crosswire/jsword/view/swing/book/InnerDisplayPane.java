@@ -27,6 +27,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
+import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
 
 /**
  * An inner component of Passage pane that can't show the list.
@@ -272,12 +273,12 @@ public class InnerDisplayPane extends JPanel implements FocusablePart
     private Passage ref = null;
 
     /**
-     * The scroller for the BookDataDisplay component
+     * The scroller for the TextPaneBookDataDisplay component
      */
     private JScrollPane scrView = new JScrollPane();
 
     /**
      * The display of OSIS data
      */
-    private BookDataDisplay txtView = new BookDataDisplay();
+    private BookDataDisplay txtView = BookDataDisplayFactory.createBookDataDisplay();
 }

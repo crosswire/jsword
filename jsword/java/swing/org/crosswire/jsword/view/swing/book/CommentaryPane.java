@@ -25,6 +25,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
+import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
 
 /**
  * Builds a set of tabs from the list of Books returned by a filtered list
@@ -60,13 +61,13 @@ public class CommentaryPane extends JPanel implements FocusablePart
     {
         cmds = Books.installed().getBookMetaDatas(filter);
 
-        jbInit();
+        init();
     }
 
     /**
      * Initialise the GUI
      */
-    private void jbInit()
+    private void init()
     {
         set.addActionListener(new ActionListener()
         {
@@ -245,7 +246,7 @@ public class CommentaryPane extends JPanel implements FocusablePart
     /**
      * The display of OSIS data
      */
-    private BookDataDisplay txtdisplay = new BookDataDisplay();
+    private BookDataDisplay txtdisplay = BookDataDisplayFactory.createBookDataDisplay();
 
     /*
      * GUI components

@@ -36,6 +36,7 @@ import org.crosswire.jsword.view.swing.book.BooksComboBoxModel;
 import org.crosswire.jsword.view.swing.book.FocusablePart;
 import org.crosswire.jsword.view.swing.book.KeyTreeNode;
 import org.crosswire.jsword.view.swing.display.BookDataDisplay;
+import org.crosswire.jsword.view.swing.display.BookDataDisplayFactory;
 
 /**
  * Builds a panel on which all the Dictionaries and their entries are visible.
@@ -297,7 +298,7 @@ public class ReferencedPane extends JPanel implements FocusablePart
     /**
      * The display of OSIS data
      */
-    private BookDataDisplay txtDisplay = new BookDataDisplay();
+    private BookDataDisplay txtDisplay = BookDataDisplayFactory.createBookDataDisplay();
 
     /*
      * Gui components

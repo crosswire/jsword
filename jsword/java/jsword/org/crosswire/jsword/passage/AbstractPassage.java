@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.passage;
 
 import java.io.BufferedReader;
@@ -68,6 +67,12 @@ public abstract class AbstractPassage implements Passage
      */
     public int compareTo(Object obj)
     {
+        if (!(obj instanceof Passage))
+        {
+            log.warn("Can't compare a Passage to a "+obj.getClass().getName());
+            return -1;
+        }
+
         Passage thatref = (Passage) obj;
 
         if (thatref.countVerses() == 0)
