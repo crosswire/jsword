@@ -92,6 +92,11 @@ public class PassageFactory
      */
     public static Passage createPassage(String name) throws NoSuchVerseException
     {
+        if (name == null)
+        {
+            createPassage(default_type);
+        }
+
         return createPassage(default_type, name);
     }
 
@@ -136,6 +141,11 @@ public class PassageFactory
      */
     public static Passage createPassage(int type, String name) throws NoSuchVerseException
     {
+        if (name == null)
+        {
+            createPassage(type);
+        }
+
         switch (type)
         {
         case MIX:
@@ -167,7 +177,9 @@ public class PassageFactory
         try
         {
             if (whole == null)
+            {
                 whole = new ReadOnlyPassage(PassageFactory.createPassage("Gen 1:1-Rev 22:21"), true);
+            }
 
             return whole;
         }
@@ -182,6 +194,8 @@ public class PassageFactory
      */
     private static Passage whole;
 
-    /** The default type */
+    /**
+     * The default type
+     */
     private static int default_type = SPEED;
 }

@@ -35,7 +35,8 @@ class Msg extends MsgBase
     static final Msg GBF_JAXB = new Msg("Parse Error");
     static final Msg GBF_BADTOKEN = new Msg("Illegal token: {0}.");
 
-    static final Msg THML_BADTOKEN = new Msg("THML parse failed.");
+    static final Msg THML_BADTOKEN = new Msg("Bad XML string line={1}, column={2}: {0}");
+    static final Msg THML_PARSE = new Msg("Parse failed: {0}");
 
     static final Msg JAXB_ERROR = new Msg("JAXB Error");
 

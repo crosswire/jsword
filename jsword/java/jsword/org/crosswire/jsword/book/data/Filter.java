@@ -36,4 +36,24 @@ public interface Filter
      * @return Verse OSIS data
      */
     public void toOSIS(Element ele, String plain) throws DataException;
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the italic tag
+     */
+    public static final String SEG_ITALIC = "font-style: italic;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the bold tag
+     */
+    public static final String SEG_BOLD = "font-weight: bold;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the bold tag
+     */
+    public static final String SEG_UNDERLINE = "text-decoration: underline;";
+
+    /**
+     * Constant to help narrow down what we use seg for. In this case the color tag
+     */
+    public static final String SEG_COLORPREFIX = "color: ";
 }

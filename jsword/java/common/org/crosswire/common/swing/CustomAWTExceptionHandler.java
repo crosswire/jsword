@@ -4,8 +4,6 @@ package org.crosswire.common.swing;
 import java.awt.Component;
 import java.util.Properties;
 
-import org.crosswire.common.util.Reporter;
-
 /**
  * Handle AWT exceptions that reach the event thread.
  * 
@@ -44,7 +42,7 @@ public class CustomAWTExceptionHandler
      */
     public void handle(final Throwable ex)
     {
-        Reporter.informUser(this, ex);
+        //Reporter.informUser(this, ex);
 
         /* This is done by the above
         SwingUtilities.invokeLater(new Runnable()

@@ -198,6 +198,11 @@ public class DictionaryPane extends JPanel implements DisplayArea
     {
         try
         {
+            if (dict == null)
+            {
+                return;
+            }
+
             Key key = dict.getKeyFuzzy(data);
             if (key != null)
             {
@@ -262,12 +267,15 @@ public class DictionaryPane extends JPanel implements DisplayArea
         try
         {
             Key key = (Key) lstentries.getSelectedValue();
-            BookData bdata = dict.getData(key);
-            SAXEventProvider provider = bdata.getSAXEventProvider();
-            String text = style.applyStyleToString(provider, "simple.xsl");
-
-            txtdisplay.setText(text);
-            txtdisplay.select(0, 0);
+            if (key != null)
+            {
+                BookData bdata = dict.getData(key);
+                SAXEventProvider provider = bdata.getSAXEventProvider();
+                String text = style.applyStyleToString(provider, "simple.xsl");
+    
+                txtdisplay.setText(text);
+                txtdisplay.select(0, 0);
+            }
         }
         catch (Exception ex)
         {

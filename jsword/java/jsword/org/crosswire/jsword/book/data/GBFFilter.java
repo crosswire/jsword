@@ -321,8 +321,9 @@ public class GBFFilter implements Filter
 
             // Lets try to fix the XSL ...
             Seg seg = JAXBUtil.factory().createSeg();
+            seg.setType(SEG_ITALIC);
             Element current = (Element) stack.peek();
-            
+
             List list = JAXBUtil.getList(current); 
             list.add(seg);
             

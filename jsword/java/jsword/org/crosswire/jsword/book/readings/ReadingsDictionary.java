@@ -215,7 +215,7 @@ public class ReadingsDictionary implements Dictionary
                     VerseRange range = (VerseRange) it.next();
 
                     Div reading = JAXBUtil.factory().createDiv();
-                    reading.setOsisID(range.getOSISName());
+                    reading.setOsisID("bible://"+range.getOSISName());
                     reading.getContent().add(range.getName());
 
                     div.getContent().add(reading);                

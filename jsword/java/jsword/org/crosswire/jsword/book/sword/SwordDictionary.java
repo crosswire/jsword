@@ -206,6 +206,10 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
      */
     public BookData getData(Key key) throws BookException
     {
+        if (key == null)
+        {
+            throw new NullPointerException();
+        }
         if (map == null)
         {
             throw new BookException(Msg.READ_FAIL);

@@ -82,7 +82,7 @@
       </h2>
     </xsl:if>
     <xsl:if test="@osisID">
-      <a href="bible:{@osisID}">
+      <a href="{@osisID}">
       <xsl:apply-templates/>
       </a>
     </xsl:if>
@@ -183,6 +183,37 @@
           <xsl:apply-templates/>
         </xsl:otherwise>
       </xsl:choose>
+  </xsl:template>
+
+  <!--=======================================================================-->
+  <xsl:template match="seg">
+    <xsl:choose>
+      <xsl:when test="@type='font-style: italic;'">
+        <i>
+          <xsl:apply-templates/>
+        </i>
+      </xsl:when>
+      <xsl:when test="@type='font-weight: bold;'">
+        <b>
+          <xsl:apply-templates/>
+        </b>
+      </xsl:when>
+      <xsl:when test="@type='text-decoration: underline;'">
+        <u>
+          <xsl:apply-templates/>
+        </u>
+      </xsl:when>
+      <xsl:when test="starts-with(@type, 'color:')">
+        <font color="substring-after(@type, 'color: ')">
+          <xsl:apply-templates/>
+        </font>
+      </xsl:when>
+      <xsl:otherwise>
+        <p>
+          <xsl:apply-templates/>
+        </p>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <!--=======================================================================-->
@@ -434,21 +465,6 @@
     <div class="salute">
       <xsl:apply-templates/>
     </div>
-  </xsl:template>
-  
-  <xsl:template match="seg">
-    <!--
-    The original author made the following comment:
-    <seg> is very ambiguously defined in the spec.
-    It seems like the most defined use is to represent line breaks, so I'm using
-    a <div> here; but it also says that it can represent generic phrase markup,
-    so I'm really not sure if it should be a <span> instead.
-    But we were getting seg used where we should output <i>. So I am trying
-    that for a while. Really we need some good docs.
-    -->
-    <i>
-      <xsl:apply-templates/>
-    </i>
   </xsl:template>
   
   <xsl:template match="signed">

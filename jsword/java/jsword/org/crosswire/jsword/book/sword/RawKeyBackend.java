@@ -127,6 +127,12 @@ public class RawKeyBackend implements KeyBackend
                 System.arraycopy(data, 0, keydata, 0, keyend);
                 
                 String keytitle = new String(keydata).trim();
+                // for some wierd reason plain text (i.e. SourceType=0) dicts
+                // all get \ added to the ends of the index entries.
+                if (keytitle.endsWith("\\"))
+                {
+                    keytitle = keytitle.substring(0, keytitle.length()-1);
+                }
                 Key key = new IndexKey(keytitle, offset, size);
                 
                 reply.add(key);

@@ -638,6 +638,10 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         String protocol = url.substring(0, match);
         String data = url.substring(match+1);
+        if (data.startsWith("//"))
+        {
+            data = data.substring(2);
+        }
 
         if (protocol.equals("bible"))
         {
