@@ -87,7 +87,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     {
         checkActive();
 
-        // TODO: think about splitting out the parser.
+        // PENDING(joe): think about splitting out the parser.
         /*
         Parser parser = ParserFactory.createParser(this);
         return parser.search(search);
@@ -120,7 +120,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
      *
     public Iterator getStartsWith(String word) throws BookException
     {
-        // TODO: we could probably implement this, but only if we can split the parser out
+        // NOTE(joe): we could probably implement this, but only if we can split the parser out
     }
     */
 
@@ -129,7 +129,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
      *
     public Passage findWord(String word) throws BookException
     {
-        // TODO: we could probably implement this, but only if we can split the parser out
+        // NOTE(joe): we could probably implement this, but only if we can split the parser out
     }
     */
 
@@ -140,7 +140,7 @@ public class LuceneSearchEngine extends AbstractSearchEngine
     {
         checkActive();
 
-        // TODO: write this
+        // PENDING(joe): write this
         /*
         Directory directory = FSDirectory.getDirectory("demo index", false);
         IndexReader reader = IndexReader.open(directory);

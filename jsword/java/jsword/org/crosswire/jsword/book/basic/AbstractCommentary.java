@@ -17,8 +17,8 @@ import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.FilterException;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterException;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
@@ -179,7 +179,7 @@ public abstract class AbstractCommentary implements Commentary
 
                     try
                     {
-                        Filters.getDefaultFilter().toOSIS(everse, message.getName());
+                        FilterFactory.getDefaultFilter().toOSIS(everse, message.getName());
                     }
                     catch (FilterException ex)
                     {

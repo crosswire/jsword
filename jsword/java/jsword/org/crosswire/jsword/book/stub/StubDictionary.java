@@ -15,7 +15,7 @@ import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
 import org.crosswire.jsword.book.basic.DefaultKey;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
@@ -124,7 +124,7 @@ public class StubDictionary extends AbstractDictionary
                         
                         div.getContent().add(everse);
             
-                        Filters.getDefaultFilter().toOSIS(everse, "stub implementation");
+                        FilterFactory.getDefaultFilter().toOSIS(everse, "stub implementation");
                     }
                 }
                 

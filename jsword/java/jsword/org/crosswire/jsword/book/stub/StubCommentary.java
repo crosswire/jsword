@@ -10,7 +10,7 @@ import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractCommentary;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
@@ -108,7 +108,7 @@ public class StubCommentary extends AbstractCommentary
                     
                     div.getContent().add(everse);
 
-                    Filters.getDefaultFilter().toOSIS(everse, "stub implementation");
+                    FilterFactory.getDefaultFilter().toOSIS(everse, "stub implementation");
                 }
             }
             

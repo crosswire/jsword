@@ -13,7 +13,7 @@ import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.basic.DefaultKey;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
@@ -111,7 +111,7 @@ public class StubBible extends AbstractBible
                     
                     div.getContent().add(everse);
 
-                    Filters.getDefaultFilter().toOSIS(everse, "stub implementation");
+                    FilterFactory.getDefaultFilter().toOSIS(everse, "stub implementation");
                 }
             }
             

@@ -178,7 +178,7 @@ public class SerBible extends LocalURLBible
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.data.BookData)
+     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.filter.BookData)
      */
     public void setDocument(Verse verse, BookData doc) throws BookException
     {

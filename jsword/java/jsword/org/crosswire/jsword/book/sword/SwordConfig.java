@@ -10,8 +10,8 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.data.Filter;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.FilterFactory;
 
 /**
  * A utility class for loading and representing Sword module configs.
@@ -192,7 +192,7 @@ public class SwordConfig
         direction = matchingIndex(SwordConstants.DIRECTION_STRINGS, "Direction", 0);
 
         String sourcetype = reader.getFirstValue("SourceType");
-        filter = Filters.getFilter(sourcetype);
+        filter = FilterFactory.getFilter(sourcetype);
 
         encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, "Encoding", 0);
         if (encoding < 0)

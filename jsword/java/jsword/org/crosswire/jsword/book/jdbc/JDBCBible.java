@@ -18,7 +18,7 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.search.Index;
@@ -215,7 +215,7 @@ public class JDBCBible extends LocalURLBible implements Index
                         div.getContent().add(everse);
     
                         String txt = JDBCBibleUtil.processText(vtext);
-                        Filters.getDefaultFilter().toOSIS(everse, txt);
+                        FilterFactory.getDefaultFilter().toOSIS(everse, txt);
                     }
                 }
 

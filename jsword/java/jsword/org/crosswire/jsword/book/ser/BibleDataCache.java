@@ -20,7 +20,7 @@ import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.JAXBUtil;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.osis.Div;
 import org.crosswire.jsword.osis.Header;
 import org.crosswire.jsword.osis.Osis;
@@ -205,7 +205,7 @@ public class BibleDataCache implements Activatable
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        Filters.getDefaultFilter().toOSIS(everse, txt);
+                        FilterFactory.getDefaultFilter().toOSIS(everse, txt);
                     }
                 }
             }

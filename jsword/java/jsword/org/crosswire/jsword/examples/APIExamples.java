@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.examples;
 
 import java.io.IOException;

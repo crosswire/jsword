@@ -14,7 +14,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.JAXBUtil;
 import org.crosswire.jsword.book.Search;
-import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
@@ -365,7 +365,7 @@ public class RawBible extends LocalURLBible implements Index
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        Filters.getDefaultFilter().toOSIS(everse, txt);                
+                        FilterFactory.getDefaultFilter().toOSIS(everse, txt);                
                     }
                 }
             }
@@ -430,7 +430,7 @@ public class RawBible extends LocalURLBible implements Index
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.data.BookData)
+     * @see org.crosswire.jsword.book.basic.AbstractBible#setDocument(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.book.filter.BookData)
      */
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {
