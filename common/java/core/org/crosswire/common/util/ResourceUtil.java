@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.ClassUtils;
+
 /**
  * Better implemenetations of the getResource methods with less ambiguity and
  * that are less dependent on the specific classloader situation.
@@ -83,13 +85,13 @@ public class ResourceUtil
     {
         URL resource = null;
 
-         if (search != null && search.length() > 0)
-         {
+        if (search != null && search.length() > 0)
+        {
             // First look for the resource using an absolute path
-             if (!search.startsWith("/")) //$NON-NLS-1$
-             {
+            if (!search.startsWith("/")) //$NON-NLS-1$
+            {
                 resource = findResource('/' + search);
-             }
+            }
             else
             {
                 log.warn("getResource(" + search + ") starts with a /. More chance of success if it doesn't"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -100,7 +102,7 @@ public class ResourceUtil
             {
                 resource = findResource(search);
             }
-         }
+        }
 
         if (resource == null)
         {
@@ -111,28 +113,108 @@ public class ResourceUtil
     }
 
     /**
+     * Generic resource URL fetcher. One way or the other we'll find it!
+     * Either as a relative or an absolute reference.
+     * @param clazz The resource to find
+     * @return The requested resource
+     * @throws MalformedURLException if the resource can not be found
+     */
+    public static URL getResource(Class clazz, String extension) throws MalformedURLException
+    {
+        URL resource = findResource(clazz, extension);
+
+        if (resource == null)
+        {
+            throw new MalformedURLException(Msg.NO_RESOURCE.toString(clazz.getName()));
+        }
+
+        return resource;
+    }
+
+    /**
      * Generic resource URL fetcher. This uses a variety of strategies
      * to find the resource.
-     *
+     * I'm fairly sure some of these do the same thing, but which and how they
+     * change on various VMs is complex, and it seems simpler to take the
+     * shotgun approach.
+     * @param clazz The resource to find
+     * @return The requested resource, or null if it cannot be found
+     */
+    private static URL findResource(Class clazz, String extension)
+    {
+        URL reply = null;
+
+        if (clazz == null)
+        {
+            assert false : "findResource called on a null string."; //$NON-NLS-1$
+            return reply;
+        }
+
+        String shortName = clazz.getName() + extension;
+        String longName = ClassUtils.getShortClassName(clazz) + extension;
+
+        reply = findHomeResource(shortName);
+
+        if (reply == null)
+        {
+            reply = findHomeResource(longName);
+        }
+
+        if (reply == null)
+        {
+            reply = clazz.getResource(shortName);
+        }
+
+        if (reply == null)
+        {
+            reply = clazz.getResource(longName);
+        }
+
+        if (reply == null)
+        {
+            reply = clazz.getClassLoader().getResource(shortName);
+        }
+
+        if (reply == null)
+        {
+            reply = clazz.getClassLoader().getResource(longName);
+        }
+
+        if (reply == null)
+        {
+            reply = ClassLoader.getSystemResource(shortName);
+        }
+
+        if (reply == null)
+        {
+            reply = ClassLoader.getSystemResource(longName);
+        }
+
+        return reply;
+    }
+
+    /**
+     * Generic resource URL fetcher. This uses a variety of strategies
+     * to find the resource.
      * I'm fairly sure some of these do the same thing, but which and how they
      * change on various VMs is complex, and it seems simpler to take the
      * shotgun approach.
      * @param search The name of the resource to find
      * @return The requested resource, or null if it cannot be found
-    */
+     */
     public static URL findResource(String search)
     {
         URL reply = null;
 
         if (search == null)
         {
-            log.warn("findResource called on a null string."); //$NON-NLS-1$
+            assert false : "findResource called on a null string."; //$NON-NLS-1$
             return reply;
         }
 
         if (search.length() == 0)
         {
-            log.warn("findResource called on an empty string."); //$NON-NLS-1$
+            assert false : "findResource called on an empty string."; //$NON-NLS-1$
             return reply;
         }
 
@@ -213,6 +295,18 @@ public class ResourceUtil
     }
 
     /**
+     * Generic resource URL fetcher
+     * @return The requested resource
+     * @throws IOException if there is a problem reading the file
+     * @throws MalformedURLException if the resource can not be found
+     */
+    public static InputStream getResourceAsStream(Class clazz, String extension) throws IOException, MalformedURLException
+    {
+        URL url = ResourceUtil.getResource(clazz, extension);
+        return url.openStream();
+    }
+
+    /**
      * Get the known implementors of some interface or abstract class.
      * This is currently done by looking up a properties file by the name of
      * the given class, and assuming that values are implementors of said
@@ -225,7 +319,7 @@ public class ResourceUtil
         try
         {
             List matches = new ArrayList();
-            Properties props = getProperties(clazz.getName());
+            Properties props = getProperties(clazz);
             Iterator it = props.values().iterator();
             while (it.hasNext())
             {
@@ -275,7 +369,7 @@ public class ResourceUtil
 
         try
         {
-            Properties props = getProperties(clazz.getName());
+            Properties props = getProperties(clazz);
             Iterator it = props.keySet().iterator();
             while (it.hasNext())
             {
@@ -324,7 +418,7 @@ public class ResourceUtil
      */
     public static Class getImplementor(Class clazz) throws MalformedURLException, IOException, ClassNotFoundException, ClassCastException
     {
-        Properties props = getProperties(clazz.getName());
+        Properties props = getProperties(clazz);
         String name = props.getProperty(DEFAULT);
 
         Class impl = Class.forName(name);
@@ -366,6 +460,24 @@ public class ResourceUtil
     {
         String lookup = subject+FileUtil.EXTENSION_PROPERTIES;
         InputStream in = getResourceAsStream(lookup);
+
+        Properties prop = new Properties();
+        prop.load(in);
+
+        return prop;
+    }
+
+    /**
+     * Get and load a properties file from the writable area or if that
+     * fails from the classpath (where a default ought to be stored)
+     * @param clazz The name of the desired resource
+     * @return The found and loaded properties file
+     * @throws IOException if the resource can not be loaded
+     * @throws MalformedURLException if the resource can not be found
+     */
+    public static Properties getProperties(Class clazz) throws IOException, MalformedURLException
+    {
+        InputStream in = getResourceAsStream(clazz, FileUtil.EXTENSION_PROPERTIES);
 
         Properties prop = new Properties();
         prop.load(in);

@@ -79,25 +79,18 @@ public class SwordBook extends PassageAbstractBook
 
         // We often get rogue characters in the source so we have to chop them
         // out. To start with we kill chars less than 32 and 255
-        int realLen = 0;
         for (int i = 0; i < data.length; i++)
         {
-            // copy the character across
-            if (i != realLen)
+            byte b = data[i];
+            if (b < 32 || b == 255 || (b >= 127 && b <= 159))
             {
-                data[realLen] = data[i];
-            }
-
-            // but let it be overwritten id invalid
-            if (data[i] >= 32 && data[i] != 255)
-            {
-                realLen++;
+                data[i] = ' ';
             }
         }
 
         try
         {
-            return new String(data, 0, realLen, charset);
+            return new String(data, charset);
         }
         catch (UnsupportedEncodingException ex)
         {

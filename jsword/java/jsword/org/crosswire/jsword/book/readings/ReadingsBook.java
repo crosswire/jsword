@@ -158,7 +158,10 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                     reading.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, OSISUtil.PROTOCOL_BIBLE+range.getOSISName());
                     reading.addContent(range.getName());
 
-                    div.getContent().add(reading);                
+                    Element p = OSISUtil.factory().createP();
+                    p.getContent().add(reading);
+
+                    div.getContent().add(p);
                 }
             }
             catch (NoSuchVerseException ex)
