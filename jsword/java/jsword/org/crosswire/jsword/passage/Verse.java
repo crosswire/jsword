@@ -33,11 +33,12 @@ import org.crosswire.common.util.LogicError;
  * Removing the default initialization of the ints took the time down by
  * about 0.25s also.
  * </p>
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -45,14 +46,13 @@ import org.crosswire.common.util.LogicError;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class Verse implements VerseBase
@@ -716,10 +716,14 @@ public class Verse implements VerseBase
                 command = command.substring(0, idx) + VERSE_PREF_DELIM2 + command.substring(idx+1);
             }
         }
+        
+        /*
+        // I'm taking this out - it is of dubious use and confuses cases like
+        // 1ch 5:1 which could be book 1 chapter 5 verse 1 or 1Ch 5:1
         idx = command.lastIndexOf("ch");
         if (idx != -1)
         {
-            // Check that the "ch" is surrounded my non letters - i.e.
+            // Check that the "ch" is surrounded by non letters - i.e.
             // it is not part of "chronicles"
             if (!Character.isLetter(command.charAt(idx-1)) &&
                 !Character.isLetter(command.charAt(idx+2)))
@@ -727,6 +731,7 @@ public class Verse implements VerseBase
                 command = command.substring(0, idx) + VERSE_PREF_DELIM1 + command.substring(idx+2);
             }
         }
+        */
 
         // Create the original string array
         StringTokenizer tokenize = new StringTokenizer(command, delim);

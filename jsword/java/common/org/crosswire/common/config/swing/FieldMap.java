@@ -1,22 +1,14 @@
 
 package org.crosswire.common.config.swing;
 
+import java.awt.Font;
+import java.io.File;
 import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.config.swing.fields.ActionField;
-import org.crosswire.common.config.swing.fields.BooleanField;
-import org.crosswire.common.config.swing.fields.ColorField;
-import org.crosswire.common.config.swing.fields.FileField;
-import org.crosswire.common.config.swing.fields.FontButtonField;
-import org.crosswire.common.config.swing.fields.FontField;
-import org.crosswire.common.config.swing.fields.HashtableField;
-import org.crosswire.common.config.swing.fields.NumberField;
-import org.crosswire.common.config.swing.fields.OptionsField;
-import org.crosswire.common.config.swing.fields.PasswordField;
-import org.crosswire.common.config.swing.fields.StringArrayField;
-import org.crosswire.common.config.swing.fields.TextField;
-import org.crosswire.common.config.swing.fields.TextViewField;
+import org.crosswire.common.config.Choice;
+import org.crosswire.common.config.DirectoryChoice;
+import org.crosswire.common.config.MultipleChoice;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -25,11 +17,12 @@ import org.crosswire.common.util.Reporter;
  * however the practical advantages of compile time type-checking and
  * make simplicity, overweigh the possible re-use gains of a
  * properties file.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -37,14 +30,14 @@ import org.crosswire.common.util.Reporter;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class FieldMap
 {
@@ -53,23 +46,31 @@ public class FieldMap
      * @param the configuration type
      * @return The best Field that matches
      */
-    public static Field getField(String type, Object data)
+    public static Field getField(Choice type)
     {
         Field field = null;
 
         try
         {
-            Class clazz = (Class) hash.get(type);
-            if (clazz == null)
+            // We need to treat instances of MultipleChoice differently
+            // because they are always OptionsFields whatever their underlying
+            // type is.
+            if (type instanceof MultipleChoice)
             {
-                log.warn("field type ("+type+") unregistered.");
-                field = new TextField();
-                field.setOptions(data);
+                field = new OptionsField();
             }
             else
             {
-                field = (Field) clazz.newInstance();
-                field.setOptions(data);
+                Class clazz = (Class) hash.get(type.getConvertionClass());
+                if (clazz != null)
+                {
+                    field = (Field) clazz.newInstance();
+                }
+                else
+                {
+                    log.warn("field type ("+type+") unregistered.");
+                    field = new TextField();
+                }
             }
         }
         catch (Exception ex)
@@ -81,10 +82,10 @@ public class FieldMap
             {
                 log.warn("field type ("+type+") unregistered.");
                 field = new TextField();
-                field.setOptions(data);
             }
         }
 
+        field.setChoice(type);
         return field;
     }
 
@@ -106,20 +107,19 @@ public class FieldMap
      */
     static
     {
-        hash.put("text", TextField.class);
-        hash.put("action", ActionField.class);
-        hash.put("boolean", BooleanField.class);
-        hash.put("number", NumberField.class);
-        hash.put("options", OptionsField.class);
-        hash.put("hash", HashtableField.class);
-        hash.put("array", StringArrayField.class);
-        hash.put("password", PasswordField.class);
+        hash.put(String.class, TextField.class);
+        hash.put(Boolean.TYPE, BooleanField.class);
+        hash.put(Integer.TYPE, NumberField.class);
+        //hash.put("hash", MapField.class);
+        //hash.put("array", StringArrayField.class);
+        //hash.put("password", PasswordField.class);
 
-        hash.put("color", ColorField.class);
-        hash.put("file", FileField.class);
-        hash.put("font", FontField.class);
-        hash.put("fontb", FontButtonField.class);
-        hash.put("file", TextViewField.class);
+        //hash.put("color", ColorField.class);
+        hash.put(File.class, FileField.class);
+        hash.put(DirectoryChoice.class, FileField.class);
+        hash.put(String[].class, FileField.class);
+        hash.put(Font.class, FontField.class);
+        //hash.put("file", TextViewField.class);
     }
 
     /** The log stream */

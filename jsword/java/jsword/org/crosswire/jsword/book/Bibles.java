@@ -9,38 +9,38 @@ import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Reporter;
 
 /**
-* The Bibles class (along with Bible) is the central point of contact
-* between the rest of the world and this set of packages.
-*
-* <table border='1' cellPadding='3' cellSpacing='0' width="100%">
-* <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
-* Distribution Licence:<br />
-* Project B is free software; you can redistribute it
-* and/or modify it under the terms of the GNU General Public License,
-* version 2 as published by the Free Software Foundation.<br />
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* General Public License for more details.<br />
-* The License is available on the internet
-* <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
-* <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-* MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
-* The copyright to this program is held by it's authors.
-* </font></td></tr></table>
-* @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
-* @see <{docs.Licence}>
-* @author Joe Walker
-* @version $Id$
-*/
+ * The Bibles class (along with Bible) is the central point of contact
+ * between the rest of the world and this set of packages.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
 public class Bibles
 {
     /**
-    * Get an array of the available Bible names. This is done by asking
-    * all of the available Bibles in turn and collating the results.
-    * @return An array of available version IDs
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Get an array of the available Bible names. This is done by asking
+     * all of the available Bibles in turn and collating the results.
+     * @return An array of available version IDs
+     * @throws BookException If anything goes wrong with this method
+     */
     public static String[] getBibleNames() throws BookException
     {
         int total = 0;
@@ -83,11 +83,11 @@ public class Bibles
     }
 
     /**
-    * Load up a Bible by name
-    * @param name The version name to create
-    * @return The version requested ready for use
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Load up a Bible by name
+     * @param name The version name to create
+     * @return The version requested ready for use
+     * @throws BookException If anything goes wrong with this method
+     */
     public static Bible getBible(String name) throws BookException
     {
         Bible retcode = null;
@@ -109,13 +109,13 @@ public class Bibles
     }
 
     /**
-    * Get a MutableBook ready to have generate called.
-    * dest_name should not be the name of an existing Bible.
-    * @param dest_name The version name to create
-    * @param dest_driver The driver to use
-    * @return The version requested ready for generate to be called
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Get a MutableBook ready to have generate called.
+     * dest_name should not be the name of an existing Bible.
+     * @param dest_name The version name to create
+     * @param dest_driver The driver to use
+     * @return The version requested ready for generate to be called
+     * @throws BookException If anything goes wrong with this method
+     */
     public static WritableBible createBible(String dest_name, WritableBibleDriver dest_driver) throws BookException
     {
         // There might be a better way of doing this
@@ -134,10 +134,10 @@ public class Bibles
     }
 
     /**
-    * Delete a Bible by name
-    * @param name The version name to delete
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Delete a Bible by name
+     * @param name The version name to delete
+     * @throws BookException If anything goes wrong with this method
+     */
     public static void deleteBible(String name) throws BookException
     {
         WritableBibleDriver driver = BibleDriverManager.getWritableDriverForBible(name);
@@ -150,11 +150,11 @@ public class Bibles
     }
 
     /**
-    * Rename a Bible by name
-    * @param old_name The version name to delete
-    * @param new_name The version name to create
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Rename a Bible by name
+     * @param old_name The version name to delete
+     * @param new_name The version name to create
+     * @throws BookException If anything goes wrong with this method
+     */
     public static void renameBible(String old_name, String new_name) throws BookException
     {
         WritableBibleDriver driver = BibleDriverManager.getWritableDriverForBible(old_name);
@@ -168,12 +168,12 @@ public class Bibles
     }
 
     /**
-    * Set the default Bible. The new name must be equal() to a string
-    * returned from getBibleNames. (if does not need to be == however)
-    * A BookException results if you get it wrong.
-    * @param name The version to use as default.
-    * @exception BookException If the name is not valid
-    */
+     * Set the default Bible. The new name must be equal() to a string
+     * returned from getBibleNames. (if does not need to be == however)
+     * A BookException results if you get it wrong.
+     * @param name The version to use as default.
+     * @exception BookException If the name is not valid
+     */
     public static void setDefaultName(String name) throws BookException
     {
         // Check that this is valid
@@ -192,13 +192,13 @@ public class Bibles
     }
 
     /**
-    * Get the current default Bible name. If there are no Bibles that
-    * can be accessed (sounds like an installation problem or something)
-    * then a BookException results. Otherwise this should always get
-    * you something useful.
-    * @return the current default version name
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Get the current default Bible name. If there are no Bibles that
+     * can be accessed (sounds like an installation problem or something)
+     * then a BookException results. Otherwise this should always get
+     * you something useful.
+     * @return the current default version name
+     * @throws BookException If anything goes wrong with this method
+     */
     public static String getDefaultName() throws BookException
     {
         if (getBibleNames().length == 0)
@@ -211,13 +211,13 @@ public class Bibles
     }
 
     /**
-    * Get the current default Bible. If there are no Bibles that
-    * can be accessed (sounds like an installation problem or something)
-    * then a BookException results. Otherwise this should always get
-    * you something useful.
-    * @return the current default version
-    * @throws BookException If anything goes wrong with this method
-    */
+     * Get the current default Bible. If there are no Bibles that
+     * can be accessed (sounds like an installation problem or something)
+     * then a BookException results. Otherwise this should always get
+     * you something useful.
+     * @return the current default version
+     * @throws BookException If anything goes wrong with this method
+     */
     public static Bible getDefaultBible() throws BookException
     {
         if (default_bible == null)
@@ -230,17 +230,17 @@ public class Bibles
     }
 
     /**
-    * @return are we cacheing Bibles?
-    */
+     * @return are we cacheing Bibles?
+     */
     public static boolean getCacheingBibles()
     {
         return bibles != null;
     }
 
     /**
-    * Are we cacheing Bibles?
-    * @param cache The new cache setting
-    */
+     * Are we cacheing Bibles?
+     * @param cache The new cache setting
+     */
     public static void setCacheingBibles(boolean cache)
     {
         if (cache && bibles == null)
@@ -254,29 +254,29 @@ public class Bibles
     }
 
     /**
-    * Remove a BibleListener from our list of listeners
-    * @param li The old listener
-    */
+     * Remove a BibleListener from our list of listeners
+     * @param li The old listener
+     */
     public static void addBiblesListener(BiblesListener li)
     {
         listeners.add(BiblesListener.class, li);
     }
 
     /**
-    * Add a BibleListener to our list of listeners
-    * @param li The new listener
-    */
+     * Add a BibleListener to our list of listeners
+     * @param li The new listener
+     */
     public static void removeBiblesListener(BiblesListener li)
     {
         listeners.remove(BiblesListener.class, li);
     }
 
     /**
-    * Kick of an event sequence
-    * @param source The event source
-    * @param name The name of the changed Bible
-    * @param added Is it added?
-    */
+     * Kick of an event sequence
+     * @param source The event source
+     * @param name The name of the changed Bible
+     * @param added Is it added?
+     */
     public static void fireBiblesChanged(Object source, String name, boolean added)
     {
         // Guaranteed to return a non-null array

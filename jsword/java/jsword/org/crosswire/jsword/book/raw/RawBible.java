@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -187,11 +186,12 @@ import org.crosswire.jsword.passage.VerseRange;
  *
  * End Sub
  * </pre>
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -199,14 +199,13 @@ import org.crosswire.jsword.passage.VerseRange;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class RawBible extends VersewiseBible
@@ -528,10 +527,10 @@ public class RawBible extends VersewiseBible
      * could skip this one.
      * @return The references to the word
      */
-    public Enumeration listWords() throws BookException
+    public Iterator listWords() throws BookException
     {
         if (!started) init();
-        return word_items.getEnumeration();
+        return word_items.iterator();
     }
 
     /**
@@ -547,14 +546,14 @@ public class RawBible extends VersewiseBible
         if (!started) init();
 
         // For all of the sections
-        for (Enumeration sen=doc.getSectionDatas(); sen.hasMoreElements(); )
+        for (Iterator sit=doc.getSectionDatas(); sit.hasNext(); )
         {
-            SectionData section = (SectionData) sen.nextElement();
+            SectionData section = (SectionData) sit.next();
 
             // For all of the Verses in the section
-            for (Enumeration ven=section.getRefDatas(); ven.hasMoreElements(); )
+            for (Iterator vit=section.getRefDatas(); vit.hasNext(); )
             {
-                RefData vel = (RefData) ven.nextElement();
+                RefData vel = (RefData) vit.next();
 
                 Verse verse = vel.getVerse();
                 String text = vel.getPlainText();

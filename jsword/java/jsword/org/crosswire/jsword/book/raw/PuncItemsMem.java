@@ -9,70 +9,70 @@ import java.io.OutputStream;
 import java.util.Hashtable;
 
 /**
-* PuncItemsMem is almost identical to WordItemsMem, but the Dictionary is
-* much smaller, there are almost certainly less than 256 different
-* intra-word punctuation sets, so we will only need 1 byte per word
-* instead of 2.
-*
-* <table border='1' cellPadding='3' cellSpacing='0' width="100%">
-* <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
-* Distribution Licence:<br />
-* Project B is free software; you can redistribute it
-* and/or modify it under the terms of the GNU General Public License,
-* version 2 as published by the Free Software Foundation.<br />
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* General Public License for more details.<br />
-* The License is available on the internet
-* <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
-* <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-* MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
-* The copyright to this program is held by it's authors.
-* </font></td></tr></table>
-* @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
-* @see <{docs.Licence}>
-* @author Joe Walker
-* @version D0.I0.T0
-*/
+ * PuncItemsMem is almost identical to WordItemsMem, but the Dictionary is
+ * much smaller, there are almost certainly less than 256 different
+ * intra-word punctuation sets, so we will only need 1 byte per word
+ * instead of 2.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
+ */
 public class PuncItemsMem extends ItemsMem
 {
     /**
-    * Create a PuncItemsMem from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    */
+     * Create a PuncItemsMem from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     */
     public PuncItemsMem(RawBible raw, boolean create) throws Exception
     {
         super(raw, "punc.idx", create);
     }
 
     /**
-    * Create a PuncItemsMem from a File that contains the dictionary.
-    * @param raw Reference to the RawBible that is using us
-    * @param filename The leaf name to read/write
-    * @param create Should we start all over again
-    * @param messages We append stuff here if something went wrong
-    */
+     * Create a PuncItemsMem from a File that contains the dictionary.
+     * @param raw Reference to the RawBible that is using us
+     * @param filename The leaf name to read/write
+     * @param create Should we start all over again
+     * @param messages We append stuff here if something went wrong
+     */
     public PuncItemsMem(RawBible raw, boolean create, StringBuffer messages)
     {
         super(raw, "punc.idx", create, messages);
     }
 
     /**
-    * How many items are there in this index?
-    * @return The number of items that we must remember
-    */
+     * How many items are there in this index?
+     * @return The number of items that we must remember
+     */
     public int getMaxItems()
     {
         return 1000;
     }
 
     /**
-    * Load the Resource from a stream
-    * @param in The stream to read from
-    */
+     * Load the Resource from a stream
+     * @param in The stream to read from
+     */
     public void load(InputStream in) throws IOException, ClassNotFoundException
     {
         DataInputStream din = new DataInputStream(in);
@@ -102,10 +102,10 @@ public class PuncItemsMem extends ItemsMem
     }
 
     /**
-    * Ensure that all changes to the index of words are written to a
-    * stream
-    * @param out The stream to write to
-    */
+     * Ensure that all changes to the index of words are written to a
+     * stream
+     * @param out The stream to write to
+     */
     public void save(OutputStream out) throws IOException
     {
         DataOutputStream dout = new DataOutputStream(out);

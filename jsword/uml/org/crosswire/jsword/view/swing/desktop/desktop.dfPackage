@@ -84,11 +84,6 @@ class link306 {
 */
 class link188 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.Tools:oiref><oihard>
-@__modelType reference 
-*/
-class reference245 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.DebugAction:oiref><oihard>
 @__modelType reference 
 */
@@ -133,11 +128,6 @@ class reference7 {
 @__modelType reference 
 */
 class reference8 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.RestartAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference9 {
 }/**
 @__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ExitAction:oiref><oihard>
 @__modelType reference 
@@ -199,16 +189,6 @@ class reference20 {
 */
 class reference21 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.GenerateAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference22 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.DiffAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference23 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.OptionsAction:oiref><oihard>
 @__modelType reference 
 */
@@ -218,21 +198,6 @@ class reference24 {
 @__modelType reference 
 */
 class reference25 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.SysInfoAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference26 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ErrorLogAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference27 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.AboutAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference28 {
 }/**
 @__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref><oihard>
 @__modelType reference 
@@ -254,20 +219,20 @@ class reference31 {
 */
 class reference32 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.BenchmarkAction:oiref><oihard>
-@__modelType reference 
-*/
-class reference33 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ScriptAction:oiref><oihard>
 @__modelType reference 
 */
 class reference34 {
 }/**
-@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref><oihard>
+@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.Desktop:oiref><oihard>
 @__modelType reference 
 */
-class reference35 {
+class reference9 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref><oihard>
+@__modelType reference 
+*/
+class reference22 {
 }}/**
 @__tags
 @shapeType ClassDiagram 
@@ -280,54 +245,72 @@ class __tags {
 class __options {
 }/**
 @__positions <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileOpenAction:oiref>=810,488,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewStatusBarAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=1116,208,602,173:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.EditCutAction:oiref>=544,997,203,81,1:oigroup>
 <oigroup:<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.DebugAction#debug#(##)#:oiref>=419,1206,0,0,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Desktop#act_tools_options:oiref>=241,676,1042,676:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FilePrintAction:oiref>=308,749,203,81,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileNewAction:oiref>=304,627,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileSaveAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=658,621,485,173:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ListDeleteAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=409,348,409,173:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Desktop#VIEW_SDI:oiref>=241,1224,280,1488:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.RestartAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1148,866,804,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ErrorLogAction:oiref>=1034,742,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileCloseAllAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1134,484,836,141:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileSaveAsAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=747,872,747,141:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.EditCopyAction:oiref>=797,1001,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ListDeleteAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=426,348,656,141:oigroup>
 <oigroup:<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.AboutAction#splash:oiref>=342,905,0,0,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ListToggleAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=639,211,530,173:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.EditCopyAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=898,1001,512,173:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ExitAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=900,873,521,173:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileSaveAction:oiref>=557,621,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FilePrintAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=433,749,433,173:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewTDIAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=449,1127,449,173:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ExitAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=900,873,761,141:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=392,65,219,108,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileSaveAllAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=406,210,648,141:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileCloseAction:oiref>=804,342,203,81,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ListToggleAction:oiref>=538,211,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewMDIAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=820,208,820,141:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileSaveAllAction:oiref>=305,210,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileOpenAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=911,488,548,173:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ScriptAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=902,1121,503,173:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewToolBarAction:oiref>=1032,336,203,81,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewTDIAction:oiref>=305,1127,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ListToggleAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=670,211,670,141:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.SDIViewLayout#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=146,1579,334,1504:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.SDIViewLayout#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=146,1579,334,1532:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.BlurAction:oiref>=563,338,203,109,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ScriptAction:oiref>=801,1121,203,108,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ScriptAction:oiref>=801,1121,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewToolBarAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1133,336,844,141:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.OptionsAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1143,612,828,141:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.DiffAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=917,616,775,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=641,42,219,99,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.DebugAction:oiref>=310,470,203,100,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileCloseAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=905,342,575,173:oigroup>
 <oigroup:<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.SysInfoAction#pnl_props:oiref>=856,764,0,0,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Tools#VIEW_TDI:oiref>=118,1220,388,1328:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewSDIAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=441,1005,441,173:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Desktop#layout:oiref>=241,1095,280,1368:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ExitAction:oiref>=799,873,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.EditPasteAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1146,995,796,141:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewMDIAction:oiref>=772,208,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileCloseAllAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=1134,484,566,173:oigroup>
 <oigroup:<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.GenerateAction#pnl_maint:oiref>=585,526,0,0,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction#tools:oiref>=392,101,241,101:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ListDeleteAction:oiref>=325,348,203,81,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.EditPasteAction:oiref>=1045,995,203,81,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.EditCutAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=726,997,726,141:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewSDIAction:oiref>=304,1005,203,81,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=280,1328,219,176,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.BlurAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=664,338,494,173:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileSaveAsAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=658,872,467,173:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=280,1328,219,204,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.EditCopyAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=898,1001,754,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.BenchmarkAction:oiref>=547,1124,203,108,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.DebugAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=417,470,417,173:oigroup>
 <oigroup:<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.DiffAction#pnl_comp:oiref>=852,627,0,0,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.OptionsAction:oiref>=1042,612,203,81,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.GenerateAction:oiref>=562,484,203,90,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.Tools:oiref>=10,10,219,1210,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.OptionsAction:oiref>=1042,612,203,128,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.EditPasteAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=1146,995,539,173:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Desktop#VIEW_TDI:oiref>=241,1138,280,1408:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileSaveAsAction:oiref>=557,872,203,81,1:oigroup>
-<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.ViewLayout#tools:oiref>=316,1328,46,1220:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.ViewLayout#tools:oiref>=280,1522,241,1267:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewTDIAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=406,1127,705,141:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Tools#layout:oiref>=82,1220,352,1328:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileNewAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=405,627,677,141:oigroup>
@@ -336,29 +319,34 @@ class __options {
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.FileCloseAllAction:oiref>=1033,484,203,81,1:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction#tools:oiref>=641,91,229,91:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.AboutAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=407,878,691,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.RestartAction:oiref>=1047,866,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewMDIAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=873,208,593,173:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileOpenAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=911,488,782,141:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ErrorLogAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1135,742,812,141:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileSaveAllAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=400,210,400,173:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Tools#VIEW_MDI:oiref>=155,1220,425,1328:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewToolBarAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=1133,336,584,173:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.GenerateAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=719,484,719,141:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileSaveAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=733,621,733,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.SysInfoAction:oiref>=805,744,203,90,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.TDIViewLayout:oiref>=282,1578,219,166,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.TDIViewLayout:oiref>=282,1578,219,185,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileNewAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=425,627,425,173:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.SDIViewLayout:oiref>=37,1579,219,176,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewSDIAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=405,1005,698,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.SDIViewLayout:oiref>=37,1579,219,157,1:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.AboutAction:oiref>=306,878,203,90,1:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FileCloseAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=905,342,789,141:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.MDIViewLayout#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=636,1579,444,1504:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.MDIViewLayout#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=636,1579,444,1532:oigroup>
 <oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Tools#VIEW_SDI:oiref>=192,1220,462,1328:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.jsword.view.swing.desktop.Desktop#VIEW_MDI:oiref>=241,1181,280,1448:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.ViewStatusBarAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=1116,208,852,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.MDIViewLayout:oiref>=527,1579,219,166,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.MDIViewLayout:oiref>=527,1579,219,185,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.Desktop:oiref>=22,5,219,1305,1:oigroup>
 <oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.ViewStatusBarAction:oiref>=1015,208,203,81,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.HelpContentsAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=656,749,476,173:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.FilePrintAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=409,749,684,141:oigroup>
-<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.TDIViewLayout#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=389,1578,389,1504:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.TDIViewLayout#org.crosswire.jsword.view.swing.desktop.ViewLayout:oiref>=389,1578,389,1532:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.BlurAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=712,338,712,141:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.DebugAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=411,470,663,141:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.EditCutAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=645,997,458,173:oigroup>
 <oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.SysInfoAction#org.crosswire.jsword.view.swing.desktop.ToolsAbstractAction:oiref>=906,744,768,141:oigroup>
-<oigroup:<oiref:java#Class#org.crosswire.jsword.view.swing.desktop.DiffAction:oiref>=816,616,203,90,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.jsword.view.swing.desktop.OptionsAction#org.crosswire.jsword.view.swing.desktop.DesktopAbstractAction:oiref>=1143,612,557,173:oigroup>
 */
 class __positions {
 }

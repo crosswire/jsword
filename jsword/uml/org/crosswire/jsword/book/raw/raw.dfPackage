@@ -57,13 +57,6 @@ class link162 {
 }/**
 @shapeType DependencyLink
 @__modelType link
-@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
-@automatic 
-*/
-class link163 {
-}/**
-@shapeType DependencyLink
-@__modelType link
 @__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
 @automatic 
 */

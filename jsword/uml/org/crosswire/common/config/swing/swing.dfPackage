@@ -7,12 +7,6 @@ package id3s1x2d0mod6ytd0mpfenx;
 */
 class diagram {
 /**
-@__ref <oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref><oihard>
-@__modelType reference
-@__fqn <oiref:#Package#org.crosswire.config.swing.config:oiref> 
-*/
-class reference126 {
-}/**
 @__ref <oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref><oihard>
 @__modelType reference
 @__fqn <oiref:#Package#org.crosswire.config.swing.fields:oiref> 
@@ -46,13 +40,6 @@ class link229 {
 @automatic 
 */
 class link231 {
-}/**
-@shapeType DependencyLink
-@__modelType link
-@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
-@automatic 
-*/
-class link232 {
 }/**
 @shapeType DependencyLink
 @__modelType link
@@ -102,12 +89,6 @@ class reference98 {
 */
 class reference114 {
 }/**
-@__ref <oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref><oihard>
-@__modelType reference
-@__fqn <oiref:#Package#org.crosswire.common.config.swing.config:oiref> 
-*/
-class reference136 {
-}/**
 @__ref <oiref:java#Class#org.crosswire.common.config.swing.WizardConfigPane:oiref><oihard>
 @__modelType reference 
 */
@@ -127,11 +108,6 @@ class reference144 {
 @__modelType reference 
 */
 class reference145 {
-}/**
-@__ref <oiref:java#Class#org.crosswire.common.config.swing.Remote:oiref><oihard>
-@__modelType reference 
-*/
-class reference146 {
 }/**
 @__ref <oiref:java#Class#org.crosswire.common.config.swing.SwingConfig:oiref><oihard>
 @__modelType reference 

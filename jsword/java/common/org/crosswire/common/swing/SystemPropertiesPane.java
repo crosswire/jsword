@@ -9,7 +9,6 @@ import javax.swing.Action;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.crosswire.common.swing.data.HashtableTableModel;
 
 /**
  * SystemPropertiesPane displays the current values of the properties
@@ -97,7 +96,7 @@ public class SystemPropertiesPane extends EirPanel
     }
 
     /* GUI Components */
-    private HashtableTableModel mdl_props = new HashtableTableModel(System.getProperties());
+    private MapTableModel mdl_props = new MapTableModel(System.getProperties());
     private JScrollPane scr_props = new JScrollPane();
     private JTable tbl_props = new JTable();
 }

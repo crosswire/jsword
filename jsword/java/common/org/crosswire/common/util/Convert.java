@@ -1,18 +1,20 @@
 
 package org.crosswire.common.util;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 /**
  * Conversions between various types and Strings.
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -20,14 +22,14 @@ import org.apache.log4j.Logger;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class Convert
 {
@@ -137,9 +139,9 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Hashtable string2Hashtable(String data, Class superclass)
+    public static Map string2Hashtable(String data, Class superclass)
     {
-        Hashtable commands = new Hashtable();
+        Map commands = new HashMap();
 
         String[] data_arr = StringUtil.tokenize(data, " ");
 
@@ -172,7 +174,7 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Hashtable string2Hashtable(String data)
+    public static Map string2Hashtable(String data)
     {
         return string2Hashtable(data, Object.class);
     }
@@ -182,19 +184,19 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static String hashtable2String(Hashtable commands)
+    public static String hashtable2String(Map commands)
     {
-        Enumeration en = commands.keys();
+        Iterator it = commands.keySet().iterator();
         StringBuffer retcode = new StringBuffer();
 
-        while (en.hasMoreElements())
+        while (it.hasNext())
         {
             String key = "";
             String value = "";
 
             try
             {
-                key = (String) en.nextElement();
+                key = (String) it.next();
                 value = (String) commands.get(key);
 
                 retcode.append(key);
@@ -217,9 +219,9 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static String[] string2StringArray(String value)
+    public static String[] string2StringArray(String value, String separator)
     {
-        return StringUtil.tokenize(value, "#");
+        return StringUtil.tokenize(value, separator);
     }
 
     /**
@@ -227,9 +229,9 @@ public class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static String stringArray2String(String[] value)
+    public static String stringArray2String(String[] value, String separator)
     {
-        return StringUtil.cat(value, "#");
+        return StringUtil.cat(value, separator);
     }
 
     /** The log stream */

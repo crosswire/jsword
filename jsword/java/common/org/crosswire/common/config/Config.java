@@ -11,14 +11,11 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.crosswire.common.config.choices.StaticReflectiveChoice;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.PropertiesUtil;
 import org.crosswire.common.util.Reporter;
@@ -136,18 +133,14 @@ public class Config implements Serializable
         {
             Element element = (Element) it.next();
             String key = element.getAttributeValue("key");
-            String type = element.getAttributeValue("type");
-            if (type.equals("static"))
+            try
             {
-                try
-                {
-                    Choice choice = new StaticReflectiveChoice(element);
-                    add(key, choice);
-                }
-                catch (Exception ex)
-                {
-                    log.warn("Error creating config element, key="+key, ex);
-                }
+                Choice choice = ChoiceFactory.getChoice(element);
+                add(key, choice);
+            }
+            catch (Exception ex)
+            {
+                log.warn("Error creating config element, key="+key, ex);
             }
         }
     }
@@ -285,7 +278,7 @@ public class Config implements Serializable
                 String key = (String) it.next();
                 Choice model = getChoice(key);
 
-                if (model.priority() == priority)
+                if (model.getPriority() == priority)
                 {
                     String old_value = model.getString();
                     String new_value = local.getProperty(key);
@@ -327,14 +320,6 @@ public class Config implements Serializable
                 }
             }
         }
-    }
-
-    /**
-     * Method getDataMap.
-     */
-    public Map getDataMap()
-    {
-        return datamap;
     }
 
     /**
@@ -571,6 +556,4 @@ public class Config implements Serializable
 
     /** The list of listeners */
     protected EventListenerList listener_list = new EventListenerList();
-    
-    private Map datamap = new HashMap();
 }

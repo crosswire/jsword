@@ -1,3 +1,4 @@
+
 package org.crosswire.jsword.book.ser;
 
 import java.io.BufferedReader;
@@ -10,7 +11,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.SortedMap;
@@ -416,14 +416,14 @@ public class SerBible extends VersewiseBible
         try
         {
             // For all of the sections
-            for (Enumeration sen = doc.getSectionDatas(); sen.hasMoreElements();)
+            for (Iterator sit = doc.getSectionDatas(); sit.hasNext(); )
             {
-                SectionData section = (SectionData) sen.nextElement();
+                SectionData section = (SectionData) sit.next();
 
                 // For all of the Verses in the section
-                for (Enumeration ven = section.getRefDatas(); ven.hasMoreElements();)
+                for (Iterator vit = section.getRefDatas(); vit.hasNext(); )
                 {
-                    RefData vel = (RefData) ven.nextElement();
+                    RefData vel = (RefData) vit.next();
 
                     Verse verse = vel.getVerse();
                     String text = vel.getPlainText();

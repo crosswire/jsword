@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.config.swing.SwingConfig;
 import org.crosswire.common.util.Reporter;
@@ -54,7 +55,7 @@ public class OptionsAction extends DesktopAbstractAction
     public void createConfig() throws IOException, JDOMException, BookException
     {
         config = new Config("Tool Shed Options");
-        config.getDataMap().put("biblenames", Bibles.getBibleNames());
+        ChoiceFactory.getDataMap().put("biblenames", Bibles.getBibleNames());
 
         Document xmlconfig = Project.resource().getDocument("config");
         config.add(xmlconfig);

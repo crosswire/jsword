@@ -250,13 +250,6 @@ class reference139 {
 */
 class reference140 {
 }/**
-@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
-@__modelType reference
-@__fqn <oiref:#Package#org.crosswire.config.choices:oiref>
-@__imported 
-*/
-class reference141 {
-}/**
 @__ref <oiref:design#Class#id1a0rod0mod6ytd0mpfe6e.diagram:oiref><oihard>
 @__modelType reference
 @__fqn <oiref:#Package#org.crosswire.config.servlet:oiref>
@@ -270,13 +263,6 @@ class reference142 {
 @__imported 
 */
 class reference143 {
-}/**
-@__ref <oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref><oihard>
-@__modelType reference
-@__fqn <oiref:#Package#org.crosswire.config.swing.config:oiref>
-@__imported 
-*/
-class reference144 {
 }/**
 @__ref <oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref><oihard>
 @__modelType reference
@@ -351,10 +337,10 @@ class __options {
 <oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram:oiref>=800,1360,200,63,1:oigroup>
 <oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link189:oiref>=1696,1110,69,83:oigroup>
 <oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link15:oiref>=302,854,108,2380:oigroup>
-<oigroup:<oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram.link258:oiref>=1380,2563,721,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link92:oiref>=180,2443,540,2500:oigroup>
 <oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link68:oiref>=1295,1490,1895,1173:oigroup>
-<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link232:oiref>=1040,2636,733,2636:oigroup>
+
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link230:oiref>=1940,1173,1101,2190:oigroup>
 <oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link190:oiref>=1540,1173,1076,2190:oigroup>
 <oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link218:oiref>=2384,1173,1343,1490:oigroup>
@@ -363,10 +349,10 @@ class __options {
 <oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link31:oiref>=711,193,255,430:oigroup>
 <oigroup:<oiref:design#Class#id97dc37li4p0c37mqo2c.diagram.link318:oiref>=553,260,86,83:oigroup>
 <oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link59:oiref>=1279,1490,1691,1173:oigroup>
-<oigroup:<oiref:design#Class#id13oldcvwm367tcvwma28h.diagram.link172:oiref>=1985,1083,673,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link29:oiref>=873,193,1942,1250:oigroup>
 <oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link237:oiref>=824,2563,329,3210:oigroup>
-<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link250:oiref>=814,2750,665,2673:oigroup>
+
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link63:oiref>=49,83,1120,2620:oigroup>
 <oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link172:oiref>=2205,1173,1127,2190:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link51:oiref>=66,83,1543,1110:oigroup>
@@ -375,7 +361,7 @@ class __options {
 <oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram.link164:oiref>=1697,1083,638,2500:oigroup>
 <oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram.link:oiref>=662,93,791,130:oigroup>
 <oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link157:oiref>=1981,1313,686,2500:oigroup>
-<oigroup:<oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram.link184:oiref>=606,643,606,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link466:oiref>=883,744,1050,2190:oigroup>
 <oigroup:<oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram:oiref>=1280,2500,200,63,1:oigroup>
 <oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link197:oiref>=1476,1110,65,83:oigroup>
@@ -390,7 +376,7 @@ class __options {
 <oigroup:<oiref:design#Class#id13oldcvwm367tcvwma28h.diagram:oiref>=1850,1020,203,63,1:oigroup>
 <oigroup:<oiref:design#Class#id26nxxcvzpttgbcvzrgx8a.diagram.link:oiref>=905,484,905,690:oigroup>
 <oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link160:oiref>=2232,1173,357,3210:oigroup>
-<oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link256:oiref>=301,3210,597,2673:oigroup>
+
 <oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link248:oiref>=947,2750,1080,2663:oigroup>
 <oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link172:oiref>=1932,1313,1335,1490:oigroup>
 <oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram:oiref>=500,30,203,63,1:oigroup>
@@ -432,7 +418,7 @@ class __options {
 <oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link200:oiref>=2151,1173,586,1840:oigroup>
 <oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link69:oiref>=1305,1553,315,3210:oigroup>
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link231:oiref>=1970,1173,1970,1250:oigroup>
-<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link224:oiref>=573,2563,573,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram.link281:oiref>=112,353,243,3210:oigroup>
 <oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link153:oiref>=1328,1553,1064,2190:oigroup>
 <oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram:oiref>=1040,2500,203,63,1:oigroup>
@@ -447,33 +433,33 @@ class __options {
 <oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram:oiref>=20,290,184,63,1:oigroup>
 <oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link221:oiref>=710,2550,800,2550:oigroup>
 <oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link:oiref>=299,643,992,2190:oigroup>
-<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram.link327:oiref>=578,2610,33,83:oigroup>
+
 <oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram.link193:oiref>=486,2343,551,2500:oigroup>
 <oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref>=800,2500,203,63,1:oigroup>
 <oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link:oiref>=378,3210,1075,3013:oigroup>
-<oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram.link158:oiref>=900,1423,628,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram.link266:oiref>=460,2280,29,83:oigroup>
 <oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram:oiref>=1860,1250,196,63,1:oigroup>
 <oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link233:oiref>=1202,2663,930,2860:oigroup>
 <oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link176:oiref>=1884,1313,850,1480:oigroup>
-<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link181:oiref>=595,753,595,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link:oiref>=2031,1313,350,3210:oigroup>
 <oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref>=1190,1490,162,63,1:oigroup>
 <oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link341:oiref>=238,3210,28,83:oigroup>
 <oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link25:oiref>=154,314,755,690:oigroup>
 <oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref>=530,2500,180,63,1:oigroup>
 <oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link:oiref>=834,193,1231,1490:oigroup>
-<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref>=530,2610,203,63,1:oigroup>
+
 <oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link11:oiref>=925,744,1313,1490:oigroup>
-<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link66:oiref>=1282,1553,639,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idmu6fcvzpttgbcvzuz8i2.diagram:oiref>=720,1480,203,63,1:oigroup>
-<oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram.link165:oiref>=1765,1083,650,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link249:oiref>=887,2813,887,2860:oigroup>
 <oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram:oiref>=680,2120,203,63,1:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link70:oiref>=54,83,1169,2500:oigroup>
 <oigroup:<oiref:design#Class#id1z4wtd0mod6ytd0mpffh5.diagram:oiref>=1010,2950,196,63,1:oigroup>
 <oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link22:oiref>=126,314,1285,1490:oigroup>
-<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram.link90:oiref>=1061,2253,697,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link31:oiref>=104,61,1170,61:oigroup>
 <oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link224:oiref>=571,690,59,83:oigroup>
 <oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link27:oiref>=777,193,777,1480:oigroup>
@@ -491,11 +477,11 @@ class __options {
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link59:oiref>=27,83,237,3210:oigroup>
 <oigroup:<oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram.link182:oiref>=572,643,572,2500:oigroup>
 <oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link234:oiref>=1487,623,1052,2190:oigroup>
-<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link97:oiref>=150,2443,546,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram.link187:oiref>=747,2183,593,2500:oigroup>
-<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link163:oiref>=1733,1173,661,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram.link15:oiref>=825,634,672,690:oigroup>
-<oigroup:<oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref>=1270,2600,203,63,1:oigroup>
+
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link:oiref>=1955,1173,343,3210:oigroup>
 <oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram.link186:oiref>=565,1840,1236,1553:oigroup>
 <oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link181:oiref>=1775,1173,1088,2190:oigroup>
@@ -505,7 +491,7 @@ class __options {
 <oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram.link:oiref>=555,1903,981,2190:oigroup>
 <oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link17:oiref>=315,800,315,484:oigroup>
 <oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link222:oiref>=2416,1173,628,1840:oigroup>
-<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link171:oiref>=1925,1173,685,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link68:oiref>=37,83,848,2860:oigroup>
 <oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link94:oiref>=90,2443,236,3210:oigroup>
 <oigroup:<oiref:design#Class#id1jzt3cvzpttgbcvzwa8kg.diagram.link392:oiref>=1051,333,1239,1490:oigroup>
@@ -527,7 +513,7 @@ class __options {
 <oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link239:oiref>=848,2563,848,2860:oigroup>
 <oigroup:<oiref:design#Class#id26nxxcvzpttgbcvzrgx8a.diagram:oiref>=880,430,200,54,1:oigroup>
 <oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram:oiref>=730,580,200,54,1:oigroup>
-<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram.link:oiref>=563,2610,563,2563:oigroup>
+
 <oigroup:<oiref:design#Class#id1z4wtd0mod6ytd0mpffh5.diagram.link:oiref>=1140,3013,385,3210:oigroup>
 <oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram.link346:oiref>=36,120,36,83:oigroup>
 <oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram:oiref>=60,2380,151,63,1:oigroup>
@@ -537,7 +523,7 @@ class __options {
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link26:oiref>=70,83,1763,1110:oigroup>
 <oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram:oiref>=2290,1110,190,63,1:oigroup>
 <oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link60:oiref>=1213,1553,544,1840:oigroup>
-<oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram.link194:oiref>=423,2343,584,2610:oigroup>
+
 <oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram:oiref>=500,690,203,63,1:oigroup>
 <oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram:oiref>=230,800,200,54,1:oigroup>
 <oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link203:oiref>=1796,1173,1914,1250:oigroup>
@@ -572,7 +558,7 @@ class __options {
 <oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link28:oiref>=815,193,1028,2190:oigroup>
 <oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link236:oiref>=923,2563,1141,2600:oigroup>
 <oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram.link178:oiref>=520,1830,35,83:oigroup>
-<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram.link253:oiref>=1082,2563,709,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link171:oiref>=2097,1173,1303,1490:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link50:oiref>=43,83,323,800:oigroup>
 <oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link255:oiref>=280,3210,590,2563:oigroup>
@@ -580,7 +566,7 @@ class __options {
 <oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram:oiref>=1630,1110,187,63,1:oigroup>
 <oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link247:oiref>=828,2750,641,2563:oigroup>
 <oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link19:oiref>=730,717,700,717:oigroup>
-<oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram.link188:oiref>=815,2183,617,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link236:oiref>=1865,1173,523,1840:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link41:oiref>=82,83,2356,1110:oigroup>
 <oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram.link174:oiref>=900,1360,58,83:oigroup>
@@ -600,7 +586,7 @@ class __options {
 <oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link250:oiref>=1403,560,90,83:oigroup>
 <oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link48:oiref>=92,83,1436,560:oigroup>
 <oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link218:oiref>=349,643,1215,1490:oigroup>
-<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link66:oiref>=32,83,572,2610:oigroup>
+
 <oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link333:oiref>=933,2500,44,83:oigroup>
 <oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link259:oiref>=667,753,1223,1490:oigroup>
 <oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link178:oiref>=1448,623,287,3210:oigroup>

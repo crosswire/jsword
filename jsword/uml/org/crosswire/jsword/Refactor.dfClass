@@ -211,13 +211,6 @@ class reference3 {
 */
 class reference5 {
 }/**
-@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
-@__modelType reference
-@__fqn <oiref:#Package#org.crosswire.config.choices:oiref>
-@__imported 
-*/
-class reference6 {
-}/**
 @__ref <oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref><oihard>
 @__modelType reference
 @__fqn <oiref:#Package#org.crosswire.config.swing:oiref>
@@ -318,7 +311,7 @@ class __options {
 <oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link466:oiref>=1370,383,645,1403:oigroup>
 <oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link171:oiref>=359,368,564,1403:oigroup>
 <oigroup:<oiref:design#Class#id97dc37li4p0c37mqo2c.diagram.link299:oiref>=910,1358,693,1403:oigroup>
-<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref>=760,1040,203,262,1:oigroup>
+
 <oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram:oiref>=30,589,201,129,1:oigroup>
 <oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram:oiref>=980,1120,203,281,1:oigroup>
 <oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link180:oiref>=440,227,944,781:oigroup>

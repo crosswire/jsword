@@ -652,8 +652,8 @@ public class Mapper extends JFrame
 
             if (reply == BibleChooser.APPROVE_OPTION)
             {
-                // Bible bible = chooser.getSelectedBible();
-                // map.createLinks(bible);
+                //Bible bible = chooser.getSelectedBible();
+                //map.createLinks(bible);
             }
         }
         catch (Exception ex)

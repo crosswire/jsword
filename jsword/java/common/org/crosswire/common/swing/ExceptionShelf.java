@@ -7,8 +7,9 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -67,7 +68,7 @@ public class ExceptionShelf extends JPanel
         add(toggle, BorderLayout.EAST);
 
         addPanel(NO_PROBLEMS);
-        shelves.addElement(this);
+        shelves.add(this);
 
         setToggles();
     }
@@ -77,7 +78,7 @@ public class ExceptionShelf extends JPanel
      */
     public void close()
     {
-        shelves.removeElement(this);
+        shelves.remove(this);
     }
 
     /**
@@ -98,8 +99,8 @@ public class ExceptionShelf extends JPanel
         // Add in the new panel
         JPanel panel = createExceptionPanel(ex);
         total++;
-        exceptions.addElement(ex);
-        panels.addElement(panel);
+        exceptions.add(ex);
+        panels.add(panel);
         addPanel(panel);
         setToggles();
     }
@@ -120,10 +121,10 @@ public class ExceptionShelf extends JPanel
         if (index == -1)
             return;
 
-        removePanel((JPanel) panels.elementAt(index));
+        removePanel((JPanel) panels.get(index));
         total--;
-        exceptions.removeElementAt(index);
-        panels.removeElementAt(index);
+        exceptions.remove(index);
+        panels.remove(index);
         setToggles();
 
         // Add in the 'no problems' panel if we are empty
@@ -188,7 +189,7 @@ public class ExceptionShelf extends JPanel
         else
         {
             DetailedExceptionPane.showExceptionDialog(this,
-                    (Throwable) exceptions.elementAt(current));
+                    (Throwable) exceptions.get(current));
         }
     }
 
@@ -197,7 +198,7 @@ public class ExceptionShelf extends JPanel
      */
     protected void remover()
     {
-        removeException((Throwable) exceptions.elementAt(current));
+        removeException((Throwable) exceptions.get(current));
     }
 
     /**
@@ -293,7 +294,7 @@ public class ExceptionShelf extends JPanel
     }
 
     /** The set of panels reporting on the errors */
-    private Vector panels = new Vector();
+    private List panels = new ArrayList();
 
     /** The shelf scroller */
     private NudgeButton toggle = new NudgeButton();
@@ -314,7 +315,7 @@ public class ExceptionShelf extends JPanel
     private int total = 0;
 
     /** The set of known errors */
-    private Vector exceptions = new Vector();
+    private List exceptions = new ArrayList();
 
     /**
      * You must call setHelpDeskListener() in order to start displaying
@@ -349,7 +350,7 @@ public class ExceptionShelf extends JPanel
     private static ShelfCaptureListener li = new ShelfCaptureListener();
 
     /** All the ExceptionShelves that we know about */
-    protected static Vector shelves = new Vector();
+    protected static List shelves = new ArrayList();
 
     /** The font for the remove button */
     private static Font small;
@@ -371,10 +372,10 @@ public class ExceptionShelf extends JPanel
             SwingUtilities.invokeLater(new Runnable() {
                 public void run()
                 {
-                    Enumeration en = shelves.elements();
-                    while (en.hasMoreElements())
+                    Iterator it = shelves.iterator();
+                    while (it.hasNext())
                     {
-                        ExceptionShelf es = (ExceptionShelf) en.nextElement();
+                        ExceptionShelf es = (ExceptionShelf) it.next();
                         es.addException(ev.getException());
                     }
                 }
@@ -390,10 +391,10 @@ public class ExceptionShelf extends JPanel
             SwingUtilities.invokeLater(new Runnable() {
                 public void run()
                 {
-                    Enumeration en = shelves.elements();
-                    while (en.hasMoreElements())
+                    Iterator it = shelves.iterator();
+                    while (it.hasNext())
                     {
-                        ExceptionShelf es = (ExceptionShelf) en.nextElement();
+                        ExceptionShelf es = (ExceptionShelf) it.next();
                         es.addException(new Exception(ev.getMessage()));
                     }
                 }

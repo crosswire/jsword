@@ -54,11 +54,15 @@ import org.crosswire.common.util.LogicError;
  * memory than a BitSet sytle PassageTally) And the intuative result
  * that the BitSet will be faster, I'm going to start by implementing
  * the latter only.</p>
+ * 
+ * <p>To think about - I've upped the MAX_TALLY to 20000 to help the new
+ * mapper program. I'm not sure why it was originally 100?
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
- * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
  * Distribution Licence:<br />
- * Project B is free software; you can redistribute it
+ * JSword is free software; you can redistribute it
  * and/or modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.<br />
  * This program is distributed in the hope that it will be useful,
@@ -66,14 +70,13 @@ import org.crosswire.common.util.LogicError;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.<br />
  * The License is available on the internet
- * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
- * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
- * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
- * @see <{docs.Licence}>
- * @author Joe Walker
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
 public class PassageTally extends AbstractPassage
@@ -344,6 +347,22 @@ public class PassageTally extends AbstractPassage
         optimizeWrites();
 
         alterVerseBase(that, 1);
+        fireIntervalAdded(this, null, null);
+    }
+
+    /**
+     * DONT USE THIS. It makes public something of the ratings scheme which
+     * is not generally recommended. This method is likely to be removed at
+     * a moments notice, and it only here to keep Mapper happy.
+     * Add/Increment this verses in the rankings
+     * @param that The verses to add/increment
+     * @param count The amount to increment by
+     */
+    public void add(VerseBase that, int count)
+    {
+        optimizeWrites();
+
+        alterVerseBase(that, count);
         fireIntervalAdded(this, null, null);
     }
 
@@ -728,7 +747,7 @@ public class PassageTally extends AbstractPassage
     public static final int ORDER_TALLY = 1;
 
     /** The highest tally possible */
-    public static final int MAX_TALLY = 100;
+    public static final int MAX_TALLY = 20000;
 
     /** The tallyboard itself */
     private int[] board = new int[Books.versesInBible()];

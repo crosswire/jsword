@@ -318,7 +318,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         this.setJMenuBar(bar_menu);
 
         this.setEnabled(true);
-        this.setTitle("Project B");
+        this.setTitle("JSword");
 
         accelerateMenu(bar_menu);
     }

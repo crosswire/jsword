@@ -1,6 +1,11 @@
 
 package org.crosswire.common.util;
 
+import org.crosswire.common.config.AbstractChoice;
+import org.crosswire.common.config.MultipleChoice;
+import org.crosswire.common.config.StartupException;
+import org.jdom.Element;
+
 /**
  * A UserLevel keeps a track of how advanced the user is.
  * It may not be a graphical component, but many graphical components
@@ -115,16 +120,6 @@ public class UserLevel
     /** User level - Advanced */
     public static final UserLevel ADVANCED = new UserLevel(2, "Advanced");
 
-    /**
-     * An array containing all the UserLevels
-     */
-    private static final UserLevel[] levels = new UserLevel[]
-    {
-        BEGINNER,
-        INTERMEDIATE,
-        ADVANCED,
-    };
-
     /** The level name */
     private String name;
     
@@ -133,4 +128,76 @@ public class UserLevel
 
     /** The current User level */
     private static UserLevel global = BEGINNER;
+
+    /**
+     * A Custom Choice
+     */
+    public static class UserLevelChoice extends AbstractChoice implements MultipleChoice
+    {
+        /**
+         * Simple ctor so there is a default
+         */
+        public void init(Element option) throws StartupException
+        {
+            // Help text
+            Element childele = option.getChild("help");
+            if (childele == null)
+                helptext = "";
+            helptext = childele.getTextTrim();
+        }
+
+        /**
+         * The available alternative values to be presented as options to the user
+         * where the user interface allows presentation of alternatives.
+         * @return A string array of alternatives.
+         */
+        public String[] getOptions()
+        {
+            return levels;
+        }
+
+        /**
+         * Accessor for this UserLevels type.
+         */
+        public Class getConvertionClass()
+        {
+            return UserLevel.class;
+        }
+
+        /**
+         * Read the save setting from UserLevel
+         */
+        public void setString(String value)
+        {
+            UserLevel.setGlobalUserLevel(UserLevel.forName(value));
+        }
+    
+        /**
+         * Save the save setting to UserLevel
+         */
+        public String getString()
+        {
+            return UserLevel.getGlobalUserLevel().getName();
+        }
+
+        /**
+         * Get some help on this Choice.
+         */
+        public String getHelpText()
+        {
+            return helptext;
+        }
+
+        private String helptext;
+
+        /**
+         * An array containing all the UserLevels
+         */
+        private static final String[] levels = new String[]
+        {
+            BEGINNER.getName(),
+            INTERMEDIATE.getName(),
+            ADVANCED.getName(),
+        };
+    }
 }
