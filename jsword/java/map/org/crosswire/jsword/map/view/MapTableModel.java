@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import org.crosswire.jsword.map.model.Map;
 import org.crosswire.jsword.map.model.MapEvent;
 import org.crosswire.jsword.map.model.MapListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
@@ -187,22 +187,22 @@ public class MapTableModel extends AbstractTableModel
             int count = row + 1;
             int b = 1;
             int c = 1;
-            while (b <= Books.booksInBible())
+            while (b <= BibleInfo.booksInBible())
             {
-                if (count <= Books.chaptersInBook(b))
+                if (count <= BibleInfo.chaptersInBook(b))
                 {
                     c = count;
                     break;
                 }
 
-                count -= Books.chaptersInBook(b);
+                count -= BibleInfo.chaptersInBook(b);
                 b++;
             }
 
             switch (col)
             {
             case 0:
-                VerseRange vr = new VerseRange(new Verse(b, c, 1), new Verse(b, c, Books.versesInChapter(b, c)));
+                VerseRange vr = new VerseRange(new Verse(b, c, 1), new Verse(b, c, BibleInfo.versesInChapter(b, c)));
                 return vr;
             case 1:
                 return new Integer(b);
@@ -262,7 +262,7 @@ public class MapTableModel extends AbstractTableModel
     private Map map;
 
     /** The number of rows */
-    private static int cib = Books.chaptersInBible();
+    private static int cib = BibleInfo.chaptersInBible();
 
     /** The number of columns */
     private static int cols;
@@ -294,7 +294,7 @@ public class MapTableModel extends AbstractTableModel
             {
                 int book = ev.getChangedBook();
                 int chapter = ev.getChangedChapter();
-                int ord = Books.verseOrdinal(book, chapter, 1);
+                int ord = BibleInfo.verseOrdinal(book, chapter, 1);
                 int row = ord - 1;
                 
                 fireTableCellUpdated(row, 2);

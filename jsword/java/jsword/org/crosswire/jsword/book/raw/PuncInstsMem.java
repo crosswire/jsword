@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * A PuncInstsMem provides access to the list of punctuation ids that
@@ -74,7 +74,7 @@ public class PuncInstsMem extends InstsMem
         if (!ssig.equals("RAW:PI"))
             throw new IOException("This file is not a PuncInst file");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             int insts = din.readByte();
             array[i] = new int[insts];
@@ -98,7 +98,7 @@ public class PuncInstsMem extends InstsMem
 
         dout.writeBytes("RAW:PI");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             if (array[i] == null)
             {

@@ -343,7 +343,7 @@ public class TestPassageUtil extends TestCase
         Passage gen_rev = PassageFactory.createPassage("Gen 1:1-Rev 22:21");
         Passage hard = PassageFactory.createPassage();
         Passage empty = PassageFactory.createPassage();
-        for (int i=1; i<Books.versesInBible(); i+=10)
+        for (int i=1; i<BibleInfo.versesInBible(); i+=10)
         {
             hard.add(new Verse(i));
         }

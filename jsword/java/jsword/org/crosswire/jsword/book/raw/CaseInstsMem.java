@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * A CaseInstsMem provides access to the list of case ids that
@@ -81,7 +81,7 @@ public class CaseInstsMem extends InstsMem
         if (!ssig.equals("RAW:CI"))
             throw new IOException("This file is not a CaseInst file");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             int insts = din.readByte();
             array[i] = new int[insts];
@@ -111,7 +111,7 @@ public class CaseInstsMem extends InstsMem
 
         dout.writeBytes("RAW:CI");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             if (array[i] == null)
             {

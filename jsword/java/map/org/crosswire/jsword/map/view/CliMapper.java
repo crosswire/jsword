@@ -9,7 +9,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Bibles;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.control.search.Matcher;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -81,20 +81,20 @@ public class CliMapper
 
             Element links = new Element("links");
 
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
                 Element eb = new Element("book");
                 eb.setAttribute("num", ""+b);
-                eb.setAttribute("name", Books.getShortBookName(b));
+                eb.setAttribute("name", BibleInfo.getShortBookName(b));
                 links.addContent(eb);
 
-                int chff = Books.chaptersInBook(b);
-                int vsff = Books.versesInChapter(b, chff);
+                int chff = BibleInfo.chaptersInBook(b);
+                int vsff = BibleInfo.versesInChapter(b, chff);
                 Verse start = new Verse(b, 1, 1);
                 Verse end = new Verse(b, chff, vsff);
                 VerseRange book = new VerseRange(start, end);
 
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     Element ec = new Element("chapter");
                     ec.setAttribute("num", ""+c);
@@ -103,7 +103,7 @@ public class CliMapper
                     PassageTally total = new PassageTally();
                     total.setOrdering(PassageTally.ORDER_TALLY);
                     
-                    for (int v=1; v<=Books.versesInChapter(b, c); v++)
+                    for (int v=1; v<=BibleInfo.versesInChapter(b, c); v++)
                     {
                         Verse find = new Verse(b, c, v);
                         Passage ref = PassageFactory.createPassage();
@@ -116,7 +116,7 @@ public class CliMapper
                         total.addAll(temp);
                     }
 
-                    int ff = Books.versesInChapter(b, c);
+                    int ff = BibleInfo.versesInChapter(b, c);
                     VerseRange base = new VerseRange(new Verse(b, c, 1), new Verse(b, c, ff));
 
                     total.remove(book);
@@ -127,7 +127,7 @@ public class CliMapper
                     while (it.hasNext())
                     {
                         Verse link = (Verse) it.next();
-                        VerseRange chap = new VerseRange(link, new Verse(link.getBook(), link.getChapter(), Books.versesInChapter(link.getBook(), link.getChapter())));
+                        VerseRange chap = new VerseRange(link, new Verse(link.getBook(), link.getChapter(), BibleInfo.versesInChapter(link.getBook(), link.getChapter())));
                         Element el = new Element("link");
                         el.setAttribute("book", ""+link.getBook());
                         el.setAttribute("chapter", ""+link.getChapter());
@@ -140,9 +140,9 @@ public class CliMapper
                             chap.getName()+","+link.getBook()+","+link.getChapter()+","+
                             total.getIndexOf(link));
 
-                        for (int tb=1; tb<=Books.booksInBible(); tb++)
+                        for (int tb=1; tb<=BibleInfo.booksInBible(); tb++)
                         {
-                            for (int tc=0; tc<Books.chaptersInBook(tb); tc++)
+                            for (int tc=0; tc<BibleInfo.chaptersInBook(tb); tc++)
                             {
                                 Verse t = new Verse(tb, tc, 1);
                                 total.getIndexOf(t);
@@ -171,17 +171,17 @@ public class CliMapper
 
     public void scrunchTally(PassageTally tally) throws NoSuchVerseException
     {
-        for (int b=1; b<=Books.booksInBible(); b++)
+        for (int b=1; b<=BibleInfo.booksInBible(); b++)
         {
-            for (int c=1; c<=Books.chaptersInBook(b); c++)
+            for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
             {
                 Verse start = new Verse(b, c, 1);
-                Verse end = new Verse(b, c, Books.versesInChapter(b, c));
+                Verse end = new Verse(b, c, BibleInfo.versesInChapter(b, c));
                 VerseRange chapter = new VerseRange(start, end);
                 
                 int chaptotal = 0;
 
-                for (int v=1; v<=Books.versesInChapter(b, c); v++)
+                for (int v=1; v<=BibleInfo.versesInChapter(b, c); v++)
                 {
                     chaptotal += tally.getTallyOf(new Verse(b, c, v));
                 }

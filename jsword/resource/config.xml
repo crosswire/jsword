@@ -69,7 +69,7 @@
   </option>
 
   <option key="Bibles.Display.Book Case" type="int-options">
-  	<introspect class="org.crosswire.jsword.passage.Books" property="Case"/>
+  	<introspect class="org.crosswire.jsword.passage.BibleInfo" property="Case"/>
     <help>What case should we use to display the references.</help>
     <alternative number="0" name="lower"/>
     <alternative number="1" name="Sentance"/>

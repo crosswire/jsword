@@ -10,7 +10,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -55,13 +55,13 @@ public class Map implements Serializable
         this.dimensions = dimensions;
 
         // Create the array of Nodes
-        int bie = Books.booksInBible();
+        int bie = BibleInfo.booksInBible();
         this.nodes = new Position[bie+1][];
         try
         {
             for (int b=1; b<=bie; b++)
             {
-                int cib = Books.chaptersInBook(b);
+                int cib = BibleInfo.chaptersInBook(b);
                 nodes[b] = new Position[cib+1];
                 for (int c=1; c<=cib; c++)
                 {
@@ -166,9 +166,9 @@ public class Map implements Serializable
     {
         try
         {
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     nodes[b][c] = new Position(new float[] { (float) Math.random(), (float) Math.random() });
                 }
@@ -195,12 +195,12 @@ public class Map implements Serializable
 
         try
         {
-            int bie = Books.booksInBible();
+            int bie = BibleInfo.booksInBible();
             for (int b=1; b<=bie; b++)
             {
                 float y = (((float) (b - 1)) / (bie - 1)) * scale + start;
 
-                int cib = Books.chaptersInBook(b);
+                int cib = BibleInfo.chaptersInBook(b);
                 if (cib == 1)
                 {
                     nodes[b][1] = new Position(new float[] { mid + start, y });
@@ -234,9 +234,9 @@ public class Map implements Serializable
         try
         {
             // For each verse
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     Position[][] dar = new Position[rules.length][];
                     for (int j=0; j<rules.length; j++)
@@ -277,10 +277,10 @@ public class Map implements Serializable
     {
         try
         {
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
                 log.debug("Book "+b);
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     log.debug("  Chapter "+c+": Position=("+nodes[b][c].pos[0]+","+nodes[b][c].pos[1]+")");
                 }
@@ -502,14 +502,14 @@ public class Map implements Serializable
 
         try
         {
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
                 Element eb = new Element("book");
                 eb.setAttribute("num", ""+b);
-                eb.setAttribute("name", Books.getShortBookName(b));
+                eb.setAttribute("name", BibleInfo.getShortBookName(b));
                 epos.addContent(eb);
 
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     Position node = nodes[b][c];
                     Element ec = new Element("chapter");

@@ -16,7 +16,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.control.search.Matcher;
 import org.crosswire.jsword.control.search.SearchException;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -67,11 +67,11 @@ public class LinkArray implements Serializable
         this.bible = bible;
         engine = new Matcher(bible);
 
-        links = new Link[Books.booksInBible()+1][][];
+        links = new Link[BibleInfo.booksInBible()+1][][];
 
-        for (int b=1; b<=Books.booksInBible(); b++)
+        for (int b=1; b<=BibleInfo.booksInBible(); b++)
         {
-            links[b] = new Link[Books.chaptersInBook(b)+1][];
+            links[b] = new Link[BibleInfo.chaptersInBook(b)+1][];
         }
     }
 
@@ -157,14 +157,14 @@ public class LinkArray implements Serializable
 
         try
         {
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
                 Element eb = new Element("book");
                 eb.setAttribute("num", ""+b);
-                eb.setAttribute("name", Books.getShortBookName(b));
+                eb.setAttribute("name", BibleInfo.getShortBookName(b));
                 elinks.addContent(eb);
 
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     Element ec = new Element("chapter");
                     ec.setAttribute("num", ""+c);
@@ -177,7 +177,7 @@ public class LinkArray implements Serializable
                         int dchap = l.getDestinationChapter();
 
                         Verse start = new Verse(dbook, dchap, 1);
-                        Verse end = new Verse(dbook, dchap, Books.versesInChapter(dbook, dchap));
+                        Verse end = new Verse(dbook, dchap, BibleInfo.versesInChapter(dbook, dchap));
                         VerseRange chap = new VerseRange(start, end);
 
                         Element el = new Element("link");
@@ -204,9 +204,9 @@ public class LinkArray implements Serializable
     public void cacheAll() throws NoSuchVerseException, BookException, SearchException
     {
         // Create the array of Nodes
-        for (int b=1; b<=Books.booksInBible(); b++)
+        for (int b=1; b<=BibleInfo.booksInBible(); b++)
         {
-            for (int c=1; c<=Books.chaptersInBook(b); c++)
+            for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
             {
                 getLinks(b, c);
             }
@@ -228,7 +228,7 @@ public class LinkArray implements Serializable
             PassageTally total = new PassageTally();
             total.setOrdering(PassageTally.ORDER_TALLY);
             
-            for (int v=1; v<=Books.versesInChapter(b, c); v++)
+            for (int v=1; v<=BibleInfo.versesInChapter(b, c); v++)
             {
                 Verse find = new Verse(b, c, v);
                 Passage ref = PassageFactory.createPassage();
@@ -241,8 +241,8 @@ public class LinkArray implements Serializable
                 total.addAll(temp);
             }
 
-            int chff = Books.chaptersInBook(b);
-            int vsff = Books.versesInChapter(b, chff);
+            int chff = BibleInfo.chaptersInBook(b);
+            int vsff = BibleInfo.versesInChapter(b, chff);
             Verse start = new Verse(b, 1, 1);
             Verse end = new Verse(b, chff, vsff);
             VerseRange book = new VerseRange(start, end);
@@ -289,17 +289,17 @@ public class LinkArray implements Serializable
      */
     public void scrunchTally(PassageTally tally) throws NoSuchVerseException
     {
-        for (int b=1; b<=Books.booksInBible(); b++)
+        for (int b=1; b<=BibleInfo.booksInBible(); b++)
         {
-            for (int c=1; c<=Books.chaptersInBook(b); c++)
+            for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
             {
                 Verse start = new Verse(b, c, 1);
-                Verse end = new Verse(b, c, Books.versesInChapter(b, c));
+                Verse end = new Verse(b, c, BibleInfo.versesInChapter(b, c));
                 VerseRange chapter = new VerseRange(start, end);
                 
                 int chaptotal = 0;
 
-                for (int v=1; v<=Books.versesInChapter(b, c); v++)
+                for (int v=1; v<=BibleInfo.versesInChapter(b, c); v++)
                 {
                     chaptotal += tally.getTallyOf(new Verse(b, c, v));
                 }

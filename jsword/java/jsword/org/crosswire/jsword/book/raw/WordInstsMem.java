@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * A WordInstsMem provides access to the list of word ids that make up
@@ -77,7 +77,7 @@ public class WordInstsMem extends InstsMem
         if (!ssig.equals("RAW:WI"))
             throw new IOException("This file is not a WordInst file");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             int insts = din.readByte();
             array[i] = new int[insts];
@@ -100,7 +100,7 @@ public class WordInstsMem extends InstsMem
 
         dout.writeBytes("RAW:WI");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             if (array[i] == null)
             {

@@ -407,7 +407,7 @@ public class PassageTally extends AbstractPassage
         {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=0; i<vib; i++)
             {
                 increment(i+1, that_rt.board[i]);
@@ -443,7 +443,7 @@ public class PassageTally extends AbstractPassage
         {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=0; i<vib; i++)
             {
                 increment(i, -that_rt.board[i-1]);
@@ -479,7 +479,7 @@ public class PassageTally extends AbstractPassage
         {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=0; i<vib; i++)
             {
                 if (that_rt.board[i] != 0)
@@ -511,7 +511,7 @@ public class PassageTally extends AbstractPassage
     {
         optimizeWrites();
 
-        int vib = Books.versesInBible();
+        int vib = BibleInfo.versesInBible();
         for (int i=0; i<vib; i++)
         {
             board[i] = 0;
@@ -578,7 +578,7 @@ public class PassageTally extends AbstractPassage
     {
         optimizeWrites();
 
-        int vib = Books.versesInBible();
+        int vib = BibleInfo.versesInBible();
         for (int i=0; i<vib; i++)
         {
             if (board[i] != 0)
@@ -631,9 +631,9 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            int[] new_board = new int[Books.versesInBible()];
+            int[] new_board = new int[BibleInfo.versesInBible()];
 
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=0; i<vib; i++)
             {
                 if (board[i] != 0)
@@ -642,7 +642,7 @@ public class PassageTally extends AbstractPassage
                     //   for (int j=-verses; j<=verses; j++)
                     //   {
                     //       int k = i+j;
-                    //       if (k >= 0 && k < Books.versesInBible())
+                    //       if (k >= 0 && k < BibleInfo.versesInBible())
                     //           new_board[k] += board[i]+verses-mod(j);
                     //   }
                     // However splitting the loop in 2 will speed it
@@ -683,7 +683,7 @@ public class PassageTally extends AbstractPassage
     {
         optimizeWrites();
 
-        int vib = Books.versesInBible();
+        int vib = BibleInfo.versesInBible();
         max = 0;
         for (int i=0; i<vib; i++)
         {
@@ -750,7 +750,7 @@ public class PassageTally extends AbstractPassage
     public static final int MAX_TALLY = 20000;
 
     /** The tallyboard itself */
-    private int[] board = new int[Books.versesInBible()];
+    private int[] board = new int[BibleInfo.versesInBible()];
 
     /** The maximum tally possible */
     private int max = 0;
@@ -780,7 +780,7 @@ public class PassageTally extends AbstractPassage
          */
         public boolean hasNext()
         {
-            return next <= Books.versesInBible();
+            return next <= BibleInfo.versesInBible();
         }
 
         /**
@@ -791,7 +791,7 @@ public class PassageTally extends AbstractPassage
         {
             try
             {
-                if (next > Books.versesInBible())
+                if (next > BibleInfo.versesInBible())
                     throw new NoSuchElementException();
 
                 Object retcode = new Verse(next);
@@ -823,7 +823,7 @@ public class PassageTally extends AbstractPassage
             {
                 next++;
             }
-            while (next <= Books.versesInBible() && board[next-1] == 0);
+            while (next <= BibleInfo.versesInBible() && board[next-1] == 0);
         }
 
         /** What is the next Verse to be considered */
@@ -843,7 +843,7 @@ public class PassageTally extends AbstractPassage
         {
             TreeSet output = new TreeSet();
 
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=0; i<vib; i++)
             {
                 if (board[i] != 0)

@@ -2,7 +2,7 @@
 package org.crosswire.jsword.book.jdbc;
 
 import org.crosswire.jsword.book.ParentTstBible;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * JUnit Test.
@@ -44,17 +44,17 @@ public class TestJDBCBible extends ParentTstBible
 
             // JDBCBible ver = (JDBCBible) bibles[i];
 
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
-                //int max_chapter = Books.chaptersInBook(b);
-                //int max_verse = Books.versesInChapter(b, max_chapter);
+                //int max_chapter = BibleInfo.chaptersInBook(b);
+                //int max_verse = BibleInfo.versesInChapter(b, max_chapter);
     
-                //test(db.verseOrdinal(b, 1, 1), Books.verseOrdinal(b, 1, 1));
-                //test(db.verseOrdinal(b, max_chapter, max_verse), Books.verseOrdinal(b, max_chapter, max_verse));
+                //test(db.verseOrdinal(b, 1, 1), BibleInfo.verseOrdinal(b, 1, 1));
+                //test(db.verseOrdinal(b, max_chapter, max_verse), BibleInfo.verseOrdinal(b, max_chapter, max_verse));
     
                 // Like to do this, but MS can't cope. :-(
-                // for (int c=1; c<=Books.chaptersIn(b); c++)
-                //   for (int v=1; v<=Books.versesIn(b, c); v++)
+                // for (int c=1; c<=BibleInfo.chaptersIn(b); c++)
+                //   for (int v=1; v<=BibleInfo.versesIn(b, c); v++)
             }
         }
     }

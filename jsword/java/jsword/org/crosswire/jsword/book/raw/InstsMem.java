@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -65,7 +65,7 @@ public abstract class InstsMem extends Mem implements Insts
     */
     public void init()
     {
-        array = new int[Books.versesInBible()][];
+        array = new int[BibleInfo.versesInBible()][];
     }
 
     /**

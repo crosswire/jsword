@@ -3,7 +3,7 @@ package org.crosswire.jsword.map.model;
 
 import java.io.Serializable;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
@@ -79,7 +79,7 @@ public class Link implements Serializable
     {
         try
         {
-            return ""+new VerseRange(new Verse(book, chapter, 1), new Verse(book, chapter, Books.versesInChapter(book, chapter)))+"("+strength+")";
+            return ""+new VerseRange(new Verse(book, chapter, 1), new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter)))+"("+strength+")";
         }
         catch (NoSuchVerseException ex)
         {

@@ -22,7 +22,7 @@ import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -145,8 +145,8 @@ public class JDBCBible extends LocalURLBible
                 VerseRange range = (VerseRange) it.next();
                 Verse start = range.getStart();
                 Verse end = range.getEnd();
-                int start_id = Books.verseOrdinal(start.getRefArray());
-                int end_id = Books.verseOrdinal(end.getRefArray());
+                int start_id = BibleInfo.verseOrdinal(start.getRefArray());
+                int end_id = BibleInfo.verseOrdinal(end.getRefArray());
 
                 SectionData section = doc.createSectionData(range.getName(), "AV");
 

@@ -6,7 +6,7 @@ import java.io.RandomAccessFile;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 
@@ -72,7 +72,7 @@ public class PuncInstsDisk extends InstsDisk
         if (!ssig.equals("RAW:PI"))
             throw new IOException("This file is not a PuncInst file");
 
-        for (int i=0; i<Books.versesInBible(); i++)
+        for (int i=0; i<BibleInfo.versesInBible(); i++)
         {
             index[i] = raf.getFilePointer();
 

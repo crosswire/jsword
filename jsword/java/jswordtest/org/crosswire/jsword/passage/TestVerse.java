@@ -287,7 +287,7 @@ public class TestVerse extends TestCase
         assertEquals(gen11.subtract(gen11), 0);
         assertEquals(gen11.subtract(gen12), -1);
         Verse last = (Verse) gen11.clone();
-        for (int i=0; i<Books.versesInBible(); i+=99)
+        for (int i=0; i<BibleInfo.versesInBible(); i+=99)
         {
             Verse next = last.add(i);
             assertEquals(next.subtract(last), i);
@@ -358,15 +358,15 @@ public class TestVerse extends TestCase
 
     public void testGetRefArray() throws Exception
     {
-        assertEquals(Books.verseCount(gen11.getRefArray(), new int[]{1,1,1}), 1);
-        assertEquals(Books.verseCount(gen12.getRefArray(), new int[]{1,1,2}), 1);
-        assertEquals(Books.verseCount(gen21.getRefArray(), new int[]{1,2,1}), 1);
-        assertEquals(Books.verseCount(gen22.getRefArray(), new int[]{1,2,2}), 1);
-        assertEquals(Books.verseCount(rev11.getRefArray(), new int[]{66,1,1}), 1);
-        assertEquals(Books.verseCount(rev12.getRefArray(), new int[]{66,1,2}), 1);
-        assertEquals(Books.verseCount(rev21.getRefArray(), new int[]{66,2,1}), 1);
-        assertEquals(Books.verseCount(rev22.getRefArray(), new int[]{66,2,2}), 1);
-        assertEquals(Books.verseCount(rev99.getRefArray(), new int[]{66,22,21}), 1);
+        assertEquals(BibleInfo.verseCount(gen11.getRefArray(), new int[]{1,1,1}), 1);
+        assertEquals(BibleInfo.verseCount(gen12.getRefArray(), new int[]{1,1,2}), 1);
+        assertEquals(BibleInfo.verseCount(gen21.getRefArray(), new int[]{1,2,1}), 1);
+        assertEquals(BibleInfo.verseCount(gen22.getRefArray(), new int[]{1,2,2}), 1);
+        assertEquals(BibleInfo.verseCount(rev11.getRefArray(), new int[]{66,1,1}), 1);
+        assertEquals(BibleInfo.verseCount(rev12.getRefArray(), new int[]{66,1,2}), 1);
+        assertEquals(BibleInfo.verseCount(rev21.getRefArray(), new int[]{66,2,1}), 1);
+        assertEquals(BibleInfo.verseCount(rev22.getRefArray(), new int[]{66,2,2}), 1);
+        assertEquals(BibleInfo.verseCount(rev99.getRefArray(), new int[]{66,22,21}), 1);
     }
 
     public void testGetOrdinal() throws Exception

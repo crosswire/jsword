@@ -6,7 +6,7 @@ import java.util.Enumeration;
 
 import javax.swing.tree.TreeNode;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -43,7 +43,7 @@ public class BibleTreeNode implements TreeNode
      */
     public BibleTreeNode()
     {
-        kids = new BookTreeNode[Books.booksInBible()];
+        kids = new BookTreeNode[BibleInfo.booksInBible()];
     }
 
     /**

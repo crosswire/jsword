@@ -21,7 +21,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageUtil;
@@ -179,7 +179,7 @@ public class SerSearcher implements Searcher
             Verse verse = (Verse) it.next();
 
             if (li != null)
-                li.progressMade(new ProgressEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / Books.versesInBible()));
+                li.progressMade(new ProgressEvent(bible, "Finding Words:", 90 * verse.getOrdinal() / BibleInfo.versesInBible()));
 
             // loop through all the words in this verse
             Passage current = PassageFactory.createPassage();

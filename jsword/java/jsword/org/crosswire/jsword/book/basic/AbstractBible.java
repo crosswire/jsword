@@ -13,7 +13,7 @@ import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.BookData;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -125,7 +125,7 @@ public abstract class AbstractBible implements Bible
             temp.add(verse);
 
             // Fire a progress event?
-            li.progressMade(new ProgressEvent(this, "Writing Verses:", 100 * verse.getOrdinal() / Books.versesInBible()));
+            li.progressMade(new ProgressEvent(this, "Writing Verses:", 100 * verse.getOrdinal() / BibleInfo.versesInBible()));
 
             // Read the document from the original version
             BibleData doc = source.getData(temp);

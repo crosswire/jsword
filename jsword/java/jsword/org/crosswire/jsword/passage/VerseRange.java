@@ -106,13 +106,13 @@ public class VerseRange implements VerseBase
 
             case ACCURACY_BOOK_CHAPTER:
                 start = new Verse(parts[0], basis);
-                verse_count = Books.versesInChapter(start.getBook(), start.getChapter());
+                verse_count = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
                 end = calcEnd(start, verse_count);
                 break;
 
             case ACCURACY_BOOK_ONLY:
                 start = new Verse(parts[0], basis);
-                verse_count = Books.versesInBook(start.getBook());
+                verse_count = BibleInfo.versesInBook(start.getBook());
                 end = calcEnd(start, verse_count);
                 break;
 
@@ -207,11 +207,11 @@ public class VerseRange implements VerseBase
                     // This should be ACCURACY_CHAPTER_ONLY if it existed
                     int book = basis.getStart().getBook();
                     int chapter = 0;
-                    if (Verse.isEndMarker(parts[0]))    chapter = Books.chaptersInBook(book);
+                    if (Verse.isEndMarker(parts[0]))    chapter = BibleInfo.chaptersInBook(book);
                     else                                chapter = Verse.parseInt(parts[0]);
 
                     start = new Verse(book, chapter, 1);
-                    end = new Verse(book, chapter, Books.versesInChapter(book, chapter));
+                    end = new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter));
                     verse_count = calcVerseCount(start, end);
                 }
                 else
@@ -231,13 +231,13 @@ public class VerseRange implements VerseBase
 
             case ACCURACY_BOOK_CHAPTER:
                 start = new Verse(parts[0], basis.getStart());
-                verse_count = Books.versesInChapter(start.getBook(), start.getChapter());
+                verse_count = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
                 end = calcEnd(start, verse_count);
                 break;
 
             case ACCURACY_BOOK_ONLY:
                 start = new Verse(parts[0], basis.getStart());
-                verse_count = Books.versesInBook(start.getBook());
+                verse_count = BibleInfo.versesInBook(start.getBook());
                 end = calcEnd(start, verse_count);
                 break;
 
@@ -289,12 +289,12 @@ public class VerseRange implements VerseBase
         if (verse_count < 1)
             throw new NoSuchVerseException(PassageUtil.getResource("range_error_count"));
 
-        if (start.getOrdinal()+verse_count-1 > Books.versesInBible())
+        if (start.getOrdinal()+verse_count-1 > BibleInfo.versesInBible())
         {
             Object[] params =
             {
                 start.getName(),
-                new Integer(Books.versesInBible()-start.getOrdinal()),
+                new Integer(BibleInfo.versesInBible()-start.getOrdinal()),
                 new Integer(verse_count)
             };
             throw new NoSuchVerseException(PassageUtil.getResource("range_error_size", params));
@@ -407,7 +407,7 @@ public class VerseRange implements VerseBase
                 int end_verse = base_start.getVerse() + blur_up;
 
                 start_verse = Math.max(start_verse, 1);
-                end_verse = Math.min(end_verse, Books.versesInChapter(start_book, start_chapter));
+                end_verse = Math.min(end_verse, BibleInfo.versesInChapter(start_book, start_chapter));
 
                 start = new Verse(start_book, start_chapter, start_verse);
                 verse_count = end_verse - start_verse + 1;
@@ -470,7 +470,7 @@ public class VerseRange implements VerseBase
                 int end_verse = base_start.getEnd().getVerse() + blur_up;
 
                 start_verse = Math.max(start_verse, 1);
-                end_verse = Math.min(end_verse, Books.versesInChapter(end_book, end_chapter));
+                end_verse = Math.min(end_verse, BibleInfo.versesInChapter(end_book, end_chapter));
 
                 start = new Verse(start_book, start_chapter, start_verse);
                 end = new Verse(end_book, end_chapter, end_verse);
@@ -552,18 +552,18 @@ public class VerseRange implements VerseBase
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
-                    return Books.getShortBookName(start_book)
+                    return BibleInfo.getShortBookName(start_book)
                          + RANGE_PREF_DELIM
-                         + Books.getShortBookName(end_book);
+                         + BibleInfo.getShortBookName(end_book);
                 }
 
                 // If this range is exactly a whole chapter
                 if (isChapters())
                 {
                     // Just report book and chapter names
-                    return Books.getShortBookName(start_book)
+                    return BibleInfo.getShortBookName(start_book)
                          + VERSE_PREF_DELIM1 + start_chapter
-                         + RANGE_PREF_DELIM + Books.getShortBookName(end_book)
+                         + RANGE_PREF_DELIM + BibleInfo.getShortBookName(end_book)
                          + VERSE_PREF_DELIM1 + end_chapter;
                 }
 
@@ -576,7 +576,7 @@ public class VerseRange implements VerseBase
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
                 // recently normalized()
-                return Books.getShortBookName(start_book);
+                return BibleInfo.getShortBookName(start_book);
             }
 
             // If this is 2 separate chapters
@@ -586,7 +586,7 @@ public class VerseRange implements VerseBase
                 if (isChapters())
                 {
                     // Just report the name of the book and the chapters
-                    return Books.getShortBookName(start_book)
+                    return BibleInfo.getShortBookName(start_book)
                          + VERSE_PREF_DELIM1 + start_chapter
                          + RANGE_PREF_DELIM + end_chapter;
                 }
@@ -600,7 +600,7 @@ public class VerseRange implements VerseBase
             if (isChapter())
             {
                 // Just report the name of the book and the chapter
-                return Books.getShortBookName(start_book)
+                return BibleInfo.getShortBookName(start_book)
                      + VERSE_PREF_DELIM1 + start_chapter;
             }
 

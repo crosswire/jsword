@@ -109,7 +109,7 @@ public class BitwisePassage extends AbstractPassage
     {
         int count = 0;
 
-        int vib = Books.versesInBible();
+        int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
             if (store.get(i)) count++;
 
@@ -121,7 +121,7 @@ public class BitwisePassage extends AbstractPassage
      */
     public boolean isEmpty()
     {
-        int vib = Books.versesInBible();
+        int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
             if (store.get(i)) return false;
 
@@ -245,7 +245,7 @@ public class BitwisePassage extends AbstractPassage
             // We'd like to use store.andNot(that_ref.store); which would
             // probably be quicker (they can work on the longs) but it is
             // not available on JDK 1.1
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=1; i<=vib; i++)
                 if (that_ref.store.get(i)) store.clear(i);
         }
@@ -277,7 +277,7 @@ public class BitwisePassage extends AbstractPassage
         }
         else
         {
-            BitSet new_store = new BitSet(Books.versesInBible());
+            BitSet new_store = new BitSet(BibleInfo.versesInBible());
 
             Iterator it = that.verseIterator();
             while (it.hasNext())
@@ -300,7 +300,7 @@ public class BitwisePassage extends AbstractPassage
     {
         optimizeWrites();
 
-        int vib = Books.versesInBible();
+        int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
         {
             store.clear(i);
@@ -347,15 +347,15 @@ public class BitwisePassage extends AbstractPassage
         }
         else
         {
-            BitSet new_store = new BitSet(Books.versesInBible());
+            BitSet new_store = new BitSet(BibleInfo.versesInBible());
 
-            int vib = Books.versesInBible();
+            int vib = BibleInfo.versesInBible();
             for (int i=1; i<=vib; i++)
             {
                 if (store.get(i))
                 {
                     int start = Math.max(0, i-verses);
-                    int end = Math.min(Books.versesInBible(), i+verses);
+                    int end = Math.min(BibleInfo.versesInBible(), i+verses);
 
                     for (int j=start; j<=end; j++)
                         new_store.set(j);
@@ -388,7 +388,7 @@ public class BitwisePassage extends AbstractPassage
          */
         public boolean hasNext()
         {
-            return next <= Books.versesInBible();
+            return next <= BibleInfo.versesInBible();
         }
 
         /**
@@ -399,7 +399,7 @@ public class BitwisePassage extends AbstractPassage
         {
             try
             {
-                if (next > Books.versesInBible()) throw new NoSuchElementException();
+                if (next > BibleInfo.versesInBible()) throw new NoSuchElementException();
 
                 Object retcode = new Verse(next);
                 calculateNext();
@@ -426,7 +426,7 @@ public class BitwisePassage extends AbstractPassage
          */
         private void calculateNext()
         {
-            while (next <= Books.versesInBible())
+            while (next <= BibleInfo.versesInBible())
             {
                 next++;
                 if (store.get(next)) break;
@@ -462,7 +462,7 @@ public class BitwisePassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = new BitSet(Books.versesInBible()+1);
+        store = new BitSet(BibleInfo.versesInBible()+1);
         readObjectSupport(in);
     }
 
@@ -470,5 +470,5 @@ public class BitwisePassage extends AbstractPassage
     static final long serialVersionUID = -5931560451407396276L;
 
     /** The place the real data is stored */
-    private transient BitSet store = new BitSet(Books.versesInBible()+1);
+    private transient BitSet store = new BitSet(BibleInfo.versesInBible()+1);
 }

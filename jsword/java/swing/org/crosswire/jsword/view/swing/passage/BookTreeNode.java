@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import javax.swing.tree.TreeNode;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -45,7 +45,7 @@ public class BookTreeNode extends BibleTreeNode
         this.parent = parent;
         this.book = book;
 
-        kids = new ChapterTreeNode[Books.chaptersInBook(book)];
+        kids = new ChapterTreeNode[BibleInfo.chaptersInBook(book)];
     }
 
     /**
@@ -137,7 +137,7 @@ public class BookTreeNode extends BibleTreeNode
     {
         try
         {
-            String book_name = Books.getLongBookName(book);
+            String book_name = BibleInfo.getLongBookName(book);
             if (ref == null) return book_name;
 
             int chapters = ref.chaptersInPassage(book);

@@ -16,7 +16,7 @@ import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -384,7 +384,7 @@ public class RawBible extends LocalURLBible
         Passage ref = PassageFactory.createPassage();
         try
         {
-            int total = Books.versesInBible();
+            int total = BibleInfo.versesInBible();
 
             for (int ord=1; ord<=total; ord++)
             {
@@ -559,7 +559,7 @@ public class RawBible extends LocalURLBible
             }
 
             // For each verse in the Bible
-            for (int ord=1; ord<=Books.versesInBible(); ord++)
+            for (int ord=1; ord<=BibleInfo.versesInBible(); ord++)
             {
                 // and each word in the verse
                 int[] word_items = word_insts.getIndexes(ord);

@@ -55,7 +55,7 @@ import org.crosswire.jsword.map.model.LinkAttractionRule;
 import org.crosswire.jsword.map.model.Map;
 import org.crosswire.jsword.map.model.Rule;
 import org.crosswire.jsword.map.model.VBAExport;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.BibleChooser;
 import org.jdom.Document;
@@ -110,13 +110,13 @@ public class Mapper extends JFrame
         vcols = new VerseColor[76];
         vcols[0] = new RainbowVerseColor();
         vcols[1] = new GroupVerseColor();
-        for (int i = Books.Section.Pentateuch; i <= Books.Section.Letters; i++)
+        for (int i = BibleInfo.Section.Pentateuch; i <= BibleInfo.Section.Letters; i++)
         {
             vcols[i + 1] = new SectionVerseColor(i);
         }
-        for (int i = Books.Names.Genesis; i <= Books.Names.Revelation; i++)
+        for (int i = BibleInfo.Names.Genesis; i <= BibleInfo.Names.Revelation; i++)
         {
-            vcols[i + 1 + Books.Section.Letters] = new BookVerseColor(i);
+            vcols[i + 1 + BibleInfo.Section.Letters] = new BookVerseColor(i);
         }
 
         jbInit();

@@ -16,7 +16,7 @@ import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -65,7 +65,7 @@ public class SwordBible extends AbstractBible
         {
             try
             {
-                Verse mat11 = new Verse(Books.Names.Matthew, 1, 1);
+                Verse mat11 = new Verse(BibleInfo.Names.Matthew, 1, 1);
                 mat11_ord = mat11.getOrdinal();
             }
             catch (NoSuchVerseException ex)
@@ -117,7 +117,7 @@ public class SwordBible extends AbstractBible
                 // If this is an NT verse
                 if (verse_ord >= mat11_ord)
                 {
-                    reply.append(backend.getText(SwordConstants.TESTAMENT_NEW, bookNo - Books.Names.Malachi, chapNo, verseNo));
+                    reply.append(backend.getText(SwordConstants.TESTAMENT_NEW, bookNo - BibleInfo.Names.Malachi, chapNo, verseNo));
                 }
                 else
                 {

@@ -3,7 +3,7 @@ package org.crosswire.jsword.map.model;
 
 import java.util.EventObject;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -43,7 +43,7 @@ public class MapEvent extends EventObject
 
         try
         {
-            if (chapter < 1 || chapter > Books.chaptersInBook(book))
+            if (chapter < 1 || chapter > BibleInfo.chaptersInBook(book))
                 throw new IllegalArgumentException("Invalid chapter");
         }
         catch (NoSuchVerseException ex)

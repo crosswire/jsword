@@ -4,7 +4,7 @@ package org.crosswire.jsword.book.raw;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Verse;
 
 /**
@@ -77,7 +77,7 @@ public abstract class InstsDisk extends Disk implements Insts
         this.leafname = leafname;
         this.create = create;
 
-        index = new long[Books.versesInBible()];
+        index = new long[BibleInfo.versesInBible()];
 
         if (create) save();
         else        load();

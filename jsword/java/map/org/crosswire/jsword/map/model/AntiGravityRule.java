@@ -3,7 +3,7 @@ package org.crosswire.jsword.map.model;
 
 import org.apache.log4j.Logger;
 import org.crosswire.common.util.LogicError;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -57,9 +57,9 @@ public class AntiGravityRule extends AbstractRule
             //log.debug(",b,c,x,y,c,tx,ty");
 
             // For each verse
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
-                for (int c=1; c<=Books.chaptersInBook(b); c++)
+                for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
                 {
                     if (b != book || c != chapter)
                     {

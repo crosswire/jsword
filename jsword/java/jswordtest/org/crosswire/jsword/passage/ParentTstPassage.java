@@ -792,7 +792,7 @@ public class ParentTstPassage extends TestCase
     public void testWriteObject() throws Exception
     {
         Passage hard = PassageFactory.createPassage();
-        for (int i=1; i<Books.versesInBible(); i+=200)
+        for (int i=1; i<BibleInfo.versesInBible(); i+=200)
         {
             hard.add(new Verse(i));
         }

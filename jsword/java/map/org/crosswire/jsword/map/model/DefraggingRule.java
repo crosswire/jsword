@@ -1,7 +1,7 @@
 
 package org.crosswire.jsword.map.model;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -49,7 +49,7 @@ public class DefraggingRule extends AbstractRule
             Position reply;
 
             boolean at_start = (chapter == 1);
-            boolean at_end = (chapter == Books.chaptersInBook(book));
+            boolean at_end = (chapter == BibleInfo.chaptersInBook(book));
 
             if (at_start || at_end)
             {
@@ -61,8 +61,8 @@ public class DefraggingRule extends AbstractRule
                 int other_ord;
                 if (at_start)
                 {
-                    int end_chapter = Books.chaptersInBook(b);
-                    int end_verse = Books.versesInChapter(b, end_chapter);
+                    int end_chapter = BibleInfo.chaptersInBook(b);
+                    int end_verse = BibleInfo.versesInChapter(b, end_chapter);
                     Verse end = new Verse(b, end_chapter, end_verse);
                     other_ord = end.getOrdinal();
                 }

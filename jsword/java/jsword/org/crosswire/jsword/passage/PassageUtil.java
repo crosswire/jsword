@@ -293,7 +293,7 @@ public class PassageUtil implements PassageConstants
         int ranges = ref.countRanges();
 
         // the size in bytes of teach storage method
-        int bitwise_size = Books.versesInBible() / 8;
+        int bitwise_size = BibleInfo.versesInBible() / 8;
         int ranged_size =  (ranges * 4) + 1;
         int distinct_size = (verses * 2) + 1;
 
@@ -301,7 +301,7 @@ public class PassageUtil implements PassageConstants
         if (bitwise_size <= ranged_size && bitwise_size <= distinct_size)
         {
             int array_size = binarySize(AbstractPassage.METHOD_COUNT)
-                           + (Books.versesInBible() / 8) + 1;
+                           + (BibleInfo.versesInBible() / 8) + 1;
             byte[] buffer = new byte[array_size];
             int index = 0;
 
@@ -329,15 +329,15 @@ public class PassageUtil implements PassageConstants
         else if (distinct_size <= ranged_size)
         {
             int array_size = binarySize(AbstractPassage.METHOD_COUNT)
-                           + binarySize(Books.versesInBible())
-                           + (verses * binarySize(Books.versesInBible()));
+                           + binarySize(BibleInfo.versesInBible())
+                           + (verses * binarySize(BibleInfo.versesInBible()));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of verses. There must be
             // less than 2**16 verses
             index += toBinary(buffer, index, AbstractPassage.DISTINCT, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, verses, Books.versesInBible());
+            index += toBinary(buffer, index, verses, BibleInfo.versesInBible());
 
             // write the verse ordinals in a loop
             Iterator it = ref.verseIterator();
@@ -345,7 +345,7 @@ public class PassageUtil implements PassageConstants
             {
                 Verse verse = (Verse) it.next();
                 int ord = verse.getOrdinal();
-                index += toBinary(buffer, index, ord, Books.versesInBible());
+                index += toBinary(buffer, index, ord, BibleInfo.versesInBible());
             }
 
             return buffer;
@@ -355,22 +355,22 @@ public class PassageUtil implements PassageConstants
         else
         {
             int array_size = binarySize(AbstractPassage.METHOD_COUNT)
-                           + binarySize(Books.versesInBible()/2)
-                           + (2 * ranges * binarySize(Books.versesInBible()));
+                           + binarySize(BibleInfo.versesInBible()/2)
+                           + (2 * ranges * binarySize(BibleInfo.versesInBible()));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of ranges
             index += toBinary(buffer, index, AbstractPassage.RANGED, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, ranges, Books.versesInBible()/2);
+            index += toBinary(buffer, index, ranges, BibleInfo.versesInBible()/2);
 
             // write the verse ordinals in a loop
             Iterator it = ref.rangeIterator();
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();
-                index += toBinary(buffer, index, range.getStart().getOrdinal(), Books.versesInBible());
-                index += toBinary(buffer, index, range.getVerseCount(), Books.versesInBible());
+                index += toBinary(buffer, index, range.getStart().getOrdinal(), BibleInfo.versesInBible());
+                index += toBinary(buffer, index, range.getVerseCount(), BibleInfo.versesInBible());
             }
 
             // chop to size
@@ -403,7 +403,7 @@ public class PassageUtil implements PassageConstants
         switch (type)
         {
         case AbstractPassage.BITWISE:
-            for (int ord=1; ord<=Books.versesInBible(); ord++)
+            for (int ord=1; ord<=BibleInfo.versesInBible(); ord++)
             {
                 // Which byte should we be viewing
                 int idx0 = (ord / 8) + index[0];
@@ -418,20 +418,20 @@ public class PassageUtil implements PassageConstants
             break;
 
         case AbstractPassage.DISTINCT:
-            int verses = fromBinary(buffer, index, Books.versesInBible());
+            int verses = fromBinary(buffer, index, BibleInfo.versesInBible());
             for (int i=0; i<verses; i++)
             {
-                int ord = fromBinary(buffer, index, Books.versesInBible());
+                int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
                 ref.add(new Verse(ord));
             }
             break;
 
         case AbstractPassage.RANGED:
-            int ranges = fromBinary(buffer, index, Books.versesInBible()/2);
+            int ranges = fromBinary(buffer, index, BibleInfo.versesInBible()/2);
             for (int i=0; i<ranges; i++)
             {
-                int ord = fromBinary(buffer, index, Books.versesInBible());
-                int len = fromBinary(buffer, index, Books.versesInBible());
+                int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
+                int len = fromBinary(buffer, index, BibleInfo.versesInBible());
                 ref.add(new VerseRange(new Verse(ord), len));
             }
             break;

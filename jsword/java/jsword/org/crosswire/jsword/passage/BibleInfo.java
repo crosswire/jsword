@@ -10,10 +10,10 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.Reporter;
 
 /**
- * Books is a static class that deals with Book number conversions and similar.
+ * BibleInfo is a static class that deals with Book number conversions and similar.
  * We start counting at 1 for books, chapters and verses (so Genesis=1, Revelation=66).
  * However internally books start counting at 0 and go up to 65.
- * <p>I've considered merging Books and PassageUtil since they are both supporting
+ * <p>I've considered merging BibleInfo and PassageUtil since they are both supporting
  * static only classes. However they are both non-trivial, so together they would
  * be large, and there is a good dividing line between the 2.
  * 
@@ -38,12 +38,12 @@ import org.crosswire.common.util.Reporter;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Books implements PassageConstants
+public class BibleInfo implements PassageConstants
 {
     /**
      * Ensure that we can not be instansiated
      */
-    private Books()
+    private BibleInfo()
     {
     }
 
@@ -52,7 +52,7 @@ public class Books implements PassageConstants
      * These are static. This is on the assumption that we will not want to have
      * different sections of the app using a different format. I expect this to
      * be a good assumption, and it saves passing a Book class around everywhere.
-     * Books.MIXED is not allowed
+     * BibleInfo.MIXED is not allowed
      * @param book_case The new case to use for reporting book names
      * @exception IllegalArgumentException If the case is not between 0 and 2
      * @see Passage
@@ -66,7 +66,7 @@ public class Books implements PassageConstants
             throw new IllegalArgumentException(PassageUtil.getResource("books_error_case", params));
         }
 
-        Books.book_case = book_case;
+        BibleInfo.book_case = book_case;
     }
 
     /**
@@ -77,7 +77,7 @@ public class Books implements PassageConstants
      */
     public final static int getCase()
     {
-        return Books.book_case;
+        return BibleInfo.book_case;
     }
 
     /**
@@ -417,9 +417,9 @@ public class Books implements PassageConstants
      */
     public final static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException
     {
-        if (ordinal < 1 || ordinal > Books.versesInBible())
+        if (ordinal < 1 || ordinal > BibleInfo.versesInBible())
         {
-            Object[] params = new Object[] { new Integer(Books.versesInBible()), new Integer(ordinal) };
+            Object[] params = new Object[] { new Integer(BibleInfo.versesInBible()), new Integer(ordinal) };
             throw new NoSuchVerseException("passg_books_decode", params);
         }
 
@@ -427,7 +427,7 @@ public class Books implements PassageConstants
         {
             if (ordinal >= ordinal_at_start_of_book[b-1])
             {
-                int cib = Books.chaptersInBook(b);
+                int cib = BibleInfo.chaptersInBook(b);
                 for (int c=cib; c>0; c--)
                 {
                     if (ordinal >= ordinal_at_start_of_chapter[b-1][c-1])
@@ -456,18 +456,17 @@ public class Books implements PassageConstants
         // Check the book
         if (book < 1 || book > books_in_bible)
         {
-            throw new NoSuchVerseException("passg_books_book",
-                new Object[] { new Integer(book) });
+            throw new NoSuchVerseException("passg_books_book", new Object[] { new Integer(book) });
         }
 
         // Check the chapter
         if (chapter < 1 || chapter > chaptersInBook(book))
         {
             Object[] params = new Object[]
-                                 {
-                                 new Integer(chaptersInBook(book)),
-                                 full_books[book-1], new Integer(chapter),
-                                 };
+            {
+                new Integer(chaptersInBook(book)),
+                full_books[book-1], new Integer(chapter),
+            };
             throw new NoSuchVerseException("passg_books_chapter", params);
         }
 
@@ -475,12 +474,12 @@ public class Books implements PassageConstants
         if (verse < 1 || verse > versesInChapter(book, chapter))
         {
             Object[] params = new Object[]
-                                 {
-                                 new Integer(versesInChapter(book, chapter)),
-                                 full_books[book-1],
-                                 new Integer(chapter),
-                                 new Integer(verse),
-                                 };
+            {
+                new Integer(versesInChapter(book, chapter)),
+                full_books[book-1],
+                new Integer(chapter),
+                new Integer(verse),
+            };
             throw new NoSuchVerseException("passg_books_verse", params);
         }
     }
@@ -696,7 +695,7 @@ public class Books implements PassageConstants
      * What section is this book a part of?
      * @param book The book to test
      * @return True The section
-     * @see Books.Section
+     * @see BibleInfo.Section
      */
     public final static int getSection(int book)
     {
@@ -1233,7 +1232,7 @@ public class Books implements PassageConstants
     };
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger(Books.class);
+    protected static Logger log = Logger.getLogger(BibleInfo.class);
 
     /**
      * Set up the Internationalization (I18N), and cache the upper and
@@ -1249,7 +1248,7 @@ public class Books implements PassageConstants
             String key = "";
             boolean success = true;
 
-            for (int i=0; i<Books.books_in_bible; i++)
+            for (int i=0; i<BibleInfo.books_in_bible; i++)
             {
                 // Read any customized versions of the Book names
                 try
@@ -1301,11 +1300,11 @@ public class Books implements PassageConstants
             }
 
             if (!success)
-                Reporter.informUser(Books.class, "Failed to load all resources correctly, using defaults.");
+                Reporter.informUser(BibleInfo.class, "Failed to load all resources correctly, using defaults.");
         }
         catch (Throwable ex)
         {
-            Reporter.informUser(Books.class, "Can't find resources for Locale '" + Locale.getDefault().toString() + "'");
+            Reporter.informUser(BibleInfo.class, "Can't find resources for Locale '" + Locale.getDefault().toString() + "'");
         }
 
         try
@@ -1320,7 +1319,7 @@ public class Books implements PassageConstants
             sections_lower = new String[sections.length];
             sections_upper = new String[sections.length];
 
-            for (int i=0; i<Books.books_in_bible; i++)
+            for (int i=0; i<BibleInfo.books_in_bible; i++)
             {
                 // Cache the upper and lower case versions of the book names
                 full_books_lower[i] = full_books[i].toLowerCase();
@@ -1343,7 +1342,7 @@ public class Books implements PassageConstants
         }
         catch (Throwable ex)
         {
-            Reporter.informUser(Books.class, ex);
+            Reporter.informUser(BibleInfo.class, ex);
         }
     }
 
@@ -1376,15 +1375,15 @@ public class Books implements PassageConstants
         verse_num = 1;
         log.fine("    private static final int[][] ordinal_at_start_of_chapter =");
         log.fine("    {");
-        for (int b=1; b<=Books.booksInBible(); b++)
+        for (int b=1; b<=BibleInfo.booksInBible(); b++)
         {
             log.fine("        { ");
-            for (int c=1; c<=Books.chaptersInBook(b); c++)
+            for (int c=1; c<=BibleInfo.chaptersInBook(b); c++)
             {
                 String vstr1 = "     "+verse_num;
                 String vstr2 = vstr1.substring(vstr1.length()-5);
                 log.fine(vstr2+", ");
-                verse_num += Books.versesInChapter(b, c);
+                verse_num += BibleInfo.versesInChapter(b, c);
             }
             log.fine("},");
         }

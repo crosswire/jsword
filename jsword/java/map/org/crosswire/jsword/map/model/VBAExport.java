@@ -3,7 +3,7 @@ package org.crosswire.jsword.map.model;
 
 import java.io.PrintWriter;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.common.util.LogicError;
 
@@ -228,15 +228,15 @@ public class VBAExport
 
         try
         {
-            int bie = Books.booksInBible();
+            int bie = BibleInfo.booksInBible();
             for (int b=1; b<=bie; b++)
             {
                 x = (int) (map.getPositionDimension(b, 1, 0) * x_mag);
                 y = (int) (map.getPositionDimension(b, 1, 1) * y_mag);
 
-                out.println("  RouteStart "+x+"#, "+y+"#, \""+Books.getShortBookName(b)+"\"");
+                out.println("  RouteStart "+x+"#, "+y+"#, \""+BibleInfo.getShortBookName(b)+"\"");
 
-                int cib = Books.chaptersInBook(b);
+                int cib = BibleInfo.chaptersInBook(b);
                 for (int c=2; c<=cib; c++)
                 {
                     x = (int) (map.getPositionDimension(b, c, 0) * x_mag);

@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 import org.crosswire.jsword.map.model.Map;
 import org.crosswire.jsword.map.model.MapEvent;
 import org.crosswire.jsword.map.model.MapListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.common.util.LogicError;
 
@@ -149,18 +149,18 @@ public class MapperPane extends JPanel implements Scrollable
             int[] pos;
             int[] prev;
 
-            for (int b=1; b<=Books.booksInBible(); b++)
+            for (int b=1; b<=BibleInfo.booksInBible(); b++)
             {
                 pos = getPosition(b, 1);
 
                 Color col = versecolor.getForeground();
                 g.setColor(col);
-                g.drawString(Books.getShortBookName(b), pos[X], pos[Y]);
+                g.drawString(BibleInfo.getShortBookName(b), pos[X], pos[Y]);
 
                 col = versecolor.getColor(b, 1, 1);
                 g.setColor(col);
 
-                int cib = Books.chaptersInBook(b);
+                int cib = BibleInfo.chaptersInBook(b);
                 for (int c=1; c<=cib; c++)
                 {
                     pos = getPosition(b, 1);

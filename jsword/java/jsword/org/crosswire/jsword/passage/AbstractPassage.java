@@ -254,7 +254,7 @@ public abstract class AbstractPassage implements Passage
      */
     public int chaptersInPassage(int book) throws NoSuchVerseException
     {
-        if (book != 0)  Books.validate(book, 1, 1);
+        if (book != 0)  BibleInfo.validate(book, 1, 1);
 
         int current_chapter = 0;
         int chapter_count = 0;
@@ -286,7 +286,7 @@ public abstract class AbstractPassage implements Passage
      */
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException
     {
-        Books.validate((book == 0 ? 1 : book), (chapter == 0 ? 1 : chapter), 1);
+        BibleInfo.validate((book == 0 ? 1 : book), (chapter == 0 ? 1 : chapter), 1);
 
         int verse_count = 0;
 
@@ -1095,7 +1095,7 @@ public abstract class AbstractPassage implements Passage
         out.defaultWriteObject();
 
         // the size in bits of teach storage method
-        int bitwise_size = Books.versesInBible();
+        int bitwise_size = BibleInfo.versesInBible();
         int ranged_size =  8 * countRanges();
         int distinct_size = 4 * countVerses();
 
@@ -1104,7 +1104,7 @@ public abstract class AbstractPassage implements Passage
         {
             out.writeInt(BITWISE);
 
-            BitSet store = new BitSet(Books.versesInBible());
+            BitSet store = new BitSet(BibleInfo.versesInBible());
             Iterator it = verseIterator();
             while (it.hasNext())
             {
@@ -1178,7 +1178,7 @@ public abstract class AbstractPassage implements Passage
             {
             case BITWISE:
                 BitSet store = (BitSet) in.readObject();
-                for (int i=0; i<Books.versesInBible(); i++)
+                for (int i=0; i<BibleInfo.versesInBible(); i++)
                 {
                     if (store.get(i))
                         add(new Verse(i+1));

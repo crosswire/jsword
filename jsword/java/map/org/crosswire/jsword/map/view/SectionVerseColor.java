@@ -3,7 +3,7 @@ package org.crosswire.jsword.map.view;
 
 import java.awt.Color;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -68,7 +68,7 @@ public class SectionVerseColor implements VerseColor
     */
     public Color getColor(int book, int chapter, int verse)
     {
-        if (section != Books.getSection(book))
+        if (section != BibleInfo.getSection(book))
         {
             return Color.gray;
         }
@@ -103,7 +103,7 @@ public class SectionVerseColor implements VerseColor
     {
         try
         {
-            return "Section - "+Books.getSectionName(section);
+            return "Section - "+BibleInfo.getSectionName(section);
         }
         catch (NoSuchVerseException ex)
         {

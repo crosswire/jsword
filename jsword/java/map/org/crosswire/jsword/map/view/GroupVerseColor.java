@@ -3,7 +3,7 @@ package org.crosswire.jsword.map.view;
 
 import java.awt.Color;
 
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 
 /**
  * GroupVerseColor gives colors to groups of books, so the pentetuch is
@@ -41,7 +41,7 @@ public class GroupVerseColor implements VerseColor
     */
     public Color getColor(int book, int chapter, int verse)
     {
-        return array[Books.getSection(book)-1];
+        return array[BibleInfo.getSection(book)-1];
     }
 
     /**
@@ -72,7 +72,7 @@ public class GroupVerseColor implements VerseColor
 
     /**
     * The colors of the different sections of the Bible. Watch out for
-    * dependancies in Books with this array indexing.
+    * dependancies in BibleInfo with this array indexing.
     */
     private Color[] array =
     {

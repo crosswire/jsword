@@ -11,7 +11,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.events.ProgressEvent;
 import org.crosswire.jsword.book.events.ProgressListener;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -121,7 +121,7 @@ public class Verifier
             ref2.add(range);
 
             // Fire a progress event?
-            int new_progress = 100 * verse.getOrdinal() / Books.versesInBible();
+            int new_progress = 100 * verse.getOrdinal() / BibleInfo.versesInBible();
             if (progress != new_progress)
             {
                 progress = new_progress;

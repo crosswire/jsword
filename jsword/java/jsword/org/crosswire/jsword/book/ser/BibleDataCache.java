@@ -17,7 +17,7 @@ import org.crosswire.jsword.book.data.BibleData;
 import org.crosswire.jsword.book.data.DefaultBibleData;
 import org.crosswire.jsword.book.data.RefData;
 import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.passage.Books;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
@@ -61,7 +61,7 @@ public class BibleDataCache
         }
 
         // Create blank indexes
-        xml_arr = new long[Books.versesInBible()];
+        xml_arr = new long[BibleInfo.versesInBible()];
         
         // Open the XML RAF
         URL xml_dat_url = NetUtil.lengthenURL(url, "xml.data");
@@ -76,7 +76,7 @@ public class BibleDataCache
         // Load the ascii XML index
         URL xml_idy_url = NetUtil.lengthenURL(url, "xml.index");
         BufferedReader xml_idy_bin = new BufferedReader(new InputStreamReader(xml_idy_url.openStream()));
-        for (int i = 0; i < Books.versesInBible(); i++)
+        for (int i = 0; i < BibleInfo.versesInBible(); i++)
         {
             String line = xml_idy_bin.readLine();
             xml_arr[i] = Integer.parseInt(line);
