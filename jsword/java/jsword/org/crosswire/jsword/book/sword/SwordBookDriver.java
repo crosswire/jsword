@@ -179,13 +179,13 @@ public class SwordBookDriver extends AbstractBookDriver
 
     /**
      * Accessor for the Sword directory
-     * @param dirs The new Sword directory
+     * @param newDirs The new Sword directory
      * @throws BookException
      */
-    public static void setSwordPath(File[] dirs) throws BookException
+    public static void setSwordPath(File[] newDirs) throws BookException
     {
-        dirs = validateSwordPath(dirs);
-        if (dirs == null)
+        newDirs = validateSwordPath(newDirs);
+        if (newDirs == null)
         {
             return;
         }
@@ -197,7 +197,7 @@ public class SwordBookDriver extends AbstractBookDriver
             Books.installed().unregisterDriver(matches[i]);
         }
 
-        SwordBookDriver.dirs = dirs;
+        SwordBookDriver.dirs = newDirs;
 
         // Now we need to register ourselves
         Books.installed().registerDriver(new SwordBookDriver());
@@ -251,7 +251,7 @@ public class SwordBookDriver extends AbstractBookDriver
             // If it is not in the list then add it
             if (pos == -1)
             {
-                File[] temp = new File[dirs.length + 1];
+                File[] temp = new File[files.length + 1];
                 temp[0] = downloadDir;
                 for (int i = 0; i < files.length; i++)
                 {

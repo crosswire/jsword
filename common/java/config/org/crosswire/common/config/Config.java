@@ -72,7 +72,7 @@ import org.jdom.Element;
 public class Config
 {
     /**
-     * Ensure that we can not be instansiated
+     * Config ctor
      * @param title The name for dialog boxes and properties files
      */
     public Config(String title)
@@ -264,7 +264,7 @@ public class Config
      */
     public void localToApplication(boolean force)
     {
-        int highest_change = Choice.PRIORITY_LOWEST;
+        int highestChange = Choice.PRIORITY_LOWEST;
 
         if (force)
         {
@@ -279,19 +279,19 @@ public class Config
             while (it.hasNext())
             {
                 String key = (String) it.next();
-                Choice model = getChoice(key);
+                Choice choice = getChoice(key);
 
-                if (model.getPriority() == priority)
+                if (choice.getPriority() == priority)
                 {
-                    String old_value = model.getString();
-                    String new_value = local.getProperty(key);
+                    String oldValue = choice.getString();
+                    String newValue = local.getProperty(key);
 
                     // The new value shouldn't really be blank - obviously this
                     // choice has just been added, substitute the default.
-                    if (new_value == null)
+                    if (newValue == null)
                     {
-                        local.put(key, old_value);
-                        new_value = old_value;
+                        local.put(key, oldValue);
+                        newValue = oldValue;
                     }
 
                     try
@@ -300,27 +300,27 @@ public class Config
                         // if force==true or if a higher priority choice has
                         // changed.
                         if (force
-                            || priority < highest_change
-                            || !new_value.equals(old_value))
+                            || priority < highestChange
+                            || !newValue.equals(oldValue))
                         {
-                            log.info("Setting " + key + "=" + new_value + " (was " + old_value + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                            model.setString(new_value);
+                            log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            choice.setString(newValue);
 
-                            if (priority > highest_change)
+                            if (priority > highestChange)
                             {
-                                highest_change = priority;
+                                highestChange = priority;
 
                                 if (!force)
                                 {
-                                    log.info("Change at level " + highest_change + ", all changes will propogate regardless"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    log.info("Change at level " + highestChange + ", all changes will propogate regardless"); //$NON-NLS-1$ //$NON-NLS-2$
                                 }
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        log.warn("Failure with " + key + "=" + new_value, ex);  //$NON-NLS-1$ //$NON-NLS-2$
-                        Reporter.informUser(this, ex);
+                        log.warn("Failure setting " + key + "=" + newValue, ex);  //$NON-NLS-1$ //$NON-NLS-2$
+                        Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { choice.getFullPath() } ));
                     }
                 }
             }
@@ -412,13 +412,13 @@ public class Config
      */
     public static String getPath(String key)
     {
-        int last_dot = key.lastIndexOf('.');
-        if (last_dot == -1)
+        int lastDot = key.lastIndexOf('.');
+        if (lastDot == -1)
         {
             throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return key.substring(0, last_dot);
+        return key.substring(0, lastDot);
     }
 
     /**
@@ -426,13 +426,13 @@ public class Config
      */
     public static String getLeaf(String key)
     {
-        int last_dot = key.lastIndexOf('.');
-        if (last_dot == -1)
+        int lastDot = key.lastIndexOf('.');
+        if (lastDot == -1)
         {
             throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return key.substring(last_dot + 1);
+        return key.substring(lastDot + 1);
     }
 
     /**
@@ -441,7 +441,7 @@ public class Config
      */
     public void addConfigListener(ConfigListener li)
     {
-        listener_list.add(ConfigListener.class, li);
+        listenerList.add(ConfigListener.class, li);
     }
 
     /**
@@ -450,7 +450,7 @@ public class Config
      */
     public void removeConfigListener(ConfigListener li)
     {
-        listener_list.remove(ConfigListener.class, li);
+        listenerList.remove(ConfigListener.class, li);
     }
 
     /**
@@ -459,7 +459,7 @@ public class Config
     protected void fireChoiceAdded(String key, Choice model)
     {
         // Guaranteed to return a non-null array
-        Object[] listeners = listener_list.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
@@ -484,7 +484,7 @@ public class Config
     protected void fireChoiceRemoved(String key, Choice model)
     {
         // Guaranteed to return a non-null array
-        Object[] listeners = listener_list.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
@@ -531,5 +531,5 @@ public class Config
     /**
      * The list of listeners
      */
-    protected EventListenerList listener_list = new EventListenerList();
+    protected EventListenerList listenerList = new EventListenerList();
 }

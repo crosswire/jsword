@@ -36,6 +36,7 @@ public class Msg extends MsgBase
     static final Msg CONFIG_NOMAP = new Msg("StringOptionsChoice.ConfigNoMap"); //$NON-NLS-1$
     static final Msg NO_HELP = new Msg("AbstractReflectedChoice.NoHelp"); //$NON-NLS-1$
     static final Msg IGNORE = new Msg("IntOptionsChoice.Ignore"); //$NON-NLS-1$
+    static final Msg CONFIG_SETFAIL = new Msg("Config.SetFail"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
