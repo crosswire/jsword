@@ -434,7 +434,7 @@ public class Defaults
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
             Book book = (Book) it.next();
-            names.add(book.getBookMetaData().getFullName());
+            names.add(book.getFullName());
         }
 
         return (String[]) names.toArray(new String[names.size()]);

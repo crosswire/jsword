@@ -55,7 +55,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     {
         try
         {
-            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + book.getBookMetaData().getInitials() + ZIP_SUFFIX);
+            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + book.getInitials() + ZIP_SUFFIX);
         }
         catch (MalformedURLException ex)
         {

@@ -124,8 +124,8 @@ public class Verifier
                     if (!text1.equals(text2))
                     {
                         out.println(Msg.VERIFY_VERSE.toString() + subkey);
-                        out.println(book1.getBookMetaData().getName() + ": " + text1); //$NON-NLS-1$
-                        out.println(book2.getBookMetaData().getName() + ": " + text2); //$NON-NLS-1$
+                        out.println(book1.getName() + ": " + text1); //$NON-NLS-1$
+                        out.println(book2.getName() + ": " + text2); //$NON-NLS-1$
                         out.println();
                     }
                 }
@@ -203,8 +203,8 @@ public class Verifier
         if (!ref1.equals(ref2))
         {
             out.println(Msg.WORD.toString() + word);
-            out.println(book1.getBookMetaData().getName() + ": " + ref1); //$NON-NLS-1$
-            out.println(book2.getBookMetaData().getName() + ": " + ref2); //$NON-NLS-1$
+            out.println(book1.getName() + ": " + ref1); //$NON-NLS-1$
+            out.println(book2.getName() + ": " + ref2); //$NON-NLS-1$
             out.println();
         }
     }

@@ -71,14 +71,10 @@ public class LuceneIndex implements Index, Activatable
     public LuceneIndex(Book book, URL storage) throws BookException
     {
         this.book = book;
-        this.storage = storage;
 
         try
         {
-            // Opening Lucene indexes is quite quick I think, so we can try
-            // it to see if it works to report errors that we want to drop
-            // later
-            searcher = new IndexSearcher(NetUtil.getAsFile(storage).getCanonicalPath());
+            this.path = NetUtil.getAsFile(storage).getCanonicalPath();
         }
         catch (IOException ex)
         {
@@ -95,7 +91,16 @@ public class LuceneIndex implements Index, Activatable
         assert create;
 
         this.book = book;
-        this.storage = storage;
+        File finalPath = null;
+        try
+        {
+            finalPath = NetUtil.getAsFile(storage);
+            this.path = finalPath.getCanonicalPath();
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.LUCENE_INIT, ex);
+        }
 
         Job job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
@@ -104,10 +109,8 @@ public class LuceneIndex implements Index, Activatable
         {
             synchronized (CREATING)
             {
-                book.getBookMetaData().setIndexStatus(IndexStatus.CREATING);
-                File finalPath = NetUtil.getAsFile(storage);
-                String finalCanonicalPath = finalPath.getCanonicalPath();
-                File tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
+                book.setIndexStatus(IndexStatus.CREATING);
+                File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
                 // An index is created by opening an IndexWriter with the
                 // create argument set to true.
@@ -123,10 +126,7 @@ public class LuceneIndex implements Index, Activatable
                 job.setInterruptable(false);
                 if (!job.isFinished())
                 {
-
                     tempPath.renameTo(finalPath);
-
-                    searcher = new IndexSearcher(finalPath.getCanonicalPath());
                 }
 
                 if (finalPath.exists())
@@ -142,7 +142,7 @@ public class LuceneIndex implements Index, Activatable
         }
         finally
         {
-            book.getBookMetaData().setIndexStatus(finalStatus);
+            book.setIndexStatus(finalStatus);
             job.done();
         }
     }
@@ -159,30 +159,27 @@ public class LuceneIndex implements Index, Activatable
 
         if (search != null)
         {
-            if (searcher != null)
+            try
             {
-                try
-                {
-                    Analyzer analyzer = new SimpleAnalyzer();
-                    Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
-                    Hits hits = searcher.search(query);
+                Analyzer analyzer = new SimpleAnalyzer();
+                Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
+                Hits hits = searcher.search(query);
 
-                    for (int i = 0; i < hits.length(); i++)
-                    {
-                        Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
-//                        int score = (int) (hits.score(i) * 100);
-//                        tally.add(verse, score);
-                        tally.addAll(verse);
-                    }
-                }
-                catch (Exception ex)
+                for (int i = 0; i < hits.length(); i++)
                 {
-                    throw new BookException(Msg.SEARCH_FAILED, ex);
+                    Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+//                  int score = (int) (hits.score(i) * 100);
+//                  tally.add(verse, score);
+                    tally.addAll(verse);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                log.warn("Missing searcher, skipping search for: " + search); //$NON-NLS-1$
+                throw new BookException(Msg.SEARCH_FAILED, ex);
+            }
+            finally
+            {
+                Activator.deactivate(this);
             }
         }
 
@@ -204,7 +201,7 @@ public class LuceneIndex implements Index, Activatable
     {
         try
         {
-            searcher = new IndexSearcher(NetUtil.getAsFile(storage).getCanonicalPath());
+            searcher = new IndexSearcher(path);
         }
         catch (IOException ex)
         {
@@ -337,7 +334,7 @@ public class LuceneIndex implements Index, Activatable
     /**
      * The location of this index
      */
-    private URL storage;
+    private String path;
 
     /**
      * The Lucene search engine

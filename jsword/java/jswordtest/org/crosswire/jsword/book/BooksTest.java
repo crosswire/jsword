@@ -147,7 +147,7 @@ public class BooksTest extends TestCase
         {
             Book bible = bibles[i];
             Key key = bible.find(new Search("aaron", false)); //$NON-NLS-1$
-            assertNotNull("bible=" + bible.getBookMetaData().getFullName(), key); //$NON-NLS-1$
+            assertNotNull("bible=" + bible.getFullName(), key); //$NON-NLS-1$
         }
     }
 
@@ -179,7 +179,7 @@ public class BooksTest extends TestCase
             }
             if (skip)
                 continue;
-            log.debug("thorough testing bible: " + ver.getBookMetaData().getFullName()); //$NON-NLS-1$
+            log.debug("thorough testing bible: " + ver.getFullName()); //$NON-NLS-1$
 
             Key key = ver.find(new Search("aaron", false)); //$NON-NLS-1$
             Passage ref = KeyUtil.getPassage(key);

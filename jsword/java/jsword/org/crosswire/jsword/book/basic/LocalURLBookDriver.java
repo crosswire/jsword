@@ -84,7 +84,7 @@ public class LocalURLBookDriver
 
         try
         {
-            String base = source.getBookMetaData().getFullName();
+            String base = source.getFullName();
             URL url = createUniqueDirectory(base);
 
             LocalURLBook dest = (LocalURLBook) bibleclass.newInstance();

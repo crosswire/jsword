@@ -137,7 +137,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public void install(Book book)
     {
         // Is the book already installed? Then nothing to do.
-        if (Books.installed().getBook(book.getBookMetaData().getName()) != null)
+        if (Books.installed().getBook(book.getName()) != null)
         {
             return;
         }

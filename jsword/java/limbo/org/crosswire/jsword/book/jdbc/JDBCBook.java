@@ -60,7 +60,7 @@ public class JDBCBook extends PassageAbstractBook
         BookMetaData bmd = new DefaultBookMetaData(driver, this, prop);
         setBookMetaData(bmd);
 
-        Map props = getBookMetaData().getProperties();
+        Map props = getProperties();
 
         // Load the specified JDBC name
         int driver_attempt = 1;

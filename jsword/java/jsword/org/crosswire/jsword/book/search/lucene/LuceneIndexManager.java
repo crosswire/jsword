@@ -91,7 +91,7 @@ public class LuceneIndexManager implements IndexManager
      */
     public void scheduleIndexCreation(final Book book)
     {
-        book.getBookMetaData().setIndexStatus(IndexStatus.SCHEDULED);
+        book.setIndexStatus(IndexStatus.SCHEDULED);
 
         Thread work = new Thread(new Runnable()
         {
@@ -116,7 +116,7 @@ public class LuceneIndexManager implements IndexManager
                 }
                 finally
                 {
-                    book.getBookMetaData().setIndexStatus(finalStatus);
+                    book.setIndexStatus(finalStatus);
                 }
             }
         });
@@ -158,7 +158,7 @@ public class LuceneIndexManager implements IndexManager
             tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
             FileUtil.delete(tempPath);
             storage.renameTo(tempPath);
-            book.getBookMetaData().setIndexStatus(IndexStatus.UNDONE);
+            book.setIndexStatus(IndexStatus.UNDONE);
         }
         catch (IOException ex)
         {

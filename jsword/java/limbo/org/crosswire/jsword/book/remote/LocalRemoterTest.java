@@ -61,7 +61,7 @@ public class LocalRemoterTest extends TestCase
         assertEquals(names1.length, names2.length);
         for (int i=0; i<names1.length; i++)
         {
-            assertEquals(names1[i].getBookMetaData().getName(), names2[i].getBookMetaData().getName());
+            assertEquals(names1[i].getName(), names2[i].getName());
         }
     }
 

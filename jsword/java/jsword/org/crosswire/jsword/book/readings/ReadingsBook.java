@@ -93,7 +93,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
             greg.add(Calendar.DATE, 1);
         }
 
-        global = new SetKeyList(hash.keySet(), getBookMetaData().getName());
+        global = new SetKeyList(hash.keySet(), getName());
     }
 
     /* (non-Javadoc)
