@@ -442,7 +442,7 @@
         <pathelement path="${target.classes}/swing"/>
         <pathelement path="${target.classes}/servlet"/>
         <fileset dir="${source.jar}" includes="**/*.jar"/>
-        <fileset dir="${support.tools}/jdepend24" includes="**/*.jar"/>
+        <fileset dir="${support.tools}/jdepend26" includes="**/*.jar"/>
       </classpath>
     </jdepend>
     <style
