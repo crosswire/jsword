@@ -49,7 +49,7 @@ public class SwordConstants
     public static final String FILE_OT = "ot"; //$NON-NLS-1$
 
     /**
-     * Index(?) file extensions
+     * Index file extensions
      */
     public static final String EXTENSION_VSS = ".vss"; //$NON-NLS-1$
     

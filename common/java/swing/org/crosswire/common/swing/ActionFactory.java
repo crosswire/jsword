@@ -260,7 +260,7 @@ public class ActionFactory implements ActionListener
     }
 
     /**
-     * Convert the string to a valid Accelerator (i.e. a KeyStroke)
+     * Convert the string to a valid Accelerator (ie a KeyStroke)
      */
     private KeyStroke getAccelerator(ResourceBundle resources, String actionName)
     {

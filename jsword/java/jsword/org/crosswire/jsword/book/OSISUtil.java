@@ -166,10 +166,13 @@ public class OSISUtil
         return factory;
     }
 
+    /**
+     * A generic way of creating empty Elements of various types
+     */
     public static class ObjectFactory
     {
         /**
-         * @return
+         * 
          */
         public Element createSeg()
         {
@@ -177,7 +180,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createOsisText()
         {
@@ -185,7 +188,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createHeader()
         {
@@ -193,7 +196,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createWork()
         {
@@ -201,7 +204,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createOsis()
         {
@@ -209,7 +212,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createDiv()
         {
@@ -217,7 +220,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createCell()
         {
@@ -225,7 +228,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createVerse()
         {
@@ -233,7 +236,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createW()
         {
@@ -241,7 +244,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createForeign()
         {
@@ -249,7 +252,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createItem()
         {
@@ -257,7 +260,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createP()
         {
@@ -265,7 +268,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createList()
         {
@@ -273,7 +276,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createQ()
         {
@@ -281,7 +284,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createName()
         {
@@ -289,7 +292,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createNote()
         {
@@ -297,7 +300,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createReference()
         {
@@ -305,7 +308,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createRow()
         {
@@ -313,7 +316,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createSpeaker()
         {
@@ -321,7 +324,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createSpeech()
         {
@@ -329,7 +332,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createTable()
         {
@@ -337,7 +340,7 @@ public class OSISUtil
         }
 
         /**
-         * @return
+         * 
          */
         public Element createTitle()
         {
@@ -425,7 +428,7 @@ public class OSISUtil
         header.addContent(work);
 
         Element text = factory().createOsisText();
-        text.setAttribute(ATTRIBUTE_TEXT_OSISIDWORK, OSISID_PREFIX_BIBLE+osisid);
+        text.setAttribute(ATTRIBUTE_TEXT_OSISIDWORK, OSISID_PREFIX_BIBLE + osisid);
         text.addContent(header);
 
         osis.addContent(text);
@@ -472,7 +475,7 @@ public class OSISUtil
         }
         else
         {
-            log.error("unknown type: "+sub.getClass().getName()); //$NON-NLS-1$
+            log.error("unknown type: " + sub.getClass().getName()); //$NON-NLS-1$
         }
     }
 
@@ -496,7 +499,7 @@ public class OSISUtil
         catch (Exception ex)
         {
             // We can continue, but we should report a problem
-            log.error("Error interrogating: "+ele.getClass().getName(), ex); //$NON-NLS-1$
+            log.error("Error interrogating: " + ele.getClass().getName(), ex); //$NON-NLS-1$
         }
     }
 }

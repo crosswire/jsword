@@ -2,7 +2,6 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
@@ -53,7 +52,6 @@ public class XMLUtil
      * @return The requested resource
      * @throws IOException if there is a problem reading the file
      * @throws JDOMException If the resource is not valid XML
-     * @throws MalformedURLException if the resource can not be found
      */
     public static Document getDocument(String subject) throws JDOMException, IOException
     {

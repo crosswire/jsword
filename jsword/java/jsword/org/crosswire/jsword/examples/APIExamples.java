@@ -19,7 +19,6 @@ import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
 
@@ -59,7 +58,6 @@ public class APIExamples
      * a verse, and print it to stdout. Reading from a Commentary is just the
      * same as reading from a Bible.
      * @see Book
-     * @see Passage
      */
     public void readPlainText() throws BookException, NoSuchKeyException
     {
@@ -70,7 +68,7 @@ public class APIExamples
         BookData data = bible.getData(key);
         String text = data.getPlainText();
 
-        System.out.println("The plain text of Gen 1:1 is "+text); //$NON-NLS-1$
+        System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
     }
 
     /**
@@ -78,7 +76,6 @@ public class APIExamples
      * a verse, and print it to stdout. Reading from a Commentary is just the
      * same as reading from a Bible.
      * @see Book
-     * @see Passage
      * @see SAXEventProvider
      */
     public void readStyledText() throws NoSuchKeyException, BookException, TransformerException, SAXException
@@ -94,7 +91,7 @@ public class APIExamples
         SAXEventProvider htmlsep = styler.convert(osissep);
         String text = XMLUtil.writeToString(htmlsep);
 
-        System.out.println("The html text of Gen 1:1 is "+text); //$NON-NLS-1$
+        System.out.println("The html text of Gen 1:1 is " + text); //$NON-NLS-1$
     }
 
     /**
@@ -118,10 +115,10 @@ public class APIExamples
         Key keys = dict.getGlobalKeyList();
         Key first = (Key) keys.iterator().next();
 
-        System.out.println("The first Key in the default dictionary is "+first); //$NON-NLS-1$
+        System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
         BookData data = dict.getData(keys);
-        System.out.println("And the text against that key is "+data.getPlainText()); //$NON-NLS-1$
+        System.out.println("And the text against that key is " + data.getPlainText()); //$NON-NLS-1$
     }
 
     /**
@@ -194,7 +191,7 @@ public class APIExamples
             public void bookAdded(BooksEvent ev)
             {
             }
-        
+
             /* (non-Javadoc)
              * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
              */

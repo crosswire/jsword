@@ -109,8 +109,8 @@ public class LucidException extends Exception
         }
         catch (IllegalArgumentException ex)
         {
-            log.warn("Format fail for '"+out+"'", ex); //$NON-NLS-1$ //$NON-NLS-2$
-            return "Error formatting message '"+out+"'"; //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Format fail for '" + out + "'", ex); //$NON-NLS-1$ //$NON-NLS-2$
+            return "Error formatting message '" + out + "'"; //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -143,8 +143,8 @@ public class LucidException extends Exception
     private static final Logger log = Logger.getLogger(LucidException.class);
 
     /**
-     * Is the message to be included literally (i.e. passed a string), or should we look it up as a
-     * resource (i.e. passed a MsgBase).
+     * Is the message to be included literally (ie passed a string), or should we look it up as a
+     * resource (ie passed a MsgBase).
      */
     private boolean deprecated;
 

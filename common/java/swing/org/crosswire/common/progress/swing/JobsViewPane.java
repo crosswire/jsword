@@ -81,10 +81,10 @@ public class JobsViewPane extends JPanel implements WorkListener
         positions = new ArrayList();
         jobsPanel = new JPanel(new GridBagLayout());
         jobsPanel.setBorder(null);
-        
+
         JPanel pnl = new JPanel(new BorderLayout());
         pnl.add(jobsPanel, BorderLayout.NORTH);
-        
+
         JScrollPane scrollPane = new JScrollPane(pnl);
         scrollPane.setBorder(null);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -142,7 +142,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     protected void addJob(final Job job)
     {
         int i = findEmptyPosition();
-        log.debug("adding job to panel at "+i+": "+job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
+        log.debug("adding job to panel at " + i + ": " + job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
 
         JProgressBar progress = new JProgressBar();
         progress.setStringPainted(true);
@@ -197,7 +197,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.getProgress().setString(""+percent+"%"); //$NON-NLS-1$ //$NON-NLS-2$
+        jobdata.getProgress().setString("" + percent + "%"); //$NON-NLS-1$ //$NON-NLS-2$
         jobdata.getProgress().setToolTipText(job.getStateDescription());
         jobdata.getProgress().setValue(percent);
     }
@@ -209,15 +209,15 @@ public class JobsViewPane extends JPanel implements WorkListener
     {
         JobData jobdata = (JobData) jobs.get(job);
 
-        log.debug("removing job from panel at "+jobdata.getIndex()+": "+job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
+        log.debug("removing job from panel at " + jobdata.getIndex() + ": " + job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
 
         positions.set(jobdata.getIndex(), null);
         jobs.remove(job);
-        
+
         jobsPanel.remove(jobdata.getLabel());
         jobsPanel.remove(jobdata.getProgress());
         jobsPanel.remove(jobdata.getCancel());
-        
+
         this.revalidate();
 
         jobdata.invalidate();
@@ -278,7 +278,7 @@ public class JobsViewPane extends JPanel implements WorkListener
     /**
      * The panel containing jobs
      */
-	private JPanel jobsPanel;
+    private JPanel jobsPanel;
 
     /**
      * A label stating that there are no jobs running
@@ -290,7 +290,7 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private static final Logger log = Logger.getLogger(JobsViewPane.class);
 
-   /**
+    /**
      * A simple struct to group information about a Job
      */
     private static class JobData

@@ -130,8 +130,6 @@ public class CWClassLoader extends ClassLoader
     /**
      * Prefix the search with a package prefix, if not already.
      * Skip a leading '/' if present.
-     * @param search
-     * @return
      */
     private String adjustPackageSearch(String search)
     {
@@ -163,8 +161,6 @@ public class CWClassLoader extends ClassLoader
 
     /**
      * Change all but a leading '/' to '.'
-     * @param search
-     * @return
      */
     private String adjustPathSearch(String search)
     {
@@ -183,6 +179,9 @@ public class CWClassLoader extends ClassLoader
         return search;
     }
 
+    /**
+     * 
+     */
     public ClassLoader getClassLoader()
     {
         // Choose the child loader as it will use the parent if need be
@@ -211,7 +210,7 @@ public class CWClassLoader extends ClassLoader
             {
                 // Is loader2 a descendant of loader1?
                 // It is if we can walk up to the top and find it.
-                for (ClassLoader curloader = loader2 ; curloader != null; curloader = curloader.getParent())
+                for (ClassLoader curloader = loader2; curloader != null; curloader = curloader.getParent())
                 {
                     if (curloader == loader1)
                     {
@@ -248,12 +247,11 @@ public class CWClassLoader extends ClassLoader
     /**
      * Look for the resource in the home directory
      * @param search must be non-null, non-empty
-     * @return
      */
     public static URL findHomeResource(String search)
     {
         URL reply = null;
-    
+
         // Look at the application's home first to allow overrides
         if (home != null)
         {
@@ -269,15 +267,15 @@ public class CWClassLoader extends ClassLoader
             {
                 ssearch = '/' + search;
             }
-    
+
             URL override = null;
-    
+
             // Make use of "home" thread safe
             synchronized (CWClassLoader.class)
             {
                 override = NetUtil.lengthenURL(home, ssearch);
             }
-    
+
             // Make sure the file exists and can be read
             File f = new File(override.getFile());
             if (f.canRead())
@@ -285,7 +283,7 @@ public class CWClassLoader extends ClassLoader
                 reply = override;
             }
         }
-    
+
         return reply;
     }
 

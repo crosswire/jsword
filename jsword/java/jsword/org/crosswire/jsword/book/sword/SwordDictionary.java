@@ -150,7 +150,7 @@ public class SwordDictionary extends AbstractBook
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
@@ -192,7 +192,7 @@ public class SwordDictionary extends AbstractBook
         // Next keys that start with the given text
         for (Iterator it = map.keySet().iterator(); it.hasNext();)
         {
-            String keyName = (String)it.next();
+            String keyName = (String) it.next();
             if (keyName.startsWith(text))
             {
                 reply.addAll((Key) map.get(keyName));
@@ -247,7 +247,7 @@ public class SwordDictionary extends AbstractBook
      * So we can quickly find a Key given the text for the key
      */
     private Map map = null;
-    
+
     /**
      * So we can implement getIndex() easily
      */

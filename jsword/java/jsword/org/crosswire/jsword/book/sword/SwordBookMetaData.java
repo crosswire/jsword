@@ -94,13 +94,13 @@ public class SwordBookMetaData implements BookMetaData
         {
             // Empty out the buffer
             buf.setLength(0);
-            
+
             String line = advance(bin);
             if (line == null)
             {
                 break;
             }
-            
+
             int length = line.length();
             if (length > 0)
             {
@@ -118,7 +118,7 @@ public class SwordBookMetaData implements BookMetaData
 
         // From the config map, extract the important bean properties
         name = getFirstValue(ConfigEntry.DESCRIPTION);
-        
+
         // Set initials, if not already set
         if (name != null && initials.length() == 0)
         {
@@ -149,7 +149,7 @@ public class SwordBookMetaData implements BookMetaData
 
         if (name == null)
         {
-            log.warn("Missing description for: "+internal); //$NON-NLS-1$
+            log.warn("Missing description for: " + internal); //$NON-NLS-1$
             name = internal;
         }
 
@@ -162,14 +162,14 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // merge entries into properties file
-        for (Iterator kit = getKeys(); kit.hasNext(); )
+        for (Iterator kit = getKeys(); kit.hasNext();)
         {
             String key = (String) kit.next();
             List list = (List) table.get(key);
-            
+
             StringBuffer combined = new StringBuffer();
             boolean appendSeparator = false;
-            for (Iterator vit = list.iterator(); vit.hasNext(); )
+            for (Iterator vit = list.iterator(); vit.hasNext();)
             {
                 String element = (String) vit.next();
                 if (appendSeparator)
@@ -179,7 +179,7 @@ public class SwordBookMetaData implements BookMetaData
                 combined.append(element);
                 appendSeparator = true;
             }
-            
+
             prop.put(key, combined.toString());
         }
 
@@ -270,10 +270,10 @@ public class SwordBookMetaData implements BookMetaData
 
         if (value == null)
         {
-            log.error("Null string (title="+title.getName()+") in array: "+StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("Null string (title=" + title.getName() + ") in array: " + StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return -1;
         }
-        
+
         for (int i = 0; i < array.length; i++)
         {
             if (value.equalsIgnoreCase(array[i]))
@@ -283,7 +283,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Some debug to say: no match
-        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        log.error("String " + value + " (title=" + title.getName() + ") not found in array: " + StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return -1;
     }
 
@@ -307,7 +307,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Some debug to say: no match
-        log.error("String "+value+" (title="+title.getName()+") not found in array: "+StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        log.error("String " + value + " (title=" + title.getName() + ") not found in array: " + StringUtils.join(array, ", ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return deft;
     }
 
@@ -335,14 +335,13 @@ public class SwordBookMetaData implements BookMetaData
         {
             log.debug("Book not supported: " + internal + " because it has no name."); //$NON-NLS-1$ //$NON-NLS-2$
         }
-            
+
         if (!workable)
         {
             String modTypeName = getFirstValue(ConfigEntry.MOD_DRV);
             if (mtype == null)
             {
                 log.debug("Book not supported: " + internal + " because no ModuleType for " + modTypeName); //$NON-NLS-1$ //$NON-NLS-2$
-                
             }
             else if (mtype.getBookType() == null)
             {
@@ -372,7 +371,7 @@ public class SwordBookMetaData implements BookMetaData
     public String getModuleCharset()
     {
         int encoding = matchingIndex(SwordConstants.ENCODING_STRINGS, ConfigEntry.ENCODING, SwordConstants.ENCODING_LATIN1);
-        
+
         // There was code here that said:
         // if (encoding < 0)
         //  encoding = SwordConstants.ENCODING_UTF8;
@@ -430,6 +429,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
     }
+
     private String handleRTF(String value)
     {
         // This method is a hack! It could be made much nicer.
@@ -491,7 +491,7 @@ public class SwordBookMetaData implements BookMetaData
             buf.append(line);
         }
     }
-    
+
     /**
      * Get the next line from the input
      * @param bin The reader to get data from
@@ -509,7 +509,7 @@ public class SwordBookMetaData implements BookMetaData
         }
 
         // Get the next non-blank, non-comment line
-        for (String line = bin.readLine(); line != null; line=bin.readLine())
+        for (String line = bin.readLine(); line != null; line = bin.readLine())
         {
             // Save the original for diagnostics and for save
             data.append(line).append('\n');
@@ -521,9 +521,10 @@ public class SwordBookMetaData implements BookMetaData
             line = line.trim();
 
             int length = line.length();
-            
+
             // skip blank and comment lines
-            if (length != 0 && line.charAt(0) != '#') {
+            if (length != 0 && line.charAt(0) != '#')
+            {
                 return line;
             }
         }
@@ -535,7 +536,8 @@ public class SwordBookMetaData implements BookMetaData
      */
     private void backup(String oops)
     {
-        if (oops.length() > 0) {
+        if (oops.length() > 0)
+        {
             readahead = oops;
         }
         else
@@ -666,7 +668,7 @@ public class SwordBookMetaData implements BookMetaData
     {
         return prop;
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getFullName()
      */
@@ -749,7 +751,7 @@ public class SwordBookMetaData implements BookMetaData
         {
             return false;
         }
-        
+
         // We might consider checking for equality against all BookMetaDatas?
         // However currently we dont.
 

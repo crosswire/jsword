@@ -114,7 +114,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
     protected synchronized void addJob(Job job)
     {
         int i = findEmptyPosition();
-        log.debug("adding job to panel at "+i+": "+job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
+        log.debug("adding job to panel at " + i + ": " + job.getJobDescription()); //$NON-NLS-1$ //$NON-NLS-2$
 
         JProgressBar progress = new JProgressBar();
         progress.setStringPainted(true);
@@ -126,7 +126,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         // Dimension preferred = progress.getPreferredSize();
         // preferred.width = 50;
         // progress.setPreferredSize(preferred);
-        
+
         // Decorate the progress bar if necessary
         Component decorated = decorateProgressBar(job, progress);
         this.add(decorated, i);
@@ -172,8 +172,8 @@ public class JobsProgressBar extends JPanel implements WorkListener
     /**
      * Create a cancel button that only shows the cancel icon.
      * When the button is pressed the job is interrupted.
-     * @param job
-     * @return
+     * @param job A job to interrupt when the button is pressed
+     * @return a custom cancel button
      */
     private JButton createCancelButton(final Job job)
     {
@@ -190,13 +190,13 @@ public class JobsProgressBar extends JPanel implements WorkListener
         {
             assert false : ex;
         }
-        
+
         // Create a cancel button
         JButton cancel = new JButton(stop);
         // Only paint the icon not the button
         cancel.setContentAreaFilled(false);
         // Make the button as small as possible
-        cancel.setMargin(new Insets(0,0,0,0));
+        cancel.setMargin(new Insets(0, 0, 0, 0));
         // We don't need no stinkin' border
         cancel.setBorderPainted(false);
         // Under WinXP this does nothing
@@ -220,7 +220,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         JobData jobdata = (JobData) jobs.get(job);
 
         int percent = job.getPercent();
-        jobdata.getProgress().setString(job.getStateDescription()+": ("+percent+"%)"); //$NON-NLS-1$ //$NON-NLS-2$
+        jobdata.getProgress().setString(job.getStateDescription() + ": (" + percent + "%)"); //$NON-NLS-1$ //$NON-NLS-2$
         jobdata.getProgress().setValue(percent);
     }
 
@@ -233,7 +233,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
 
         positions.set(jobdata.getIndex(), null);
         jobs.remove(job);
-        log.debug("removing job from panel: "+jobdata.getJob().getJobDescription()); //$NON-NLS-1$
+        log.debug("removing job from panel: " + jobdata.getJob().getJobDescription()); //$NON-NLS-1$
 
         this.remove(jobdata.getComponent());
         this.revalidate();
@@ -327,7 +327,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
         }
 
         /**
-         * @return
+         * 
          */
         public Component getComponent()
         {
