@@ -319,7 +319,7 @@ public class Config implements Serializable
                     }
                     catch (Throwable ex)
                     {
-                        log.warn("Failure with "+key+"="+new_value);
+                        log.warn("Failure with "+key+"="+new_value, ex);
                         Reporter.informUser(this, ex);
                     }
                 }

@@ -271,7 +271,7 @@ public class Desktop extends JFrame implements TitleChangedListener
         //menu_tools.add(act_tools_bench).addMouseListener(bar_status);
         menu_tools.add(act_tools_generate).addMouseListener(bar_status);
         menu_tools.add(act_tools_diff).addMouseListener(bar_status);
-        menu_tools.addSeparator();
+        //menu_tools.addSeparator();
         //menu_tools.add(act_tools_test).addMouseListener(bar_status);
         //menu_tools.add(act_tools_script).addMouseListener(bar_status);
         menu_tools.addSeparator();

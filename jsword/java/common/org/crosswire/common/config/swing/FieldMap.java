@@ -74,7 +74,7 @@ public class FieldMap
         }
         catch (Exception ex)
         {
-            log.warn("field type ("+type+") initialization failed:");
+            log.warn("field type ("+type+") initialization failed:", ex);
             Reporter.informUser(type, ex);
 
             if (field == null)

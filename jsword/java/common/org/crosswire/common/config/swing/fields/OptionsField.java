@@ -78,7 +78,7 @@ public class OptionsField extends JComboBox implements Field
             }
         }
 
-        log.warn("illegal option setting: '"+value+"'. Using default");
+        log.warn("Illegal option setting: '"+value+"'. Using default");
         setSelectedItem(list[0]);
     }
 

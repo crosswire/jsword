@@ -189,7 +189,7 @@ public class StaticReflectiveChoice implements Choice
      */
     public Object getTypeOptions()
     {
-        return data;
+        return type.getTypeOptions();
     }
 
     /**
@@ -237,6 +237,7 @@ public class StaticReflectiveChoice implements Choice
     {
         public abstract Class getTypeToConvert();
         public abstract String getTypeName();
+        public abstract Object getTypeOptions();
         public abstract String toString(Object orig);
         public abstract Object fromString(String orig);
     }
@@ -254,6 +255,11 @@ public class StaticReflectiveChoice implements Choice
         public String getTypeName()
         {
             return "text";
+        }
+
+        public Object getTypeOptions()
+        {
+            return data;
         }
 
         public String toString(Object orig)
@@ -282,6 +288,11 @@ public class StaticReflectiveChoice implements Choice
             return "number";
         }
 
+        public Object getTypeOptions()
+        {
+            return data;
+        }
+
         public String toString(Object orig)
         {
             return Convert.int2String(((Integer) orig).intValue());
@@ -306,6 +317,11 @@ public class StaticReflectiveChoice implements Choice
         public String getTypeName()
         {
             return "array";
+        }
+
+        public Object getTypeOptions()
+        {
+            return data;
         }
 
         public String toString(Object orig)
@@ -348,6 +364,11 @@ public class StaticReflectiveChoice implements Choice
         public String getTypeName()
         {
             return "boolean";
+        }
+
+        public Object getTypeOptions()
+        {
+            return data;
         }
 
         public String toString(Object orig)
@@ -404,7 +425,12 @@ public class StaticReflectiveChoice implements Choice
 
         public String getTypeName()
         {
-            return "class";
+            return "text";
+        }
+
+        public Object getTypeOptions()
+        {
+            return data;
         }
 
         public String toString(Object orig)
@@ -418,8 +444,9 @@ public class StaticReflectiveChoice implements Choice
             {
                 return Class.forName(orig);
             }
-            catch (ClassNotFoundException e)
+            catch (ClassNotFoundException ex)
             {
+                log.warn("Class not found: "+orig, ex);
                 return null;
             }
         }

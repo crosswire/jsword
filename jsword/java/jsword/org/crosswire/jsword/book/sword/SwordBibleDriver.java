@@ -160,6 +160,15 @@ public class SwordBibleDriver extends AbstractBibleDriver
      */
     public static void setSwordDir(String sword_dir) throws MalformedURLException
     {
+        // Just accept that we're not supposed to work ...
+        if (sword_dir == null || sword_dir.trim().length() == 0)
+        {
+            driver.dir = null;
+            driver.nested = null;
+            log.info("No sword dir set.");
+            return;
+        }
+
         URL dir_temp = new URL("file:"+sword_dir);
         URL nest_temp = NetUtil.lengthenURL(dir_temp, "modules", "texts", "rawtext");
 
