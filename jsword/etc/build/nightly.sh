@@ -24,7 +24,7 @@ JSWORD_HOME=`pwd`
 rm -f $LOGFILE
 
 {
-  $JSWORD_HOME/etc/build/rebuild.sh
+  sh $JSWORD_HOME/etc/build/rebuild.sh
 } > $LOGFILE 2>&1
 
 {

@@ -28,42 +28,59 @@ echo JSWORD_HOME=$JSWORD_HOME
 
 # keep the cvsup separate to allow build.xml to be updated
 
+echo ""
+echo "=============================================================================="
 echo "Building common"
 cd $JSWORD_HOME/../common
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building jsword-support"
 cd $JSWORD_HOME/../jsword-support
 cvs -q up -d -P
 #$ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building jsword"
 cd $JSWORD_HOME/../jsword
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building jsword-sword"
 cd $JSWORD_HOME/../jsword-sword
 cvs -q up -d -P
 #$ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building jsword-web"
 cd $JSWORD_HOME/../jsword-web
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building bibledesktop"
 cd $JSWORD_HOME/../bibledesktop
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building bibledesktop-web"
 cd $JSWORD_HOME/../bibledesktop-web
 $ANT_HOME/bin/ant cvsup $PROPERTIES
 $ANT_HOME/bin/ant incremental $PROPERTIES
 
+echo ""
+echo "=============================================================================="
 echo "Building biblemapper"
 cd $JSWORD_HOME/../biblemapper
 cvs -q up -d -P
 #$ANT_HOME/bin/ant incremental $PROPERTIES
+
