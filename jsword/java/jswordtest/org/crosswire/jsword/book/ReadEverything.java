@@ -57,7 +57,7 @@ public class ReadEverything
         Document xmlconfig = XMLUtil.getDocument("config"); //$NON-NLS-1$
         config.add(xmlconfig, null);
         config.setProperties(ResourceUtil.getProperties("desktop")); //$NON-NLS-1$
-        config.localToApplication(true);
+        config.localToApplication();
 
         // Loop through all the Bookks
         log.info("*** Reading all known Books"); //$NON-NLS-1$

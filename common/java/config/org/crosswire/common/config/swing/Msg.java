@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
 public class Msg extends MsgBase
 {
     static final Msg EDIT = new Msg("ColorField.Edit"); //$NON-NLS-1$
-    static final Msg CONFIG_SAVE_FAILED = new Msg("ConfigEditorFactory.Could not save config file: {0}"); //$NON-NLS-1$
+    static final Msg CONFIG_SAVE_FAILED = new Msg("ConfigEditorFactory.ConfigFileFailed"); //$NON-NLS-1$
     static final Msg SELECT_FONT = new Msg("FontField.SelectFont"); //$NON-NLS-1$
     static final Msg CLASS = new Msg("MapField.Class"); //$NON-NLS-1$
     static final Msg NAME = new Msg("MapField.Name"); //$NON-NLS-1$

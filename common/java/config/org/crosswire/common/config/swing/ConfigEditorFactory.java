@@ -99,7 +99,7 @@ public class ConfigEditorFactory
         {
             try
             {
-                config.localToApplication(false);
+                config.localToApplication();
                 config.localToPermanent(url);
             }
             catch (IOException ex)
