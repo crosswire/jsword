@@ -112,6 +112,14 @@ td.maincell a:hover {
 .tableHeader2 { font-family: Arial; font-size: 11pt; font-weight: bold; color: #000000; }
 .headings     { font-family: Arial; font-size: 10pt; font-weight: bold; color: #6633CC; }
 
+/* From the OSIS->HTML converter */
+.w-x-Strongs a { text-decoration: none; color: black; }
+.note-ref { font-size: smaller; vertical-align: super; }
+.figure { text-align: center; }
+.caption { text-align: center; font-size: smaller; }
+.lg { padding-left: 0.5in; padding-bottom: 1em; }
+
+
 pre { margin-bottom: 0 }
 
 .comment {

@@ -21,11 +21,13 @@ to JSword.
 <p>Please enter a reference to view or a search:</p>
 <table width="100%">
   <tr>
-	<td>Search:</td>
-	<td nowrap="nowrap">
-	  <form name="search" method="post" action="demo">
-		<input type="text" name="search" value="%= search %" />
-		<input name="GO" type="submit" id="GO" value="GO" />
+    <td>Search:</td>
+    <td nowrap="nowrap">
+      <form name="search" method="post" action="demo">
+        <jsp:text>&lt;input type="text" name="search" value="</jsp:text>
+        <jsp:expression>search</jsp:expression>
+        <jsp:text>" /&gt;</jsp:text>
+        <input name="GO" type="submit" id="GO" value="GO" />
 	  </form>
 	</td>
 	<td><small>E.g. &quot;joseph + mary&quot;. Enter a search 
@@ -36,7 +38,9 @@ to JSword.
 	<td>Best Match: </td>
 	<td nowrap="nowrap">
 	  <form name="match" method="post" action="demo">
-		<input type="text" name="match" value="%= match %" />
+        <jsp:text>&lt;input type="text" name="match" value="</jsp:text>
+        <jsp:expression>match</jsp:expression>
+        <jsp:text>" /&gt;</jsp:text>
 		<input name="GO" type="submit" id="GO" value="GO" />
 	  </form>
 	</td>
@@ -47,7 +51,9 @@ to JSword.
 	<td>View:</td>
 	<td nowrap="nowrap">
 	  <form name="view" method="post" action="demo">
-		<input type="text" name="view" value="%= view %" />
+        <jsp:text>&lt;input type="text" name="view" value="</jsp:text>
+        <jsp:expression>view</jsp:expression>
+        <jsp:text>" /&gt;</jsp:text>
 		<input name="GO" type="submit" id="GO" value="GO" />
 	  </form>
 	</td>
@@ -72,7 +78,13 @@ were trimmed to avoid overloading server.</p>
 <p><font size="-1">
 <jsp:expression>request.getAttribute("next-name")</jsp:expression>
 </font></p>
-<p>To see them <a href="demo?view=%= link %">click here</a>.</p>
+<p>
+  To see them 
+  <jsp:text>&lt;a href="demo?view=</jsp:text>
+  <jsp:expression>link</jsp:expression>
+  <jsp:text>"&gt;click here&lt;/a&gt;</jsp:text>
+  .
+</p>
 <jsp:scriptlet><![CDATA[ } ]]></jsp:scriptlet>
 </body>
 </html>

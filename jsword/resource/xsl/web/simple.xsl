@@ -66,22 +66,11 @@
   
 
   <xsl:template match="/osis">
+    <!--
     <xsl:message>osis-id-type is <xsl:value-of select="$osis-id-type"/></xsl:message>
     <xsl:message>page-div-type is <xsl:value-of select="$page-div-type"/></xsl:message>
-    <html>
-      <head>
-        <style>
-          .w-x-Strongs a { text-decoration: none; color: black; }
-          .note-ref { font-size: smaller; vertical-align: super; }
-          .figure { text-align: center; }
-          .caption { text-align: center; font-size: smaller; }
-          .lg { padding-left: 0.5in; padding-bottom: 1em; }
-        </style>
-      </head>
-      <body>
-        <xsl:apply-templates/>
-      </body>
-    </html>
+    -->
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="osisCorpus">
