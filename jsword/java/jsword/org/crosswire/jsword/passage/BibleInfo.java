@@ -200,12 +200,12 @@ public class BibleInfo
     {
         try
         {
-            if (bookCase.equals(CaseType.LOWER))
+            if (bookCase == CaseType.LOWER)
             {
                 return fullBooksLower[book - 1];
             }
 
-            if (bookCase.equals(CaseType.UPPER))
+            if (bookCase == CaseType.UPPER)
             {
                 return fullBooksUpper[book - 1];
             }

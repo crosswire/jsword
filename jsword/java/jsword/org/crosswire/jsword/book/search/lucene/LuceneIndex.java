@@ -2,7 +2,6 @@ package org.crosswire.jsword.book.search.lucene;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
@@ -245,6 +244,8 @@ public class LuceneIndex implements Index, Activatable
      */
     private void generateSearchIndexImpl(Job job, IndexWriter writer, Key key) throws BookException, IOException
     {
+        int bookNum = 0;
+        int oldBookNum = -1;
         int percent = 0;
         for (Iterator it = key.iterator(); it.hasNext(); )
         {
@@ -255,15 +256,28 @@ public class LuceneIndex implements Index, Activatable
             }
             else
             {
-                BookData data = book.getData(subkey);
+                BookData data = null;
+                try
+                {
+                    data = book.getData(subkey);
+                }
+                catch (BookException e)
+                {
+                    // ignore
+                    // TODO(DM): report these to the user as verses that could not be indexed.
+                    continue;
+                }
+
                 String text = data.getPlainText();
-                Reader reader = new StringReader(text);
 
-                Document doc = new Document();
-                doc.add(Field.UnIndexed(FIELD_NAME, subkey.getOSISName()));
-                doc.add(Field.Text(FIELD_BODY, reader));
-
-                writer.addDocument(doc);
+                // Do the actual indexing
+                if (text != null && text.length() > 0)
+                {
+                    Document doc = new Document();
+                    doc.add(Field.UnIndexed(FIELD_NAME, subkey.getOSISName()));
+                    doc.add(Field.Text(FIELD_BODY, new StringReader(text)));
+                    writer.addDocument(doc);
+                }
 
                 // report progress
                 String name = ""; //$NON-NLS-1$
@@ -272,7 +286,12 @@ public class LuceneIndex implements Index, Activatable
                 try
                 {
                     percent = 95 * verse.getOrdinal() / BibleInfo.versesInBible();
-                    name = BibleInfo.getLongBookName(verse.getBook());
+                    bookNum = verse.getBook();
+                    if (oldBookNum != bookNum)
+                    {
+                        name = BibleInfo.getLongBookName(bookNum);
+                        oldBookNum = bookNum;
+                    }
                 }
                 catch (NoSuchVerseException ex)
                 {
