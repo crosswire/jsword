@@ -200,6 +200,13 @@ public class DisplaySelectPane extends JPanel
         });
         txt_srestrict.setEnabled(false);
         txt_srestrict.setText("Gen-Rev");
+        txt_srestrict.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                doSearchAction();
+            }
+        });
         btn_search.setText("Go");
         btn_search.addActionListener(new ActionListener()
         {
@@ -238,6 +245,13 @@ public class DisplaySelectPane extends JPanel
         });
         txt_mrestrict.setText("Gen-Rev");
         txt_mrestrict.setEnabled(false);
+        txt_mrestrict.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ev)
+            {
+                doMatchAction();
+            }
+        });
         btn_match.setText("Go");
         btn_match.addActionListener(new ActionListener()
         {
