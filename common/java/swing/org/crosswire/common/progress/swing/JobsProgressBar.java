@@ -8,13 +8,13 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Set;
 
 import javax.swing.Icon;
@@ -186,7 +186,7 @@ public class JobsProgressBar extends JPanel implements WorkListener
                 stop = new ImageIcon(url);
             }
         }
-        catch (MalformedURLException ex)
+        catch (MissingResourceException ex)
         {
             assert false : ex;
         }

@@ -3,6 +3,7 @@ package org.crosswire.common.config;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.crosswire.common.util.Reporter;
 import org.jdom.Element;
@@ -36,9 +37,14 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    public void init(Element option) throws StartupException
+    public void init(Element option, ResourceBundle configResources) throws StartupException
     {
-        super.init(option);
+        assert configResources != null;
+
+        super.init(option, configResources);
+
+        String prefix = option.getAttributeValue("key") + ".alternative."; //$NON-NLS-1$  //$NON-NLS-2$
+
 
         List list = new ArrayList();
         List alts = option.getChildren("alternative"); //$NON-NLS-1$
@@ -47,7 +53,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
         {
             Element alternative = (Element) it.next();
             int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
-            String name = alternative.getAttributeValue("name"); //$NON-NLS-1$
+            String name = configResources.getString(prefix + number);
             list.add(number, name);
         }
 

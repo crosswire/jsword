@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.ResourceUtil;
 
 /**
  * A simple container for all the known filters.
@@ -62,7 +62,7 @@ public class FilterFactory
      */
     static
     {
-        Map map = ResourceUtil.getImplementorsMap(Filter.class);
+        Map map = ClassUtil.getImplementorsMap(Filter.class);
 
         // the default value
         try

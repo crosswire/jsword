@@ -181,4 +181,51 @@ public abstract class PassageAbstractBook extends AbstractBook
      * The log stream
      */
     private static Logger log = Logger.getLogger(PassageAbstractBook.class);
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawData(Key key) throws BookException
+    {
+        if (key == null)
+        {
+            throw new NullPointerException();
+        }
+    
+        try
+        {
+            StringBuffer buffer = new StringBuffer();
+    
+            // For all the ranges in this Passage
+            KeyList keylist = DefaultKeyList.getKeyList(key);
+            Passage ref = PassageUtil.getPassage(keylist);
+            Iterator rit = ref.rangeIterator(PassageConstants.RESTRICT_CHAPTER);
+    
+            while (rit.hasNext())
+            {
+                VerseRange range = (VerseRange) rit.next();
+    
+                // For all the verses in this range
+                Iterator vit = range.verseIterator();
+                while (vit.hasNext())
+                {
+                    Verse verse = (Verse) vit.next();
+                    String txt = getText(verse);
+    
+                    // If the verse is empty then we shouldn't add the verse
+                    if (txt.length() > 0)
+                    {
+                        buffer.append(txt);
+                        buffer.append('\n');
+                    }
+                }
+            }
+    
+            return buffer.toString();
+        }
+        catch (Exception ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
+    }
 }

@@ -50,6 +50,15 @@ public interface Book extends Activatable, KeyFactory
     public BookData getData(Key key) throws BookException;
 
     /**
+     * Returns the raw text that getData(Key key) builds into OSIS.
+     * TODO: If this given key can not be found null will be returned.
+     * @param key The verses to search for
+     * @return The found Book data
+     * @throws BookException If anything goes wrong with this method
+     */
+    public String getRawData(Key key) throws BookException;
+
+    /**
      * Does the specified verse have any data behind it.
      * @param key The verse to query
      * @return The found BibleData document

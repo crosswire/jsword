@@ -2,7 +2,7 @@ package org.crosswire.jsword.util;
 
 import java.util.Map;
 
-import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.xml.Converter;
 
 /**
@@ -46,7 +46,7 @@ public class ConverterFactory
     {
         try
         {
-            Class clazz = (Class) ResourceUtil.getImplementorsMap(Converter.class).get(name);
+            Class clazz = (Class) ClassUtil.getImplementorsMap(Converter.class).get(name);
             if (clazz == null)
             {
                 throw new NullPointerException(Msg.NO_CONVERTER.toString(name));
@@ -67,7 +67,7 @@ public class ConverterFactory
      */
     public static final Map getKnownConverters()
     {
-        return ResourceUtil.getImplementorsMap(Converter.class);
+        return ClassUtil.getImplementorsMap(Converter.class);
     }
 
     /**

@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.SentanceUtil;
@@ -340,7 +340,7 @@ public class LocalParser implements Parser
     {
         if (wordMap == null)
         {
-            Map classes = ResourceUtil.getImplementorsMap(Word.class);
+            Map classes = ClassUtil.getImplementorsMap(Word.class);
             wordMap = new HashMap();
 
             for (Iterator it = classes.keySet().iterator(); it.hasNext();)

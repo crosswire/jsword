@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.crosswire.common.config.Config;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.LucidRuntimeException;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.ResourceUtil;
 
 /**
  * Allow a swing program to display a Dialog box displaying a set of
@@ -56,7 +56,7 @@ public class ConfigEditorFactory
     {
         try
         {
-            ConfigEditor base = (ConfigEditor) ResourceUtil.getImplementation(ConfigEditor.class);
+            ConfigEditor base = (ConfigEditor) ClassUtil.getImplementation(ConfigEditor.class);
             base.init(config);
             base.showDialog(parent, al);
         }

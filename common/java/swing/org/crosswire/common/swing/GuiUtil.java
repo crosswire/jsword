@@ -9,8 +9,8 @@ import java.awt.Label;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.MissingResourceException;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -70,7 +70,7 @@ public class GuiUtil
             URL url = ResourceUtil.getResource(name);
             return new ImageIcon(url);
         }
-        catch (MalformedURLException ex)
+        catch (MissingResourceException ex)
         {
             log.error("Failed to find icon name='" + name + "'", ex); //$NON-NLS-1$ //$NON-NLS-2$
             return null;

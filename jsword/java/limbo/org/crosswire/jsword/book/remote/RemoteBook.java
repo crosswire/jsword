@@ -98,6 +98,15 @@ public class RemoteBook extends AbstractBook
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawData(Key key) throws BookException
+    {
+        StringBuffer buffer = new StringBuffer();
+        return buffer.toString();
+    }
+    
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bible#findPassage(org.crosswire.jsword.book.Search)
      */
     public KeyList find(Search search) throws BookException

@@ -1,10 +1,15 @@
 package org.crosswire.jsword.book.readings;
 
+import java.io.IOException;
+import java.net.URL;
+
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.util.URLFilter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A driver for the readings dictionary.
@@ -76,7 +81,21 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public static String[] getInstalledReadingsSets()
     {
-        return Project.instance().getInstalledReadingsSets();
+        try
+        {
+            URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt"); //$NON-NLS-1$
+            return NetUtil.listByIndexFile(index, new URLFilter()
+            {
+                public boolean accept(String name)
+                {
+                    return true;
+                }
+            });
+        }
+        catch (IOException ex)
+        {
+            return new String[0];
+        }
     }
 
     /**
@@ -103,6 +122,11 @@ public class ReadingsBookDriver extends AbstractBookDriver
     {
         ReadingsBookDriver.set = set;
     }
+
+    /**
+     * Resources subdir for readings sets
+     */
+    public static final String DIR_READINGS = "readings"; //$NON-NLS-1$
 
     /**
      * The current readings set

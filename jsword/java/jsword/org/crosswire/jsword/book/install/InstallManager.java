@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.crosswire.common.util.EventListenerList;
+import javax.swing.event.EventListenerList;
+
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
@@ -46,8 +48,8 @@ public class InstallManager
     {
         try
         {
-            Properties sitemap = ResourceUtil.getProperties(getClass().getName());
-            factories = ResourceUtil.getImplementorsMap(InstallerFactory.class);
+            Properties sitemap = ResourceUtil.getProperties(getClass());
+            factories = ClassUtil.getImplementorsMap(InstallerFactory.class);
 
             for (Iterator it = sitemap.keySet().iterator(); it.hasNext();)
             {

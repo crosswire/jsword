@@ -2,7 +2,7 @@ package org.crosswire.jsword.book.search;
 
 import java.net.URL;
 
-import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 
@@ -46,7 +46,7 @@ public class SearchEngineFactory
     {
         try
         {
-            Class impl = ResourceUtil.getImplementor(SearchEngine.class);
+            Class impl = ClassUtil.getImplementor(SearchEngine.class);
             SearchEngine searcher = (SearchEngine) impl.newInstance();
             searcher.init(bible, indexdir);
             

@@ -151,6 +151,47 @@ public class SwordDictionary extends AbstractBook
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawData(Key key) throws BookException
+    {
+        checkActive();
+
+        if (key == null)
+        {
+            throw new NullPointerException();
+        }
+
+        if (backend == null)
+        {
+            throw new BookException(Msg.MISSING_BACKEND);
+        }
+
+        try
+        {
+            byte[] data = backend.getRawText(key);
+            String charset = sbmd.getModuleCharset();
+            String txt = null;
+            try
+            {
+                txt = new String(data, charset);
+            }
+            catch (UnsupportedEncodingException ex)
+            {
+                // It is impossible! In case, use system default...
+                log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
+                txt = new String(data);
+            }
+
+            return txt;
+        }
+        catch (Exception ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
+        }
+    }
+    
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
     public KeyList getGlobalKeyList()

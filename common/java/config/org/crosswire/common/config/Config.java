@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
-import org.crosswire.common.util.EventListenerList;
+import javax.swing.event.EventListenerList;
+
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.RobustList;
@@ -113,8 +115,9 @@ public class Config
     /**
      * Add the set of configuration options specified in the xml file.
      * @param xmlconfig The JDOM document to read.
+     * @param configResources contains the user level text for this config
      */
-    public void add(Document xmlconfig)
+    public void add(Document xmlconfig, ResourceBundle configResources)
     {
         // We are going to assume a DTD has validated the config file and
         // just assume that everything is laid out properly.
@@ -124,9 +127,10 @@ public class Config
         {
             Element element = (Element) it.next();
             String key = element.getAttributeValue("key"); //$NON-NLS-1$
+
             try
             {
-                Choice choice = ChoiceFactory.getChoice(element);
+                Choice choice = ChoiceFactory.getChoice(element, configResources);
                 add(key, choice);
             }
             catch (Exception ex)
@@ -160,11 +164,11 @@ public class Config
     {
         List paths = new ArrayList();
 
-        Iterator it = keys.iterator();
+        Iterator it = models.iterator();
         while (it.hasNext())
         {
-            String key = (String) it.next();
-            String path = getPath(key);
+            Choice choice = (Choice) it.next();
+            String path = getPath(choice.getFullPath());
 
             if (!paths.contains(path))
             {

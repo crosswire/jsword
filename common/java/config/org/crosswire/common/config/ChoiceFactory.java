@@ -2,8 +2,9 @@ package org.crosswire.common.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.util.ClassUtil;
 import org.jdom.Element;
 
 /**
@@ -44,7 +45,7 @@ public class ChoiceFactory
      * @param option The element to check
      * @return One of the ChoiceTypes.
      */
-    public static Choice getChoice(Element option) throws ClassNotFoundException, IllegalAccessException, InstantiationException, StartupException
+    public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException, InstantiationException, StartupException
     {
         Class clazz = null;
 
@@ -60,7 +61,7 @@ public class ChoiceFactory
         }
 
         Choice choice = (Choice) clazz.newInstance();
-        choice.init(option);
+        choice.init(option, configResources);
         return choice;
     }
 
@@ -87,6 +88,6 @@ public class ChoiceFactory
      */
     static
     {
-        map = ResourceUtil.getImplementorsMap(Choice.class);
+        map = ClassUtil.getImplementorsMap(Choice.class);
     }
 }

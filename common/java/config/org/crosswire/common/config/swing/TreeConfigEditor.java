@@ -148,7 +148,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
         super.addChoice(key, model);
 
         // Sort the tree out
-        String path = Config.getPath(key);
+        String path = Config.getPath(model.getFullPath());
         FormPane card = (FormPane) decks.get(path);
         if (card != null && card.getParent() == null)
         {
@@ -161,12 +161,12 @@ public class TreeConfigEditor extends AbstractConfigEditor
     /**
      * Add a Choice to our set of panels
      */
-    protected void removeChoice(String key)
+    protected void removeChoice(String key, Choice model)
     {
-        super.removeChoice(key);
+        super.removeChoice(key, model);
 
         // Sort the tree out
-        String path = Config.getPath(key);
+        String path = Config.getPath(model.getFullPath());
         FormPane card = (FormPane) decks.get(path);
         if (card != null && card.isEmpty())
         {

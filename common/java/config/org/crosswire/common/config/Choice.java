@@ -1,5 +1,7 @@
 package org.crosswire.common.config;
 
+import java.util.ResourceBundle;
+
 import org.jdom.Element;
 
 /**
@@ -38,7 +40,19 @@ public interface Choice
     /**
      * String value to associate with the name (key)
      */
-    public void init(Element option) throws StartupException;
+    public void init(Element option, ResourceBundle configResources) throws StartupException;
+
+    /**
+     * The full path of the option.
+     * @return String The path string as supplied in config.properties
+     */
+    public String getFullPath();
+
+    /**
+     * Sets the full path of the option.
+     * @param fullPath The path string as supplied in config.properties
+     */
+    public void setFullPath(String fullPath);
 
     /**
      * The type by which UIs can pick an appropriate editor
@@ -72,6 +86,12 @@ public interface Choice
      * @return Some help text
      */
     public String getHelpText();
+
+    /**
+     * Sets a brief description of what is going on
+     * @param helptext Some help text
+     */
+    public void setHelpText(String helptext);
 
     /**
      * Is this Choice OK to write out to a file, or should we use settings

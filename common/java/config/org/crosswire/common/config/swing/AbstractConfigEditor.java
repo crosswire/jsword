@@ -67,7 +67,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
             }
             public void choiceRemoved(ConfigEvent ev)
             {
-                removeChoice(ev.getKey());
+                removeChoice(ev.getKey(), ev.getChoice());
                 updateTree();
             }
         });
@@ -181,7 +181,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
      */
     protected void addChoice(String key, Choice model)
     {
-        String path = Config.getPath(key);
+        String path = Config.getPath(model.getFullPath());
 
         try
         {
@@ -203,7 +203,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
             JComponent comp = field.getComponent();
             comp.setToolTipText(model.getHelpText());
 
-            String name = Config.getLeaf(key) + ":"; //$NON-NLS-1$
+            String name = Config.getLeaf(model.getFullPath()) + ':';
             card.addEntry(name, comp);
 
             // Fill in the current value
@@ -219,9 +219,9 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
     /**
      * Add a Choice to our set of panels
      */
-    protected void removeChoice(String key)
+    protected void removeChoice(String key, Choice model)
     {
-        String path = Config.getPath(key);
+        String path = Config.getPath(model.getFullPath());
 
         try
         {
@@ -232,7 +232,7 @@ public abstract class AbstractConfigEditor extends JPanel implements ConfigEdito
                 FormPane card = (FormPane) decks.get(path);
 
                 // Remove field from card.
-                String name = Config.getLeaf(key) + ":"; //$NON-NLS-1$
+                String name = Config.getLeaf(model.getFullPath()) + ':';
                 card.removeEntry(name);
 
                 if (card.isEmpty())

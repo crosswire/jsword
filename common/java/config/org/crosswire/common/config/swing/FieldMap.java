@@ -4,9 +4,9 @@ import java.util.Map;
 
 import org.crosswire.common.config.Choice;
 import org.crosswire.common.config.MultipleChoice;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.ResourceUtil;
 
 /**
  * This class provides mapping between Choice types and Fields.
@@ -103,7 +103,7 @@ public class FieldMap
      */
     static
     {
-        map = ResourceUtil.getImplementorsMap(Field.class);
+        map = ClassUtil.getImplementorsMap(Field.class);
     }
 
     /**

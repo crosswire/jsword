@@ -663,6 +663,31 @@ public class NetUtil
     }
 
     /**
+     * Check that the directories in the version directory really
+     * represent versions.
+     */
+    public static class IsDirectoryURLFilter implements URLFilter
+    {
+        /**
+         * Simple ctor
+         */
+        public IsDirectoryURLFilter(URL parent)
+        {
+            this.parent = parent;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.common.util.URLFilter#accept(java.lang.String)
+         */
+        public boolean accept(String name)
+        {
+            return NetUtil.isDirectory(NetUtil.lengthenURL(parent, name));
+        }
+
+        private URL parent;
+    }
+
+    /**
      * Where are temporary files cached.
      */
     private static File cachedir;

@@ -1,6 +1,15 @@
 package org.crosswire.common.xml;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.ResourceUtil;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -35,6 +44,25 @@ public class XMLUtil
      */
     private XMLUtil()
     {
+    }
+
+    /**
+     * Get and load an XML file from the classpath and a few other places
+     * into a JDOM Document object.
+     * @param subject The name of the desired resource (without any extension)
+     * @return The requested resource
+     * @throws IOException if there is a problem reading the file
+     * @throws JDOMException If the resource is not valid XML
+     * @throws MalformedURLException if the resource can not be found
+     */
+    public static Document getDocument(String subject) throws JDOMException, IOException
+    {
+        String resource = subject + FileUtil.EXTENSION_XML;
+        InputStream in = ResourceUtil.getResourceAsStream(resource);
+
+        log.debug("Loading "+subject+".xml from classpath: [OK]"); //$NON-NLS-1$ //$NON-NLS-2$
+        SAXBuilder builder = new SAXBuilder(true);
+        return builder.build(in);
     }
 
     /**

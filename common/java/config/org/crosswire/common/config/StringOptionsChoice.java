@@ -1,5 +1,7 @@
 package org.crosswire.common.config;
 
+import java.util.ResourceBundle;
+
 import org.jdom.Element;
 
 /**
@@ -31,9 +33,9 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    public void init(Element option) throws StartupException
+    public void init(Element option, ResourceBundle configResources) throws StartupException
     {
-        super.init(option);
+        super.init(option, configResources);
         Element map = option.getChild("map"); //$NON-NLS-1$
         if (map == null)
         {

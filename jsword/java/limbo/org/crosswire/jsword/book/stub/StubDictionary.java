@@ -85,6 +85,15 @@ public class StubDictionary extends AbstractBook
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawData(Key key) throws BookException
+    {
+        StringBuffer buffer = new StringBuffer();
+        return buffer.toString();
+    }
+    
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
     public KeyList getGlobalKeyList()

@@ -1,5 +1,7 @@
 package org.crosswire.common.config;
 
+import java.util.ResourceBundle;
+
 import org.crosswire.common.util.Convert;
 import org.jdom.Element;
 
@@ -32,9 +34,9 @@ public class StringArrayChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    public void init(Element option) throws StartupException
+    public void init(Element option, ResourceBundle configResources) throws StartupException
     {
-        super.init(option);
+        super.init(option, configResources);
         separator = option.getAttributeValue("separator"); //$NON-NLS-1$
     }
 

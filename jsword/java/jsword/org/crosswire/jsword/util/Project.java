@@ -2,19 +2,13 @@ package org.crosswire.jsword.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Properties;
 
+import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.common.util.URLFilter;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 
 /**
  * The Project class looks after the source of project files.
@@ -46,16 +40,6 @@ public class Project
      * A file so we know if we have the right versions directory
      */
     public static final String FILE_LOCATOR = "locator.properties"; //$NON-NLS-1$
-
-    /**
-     * Properties settings file
-     */
-    public static final String FILE_PROJECT = "project.properties"; //$NON-NLS-1$
-
-    /**
-     * Resources subdir for readings sets
-     */
-    public static final String DIR_READINGS = "readings"; //$NON-NLS-1$
 
     /**
      * The cache of downloaded files inside the project directory
@@ -98,7 +82,7 @@ public class Project
         {
             String path = System.getProperty("user.home") + File.separator + DIR_PROJECT; //$NON-NLS-1$
             home = new URL(NetUtil.PROTOCOL_FILE, null, path);
-            ResourceUtil.setHome(home);
+            CWClassLoader.setHome(home);
             base = NetUtil.lengthenURL(home, "/"); //$NON-NLS-1$
         }
         catch (MalformedURLException ex)
@@ -120,60 +104,6 @@ public class Project
             log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex); //$NON-NLS-1$
         }
     }
-
-    /**
-     * Get a list of readings sets for a given subject.
-     * @return The project root as a URL
-     * @see NetUtil#list(URL, URLFilter)
-     */
-    public String[] getInstalledReadingsSets()
-    {
-        try
-        {
-            String search = DIR_READINGS + NetUtil.SEPARATOR + NetUtil.INDEX_FILE;
-            URL index = ResourceUtil.getResource(search);
-            return NetUtil.listByIndexFile(index, new URLFilter()
-            {
-                public boolean accept(String name)
-                {
-                    return name.endsWith(FileUtil.EXTENSION_PROPERTIES);
-                }
-            });
-        }
-        catch (IOException ex)
-        {
-            return new String[0];
-        }
-    }
-
-    /**
-     * Get a list of readings sets for a given subject.
-     * @return The project root as a URL
-     * @see NetUtil#list(URL, URLFilter)
-     */
-    public Properties getReadingsSet(String name) throws IOException
-    {
-        String lookup = DIR_READINGS + NetUtil.SEPARATOR + name;
-        InputStream in = ResourceUtil.getResourceAsStream(lookup);
-
-        Properties prop = new Properties();
-        prop.load(in);
-
-        //log.debug("Loaded "+name+" from classpath: [OK]");
-        return prop;
-    }
-
-//    /**
-//     * Get and load a properties file from the writable area or if that
-//     * fails from the classpath (where a default ought to be stored)
-//     * @param subject The name of the desired resource (without any extension)
-//     * @return The found and loaded properties file
-//     * @throws IOException if the resource can not be loaded
-//     */
-//    public Properties getProperties(String subject) throws IOException
-//    {
-//        return ResourceUtil.getProperties(subject);
-//    }
 
     /**
      * Get a the URL of a (potentially non-existant) properties file that we can
@@ -217,50 +147,6 @@ public class Project
         }
 
         return temp;
-    }
-
-    /**
-     * Get and load an XML file from the classpath and a few other places
-     * into a JDOM Document object.
-     * @param subject The name of the desired resource (without any extension)
-     * @return The requested resource
-     * @throws IOException if there is a problem reading the file
-     * @throws JDOMException If the resource is not valid XML
-     * @throws MalformedURLException if the resource can not be found
-     */
-    public Document getDocument(String subject) throws JDOMException, IOException
-    {
-        String resource = subject + FileUtil.EXTENSION_XML;
-        InputStream in = ResourceUtil.getResourceAsStream(resource);
-
-        log.debug("Loading "+subject+".xml from classpath: [OK]"); //$NON-NLS-1$ //$NON-NLS-2$
-        SAXBuilder builder = new SAXBuilder(true);
-        return builder.build(in);
-    }
-
-    /**
-     * Check that the directories in the version directory really
-     * represent versions.
-     */
-    public static class IsDirectoryURLFilter implements URLFilter
-    {
-        /**
-         * Simple ctor
-         */
-        public IsDirectoryURLFilter(URL parent)
-        {
-            this.parent = parent;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.common.util.URLFilter#accept(java.lang.String)
-         */
-        public boolean accept(String name)
-        {
-            return NetUtil.isDirectory(NetUtil.lengthenURL(parent, name));
-        }
-
-        private URL parent;
     }
 
     /**

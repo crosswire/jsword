@@ -4,10 +4,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 
+import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -26,7 +29,6 @@ import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Element;
 
 /**
@@ -67,42 +69,28 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
 
         String setname = ReadingsBookDriver.getReadingsSet();
 
-        Properties prop;
-        try
-        {
-            prop = Project.instance().getReadingsSet(setname);
-        }
-        catch (Exception ex)
-        {
-            prop = new Properties();
-            log.error("Failed to read readings set", ex); //$NON-NLS-1$
-        }
-
-        /*String title = (String)*/ prop.remove("title"); //$NON-NLS-1$
+        Locale defaultLocale = Locale.getDefault();
+        ResourceBundle prop =  ResourceBundle.getBundle(setname, defaultLocale, new CWClassLoader(ReadingsBookDriver.class));
 
         // We use 1972 because it is a leap year.
         GregorianCalendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
         while (greg.get(Calendar.YEAR) == 1972)
         {
             String key = KEYBASE + (1+greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE); //$NON-NLS-1$
-            String readings = (String) prop.remove(key);
-            if (readings == null)
+            String readings = ""; //$NON-NLS-1$
+
+            try
             {
-                log.warn("Missing resource: "+key+" while parsing: "+setname); //$NON-NLS-1$ //$NON-NLS-2$
-                readings = ""; //$NON-NLS-1$
+                readings = prop.getString(key);
+            }
+            catch (MissingResourceException e)
+            {
+                log.warn("Missing resource: " + key + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             hash.put(new ReadingsKey(greg.getTime()), readings);
 
             greg.add(Calendar.DATE, 1);
-        }
-
-        // Anything left is probably in error
-        for (Iterator it = prop.keySet().iterator(); it.hasNext();)
-        {
-            String key = (String) it.next();
-            String val = prop.getProperty(key);
-            log.warn("Extra resource: "+key+"="+val+" while parsing: "+setname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
         global = new SetKeyList(hash.keySet(), getBookMetaData().getName());
@@ -178,6 +166,15 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawData(Key key) throws BookException
+    {
+        StringBuffer buffer = new StringBuffer();
+        return buffer.toString();
+    }
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */

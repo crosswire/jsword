@@ -2,14 +2,13 @@ package org.crosswire.common.config;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import org.crosswire.common.util.Logger;
 import org.jdom.Element;
 
 /**
  * A helper for when we need to be a choice created dynamically.
- * 
- * I18N: lookup the [help] element and [key] attr of an option in resources
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -37,8 +36,20 @@ public abstract class AbstractReflectedChoice implements Choice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    public void init(Element option) throws StartupException
+    public void init(Element option, ResourceBundle configResources) throws StartupException
     {
+        String key = option.getAttributeValue("key"); //$NON-NLS-1$
+
+        assert configResources != null;
+
+        String helpText = configResources.getString(key + ".help"); //$NON-NLS-1$
+        assert helpText != null;
+        setHelpText(helpText);
+
+        String path = configResources.getString(key + ".path"); //$NON-NLS-1$
+        assert path != null;
+        setFullPath(path);
+
         type = option.getAttributeValue("type"); //$NON-NLS-1$
 
         // The important 3 things saying what we update and how we describe ourselves
@@ -102,14 +113,6 @@ public abstract class AbstractReflectedChoice implements Choice
             throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConvertionClass() });
         }
 
-        // Help text
-        Element childele = option.getChild("help"); //$NON-NLS-1$
-        if (childele == null)
-        {
-            helptext = ""; //$NON-NLS-1$
-        }
-        helptext = childele.getTextTrim();
-
         // 2 optional config attrubites
         String priorityname = option.getAttributeValue("priority"); //$NON-NLS-1$
         if (priorityname == null)
@@ -141,6 +144,22 @@ public abstract class AbstractReflectedChoice implements Choice
     public abstract Object convertToObject(String orig);
 
     /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getFullPath()
+     */
+    public String getFullPath()
+    {
+        return fullPath;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#setFullPath(java.lang.String)
+     */
+    public void setFullPath(String newFullPath)
+    {
+        fullPath = newFullPath;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getHelpText()
      */
     public String getHelpText()
@@ -148,9 +167,8 @@ public abstract class AbstractReflectedChoice implements Choice
         return helptext;
     }
 
-    /**
-     * Get some help on this Field. In this case we are just providing
-     * a default help text, that isn't much use.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#setHelpText(java.lang.String)
      */
     public void setHelpText(String helptext)
     {
@@ -276,7 +294,12 @@ public abstract class AbstractReflectedChoice implements Choice
     /**
      * The help text (tooltip) for this item
      */
-    private String helptext = Msg.NO_HELP.toString();
+    private String helptext;
+
+    /**
+     * The full path of this item
+     */
+    private String fullPath;
 
     /**
      * The priority of this config level

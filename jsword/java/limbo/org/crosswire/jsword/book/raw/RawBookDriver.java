@@ -12,7 +12,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.book.basic.BookRoot;
-import org.crosswire.jsword.util.Project;
 
 /**
  * This represents all of the RawBibles.
@@ -62,7 +61,7 @@ public class RawBookDriver extends AbstractBookDriver
             }
             else
             {
-                names = NetUtil.list(dir, new Project.IsDirectoryURLFilter(dir));
+                names = NetUtil.list(dir, new NetUtil.IsDirectoryURLFilter(dir));
             }
 
             List bmds = new ArrayList();

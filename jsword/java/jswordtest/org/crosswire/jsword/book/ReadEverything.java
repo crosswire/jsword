@@ -7,9 +7,9 @@ import java.util.List;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 
@@ -48,8 +48,8 @@ public class ReadEverything
 
         // Load the desktop configuration so we can find the sword drivers
         Config config = new Config("Desktop Options"); //$NON-NLS-1$
-        Document xmlconfig = Project.instance().getDocument("config"); //$NON-NLS-1$
-        config.add(xmlconfig);
+        Document xmlconfig = XMLUtil.getDocument("config"); //$NON-NLS-1$
+        config.add(xmlconfig, null);
         config.setProperties(ResourceUtil.getProperties("desktop")); //$NON-NLS-1$
         config.localToApplication(true);
 

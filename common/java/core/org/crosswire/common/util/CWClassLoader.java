@@ -1,10 +1,11 @@
 package org.crosswire.common.util;
 
+import java.io.File;
 import java.net.URL;
 
 /**
- * CWClassLoader extends the regular class loader by using ResourceUtil
- * to find resources. This is needed so that ResourceBundle can find
+ * CWClassLoader extends the regular class loader by using looking
+ * in more places. This is needed so that ResourceBundle can find
  * resources that are not held in the same package as the class.
  *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
@@ -32,7 +33,7 @@ public class CWClassLoader extends ClassLoader
 {
     /**
      * Creates a class loader that finds resources
-     * for the supplied class using ResourceUtil.
+     * for the supplied class that may not be in the class' package.
      * You can use this within base classes by passing getClass()
      * to load resources for a derived class.
      * @param resourceOwner is the owner of the resource
@@ -44,7 +45,7 @@ public class CWClassLoader extends ClassLoader
 
     /**
      * Creates a class loader that finds resources
-     * for the supplied class using ResourceUtil.
+     * for the calling class that may not be in the class' package.
      * Use this only within classes that are directly looking up their resources.
      */
     public CWClassLoader()
@@ -96,7 +97,7 @@ public class CWClassLoader extends ClassLoader
         // See if it can be found in the home directory
         if (resource == null)
         {
-            resource = ResourceUtil.findHomeResource(search);
+            resource = CWClassLoader.findHomeResource(search);
         }
 
         // See if it can be found by its own class.
@@ -115,12 +116,6 @@ public class CWClassLoader extends ClassLoader
         if (resource == null)
         {
             resource = ClassLoader.getSystemResource(search);
-        }
-
-        // Let's let the ResourceUtil try to find it
-        if (resource == null)
-        {
-            resource = ResourceUtil.findResource(search);
         }
 
         // For good measure let the super class try to find it.
@@ -230,7 +225,77 @@ public class CWClassLoader extends ClassLoader
     }
 
     /**
+     * If the application has set the home, it will return
+     * the application's home directory, otherwise it returns null.
+     * @return Returns the home.
+     */
+    public static synchronized URL getHome()
+    {
+        return home;
+    }
+
+    /**
+     * Establish the applications home directory from where
+     * additional resources can be found. URL is expected to
+     * end with the directory name, not '/'.
+     * @param newhome The home to set.
+     */
+    public static synchronized void setHome(URL newhome)
+    {
+        home = newhome;
+    }
+
+    /**
+     * Look for the resource in the home directory
+     * @param search must be non-null, non-empty
+     * @return
+     */
+    public static URL findHomeResource(String search)
+    {
+        URL reply = null;
+    
+        // Look at the application's home first to allow overrides
+        if (home != null)
+        {
+            // Since home does not end in a '/'
+            // we need to add one to the front of search
+            // if it does not have it.
+            String ssearch = null;
+            if (search.charAt(0) == '/')
+            {
+                ssearch = search;
+            }
+            else
+            {
+                ssearch = '/' + search;
+            }
+    
+            URL override = null;
+    
+            // Make use of "home" thread safe
+            synchronized (CWClassLoader.class)
+            {
+                override = NetUtil.lengthenURL(home, ssearch);
+            }
+    
+            // Make sure the file exists and can be read
+            File f = new File(override.getFile());
+            if (f.canRead())
+            {
+                reply = override;
+            }
+        }
+    
+        return reply;
+    }
+
+    /**
      * The class to which the resources belong
      */
     private Class owner;
+
+    /**
+     * Notion of a project's home from where additional resources can be found.
+     */
+    private static URL home = null;
 }

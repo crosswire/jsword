@@ -6,15 +6,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.event.EventListenerList;
+
 import org.apache.commons.lang.ClassUtils;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.CollectionUtil;
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -364,7 +365,7 @@ public class Books implements BookList
         try
         {
             // This will classload them all and they will register themselves.
-            Class[] types = ResourceUtil.getImplementors(BookDriver.class);
+            Class[] types = ClassUtil.getImplementors(BookDriver.class);
 
             log.debug("begin auto-registering "+types.length+" drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
 

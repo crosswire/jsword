@@ -70,35 +70,40 @@ public class SwordBook extends PassageAbstractBook
     }
 
     /**
-     * Read the unfiltered data for a given verse
+     * Read the unfiltered data for a given verVerse
      */
     protected String getText(Verse verse) throws BookException
     {
         byte[] data = backend.getRawText(verse);
         String charset = sbmd.getModuleCharset();
 
-        // We often get rogue characters in the source so we have to chop them
-        // out. To start with we kill chars less than 32 and 255
-        for (int i = 0; i < data.length; i++)
-        {
-            byte b = data[i];
-            if (b < 32 || b == 255 || (b >= 127 && b <= 159))
-            {
-                data[i] = ' ';
-            }
-        }
-
+        String result = null;
         try
         {
-            return new String(data, charset);
+            result = new String(data, charset);
         }
         catch (UnsupportedEncodingException ex)
         {
             // It is impossible! In case, use system default...
             log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
-            return new String(data);
+            result = new String(data);
         }
-    }
+
+        assert result != null;
+        // We often get rogue characters in the source so we have to chop them
+        // out. To start with we kill chars less than 32 and 255 and invalid UTF-8
+        char [] buffer = result.toCharArray();
+        for (int i = 0; i < buffer.length; i++)
+        {
+            char c = buffer[i];
+            if ((c >= 0 && c < 32) || c == 255 || (c >= 127 && c <= 159))
+            {
+                buffer[i] = ' ';
+                log.debug("Verse " + verse + " has bad character " + (int)c + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            }
+        }
+        return new String(buffer);
+	}
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.PassageAbstractBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
