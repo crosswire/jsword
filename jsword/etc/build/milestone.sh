@@ -18,20 +18,10 @@ fi
 cd $BUILD_HOME/../..
 JSWORD_HOME=`pwd`
 
+echo JSWORD_HOME=$JSWORD_HOME
+
 . $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
 . $JSWORD_HOME/etc/build/settings.global.sh
 
-rm -f $LOGFILE
-
-{
-  $JSWORD_HOME/etc/build/rebuild.sh
-} > $LOGFILE 2>&1
-
-{
-  echo "## Removing old nightly builds"
-  find $FTP_BASE/nightly -type f -mtime +7 -exec rm -v {} \;
-  echo ""
-  echo "## Build log"
-  cat $LOGFILE
-} | /bin/mail -s "jsword buildlog (from `dnsdomainname`)" joe@eireneh.com
+$ANT_HOME/bin/ant release.final $PROPERTIES
 
