@@ -1,0 +1,161 @@
+package id34f7jcjogjmpycjogm68l;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id3oh1ncc6chppkcc6czey0.diagram:oiref><oihard>
+@automatic 
+*/
+class link410 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link411 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link412 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link413 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link414 {
+}/**
+@shapeType NoteLink
+@__modelType link
+@__ref <oiref:design#Class#id3oh1ncc6chppkcc6czey0.node19:oiref><oihard> 
+*/
+class link21 {
+}/**
+@__ref <oiref:design#Class#id2wj32d0pausd0d0pazqmu.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#docs.future.doe:oiref> 
+*/
+class reference19 {
+}/**
+@__ref <oiref:design#Class#id6sxad0pausd0d0pb00g5.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#docs.future.translation:oiref> 
+*/
+class reference20 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2wj32d0pausd0d0pazqmu.diagram:oiref><oihard>
+@automatic 
+*/
+class link77 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link78 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id6sxad0pausd0d0pb00g5.diagram:oiref><oihard>
+@automatic 
+*/
+class link79 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Event#ref:oiref>=721,198,579,290:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Event#getHeadline#(##)#:oiref>=468,261,145,16,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Point:oiref>=190,230,114,95,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Event#getTime#(##)#:oiref>=468,229,145,16,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Person#getMother#(##)#:oiref>=78,466,105,16,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Area:oiref>=-30,230,114,104,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Thing#lnkPassage:oiref>=239,135,554,217:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.DoeManager:oiref>=40,30,140,146,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.DoeFactory:oiref>=40,60,145,146,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Role#lnkPassage:oiref>=439,149,583,228:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Thing:oiref>=20,120,143,168,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Event#lnkPassage:oiref>=602,135,602,217:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Role#lnkEvent:oiref>=444,91,503,91:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Role:oiref>=260,120,107,168,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.DoeFactory#getEvents#(##)#:oiref>=58,179,126,16,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.DoeFactory#getThings#(#java.lang.String#)#:oiref>=58,147,126,16,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Event#getPassage#(##)#:oiref>=468,245,145,16,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Place:oiref>=-70,350,122,104,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.Thing#aliases:oiref>=180,266,0,0,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Role#ref:oiref>=509,198,509,290:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Thing#getAliases#(##)#:oiref>=38,261,124,16,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.Thing#ref:oiref>=38,168,124,16,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Event:oiref>=450,120,164,168,1:oigroup>
+<oigroup:<oiref:java#Extends#docs.future.doe.Thing#docs.future.Name:oiref>=174,180,174,121:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.DoeManager#getThing#(#java.lang.String#)#:oiref>=42,101,137,16,1:oigroup>
+<oigroup:<oiref:java#Extends#docs.future.doe.Place#docs.future.doe.Thing:oiref>=-6,350,72,288:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.DoeManager#getPlace#(#java.lang.String#)#:oiref>=42,133,137,16,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.Place#location:oiref>=-68,398,119,16,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.Event#ref:oiref>=468,168,145,16,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Area#outline:oiref>=84,277,190,277:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Role#getThing#(##)#:oiref>=278,229,88,16,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Place#location:oiref>=199,364,199,430:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Thing#getPassage#(##)#:oiref>=38,245,124,16,1:oigroup>
+<oigroup:<oiref:design#Class#id6sxad0pausd0d0pb00g5.diagram:oiref>=140,30,87,54,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Role#getRole#(##)#:oiref>=278,261,88,16,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.Role#ref:oiref>=278,168,88,16,1:oigroup>
+<oigroup:<oiref:java#Extends#docs.future.doe.Item#docs.future.doe.Thing:oiref>=-120,350,46,288:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Role#getEvent#(##)#:oiref>=278,245,88,16,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Role#thing:oiref>=260,204,163,204:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Place#lnkLocation:oiref>=204,304,204,382:oigroup>
+<oigroup:<oiref:java#Extends#docs.future.doe.Point#docs.future.doe.Location:oiref>=239,230,145,165:oigroup>
+<oigroup:<oiref:java#Class#docs.future.Time:oiref>=544,407,63,59,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.DoeManager#getPerson#(#java.lang.String#)#:oiref>=42,117,137,16,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Thing#ref:oiref>=325,198,479,290:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Thing#aliases:oiref>=209,180,323,69,225,69:oigroup>
+<oigroup:<oiref:java#Extends#docs.future.doe.Person#docs.future.doe.Thing:oiref>=98,350,98,288:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Person:oiref>=60,350,124,143,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Thing#getName#(##)#:oiref>=38,229,124,16,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Role#event:oiref>=367,204,450,204:oigroup>
+<oigroup:<oiref:design#Class#id2wj32d0pausd0d0pazqmu.diagram:oiref>=20,20,100,225,1:oigroup>
+<oigroup:BeanProperty#<oiref:java#Member#docs.future.doe.Person#getFather#(##)#:oiref>=78,450,105,16,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Item:oiref>=-170,350,80,95,1:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.DoeManager#getItem#(#java.lang.String#)#:oiref>=42,149,137,16,1:oigroup>
+<oigroup:<oiref:java#Class#docs.future.doe.Location:oiref>=80,70,114,95,1:oigroup>
+<oigroup:<oiref:java#Extends#docs.future.doe.Area#docs.future.doe.Location:oiref>=19,230,112,165:oigroup>
+<oigroup:<oiref:java#Member#docs.future.doe.Area#outline:oiref>=-28,278,111,16,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#docs.future.doe.Role#lnkThing:oiref>=363,105,261,105:oigroup>
+
+
+*/
+class __positions {
+}

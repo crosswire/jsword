@@ -1,0 +1,62 @@
+package id35fvzd0s4c5ysd0syqzqz;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:java#Class#org.crosswire.sword.web.PackageMod:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1nj7od0s4c5ysd0syqzo7.diagram:oiref><oihard>
+@automatic 
+*/
+class link649 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link650 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1zfxxd0s4c5ysd0syqykf.diagram:oiref><oihard>
+@automatic 
+*/
+class link651 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link652 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

@@ -1,0 +1,622 @@
+package id1r3kicvzpttgbcvzqfa8n;
+
+/**
+@version 2.0
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType NoteLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.node:oiref><oihard> 
+*/
+class link {
+}/**
+@__ref <oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.basic:oiref>
+@__imported 
+*/
+class reference {
+}/**
+@__ref <oiref:design#Class#id7yqc37li4p0c37mqozq.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.config:oiref>
+@__imported 
+*/
+class reference35 {
+}/**
+@__ref <oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.data:oiref>
+@__imported 
+*/
+class reference36 {
+}/**
+@__ref <oiref:design#Class#idmu6fcvzpttgbcvzuz8i2.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.events:oiref>
+@__imported 
+*/
+class reference37 {
+}/**
+@__ref <oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.jdbc:oiref>
+@__imported 
+*/
+class reference38 {
+}/**
+@__ref <oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.raw:oiref>
+@__imported 
+*/
+class reference39 {
+}/**
+@__ref <oiref:design#Class#id6amc37li4p0c37mr4x2.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.raw.config:oiref>
+@__imported 
+*/
+class reference40 {
+}/**
+@__ref <oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.ser:oiref>
+@__imported 
+*/
+class reference41 {
+}/**
+@__ref <oiref:design#Class#idxqtvciqgqawociqgywx9.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.stub:oiref>
+@__imported 
+*/
+class reference42 {
+}/**
+@__ref <oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.sword:oiref>
+@__imported 
+*/
+class reference43 {
+}/**
+@__ref <oiref:design#Class#id13oldcvwm367tcvwma28h.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book.sword.config:oiref>
+@__imported 
+*/
+class reference44 {
+}/**
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.book:oiref>
+@__imported 
+*/
+class reference45 {
+}/**
+@__ref <oiref:design#Class#idao2c37li4p0c37mqkzw.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.dictionary:oiref>
+@__imported 
+*/
+class reference46 {
+}/**
+@__ref <oiref:design#Class#id7p8c37li4p0c37mql0q.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.map.model:oiref>
+@__imported 
+*/
+class reference47 {
+}/**
+@__ref <oiref:design#Class#idai1c37li4p0c37mql1v.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.search:oiref>
+@__imported 
+*/
+class reference48 {
+}/**
+@__ref <oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.search.config:oiref>
+@__imported 
+*/
+class reference49 {
+}/**
+@__ref <oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.state:oiref>
+@__imported 
+*/
+class reference50 {
+}/**
+@__ref <oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.tasks:oiref>
+@__imported 
+*/
+class reference51 {
+}/**
+@__ref <oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.tasks.search:oiref>
+@__imported 
+*/
+class reference52 {
+}/**
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.passage:oiref>
+@__imported 
+*/
+class reference53 {
+}/**
+@__ref <oiref:design#Class#id9e4c37li4p0c37mqo18.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.passage.config:oiref>
+@__imported 
+*/
+class reference54 {
+}/**
+@__ref <oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.util:oiref>
+@__imported 
+*/
+class reference55 {
+}/**
+@__ref <oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.util.config:oiref>
+@__imported 
+*/
+class reference56 {
+}/**
+@__ref <oiref:design#Class#id729c37li4p0c37mqpfl.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.applet:oiref>
+@__imported 
+*/
+class reference57 {
+}/**
+@__ref <oiref:design#Class#id2gax8d0mi2vggd0mjslmj.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.style:oiref>
+@__imported 
+*/
+class reference59 {
+}/**
+@__ref <oiref:design#Class#id34x5nd0nmd8tnd0nmhbtp.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.cli:oiref>
+@__imported 
+*/
+class reference60 {
+}/**
+@__ref <oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.swing.book:oiref>
+@__imported 
+*/
+class reference61 {
+}/**
+@__ref <oiref:design#Class#id26nxxcvzpttgbcvzrgx8a.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#.control:oiref>
+@__imported 
+*/
+class reference62 {
+}/**
+@__ref <oiref:design#Class#id1jzt3cvzpttgbcvzwa8kg.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.swing.event:oiref>
+@__imported 
+*/
+class reference63 {
+}/**
+@__ref <oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.map.view:oiref>
+@__imported 
+*/
+class reference64 {
+}/**
+@__ref <oiref:design#Class#id97dc37li4p0c37mqo2c.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.swing.passage:oiref>
+@__imported 
+*/
+class reference65 {
+}/**
+@__ref <oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.swing.desktop:oiref>
+@__imported 
+*/
+class reference66 {
+}/**
+@__ref <oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.test:oiref>
+@__imported 
+*/
+class reference139 {
+}/**
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config:oiref>
+@__imported 
+*/
+class reference140 {
+}/**
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.choices:oiref>
+@__imported 
+*/
+class reference141 {
+}/**
+@__ref <oiref:design#Class#id1a0rod0mod6ytd0mpfe6e.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.servlet:oiref>
+@__imported 
+*/
+class reference142 {
+}/**
+@__ref <oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.swing:oiref>
+@__imported 
+*/
+class reference143 {
+}/**
+@__ref <oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.swing.config:oiref>
+@__imported 
+*/
+class reference144 {
+}/**
+@__ref <oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.swing.fields:oiref>
+@__imported 
+*/
+class reference145 {
+}/**
+@__ref <oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.swing:oiref>
+@__imported 
+*/
+class reference151 {
+}/**
+@__ref <oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.swing.config:oiref>
+@__imported 
+*/
+class reference152 {
+}/**
+@__ref <oiref:design#Class#id3rppcd0mod6ytd0mpfeuv.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.swing.data:oiref>
+@__imported 
+*/
+class reference153 {
+}/**
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.util:oiref>
+@__imported 
+*/
+class reference154 {
+}/**
+@__ref <oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.util.config:oiref>
+@__imported 
+*/
+class reference155 {
+}/**
+@__ref <oiref:design#Class#id1z4wtd0mod6ytd0mpffh5.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.util.event:oiref>
+@__imported 
+*/
+class reference156 {
+}/**
+@__ref <oiref:design#Class#id74ec37li4p0c37mqphj.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.awt:oiref>
+@__imported 
+*/
+class reference114 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options option.showPackageContents = false 
+*/
+class __options {
+}/**
+@__positions <oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link335:oiref>=843,2750,39,83:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link201:oiref>=806,184,860,2750:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link:oiref>=566,2554,276,3210:oigroup>
+<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram.link339:oiref>=1104,2620,48,83:oigroup>
+<oigroup:<oiref:design#Class#idmu6fcvzpttgbcvzuz8i2.diagram.link191:oiref>=920,1519,1190,1519:oigroup>
+<oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram:oiref>=800,1360,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link189:oiref>=1696,1110,69,83:oigroup>
+<oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link15:oiref>=302,854,108,2380:oigroup>
+<oigroup:<oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram.link258:oiref>=1368,2554,721,2610:oigroup>
+<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link92:oiref>=194,2434,538,2500:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link68:oiref>=1306,1490,1890,1164:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link232:oiref>=1040,2632,730,2632:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link230:oiref>=1910,1164,1130,2190:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link190:oiref>=1519,1164,1110,2190:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link218:oiref>=2390,1164,1360,1490:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram:oiref>=40,260,198,54,1:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram:oiref>=1410,1110,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link31:oiref>=698,184,260,430:oigroup>
+<oigroup:<oiref:design#Class#id97dc37li4p0c37mqo2c.diagram.link318:oiref>=553,260,86,83:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link59:oiref>=1288,1490,1700,1164:oigroup>
+<oigroup:<oiref:design#Class#id13oldcvwm367tcvwma28h.diagram.link172:oiref>=1961,1074,667,2610:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link29:oiref>=869,184,1944,1250:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link237:oiref>=872,2554,310,3210:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link250:oiref>=810,2750,680,2664:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link63:oiref>=49,83,1120,2620:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link172:oiref>=2220,1164,1150,2190:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link51:oiref>=66,83,1543,1110:oigroup>
+<oigroup:<oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram:oiref>=1170,40,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link220:oiref>=666,2554,1114,2600:oigroup>
+<oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram.link164:oiref>=1696,1074,615,2500:oigroup>
+<oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram.link:oiref>=680,84,790,130:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link157:oiref>=1976,1304,643,2500:oigroup>
+<oigroup:<oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram.link184:oiref>=613,634,613,2610:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link466:oiref>=883,744,1050,2190:oigroup>
+<oigroup:<oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram:oiref>=1280,2500,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link197:oiref>=1476,1110,65,83:oigroup>
+<oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram:oiref>=1630,1020,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram:oiref>=800,2750,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id34x5nd0nmd8tnd0nmhbtp.diagram:oiref>=30,160,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link323:oiref>=540,2500,30,83:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link180:oiref>=566,744,566,2500:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link24:oiref>=99,314,286,800:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link253:oiref>=642,744,1010,2190:oigroup>
+<oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram.link214:oiref>=567,84,255,3210:oigroup>
+<oigroup:<oiref:design#Class#id13oldcvwm367tcvwma28h.diagram:oiref>=1850,1020,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id26nxxcvzpttgbcvzrgx8a.diagram.link:oiref>=905,484,905,690:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link160:oiref>=2245,1164,318,3210:oigroup>
+<oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link256:oiref>=282,3210,580,2664:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link248:oiref>=932,2750,1098,2654:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link172:oiref>=1928,1304,1342,1490:oigroup>
+<oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram:oiref>=500,30,200,65,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link49:oiref>=25,83,116,2380:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link67:oiref>=53,83,226,430:oigroup>
+<oigroup:<oiref:design#Class#id1z4wtd0mod6ytd0mpffh5.diagram.link348:oiref>=1141,2950,46,83:oigroup>
+<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram.link251:oiref>=1195,2554,1195,2600:oigroup>
+<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram.link275:oiref>=380,214,120,290:oigroup>
+<oigroup:<oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram.link209:oiref>=1267,94,870,2750:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link62:oiref>=1265,1544,604,2500:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link245:oiref>=912,2804,1058,2950:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link58:oiref>=67,83,1898,1250:oigroup>
+<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link96:oiref>=172,2380,26,83:oigroup>
+<oigroup:<oiref:design#Class#idahyc37li4p0c37mqk6f.diagram.link209:oiref>=1374,556,622,1403:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link216:oiref>=416,634,530,690:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link162:oiref>=1715,1164,622,2500:oigroup>
+<oigroup:<oiref:design#Class#id1jzt3cvzpttgbcvzwa8kg.diagram.link:oiref>=926,324,1058,2190:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link197:oiref>=2195,1164,2000,1250:oigroup>
+<oigroup:<oiref:design#Class#idao2c37li4p0c37mqkzw.diagram.link253:oiref>=390,854,1207,1490:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link185:oiref>=2203,1110,80,83:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link202:oiref>=734,184,264,3210:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link:oiref>=547,744,261,3210:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link180:oiref>=1685,1164,1279,1490:oigroup>
+<oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram:oiref>=360,2280,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link:oiref>=72,314,72,2380:oigroup>
+<oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram:oiref>=460,1840,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1a0rod0mod6ytd0mpfe6e.diagram:oiref>=1680,2230,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram.link:oiref>=1280,2514,730,2514:oigroup>
+<oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link16:oiref>=375,854,1257,1490:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link170:oiref>=1899,1164,636,2500:oigroup>
+<oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref>=230,3210,191,54,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link55:oiref>=24,83,24,120:oigroup>
+<oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link:oiref>=414,800,796,744:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link230:oiref>=1395,614,653,690:oigroup>
+<oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram.link:oiref>=862,1414,580,2500:oigroup>
+<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link93:oiref>=126,2434,1034,2950:oigroup>
+<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram.link87:oiref>=1120,2244,306,3210:oigroup>
+<oigroup:<oiref:design#Class#id2gax8d0mi2vggd0mjslmj.diagram:oiref>=160,430,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link200:oiref>=2163,1164,592,1840:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link69:oiref>=1317,1544,294,3210:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link231:oiref>=1970,1164,1970,1250:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link224:oiref>=584,2554,584,2610:oigroup>
+<oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram.link281:oiref>=120,344,237,3210:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link153:oiref>=1343,1544,1097,2190:oigroup>
+<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram:oiref>=1040,2500,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link32:oiref>=841,184,960,270:oigroup>
+<oigroup:<oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram.link254:oiref>=1170,72,104,72:oigroup>
+<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram.link:oiref>=1020,2244,649,2500:oigroup>
+<oigroup:<oiref:design#Class#id4vy0zd0mod6ytd0mpffg1.diagram.link343:oiref>=1768,2050,62,83:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link238:oiref>=944,2554,880,2750:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link64:oiref>=45,83,1099,2950:oigroup>
+<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram.link279:oiref>=380,160,94,83:oigroup>
+<oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram.link20:oiref>=842,634,382,800:oigroup>
+<oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram:oiref>=20,290,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link221:oiref>=730,2544,800,2544:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link:oiref>=349,634,986,2190:oigroup>
+<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram.link327:oiref>=578,2610,33,83:oigroup>
+<oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram.link193:oiref>=545,2334,545,2500:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref>=800,2500,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link:oiref>=358,3210,1125,3004:oigroup>
+<oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram.link158:oiref>=899,1414,622,2610:oigroup>
+<oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram.link266:oiref>=460,2280,29,83:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram:oiref>=1860,1250,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link233:oiref>=1215,2654,943,2860:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link176:oiref>=1882,1304,849,1480:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link181:oiref>=604,744,604,2610:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link:oiref>=2026,1304,314,3210:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref>=1190,1490,193,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link341:oiref>=238,3210,28,83:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link25:oiref>=154,314,755,690:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref>=530,2500,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link:oiref>=838,184,1234,1490:oigroup>
+<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref>=530,2610,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link11:oiref>=925,744,1313,1490:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link66:oiref>=1291,1544,640,2610:oigroup>
+<oigroup:<oiref:design#Class#idmu6fcvzpttgbcvzuz8i2.diagram:oiref>=720,1480,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram.link165:oiref>=1729,1074,649,2610:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link249:oiref>=874,2804,874,2860:oigroup>
+<oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram:oiref>=680,2120,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link70:oiref>=54,83,1169,2500:oigroup>
+<oigroup:<oiref:design#Class#id1z4wtd0mod6ytd0mpffh5.diagram:oiref>=1010,2950,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link22:oiref>=126,314,1285,1490:oigroup>
+<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram.link90:oiref>=1070,2244,682,2610:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link31:oiref>=104,61,1170,61:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link224:oiref>=571,690,59,83:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link27:oiref>=778,184,778,1480:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram:oiref>=690,130,200,369,1:oigroup>
+<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram.link252:oiref>=1117,2554,897,2750:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link29:oiref>=63,83,612,690:oigroup>
+<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram.link:oiref>=1040,2524,730,2524:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link63:oiref>=1351,1490,2360,1164:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link:oiref>=1190,1504,920,1504:oigroup>
+<oigroup:<oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram:oiref>=500,580,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link246:oiref>=914,2750,1156,2554:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link18:oiref>=842,744,132,2380:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link:oiref>=800,2534,730,2534:oigroup>
+<oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram.link215:oiref>=616,84,850,2750:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link59:oiref>=27,83,237,3210:oigroup>
+<oigroup:<oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram.link182:oiref>=545,634,552,2500:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link234:oiref>=1495,614,1084,2190:oigroup>
+<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link97:oiref>=160,2434,548,2610:oigroup>
+<oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram.link187:oiref>=746,2174,594,2500:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link163:oiref>=1725,1164,658,2610:oigroup>
+<oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram.link15:oiref>=825,634,672,690:oigroup>
+<oigroup:<oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref>=1270,2600,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link:oiref>=1909,1164,302,3210:oigroup>
+<oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram.link186:oiref>=570,1840,1240,1544:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link181:oiref>=1730,1164,1120,2190:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link228:oiref>=1176,2654,340,3210:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link251:oiref>=528,744,390,800:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram:oiref>=1370,560,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram.link:oiref>=560,1894,978,2190:oigroup>
+<oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link17:oiref>=315,800,315,484:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link222:oiref>=2420,1164,637,1840:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link171:oiref>=1907,1164,676,2610:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link68:oiref>=37,83,848,2860:oigroup>
+<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram.link94:oiref>=93,2434,235,3210:oigroup>
+<oigroup:<oiref:design#Class#id1jzt3cvzpttgbcvzwa8kg.diagram.link392:oiref>=993,324,1243,1490:oigroup>
+<oigroup:<oiref:design#Class#id13oldcvwm367tcvwma28h.diagram.link:oiref>=1924,1074,629,2500:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link225:oiref>=609,2554,822,2860:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link:oiref>=2450,1164,1160,2190:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link205:oiref>=1916,1110,72,83:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link33:oiref>=705,184,641,260:oigroup>
+<oigroup:<oiref:design#Class#idrkac4kbep2mc4kbyicn.diagram.link225:oiref>=600,580,64,83:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link170:oiref>=1907,1250,68,83:oigroup>
+<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref>=970,2190,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link201:oiref>=2423,1110,84,83:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link206:oiref>=1670,1164,504,1840:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link47:oiref>=56,83,758,1480:oigroup>
+<oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram.link303:oiref>=500,50,104,50:oigroup>
+<oigroup:<oiref:design#Class#id729c37li4p0c37mqpfl.diagram:oiref>=280,160,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idao2c37li4p0c37mqkzw.diagram:oiref>=290,800,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link:oiref>=763,744,398,800:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link239:oiref>=972,2554,933,2860:oigroup>
+<oigroup:<oiref:design#Class#id26nxxcvzpttgbcvzrgx8a.diagram:oiref>=880,430,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram:oiref>=730,580,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram.link:oiref>=595,2610,595,2554:oigroup>
+<oigroup:<oiref:design#Class#id1z4wtd0mod6ytd0mpffh5.diagram.link:oiref>=1067,3004,354,3210:oigroup>
+<oigroup:<oiref:design#Class#id74ec37li4p0c37mqphj.diagram.link346:oiref>=36,120,36,83:oigroup>
+<oigroup:<oiref:design#Class#idb7wc37li4p0c37mqk8n.diagram:oiref>=60,2380,182,54,1:oigroup>
+<oigroup:<oiref:design#Class#idahyc37li4p0c37mqk6f.diagram.link216:oiref>=1356,556,1002,781:oigroup>
+<oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram.link21:oiref>=860,634,860,690:oigroup>
+<oigroup:<oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram.link207:oiref>=1256,94,587,2500:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link26:oiref>=70,83,1763,1110:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram:oiref>=2290,1110,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link60:oiref>=1215,1544,548,1840:oigroup>
+<oigroup:<oiref:design#Class#idbcxc37li4p0c37mqkp2.diagram.link194:oiref>=502,2334,566,2610:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram:oiref>=500,690,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram:oiref>=230,800,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link203:oiref>=1810,1164,1916,1250:oigroup>
+<oigroup:<oiref:design#Class#id3rppcd0mod6ytd0mpfeuv.diagram:oiref>=770,2860,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link232:oiref>=1881,1164,1297,1490:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram:oiref>=250,580,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link58:oiref>=1216,1490,60,83:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link177:oiref>=1951,1304,614,1840:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram:oiref>=730,690,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram.link243:oiref>=1358,94,1470,560:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link62:oiref>=38,83,836,2750:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link26:oiref>=140,314,266,430:oigroup>
+<oigroup:<oiref:design#Class#idao2c37li4p0c37mqkzw.diagram.link219:oiref>=356,800,47,83:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link232:oiref>=350,580,57,83:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link:oiref>=61,83,1221,1490:oigroup>
+<oigroup:<oiref:design#Class#id2gax8d0mi2vggd0mjslmj.diagram.link286:oiref>=193,430,42,83:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link214:oiref>=1437,1164,482,1840:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link:oiref>=837,2804,326,3210:oigroup>
+<oigroup:<oiref:design#Class#idvhdc4n3jkl2c4pu6hv8.diagram.link:oiref>=895,634,1070,2190:oigroup>
+<oigroup:<oiref:design#Class#id97dc37li4p0c37mqo2c.diagram:oiref>=510,260,200,209,1:oigroup>
+<oigroup:<oiref:design#Class#id13oldcvwm367tcvwma28h.diagram.link208:oiref>=1950,1020,76,83:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link67:oiref>=1333,1490,1905,1304:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link231:oiref>=1137,2654,941,2750:oigroup>
+<oigroup:<oiref:design#Class#idmu6fcvzpttgbcvzuz8i2.diagram.link181:oiref>=739,1480,55,83:oigroup>
+<oigroup:<oiref:design#Class#idxqtvciqgqawociqgywx9.diagram.link217:oiref>=2330,1164,2030,1250:oigroup>
+<oigroup:<oiref:design#Class#id1jzt3cvzpttgbcvzwa8kg.diagram:oiref>=860,270,200,113,1:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link297:oiref>=723,130,100,83:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram:oiref>=1850,1110,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link71:oiref>=31,83,543,2500:oigroup>
+<oigroup:<oiref:design#Class#id6yic37li4p0c37mqpjh.diagram.link23:oiref>=210,314,1885,1110:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link211:oiref>=1595,1164,1888,1250:oigroup>
+<oigroup:<oiref:design#Class#id15pjgd0mi2vggd0mjei6m.diagram.link28:oiref>=834,184,1050,2190:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link236:oiref>=982,2554,1141,2600:oigroup>
+<oigroup:<oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram.link178:oiref>=520,1830,35,83:oigroup>
+<oigroup:<oiref:design#Class#id4v3kfd0mod6ytd0mpfet7.diagram.link253:oiref>=1078,2554,713,2610:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram.link171:oiref>=2101,1164,1315,1490:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link50:oiref>=43,83,323,800:oigroup>
+<oigroup:<oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram.link255:oiref>=273,3210,548,2554:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link64:oiref>=1270,1490,1479,1164:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram:oiref>=1630,1110,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram.link247:oiref>=820,2750,623,2554:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link19:oiref>=730,717,700,717:oigroup>
+<oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram.link188:oiref>=813,2174,631,2610:oigroup>
+<oigroup:<oiref:design#Class#id36djlcc6chppkcc6d44oz.diagram.link236:oiref>=1872,1164,526,1840:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link41:oiref>=82,83,2356,1110:oigroup>
+<oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram.link174:oiref>=900,1360,58,83:oigroup>
+<oigroup:<oiref:design#Class#id7sdc37li4p0c37mqp0k.diagram:oiref>=2070,1110,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link39:oiref>=74,83,1983,1110:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link229:oiref>=1168,2600,991,2554:oigroup>
+<oigroup:<oiref:design#Class#id97dc37li4p0c37mqo2c.diagram.link299:oiref>=642,314,1020,2190:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link69:oiref>=40,83,866,2500:oigroup>
+<oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram.link260:oiref>=780,2120,41,83:oigroup>
+<oigroup:<oiref:design#Class#idr1qc4kbep2mc4kbyqes.diagram.link213:oiref>=570,84,559,2500:oigroup>
+<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram.link89:oiref>=982,2190,51,83:oigroup>
+<oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram.link190:oiref>=1730,1020,71,83:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link193:oiref>=1458,1164,1261,1490:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link:oiref>=1087,2600,651,2554:oigroup>
+<oigroup:<oiref:design#Class#id7r4c37li4p0c37mqp2i.diagram.link166:oiref>=1500,1164,290,3210:oigroup>
+<oigroup:<oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram.link171:oiref>=1992,1304,1140,2190:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link250:oiref>=1403,560,90,83:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link48:oiref>=92,83,1436,560:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link218:oiref>=382,634,1216,1490:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link66:oiref>=32,83,572,2610:oigroup>
+<oigroup:<oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram.link333:oiref>=933,2500,44,83:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link259:oiref>=671,744,1225,1490:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link178:oiref>=1457,614,279,3210:oigroup>
+<oigroup:<oiref:design#Class#idropc4kbep2mc4kbyhn2.diagram.link208:oiref>=1234,94,270,3210:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref>=1040,2600,200,54,1:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link27:oiref>=34,83,490,1830:oigroup>
+<oigroup:<oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram.link223:oiref>=637,2554,830,2750:oigroup>
+<oigroup:<oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram.link329:oiref>=1104,2500,50,83:oigroup>
+<oigroup:<oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram.link61:oiref>=1324,1490,2132,1164:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link239:oiref>=1476,614,1252,1490:oigroup>
+<oigroup:<oiref:design#Class#id7yqc37li4p0c37mqozq.diagram.link180:oiref>=949,1414,1198,1490:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link57:oiref>=52,83,984,2190:oigroup>
+<oigroup:<oiref:design#Class#id2gax8d0mi2vggd0mjslmj.diagram.link196:oiref>=240,484,240,3210:oigroup>
+<oigroup:<oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram.link45:oiref>=78,83,2136,1110:oigroup>
+<oigroup:<oiref:design#Class#id1jzt3cvzpttgbcvzwa8kg.diagram.link312:oiref>=893,270,96,83:oigroup>
+<oigroup:<oiref:design#Class#id7cbc37li4p0c37mqp1e.diagram.link161:oiref>=1727,1164,298,3210:oigroup>
+*/
+class __positions {
+}

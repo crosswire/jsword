@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<title>com.eireneh.bible.swing</title>
+</head>
+
+<body>
+
+<p>The swing section is in charge of turning the XML from the source
+section into a screen view.</p>
+
+<p>I am currently using LotusXSL to automatically turn the XML data into
+HTML and display this using the JDK Swing HTML component. This will allow
+me to generate custimizable views&nbsp; - so that an AV source can be
+displayed like the AV is usually printed, and an NIV/NKJV source to have 
+paragraph formatting etc. (Or even a more mix and match system)</p>
+
+<p>I also use a component called BSH (BeanShell) to give me a scripting
+environment to test code. This may become part of the final interface as
+it provides a significant amount of power to the user.</p>
+
+<p>The current display code is very rough though. I have not spent very
+much time on it because I think that there are tools on the way out that
+will significantly help Java GUI development.</p>
+
+<p>&nbsp;</p>
+
+<p>I've stopped working on this package at the moment to concentrate on
+other sections. I am noting idea that I come across though.</p>
+
+<p>Things to try:</p>
+
+<pre>
+table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+table.getColumnModel().getColumn(index).setPreferredWidth(width);
+table.sizeColumnsToFit(-1);
+</pre>
+
+</body>
+</html>

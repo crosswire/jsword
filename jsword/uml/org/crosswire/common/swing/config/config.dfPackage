@@ -1,0 +1,143 @@
+package id4v3kfd0mod6ytd0mpfet7;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id3s1x2d0mod6ytd0mpfenx.diagram:oiref><oihard>
+@automatic 
+*/
+class link251 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram:oiref><oihard>
+@automatic 
+*/
+class link252 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@automatic 
+*/
+class link253 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link337 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link338 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link339 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.FontField:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.StyleField:oiref><oihard>
+@__modelType reference 
+*/
+class reference148 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.ShelfExceptionChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference149 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.FontButtonField:oiref><oihard>
+@__modelType reference 
+*/
+class reference150 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.MonitorChoices:oiref><oihard>
+@__modelType reference 
+*/
+class reference151 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.LookAndFeelChoices:oiref><oihard>
+@__modelType reference 
+*/
+class reference152 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.ColorField:oiref><oihard>
+@__modelType reference 
+*/
+class reference153 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.FileField:oiref><oihard>
+@__modelType reference 
+*/
+class reference154 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.DisplayExceptionChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference155 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.MetalColorChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference156 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.DefaultFontChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference157 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.LogListChoices:oiref><oihard>
+@__modelType reference 
+*/
+class reference158 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.swing.config.SourcePathChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference159 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link205 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<title>Project B</title>
+</head>
+
+<body>
+
+<p>Project B is a platform for various Bible programs using
+Java - It will support desktop applications like the On-Line Bible and Sword,
+there is a Servlet interface, some add-in macros for MS Word and other
+interfaces are in development - It is freely redistributable (licensed under the
+GPL).</p>
+
+<p>The most recent release is version v0.6. It incorporates
+most of the features of the On-Line Bible, although it is still beta software.
+The extra features that are planned and under development are:
+<ul>
+  <li><b>HTML Display</b>:
+    Biblical text is currently displayed using HTML. This allows us to generate
+    reference links. It is also highly customizable using XSL so that we can make
+    AV text look like an Oxford AV Bible, and an NIV look like a H&amp;S NIV -
+    or visa versa.</li>
+  <li><b>Powerful Word Study Aids</b>:
+    Using a HTML links I plan a set of Word Study pages that detail
+    words translated to and from a selected word or strongs number. This has
+    been implemented as a prototype using VB/Access and Excel! A Java and HTML
+    version will much more useful.</li>
+  <li><b>Intelligent Search</b>:
+    So that you can search for phrases like &quot;For God so loves the world&quot;
+    and get a match. Most searches will fail. (The 4th word is loved not loves).
+    This is currently working. We have extension project planned for next year
+    to extend this to query wizard technology where we can ask questions
+    &quot;Where was Jesus born?&quot; and we find verses that attempt to answer
+    the question.</li>
+  <li><b>Incremental Download</b>:
+    A problem with most current versions is that they are practically difficult to
+    download, due to their size. This is not a feature that many authors want to
+    solve, as it helps boost CD sales. This is planned but not under active
+    development.<br />
+    I believe that there should be an smooth functionality/download curve: <ul>
+      <li><b>Servlet</b>:
+        0 code download. All code executes on server to generate an HTML interface.</li>
+      <li><b>Applet, Remote Data</b>:
+        &lt;100k download. GUI code executes locally, making HTTP
+        calls to a remote server for Biblical data</li>
+      <li><b>Application, Remote Data</b>:
+        0k extra download. I think that we ought to be able to use the
+        browsers cache to provide a &quot;Save As...&quot; dialog with zero or
+        very low download to turn the applet into an application.</li>
+      <li><b>Application, Local Data</b>:
+        Selectable download. We ought to be able to provide a variety
+        of installation sizes, from a heavily cached, disk hungry installation
+        down to a Bible version in a few hundred K.</li>
+    </ul></li>
+  <li><b>Low Development Barrier</b>:
+    CatB notes how important it is that users can help with
+    development. The code is fully JavaDoc commented, and features like the
+    DetailedExceptionDialog should help people analyse faults. I plan a
+    &quot;How can I help?&quot; wizard to help people request features, and
+    offer help.</li>
+</ul></p>
+
+<p>Listing the important sections from the bottom up:
+<ul>
+  <li><b>Passage</b>:
+    Collection of information about the structure of the Bible.</li>
+  <li><b>Book</b>:
+    An interface to a real store of Biblical data.</li>
+  <li><b>Search</b>:
+    Provides a search engine to ease access to the source and passage sections.</li>
+  <li><b>View</b>:
+    There are several front end packages under development, in order of usefulness:
+    servlet, office, swing, applet, wfc</li>
+  <li><b>Other</b>:
+    There are other support packages, the most significant being config which
+    organizes the whole system, there are many others.</li>
+</ul>
+</p>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+package id157led0s4c5ysd0sznd4x;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:java#Class#org.crosswire.sword.servlet.Verify:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.sword.servlet.zip:oiref><oihard>
+@__modelType reference 
+*/
+class reference601 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

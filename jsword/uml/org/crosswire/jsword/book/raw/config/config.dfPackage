@@ -1,0 +1,73 @@
+package id6amc37li4p0c37mr4x2;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link164 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@automatic 
+*/
+class link165 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link190 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link191 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link192 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.config.CacheDataChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}}
+/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,255,204
+*/
+class __tags {
+}
+/**
+@__options 
+*/
+class __options {
+}
+/**
+@__positions 
+*/
+class __positions {
+}

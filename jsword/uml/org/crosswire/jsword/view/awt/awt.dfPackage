@@ -1,0 +1,67 @@
+package id74ec37li4p0c37mqphj;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link346 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link280 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@automatic 
+*/
+class link281 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link184 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.view.awt.Display:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}}
+/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 204,255,255
+*/
+class __tags {
+}
+/**
+@__options 
+*/
+class __options {
+}
+/**
+@__positions 
+<oigroup:<oiref:java#Class#org.crosswire.bible.view.awt.Display:oiref>=40,30,177,379,1:oigroup>
+*/
+class __positions {
+}

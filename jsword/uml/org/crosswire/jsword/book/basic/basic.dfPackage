@@ -1,0 +1,140 @@
+package id1cag7cvzpttgbcvzqfa65;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@automatic 
+*/
+class link171 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link172 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idmu6fcvzpttgbcvzuz8i2.diagram:oiref><oihard>
+@automatic 
+*/
+class link176 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram:oiref><oihard>
+@automatic 
+*/
+class link177 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link157 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link167 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link168 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link169 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link170 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link173 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.VersionFactory:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.VersewiseBible:oiref><oihard>
+@__modelType reference 
+*/
+class reference467 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractBibleDriver:oiref><oihard>
+@__modelType reference 
+*/
+class reference468 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractWritableBibleDriver:oiref><oihard>
+@__modelType reference 
+*/
+class reference469 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractBible:oiref><oihard>
+@__modelType reference 
+*/
+class reference470 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.Verifier:oiref><oihard>
+@__modelType reference 
+*/
+class reference471 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.BasicBookMetaData:oiref><oihard>
+@__modelType reference 
+*/
+class reference472 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.basic.AbstractWritableBible:oiref><oihard>
+@__modelType reference 
+*/
+class reference473 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,255,204
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

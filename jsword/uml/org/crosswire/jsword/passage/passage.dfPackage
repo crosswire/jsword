@@ -1,0 +1,459 @@
+package idb2uc37li4p0c37mqk7j;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:design#Class#id9e4c37li4p0c37mqo18.diagram:oiref><oihard>
+@__modelType reference 
+*/
+class reference39 {
+}
+/**
+@__ref <oiref:design#Class#id97dc37li4p0c37mqo2c.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.view.swing.passage:oiref>
+@__imported 
+*/
+class reference36 {
+}/**
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.node:oiref><oihard>
+@__modelType reference 
+*/
+class reference37 {
+}/**
+@__ref <oiref:java#Class#java.util.Collection:oiref><oihard>
+@__modelType reference
+@__imported
+@hideAll 
+*/
+class reference40 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link256 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@automatic 
+*/
+class link87 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link88 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link89 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@automatic 
+*/
+class link90 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link91 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link181 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageMix:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.RangedPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference540 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestVerseRange:oiref><oihard>
+@__modelType reference 
+*/
+class reference541 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageConstants:oiref><oihard>
+@__modelType reference 
+*/
+class reference542 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.VerseRange:oiref><oihard>
+@__modelType reference 
+*/
+class reference543 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageTally:oiref><oihard>
+@__modelType reference 
+*/
+class reference544 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageListener:oiref><oihard>
+@__modelType reference 
+*/
+class reference545 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestBooks:oiref><oihard>
+@__modelType reference 
+*/
+class reference546 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.Passage:oiref><oihard>
+@__modelType reference 
+*/
+class reference547 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageWriteSpeed:oiref><oihard>
+@__modelType reference 
+*/
+class reference548 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.NoSuchVerseException:oiref><oihard>
+@__modelType reference 
+*/
+class reference549 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageEvent:oiref><oihard>
+@__modelType reference 
+*/
+class reference550 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageUtil:oiref><oihard>
+@__modelType reference 
+*/
+class reference551 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.AbstractPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference552 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageFactory:oiref><oihard>
+@__modelType reference 
+*/
+class reference553 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageTally2:oiref><oihard>
+@__modelType reference 
+*/
+class reference554 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.ReadOnlyPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference555 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageConstants:oiref><oihard>
+@__modelType reference 
+*/
+class reference556 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.SynchronizedPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference557 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageListener:oiref><oihard>
+@__modelType reference 
+*/
+class reference558 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.DistinctPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference559 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageUtil:oiref><oihard>
+@__modelType reference 
+*/
+class reference560 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.VerseBase:oiref><oihard>
+@__modelType reference 
+*/
+class reference561 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.RocketPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference562 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageSpeed:oiref><oihard>
+@__modelType reference 
+*/
+class reference563 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageSpeedOpt:oiref><oihard>
+@__modelType reference 
+*/
+class reference564 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference565 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.Books:oiref><oihard>
+@__modelType reference 
+*/
+class reference566 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.Verse:oiref><oihard>
+@__modelType reference 
+*/
+class reference567 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.BitwisePassage:oiref><oihard>
+@__modelType reference 
+*/
+class reference568 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestPassageSize:oiref><oihard>
+@__modelType reference 
+*/
+class reference569 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.TestVerse:oiref><oihard>
+@__modelType reference 
+*/
+class reference570 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageTally:oiref><oihard>
+@__modelType reference 
+*/
+class reference571 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.passage.PassageCollection:oiref><oihard>
+@__modelType reference 
+*/
+class reference572 {
+}}
+/**
+This is a utility package best viewed as being Java collections for Bible projects. The important classes are Books, Verse, VerseRange, and Passage.
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 224,224,224
+*/
+class __tags {
+}
+/**
+@__options 
+*/
+class __options {
+}
+/**
+@__positions <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen11_1:oiref>=2721,987,692,983:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#empty:oiref>=1960,1574,891,1574:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.RangedPassage:oiref>=990,1040,113,66,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#tally:oiref>=1960,1506,891,1506:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#rev21:oiref>=2199,1125,433,1125:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen_rev:oiref>=2459,861,1211,861:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo21_2:oiref>=2459,917,692,917:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageEvent#upper:oiref>=370,1170,250,1170:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo21_1:oiref>=1960,939,692,939:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#rev12:oiref>=2199,1152,433,1152:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageEvent#lower:oiref>=370,1200,250,1200:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageSpeedOpt:oiref>=2291,661,164,82,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.view.swing.passage.VerseTreeNode#org.crosswire.bible.view.swing.passage.ChapterTreeNode:oiref>=2117,905,2117,894:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen12_1:oiref>=2721,933,692,929:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev99:oiref>=2721,1071,433,1071:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#temp:oiref>=1960,1540,891,1540:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev11:oiref>=2721,1161,433,1161:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.RocketPassage#ranged:oiref>=1010,1260,1010,1106:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestVerseRange:oiref>=2721,831,200,939,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#ssa11:oiref>=2199,948,433,948:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#ch111:oiref>=2199,890,433,890:oigroup>
+<oigroup:<oiref:java#Class#java.util.Collection:oiref>=710,270,151,57,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen13:oiref>=1960,1232,433,1232:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo22_1:oiref>=1960,903,692,903:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen1_135:oiref>=1960,891,1211,891:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#gen22:oiref>=2199,1212,433,1212:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.RocketPassage:oiref>=930,1260,125,66,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.ReadOnlyPassage#org.crosswire.bible.passage.Passage:oiref>=1186,820,1186,639:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageCollection#ref:oiref>=868,514,1070,514:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.Verse#DEFAULT:oiref>=207,1340,207,1393,303,1393,303,1297,250,1297:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen12:oiref>=2721,1333,433,1333:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageTally2:oiref>=1960,861,200,747,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.view.swing.passage.BibleTreeNode#ref:oiref>=2008,498,1848,498,1214,578:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.PassageCollection#java.util.Collection:oiref>=785,390,785,327:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageFactory:oiref>=690,40,200,184,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.PassageTally#org.crosswire.bible.passage.AbstractPassage:oiref>=770,960,1003,835:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo23:oiref>=1960,1107,433,1107:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.AbstractPassage#org.crosswire.bible.passage.Passage:oiref>=1080,769,1080,639:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#pro11:oiref>=2199,919,433,919:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen21:oiref>=2721,1275,433,1275:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo2a_3b:oiref>=2459,871,1211,871:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen11_2:oiref>=2721,977,692,977:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.RocketPassage#org.crosswire.bible.passage.BitwisePassage:oiref>=1030,1260,1136,1206:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#jude2:oiref>=2199,1001,433,1001:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.TestPassageSpeed#org.crosswire.bible.passage.TestPassage:oiref>=2399,393,2601,821:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.SynchronizedPassage#org.crosswire.bible.passage.Passage:oiref>=1355,820,1214,639:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageListener:oiref>=379,1330,143,152,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen_all:oiref>=2721,923,692,923:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen11:oiref>=2459,1183,433,1183:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.VerseRange#org.crosswire.bible.passage.VerseBase:oiref>=480,360,341,256:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#rev22:oiref>=2199,1092,433,1092:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev11_9:oiref>=2721,857,692,857:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.VerseRange#whole:oiref>=537,1072,537,1125,633,1125,633,1029,580,1029:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo21_2:oiref>=1960,920,692,920:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev99_1:oiref>=2721,844,692,844:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.TestPassageSize#org.crosswire.bible.passage.TestPassage:oiref>=2404,591,2572,821:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.TestPassageMix#org.crosswire.bible.passage.TestPassage:oiref>=2480,491,2630,821:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageTally:oiref>=2371,141,129,82,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.AbstractPassage:oiref>=980,769,119,66,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#jude9:oiref>=2199,977,433,977:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.view.swing.passage.ChapterTreeNode#org.crosswire.bible.view.swing.passage.BookTreeNode:oiref>=2220,745,2219,745:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen11_1:oiref>=2459,989,692,989:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev12:oiref>=2721,1144,433,1144:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.VerseBase#org.crosswire.bible.passage.PassageConstants:oiref>=466,193,466,122:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen19:oiref>=2721,1302,433,1302:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.view.swing.passage.BookTreeNode#org.crosswire.bible.view.swing.passage.BibleTreeNode:oiref>=2219,591,2222,559:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.view.swing.passage.VerseRangeTreeNode#range:oiref>=1769,964,689,964:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.BitwisePassage:oiref>=1080,1140,113,66,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassage:oiref>=2459,821,200,1195,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.TestPassageListener#org.crosswire.bible.passage.PassageListener:oiref>=146,1922,146,1780:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo21:oiref>=2459,1061,433,1061:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen1_157:oiref>=1960,871,1211,866:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.VerseBase:oiref>=231,40,165,216,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen11_a:oiref>=2721,944,692,944:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev21:oiref>=2721,1117,433,1117:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.view.swing.passage.PassageTreeModel#ref:oiref>=1537,558,1214,558:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.Passage#org.crosswire.bible.passage.PassageConstants:oiref>=1046,439,519,122:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen11_9:oiref>=2721,962,692,962:oigroup>
+<oigroup:<oiref:java#Class#docs.future.translation.Strongs:oiref>=1817,354,141,264,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#rev99:oiref>=2459,1193,433,1193:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen12_1:oiref>=2459,953,692,953:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageUtil:oiref>=2201,1671,200,258,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo3b:oiref>=2459,1203,433,1203:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.SynchronizedPassage#ref:oiref>=1411,820,1242,639:oigroup>
+<oigroup:<oiref:design#Class#id9e4c37li4p0c37mqo18.diagram:oiref>=270,1570,123,65,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.NoSuchVerseException:oiref>=1610,500,164,152,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen11:oiref>=1960,1051,433,1051:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageConstants:oiref>=415,21,131,101,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.view.swing.passage.PassageTreeNode#org.crosswire.bible.passage.PassageListener:oiref>=1884,531,1405,398:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen_exo:oiref>=2721,889,692,889:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageUtil:oiref>=1560,40,200,424,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.TestPassageWriteSpeed#org.crosswire.bible.passage.TestPassage:oiref>=2056,321,2515,821:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen15:oiref>=2459,1097,433,1097:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.view.swing.passage.PassageListModel#ref:oiref>=1771,476,1214,568:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#gen11:oiref>=2199,1328,433,1328:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen22:oiref>=2721,1248,433,1248:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageEvent#VERSE_HIGHEST:oiref>=370,1230,250,1230:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.ReadOnlyPassage#ref:oiref>=1158,820,1158,639:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.DistinctPassage#org.crosswire.bible.passage.AbstractPassage:oiref>=947,960,1027,835:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen12:oiref>=2459,1171,433,1171:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo21:oiref>=1960,1166,433,1166:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.TestPassageSpeedOpt#org.crosswire.bible.passage.TestPassage:oiref>=2373,743,2543,821:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.Passage:oiref>=1070,39,200,600,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageSize:oiref>=2341,509,127,82,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.VerseRange#end:oiref>=380,835,250,835:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageFactory#whole:oiref>=890,132,1070,132:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo3b:oiref>=1960,1079,433,1079:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen11_2:oiref>=2459,971,692,971:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen11_1:oiref>=1960,980,692,980:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.view.swing.passage.PassageListModel#org.crosswire.bible.passage.PassageListener:oiref>=1771,332,1507,332:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.SynchronizedPassage:oiref>=1299,820,169,79,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.Verse:oiref>=50,361,200,979,0:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo22:oiref>=2459,1031,433,1031:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#exo11:oiref>=2721,1198,433,1198:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageMix:oiref>=2420,409,121,82,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#rev11:oiref>=2199,1177,433,1177:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.Verse#org.crosswire.bible.passage.VerseBase:oiref>=150,361,286,256:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev99_9:oiref>=2721,869,692,869:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev22:oiref>=2721,1087,433,1087:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen15:oiref>=1960,1200,433,1200:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#rev91:oiref>=2721,1041,433,1041:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageEvent#VERSE_LOWEST:oiref>=370,1261,250,1261:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageTally:oiref>=670,960,200,600,1:oigroup>
+<oigroup:<oiref:design#Class#id97dc37li4p0c37mqo2c.diagram:oiref>=40,1430,200,213,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen12_1:oiref>=1960,957,692,957:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen_rev:oiref>=2721,879,692,879:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.VerseRange#start:oiref>=380,598,250,598:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.PassageUtil#org.crosswire.bible.passage.PassageConstants:oiref>=862,435,492,122:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestVerse:oiref>=2199,861,200,715,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo21_1:oiref>=2459,935,692,935:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#rev99:oiref>=2199,1066,433,1066:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageCollection:oiref>=710,390,158,328,1:oigroup>
+<oigroup:<oiref:design#Class#idb2uc37li4p0c37mqk7j.node:oiref>=1610,680,160,220,0:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.PassageFactory#lnkPassage:oiref>=890,86,1070,86:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.Books:oiref>=1350,40,183,680,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.TestPassageTally#org.crosswire.bible.passage.TestPassage:oiref>=2435,223,2644,821:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#empty:oiref>=2459,841,1211,841:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageSpeed:oiref>=2329,311,141,82,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageWriteSpeed:oiref>=1969,239,175,82,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen_ex1:oiref>=2721,908,692,908:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.ReadOnlyPassage:oiref>=1130,820,144,79,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#gen12:oiref>=2199,1265,433,1265:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen1_135:oiref>=2459,881,1211,881:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen12:oiref>=1960,1021,433,1021:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#gen11a:oiref>=2199,1292,433,1292:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo22_1:oiref>=2459,899,692,899:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageConstants:oiref>=2000,441,166,146,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#gen13:oiref>=2459,1134,433,1134:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#gen21:oiref>=2199,1240,433,1240:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.PassageEvent:oiref>=370,1140,144,152,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.passage.Books#org.crosswire.bible.passage.PassageConstants:oiref>=110,378,440,122:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestBooks:oiref>=2700,369,198,347,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.VerseRange:oiref>=380,360,200,712,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#grace:oiref>=2459,851,1211,851:oigroup>
+<oigroup:<oiref:java#Class#docs.future.translation.Translation:oiref>=1824,209,90,104,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.RocketPassage#distinct:oiref>=967,1260,967,1013:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerse#jude1:oiref>=2199,1036,433,1036:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.view.swing.passage.PassageTreeNode#ref:oiref>=1775,681,1214,681:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.BitwisePassage#org.crosswire.bible.passage.AbstractPassage:oiref>=1136,1140,1075,835:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen99:oiref>=2721,1221,433,1221:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestVerseRange#gen11:oiref>=2721,1011,433,1011:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.DistinctPassage:oiref>=890,960,114,53,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#temp:oiref>=2459,831,1211,831:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen11_2:oiref>=1960,967,692,966:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#gen123_1:oiref>=1960,881,1211,876:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.passage.TestPassageListener:oiref>=62,1922,152,136,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.passage.RangedPassage#org.crosswire.bible.passage.AbstractPassage:oiref>=1051,1040,1051,835:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassageTally2#exo22:oiref>=1960,1139,433,1139:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.passage.TestPassage#exo23:oiref>=2459,1323,433,1323:oigroup>
+*/
+class __positions {
+}
+/**
+@shapeType Note
+@__modelType node
+@name Note1
+@text <<description>>
+     interface
+PassageConstants
+-------------------------
+This is not shown as a class because it is fairly insignificant, but many classes inherit from it, so it appears to have greater significance than it really does.
+@backgroundColor 255,255,255
+*/
+class node {
+}

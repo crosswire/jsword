@@ -1,0 +1,121 @@
+package idl6avcvwm367tcvwm9sxt;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link186 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link175 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link176 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link177 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link178 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.BibleData:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.DefaultBibleData:oiref><oihard>
+@__modelType reference 
+*/
+class reference476 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.RefData:oiref><oihard>
+@__modelType reference 
+*/
+class reference477 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.DefaultSectionData:oiref><oihard>
+@__modelType reference 
+*/
+class reference478 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.BookData:oiref><oihard>
+@__modelType reference 
+*/
+class reference479 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.DefaultRefData:oiref><oihard>
+@__modelType reference 
+*/
+class reference480 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.SectionData:oiref><oihard>
+@__modelType reference 
+*/
+class reference481 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.data.DataUtil:oiref><oihard>
+@__modelType reference 
+*/
+class reference482 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,255,204
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultBibleData#sections:oiref>=271,570,392,570:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultBibleData:oiref>=52,430,219,231,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.RefData:oiref>=752,141,203,167,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.data.DefaultRefData#org.crosswire.bible.book.data.RefData:oiref>=904,430,904,308:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultRefData:oiref>=744,430,219,285,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.BibleData#sections:oiref>=260,218,402,218:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.data.DefaultBibleData#org.crosswire.bible.book.data.BibleData:oiref>=107,430,107,298:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.SectionData#refs:oiref>=605,219,752,219:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.BibleData:oiref>=57,141,203,157,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.SectionData:oiref>=402,141,203,157,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultSectionData#doc:oiref>=430,430,158,298:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultRefData#section:oiref>=850,430,537,298:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DefaultSectionData:oiref>=392,430,219,249,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.data.DataUtil:oiref>=241,10,246,79,0:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultSectionData#refs:oiref>=611,586,744,586:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.data.DefaultRefData#doc:oiref>=797,430,209,298:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.data.DefaultSectionData#org.crosswire.bible.book.data.SectionData:oiref>=469,430,469,298:oigroup>
+*/
+class __positions {
+}

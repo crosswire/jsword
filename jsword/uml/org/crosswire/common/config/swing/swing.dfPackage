@@ -1,0 +1,160 @@
+package id3s1x2d0mod6ytd0mpfenx;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.swing.config:oiref> 
+*/
+class reference126 {
+}/**
+@__ref <oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.config.swing.fields:oiref> 
+*/
+class reference127 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@automatic 
+*/
+class link228 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2s3jid0n5z2zkd0n634pp.diagram:oiref><oihard>
+@automatic 
+*/
+class link229 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1kx0od0mod6ytd0moz798.diagram:oiref><oihard>
+@automatic 
+*/
+class link231 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@automatic 
+*/
+class link232 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id3rppcd0mod6ytd0mpfeuv.diagram:oiref><oihard>
+@automatic 
+*/
+class link233 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link328 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link329 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link330 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.TreeConfigPane:oiref><oihard>
+@__modelType reference 
+*/
+class reference96 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.AdvancedConfigPane:oiref><oihard>
+@__modelType reference 
+*/
+class reference97 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.PanelConfigPane:oiref><oihard>
+@__modelType reference 
+*/
+class reference98 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.Field:oiref><oihard>
+@__modelType reference 
+*/
+class reference114 {
+}/**
+@__ref <oiref:design#Class#id3i5zld0n5z2zkd0n634jl.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.common.config.swing.config:oiref> 
+*/
+class reference136 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.WizardConfigPane:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.FieldMap:oiref><oihard>
+@__modelType reference 
+*/
+class reference143 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.BaseConfig:oiref><oihard>
+@__modelType reference 
+*/
+class reference144 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.TabbedConfigPane:oiref><oihard>
+@__modelType reference 
+*/
+class reference145 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.Remote:oiref><oihard>
+@__modelType reference 
+*/
+class reference146 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.swing.SwingConfig:oiref><oihard>
+@__modelType reference 
+*/
+class reference147 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link202 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

@@ -1,0 +1,78 @@
+package idmu6fcvzpttgbcvzuz8i2;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link191 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link179 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link180 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link181 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.events.ProgressListener:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.events.BiblesListener:oiref><oihard>
+@__modelType reference 
+*/
+class reference483 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.events.BiblesEvent:oiref><oihard>
+@__modelType reference 
+*/
+class reference484 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.events.ProgressEvent:oiref><oihard>
+@__modelType reference 
+*/
+class reference485 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,255,204
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

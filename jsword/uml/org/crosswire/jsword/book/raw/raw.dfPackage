@@ -1,0 +1,261 @@
+package id7cbc37li4p0c37mqp1e;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:design#Class#id6amc37li4p0c37mr4x2.diagram:oiref><oihard>
+@__modelType reference 
+*/
+class reference103 {
+}
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link180 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@automatic 
+*/
+class link181 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram:oiref><oihard>
+@automatic 
+*/
+class link203 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram:oiref><oihard>
+@automatic 
+*/
+class link206 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@automatic 
+*/
+class link161 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link162 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@automatic 
+*/
+class link163 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link186 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link187 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link188 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link189 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.ItemsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.PuncItemsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference489 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.WordItemsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference490 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.RawBibleDriver:oiref><oihard>
+@__modelType reference 
+*/
+class reference491 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.PuncInstsDisk:oiref><oihard>
+@__modelType reference 
+*/
+class reference492 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.Mem:oiref><oihard>
+@__modelType reference 
+*/
+class reference493 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.CaseInstsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference494 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.Disk:oiref><oihard>
+@__modelType reference 
+*/
+class reference495 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.InstsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference496 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.RawBible:oiref><oihard>
+@__modelType reference 
+*/
+class reference497 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.Items:oiref><oihard>
+@__modelType reference 
+*/
+class reference498 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.WordInstsDisk:oiref><oihard>
+@__modelType reference 
+*/
+class reference499 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.NoSuchResourceException:oiref><oihard>
+@__modelType reference 
+*/
+class reference500 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.Insts:oiref><oihard>
+@__modelType reference 
+*/
+class reference501 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.WordInstsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference502 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.ItemsDisk:oiref><oihard>
+@__modelType reference 
+*/
+class reference503 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.ParaInstsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference504 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.InstsDisk:oiref><oihard>
+@__modelType reference 
+*/
+class reference505 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.PuncInstsMem:oiref><oihard>
+@__modelType reference 
+*/
+class reference506 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.raw.TestRawBible:oiref><oihard>
+@__modelType reference 
+*/
+class reference507 {
+}}
+/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,255,204
+*/
+class __tags {
+}
+/**
+@__options 
+*/
+class __options {
+}
+/**
+@__positions <oigroup:<oiref:java#Implements#org.crosswire.bible.book.raw.ItemsMem#org.crosswire.bible.book.raw.Items:oiref>=820,98,820,-769:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.ItemsDisk:oiref>=853,-637,67,59,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.ParaInstsMem:oiref>=440,491,117,169,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#word_insts:oiref>=1057,-816,412,-816:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.WordInstsMem:oiref>=57,489,109,94,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.RawBibleDriver:oiref>=1320,-909,203,302,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.NoSuchResourceException:oiref>=1657,-232,189,125,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#punc_insts:oiref>=1057,-792,412,-792:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.InstsMem:oiref>=251,135,132,186,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#case_insts:oiref>=1057,-840,412,-840:oigroup>
+<oigroup:<oiref:design#Class#id6amc37li4p0c37mr4x2.diagram:oiref>=1717,-890,127,70,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.CaseInstsMem:oiref>=313,493,110,111,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.raw.InstsDisk#org.crosswire.bible.book.raw.Insts:oiref>=326,-680,326,-767:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.WordInstsDisk#org.crosswire.bible.book.raw.InstsDisk:oiref>=337,-429,337,-460:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.Insts:oiref>=300,-892,112,125,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.InstsDisk#org.crosswire.bible.book.raw.Disk:oiref>=239,-596,104,-596:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.PuncItemsMem#org.crosswire.bible.book.raw.ItemsMem:oiref>=801,504,801,369:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.PuncInstsDisk:oiref>=134,-428,167,118,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.InstsMem#org.crosswire.bible.book.raw.Mem:oiref>=251,203,139,203:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.PuncInstsDisk#org.crosswire.bible.book.raw.InstsDisk:oiref>=259,-428,259,-460:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.PuncItemsMem:oiref>=708,504,128,128,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.InstsDisk#raw:oiref>=352,-570,1057,-570:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.RawBible:oiref>=1057,-910,212,890,0:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.WordItemsMem#org.crosswire.bible.book.raw.ItemsMem:oiref>=918,498,918,369:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.PuncInstsMem#org.crosswire.bible.book.raw.InstsMem:oiref>=240,490,301,321:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.InstsDisk:oiref>=239,-680,113,220,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.ParaInstsMem#org.crosswire.bible.book.raw.InstsMem:oiref>=479,491,346,321:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.WordInstsDisk:oiref>=322,-429,167,118,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.Disk:oiref>=34,-653,70,114,0:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.PuncInstsMem:oiref>=186,490,108,111,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.raw.InstsMem#org.crosswire.bible.book.raw.Insts:oiref>=364,135,364,70,364,-767:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBibleDriver#driver:oiref>=1483,-607,1483,-557,1573,-557,1573,-647,1523,-647:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.PassageCache#raw:oiref>=1354,-418,1269,-418:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.WordInstsMem#org.crosswire.bible.book.raw.InstsMem:oiref>=111,489,284,321:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.book.raw.ItemsDisk#org.crosswire.bible.book.raw.Items:oiref>=886,-637,886,-769:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#word_items:oiref>=1057,-864,930,-864:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#punc_items:oiref>=1057,-887,930,-887:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.Mem#raw:oiref>=124,52,124,-89,1057,-89:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.raw.RawBible#para_insts:oiref>=1057,-56,518,-56,518,491:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.WordItemsMem:oiref>=888,498,156,145,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.ItemsMem#org.crosswire.bible.book.raw.Mem:oiref>=766,185,139,185:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.ItemsDisk#org.crosswire.bible.book.raw.Disk:oiref>=853,-617,104,-617:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.ItemsMem:oiref>=766,98,182,271,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.Items:oiref>=742,-928,188,159,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.book.raw.CaseInstsMem#org.crosswire.bible.book.raw.InstsMem:oiref>=368,493,309,321:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.raw.Mem:oiref>=26,52,113,220,1:oigroup>
+*/
+class __positions {
+}

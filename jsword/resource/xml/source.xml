@@ -1,0 +1,51 @@
+
+<web title='The Source'>
+
+<line title='Introduction'>
+
+You can download the source from <link src='download'>here</link>. This
+page gives you links to look at it on the web. If you are not a
+programmer then you are probably best <a href='spage'>find something
+else to do</a>. This is all computer stuff from here in.
+To get a head start into understanding all this lot there are a group of
+classes/documents in the docs package that contain only JavaDoc and no
+real code, that give an overview on some of the rest. (Effectively
+overview.html got too large and spilled out over here)
+
+</line>
+<line title='JavaDoc'>
+
+The JavaDoc was produced by a hacked up version of JavaDoc that
+generates links to the source, which is very useful. This hack is not
+of my invention - it comes from Sun's JavaDoc pages
+
+</line>
+<line title='The Programs'>
+
+There are several programs to the distribution:
+<ul>
+  <li><b>ToolShed</b> - a tool for converting Bible data and testing</li>
+  <li><b>B</b> - and early desktop prototype, that is probably broken</li>
+  <li><b>BApplet</b> - an applet demo</li>
+  <li><b>Servlets</b> - Run on the web-server, generating content</li>
+  <ul>
+    <li><b>Page</b> - For viewing the Bible on the web</li>
+    <li><b>Web</b> - For looking at basic web pages</li>
+    <li><b>Source</b> - The source-code viewer</li>
+    <li><b>Config*</b> - To configure the look of the other servlets</li>
+  </ul>
+</ul>
+
+</line>
+<line title='Get it here'>
+
+There are 2 ways of looking at the source.
+<ul>
+<li>The easy way is to read the <a href='http://www.eireneh.demon.co.uk/projectb'>JavaDoc</a></li>
+<li>The hard way is to read the <a href='ssource'>Source</a> in the source servlet</li>
+<li>The very hard way is to download the <link src='download'>lot</link> and compile it yourself</li>
+</ul>
+
+</line>
+
+</web>

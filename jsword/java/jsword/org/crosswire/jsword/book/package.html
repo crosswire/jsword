@@ -1,0 +1,63 @@
+<html>
+
+<head>
+<title>com.eireneh.bible.book</title>
+</head>
+
+<body>
+
+<p>The Book package provides an interface to a real store of data.
+Different sources of data interact with the rest of the code via a 
+<code>Book</code> interface. An implementation of <code>Book</code> is
+expected to be able to retrieve Biblical text for a given
+<code>Passage</code>, and to return a <code>Passage</code> of verses that
+contain a word.</p>
+
+<p>A Bible is a specialization of a Book that uses Passages as basic data
+types.</p>
+
+<p>The folowing is out of date since the Version -> Book/Bible split</p>
+
+<p>There are several specializations of the <code>Book</code> interface.
+A <code>MutableBook</code> is-a <code>Book</code> that can be changed
+either to accomodate Verse based notes or for a normal <code>Book</code>
+that can be created at run-time. The latter option allows this system to
+be installed on a computer that already has OLB installed without
+requiring a download of the complete Bible source, but the source is
+created either as part of the install or on the fly, and cached here.</p>
+
+<p>Secondly a <code>Translation</code> is a <code>Book</code> that
+understands Strongs numbering and can give information about how words are
+translated to and from the original.</p>
+
+<p>Currently there are 2 basic implementations of the <code>Book</code>
+interface - an <code>ODBCBook</code> and a <code>FileBook</code>. The
+former acts on an Access database via JBDC and ODBC. The latter on an
+experimental serialized data store. Probably neither of these
+implementations are of any long term use, however they do help get me up
+to speed quickly.</p>
+
+<p>I invisage at least 2 more production stores - an
+<code>OLBBook</code> that reads directly from OLB files exactly as
+installed on Windows. (Maybe in reality there needs to be an
+<code>OLB7Book</code> and an <code>OLB8Book</code> or something)
+and a <code>RemoteBook</code> that uses RMI / CORBA / HTTP or whatever
+to retrieve the data from a remote server)</p>
+
+<p>It is important that multiple data sources are available, to allow a
+compact download time. In an ideal world the base download, would be
+small enough to place as an applet on a web page, with some kind of
+&quot;Save as application functionality&quot; that still uses a remote
+data server. A cacheing Book could then store verses locally, only
+using the network for verses not retrieved yet.</p>
+
+<p>The Biblical text is returned to the application as an XML document.
+Allowing <code>Book</code>s to contain data like red-letter markup
+that a display module may not want to use. See the display section for
+more details.</p>
+
+<p>More work is needed here to with Strongs numbers and non-Biblical text
+sources. (Lexicons and such like)</p>
+
+</body>
+</html>

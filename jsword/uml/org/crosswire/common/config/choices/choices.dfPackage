@@ -1,0 +1,112 @@
+package id11wvdd0mod6ytd0mpfdyw;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link325 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link326 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link327 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.BooleanChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference93 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.StringArrayChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference99 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.OptionsChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference100 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.ChoiceSetsChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference101 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.AbstractChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference104 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.IntegerChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.ActionChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference138 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.TextViewChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference139 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.HashtableChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference140 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.ObjectChoice:oiref><oihard>
+@__modelType reference 
+*/
+class reference141 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.common.config.choices.ClassChoices:oiref><oihard>
+@__modelType reference 
+*/
+class reference142 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link201 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions 
+*/
+class __positions {
+}

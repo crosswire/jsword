@@ -1,0 +1,156 @@
+package idahyc37li4p0c37mqk6f;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:design#Class#idai1c37li4p0c37mql1v.diagram:oiref><oihard>
+@__modelType reference 
+*/
+class reference35 {
+}
+/**
+@__ref <oiref:design#Class#idao2c37li4p0c37mqkzw.diagram:oiref><oihard>
+@__modelType reference 
+*/
+class reference37 {
+}
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@automatic 
+*/
+class link209 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link216 {
+}/**
+@__ref <oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#org.crosswire.bible.control.test:oiref> 
+*/
+class reference183 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idai1c37li4p0c37mql1v.diagram:oiref><oihard>
+@automatic 
+*/
+class link71 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id4npfmd0mod6ytd0moz6q1.diagram:oiref><oihard>
+@automatic 
+*/
+class link72 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idao2c37li4p0c37mqkzw.diagram:oiref><oihard>
+@automatic 
+*/
+class link73 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1i7w1d0mod6ytd0moz7ac.diagram:oiref><oihard>
+@automatic 
+*/
+class link74 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link75 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link76 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id11wvdd0mod6ytd0mpfdyw.diagram:oiref><oihard>
+@automatic 
+*/
+class link77 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link78 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1uslzd0s33ckdd0s3silu.diagram:oiref><oihard>
+@automatic 
+*/
+class link178 {
+}}
+/**
+Contains search and other non-view specific functionallity. If you consider JSword as a MVC design, this is the controller.
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,204,204
+*/
+class __tags {
+}
+/**
+@__options 
+*/
+class __options {
+}
+/**
+@__positions <oigroup:<oiref:java#Implements#org.crosswire.bible.control.tasks.AbstractTask#org.crosswire.bible.control.tasks.Task:oiref>=953,1020,953,252:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.control.tasks.SimplePassageTask#org.crosswire.bible.control.tasks.AbstractTask:oiref>=901,1241,901,1198:oigroup>
+<oigroup:<oiref:design#Class#idao2c37li4p0c37mqkzw.diagram:oiref>=290,30,109,97,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.tasks.TaskFactory:oiref>=329,10,200,251,1:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram.link216:oiref>=290,250,220,250:oigroup>
+<oigroup:<oiref:design#Class#idd1xc4l5k7lfc4l5ltkv.diagram:oiref>=1059,350,63,54,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.state.FileHistory:oiref>=1137,201,158,139,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.tasks.Task:oiref>=914,10,160,242,1:oigroup>
+<oigroup:<oiref:java#Implements#org.crosswire.bible.control.state.FileHistory#org.crosswire.bible.control.state.History:oiref>=1230,201,1230,162:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link:oiref>=1252,550,496,283:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.state.FileState:oiref>=692,1020,120,114,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.control.tasks.TaskFactory#state:oiref>=529,177,675,177:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram.link230:oiref>=163,174,220,174:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram:oiref>=40,30,180,436,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.state.State:oiref>=675,10,183,827,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.tasks.AbstractTask:oiref>=833,1020,160,178,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.state.History:oiref>=1165,10,158,152,1:oigroup>
+<oigroup:<oiref:design#Class#idgefpd0mm80ghd0mmkd3o.diagram.link:oiref>=468,283,1218,550:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.control.state.State#factory:oiref>=675,93,529,93:oigroup>
+<oigroup:<oiref:design#Class#id1nvv2cc6chppkcc6qag0t.diagram.link19:oiref>=1184,550,310,450:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.control.tasks.AbstractTask#state:oiref>=843,1020,843,837:oigroup>
+<oigroup:<oiref:design#Class#idai1c37li4p0c37mql1v.diagram.link251:oiref>=220,78,290,78:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.tasks.TaskException:oiref>=1142,350,110,162,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.control.tasks.SimplePassageTask:oiref>=806,1241,164,219,1:oigroup>
+<oigroup:<oiref:design#Class#id1up6nd0mod6ytd0mpp3h5.diagram:oiref>=290,210,60,65,1:oigroup>
+<oigroup:<oiref:java#Extends#org.crosswire.bible.control.state.FileState#org.crosswire.bible.control.state.State:oiref>=752,1020,752,837:oigroup>
+<oigroup:<oiref:design#Class#id7p8c37li4p0c37mql0q.diagram:oiref>=120,620,133,305,1:oigroup>
+<oigroup:<oiref:design#Class#id26nxxcvzpttgbcvzrgx8a.diagram:oiref>=976,550,160,81,1:oigroup>
+*/
+class __positions {
+}

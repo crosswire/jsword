@@ -1,0 +1,66 @@
+
+package org.crosswire.common.swing;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+
+import org.crosswire.common.swing.*;
+
+/**
+ * A Simple pane to hold log messages to aid debugging.
+ *
+ * <table border='1' cellPadding='3' cellSpacing='0' width="100%">
+ * <tr><td bgColor='white'class='TableRowColor'><font size='-7'>
+ * Distribution Licence:<br />
+ * Project B is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, by writing to
+ * <i>Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA</i>, Or locally at the Licence link below.<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see <a href='http://www.eireneh.com/servlets/Web'>Project B Home</a>
+ * @see <{docs.Licence}>
+ * @author Joe Walker
+ */
+public class LogPane extends EirPanel
+{
+    /**
+     * Create a fault log window
+     */
+    public LogPane()
+    {
+        jbInit();
+    }
+
+    /**
+     * Create the GUI
+     */
+    private void jbInit()
+    {
+        pnl_shelf = new ExceptionShelf();
+
+        this.setLayout(new BorderLayout());
+        this.add(pnl_shelf, BorderLayout.NORTH);
+        //pnl_log.add(pnl_status, BorderLayout.CENTER);
+        this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+    }
+
+    /**
+     * Show this Panel in a new dialog
+     */
+    public void showInDialog(Component parent)
+    {
+        showInDialog(parent, "Fault Log", false);
+    }
+
+    private ExceptionShelf pnl_shelf = null;
+}

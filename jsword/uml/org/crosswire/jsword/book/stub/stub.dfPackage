@@ -1,0 +1,91 @@
+package idxqtvciqgqawociqgywx9;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb2uc37li4p0c37mqk7j.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1cag7cvzpttgbcvzqfa65.diagram:oiref><oihard>
+@automatic 
+*/
+class link217 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbb8c37li4p0c37mqk5l.diagram:oiref><oihard>
+@automatic 
+*/
+class link218 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idl6avcvwm367tcvwm9sxt.diagram:oiref><oihard>
+@automatic 
+*/
+class link222 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link198 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link199 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link200 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link201 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.stub.StubBible:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.book.stub.StubBibleDriver:oiref><oihard>
+@__modelType reference 
+*/
+class reference512 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 255,255,204
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:<oiref:java#Class#org.crosswire.bible.book.stub.StubBible:oiref>=267,10,189,226,1:oigroup>
+<oigroup:<oiref:java#Class#org.crosswire.bible.book.stub.StubBibleDriver:oiref>=10,10,173,203,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#org.crosswire.bible.book.stub.StubBibleDriver#driver:oiref>=149,213,149,257,227,257,227,179,183,179:oigroup> 
+*/
+class __positions {
+}

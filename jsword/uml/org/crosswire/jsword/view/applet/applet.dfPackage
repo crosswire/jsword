@@ -1,0 +1,78 @@
+package id729c37li4p0c37mqpfl;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idbogc37li4p0c37mprvg.diagram:oiref><oihard>
+@automatic 
+*/
+class link {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id74ec37li4p0c37mqphj.diagram:oiref><oihard>
+@automatic 
+*/
+class link275 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id2v3rgcc6chppkcc6czgxh.diagram:oiref><oihard>
+@automatic 
+*/
+class link276 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idb9rc37li4p0c37mqk9r.diagram:oiref><oihard>
+@automatic 
+*/
+class link277 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#id1xabrcc6chppkcc6czewn.diagram:oiref><oihard>
+@automatic 
+*/
+class link278 {
+}/**
+@shapeType DependencyLink
+@__modelType link
+@__ref <oiref:design#Class#idfc0ucc6chppkcc6czbx9.diagram:oiref><oihard>
+@automatic 
+*/
+class link279 {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.view.applet.Resolve:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#org.crosswire.jsword.view.applet.Page:oiref><oihard>
+@__modelType reference 
+*/
+class reference577 {
+}}
+/**
+@__tags
+@shapeType ClassDiagram 
+@backgroundColor 204,255,255
+*/
+class __tags {
+}
+/**
+@__options 
+*/
+class __options {
+}
+/**
+@__positions 
+*/
+class __positions {
+}
