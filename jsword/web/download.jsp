@@ -33,7 +33,7 @@
   Once you have Java installed ...
 </p>
 <div align="center">
-  <a href="stable/jsword.jnlp"><img src="images/webstart.jpg" width="247" height="60" border="0"/></a>
+  <a href="stable/jsword-stable.jnlp"><img src="images/webstart.jpg" width="247" height="60" border="0"/></a>
 </div>
 
 <h2>Zip/Tar Based Downloads</h2>

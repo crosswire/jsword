@@ -4,10 +4,10 @@
 <jnlp spec="1.0+" codebase="http://@HOSTNAME@/@WEBAPP@/jnlp" href="jsword.jnlp">
 
   <information>
-    <title>J-Sword</title>
+    <title>J-Sword (unstable)</title>
     <vendor>Crosswire Bible Society</vendor>
     <homepage href="http://@HOSTNAME@/@WEBAPP@/"/>
-    <description>J-Sword Bible Desktop Application version 0.9.7</description>
+    <description>J-Sword Bible Desktop Application (nightly build)</description>
     <description kind="short">J-Sword is a Bible study package available over the internet</description>
     <description kind="tooltip">J-Sword Bible Desktop Application</description>
     <icon href="../images/icon.gif"/>
