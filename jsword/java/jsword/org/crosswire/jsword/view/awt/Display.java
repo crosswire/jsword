@@ -169,7 +169,7 @@ public class Display extends Panel
     protected ScrollPane scr_results = new ScrollPane();
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.view");
+    protected static Logger log = Logger.getLogger(Display.class);
 
     /** The default Passage to view */
     private static final String DEFAULT_PASSAGE = "Gen 1:1-5";

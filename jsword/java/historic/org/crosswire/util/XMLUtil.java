@@ -184,5 +184,5 @@ public class XMLUtil
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.xml");
+    protected static Logger log = Logger.getLogger(XMLUtil.class);
 }

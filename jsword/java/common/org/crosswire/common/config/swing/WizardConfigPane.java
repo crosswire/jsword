@@ -296,6 +296,6 @@ public class WizardConfigPane extends PanelConfigPane
     private JButton back = new JButton("Back");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.config");
+    protected static Logger log = Logger.getLogger(WizardConfigPane.class);
 }
 

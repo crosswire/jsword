@@ -1162,5 +1162,5 @@ public class VerseRange implements VerseBase
     /**
      * The log stream
      */
-    protected transient static Logger log = Logger.getLogger("bible.passage");
+    protected transient static Logger log = Logger.getLogger(VerseRange.class);
 }

@@ -51,67 +51,67 @@ public class TestCustomTokenizer extends TestCase
         Vector output = null;
 
         output = CustomTokenizer.tokenize("/ aaron , moses", commands);
-        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.words.AddCommandWord");
-        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
-        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.AddCommandWord");
+        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
+        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertEquals(output.size(), 4);
 
         output = CustomTokenizer.tokenize("/aaron+moses", commands);
-        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.words.AddCommandWord");
-        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
-        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.AddCommandWord");
+        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
+        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertEquals(output.size(), 4);
 
         output = CustomTokenizer.tokenize("&aaron-moses", commands);
-        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
-        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.words.RemoveCommandWord");
-        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
+        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.RemoveCommandWord");
+        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertEquals(output.size(), 4);
 
         output = CustomTokenizer.tokenize("/aaron~5+moses", commands);
-        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.words.AddCommandWord");
-        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.words.BlurCommandWord");
-        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(4).getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
-        assertEquals(output.elementAt(5).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.AddCommandWord");
+        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.BlurCommandWord");
+        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(4).getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
+        assertEquals(output.elementAt(5).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertEquals(output.size(), 6);
 
         output = CustomTokenizer.tokenize("  /  aaron  ~   5    +     moses   ", commands);
-        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.words.AddCommandWord");
-        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.words.BlurCommandWord");
-        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(4).getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
-        assertEquals(output.elementAt(5).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.AddCommandWord");
+        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.BlurCommandWord");
+        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(4).getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
+        assertEquals(output.elementAt(5).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertEquals(output.size(), 6);
 
         output = CustomTokenizer.tokenize("  /  aaron  ~   5    +     moses   ", commands);
         Enumeration en = output.elements();
         assertTrue(en.hasMoreElements());
-        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.words.AddCommandWord");
+        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.AddCommandWord");
         assertTrue(en.hasMoreElements());
-        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertTrue(en.hasMoreElements());
-        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.words.BlurCommandWord");
+        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.BlurCommandWord");
         assertTrue(en.hasMoreElements());
-        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertTrue(en.hasMoreElements());
-        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
+        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
         assertTrue(en.hasMoreElements());
-        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
+        assertEquals(en.nextElement().getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
         assertTrue(!en.hasMoreElements());
 
         // This is not actually a legal search string ... however the parser should get it right
         output = CustomTokenizer.tokenize("&~5-/", commands);
-        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.words.RetainCommandWord");
-        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.words.BlurCommandWord");
-        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.words.DefaultParamWord");
-        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.words.RemoveCommandWord");
-        assertEquals(output.elementAt(4).getClass().getName(), "org.crosswire.jsword.control.search.words.AddCommandWord");
+        assertEquals(output.elementAt(0).getClass().getName(), "org.crosswire.jsword.control.search.RetainCommandWord");
+        assertEquals(output.elementAt(1).getClass().getName(), "org.crosswire.jsword.control.search.BlurCommandWord");
+        assertEquals(output.elementAt(2).getClass().getName(), "org.crosswire.jsword.control.search.DefaultParamWord");
+        assertEquals(output.elementAt(3).getClass().getName(), "org.crosswire.jsword.control.search.RemoveCommandWord");
+        assertEquals(output.elementAt(4).getClass().getName(), "org.crosswire.jsword.control.search.AddCommandWord");
         assertEquals(output.size(), 5);
     }
 }

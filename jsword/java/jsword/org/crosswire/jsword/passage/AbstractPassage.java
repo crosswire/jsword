@@ -1223,7 +1223,7 @@ public abstract class AbstractPassage implements Passage
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.passage");
+    protected static Logger log = Logger.getLogger(AbstractPassage.class);
 
     /** Serialization type constant for a BitWise layout */
     protected static final int BITWISE = 0;

@@ -255,7 +255,7 @@ public class BasicBookMetaData implements BookMetaData
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger("bible.basic");
+    protected static Logger log = Logger.getLogger(BasicBookMetaData.class);
 
     /**
      * Setup the default publish date

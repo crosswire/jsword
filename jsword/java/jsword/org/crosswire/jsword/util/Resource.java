@@ -282,7 +282,6 @@ public class Resource
      */
     private void load(String path)
     {
-        System.out.print("Trying "+path+": ");
         try
         {
             InputStream in = new FileInputStream(path);
@@ -290,18 +289,18 @@ public class Resource
             {
                 Properties prop = new Properties();
                 PropertiesUtil.load(prop, in);
-                log.debug("[Loading]");
+                log.debug("Trying "+path+": [Loading]");
 
                 load(prop);
             }
             else
             {
-                log.debug("[Skipping]");
+                log.debug("Trying "+path+": [Skipping]");
             }
         }
         catch (IOException ex)
         {
-            log.debug("[Skipping]");
+            log.debug("Trying "+path+": [Skipping]");
         }
     }
 
@@ -310,25 +309,24 @@ public class Resource
      */
     private void load(InputStream in, String name)
     {
-        System.out.print("Trying "+name+": ");
         if (in != null)
         {
             try
             {
                 Properties prop = new Properties();
                 PropertiesUtil.load(prop, in);
-                log.debug("[Loading]");
+                log.debug("Trying "+name+": [Loading]");
 
                 load(prop);
             }
             catch (IOException ex)
             {
-                log.debug("[Failed: "+ex+"]");
+                log.debug("Trying "+name+": [Failed: "+ex+"]");
             }
         }
         else
         {
-            log.debug("[Skipping]");
+            log.debug("Trying "+name+": [Skipping]");
         }
     }
 
@@ -556,7 +554,7 @@ public class Resource
     private URL write = null;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.util");
+    protected static Logger log = Logger.getLogger(Resource.class);
 }
 
 /*

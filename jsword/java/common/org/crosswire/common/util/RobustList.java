@@ -316,5 +316,5 @@ public class RobustList implements Serializable
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.util");
+    protected static Logger log = Logger.getLogger(RobustList.class);
 }

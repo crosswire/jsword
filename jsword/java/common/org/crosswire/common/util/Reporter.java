@@ -157,7 +157,7 @@ public class Reporter
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.passage");
+    protected static Logger log = Logger.getLogger(Reporter.class);
 
     /** The list of listeners */
     protected static EventListenerList inform_list = new EventListenerList();

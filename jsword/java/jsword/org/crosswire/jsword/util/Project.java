@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.util;
 
+import org.apache.log4j.Logger;
+
 /**
  * The Project class looks after the source of project files.
  *
@@ -64,6 +66,9 @@ public class Project
      */
     public static Resource resource()
     {
+        if (resource == null)
+            log.error("attempt to use Resource before project is init()ed");
+            
         return resource;
     }
 
@@ -82,6 +87,11 @@ public class Project
     {
         return "0.9.2";
     }
+
+    /**
+     * The log stream
+     */
+    protected static Logger log = Logger.getLogger(Project.class);
 
     /**
      * The filesystem resources

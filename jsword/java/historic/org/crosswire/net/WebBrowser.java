@@ -163,6 +163,6 @@ public class WebBrowser
     private Header cook_head = null;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.net");
+    protected static Logger log = Logger.getLogger(WebBrowser.class);
 }
 

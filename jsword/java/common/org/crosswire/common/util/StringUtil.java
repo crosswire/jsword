@@ -1109,5 +1109,5 @@ public final class StringUtil
     public static final String NEWLINE = System.getProperty("line.separator", "\r\n");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.util");
+    protected static Logger log = Logger.getLogger(StringUtil.class);
 }

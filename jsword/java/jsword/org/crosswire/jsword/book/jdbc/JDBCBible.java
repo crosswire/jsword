@@ -358,7 +358,7 @@ public class JDBCBible extends AbstractBible
     private BookMetaData version;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(JDBCBible.class);
 
     /**
      * Helper class to enumerate through the words in a version

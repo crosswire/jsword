@@ -47,11 +47,41 @@ import org.crosswire.jsword.util.Project;
 public class JDBCBibleDriver extends AbstractBibleDriver
 {
     /**
-     * Some basic driver initialization
+     * Some basic driver initialization. If we couldn't get a Bibles root
+     * then just give a warning but do no more. Perhaps there are other
+     * BibleDrivers that can cope, so this needent be a big error.
      */
-    private JDBCBibleDriver() throws MalformedURLException
+    private JDBCBibleDriver() throws MalformedURLException, IOException
     {
-        dir = NetUtil.lengthenURL(Project.resource().getBiblesRoot(), "jdbc");
+        log.debug("Starting");
+
+        URL root = Project.resource().getBiblesRoot();
+        if (root == null)
+        {
+            log.warn("Cant find Bibles root, restart needed before service can resume.");
+            dir = null;
+            return;
+        }
+
+        dir = NetUtil.lengthenURL(root, "jdbc");
+
+        // To save giving off hundreds of warnings later we'll do a check on the
+        // setup and available Bibles now ...
+        if (dir.getProtocol().equals("file"))
+        {
+            File fdir = new File(dir.getFile());
+            if (!fdir.isDirectory())
+            {
+                log.debug("The directory '"+dir+"' does not exist.");
+            }
+        }
+        else
+        {
+            URL search = NetUtil.lengthenURL(dir, "list.txt");
+            InputStream in = search.openStream();
+            if (in == null)
+                log.debug("The remote listing file at '"+search+"' does not exist.");
+        }       
     }
 
     /**
@@ -69,6 +99,9 @@ public class JDBCBibleDriver extends AbstractBibleDriver
      */
     public String[] getBibleNames()
     {
+        if (dir == null)
+            return new String[0];
+
         try
         {
             if (dir.getProtocol().equals("file"))
@@ -78,7 +111,6 @@ public class JDBCBibleDriver extends AbstractBibleDriver
                 // Check that the dir exists
                 if (!fdir.isDirectory())
                 {
-                    log.debug("The directory '"+dir+"' does not exist.");
                     return new String[0];
                 }
                 else
@@ -102,6 +134,8 @@ public class JDBCBibleDriver extends AbstractBibleDriver
             }
             else
             {
+                // We should probably cache this in some way? This is going
+                // to get very slow calling this often across a network
                 URL search = NetUtil.lengthenURL(dir, "list.txt");
                 InputStream in = search.openStream();
                 String contents = StringUtil.read(new InputStreamReader(in));
@@ -122,11 +156,9 @@ public class JDBCBibleDriver extends AbstractBibleDriver
      */
     public boolean exists(String name)
     {
-        URL url = null;
-
         try
         {
-            url = NetUtil.lengthenURL(dir, name+".properties");
+            URL url = NetUtil.lengthenURL(dir, name+".properties");
             return NetUtil.isFile(url);
         }
         catch (Exception ex)
@@ -183,7 +215,7 @@ public class JDBCBibleDriver extends AbstractBibleDriver
     protected static JDBCBibleDriver driver;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(JDBCBibleDriver.class);
 
     /**
      * Register ourselves with the Driver Manager

@@ -1126,5 +1126,5 @@ public class Verse implements VerseBase
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger("bible.passage");
+    protected static Logger log = Logger.getLogger(Verse.class);
 }

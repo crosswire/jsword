@@ -167,5 +167,5 @@ public class StackedReader extends Reader
     private Reader current;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.io");
+    protected static Logger log = Logger.getLogger(StackedReader.class);
 }

@@ -569,7 +569,7 @@ public class SerBible extends VersewiseBible
     /**
      * The log stream
      */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(SerBible.class);
 
     /**
      * A simple class to hold an offset and length into the passages random

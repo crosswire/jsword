@@ -499,7 +499,7 @@ public class Desktop extends JFrame implements TitleChangedListener
     private boolean view_tool = true;
 
     /** The log stream */
-    private static Logger log = Logger.getLogger("bible.view");
+    private static Logger log = Logger.getLogger(Desktop.class);
 
     private Action act_file_new = null;
     private Action act_file_open = null;

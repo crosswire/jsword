@@ -510,7 +510,7 @@ public class Config implements Serializable
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.config");
+    protected static Logger log = Logger.getLogger(Config.class);
 
     /** The name for dialog boxes and properties files */
     protected String title;

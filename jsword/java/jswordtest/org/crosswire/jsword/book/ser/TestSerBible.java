@@ -30,6 +30,6 @@ public class TestSerBible extends TestBible
 {
     public TestSerBible(String s)
     {
-        super(s, "av");
+        super(s, "av-ser");
     }
 }

@@ -33,27 +33,19 @@ public class TestDriverManager extends TestCase
         super(s);
     }
 
-    String[] names = null;
-    BibleDriver[] drivers = null;
 
     protected void setUp() throws Exception
     {
-        names = Bibles.getBibleNames();
-        drivers = BibleDriverManager.getDrivers();
     }
 
     protected void tearDown()
     {
     }
 
-    public void testGetDrivers()
-    {
-        int before = drivers.length;
-        assertEquals(before, 3);
-    }
-
     public void testGetDriverForBible() throws Exception
     {
+        String[] names = Bibles.getBibleNames();
+
         for (int i=0; i<names.length; i++)
         {
             BibleDriver driver = BibleDriverManager.getDriverForBible(names[i]);
@@ -71,8 +63,13 @@ public class TestDriverManager extends TestCase
         */
     }
 
-    public void testUnregisterDriver() throws Exception
+    public void testRegUnreg() throws Exception
     {
+        BibleDriver[] drivers = BibleDriverManager.getDrivers();
+
+        int before = drivers.length;
+        assertEquals(before, 3);
+
         BibleDriverManager.unregisterDriver(drivers[0]);
         BibleDriver[] d2 = BibleDriverManager.getDrivers();
         int n2 = d2.length;
@@ -85,10 +82,7 @@ public class TestDriverManager extends TestCase
         BibleDriver[] d4 = BibleDriverManager.getDrivers();
         int n4 = d4.length;
         assertEquals(n4, 0);
-    }
 
-    public void testRegisterDriver() throws Exception
-    {
         BibleDriverManager.registerDriver(drivers[0]);
         BibleDriver[] d5 = BibleDriverManager.getDrivers();
         int n5 = d5.length;

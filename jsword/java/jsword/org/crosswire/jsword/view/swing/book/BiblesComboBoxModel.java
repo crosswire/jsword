@@ -86,5 +86,5 @@ public class BiblesComboBoxModel extends BiblesListModel implements ComboBoxMode
     protected Object current;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(BiblesComboBoxModel.class);
 }

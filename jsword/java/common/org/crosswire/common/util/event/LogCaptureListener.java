@@ -81,5 +81,5 @@ public class LogCaptureListener implements ReporterListener
     private static LogCaptureListener li = null;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.reporter");
+    protected static Logger log = Logger.getLogger(LogCaptureListener.class);
 }

@@ -311,5 +311,5 @@ public class MailCaptureListener implements ReporterListener
     private static MailCaptureListener li = null;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.mail");
+    protected static Logger log = Logger.getLogger(MailCaptureListener.class);
 }

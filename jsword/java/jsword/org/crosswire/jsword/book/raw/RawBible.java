@@ -758,5 +758,5 @@ public class RawBible extends VersewiseBible
     private BookMetaData version;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(RawBible.class);
 }

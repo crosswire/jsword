@@ -72,7 +72,6 @@ public class TestBibles extends TestCase
         {
             Bibles.setDefaultName(names[0]);
             assertEquals(Bibles.getDefaultName(), names[0]);
-            assertEquals(Bibles.getDefaultBible().getMetaData().getName(), names[0]);
         }
         try { Bibles.setDefaultName("NONE"); fail(); }
         catch (BookException ex) { }

@@ -182,6 +182,6 @@ public class Style
     public static final String XSL_EXTENSION = ".xsl";
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.style");
+    protected static Logger log = Logger.getLogger(Style.class);
 }
 

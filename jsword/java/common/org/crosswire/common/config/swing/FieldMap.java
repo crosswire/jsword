@@ -123,6 +123,6 @@ public class FieldMap
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.config");
+    protected static Logger log = Logger.getLogger(FieldMap.class);
 }
 

@@ -251,5 +251,5 @@ public class WebPage
     private WebBrowser browser;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.swing");
+    protected static Logger log = Logger.getLogger(WebPage.class);
 }

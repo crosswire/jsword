@@ -147,5 +147,5 @@ public class StackedInputStream extends InputStream
     private InputStream current;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.swing");
+    protected static Logger log = Logger.getLogger(StackedInputStream.class);
 }

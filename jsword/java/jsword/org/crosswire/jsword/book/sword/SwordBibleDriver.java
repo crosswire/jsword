@@ -192,7 +192,7 @@ public class SwordBibleDriver extends AbstractBibleDriver
     protected static SwordBibleDriver driver;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(SwordBibleDriver.class);
 
     /**
      * Register ourselves with the Driver Manager

@@ -147,5 +147,5 @@ public class JDBCBibleUtil
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(JDBCBibleUtil.class);
 }

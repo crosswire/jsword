@@ -740,7 +740,7 @@ public class PassageTally extends AbstractPassage
     private int order = ORDER_BIBLICAL;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.passage");
+    protected static Logger log = Logger.getLogger(PassageTally.class);
 
     /**
      * Iterate over the Verses in normal verse order

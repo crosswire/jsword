@@ -187,5 +187,5 @@ public class LinkArray implements Serializable
     private Link[][] links = new Link[Books.versesInBible()][];
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("control.map");
+    protected static Logger log = Logger.getLogger(LinkArray.class);
 }

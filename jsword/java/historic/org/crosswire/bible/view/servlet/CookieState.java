@@ -117,5 +117,5 @@ public class CookieState extends State
     private HttpServletResponse response;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("view.servlet");
+    protected static Logger log = Logger.getLogger(CookieState.class);
 }

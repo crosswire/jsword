@@ -326,6 +326,6 @@ public class RawVerse
     private RandomAccessFile[] txt_raf = new RandomAccessFile[3];
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(RawVerse.class);
 }
 

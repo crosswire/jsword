@@ -113,5 +113,5 @@ public class TeeOutputStream extends OutputStream
     private Vector list = new Vector();
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.io");
+    protected static Logger log = Logger.getLogger(TeeOutputStream.class);
 }

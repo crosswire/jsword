@@ -335,5 +335,5 @@ public class SwordBible extends AbstractBible
     private static int mat11_ord = -1;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(SwordBible.class);
 }

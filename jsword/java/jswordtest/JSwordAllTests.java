@@ -1,6 +1,8 @@
 
 // package default;
 
+import org.crosswire.jsword.util.Project;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -15,6 +17,8 @@ public class JSwordAllTests extends TestCase
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
+
+        Project.init();
 
         suite.addTestSuite(org.crosswire.jsword.book.jdbc.TestJDBCBible.class);
         suite.addTestSuite(org.crosswire.jsword.book.raw.TestRawBible.class);

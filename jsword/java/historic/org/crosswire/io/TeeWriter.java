@@ -138,5 +138,5 @@ public class TeeWriter extends Writer
     private Vector list = new Vector();
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.io");
+    protected static Logger log = Logger.getLogger(TeeWriter.class);
 }

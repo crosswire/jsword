@@ -48,9 +48,37 @@ public class RawBibleDriver extends AbstractBibleDriver
     /**
      * Some basic driver initialization
      */
-    private RawBibleDriver() throws MalformedURLException
+    private RawBibleDriver() throws MalformedURLException, IOException
     {
-        dir = NetUtil.lengthenURL(Project.resource().getBiblesRoot(), "raw");
+        log.debug("Starting");
+
+        URL root = Project.resource().getBiblesRoot();
+        if (root == null)
+        {
+            log.warn("Cant find Bibles root, restart needed before service can resume.");
+            dir = null;
+            return;
+        }
+
+        dir = NetUtil.lengthenURL(root, "raw");
+
+        // To save giving off hundreds of warnings later we'll do a check on the
+        // setup and available Bibles now ...
+        if (dir.getProtocol().equals("file"))
+        {
+            File fdir = new File(dir.getFile());
+            if (!fdir.isDirectory())
+            {
+                log.debug("The directory '"+dir+"' does not exist.");
+            }
+        }
+        else
+        {
+            URL search = NetUtil.lengthenURL(dir, "list.txt");
+            InputStream in = search.openStream();
+            if (in == null)
+                log.debug("The remote listing file at '"+search+"' does not exist.");
+        }       
     }
 
     /**
@@ -68,6 +96,9 @@ public class RawBibleDriver extends AbstractBibleDriver
      */
     public String[] getBibleNames()
     {
+        if (dir == null)
+            return new String[0];
+
         try
         {
             if (dir.getProtocol().equals("file"))
@@ -77,7 +108,6 @@ public class RawBibleDriver extends AbstractBibleDriver
                 // Check that the dir exists
                 if (!fdir.isDirectory())
                 {
-                    log.debug("The directory '"+dir+"' does not exist.");
                     return new String[0];
                 }
 
@@ -86,6 +116,8 @@ public class RawBibleDriver extends AbstractBibleDriver
             }
             else
             {
+                // We should probably cache this in some way? This is going
+                // to get very slow calling this often across a network
                 URL search = NetUtil.lengthenURL(dir, "list.txt");
                 InputStream in = search.openStream();
                 String contents = StringUtil.read(new InputStreamReader(in));
@@ -261,7 +293,7 @@ public class RawBibleDriver extends AbstractBibleDriver
     private static boolean memory = true;
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(RawBibleDriver.class);
 
     /**
      * Do the Bibles we create cache everything in memory or leave it on

@@ -1,6 +1,7 @@
 
 package org.crosswire.jsword.book.stub;
 
+import org.apache.log4j.Logger;
 import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BibleDriverManager;
 import org.crosswire.jsword.book.BookException;
@@ -38,6 +39,7 @@ public class StubBibleDriver extends AbstractBibleDriver
      */
     public StubBibleDriver()
     {
+        log.debug("Starting");
     }
 
     /**
@@ -90,6 +92,9 @@ public class StubBibleDriver extends AbstractBibleDriver
      * The singleton driver
      */
     protected static StubBibleDriver driver;
+
+    /** The log stream */
+    protected static Logger log = Logger.getLogger(StubBibleDriver.class);
 
     /**
      * Register ourselves with the Driver Manager

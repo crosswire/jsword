@@ -234,7 +234,7 @@ public class PassageTabbedPane extends JPanel
     private Style style = new Style("swing");
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.view");
+    protected static Logger log = Logger.getLogger(PassageTabbedPane.class);
 
     private JTabbedPane tab_main = new JTabbedPane();
     private JPanel pnl_more = new JPanel();

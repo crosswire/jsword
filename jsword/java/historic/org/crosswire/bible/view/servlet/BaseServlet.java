@@ -265,5 +265,5 @@ public abstract class BaseServlet extends HttpServlet
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("view.servlet");
+    protected static Logger log = Logger.getLogger(BaseServlet.class);
 }

@@ -1234,7 +1234,7 @@ public class Books implements PassageConstants
     };
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.passage");
+    protected static Logger log = Logger.getLogger(Books.class);
 
     /**
      * Set up the Internationalization (I18N), and cache the upper and

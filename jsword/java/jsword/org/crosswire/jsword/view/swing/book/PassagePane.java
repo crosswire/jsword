@@ -296,7 +296,7 @@ public class PassagePane extends JPanel implements VersionListener, CommandListe
     private static final String VIEW_SIMPLE = "simple";
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.view");
+    protected static Logger log = Logger.getLogger(PassagePane.class);
 
     /** What is being displayed */
     private Bible version = null;

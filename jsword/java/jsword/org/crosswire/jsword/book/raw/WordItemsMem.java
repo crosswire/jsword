@@ -218,5 +218,5 @@ public class WordItemsMem extends ItemsMem
     }
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("bible.book");
+    protected static Logger log = Logger.getLogger(WordItemsMem.class);
 }

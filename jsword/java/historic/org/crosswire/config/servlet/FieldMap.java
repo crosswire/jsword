@@ -95,7 +95,7 @@ public class FieldMap
     private static Hashtable hash = new Hashtable();
 
     /** The log stream */
-    protected static Logger log = Logger.getLogger("util.config");
+    protected static Logger log = Logger.getLogger(FieldMap.class);
 
     /**
      * Default hashtable configuration
