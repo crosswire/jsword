@@ -16,11 +16,13 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
 import org.crosswire.jsword.book.data.Filters;
-import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.book.data.VerseData;
+import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.Verse;
@@ -132,21 +134,41 @@ public class BibleDataCache
     {
         try
         {
-            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
-            li.startDocument(bmd.getInitials());
+            String osisid = bmd.getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
+
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+            
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+            
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+
+            osis.setOsisText(text);
 
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                li.startSection(range.toString());
+                Div div = JAXBUtil.factory().createDiv();
+                div.setDivTitle(range.toString());
+
+                text.getDiv().add(div);
 
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
                 while (vit.hasNext())
                 {
                     Verse verse = (Verse) vit.next();
+
+                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+
+                    div.getContent().add(everse);
 
                     // Seek to the correct point
                     long location = xml_arr[verse.getOrdinal() - 1];
@@ -158,17 +180,14 @@ public class BibleDataCache
                     xml_dat.seek(location);
 
                     // Read the XML text
-                    String text = xml_dat.readUTF();
+                    String txt = xml_dat.readUTF();
 
-                    li.startVerse(verse);
-                    Filters.PLAIN_TEXT.toOSIS(li, text);
-                    li.endVerse();
+                    Filters.PLAIN_TEXT.toOSIS(everse, txt);
                 }
-
-                li.endSection();
             }
-
-            return li.endDocument();
+            
+            BookData bdata = new BookData(osis);
+            return bdata;
         }
         catch (Exception ex)
         {
@@ -185,15 +204,15 @@ public class BibleDataCache
         try
         {
             // For all of the sections
-            for (Iterator sit = bdata.getSectionDatas(); sit.hasNext(); )
+            for (Iterator sit = JAXBUtil.getSectionDatas(bdata); sit.hasNext(); )
             {
-                SectionData section = (SectionData) sit.next();
+                Div div = (Div) sit.next();
 
                 // For all of the Verses in the section
-                for (Iterator vit = section.getRefDatas(); vit.hasNext(); )
+                for (Iterator vit = JAXBUtil.getRefDatas(div); vit.hasNext(); )
                 {
-                    VerseData vel = (VerseData) vit.next();
-                    String text = vel.getPlainText();
+                    org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) vit.next();
+                    String text = JAXBUtil.getPlainText(overse);
 
                     // Remember where we were so we can read it back later
                     xml_arr[verse.getOrdinal() - 1] = xml_dat.getFilePointer();

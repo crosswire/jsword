@@ -21,10 +21,13 @@ import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.basic.DefaultKey;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
-import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -99,33 +102,50 @@ public class StubBook extends AbstractBible implements Bible, Dictionary, Commen
     {
         try
         {
-            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
-            li.startDocument(getBibleMetaData().getInitials());
-    
+            String osisid = getBibleMetaData().getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
+
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+            
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+            
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+
+            osis.setOsisText(text);
+
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                li.startSection(range.toString());
-    
+                Div div = JAXBUtil.factory().createDiv();
+                div.setDivTitle(range.toString());
+
+                text.getDiv().add(div);
+
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
                 while (vit.hasNext())
                 {
                     Verse verse = (Verse) vit.next();
-    
-                    li.startVerse(verse);
-                    Filters.PLAIN_TEXT.toOSIS(li, "stub implementation");
-                    li.endVerse();
+
+                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+                    
+                    div.getContent().add(everse);
+
+                    Filters.PLAIN_TEXT.toOSIS(everse, "stub implementation");
                 }
-    
-                li.endSection();
             }
-    
-            return li.endDocument();
+            
+            BookData bdata = new BookData(osis);
+            return bdata;
         }
-        catch (FilterException ex)
+        catch (Exception ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }

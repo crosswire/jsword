@@ -16,6 +16,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.PassageTally;
@@ -115,7 +116,7 @@ public class DemoServlet extends HttpServlet
                 }
     
                 BookData data = version.getData(ref);
-                SAXEventProvider provider = data.getSAXEventProvider();
+                SAXEventProvider provider = JAXBUtil.getSAXEventProvider(data);
                 String text = style.applyStyleToString(provider, "simple.xsl");
     
                 request.setAttribute("reply", text);

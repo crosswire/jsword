@@ -28,13 +28,13 @@ import org.crosswire.common.util.LucidException;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class FilterException extends LucidException
+public class DataException extends LucidException
 {
     /**
      * Construct the Exception with a message
      * @param msg The resource id to read
      */
-    public FilterException(MsgBase msg)
+    public DataException(MsgBase msg)
     {
         super(msg);
     }
@@ -44,7 +44,7 @@ public class FilterException extends LucidException
      * @param msg The resource id to read
      * @param ex The nested Exception
      */
-    public FilterException(MsgBase msg, Throwable ex)
+    public DataException(MsgBase msg, Throwable ex)
     {
         super(msg, ex);
     }
@@ -54,7 +54,7 @@ public class FilterException extends LucidException
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public FilterException(MsgBase msg, Object[] params)
+    public DataException(MsgBase msg, Object[] params)
     {
         super(msg, params);
     }
@@ -65,7 +65,7 @@ public class FilterException extends LucidException
      * @param ex The nested Exception
      * @param params An array of parameters
      */
-    public FilterException(MsgBase msg, Throwable ex, Object[] params)
+    public DataException(MsgBase msg, Throwable ex, Object[] params)
     {
         super(msg, ex, params);
     }

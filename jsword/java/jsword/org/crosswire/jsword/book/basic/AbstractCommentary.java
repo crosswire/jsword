@@ -3,6 +3,9 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Iterator;
 
+import javax.xml.bind.JAXBException;
+
+import org.crosswire.common.util.LogicError;
 import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -11,10 +14,14 @@ import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.PassageKey;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
-import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.data.DataException;
 import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -79,7 +86,7 @@ public abstract class AbstractCommentary implements Commentary
         Passage ref = PassageFactory.createPassage();
         ref.add(verse);
         BookData bdata = getComments(ref);
-        
+
         return bdata != null;
     }
 
@@ -129,37 +136,60 @@ public abstract class AbstractCommentary implements Commentary
      */
     protected BookData failedGetData(Passage ref, MsgBase message)
     {
-        BookDataListener li = DataFactory.getInstance().createBookDataListnener();
-        li.startDocument(getBookMetaData().getInitials());
-
-        // For all the ranges in this Passage
-        Iterator rit = ref.rangeIterator();
-        while (rit.hasNext())
+        try
         {
-            VerseRange range = (VerseRange) rit.next();
-            li.startSection(range.toString());
+            String osisid = getBookMetaData().getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
 
-            // For all the verses in this range
-            Iterator vit = range.verseIterator();
-            while (vit.hasNext())
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible." + osisid);
+            text.setHeader(header);
+
+            osis.setOsisText(text);
+
+            // For all the ranges in this Passage
+            Iterator rit = ref.rangeIterator();
+            while (rit.hasNext())
             {
-                Verse verse = (Verse) vit.next();
+                VerseRange range = (VerseRange) rit.next();
+                Div div = JAXBUtil.factory().createDiv();
+                div.setDivTitle(range.toString());
 
-                li.startVerse(verse);
-                try
+                text.getDiv().add(div);
+
+                // For all the verses in this range
+                Iterator vit = range.verseIterator();
+                while (vit.hasNext())
                 {
-                    Filters.PLAIN_TEXT.toOSIS(li, message.getName());
+                    Verse verse = (Verse) vit.next();
+
+                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                    everse.setOsisID(verse.getBook() + "." + verse.getChapter() + "." + verse.getVerse());
+
+                    div.getContent().add(everse);
+
+                    try
+                    {
+                        Filters.PLAIN_TEXT.toOSIS(everse, message.getName());
+                    }
+                    catch (DataException ex)
+                    {
+                        // Ignore. There is not a lot we can do more.
+                    }
                 }
-                catch (FilterException ex)
-                {
-                    // Ignore. There is not a lot we can do more.
-                }
-                li.endVerse();
             }
 
-            li.endSection();
+            return new BookData(osis);
         }
-
-        return li.endDocument();
+        catch (JAXBException ex)
+        {
+            throw new LogicError();
+        }
     }
 }

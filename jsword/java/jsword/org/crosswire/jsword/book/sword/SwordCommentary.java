@@ -11,9 +11,12 @@ import org.crosswire.jsword.book.CommentaryMetaData;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractCommentary;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
-import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.Verse;
@@ -86,49 +89,64 @@ public class SwordCommentary extends AbstractCommentary implements Commentary
 
         try
         {
-            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
-            li.startDocument(getCommentaryMetaData().getInitials());
-    
-            String moduleCharset = config.getModuleCharset();
+            String osisid = getCommentaryMetaData().getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
+
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+            
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+
+            osis.setOsisText(text);
             
             // For all the ranges in this Passage
             Iterator rit = ref.rangeIterator();
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
-                li.startSection(range.toString());
-    
+                Div div = JAXBUtil.factory().createDiv();
+                div.setDivTitle(range.toString());
+                
+                text.getDiv().add(div);
+
                 // For all the verses in this range
                 Iterator vit = range.verseIterator();
                 while (vit.hasNext())
                 {
                     Verse verse = (Verse) vit.next();
-    
-                    li.startVerse(verse);
+
+                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+
+                    div.getContent().add(everse);
 
                     byte[] data = backend.getRawText(verse);
-                    String text = null;
+                    String charset = config.getModuleCharset();
+                    String txt = null;
                     try
                     {
-                        text = new String(data, moduleCharset);
+                        txt = new String(data, charset);
                     }
-                    catch (UnsupportedEncodingException unSupEnEx)
+                    catch (UnsupportedEncodingException ex)
                     {
                         // It is impossible! In case, use system default...
-                        log.error("Encoding: " + moduleCharset + " not supported", unSupEnEx);
-                        text = new String(data);
+                        log.error("Encoding: " + charset + " not supported", ex);
+                        txt = new String(data);
                     }
-                    config.getFilter().toOSIS(li, text);
 
-                    li.endVerse();
+                    config.getFilter().toOSIS(everse, txt);
                 }
-                
-                li.endSection();
             }
-    
-            return li.endDocument();
+
+            BookData bdata = new BookData(osis);
+            return bdata;
         }
-        catch (FilterException ex)
+        catch (Exception ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }

@@ -17,9 +17,12 @@ import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.basic.AbstractDictionary;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
-import org.crosswire.jsword.book.data.FilterException;
+import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 
 /**
  * A Sword version of Dictionary.
@@ -156,30 +159,46 @@ public class SwordDictionary extends AbstractDictionary implements Dictionary
 
         try
         {
-            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
+            String osisid = getDictionaryMetaData().getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
 
-            li.startDocument(getDictionaryMetaData().getInitials());
-            li.startSection(key.getText());
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+
+            osis.setOsisText(text);
+
+            Div div = JAXBUtil.factory().createDiv();
+            div.setDivTitle(key.getText());
+
+            text.getDiv().add(div);
 
             byte[] data = backend.getRawText(key);
-            String moduleCharset = config.getModuleCharset();
-            String text = null;
+            String charset = config.getModuleCharset();
+            String txt = null;
             try
             {
-                text = new String(data, moduleCharset);
+                txt = new String(data, charset);
             }
-            catch (UnsupportedEncodingException unSupEnEx)
+            catch (UnsupportedEncodingException ex)
             {
                 // It is impossible! In case, use system default...
-                log.error("Encoding: " + moduleCharset + " not supported", unSupEnEx);
-                text = new String(data);
+                log.error("Encoding: " + charset + " not supported", ex);
+                txt = new String(data);
             }
-            config.getFilter().toOSIS(li, text);
 
-            li.endSection();
-            return li.endDocument();
+            config.getFilter().toOSIS(div, txt);
+
+            BookData bdata = new BookData(osis);
+            return bdata;
         }
-        catch (FilterException ex)
+        catch (Exception ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }

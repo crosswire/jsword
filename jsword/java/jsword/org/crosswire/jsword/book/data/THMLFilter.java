@@ -2,7 +2,10 @@
 package org.crosswire.jsword.book.data;
 
 import java.io.StringReader;
+import java.util.LinkedList;
+import java.util.List;
 
+import javax.xml.bind.Element;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -41,22 +44,22 @@ public class THMLFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(BookDataListener li, String plain) throws FilterException
+    public void toOSIS(Element ele, String plain) throws DataException
     {
         try
         {
             // create a root element to house our document fragment
             StringReader in = new StringReader("<root>"+plain+"</root>");
             InputSource is = new InputSource(in);
-            
+
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser parser = spf.newSAXParser();
-            CustomHandler handler = new CustomHandler(li);
+            CustomHandler handler = new CustomHandler(ele);
             parser.parse(is, handler);
         }
         catch (Exception ex)
         {
-            throw new FilterException(Msg.THML_BADTOKEN, ex);
+            throw new DataException(Msg.THML_BADTOKEN, ex);
         }
     }
 
@@ -75,9 +78,17 @@ public class THMLFilter implements Filter
         /**
          * Simple ctor
          */
-        public CustomHandler(BookDataListener li)
+        public CustomHandler(Element ele)
         {
-            this.li = li;
+            stack.addFirst(ele);
+        }
+
+        /* (non-Javadoc)
+         * @see org.xml.sax.helpers.DefaultHandler#endDocument()
+         */
+        public void endDocument() throws SAXException
+        {
+            stack.removeFirst();
         }
 
         /* (non-Javadoc)
@@ -93,8 +104,11 @@ public class THMLFilter implements Filter
 
             if (localname.equals(TAG_FOO))
             {
-                li.startTitle();
+                //li.startTitle();
+                return;
             }
+
+            log.warn("unknown thml element: "+localname);
         }
         
         /* (non-Javadoc)
@@ -105,7 +119,9 @@ public class THMLFilter implements Filter
             String text = new String(data, offset, length);
 
             log.debug("found text="+text);
-            li.addText(text);
+            Element current = (Element) stack.getFirst();
+            List list = JAXBUtil.getList(current); 
+            list.add(text);
         }
 
         /* (non-Javadoc)
@@ -121,10 +137,11 @@ public class THMLFilter implements Filter
 
             if (localname.equals(TAG_FOO))
             {
-                li.endTitle();
+                //li.endTitle();
+                return;
             }
         }
 
-        private BookDataListener li;
+        private LinkedList stack = new LinkedList();
     }
 }

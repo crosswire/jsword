@@ -20,6 +20,7 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -28,7 +29,26 @@ import org.crosswire.jsword.util.Style;
 /**
  * All the methods in this class highlight some are of the API and how to use it.
  * 
- * @author Joe Walker [joe at getahead dot ltd dot uk]
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see docs.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @version $Id$
  */
 public class APIExamples
 {
@@ -46,7 +66,7 @@ public class APIExamples
         Bible bible = Defaults.getBibleMetaData().getBible();
 
         BookData data = bible.getData(ref);
-        String text = data.getPlainText();
+        String text = JAXBUtil.getPlainText(data);
 
         System.out.println("The plain text of Mat 1:1 is "+text);
     }
@@ -67,9 +87,9 @@ public class APIExamples
         Bible bible = Defaults.getBibleMetaData().getBible();
 
         BookData data = bible.getData(ref);
-        SAXEventProvider sep = data.getSAXEventProvider();
+        SAXEventProvider sep = JAXBUtil.getSAXEventProvider(data);
 
-        // It would be normal to store this in a class variable (field)
+        // It would be normal to store 'styler' in a class variable (field)
         Style styler = new Style("html");
         String html = styler.applyStyleToString(sep, "plain");
 
@@ -95,7 +115,7 @@ public class APIExamples
         System.out.println("The first Key in the default dictionary is "+first);
         
         BookData data = dict.getData(first);
-        System.out.println("And the text against that key is "+data.getPlainText());
+        System.out.println("And the text against that key is "+JAXBUtil.getPlainText(data));
     }
 
     /**

@@ -15,6 +15,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -233,7 +234,7 @@ public class LinkArray implements Serializable
                 ref.add(find);
 
                 BookData bdata = bible.getData(ref);
-                String text = bdata.getPlainText();   
+                String text = JAXBUtil.getPlainText(bdata);   
                 PassageTally temp = (PassageTally) bible.findPassage(new Search(text, false));
                 temp.setOrdering(PassageTally.ORDER_TALLY);
                 total.addAll(temp);

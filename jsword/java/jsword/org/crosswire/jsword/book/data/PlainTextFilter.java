@@ -1,6 +1,10 @@
 
 package org.crosswire.jsword.book.data;
 
+import java.util.List;
+
+import javax.xml.bind.Element;
+
 /**
  * Filter to convert plain text to OSIS format.
  * 
@@ -30,8 +34,9 @@ public class PlainTextFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(BookDataListener li, String plain) throws FilterException
+    public void toOSIS(Element ele, String plain) throws DataException
     {
-        li.addText(plain);
+        List list = JAXBUtil.getList(ele);
+        list.add(plain);
     }
 }

@@ -41,7 +41,7 @@ import org.crosswire.common.util.LogicError;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class VerseRange implements VerseBase
+public final class VerseRange implements VerseBase
 {
     /**
      * The default VerseRange is a single verse - Genesis 1:1. I didn't

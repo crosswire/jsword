@@ -29,6 +29,7 @@ import org.crosswire.jsword.book.Dictionary;
 import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.util.Style;
 
 /**
@@ -145,7 +146,7 @@ public class DictionaryPane extends JPanel
         {
             Key key = (Key) lstentries.getSelectedValue();
             BookData bdata = dict.getData(key);
-            SAXEventProvider provider = bdata.getSAXEventProvider();
+            SAXEventProvider provider = JAXBUtil.getSAXEventProvider(bdata);
             String text = style.applyStyleToString(provider, "simple.xsl");
 
             txtdisplay.setText(text);

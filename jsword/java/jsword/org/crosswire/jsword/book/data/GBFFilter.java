@@ -3,11 +3,16 @@ package org.crosswire.jsword.book.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.Element;
 import javax.xml.bind.JAXBException;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
+import org.crosswire.jsword.osis.Note;
+import org.crosswire.jsword.osis.Seg;
 
 /**
  * Filter to convert GBF data to OSIS format.
@@ -38,24 +43,27 @@ public class GBFFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.data.Filter#toOSIS(org.crosswire.jsword.book.data.BookDataListener, java.lang.String)
      */
-    public void toOSIS(BookDataListener li, String plain) throws FilterException
+    public void toOSIS(Element ele, String plain) throws DataException
     {
         try
         {
             List tokens = tokenize(plain);
-            parseTokens(li, tokens);
+            parseTokens(ele, tokens);
         }
         catch (JAXBException ex)
         {
-            throw new FilterException(Msg.GBF_JAXB, ex);
+            throw new DataException(Msg.GBF_JAXB, ex);
         }
     }
 
     /**
      * Go through a list of tokens and add them to the listener
      */
-    public void parseTokens(BookDataListener li, List tokens) throws JAXBException, FilterException
+    public void parseTokens(Element ele, List tokens) throws JAXBException, DataException
     {
+        LinkedList stack = new LinkedList();
+        stack.addFirst(ele);
+
         // For notes
         int marker = 1;
 
@@ -65,7 +73,9 @@ public class GBFFilter implements Filter
             Object token = it.next();
             if (token instanceof String)
             {
-                li.addText((String) token);
+                Element current = (Element) stack.getFirst();
+                List list = JAXBUtil.getList(current); 
+                list.add((String) token);
             }
             else if (token instanceof Tag)
             {
@@ -82,7 +92,13 @@ public class GBFFilter implements Filter
                     // ignore for simplicity
                     if (content.length() > 1)
                     {
-                        li.addNote(""+(marker++), content);
+                        Note note = JAXBUtil.factory().createNote();
+                        note.setN(""+(marker++));
+                        note.getContent().add(content);
+                        Element current = (Element) stack.getFirst();
+                        
+                        List list = JAXBUtil.getList(current); 
+                        list.add(note);
                     }
                 }
                 else if (tag.equals(PARAGRAPH))
@@ -91,11 +107,23 @@ public class GBFFilter implements Filter
                 }                
                 else if (tag.equals(ITALICS_START))
                 {
-                    li.startSegment();
+                    Seg seg = JAXBUtil.factory().createSeg();
+                    Element current = (Element) stack.getFirst();
+                    
+                    List list = JAXBUtil.getList(current); 
+                    list.add(seg);
+
+                    stack.addFirst(seg);
                 }                
                 else if (tag.equals(ITALICS_STOP))
                 {
-                    li.endSegment();
+                    Object top = stack.removeFirst();
+                    
+                    // Check that we are properly tree structured
+                    if (!(top instanceof Seg))
+                    {
+                        throw new LogicError();
+                    }
                 }                
                 else
                 {
@@ -105,9 +133,11 @@ public class GBFFilter implements Filter
             }
             else
             {
-                throw new FilterException(Msg.GBF_BADTOKEN, new Object[] { token });
+                throw new DataException(Msg.GBF_BADTOKEN, new Object[] { token });
             }
         }
+
+        stack.removeFirst();
     }
 
     /**

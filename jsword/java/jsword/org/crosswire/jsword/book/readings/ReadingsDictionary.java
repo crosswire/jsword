@@ -10,7 +10,10 @@ import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.xml.bind.JAXBException;
+
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Dictionary;
@@ -18,8 +21,12 @@ import org.crosswire.jsword.book.DictionaryMetaData;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
+import org.crosswire.jsword.book.data.JAXBUtil;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -167,14 +174,37 @@ public class ReadingsDictionary implements Dictionary
             throw new BookException(Msg.NOT_FOUND, new Object[] { key.getText() });
         }
 
-        BookDataListener li = DataFactory.getInstance().createBookDataListnener();
+        try
+        {
+            String osisid = dmd.getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
 
-        li.startDocument(dmd.getInitials());
-        li.startSection("Readings for "+key.getText());
-        li.addText(readings);
-        li.endSection();
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+            
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+            
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+            
+            osis.setOsisText(text);
+            
+            Div div = JAXBUtil.factory().createDiv();
+            div.setDivTitle("Readings for "+key.getText());
 
-        return li.endDocument();
+            text.getDiv().add(div);
+
+            div.getContent().add(readings);
+        
+            BookData bdata = new BookData(osis);
+            return bdata;
+        }
+        catch (JAXBException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /* (non-Javadoc)

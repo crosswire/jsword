@@ -13,6 +13,7 @@ import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.jdom.Document;
@@ -80,7 +81,7 @@ public class LocalRemoter implements Remoter
                 Passage ref = PassageFactory.createPassage(refstr);
                 BookData data = bible.getData(ref);
 
-                SAXEventProvider provider = data.getSAXEventProvider();
+                SAXEventProvider provider = JAXBUtil.getSAXEventProvider(data);
                 SAXHandler handler = new SAXHandler();
                 provider.provideSAXEvents(handler);
                 return handler.getDocument();

@@ -34,6 +34,8 @@ class Msg extends MsgBase
 
     static final Msg THML_BADTOKEN = new Msg("THML parse failed.");
 
+    static final Msg JAXB_ERROR = new Msg("JAXB Error");
+
     /** Initialise any resource bundles */
     static
     {

@@ -9,7 +9,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.basic.AbstractBible;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.DataFactory;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.jdom.Document;
 import org.xml.sax.SAXException;
@@ -79,7 +79,7 @@ public class RemoteBible extends AbstractBible
             Document doc = remoter.execute(method);
             SAXEventProvider provider = new JDOMSAXEventProvider(doc);
 
-            return DataFactory.getInstance().createBibleData(provider);
+            return JAXBUtil.createBibleData(provider);
         }
         catch (RemoterException ex)
         {

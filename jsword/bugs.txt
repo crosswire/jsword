@@ -5,8 +5,8 @@ Tests
 - write tests to check support for all modules
 
 Filters
-- GBF add tags: RB, WG****, WHO****, WTH****, WTP, WT*******
-- THML enable debug tags
+- GBF add tags: RB, WG****, WHO****, WTH****, WTP, WT******* (Jacky)
+- Check THML debug tags needing work (Joe)
 - OSIS->text filter does not work for dictionaries
 
 GUI
@@ -17,9 +17,12 @@ GUI
 
 Sword Modules
 - ISV (NT only?) refs in with text????
-- RSV for Rev 22:21 contains [bizarre]
+- RSV for Rev 22:21 contains bizarre markup
 - KJV1769+Strong and Young's - stange <small><br>
 - ACV/AKJV dies on Jer 7:1-7:34, Mal 1:1-14
+- zLD
+- GenBook
+- Locale/font support (Joe)
 
 Passage
 - chapter ranges are not displayed distinctly from verse ranges

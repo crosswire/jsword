@@ -17,10 +17,8 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
-import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.local.LocalURLBibleMetaData;
 import org.crosswire.jsword.book.search.Index;
@@ -28,6 +26,11 @@ import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.book.search.SearchEngineFactory;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -179,8 +182,20 @@ public class JDBCBible extends LocalURLBible implements Index
     {
         try
         {
-            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
-            li.startDocument(getBibleMetaData().getInitials());
+            String osisid = getBibleMetaData().getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
+            
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+            
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+            
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+            
+            osis.setOsisText(text);
 
             Iterator it = ref.rangeIterator();
             while (it.hasNext())
@@ -191,7 +206,10 @@ public class JDBCBible extends LocalURLBible implements Index
                 int start_id = BibleInfo.verseOrdinal(start.getRefArray());
                 int end_id = BibleInfo.verseOrdinal(end.getRefArray());
 
-                li.startSection(range.getName());
+                Div div = JAXBUtil.factory().createDiv();
+                div.setDivTitle(range.getName());
+
+                text.getDiv().add(div);
 
                 doc_stmt.setInt(1, start_id);
                 doc_stmt.setInt(2, end_id);
@@ -202,30 +220,37 @@ public class JDBCBible extends LocalURLBible implements Index
                     Verse verse = new Verse(rs.getInt(1), rs.getInt(2), rs.getInt(3));
                     rs.getBoolean(4); // ignored, but perhaps we should still be getting things in order?
                     String vtext = rs.getString(5);
-                    if (vtext == null) vtext = "";
+                    if (vtext == null)
+                    {
+                        vtext = "";
+                    }
 
-                    li.startVerse(verse);
-                    Filters.PLAIN_TEXT.toOSIS(li, JDBCBibleUtil.processText(vtext));
-                    li.endVerse();
+                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+
+                    div.getContent().add(everse);
+
+                    String txt = JDBCBibleUtil.processText(vtext);
+                    Filters.PLAIN_TEXT.toOSIS(everse, txt);
                 }
 
-                li.endSection();
                 rs.close();
             }
-
-            return li.endDocument();
+            
+            BookData bdata = new BookData(osis);
+            return bdata;
         }
         catch (NoSuchVerseException ex)
         {
             throw new LogicError(ex);
         }
-        catch (FilterException ex)
-        {
-            throw new BookException(Msg.FILTER_FAIL, ex);
-        }
         catch (SQLException ex)
         {
             throw new BookException(Msg.BIBLE_DB, ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BookException(Msg.FILTER_FAIL, ex);
         }
     }
 

@@ -56,7 +56,7 @@ import org.crosswire.common.util.LogicError;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class Verse implements VerseBase
+public final class Verse implements VerseBase, Comparable
 {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this

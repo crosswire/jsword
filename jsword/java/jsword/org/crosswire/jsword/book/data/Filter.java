@@ -1,6 +1,8 @@
 
 package org.crosswire.jsword.book.data;
 
+import javax.xml.bind.Element;
+
 /**
  * A generic interface for things that can convert a String into OSIS data.
  * 
@@ -33,5 +35,5 @@ public interface Filter
      * @param plain The encoded text
      * @return Verse OSIS data
      */
-    public void toOSIS(BookDataListener li, String plain) throws FilterException;
+    public void toOSIS(Element li, String plain) throws DataException;
 }

@@ -14,18 +14,19 @@ import org.crosswire.jsword.book.BookUtil;
 import org.crosswire.jsword.book.ProgressListener;
 import org.crosswire.jsword.book.Search;
 import org.crosswire.jsword.book.data.BookData;
-import org.crosswire.jsword.book.data.BookDataListener;
-import org.crosswire.jsword.book.data.DataFactory;
-import org.crosswire.jsword.book.data.FilterException;
 import org.crosswire.jsword.book.data.Filters;
-import org.crosswire.jsword.book.data.SectionData;
-import org.crosswire.jsword.book.data.VerseData;
+import org.crosswire.jsword.book.data.JAXBUtil;
 import org.crosswire.jsword.book.local.LocalURLBible;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.Parser;
 import org.crosswire.jsword.book.search.ParserFactory;
 import org.crosswire.jsword.book.search.SearchEngine;
 import org.crosswire.jsword.book.search.SearchEngineFactory;
+import org.crosswire.jsword.osis.Div;
+import org.crosswire.jsword.osis.Header;
+import org.crosswire.jsword.osis.Osis;
+import org.crosswire.jsword.osis.OsisText;
+import org.crosswire.jsword.osis.Work;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
@@ -340,33 +341,49 @@ public class RawBible extends LocalURLBible implements Index
     {
         try
         {
-            BookDataListener li = DataFactory.getInstance().createBookDataListnener();
-            li.startDocument(getBibleMetaData().getInitials());
-    
+            String osisid = getBibleMetaData().getInitials();
+            Osis osis = JAXBUtil.factory().createOsis();
+            
+            Work work = JAXBUtil.factory().createWork();
+            work.setOsisWork(osisid);
+            
+            Header header = JAXBUtil.factory().createHeader();
+            header.getWork().add(work);
+            
+            OsisText text = JAXBUtil.factory().createOsisText();
+            text.setOsisIDWork("Bible."+osisid);
+            text.setHeader(header);
+            
+            osis.setOsisText(text);
+
             Iterator it = ref.rangeIterator();
             while (it.hasNext())
             {
                 VerseRange range = (VerseRange) it.next();
-                li.startSection(range.getName());
+                Div div = JAXBUtil.factory().createDiv();
+                div.setDivTitle(range.getName());
+                
+                text.getDiv().add(div);
                 
                 Verse[] array = range.toVerseArray();
                 for (int i=0; i<array.length; i++)
                 {
                     Verse verse = array[i];
-                    li.startVerse(verse);
-                
-                    String text = getText(new VerseRange(verse));
-                    Filters.PLAIN_TEXT.toOSIS(li, text);
-                
-                    li.endVerse();
+
+                    org.crosswire.jsword.osis.Verse everse = JAXBUtil.factory().createVerse();
+                    everse.setOsisID(verse.getBook()+"."+verse.getChapter()+"."+verse.getVerse());
+
+                    div.getContent().add(everse);
+
+                    String txt = getText(new VerseRange(verse));
+                    Filters.PLAIN_TEXT.toOSIS(everse, txt);                
                 }
-                
-                li.endSection();
             }
-    
-            return li.endDocument();
+
+            BookData bdata = new BookData(osis);
+            return bdata;
         }
-        catch (FilterException ex)
+        catch (Exception ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
@@ -446,15 +463,15 @@ public class RawBible extends LocalURLBible implements Index
     public void setDocument(Verse verse, BookData bdata) throws BookException
     {
         // For all of the sections
-        for (Iterator sit = bdata.getSectionDatas(); sit.hasNext(); )
+        for (Iterator sit = JAXBUtil.getSectionDatas(bdata); sit.hasNext(); )
         {
-            SectionData section = (SectionData) sit.next();
+            Div div = (Div) sit.next();
 
             // For all of the Verses in the section
-            for (Iterator vit=section.getRefDatas(); vit.hasNext(); )
+            for (Iterator vit=JAXBUtil.getRefDatas(div); vit.hasNext(); )
             {
-                VerseData vel = (VerseData) vit.next();
-                String text = vel.getPlainText();
+                org.crosswire.jsword.osis.Verse overse = (org.crosswire.jsword.osis.Verse) vit.next();
+                String text = JAXBUtil.getPlainText(overse);
 
                 // Is this verse part of a new paragraph? Since the move to OSIS
                 // the concept of new para is not what it was. I don't intend to

@@ -1,9 +1,7 @@
 
 package org.crosswire.jsword.book.data;
 
-import java.util.Iterator;
-
-import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.osis.Osis;
 
 /**
  * Basic section of BookData.
@@ -29,26 +27,26 @@ import org.crosswire.common.xml.SAXEventProvider;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public interface BookData
+public class BookData
 {
     /**
-     * Output the current data as a SAX stream.
-     * @param handler The Place to post SAX events
+     * Ctor
      */
-    public abstract SAXEventProvider getSAXEventProvider();
+    public BookData(Osis osis)
+    {
+        this.osis = osis;
+    }
 
     /**
-     * This is an enumeration through all the sections in this Document.
-     * Each of the sections will be able to give a list of the Verses
-     * that it contains.
-     * @return The list of sections
+     * Accessor for the root OSIS element
      */
-    public abstract Iterator getSectionDatas();
+    public Osis getOsis()
+    {
+        return osis;
+    }
 
     /**
-     * A simplified plain text version of the data in this verse with all
-     * the markup stripped out.
-     * @return The Bible text without markup
+     * The root where we read data from
      */
-    public abstract String getPlainText();
+    private Osis osis;
 }
