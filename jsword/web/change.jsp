@@ -6,7 +6,8 @@
 <h2>Change History</h2>
 
 <p>The following is the broad outline of the version of JSword and Project-B 
-  (the old name for JSword).</p>
+(the old name for JSword).</p>
+
 <ul>
   <li><strong>Version 0.90</strong> - JSWORD - Merging with JSword</li>
   <li><strong>Version 0.80</strong> - SWORD1 - Troy just did a call for 

@@ -5,8 +5,8 @@
 
 <h1>JSword - XML</h1>
 
-This is some example XML that could have been produced by the Book
-package.
+<p>This is some example XML that could have been produced by the Book
+package.</p>
 
 <pre>
 &lt;?xml version="1.0"?>

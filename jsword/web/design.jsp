@@ -9,6 +9,7 @@
 interfaces are arranged and explains some of the design decisions. Note 
 that most of what is documented here is current for JSword - there are 
 a few sections that reflect where we will be given a bit more re-factoring.</p>
+
 <p>The most important thing any Bible program does is to access Bible data, and in 
 more general terms, book data. There may be many different sources of 
 data - Bibles stored in different formats, or even on remote systems, 

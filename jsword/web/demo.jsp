@@ -13,8 +13,11 @@ if (view == null) view = "";
 %>
 
 <h1>Live</h1>
-<p>This is a quick demonstration of how easy it is to write new front-ends 
-  to JSword.</p>
+<p>
+This is a quick demonstration of how easy it is to write new front-ends 
+to JSword.
+</p>
+
 <p>Please enter a reference to view or a search:</p>
 <table width="100%">
   <tr>

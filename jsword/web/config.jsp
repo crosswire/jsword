@@ -4,7 +4,9 @@
 </jsp:include>
 
 <h1>The Config Sub-System</h1>
+
 <h2>Introduction</h2>
+
 <p>Config is (mostly) all kept in a few packages in the util source tree. 
   The design aims for the following goals:</p>
 <ul>
@@ -20,6 +22,7 @@
 	bit-rot, and should not be considered useful. It does however prove 
 	the view independance concept.</li>
 </ul>
+
 <h3>How To Use Config</h3>
 <p>There are a number of simple steps. First a config.xml file is needed 
   to tell the config system what to configure and how.</p>

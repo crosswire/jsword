@@ -7,18 +7,26 @@
 
 <h2>CVS Access</h2>
 	  
-<p>There is a mailing list at <a href="mailto:jsword-devel@crosswire.org">jsword-devel@crosswire.org</a>. 
-To join, please fill out your email address in on <a href="http://www.crosswire.org/mailman/listinfo/jsword-devel ">this</a> 
-form. Or you can read the archives <a href='http://www.crosswire.org/pipermail/jsword-devel/'>here</a></p>
+<p>
+There is a mailing list at
+<a href="mailto:jsword-devel@crosswire.org">jsword-devel@crosswire.org</a>. 
+To join, please fill out your email address in on
+<a href="http://www.crosswire.org/mailman/listinfo/jsword-devel">this</a> 
+form. Or you can read the archives
+<a href='http://www.crosswire.org/pipermail/jsword-devel/'>here</a></p>
 
-<p> CVS is also hosted at crosswire. The CVS root is:<br />
+<p>
+CVS is also hosted at crosswire. The CVS root is:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<code>:pserver:anonymous@cvs.crosswire.org:/cvs/jsword</code> 
 <br />
 And the password is "anonymous". If you need to get at the code but are not sure about
-CVS then join the mailing list and we'll sort something out.</p>
+CVS then join the mailing list and we'll sort something out.
+</p>
 
-<p>When you first check files out of CVS you should run ant using the all target
-to generate all the source files required for tools like eclipse.</p>
+<p>
+When you first check files out of CVS you should run ant using the all target
+to generate all the source files required for tools like eclipse.
+</p>
 
 <h2>Documentation</h2>
 <table width="100%" cellpadding="5" cellspacing="0">
