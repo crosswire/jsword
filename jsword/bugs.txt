@@ -6,12 +6,6 @@ roadmap for the next few releases:
 We are here
 --------------------------------------------------------------------------------
 
-- check recent bug fixes have not spoilt JNLP
-
---------------------------------------------------------------------------------
-RELEASE v0.9.7
---------------------------------------------------------------------------------
-
 Swing
 - status bar re-size (is this still bothering people?)
 - check i18n basic works
@@ -29,12 +23,9 @@ Sword
 Other
 - split out swing packages, call Bible Desktop
 - split out web stuff, call jsword-web?
-- what version of findbugs do we use
 
 Web
 - auto test for web demo
-- multiple jnlp releases
-- restructured wrt the download and installation. 
 
 Install
 - save install sites
@@ -42,10 +33,7 @@ Install
 - warning about web access in install
 
 SwingUI
-- make more like jnlp
-  make ResourceUtil do a lookup first in the ~/.jsword for the named file?
-  modify the classpath to have ~/.jsword/? at the beginning of the path / roll our own classloader.
-- check it works
+- make structure more like jnlp
 
 --------------------------------------------------------------------------------
 RELEASE v0.9.8
