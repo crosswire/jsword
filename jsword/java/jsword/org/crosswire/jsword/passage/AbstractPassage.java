@@ -8,8 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
@@ -69,7 +71,9 @@ public abstract class AbstractPassage implements Passage
         // This gets us a shallow copy
         AbstractPassage copy = (AbstractPassage) super.clone();
 
-        copy.listeners = (Vector) listeners.clone();
+        copy.listeners = new ArrayList();
+        copy.listeners.addAll(listeners);
+
         copy.original_name  = original_name;
 
         return copy;
@@ -81,7 +85,10 @@ public abstract class AbstractPassage implements Passage
     public boolean equals(Object obj)
     {
         // Since this can not be null
-        if (obj == null) return false;
+        if (obj == null)
+        {
+            return false;
+        }
 
         // This is cheating beacuse I am supposed to say:
         // <code>!obj.getClass().equals(this.getClass())</code>
@@ -483,9 +490,9 @@ public abstract class AbstractPassage implements Passage
 
         Iterator that_it = null;
 
-        if (that instanceof Passage)
+        if (that instanceof RangedPassage)
         {
-            that_it = ((Passage) that).rangeIterator();
+            that_it = that.rangeIterator();
         }
         else
         {
@@ -500,7 +507,9 @@ public abstract class AbstractPassage implements Passage
 
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest())
-            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
+        {
+        	fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+        }
     }
 
     /* (non-Javadoc)
@@ -514,9 +523,9 @@ public abstract class AbstractPassage implements Passage
 
         Iterator that_it = null;
 
-        if (that instanceof Passage)
+        if (that instanceof RangedPassage)
         {
-            that_it = ((Passage) that).rangeIterator();
+            that_it = that.rangeIterator();
         }
         else
         {
@@ -531,7 +540,9 @@ public abstract class AbstractPassage implements Passage
 
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest())
+        {
             fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
+        }
     }
 
     /* (non-Javadoc)
@@ -564,7 +575,9 @@ public abstract class AbstractPassage implements Passage
 
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest())
+        {
             fireIntervalRemoved(this, null, null);
+        }
     }
 
     /* (non-Javadoc)
@@ -578,7 +591,9 @@ public abstract class AbstractPassage implements Passage
         remove(VerseRange.getWholeBibleVerseRange());
 
         if (lowerEventSuppresionAndTest())
+        {
             fireIntervalRemoved(this, null, null);
+        }
     }
 
     /* (non-Javadoc)
@@ -608,7 +623,9 @@ public abstract class AbstractPassage implements Passage
 
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest())
+        {
             fireIntervalAdded(this, null, null);
+        }
     }
 
     /* (non-Javadoc)
@@ -647,8 +664,10 @@ public abstract class AbstractPassage implements Passage
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest())
-            fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses()-1));
+		if (lowerEventSuppresionAndTest())
+		{
+			fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses() - 1));
+        }
     }
 
     /* (non-Javadoc)
@@ -672,7 +691,7 @@ public abstract class AbstractPassage implements Passage
     {
         synchronized (listeners)
         {
-            listeners.addElement(li);
+            listeners.add(li);
         }
     }
 
@@ -683,7 +702,7 @@ public abstract class AbstractPassage implements Passage
     {
         synchronized (listeners)
         {
-            listeners.removeElement(li);
+            listeners.remove(li);
         }
     }
 
@@ -698,23 +717,26 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireIntervalAdded(Object source, Verse start, Verse end)
     {
-        if (suppress_events != 0) return;
-
-        Vector temp;
+		if (suppress_events != 0)
+		{
+			return;
+		}
 
         // Create Event
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_ADDED, start, end);
 
         // Copy listener vector so it won't change while firing
+        List temp;
         synchronized (listeners)
         {
-            temp = (Vector) listeners.clone();
+            temp = new ArrayList();
+            temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i=0; i<temp.size(); i++)
         {
-            PassageListener rl = (PassageListener) temp.elementAt(i);
+            PassageListener rl = (PassageListener) temp.get(i);
             rl.versesAdded(ev);
         }
     }
@@ -730,23 +752,26 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireIntervalRemoved(Object source, Verse start, Verse end)
     {
-        if (suppress_events != 0) return;
-
-        Vector temp;
+		if (suppress_events != 0)
+		{
+			return;
+		}
 
         // Create Event
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_REMOVED, start, end);
 
         // Copy listener vector so it won't change while firing
+        List temp;
         synchronized (listeners)
         {
-            temp = (Vector) listeners.clone();
+            temp = new ArrayList();
+            temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i=0; i<temp.size(); i++)
         {
-            PassageListener rl = (PassageListener) temp.elementAt(i);
+            PassageListener rl = (PassageListener) temp.get(i);
             rl.versesRemoved(ev);
         }
     }
@@ -762,23 +787,26 @@ public abstract class AbstractPassage implements Passage
      */
     protected void fireContentsChanged(Object source, Verse start, Verse end)
     {
-        if (suppress_events != 0) return;
-
-        Vector temp;
+		if (suppress_events != 0)
+		{
+			return;
+		}
 
         // Create Event
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_CHANGED, start, end);
 
         // Copy listener vector so it won't change while firing
+        List temp;
         synchronized (listeners)
         {
-            temp = (Vector) listeners.clone();
+            temp = new ArrayList();
+            temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i=0; i<temp.size(); i++)
         {
-            PassageListener rl = (PassageListener) temp.elementAt(i);
+            PassageListener rl = (PassageListener) temp.get(i);
             rl.versesChanged(ev);
         }
     }
@@ -857,10 +885,14 @@ public abstract class AbstractPassage implements Passage
         skip_normalization--;
 
         if (skip_normalization == 0)
+        {
             normalize();
+        }
 
         if (skip_normalization < 0)
+        {
             throw new LogicError();
+        }
     }
 
     /**
@@ -894,7 +926,9 @@ public abstract class AbstractPassage implements Passage
         suppress_events--;
 
         if (suppress_events < 0)
+        {
             throw new LogicError();
+        }
 
         return (suppress_events == 0);
     }
@@ -909,7 +943,9 @@ public abstract class AbstractPassage implements Passage
     protected static VerseRange toVerseRange(Object base) throws ClassCastException
     {
         if (base == null)
+        {
             throw new NullPointerException();
+        }
 
         if (base instanceof VerseRange)
         {
@@ -933,7 +969,9 @@ public abstract class AbstractPassage implements Passage
     protected static Verse[] toVerseArray(Object base) throws ClassCastException
     {
         if (base == null)
+        {
             throw new NullPointerException();
+        }
 
         if (base instanceof VerseRange)
         {
@@ -1023,7 +1061,10 @@ public abstract class AbstractPassage implements Passage
                 }
 
                 next_verse = (Verse) it.next();
-                if (!end.adjacentTo(next_verse)) break;
+                if (!end.adjacentTo(next_verse))
+                {
+                    break;
+                }
                 end = next_verse;
             }
 
@@ -1085,7 +1126,6 @@ public abstract class AbstractPassage implements Passage
 
             out.writeObject(store);
         }
-
         // if distinct is not bigger than ranged
         else if (distinct_size <= ranged_size)
         {
@@ -1101,7 +1141,6 @@ public abstract class AbstractPassage implements Passage
                 out.writeInt(verse.getOrdinal());
             }
         }
-
         // otherwise use ranges
         else
         {
@@ -1152,7 +1191,9 @@ public abstract class AbstractPassage implements Passage
                 for (int i=0; i<BibleInfo.versesInBible(); i++)
                 {
                     if (store.get(i))
+                    {
                         add(new Verse(i+1));
+                    }
                 }
                 break;
 
@@ -1209,7 +1250,7 @@ public abstract class AbstractPassage implements Passage
     protected static final int METHOD_COUNT = 3;
 
     /** Support for change notification */
-    protected transient Vector listeners = new Vector();
+    protected transient List listeners = new Vector();
 
     /** The original string for picky users */
     protected transient String original_name = null;

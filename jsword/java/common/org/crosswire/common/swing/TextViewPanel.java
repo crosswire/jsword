@@ -21,13 +21,13 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ProgressMonitorInputStream;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
@@ -183,7 +183,7 @@ public class TextViewPanel extends JPanel
 
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(this, BorderLayout.CENTER);
 

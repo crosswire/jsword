@@ -71,15 +71,15 @@ public abstract class InstsDisk extends Disk implements Insts
      * @param leafname The leaf name to read/write
      * @param create Should we start all over again
      */
-    private void ctor(RawBible raw, String leafname, boolean create) throws IOException
+    private void ctor(RawBible newraw, String newleafname, boolean newcreate) throws IOException
     {
-        this.raw = raw;
-        this.leafname = leafname;
-        this.create = create;
+        this.raw = newraw;
+        this.leafname = newleafname;
+        this.create = newcreate;
 
         index = new long[BibleInfo.versesInBible()];
 
-        if (create)
+        if (newcreate)
         {
             save();
         }

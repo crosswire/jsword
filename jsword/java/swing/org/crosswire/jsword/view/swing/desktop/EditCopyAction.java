@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -44,7 +45,7 @@ public class EditCopyAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Copy16.gif",
               "toolbarButtonGraphics/general/Copy24.gif",
               "Copy", "Copy the selection.",
-              'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.ALT_MASK, false));
+              'C', KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK, false));
     }
 
     /* (non-Javadoc)

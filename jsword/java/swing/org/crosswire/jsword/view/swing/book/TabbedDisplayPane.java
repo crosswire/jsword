@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkListener;
@@ -73,7 +74,7 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
      */
     private void jbInit()
     {
-        tab_main.setTabPlacement(JTabbedPane.BOTTOM);
+        tab_main.setTabPlacement(SwingConstants.BOTTOM);
         tab_main.addChangeListener(new ChangeListener()
         {
             public void stateChanged(ChangeEvent ev)

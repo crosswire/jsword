@@ -364,19 +364,19 @@ public class PassageParentTst extends TestCase
     {
         for (int i=0; i<1000; i++)
         {
-            assertTrue(!empty.contains((VerseBase) gen11));
-            assertTrue(gen1_135.contains((VerseBase) gen11));
-            assertTrue(!gen1_135.contains((VerseBase) gen12));
-            assertTrue(gen1_135.contains((VerseBase) gen13));
-            assertTrue(gen1_135.contains((VerseBase) gen15));
-            assertTrue(gen1_135.contains((VerseBase) gen11_1));
-            assertTrue(!gen1_135.contains((VerseBase) gen11_2));
-            assertTrue(!gen1_135.contains((VerseBase) gen12_1));
-            assertTrue(!gen1_135.contains((VerseBase) exo21_1));
-            assertTrue(!exo2a_3b.contains((VerseBase) gen11_1));
-            assertTrue(exo2a_3b.contains((VerseBase) exo21_1));
-            assertTrue(exo2a_3b.contains((VerseBase) exo21_2));
-            assertTrue(exo2a_3b.contains((VerseBase) exo22_1));
+            assertTrue(!empty.contains(gen11));
+            assertTrue(gen1_135.contains(gen11));
+            assertTrue(!gen1_135.contains(gen12));
+            assertTrue(gen1_135.contains(gen13));
+            assertTrue(gen1_135.contains(gen15));
+            assertTrue(gen1_135.contains(gen11_1));
+            assertTrue(!gen1_135.contains(gen11_2));
+            assertTrue(!gen1_135.contains(gen12_1));
+            assertTrue(!gen1_135.contains(exo21_1));
+            assertTrue(!exo2a_3b.contains(gen11_1));
+            assertTrue(exo2a_3b.contains(exo21_1));
+            assertTrue(exo2a_3b.contains(exo21_2));
+            assertTrue(exo2a_3b.contains(exo22_1));
         }
     }
 
@@ -393,7 +393,7 @@ public class PassageParentTst extends TestCase
         assertEquals(PassageFactory.createPassage("Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").toString(), "Gen 1:1-3, 22:2-10, Rev 22");
         assertEquals(PassageFactory.createPassage("").toString(), "");
         assertEquals(PassageFactory.createPassage("gen 1 1-50:26,e,e 1 2,e 1 3-10").toString(), "Gen-Exo");
-        try { PassageFactory.createPassage((String) null); fail(); }
+        try { PassageFactory.createPassage(null); fail(); }
         catch (NullPointerException ex) { }
     }
 
@@ -411,96 +411,96 @@ public class PassageParentTst extends TestCase
     public void testWriteBlur() throws Exception
     {
         temp = (Passage) gen1_135.clone();
-        temp.blur(0, Verse.RESTRICT_CHAPTER);
+        temp.blur(0, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
-        temp.blur(0, Verse.RESTRICT_NONE);
+        temp.blur(0, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
-        temp.blur(1, Verse.RESTRICT_CHAPTER);
+        temp.blur(1, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-6"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(1, Verse.RESTRICT_NONE);
+        temp.blur(1, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-6"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(2, Verse.RESTRICT_CHAPTER);
+        temp.blur(2, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-7"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(2, Verse.RESTRICT_NONE);
+        temp.blur(2, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-7"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(12, Verse.RESTRICT_CHAPTER);
+        temp.blur(12, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-17"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(12, Verse.RESTRICT_NONE);
+        temp.blur(12, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-17"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(26, Verse.RESTRICT_CHAPTER);
+        temp.blur(26, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-31"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(26, Verse.RESTRICT_NONE);
+        temp.blur(26, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-31"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(27, Verse.RESTRICT_CHAPTER);
+        temp.blur(27, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-31"));
         temp = (Passage) gen1_135.clone();
-        temp.blur(27, Verse.RESTRICT_NONE);
+        temp.blur(27, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-2:1"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(0, Verse.RESTRICT_CHAPTER);
+        temp.blur(0, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-10, Exo 3:1-11"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(0, Verse.RESTRICT_NONE);
+        temp.blur(0, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-10, Exo 3:1-11"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(1, Verse.RESTRICT_CHAPTER);
+        temp.blur(1, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-11, Exo 3:1-12"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(1, Verse.RESTRICT_NONE);
+        temp.blur(1, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 1:22-2:11, Exo 2:25-3:12"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(2, Verse.RESTRICT_CHAPTER);
+        temp.blur(2, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-12, Exo 3:1-13"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(2, Verse.RESTRICT_NONE);
+        temp.blur(2, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 1:21-2:12, Exo 2:24-3:13"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(3, Verse.RESTRICT_CHAPTER);
+        temp.blur(3, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-13, Exo 3:1-14"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(3, Verse.RESTRICT_NONE);
+        temp.blur(3, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 1:20-2:13, Exo 2:23-3:14"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(14, Verse.RESTRICT_CHAPTER);
+        temp.blur(14, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-24, Exo 3:1-22"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(14, Verse.RESTRICT_NONE);
+        temp.blur(14, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 1:9-2:24, Exo 2:12-4:3"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(15, Verse.RESTRICT_CHAPTER);
+        temp.blur(15, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-25, Exo 3:1-22"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(15, Verse.RESTRICT_NONE);
+        temp.blur(15, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 1:8-2:25, Exo 2:11-4:4"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(16, Verse.RESTRICT_CHAPTER);
+        temp.blur(16, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-3:22"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(16, Verse.RESTRICT_NONE);
+        temp.blur(16, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Exo 1:7-4:5"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(99999, Verse.RESTRICT_CHAPTER);
+        temp.blur(99999, PassageConstants.RESTRICT_CHAPTER);
         assertEquals(temp, PassageFactory.createPassage("Exo 2:1-3:22"));
         temp = (Passage) exo2a_3b.clone();
-        temp.blur(99999, Verse.RESTRICT_NONE);
+        temp.blur(99999, PassageConstants.RESTRICT_NONE);
         assertEquals(temp, PassageFactory.createPassage("Gen 1:1-Rev 22:21"));
-        try { temp.blur(-1, Verse.RESTRICT_NONE); fail(temp.toString()); }
+        try { temp.blur(-1, PassageConstants.RESTRICT_NONE); fail(temp.toString()); }
         catch (IllegalArgumentException ex) { }
         try { temp.blur(-1, -1); fail(temp.toString()); }
         catch (IllegalArgumentException ex) { }
         try { temp.blur(-1, 5); fail(temp.toString()); }
         catch (IllegalArgumentException ex) { }
-        try { temp.blur(-1, Verse.RESTRICT_BOOK); fail(temp.toString()); }
+        try { temp.blur(-1, PassageConstants.RESTRICT_BOOK); fail(temp.toString()); }
         catch (IllegalArgumentException ex) { }
     }
 
@@ -696,19 +696,19 @@ public class PassageParentTst extends TestCase
 
     public void testWriteContainsVerseBase() throws Exception
     {
-        assertTrue(!empty.contains((VerseBase) gen11));
-        assertTrue(gen1_135.contains((VerseBase) gen11));
-        assertTrue(!gen1_135.contains((VerseBase) gen12));
-        assertTrue(gen1_135.contains((VerseBase) gen13));
-        assertTrue(gen1_135.contains((VerseBase) gen15));
-        assertTrue(gen1_135.contains((VerseBase) gen11_1));
-        assertTrue(!gen1_135.contains((VerseBase) gen11_2));
-        assertTrue(!gen1_135.contains((VerseBase) gen12_1));
-        assertTrue(!gen1_135.contains((VerseBase) exo21_1));
-        assertTrue(!exo2a_3b.contains((VerseBase) gen11_1));
-        assertTrue(exo2a_3b.contains((VerseBase) exo21_1));
-        assertTrue(exo2a_3b.contains((VerseBase) exo21_2));
-        assertTrue(exo2a_3b.contains((VerseBase) exo22_1));
+        assertTrue(!empty.contains(gen11));
+        assertTrue(gen1_135.contains(gen11));
+        assertTrue(!gen1_135.contains(gen12));
+        assertTrue(gen1_135.contains(gen13));
+        assertTrue(gen1_135.contains(gen15));
+        assertTrue(gen1_135.contains(gen11_1));
+        assertTrue(!gen1_135.contains(gen11_2));
+        assertTrue(!gen1_135.contains(gen12_1));
+        assertTrue(!gen1_135.contains(exo21_1));
+        assertTrue(!exo2a_3b.contains(gen11_1));
+        assertTrue(exo2a_3b.contains(exo21_1));
+        assertTrue(exo2a_3b.contains(exo21_2));
+        assertTrue(exo2a_3b.contains(exo22_1));
     }
 
     public void testWriteAdd() throws Exception

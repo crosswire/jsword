@@ -62,20 +62,20 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Constructor for SerSearchEngine.
      */
-    public void init(Bible bible, URL url) throws BookException
+    public void init(Bible newbible, URL newurl) throws BookException
     {
         try
         {
-            this.bible = bible;
-            this.url = url;
+            this.bible = newbible;
+            this.url = newurl;
 
             isindexed = isIndexed();
             
-            URL dataurl = NetUtil.lengthenURL(url, "ref.data");
+            URL dataurl = NetUtil.lengthenURL(newurl, "ref.data");
 
             if (isindexed)
             {
-                URL indexurl = NetUtil.lengthenURL(url, "ref.index");
+                URL indexurl = NetUtil.lengthenURL(newurl, "ref.index");
 
                 // We don't need to create any indexes, they just need loading
                 indexin = new BufferedReader(new InputStreamReader(indexurl.openStream()));
@@ -263,7 +263,7 @@ public class SerSearchEngine implements SearchEngine, Index
      * Read from the given source version to generate ourselves
      * @param version The source
      */
-    protected void generateSearchIndex(Job job) throws BookException
+    protected void generateSearchIndex(Job ajob) throws BookException
     {
         // create a word/passage hashmap
         Map matchmap = new HashMap();
@@ -282,7 +282,7 @@ public class SerSearchEngine implements SearchEngine, Index
                 if (percent != newpercent)
                 {
                     percent = newpercent;
-                    job.setProgress(percent, "Finding Words ("+verse.getName()+")");
+                    ajob.setProgress(percent, "Finding Words ("+verse.getName()+")");
                 }
 
                 // loop through all the words in this verse
@@ -345,7 +345,7 @@ public class SerSearchEngine implements SearchEngine, Index
             if (percent != newpercent)
             {
                 percent = newpercent;
-                job.setProgress(percent, "Writing Words ("+word+")");
+                ajob.setProgress(percent, "Writing Words ("+word+")");
             }
 
             // This could take a long time ...
@@ -387,12 +387,12 @@ public class SerSearchEngine implements SearchEngine, Index
     /**
      * Write the indexes to disk
      */
-    protected void saveIndexes(Job job) throws BookException
+    protected void saveIndexes(Job ajob) throws BookException
     {
         // Store the indexes on disk
         try
         {
-            job.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
+            ajob.setProgress(PERCENT_READ + PERCENT_WRITE, "Saving Index");
 
             // Save the ascii Passage index
             URL indexurl = NetUtil.lengthenURL(url, "ref.index");

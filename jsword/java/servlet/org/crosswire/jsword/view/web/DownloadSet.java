@@ -156,7 +156,7 @@ public class DownloadSet implements Comparable
     public String getLinkString(String extension)
     {
         File file = new File(localprefix, TEST_PREFIX + setname + extension);
-        String size = NF.format(((float) file.length()) / (1024F * 1024F));
+        String size = NF.format(file.length() / (1024F * 1024F));
         String reply = "<a href='"+ webprefix + "/" + TEST_PREFIX + setname + extension + "'>"+size+" Mb</a>";
 
         log.debug("link="+reply);

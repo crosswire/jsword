@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -284,14 +285,14 @@ public class ExceptionShelf extends JPanel
         }
 
         report.setFocusPainted(false);
-        report.setHorizontalAlignment(JButton.LEFT);
+        report.setHorizontalAlignment(SwingConstants.LEFT);
 
         remove.setFocusPainted(false);
         // remove.setBorderPainted(false);
         // remove.setBorder(BorderFactory.createEmptyBorder());
         remove.setFont(small);
-        remove.setVerticalAlignment(JButton.TOP);
-        remove.setVerticalAlignment(JButton.BOTTOM);
+        remove.setVerticalAlignment(SwingConstants.TOP);
+        remove.setVerticalAlignment(SwingConstants.BOTTOM);
         remove.setMargin(new Insets(0, 3, 3, 3));
 
         report.addActionListener(new ActionListener()

@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
@@ -40,7 +41,7 @@ public class FilePrintAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Print16.gif",
               "toolbarButtonGraphics/general/Print24.gif",
               "Print Passage", "Print the current passage.",
-              'P', KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK, false));
+              'P', KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK, false));
     }
 
     public void actionPerformed(ActionEvent ev)

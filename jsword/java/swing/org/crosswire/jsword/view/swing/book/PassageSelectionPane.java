@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.tree.TreePath;
@@ -278,7 +279,7 @@ public class PassageSelectionPane extends JPanel
         dlg_main.getContentPane().add(pnl_action, BorderLayout.SOUTH);
         dlg_main.getRootPane().setDefaultButton(btn_go);
         dlg_main.getRootPane().registerKeyboardAction(closer, esc, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        dlg_main.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg_main.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dlg_main.setTitle(title);
         dlg_main.setModal(modal);
 

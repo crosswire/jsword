@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -113,7 +114,7 @@ public class TreeConfigPane extends PanelConfigPane
         title.setForeground(Color.white);
         title.setOpaque(true);
         title.setText("Properties");
-        title.setAlignmentX(JLabel.LEFT);
+        title.setAlignmentX(SwingConstants.LEFT);
 
         // Use this if you want to have the tree touch the bottom. Then add
         // the button panel to content.South

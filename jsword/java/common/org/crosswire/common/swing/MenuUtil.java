@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -118,7 +119,7 @@ public class MenuUtil
         URL url = getResource(name+SUFFIX_IMAGE);
         if (url != null)
         {
-            menuitem.setHorizontalTextPosition(JButton.RIGHT);
+            menuitem.setHorizontalTextPosition(SwingConstants.RIGHT);
             menuitem.setIcon(new ImageIcon(url));
         }
         String action_name = getResourceString(name+SUFFIX_ACTIOIN);

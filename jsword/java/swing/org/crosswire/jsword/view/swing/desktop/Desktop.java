@@ -3,6 +3,7 @@ package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
@@ -45,6 +45,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.util.Project;
 import org.crosswire.jsword.view.swing.book.AdvancedToolsPane;
@@ -102,6 +103,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             Desktop desktop = new Desktop();
             desktop.pack();
             GuiUtil.centerWindow(desktop);
+            desktop.toFront();
             desktop.setVisible(true);
 
             log.debug("desktop main exiting.");
@@ -206,8 +208,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         act_edit_cut = new EditCutAction(this);
         act_edit_copy = new EditCopyAction(this);
         act_edit_paste = new EditPasteAction(this);
-        act_edit_blur1 = new BlurAction(this, 1, Passage.RESTRICT_CHAPTER);
-        act_edit_blur5 = new BlurAction(this, 5, Passage.RESTRICT_CHAPTER);
+        act_edit_blur1 = new BlurAction(this, 1, PassageConstants.RESTRICT_CHAPTER);
+        act_edit_blur5 = new BlurAction(this, 5, PassageConstants.RESTRICT_CHAPTER);
         
         act_view_tdi = new ViewTDIAction(this);
         act_view_mdi = new ViewMDIAction(this);
@@ -322,7 +324,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         bar_menu.add(menu_tools);
         bar_menu.add(menu_help);
 
-        // JToolBar.setRollover(boolean) is not supported in jdk1.3, instead we use reflection
+        // JToolBar.setRollover(boolean) is not supported in JDK1.3, instead we use reflection
         // to find out whether the method is available, if so call it.
         try
         {
@@ -461,7 +463,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
      */
     protected DisplayArea recurseDisplayArea()
     {
-        Component comp = FocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+        Component comp = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
         
         // So we've got the current component, we now need to walk up the tree
         // to find something that we recognise.
@@ -719,20 +721,16 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             for (int j = 0; j < menu.getItemCount(); j++)
             {
                 JMenuItem item = menu.getItem(j);
-                if (item instanceof AbstractButton)
-                {
-                    AbstractButton button = (AbstractButton) item;
-                    Action action = button.getAction();
+                Action action = item.getAction();
 
-                    if (action != null)
-                    {
-                        KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-                        if (accel != null)
-                        {
-                            item.setAccelerator(accel);
-                        }
-                    }
-                }
+				if (action != null)
+				{
+				    KeyStroke accel = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+				    if (accel != null)
+				    {
+				        item.setAccelerator(accel);
+				    }
+				}
             }
         }
     }

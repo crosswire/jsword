@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -44,7 +45,7 @@ public class FileCloseAction extends DesktopAbstractAction
               null,
               null,
               "Close Passages", "Close the current passage.",
-              'C', KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.CTRL_MASK, false));
+              'C', KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.CTRL_MASK, false));
     }
 
     /* (non-Javadoc)

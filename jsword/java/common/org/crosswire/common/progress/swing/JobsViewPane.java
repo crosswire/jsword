@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
@@ -84,7 +85,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         pnl_ojobs.add(pnl_ijobs, BorderLayout.NORTH);
         
         scr_jobs.setBorder(null);
-        scr_jobs.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scr_jobs.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scr_jobs.setViewportView(pnl_ojobs);
 
         this.setPreferredSize(new Dimension(700, 300));

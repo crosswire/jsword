@@ -143,11 +143,11 @@ void close(InputStream file) throws java.io.IOException {
 		}
 
 
-		public int read(byte[] bytes, int offset, int len) throws java.io.IOException {
+		public int read(byte[] bytes, int off, int len) throws java.io.IOException {
 			if (istream == null)
 				istream = fileMgr.sysOpen(this);
 
-			return istream.read(bytes, offset, len);
+			return istream.read(bytes, off, len);
 		}
 
 

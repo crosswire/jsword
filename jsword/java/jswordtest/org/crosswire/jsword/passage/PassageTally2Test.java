@@ -282,7 +282,7 @@ public class PassageTally2Test extends TestCase
     public void testBlur() throws Exception
     {
         temp = (PassageTally) tally.clone();
-        temp.blur(1, Verse.RESTRICT_NONE);
+        temp.blur(1, PassageConstants.RESTRICT_NONE);
         assertEquals(temp.getNameAndTally(), "Gen 1:1 (100%), Gen 1:2 (100%), Gen 1:4 (75%), Gen 1:5 (75%), Gen 1:6 (75%), Gen 1:3 (50%), Gen 1:7 (50%), Gen 2:1 (50%), Gen 3:1 (50%), Gen 1:8 (25%), Gen 1:31 (25%), Gen 2:2 (25%), Gen 2:25 (25%), Gen 3:2 (25%)");
         //temp = (PassageTally) tally.clone();
         //temp.blur(1, Verse.RESTRICT_CHAPTER);

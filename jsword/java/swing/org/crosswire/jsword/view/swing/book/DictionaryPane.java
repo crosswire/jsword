@@ -197,11 +197,11 @@ public class DictionaryPane extends JPanel implements DisplayArea
     {
         for (Iterator it = Books.getBooks(filter).iterator(); it.hasNext();)
         {
-            Dictionary dict = (Dictionary) it.next();
+            Dictionary tempdict = (Dictionary) it.next();
             try
             {
-                Key key = dict.getKey(data);
-                lstdicts.setSelectedValue(dict, true);
+                Key key = tempdict.getKey(data);
+                lstdicts.setSelectedValue(tempdict, true);
                 lstentries.setSelectedValue(key, true);
                 return;
             }

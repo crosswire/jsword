@@ -4,7 +4,7 @@ package org.crosswire.jsword.book;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.StringUtils;
-import org.crosswire.jsword.passage.BibleInfo;
+import org.crosswire.jsword.passage.PassageConstants;
 
 /**
  * JUnit Test.
@@ -292,7 +292,7 @@ public class BookUtilTest extends TestCase
     public void testGetCases() throws Exception
     {
         int[] ia = BookUtil.getCases(new String[] { "abc" });
-        assertEquals(ia[0], BibleInfo.CASE_LOWER);
+        assertEquals(ia[0], PassageConstants.CASE_LOWER);
     }
 
     public void testFirstLetter() throws Exception

@@ -67,7 +67,7 @@ public class BooleanField extends JPanel implements Field
      */
     public String getValue()
     {
-        return (String) Convert.boolean2String(on.isSelected());
+        return Convert.boolean2String(on.isSelected());
     }
 
     /**

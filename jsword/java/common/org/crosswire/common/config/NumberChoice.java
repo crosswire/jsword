@@ -52,4 +52,4 @@ public class NumberChoice extends ReflectedChoice
     {
         return new Integer(Convert.string2Int(orig));
     }
-};
+}

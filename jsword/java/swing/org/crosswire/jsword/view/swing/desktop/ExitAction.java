@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -41,7 +42,7 @@ public class ExitAction extends DesktopAbstractAction
               null,
               null,
               "Exit", "Exit the Desktop application.",
-              'X', KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK, false));
+              'X', KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK, false));
     }
 
     public void actionPerformed(ActionEvent ev)

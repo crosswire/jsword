@@ -66,9 +66,9 @@ public class BookVerseColor implements VerseColor
      * @param verse The verse number
      * @return The Color for this verse
      */
-    public Color getColor(int book, int chapter, int verse)
+    public Color getColor(int booknum, int chapternum, int versenum)
     {
-        if (book != this.book)
+        if (booknum != this.book)
         {
             return Color.gray;
         }

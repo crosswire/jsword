@@ -214,7 +214,7 @@ public class PassageTally extends AbstractPassage
 
                     if (it.hasNext() && count < max_count)
                     {
-                        retcode.append(Passage.REF_PREF_DELIM);
+                        retcode.append(PassageConstants.REF_PREF_DELIM);
                     }
                 }
             }
@@ -265,7 +265,7 @@ public class PassageTally extends AbstractPassage
 
                 if (it.hasNext() && count < max_count)
                 {
-                    retcode.append(Passage.REF_PREF_DELIM);
+                    retcode.append(PassageConstants.REF_PREF_DELIM);
                 }
             }
         }

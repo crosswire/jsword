@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
@@ -213,7 +214,7 @@ public class WizardConfigPane extends PanelConfigPane
             }
         });
 
-        retcode.setBorder(new EdgeBorder(EdgeBorder.NORTH));
+        retcode.setBorder(new EdgeBorder(SwingConstants.NORTH));
         retcode.setLayout(new BorderLayout(10, 10));
         retcode.add("East", buttons);
 
@@ -291,7 +292,7 @@ public class WizardConfigPane extends PanelConfigPane
     private Vector names = new Vector();
 
     /** The title for the config panels */
-    private JLabel title = new JLabel("Properties", JLabel.LEFT);
+    private JLabel title = new JLabel("Properties", SwingConstants.LEFT);
 
     /** Contains the configuration panels */
     private JPanel deck = new JPanel();

@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -44,7 +45,7 @@ public class EditCutAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Cut16.gif",
               "toolbarButtonGraphics/general/Cut24.gif",
               "Cut", "Cut the selection.",
-              'U', KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.ALT_MASK, false));
+              'U', KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.ALT_MASK, false));
 
         setEnabled(false);
     }

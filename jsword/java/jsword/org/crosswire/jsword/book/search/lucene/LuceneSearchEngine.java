@@ -107,7 +107,7 @@ public class LuceneSearchEngine implements SearchEngine
                 Verse verse = new Verse(hits.doc(i).get("path"));
                 int score = (int) (hits.score(i) * 100);
                 tally.add(verse, score);
-            };
+            }
             
             return tally;
         }

@@ -226,9 +226,9 @@ public class VerseRangeTest extends TestCase
         assertEquals(gen_ex1, new VerseRange(gen11, exo11));
         assertEquals(gen_ex1, new VerseRange(exo11, gen11));
         assertEquals(gen11_1, new VerseRange(gen11, new Verse(1, 1, 1)));
-        try { new VerseRange((Verse) null, gen11); fail(); }
+        try { new VerseRange(null, gen11); fail(); }
         catch (NullPointerException ex) { }
-        try { new VerseRange(gen11, (Verse) null); fail(); }
+        try { new VerseRange(gen11, null); fail(); }
         catch (NullPointerException ex) { }
         try { new VerseRange((Verse) null, (Verse) null); fail(); }
         catch (NullPointerException ex) { }
@@ -236,185 +236,185 @@ public class VerseRangeTest extends TestCase
 
     public void testNewViaVerseIntIntBoolean() throws Exception
     {
-        assertEquals(gen11_1, new VerseRange(gen11, 0, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_1, new VerseRange(gen11, 0, 0, Verse.RESTRICT_NONE));
-        assertEquals(gen11_2, new VerseRange(gen11, 0, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen11, 0, 1, Verse.RESTRICT_NONE));
-        assertEquals(gen11_1, new VerseRange(gen11, 1, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_1, new VerseRange(gen11, 1, 0, Verse.RESTRICT_NONE));
-        assertEquals(gen11_1, new VerseRange(gen11, 9, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_1, new VerseRange(gen11, 9, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_1, new VerseRange(rev99, 0, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_1, new VerseRange(rev99, 0, 1, Verse.RESTRICT_NONE));
-        assertEquals(rev99_1, new VerseRange(rev99, 0, 9, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_1, new VerseRange(rev99, 0, 9, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 30, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 30, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 30, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 30, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 30, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 30, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_a, new VerseRange(gen11, 0, 31, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 31, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_a, new VerseRange(gen11, 1, 31, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 31, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_a, new VerseRange(gen11, 9, 31, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 31, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_all, new VerseRange(gen11, 0, 1532, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 1532, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_all, new VerseRange(gen11, 1, 1532, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 1532, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_all, new VerseRange(gen11, 9, 1532, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 1532, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_ex1, new VerseRange(gen11, 0, 1533, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 1533, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_ex1, new VerseRange(gen11, 1, 1533, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 1533, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_ex1, new VerseRange(gen11, 9, 1533, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 1533, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 0, 31101, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 31101, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 1, 31101, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 31101, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 9, 31101, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 31101, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 0, 31102, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 31102, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 1, 31102, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 31102, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 9, 31102, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 31102, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 0, 99999, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 0, 99999, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 1, 99999, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 1, 99999, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11, 9, 99999, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11, 9, 99999, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen12, 1, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen12, 1, 0, Verse.RESTRICT_NONE));
-        assertEquals(gen11_2, new VerseRange(gen12, 9, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen12, 9, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99, 20, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_9, new VerseRange(rev99, 20, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99, 20, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_9, new VerseRange(rev99, 20, 1, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99, 20, 9, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_9, new VerseRange(rev99, 20, 9, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99, 403, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev11_9, new VerseRange(rev99, 403, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99, 403, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev11_9, new VerseRange(rev99, 403, 1, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99, 403, 9, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev11_9, new VerseRange(rev99, 403, 9, Verse.RESTRICT_NONE));
-        try { new VerseRange((Verse) null, 0, 0, Verse.RESTRICT_CHAPTER); fail(); }
+        assertEquals(gen11_1, new VerseRange(gen11, 0, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_1, new VerseRange(gen11, 0, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_2, new VerseRange(gen11, 0, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen11, 0, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_1, new VerseRange(gen11, 1, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_1, new VerseRange(gen11, 1, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_1, new VerseRange(gen11, 9, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_1, new VerseRange(gen11, 9, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_1, new VerseRange(rev99, 0, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_1, new VerseRange(rev99, 0, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_1, new VerseRange(rev99, 0, 9, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_1, new VerseRange(rev99, 0, 9, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 30, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 30, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 30, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 30, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 30, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 30, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_a, new VerseRange(gen11, 0, 31, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 31, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_a, new VerseRange(gen11, 1, 31, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 31, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_a, new VerseRange(gen11, 9, 31, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 31, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_all, new VerseRange(gen11, 0, 1532, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 1532, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_all, new VerseRange(gen11, 1, 1532, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 1532, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_all, new VerseRange(gen11, 9, 1532, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 1532, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_ex1, new VerseRange(gen11, 0, 1533, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 1533, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_ex1, new VerseRange(gen11, 1, 1533, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 1533, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_ex1, new VerseRange(gen11, 9, 1533, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 1533, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 0, 31101, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 31101, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 1, 31101, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 31101, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 9, 31101, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 31101, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 0, 31102, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 31102, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 1, 31102, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 31102, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 9, 31102, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 31102, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 0, 99999, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 0, 99999, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 1, 99999, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 1, 99999, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11, 9, 99999, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11, 9, 99999, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen12, 1, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen12, 1, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_2, new VerseRange(gen12, 9, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen12, 9, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99, 20, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_9, new VerseRange(rev99, 20, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99, 20, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_9, new VerseRange(rev99, 20, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99, 20, 9, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_9, new VerseRange(rev99, 20, 9, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99, 403, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev11_9, new VerseRange(rev99, 403, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99, 403, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev11_9, new VerseRange(rev99, 403, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99, 403, 9, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev11_9, new VerseRange(rev99, 403, 9, PassageConstants.RESTRICT_NONE));
+        try { new VerseRange((Verse) null, 0, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
         catch (NullPointerException ex) { }
-        try { new VerseRange(gen11, -1, 0, Verse.RESTRICT_CHAPTER); fail(); }
+        try { new VerseRange(gen11, -1, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, -1, Verse.RESTRICT_CHAPTER); fail(); }
+        try { new VerseRange(gen11, 0, -1, PassageConstants.RESTRICT_CHAPTER); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange((Verse) null, 0, 0, Verse.RESTRICT_NONE); fail(); }
+        try { new VerseRange((Verse) null, 0, 0, PassageConstants.RESTRICT_NONE); fail(); }
         catch (NullPointerException ex) { }
-        try { new VerseRange(gen11, -1, 0, Verse.RESTRICT_NONE); fail(); }
+        try { new VerseRange(gen11, -1, 0, PassageConstants.RESTRICT_NONE); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, -1, Verse.RESTRICT_NONE); fail(); }
+        try { new VerseRange(gen11, 0, -1, PassageConstants.RESTRICT_NONE); fail(); }
         catch (IllegalArgumentException ex) { }
         try { new VerseRange(gen11, 0, 0, -1); fail(); }
         catch (IllegalArgumentException ex) { }
         try { new VerseRange(gen11, 0, 0, 5); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, Verse.RESTRICT_BOOK); fail(); }
+        try { new VerseRange(gen11, 0, 0, PassageConstants.RESTRICT_BOOK); fail(); }
         catch (IllegalArgumentException ex) { }
     }
 
     public void testNewViaVerseRangeIntIntBoolean() throws Exception
     {
-        assertEquals(gen11_1, new VerseRange(gen11_1, 0, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_1, new VerseRange(gen11_1, 0, 0, Verse.RESTRICT_NONE));
-        assertEquals(gen11_2, new VerseRange(gen11_1, 0, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen11_1, 0, 1, Verse.RESTRICT_NONE));
-        assertEquals(gen11_1, new VerseRange(gen11_1, 1, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_1, new VerseRange(gen11_1, 1, 0, Verse.RESTRICT_NONE));
-        assertEquals(gen11_1, new VerseRange(gen11_1, 9, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_1, new VerseRange(gen11_1, 9, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 1, Verse.RESTRICT_NONE));
-        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 9, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 9, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 30, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 30, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 30, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 30, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 30, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 30, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_a, new VerseRange(gen11_1, 0, 31, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 31, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_a, new VerseRange(gen11_1, 1, 31, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 31, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_a, new VerseRange(gen11_1, 9, 31, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 31, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_all, new VerseRange(gen11_1, 0, 1532, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 1532, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_all, new VerseRange(gen11_1, 1, 1532, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 1532, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_all, new VerseRange(gen11_1, 9, 1532, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 1532, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_ex1, new VerseRange(gen11_1, 0, 1533, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 1533, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_ex1, new VerseRange(gen11_1, 1, 1533, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 1533, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_ex1, new VerseRange(gen11_1, 9, 1533, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 1533, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 0, 31101, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 31101, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 1, 31101, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 31101, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 9, 31101, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 31101, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 0, 31102, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 31102, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 1, 31102, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 31102, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 9, 31102, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 31102, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 0, 99999, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 99999, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 1, 99999, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 99999, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen_rev, new VerseRange(gen11_1, 9, 99999, Verse.RESTRICT_NONE));
-        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 99999, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen12_1, 1, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen12_1, 1, 0, Verse.RESTRICT_NONE));
-        assertEquals(gen11_2, new VerseRange(gen12_1, 9, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(gen11_2, new VerseRange(gen12_1, 9, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 1, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 9, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 9, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 403, 0, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev11_9, new VerseRange(rev99_1, 403, 0, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 403, 1, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev11_9, new VerseRange(rev99_1, 403, 1, Verse.RESTRICT_NONE));
-        assertEquals(rev99_9, new VerseRange(rev99_1, 403, 9, Verse.RESTRICT_CHAPTER));
-        assertEquals(rev11_9, new VerseRange(rev99_1, 403, 9, Verse.RESTRICT_NONE));
-        try { new VerseRange((VerseRange) null, 0, 0, Verse.RESTRICT_CHAPTER); fail(); }
+        assertEquals(gen11_1, new VerseRange(gen11_1, 0, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_1, new VerseRange(gen11_1, 0, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_2, new VerseRange(gen11_1, 0, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen11_1, 0, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_1, new VerseRange(gen11_1, 1, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_1, new VerseRange(gen11_1, 1, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_1, new VerseRange(gen11_1, 9, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_1, new VerseRange(gen11_1, 9, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 9, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_1, new VerseRange(rev99_1, 0, 9, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 30, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 30, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 30, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 30, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 30, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 30, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_a, new VerseRange(gen11_1, 0, 31, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 31, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_a, new VerseRange(gen11_1, 1, 31, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 31, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_a, new VerseRange(gen11_1, 9, 31, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 31, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_all, new VerseRange(gen11_1, 0, 1532, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 1532, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_all, new VerseRange(gen11_1, 1, 1532, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 1532, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_all, new VerseRange(gen11_1, 9, 1532, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 1532, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_ex1, new VerseRange(gen11_1, 0, 1533, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 1533, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_ex1, new VerseRange(gen11_1, 1, 1533, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 1533, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_ex1, new VerseRange(gen11_1, 9, 1533, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 1533, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 0, 31101, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 31101, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 1, 31101, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 31101, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 9, 31101, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 31101, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 0, 31102, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 31102, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 1, 31102, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 31102, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 9, 31102, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 31102, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 0, 99999, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 0, 99999, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 1, 99999, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 1, 99999, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen_rev, new VerseRange(gen11_1, 9, 99999, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_9, new VerseRange(gen11_1, 9, 99999, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen12_1, 1, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen12_1, 1, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(gen11_2, new VerseRange(gen12_1, 9, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(gen11_2, new VerseRange(gen12_1, 9, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 9, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 20, 9, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 403, 0, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev11_9, new VerseRange(rev99_1, 403, 0, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 403, 1, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev11_9, new VerseRange(rev99_1, 403, 1, PassageConstants.RESTRICT_NONE));
+        assertEquals(rev99_9, new VerseRange(rev99_1, 403, 9, PassageConstants.RESTRICT_CHAPTER));
+        assertEquals(rev11_9, new VerseRange(rev99_1, 403, 9, PassageConstants.RESTRICT_NONE));
+        try { new VerseRange((VerseRange) null, 0, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
         catch (NullPointerException ex) { }
-        try { new VerseRange(gen11_1, -1, 0, Verse.RESTRICT_CHAPTER); fail(); }
+        try { new VerseRange(gen11_1, -1, 0, PassageConstants.RESTRICT_CHAPTER); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11_1, 0, -1, Verse.RESTRICT_CHAPTER); fail(); }
+        try { new VerseRange(gen11_1, 0, -1, PassageConstants.RESTRICT_CHAPTER); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange((VerseRange) null, 0, 0, Verse.RESTRICT_NONE); fail(); }
+        try { new VerseRange((VerseRange) null, 0, 0, PassageConstants.RESTRICT_NONE); fail(); }
         catch (NullPointerException ex) { }
-        try { new VerseRange(gen11_1, -1, 0, Verse.RESTRICT_NONE); fail(); }
+        try { new VerseRange(gen11_1, -1, 0, PassageConstants.RESTRICT_NONE); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11_1, 0, -1, Verse.RESTRICT_NONE); fail(); }
+        try { new VerseRange(gen11_1, 0, -1, PassageConstants.RESTRICT_NONE); fail(); }
         catch (IllegalArgumentException ex) { }
         try { new VerseRange(gen11, 0, 0, -1); fail(); }
         catch (IllegalArgumentException ex) { }
         try { new VerseRange(gen11, 0, 0, 5); fail(); }
         catch (IllegalArgumentException ex) { }
-        try { new VerseRange(gen11, 0, 0, Verse.RESTRICT_BOOK); fail(); }
+        try { new VerseRange(gen11, 0, 0, PassageConstants.RESTRICT_BOOK); fail(); }
         catch (IllegalArgumentException ex) { }
     }
 
@@ -424,7 +424,7 @@ public class VerseRangeTest extends TestCase
         assertEquals(gen_rev, new VerseRange(gen_rev, rev99_9));
         assertEquals(gen_rev, new VerseRange(rev11_9, gen_rev));
         assertEquals(gen_rev, new VerseRange(gen_rev, gen_rev));
-        try { new VerseRange(gen_rev, (VerseRange) null); fail(); }
+        try { new VerseRange(gen_rev, null); fail(); }
         catch (NullPointerException ex) { }
         try { new VerseRange((VerseRange) null, gen_rev); fail(); }
         catch (NullPointerException ex) { }

@@ -382,7 +382,7 @@ public class Job
                 end = age;
             }
         }
-        long length = end - start;
+        //long length = end - start;
         
         // Now we know the start and the end we can convert all times to percents
         Properties predictions = new Properties();

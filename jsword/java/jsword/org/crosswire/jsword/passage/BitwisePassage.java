@@ -112,7 +112,10 @@ public class BitwisePassage extends AbstractPassage
         int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
         {
-            if (store.get(i)) count++;
+            if (store.get(i))
+            {
+                count++;
+            }
         }
 
         return count;
@@ -126,7 +129,10 @@ public class BitwisePassage extends AbstractPassage
         int vib = BibleInfo.versesInBible();
         for (int i=1; i<=vib; i++)
         {
-            if (store.get(i)) return false;
+            if (store.get(i))
+            {
+                return false;
+            }
         }
 
         return true;
@@ -162,7 +168,9 @@ public class BitwisePassage extends AbstractPassage
         for (int i=0; i<verses.length; i++)
         {
             if (!store.get(verses[i].getOrdinal()))
+            {
                 return false;
+            }
         }
 
         return true;
@@ -186,7 +194,9 @@ public class BitwisePassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0)
-            fireIntervalAdded(this, verses[0], verses[verses.length-1]);
+        {
+            fireIntervalAdded(this, verses[0], verses[verses.length - 1]);
+        }
     }
 
     /**
@@ -207,7 +217,9 @@ public class BitwisePassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0)
-            fireIntervalRemoved(this, verses[0], verses[verses.length-1]);
+        {
+            fireIntervalRemoved(this, verses[0], verses[verses.length - 1]);
+        }
     }
 
     /**
@@ -231,7 +243,9 @@ public class BitwisePassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0 && !that.isEmpty())
-            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
+        {
+            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+        }
     }
 
     /**
@@ -249,13 +263,6 @@ public class BitwisePassage extends AbstractPassage
             BitwisePassage that_ref = (BitwisePassage) that;
 
             store.andNot(that_ref.store);
-
-            // When we need to work on JDK 1.1 we can do
-            //  int vib = BibleInfo.versesInBible();
-            //  for (int i=1; i<=vib; i++)
-            //  {
-            //      if (that_ref.store.get(i)) store.clear(i);
-            //  }
         }
         else
         {
@@ -265,7 +272,9 @@ public class BitwisePassage extends AbstractPassage
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppress_events == 0 && !that.isEmpty())
-            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses()-1));
+        {
+            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+        }
     }
 
     /**
@@ -292,7 +301,9 @@ public class BitwisePassage extends AbstractPassage
             {
                 int ord = ((Verse) it.next()).getOrdinal();
                 if (store.get(ord))
+                {
                     new_store.set(ord);
+                }
             }
 
             store = new_store;
@@ -411,7 +422,10 @@ public class BitwisePassage extends AbstractPassage
         {
             try
             {
-                if (next > BibleInfo.versesInBible()) throw new NoSuchElementException();
+                if (next > BibleInfo.versesInBible())
+                {
+                    throw new NoSuchElementException();
+                }
 
                 Object retcode = new Verse(next);
                 calculateNext();
@@ -441,7 +455,10 @@ public class BitwisePassage extends AbstractPassage
             while (next <= BibleInfo.versesInBible())
             {
                 next++;
-                if (store.get(next)) break;
+                if (store.get(next))
+                {
+                    break;
+                }
             }
         }
 

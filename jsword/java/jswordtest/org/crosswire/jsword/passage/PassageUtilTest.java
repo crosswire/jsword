@@ -58,61 +58,61 @@ public class PassageUtilTest extends TestCase
 
     public void testGetCase() throws Exception
     {
-        assertEquals(PassageUtil.getCase("FRED"), Passage.CASE_UPPER);
-        assertEquals(PassageUtil.getCase("F-ED"), Passage.CASE_UPPER);
-        assertEquals(PassageUtil.getCase("F00D"), Passage.CASE_UPPER);
-        assertEquals(PassageUtil.getCase("fred"), Passage.CASE_LOWER);
-        assertEquals(PassageUtil.getCase("f-ed"), Passage.CASE_LOWER);
-        assertEquals(PassageUtil.getCase("f00d"), Passage.CASE_LOWER);
-        assertEquals(PassageUtil.getCase("Fred"), Passage.CASE_SENTANCE);
-        assertEquals(PassageUtil.getCase("F-ed"), Passage.CASE_SENTANCE);
-        assertEquals(PassageUtil.getCase("F00d"), Passage.CASE_SENTANCE);
-        assertEquals(PassageUtil.getCase("fRED"), Passage.CASE_MIXED);
-        assertEquals(PassageUtil.getCase("frED"), Passage.CASE_MIXED);
-        assertEquals(PassageUtil.getCase("freD"), Passage.CASE_MIXED);
-        assertEquals(PassageUtil.getCase("LORD's"), Passage.CASE_MIXED);
-        assertEquals(PassageUtil.getCase(""), Passage.CASE_LOWER);
+        assertEquals(PassageUtil.getCase("FRED"), PassageConstants.CASE_UPPER);
+        assertEquals(PassageUtil.getCase("F-ED"), PassageConstants.CASE_UPPER);
+        assertEquals(PassageUtil.getCase("F00D"), PassageConstants.CASE_UPPER);
+        assertEquals(PassageUtil.getCase("fred"), PassageConstants.CASE_LOWER);
+        assertEquals(PassageUtil.getCase("f-ed"), PassageConstants.CASE_LOWER);
+        assertEquals(PassageUtil.getCase("f00d"), PassageConstants.CASE_LOWER);
+        assertEquals(PassageUtil.getCase("Fred"), PassageConstants.CASE_SENTANCE);
+        assertEquals(PassageUtil.getCase("F-ed"), PassageConstants.CASE_SENTANCE);
+        assertEquals(PassageUtil.getCase("F00d"), PassageConstants.CASE_SENTANCE);
+        assertEquals(PassageUtil.getCase("fRED"), PassageConstants.CASE_MIXED);
+        assertEquals(PassageUtil.getCase("frED"), PassageConstants.CASE_MIXED);
+        assertEquals(PassageUtil.getCase("freD"), PassageConstants.CASE_MIXED);
+        assertEquals(PassageUtil.getCase("LORD's"), PassageConstants.CASE_MIXED);
+        assertEquals(PassageUtil.getCase(""), PassageConstants.CASE_LOWER);
         try { PassageUtil.getCase(null); fail(); }
         catch (NullPointerException ex) { }
         // The results of this are undefined so
-        // assertEquals(PassageUtil.getCase("FreD"), Passage.CASE_SENTANCE);
+        // assertEquals(PassageUtil.getCase("FreD"), PassageConstants.CASE_SENTANCE);
     }
 
     public void testSetCase() throws Exception
     {
-        assertEquals(PassageUtil.setCase("FRED", Passage.CASE_UPPER), "FRED");
-        assertEquals(PassageUtil.setCase("Fred", Passage.CASE_UPPER), "FRED");
-        assertEquals(PassageUtil.setCase("fred", Passage.CASE_UPPER), "FRED");
-        assertEquals(PassageUtil.setCase("frED", Passage.CASE_UPPER), "FRED");
-        assertEquals(PassageUtil.setCase("fr00", Passage.CASE_UPPER), "FR00");
-        assertEquals(PassageUtil.setCase("fr=_", Passage.CASE_UPPER), "FR=_");
-        assertEquals(PassageUtil.setCase("FRED", Passage.CASE_LOWER), "fred");
-        assertEquals(PassageUtil.setCase("Fred", Passage.CASE_LOWER), "fred");
-        assertEquals(PassageUtil.setCase("fred", Passage.CASE_LOWER), "fred");
-        assertEquals(PassageUtil.setCase("frED", Passage.CASE_LOWER), "fred");
-        assertEquals(PassageUtil.setCase("fr00", Passage.CASE_LOWER), "fr00");
-        assertEquals(PassageUtil.setCase("fr=_", Passage.CASE_LOWER), "fr=_");
-        assertEquals(PassageUtil.setCase("FRED", Passage.CASE_SENTANCE), "Fred");
-        assertEquals(PassageUtil.setCase("Fred", Passage.CASE_SENTANCE), "Fred");
-        assertEquals(PassageUtil.setCase("fred", Passage.CASE_SENTANCE), "Fred");
-        assertEquals(PassageUtil.setCase("frED", Passage.CASE_SENTANCE), "Fred");
-        assertEquals(PassageUtil.setCase("fr00", Passage.CASE_SENTANCE), "Fr00");
-        assertEquals(PassageUtil.setCase("fr=_", Passage.CASE_SENTANCE), "Fr=_");
-        assertEquals(PassageUtil.setCase("lord's", Passage.CASE_MIXED), "LORD's");
-        assertEquals(PassageUtil.setCase("LORD's", Passage.CASE_MIXED), "LORD's");
-        assertEquals(PassageUtil.setCase("no-one", Passage.CASE_LOWER), "no-one");
-        assertEquals(PassageUtil.setCase("no-one", Passage.CASE_UPPER), "NO-ONE");
-        assertEquals(PassageUtil.setCase("no-one", Passage.CASE_SENTANCE), "No-one");
-        assertEquals(PassageUtil.setCase("xx-one", Passage.CASE_LOWER), "xx-one");
-        assertEquals(PassageUtil.setCase("xx-one", Passage.CASE_UPPER), "XX-ONE");
-        assertEquals(PassageUtil.setCase("xx-one", Passage.CASE_SENTANCE), "Xx-One");
-        assertEquals(PassageUtil.setCase("god-inspired", Passage.CASE_SENTANCE), "God-inspired");
-        assertEquals(PassageUtil.setCase("god-breathed", Passage.CASE_SENTANCE), "God-breathed");
-        assertEquals(PassageUtil.setCase("maher-shalal-hash-baz", Passage.CASE_SENTANCE), "Maher-Shalal-Hash-Baz");
-        assertEquals(PassageUtil.setCase("", Passage.CASE_LOWER), "");
-        assertEquals(PassageUtil.setCase("", Passage.CASE_UPPER), "");
-        assertEquals(PassageUtil.setCase("", Passage.CASE_SENTANCE), "");
-        try { PassageUtil.setCase("god-inspired", Passage.CASE_MIXED); fail(); }
+        assertEquals(PassageUtil.setCase("FRED", PassageConstants.CASE_UPPER), "FRED");
+        assertEquals(PassageUtil.setCase("Fred", PassageConstants.CASE_UPPER), "FRED");
+        assertEquals(PassageUtil.setCase("fred", PassageConstants.CASE_UPPER), "FRED");
+        assertEquals(PassageUtil.setCase("frED", PassageConstants.CASE_UPPER), "FRED");
+        assertEquals(PassageUtil.setCase("fr00", PassageConstants.CASE_UPPER), "FR00");
+        assertEquals(PassageUtil.setCase("fr=_", PassageConstants.CASE_UPPER), "FR=_");
+        assertEquals(PassageUtil.setCase("FRED", PassageConstants.CASE_LOWER), "fred");
+        assertEquals(PassageUtil.setCase("Fred", PassageConstants.CASE_LOWER), "fred");
+        assertEquals(PassageUtil.setCase("fred", PassageConstants.CASE_LOWER), "fred");
+        assertEquals(PassageUtil.setCase("frED", PassageConstants.CASE_LOWER), "fred");
+        assertEquals(PassageUtil.setCase("fr00", PassageConstants.CASE_LOWER), "fr00");
+        assertEquals(PassageUtil.setCase("fr=_", PassageConstants.CASE_LOWER), "fr=_");
+        assertEquals(PassageUtil.setCase("FRED", PassageConstants.CASE_SENTANCE), "Fred");
+        assertEquals(PassageUtil.setCase("Fred", PassageConstants.CASE_SENTANCE), "Fred");
+        assertEquals(PassageUtil.setCase("fred", PassageConstants.CASE_SENTANCE), "Fred");
+        assertEquals(PassageUtil.setCase("frED", PassageConstants.CASE_SENTANCE), "Fred");
+        assertEquals(PassageUtil.setCase("fr00", PassageConstants.CASE_SENTANCE), "Fr00");
+        assertEquals(PassageUtil.setCase("fr=_", PassageConstants.CASE_SENTANCE), "Fr=_");
+        assertEquals(PassageUtil.setCase("lord's", PassageConstants.CASE_MIXED), "LORD's");
+        assertEquals(PassageUtil.setCase("LORD's", PassageConstants.CASE_MIXED), "LORD's");
+        assertEquals(PassageUtil.setCase("no-one", PassageConstants.CASE_LOWER), "no-one");
+        assertEquals(PassageUtil.setCase("no-one", PassageConstants.CASE_UPPER), "NO-ONE");
+        assertEquals(PassageUtil.setCase("no-one", PassageConstants.CASE_SENTANCE), "No-one");
+        assertEquals(PassageUtil.setCase("xx-one", PassageConstants.CASE_LOWER), "xx-one");
+        assertEquals(PassageUtil.setCase("xx-one", PassageConstants.CASE_UPPER), "XX-ONE");
+        assertEquals(PassageUtil.setCase("xx-one", PassageConstants.CASE_SENTANCE), "Xx-One");
+        assertEquals(PassageUtil.setCase("god-inspired", PassageConstants.CASE_SENTANCE), "God-inspired");
+        assertEquals(PassageUtil.setCase("god-breathed", PassageConstants.CASE_SENTANCE), "God-breathed");
+        assertEquals(PassageUtil.setCase("maher-shalal-hash-baz", PassageConstants.CASE_SENTANCE), "Maher-Shalal-Hash-Baz");
+        assertEquals(PassageUtil.setCase("", PassageConstants.CASE_LOWER), "");
+        assertEquals(PassageUtil.setCase("", PassageConstants.CASE_UPPER), "");
+        assertEquals(PassageUtil.setCase("", PassageConstants.CASE_SENTANCE), "");
+        try { PassageUtil.setCase("god-inspired", PassageConstants.CASE_MIXED); fail(); }
         catch (IllegalArgumentException ex) { }
         try { PassageUtil.setCase("fred", -1); fail(); }
         catch (IllegalArgumentException ex) { }

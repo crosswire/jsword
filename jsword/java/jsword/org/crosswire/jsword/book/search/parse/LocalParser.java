@@ -56,9 +56,9 @@ public class LocalParser implements Parser
      * Create a new search engine.
      * @param index The Index to search
      */
-    public void init(Index index)
+    public void init(Index newindex)
     {
-        this.index = index;
+        this.index = newindex;
         this.commands = SearchDefault.getMap();
     }
 
@@ -164,10 +164,10 @@ public class LocalParser implements Parser
      * @param output The string to be searched for as a Vector of SearchWords
      * @return The matching verses
      */
-    protected Passage search(List output) throws BookException
+    protected Passage search(List matches) throws BookException
     {
         Passage ref = PassageFactory.createPassage();
-        return search(ref, output);
+        return search(ref, matches);
     }
 
     /**
@@ -196,16 +196,16 @@ public class LocalParser implements Parser
      * @param output The string to be searched for as a Vector of SearchWords
      * @return The Passage passed in
      */
-    protected Passage search(Passage ref, List output) throws BookException
+    protected Passage search(Passage ref, List matches) throws BookException
     {
         // Check that there is a CommandWord first
-        if (!(output.get(0) instanceof CommandWord))
+        if (!(matches.get(0) instanceof CommandWord))
         {
             // Add a default AddCommandWord if not
-            output.add(0, new AddCommandWord());
+            matches.add(0, new AddCommandWord());
         }
 
-        wit = output.iterator();
+        wit = matches.iterator();
         while (wit.hasNext())
         {
             Object temp = wit.next();
@@ -222,7 +222,7 @@ public class LocalParser implements Parser
 
         // Set these to null so that people can't play around
         // with them once they're done with, and to save memory.
-        output = null;
+        matches = null;
         wit = null;
 
         return ref;

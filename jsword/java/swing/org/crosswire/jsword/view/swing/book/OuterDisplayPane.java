@@ -16,6 +16,7 @@ import org.crosswire.jsword.book.Bible;
 import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.Key;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageConstants;
 import org.crosswire.jsword.passage.PassageFactory;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.view.swing.event.DisplaySelectEvent;
@@ -227,7 +228,7 @@ public class OuterDisplayPane extends JPanel implements DisplayArea
             // if there was a single selection then show the whole chapter
             if (ranges.length == 1)
             {
-                ref.blur(1000, Passage.RESTRICT_CHAPTER);
+                ref.blur(1000, PassageConstants.RESTRICT_CHAPTER);
             }
 
             txt_passg.setPassage(ref);

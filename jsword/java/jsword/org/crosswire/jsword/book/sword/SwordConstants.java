@@ -200,7 +200,7 @@ public class SwordConstants
         {
             // This is an OT verse
             testament = SwordConstants.TESTAMENT_OLD;
-        };
+        }
 
         int bookOffset = SwordConstants.bks[testament][book];
         long chapOffset = SwordConstants.cps[testament][bookOffset + chapter];

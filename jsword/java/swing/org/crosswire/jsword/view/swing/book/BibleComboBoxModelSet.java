@@ -96,11 +96,11 @@ public class BibleComboBoxModelSet
             String book = BibleInfo.getLongBookName(newverse.getBook());
             cbo_book.setSelectedItem(book);
             
-            Integer chapter = new Integer(newverse.getChapter());
-            cbo_chapter.setSelectedItem(chapter);
+            Integer chapternum = new Integer(newverse.getChapter());
+            cbo_chapter.setSelectedItem(chapternum);
             
-            Integer verse = new Integer(newverse.getVerse());
-            cbo_verse.setSelectedItem(verse);
+            Integer versenum = new Integer(newverse.getVerse());
+            cbo_verse.setSelectedItem(versenum);
         }
         catch (NoSuchVerseException ex)
         {

@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -44,7 +45,7 @@ public class EditPasteAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Paste16.gif",
               "toolbarButtonGraphics/general/Paste24.gif",
               "Paste", "Paste the selection.",
-              'P', KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.ALT_MASK, false));
+              'P', KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.ALT_MASK, false));
 
         setEnabled(false);
     }

@@ -156,7 +156,7 @@ public class VerseTest extends TestCase
         catch (NoSuchVerseException ex) { }
         try { new Verse("gen 1 1 1", gen11); fail(); }
         catch (NoSuchVerseException ex) { }
-        try { new Verse((String) null); fail(); }
+        try { new Verse(null); fail(); }
         catch (Exception ex) { }
         assertEquals(jude1, new Verse("jude 1"));
         assertEquals(jude2, new Verse("jude 2"));
@@ -202,9 +202,9 @@ public class VerseTest extends TestCase
         assertEquals(jude2, new Verse("2", jude1));
         try { new Verse("2", null); fail(); }
         catch (NullPointerException ex) { }
-        try { new Verse((String) null, gen11); fail(); }
+        try { new Verse(null, gen11); fail(); }
         catch (NullPointerException ex) { }
-        try { new Verse((String) null, null); fail(); }
+        try { new Verse(null, null); fail(); }
         catch (NullPointerException ex) { }
     }
 
@@ -384,19 +384,19 @@ public class VerseTest extends TestCase
 
     public void testGetAccuracy() throws Exception
     {
-        assertEquals(Verse.getAccuracy("Gen 1:1"), Verse.ACCURACY_BOOK_VERSE);
-        assertEquals(Verse.getAccuracy("Gen 1"), Verse.ACCURACY_BOOK_CHAPTER);
-        assertEquals(Verse.getAccuracy("Jude 1"), Verse.ACCURACY_BOOK_VERSE);
-        assertEquals(Verse.getAccuracy("Jude 1:1"), Verse.ACCURACY_BOOK_VERSE);
-        assertEquals(Verse.getAccuracy("Gen"), Verse.ACCURACY_BOOK_ONLY);
-        assertEquals(Verse.getAccuracy(""), Verse.ACCURACY_NONE);
-        assertEquals(Verse.getAccuracy("1:1"), Verse.ACCURACY_CHAPTER_VERSE);
-        assertEquals(Verse.getAccuracy("1"), Verse.ACCURACY_NUMBER_ONLY);
+        assertEquals(Verse.getAccuracy("Gen 1:1"), PassageConstants.ACCURACY_BOOK_VERSE);
+        assertEquals(Verse.getAccuracy("Gen 1"), PassageConstants.ACCURACY_BOOK_CHAPTER);
+        assertEquals(Verse.getAccuracy("Jude 1"), PassageConstants.ACCURACY_BOOK_VERSE);
+        assertEquals(Verse.getAccuracy("Jude 1:1"), PassageConstants.ACCURACY_BOOK_VERSE);
+        assertEquals(Verse.getAccuracy("Gen"), PassageConstants.ACCURACY_BOOK_ONLY);
+        assertEquals(Verse.getAccuracy(""), PassageConstants.ACCURACY_NONE);
+        assertEquals(Verse.getAccuracy("1:1"), PassageConstants.ACCURACY_CHAPTER_VERSE);
+        assertEquals(Verse.getAccuracy("1"), PassageConstants.ACCURACY_NUMBER_ONLY);
         try { Verse.getAccuracy("complete and utter rubbish"); fail(); }
         catch (NoSuchVerseException ex) { }
         try { Verse.getAccuracy("b 1 1"); fail(); }
         catch (NoSuchVerseException ex) { }
-        try { Verse.getAccuracy((String) null); fail(); }
+        try { Verse.getAccuracy(null); fail(); }
         catch (NullPointerException ex) { }
     }
 

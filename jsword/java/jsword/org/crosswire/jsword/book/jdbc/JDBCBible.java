@@ -95,30 +95,30 @@ public class JDBCBible extends LocalURLBible implements Index
         {
             // Actually connect to the database
             String text_url = lbmd.getProperty("TextURL");
-            text = DriverManager.getConnection(text_url);
+            textcnx = DriverManager.getConnection(text_url);
 
             String concord_url = lbmd.getProperty("ConcordURL");
-            concord = DriverManager.getConnection(concord_url);
+            conccnx = DriverManager.getConnection(concord_url);
 
             // SQL statements
             String doc_query = lbmd.getProperty("DocQuery");
-            doc_stmt = text.prepareStatement(doc_query);
+            doc_stmt = textcnx.prepareStatement(doc_query);
 
             String ref_query = lbmd.getProperty("RefQuery");
-            ref_stmt = concord.prepareStatement(ref_query);
+            ref_stmt = conccnx.prepareStatement(ref_query);
 
             String verse_query = lbmd.getProperty("VerseQuery");
-            verse_stmt = text.prepareStatement(verse_query);
+            verse_stmt = textcnx.prepareStatement(verse_query);
 
             String start_query = lbmd.getProperty("StartQuery");
-            start_stmt = concord.prepareStatement(start_query);
+            start_stmt = conccnx.prepareStatement(start_query);
 
             words_query = lbmd.getProperty("WordsQuery");
         }
         catch (SQLException ex)
         {
-            text = null;
-            concord = null;
+            textcnx = null;
+            conccnx = null;
             doc_stmt = null;
             ref_stmt = null;
             verse_stmt = null;
@@ -334,7 +334,7 @@ public class JDBCBible extends LocalURLBible implements Index
     {
         try
         {
-            Statement stmt = concord.createStatement();
+            Statement stmt = conccnx.createStatement();
             return new WordIterator(stmt, stmt.executeQuery(words_query));
         }
         catch (SQLException ex)
@@ -409,10 +409,10 @@ public class JDBCBible extends LocalURLBible implements Index
     protected String words_query;
 
     /** The conenction to the text data source */
-    private Connection text;
+    private Connection textcnx;
 
     /** The conenction to the concordance */
-    protected Connection concord;
+    protected Connection conccnx;
 
     /** The log stream */
     protected static final Logger log = Logger.getLogger(JDBCBible.class);

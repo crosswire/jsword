@@ -50,4 +50,4 @@ public class FontChoice extends ReflectedChoice
     {
         return orig;
     }
-};
+}

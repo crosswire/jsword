@@ -681,16 +681,24 @@ public class PassageUtil implements PassageConstants
         }
     }
 
-    /** The ResourceBundle containing the name customizations */
+    /**
+     * The ResourceBundle containing the name customizations
+     */
     private static ResourceBundle res = null;
 
-    /** Do we store the original string? */
+    /**
+     * Do we store the original string?
+     */
     private static boolean persistent_naming = getDefaultPersistentNaming();
 
-    /** The blur restriction */
-    private static int blur = Passage.RESTRICT_CHAPTER;
+    /**
+     * The blur restriction
+     */
+    private static int blur = PassageConstants.RESTRICT_CHAPTER;
 
-    /** The log stream */
+    /**
+     *  The log stream
+     */
     private static final Logger log = Logger.getLogger(PassageUtil.class);
 
     /**

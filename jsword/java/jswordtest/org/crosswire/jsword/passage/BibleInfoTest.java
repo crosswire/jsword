@@ -48,18 +48,18 @@ public class BibleInfoTest extends TestCase
 
     public void testCase() throws Exception
     {
-        BibleInfo.setCase(Passage.CASE_LOWER);
-        assertEquals(BibleInfo.getCase(), Passage.CASE_LOWER);
+        BibleInfo.setCase(PassageConstants.CASE_LOWER);
+        assertEquals(BibleInfo.getCase(), PassageConstants.CASE_LOWER);
 
-        BibleInfo.setCase(Passage.CASE_UPPER);
-        assertEquals(BibleInfo.getCase(), Passage.CASE_UPPER);
+        BibleInfo.setCase(PassageConstants.CASE_UPPER);
+        assertEquals(BibleInfo.getCase(), PassageConstants.CASE_UPPER);
 
-        BibleInfo.setCase(Passage.CASE_SENTANCE);
-        assertEquals(BibleInfo.getCase(), Passage.CASE_SENTANCE);
+        BibleInfo.setCase(PassageConstants.CASE_SENTANCE);
+        assertEquals(BibleInfo.getCase(), PassageConstants.CASE_SENTANCE);
 
         try
         {
-            BibleInfo.setCase(Passage.CASE_MIXED);
+            BibleInfo.setCase(PassageConstants.CASE_MIXED);
             fail();
         }
         catch (IllegalArgumentException ex)
@@ -78,15 +78,15 @@ public class BibleInfoTest extends TestCase
 
     public void testGetLongBookName() throws Exception
     {
-        BibleInfo.setCase(Passage.CASE_SENTANCE);
+        BibleInfo.setCase(PassageConstants.CASE_SENTANCE);
         assertEquals(BibleInfo.getLongBookName(1), "Genesis");
         assertEquals(BibleInfo.getLongBookName(66), "Revelation");
 
-        BibleInfo.setCase(Passage.CASE_LOWER);
+        BibleInfo.setCase(PassageConstants.CASE_LOWER);
         assertEquals(BibleInfo.getLongBookName(1), "genesis");
         assertEquals(BibleInfo.getLongBookName(66), "revelation");
 
-        BibleInfo.setCase(Passage.CASE_UPPER);
+        BibleInfo.setCase(PassageConstants.CASE_UPPER);
         assertEquals(BibleInfo.getLongBookName(1), "GENESIS");
         assertEquals(BibleInfo.getLongBookName(66), "REVELATION");
 
@@ -111,7 +111,7 @@ public class BibleInfoTest extends TestCase
 
     public void testGetShortBookName() throws Exception
     {
-        BibleInfo.setCase(Passage.CASE_SENTANCE);
+        BibleInfo.setCase(PassageConstants.CASE_SENTANCE);
         try
         {
             BibleInfo.getShortBookName(0);
@@ -140,7 +140,7 @@ public class BibleInfoTest extends TestCase
         {
         }
 
-        BibleInfo.setCase(Passage.CASE_LOWER);
+        BibleInfo.setCase(PassageConstants.CASE_LOWER);
         try
         {
             BibleInfo.getShortBookName(0);
@@ -169,7 +169,7 @@ public class BibleInfoTest extends TestCase
         {
         }
 
-        BibleInfo.setCase(Passage.CASE_UPPER);
+        BibleInfo.setCase(PassageConstants.CASE_UPPER);
         try
         {
             BibleInfo.getShortBookName(0);

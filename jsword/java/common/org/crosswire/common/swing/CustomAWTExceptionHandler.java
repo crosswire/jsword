@@ -79,11 +79,11 @@ public class CustomAWTExceptionHandler
             }
         }
 
-        CustomAWTExceptionHandler.comp = comp;
+        //CustomAWTExceptionHandler.comp = comp;
     }
 
     private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
     private static final String OUR_NAME = CustomAWTExceptionHandler.class.getName();
 
-    private static Component comp = null;
+    //private static Component comp = null;
 }

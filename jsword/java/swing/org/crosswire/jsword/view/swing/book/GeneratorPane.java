@@ -20,11 +20,11 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.WorkEvent;
@@ -208,7 +208,7 @@ public class GeneratorPane extends EirPanel
                     work.interrupt();
             }
         });
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(this, BorderLayout.CENTER);
 

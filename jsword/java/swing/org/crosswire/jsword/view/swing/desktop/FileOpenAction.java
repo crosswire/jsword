@@ -2,6 +2,7 @@
 package org.crosswire.jsword.view.swing.desktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
@@ -40,7 +41,7 @@ public class FileOpenAction extends DesktopAbstractAction
               "toolbarButtonGraphics/general/Open16.gif",
               "toolbarButtonGraphics/general/Open24.gif",
               "Open Passage", "Open a saved passage.",
-              'O', KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK, false));
+              'O', KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK, false));
     }
 
     public void actionPerformed(ActionEvent ev)

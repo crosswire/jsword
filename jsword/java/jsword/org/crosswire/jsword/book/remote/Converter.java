@@ -13,7 +13,7 @@ import org.crosswire.common.util.LogicError;
 import org.crosswire.jsword.book.BibleMetaData;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.Openness;
-import org.crosswire.jsword.book.basic.AbstractBibleMetaData;
+import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageFactory;
@@ -123,7 +123,7 @@ public class Converter
             bmdele.addContent(new Element("edition").addContent(bmd.getEdition()));
             bmdele.addContent(new Element("initials").addContent(bmd.getInitials()));
 
-            String pubstr = AbstractBibleMetaData.formatPublishedDate(bmd.getFirstPublished());
+            String pubstr = AbstractBookMetaData.formatPublishedDate(bmd.getFirstPublished());
             if (pubstr != null)
             {
                 bmdele.addContent(new Element("pub").addContent(pubstr));

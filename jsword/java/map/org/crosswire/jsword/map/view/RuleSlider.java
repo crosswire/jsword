@@ -7,6 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -78,7 +79,7 @@ public class RuleSlider extends JPanel
         sdr_rule.setMinorTickSpacing(16);
         sdr_rule.setMajorTickSpacing(32);
         sdr_rule.setMaximum(256);
-        sdr_rule.setOrientation(JSlider.HORIZONTAL);
+        sdr_rule.setOrientation(SwingConstants.HORIZONTAL);
         sdr_rule.setValue(0);
 
         txt_rule.setText("256");

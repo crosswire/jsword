@@ -2,6 +2,7 @@
 package org.crosswire.jsword.book.readings;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -83,10 +84,10 @@ public class ReadingsDictionary implements Dictionary
         /*String title = (String)*/ prop.remove("title");
 
         // We use 1972 because it is a leap year.
-        GregorianCalendar greg = new GregorianCalendar(1972, GregorianCalendar.JANUARY, 1);
-        while (greg.get(GregorianCalendar.YEAR) == 1972)
+        GregorianCalendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
+        while (greg.get(Calendar.YEAR) == 1972)
         {
-            String key = KEYBASE + (1+greg.get(GregorianCalendar.MONTH)) + "." + greg.get(GregorianCalendar.DATE);
+            String key = KEYBASE + (1+greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE);
             String readings = (String) prop.remove(key);
             if (readings == null)
             {
@@ -96,7 +97,7 @@ public class ReadingsDictionary implements Dictionary
 
             hash.put(new ReadingsKey(greg.getTime()), readings);
 
-            greg.add(GregorianCalendar.DATE, 1);
+            greg.add(Calendar.DATE, 1);
         }
 
         // Anything left is probably in error

@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.crosswire.common.config.Choice;
@@ -169,7 +170,7 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
             }
         });
 
-        retcode.setBorder(new EdgeBorder(EdgeBorder.NORTH));
+        retcode.setBorder(new EdgeBorder(SwingConstants.NORTH));
         retcode.setLayout(new BorderLayout(10, 10));
         retcode.add("East", buttons);
 
@@ -250,9 +251,9 @@ public abstract class PanelConfigPane extends JPanel implements BaseConfig
      * using the default set of Fields
      * @param parent A component to use to find a frame to use as a dialog parent
      */
-    public void showDialog(Component parent, ActionListener al)
+    public void showDialog(Component parent, ActionListener newal)
     {
-        this.al = al;
+        this.al = newal;
 
         if (dialog == null)
         {
