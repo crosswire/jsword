@@ -5,6 +5,10 @@
 
 <h1>News</h1>
 
+<h3>25 Jan 2003</h3>
+<p>Bug update to the splash screen not means that the completion percentages
+are computed automagically, and we've fixed a few UI bugs with it too.</p>
+
 <h3>03 Jan 2003</h3>
 <p>New OSIS pages and the beginnings of Dictionary and Lexicon support are just
 going into CVS.</p>
