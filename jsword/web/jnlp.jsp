@@ -4,6 +4,11 @@
 </jsp:include>
 
 <h1>Java WebStart</h1>
+
+<p>It appears that Webstart doesn't work properly with the latest JAXB
+so we have been having problems getting Webstart to work. So this may fail
+for you.</p>
+
 <p>JSword is now available in a convenient <a href="http://java.sun.com/products/javawebstart/">WebStart</a> 
 package. You will need to have WebStart installed. On MacOSX that job 
 is done for you. It is an easy <a href="http://java.sun.com/products/javawebstart/">download</a> 
