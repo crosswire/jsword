@@ -1,17 +1,26 @@
+<%@ page %>
+
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="default.css">
-  <title>JSword</title>
+  <title>The J-SWORD Project - XML</title>
+  <META NAME="keywords" CONTENT="bible, free, software, christian, study, gpl, bible software,">
+  <META http-equiv="keywords" CONTENT="bible, free, software, christian, study, gpl, bible software,">
+  <META NAME="distribution" CONTENT="global">
+  <link rel="stylesheet" href="sword.css" type="text/css">
 </head>
 
 <body>
+
+<%@ include file="header.jsp" %>
+
+<h1>JSword - XML</h1>
 
 This is some example XML that could have been produced by the Book
 package.
 
 <pre>
 &lt;?xml version="1.0"?>
-&lt;!DOCTYPE bible SYSTEM "../notes/bible.dtd">
+&lt;!DOCTYPE bible SYSTEM "bible.dtd">
 &lt;bible>
   &lt;title level='0'>Gen 1:1-4&lt;/title>
   &lt;section version="AV">
@@ -104,5 +113,8 @@ element. -->
 &lt;!ELEMENT p EMPTY>
 
 </pre>
+
+<%@ include file="footer.jsp" %>
+
 </body>
 </html>
