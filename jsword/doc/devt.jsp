@@ -19,8 +19,8 @@
             <h2>CVS Access</h2>
                   
             <p>There is a mailing list at <a href="mailto:jsword-devel@crosswire.org">jsword-devel@crosswire.org</a>. 
-              To join, please send a message to: <a href="mailto:majordomo@crosswire.org">majordomo@crosswire.org</a> 
-              with the body of the message containing: <code>subscribe jsword-devel</code></p>
+              To join, please fill out your email address in on <a href="http://www.crosswire.org/mailman/listinfo/jsword-devel ">this</a> 
+              form.</p>
             <p> CVS is also hosted at crosswire. The CVS root is:<br />
               &nbsp;&nbsp;&nbsp;&nbsp;<code>:pserver:anonymous@cvs.crosswire.org:/cvs/jsword</code> 
               <br />

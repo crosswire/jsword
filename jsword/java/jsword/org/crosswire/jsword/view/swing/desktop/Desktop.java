@@ -286,20 +286,22 @@ public class Desktop extends JFrame implements TitleChangedListener
 
         // JToolBar.setRollover(boolean) is not supported in jdk1.3, instead we use reflection
         // to find out whether the method is available, if so call it.
-        try{
+        try
+        {
 	        Class cl = pnl_tbar.getClass();
-	        Class[] clArr = {Boolean.TYPE};
-	        Method meth = cl.getMethod("setRollover",clArr);
-	        if(meth!=null){
-	        	Object[] argArr = {Boolean.TRUE};
-	        	meth.invoke(pnl_tbar,argArr);
-	        }
-        }catch(NoSuchMethodException nsme){
-        	// we have a java < 1.4 user
-        }catch(Exception e){
-        	// we don't expect this one, print a stack trace
-        	e.printStackTrace();
+	        Method meth = cl.getMethod("setRollover", new Class[] { Boolean.TYPE });
+            meth.invoke(pnl_tbar, new Object[] { Boolean.TRUE });
         }
+        catch (NoSuchMethodException ex)
+        {
+        	// we have a java < 1.4 user
+        }
+        catch (Exception ex)
+        {
+        	// we don't expect this one, print a stack trace
+        	ex.printStackTrace();
+        }
+
         pnl_tbar.add(act_file_new).addMouseListener(bar_status);
         pnl_tbar.add(act_file_open).addMouseListener(bar_status);
         pnl_tbar.add(act_file_save).addMouseListener(bar_status);

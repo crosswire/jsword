@@ -14,6 +14,11 @@
 <%@ include file="header.jsp" %>
 
             <h1>News</h1>
+            <h3>11 Oct 2002</h3>
+            <p>Added a new JNLP section. JSword should now work over WebStart. For 
+              the time being the download comes with a complete Bible version so it 
+              is a large download, but we have a plan to reduce this. There are also 
+              some reports of failures on Windows.</p>
             <h3>21 Sep 2002</h3>
             <p>Currently working on releasing a beta for JSword v1.0. The remaining 
               tasks (other than bug fixes) are some GUI polishing - mostly to sort 

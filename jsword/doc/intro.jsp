@@ -30,14 +30,20 @@
               of the source.</p>
             <ul>
               <li>Joe Walker
+              <li>Mark Goodwin
               <li>Keith Ralston</li>
-              <li>Mark Goodwin</li>
             </ul>
 
             <h2>Coding Recommendations</h2>
 
             <h4>JDK Versions</h4>
-            <p>This is all currently being written using JDK 1.3+</p>
+            <p>This is all currently being written using JDK 1.3. The basis for this 
+              is that (where practical) we will retain support for JDKs where some 
+              of our users have no better options. So at the time of writing MacOS 
+              only supports JDK1.3, we have people wanting to use JSword on MacOS, 
+              so when we want to use JDK1.4 only features (for example roll-over toolbar 
+              buttons) we'll use reflection or some other trick to remain compatible 
+              with JDK1.3.</p>
 
             <h4>Coding Standards</h4>
             <p>The coding standards used on this project so far are very much based 

@@ -14,10 +14,10 @@
 <%@ include file="header.jsp" %>
 
             <h1>JSword</h1>
-            <p>JSword is a port of Sword to Java. Since it is written in Java (JDK 1.2+) it will 
-              run on most computers. Currently we regularly test on Windows and Linux, 
-              but it ought to work in Macs, and given some interface work, set-top 
-              boxes and PDAs.</p>
+            <p>JSword is a port of Sword to Java. Since it is written in Java (JDK 
+              1.3+) it will run on most computers. Currently we regularly test on 
+              Windows and Linux, but it ought to work in Macs, and given some interface 
+              work, set-top boxes and PDAs.</p>
             <p>JSword is open source software so it is freely available to anyone. 
               It is licensed under the <a href="api\docs\Licence.html">GPL</a>.</p>
             <h2>How to find out more</h2>

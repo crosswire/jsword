@@ -39,6 +39,7 @@
     <p>Getting&nbsp;JSword</p>
     <ul>
       <li><a href="demo.jsp">Web&nbsp;Demo</a></li>
+      <li><a href="jnlp.jsp">Web&nbsp;Start</a></li>
       <li><a href="screenshot.jsp">Screenshots</a></li>
       <li><a href="download.jsp">Download</a></li>
       <li><a href="http://www.crosswire.org/sword/modules/index.jsp">Modules</a></li>
