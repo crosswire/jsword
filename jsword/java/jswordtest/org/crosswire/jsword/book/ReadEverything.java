@@ -8,9 +8,6 @@ import org.crosswire.common.config.Config;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyList;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageFactory;
-import org.crosswire.jsword.passage.VerseBase;
 import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -57,45 +54,24 @@ public class ReadEverything
         config.setProperties(Project.instance().getProperties("desktop"));
         config.localToApplication(true);
 
-        // Loop through all the Commentaries
-        log.info("*** Reading all known Commentaries");
-        List comments = Books.installed().getBookMetaDatas(BookFilters.getCommentaries());
+        // Loop through all the Bookks
+        log.info("*** Reading all known Books");
+        List comments = Books.installed().getBookMetaDatas();
         for (Iterator cit = comments.iterator(); cit.hasNext();)
         {
             BookMetaData bmd = (BookMetaData) cit.next();
-            Iterator it = new KeyIterator(WHOLE.verseIterator());
-            testReadMultiple(bmd, it);
-        }
 
-        // Loop through all the Dictionaries
-        log.info("*** Reading all known Dictionaries");
-        List dicts = Books.installed().getBookMetaDatas(BookFilters.getDictionaries());
-        for (Iterator dit = dicts.iterator(); dit.hasNext();)
-        {
-            BookMetaData dmd = (BookMetaData) dit.next();
+            Book book = bmd.getBook();
+            KeyList set = book.getGlobalKeyList();
 
-            Book dict = dmd.getBook();
-            KeyList set = dict.getGlobalKeyList();
-
-            Iterator it = set.iterator();
-            testReadMultiple(dmd, it);
-        }
-
-        // Loop through all the Bibles
-        log.info("*** Reading all known Bibles");
-        List bibles = Books.installed().getBookMetaDatas(BookFilters.getBibles());
-        for (Iterator bit = bibles.iterator(); bit.hasNext();)
-        {
-            BookMetaData bmd = (BookMetaData) bit.next();
-            Iterator it = new KeyIterator(WHOLE.verseIterator());
-            testReadMultiple(bmd, it);
+            testReadMultiple(bmd, book, set);
         }
     }
 
     /**
      * Perform a test read on an iterator over a set of keys
      */
-    private static void testReadMultiple(BookMetaData bmd, Iterator it)
+    private static void testReadMultiple(BookMetaData bmd, Book book, KeyList set)
     {
         DataPolice.setBook(bmd);
 
@@ -103,11 +79,20 @@ public class ReadEverything
         long start = System.currentTimeMillis();
         int entries = 0;
 
-        Book book = bmd.getBook();
+        Iterator it = set.iterator();
         while (it.hasNext())
         {
             Key key = (Key) it.next();
-            testReadSingle(bmd, book, key);
+            if (key instanceof KeyList)
+            {
+                KeyList subset = (KeyList) key;
+                testReadSingle(bmd, book, subset);
+            }
+            else
+            {
+                testReadSingle(bmd, book, key);
+            }
+
             entries++;
         }
 
@@ -120,13 +105,13 @@ public class ReadEverything
     /**
      * Perform a test read on a single key
      */    
-    private static void testReadSingle(BookMetaData bmd, Book bible, Key key)
+    private static void testReadSingle(BookMetaData bmd, Book book, Key key)
     {
         try
         {
             //log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
 
-            BookData data = bible.getData(key);
+            BookData data = book.getData(key);
             if (data.getPlainText() == null)
             {
                 log.warn("No output from: "+bmd.getInitials()+", "+key.getName());
@@ -153,53 +138,8 @@ public class ReadEverything
         }
     }
 
-    private static class KeyIterator implements Iterator
-    {
-        /**
-         * Simple ctor
-         */
-        public KeyIterator(Iterator orig)
-        {
-            this.orig = orig;
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#remove()
-         */
-        public void remove()
-        {
-            orig.remove();
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#hasNext()
-         */
-        public boolean hasNext()
-        {
-            return orig.hasNext();
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#next()
-         */
-        public Object next()
-        {
-            VerseBase vb = (VerseBase) orig.next();
-            Passage fetch = PassageFactory.createPassage();
-            fetch.add(vb);
-            return fetch;
-        }
-
-        private Iterator orig;
-    }
-
     /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(ReadEverything.class);
-
-    /**
-     * To allow us to iterate over the whole Bible
-     */
-    private static Passage WHOLE = PassageFactory.getWholeBiblePassage();
 }

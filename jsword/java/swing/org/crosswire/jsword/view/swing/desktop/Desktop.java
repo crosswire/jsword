@@ -51,7 +51,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageConstants;
@@ -127,7 +126,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * Construct a Desktop.
      */
-    public Desktop() throws IOException, JDOMException, InstallException
+    public Desktop() throws IOException, JDOMException
     {
         LookAndFeelUtil.tweakLookAndFeel();
         Reporter.grabAWTExecptions(true);
@@ -220,7 +219,7 @@ public class Desktop implements TitleChangedListener, HyperlinkListener
     /**
      * Call all the constructors
      */
-    private void createComponents() throws InstallException
+    private void createComponents()
     {
         layouts = new ViewLayout[2];
         layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();

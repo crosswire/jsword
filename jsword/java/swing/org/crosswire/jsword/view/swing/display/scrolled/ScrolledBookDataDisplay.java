@@ -41,14 +41,7 @@ public class ScrolledBookDataDisplay extends ProxyBookDataDisplay implements Boo
     public ScrolledBookDataDisplay()
     {
         super(BookDataDisplayFactory.createBookDataDisplay());
-        initialize();
-    }
 
-    /**
-     * Gui creation
-     */
-    private void initialize()
-    {
         scrView.getViewport().setPreferredSize(new Dimension(500, 400));
         scrView.getViewport().add(getProxy().getComponent(), null);
     }

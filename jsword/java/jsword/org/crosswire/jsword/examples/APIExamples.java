@@ -119,7 +119,9 @@ public class APIExamples
         BookMetaData bmd = (BookMetaData) dicts.get(0);
         Book dict = bmd.getBook();
 
-        // If I want every key in the Dictionary then I do this:
+        // If I want every key in the Dictionary then I do this (or something
+        // like it - in the real world you want to call hasNext() on an iterator
+        // before next() but the point is the same:
         KeyList keys = dict.getGlobalKeyList();
         Key first = (Key) keys.iterator().next();
 

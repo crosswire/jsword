@@ -76,7 +76,7 @@ public class Project
     {
         try
         {
-            URL urlcache = getTempScratchSpace("netcache");
+            URL urlcache = getTempScratchSpace("netcache", true);
             File filecache = new File(urlcache.getFile());
             NetUtil.setURLCacheDir(filecache);
         }
@@ -249,11 +249,16 @@ public class Project
      * @param subject A moniker for the are to write to. This will be converted into a directory name.
      * @return A file: URL pointing at a local writable directory.
      */
-    public URL getTempScratchSpace(String subject) throws IOException
+    public URL getTempScratchSpace(String subject, boolean create) throws IOException
     {
         URL base = getWritableBaseURL();
         URL temp = NetUtil.lengthenURL(base, subject);
-        NetUtil.makeDirectory(temp);
+        
+        if (create && !NetUtil.isDirectory(temp))
+        {
+            NetUtil.makeDirectory(temp);
+        }
+
         return temp;
     }
 

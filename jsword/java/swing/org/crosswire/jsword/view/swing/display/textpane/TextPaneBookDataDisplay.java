@@ -13,7 +13,7 @@ import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.util.ConverterFactory;
-import org.crosswire.jsword.view.swing.display.*;
+import org.crosswire.jsword.view.swing.display.BookDataDisplay;
 
 /**
  * A JDK JTextPane implementation of an OSIS displayer.

@@ -27,7 +27,7 @@ import org.crosswire.jsword.view.swing.book.DisplaySelectEvent;
 import org.crosswire.jsword.view.swing.book.DisplaySelectListener;
 import org.crosswire.jsword.view.swing.book.DisplaySelectPane;
 import org.crosswire.jsword.view.swing.display.FocusablePart;
-import org.crosswire.jsword.view.swing.display.tab.*;
+import org.crosswire.jsword.view.swing.display.tab.TabbedDisplayPane;
 import org.crosswire.jsword.view.swing.passage.PassageGuiUtil;
 import org.crosswire.jsword.view.swing.passage.PassageListModel;
 
@@ -62,6 +62,7 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
      */
     public OuterDisplayPane()
     {
+        log.debug("odp start");
         try
         {
             List booklist = Books.installed().getBookMetaDatas(BookFilters.getBibles());
@@ -79,6 +80,7 @@ public class OuterDisplayPane extends JPanel implements FocusablePart
         }
 
         initialize();
+        log.debug("odp end");
     }
 
     /**

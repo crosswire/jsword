@@ -39,7 +39,6 @@ import org.apache.commons.lang.StringUtils;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @author Keith Ralston
  * @author Mark Goodwin
  */
 public class NetUtil
@@ -171,17 +170,17 @@ public class NetUtil
      * Move a URL from one place to another. Currently this only works for
      * file: URLs, however the interface should not need to change to
      * handle more complex URLs
-     * @param old_url The URL to move
-     * @param new_url The desitination URL
+     * @param oldUrl The URL to move
+     * @param newUrl The desitination URL
      */
-    public static boolean move(URL old_url, URL new_url) throws IOException
+    public static boolean move(URL oldUrl, URL newUrl) throws IOException
     {
-        checkFileURL(old_url);
-        checkFileURL(new_url);
+        checkFileURL(oldUrl);
+        checkFileURL(newUrl);
 
-        File old_file = new File(old_url.getFile());
-        File new_file = new File(new_url.getFile());
-        return old_file.renameTo(new_file);
+        File oldFile = new File(oldUrl.getFile());
+        File newFile = new File(newUrl.getFile());
+        return oldFile.renameTo(newFile);
     }
 
     /**
@@ -210,40 +209,40 @@ public class NetUtil
         {
             return new File(url.getFile());
         }
-
-        // PENGING(mark): surely this is a bug - the replace() happens on "" and not the url?
-        File workingFile = null;
-        String hashString = url.toExternalForm().hashCode() + "".replace('-', 'm');
-
-        // get the location of the tempWorkingDir
-        File workingDir = getURLCacheDir();
-        if (workingDir != null && workingDir.isDirectory())
-        {
-            workingFile = new File(workingDir, hashString);
-        }
         else
         {
-            // If there's no working dir, we just use temp...
-            workingFile = File.createTempFile(hashString, "jswordtemp");
+            String hashString = (url.toExternalForm().hashCode() + "").replace('-', 'm');
 
-            // make sure we clean up after ourselves..
+            // get the location of the tempWorkingDir
+            File workingDir = getURLCacheDir();
+            File workingFile = null;
+
+            if (workingDir != null && workingDir.isDirectory())
+            {
+                workingFile = new File(workingDir, hashString);
+            }
+            else
+            {
+                // If there's no working dir, we just use temp...
+                workingFile = File.createTempFile(hashString, "jswordtemp");
+            }
             workingFile.deleteOnExit();
+
+            // copy the contents of the URL to the file
+            OutputStream output = new FileOutputStream(workingFile);
+            InputStream input = url.openStream();
+
+            byte[] data = new byte[512];
+            for (int read = 0; read != -1; read = input.read(data))
+            {
+                output.write(data, 0, read);
+            }
+            input.close();
+            output.close();
+
+            // return the new file in URL form
+            return workingFile;
         }
-
-        // copy the contents of the URL to the file
-        OutputStream output = new FileOutputStream(workingFile);
-        InputStream input = url.openStream();
-
-        byte[] data = new byte[512];
-        for (int read = 0; read != -1; read = input.read(data))
-        {
-            output.write(data, 0, read);
-        }
-        input.close();
-        output.close();
-
-        // return the new file in URL form
-        return workingFile;
     }
 
     /**
@@ -271,12 +270,12 @@ public class NetUtil
             throw new MalformedURLException("The URL '" + orig + "' does not end in '" + strip + "'");
         }
 
-        String new_file = file.substring(0, file.length() - strip.length());
+        String newFile = file.substring(0, file.length() - strip.length());
 
         return new URL(orig.getProtocol(),
                        orig.getHost(),
                        orig.getPort(),
-                       new_file);
+                       newFile);
     }
 
     /**

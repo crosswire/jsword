@@ -175,9 +175,31 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
      */
     public void setBook(int book)
     {
-        Verse old = set.getVerse();
-        Verse update = new Verse(book, old.getChapter(), old.getVerse(), true);
-        set.setViewedVerse(update);
+        try
+        {
+        	// Try to honor current chapter and verse
+        	// Use 1 if it is not possible
+            Verse old = set.getVerse();
+            int chapter = old.getChapter();
+            int verse = old.getVerse();
+
+            if (BibleInfo.chaptersInBook(book) < chapter)
+            {
+                chapter = 1;
+            }
+
+            if (BibleInfo.versesInChapter(book, chapter) < verse)
+            {
+                verse = 1;
+            }
+
+            Verse update = new Verse(book, chapter, verse, true);
+            set.setViewedVerse(update);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**
@@ -185,9 +207,26 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
      */
     public void setChapter(int chapter)
     {
-        Verse old = set.getVerse();
-        Verse update = new Verse(old.getChapter(), chapter, old.getVerse(), true);
-        set.setViewedVerse(update);
+        try
+        {
+        	// Try to honor current verse
+        	// Use 1 if it is not possible
+            Verse old = set.getVerse();
+            int book = old.getBook();
+            int verse = old.getVerse();
+
+            if (BibleInfo.versesInChapter(book, chapter) < verse)
+            {
+                verse = 1;
+            }
+
+            Verse update = new Verse(book, chapter, verse, true);
+            set.setViewedVerse(update);
+        }
+        catch (NoSuchVerseException ex)
+        {
+            throw new LogicError(ex);
+        }
     }
 
     /**
@@ -196,7 +235,7 @@ public class BibleComboBoxModel extends AbstractListModel implements ComboBoxMod
     public void setVerse(int verse)
     {
         Verse old = set.getVerse();
-        Verse update = new Verse(old.getChapter(), old.getChapter(), verse, true);
+        Verse update = new Verse(old.getBook(), old.getChapter(), verse, true);
         set.setViewedVerse(update);
     }
 

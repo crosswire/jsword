@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.crosswire.common.swing.EirAbstractAction;
-import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerEvent;
@@ -55,7 +54,7 @@ public class SitesPane extends JPanel
     /**
      * Simple ctor
      */
-    public SitesPane() throws InstallException
+    public SitesPane()
     {
         initialize();
 
@@ -220,7 +219,7 @@ public class SitesPane extends JPanel
     /**
      * Create an 'open' Action
      */
-    public static Action createOpenAction(Component parent) throws InstallException
+    public static Action createOpenAction(Component parent)
     {
         return new OpenAction(parent);
     }
@@ -233,7 +232,7 @@ public class SitesPane extends JPanel
         /**
          * Simple ctor
          */
-        public OpenAction(Component parent) throws InstallException
+        public OpenAction(Component parent)
         {
             super("Books ...",
                   "toolbarButtonGraphics/general/Import16.gif",
@@ -242,7 +241,6 @@ public class SitesPane extends JPanel
                   'A', null);
 
             this.parent = parent;
-            sites = new SitesPane();
         }
 
         /* (non-Javadoc)
@@ -250,6 +248,11 @@ public class SitesPane extends JPanel
          */
         public void actionPerformed(ActionEvent ev)
         {
+            if (sites == null)
+            {
+                sites = new SitesPane();
+            }
+
             sites.showInDialog(parent);
         }
 

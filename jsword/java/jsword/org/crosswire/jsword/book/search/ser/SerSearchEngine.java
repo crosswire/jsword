@@ -1,4 +1,3 @@
-
 package org.crosswire.jsword.book.search.ser;
 
 import java.io.BufferedReader;
@@ -61,35 +60,10 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchEngine#init(org.crosswire.jsword.book.Bible, java.net.URL)
      */
-    public void init(Book newbook, URL newurl) throws BookException
+    public void init(Book newbook, URL newurl)
     {
-        try
-        {
-            this.book = newbook;
-            this.url = newurl;
-
-            URL dataurl = NetUtil.lengthenURL(newurl, "ref.data");
-
-            if (isIndexed())
-            {
-                URL indexurl = NetUtil.lengthenURL(newurl, "ref.index");
-
-                // We don't need to create any indexes, they just need loading
-                indexin = new BufferedReader(new InputStreamReader(indexurl.openStream()));
-
-                // Open the Passage RAF
-                dataraf = new RandomAccessFile(NetUtil.getAsFile(dataurl), "r");
-            }
-            else
-            {
-                // Open the Passage RAF
-                dataraf = new RandomAccessFile(NetUtil.getAsFile(dataurl), "rw");
-            }
-        }
-        catch (IOException ex)
-        {
-            throw new BookException(Msg.INITIALIZE, ex);
-        }
+        this.book = newbook;
+        this.url = newurl;
     }
 
     /* (non-Javadoc)
@@ -128,8 +102,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         checkActive();
 
         word = word.toLowerCase();
-        SortedMap sub_map = datamap.subMap(word, word + "\u9999");
-        return sub_map.keySet().iterator();
+        SortedMap submap = datamap.subMap(word, word + "\u9999");
+        return submap.keySet().iterator();
     }
 
     /* (non-Javadoc)
@@ -154,8 +128,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         {
             // Read blob
             byte[] blob = new byte[section.length];
-            dataraf.seek(section.offset);
-            int read = dataraf.read(blob);
+            dataRaf.seek(section.offset);
+            int read = dataRaf.read(blob);
 
             // Probably a bit harsh, but it would be wrong to just drop it.
             if (read != blob.length)
@@ -170,8 +144,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         {
             log.warn("Search failed on:");
             log.warn("  word=" + word);
-            log.warn("  ref_ptr=" + section.offset);
-            log.warn("  ref_length=" + section.length);
+            log.warn("  offset=" + section.offset);
+            log.warn("  length=" + section.length);
             Reporter.informUser(this, ex);
 
             return PassageFactory.createPassage();
@@ -188,8 +162,8 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
             return false;
         }
 
-        URL ref_idy_url = NetUtil.lengthenURL(url, "ref.index");
-        return NetUtil.isFile(ref_idy_url);
+        URL indexIn = NetUtil.lengthenURL(url, "ref.index");
+        return NetUtil.isFile(indexIn);
     }
 
     /* (non-Javadoc)
@@ -197,41 +171,43 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
      */
     protected void loadIndexes()
     {
-        while (true)
+        try
         {
-            String line = null;
+            URL dataUrl = NetUtil.lengthenURL(url, "ref.data");
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "r");
 
-            try
-            {
-                line = indexin.readLine();
-            }
-            catch (IOException ex)
-            {
-                log.error("Read failed on indexin", ex);
-                break;
-            }
+            URL indexUrl = NetUtil.lengthenURL(url, "ref.index");
+            BufferedReader indexIn = new BufferedReader(new InputStreamReader(indexUrl.openStream()));
 
-            if (line == null)
+            while (true)
             {
-                break;
-            }
+                String line = indexIn.readLine();
+                if (line == null)
+                {
+                    break;
+                }
 
-            try
-            {
-                int colon1 = line.indexOf(":");
-                int colon2 = line.lastIndexOf(":");
-                String word = line.substring(0, colon1);
+                try
+                {
+                    int colon1 = line.indexOf(":");
+                    int colon2 = line.lastIndexOf(":");
+                    String word = line.substring(0, colon1);
 
-                long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
-                int length = Integer.parseInt(line.substring(colon2 + 1));
+                    long offset = Long.parseLong(line.substring(colon1 + 1, colon2));
+                    int length = Integer.parseInt(line.substring(colon2 + 1));
 
-                Section section = new Section(offset, length);
-                datamap.put(word, section);
+                    Section section = new Section(offset, length);
+                    datamap.put(word, section);
+                }
+                catch (NumberFormatException ex)
+                {
+                    log.error("NumberFormatException reading line: "+line, ex);
+                }
             }
-            catch (NumberFormatException ex)
-            {
-                log.error("NumberFormatException reading line: "+line, ex);
-            }
+        }
+        catch (IOException ex)
+        {
+            log.error("Read failed on indexin", ex);
         }
     }
 
@@ -241,6 +217,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     protected void unloadIndexes()
     {
         datamap.clear();
+        dataRaf = null;
     }
 
     /* (non-Javadoc)
@@ -310,6 +287,17 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         int words = matchmap.size();
 
         // Now we need to write the words into our index
+        try
+        {
+            NetUtil.makeDirectory(url);
+            URL dataUrl = NetUtil.lengthenURL(url, "ref.data");
+            dataRaf = new RandomAccessFile(NetUtil.getAsFile(dataUrl), "rw");
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(Msg.WRITE_ERROR, ex);
+        }
+
         for (Iterator it = matchmap.keySet().iterator(); it.hasNext();)
         {
             String word = (String) it.next();
@@ -371,9 +359,9 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
         {
             byte[] buffer = PassageUtil.toBinaryRepresentation(ref);
 
-            Section section = new Section(dataraf.getFilePointer(), buffer.length);
+            Section section = new Section(dataRaf.getFilePointer(), buffer.length);
 
-            dataraf.write(buffer);
+            dataRaf.write(buffer);
             datamap.put(word.toLowerCase(), section);
         }
         catch (Exception ex)
@@ -395,12 +383,7 @@ public class SerSearchEngine extends AbstractSearchEngine implements Index
     /**
      * The passages random access file
      */
-    private RandomAccessFile dataraf;
-
-    /**
-     * The index to the random access file
-     */
-    private BufferedReader indexin;
+    private RandomAccessFile dataRaf;
 
     /**
      * The hash of indexes into the passages file

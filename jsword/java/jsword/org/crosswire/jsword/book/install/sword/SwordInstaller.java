@@ -171,84 +171,85 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
      */
     private void loadCachedIndex() throws InstallException
     {
-        try
+        entries.clear();
+
+        URL cache = getCachedIndexFile();
+        if (!NetUtil.isFile(cache))
         {
-            entries.clear();
-
-            URL cache = getCachedIndexFile();
-            if (!NetUtil.isFile(cache))
+            log.info("Missing cache file: "+cache.toExternalForm());
+        }
+        else
+        {
+            try
             {
-                log.info("Missing cache file: "+cache.toExternalForm());
-                return;
-            }
+                InputStream in = cache.openStream();
+                GZIPInputStream gin = new GZIPInputStream(in);
+                TarInputStream tin = new TarInputStream(gin);
 
-            InputStream in = cache.openStream();
-            GZIPInputStream gin = new GZIPInputStream(in);
-            TarInputStream tin = new TarInputStream(gin);
-
-            while (true)
-            {
-                TarEntry entry = tin.getNextEntry();
-                if (entry == null)
+                while (true)
                 {
-                    break;
-                }
-
-                String internal = entry.getName();
-                if (!entry.isDirectory())
-                {
-                    try
+                    TarEntry entry = tin.getNextEntry();
+                    if (entry == null)
                     {
-                        int size = (int) entry.getSize();
-                        byte[] buffer = new byte[size];
-                        tin.read(buffer);
+                        break;
+                    }
 
-                        if (internal.endsWith(".conf"))
+                    String internal = entry.getName();
+                    if (!entry.isDirectory())
+                    {
+                        try
                         {
-                            internal = internal.substring(0, internal.length() - 5);
-                        }
-                        if (internal.startsWith("mods.d/"))
-                        {
-                            internal = internal.substring(7);
-                        }
+                            int size = (int) entry.getSize();
+                            byte[] buffer = new byte[size];
+                            tin.read(buffer);
 
-                        Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                        SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
-
-                        String desc = sbmd.getName();
-                        if (desc == null)
-                        {
-                            log.warn("Ignoring descriptionless module: "+internal);
-                        }
-                        else if (sbmd.isSupported())
-                        {
-                            if (sbmd.getFirstValue(ConfigEntry.CIPHER_KEY) == null)
+                            if (internal.endsWith(".conf"))
                             {
-                                entries.put(desc, sbmd);
+                                internal = internal.substring(0, internal.length() - 5);
                             }
-                            else
+                            if (internal.startsWith("mods.d/"))
                             {
-                                log.info("Ignoring module: "+desc+" because it is locked.");
+                                internal = internal.substring(7);
                             }
+
+                            Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
+                            SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
+
+                            String desc = sbmd.getName();
+                            if (desc == null)
+                            {
+                                log.warn("Ignoring descriptionless module: "+internal);
+                            }
+                            else if (sbmd.isSupported())
+                            {
+                                if (sbmd.getFirstValue(ConfigEntry.CIPHER_KEY) == null)
+                                {
+                                    entries.put(desc, sbmd);
+                                }
+                                else
+                                {
+                                    log.info("Ignoring module: "+desc+" because it is locked.");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            log.warn("Failed to load config for entry: "+internal, ex);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        log.warn("Failed to load config for entry: "+internal, ex);
-                    }
                 }
-            }
-            
-            tin.close();
-            gin.close();
-            in.close();
 
-            loaded = true;
+                tin.close();
+                gin.close();
+                in.close();
+            }
+            catch (IOException ex)
+            {
+                throw new InstallException(Msg.CACHE_ERROR, ex);
+            }
         }
-        catch (IOException ex)
-        {
-            throw new InstallException(Msg.CACHE_ERROR, ex);
-        }
+
+        loaded = true;
     }
 
     /**
@@ -258,14 +259,21 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     {
         try
         {
-            String encoded = host + directory.replace('/', '_');
-            URL scratchdir = Project.instance().getTempScratchSpace("download-" + encoded);
+            URL scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), false);
             return NetUtil.lengthenURL(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)
         {
             throw new InstallException(Msg.URL_FAILED, ex);
         }
+    }
+
+    /**
+     * What are we using as a temp filename?
+     */
+    private static String getTempFileExtension(String host, String directory)
+    {
+        return "download-" + host + directory.replace('/', '_');
     }
 
     /**
@@ -284,6 +292,10 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
         try
         {
             ftpInit(ftp, site, user, password, dir);
+
+            // Check the download directory exists
+            URL parent = NetUtil.shortenURL(dest, getTempFileExtension(site, dir));
+            NetUtil.makeDirectory(parent);
 
             // Download the index file
             OutputStream out = NetUtil.getOutputStream(dest);
@@ -450,6 +462,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     public void setDirectory(String directory)
     {
         this.directory = directory;
+        loaded = false;
     }
 
     /**
@@ -466,6 +479,7 @@ public class SwordInstaller extends AbstractBookList implements Installer, Compa
     public void setHost(String host)
     {
         this.host = host;
+        loaded = false;
     }
 
     /**

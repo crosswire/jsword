@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
@@ -120,7 +121,6 @@ public class CommentaryPane extends JPanel implements FocusablePart
     protected void updateDisplay()
     {
         int index = cbocomments.getSelectedIndex();
-
         if (index == -1)
         {
             return;
@@ -131,6 +131,12 @@ public class CommentaryPane extends JPanel implements FocusablePart
             Verse verse = set.getVerse();
             ref = PassageFactory.createPassage();
             ref.add(verse);
+
+            if (index >= cmds.size())
+            {
+                log.error("Can't update display to index: "+index+" when I only know about: "+cmds.size()+" books.", new Exception());
+                return;
+            }
 
             BookMetaData bmd = (BookMetaData) cmds.get(index);
 
@@ -255,6 +261,11 @@ public class CommentaryPane extends JPanel implements FocusablePart
      * The display of OSIS data
      */
     private BookDataDisplay txtdisplay = BookDataDisplayFactory.createBookDataDisplay();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(CommentaryPane.class);
 
     /*
      * GUI components

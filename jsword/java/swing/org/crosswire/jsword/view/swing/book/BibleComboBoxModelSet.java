@@ -1,8 +1,9 @@
-
 package org.crosswire.jsword.view.swing.book;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JComboBox;
 import javax.swing.event.EventListenerList;
@@ -41,38 +42,38 @@ public class BibleComboBoxModelSet
     /**
      * The book combo box
      */
-    public void setBookComboBox(JComboBox cbo_book)
+    public void setBookComboBox(JComboBox cboBook)
     {
-        this.cbo_book = cbo_book;
+        this.cboBook = cboBook;
 
-        cbo_book.setModel(mdl_book);
-        cbo_book.addActionListener(cal);
+        cboBook.setModel(mdlBook);
+        cboBook.addItemListener(cil);
     }
 
     /**
      * The chapter combo box
      */
-    public void setChapterComboBox(JComboBox cbo_chapter)
+    public void setChapterComboBox(JComboBox cboChapter)
     {
-        this.cbo_chapter = cbo_chapter;
+        this.cboChapter = cboChapter;
 
-        cbo_chapter.setModel(mdl_chapter);
+        cboChapter.setModel(mdlChapter);
         // There are over 100 chapters in some books
-        cbo_chapter.setPrototypeDisplayValue(new Integer(999));
-        cbo_chapter.addActionListener(cal);
+        cboChapter.setPrototypeDisplayValue(new Integer(999));
+        cboChapter.addItemListener(cil);
     }
 
     /**
      * The verse combo box
      */
-    public void setVerseComboBox(JComboBox cbo_verse)
+    public void setVerseComboBox(JComboBox cboVerse)
     {
-        this.cbo_verse = cbo_verse;
+        this.cboVerse = cboVerse;
 
-        cbo_verse.setModel(mdl_verse);
+        cboVerse.setModel(mdlVerse);
         // There are over 100 verses in some chapters
-        cbo_chapter.setPrototypeDisplayValue(new Integer(999));
-        cbo_verse.addActionListener(cal);
+        cboChapter.setPrototypeDisplayValue(new Integer(999));
+        cboVerse.addItemListener(cil);
     }
 
     /**
@@ -85,11 +86,11 @@ public class BibleComboBoxModelSet
 
     /**
      * Sets the verse.
-     * @param verse The verse to set
+     * @param newverse The verse to set
      */
-    protected void setViewedVerse(Verse verse)
+    protected void setViewedVerse(Verse newverse)
     {
-        this.verse = verse;
+        setVerse(newverse);
     }
 
     /**
@@ -97,16 +98,37 @@ public class BibleComboBoxModelSet
      */
     public void setVerse(Verse newverse)
     {
+        if (verse.equals(newverse))
+        {
+            return;
+        }
+
         try
         {
-            String book = BibleInfo.getLongBookName(newverse.getBook());
-            cbo_book.setSelectedItem(book);
-            
-            Integer chapternum = new Integer(newverse.getChapter());
-            cbo_chapter.setSelectedItem(chapternum);
-            
-            Integer versenum = new Integer(newverse.getVerse());
-            cbo_verse.setSelectedItem(versenum);
+            Verse oldverse = verse;
+            verse = newverse;
+            int bookval = newverse.getBook();
+            String book = BibleInfo.getLongBookName(bookval);
+            if (oldverse.getBook() != bookval || !cboBook.getSelectedItem().equals(book))
+            {
+                cboBook.setSelectedItem(book);
+            }
+
+            int chapterval = newverse.getChapter();
+            Integer chapternum = new Integer(chapterval);
+            if (oldverse.getChapter() != chapterval || !cboChapter.getSelectedItem().equals(chapternum))
+            {
+                cboChapter.setSelectedItem(chapternum);
+            }
+
+            int verseval = newverse.getVerse();
+            Integer versenum = new Integer(verseval);
+            if (oldverse.getVerse() != verseval || !cboVerse.getSelectedItem().equals(versenum))
+            {
+                cboVerse.setSelectedItem(versenum);
+            }
+
+            fireContentsChanged();
         }
         catch (NoSuchVerseException ex)
         {
@@ -116,16 +138,16 @@ public class BibleComboBoxModelSet
 
     private Verse verse = new Verse();
 
-    private JComboBox cbo_book = null;
-    private JComboBox cbo_chapter = null;
-    private JComboBox cbo_verse = null;
+    protected JComboBox cboBook = null;
+    protected JComboBox cboChapter = null;
+    private JComboBox cboVerse = null;
 
-    protected BibleComboBoxModel mdl_book = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_BOOK);
-    protected BibleComboBoxModel mdl_chapter = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_CHAPTER);
-    protected BibleComboBoxModel mdl_verse = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_VERSE);
+    protected BibleComboBoxModel mdlBook = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_BOOK);
+    protected BibleComboBoxModel mdlChapter = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_CHAPTER);
+    protected BibleComboBoxModel mdlVerse = new BibleComboBoxModel(this, BibleComboBoxModel.LEVEL_VERSE);
 
     protected EventListenerList listeners = new EventListenerList();
-    private ActionListener cal = new CustomActionListener();
+    private ItemListener cil = new CustomItemListener();
 
     /**
      * Add a listener to the list that's notified each time a change
@@ -174,15 +196,25 @@ public class BibleComboBoxModelSet
     /**
      * For when a selection is made
      */
-    private final class CustomActionListener implements ActionListener
+    private final class CustomItemListener implements ItemListener
     {
-        public void actionPerformed(ActionEvent ev)
+        public void itemStateChanged(ItemEvent ev)
         {
-            mdl_book.fireContentsChanged(this, 0, mdl_book.getSize());
-            mdl_chapter.fireContentsChanged(this, 0, mdl_chapter.getSize());
-            mdl_verse.fireContentsChanged(this, 0, mdl_verse.getSize());
-            
-            fireContentsChanged();
+            if (ev.getStateChange() == ItemEvent.SELECTED)
+            {
+                // If the book changes we need to change both the chapter and verse list
+                // If the chapter changes we need to change the verse list
+                Object source = ev.getSource();
+                if (source.equals(cboBook))
+                {
+                    mdlChapter.fireContentsChanged(this, 0, mdlChapter.getSize());
+                }
+
+                if (source.equals(cboBook) || source.equals(cboChapter))
+                {
+                    mdlVerse.fireContentsChanged(this, 0, mdlVerse.getSize());
+                }
+            }
         }
     }
 }

@@ -94,7 +94,7 @@ public abstract class AbstractBook implements Book
     {
         try
         {
-            URL url = Project.instance().getTempScratchSpace("sword-"+getBookMetaData().getInitials());
+            URL url = Project.instance().getTempScratchSpace("sword-"+getBookMetaData().getInitials(), false);
             searcher = SearchEngineFactory.createSearchEngine(this, url);
         }
         catch (Exception ex)

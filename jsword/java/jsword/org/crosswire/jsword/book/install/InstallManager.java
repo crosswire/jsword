@@ -44,7 +44,7 @@ public class InstallManager
     /**
      * Simple ctor
      */
-    public InstallManager() throws InstallException
+    public InstallManager()
     {
         try
         {
@@ -82,7 +82,7 @@ public class InstallManager
         }
         catch (IOException ex)
         {
-            throw new InstallException(Msg.INIT, ex);
+            Reporter.informUser(this, ex);
         }
     }
 
