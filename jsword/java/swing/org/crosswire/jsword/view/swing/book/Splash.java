@@ -81,7 +81,7 @@ public class Splash extends JWindow
         }
         catch (IOException ex)
         {
-            log.error("Failed to load prediction times", ex);
+            log.debug("Failed to load prediction times - guessing");
         }
         
         // And the predictions for next time

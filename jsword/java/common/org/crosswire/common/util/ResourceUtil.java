@@ -53,42 +53,42 @@ public class ResourceUtil
         URL reply = ResourceUtil.class.getResource(search);
         if (reply != null)
         {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getResource(search);");
+            //log.debug("getResource("+search+") = "+reply+" using getClass().getResource(search);");
             return reply;
         }
     
         reply = ResourceUtil.class.getResource("/"+search);
         if (reply != null)
         {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getResource(/search);");
+            //log.debug("getResource("+search+") = "+reply+" using getClass().getResource(/search);");
             return reply;
         }
     
         reply = ResourceUtil.class.getClassLoader().getResource(search);
         if (reply != null)
         {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(search);");
+            //log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(search);");
             return reply;
         }
     
         reply = ResourceUtil.class.getClassLoader().getResource("/"+search);
         if (reply != null)
         {
-            log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(/search);");
+            //log.debug("getResource("+search+") = "+reply+" using getClass().getClassLoader().getResource(/search);");
             return reply;
         }
-    
+
         reply = ClassLoader.getSystemResource(search);
         if (reply != null)
         {
-            log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(search);");
+            //log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(search);");
             return reply;
         }
-    
+
         reply = ClassLoader.getSystemResource("/"+search);
         if (reply != null)
         {
-            log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(/search);");
+            //log.debug("getResource("+search+") = "+reply+" using ClassLoader.getSystemResource(/search);");
             return reply;
         }
     

@@ -42,7 +42,7 @@ public class JSwordAllTests extends TestCase
 
         suite.addTestSuite(org.crosswire.jsword.util.TestStyle.class);
 
-        suite.addTestSuite(org.crosswire.jsword.passage.TestBooks.class);
+        suite.addTestSuite(org.crosswire.jsword.passage.TestBibleInfo.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageConstants.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageMix.class);
         suite.addTestSuite(org.crosswire.jsword.passage.TestPassageSize.class);

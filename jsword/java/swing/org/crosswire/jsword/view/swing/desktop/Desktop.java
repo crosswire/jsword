@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
 import javax.swing.JCheckBoxMenuItem;
@@ -23,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -120,10 +118,9 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             act_tools_options.loadConfig();
 
             splash.setProgress("Creating GUI : Generating Components");
-            layouts = new ViewLayout[3];
-            layouts[LAYOUT_TYPE_SDI] = new SDIViewLayout(this);
-            layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout(this);
-            layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout(this);
+            layouts = new ViewLayout[2];
+            layouts[LAYOUT_TYPE_TDI] = new TDIViewLayout();
+            layouts[LAYOUT_TYPE_MDI] = new MDIViewLayout();
 
             act_file_new = new FileNewAction(this);
             act_file_open = new FileOpenAction(this);
@@ -141,7 +138,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
             act_edit_blur1 = new BlurAction(this, 1, Passage.RESTRICT_CHAPTER);
             act_edit_blur5 = new BlurAction(this, 5, Passage.RESTRICT_CHAPTER);
 
-            act_view_sdi = new ViewSDIAction(this);
             act_view_tdi = new ViewTDIAction(this);
             act_view_mdi = new ViewMDIAction(this);
             act_view_tbar = new ViewToolBarAction(this);
@@ -162,7 +158,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
             rdo_view_tdi = new JRadioButtonMenuItem(act_view_tdi);
             rdo_view_mdi = new JRadioButtonMenuItem(act_view_mdi);
-            rdo_view_sdi = new JRadioButtonMenuItem(act_view_sdi);
             chk_view_sbar = new JCheckBoxMenuItem(act_view_sbar);
             chk_view_tbar = new JCheckBoxMenuItem(act_view_tbar);
 
@@ -186,17 +181,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
             // Sort out the current ViewLayout. We need to reset current to be
             // initial because the config system may well have changed initial
-            ensureAvailableBibleViewPane();
             current = initial;
-            BibleViewPane view = (BibleViewPane) iterateBibleViewPanes().next();
-            layouts[current].add(view);
-            Component comp = layouts[current].getRootComponent();
-            spt_books.add(comp, JSplitPane.LEFT);
-            layouts[current].getSelected().adjustFocus(); 
-
-            // Preload the PassageInnerPane for faster initial view
-            splash.setProgress("Creating GUI : Preloading view system");
-            InnerDisplayPane.preload();
+            ensureAvailableBibleViewPane();
 
             // Configuration
             splash.setProgress("General configuration");
@@ -215,6 +201,10 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
                 }
             });
             last = recurseDisplayArea();
+
+            // Preload the PassageInnerPane for faster initial view
+            splash.setProgress("Creating GUI : Preloading view system");
+            InnerDisplayPane.preload();
 
             splash.done();
         }
@@ -257,19 +247,16 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
         rdo_view_tdi.addMouseListener(bar_status);
         rdo_view_mdi.addMouseListener(bar_status);
-        rdo_view_sdi.addMouseListener(bar_status);
         chk_view_tbar.addMouseListener(bar_status);
         chk_view_sbar.addMouseListener(bar_status);
-        rdo_view_sdi.setSelected(true);
+        rdo_view_tdi.setSelected(true);
         chk_view_tbar.setSelected(view_status);
         chk_view_sbar.setSelected(view_tool);
         grp_views.add(rdo_view_mdi);
-        grp_views.add(rdo_view_sdi);
         grp_views.add(rdo_view_tdi);
 
         menu_view.setText("View");
         menu_view.setMnemonic('V');
-        menu_view.add(rdo_view_sdi);
         menu_view.add(rdo_view_tdi);
         menu_view.add(rdo_view_mdi);
         menu_view.addSeparator();
@@ -373,37 +360,31 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     /**
      * Adds BibleViewPane to the list in this Desktop.
      */
-    public boolean addBibleViewPane(BibleViewPane view)
+    public void addBibleViewPane(BibleViewPane view)
     {
-        view.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        view.addTitleChangedListener(this);
+        view.addHyperlinkListener(this);
+        views.add(view);
 
-        if (getViewLayout().add(view))
-        {
-            view.addTitleChangedListener(this);
-            views.add(view);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        getViewLayout().add(view);
+
+        setLayoutComponent(getViewLayout().getRootComponent());
+        getViewLayout().getSelected().adjustFocus(); 
     }
 
     /**
      * Removes BibleViewPane from the list in this Desktop.
      */
-    public boolean removeBibleViewPane(BibleViewPane view)
+    public void removeBibleViewPane(BibleViewPane view)
     {
-        // From FileCloseAllAction
-        if (getViewLayout().remove(view))
-        {
-            views.remove(view);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        view.removeTitleChangedListener(this);
+        view.removeHyperlinkListener(this);
+        views.remove(view);
+
+        getViewLayout().remove(view);
+
+        setLayoutComponent(getViewLayout().getRootComponent());
+        //getViewLayout().getSelected().adjustFocus(); 
     }
 
     /**
@@ -412,6 +393,14 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     public Iterator iterateBibleViewPanes()
     {
         return views.iterator();
+    }
+
+    /**
+     * How many BibleViewPanes are there currently?
+     */
+    public int countBibleViewPanes()
+    {
+        return views.size();
     }
 
     /**
@@ -438,7 +427,8 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
-     * 
+     * Get the currently selected component and the walk up the component tree
+     * trying to find a component that implements DisplayArea
      */
     protected DisplayArea recurseDisplayArea()
     {
@@ -548,7 +538,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
-     * If there are no current BibleViewPane then add one in.
+     * If there are no current BibleViewPanes then add one in.
      * final because the ctor calls this method
      */
     public final void ensureAvailableBibleViewPane()
@@ -557,7 +547,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         if (!iterateBibleViewPanes().hasNext())
         {
             BibleViewPane view = new BibleViewPane();
-            view.addHyperlinkListener(this);
             addBibleViewPane(view);
         }
     }
@@ -604,10 +593,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
                 Passage ref = PassageFactory.createPassage(data);
                 BibleViewPane view = new BibleViewPane();
 
-                if (!addBibleViewPane(view))
-                {
-                    JOptionPane.showMessageDialog(this, "You can't add windows in this view.\nUse the View menu to switch to MDI mode or TDI mode to view multiple passages.");
-                }
+                addBibleViewPane(view);
 
                 view.addHyperlinkListener(this);
                 view.setPassage(ref);
@@ -643,7 +629,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     /**
      * What is the current layout?
      */
-    private ViewLayout getViewLayout()
+    private final ViewLayout getViewLayout()
     {
         return layouts[current];
     }
@@ -654,7 +640,7 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     public void setLayoutType(int next)
     {
         // Check this is a change
-        if (this.current == next)
+        if (current == next)
         {
             return;
         }
@@ -664,28 +650,46 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
         while (it.hasNext())
         {
             BibleViewPane view = (BibleViewPane) it.next();
-            layouts[current].remove(view);
+            getViewLayout().remove(view);
         }
-        Component comp = layouts[current].getRootComponent();
-        spt_books.remove(comp);
 
-        // set the new layout to be current
-        this.current = next;
+        current = next;
 
-        // Go through the views adding them to the layout
-        // SDIViewLayout may well add a view, in which case the view needs to
-        // be set already so this must come last.
+        // Go through the views adding them to the layout SDIViewLayout may well add
+        // a view, in which case the view needs to be set already so this must come
+        // last.
         it = iterateBibleViewPanes();
         while (it.hasNext())
         {
             BibleViewPane view = (BibleViewPane) it.next();
-            layouts[current].add(view);
+            getViewLayout().add(view);
         }
-        comp = layouts[current].getRootComponent();
-        spt_books.add(comp, JSplitPane.LEFT);
 
         // Allow the current BibleViewPane to set the focus in the right place
-        layouts[current].getSelected().adjustFocus(); 
+        setLayoutComponent(getViewLayout().getRootComponent());
+        getViewLayout().getSelected().adjustFocus();
+    }
+
+    /**
+     * For the use of the various Layout components to update the UI with
+     * their Layout component.
+     */
+    private void setLayoutComponent(Component next)
+    {
+        Component current = spt_books.getLeftComponent();
+        if (current == next)
+        {
+            return;
+        }
+        
+        if (current != null)
+        {
+            // Not sure why we have to use a number in place of
+            // the JSplitPane.LEFT string constant.
+            spt_books.remove(1/*JSplitPane.LEFT*/);
+        }
+
+        spt_books.add(next, JSplitPane.LEFT);
     }
 
     /**
@@ -705,24 +709,24 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     }
 
     /**
-     * Single document interface
-     */
-    protected static final int LAYOUT_TYPE_SDI = 0;
-
-    /**
      * Tabbed document interface
      */
-    protected static final int LAYOUT_TYPE_TDI = 1;
+    protected static final int LAYOUT_TYPE_TDI = 0;
 
     /**
      * Multiple document interface
      */
-    protected static final int LAYOUT_TYPE_MDI = 2;
+    protected static final int LAYOUT_TYPE_MDI = 1;
+
+    /**
+     * Single document interface
+     */
+    //protected static final int LAYOUT_TYPE_SDI = 2;
 
     /**
      * The initial layout state
      */
-    private static int initial = LAYOUT_TYPE_SDI;
+    private static int initial = LAYOUT_TYPE_TDI;
 
     /**
      * The array of valid layouts
@@ -776,7 +780,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
     private Action act_edit_blur1 = null;
     private Action act_edit_blur5 = null;
 
-    private Action act_view_sdi = null;
     private Action act_view_tdi = null;
     private Action act_view_mdi = null;
     private Action act_view_tbar = null;
@@ -799,7 +802,6 @@ public class Desktop extends JFrame implements TitleChangedListener, HyperlinkLi
 
     private JRadioButtonMenuItem rdo_view_tdi = null;
     private JRadioButtonMenuItem rdo_view_mdi = null;
-    private JRadioButtonMenuItem rdo_view_sdi = null;
     private JCheckBoxMenuItem chk_view_sbar = null;
     private JCheckBoxMenuItem chk_view_tbar = null;
 

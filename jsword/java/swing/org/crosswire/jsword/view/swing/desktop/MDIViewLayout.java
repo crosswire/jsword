@@ -35,16 +35,8 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class MDIViewLayout extends ViewLayout
+public class MDIViewLayout implements ViewLayout
 {
-    /**
-     * ctor that connects to the Desktop that we manage
-     */
-    public MDIViewLayout(Desktop tools)
-    {
-        super(tools);
-    }
-
     /**
      * What should the desktop add to the parent?
      */
@@ -56,7 +48,7 @@ public class MDIViewLayout extends ViewLayout
     /**
      * Add a view to the set while visible
      */
-    public boolean add(BibleViewPane view)
+    public void add(BibleViewPane view)
     {
         String name = view.getTitle();
 
@@ -69,19 +61,15 @@ public class MDIViewLayout extends ViewLayout
 
         iframe.setVisible(true);
         iframe.pack();
-
-        return true;
     }
 
     /**
      * Remove a view from the set while visible
      */
-    public boolean remove(BibleViewPane view)
+    public void remove(BibleViewPane view)
     {
         JInternalFrame iframe = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, view);
         iframe.dispose();
-
-        return true;
     }
 
     /**

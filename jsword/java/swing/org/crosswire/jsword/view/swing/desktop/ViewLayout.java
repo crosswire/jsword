@@ -29,48 +29,34 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class ViewLayout
+public interface ViewLayout
 {
-    /**
-     * Simple ctor that puts us in contact with a Desktop to manage
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.view.swing.desktop.ViewLayout#getRootComponent()
      */
-    public ViewLayout(Desktop tools)
-    {
-        this.tools = tools;
-    }
+    public Component getRootComponent();
 
     /**
-     * What should the desktop add to the parent?
+     * Add a view to the set while visible. This implies that you are now the
+     * active view so you should call Desktop.setLayoutComponent() to update
+     * the display.
      */
-    public abstract Component getRootComponent();
+    public void add(BibleViewPane view);
 
     /**
-     * Add a view to the set while visible
+     * Remove a view from the set while visible. This implies that you are now
+     * the active view so you should call Desktop.setLayoutComponent() to update
+     * the display.
      */
-    public abstract boolean add(BibleViewPane view);
-
-    /**
-     * Remove a view from the set while visible
-     */
-    public abstract boolean remove(BibleViewPane view);
+    public void remove(BibleViewPane view);
 
     /**
      * Update a view from the set while visible
      */
-    public abstract void updateTitle(BibleViewPane view);
+    public void updateTitle(BibleViewPane view);
 
     /**
      * While visible, which is the current pane
      */
-    public abstract BibleViewPane getSelected();
-
-    /**
-     * Accessor for the Desktop that we are managing
-     */
-    public Desktop getDesktop()
-    {
-        return tools;
-    }
-
-    private Desktop tools;
+    public BibleViewPane getSelected();
 }

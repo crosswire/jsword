@@ -95,7 +95,7 @@ public class Config
      */
     public void add(String key, Choice model)
     {
-        log.info("Adding key="+key);
+        //log.debug("Adding key="+key);
 
         keys.add(key);
         models.add(model);
@@ -104,7 +104,7 @@ public class Config
         if (value == null)
         {
             value = "";
-            log.info("key="+key+" has a null value");
+            log.info("key="+key+" had a null value");
         }
 
         local.put(key, value);

@@ -27,9 +27,9 @@ import junit.framework.TestCase;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class TestBooks extends TestCase
+public class TestBibleInfo extends TestCase
 {
-    public TestBooks(String s)
+    public TestBibleInfo(String s)
     {
         super(s);
     }
@@ -230,14 +230,28 @@ public class TestBooks extends TestCase
         assertEquals(BibleInfo.getBookNumber("Gene"), 1);
         assertEquals(BibleInfo.getBookNumber("Gen"), 1);
         assertEquals(BibleInfo.getBookNumber("G"), 1);
+        assertEquals(BibleInfo.getBookNumber("g"), 1);
         assertEquals(BibleInfo.getBookNumber("GEN"), 1);
         assertEquals(BibleInfo.getBookNumber("genesis"), 1);
-        assertEquals(BibleInfo.getBookNumber("revelations"), 66);
-        assertEquals(BibleInfo.getBookNumber("rev"), 66);
+        assertEquals(BibleInfo.getBookNumber("psa"), 19);
+        assertEquals(BibleInfo.getBookNumber("ps"), 19);
+        assertEquals(BibleInfo.getBookNumber("pss"), 19);
+        assertEquals(BibleInfo.getBookNumber("psalter"), 19);
+        assertEquals(BibleInfo.getBookNumber("ecc"), 21);
+        assertEquals(BibleInfo.getBookNumber("Qohelot"), 21);
+        assertEquals(BibleInfo.getBookNumber("son"), 22);
+        assertEquals(BibleInfo.getBookNumber("song"), 22);
+        assertEquals(BibleInfo.getBookNumber("song of solomon"), 22);
+        assertEquals(BibleInfo.getBookNumber("songofsolomon"), 22);
+        assertEquals(BibleInfo.getBookNumber("ss"), 22);
+        assertEquals(BibleInfo.getBookNumber("canticle"), 22);
+        assertEquals(BibleInfo.getBookNumber("can"), 22);
         assertEquals(BibleInfo.getBookNumber("phi"), 50);
         assertEquals(BibleInfo.getBookNumber("phil"), 50);
         assertEquals(BibleInfo.getBookNumber("phili"), 50);
         assertEquals(BibleInfo.getBookNumber("phile"), 57);
+        assertEquals(BibleInfo.getBookNumber("revelations"), 66);
+        assertEquals(BibleInfo.getBookNumber("rev"), 66);
 
         try
         {

@@ -61,6 +61,7 @@ public class SwordBookDriver extends AbstractBookDriver
             log.debug("getBooks() empty because dir == null");
             return new BibleMetaData[0];
         }
+
         try
         {
             // load each config withing mods.d, discard those which are not bibles, return names of remaining
@@ -73,9 +74,9 @@ public class SwordBookDriver extends AbstractBookDriver
 
             return createBookMetaDataArray(mods);
         }
-        catch (Exception ex)
+        catch (MalformedURLException ex)
         {
-            ex.printStackTrace();
+            log.warn("Failed to get mods.d directory", ex);
             return new BibleMetaData[0];
         }
     }
@@ -115,7 +116,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     public static void setSwordDir(String sword_dir) throws MalformedURLException, BookException
     {
-        // Fist we need to unregister any registered drivers
+        // Fist we need to unregister any registered books from ourselves
         BookDriver[] matches = Books.getDriversByClass(SwordBookDriver.class);
         for (int i=0; i<matches.length; i++)
         {

@@ -1,6 +1,7 @@
 
 package org.crosswire.common.util;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -57,6 +58,30 @@ public class MsgBase extends Enum
         }
 
         return base;
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.commons.lang.enum.Enum#toString()
+     */
+    public String toString(Object[] params)
+    {
+        String base = super.getName();
+
+        if (resources != null)
+        {
+            try
+            {
+                return resources.getString(base);
+            }
+            catch (MissingResourceException ex)
+            {
+                log.warn("missing resource in "+Locale.getDefault().getDisplayName()+" for "+base);
+                return base;
+            }
+        }
+
+        MessageFormat formatter = new MessageFormat(base);
+        return formatter.format(params);
     }
 
     /**

@@ -29,16 +29,22 @@ import java.awt.event.ActionEvent;
  */
 public class ViewMDIAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public ViewMDIAction(Desktop tools)
     {
         super(tools,
-              "View MDI",
+              "Sub-Window Mode",
               null,
               null,
-              "View MDI", "View using a window layout",
+              "View passages using sub-windows", "View passages using a MDI based windows layout",
               'M', null);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         getDesktop().setLayoutType(Desktop.LAYOUT_TYPE_MDI);

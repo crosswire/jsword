@@ -119,9 +119,11 @@ public class SwordUtil
         for (int i=0; i<data.length; i++)
         {
             if (data[i] == sought)
+            {
                 return i;
+            }
         }
-        
+
         return -1;
     }
 

@@ -4,8 +4,6 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
-import javax.swing.JOptionPane;
-
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
 
 /**
@@ -34,6 +32,9 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  */
 public class FileCloseAllAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public FileCloseAllAction(Desktop tools)
     {
         super(tools,
@@ -44,17 +45,16 @@ public class FileCloseAllAction extends DesktopAbstractAction
               'L', null);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         Iterator it = getDesktop().iterateBibleViewPanes();
         while (it.hasNext())
         {
             BibleViewPane view = (BibleViewPane) it.next();
-            if (!getDesktop().removeBibleViewPane(view))
-            {
-                JOptionPane.showMessageDialog(getDesktop(), "You must switch to MDI or TDI to close a passage window.");
-                return;
-            }
+            getDesktop().removeBibleViewPane(view);
         }
     }
 }

@@ -71,6 +71,7 @@ public class BibleViewPane extends JPanel
         });
         pnl_passg.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.setLayout(new BorderLayout());
         this.add(pnl_select, BorderLayout.NORTH);
         this.add(pnl_passg, BorderLayout.CENTER);

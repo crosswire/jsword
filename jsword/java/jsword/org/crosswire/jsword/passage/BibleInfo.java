@@ -62,7 +62,7 @@ public class BibleInfo implements PassageConstants
         if (book_case < 0 || book_case > 2)
         {
             Object[] params = new Object[] { new Integer(book_case) };
-            throw new IllegalArgumentException(PassageUtil.getResource(Msg.ERROR_CASE, params));
+            throw new IllegalArgumentException(Msg.ERROR_CASE.toString(params));
         }
 
         BibleInfo.book_case = book_case;
@@ -178,18 +178,28 @@ public class BibleInfo implements PassageConstants
             for (int i=0; i<VERSE_NUMERIC_BOOK.length; i++)
             {
                 if (find.startsWith(VERSE_NUMERIC_BOOK[i]))
+                {
                     numeric_book = true;
+                }
             }
 
             if (!numeric_book)
+            {
                 throw new NoSuchVerseException(Msg.BOOKS_NUMBER, new Object[] { find });
+            }
         }
 
         // Does it match a long version of the book or a short version
         for (int i=0; i<full_books.length; i++)
         {
-            if (full_books_lower[i].startsWith(match)) return i+1;
-            if (match.startsWith(short_books_lower[i])) return i+1;
+            if (full_books_lower[i].startsWith(match))
+            {
+                return i + 1;
+            }
+            if (match.startsWith(short_books_lower[i]))
+            {
+                return i + 1;
+            }
         }
 
         // Or does it match one of the alternative versions
@@ -197,7 +207,10 @@ public class BibleInfo implements PassageConstants
         {
             for (int j=0; j<alt_books[i].length; j++)
             {
-                if (match.startsWith(alt_books_lower[i][j])) return i+1;
+                if (match.startsWith(alt_books_lower[i][j]))
+                {
+                    return i + 1;
+                }
             }
         }
 
@@ -234,8 +247,14 @@ public class BibleInfo implements PassageConstants
         // This could be sped up with less of the toLowerCase()
         for (int i=0; i<full_books.length; i++)
         {
-            if (full_books_lower[i].startsWith(match)) return true;
-            if (match.startsWith(short_books_lower[i])) return true;
+            if (full_books_lower[i].startsWith(match))
+            {
+                return true;
+            }
+            if (match.startsWith(short_books_lower[i]))
+            {
+                return true;
+            }
 
             for (int j=0; j<alt_books[i].length; j++)
             {
@@ -368,7 +387,9 @@ public class BibleInfo implements PassageConstants
     public static final int verseOrdinal(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
+        {
             throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
+        }
 
         return verseOrdinal(ref[0], ref[1], ref[2]);
     }
@@ -458,7 +479,9 @@ public class BibleInfo implements PassageConstants
     public static final void validate(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
+        {
             throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
+        }
 
         validate(ref[BOOK], ref[CHAPTER], ref[VERSE]);
     }
@@ -488,9 +511,18 @@ public class BibleInfo implements PassageConstants
         try
         {
             // If they are too small
-            if (ref[BOOK] <= 0) ref[BOOK] = 1;
-            if (ref[CHAPTER] <= 0) ref[CHAPTER] = 1;
-            if (ref[VERSE] <= 0) ref[VERSE] = 1;
+            if (ref[BOOK] <= 0)
+            {
+                ref[BOOK] = 1;
+            }
+            if (ref[CHAPTER] <= 0)
+            {
+                ref[CHAPTER] = 1;
+            }
+            if (ref[VERSE] <= 0)
+            {
+                ref[VERSE] = 1;
+            }
 
             // If they are too big
             if (ref[BOOK] > BOOKS_IN_BIBLE)
@@ -572,7 +604,9 @@ public class BibleInfo implements PassageConstants
     public static final int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
     {
         if (ref1.length != 3 || ref2.length != 3)
+        {
             throw new IllegalArgumentException(PassageUtil.getResource(Msg.BOOKS_ORDINAL));
+        }
 
         return verseCount(ref1[0], ref1[1], ref1[2], ref2[0], ref2[1], ref2[2]);
     }
@@ -697,7 +731,9 @@ public class BibleInfo implements PassageConstants
     public static final String getSectionName(int section) throws NoSuchVerseException
     {
         if (section == 0)
-            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section) });
+        {
+            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section)});
+        }
 
         try
         {
@@ -948,8 +984,8 @@ public class BibleInfo implements PassageConstants
         /* Job */   { },
         /* Psa */   { "Pss", "Ps" },
         /* Pro */   { },
-        /* Ecc */   { "Qohelot", },
-        /* Son */   { "SS", "Canticle of Canticles" },
+        /* Ecc */   { "Qoh", },
+        /* Son */   { "SS", "Canticle", "Can" },
         /* Isa */   { },
         /* Jer */   { },
         /* Lam */   { },

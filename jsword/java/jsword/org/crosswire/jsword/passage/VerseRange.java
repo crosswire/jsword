@@ -18,8 +18,6 @@ import org.crosswire.common.util.LogicError;
  * be valid, although some versions may not return any text for verses
  * that they consider to be mis-translated in some way.
  * 
- * NOTE(joe): make chapter ranges prefixed by book to separate from v-ranges
- * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
@@ -68,21 +66,29 @@ public final class VerseRange implements VerseBase
      */
     public VerseRange(String desc) throws NoSuchVerseException
     {
-        this(desc, Verse.DEFAULT);
+        this(desc, DEFAULT);
     }
 
     /**
-     * Construct a VerseRange from a String and a Verse. For example given
-     * "2:2" and a basis of Gen 1:1 the result would be range of 1 verse
-     * starting at Gen 2:2. Also given "2:2-5" and a basis of Gen 1:1 the
-     * result would be a range of 5 verses starting at Gen 1:1.
+     * Construct a VerseRange from a String and a VerseRange. For example given "2:2"
+     * and a basis of Gen 1:1-2 the result would be range of 1 verse starting at
+     * Gen 2:2. Also given "2:2-5" and a basis of Gen 1:1-2 the result would be a
+     * range of 5 verses starting at Gen 1:1.
+     * <p>This constructor is different from the (String, Verse) constructor in that
+     * if the basis is a range that exactly covers a chapter and the string is a
+     * single number, then we assume that the number referrs to a chapter and not to
+     * a verse. This allows us to have a Passage like "Gen 1,2" and have the 2
+     * understood as chapter 2 and not verse 2 of Gen 1, which would have occured
+     * otherwise.
      * @param desc The string describing the verse e.g "2:2"
-     * @param basis The basis by which to understand the desc.
+     * @param basis The verse that forms the basis by which to understand the desc.
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public VerseRange(String desc, Verse basis) throws NoSuchVerseException
+    public VerseRange(String desc, VerseRange basis) throws NoSuchVerseException
     {
         original_name = desc;
+
+        Verse vbasis = basis.getEnd();
 
         // Do we need this?
         String[] parts = PassageUtil.tokenize(desc, RANGE_ALLOWED_DELIMS);
@@ -90,33 +96,66 @@ public final class VerseRange implements VerseBase
         switch (parts.length)
         {
         case 0:
-            start = basis;
+            // So no parts to this at all, so all we have is the basis
+            start = vbasis;
             verse_count = 1;
             end = calcEnd(start, verse_count);
             break;
 
         case 1:
+            // Only one part so for most things this will a single verse
+            // with the exception of whole chapters and books
             switch (Verse.getAccuracy(parts[0]))
             {
-            case ACCURACY_BOOK_VERSE:
-            case ACCURACY_CHAPTER_VERSE:
-            case ACCURACY_NUMBER_ONLY:
-            case ACCURACY_NONE:
-                start = new Verse(parts[0], basis);
-                end = start;
-                verse_count = 1;
+            case ACCURACY_BOOK_ONLY:
+                start = new Verse(parts[0], vbasis);
+                verse_count = BibleInfo.versesInBook(start.getBook());
+                end = calcEnd(start, verse_count);
                 break;
 
             case ACCURACY_BOOK_CHAPTER:
-                start = new Verse(parts[0], basis);
+                start = new Verse(parts[0], vbasis);
                 verse_count = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
                 end = calcEnd(start, verse_count);
                 break;
 
-            case ACCURACY_BOOK_ONLY:
-                start = new Verse(parts[0], basis);
-                verse_count = BibleInfo.versesInBook(start.getBook());
-                end = calcEnd(start, verse_count);
+            case ACCURACY_BOOK_VERSE:
+            case ACCURACY_CHAPTER_VERSE:
+                start = new Verse(parts[0], vbasis);
+                end = start;
+                verse_count = 1;
+                break;
+
+            case ACCURACY_NUMBER_ONLY:
+                if (basis.isChapter())
+                {
+                    // This should be ACCURACY_CHAPTER_ONLY if it existed
+                    int book = basis.getStart().getBook();
+                    int chapter = 0;
+                    if (Verse.isEndMarker(parts[0]))
+                    {
+                        chapter = BibleInfo.chaptersInBook(book);
+                    }
+                    else
+                    {
+                        chapter = Verse.parseInt(parts[0]);
+                    }
+    
+                    start = new Verse(book, chapter, 1);
+                    end = new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter));
+                    verse_count = calcVerseCount(start, end);
+                }
+                else
+                {
+                    start = new Verse(parts[0], basis.getStart());
+                    end = start;
+                    verse_count = 1;
+                }
+                break;
+    
+            case ACCURACY_NONE:
+                start = vbasis;
+                end = vbasis;
                 break;
 
             default:
@@ -287,7 +326,7 @@ public final class VerseRange implements VerseBase
                 {
                 case ACCURACY_BOOK_ONLY:
                     // For example "3:2-Exo"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     // except that this gives us end at 1:1, and not the book end
                     end = end.getLastVerseInBook();
@@ -295,7 +334,7 @@ public final class VerseRange implements VerseBase
 
                 case ACCURACY_BOOK_CHAPTER:
                     // For example "3:2-Exo 4"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     // except that this gives us end at verse 1, and not the book end
                     end = end.getLastVerseInChapter();
@@ -303,26 +342,26 @@ public final class VerseRange implements VerseBase
 
                 case ACCURACY_BOOK_VERSE:
                     // For example "3:2-Exo 3:4"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     break;
 
                 case ACCURACY_CHAPTER_VERSE:
                     // For example "3:2-4:4"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1], start);
                     break;
 
                 case ACCURACY_NUMBER_ONLY:
                     // For example "3:2-5"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1], start);
                     break;
 
                 case ACCURACY_NONE:
                     // Very wierd: "4:3-", can really assume end of anything
                     // so make end = start.
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = start;
                     break;
     
@@ -338,7 +377,7 @@ public final class VerseRange implements VerseBase
                 case ACCURACY_BOOK_ONLY:
                     // Wierd - For example "1-Exo". Since there is a basis to
                     // work from we won't assume that 1 means Gen.
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     // except that this gives us end at 1:1, and not the book end
                     end = end.getLastVerseInBook();
@@ -346,7 +385,7 @@ public final class VerseRange implements VerseBase
 
                 case ACCURACY_BOOK_CHAPTER:
                     // For example "2-Exo 4". See note for ACCURACY_BOOK_ONLY 
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     // except that this gives us end at verse 1, and not the book end
                     end = end.getLastVerseInChapter();
@@ -354,32 +393,52 @@ public final class VerseRange implements VerseBase
 
                 case ACCURACY_BOOK_VERSE:
                     // For example "2-Exo 3:4"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1]);
                     break;
 
                 case ACCURACY_CHAPTER_VERSE:
                     // For example "2-4:4"
-                    start = new Verse(parts[0], basis);
+                    start = new Verse(parts[0], vbasis);
                     end = new Verse(parts[1], start);
                     break;
 
                 case ACCURACY_NUMBER_ONLY:
+                    // TODO: This needs work
                     // For example "3-5". Tricky because the scope of the basis
                     // tells us how to interpret this.
                     // "Gen 1, 3-5" probably means chapters, but
                     // "Gen 1:1, 3-5" probably means verses.
-
-                    // "Gen, 3-5" might mean
-                    // "Gen, Num - Deu"
-                    start = new Verse(parts[0], basis);
-                    end = new Verse(parts[1], start);
+                    // also "Gen, 3-5" might mean "Gen, Num-Deu" but I think we can ignore that for now
+                    if (basis.isChapter())
+                    {
+                        // This should be ACCURACY_CHAPTER_ONLY if it existed
+                        int book = basis.getStart().getBook();
+                        int chapter = 0;
+                        if (Verse.isEndMarker(parts[0]))
+                        {
+                            chapter = BibleInfo.chaptersInBook(book);
+                        }
+                        else
+                        {
+                            chapter = Verse.parseInt(parts[0]);
+                        }
+                        start = new Verse(book, chapter, 1);
+                        end = new Verse(parts[1], start);
+                        // except that this gives us end at verse 1, and not the book end
+                        end = end.getLastVerseInChapter();
+                    }
+                    else
+                    {
+                        start = new Verse(parts[0], basis.getStart());
+                        end = new Verse(parts[1], start);
+                    }
                     break;
 
                 case ACCURACY_NONE:
                     // For example "4-".
-                    start = new Verse(parts[0], basis);
-                    end = basis;
+                    start = new Verse(parts[0], vbasis);
+                    end = vbasis;
                     break;
     
                 default:
@@ -394,7 +453,7 @@ public final class VerseRange implements VerseBase
                 {
                 case ACCURACY_BOOK_ONLY:
                     // For example "-Exo".
-                    start = basis;
+                    start = vbasis;
                     end = new Verse(parts[1]);
                     // except that this gives us end at 1:1, and not the book end
                     end = end.getLastVerseInBook();
@@ -402,7 +461,7 @@ public final class VerseRange implements VerseBase
 
                 case ACCURACY_BOOK_CHAPTER:
                     // For example "-Exo 2"
-                    start = basis;
+                    start = vbasis;
                     end = new Verse(parts[1]);
                     // except that this gives us end at verse 1, and not the book end
                     end = end.getLastVerseInChapter();
@@ -410,28 +469,28 @@ public final class VerseRange implements VerseBase
 
                 case ACCURACY_BOOK_VERSE:
                     // For example "-Exo 3:4"
-                    start = basis;
+                    start = vbasis;
                     end = new Verse(parts[1]);
                     break;
 
                 case ACCURACY_CHAPTER_VERSE:
                     // For example "-4:4"
-                    start = basis;
+                    start = vbasis;
                     end = new Verse(parts[1], start);
                     break;
 
                 case ACCURACY_NUMBER_ONLY:
                     // For example "-5". This is wierd enough that is is hard
                     // to say we got this wrong.
-                    start = basis;
+                    start = vbasis;
                     end = new Verse(parts[1], start);
                     break;
 
                 case ACCURACY_NONE:
                     // For example "-". We just make everything the basis,
                     // although I'm not sure we shouldn't except.
-                    start = basis;
-                    end = basis;
+                    start = vbasis;
+                    end = vbasis;
                     break;
     
                 default:
@@ -443,120 +502,6 @@ public final class VerseRange implements VerseBase
                 throw new LogicError();
             }
 
-            verse_count = calcVerseCount(start, end);
-            break;
-
-        default:
-            throw new NoSuchVerseException(Msg.RANGE_PARTS, new Object[] { RANGE_ALLOWED_DELIMS, desc });
-        }
-
-        verifyData();
-    }
-
-    /**
-     * Construct a VerseRange from a String and a VerseRange. For example given "2:2"
-     * and a basis of Gen 1:1-2 the result would be range of 1 verse starting at
-     * Gen 2:2. Also given "2:2-5" and a basis of Gen 1:1-2 the result would be a
-     * range of 5 verses starting at Gen 1:1.
-     * <p>This constructor is different from the (String, Verse) constructor in that
-     * if the basis is a range that exactly covers a chapter and the string is a
-     * single number, then we assume that the number referrs to a chapter and not to
-     * a verse. This allows us to have a Passage like "Gen 1,2" and have the 2
-     * understood as chapter 2 and not verse 2 of Gen 1, which would have occured
-     * otherwise.
-     * @param desc The string describing the verse e.g "2:2"
-     * @param basis The verse that forms the basis by which to understand the desc.
-     * @exception NoSuchVerseException If the reference is illegal
-     */
-    public VerseRange(String desc, VerseRange basis) throws NoSuchVerseException
-    {
-        original_name = desc;
-
-        String[] parts = PassageUtil.tokenize(desc, RANGE_ALLOWED_DELIMS);
-
-        switch (parts.length)
-        {
-        case 0:
-            // This happens when someone types "Gen 1:1-" not sure what
-            // someone would expect to happen as a result, maybe 1 verse,
-            // maybe the whole chapter, maybe the whole book. I think that
-            // we'd be silly to try to be too clever. So I'm assuming the
-            // former. If you want either latter option use "Gen 1:1-$:$"
-            start = basis.getStart();
-            verse_count = 1;
-            end = calcEnd(start, verse_count);
-            break;
-
-        case 1:
-            // We need to cope with 2 special cases here:
-            // o The first is of "Gen 1, 2": If there is 1 part to a verse,
-            //   and the basis is a whole chapter then we are ACCURACY_CHAPTER
-            // o The second is of "Mat, Mar": If there is 1 part to the verse
-            //   and the basis is a whole book, then we are ACCURACY_BOOK
-            //   However the second case is dealt with automatically because
-            //   "Mar" can only be a book and never a chapter or verse
-            switch (Verse.getAccuracy(parts[0]))
-            {
-            case ACCURACY_BOOK_VERSE:
-                start = new Verse(parts[0], basis.getStart());
-                end = start;
-                verse_count = 1;
-                break;
-
-            case ACCURACY_NUMBER_ONLY:
-                if (basis.isChapter())
-                {
-                    // This should be ACCURACY_CHAPTER_ONLY if it existed
-                    int book = basis.getStart().getBook();
-                    int chapter = 0;
-                    if (Verse.isEndMarker(parts[0]))
-                    {
-                        chapter = BibleInfo.chaptersInBook(book);
-                    }
-                    else
-                    {
-                        chapter = Verse.parseInt(parts[0]);
-                    }
-
-                    start = new Verse(book, chapter, 1);
-                    end = new Verse(book, chapter, BibleInfo.versesInChapter(book, chapter));
-                    verse_count = calcVerseCount(start, end);
-                }
-                else
-                {
-                    start = new Verse(parts[0], basis.getStart());
-                    end = start;
-                    verse_count = 1;
-                }
-                break;
-
-            case ACCURACY_CHAPTER_VERSE:
-            case ACCURACY_NONE:
-                start = new Verse(parts[0], basis.getStart());
-                end = start;
-                verse_count = 1;
-                break;
-
-            case ACCURACY_BOOK_CHAPTER:
-                start = new Verse(parts[0], basis.getStart());
-                verse_count = BibleInfo.versesInChapter(start.getBook(), start.getChapter());
-                end = calcEnd(start, verse_count);
-                break;
-
-            case ACCURACY_BOOK_ONLY:
-                start = new Verse(parts[0], basis.getStart());
-                verse_count = BibleInfo.versesInBook(start.getBook());
-                end = calcEnd(start, verse_count);
-                break;
-
-            default:
-                throw new LogicError();
-            }
-            break;
-
-        case 2:
-            start = new Verse(parts[0], basis.getStart());
-            end = new Verse(parts[1], start);
             verse_count = calcVerseCount(start, end);
             break;
 
@@ -1619,6 +1564,12 @@ public final class VerseRange implements VerseBase
      * The original string for picky users
      */
     private transient String original_name;
+
+    /**
+     * The default verse range is a singel verse starting at Gen 1.
+     * It is mostly only used by the ctors as a default.
+     */
+    private static final VerseRange DEFAULT = new VerseRange(Verse.DEFAULT);
 
     /**
      * The whole Bible VerseRange

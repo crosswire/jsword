@@ -120,11 +120,14 @@ public class SwordConfig
                 else
                 {
                     if (!distributionLicenseAdditionalInfo.equals(""))
+                    {
                         distributionLicenseAdditionalInfo += "; ";
+                    }
                     distributionLicenseAdditionalInfo += distributionLicenseString;
                 }
             }
         }
+
         distributionSource = reader.getFirstValue("DistributionSource");
         distributionNotes = reader.getFirstValue("DistributionNotes");
         textSource = reader.getFirstValue("TextSource");

@@ -1,7 +1,6 @@
 
 package org.crosswire.jsword.passage;
 
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -667,25 +666,19 @@ public class PassageUtil implements PassageConstants
     {
         try
         {
-            return res.getString(id.toString());
+            if (res != null)
+            {
+                return res.getString(id.toString());
+            }
+            else
+            {
+                return "Missing passage resource bundle";
+            }
         }
         catch (MissingResourceException ex)
         {
             return "Missing resource for: "+id;
         }
-    }
-
-    /**
-     * Utility that enables us to have a single resource file for all the
-     * passage classes
-     * @param id The resource id to fetch
-     * @param params The params to format
-     * @return The String from the resource file
-     */
-    protected static String getResource(MsgBase id, Object[] params)
-    {
-        MessageFormat formatter = new MessageFormat(getResource(id));
-        return formatter.format(params);
     }
 
     /** The ResourceBundle containing the name customizations */
@@ -711,7 +704,7 @@ public class PassageUtil implements PassageConstants
         }
         catch (MissingResourceException ex)
         {
-            log.error("PassageUtil init failure", ex);
+            log.debug("No custom resource found: "+ex.getMessage());
         }
     }
 }

@@ -59,7 +59,7 @@ public abstract class ReflectedChoice implements Choice
             throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "property" });
         }
 
-        log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
+        //log.debug("Looking up "+clazzname+".set"+propertyname+"("+getConvertionClass().getName()+" arg0)");
 
         try
         {

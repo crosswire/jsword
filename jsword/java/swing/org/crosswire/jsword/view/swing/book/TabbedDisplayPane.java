@@ -229,15 +229,21 @@ public class TabbedDisplayPane extends JPanel implements DisplayArea
         idps.add(idp);
 
         // Add all the known listeners to this new InnerDisplayPane
-        for (Iterator it = hyperlis.iterator(); it.hasNext();)
+        if (hyperlis != null)
         {
-            HyperlinkListener li = (HyperlinkListener) it.next();
-            idp.addHyperlinkListener(li);
+            for (Iterator it = hyperlis.iterator(); it.hasNext();)
+            {
+                HyperlinkListener li = (HyperlinkListener) it.next();
+                idp.addHyperlinkListener(li);
+            }
         }
-        for (Iterator it = mouselis.iterator(); it.hasNext();)
+        if (mouselis != null)
         {
-            MouseListener li = (MouseListener) it.next();
-            idp.addMouseListener(li);
+            for (Iterator it = mouselis.iterator(); it.hasNext();)
+            {
+                MouseListener li = (MouseListener) it.next();
+                idp.addMouseListener(li);
+            }
         }
 
         return idp;

@@ -4,7 +4,6 @@ package org.crosswire.jsword.view.swing.desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.crosswire.jsword.view.swing.book.BibleViewPane;
@@ -35,6 +34,9 @@ import org.crosswire.jsword.view.swing.book.BibleViewPane;
  */
 public class FileCloseAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public FileCloseAction(Desktop tools)
     {
         super(tools,
@@ -45,12 +47,12 @@ public class FileCloseAction extends DesktopAbstractAction
               'C', KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.CTRL_MASK, false));
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         BibleViewPane view = getDesktop().getSelectedBibleViewPane();
-        if (!getDesktop().removeBibleViewPane(view))
-        {
-            JOptionPane.showMessageDialog(getDesktop(), "You can't remove a passage in this view.\nYou must switch to MDI or TDI to close a passage window.");
-        }
+        getDesktop().removeBibleViewPane(view);
     }
 }

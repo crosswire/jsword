@@ -29,16 +29,22 @@ import java.awt.event.ActionEvent;
  */
 public class ViewTDIAction extends DesktopAbstractAction
 {
+    /**
+     * Setup configuration
+     */
     public ViewTDIAction(Desktop tools)
     {
         super(tools,
-              "View TDI",
+              "Tabbed Mode",
               null,
               null,
-              "View TDI", "View using a tab layout",
+              "View passages using tabs", "View passages using a tab based layout",
               'T', null);
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ev)
     {
         getDesktop().setLayoutType(Desktop.LAYOUT_TYPE_TDI);

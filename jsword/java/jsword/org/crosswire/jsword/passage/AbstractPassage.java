@@ -305,8 +305,8 @@ public abstract class AbstractPassage implements Passage
         {
             if (!it.hasNext())
             {
-                String message = PassageUtil.getResource(Msg.ABSTRACT_INDEX, new Object[] { new Integer(offset), new Integer(countVerses()) });
-                throw new ArrayIndexOutOfBoundsException(message);
+                Object[] params = new Object[] { new Integer(offset), new Integer(countVerses()) };
+                throw new ArrayIndexOutOfBoundsException(Msg.ABSTRACT_INDEX.toString(params));
             }
 
             retcode = it.next();
@@ -327,8 +327,8 @@ public abstract class AbstractPassage implements Passage
         {
             if (!it.hasNext())
             {
-                String message = PassageUtil.getResource(Msg.ABSTRACT_INDEX, new Object[] { new Integer(offset), new Integer(countVerses()) });
-                throw new ArrayIndexOutOfBoundsException(message);
+                Object[] params = new Object[] { new Integer(offset), new Integer(countVerses()) };
+                throw new ArrayIndexOutOfBoundsException(Msg.ABSTRACT_INDEX.toString(params));
             }
 
             retcode = it.next();

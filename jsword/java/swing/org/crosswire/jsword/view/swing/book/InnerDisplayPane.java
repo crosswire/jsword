@@ -13,6 +13,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.transform.TransformerException;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.SerializingContentHandler;
@@ -66,21 +67,31 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
      */
     public static void preload()
     {
-        try
+        Thread worker = new Thread(new Runnable()
         {
-            Passage ref = PassageFactory.createPassage("Gen 1:1");
-            Bible version = Defaults.getBibleMetaData().getBible();
+            public void run()
+            {
+                try
+                {
+                    Passage ref = PassageFactory.createPassage("Gen 1:1");
+                    Bible version = Defaults.getBibleMetaData().getBible();
 
-            BookData data = version.getData(ref);
-            SAXEventProvider provider = data.getSAXEventProvider();
+                    BookData data = version.getData(ref);
+                    SAXEventProvider provider = data.getSAXEventProvider();
             
-            Style style = new Style("swing");
-            style.applyStyleToString(provider, "simple.xsl");
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+                    Style style = new Style("swing");
+                    style.applyStyleToString(provider, "simple.xsl");
+
+                    log.debug("View pre-load finished");
+                }
+                catch (Exception ex)
+                {
+                    log.warn("View pre-load failed", ex);
+                }
+            }
+        }, "DisplayPreLoader");
+        worker.setPriority(Thread.MIN_PRIORITY);
+        worker.start();
     }
 
     /**
@@ -232,6 +243,11 @@ public class InnerDisplayPane extends JPanel implements DisplayArea
     {
         txt_view.addMouseListener(li);
     }
+
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(InnerDisplayPane.class);
 
     /**
      * What version is currently being used for display
