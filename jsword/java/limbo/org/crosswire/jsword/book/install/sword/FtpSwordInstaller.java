@@ -14,6 +14,8 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.install.InstallException;
+import org.crosswire.jsword.book.install.sword.AbstractSwordInstaller;
+import org.crosswire.jsword.book.install.sword.FTPMsg;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 
 /**
@@ -94,7 +96,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
             if (!FTPReply.isPositiveCompletion(reply1))
             {
                 String text1 = ftp.getReplyString();
-                throw new InstallException(Msg.CONNECT_REFUSED, new Object[] { host, new Integer(reply1), text1 });
+                throw new InstallException(FTPMsg.CONNECT_REFUSED, new Object[] { host, new Integer(reply1), text1 });
             }
 
             // Authenticate
@@ -106,7 +108,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
             if (!FTPReply.isPositiveCompletion(reply1))
             {
                 String text2 = ftp.getReplyString();
-                throw new InstallException(Msg.AUTH_REFUSED, new Object[] { username, new Integer(reply1), text2 });
+                throw new InstallException(FTPMsg.AUTH_REFUSED, new Object[] { username, new Integer(reply1), text2 });
             }
 
             // Change directory
@@ -118,7 +120,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
             if (!FTPReply.isPositiveCompletion(reply1))
             {
                 String text3 = ftp.getReplyString();
-                throw new InstallException(Msg.CWD_REFUSED, new Object[] { dir, new Integer(reply1), text3 });
+                throw new InstallException(FTPMsg.CWD_REFUSED, new Object[] { dir, new Integer(reply1), text3 });
             }
 
             ftp.setFileType(FTP.BINARY_FILE_TYPE);
@@ -136,7 +138,7 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
             if (!FTPReply.isPositiveCompletion(reply))
             {
                 String text = ftp.getReplyString();
-                throw new InstallException(Msg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
+                throw new InstallException(FTPMsg.DOWNLOAD_REFUSED, new Object[] { FILE_LIST_GZ, new Integer(reply), text });
             }
             out.close();
         }

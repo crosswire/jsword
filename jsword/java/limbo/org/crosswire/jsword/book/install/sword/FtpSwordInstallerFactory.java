@@ -3,6 +3,7 @@ package org.crosswire.jsword.book.install.sword;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
+import org.crosswire.jsword.book.install.sword.FTPMsg;
 
 /**
  * A Factory for instances of FtpSwordInstaller.
@@ -58,13 +59,13 @@ public class FtpSwordInstallerFactory implements InstallerFactory
             String[] chop2 = part2.split(NetUtil.AUTH_SEPERATOR_USERNAME);
             if (chop2.length != 2)
             {
-                throw new IllegalArgumentException(Msg.URL_AT_COUNT.toString(url));
+                throw new IllegalArgumentException(FTPMsg.URL_AT_COUNT.toString(url));
             }
 
             String[] chop3 = chop2[0].split(NetUtil.AUTH_SEPERATOR_PASSWORD);
             if (chop3.length != 2)
             {
-                throw new IllegalArgumentException(Msg.URL_COLON_COUNT.toString(url));
+                throw new IllegalArgumentException(FTPMsg.URL_COLON_COUNT.toString(url));
             }
 
             reply.setUsername(chop3[0]);
