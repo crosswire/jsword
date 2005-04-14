@@ -2,7 +2,6 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
 
@@ -49,15 +48,15 @@ public class ParagraphTagBuilder implements TagBuilder
              */
             public void updateOsisStack(LinkedList stack)
             {
-                Element p = OSISUtil.factory().createP();
 
                 if (stack.size() == 0)
                 {
+                    Element p = OSISUtil.factory().createLB();
                     stack.addFirst(p);
-                    DataPolice.report("failing to add to element on empty stack"); //$NON-NLS-1$
                 }
                 else
                 {
+                    Element p = OSISUtil.factory().createP();
                     Element ele = (Element) stack.get(0);
                     ele.addContent(p);
                 }

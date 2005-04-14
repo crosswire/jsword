@@ -6,7 +6,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
 
 /**
- * Represent a trunc of bible text without any tags.
+ * End of Line: CL
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
@@ -45,15 +45,16 @@ public class EndOfLineTagBuilder implements TagBuilder
         {
             public void updateOsisStack(LinkedList stack)
             {
-                Element p = OSISUtil.factory().createP();
 
                 if (stack.size() == 0)
                 {
+                    Element p = OSISUtil.factory().createLB();
                     stack.addFirst(p);
                     // log.warn("failing to add to element on empty stack");
                 }
                 else
                 {
+                    Element p = OSISUtil.factory().createP();
                     Element ele = (Element) stack.get(0);
                     ele.addContent(p);
                 }

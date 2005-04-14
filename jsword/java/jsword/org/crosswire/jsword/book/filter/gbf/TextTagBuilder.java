@@ -42,7 +42,6 @@ public class TextTagBuilder implements TagBuilder
                 if (stack.size() == 0)
                 {
                     stack.addFirst(name);
-                    // log.warn("failing to add to element on empty stack");
                 }
                 else
                 {

@@ -249,7 +249,9 @@ public class SwordBookMetaData extends AbstractBookMetaData
     static final Map ENCODING_JAVA = new HashMap();
     static
     {
-        ENCODING_JAVA.put("Latin-1", "ISO-8859-1"); //$NON-NLS-1$ //$NON-NLS-2$
+        //ENCODING_JAVA.put("Latin-1", "ISO-8859-1"); //$NON-NLS-1$ //$NON-NLS-2$
+        // Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
+        ENCODING_JAVA.put("Latin-1", "WINDOWS-1252"); //$NON-NLS-1$ //$NON-NLS-2$
         ENCODING_JAVA.put("UTF-8", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 

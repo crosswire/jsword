@@ -80,10 +80,16 @@ public class SwordUtil
      */
     protected static long decodeLittleEndian32(byte[] data, int offset)
     {
-        long byte1 = SwordUtil.un2complement(data[0 + offset]);
-        long byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
-        long byte3 = SwordUtil.un2complement(data[2 + offset]) << 16;
-        long byte4 = SwordUtil.un2complement(data[3 + offset]) << 24;
+//        long byte1 = SwordUtil.un2complement(data[0 + offset]);
+//        long byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
+//        long byte3 = SwordUtil.un2complement(data[2 + offset]) << 16;
+//        long byte4 = SwordUtil.un2complement(data[3 + offset]) << 24;
+        // Convert from a byte to an int, but prevent sign extension.
+        // So -16 becomes 240
+        long byte1 = data[0 + offset] & 0xFF;
+        long byte2 = (data[1 + offset] & 0xFF) << 8;
+        long byte3 = (data[2 + offset] & 0xFF) << 16;
+        long byte4 = (data[3 + offset] & 0xFF) << 24;
 
         return byte4 | byte3 | byte2 | byte1;
     }
@@ -114,8 +120,12 @@ public class SwordUtil
      */
     protected static int decodeLittleEndian16(byte[] data, int offset)
     {
-        int byte1 = SwordUtil.un2complement(data[0 + offset]);
-        int byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
+//        int byte1 = SwordUtil.un2complement(data[0 + offset]);
+//        int byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
+        // Convert from a byte to an int, but prevent sign extension.
+        // So -16 becomes 240
+        int byte1 = data[0 + offset] & 0xFF;
+        int byte2 = (data[1 + offset] & 0xFF) << 8;
 
         return byte2 | byte1;
     }
@@ -125,7 +135,7 @@ public class SwordUtil
      */
     protected static int un2complement(byte data)
     {
-        return data >= 0 ? data : 256 + data;
+        return data & 0xFF; //>= 0 ? data : 256 + data;
     }
 
     /**
@@ -188,11 +198,11 @@ public class SwordUtil
         catch (UnsupportedEncodingException ex)
         {
             // It is impossible! In case, use system default...
-            log.error("Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error(key + ": Encoding: " + charset + " not supported", ex); //$NON-NLS-1$ //$NON-NLS-2$
             txt = new String(data);
         }
 
-        return clean(key, txt);
+        return txt;
     }
 
     /**

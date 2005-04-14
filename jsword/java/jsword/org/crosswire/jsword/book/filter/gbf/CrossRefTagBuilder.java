@@ -11,7 +11,7 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.jdom.Element;
 
 /**
- * Handle Footnotes: FR and Fr.
+ * Handle Cross References: RX and Rx.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

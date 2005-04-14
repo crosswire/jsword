@@ -3,7 +3,7 @@ package org.crosswire.jsword.book.filter.gbf;
 import java.util.LinkedList;
 
 /**
- * Represent a trunc of bible text without any tags.
+ * Body Tags (that are ignored): BA, BC, BI, BN, BO, BP
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
