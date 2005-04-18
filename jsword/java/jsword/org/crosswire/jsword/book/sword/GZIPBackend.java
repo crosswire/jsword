@@ -219,7 +219,7 @@ public class GZIPBackend extends Backend
         try
         {
             int testament = SwordConstants.getTestament(verse);
-            long index = SwordConstants.getIndex(verse);
+            int index = SwordConstants.getIndex(verse);
 
             // If Bible does not contain the desired testament, return nothing.
             if (compRaf[testament] == null)
@@ -239,8 +239,8 @@ public class GZIPBackend extends Backend
             }
 
             // The data is little endian - extract the blockNum, verseStart and verseSize
-            int blockNum = SwordUtil.decodeLittleEndian32AsInt(temp, 0);
-            int verseStart = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
+            int blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+            int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
             int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
 
             // Can we get the data from the cache
@@ -258,9 +258,9 @@ public class GZIPBackend extends Backend
                     return ""; //$NON-NLS-1$
                 }
 
-                long blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
-                int blockSize = SwordUtil.decodeLittleEndian32AsInt(temp, 4);
-                int uncompressedSize = SwordUtil.decodeLittleEndian32AsInt(temp, 8);
+                int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+                int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
+                int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
 
                 // Read from the data file.
                 byte[] data = SwordUtil.readRAF(textRaf[testament], blockStart, blockSize);

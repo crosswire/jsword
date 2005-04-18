@@ -112,7 +112,7 @@ public class SwordConstants
     /**
      * Get the sword index of the given verse
      */
-    static long getIndex(Verse v)
+    static int getIndex(Verse v)
     {
         int ord = v.getOrdinal();
         int book = v.getBook();
@@ -132,8 +132,8 @@ public class SwordConstants
             testament = SwordConstants.TESTAMENT_OLD;
         }
 
-        int bookOffset = SwordConstants.bks[testament][book];
-        long chapOffset = SwordConstants.cps[testament][bookOffset + chapter];
+        short bookOffset = SwordConstants.bks[testament][book];
+        short chapOffset = SwordConstants.cps[testament][bookOffset + chapter];
 
         return verse + chapOffset;
     }
@@ -159,6 +159,14 @@ public class SwordConstants
     /**
      * initialise our LUTs with data shamelessly stolen from our sister project (Sword)
      * taken from canon.h.
+     * 
+     * The basic feature of an index is that starting at 4 for Gen 1.1 and Mat 1.1,
+     * increment 1 for each subsequent verse. At a chapter boundary, skip 1. At a book
+     * boundary skip 1 for the book and 1 for the chapter.
+     * 
+     * Book 0.0 gives the index for the book's info. ( == index of Book 1.1 - 2)
+     * Book ch.0 gives the index for the chapter's info in the book. ( == index of Book 1.1 - 1)
+     * 
      * There are arrays of data like this in BibleInfo. I guess we could merge
      * them at some stage.
      * @see org.crosswire.jsword.passage.BibleInfo
@@ -194,7 +202,7 @@ public class SwordConstants
         {
             0, 2, 3, 35, 61, 86,
             113, 146, 169, 194, 217, 247, 280,
-            413, 334, 353, 378, 400, 417, 445,
+            313, 334, 353, 378, 400, 417, 445,
             479, 518, 537, 572, 597, 618, 686,
             721, 757, 804, 827, 863, 907, 963,
             996, 1017, 1049, 1079, 1123, 1160, 1191,

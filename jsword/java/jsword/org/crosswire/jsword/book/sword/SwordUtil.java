@@ -51,7 +51,7 @@ public class SwordUtil
      * @param size The number of bytes to read
      * @return the read data
      */
-    protected static byte[] readRAF(RandomAccessFile raf, long offset, int size) throws IOException
+    protected static byte[] readRAF(RandomAccessFile raf, int offset, int size) throws IOException
     {
         if (offset + size > raf.length())
         {
@@ -61,7 +61,7 @@ public class SwordUtil
 
         if (size < 1)
         {
-            DataPolice.report("Nothing to read returning empty because size=" + size); //$NON-NLS-1$
+            DataPolice.report("Nothing to read at offset = " + offset + " returning empty because size=" + size); //$NON-NLS-1$ //$NON-NLS-2$
             return new byte[0];
         }
 
@@ -73,12 +73,15 @@ public class SwordUtil
     }
 
     /**
-     * Decode little endian data from a byte array
+     * Decode little endian data from a byte array.
+     * This assumes that the high order bit is not set as this is used solely
+     * for an offset in a file in bytes. For a practical limit, 2**31 is way
+     * bigger than any document that we can have.
      * @param data the byte[] from which to read 4 bytes
      * @param offset the offset into the array
      * @return The decoded data
      */
-    protected static long decodeLittleEndian32(byte[] data, int offset)
+    protected static int decodeLittleEndian32(byte[] data, int offset)
     {
 //        long byte1 = SwordUtil.un2complement(data[0 + offset]);
 //        long byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
@@ -86,30 +89,12 @@ public class SwordUtil
 //        long byte4 = SwordUtil.un2complement(data[3 + offset]) << 24;
         // Convert from a byte to an int, but prevent sign extension.
         // So -16 becomes 240
-        long byte1 = data[0 + offset] & 0xFF;
-        long byte2 = (data[1 + offset] & 0xFF) << 8;
-        long byte3 = (data[2 + offset] & 0xFF) << 16;
-        long byte4 = (data[3 + offset] & 0xFF) << 24;
+        int byte1 = data[0 + offset] & 0xFF;
+        int byte2 = (data[1 + offset] & 0xFF) << 8;
+        int byte3 = (data[2 + offset] & 0xFF) << 16;
+        int byte4 = (data[3 + offset] & 0xFF) << 24;
 
         return byte4 | byte3 | byte2 | byte1;
-    }
-
-    /**
-     * Decode little endian data from a byte array
-     * @param data the byte[] from which to read 4 bytes
-     * @param offset the offset into the array
-     * @return The decoded data
-     */
-    protected static int decodeLittleEndian32AsInt(byte[] data, int offset)
-    {
-        long result = decodeLittleEndian32(data, offset);
-
-        if (result > Integer.MAX_VALUE)
-        {
-            log.warn("loss of precision converting to integer from " + result + " to " + ((int) result)); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        return (int) result;
     }
 
     /**
@@ -128,14 +113,6 @@ public class SwordUtil
         int byte2 = (data[1 + offset] & 0xFF) << 8;
 
         return byte2 | byte1;
-    }
-
-    /**
-     * Un 2-s complement a byte
-     */
-    protected static int un2complement(byte data)
-    {
-        return data & 0xFF; //>= 0 ? data : 256 + data;
     }
 
     /**

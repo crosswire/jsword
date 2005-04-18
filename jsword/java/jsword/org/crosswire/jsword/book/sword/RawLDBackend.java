@@ -144,7 +144,7 @@ public class RawLDBackend extends Backend
             {
                 // Read the offset and size for this key from the index
                 byte[] buffer = SwordUtil.readRAF(idxRaf, entry * entrysize, entrysize);
-                long offset = SwordUtil.decodeLittleEndian32(buffer, 0);
+                int offset = SwordUtil.decodeLittleEndian32(buffer, 0);
                 int size = -1;
                 switch (datasize)
                 {
@@ -152,7 +152,7 @@ public class RawLDBackend extends Backend
                     size = SwordUtil.decodeLittleEndian16(buffer, 4);
                     break;
                 case 4:
-                    size = SwordUtil.decodeLittleEndian32AsInt(buffer, 4);
+                    size = SwordUtil.decodeLittleEndian32(buffer, 4);
                     break;
                 default:
                     assert false : datasize;
@@ -304,7 +304,7 @@ public class RawLDBackend extends Backend
         /**
          * Setup with the key name and positions of data in the file
          */
-        protected IndexKey(String text, long offset, int size, Key parent)
+        protected IndexKey(String text, int offset, int size, Key parent)
         {
             super(text, text, parent);
 
@@ -320,7 +320,7 @@ public class RawLDBackend extends Backend
             return super.clone();
         }
 
-        protected long offset;
+        protected int offset;
         protected int size;
     }
 }
