@@ -103,8 +103,12 @@ public class LookAndFeelUtil
         String systemLAF = UIManager.getSystemLookAndFeelClassName();
         try
         {
-            UIManager.setLookAndFeel(systemLAF);
-            defaultLAF = Class.forName(systemLAF);
+            // NOTE(DM): test with the gtk laf before allowing it.
+            if (systemLAF.indexOf("gtk") == -1) //$NON-NLS-1$
+            {
+                UIManager.setLookAndFeel(systemLAF);               
+                defaultLAF = Class.forName(systemLAF);
+            }
         }
         catch (ClassNotFoundException e)
         {
