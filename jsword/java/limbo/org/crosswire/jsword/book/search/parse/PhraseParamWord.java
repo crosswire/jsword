@@ -100,7 +100,7 @@ public class PhraseParamWord implements ParamWord
 
         for (int i = 0; i < words.length; i++)
         {
-            tally.addAll(engine.getIndex().findWord(words[i]));
+            tally.addAll(engine.getIndex().find(words[i]));
         }
 
         // This uses flatten() so that words like God
@@ -117,7 +117,7 @@ public class PhraseParamWord implements ParamWord
 
             for (int j = 0; j < grWords.length; j++)
             {
-                temp.addAll(engine.getIndex().findWord(grWords[j]));
+                temp.addAll(engine.getIndex().find(grWords[j]));
             }
 
             temp.flatten();

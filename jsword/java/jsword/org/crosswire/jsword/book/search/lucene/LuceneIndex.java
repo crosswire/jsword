@@ -166,7 +166,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Index#findWord(java.lang.String)
      */
-    public Key findWord(String search) throws BookException
+    public Key find(String search) throws BookException
     {
         checkActive();
 

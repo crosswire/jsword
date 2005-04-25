@@ -31,15 +31,16 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 public interface Index
 {
     /**
-     * For a given word find a list of references to it.
-     * If the <code>word</code> being searched for is null then an empty Key
+     * Find the set of references that satisfy the query. Query is anything that
+     * the underlying index can handle.
+     * If the <code>query</code> being searched for is null then an empty Key
      * <b>MUST</b> be returned. Users of this index may use this functionality
      * to get empty KeyLists which they then use to aggregate other searches
      * done on this index.
-     * @param word The text to search for
+     * @param query The text to search for
      * @return The references to the word
      */
-    public Key findWord(String word) throws BookException;
+    public Key find(String query) throws BookException;
 
     /**
      * An index must be able to create KeyLists for users in a similar way to

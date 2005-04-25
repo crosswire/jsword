@@ -125,7 +125,7 @@ public class SerIndex extends AbstractIndex implements Activatable, Thesaurus
         // Check that the root is still a word. If not then we
         // use the full version. This catches misses like se is
         // the root of seed, and matches sea and so on ...
-        Key ref = findWord(root);
+        Key ref = find(root);
         if (ref.isEmpty())
         {
             root = word;
@@ -139,7 +139,7 @@ public class SerIndex extends AbstractIndex implements Activatable, Thesaurus
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Index#findWord(java.lang.String)
      */
-    public Key findWord(String word)
+    public Key find(String word)
     {
         checkActive();
 

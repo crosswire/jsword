@@ -89,7 +89,7 @@ public class IndexSearcher implements Searcher
      */
     protected Key wordSearch(String sought) throws BookException
     {
-        return index.findWord(sought);
+        return index.find(sought);
     }
 
     /**
@@ -98,7 +98,7 @@ public class IndexSearcher implements Searcher
      */
     protected Key search(List matches) throws BookException
     {
-        Key key = index.findWord(null);
+        Key key = index.find(null);
 
         // Need a CommandWord, but a ParamWord we can deal with using an
         // AddCommandWord chucked on the front
@@ -142,7 +142,7 @@ public class IndexSearcher implements Searcher
      */
     protected Key getPassage(String[] words) throws BookException
     {
-        Key ref = index.findWord(null);
+        Key ref = index.find(null);
 
         for (int i = 0; i < words.length; i++)
         {

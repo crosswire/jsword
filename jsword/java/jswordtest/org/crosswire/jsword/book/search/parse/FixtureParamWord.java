@@ -44,7 +44,7 @@ class FixtureParamWord implements ParamWord
             assert false : ex;
             try
             {
-                return engine.getIndex().findWord(null);
+                return engine.getIndex().find(null);
             }
             catch (BookException ex2)
             {
