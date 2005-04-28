@@ -55,11 +55,6 @@ public class Project
     }
 
     /**
-     * The filesystem resources
-     */
-    private static Project instance = new Project();
-
-    /**
      * Prevent Instansiation.
      * <p>The biggest job is trying to work out which resource bundle to
      * load to work out where the config and data files are stored.
@@ -147,4 +142,9 @@ public class Project
      * The log stream
      */
     private static final Logger log = Logger.getLogger(Project.class);
+
+    /**
+     * The filesystem resources
+     */
+    private static Project instance = new Project();
 }
