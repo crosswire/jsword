@@ -322,9 +322,11 @@ public class TarInputStream extends FilterInputStream
     {
         int num = this.read(this.oneBuf, 0, 1);
         if (num == -1)
+        {
             return num;
-        else
-            return this.oneBuf[0];
+        }
+
+        return this.oneBuf[0];
     }
 
     /**
