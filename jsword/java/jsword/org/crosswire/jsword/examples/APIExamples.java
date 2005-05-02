@@ -64,7 +64,7 @@ public class APIExamples
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
         BookData data = bible.getData(key);
-        String text = data.getPlainText();
+        String text = data.getVerseText();
 
         System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
     }

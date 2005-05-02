@@ -292,16 +292,21 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         int oldBookNum = -1;
         int percent = 0;
         String name = ""; //$NON-NLS-1$
+        String text = ""; //$NON-NLS-1$
+        BookData data = null;
+        Key subkey = null;
+        Verse verse = null;
+        Document doc = null;
         for (Iterator it = key.iterator(); it.hasNext(); )
         {
-            Key subkey = (Key) it.next();
+            subkey = (Key) it.next();
             if (subkey.canHaveChildren())
             {
                 generateSearchIndexImpl(job, errors, writer, subkey);
             }
             else
             {
-                BookData data = null;
+                data = null;
                 try
                 {
                     data = book.getData(subkey);
@@ -312,19 +317,19 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     continue;
                 }
 
-                String text = data.getPlainText();
+                text = data.getVerseText();
 
                 // Do the actual indexing
                 if (text != null && text.length() > 0)
                 {
-                    Document doc = new Document();
+                    doc = new Document();
                     doc.add(Field.UnIndexed(FIELD_NAME, subkey.getOSISName()));
                     doc.add(Field.Text(FIELD_BODY, new StringReader(text)));
                     writer.addDocument(doc);
                 }
 
                 // report progress
-                Verse verse = KeyUtil.getVerse(subkey);
+                verse = KeyUtil.getVerse(subkey);
 
                 try
                 {

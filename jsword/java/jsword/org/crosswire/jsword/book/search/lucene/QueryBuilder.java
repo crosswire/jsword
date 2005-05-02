@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * The copyright to this program is held by it's authors.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
 public class QueryBuilder
@@ -61,16 +61,16 @@ public class QueryBuilder
         Query range = null;
         String rangeModifier = null;
         // Look for a range +[...], -[...], or [...]
-        Matcher rangeMatcher = rangePattern.matcher(sought);
+        Matcher rangeMatcher = RANGE_PATTERN.matcher(sought);
         if (rangeMatcher.find())
         {
             rangeModifier = rangeMatcher.group(1);
             range = new RangeQuery(rangeMatcher.group(2));
-            sought = sought.substring(rangeMatcher.end()-1);
+            sought = sought.substring(rangeMatcher.end() - 1);
         }
 
         // Look for a blur ~n
-        Matcher blurMatcher = blurPattern.matcher(sought);
+        Matcher blurMatcher = BLUR_PATTERN.matcher(sought);
         if (blurMatcher.find())
         {
             int blurFactor = 1;
@@ -87,7 +87,7 @@ public class QueryBuilder
         {
             query = new BaseQuery(sought);
         }
-        
+
         if (range != null)
         {
             if (rangeModifier == null)
@@ -118,11 +118,11 @@ public class QueryBuilder
      * with a + or - optional prefix,
      * perhaps surrounded by whitespace.
      */
-    private static final Pattern rangePattern = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*"); //$NON-NLS-1$
+    private static final Pattern RANGE_PATTERN = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*"); //$NON-NLS-1$
 
     /**
      * The pattern of a blur. ~, optionally followed by a number, representing the number of verses
      */
-    private static final Pattern blurPattern = Pattern.compile("\\s~(\\d*)?\\s"); //$NON-NLS-1$
+    private static final Pattern BLUR_PATTERN = Pattern.compile("\\s~(\\d*)?\\s"); //$NON-NLS-1$
 
 }

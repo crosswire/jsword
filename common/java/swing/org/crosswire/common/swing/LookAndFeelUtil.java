@@ -106,7 +106,7 @@ public class LookAndFeelUtil
             // NOTE(DM): test with the gtk laf before allowing it.
             if (systemLAF.indexOf("gtk") == -1) //$NON-NLS-1$
             {
-                UIManager.setLookAndFeel(systemLAF);               
+                UIManager.setLookAndFeel(systemLAF);
                 defaultLAF = Class.forName(systemLAF);
             }
         }

@@ -1,8 +1,5 @@
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.passage.Key;
@@ -68,38 +65,23 @@ public class BookData
     }
 
     /**
-     * A simplified plain text version of the data in this document with all
-     * the markup stripped out.
+     * Return the verse's text without any extra-biblical material.
      * @return The Bible text without markup
+     */
+    public String getVerseText()
+    {
+        return OSISUtil.getVerseText(getOsis());
+    }
+
+    /**
+     * A simplified plain text version of the data in this document with all
+     * the markup stripped out. This is not as simple as it seems.
+     * TODO(DMS): push this into OSISUtil
+     * @return The text without markup
      */
     public String getPlainText()
     {
-        StringBuffer buffer = new StringBuffer();
-
-        Element osisText = getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-        List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
-
-        for (Iterator oit = divs.iterator(); oit.hasNext(); )
-        {
-            Element div = (Element) oit.next();
-
-            Iterator dit = div.getContent().iterator();
-            while (dit.hasNext())
-            {
-                Object data = dit.next();
-                if (data instanceof Element)
-                {
-                    Element ele = (Element) data;
-                    if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-                    {
-                        String txt = OSISUtil.getPlainText((Element) data);
-                        buffer.append(txt);
-                    }
-                }
-            }
-        }
-
-        return buffer.toString().trim();
+        return OSISUtil.getPlainText(getOsis());
     }
 
     /**

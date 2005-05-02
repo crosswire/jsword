@@ -120,8 +120,6 @@ public class ReadEverything
                 log.warn("No output from: "+bmd.getInitials()+", "+key.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
-            // LATER(joe): put in a test for invalid characters
-
             // This might be a useful extra test, except that a failure gives you no help at all.
             //data.validate();
         }

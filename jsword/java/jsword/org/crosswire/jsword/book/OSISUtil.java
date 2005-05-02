@@ -1,9 +1,12 @@
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -130,8 +133,10 @@ public class OSISUtil
     public static final String ATTRIBUTE_WORK_OSISWORK = "osisWork"; //$NON-NLS-1$
     public static final String ATTRIBUTE_VERSE_OSISID = "osisID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_OSISID = "osisID"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_SID = "sID"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_EID = "eID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_HI_TYPE = "rend"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_HI_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SEG_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_REFERENCE_OSISREF = "osisRef"; //$NON-NLS-1$
     public static final String ATTRIBUTE_NOTE_TYPE = "type"; //$NON-NLS-1$
@@ -144,6 +149,11 @@ public class OSISUtil
      * Prefix for OSIS IDs that refer to Bibles
      */
     private static final String OSISID_PREFIX_BIBLE = "Bible."; //$NON-NLS-1$
+
+    private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[]
+    {
+        OSIS_ELEMENT_NOTE,
+    }));
 
     /**
      * The log stream
@@ -378,11 +388,150 @@ public class OSISUtil
     }
 
     /**
+     * Get the verse text from an osis document consisting of a single verse.
+     * The document is assumed to be valid OSIS2.0 XML. While xml valid
+     * is rigidly defined as meaning that an xml parser can validate the document,
+     * it does not mean that the document is valid OSIS. This is a semantic
+     * problem that is not validated. This method assumes that the
+     * root element is also semantically valid.
+     * 
+     * <p>This means that the top level element's tagname is osis.
+     * This can contain either a osisText or an osisCorpus.
+     * If it is an osisCorpus, then it contains an osisText.
+     * However, as a simplification, since JSword constructs
+     * the whole doc for the fragment, osisCorpus can be ignored.
+     * <p>The osisText element contains a div element that is either
+     * a container or a milestone. Again, JSword is providing the
+     * div element and it will be provided as a container. It is this div
+     * that "contains" the verse element.</p>
+     * <p>The verse element may either be
+     * a container or a milestone. Sword OSIS modules differ in whether
+     * they provide the verse element. Most do not. The few that do are
+     * using the container model, but it has been proposed that milestones
+     * are the best practice.</p>
+     * 
+     * <p>The verse may contain elements that are not a part of the
+     * original text. These are things such as notes.</p>
+     * 
+     * <p>Milestones require special handling. Beginning milestones
+     * elements have an sID attribute, while ending milestones have
+     * an eID with the same value as the opening. So everything between
+     * the start and the corresponding end is the content of the element.
+     * Also, for a given element, say div, they have to be properly nested
+     * as if they were container elements.</p>
+     * 
+     * @param root the whole osis document.
+     * @return The Bible text without markup
+     */
+    public static String getVerseText(Element root)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+        Element div = osisText.getChild(OSISUtil.OSIS_ELEMENT_DIV);
+
+        Iterator dit = div.getContent().iterator();
+        String sid = null;
+        Object data = null;
+        Element ele = null;
+        while (dit.hasNext())
+        {
+            data = dit.next();
+            if (data instanceof Element)
+            {
+                ele = (Element) data;
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                {
+                    sid = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
+                    if (sid != null)
+                    {
+                        getVerseContent(dit, buffer);
+                    }
+                    else
+                    {
+                        getVerseContent(ele.getContent().iterator(), buffer);
+                    }
+                }
+            }
+            else if (data instanceof Text)
+            {
+                buffer.append(((Text) data).getText());
+            }
+        }
+
+        return buffer.toString().trim();
+    }
+
+    /**
      * A simplified plain text version of the data in this Element with all
      * the markup stripped out.
      * @return The Bible text without markup
      */
-    public static String getPlainText(Element ele)
+    public static String getPlainText(Element root)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+        List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
+
+        for (Iterator oit = divs.iterator(); oit.hasNext(); )
+        {
+            Element div = (Element) oit.next();
+
+            Iterator dit = div.getContent().iterator();
+            while (dit.hasNext())
+            {
+                Object data = dit.next();
+                if (data instanceof Element)
+                {
+                    Element ele = (Element) data;
+                    if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                    {
+                        String txt = OSISUtil.getTextContent((Element) data);
+                        buffer.append(txt);
+                    }
+                }
+            }
+        }
+
+        return buffer.toString().trim();
+    }
+
+    private static void getVerseContent(Iterator iter, StringBuffer buffer)
+    {
+        Object data = null;
+        Element ele = null;
+        String eleName = null;
+        while (iter.hasNext())
+        {
+            data = iter.next();
+            if (data instanceof Element)
+            {
+                ele = (Element) data;
+                // If the verse is done then quit.
+                // This should be a verse eID=, that matches sID, but it does not matter.
+                // Since this gets the text of one verse, any verse element that follows
+                // is the end of the previous verse.
+                eleName = ele.getName();
+                if (eleName.equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                {
+                    break;
+                }
+
+                // Ignore extra-biblical text
+                if (!EXTRA_BIBLICAL_ELEMENTS.contains(eleName))
+                {
+                    OSISUtil.getVerseContent(ele.getContent().iterator(), buffer);
+                }
+            }
+            else if (data instanceof Text)
+            {
+                buffer.append(((Text) data).getText());
+            }
+        }
+    }
+
+    private static String getTextContent(Element ele)
     {
         StringBuffer buffer = new StringBuffer();
 

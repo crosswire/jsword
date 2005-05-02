@@ -83,10 +83,6 @@ public class SwordUtil
      */
     protected static int decodeLittleEndian32(byte[] data, int offset)
     {
-//        long byte1 = SwordUtil.un2complement(data[0 + offset]);
-//        long byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
-//        long byte3 = SwordUtil.un2complement(data[2 + offset]) << 16;
-//        long byte4 = SwordUtil.un2complement(data[3 + offset]) << 24;
         // Convert from a byte to an int, but prevent sign extension.
         // So -16 becomes 240
         int byte1 = data[0 + offset] & 0xFF;
@@ -105,8 +101,6 @@ public class SwordUtil
      */
     protected static int decodeLittleEndian16(byte[] data, int offset)
     {
-//        int byte1 = SwordUtil.un2complement(data[0 + offset]);
-//        int byte2 = SwordUtil.un2complement(data[1 + offset]) << 8;
         // Convert from a byte to an int, but prevent sign extension.
         // So -16 becomes 240
         int byte1 = data[0 + offset] & 0xFF;
@@ -167,6 +161,10 @@ public class SwordUtil
      */
     public static String decode(Key key, byte[] data, String charset)
     {
+        if (charset.equals("WINDOWS-1252")) //$NON-NLS-1$
+        {
+            clean1252(key, data);
+        }
         String txt = ""; //$NON-NLS-1$
         try
         {
@@ -184,28 +182,24 @@ public class SwordUtil
 
     /**
      * Remove rogue characters in the source.
-     * These are characters that are not valid in ISO-LATIN-1 (8859-1)
+     * These are characters that are not valid in cp1252 aka WINDOWS-1252
      * and in UTF-8 or are non-printing control characters in the range
      * of 0-32.
      */
-    public static String clean(Key key, String data)
+    public static void clean1252(Key key, byte[] data)
     {
-        char[] buffer = data.toCharArray();
-        for (int i = 0; i < buffer.length; i++)
+        for (int i = 0; i < data.length; i++)
         {
             // between 0-32 only allow whitespace
-            // characters 127-159 are undefined in ISO-8859-1 and UTF-8
-            //    Microsoft uses them in cp1250 and cp1252 for their own purpose
-            //    Microsoft and others frequently call that "Latin 1" when it is not
-            char c = buffer[i];
-            if ((c >= 0 && c < 32 && c != 9 && c != 10 && c != 13) || c == 255 || (c >= 127 && c <= 159))
+            // characters 0x81, 0x8D, 0x8F, 0x90 and 0x9D are undefined in cp1252
+            int c = data[i] & 0xFF;
+            if ((c >= 0x00 && c < 0x20 && c != 0x09 && c != 0x0A && c != 0x0D)
+                || (c == 0x81 || c == 0x8D || c == 0x8F || c == 0x90 || c == 0x9D))
             {
-                buffer[i] = ' ';
-                // NOTE(joe): Should this be a call to DataPolice???
-                log.debug(key.getName() + " has bad character " + (int) c + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                data[i] = 0x20;
+                DataPolice.report(key.getName() + " has bad character 0x" + Integer.toString(c, 16) + " at position " + i + " in input."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
-        return new String(buffer);
     }
 
     /**
