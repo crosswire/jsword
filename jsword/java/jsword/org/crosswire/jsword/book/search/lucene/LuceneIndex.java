@@ -190,7 +190,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     for (int i = 0; i < hits.length(); i++)
                     {
                         Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
-                        int score = (int) (hits.score(i) * 100);
+                        // PassageTally understands a score of 0 as the verse not participating
+                        int score = (int) (hits.score(i) * 100 + 1);
                         tally.add(verse, score);
                     }
                 }

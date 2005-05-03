@@ -764,13 +764,6 @@ public abstract class AbstractPassage implements Passage
         return countVerses();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#iterator()
-     */
-    public Iterator iterator()
-    {
-        return iterator();
-    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
