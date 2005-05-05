@@ -247,7 +247,8 @@ public abstract class AbstractPassage implements Passage
      */
     public boolean isEmpty()
     {
-        return countVerses() == 0;
+        // Is there any content?
+        return !iterator().hasNext();
     }
 
     /* (non-Javadoc)
