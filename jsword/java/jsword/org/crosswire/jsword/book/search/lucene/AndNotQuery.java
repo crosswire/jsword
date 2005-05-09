@@ -29,7 +29,7 @@ import org.crosswire.jsword.passage.Key;
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class AndNotQuery extends BinaryQuery
+public class AndNotQuery extends AbstractBinaryQuery
 {
 
     /**

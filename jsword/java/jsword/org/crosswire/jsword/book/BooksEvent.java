@@ -67,7 +67,7 @@ public class BooksEvent extends EventObject
     /**
      * The name of the changed Bible
      */
-    private Book book;
+    private transient Book book;
 
     /**
      * Serialization ID

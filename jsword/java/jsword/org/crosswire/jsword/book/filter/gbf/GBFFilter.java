@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
@@ -84,7 +83,7 @@ public class GBFFilter implements Filter
             if (ltpos == -1 && gtpos == -1)
             {
                 // no more tags to decode
-                taglist.add(createText(remains));
+                taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
                 break;
             }
@@ -93,7 +92,7 @@ public class GBFFilter implements Filter
             if (ltpos == -1 || gtpos == -1)
             {
                 DataPolice.report("ignoring unmatched '<' or '>' in gbf: " + remains); //$NON-NLS-1$
-                taglist.add(createText(remains));
+                taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
                 break;
             }
@@ -102,7 +101,7 @@ public class GBFFilter implements Filter
             if (ltpos > gtpos)
             {
                 DataPolice.report("ignoring transposed '<' or '>' in gbf: " + remains); //$NON-NLS-1$
-                taglist.add(createText(remains));
+                taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
                 break;
             }
@@ -122,7 +121,7 @@ public class GBFFilter implements Filter
                     char currentChar = start.charAt(i);
                     if (!(SEPARATORS.indexOf(currentChar) >= 0))
                     {
-                        taglist.add(createText(start.substring(beginIndex, i)));
+                        taglist.add(GBFTagBuilders.getTextTag(start.substring(beginIndex, i)));
                         beginIndex = i;
                         inSepStr = false;
                     }
@@ -130,33 +129,16 @@ public class GBFFilter implements Filter
 
                 if (beginIndex < strLen)
                 {
-                    taglist.add(createText(start.substring(beginIndex)));
+                    taglist.add(GBFTagBuilders.getTextTag(start.substring(beginIndex)));
                 }
             }
 
             String tag = remains.substring(ltpos + 1, gtpos);
-            if (tag.length() > 0)
+            int length = tag.length();
+            if (length > 0)
             {
-                Tag reply = null;
-
-                for (int i = 0; i < BUILDERS.length; i++)
-                {
-                    reply = BUILDERS[i].createTag(tag);
-                    if (reply != null)
-                    {
-                        break;
-                    }
-                }
-
-                if (reply == null)
-                {
-                    // I'm not confident enough that we handle all the GBF tags
-                    // that I will blame the module instead of the program
-
-                    log.warn("Ignoring tag of <" + tag + ">"); //$NON-NLS-1$ //$NON-NLS-2$
-                    //DataPolice.report("Ignoring tag of <" + tag + ">");
-                }
-                else
+                Tag reply = GBFTagBuilders.getTag(tag);
+                if (reply != null)
                 {
                     taglist.add(reply);
                 }
@@ -168,41 +150,6 @@ public class GBFFilter implements Filter
         return taglist;
     }
 
-    /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(GBFFilter.class);
-
-    /**
-     * Create a text tag which might involve some fancy parsing
-     */
-    private static Tag createText(String text)
-    {
-        return TEXT.createTag(text);
-    }
-
     private static final String SEPARATORS = " ,:;.?!"; //$NON-NLS-1$
 
-    private static final TagBuilder TEXT = new TextTagBuilder();
-    private static final TagBuilder[] BUILDERS = new TagBuilder[]
-    {
-        new BoldTagBuilder(),
-        new CrossRefTagBuilder(),
-        new EndOfLineTagBuilder(),
-        new FootnoteTagBuilder(),
-        new HeaderTagBuilder(),
-        new IgnoredTagBuilder(),
-        new ItalicTagBuilder(),
-        new JustifyTagBuilder(),
-        new OTQuoteTagBuilder(),
-        new ParagraphTagBuilder(),
-        new PoetryTagBuilder(),
-        new PsalmTitleTagBuilder(),
-        new RedLetterTagBuilder(),
-        new StrongsMorphTagBuilder(),
-        new StrongsWordTagBuilder(),
-        new TitleTagBuilder(),
-        new TextFootnoteTagBuilder(),
-        new UnderlineTagBuilder(),
-    };
 }

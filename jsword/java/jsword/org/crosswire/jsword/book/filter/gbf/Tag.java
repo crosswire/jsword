@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * GBF Tag interface.
  * <p>For copy and paste purposes, the canonical single Tag is
- * EndOfLineTagBuilder and the canonical paired tag is PoetryTagBuilder.
+ * EndOfLineTagBuilder and the canonical paired tag is PoetryStartTagBuilder.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

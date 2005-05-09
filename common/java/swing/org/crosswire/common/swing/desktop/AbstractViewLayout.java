@@ -39,13 +39,13 @@ import org.crosswire.common.swing.desktop.event.ViewEventListener;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public abstract class ViewLayout implements Viewable
+public abstract class AbstractViewLayout implements Viewable
 {
     /**
      * This constructor is protected because it only needs to be seen by
      * the sub classes
      */
-    protected ViewLayout()
+    protected AbstractViewLayout()
     {
         panel = new JPanel(new GridBagLayout());
 
@@ -105,7 +105,7 @@ public abstract class ViewLayout implements Viewable
      * Copies all the views from the one layout to the other
      * @param other the other layout
      */
-    public void moveTo(ViewLayout other)
+    public void moveTo(AbstractViewLayout other)
     {
         // Make sure we are copying to something else
         if (getClass() == other.getClass())

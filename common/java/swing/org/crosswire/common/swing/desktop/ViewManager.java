@@ -150,9 +150,9 @@ public class ViewManager implements Viewable, TitleChangedListener, ViewEventLis
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.Viewable#moveTo(org.crosswire.common.swing.desktop.ViewLayout)
+     * @see org.crosswire.common.swing.desktop.Viewable#moveTo(org.crosswire.common.swing.desktop.AbstractViewLayout)
      */
-    public void moveTo(ViewLayout other)
+    public void moveTo(AbstractViewLayout other)
     {
         getViewLayout().moveTo(other);
     }
@@ -290,7 +290,7 @@ public class ViewManager implements Viewable, TitleChangedListener, ViewEventLis
     /**
      * What is the current layout?
      */
-    public final ViewLayout getViewLayout()
+    public final AbstractViewLayout getViewLayout()
     {
         return getViewLayoutType().getLayout();
     }
@@ -306,8 +306,8 @@ public class ViewManager implements Viewable, TitleChangedListener, ViewEventLis
             return;
         }
 
-        ViewLayout nextLayout = next.getLayout();
-        ViewLayout currentLayout = getViewLayout();
+        AbstractViewLayout nextLayout = next.getLayout();
+        AbstractViewLayout currentLayout = getViewLayout();
         currentLayout.moveTo(nextLayout);
 
         panel.remove(currentLayout.getPanel());

@@ -143,7 +143,7 @@ public class VerseRangeTest extends TestCase
         try { VerseRangeFactory.fromString("g-f 1 2"); fail(); } //$NON-NLS-1$
         catch (NoSuchVerseException ex) { }
         try { VerseRangeFactory.fromString((String) null); fail(); }
-        catch (NullPointerException ex) { }
+        catch (NoSuchVerseException ex) { }
         assertEquals(gen_all, VerseRangeFactory.fromString("Gen")); //$NON-NLS-1$
         assertEquals(rev99_9, VerseRangeFactory.fromString("Rev 22")); //$NON-NLS-1$
         assertEquals(rev11_9, VerseRangeFactory.fromString("Rev")); //$NON-NLS-1$

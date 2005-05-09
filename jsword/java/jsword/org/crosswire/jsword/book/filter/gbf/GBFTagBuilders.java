@@ -1,0 +1,463 @@
+package org.crosswire.jsword.book.filter.gbf;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.BoldStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.CrossRefStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.DefaultEndTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.EOLTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.FootnoteEndTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.FootnoteStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.HeaderStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.IgnoredTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.ItalicStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.JustifyRightTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.OTQuoteStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.ParagraphTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.PoetryStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.PsalmStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.RedLetterStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.StrongsMorphTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.StrongsWordTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.TextFootnoteTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.TextTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.TitleStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.UnderlineStartTag;
+
+/**
+ * This class is a convienence to get GBF Tags.
+ * 
+ * The best place to go for more information about the GBF spec that I have
+ * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
+ * 
+ * <p><table border='1' cellPadding='3' cellSpacing='0'>
+ * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
+ *
+ * Distribution Licence:<br />
+ * JSword is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.<br />
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.<br />
+ * The License is available on the internet
+ * <a href='http://www.gnu.org/copyleft/gpl.html'>here</a>, or by writing to:
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA<br />
+ * The copyright to this program is held by it's authors.
+ * </font></td></tr></table>
+ * @see gnu.gpl.Licence
+ * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @version $Id$
+ */
+public class GBFTagBuilders
+{
+    /**
+     * 
+     */
+    private GBFTagBuilders()
+    {
+    }
+
+    /**
+     * @param name
+     * @return return a GBF Tag for the given tag name
+     */
+    public static Tag getTag(String name)
+    {
+        Tag tag = null;
+        int length = name.length();
+        if (length > 0)
+        {
+            // Only the first two letters of the tag are indicative of the tag
+            // The rest, if present, is data.
+            TagBuilder builder = null;
+            if (length == 2)
+            {
+                builder = (TagBuilder) BUILDERS.get(name);
+            }
+            else
+            {
+                builder = (TagBuilder) BUILDERS.get(name.substring(0, 2));
+            }
+
+            Tag reply = null;
+            if (builder != null)
+            {
+                reply = builder.createTag(name);
+            }
+
+            if (reply == null)
+            {
+                // I'm not confident enough that we handle all the GBF tags
+                // that I will blame the module instead of the program
+                log.warn("Ignoring tag of <" + name + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+                //DataPolice.report("Ignoring tag of <" + name + ">");
+            }
+        }
+        return tag;
+    }
+
+    /**
+     * @param text
+     * @return get a Text Tag object containing the text
+     */
+    public static Tag getTextTag(String text)
+    {
+        return new TextTag(text);
+    }
+
+    /**
+     *
+     */
+    private static final class BoldStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new BoldStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class CrossRefStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(final String name)
+        {
+            return new CrossRefStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class DefaultEndTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new DefaultEndTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class EndOfLineTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(final String name)
+        {
+            return new EOLTag(name);
+        }
+
+    }
+
+    /**
+     *
+     */
+    private static final class FootnoteStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new FootnoteStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class FootnoteEndTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new FootnoteEndTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class HeaderStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new HeaderStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class IgnoredTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(final String name)
+        {
+            return new IgnoredTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class ItalicStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new ItalicStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class JustifyRightTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new JustifyRightTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class OTQuoteStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new OTQuoteStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class ParagraphTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new ParagraphTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class PoetryStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new PoetryStartTag(name);
+        }
+
+    }
+
+    /**
+     *
+     */
+    private static final class PsalmTitleStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new PsalmStartTag(name);
+        }
+
+    }
+
+    /**
+     *
+     */
+    private static final class RedLetterStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new RedLetterStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class StrongsMorphTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(final String name)
+        {
+            return new StrongsMorphTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class StrongsWordTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(final String name)
+        {
+            return new StrongsWordTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class TextFootnoteTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new TextFootnoteTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class TitleStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new TitleStartTag(name);
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class UnderlineStartTagBuilder implements TagBuilder
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+         */
+        public Tag createTag(String name)
+        {
+            return new UnderlineStartTag(name);
+        }
+    }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(GBFTagBuilders.class);
+
+    /**
+     * The <code>BUILDERS</code> maps the 2 letter GBF tag to a class that proxies for the tag.
+     */
+    private static final Map BUILDERS = new HashMap();
+    static
+    {
+        TagBuilder defaultEndTagBuilder = new DefaultEndTagBuilder();
+        TagBuilder ignoreTagBuilder = new IgnoredTagBuilder();
+
+        BUILDERS.put("FB", new BoldStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Fb", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("FI", new ItalicStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Fi", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("FR", new RedLetterStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Fr", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("FU", new UnderlineStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Fu", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("RX", new CrossRefStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Rx", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("CL", new EndOfLineTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("CM", new ParagraphTagBuilder()); //$NON-NLS-1$
+
+        BUILDERS.put("RF", new FootnoteStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Rf", new FootnoteEndTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("RB", new TextFootnoteTagBuilder()); //$NON-NLS-1$
+
+        BUILDERS.put("TS", new HeaderStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Ts", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("TB", new PsalmTitleStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Tb", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("TH", new TitleStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Th", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("BA", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("BC", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("BI", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("BN", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("BO", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("BP", ignoreTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("JR", new JustifyRightTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("JL", ignoreTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("FO", new OTQuoteStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Fo", defaultEndTagBuilder); //$NON-NLS-1$
+
+        BUILDERS.put("PP", new PoetryStartTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("Pp", defaultEndTagBuilder); //$NON-NLS-1$
+
+        TagBuilder builder = new StrongsWordTagBuilder();
+        BUILDERS.put("WH", builder); //$NON-NLS-1$
+        BUILDERS.put("WG", builder); //$NON-NLS-1$
+        BUILDERS.put("WT", new StrongsMorphTagBuilder()); //$NON-NLS-1$
+    }
+}

@@ -92,9 +92,13 @@ public class XMLUtil
      */
      public static String escape(String s)
      {
-         StringBuffer str = new StringBuffer(s.length());
+         if (s == null)
+         {
+             return s;
+         }
+         int len = s.length();
+         StringBuffer str = new StringBuffer(len);
 
-         int len = (s != null) ? s.length() : 0;
          for (int i = 0; i < len; i++)
          {
              char ch = s.charAt(i); //$NON-NLS-1$

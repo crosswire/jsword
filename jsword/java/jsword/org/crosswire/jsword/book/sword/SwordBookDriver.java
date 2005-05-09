@@ -271,7 +271,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // If there is no change then there is nothing to do
         if (Arrays.equals(files, SwordBookDriver.dirs))
         {
-            return null;
+            return EMPTY_FILE_ARRAY;
         }
 
         if (useDefaultPaths)
@@ -425,6 +425,11 @@ public class SwordBookDriver extends AbstractBookDriver
             return !name.startsWith(PREFIX_GLOBALS) && name.endsWith(SwordConstants.EXTENSION_CONF);
         }
     }
+
+    /**
+     * An empty immutable <code>Rile</code> array.
+     */
+    public static final File[] EMPTY_FILE_ARRAY = new File[0];
 
     /**
      * Default windows installation directory

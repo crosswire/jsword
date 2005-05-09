@@ -205,29 +205,17 @@ public class Convert
      */
     public static String map2String(Map commands)
     {
-        Iterator it = commands.keySet().iterator();
+        Iterator it = commands.entrySet().iterator();
         StringBuffer retcode = new StringBuffer();
 
         while (it.hasNext())
         {
-            String key = ""; //$NON-NLS-1$
-            String value = ""; //$NON-NLS-1$
+            Map.Entry entry = (Map.Entry) it.next();
 
-            try
-            {
-                key = (String) it.next();
-                value = (String) commands.get(key);
-
-                retcode.append(key);
-                retcode.append('=');
-                retcode.append(value);
-                retcode.append(' ');
-            }
-            catch (ClassCastException ex)
-            {
-                log.warn("non-String member found: key=" + key + " value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
-                Reporter.informUser(Convert.class, ex);
-            }
+            retcode.append(entry.getKey());
+            retcode.append('=');
+            retcode.append(entry.getValue());
+            retcode.append(' ');
         }
 
         return retcode.toString().trim();

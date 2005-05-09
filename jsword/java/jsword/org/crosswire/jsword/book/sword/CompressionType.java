@@ -41,7 +41,7 @@ public abstract class CompressionType implements Serializable
         {
             return true;
         }
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new GZIPBackend(sbmd, rootPath, blockType);
@@ -62,7 +62,7 @@ public abstract class CompressionType implements Serializable
         {
             return false;
         }
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new LZSSBackend(sbmd, rootPath);
         }
@@ -88,7 +88,7 @@ public abstract class CompressionType implements Serializable
      */
     abstract boolean isSupported();
 
-    abstract Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
+    abstract AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
 
     /**
      * Lookup method to convert from a String

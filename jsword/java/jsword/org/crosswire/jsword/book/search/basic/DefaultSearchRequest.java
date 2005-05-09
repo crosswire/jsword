@@ -4,7 +4,7 @@ import org.crosswire.jsword.book.search.SearchModifier;
 import org.crosswire.jsword.book.search.SearchRequest;
 
 /**
- * A default implementation of a SearchRequest
+ * A default implementation of a SearchRequest.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

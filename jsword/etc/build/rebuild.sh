@@ -37,6 +37,9 @@ do
   echo "Updating $PROJECT"
   cd $JSWORD_HOME/../$PROJECT
   cvs -q up -d -P
+  # Ensure that directory permissions and ownership are as expected
+  find . -type d -name CVS -prune -o -type d ! -perm -2775 -print | xargs chmod 2775
+  find . -type d -name CVS -prune -o -type d ! -group jsword | xargs chgrp jsword
 done
 chmod 755 $JSWORD_HOME/etc/build/*.sh
 

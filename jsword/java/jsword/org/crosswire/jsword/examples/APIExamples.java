@@ -157,6 +157,7 @@ public class APIExamples
 
         // Or you can narrow the range a bit
         books = Books.installed().getBooks(BookFilters.getBibles());
+        book = (Book) books.get(0);
 
         // There are implementations of BookFilter for all sorts of things in
         // the BookFilters class

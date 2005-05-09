@@ -47,58 +47,58 @@ public class SentanceUtilTest extends TestCase
     {
         String[] sa;
 
-        sa = SentanceUtil.tokenize("one two three"); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("one two three"); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one "); //$NON-NLS-1$
         assertEquals(sa[1], "two "); //$NON-NLS-1$
         assertEquals(sa[2], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("!one  two three "); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("!one  two three "); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "!one "); //$NON-NLS-1$
         assertEquals(sa[1], "two "); //$NON-NLS-1$
         assertEquals(sa[2], "three "); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("\"one-- two three "); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("\"one-- two three "); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "\"one-- "); //$NON-NLS-1$
         assertEquals(sa[1], "two "); //$NON-NLS-1$
         assertEquals(sa[2], "three "); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("-one--two three "); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("-one--two three "); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "-one--"); //$NON-NLS-1$
         assertEquals(sa[1], "two "); //$NON-NLS-1$
         assertEquals(sa[2], "three "); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("one-two--three "); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("one-two--three "); //$NON-NLS-1$
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one-two--"); //$NON-NLS-1$
         assertEquals(sa[1], "three "); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("one! \"*(two-three"); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("one! \"*(two-three"); //$NON-NLS-1$
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one! "); //$NON-NLS-1$
         assertEquals(sa[1], "\"*(two-three"); //$NON-NLS-1$
 
         // moved from TestRawBible
-        sa = SentanceUtil.tokenize("one two three"); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("one two three"); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one "); //$NON-NLS-1$
         assertEquals(sa[1], "two "); //$NON-NLS-1$
         assertEquals(sa[2], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("one"); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("one"); //$NON-NLS-1$
         assertEquals(sa.length, 1);
         assertEquals(sa[0], "one"); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("One, !Two-er THREE-er?"); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("One, !Two-er THREE-er?"); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One, "); //$NON-NLS-1$
         assertEquals(sa[1], "!Two-er "); //$NON-NLS-1$
         assertEquals(sa[2], "THREE-er?"); //$NON-NLS-1$
 
-        sa = SentanceUtil.tokenize("One, !Two-er THREE--four?"); //$NON-NLS-1$
+        sa = SentenceUtil.tokenize("One, !Two-er THREE--four?"); //$NON-NLS-1$
         assertEquals(sa.length, 4);
         assertEquals(sa[0], "One, "); //$NON-NLS-1$
         assertEquals(sa[1], "!Two-er "); //$NON-NLS-1$
@@ -181,29 +181,29 @@ public class SentanceUtilTest extends TestCase
     {
         String[] sa;
 
-        sa = SentanceUtil.stripPunctuation(new String[] { "aaaa" }); //$NON-NLS-1$
+        sa = SentenceUtil.stripPunctuation(new String[] { "aaaa" }); //$NON-NLS-1$
         assertEquals(sa.length, 1);
         assertEquals(sa[0], "aaaa"); //$NON-NLS-1$
-        sa = SentanceUtil.stripPunctuation(new String[] { "aaaa", "bbbb" }); //$NON-NLS-1$ //$NON-NLS-2$
+        sa = SentenceUtil.stripPunctuation(new String[] { "aaaa", "bbbb" }); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "aaaa"); //$NON-NLS-1$
         assertEquals(sa[1], "bbbb"); //$NON-NLS-1$
-        sa = SentanceUtil.stripPunctuation(new String[] { "One", "Two", "Three" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        sa = SentenceUtil.stripPunctuation(new String[] { "One", "Two", "Three" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three"); //$NON-NLS-1$
-        sa = SentanceUtil.stripPunctuation(new String[] { " One ", " Two ", " Three " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        sa = SentenceUtil.stripPunctuation(new String[] { " One ", " Two ", " Three " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three"); //$NON-NLS-1$
-        sa = SentanceUtil.stripPunctuation(new String[] { " 'One's' " , "Two?",  "!Three-Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+        sa = SentenceUtil.stripPunctuation(new String[] { " 'One's' " , "Two?",  "!Three-Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One's"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three-Four"); //$NON-NLS-1$
-        sa = SentanceUtil.stripPunctuation(new String[] { " 'One's' ", " ,Two? ", " !Three-- ", " Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        sa = SentenceUtil.stripPunctuation(new String[] { " 'One's' ", " ,Two? ", " !Three-- ", " Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         assertEquals(sa.length, 4);
         assertEquals(sa[0], "One's"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
@@ -215,14 +215,14 @@ public class SentanceUtilTest extends TestCase
     {
         String[] sa;
 
-        sa = SentanceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-Four\" ")); //$NON-NLS-1$
+        sa = SentenceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-Four\" ")); //$NON-NLS-1$
         assertEquals(sa.length, 4);
         assertEquals(sa[0], "'"); //$NON-NLS-1$
         assertEquals(sa[1], "',"); //$NON-NLS-1$
         assertEquals(sa[2], "?!"); //$NON-NLS-1$
         assertEquals(sa[3], "\""); //$NON-NLS-1$
 
-        sa = SentanceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-- Four\" ")); //$NON-NLS-1$
+        sa = SentenceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-- Four\" ")); //$NON-NLS-1$
         assertEquals(sa.length, 5);
         assertEquals(sa[0], "'"); //$NON-NLS-1$
         assertEquals(sa[1], "',"); //$NON-NLS-1$
@@ -230,7 +230,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[3], "--"); //$NON-NLS-1$
         assertEquals(sa[4], "\""); //$NON-NLS-1$
 
-        sa = SentanceUtil.stripWords(new String[] { "'One's'", " ,Two? ", "!Three--", "Four\"" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        sa = SentenceUtil.stripWords(new String[] { "'One's'", " ,Two? ", "!Three--", "Four\"" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         assertEquals(sa.length, 5);
         assertEquals(sa[0], "'"); //$NON-NLS-1$
         assertEquals(sa[1], "' ,"); //$NON-NLS-1$
@@ -241,58 +241,58 @@ public class SentanceUtilTest extends TestCase
 
     public void testUpdatePassageTally()
     {
-        // SentanceUtil.updatePassageTally(version, tally, words);
+        // SentenceUtil.updatePassageTally(version, tally, words);
     }
 
     public void testUpdatePassageTallyFlat() throws Exception
     {
-        // SentanceUtil.updatePassageTallyFlat(version, tally, words);
+        // SentenceUtil.updatePassageTallyFlat(version, tally, words);
     }
 
     public void testGetPassage() throws Exception
     {
-        // Passage ref = SentanceUtil.getPassage(version, words);
+        // Passage ref = SentenceUtil.getPassage(version, words);
     }
 
     public void testIsNewPara() throws Exception
     {
-        // boolean b = SentanceUtil.isNewPara(doc);
+        // boolean b = SentenceUtil.isNewPara(doc);
     }
 
     public void testGetWords() throws Exception
     {
         String[] sa;
 
-        sa = SentanceUtil.getWords("One Two three"); //$NON-NLS-1$
+        sa = SentenceUtil.getWords("One Two three"); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one"); //$NON-NLS-1$
         assertEquals(sa[1], "two"); //$NON-NLS-1$
         assertEquals(sa[2], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.getWords("!one  two three "); //$NON-NLS-1$
+        sa = SentenceUtil.getWords("!one  two three "); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one"); //$NON-NLS-1$
         assertEquals(sa[1], "two"); //$NON-NLS-1$
         assertEquals(sa[2], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.getWords("\"one-- two three "); //$NON-NLS-1$
+        sa = SentenceUtil.getWords("\"one-- two three "); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one"); //$NON-NLS-1$
         assertEquals(sa[1], "two"); //$NON-NLS-1$
         assertEquals(sa[2], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.getWords("-one--two three "); //$NON-NLS-1$
+        sa = SentenceUtil.getWords("-one--two three "); //$NON-NLS-1$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "one"); //$NON-NLS-1$
         assertEquals(sa[1], "two"); //$NON-NLS-1$
         assertEquals(sa[2], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.getWords("one-two--three "); //$NON-NLS-1$
+        sa = SentenceUtil.getWords("one-two--three "); //$NON-NLS-1$
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one-two"); //$NON-NLS-1$
         assertEquals(sa[1], "three"); //$NON-NLS-1$
 
-        sa = SentanceUtil.getWords("one! \"(two-three"); //$NON-NLS-1$
+        sa = SentenceUtil.getWords("one! \"(two-three"); //$NON-NLS-1$
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "one"); //$NON-NLS-1$
         assertEquals(sa[1], "two-three"); //$NON-NLS-1$
@@ -300,120 +300,120 @@ public class SentanceUtilTest extends TestCase
 
     public void testStripPunctuationWord() throws Exception
     {
-        assertEquals(SentanceUtil.stripPunctuationWord("abcde"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("a---e"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("a'''e"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("a'e-e"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("12345"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'abcde"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'a---e"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'a'''e"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'a'e-e"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'12345"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'abcde'"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'a---e'"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'a'''e'"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'a'e-e'"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'12345'"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'-abcde--"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'-a---e--"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'-a'''e--"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'-a'e-e--"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'-12345--"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("$'-abcde-'*"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("$'-a---e-'*"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("$'-a'''e-'*"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("$'-a'e-e-'*"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("$'-12345-'*"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("`'-abcde-'["), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("`'-a---e-'["), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("`'-a'''e-'["), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("`'-a'e-e-'["), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("`'-12345-'["), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("#'-abcde-'}"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("#'-a---e-'}"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("#'-a'''e-'}"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("#'-a'e-e-'}"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("#'-12345-'}"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("%'-abcde-'/"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("%'-a---e-'/"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("%'-a'''e-'/"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("%'-a'e-e-'/"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("%'-12345-'/"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("abcde"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("a---e"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("a'''e"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("a'e-e"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("12345"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'abcde"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'a---e"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'a'''e"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'a'e-e"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'12345"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'abcde'"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'a---e'"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'a'''e'"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'a'e-e'"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'12345'"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'-abcde--"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'-a---e--"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'-a'''e--"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'-a'e-e--"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'-12345--"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("$'-abcde-'*"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("$'-a---e-'*"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("$'-a'''e-'*"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("$'-a'e-e-'*"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("$'-12345-'*"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("`'-abcde-'["), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("`'-a---e-'["), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("`'-a'''e-'["), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("`'-a'e-e-'["), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("`'-12345-'["), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("#'-abcde-'}"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("#'-a---e-'}"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("#'-a'''e-'}"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("#'-a'e-e-'}"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("#'-12345-'}"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("%'-abcde-'/"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("%'-a---e-'/"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("%'-a'''e-'/"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("%'-a'e-e-'/"), "a'e-e"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("%'-12345-'/"), "12345"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        assertEquals(SentanceUtil.stripPunctuationWord("test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord(" test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test-- "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test! "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test\" "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test... "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test's"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test's "), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test's!"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test's?"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("test!?;;'#\""), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("!\"%$test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("   test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("--test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("'test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord("/?test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(SentanceUtil.stripPunctuationWord(" $%^\" test %^&"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord(" test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test-- "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test! "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test\" "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test... "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test's"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test's "), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test's!"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test's?"), "test's"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("test!?;;'#\""), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("!\"%$test"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("   test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("--test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("'test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord("/?test "), "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(SentenceUtil.stripPunctuationWord(" $%^\" test %^&"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testStripWordsStringString() throws Exception
     {
-        // String s = SentanceUtil.stripWords(first, last);
+        // String s = SentenceUtil.stripWords(first, last);
     }
 
     public void testFirstLetter() throws Exception
     {
-        assertEquals(SentanceUtil.firstLetter("abcde"), 0); //$NON-NLS-1$
-        assertEquals(SentanceUtil.firstLetter(" abcde"), 1); //$NON-NLS-1$
-        assertEquals(SentanceUtil.firstLetter(" \"%abcde"), 3); //$NON-NLS-1$
-        assertEquals(SentanceUtil.firstLetter(" \"%abcde--!   "), 3); //$NON-NLS-1$
+        assertEquals(SentenceUtil.firstLetter("abcde"), 0); //$NON-NLS-1$
+        assertEquals(SentenceUtil.firstLetter(" abcde"), 1); //$NON-NLS-1$
+        assertEquals(SentenceUtil.firstLetter(" \"%abcde"), 3); //$NON-NLS-1$
+        assertEquals(SentenceUtil.firstLetter(" \"%abcde--!   "), 3); //$NON-NLS-1$
     }
 
     public void testLastLetter() throws Exception
     {
-        assertEquals(SentanceUtil.lastLetter("abcde"), 4); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter("abcde "), 4); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter("abcde\" "), 4); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter("abcde\"%$ "), 4); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde"), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde\" "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde\"%$ "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde--\"%$ "), 5); //$NON-NLS-1$
-        assertEquals(SentanceUtil.lastLetter(" abcde\"%$-- "), 5); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter("abcde"), 4); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter("abcde "), 4); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter("abcde\" "), 4); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter("abcde\"%$ "), 4); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter(" abcde"), 5); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter(" abcde "), 5); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter(" abcde\" "), 5); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter(" abcde\"%$ "), 5); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter(" abcde--\"%$ "), 5); //$NON-NLS-1$
+        assertEquals(SentenceUtil.lastLetter(" abcde\"%$-- "), 5); //$NON-NLS-1$
     }
 
     public void testStripWords()
     {
-        assertEquals(SentanceUtil.stripWords("one", "two"), ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one,", "two"), ","); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one'", "two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one-", "two"), "-"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one#", "two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", ",two"), ","); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", "'two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", "-two"), "-"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", "#two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one-", "-two"), "--"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("-one-", "-two-"), "--"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one-world", "two"), ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one-world'", "two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one ", "two"), " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one, ", "two"), ", "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one' ", "two"), "' "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one- ", "two"), "- "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one# ", "two"), "# "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", " ,two"), " ,"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", " 'two"), " '"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one", " -two"), " -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one" , "#two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one- ", "-two"), "- -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("-one- ", "-two-"), "- -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one-world ", "two"), " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentanceUtil.stripWords("one-world'", " two"), "' "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", "two"), ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one,", "two"), ","); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one'", "two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one-", "two"), "-"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one#", "two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", ",two"), ","); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", "'two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", "-two"), "-"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", "#two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one-", "-two"), "--"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("-one-", "-two-"), "--"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one-world", "two"), ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one-world'", "two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one ", "two"), " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one, ", "two"), ", "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one' ", "two"), "' "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one- ", "two"), "- "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one# ", "two"), "# "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", " ,two"), " ,"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", " 'two"), " '"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", " -two"), " -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one" , "#two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one- ", "-two"), "- -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("-one- ", "-two-"), "- -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one-world ", "two"), " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one-world'", " two"), "' "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 }

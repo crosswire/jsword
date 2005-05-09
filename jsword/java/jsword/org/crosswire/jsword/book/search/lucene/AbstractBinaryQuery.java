@@ -24,13 +24,13 @@ package org.crosswire.jsword.book.search.lucene;
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public abstract class BinaryQuery implements Query
+public abstract class AbstractBinaryQuery implements Query
 {
 
     /**
      * 
      */
-    public BinaryQuery(Query theLeftToken, Query theRightToken)
+    public AbstractBinaryQuery(Query theLeftToken, Query theRightToken)
     {
         leftToken = theLeftToken;
         rightToken = theRightToken;
@@ -43,6 +43,7 @@ public abstract class BinaryQuery implements Query
     {
         return leftToken;
     }
+
     /**
      * @return Returns the rightToken.
      */

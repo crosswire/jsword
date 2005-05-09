@@ -102,7 +102,7 @@ public class ColorField extends JPanel implements Field
     /**
      * The action factory for the buttons
      */
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     /**
      * The current Color

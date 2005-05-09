@@ -69,7 +69,7 @@ public class GuiConvert
      */
     public static String font2String(Font font)
     {
-        if (font == null || font.equals("")) //$NON-NLS-1$
+        if (font == null)
         {
             return ""; //$NON-NLS-1$
         }

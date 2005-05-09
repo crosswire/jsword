@@ -39,12 +39,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType RAW_TEXT = new ModuleType("RawText", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
@@ -60,12 +60,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType Z_TEXT = new ModuleType("zText", BookType.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return getCompressedBackend(sbmd, rootPath);
         }
@@ -86,12 +86,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType RAW_COM = new ModuleType("RawCom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
@@ -107,12 +107,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType Z_COM = new ModuleType("zCom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return getCompressedBackend(sbmd, rootPath);
         }
@@ -133,12 +133,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType HREF_COM = new ModuleType("HREFCom", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
@@ -154,12 +154,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType RAW_FILES = new ModuleType("RawFiles", BookType.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
@@ -175,12 +175,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType RAW_LD = new ModuleType("RawLD", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawLDBackend(sbmd, rootPath, 2);
         }
@@ -196,12 +196,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType RAW_LD4 = new ModuleType("RawLD4", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawLDBackend(sbmd, rootPath, 4);
         }
@@ -217,12 +217,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType Z_LD = new ModuleType("zLD", BookType.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new ZLDBackend(sbmd, rootPath);
         }
@@ -243,12 +243,12 @@ public abstract class ModuleType implements Serializable
      */
     public static final ModuleType RAW_GEN_BOOK = new ModuleType("RawGenBook", null) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        protected Book getBook(SwordBookMetaData sbmd, Backend backend)
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        protected Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
@@ -321,7 +321,7 @@ public abstract class ModuleType implements Serializable
      */
     public Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
     {
-        Backend backend = getBackend(sbmd, progdir);
+        AbstractBackend backend = getBackend(sbmd, progdir);
         Book book = getBook(sbmd, backend);
         return book;
     }
@@ -329,17 +329,17 @@ public abstract class ModuleType implements Serializable
     /**
      * Create a Book with the given backend
      */
-    protected abstract Book getBook(SwordBookMetaData sbmd, Backend backend);
+    protected abstract Book getBook(SwordBookMetaData sbmd, AbstractBackend backend);
 
     /**
      * Create a the appropriate backend for this type of book
      */
-    protected abstract Backend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
+    protected abstract AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
 
     /**
      * 
      */
-    protected static Backend getCompressedBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+    protected static AbstractBackend getCompressedBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
     {
         String cStr = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
         if (cStr != null)

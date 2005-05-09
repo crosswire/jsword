@@ -34,7 +34,7 @@ import javax.swing.JTabbedPane;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class TDIViewLayout extends ViewLayout
+public class TDIViewLayout extends AbstractViewLayout
 {
     /**
      * Build a TDI layout
@@ -47,7 +47,7 @@ public class TDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#addView(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#addView(java.awt.Component)
      */
     public void addView(Component component)
     {
@@ -74,7 +74,7 @@ public class TDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#removeView(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#removeView(java.awt.Component)
      */
     public void removeView(Component component)
     {
@@ -106,7 +106,7 @@ public class TDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#forceRemoveView(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#forceRemoveView(java.awt.Component)
      */
     protected void forceRemoveView(Component component)
     {
@@ -160,7 +160,7 @@ public class TDIViewLayout extends ViewLayout
 
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#select(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#select(java.awt.Component)
      */
     public void select(Component component)
     {

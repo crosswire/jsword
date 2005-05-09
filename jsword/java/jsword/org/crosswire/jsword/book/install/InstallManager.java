@@ -54,10 +54,10 @@ public class InstallManager
             Properties sitemap = ResourceUtil.getProperties(getClass());
             factories = ClassUtil.getImplementorsMap(InstallerFactory.class);
 
-            for (Iterator it = sitemap.keySet().iterator(); it.hasNext(); )
+            for (Iterator it = sitemap.entrySet().iterator(); it.hasNext(); )
             {
-                String name = (String) it.next();
-                String url = sitemap.getProperty(name);
+                Map.Entry entry = (Map.Entry) it.next();
+                String url = (String) entry.getValue();
 
                 try
                 {
@@ -74,7 +74,7 @@ public class InstallManager
                         InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
                         Installer installer = ifactory.createInstaller(url);
 
-                        internalAdd(name, installer);
+                        internalAdd((String) entry.getKey(), installer);
                     }
                 }
                 catch (Exception ex)

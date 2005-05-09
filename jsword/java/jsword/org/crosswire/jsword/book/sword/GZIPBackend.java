@@ -87,7 +87,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class GZIPBackend extends Backend
+public class GZIPBackend extends AbstractBackend
 {
     private static final String SUFFIX_COMP = "v"; //$NON-NLS-1$
     private static final String SUFFIX_INDEX = "s"; //$NON-NLS-1$
@@ -206,7 +206,7 @@ public class GZIPBackend extends Backend
 
     /*
      * (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public String getRawText(Key key) throws BookException
     {
@@ -317,7 +317,7 @@ public class GZIPBackend extends Backend
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#readIndex()
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
      */
     public Key readIndex()
     {
@@ -326,7 +326,7 @@ public class GZIPBackend extends Backend
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#isSupported()
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
      */
     public boolean isSupported()
     {

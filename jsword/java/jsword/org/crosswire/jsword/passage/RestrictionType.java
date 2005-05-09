@@ -346,7 +346,7 @@ public abstract class RestrictionType implements Serializable
      */
     public static int getBlurRestriction()
     {
-        return defaultBlurRestriction.toInteger();
+        return getDefaultBlurRestriction().toInteger();
     }
 
     /**
@@ -355,13 +355,17 @@ public abstract class RestrictionType implements Serializable
      */
     public static RestrictionType getDefaultBlurRestriction()
     {
+        if (defaultBlurRestriction == null)
+        {
+            defaultBlurRestriction = RestrictionType.CHAPTER;
+        }
         return defaultBlurRestriction;
     }
 
     /**
      * A default restriction type for blurring.
      */
-    private static RestrictionType defaultBlurRestriction = RestrictionType.CHAPTER;
+    private static RestrictionType defaultBlurRestriction;
 
     /**
      * The name of the PassageListType

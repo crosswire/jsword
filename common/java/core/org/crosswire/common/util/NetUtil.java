@@ -239,6 +239,7 @@ public class NetUtil
      * by downloading to a temp dir first
      * @param url The original URL to the file.
      * @return The URL as a file
+     * @throws IOException 
      */
     public static File getAsFile(URL url) throws IOException
     {
@@ -265,16 +266,35 @@ public class NetUtil
         workingFile.deleteOnExit();
 
         // copy the contents of the URL to the file
-        OutputStream output = new FileOutputStream(workingFile);
-        InputStream input = url.openStream();
-
-        byte[] data = new byte[512];
-        for (int read = 0; read != -1; read = input.read(data))
+        OutputStream output = null;
+        InputStream input = null;
+        try
         {
-            output.write(data, 0, read);
+            output = new FileOutputStream(workingFile);
+            input = url.openStream();
+            byte[] data = new byte[512];
+            for (int read = 0; read != -1; read = input.read(data))
+            {
+                output.write(data, 0, read);
+            }
         }
-        input.close();
-        output.close();
+        finally
+        {
+            try
+            {
+                if (input != null)
+                {
+                    input.close();
+                }
+            }
+            finally
+            {
+                if (output != null)
+                {
+                    output.close();
+                }
+            }
+        }
 
         // return the new file in URL form
         return workingFile;

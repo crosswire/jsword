@@ -303,7 +303,7 @@ public class MapField extends JPanel implements Field
     private static final String REMOVE = "RemoveMapEntry"; //$NON-NLS-1$
     private static final String UPDATE = "UpdateMapEntry"; //$NON-NLS-1$
 
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     /**
      * The TableModel that points the JTable at the Map

@@ -82,11 +82,8 @@ public class FieldMap
             log.warn("field type (" + type + ") initialization failed:", ex); //$NON-NLS-1$ //$NON-NLS-2$
             Reporter.informUser(type, ex);
 
-            if (field == null)
-            {
-                log.warn("field type (" + type + ") unregistered."); //$NON-NLS-1$ //$NON-NLS-2$
-                field = new TextField();
-            }
+            log.warn("field type (" + type + ") unregistered."); //$NON-NLS-1$ //$NON-NLS-2$
+            field = new TextField();
         }
 
         field.setChoice(type);

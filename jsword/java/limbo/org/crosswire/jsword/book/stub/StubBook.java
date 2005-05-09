@@ -4,7 +4,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
-import org.crosswire.jsword.book.basic.PassageAbstractBook;
+import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.passage.Key;
@@ -35,7 +35,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class StubBook extends PassageAbstractBook
+public class StubBook extends AbstractPassageBook
 {
     /**
      * Basic constructor for a StubBook
@@ -47,7 +47,7 @@ public class StubBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getFilter()
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
     protected Filter getFilter()
     {
@@ -55,7 +55,7 @@ public class StubBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getText(org.crosswire.jsword.passage.Verse)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getText(org.crosswire.jsword.passage.Verse)
      */
     protected String getText(Key key)
     {
@@ -63,7 +63,7 @@ public class StubBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
      */
     protected void setText(Verse verse, String text) throws BookException
     {

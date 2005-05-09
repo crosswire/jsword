@@ -50,7 +50,7 @@ public class SwordDictionary extends AbstractBook
      * Start and to as much checking as we can without using memory.
      * (i.e. actually reading the indexes)
      */
-    protected SwordDictionary(SwordBookMetaData sbmd, Backend backend)
+    protected SwordDictionary(SwordBookMetaData sbmd, AbstractBackend backend)
     {
         setBookMetaData(sbmd);
 
@@ -296,7 +296,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * To read the data from the disk
      */
-    private Backend backend;
+    private AbstractBackend backend;
 
     /**
      * The Sword configuration file

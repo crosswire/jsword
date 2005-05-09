@@ -7,7 +7,7 @@ import java.util.List;
 import org.crosswire.common.util.StringUtil;
 
 /**
- * The SentanceUtil class provide utility functions for the various Books.
+ * The SentenceUtil class provide utility functions for the various Books.
  * 
  * It is not designed to be used outside of the book package, so using it
  * outside of these bounds is at your own risk.
@@ -33,12 +33,12 @@ import org.crosswire.common.util.StringUtil;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SentanceUtil
+public class SentenceUtil
 {
     /**
      * Ensure we can not be instansiated
      */
-    private SentanceUtil()
+    private SentenceUtil()
     {
     }
 

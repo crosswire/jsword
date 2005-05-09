@@ -7,7 +7,7 @@ import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.book.basic.PassageAbstractBook;
+import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Verse;
@@ -37,12 +37,12 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class SwordBook extends PassageAbstractBook
+public class SwordBook extends AbstractPassageBook
 {
     /**
      * Simple ctor
      */
-    public SwordBook(SwordBookMetaData sbmd, Backend backend)
+    public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend)
     {
         setBookMetaData(sbmd);
 
@@ -88,7 +88,7 @@ public class SwordBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#addOSIS(org.crosswire.jsword.passage.Key, org.jdom.Element, java.util.List)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire.jsword.passage.Key, org.jdom.Element, java.util.List)
      */
     public void addOSIS(Key key, Element div, List osisContent)
     {
@@ -118,7 +118,7 @@ public class SwordBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
      */
     protected void setText(Verse verse, String text) throws BookException
     {
@@ -126,7 +126,7 @@ public class SwordBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getFilter()
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
     protected Filter getFilter()
     {
@@ -136,7 +136,7 @@ public class SwordBook extends PassageAbstractBook
     /**
      * To read the data from the disk
      */
-    private Backend backend;
+    private AbstractBackend backend;
 
     /**
      * The Sword configuration file

@@ -32,6 +32,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.search.SearchModifier;
 import org.crosswire.jsword.book.search.basic.AbstractIndex;
+import org.crosswire.jsword.passage.AbstractPassage;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -186,6 +187,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 if (modifier != null && modifier.isRanked())
                 {
                     PassageTally tally = new PassageTally();
+                    tally.raiseEventSuppresion();
+                    tally.raiseNormalizeProtection();
                     results = tally;
                     for (int i = 0; i < hits.length(); i++)
                     {
@@ -194,16 +197,31 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                         int score = (int) (hits.score(i) * 100 + 1);
                         tally.add(verse, score);
                     }
+                    tally.lowerNormalizeProtection();
+                    tally.lowerEventSuppresionAndTest();
                 }
                 else
                 {
                     results = book.createEmptyKeyList();
+                    // If we have an abstract passage,
+                    // make sure it does not try to fire change events.
+                    AbstractPassage passage = null;
+                    if (results instanceof AbstractPassage)
+                    {
+                        passage = (AbstractPassage) results;
+                        passage.raiseEventSuppresion();
+                        passage.raiseNormalizeProtection();
+                    }
                     for (int i = 0; i < hits.length(); i++)
                     {
                         Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
                         results.addAll(verse);
                     }
-
+                    if (passage != null)
+                    {
+                        passage.lowerNormalizeProtection();
+                        passage.lowerEventSuppresionAndTest();
+                    }
                 }
             }
             catch (Exception ex)

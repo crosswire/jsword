@@ -187,7 +187,7 @@ public class PathField extends JPanel implements Field
     private static final String REMOVE = "RemovePathEntry"; //$NON-NLS-1$
     private static final String UPDATE = "UpdatePathEntry"; //$NON-NLS-1$
 
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     /**
      * The TableModel that points the JTable at the Hashtable

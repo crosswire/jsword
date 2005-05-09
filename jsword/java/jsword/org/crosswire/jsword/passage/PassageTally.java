@@ -99,6 +99,22 @@ public class PassageTally extends AbstractPassage
         addVerses(refs);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#isEmpty()
+     */
+    public boolean isEmpty()
+    {
+        return size == 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#countVerses()
+     */
+    public int countVerses()
+    {
+        return size;
+    }
+
     /**
      * Set how we sort the verses we output. The options are:<ul>
      * <li>ORDER_BIBLICAL: Natural Biblical order</li>
@@ -342,20 +358,9 @@ public class PassageTally extends AbstractPassage
      */
     public int getIndexOf(Verse verse)
     {
-        int reply = 0;
-
-        Iterator it = iterator();
-        while (it.hasNext())
-        {
-            if (verse.equals(it.next()))
-            {
-                return reply;
-            }
-
-            reply++;
-        }
-
-        return -1;
+        int pos = verse.getOrdinal() - 1;
+        int tally = board[pos];
+        return tally > 0 ? pos : -1;
     }
 
     /**
@@ -543,6 +548,8 @@ public class PassageTally extends AbstractPassage
             board[i] = 0;
         }
 
+        size = 0;
+
         fireIntervalRemoved(this, null, null);
     }
 
@@ -651,7 +658,7 @@ public class PassageTally extends AbstractPassage
         {
             int[] new_board = new int[BibleInfo.versesInBible()];
 
-            int vib = BibleInfo.versesInBible();
+            int vib = new_board.length;
             for (int i = 0; i < vib; i++)
             {
                 if (board[i] != 0)
@@ -699,7 +706,8 @@ public class PassageTally extends AbstractPassage
 
     /**
      * Sometimes we end up not knowing what the max is - this makes sure
-     * we know accurately
+     * we know accurately.
+     * Same with size.
      */
     private void resetMax()
     {
@@ -707,8 +715,13 @@ public class PassageTally extends AbstractPassage
 
         int vib = BibleInfo.versesInBible();
         max = 0;
+        size = 0;
         for (int i = 0; i < vib; i++)
         {
+            if (board[i] > 0)
+            {
+                size++;
+            }
             if (board[i] > max)
             {
                 max = board[i];
@@ -743,6 +756,7 @@ public class PassageTally extends AbstractPassage
      */
     private final void increment(int ord, int tally)
     {
+        boolean exists = board[ord - 1] > 0;
         board[ord - 1] += tally;
         if (board[ord - 1] > MAX_TALLY)
         {
@@ -751,6 +765,16 @@ public class PassageTally extends AbstractPassage
         if (board[ord - 1] < 0)
         {
             board[ord - 1] = 0;
+        }
+
+        // Recompute the size
+        if (exists && board[ord - 1] == 0)
+        {
+            size--;
+        }
+        else if (!exists && board[ord - 1] > 0)
+        {
+            size++;
         }
     }
 
@@ -777,6 +801,11 @@ public class PassageTally extends AbstractPassage
      */
     private final void kill(int ord)
     {
+        if (board[ord - 1] > 0)
+        {
+            size--;
+        }
+
         board[ord - 1] = 0;
     }
 
@@ -795,6 +824,10 @@ public class PassageTally extends AbstractPassage
      */
     public static final int MAX_TALLY = 20000;
 
+    /*
+     * The number of verses in the tally.
+     */
+    private int size;
     /**
      * The tallyboard itself
      */

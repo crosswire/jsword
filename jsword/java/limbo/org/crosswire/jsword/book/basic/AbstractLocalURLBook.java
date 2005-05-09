@@ -27,7 +27,7 @@ package org.crosswire.jsword.book.basic;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class LocalURLBook
+public abstract class AbstractLocalURLBook
 {
     /*
      * Flush the data written to disk

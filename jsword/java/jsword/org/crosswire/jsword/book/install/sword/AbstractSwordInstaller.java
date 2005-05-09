@@ -255,13 +255,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             reloadBookList();
         }
 
+        InputStream in = null;
+        GZIPInputStream gin = null;
+        TarInputStream tin = null;
         try
         {
             ConfigEntry.resetStatistics();
 
-            InputStream in = cache.openStream();
-            GZIPInputStream gin = new GZIPInputStream(in);
-            TarInputStream tin = new TarInputStream(gin);
+            in = cache.openStream();
+            gin = new GZIPInputStream(in);
+            tin = new TarInputStream(gin);
             while (true)
             {
                 TarEntry entry = tin.getNextEntry();
@@ -277,7 +280,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     {
                         int size = (int) entry.getSize();
                         byte[] buffer = new byte[size];
-                        tin.read(buffer);
+                        if (tin.read(buffer) != size)
+                        {
+                            log.warn("Did not read all that was expected " + internal); //$NON-NLS-1$
+                        }
 
                         if (internal.endsWith(SwordConstants.EXTENSION_CONF))
                         {
@@ -305,9 +311,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     }
                 }
             }
-            IOUtil.close(tin);
-            IOUtil.close(gin);
-            IOUtil.close(in);
 
             loaded = true;
 
@@ -316,6 +319,12 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         catch (IOException ex)
         {
             throw new InstallException(Msg.CACHE_ERROR, ex);
+        }
+        finally
+        {
+            IOUtil.close(tin);
+            IOUtil.close(gin);
+            IOUtil.close(in);
         }
     }
 

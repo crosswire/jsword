@@ -7,7 +7,7 @@ import org.crosswire.common.util.Logger;
 
 /**
  * Defines a single default book.
- * *
+ *
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *

@@ -402,9 +402,9 @@ public class GuiUtil
      * size, and not any growths/shrinkages like restrainedRePack(Window).
      * @param win The window to be packed
      * @param maxx The maximum fraction (0.0 to 1.0) of the screen to be taken
-     * up horizontally (-1 means no restrictions to the horizontal alterations)
+     * up horizontally
      * @param maxy The maximum fraction (0.0 to 1.0) of the screen to be taken
-     * up vertically (-1 means no restrictions to the vertical alterations)
+     * up vertically
      * @see GuiUtil#restrainedRePack(Window)
      */
     public static void restrainedPack(Window win, float maxx, float maxy)
@@ -414,13 +414,13 @@ public class GuiUtil
         Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         // If the window is wider than the screen, clip it
-        if (maxx != -1 && win.getSize().width > (screen_dim.width * maxx))
+        if (win.getSize().width > (screen_dim.width * maxx))
         {
             win.setSize((int) (screen_dim.width * maxx), win.getSize().height);
         }
 
         // If the window is taller than the screen, clip it
-        if (maxy != -1 && win.getSize().height > (screen_dim.height * maxy))
+        if (win.getSize().height > (screen_dim.height * maxy))
         {
             win.setSize(win.getSize().width, (int) (screen_dim.height * maxy));
         }

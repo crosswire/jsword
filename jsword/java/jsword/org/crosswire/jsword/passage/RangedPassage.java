@@ -3,7 +3,6 @@ package org.crosswire.jsword.passage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
@@ -57,7 +56,7 @@ public class RangedPassage extends AbstractPassage
      */
     protected RangedPassage()
     {
-        store = Collections.synchronizedSortedSet(new TreeSet());
+        store = new TreeSet();
     }
 
     /**
@@ -77,7 +76,7 @@ public class RangedPassage extends AbstractPassage
     {
         super(refs);
 
-        store = Collections.synchronizedSortedSet(new TreeSet());
+        store = new TreeSet();
         addVerses(refs);
         normalize();
     }
@@ -94,7 +93,7 @@ public class RangedPassage extends AbstractPassage
         //   copy.store = (SortedSet) store.clone();
         // However SortedSet is not Clonable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = Collections.synchronizedSortedSet(new TreeSet());
+        copy.store = new TreeSet();
         copy.store.addAll(store);
 
         return copy;
@@ -227,7 +226,7 @@ public class RangedPassage extends AbstractPassage
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
-        SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
+        SortedSet new_store = new TreeSet();
         new_store.addAll(store);
         Iterator it = new_store.iterator();
 
@@ -273,7 +272,7 @@ public class RangedPassage extends AbstractPassage
 
         optimizeWrites();
 
-        SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
+        SortedSet new_store = new TreeSet();
 
         Iterator that_it = null;
         if (that instanceof RangedPassage)
@@ -329,7 +328,7 @@ public class RangedPassage extends AbstractPassage
 
         VerseRange last = null;
         VerseRange next = null;
-        SortedSet new_store = Collections.synchronizedSortedSet(new TreeSet());
+        SortedSet new_store = new TreeSet();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext())
@@ -374,7 +373,7 @@ public class RangedPassage extends AbstractPassage
         {
             try
             {
-                SortedSet temp = Collections.synchronizedSortedSet(new TreeSet());
+                SortedSet temp = new TreeSet();
 
                 while (it.hasNext())
                 {
@@ -543,7 +542,7 @@ public class RangedPassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = Collections.synchronizedSortedSet(new TreeSet());
+        store = new TreeSet();
         readObjectSupport(in);
     }
 

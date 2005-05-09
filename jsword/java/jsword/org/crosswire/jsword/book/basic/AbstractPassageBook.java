@@ -44,7 +44,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public abstract class PassageAbstractBook extends AbstractBook
+public abstract class AbstractPassageBook extends AbstractBook
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
@@ -116,7 +116,7 @@ public abstract class PassageAbstractBook extends AbstractBook
      * What filter should be used to filter data in the format produced by this
      * Book?.
      * In some ways this method is more suited to BookMetaData however we do not
-     * have a specialization of BookMetaData to fit PassageAbstractBook and it
+     * have a specialization of BookMetaData to fit AbstractPassageBook and it
      * doesn't like any higher in the hierachy at the moment so I will leave
      * this here.
      */
@@ -194,7 +194,7 @@ public abstract class PassageAbstractBook extends AbstractBook
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(PassageAbstractBook.class);
+    private static final Logger log = Logger.getLogger(AbstractPassageBook.class);
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)

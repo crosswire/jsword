@@ -75,7 +75,7 @@ public class ConfigEvent extends EventObject
     /**
      * The Choice
      */
-    private Choice model;
+    private transient Choice model;
 
     /**
      * Serialization ID

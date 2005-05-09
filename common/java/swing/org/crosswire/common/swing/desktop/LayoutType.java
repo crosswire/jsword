@@ -42,7 +42,7 @@ public abstract class LayoutType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.common.swing.desktop.LayoutType#createLayout()
          */
-        public ViewLayout createLayout()
+        public AbstractViewLayout createLayout()
         {
             return new TDIViewLayout();
         }
@@ -61,7 +61,7 @@ public abstract class LayoutType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.common.swing.desktop.LayoutType#createLayout()
          */
-        public ViewLayout createLayout()
+        public AbstractViewLayout createLayout()
         {
             return new MDIViewLayout();
         }
@@ -85,7 +85,7 @@ public abstract class LayoutType implements Serializable
      *
      * @return the layout
      */
-    public ViewLayout getLayout()
+    public AbstractViewLayout getLayout()
     {
         // In order to get the proper LAF it needs to be created after the LAF is set
         // So we delay it until it is actually needed.
@@ -100,7 +100,7 @@ public abstract class LayoutType implements Serializable
      * Create the appropriate kind of view layout
      * @return the created view layout
      */
-    public abstract ViewLayout createLayout();
+    public abstract AbstractViewLayout createLayout();
 
     /**
      * Get an integer representation for this LayoutType
@@ -179,7 +179,7 @@ public abstract class LayoutType implements Serializable
     /**
      * The actual layout
      */
-    protected ViewLayout layout;
+    protected AbstractViewLayout layout;
 
     // Support for serialization
     private static int nextObj;

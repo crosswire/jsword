@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.crosswire.common.util.EmptyIterator;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -1042,23 +1043,7 @@ public final class VerseRange implements VerseBase
      */
     public Iterator iterator()
     {
-        return new Iterator()
-        {
-            public void remove()
-            {
-                throw new UnsupportedOperationException();
-            }
-
-            public boolean hasNext()
-            {
-                return false;
-            }
-
-            public Object next()
-            {
-                return null;
-            }
-        };
+        return new EmptyIterator();
     }
 
     /* (non-Javadoc)

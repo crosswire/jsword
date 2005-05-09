@@ -40,7 +40,7 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawLDBackend extends Backend
+public class RawLDBackend extends AbstractBackend
 {
     /**
      * Simple ctor
@@ -195,7 +195,7 @@ public class RawLDBackend extends Backend
 
     /*
      * (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public String getRawText(Key key) throws BookException
     {
@@ -233,7 +233,7 @@ public class RawLDBackend extends Backend
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.Backend#isSupported()
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
      */
     public boolean isSupported()
     {

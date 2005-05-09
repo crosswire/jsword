@@ -119,24 +119,9 @@ public abstract class AbstractKeyList implements Key
             return name;
         }
 
-        final StringBuffer buffer = new StringBuffer();
-        KeyUtil.visit(this, new DefaultKeyVisitor()
-        {
-            public void visitLeaf(Key key)
-            {
-                buffer.append(key.getName());
-                buffer.append(AbstractPassage.REF_PREF_DELIM);
-            }
-        });
-
-        String reply = buffer.toString();
-        if (reply.length() > 0)
-        {
-            // strip off the final ", "
-            reply = reply.substring(0, reply.length() - AbstractPassage.REF_PREF_DELIM.length());
-        }
-
-        return reply;
+        DefaultKeyVisitor visitor = new NameVisitor();
+        KeyUtil.visit(this, visitor);
+        return visitor.toString();
     }
 
     /* (non-Javadoc)
@@ -144,29 +129,9 @@ public abstract class AbstractKeyList implements Key
      */
     public String getOSISName()
     {
-        if (osisName != null)
-        {
-            return osisName;
-        }
-
-        final StringBuffer buffer = new StringBuffer();
-        KeyUtil.visit(this, new DefaultKeyVisitor()
-        {
-            public void visitLeaf(Key key)
-            {
-                buffer.append(key.getOSISName());
-                buffer.append(AbstractPassage.REF_OSIS_DELIM);
-            }
-        });
-
-        String reply = buffer.toString();
-        if (reply.length() > 0)
-        {
-            // strip off the final ", "
-            reply = reply.substring(0, reply.length() - AbstractPassage.REF_OSIS_DELIM.length());
-        }
-
-        return reply;
+        DefaultKeyVisitor visitor = new OSISNameVisitor();
+        KeyUtil.visit(this, visitor);
+        return visitor.toString();
     }
 
     /* (non-Javadoc)
@@ -217,12 +182,64 @@ public abstract class AbstractKeyList implements Key
     }
 
     /**
+     * The <code>NameVisitor</code> constructs a readable representation
+     * of the Passage.
+     */
+    private static class NameVisitor extends DefaultKeyVisitor
+    {
+        /**
+         * Create a <code>NameVisitor</code>.
+         */
+        public NameVisitor()
+        {
+            buffer = new StringBuffer();
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
+         */
+        public void visitLeaf(Key key)
+        {
+            buffer.append(key.getName());
+            buffer.append(AbstractPassage.REF_PREF_DELIM);
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
+        public String toString()
+        {
+            String reply = buffer.toString();
+            if (reply.length() > 0)
+            {
+                // strip off the final ", "
+                reply = reply.substring(0, reply.length() - AbstractPassage.REF_OSIS_DELIM.length());
+            }
+
+            return reply;
+        }
+
+        protected StringBuffer buffer;
+    }
+
+    /** 
+     * The <code>OSISNameVisitor</code> constructs a readable representation
+     * of the Passage, using OSIS names.
+     */
+    private static class OSISNameVisitor extends NameVisitor
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
+         */
+        public void visitLeaf(Key key)
+        {
+            buffer.append(key.getOSISName());
+            buffer.append(AbstractPassage.REF_PREF_DELIM);
+        }
+    }
+
+    /**
      * The common user visible name for this work
      */
     private String name;
-
-    /**
-     * The OSIS ID attribute
-     */
-    private String osisName;
 }

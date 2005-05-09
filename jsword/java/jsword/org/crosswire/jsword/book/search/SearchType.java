@@ -39,7 +39,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decoratePhrase(queryWords);
+            return SEARCH_SYNTAX.decoratePhrase(queryWords);
         }
 
         /**
@@ -58,7 +58,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decorateAllWords(queryWords);
+            return SEARCH_SYNTAX.decorateAllWords(queryWords);
         }
 
         /**
@@ -77,7 +77,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decorateAnyWords(queryWords);
+            return SEARCH_SYNTAX.decorateAnyWords(queryWords);
         }
 
         /**
@@ -97,7 +97,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decorateNotWords(queryWords);
+            return SEARCH_SYNTAX.decorateNotWords(queryWords);
         }
 
         /**
@@ -116,7 +116,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decorateStartWords(queryWords);
+            return SEARCH_SYNTAX.decorateStartWords(queryWords);
         }
 
         /**
@@ -135,7 +135,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decorateSpellWords(queryWords);
+            return SEARCH_SYNTAX.decorateSpellWords(queryWords);
         }
 
         /**
@@ -154,7 +154,7 @@ public abstract class SearchType implements Serializable
          */
         public String decorate(String queryWords)
         {
-            return searchSyntax.decorateRange(queryWords);
+            return SEARCH_SYNTAX.decorateRange(queryWords);
         }
 
         /**
@@ -231,7 +231,7 @@ public abstract class SearchType implements Serializable
      */
     private String name;
 
-    protected static SearchSyntax searchSyntax = SearchSyntaxFactory.getSearchSyntax();
+    protected static final SearchSyntax SEARCH_SYNTAX = SearchSyntaxFactory.getSearchSyntax();
 
     // Support for serialization
     private static int nextObj;

@@ -3,7 +3,7 @@ package org.crosswire.common.history;
 import java.util.EventListener;
 
 /**
- * A listener of HistoryEvents
+ * A listener of HistoryEvents.
  * 
  * <p><table border='1' cellPadding='3' cellSpacing='0'>
  * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>

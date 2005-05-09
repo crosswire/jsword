@@ -415,18 +415,7 @@ public class ExceptionShelf extends JPanel
          */
         public void reportException(final ReporterEvent ev)
         {
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    Iterator it = SHELVES.iterator();
-                    while (it.hasNext())
-                    {
-                        ExceptionShelf es = (ExceptionShelf) it.next();
-                        es.addException(ev.getException());
-                    }
-                }
-            });
+            SwingUtilities.invokeLater(new ExceptionRunner(ev));
         }
 
         /* (non-Javadoc)
@@ -434,18 +423,65 @@ public class ExceptionShelf extends JPanel
          */
         public void reportMessage(final ReporterEvent ev)
         {
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    Iterator it = SHELVES.iterator();
-                    while (it.hasNext())
-                    {
-                        ExceptionShelf es = (ExceptionShelf) it.next();
-                        es.addException(new Exception(ev.getMessage()));
-                    }
-                }
-            });
+            SwingUtilities.invokeLater(new MessageRunner(ev));
         }
+    }
+
+    /**
+     *
+     */
+    private static final class ExceptionRunner implements Runnable
+    {
+        /**
+         * @param ev
+         */
+        public ExceptionRunner(ReporterEvent ev)
+        {
+            event = ev;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            Iterator it = SHELVES.iterator();
+            while (it.hasNext())
+            {
+                ExceptionShelf es = (ExceptionShelf) it.next();
+                es.addException(event.getException());
+            }
+        }
+
+        private ReporterEvent event;
+    }
+
+    /**
+     *
+     */
+    private static final class MessageRunner implements Runnable
+    {
+        /**
+         * @param ev
+         */
+        public MessageRunner(ReporterEvent ev)
+        {
+            event = ev;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            Iterator it = SHELVES.iterator();
+            while (it.hasNext())
+            {
+                ExceptionShelf es = (ExceptionShelf) it.next();
+                es.addException(new Exception(event.getMessage()));
+            }
+        }
+
+        private ReporterEvent event;
     }
 }

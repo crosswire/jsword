@@ -76,14 +76,14 @@ public class FilterFactory
         }
 
         // the lookup table
-        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
+        for (Iterator it = map.entrySet().iterator(); it.hasNext(); )
         {
             try
             {
-                String key = (String) it.next();
-                Class clazz = (Class) map.get(key);
+                Map.Entry entry = (Map.Entry) it.next();
+                Class clazz = (Class) entry.getValue();
                 Filter instance = (Filter) clazz.newInstance();
-                addFilter(key, instance);
+                addFilter((String) entry.getKey(), instance);
             }
             catch (Exception ex)
             {

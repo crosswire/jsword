@@ -226,7 +226,7 @@ public class StringArrayField extends JPanel implements Field
      */
     private static final String SEPARATOR = "#"; //$NON-NLS-1$
 
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     /**
      * The TableModel that points the JTable at the Hashtable

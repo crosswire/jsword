@@ -58,7 +58,7 @@ public interface Viewable
      * Copies all the views from the one layout to the other
      * @param other the other layout
      */
-    public abstract void moveTo(ViewLayout other);
+    public abstract void moveTo(AbstractViewLayout other);
 
     /**
      * Close all the views. Note the policy is enforced that one view is kept.

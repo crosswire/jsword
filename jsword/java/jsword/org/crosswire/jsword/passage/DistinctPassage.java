@@ -89,7 +89,7 @@ public class DistinctPassage extends AbstractPassage
         //   copy.store = (SortedSet) store.clone();
         // However SortedSet is not Clonable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = Collections.synchronizedSortedSet(new TreeSet());
+        copy.store = new TreeSet();
         copy.store.addAll(store);
 
         return copy;
@@ -216,7 +216,7 @@ public class DistinctPassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = Collections.synchronizedSortedSet(new TreeSet());
+        store = new TreeSet();
         readObjectSupport(in);
     }
 
@@ -228,5 +228,5 @@ public class DistinctPassage extends AbstractPassage
     /**
      * The place the real data is stored
      */
-    private transient SortedSet store = Collections.synchronizedSortedSet(new TreeSet());
+    private transient SortedSet store = new TreeSet();
 }

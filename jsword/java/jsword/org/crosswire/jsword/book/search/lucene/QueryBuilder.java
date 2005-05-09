@@ -121,7 +121,7 @@ public class QueryBuilder
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*"); //$NON-NLS-1$
 
     /**
-     * The pattern of a blur. ~, optionally followed by a number, representing the number of verses
+     * The pattern of a blur. A '~', optionally followed by a number, representing the number of verses.
      */
     private static final Pattern BLUR_PATTERN = Pattern.compile("\\s~(\\d*)?\\s"); //$NON-NLS-1$
 

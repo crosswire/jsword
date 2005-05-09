@@ -312,17 +312,18 @@ public class ConfigEntryTable
         }
 
         // Get the next non-blank, non-comment line
+        String trimmed = null;
         for (String line = bin.readLine(); line != null; line = bin.readLine())
         {
             // Remove trailing whitespace
-            line = line.trim();
+            trimmed = line.trim();
 
-            int length = line.length();
+            int length = trimmed.length();
 
             // skip blank and comment lines
-            if (length != 0 && line.charAt(0) != '#')
+            if (length != 0 && trimmed.charAt(0) != '#')
             {
-                return line;
+                return trimmed;
             }
         }
         return null;

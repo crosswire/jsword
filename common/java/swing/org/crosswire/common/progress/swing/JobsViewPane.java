@@ -104,37 +104,7 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     public synchronized void workProgressed(final WorkEvent ev)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                Job job = ev.getJob();
-
-                if (!jobs.containsKey(job))
-                {
-                    // do we need an 'empty' label
-                    if (jobs.isEmpty())
-                    {
-                        removeEmptyLabel();
-                    }
-
-                    addJob(job);
-                }
-
-                updateJob(job);
-
-                if (job.isFinished())
-                {
-                    removeJob(job);
-
-                    // do we need an 'empty' label
-                    if (jobs.isEmpty())
-                    {
-                        addEmptyLabel();
-                    }
-                }
-            }
-        });
+        SwingUtilities.invokeLater(new JobRunner(this, ev));
     }
 
     /**
@@ -165,13 +135,7 @@ public class JobsViewPane extends JPanel implements WorkListener
         {
             cancel.setEnabled(false);
         }
-        cancel.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                job.interrupt();
-            }
-        });
+        cancel.addActionListener(new CancelListener(job));
 
         jobsPanel.add(label, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
         jobsPanel.add(progress, new GridBagConstraints(1, i, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
@@ -296,6 +260,80 @@ public class JobsViewPane extends JPanel implements WorkListener
      */
     private static final long serialVersionUID = 3546366136561315891L;
 
+    /**
+     *
+     */
+    private static final class JobRunner implements Runnable
+    {
+        /**
+         * @param jvp
+         * @param ev
+         */
+        public JobRunner(JobsViewPane jvp, WorkEvent ev)
+        {
+            pane = jvp;
+            event = ev;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            Job job = event.getJob();
+
+            if (!pane.jobs.containsKey(job))
+            {
+                // do we need an 'empty' label
+                if (pane.jobs.isEmpty())
+                {
+                    pane.removeEmptyLabel();
+                }
+
+                pane.addJob(job);
+            }
+
+            pane.updateJob(job);
+
+            if (job.isFinished())
+            {
+                pane.removeJob(job);
+
+                // do we need an 'empty' label
+                if (pane.jobs.isEmpty())
+                {
+                    pane.addEmptyLabel();
+                }
+            }
+        }
+
+        private JobsViewPane pane;
+        private WorkEvent event;
+    }
+
+    /**
+     * Listen for cancel events and do the cancel.
+     */
+    private static final class CancelListener implements ActionListener
+    {
+        /**
+         * @param theJob
+         */
+        public CancelListener(Job theJob)
+        {
+            job = theJob;
+        }
+
+        /* (non-Javadoc)
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ev)
+        {
+            job.interrupt();
+        }
+
+        private Job job;
+    }
     /**
      * A simple struct to group information about a Job
      */

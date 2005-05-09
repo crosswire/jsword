@@ -397,8 +397,7 @@ public class PassageParentTst extends TestCase
         assertEquals(keyf.getKey("Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").toString(), "Gen 1:1-3, 22:2-10, Rev 22"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("").toString(), ""); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("gen 1 1-50:26,e,e 1 2,e 1 3-10").toString(), "Gen-Exo"); //$NON-NLS-1$ //$NON-NLS-2$
-        try { keyf.getKey(null); fail(); }
-        catch (NullPointerException ex) { }
+        assertEquals(keyf.getKey(null).toString(), "");  //$NON-NLS-1$
     }
 
     public void testWriteGetName() throws Exception

@@ -173,7 +173,7 @@ public final class Job
     /**
      * Accessor for the job description
      */
-    public String getStateDescription()
+    public synchronized String getStateDescription()
     {
         return statedesc;
     }
@@ -226,7 +226,7 @@ public final class Job
      * Get estimated the percent progress, extrapolating between sections
      * @return The estimated progress
      */
-    public int getPercent()
+    public synchronized int getPercent()
     {
         return guessedpc;
     }
@@ -235,7 +235,7 @@ public final class Job
      * Get the last reported total percent progress
      * @return The last reported progress
      */
-    public int getReportedPercent()
+    public synchronized int getReportedPercent()
     {
         return reportedpc;
     }

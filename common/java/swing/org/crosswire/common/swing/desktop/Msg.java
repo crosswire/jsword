@@ -28,8 +28,8 @@ import org.crosswire.common.util.MsgBase;
  */
 public class Msg extends MsgBase
 {
-    // Strings for ViewLayout
-    static final Msg UNTITLED = new Msg("ViewLayout.Untitled"); //$NON-NLS-1$
+    // Strings for AbstractViewLayout
+    static final Msg UNTITLED = new Msg("AbstractViewLayout.Untitled"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

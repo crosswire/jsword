@@ -2,6 +2,8 @@ package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
 
+import org.crosswire.common.util.EmptyIterator;
+
 /**
  * A simple default implementation of the Key interface.
  * 
@@ -108,23 +110,7 @@ public class DefaultLeafKeyList implements Key
      */
     public Iterator iterator()
     {
-        return new Iterator()
-        {
-            public void remove()
-            {
-                throw new UnsupportedOperationException();
-            }
-
-            public boolean hasNext()
-            {
-                return false;
-            }
-
-            public Object next()
-            {
-                return null;
-            }
-        };
+        return new EmptyIterator();
     }
 
     /* (non-Javadoc)

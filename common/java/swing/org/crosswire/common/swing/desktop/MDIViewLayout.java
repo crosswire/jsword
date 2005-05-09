@@ -40,7 +40,7 @@ import javax.swing.event.InternalFrameListener;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class MDIViewLayout extends ViewLayout
+public class MDIViewLayout extends AbstractViewLayout
 {
     /**
      * Create a MDIViewLayout
@@ -54,7 +54,7 @@ public class MDIViewLayout extends ViewLayout
 
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#addView(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#addView(java.awt.Component)
      */
     public void addView(Component view)
     {
@@ -76,7 +76,7 @@ public class MDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#removeView(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#removeView(java.awt.Component)
      */
     public void removeView(Component view)
     {
@@ -106,7 +106,7 @@ public class MDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#forceRemoveView(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#forceRemoveView(java.awt.Component)
      */
     protected void forceRemoveView(Component component)
     {
@@ -123,7 +123,7 @@ public class MDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#updateTitle(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#updateTitle(java.awt.Component)
      */
     public void updateTitle(Component view)
     {
@@ -135,7 +135,7 @@ public class MDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#getSelected()
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#getSelected()
      */
     public Component getSelected()
     {
@@ -171,7 +171,7 @@ public class MDIViewLayout extends ViewLayout
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.swing.desktop.ViewLayout#select(java.awt.Component)
+     * @see org.crosswire.common.swing.desktop.AbstractViewLayout#select(java.awt.Component)
      */
     public void select(Component component)
     {

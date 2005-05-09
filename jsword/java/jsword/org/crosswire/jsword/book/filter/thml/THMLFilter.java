@@ -90,21 +90,18 @@ public class THMLFilter implements Filter
                 {
                     log.warn("Could not fix it by cleaning tags: " + ex3.getMessage()); //$NON-NLS-1$
 
-                    try
-                    {
-                        Element p = OSISUtil.factory().createP();
-                        ele.addContent(p);
-                        p.addContent(plain);
-                    }
-                    catch (Exception ex4)
-                    {
-                        log.warn("no way. say it ain't so! " + ex4.getMessage()); //$NON-NLS-1$
-                    }
+                    ele = OSISUtil.factory().createP();
+                    ele.addContent(plain);
                 }
             }
         }
         finally
         {
+            if (ele == null)
+            {
+                ele = OSISUtil.factory().createP();
+                ele.addContent(plain);
+            }
             // Make sure that other places don't report this problem
             DataPolice.setKey(null);
         }

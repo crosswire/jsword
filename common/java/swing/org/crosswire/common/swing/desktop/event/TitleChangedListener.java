@@ -31,7 +31,7 @@ public interface TitleChangedListener extends EventListener
 {
     /**
      * A Select pane is telling us that it has changed, and we might want to
-     * update the BibleViewPane and the ViewLayout to reflect any potentially
+     * update the BibleViewPane and the AbstractViewLayout to reflect any potentially
      * new titles
      */
     public void titleChanged(TitleChangedEvent ev);

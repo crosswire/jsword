@@ -29,7 +29,7 @@ import org.crosswire.jsword.passage.RestrictionType;
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class BlurQuery extends BinaryQuery
+public class BlurQuery extends AbstractBinaryQuery
 {
 
     /**

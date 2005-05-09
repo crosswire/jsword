@@ -199,7 +199,7 @@ public final class StringUtil
      * @param str  the String to parse, may be null
      * @param separatorChar  the character used as the delimiter,
      *  <code>null</code> splits on whitespace
-     * @return an array of parsed Strings, <code>null</code> if null String input
+     * @return an array of parsed Strings
      * @since 2.0
      */
     public static String[] split(String str, char separatorChar)
@@ -208,7 +208,7 @@ public final class StringUtil
 
         if (str == null)
         {
-            return null;
+            return EMPTY_STRING_ARRAY;
         }
         int len = str.length();
         if (len == 0)
@@ -263,7 +263,7 @@ public final class StringUtil
      * @param str  the String to parse, may be null
      * @param separatorChar  the character used as the delimiter,
      *  <code>null</code> splits on whitespace
-     * @return an array of parsed Strings, <code>null</code> if null String input
+     * @return an array of parsed Strings
      * @since 2.0
      */
     public static String[] splitAll(String str, char separatorChar)
@@ -272,7 +272,7 @@ public final class StringUtil
 
         if (str == null)
         {
-            return null;
+            return EMPTY_STRING_ARRAY;
         }
         int len = str.length();
         if (len == 0)
@@ -355,7 +355,7 @@ public final class StringUtil
      *  <code>null</code> splits on whitespace
      * @param max  the maximum number of elements to include in the
      *  array. A zero or negative value implies no limit
-     * @return an array of parsed Strings, <code>null</code> if null String input
+     * @return an array of parsed Strings
      */
     public static String[] split(String str, String separatorChars, int max)
     {
@@ -365,7 +365,7 @@ public final class StringUtil
 
         if (str == null)
         {
-            return null;
+            return EMPTY_STRING_ARRAY;
         }
         int len = str.length();
         if (len == 0)

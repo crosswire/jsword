@@ -30,7 +30,7 @@ public class Msg extends MsgBase
 {
     static final Msg DRIVER_READONLY = new Msg("AbstractBookDriver.DriverReadonly"); //$NON-NLS-1$
     static final Msg INDEX_FAIL = new Msg("AbstractBookDriver.IndexFail"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("PassageAbstractBook.FilterFail"); //$NON-NLS-1$
+    static final Msg FILTER_FAIL = new Msg("AbstractPassageBook.FilterFail"); //$NON-NLS-1$
     static final Msg VERIFY_START = new Msg("Verifier.Start"); //$NON-NLS-1$
     static final Msg VERIFY_VERSES = new Msg("Verifier.Verses"); //$NON-NLS-1$
     static final Msg VERIFY_VERSE = new Msg("Verifier.Verse"); //$NON-NLS-1$

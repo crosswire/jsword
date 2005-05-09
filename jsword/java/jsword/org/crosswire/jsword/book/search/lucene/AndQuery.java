@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class AndQuery extends BinaryQuery
+public class AndQuery extends AbstractBinaryQuery
 {
 
     /**

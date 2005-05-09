@@ -25,7 +25,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.SentanceUtil;
+import org.crosswire.jsword.book.SentenceUtil;
 import org.crosswire.jsword.book.search.Grammar;
 import org.crosswire.jsword.book.search.Thesaurus;
 import org.crosswire.jsword.book.search.basic.AbstractIndex;
@@ -268,7 +268,7 @@ public class SerIndex extends AbstractIndex implements Activatable, Thesaurus
                 BookData data = book.getData(sublist);
                 String text = data.getPlainText();
 
-                String[] words = SentanceUtil.getWords(text);
+                String[] words = SentenceUtil.getWords(text);
                 for (int i = 0; i < words.length; i++)
                 {
                     // ensure there is a Passage for this word in the word/passage hashmap

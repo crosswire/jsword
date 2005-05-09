@@ -84,9 +84,8 @@ public class OSISFilter implements Filter
 
                     try
                     {
-                        Element p = OSISUtil.factory().createP();
-                        ele.addContent(p);
-                        p.addContent(plain);
+                        ele = OSISUtil.factory().createP();
+                        ele.addContent(plain);
                     }
                     catch (Exception ex4)
                     {
@@ -97,6 +96,10 @@ public class OSISFilter implements Filter
         }
         finally
         {
+            if (ele == null)
+            {
+                ele = OSISUtil.factory().createP();
+            }
             // Make sure that other places don't report this problem
             DataPolice.setKey(null);
         }

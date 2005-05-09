@@ -212,7 +212,7 @@ public class ToolBar extends JToolBar
      * It must be border layout with the only other component being centered.
      */
     private JFrame frame;
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     /**
      * Serialization ID

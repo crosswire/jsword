@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.SentanceUtil;
+import org.crosswire.jsword.book.SentenceUtil;
 import org.crosswire.jsword.book.search.Grammar;
 import org.crosswire.jsword.book.search.Thesaurus;
 import org.crosswire.jsword.book.search.ThesaurusFactory;
@@ -92,7 +92,7 @@ public class PhraseParamWord implements ParamWord
             }
         }
 
-        String[] words = SentanceUtil.getWords(sought);
+        String[] words = SentenceUtil.getWords(sought);
         words = Grammar.stripSmallWords(words);
         // log.fine("words="+StringUtil.toString(words));
 

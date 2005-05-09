@@ -271,7 +271,7 @@ public class WizardConfigEditor extends AbstractConfigEditor
     private static final String HELP = "WizardHelp"; //$NON-NLS-1$
     private static final String BACK = "WizardBack"; //$NON-NLS-1$
 
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     /**
      * The current position

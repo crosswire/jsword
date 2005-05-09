@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  * @version $Id$
  */
-public class OrQuery extends BinaryQuery
+public class OrQuery extends AbstractBinaryQuery
 {
 
     /**

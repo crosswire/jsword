@@ -12,6 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,13 +106,7 @@ public class ExceptionPane extends JPanel
         ok.setMnemonic(Msg.OK.toString().charAt(0));
 
         detail = new JCheckBox();
-        detail.addItemListener(new ItemListener()
-        {
-            public void itemStateChanged(ItemEvent ev)
-            {
-                changeDetail();
-            }
-        });
+        detail.addItemListener(new SelectedItemListener(this));
         detail.setText(Msg.DETAILS.toString());
 
         JPanel spacer = new JPanel(new FlowLayout());
@@ -145,21 +140,16 @@ public class ExceptionPane extends JPanel
         }
         Throwable[] exs = (Throwable[]) causes.toArray(new Throwable[causes.size()]);
 
-        final JComboBox traces = new JComboBox();
+        JComboBox traces = new JComboBox();
         traces.setModel(new DefaultComboBoxModel(exs));
-        traces.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                Throwable th = (Throwable) traces.getSelectedItem();
-                setDisplayedException(th);
-            }
-        });
+        traces.addActionListener(new SelectActionListener(this, traces));
 
         JPanel heading = new JPanel(new BorderLayout());
         heading.add(traces, BorderLayout.CENTER);
 
         JSplitPane split = new FixedSplitPane();
+        // Make the top 20% of the total
+        split.setResizeWeight(0.2D);
         split.setOrientation(JSplitPane.VERTICAL_SPLIT);
         split.setContinuousLayout(true);
         split.setTopComponent(new JScrollPane(list));
@@ -350,10 +340,62 @@ public class ExceptionPane extends JPanel
     }
 
     /**
+     *
+     */
+    private static final class SelectedItemListener implements ItemListener
+    {
+        /**
+         * @param ep
+         */
+        public SelectedItemListener(ExceptionPane ep)
+        {
+            pane = ep;
+        }
+
+        /* (non-Javadoc)
+         * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+         */
+        public void itemStateChanged(ItemEvent ev)
+        {
+            pane.changeDetail();
+        }
+
+        private ExceptionPane pane;
+    }
+
+    /**
+     *
+     */
+    private static final class SelectActionListener implements ActionListener
+    {
+        /**
+         * @param ep
+         * @param cb
+         */
+        public SelectActionListener(ExceptionPane ep, JComboBox cb)
+        {
+            pane = ep;
+            traces = cb;
+        }
+
+        /* (non-Javadoc)
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ev)
+        {
+            Throwable th = (Throwable) traces.getSelectedItem();
+            pane.setDisplayedException(th);
+        }
+
+        private ExceptionPane pane;
+        private JComboBox traces;
+    }
+
+    /**
      * List listener to update the contents of the text area
      * whenever someone clicks in the list
      */
-    static class CustomLister implements ListSelectionListener
+    private static final class CustomLister implements ListSelectionListener
     {
         /**
          * Initialize with the stuff we need to act on the
@@ -411,11 +453,12 @@ public class ExceptionPane extends JPanel
                     int selection_start = 0;
                     int selection_end = 0;
 
+                    LineNumberReader in = null;
                     try
                     {
                         String found = Msg.SOURCE_FOUND.toString(new Object[] { errorLine, file.getCanonicalPath() });
                         mylabel.setText(found);
-                        LineNumberReader in = new LineNumberReader(new FileReader(file));
+                        in = new LineNumberReader(new FileReader(file));
                         while (true)
                         {
                             String line = in.readLine();
@@ -439,6 +482,20 @@ public class ExceptionPane extends JPanel
                     catch (Exception ex)
                     {
                         data.append(ex.getMessage());
+                    }
+                    finally
+                    {
+                        if (in != null)
+                        {
+                            try
+                            {
+                                in.close();
+                            }
+                            catch (IOException e)
+                            {
+                                data.append(e.getMessage());
+                            }
+                        }
                     }
 
                     // Actually set the text
@@ -481,55 +538,90 @@ public class ExceptionPane extends JPanel
     /**
      * The ExceptionPane instance that we add to the Log
      */
-    static class ExceptionPaneReporterListener implements ReporterListener
+    private static final class ExceptionPaneReporterListener implements ReporterListener
     {
         /**
          * Called whenever Reporter.informUser() is passed an Exception
          * @param ev The event describing the Exception
          */
-        public void reportException(final ReporterEvent ev)
+        public void reportException(ReporterEvent ev)
         {
             // This faf is to ensure that we don't break any SwingThread rules
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    if (ev.getSource() instanceof Component)
-                    {
-                        ExceptionPane.showExceptionDialog((Component) ev.getSource(), ev.getException());
-                    }
-                    else
-                    {
-                        ExceptionPane.showExceptionDialog(null, ev.getException());
-                    }
-                }
-            });
+            SwingUtilities.invokeLater(new ExceptionRunner(ev));
         }
 
         /**
          * Called whenever Reporter.informUser() is passed a message
          * @param ev The event describing the message
          */
-        public void reportMessage(final ReporterEvent ev)
+        public void reportMessage(ReporterEvent ev)
         {
             // This faf is to ensure that we don't break any SwingThread rules
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    if (ev.getSource() instanceof Component)
-                    {
-                        JOptionPane.showMessageDialog((Component) ev.getSource(), ev.getMessage());
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(null, ev.getMessage());
-                    }
-                }
-            });
+            SwingUtilities.invokeLater(new MessageRunner(ev));
         }
     }
 
+    /**
+    *
+    */
+   private static final class ExceptionRunner implements Runnable
+   {
+       /**
+        * @param ev
+        */
+       public ExceptionRunner(ReporterEvent ev)
+       {
+           event = ev;
+       }
+
+       /* (non-Javadoc)
+        * @see java.lang.Runnable#run()
+        */
+       public void run()
+       {
+           if (event.getSource() instanceof Component)
+           {
+               showExceptionDialog((Component) event.getSource(), event.getException());
+           }
+           else
+           {
+               showExceptionDialog(null, event.getException());
+           }
+       }
+
+       private ReporterEvent event;
+   }
+
+   /**
+     *
+     */
+    private static final class MessageRunner implements Runnable
+    {
+        /**
+         * @param ev
+         */
+        public MessageRunner(ReporterEvent ev)
+        {
+            event = ev;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            if (event.getSource() instanceof Component)
+            {
+                JOptionPane.showMessageDialog((Component) event.getSource(), event.getMessage());
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, event.getMessage());
+            }
+        }
+
+        private ReporterEvent event;
+    }
     /**
      * The exception we are displaying
      */

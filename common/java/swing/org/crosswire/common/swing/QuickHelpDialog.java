@@ -136,7 +136,7 @@ public class QuickHelpDialog extends JDialog
 
     private static final String OK = "OK"; //$NON-NLS-1$
 
-    private ActionFactory actions;
+    private transient ActionFactory actions;
 
     private JEditorPane txtHelp;
 

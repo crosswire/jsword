@@ -14,9 +14,9 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.book.SentanceUtil;
+import org.crosswire.jsword.book.SentenceUtil;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
-import org.crosswire.jsword.book.basic.PassageAbstractBook;
+import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.passage.BibleInfo;
@@ -204,7 +204,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @version $Id$
  */
-public class RawBook extends PassageAbstractBook
+public class RawBook extends AbstractPassageBook
 {
     /**
      * Simple ctor
@@ -270,7 +270,7 @@ public class RawBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getFilter()
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
     protected Filter getFilter()
     {
@@ -278,7 +278,7 @@ public class RawBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#getText(org.crosswire.jsword.passage.Verse)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getText(org.crosswire.jsword.passage.Verse)
      */
     protected String getText(Key key)
     {
@@ -328,7 +328,7 @@ public class RawBook extends PassageAbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.PassageAbstractBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
      */
     protected void setText(Verse verse, String text) throws BookException
     {
@@ -415,15 +415,15 @@ public class RawBook extends PassageAbstractBook
                     paraInsts.setPara(false, verse);
 
                     // Chop the sentence into words.
-                    String[] textArray = SentanceUtil.tokenize(text);
+                    String[] textArray = SentenceUtil.tokenize(text);
 
                     // The word index
-                    String[] wordArray = SentanceUtil.stripPunctuation(textArray);
+                    String[] wordArray = SentenceUtil.stripPunctuation(textArray);
                     int[] wordIndexes = wordItems.getIndex(wordArray);
                     wordInsts.setIndexes(wordIndexes, verse);
 
                     // The punctuation index
-                    String[] puncArray = SentanceUtil.stripWords(textArray);
+                    String[] puncArray = SentenceUtil.stripWords(textArray);
                     int[] puncIndexes = puncItems.getIndex(puncArray);
                     puncInsts.setIndexes(puncIndexes, verse);
 

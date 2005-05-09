@@ -67,7 +67,7 @@ public class InstallerEvent extends EventObject
     /**
      * The name of the changed Bible
      */
-    private Installer installer;
+    private transient Installer installer;
 
     /**
      * Serialization ID

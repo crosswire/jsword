@@ -979,7 +979,7 @@ public abstract class AbstractPassage implements Passage
      * what to call. Be sure to call lowerNormalizeProtection() when
      * you are done.
      */
-    protected void raiseNormalizeProtection()
+    public void raiseNormalizeProtection()
     {
         skipNormalization++;
 
@@ -999,7 +999,7 @@ public abstract class AbstractPassage implements Passage
      * call raiseNormalizeProtection() and when done call this. This also
      * calls normalize() if the count reaches zero.
      */
-    protected void lowerNormalizeProtection()
+    public void lowerNormalizeProtection()
     {
         skipNormalization--;
 
@@ -1017,7 +1017,7 @@ public abstract class AbstractPassage implements Passage
      * what to call. Be sure to call lowerEventSuppression() when
      * you are done.
      */
-    protected void raiseEventSuppresion()
+    public void raiseEventSuppresion()
     {
         suppressEvents++;
 
@@ -1037,7 +1037,7 @@ public abstract class AbstractPassage implements Passage
      * call raiseEventSuppression() and when done call this.
      * @return true if it is then safe to fire an event.
      */
-    protected boolean lowerEventSuppresionAndTest()
+    public boolean lowerEventSuppresionAndTest()
     {
         suppressEvents--;
         assert suppressEvents >= 0;

@@ -42,12 +42,12 @@ public class LocalURLBookDriver
         }
 
         Book book = bmd.getBook();
-        if (!(book instanceof LocalURLBook))
+        if (!(book instanceof AbstractLocalURLBook))
         {
             throw new BookException(Msg.DELETE_FAIL, new Object[] { bmd.getName()});
         }
 
-        LocalURLBook lbook = (LocalURLBook) book;
+        AbstractLocalURLBook lbook = (AbstractLocalURLBook) book;
         try
         {
             if (!NetUtil.delete(lbook.getURL()))
@@ -87,7 +87,7 @@ public class LocalURLBookDriver
             String base = source.getFullName();
             URL url = createUniqueDirectory(base);
 
-            LocalURLBook dest = (LocalURLBook) bibleclass.newInstance();
+            AbstractLocalURLBook dest = (AbstractLocalURLBook) bibleclass.newInstance();
 
             // LATER(joe): this should not be null
             dest.init(url, null);

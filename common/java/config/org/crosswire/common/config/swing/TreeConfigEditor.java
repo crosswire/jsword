@@ -231,7 +231,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
     /**
      * The custom tree model for the tree
      */
-    protected ConfigureTreeModel ctm;
+    protected transient ConfigureTreeModel ctm;
 
     /**
      * The title for the config panels
