@@ -24,7 +24,6 @@ import org.crosswire.common.util.MsgBase;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
  */
 public class Msg extends MsgBase
 {

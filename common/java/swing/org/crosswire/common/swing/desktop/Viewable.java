@@ -28,7 +28,6 @@ import org.crosswire.common.swing.desktop.event.ViewEventListener;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author DM Smith [ dmsmith555 at yahoo dot com]
- * @version $Id$
  */
 public interface Viewable
 {

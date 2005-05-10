@@ -38,7 +38,6 @@ import javax.swing.event.InternalFrameListener;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
- * @version $Id$
  */
 public class MDIViewLayout extends AbstractViewLayout
 {

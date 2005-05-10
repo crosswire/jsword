@@ -365,7 +365,6 @@ Public License instead of this License.
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
  */
 public class Licence
 {

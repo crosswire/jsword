@@ -44,7 +44,6 @@ import org.crosswire.common.util.CallContext;
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author DM Smith [dmsmith555 at yahoo dot com]
- * @version $Id$
  */
 public class ViewManager implements Viewable, TitleChangedListener, ViewEventListener
 {

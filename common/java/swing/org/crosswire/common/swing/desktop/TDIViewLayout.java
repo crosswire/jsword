@@ -32,7 +32,6 @@ import javax.swing.JTabbedPane;
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
- * @version $Id$
  */
 public class TDIViewLayout extends AbstractViewLayout
 {

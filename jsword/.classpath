@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry sourcepath="/jsword-support/othersource/commons-net-1.3.0-src.zip" kind="lib" path="jar/net-1.3.0/commons-net-1.3.0.jar"/>
-	<classpathentry sourcepath="/jsword-support/othersource/lucene-1.4.3-src.zip" kind="lib" path="jar/lucene-1.4.3/lucene-1.4.3.jar"/>
-	<classpathentry kind="src" path="/common"/>
-	<classpathentry kind="src" path="java/jsword"/>
-	<classpathentry kind="src" path="java/limbo"/>
-	<classpathentry kind="src" path="java/jswordtest"/>
-	<classpathentry exported="true" kind="lib" path="resource"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/jsword-support/othersource/commons-net-1.3.0-src.zip" kind="lib" path="jar/net-1.3.0/commons-net-1.3.0.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/jsword-support/othersource/lucene-1.4.3-src.zip" kind="lib" path="jar/lucene-1.4.3/lucene-1.4.3.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="/common">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="java/jsword">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="java/limbo">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="java/jswordtest">
+		<attributes>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

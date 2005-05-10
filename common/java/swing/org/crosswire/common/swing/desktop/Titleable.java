@@ -24,7 +24,6 @@ import org.crosswire.common.swing.desktop.event.TitleChangedListener;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author DM Smith [ dmsmith555 at yahoo dot com]
- * @version $Id$
  */
 public interface Titleable
 {

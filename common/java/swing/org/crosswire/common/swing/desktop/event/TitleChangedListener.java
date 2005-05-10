@@ -25,7 +25,6 @@ import java.util.EventListener;
  * </font></td></tr></table>
  * @see gnu.gpl.Licence
  * @author Joe Walker [joe at eireneh dot com]
- * @version $Id$
  */
 public interface TitleChangedListener extends EventListener
 {
