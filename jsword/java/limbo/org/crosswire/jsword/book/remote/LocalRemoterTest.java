@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $ID$
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.remote;
 
