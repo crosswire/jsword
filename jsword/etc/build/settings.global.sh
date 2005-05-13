@@ -1,5 +1,3 @@
-#!/bin/sh
-
 export LOGFILE=$WEBAPP_JSWORD/buildlog.txt
 
 #export XALAN=$JSWORD_HOME/jar/xalan25d1

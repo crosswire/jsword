@@ -1,4 +1,4 @@
-#!/bin/sh
+umask -S u=rwx,g=rwx,o=rx
 
 export WEBAPP_JSWORD=/home/jsword/html
 export WEBAPP_BIBLEDESKTOP=/home/jsword/bibledesktop/html
@@ -10,12 +10,12 @@ export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly
 export JNLP_INSTALLED=$WEBAPP_BIBLEDESKTOP/nightly
 
 export EMAIL=joe@eireneh.com
-export ANT_HOME=/home/joe/local/ant
+export ANT_HOME=/usr/local/ant
 export JAVA_HOME=/usr/local/java
 
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/bin
 export PATH=$PATH:/usr/bin
+export PATH=$PATH:$ANT_HOME/bin
 export PATH=$PATH:/home/joe/local/bin
 export PATH=$PATH:$JAVA_HOME/bin
-export PATH=$PATH:$ANT_HOME/bin
