@@ -1,4 +1,4 @@
-umask -S u=rwx,g=rwx,o=rx
+umask -S u=rwx,g=rwx,o=rx > /dev/null
 
 export WEBAPP_JSWORD=/home/jsword/html
 export WEBAPP_BIBLEDESKTOP=/home/jsword/bibledesktop/html
